@@ -1,5 +1,7 @@
 NFluent overview
 ==============
+*author:* thomas@pierrain.net
+*date:* February 6th 2013
 
 NFluent provides some helpers for Easy Software Testing in .NET. NFluent is highly inspired of the awesome FEST Fluent assertion/reflection Java library (http://fest.easytesting.org/)
 
@@ -23,7 +25,3 @@ With NFluent, you can write some assertions like this (note: CollectionAssert he
 	CollectionAssert.AreEqual(new[] { Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian }, collection.Properties("Nationality"));
 
 - - -
-
-Author(s)
---------- 
-+ [Thomas PIERRAIN](mailto:thomas@pierrain.net)
