@@ -1,15 +1,14 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NFest")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("NFluent")]
+[assembly: AssemblyDescription("NFluent provides some helpers for Easy Software Testing in .NET. NFluent is highly inspired of the awesome FEST Fluent assertion/reflection Java library (http://fest.easytesting.org/)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NFest")]
+[assembly: AssemblyCompany("Thomas PIERRAIN (thomas@pierrain.net)")]
+[assembly: AssemblyProduct("NFluent")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
