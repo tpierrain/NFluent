@@ -20,8 +20,8 @@
                                      new Student() { Name = "Anton", Age = 7 }
                                  };
 
-            CollectionAssert.AreEqual(new[] {"Thomas", "Achille", "Anton"}, collection.Properties("Name"));
-            //CollectionAssert.AreEqual(new[] {38, 10, 7}, collection.Properties("Age"));
+            CollectionAssert.AreEqual(new[] {"Thomas", "Achille", "Anton"}, collection.Properties<string, Student>("Name"));
+            CollectionAssert.AreEqual(new[] {38, 10, 7}, collection.Properties<int, Student>("Age"));
 
             // assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
         }
