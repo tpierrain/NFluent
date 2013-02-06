@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CCA550FA-833A-4F2E-9C81-78EE585A49CC}"
 	ProjectSection(SolutionItems) = preProject
+		DevDoD.md = DevDoD.md
 		ReadMe.md = ReadMe.md
+		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent", "NFluent\NFluent.csproj", "{3A474510-F384-41CE-9270-539B1E51DA7E}"

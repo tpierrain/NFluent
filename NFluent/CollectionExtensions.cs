@@ -1,6 +1,10 @@
 ﻿namespace NFluent
 {
+    using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
     /// <summary>
     /// Extension methods for easily exploiting enumerable collections content.
@@ -8,30 +12,24 @@
     public static class CollectionExtensions
     {
         /// <summary>
-        /// Extract all the values of a given property from an enumerable collection of object supporting that kind of property.
+        /// Extract all the values of a given property given its name, from an enumerable collection of objects.
         /// </summary>
-        /// <typeparam name="R">Type of the objects contained in the returned collection.</typeparam>
-        /// <typeparam name="O">Type of the objects belonging to the initial enumerable collection</typeparam>
+        /// <typeparam name="T">Type of the objects belonging to the initial enumerable collection</typeparam>
         /// <param name="enumerable">The enumerable collection of objects.</param>
-        /// <param name="propertyName">Name of the property to extract value from for every object.</param>
+        /// <param name="propertyName">Name of the property to extract value from for every object of the collection.</param>
         /// <returns>
-        /// An enumerable of values for the property with name: <see cref="propertyName" />
+        /// An enumerable of all the property values for every <see cref="T"/> objects in the <see cref="enumerable"/>.
         /// </returns>
-        public static IEnumerable<R> Properties<R, O>(this IEnumerable<O> enumerable, string propertyName)
+        public static IEnumerable Properties<T>(this IEnumerable<T> enumerable, string propertyName)
         {
-            if (propertyName == "Name")
+            Type type = typeof(T);
+            var getter = type.GetProperty(propertyName);
+
+            foreach (var o in enumerable)
             {
-                IEnumerable<string> ret = new List<string>() { "Thomas", "Achille", "Anton" };
-                return ret as IEnumerable<R>;
+                var value = getter.GetValue(o);
+                yield return value;
             }
-            if (propertyName == "Age")
-            {
-                IEnumerable<int> ret = new List<int>() { 38, 10, 7 };
-                
-                return ret as IEnumerable<R>;
-            }
-                        
-            return null;
         }
     }
 }
