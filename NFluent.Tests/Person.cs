@@ -11,17 +11,14 @@
 
         public Nationality Nationality { get; set; }
 
+// ReSharper disable UnusedMember.Local
         private string PrivatePassword
+// ReSharper restore UnusedMember.Local
         {
             get
             {
                 return "Kamoulox !";
             }
-        }
-
-        public string WhisperPassword()
-        {
-            return this.PrivatePassword;
         }
     }
 }
