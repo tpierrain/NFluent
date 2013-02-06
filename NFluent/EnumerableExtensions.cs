@@ -7,9 +7,9 @@
     using System.Reflection.Emit;
 
     /// <summary>
-    /// Extension methods for easily exploiting enumerable collections content.
+    /// Extension methods for easily exploiting enumerable content.
     /// </summary>
-    public static class CollectionExtensions
+    public static class EnumerableExtensions
     {
         /// <summary>
         /// Extract all the values of a given property given its name, from an enumerable collection of objects.
@@ -23,7 +23,12 @@
         public static IEnumerable Properties<T>(this IEnumerable<T> enumerable, string propertyName)
         {
             Type type = typeof(T);
-            var getter = type.GetProperty(propertyName);
+            var getter = type.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+
+            if (getter == null)
+            {
+                throw new InvalidOperationException(string.Format("Objects of type {0} don't have property with name '{1}'", type, propertyName));
+            }
 
             foreach (var o in enumerable)
             {

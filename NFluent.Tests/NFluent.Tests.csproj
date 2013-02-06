@@ -42,9 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CollectionExtensionsTests.cs" />
+    <Compile Include="EnumerableExtensionsTests.cs" />
     <Compile Include="Nationality.cs" />
-    <Compile Include="Student.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿namespace NFluent.Tests
 {
     /// <summary>
-    /// Nationality.
+    /// Nationality for people, things, etc.
     /// </summary>
     internal enum Nationality
     {
@@ -41,9 +41,14 @@
         Indian,
         
         /// <summary>
-        /// Centrafrican nationality.
+        /// CentralAfrican nationality.
         /// </summary>
-        Centrafrican,
+        CentralAfrican,
+
+        /// <summary>
+        /// Kazakhstan nationality.
+        /// </summary>
+        Kazakhstan,
 
         /// <summary>
         /// Other nationality.
