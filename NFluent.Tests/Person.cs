@@ -12,7 +12,7 @@
         public Nationality Nationality { get; set; }
 
 // ReSharper disable UnusedMember.Local
-        private string PrivatePassword
+        private string PrivateHesitation
 // ReSharper restore UnusedMember.Local
         {
             get

@@ -31,19 +31,6 @@
         }
 
         [Test]
-        public void PropertiesWorksWithAssertThat()
-        {
-            var enumerable = new List<Person>
-                                 {
-                                     new Person { Name = "Coltrane", Nationality = Nationality.American },
-                                     new Person { Name = "Gillespie", Nationality = Nationality.American },
-                                     new Person { Name = "Vian", Nationality = Nationality.French }
-                                 };
-
-            Assert.That(enumerable.Properties("Name").ContainsExactly("Coltrane", "Gillespie", "Vian"));
-        }
-
-        [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public void PropertiesThrowInvalidOperationExceptionIfPropertyDoesNotExist()
         {
@@ -68,7 +55,7 @@
                                      new Person { Name = "Borat" }
                                  };
 
-            CollectionAssert.AreEqual(new[] { "Kamoulox !", "Kamoulox !" }, enumerable.Properties("PrivatePassword"));
+            Assert.That(enumerable.Properties("PrivateHesitation").ContainsExactly("Kamoulox !", "Kamoulox !"));
         }
 
         #endregion
