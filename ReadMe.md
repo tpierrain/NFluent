@@ -3,7 +3,7 @@ NFluent overview
 *author:* thomas@pierrain.net
 *date:* February 6th 2013
 
-NFluent provides some helpers for Easy Software Testing in .NET. NFluent is highly inspired of the awesome FEST Fluent assertion/reflection Java library (http://fest.easytesting.org/)
+NFluent provides some method extensions for Easy Software Testing in .NET. NFluent is __highly inspired by the awesome Java FEST Fluent__ assertion/reflection library (http://fest.easytesting.org/)
 
 - - -
 
