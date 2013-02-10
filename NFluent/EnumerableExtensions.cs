@@ -32,7 +32,7 @@
 
             foreach (var o in enumerable)
             {
-                var value = getter.GetValue(o);
+                var value = getter.GetValue(o, null);
                 yield return value;
             }
         }
