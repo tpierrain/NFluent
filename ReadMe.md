@@ -18,7 +18,11 @@ With NFluent, you can write some assertions like this:
 	var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
     Assert.That(guitarHeroes.ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell"));
 
-or like this:
+(note: the Assert.That is part of the NUnit library)
+
+- - - 
+
+with NFluent, you can also write something like this:
 
 	 var enumerable = new List<Person>
                                  {
