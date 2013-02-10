@@ -48,7 +48,7 @@
         {
             if (!object.Equals(obj, expected))
             {
-                throw new FluentAssertionException(string.Format("'{0}' not equals to the expected '{1}'", obj, expected));
+                throw new FluentAssertionException(string.Format("[{0}] not equals to the expected [{1}]", obj.ToStringProperlyFormated(), expected.ToStringProperlyFormated()));
             }
 
             return true;
@@ -81,7 +81,7 @@
 
                     var foundNumberOfItemsDescription = string.Format(enumerableCount <= 1 ? "{0} item" : "{0} items", enumerableCount);
                     
-                    throw new FluentAssertionException(string.Format("Found: '{0}' ({1}) instead of the expected '{2}' ({3}).", enumerable.ToAString(), foundNumberOfItemsDescription, expectedValues.ToAString(), expectedNumberOfItemsDescription));
+                    throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", enumerable.ToAString(), foundNumberOfItemsDescription, expectedValues.ToAString(), expectedNumberOfItemsDescription));
                 }
 
                 i++;
@@ -91,10 +91,12 @@
         }
 
         /// <summary>
-        /// Return a string containing all the <see cref="IEnumerable"/> elements, separated by a comma.
+        /// Return a string containing all the <see cref="IEnumerable" /> elements, separated by a comma.
         /// </summary>
         /// <param name="enumerable">The enumerable to transform into a string.</param>
-        /// <returns>A string containing all the <see cref="IEnumerable"/> elements, separated by a comma.</returns>
+        /// <returns>
+        /// A string containing all the <see cref="IEnumerable" /> elements, separated by a comma.
+        /// </returns>
         public static string ToAString(this IEnumerable enumerable)
         {
             var firstTime = true;
@@ -108,11 +110,28 @@
                     sb.Append(Separator);
                 }
 
-                sb.Append(obj.ToString());
+                sb.Append(obj.ToStringProperlyFormated());
                 firstTime = false;
             }
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object. If the object is already a string, this method will surround it with brackets.
+        /// </summary>
+        /// <param name="theObject">The theObject.</param>
+        /// <returns>A string that represents the current object. If the object is already a string, this method will surround it with brackets.</returns>
+        private static string ToStringProperlyFormated(this object theObject)
+        {
+            if (theObject is string)
+            {
+                return string.Format(@"""{0}""", theObject);
+            }
+            else
+            {
+                return theObject.ToString();
+            }
         }
     }
 }

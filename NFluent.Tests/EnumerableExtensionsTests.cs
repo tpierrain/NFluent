@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
 
     using NUnit.Framework;
 
@@ -73,7 +72,7 @@
         }
         
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "Found: 'Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell' (4 items) instead of the expected 'Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell' (1 item).")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Hendrix"", ""Paco de Lucia"", ""Django Reinhardt"", ""Baden Powell""] (4 items) instead of the expected [""Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell""] (1 item).")]
         public void ContainsExactlyThrowExplicitExceptionMessage()
         {
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
@@ -81,7 +80,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "Found: '1, 2, 3, 4, 5, 666' (6 items) instead of the expected '42, 42, 42' (3 items).")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "Found: [1, 2, 3, 4, 5, 666] (6 items) instead of the expected [42, 42, 42] (3 items).")]
         public void ContainsExactlyThrowExceptionWhenFalse()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
@@ -100,7 +99,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "'Son of a test' not equals to the expected 'no way'")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""Son of a test""] not equals to the expected [""no way""]")]
         public void EqualsExactlyThrowExceptionWhenFalse()
         {
             var first = "Son of a test";
@@ -112,10 +111,17 @@
         #region ToAString extension method
 
         [Test]
-        public void ToAStringWorks()
+        public void ToAStringParticularBehaviourWithStrings()
         {
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
-            Assert.That(guitarHeroes.ToAString().EqualsExactly("Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell"));
+            Assert.That(guitarHeroes.ToAString().EqualsExactly(@"""Hendrix"", ""Paco de Lucia"", ""Django Reinhardt"", ""Baden Powell"""));
+        }
+
+        [Test]
+        public void ToAStringWorksFineWithStrings()
+        {
+            var guitarHeroes = new[] { 93, 56, 35, 75 };
+            Assert.That(guitarHeroes.ToAString().EqualsExactly("93, 56, 35, 75"));
         }
 
         #endregion
