@@ -10,18 +10,26 @@ NFluent provides some helpers for Easy Software Testing in .NET. NFluent is high
 Usage sample
 ------------
 
-With NFluent, you can write some assertions like this (note: CollectionAssert here is part of the NUnit framework).
+With NFluent, you can write some assertions like this:
+	
+	var integers = new int[] { 1, 2, 3, 4, 5, 666 };
+    Assert.That(integers.ContainsExactly(1, 2, 3, 4, 5, 666));
 
+	var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
+    Assert.That(guitarHeroes.ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell"));
 
-	var collection = new List<Student> {
-                                     new Student { Name = "Thomas", Age = 38 }, 
-                                     new Student { Name = "Achille", Age = 10, Nationality = Nationality.French }, 
-                                     new Student { Name = "Anton", Age = 7, Nationality = Nationality.French }, 
-                                     new Student { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
+or like this:
+
+	 var enumerable = new List<Person>
+                                 {
+                                     new Person { Name = "Thomas", Age = 38 },
+                                     new Person { Name = "Achille", Age = 10, Nationality = Nationality.French },
+                                     new Person { Name = "Anton", Age = 7, Nationality = Nationality.French },
+                                     new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
 
-	CollectionAssert.AreEqual(new[] { "Thomas", "Achille", "Anton", "Arjun" }, collection.Properties("Name"));
-	CollectionAssert.AreEqual(new[] { 38, 10, 7, 7 }, collection.Properties("Age"));
-	CollectionAssert.AreEqual(new[] { Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian }, collection.Properties("Nationality"));
+     Assert.That(enumerable.Properties("Name").ContainsExactly("Thomas", "Achille", "Anton", "Arjun"));
+     Assert.That(enumerable.Properties("Age").ContainsExactly(38, 10, 7, 7));
+     Assert.That(enumerable.Properties("Nationality").ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian));
 
 - - -
