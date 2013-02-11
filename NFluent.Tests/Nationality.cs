@@ -53,6 +53,26 @@
         /// <summary>
         /// Other nationality.
         /// </summary>
-        Other
+        Other,
+
+        /// <summary>
+        /// Korean nationality.
+        /// </summary>
+        Korean,
+
+        /// <summary>
+        /// Serbian nationality.
+        /// </summary>
+        Serbian,
+
+        /// <summary>
+        /// Japanese nationality.
+        /// </summary>
+        Japanese,
+
+        /// <summary>
+        /// German nationality.
+        /// </summary>
+        German
     }
 }

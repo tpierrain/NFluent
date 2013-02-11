@@ -6,6 +6,8 @@
     using System.Reflection;
     using System.Text;
 
+    // TODO: check performances
+
     /// <summary>
     /// Extension methods for easily exploiting enumerable content.
     /// </summary>
@@ -71,7 +73,7 @@
             {
                 if (!object.Equals(obj, expectedValues[i]))
                 {
-                    var expectedNumberOfItemsDescription = string.Format(expectedValues.LongLength <= 1 ? "{0} item" : "{0} items", expectedValues.LongLength);
+                    var expectedNumberOfItemsDescription = FormatItemCount(expectedValues.LongLength);
 
                     var enumerableCount = 0;
                     foreach (var item in enumerable)
@@ -91,6 +93,48 @@
         }
 
         /// <summary>
+        /// Determines whether the specified enumerable contains exactly some expected values.
+        /// </summary>
+        /// <param name="enumerable">The enumerable.</param>
+        /// <param name="otherEnumerable">The other enumerable.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified enumerable contains exactly the specified expected values; throw a <see cref="FluentAssertionException" /> otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="NFluent.FluentAssertionException">the specified enumerable does not contains exactly the specified expected values.</exception>
+        public static bool ContainsExactly(this IEnumerable enumerable, IEnumerable otherEnumerable)
+        {
+            // TODO: Refactor this implementation
+            if (otherEnumerable == null)
+            {
+                long foundCount;
+                var foundItems = ToAString(enumerable, out foundCount);
+                var foundItemsCount = FormatItemCount(foundCount);
+                throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [] (0 item).", foundItems, foundItemsCount));
+            }
+
+            var first = enumerable.GetEnumerator();
+            var second = otherEnumerable.GetEnumerator();
+
+            while (first.MoveNext())
+            {
+                if (!second.MoveNext() || !object.Equals(first.Current, second.Current))
+                {
+                    long foundCount;
+                    var foundItems = ToAString(enumerable, out foundCount);
+                    var formatedFoundCount = FormatItemCount(foundCount);
+
+                    long expectedCount;
+                    object expectedItems = ToAString(otherEnumerable, out expectedCount);
+                    var formatedExpectedCount = FormatItemCount(expectedCount);
+
+                    throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Return a string containing all the <see cref="IEnumerable" /> elements, separated by a comma.
         /// </summary>
         /// <param name="enumerable">The enumerable to transform into a string.</param>
@@ -99,10 +143,25 @@
         /// </returns>
         public static string ToAString(this IEnumerable enumerable)
         {
+            long itemsCount = 0;
+            return ToAString(enumerable, out itemsCount);
+        }
+
+        /// <summary>
+        /// Return a string containing all the <see cref="IEnumerable" /> elements, separated by a comma.
+        /// </summary>
+        /// <param name="enumerable">The enumerable to transform into a string.</param>
+        /// <param name="itemsCount">The number of items within the <see cref="IEnumerable"/>.</param>
+        /// <returns>
+        /// A string containing all the <see cref="IEnumerable" /> elements, separated by a comma.
+        /// </returns>
+        public static string ToAString(this IEnumerable enumerable, out long itemsCount)
+        {
             var firstTime = true;
             var sb = new StringBuilder();
             const string Separator = ", ";
-            
+            itemsCount = 0;
+
             foreach (var obj in enumerable)
             {
                 if (!firstTime)
@@ -112,6 +171,8 @@
 
                 sb.Append(obj.ToStringProperlyFormated());
                 firstTime = false;
+
+                itemsCount++;
             }
 
             return sb.ToString();
@@ -132,6 +193,16 @@
             {
                 return theObject.ToString();
             }
+        }
+
+        /// <summary>
+        /// Generates the proper description for the items count, based on their numbers.
+        /// </summary>
+        /// <param name="itemsCount">The number of items.</param>
+        /// <returns>The proper description for the items count.</returns>
+        private static string FormatItemCount(long itemsCount)
+        {
+            return string.Format(itemsCount <= 1 ? "{0} item" : "{0} items", itemsCount);
         }
     }
 }
