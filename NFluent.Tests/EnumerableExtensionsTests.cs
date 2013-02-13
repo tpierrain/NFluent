@@ -25,7 +25,12 @@
             Assert.That(enumerable.Properties("Age").ContainsExactly(38, 10, 7, 7));
             Assert.That(enumerable.Properties("Nationality").ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian));
 
-            // java version
+            // more fluent than the following classical NUnit way, isn't it? 
+            CollectionAssert.AreEquivalent(enumerable.Properties("Age"), new[] { 38, 10, 7, 7 });
+
+            // NFluent relies intensively on intellisense to make you more productive in your day to day TDD
+
+            // java version (FEST fluent assert)
             // assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
         }
 
@@ -128,20 +133,20 @@
 
         #endregion
 
-        #region ToAString extension method
+        #region ToEnumeratedString extension method
 
         [Test]
-        public void ToAStringParticularBehaviourWithStrings()
+        public void ToEnumeratedStringParticularBehaviourWithStrings()
         {
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
-            Assert.That(guitarHeroes.ToAString().EqualsExactly(@"""Hendrix"", ""Paco de Lucia"", ""Django Reinhardt"", ""Baden Powell"""));
+            Assert.That(guitarHeroes.ToEnumeratedString().EqualsExactly(@"""Hendrix"", ""Paco de Lucia"", ""Django Reinhardt"", ""Baden Powell"""));
         }
 
         [Test]
-        public void ToAStringWorksFineWithStrings()
+        public void ToEnumeratedStringWorksFineWithStrings()
         {
             var guitarHeroes = new[] { 93, 56, 35, 75 };
-            Assert.That(guitarHeroes.ToAString().EqualsExactly("93, 56, 35, 75"));
+            Assert.That(guitarHeroes.ToEnumeratedString().EqualsExactly("93, 56, 35, 75"));
         }
 
         #endregion

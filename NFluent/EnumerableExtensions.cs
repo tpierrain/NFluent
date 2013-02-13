@@ -14,7 +14,7 @@
     public static class EnumerableExtensions
     {
         /// <summary>
-        /// Extract all the values of a given property given its name, from an enumerable collection of objects.
+        /// Extract all the values of a given property given its name, from an enumerable collection of objects holding that property.
         /// </summary>
         /// <typeparam name="T">Type of the objects belonging to the initial enumerable collection</typeparam>
         /// <param name="enumerable">The enumerable collection of objects.</param>
@@ -83,7 +83,7 @@
 
                     var foundNumberOfItemsDescription = string.Format(enumerableCount <= 1 ? "{0} item" : "{0} items", enumerableCount);
                     
-                    throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", enumerable.ToAString(), foundNumberOfItemsDescription, expectedValues.ToAString(), expectedNumberOfItemsDescription));
+                    throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", enumerable.ToEnumeratedString(), foundNumberOfItemsDescription, expectedValues.ToEnumeratedString(), expectedNumberOfItemsDescription));
                 }
 
                 i++;
@@ -107,7 +107,7 @@
             if (otherEnumerable == null)
             {
                 long foundCount;
-                var foundItems = ToAString(enumerable, out foundCount);
+                var foundItems = ToEnumeratedString(enumerable, out foundCount);
                 var foundItemsCount = FormatItemCount(foundCount);
                 throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [] (0 item).", foundItems, foundItemsCount));
             }
@@ -120,11 +120,11 @@
                 if (!second.MoveNext() || !object.Equals(first.Current, second.Current))
                 {
                     long foundCount;
-                    var foundItems = ToAString(enumerable, out foundCount);
+                    var foundItems = ToEnumeratedString(enumerable, out foundCount);
                     var formatedFoundCount = FormatItemCount(foundCount);
 
                     long expectedCount;
-                    object expectedItems = ToAString(otherEnumerable, out expectedCount);
+                    object expectedItems = ToEnumeratedString(otherEnumerable, out expectedCount);
                     var formatedExpectedCount = FormatItemCount(expectedCount);
 
                     throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
@@ -141,22 +141,23 @@
         /// <returns>
         /// A string containing all the <see cref="IEnumerable" /> elements, separated by a comma.
         /// </returns>
-        public static string ToAString(this IEnumerable enumerable)
+        public static string ToEnumeratedString(this IEnumerable enumerable)
         {
             long itemsCount = 0;
-            return ToAString(enumerable, out itemsCount);
+            return ToEnumeratedString(enumerable, out itemsCount);
         }
 
         /// <summary>
-        /// Return a string containing all the <see cref="IEnumerable" /> elements, separated by a comma.
+        /// Return a string containing all the elements of an <see cref="IEnumerable" />, separated by a comma.
         /// </summary>
         /// <param name="enumerable">The enumerable to transform into a string.</param>
         /// <param name="itemsCount">The number of items within the <see cref="IEnumerable"/>.</param>
         /// <returns>
         /// A string containing all the <see cref="IEnumerable" /> elements, separated by a comma.
         /// </returns>
-        public static string ToAString(this IEnumerable enumerable, out long itemsCount)
+        public static string ToEnumeratedString(this IEnumerable enumerable, out long itemsCount)
         {
+            // TODO: extract method to introduce Separator as a parameter (and using comma as Default value)
             var firstTime = true;
             var sb = new StringBuilder();
             const string Separator = ", ";
