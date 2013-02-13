@@ -9,7 +9,7 @@
     // TODO: check performances
 
     /// <summary>
-    /// Extension methods for easily exploiting enumerable content.
+    /// Extension methods for exploiting enumerable content in a fluent manner (i.e. with auto completion support and in an english readable way).
     /// </summary>
     public static class EnumerableExtensions
     {
