@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using NUnit.Framework;
 
@@ -64,6 +65,28 @@
 
         #endregion
 
+        #region Contains extension method
+
+        [Test]
+        public void ContainsWork()
+        {
+            var integers = new int[] { 1, 2, 3, 4, 5, 666 };
+            Assert.That(integers.Contains(3, 5, 666));
+
+            var enumerable = new List<string>() { "un", "dos", "tres" };
+            Assert.That(enumerable.Contains("dos"));
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The array does not contain the expected value(s): [666, 1974].")]
+        public void ContainsThrowsExceptionWhenFalse()
+        {
+            var integers = new int[] { 1, 2, 3 };
+            Assert.That(integers.Contains(3, 2, 666, 1974));
+        }
+
+        #endregion
+
         #region ContainsExactly extension method
 
         [Test]
@@ -78,7 +101,7 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "Found: [1, 2, 3, 4, 5, 666] (6 items) instead of the expected [42, 42, 42] (3 items).")]
-        public void ContainsExactlyThrowExceptionWhenFalse()
+        public void ContainsExactlyThrowsExceptionWhenFalse()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
             Assert.That(integers.ContainsExactly(42, 42, 42));
@@ -86,7 +109,7 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Hendrix"", ""Paco de Lucia"", ""Django Reinhardt"", ""Baden Powell""] (4 items) instead of the expected [""Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell""] (1 item).")]
-        public void ContainsExactlyThrowExplicitExceptionMessage()
+        public void ContainsExactlyThrowsExplicitExceptionMessageWhenFalse()
         {
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
             Assert.That(guitarHeroes.ContainsExactly("Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell"));
@@ -121,11 +144,27 @@
         {
             var first = "Son of a test";
             Assert.That(first.EqualsExactly("Son of a test"));
+
+            var array = new int[] { 45, 43, 54, 666 };
+            var otherReference = array;
+
+            Assert.That(array.EqualsExactly(array));
+            Assert.That(array.EqualsExactly(otherReference));
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException))]
+        public void EqualsExactlyThrowExceptionWhenFalse()
+        {
+            var array = new int[] { 45, 43, 54, 666 };
+            var otherEquivalentArray = new int[] { 45, 43, 54, 666 };
+
+            Assert.That(array.EqualsExactly(otherEquivalentArray));
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""Son of a test""] not equals to the expected [""no way""]")]
-        public void EqualsExactlyThrowExceptionWhenFalse()
+        public void EqualsExactlyThrowExceptionWithProperMessageWhenFalse()
         {
             var first = "Son of a test";
             Assert.That(first.EqualsExactly("no way"));

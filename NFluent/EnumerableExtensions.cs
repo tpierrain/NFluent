@@ -42,6 +42,7 @@
         /// <summary>
         /// Checks that an object is equal to the current instance, and throws a <see cref="FluentAssertionException"/> if it is not the case.
         /// </summary>
+        /// <remarks>This method is not named EqualsOrThrowException to ensure english readability when used within an Assert.That() statement.</remarks>
         /// <param name="obj">The current object instance.</param>
         /// <param name="expected">The object that we expect to be equal.</param>
         /// <returns><c>true</c> if the two objects are equal, or throw a <see cref="FluentAssertionException"/> otherwise.</returns>
@@ -57,13 +58,46 @@
         }
 
         /// <summary>
+        /// Determines whether the specified enumerable contains at least all the expected values provided.
+        /// </summary>
+        /// <typeparam name="T">Type of the elements contained in the arrays.</typeparam>
+        /// <param name="array">The array that should hold the expected values.</param>
+        /// <param name="expectedValues">The expected values.</param>
+        /// <returns>
+        ///   <c>true</c> if the array contains all the specified expected values]; throw a <see cref="FluentAssertionException"/> otherwise.
+        /// </returns>
+        /// <exception cref="NFluent.FluentAssertionException">the specified enumerable does not contains exactly the specified expected values.</exception>
+        public static bool Contains<T>(this T[] array, params T[] expectedValues)
+        {
+            var notFoundValues = new List<T>(expectedValues);
+            foreach (var element in array)
+            {
+                foreach (var expectedValue in expectedValues)
+                {
+                    if (object.Equals(element, expectedValue))
+                    {
+                        notFoundValues.Remove(expectedValue);
+                        break;
+                    }
+                }
+            }    
+
+            if (notFoundValues.Count == 0)
+            {
+                return true;
+            }
+            
+            throw new FluentAssertionException(string.Format("The array does not contain the expected value(s): [{0}].", notFoundValues.ToEnumeratedString()));
+        }
+
+        /// <summary>
         /// Determines whether the specified enumerable contains exactly some expected values.
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the <see cref="expectedValues"/> array.</typeparam>
         /// <param name="enumerable">The enumerable.</param>
         /// <param name="expectedValues">The expected values.</param>
         /// <returns>
-        ///   <c>true</c> if the specified enumerable contains exactly the specified expected values; throw a <see cref="FluentAssertionException"/> otherwise, <c>false</c>.
+        ///   <c>true</c> if the enumerable contains exactly the specified expected values; throw a <see cref="FluentAssertionException"/> otherwise.
         /// </returns>
         /// <exception cref="NFluent.FluentAssertionException">the specified enumerable does not contains exactly the specified expected values.</exception>
         public static bool ContainsExactly<T>(this IEnumerable enumerable, params T[] expectedValues)
