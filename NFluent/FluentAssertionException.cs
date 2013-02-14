@@ -17,24 +17,14 @@
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FluentAssertionException" /> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="innerException">The inner exception.</param>
-        public FluentAssertionException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FluentAssertionException" /> class.
-        /// </summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
-        protected FluentAssertionException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
+        ///// <summary>
+        ///// Initializes a new instance of the <see cref="FluentAssertionException" /> class.
+        ///// </summary>
+        ///// <param name="info">The info.</param>
+        ///// <param name="context">The context.</param>
+        //protected FluentAssertionException(SerializationInfo info, StreamingContext context)
+        //    : base(info, context)
+        //{
+        //}
     }
 }
