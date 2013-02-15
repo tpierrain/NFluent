@@ -22,9 +22,9 @@
         ///// </summary>
         ///// <param name="info">The info.</param>
         ///// <param name="context">The context.</param>
-        //protected FluentAssertionException(SerializationInfo info, StreamingContext context)
+        // protected FluentAssertionException(SerializationInfo info, StreamingContext context)
         //    : base(info, context)
-        //{
-        //}
+        // {
+        // }
     }
 }

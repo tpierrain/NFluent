@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     using NUnit.Framework;
 
@@ -79,7 +78,7 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The array does not contain the expected value(s): [666, 1974].")]
-        public void ContainsThrowsExceptionWhenFalse()
+        public void ContainsThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 1, 2, 3 };
             Assert.That(integers.Contains(3, 2, 666, 1974));
@@ -101,7 +100,7 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "Found: [1, 2, 3, 4, 5, 666] (6 items) instead of the expected [42, 42, 42] (3 items).")]
-        public void ContainsExactlyThrowsExceptionWhenFalse()
+        public void ContainsExactlyThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
             Assert.That(integers.ContainsExactly(42, 42, 42));
@@ -109,7 +108,7 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Hendrix"", ""Paco de Lucia"", ""Django Reinhardt"", ""Baden Powell""] (4 items) instead of the expected [""Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell""] (1 item).")]
-        public void ContainsExactlyThrowsExplicitExceptionMessageWhenFalse()
+        public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithStrings()
         {
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
             Assert.That(guitarHeroes.ContainsExactly("Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell"));
@@ -123,14 +122,14 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Michel Gondry"", ""Joon-ho Bong"", ""Darren Aronofsky""] (3 items) instead of the expected [""Steve Tesich"", ""Albert Camus"", ""Eiji Yoshikawa"", ""Friedrich Nietzsche""] (4 items).")]
-        public void ContainsExactlyThrowExceptionWhenWorkingWithEnumerable()
+        public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithEnumerable()
         {
             Assert.That(InstantiateDirectors().Properties("Name").ContainsExactly(InstantiateWriters().Properties("Name")));
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Michel Gondry"", ""Joon-ho Bong"", ""Darren Aronofsky""] (3 items) instead of the expected [] (0 item).")]
-        public void ContainsExactlyThrowExceptionWhenWorkingWithNullEnumerable()
+        public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithNullEnumerable()
         {
             Assert.That(InstantiateDirectors().Properties("Name").ContainsExactly(null));
         }
@@ -154,7 +153,7 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException))]
-        public void EqualsExactlyThrowExceptionWhenFalse()
+        public void EqualsExactlyThrowsExceptionWhenFails()
         {
             var array = new int[] { 45, 43, 54, 666 };
             var otherEquivalentArray = new int[] { 45, 43, 54, 666 };
@@ -164,10 +163,39 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""Son of a test""] not equals to the expected [""no way""]")]
-        public void EqualsExactlyThrowExceptionWithProperMessageWhenFalse()
+        public void EqualsExactlyThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";
             Assert.That(first.EqualsExactly("no way"));
+        }
+
+        #endregion
+
+        #region HasSize extension method
+
+        [Test]
+        public void HasSizeWorksWithArray()
+        {
+            var array = new int[] { 45, 43, 54, 666 };
+
+            Assert.That(array.HasSize(4));
+        }
+
+        [Test]
+        public void HasSizeWorksWithEnumerable()
+        {
+            var enumerable = new List<int>() { 45, 43, 54, 666 };
+
+            Assert.That(enumerable.HasSize(4));
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "Has [4] items instead of the expected value [2].")]
+        public void HasSizeThrowsExceptionWithClearStatusWhenFails()
+        {
+            var enumerable = new List<int>() { 45, 43, 54, 666 };
+
+            Assert.That(enumerable.HasSize(2));
         }
 
         #endregion

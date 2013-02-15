@@ -16,7 +16,7 @@
         /// <summary>
         /// Extract all the values of a given property given its name, from an enumerable collection of objects holding that property.
         /// </summary>
-        /// <typeparam name="T">Type of the objects belonging to the initial enumerable collection</typeparam>
+        /// <typeparam name="T">Type of the objects belonging to the initial enumerable collection.</typeparam>
         /// <param name="enumerable">The enumerable collection of objects.</param>
         /// <param name="propertyName">Name of the property to extract value from for every object of the collection.</param>
         /// <returns>
@@ -46,7 +46,7 @@
         /// <param name="obj">The current object instance.</param>
         /// <param name="expected">The object that we expect to be equal.</param>
         /// <returns><c>true</c> if the two objects are equal, or throw a <see cref="FluentAssertionException"/> otherwise.</returns>
-        /// <exception cref="NFluent.FluentAssertionException">the two objects are not equal.</exception>
+        /// <exception cref="NFluent.FluentAssertionException">The two objects are not equal.</exception>
         public static bool EqualsExactly(this object obj, object expected)
         {
             if (!object.Equals(obj, expected))
@@ -66,7 +66,7 @@
         /// <returns>
         ///   <c>true</c> if the array contains all the specified expected values]; throw a <see cref="FluentAssertionException"/> otherwise.
         /// </returns>
-        /// <exception cref="NFluent.FluentAssertionException">the specified enumerable does not contains exactly the specified expected values.</exception>
+        /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
         public static bool Contains<T>(this T[] array, params T[] expectedValues)
         {
             var notFoundValues = new List<T>(expectedValues);
@@ -99,7 +99,7 @@
         /// <returns>
         ///   <c>true</c> if the enumerable contains exactly the specified expected values; throw a <see cref="FluentAssertionException"/> otherwise.
         /// </returns>
-        /// <exception cref="NFluent.FluentAssertionException">the specified enumerable does not contains exactly the specified expected values.</exception>
+        /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
         public static bool ContainsExactly<T>(this IEnumerable enumerable, params T[] expectedValues)
         {
             long i = 0;
@@ -116,7 +116,7 @@
                     }
 
                     var foundNumberOfItemsDescription = string.Format(enumerableCount <= 1 ? "{0} item" : "{0} items", enumerableCount);
-                    
+
                     throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", enumerable.ToEnumeratedString(), foundNumberOfItemsDescription, expectedValues.ToEnumeratedString(), expectedNumberOfItemsDescription));
                 }
 
@@ -134,7 +134,7 @@
         /// <returns>
         ///   <c>true</c> if the specified enumerable contains exactly the specified expected values; throw a <see cref="FluentAssertionException" /> otherwise, <c>false</c>.
         /// </returns>
-        /// <exception cref="NFluent.FluentAssertionException">the specified enumerable does not contains exactly the specified expected values.</exception>
+        /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
         public static bool ContainsExactly(this IEnumerable enumerable, IEnumerable otherEnumerable)
         {
             // TODO: Refactor this implementation
@@ -165,6 +165,32 @@
                 }
             }
 
+            return true;
+        }
+
+        /// <summary>
+        /// Determines whether the specified enumerable has the proper size (i.e. number of elements).
+        /// </summary>
+        /// <param name="enumerable">The enumerable to inspect.</param>
+        /// <param name="expectedSize">The expected size.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified enumerable has the expected size; otherwise throws a <see cref="FluentAssertionException"/>.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The enumerable has not the expected size.</exception>
+        public static bool HasSize(this IEnumerable enumerable, long expectedSize)
+        {
+            long itemsCount = 0;
+
+            foreach (var item in enumerable)
+            {
+                itemsCount++;
+            }
+
+            if (expectedSize != itemsCount)
+            {
+                throw new FluentAssertionException(string.Format("Has [{0}] items instead of the expected value [{1}].", itemsCount, expectedSize));
+            }
+            
             return true;
         }
 
