@@ -1,7 +1,5 @@
 NFluent overview
 ==============
-*author:* thomas@pierrain.net
-*date:* February 6th 2013
 
 NFluent provides some method extensions for Easy Software Testing in .NET. 
 
@@ -13,7 +11,10 @@ NFluent is __highly inspired by the awesome Java FEST Fluent__ assertion/reflect
 
 Disclaimer
 ----------
-NFluent is not coupled to any .NET unit test framework.
+NFluent is not coupled to any .NET unit test framework. Thus, you can use it with your favorite one.
+
+With NUnit for instance, you can simply use its Assert.That(bool condition) method in order to bootstrap your usage of the NFluent extension methods 
+(note: __every failing extension method of the NFluent library throws Exception with clear message status__).
 
 - - -
 
@@ -28,7 +29,7 @@ With NFluent, you can write some assertions like this:
 	var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
     Assert.That(guitarHeroes.ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell"));
 
-(note: the Assert.That is part of the NUnit library)
+(note: the Assert.That is here part of the NUnit library)
 
 - - - 
 
@@ -56,3 +57,6 @@ with NFluent, you can also write something like this:
         
 
 - - -
+
+*author:* thomas@pierrain.net
+*date:* February 6th 2013
