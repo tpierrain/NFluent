@@ -7,7 +7,7 @@ __NFluent aims your tests to be fluent to write__ (with auto completion support)
 
 NFluent is __highly inspired by the awesome Java FEST Fluent__ assertion/reflection library (http://fest.easytesting.org/)
 
-- - - 
+
 
 Disclaimer
 ----------
@@ -16,7 +16,7 @@ NFluent is not coupled to any .NET unit test framework. Thus, you can use it wit
 With NUnit for instance, you can simply use its Assert.That(bool condition) method in order to bootstrap your usage of the NFluent extension methods 
 (note: __every failing extension method of the NFluent library throws Exception with clear message status__).
 
-- - -
+
 
 Usage sample
 ------------
@@ -30,8 +30,6 @@ With NFluent, you can write some assertions like this:
     Assert.That(guitarHeroes.ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell"));
 
 (note: the Assert.That is here part of the NUnit library)
-
-- - - 
 
 with NFluent, you can also write something like this:
 
