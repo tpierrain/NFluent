@@ -3,7 +3,8 @@ NFluent overview
 
 NFluent provides some method extensions for Easy Software Testing in .NET. 
 
-__NFluent aims your tests to be fluent to write__ (with auto completion support) __but also fluent to read__ (i.e. as close as possible to plain english expression). 
+__NFluent aims your tests to be fluent to write__ (with auto completion support) __but also fluent to read__. 
+Indeed, no more confusion about the order of the "expected" and "actual" values. NFluent makes your assertions very readable: they read very close to plain English, making it easier for non-technical people to read test code.
 
 NFluent is __highly inspired by the awesome Java FEST Fluent__ assertion/reflection library (http://fest.easytesting.org/)
 
