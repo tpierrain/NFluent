@@ -40,8 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContainsExtensions.cs" />
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="EqualityExtensions.cs" />
+    <Compile Include="ExtensionsCommonHelpers.cs" />
     <Compile Include="FluentAssertionException.cs" />
+    <Compile Include="IsInstanceExtensions.cs" />
+    <Compile Include="PropertiesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
