@@ -1,7 +1,7 @@
 NFluent overview
 ==============
 
-NFluent provides some method extensions for a __fluent TDD experience in .NET__. 
+NFluent provides some extension methods for a __fluent .NET TDD experience__. 
 
 __NFluent will make your tests__:
 + __fluent to write__: with auto completion support
