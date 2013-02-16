@@ -97,6 +97,25 @@
         }
 
         /// <summary>
+        /// Verifies that an object is not an instance of a given type, and throw a <see cref="FluentAssertionException"/> with proper details if not the case.
+        /// </summary>
+        /// <param name="obj">The current object instance to check.</param>
+        /// <param name="expectedType">The type we expect the object to be.</param>
+        /// <returns>
+        ///   <c>true</c> if this object is not an instance of this type; otherwise, throw a <see cref="FluentAssertionException"/> with proper details.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The object is an instance of this type (which is not expected).</exception>
+        public static bool IsNotInstanceOf(this object obj, Type expectedType)
+        {
+            if (obj.GetType() == expectedType)
+            {
+                throw new FluentAssertionException(string.Format("[{0}] is an instance of the type [{1}] which is not expected.", obj.ToStringProperlyFormated(), obj.GetType()));
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Determines whether the specified enumerable contains at least all the expected values provided.
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the arrays.</typeparam>
