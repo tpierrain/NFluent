@@ -5,7 +5,7 @@ NFluent provides some extension methods for a __fluent .NET TDD experience__.
 
 __NFluent will make your tests__:
 + __fluent to write__: with auto completion support
-+ __fluent to read__: they read very close to plain English, making it easier for non-technical people to read test code.
++ __fluent to read__: very close to plain English, making it easier for non-technical people to read test code.
 + __fluent to troubleshoot__: every failing extension method of the NFluent library throws Exception with clear message status to ease your TDD experience.
 + __less error-prone__: indeed, no more confusion about the order of the "expected" and "actual" values.
 
