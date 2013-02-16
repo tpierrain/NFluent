@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assert.cs" />
     <Compile Include="ContainsExtensions.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="EqualityExtensions.cs" />
