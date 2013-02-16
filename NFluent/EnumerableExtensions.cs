@@ -46,7 +46,7 @@
         /// <remarks>This method is not named EqualsOrThrowException to ensure english readability when used within an Assert.That() statement.</remarks>
         /// <param name="obj">The current object instance.</param>
         /// <param name="expected">The object that we expect to be equal.</param>
-        /// <returns><c>true</c> if the two objects are equal, or throw a <see cref="FluentAssertionException"/> otherwise.</returns>
+        /// <returns><c>true</c> if the two objects are equal, or throws a <see cref="FluentAssertionException"/> otherwise.</returns>
         /// <exception cref="NFluent.FluentAssertionException">The two objects are not equal.</exception>
         public static bool IsEqualTo(this object obj, object expected)
         {
@@ -65,7 +65,7 @@
         /// <remarks>This method is not named NotEqualsOrThrowException to ensure english readability when used within an Assert.That() statement.</remarks>
         /// <param name="obj">The current object instance.</param>
         /// <param name="expected">The object that we expect to be NOT equal.</param>
-        /// <returns><c>true</c> if the two objects are not equal, or throw a <see cref="FluentAssertionException"/> otherwise.</returns>
+        /// <returns><c>true</c> if the two objects are not equal, or throws a <see cref="FluentAssertionException"/> otherwise.</returns>
         /// <exception cref="NFluent.FluentAssertionException">The two objects are equal.</exception>
         public static bool IsNotEqualTo(this object obj, object expected)
         {
@@ -78,12 +78,12 @@
         }
 
         /// <summary>
-        /// Determines whether an object is an instance of a given type, and throw a <see cref="FluentAssertionException"/> with proper details if not the case.
+        /// Determines whether an object is an instance of a given type, and throws a <see cref="FluentAssertionException"/> with proper details if not the case.
         /// </summary>
         /// <param name="obj">The current object instance to check.</param>
         /// <param name="expectedType">The type we expect the object to be.</param>
         /// <returns>
-        ///   <c>true</c> if this object is an instance of this type; otherwise, throw a <see cref="FluentAssertionException"/> with proper details.
+        ///   <c>true</c> if this object is an instance of this type; otherwise, throws a <see cref="FluentAssertionException"/> with proper details.
         /// </returns>
         /// <exception cref="FluentAssertionException">The object is not an instance of this type.</exception>
         public static bool IsInstanceOf(this object obj, Type expectedType)
@@ -97,12 +97,12 @@
         }
 
         /// <summary>
-        /// Verifies that an object is not an instance of a given type, and throw a <see cref="FluentAssertionException"/> with proper details if not the case.
+        /// Verifies that an object is not an instance of a given type, and throws a <see cref="FluentAssertionException"/> with proper details if not the case.
         /// </summary>
         /// <param name="obj">The current object instance to check.</param>
         /// <param name="expectedType">The type we expect the object to be.</param>
         /// <returns>
-        ///   <c>true</c> if this object is not an instance of this type; otherwise, throw a <see cref="FluentAssertionException"/> with proper details.
+        ///   <c>true</c> if this object is not an instance of this type; otherwise, throws a <see cref="FluentAssertionException"/> with proper details.
         /// </returns>
         /// <exception cref="FluentAssertionException">The object is an instance of this type (which is not expected).</exception>
         public static bool IsNotInstanceOf(this object obj, Type expectedType)
@@ -116,13 +116,13 @@
         }
 
         /// <summary>
-        /// Verifies that the specified array contains the given values, in any order.
+        /// Verifies that the specified array contains the given expected values, in any order.
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the arrays.</typeparam>
         /// <param name="array">The array that should hold the expected values.</param>
         /// <param name="expectedValues">The expected values.</param>
         /// <returns>
-        ///   <c>true</c> if the array contains all the specified expected values, in any order; throw a <see cref="FluentAssertionException"/> otherwise.
+        ///   <c>true</c> if the array contains all the specified expected values, in any order; throws a <see cref="FluentAssertionException"/> otherwise.
         /// </returns>
         /// <exception cref="NFluent.FluentAssertionException">The array does not contains all the expected values.</exception>
         public static bool Contains<T>(this T[] array, params T[] expectedValues)
@@ -138,13 +138,13 @@
         }
 
         /// <summary>
-        /// Verifies that the specified enumerable contains the given values, in any order.
+        /// Verifies that the specified enumerable contains the given expected values, in any order.
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the enumerable.</typeparam>
         /// <param name="enumerable">The enumerable that should hold the expected values.</param>
         /// <param name="expectedValues">The expected values.</param>
         /// <returns>
-        ///   <c>true</c> if the enumerable contains all the specified expected values, in any order; throw a <see cref="FluentAssertionException"/> otherwise.
+        ///   <c>true</c> if the enumerable contains all the specified expected values, in any order; throws a <see cref="FluentAssertionException"/> otherwise.
         /// </returns>
         /// <exception cref="NFluent.FluentAssertionException">The enumerable does not contains all the expected values.</exception>
         public static bool Contains<T>(this IEnumerable<T> enumerable, params T[] expectedValues)
@@ -160,13 +160,57 @@
         }
 
         /// <summary>
-        /// Determines whether the specified enumerable contains exactly some expected values.
+        /// Verifies that the actual array contains only the given values and nothing else, in any order.
+        /// </summary>
+        /// <typeparam name="T">Type of the expected elements to search within.</typeparam>
+        /// <param name="array">The array to verify.</param>
+        /// <param name="expectedValues">The expected values to be searched.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified array contains only the given values and nothing else, in any order; otherwise, throws a <see cref="FluentAssertionException"/>.
+        /// </returns>
+        public static bool ContainsOnly<T>(this T[] array, params T[] expectedValues)
+        {
+            var unexpectedValuesFound = ExtractUnexpectedValues(array, expectedValues);
+
+            if (unexpectedValuesFound.Count > 0)
+            {
+                throw new FluentAssertionException(string.Format("The array does not contain only the expected value(s). It contains also other values: [{0}].", unexpectedValuesFound.ToEnumeratedString()));
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Verifies that the actual enumerable contains only the given values and nothing else, in any order.
+        /// </summary>
+        /// <typeparam name="T">Type of the expected elements to search within.</typeparam>
+        /// <param name="enumerable">The array to verify.</param>
+        /// <param name="expectedValues">The expected values to be searched.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified enumerable contains only the given values and nothing else, in any order; otherwise, throws a <see cref="FluentAssertionException"/>.
+        /// </returns>
+        public static bool ContainsOnly<T>(this IEnumerable<T> enumerable, params T[] expectedValues)
+        {
+            var unexpectedValuesFound = ExtractUnexpectedValues(enumerable, expectedValues);
+
+            if (unexpectedValuesFound.Count > 0)
+            {
+                throw new FluentAssertionException(string.Format("The enumerable does not contain only the expected value(s). It contains also other values: [{0}].", unexpectedValuesFound.ToEnumeratedString()));
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Verifies that the actual enumerable contains only the given expected values and nothing else, in order.
+        /// This assertion should only be used with IEnumerable that have a consistent iteration order 
+        /// (i.e. don't use it with <see cref="Hashtable"/>, prefer <see cref="ContainsOnly"/> in that case).
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the <see cref="expectedValues"/> array.</typeparam>
-        /// <param name="enumerable">The enumerable.</param>
-        /// <param name="expectedValues">The expected values.</param>
+        /// <param name="enumerable">The enumerable to verify.</param>
+        /// <param name="expectedValues">The expected values to be searched.</param>
         /// <returns>
-        ///   <c>true</c> if the enumerable contains exactly the specified expected values; throw a <see cref="FluentAssertionException"/> otherwise.
+        ///   <c>true</c> if the enumerable contains exactly the specified expected values; throws a <see cref="FluentAssertionException"/> otherwise.
         /// </returns>
         /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
         public static bool ContainsExactly<T>(this IEnumerable enumerable, params T[] expectedValues)
@@ -201,7 +245,7 @@
         /// <param name="enumerable">The enumerable.</param>
         /// <param name="otherEnumerable">The other enumerable.</param>
         /// <returns>
-        ///   <c>true</c> if the specified enumerable contains exactly the specified expected values; throw a <see cref="FluentAssertionException" /> otherwise, <c>false</c>.
+        ///   <c>true</c> if the specified enumerable contains exactly the specified expected values; throws a <see cref="FluentAssertionException" /> otherwise, <c>false</c>.
         /// </returns>
         /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
         public static bool ContainsExactly(this IEnumerable enumerable, IEnumerable otherEnumerable)
@@ -358,6 +402,37 @@
             }
 
             return notFoundValues;
+        }
+
+        /// <summary>
+        /// Returns all the values of the enumerable that don't belong to the expected ones. 
+        /// </summary>
+        /// <typeparam name="T">Type of enumerable and expected values.</typeparam>
+        /// <param name="enumerable">The enumerable to inspect.</param>
+        /// <param name="expectedValues">The allowed values to be part of the enumerable.</param>
+        /// <returns>A list with all the values found in the enumerable that don't belong to the expected ones.</returns>
+        private static IList ExtractUnexpectedValues<T>(IEnumerable<T> enumerable, T[] expectedValues)
+        {
+            var unexpectedValuesFound = new List<T>();
+            foreach (var element in enumerable)
+            {
+                var isExpectedValue = false;
+                foreach (var expectedValue in expectedValues)
+                {
+                    if (object.Equals(element, expectedValue))
+                    {
+                        isExpectedValue = true;
+                        break;
+                    }
+                }
+
+                if (!isExpectedValue)
+                {
+                    unexpectedValuesFound.Add(element);
+                }
+            }
+
+            return unexpectedValuesFound;
         }
     }
 }

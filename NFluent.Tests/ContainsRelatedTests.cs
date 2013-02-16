@@ -62,6 +62,64 @@
 
         #endregion
 
+        #region ContainsOnly with arrays
+        
+        [Test]
+        public void ContainsOnlyWithArraysWorks()
+        {
+            var integers = new int[] { 1, 2, 3 };
+            Assert.That(integers.ContainsOnly(3, 2, 1));
+
+            var enumerable = new List<string>() { "un", "dos", "tres" };
+            Assert.That(enumerable.ContainsOnly("dos", "un", "tres"));
+        }
+
+        [Test]
+        public void ContainsOnlyWithArraysWorksEvenWhenGivingSameExpectedValueMultipleTimes()
+        {
+            var integers = new int[] { 1, 2, 3 };
+            Assert.That(integers.ContainsOnly(3, 2, 3, 2, 2, 1));
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The array does not contain only the expected value(s). It contains also other values: [666, 1974].")]
+        public void ContainsOnlyWithArraysThrowsExceptionWithClearStatusWhenFails()
+        {
+            var integers = new int[] { 3, 2, 666, 1974, 1 };
+            Assert.That(integers.ContainsOnly(1, 2, 3));
+        }
+
+        #endregion
+
+        #region ContainsOnly with IEnumerable
+
+        [Test]
+        public void ContainsOnlyWithEnumerableWorks()
+        {
+            var integers = new List<int>() { 1, 2, 3 };
+            Assert.That(integers.ContainsOnly(3, 2, 1));
+
+            var enumerable = new List<string>() { "un", "dos", "tres" };
+            Assert.That(enumerable.ContainsOnly("dos", "un", "tres"));
+        }
+
+        [Test]
+        public void ContainsOnlyWithEnumerableWorksEvenWhenGivingSameExpectedValueMultipleTimes()
+        {
+            var integers = new List<int> { 1, 2, 3 };
+            Assert.That(integers.ContainsOnly(3, 2, 3, 2, 2, 1));
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable does not contain only the expected value(s). It contains also other values: [666, 1974].")]
+        public void ContainsOnlyWithEnumerableThrowsExceptionWithClearStatusWhenFails()
+        {
+            var integers = new List<int> { 3, 2, 666, 1974, 1 };
+            Assert.That(integers.ContainsOnly(1, 2, 3));
+        }
+
+        #endregion
+
         #region ContainsExactly with arrays
 
         [Test]
@@ -72,6 +130,14 @@
 
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
             Assert.That(guitarHeroes.ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell"));
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "Found: [1, 2, 3, 4, 5, 666] (6 items) instead of the expected [666, 3, 1, 2, 4, 5] (6 items).")]
+        public void ContainsExactlyWithArraysThrowsExceptionWhenSameItemsInWrongOrder()
+        {
+            var integers = new int[] { 1, 2, 3, 4, 5, 666 };
+            Assert.That(integers.ContainsExactly(666, 3, 1, 2, 4, 5));
         }
 
         [Test]
@@ -98,6 +164,14 @@
         public void ContainsExactlyAlsoWorksWithEnumerableParameter()
         {
             Assert.That(InstantiateDirectors().Properties("Name").ContainsExactly(InstantiateDirectors().Properties("Name")));
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "Found: [1, 2, 3, 4, 5, 666] (6 items) instead of the expected [666, 3, 1, 2, 4, 5] (6 items).")]
+        public void ContainsExactlyWithEnumerableThrowsExceptionWhenSameItemsInWrongOrder()
+        {
+            var integers = new List<int>() { 1, 2, 3, 4, 5, 666 };
+            Assert.That(integers.ContainsExactly(666, 3, 1, 2, 4, 5));
         }
 
         [Test]
