@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContainsRelatedTests.cs" />
+    <Compile Include="IsInstanceOfTests.cs" />
     <Compile Include="PropertiesRelatedTests.cs" />
     <Compile Include="EqualRelatedTests.cs" />
     <Compile Include="Nationality.cs" />

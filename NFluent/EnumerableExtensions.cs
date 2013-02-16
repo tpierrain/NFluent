@@ -29,7 +29,7 @@
 
             if (getter == null)
             {
-                throw new InvalidOperationException(string.Format("Objects of type {0} don't have property with name '{1}'", type, propertyName));
+                throw new InvalidOperationException(string.Format("Objects of expectedType {0} don't have property with name '{1}'", type, propertyName));
             }
 
             foreach (var o in enumerable)
@@ -72,6 +72,25 @@
             if (object.Equals(obj, expected))
             {
                 throw new FluentAssertionException(string.Format("[{0}] equals to the expected value [{1}]", obj.ToStringProperlyFormated(), expected.ToStringProperlyFormated()));
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Determines whether an object is an instance of a given type, and throw a <see cref="FluentAssertionException"/> with proper details if not the case.
+        /// </summary>
+        /// <param name="obj">The current object instance to check.</param>
+        /// <param name="expectedType">The type we expect the object to be.</param>
+        /// <returns>
+        ///   <c>true</c> if this object is an instance of this type; otherwise, throw a <see cref="FluentAssertionException"/> with proper details.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The object is not an instance of this type.</exception>
+        public static bool IsInstanceOf(this object obj, Type expectedType)
+        {
+            if (obj.GetType() != expectedType)
+            {
+                throw new FluentAssertionException(string.Format("[{0}] is not an instance of the expectedType [{1}] but of [{2}] instead.", obj.ToStringProperlyFormated(), expectedType, obj.GetType()));
             }
 
             return true;
