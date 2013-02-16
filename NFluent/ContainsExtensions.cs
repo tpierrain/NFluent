@@ -1,6 +1,5 @@
 ﻿namespace NFluent
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -28,7 +27,7 @@
                 return true;
             }
             
-            throw new FluentAssertionException(string.Format("The array does not contain the expected value(s): [{0}].", EnumerableExtensions.ToEnumeratedString(notFoundValues)));
+            throw new FluentAssertionException(string.Format("The array does not contain the expected value(s): [{0}].", notFoundValues.ToEnumeratedString()));
         }
 
         /// <summary>
@@ -50,7 +49,7 @@
                 return true;
             }
 
-            throw new FluentAssertionException(string.Format("The enumerable does not contain the expected value(s): [{0}].", EnumerableExtensions.ToEnumeratedString(notFoundValues)));
+            throw new FluentAssertionException(string.Format("The enumerable does not contain the expected value(s): [{0}].", notFoundValues.ToEnumeratedString()));
         }
 
         /// <summary>
@@ -68,7 +67,7 @@
 
             if (unexpectedValuesFound.Count > 0)
             {
-                throw new FluentAssertionException(string.Format("The array does not contain only the expected value(s). It contains also other values: [{0}].", EnumerableExtensions.ToEnumeratedString(unexpectedValuesFound)));
+                throw new FluentAssertionException(string.Format("The array does not contain only the expected value(s). It contains also other values: [{0}].", unexpectedValuesFound.ToEnumeratedString()));
             }
 
             return true;
@@ -89,7 +88,7 @@
 
             if (unexpectedValuesFound.Count > 0)
             {
-                throw new FluentAssertionException(string.Format("The enumerable does not contain only the expected value(s). It contains also other values: [{0}].", EnumerableExtensions.ToEnumeratedString(unexpectedValuesFound)));
+                throw new FluentAssertionException(string.Format("The enumerable does not contain only the expected value(s). It contains also other values: [{0}].", unexpectedValuesFound.ToEnumeratedString()));
             }
 
             return true;
@@ -148,7 +147,7 @@
             if (otherEnumerable == null)
             {
                 long foundCount;
-                var foundItems = EnumerableExtensions.ToEnumeratedString(enumerable, out foundCount);
+                var foundItems = enumerable.ToEnumeratedString(out foundCount);
                 var foundItemsCount = FormatItemCount(foundCount);
                 throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [] (0 item).", foundItems, foundItemsCount));
             }
@@ -161,11 +160,11 @@
                 if (!second.MoveNext() || !object.Equals(first.Current, second.Current))
                 {
                     long foundCount;
-                    var foundItems = EnumerableExtensions.ToEnumeratedString(enumerable, out foundCount);
+                    var foundItems = enumerable.ToEnumeratedString(out foundCount);
                     var formatedFoundCount = FormatItemCount(foundCount);
 
                     long expectedCount;
-                    object expectedItems = EnumerableExtensions.ToEnumeratedString(otherEnumerable, out expectedCount);
+                    object expectedItems = otherEnumerable.ToEnumeratedString(out expectedCount);
                     var formatedExpectedCount = FormatItemCount(expectedCount);
 
                     throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
