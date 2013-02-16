@@ -1,22 +1,22 @@
 NFluent overview
 ==============
 
-NFluent provides some method extensions for Easy Software Testing in .NET. 
+NFluent provides some method extensions for a __fluent TDD experience in .NET__. 
 
-__NFluent aims your tests to be fluent to write__ (with auto completion support) __but also fluent to read__. 
-Indeed, no more confusion about the order of the "expected" and "actual" values. NFluent makes your assertions very readable: they read very close to plain English, making it easier for non-technical people to read test code.
+__NFluent will make your tests__:
++ __fluent to write__: with auto completion support
++ __fluent to read__: they read very close to plain English, making it easier for non-technical people to read test code.
++ __fluent to troubleshoot__: every failing extension method of the NFluent library throws Exception with clear message status to ease your TDD experience.
++ __less error-prone__: indeed, no more confusion about the order of the "expected" and "actual" values.
 
 NFluent is __highly inspired by the awesome Java FEST Fluent__ assertion/reflection library (http://fest.easytesting.org/)
 
 
-
 Disclaimer
 ----------
-NFluent is not coupled to any .NET unit test framework. Thus, you can use it with your favorite one.
+__NFluent is not coupled to any .NET unit test framework__. Thus, you can use it with your favorite one.
 
-With NUnit for instance, you can simply use its Assert.That(bool condition) method in order to bootstrap your usage of the NFluent extension methods 
-(note: __every failing extension method of the NFluent library throws Exception with clear message status__).
-
+With NUnit for instance, you can simply use its Assert.That(bool condition) method in order to bootstrap your usage of the NFluent extension methods.
 
 
 Usage sample
