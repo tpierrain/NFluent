@@ -8,13 +8,27 @@
     public class ContainsRelatedTests
     {
         [Test]
-        public void ContainsWork()
+        public void ContainsWorks()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
             Assert.That(integers.Contains(3, 5, 666));
 
             var enumerable = new List<string>() { "un", "dos", "tres" };
             Assert.That(enumerable.Contains("dos"));
+        }
+
+        [Test]
+        public void ContainsWorksWhateverTheOrder()
+        {
+            var integers = new int[] { 1, 2, 3, 4, 5, 666 };
+            Assert.That(integers.Contains(666, 3, 5));
+        }
+
+        [Test]
+        public void ContainsWorksEvenWhenGivingSameExpectedValueMultipleTimes()
+        {
+            var integers = new int[] { 1, 2, 3, 4, 5, 666 };
+            Assert.That(integers.Contains(5, 3, 666, 3, 3, 666));
         }
 
         [Test]

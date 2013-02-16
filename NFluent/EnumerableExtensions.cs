@@ -134,7 +134,7 @@
                 {
                     if (object.Equals(element, expectedValue))
                     {
-                        notFoundValues.Remove(expectedValue);
+                        notFoundValues.RemoveAll((one) => one.Equals(expectedValue));
                         break;
                     }
                 }
