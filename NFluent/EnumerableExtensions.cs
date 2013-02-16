@@ -116,29 +116,18 @@
         }
 
         /// <summary>
-        /// Determines whether the specified enumerable contains at least all the expected values provided.
+        /// Verifies that the specified array contains the given values, in any order.
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the arrays.</typeparam>
         /// <param name="array">The array that should hold the expected values.</param>
         /// <param name="expectedValues">The expected values.</param>
         /// <returns>
-        ///   <c>true</c> if the array contains all the specified expected values]; throw a <see cref="FluentAssertionException"/> otherwise.
+        ///   <c>true</c> if the array contains all the specified expected values, in any order; throw a <see cref="FluentAssertionException"/> otherwise.
         /// </returns>
-        /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
+        /// <exception cref="NFluent.FluentAssertionException">The array does not contains all the expected values.</exception>
         public static bool Contains<T>(this T[] array, params T[] expectedValues)
         {
-            var notFoundValues = new List<T>(expectedValues);
-            foreach (var element in array)
-            {
-                foreach (var expectedValue in expectedValues)
-                {
-                    if (object.Equals(element, expectedValue))
-                    {
-                        notFoundValues.RemoveAll((one) => one.Equals(expectedValue));
-                        break;
-                    }
-                }
-            }    
+            var notFoundValues = ExtractNotFoundValues(array, expectedValues);
 
             if (notFoundValues.Count == 0)
             {
@@ -146,6 +135,28 @@
             }
             
             throw new FluentAssertionException(string.Format("The array does not contain the expected value(s): [{0}].", notFoundValues.ToEnumeratedString()));
+        }
+
+        /// <summary>
+        /// Verifies that the specified enumerable contains the given values, in any order.
+        /// </summary>
+        /// <typeparam name="T">Type of the elements contained in the enumerable.</typeparam>
+        /// <param name="enumerable">The enumerable that should hold the expected values.</param>
+        /// <param name="expectedValues">The expected values.</param>
+        /// <returns>
+        ///   <c>true</c> if the enumerable contains all the specified expected values, in any order; throw a <see cref="FluentAssertionException"/> otherwise.
+        /// </returns>
+        /// <exception cref="NFluent.FluentAssertionException">The enumerable does not contains all the expected values.</exception>
+        public static bool Contains<T>(this IEnumerable<T> enumerable, params T[] expectedValues)
+        {
+            var notFoundValues = ExtractNotFoundValues(enumerable, expectedValues);
+
+            if (notFoundValues.Count == 0)
+            {
+                return true;
+            }
+
+            throw new FluentAssertionException(string.Format("The enumerable does not contain the expected value(s): [{0}].", notFoundValues.ToEnumeratedString()));
         }
 
         /// <summary>
@@ -322,6 +333,31 @@
         private static string FormatItemCount(long itemsCount)
         {
             return string.Format(itemsCount <= 1 ? "{0} item" : "{0} items", itemsCount);
+        }
+
+        /// <summary>
+        /// Returns all expected values that aren't present in the enumerable.
+        /// </summary>
+        /// <typeparam name="T">Type of data to enumerate and find.</typeparam>
+        /// <param name="enumerable">The enumerable to inspect.</param>
+        /// <param name="expectedValues">The expected values to search within the enumerable.</param>
+        /// <returns>A list containing all the expected values that aren't present in the enumerable.</returns>
+        private static IList ExtractNotFoundValues<T>(IEnumerable<T> enumerable, T[] expectedValues)
+        {
+            var notFoundValues = new List<T>(expectedValues);
+            foreach (var element in enumerable)
+            {
+                foreach (var expectedValue in expectedValues)
+                {
+                    if (object.Equals(element, expectedValue))
+                    {
+                        notFoundValues.RemoveAll((one) => one.Equals(expectedValue));
+                        break;
+                    }
+                }
+            }
+
+            return notFoundValues;
         }
     }
 }
