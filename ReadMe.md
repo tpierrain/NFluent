@@ -16,8 +16,8 @@ Disclaimer
 ----------
 __NFluent is not coupled to any .NET unit test framework__. Thus, you can use it with your favorite one.
 
-With NUnit for instance, you can simply use its Assert.That(bool condition) method in order to bootstrap your usage of the NFluent extension methods.
-
+With NUnit for instance, you can simply use the NFluent method extensions from the NUnit Assert.That(bool condition).
+If you are using another unit tests frameork which don't provide such Assert.That() bootstrap method (e.g. xUnit), you can use the one provided by the NFluent library. 
 
 Usage sample
 ------------

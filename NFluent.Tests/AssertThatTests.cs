@@ -13,8 +13,8 @@
         }
         
         [Test]
-        [ExpectedException(typeof(FluentAssertionException))]
-        public void AssertThatThowsExceptionWhenFails()
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "")]
+        public void AssertThatThrowsExceptionWhenFails()
         {
             Assert.That(false);
         }
@@ -24,6 +24,16 @@
         public void AssertThatThowsExceptionWithIndicatedMessageWhenFails()
         {
             Assert.That(false, "Dumbest test ever");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""Marvin Gaye""] not equals to the expected [""James Brown""]")]
+        public void AssertThatDoNotOverrideTheFluentExceptionRaisedByExtensionMethods()
+        {
+            const string Name = "Marvin Gaye";
+            const string OtherName = "James Brown";
+
+            Assert.That(Name.IsEqualTo(OtherName));
         }
     }
 }
