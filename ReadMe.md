@@ -1,7 +1,7 @@
 NFluent overview
 ==============
 
-NFluent provides some extension methods for a __fluent .NET TDD experience__. 
+NFluent provides some extension methods for a __fluent .NET TDD experience__ based on simple Assert.That(bool condition) statements.
 
 __NFluent will make your tests__:
 + __fluent to write__: with auto completion support
@@ -14,10 +14,11 @@ NFluent is __highly inspired by the awesome Java FEST Fluent__ assertion/reflect
 
 Disclaimer
 ----------
-__NFluent is not coupled to any .NET unit test framework__. Thus, you can use it with your favorite one.
+__NFluent is not coupled to any .NET unit test framework. It is fully designed to work in collaboration with your favorite one.__
 
-With NUnit for instance, you can simply use the NFluent method extensions from the NUnit Assert.That(bool condition).
-If you are using another unit tests frameork which don't provide such Assert.That() bootstrap method (e.g. xUnit), you can use the one provided by the NFluent library. 
+With NUnit for instance, you can simply use all the NFluent method extensions from any NUnit Assert.That(bool condition) statement.
+
+If you are using another .NET unit tests framework which don't provide such nice and simple Assert.That() bootstraping method (e.g. xUnit), you can use the one gracefully provided by the NFluent library. 
 
 Usage sample
 ------------
