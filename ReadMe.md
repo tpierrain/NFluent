@@ -20,22 +20,25 @@ __NFluent is not coupled to any .NET unit test framework. It is fully designed t
 
 With NUnit for instance, you can simply use all the NFluent method extensions from any NUnit Assert.That(bool condition) statement.
 
-If you are using another .NET unit tests framework which don't provide such nice and simple Assert.That() bootstraping method (e.g. xUnit), you can use the one gracefully provided by the NFluent library. 
+If you are using another .NET unit tests framework which don't provide such nice and simple Assert.That() bootstraping method (e.g. xUnit), you can use the one gracefully provided by the NFluent library ;-) 
 
 Usage sample
 ------------
 
-With NFluent, you can write some assertions like this:
+With NFluent, you can write simple assertions like this:
 	
-	var integers = new int[] { 1, 2, 3, 4, 5, 666 };
-    Assert.That(integers.ContainsExactly(1, 2, 3, 4, 5, 666));
+    var first = new int[] { 1, 2, 3, 4, 5, 666 };
+    Assert.That(first.Contains(5, 666, 3));
+
+	var list = new List<int>() { 1, 666, 3 };
+    Assert.That(list.ContainsOnly(3, 666, 1));
 
 	var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
     Assert.That(guitarHeroes.ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell"));
 
-(note: the Assert.That is here part of the NUnit library)
+note: the Assert.That is here part of the NUnit library.
 
-with NFluent, you can also write something like this:
+with NFluent, you can also write assertions like this:
 
 	 var enumerable = new List<Person>
                                  {
