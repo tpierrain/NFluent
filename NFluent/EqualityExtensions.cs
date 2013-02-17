@@ -37,7 +37,7 @@
         {
             if (object.Equals(obj, expected))
             {
-                throw new FluentAssertionException(string.Format("[{0}] equals to the expected value [{1}]", obj.ToStringProperlyFormated(), expected.ToStringProperlyFormated()));
+                throw new FluentAssertionException(string.Format("[{0}] equals to the value [{1}] which is not expected.", obj.ToStringProperlyFormated(), expected.ToStringProperlyFormated()));
             }
 
             return true;
