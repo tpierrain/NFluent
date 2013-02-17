@@ -1,3 +1,5 @@
+![NFluent](https://github.com/tpierrain/nfluent/blob/master/NFluentBanner.png?raw=true)
+
 NFluent overview
 ==============
 
