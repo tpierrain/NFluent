@@ -8,10 +8,10 @@
     [TestFixture]
     public class PropertiesRelatedTests
     {
-        #region Properties extension method
+        #region Properties extension method with IEnumerable
 
         [Test]
-        public void HowPropertiesWorks()
+        public void PropertiesWorksWithEnumerable()
         {
             var enumerable = new List<Person>
                                  {
@@ -60,6 +60,26 @@
                                  };
 
             Assert.That(enumerable.Properties("PrivateHesitation").ContainsExactly("Kamoulox !", "Kamoulox !"));
+        }
+
+        #endregion
+
+        #region Properties extension method with Array
+
+        [Test]
+        public void PropertiesWorksWithArray()
+        {
+            var array = new Person[]
+                                 {
+                                     new Person { Name = "Thomas", Age = 38 },
+                                     new Person { Name = "Achille", Age = 10, Nationality = Nationality.French },
+                                     new Person { Name = "Anton", Age = 7, Nationality = Nationality.French },
+                                     new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
+                                 };
+
+            Assert.That(array.Properties("Name").ContainsExactly("Thomas", "Achille", "Anton", "Arjun"));
+            Assert.That(array.Properties("Age").ContainsExactly(38, 10, 7, 7));
+            Assert.That(array.Properties("Nationality").ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian));
         }
 
         #endregion
