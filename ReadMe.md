@@ -6,9 +6,9 @@ NFluent overview
 NFluent provides some extension methods for a __fluent .NET TDD experience__ based on simple Assert.That(bool condition) statements.
 
 __NFluent will make your tests__:
-+ __fluent to write__: with auto completion support. Just type the Assert.That() with the actual value and a dot, and your IDE will show you all the assertions available for the type of the given object to verify.
++ __fluent to write__: with auto completion support. Indeed, just type the Assert.That( followed by one of your object and a dot, and your IDE will show you all the assertions available for the type of the given object to verify.
 + __fluent to read__: very close to plain English, making it easier for non-technical people to read test code.
-+ __fluent to troubleshoot__: every failing extension method of the NFluent library throws Exception with clear message status to ease your TDD experience.
++ __fluent to troubleshoot__: every failing extension method of the NFluent library throws an Exception with a crystal-clear message status to ease your TDD experience.
 + __less error-prone__: indeed, no more confusion about the order of the "expected" and "actual" values.
 
 NFluent is __highly inspired by the awesome Java FEST Fluent__ assertion/reflection library (http://fest.easytesting.org/)
