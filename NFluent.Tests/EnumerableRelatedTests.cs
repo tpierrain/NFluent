@@ -5,8 +5,10 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class SizeRelatedTests
+    public class EnumerableRelatedTests
     {
+        #region HasSize
+
         [Test]
         public void HasSizeWorksWithArray()
         {
@@ -31,5 +33,28 @@
 
             Assert.That(enumerable.HasSize(2));
         }
+
+        #endregion
+
+        #region IsEmpty
+
+        [Test]
+        public void IsEmptyWorks()
+        {
+            var emptyEnumerable = new List<int>();
+
+            Assert.That(emptyEnumerable.IsEmpty());
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Enumerable not empty. Contains the element(s): [null, null, Thomas].")]
+        public void IsEmptyThrowsExceptionWhenNotEmpty()
+        {
+            var nobody = new List<Person>() { null, null, new Person() { Name = "Thomas" } };
+            
+            Assert.That(nobody.IsEmpty());
+        }
+
+        #endregion
     }
 }

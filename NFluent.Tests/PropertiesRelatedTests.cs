@@ -20,7 +20,7 @@
                                      new Person { Name = "Anton", Age = 7, Nationality = Nationality.French },
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
-
+            
             Assert.That(enumerable.Properties("Name").ContainsExactly("Thomas", "Achille", "Anton", "Arjun"));
             Assert.That(enumerable.Properties("Age").ContainsExactly(38, 10, 7, 7));
             Assert.That(enumerable.Properties("Nationality").ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian));

@@ -1,6 +1,7 @@
 ﻿namespace NFluent
 {
     using System.Collections;
+    using System.Linq;
     using System.Text;
 
     // TODO: check performances
@@ -33,6 +34,24 @@
                 throw new FluentAssertionException(string.Format("Has [{0}] items instead of the expected value [{1}].", itemsCount, expectedSize));
             }
             
+            return true;
+        }
+
+        /// <summary>
+        /// Verifies whether the enumerable is empty, and throws a <see cref="FluentAssertionException" /> if not empty.
+        /// </summary>
+        /// <param name="enumerable">The enumerable to check.</param>
+        /// <returns>
+        ///   <c>true</c> if the enumerable is empty; throws a <see cref="FluentAssertionException"/> otherwise.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual enumeration is not empty.</exception>
+        public static bool IsEmpty(this IEnumerable enumerable)
+        {
+            if (enumerable.Cast<object>().Any())
+            {
+                throw new FluentAssertionException(string.Format("Enumerable not empty. Contains the element(s): [{0}].", enumerable.ToEnumeratedString()));
+            }
+
             return true;
         }
 
@@ -72,9 +91,16 @@
                     sb.Append(Separator);
                 }
 
-                sb.Append(obj.ToStringProperlyFormated());
-                firstTime = false;
+                if (obj == null)
+                {
+                    sb.Append("null");
+                }
+                else
+                {
+                    sb.Append(obj.ToStringProperlyFormated());
+                }
 
+                firstTime = false;
                 itemsCount++;
             }
 
