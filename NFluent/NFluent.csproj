@@ -46,6 +46,7 @@
     <Compile Include="EqualityExtensions.cs" />
     <Compile Include="ExtensionsCommonHelpers.cs" />
     <Compile Include="FluentAssertionException.cs" />
+    <Compile Include="FluentTests.cs" />
     <Compile Include="IsInstanceExtensions.cs" />
     <Compile Include="PropertiesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

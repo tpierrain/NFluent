@@ -1,15 +1,18 @@
 ﻿namespace NFluent.Tests
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using NUnit.Framework;
     using Assert = NFluent.Assert; // alias needed here since NUnit uses the same name; but useless for other unit test frameworks.
 
     [TestFixture]
-    public class AssertThatTests
+    public class AssertThatTests : FluentTests
     {
-        [Test]
+        [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "Reviewed. Suppression is OK here."), Test]
         public void AssertThatWorks()
         {
             Assert.That(true);
+            AssertThat(true);
         }
         
         [Test]
