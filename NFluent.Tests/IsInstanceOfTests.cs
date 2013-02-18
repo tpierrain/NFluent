@@ -1,5 +1,7 @@
 ﻿namespace NFluent.Tests
 {
+    using System;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -9,15 +11,15 @@
         public void IsInstanceOfWorks()
         {
             const string StringObj = "for unit testing";
-            int intObj = 23;
-            long longObj = long.MaxValue;
-            double doubleObj = 23d;
+            const int IntObj = 23;
+            const long LongObj = long.MaxValue;
+            const double DoubleObj = 23d;
             var person = new Person();
 
             Assert.That(StringObj.IsInstanceOf(typeof(string)));
-            Assert.That(intObj.IsInstanceOf(typeof(int)));
-            Assert.That(longObj.IsInstanceOf(typeof(long)));
-            Assert.That(doubleObj.IsInstanceOf(typeof(double)));
+            Assert.That(IntObj.IsInstanceOf(typeof(int)));
+            Assert.That(LongObj.IsInstanceOf(typeof(long)));
+            Assert.That(DoubleObj.IsInstanceOf(typeof(double)));
             Assert.That(person.IsInstanceOf(typeof(Person)));
         }
 
@@ -42,9 +44,9 @@
         [Test]
         public void IsNotInstanceOfWorks()
         {
-            double doubleObj = 23d;
+            const double DoubleObj = 23d;
 
-            Assert.That(doubleObj.IsNotInstanceOf(typeof(string)));
+            Assert.That(DoubleObj.IsNotInstanceOf(typeof(string)));
         }
 
         [Test]
@@ -60,9 +62,9 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""Failure is mother of success""] is an instance of the type [System.String] which is not expected.")]
         public void IsNotInstanceOfThrowsExceptionWithProperFormatWhenFailsWithString()
         {
-            var statement = "Failure is mother of success";
+            const string Statement = "Failure is mother of success";
 
-            Assert.That(statement.IsNotInstanceOf(typeof(string)));
+            Assert.That(Statement.IsNotInstanceOf(typeof(string)));
         }
     }
 }
