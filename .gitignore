@@ -17,3 +17,4 @@ _ReSharper*
 *.vs10x
 CI
 TestResult.xml
+*.ncrunchsolution
