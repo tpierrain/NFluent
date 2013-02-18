@@ -6,15 +6,15 @@
     internal class Person
     {
         public string Name { get; set; }
-        
+
         public int Age { get; set; }
 
         public Nationality Nationality { get; set; }
 
-// ReSharper disable UnusedMember.Local
+        // ReSharper disable UnusedMember.Local
         private string PrivateHesitation
-// ReSharper restore UnusedMember.Local
         {
+            // ReSharper restore UnusedMember.Local
             get
             {
                 return "Kamoulox !";
