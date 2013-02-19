@@ -48,6 +48,7 @@
     <Compile Include="FluentAssertionException.cs" />
     <Compile Include="FluentTests.cs" />
     <Compile Include="IsInstanceExtensions.cs" />
+    <Compile Include="NumbersRelatedExtension.cs" />
     <Compile Include="PropertiesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
