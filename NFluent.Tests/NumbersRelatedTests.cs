@@ -90,12 +90,29 @@
 
         #region IsPositive
 
-        //// [Test]
-        //// public void isPositiveWorks()
-        //// {
-        ////    int a = 2;
-        ////    Assert.That(a.IsPositive());
-        //// }
+        [Test]
+        public void IsPositiveWorks()
+        {
+            int a = 2;
+            Assert.That(a.IsPositive());
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[0] is not a strictly positive value.")]
+        public void IsPositiveThrowExceptionWhenEqualToZero()
+        {
+            float a = 0F;
+            Assert.That(a.IsPositive());
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[-50] is not a strictly positive value.")]
+        public void IsPositiveThrowExceptionWhenValueIsNegative()
+        {
+            double a = -50D;
+
+            Assert.That(a.IsPositive());
+        }
 
         #endregion
     }

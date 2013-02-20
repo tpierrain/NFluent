@@ -66,14 +66,24 @@ namespace NFluent
             return true;
         }
 
-        //// public static bool IsPositive<T>(this T value)
-        //// {
-        ////    if (value < 0)
-        ////    {
-        ////        throw new FluentAssertionException(string.Format("[{0}] is not positive.", value));
-        ////    }
-        ////    return true;
-        //// }
+        /// <summary>
+        /// Verifies that the actual value is strictly positive.
+        /// </summary>
+        /// <typeparam name="T">Type of the actual value to check.</typeparam>
+        /// <param name="value">The value to be checked.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified value is strictly positive; otherwise throws a <see cref="FluentAssertionException"/>.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
+        public static bool IsPositive<T>(this T value)
+        {
+            if (Convert.ToInt32(value) <= 0)
+            {
+                throw new FluentAssertionException(string.Format("[{0}] is not a strictly positive value.", value));
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Checks whether a given value is equal to zero.
@@ -83,49 +93,7 @@ namespace NFluent
         /// <returns><c>true</c> if the specified value is equal to zero; false otherwise.</returns>
         private static bool InternalIsZero<T>(T value)
         {
-            bool res = false;
-            if (value is int)
-            {
-                res = int.Equals(value, 0);
-            }
-            else if (value is long)
-            {
-                res = long.Equals(value, 0L);
-            }
-            else if (value is double)
-            {
-                res = double.Equals(value, 0D);
-            }
-            else if (value is decimal)
-            {
-                res = decimal.Equals(value, 0M);
-            }
-            else if (value is float)
-            {
-                res = float.Equals(value, 0F);
-            }
-            else if (value is short)
-            {
-                res = short.Equals(value, (short)0.0);
-            }
-            else if (value is byte)
-            {
-                res = byte.Equals(value, (byte)0);
-            }
-            else if (value is uint)
-            {
-                res = uint.Equals(value, (uint)0);
-            }
-            else if (value is ushort)
-            {
-                res = ushort.Equals(value, (ushort)0);
-            }
-            else if (value is ulong)
-            {
-                res = ulong.Equals(value, (ulong)0);
-            }
-
-            return res;
+            return Convert.ToInt64(value) == 0;
         }
     }
 }
