@@ -18,8 +18,9 @@ Original intentions
 Before modifying this library, it is very important to keep in mind that __this library is designed to produce fluent assertions at the end!__
 
 Thus, it means that:
-+ __names__ of the extension methods __should be chosen carefully__
-+ every __extension method that don't succeed should throw a FluentAssertionException__ to make your favorite unit test framwork Assert.That() statement fails __with a clear status message__.
++ __names__ of the extension methods __should be chosen carefully__ (to smartly embrace the intellisense autocompletion mechanism)
++ every __extension method that don't succeed should throw a FluentAssertionException__ to make your favorite unit test framwork Assert.That() statement fails __with a clear status message__
++ the message of all the FluentAssertException you throw should be clear as crystal, but also compliant with the ready-to-be-copied-and-paste-for-arrays-or-collections-initialization-purpose objective of NFluent  
 
 Also, and to stay coherent with the equivalent **FEST fluent assert** Java library (interesting for people which are coding in those 2 platforms):
 + Thus, before introducing a new extension method, check the existence of a method name for the same thing within the java library (http://fest.easytesting.org/).
