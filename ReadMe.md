@@ -64,5 +64,11 @@ with NFluent, you can also write assertions like this:
 
 - - -
 
-*author:* thomas@pierrain.net
-*date:* February 6th 2013
+Newsgroup
+---------
+
+https://groups.google.com/forum/#!forum/nfluent-discuss
+
+- - -
+
+[thomas@pierrain.net](mailto:thomas@pierrain.net) / February 6th 2013
