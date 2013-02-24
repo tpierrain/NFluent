@@ -66,8 +66,8 @@ with NFluent, you can also write assertions like this:
 
 Newsgroup
 ---------
+For any comment, remark or question, please use the __[NFluent-Discuss google group](https://groups.google.com/forum/#!forum/nfluent-discuss)__.
 
-https://groups.google.com/forum/#!forum/nfluent-discuss
 
 - - -
 
