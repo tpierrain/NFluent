@@ -1,15 +1,29 @@
-﻿namespace NFluent
+﻿// // --------------------------------------------------------------------------------------------------------------------
+// // <copyright file="FluentEnumerable.cs" company="">
+// //   Copyright 2013 Thomas PIERRAIN
+// //   Licensed under the Apache License, Version 2.0 (the "License");
+// //   you may not use this file except in compliance with the License.
+// //   You may obtain a copy of the License at
+// //       http://www.apache.org/licenses/LICENSE-2.0
+// //   Unless required by applicable law or agreed to in writing, software
+// //   distributed under the License is distributed on an "AS IS" BASIS,
+// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// //   See the License for the specific language governing permissions and
+// //   limitations under the License.
+// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------------
+namespace NFluent
 {
     using System.Collections;
     using System.Collections.Generic;
 
     internal class FluentEnumerable<T> : IFluentEnumerable<T>
     {
-        private IEnumerable<T> wrappedEnumerable;
+        private readonly IEnumerable<T> enumerable;
 
-        public FluentEnumerable(IEnumerable<T> wrappedEnumerable)
+        public FluentEnumerable(IEnumerable<T> enumerable)
         {
-            this.wrappedEnumerable = wrappedEnumerable;
+            this.enumerable = enumerable;
         }
 
         /// <summary>
@@ -21,18 +35,18 @@
         ///   <c>true</c> if the specified enumerable contains exactly the specified expected values; throws a <see cref="FluentAssertionException" /> otherwise, <c>false</c>.
         /// </returns>
         /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
-        public bool ContainsExactly(/*this IEnumerable enumerable, */IEnumerable otherEnumerable)
+        public bool ContainsExactly(IEnumerable otherEnumerable)
         {
             // TODO: Refactor this implementation
             if (otherEnumerable == null)
             {
                 long foundCount;
-                var foundItems = this.wrappedEnumerable.ToEnumeratedString(out foundCount);
+                var foundItems = this.enumerable.ToEnumeratedString(out foundCount);
                 var foundItemsCount = ContainsExtensions.FormatItemCount(foundCount);
                 throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [] (0 item).", foundItems, foundItemsCount));
             }
 
-            var first = this.wrappedEnumerable.GetEnumerator();
+            var first = this.enumerable.GetEnumerator();
             var second = otherEnumerable.GetEnumerator();
 
             while (first.MoveNext())
@@ -40,7 +54,7 @@
                 if (!second.MoveNext() || !object.Equals(first.Current, second.Current))
                 {
                     long foundCount;
-                    var foundItems = this.wrappedEnumerable.ToEnumeratedString(out foundCount);
+                    var foundItems = this.enumerable.ToEnumeratedString(out foundCount);
                     var formatedFoundCount = ContainsExtensions.FormatItemCount(foundCount);
 
                     long expectedCount;
@@ -65,7 +79,7 @@
         /// </returns>
         public IEnumerable Properties(string propertyName)
         {
-            return this.wrappedEnumerable.Properties(propertyName);
+            return this.enumerable.Properties(propertyName);
         }
 
         /// <summary>
@@ -82,7 +96,7 @@
         /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
         public bool ContainsExactly<R>(params R[] expectedValues)
         {
-            IEnumerable enumerable = this.wrappedEnumerable;
+            IEnumerable enumerable = this.enumerable;
 
             long i = 0;
             foreach (var obj in enumerable)

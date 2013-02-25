@@ -4,6 +4,8 @@
 
     using NUnit.Framework;
 
+    using Assert = NFluent.Assert;
+
     [TestFixture]
     public class ContainsRelatedTests
     {
@@ -163,7 +165,7 @@
         [Test]
         public void ContainsExactlyAlsoWorksWithEnumerableParameter()
         {
-            Assert.That(InstantiateDirectors().Properties("Name").ContainsExactly(InstantiateDirectors().Properties("Name")));
+            Assert.That(InstantiateDirectors()).Properties("Name").ContainsExactly(InstantiateDirectors().Properties("Name"));
         }
 
         [Test]

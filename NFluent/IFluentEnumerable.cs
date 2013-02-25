@@ -19,6 +19,6 @@ namespace NFluent
     public interface IFluentEnumerable<T>
     {
         IEnumerable Properties(string propertyName);
-        bool ContainsExactly(/*this IEnumerable enumerable, */IEnumerable otherEnumerable);
+        bool ContainsExactly(IEnumerable otherEnumerable);
     }
 }

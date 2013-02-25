@@ -16,7 +16,7 @@
         public void ContainsWork()
         {
             var alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Assert.That(alphabet.Contains("c", "z", "u"));
+            Assert.That(alphabet).Contains("c", "z", "u");
         }
 
         [Test]
@@ -24,7 +24,7 @@
         public void ContainsThrowsExceptionWhenFails()
         {
             var alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Assert.That(alphabet.Contains("c", "0", "4"));
+            Assert.That(alphabet).Contains("c", "0", "4");
         }
 
         [Test]
@@ -32,7 +32,7 @@
         public void ContainsIsCaseSensitive()
         {
             var alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Assert.That(alphabet.Contains("C", "a", "A", "z"));
+            Assert.That(alphabet).Contains("C", "a", "A", "z");
         }
 
         [Test]
