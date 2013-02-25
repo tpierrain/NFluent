@@ -14,6 +14,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Reflection;
+
     /// <summary>
     /// Contains a collection of static methods that implement the only assertions you need to be fluent (if your favorite .NET unit test framework doesn't provide it).
     /// If you are using NUnit, this <see cref="T:NFluent.Assert"/> class is useless (since NUnit provides now few Assert.That() overloads).
@@ -44,5 +48,16 @@ namespace NFluent
                 throw new FluentAssertionException(message);
             }
         }
+        
+        public static IFluentEnumerable<T> That<T>(IEnumerable<T> enumerable)
+        {
+            return new FluentEnumerable<T>(enumerable);
+        }
+
+        public static IFluentString That(string value)
+        {
+            return new FluentString(value);
+        }
     }
 }
+

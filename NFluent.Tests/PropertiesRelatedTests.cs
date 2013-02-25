@@ -5,6 +5,8 @@
 
     using NUnit.Framework;
 
+    using Assert = NFluent.Assert;
+
     [TestFixture]
     public class PropertiesRelatedTests
     {
@@ -21,9 +23,9 @@
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
             
-            Assert.That(enumerable.Properties("Name").ContainsExactly("Thomas", "Achille", "Anton", "Arjun"));
-            Assert.That(enumerable.Properties("Age").ContainsExactly(38, 10, 7, 7));
-            Assert.That(enumerable.Properties("Nationality").ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian));
+            Assert.That(enumerable).Properties("Name").ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+            Assert.That(enumerable).Properties("Age").ContainsExactly(38, 10, 7, 7);
+            Assert.That(enumerable).Properties("Nationality").ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
 
             // more fluent than the following classical NUnit way, isn't it? 
             CollectionAssert.AreEquivalent(enumerable.Properties("Age"), new[] { 38, 10, 7, 7 });

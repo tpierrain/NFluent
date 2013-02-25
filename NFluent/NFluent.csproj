@@ -46,7 +46,11 @@
     <Compile Include="EqualityExtensions.cs" />
     <Compile Include="ExtensionsCommonHelpers.cs" />
     <Compile Include="FluentAssertionException.cs" />
+    <Compile Include="FluentEnumerable.cs" />
+    <Compile Include="FluentString.cs" />
     <Compile Include="FluentTests.cs" />
+    <Compile Include="IFluentEnumerable.cs" />
+    <Compile Include="IFluentString.cs" />
     <Compile Include="IsInstanceExtensions.cs" />
     <Compile Include="NumbersRelatedExtension.cs" />
     <Compile Include="PropertiesExtensions.cs" />

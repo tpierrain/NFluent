@@ -7,6 +7,8 @@
     using System.Text;
     using NUnit.Framework;
 
+    using Assert = NFluent.Assert;
+
     [TestFixture]
     public class StringRelatedTests
     {
@@ -37,7 +39,7 @@
         public void StartWithWorks()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Assert.That(alphabet.StartWith("abcdef"));
+            Assert.That(alphabet).StartsWith("abcdef");
         }
 
         [Test]
@@ -45,7 +47,7 @@
         public void StartWithIsCaseSensitive()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Assert.That(alphabet.StartWith("ABCDEF"));
+            Assert.That(alphabet).StartsWith("ABCDEF");
         }
     }
 }
