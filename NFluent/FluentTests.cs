@@ -25,7 +25,7 @@ namespace NFluent
         /// <param name="condition">The evaluated condition.</param>
         public void AssertThat(bool condition)
         {
-            Assert.That(condition);
+            //Assert.That(condition);
         }
     }
 }

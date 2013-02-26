@@ -15,10 +15,14 @@
 namespace NFluent
 {
     using System.Collections;
+    using System.Collections.Generic;
 
-    public interface IFluentEnumerable<T>
+    public interface IFluentEnumerable<T> : IEnumerable<T>
     {
-        IEnumerable Properties(string propertyName);
-        bool ContainsExactly(IEnumerable otherEnumerable);
+        IFluentEnumerable<R> Properties<T, R>(string propertyName);
+        
+        void ContainsExactly(IEnumerable otherEnumerable);
+
+        bool ContainsExactly<R>(params R[] expectedValues);
     }
 }

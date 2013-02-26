@@ -15,24 +15,24 @@
         public void ContainsWithArraysWorks()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers.Contains(3, 5, 666));
+            Assert.That(integers).Contains(3, 5, 666);
 
             var enumerable = new List<string>() { "un", "dos", "tres" };
-            Assert.That(enumerable.Contains("dos"));
+            Assert.That(enumerable).Contains("dos");
         }
 
         [Test]
         public void ContainsWithArraysWorksWhateverTheOrder()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers.Contains(666, 3, 5));
+            Assert.That(integers).Contains(666, 3, 5);
         }
 
         [Test]
         public void ContainsWithArraysWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers.Contains(5, 3, 666, 3, 3, 666));
+            Assert.That(integers).Contains(5, 3, 666, 3, 3, 666);
         }
 
         [Test]
@@ -40,7 +40,7 @@
         public void ContainsWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 1, 2, 3 };
-            Assert.That(integers.Contains(3, 2, 666, 1974));
+            Assert.That(integers).Contains(3, 2, 666, 1974);
         }
 
         #endregion
@@ -51,7 +51,7 @@
         public void ContainsWithEnumerableWorks()
         {
             var integers = new List<int>() { 1, 2, 3, 1974 };
-            Assert.That(integers.Contains(3, 2, 1));
+            Assert.That(integers).Contains(3, 2, 1);
         }
 
         [Test]
@@ -59,7 +59,7 @@
         public void ContainsThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new List<int>() { 1, 2, 3 };
-            Assert.That(integers.Contains(3, 2, 666, 1974));
+            Assert.That(integers).Contains(3, 2, 666, 1974);
         }
 
         #endregion
@@ -70,17 +70,17 @@
         public void ContainsOnlyWithArraysWorks()
         {
             var integers = new int[] { 1, 2, 3 };
-            Assert.That(integers.ContainsOnly(3, 2, 1));
+            Assert.That(integers).ContainsOnly(3, 2, 1);
 
             var enumerable = new List<string>() { "un", "dos", "tres" };
-            Assert.That(enumerable.ContainsOnly("dos", "un", "tres"));
+            Assert.That(enumerable).ContainsOnly("dos", "un", "tres");
         }
 
         [Test]
         public void ContainsOnlyWithArraysWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
             var integers = new int[] { 1, 2, 3 };
-            Assert.That(integers.ContainsOnly(3, 2, 3, 2, 2, 1));
+            Assert.That(integers).ContainsOnly(3, 2, 3, 2, 2, 1);
         }
 
         [Test]
@@ -88,7 +88,7 @@
         public void ContainsOnlyWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 3, 2, 666, 1974, 1 };
-            Assert.That(integers.ContainsOnly(1, 2, 3));
+            Assert.That(integers).ContainsOnly(1, 2, 3);
         }
 
         #endregion
@@ -99,17 +99,17 @@
         public void ContainsOnlyWithEnumerableWorks()
         {
             var integers = new List<int>() { 1, 2, 3 };
-            Assert.That(integers.ContainsOnly(3, 2, 1));
+            Assert.That(integers).ContainsOnly(3, 2, 1);
 
             var enumerable = new List<string>() { "un", "dos", "tres" };
-            Assert.That(enumerable.ContainsOnly("dos", "un", "tres"));
+            Assert.That(enumerable).ContainsOnly("dos", "un", "tres");
         }
 
         [Test]
         public void ContainsOnlyWithEnumerableWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
             var integers = new List<int> { 1, 2, 3 };
-            Assert.That(integers.ContainsOnly(3, 2, 3, 2, 2, 1));
+            Assert.That(integers).ContainsOnly(3, 2, 3, 2, 2, 1);
         }
 
         [Test]
@@ -117,7 +117,7 @@
         public void ContainsOnlyWithEnumerableThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
-            Assert.That(integers.ContainsOnly(1, 2, 3));
+            Assert.That(integers).ContainsOnly(1, 2, 3);
         }
 
         #endregion
@@ -128,10 +128,10 @@
         public void ContainsExactlyWithArraysWorks()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers.ContainsExactly(1, 2, 3, 4, 5, 666));
+            Assert.That(integers).ContainsExactly(1, 2, 3, 4, 5, 666);
 
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
-            Assert.That(guitarHeroes.ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell"));
+            Assert.That(guitarHeroes).ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell");
         }
 
         [Test]
@@ -139,7 +139,7 @@
         public void ContainsExactlyWithArraysThrowsExceptionWhenSameItemsInWrongOrder()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers.ContainsExactly(666, 3, 1, 2, 4, 5));
+            Assert.That(integers).ContainsExactly(666, 3, 1, 2, 4, 5);
         }
 
         [Test]
@@ -147,7 +147,7 @@
         public void ContainsExactlyWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers.ContainsExactly(42, 42, 42));
+            Assert.That(integers).ContainsExactly(42, 42, 42);
         }
 
         [Test]
@@ -155,7 +155,7 @@
         public void ContainsExactlyWithArraysThrowsExceptionWithClearStatusWhenFailsWithStrings()
         {
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
-            Assert.That(guitarHeroes.ContainsExactly("Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell"));
+            Assert.That(guitarHeroes).ContainsExactly("Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell");
         }
 
         #endregion
@@ -165,7 +165,7 @@
         [Test]
         public void ContainsExactlyAlsoWorksWithEnumerableParameter()
         {
-            Assert.That(InstantiateDirectors()).Properties("Name").ContainsExactly(InstantiateDirectors().Properties("Name"));
+            Assert.That(InstantiateDirectors()).Properties<Person, string>("Name").ContainsExactly(InstantiateDirectors().Properties("Name"));
         }
 
         [Test]
@@ -173,21 +173,22 @@
         public void ContainsExactlyWithEnumerableThrowsExceptionWhenSameItemsInWrongOrder()
         {
             var integers = new List<int>() { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers.ContainsExactly(666, 3, 1, 2, 4, 5));
+            Assert.That(integers).ContainsExactly(666, 3, 1, 2, 4, 5);
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Michel Gondry"", ""Joon-ho Bong"", ""Darren Aronofsky""] (3 items) instead of the expected [""Steve Tesich"", ""Albert Camus"", ""Eiji Yoshikawa"", ""Friedrich Nietzsche""] (4 items).")]
         public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithEnumerable()
         {
-            Assert.That(InstantiateDirectors().Properties("Name").ContainsExactly(InstantiateWriters().Properties("Name")));
+            Assert.That(InstantiateDirectors()).Properties<Person, string>("Name").ContainsExactly(InstantiateWriters().Properties("Name"));
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Michel Gondry"", ""Joon-ho Bong"", ""Darren Aronofsky""] (3 items) instead of the expected [] (0 item).")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Michel Gondry"", ""Joon-ho Bong"", ""Darren Aronofsky""] (3 items) instead of the expected [null] (1 item).")]
         public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithNullEnumerable()
         {
-            Assert.That(InstantiateDirectors().Properties("Name").ContainsExactly(null));
+            IEnumerable<string> expectedValues = null;
+            Assert.That(InstantiateDirectors()).Properties<Person, string>("Name").ContainsExactly(expectedValues);
         }
 
         #endregion
