@@ -22,7 +22,7 @@
                                      new Person { Name = "Anton", Age = 7, Nationality = Nationality.French },
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
-
+            // TODO: find a way to get rid of the lack of type inference here (<Person, string> is not really fluent...)
             Assert.That(enumerable).Properties<Person, string>("Name").ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
             Assert.That(enumerable).Properties<Person, int>("Age").ContainsExactly(38, 10, 7, 7);
             Assert.That(enumerable).Properties<Person, Nationality>("Nationality").ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
@@ -36,22 +36,21 @@
             // assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
         }
 
-        // TODO: restore this test
-        //[Test]
-        //[ExpectedException(typeof(InvalidOperationException))]
-        //public void PropertiesThrowInvalidOperationExceptionIfPropertyDoesNotExist()
-        //{
-        //    var enumerable = new List<Person>
-        //                         {
-        //                             new Person { Name = "MethodMan", Age = 38 },
-        //                             new Person { Name = "GZA", Nationality = Nationality.American }
-        //                         };
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void PropertiesThrowInvalidOperationExceptionIfPropertyDoesNotExist()
+        {
+            var enumerable = new List<Person>
+                                 {
+                                     new Person { Name = "MethodMan", Age = 38 },
+                                     new Person { Name = "GZA", Nationality = Nationality.American }
+                                 };
 
-        //     Forced to enumerate the result so that the Properties extension method is executed (IEnumerable's lazy evaluation)
-        //    foreach (var propertyValue in enumerable.Properties("Portnaouaq"))
-        //    {
-        //    }
-        //}
+            // Forced to enumerate the result so that the Properties extension method is executed (IEnumerable's lazy evaluation)
+            foreach (var propertyValue in enumerable.Properties<Person, string>("Portnaouaq"))
+            {
+            }
+        }
 
         [Test]
         public void PropertiesWorksEvenWithPrivateProperty()
