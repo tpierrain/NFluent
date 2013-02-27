@@ -22,7 +22,7 @@
                                      new Person { Name = "Anton", Age = 7, Nationality = Nationality.French },
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
-            
+
             Assert.That(enumerable).Properties<Person, string>("Name").ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
             Assert.That(enumerable).Properties<Person, int>("Age").ContainsExactly(38, 10, 7, 7);
             Assert.That(enumerable).Properties<Person, Nationality>("Nationality").ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
@@ -62,7 +62,7 @@
                                      new Person { Name = "Borat" }
                                  };
 
-            Assert.That(enumerable).Properties<Person, string>("Name").ContainsExactly("Kamoulox !", "Kamoulox !");
+            Assert.That(enumerable).Properties<Person, string>("PrivateHesitation").ContainsExactly("Kamoulox !", "Kamoulox !");
         }
 
         #endregion

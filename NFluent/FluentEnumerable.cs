@@ -19,7 +19,7 @@ namespace NFluent
     using System.Collections.Generic;
     using System.Reflection;
 
-    internal class FluentEnumerable<T> : IFluentEnumerable<T>
+    internal class FluentEnumerable<T> : IFluentEnumerable<T>, IFluentEnumerable
     {
         private readonly IEnumerable<T> enumerable;
 
@@ -38,23 +38,23 @@ namespace NFluent
             return this.enumerable.GetEnumerator();
         }
 
-        //public bool MoveNext()
-        //{
-        //    return this.enumerable.GetEnumerator().MoveNext();
-        //}
+        public bool MoveNext()
+        {
+            return this.enumerable.GetEnumerator().MoveNext();
+        }
 
-        //public void Reset()
-        //{
-        //    this.enumerable.GetEnumerator().Reset();
-        //}
+        public void Reset()
+        {
+            this.enumerable.GetEnumerator().Reset();
+        }
 
-        //public object Current
-        //{
-        //    get
-        //    {
-        //        return this.enumerable.GetEnumerator().Current;
-        //    }
-        //}
+        public object Current
+        {
+            get
+            {
+                return this.enumerable.GetEnumerator().Current;
+            }
+        }
 
         /// <summary>
         /// Determines whether the specified enumerable contains exactly some expected values.
@@ -65,7 +65,7 @@ namespace NFluent
         ///   <c>true</c> if the specified enumerable contains exactly the specified expected values; throws a <see cref="FluentAssertionException" /> otherwise, <c>false</c>.
         /// </returns>
         /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
-        public void ContainsExactly(IEnumerable otherEnumerable)
+        public void ContainsExactly(IFluentEnumerable<T> otherEnumerable)
         {
             // TODO: Refactor this implementation
             if (otherEnumerable == null)
@@ -132,7 +132,6 @@ namespace NFluent
 
         //        i++;
         //    }
-
         //    return true;
         //}
 
@@ -145,12 +144,12 @@ namespace NFluent
         /// <returns>
         /// An enumerable of all the property values for every <see cref="T"/> objects in the <see cref="enumerable"/>.
         /// </returns>
-        public IFluentEnumerable<R> Properties<T, R>(string propertyName)
-        {
-            var enumerab = this.enumerable.Properties(propertyName);
+        //public IFluentEnumerable<R> Properties<T, R>(string propertyName)
+        //{
+        //    IEnumerable properties = this.enumerable.Properties(propertyName);
 
-            return new FluentEnumerable<R>(enumerab as IEnumerable<R>);
-        }
+        //    return new FluentEnumerable<R>(properties as IEnumerable<R>);
+        //}
 
         /// <summary>
         /// Verifies that the actual enumerable contains only the given expected values and nothing else, in order.
@@ -169,14 +168,14 @@ namespace NFluent
             IEnumerable enumerable = this.enumerable;
 
             long i = 0;
-            foreach (var obj in enumerable)
+            foreach (var obj in this.enumerable)
             {
                 if (!object.Equals(obj, expectedValues[i]))
                 {
                     var expectedNumberOfItemsDescription = ContainsExtensions.FormatItemCount(expectedValues.LongLength);
 
                     var enumerableCount = 0;
-                    foreach (var item in enumerable)
+                    foreach (var item in this.enumerable)
                     {
                         enumerableCount++;
                     }

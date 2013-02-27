@@ -33,7 +33,7 @@ namespace NFluent
         /// <returns>
         /// An enumerable of all the property values for every <see cref="T"/> objects in the <see cref="enumerable"/>.
         /// </returns>
-        public static IEnumerable Properties<T>(this IEnumerable<T> enumerable, string propertyName)
+        public static IFluentEnumerable<R> Properties<T,R>(this IEnumerable<T> enumerable, string propertyName)
         {
             Type type = typeof(T);
             var getter = type.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
@@ -43,11 +43,15 @@ namespace NFluent
                 throw new InvalidOperationException(string.Format("Objects of expectedType {0} don't have property with name '{1}'", type, propertyName));
             }
 
+            // TODO: see whether we can use yield instead
+            var propertyValues = new List<R>();
             foreach (var o in enumerable)
             {
-                var value = getter.GetValue(o, null);
-                yield return value;
+                var propertyValue = getter.GetValue(o, null);
+                propertyValues.Add((R)propertyValue);
             }
+
+            return new FluentEnumerable<R>(propertyValues);
         }
     }
 }

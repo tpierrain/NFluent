@@ -25,15 +25,15 @@ namespace NFluent
     /// </summary>
     public static class Assert
     {
-        ///// <summary>
-        ///// Asserts that a condition is true. If the condition is false the method throw a <see cref="T:FluentAssertionException"/>.
-        ///// </summary>
-        ///// <param name="condition">The evaluated condition.</param>
-        //public static void That(bool condition)
-        //{
-        //    // TODO: improve the default message of failing Assert.That
-        //    That(condition, string.Empty);
-        //}
+        /// <summary>
+        /// Asserts that a condition is true. If the condition is false the method throw a <see cref="T:FluentAssertionException"/>.
+        /// </summary>
+        /// <param name="condition">The evaluated condition.</param>
+        public static void That(bool condition)
+        {
+            // TODO: improve the default message of failing Assert.That
+            That(condition, string.Empty);
+        }
 
         /// <summary>
         /// Asserts that a condition is true. If the condition is false the method throw a <see cref="T:FluentAssertionException" />.

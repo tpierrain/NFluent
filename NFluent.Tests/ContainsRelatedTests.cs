@@ -35,8 +35,9 @@
             Assert.That(integers).Contains(5, 3, 666, 3, 3, 666);
         }
 
+        // TODO: remove or rename tests since there will be no more extension methods on Arrays
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The array does not contain the expected value(s): [666, 1974].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable does not contain the expected value(s): [666, 1974].")]
         public void ContainsWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 1, 2, 3 };
@@ -83,8 +84,10 @@
             Assert.That(integers).ContainsOnly(3, 2, 3, 2, 2, 1);
         }
 
+        // TODO: get rid of tests with arrays since we will remove the extension methods on array
+ 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The array does not contain only the expected value(s). It contains also other values: [666, 1974].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable does not contain only the expected value(s). It contains also other values: [666, 1974].")]
         public void ContainsOnlyWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 3, 2, 666, 1974, 1 };
@@ -165,7 +168,7 @@
         [Test]
         public void ContainsExactlyAlsoWorksWithEnumerableParameter()
         {
-            Assert.That(InstantiateDirectors()).Properties<Person, string>("Name").ContainsExactly(InstantiateDirectors().Properties("Name"));
+            Assert.That(InstantiateDirectors()).Properties<Person, string>("Name").ContainsExactly(InstantiateDirectors().Properties<Person, string>("Name"));
         }
 
         [Test]
@@ -180,7 +183,7 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Michel Gondry"", ""Joon-ho Bong"", ""Darren Aronofsky""] (3 items) instead of the expected [""Steve Tesich"", ""Albert Camus"", ""Eiji Yoshikawa"", ""Friedrich Nietzsche""] (4 items).")]
         public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithEnumerable()
         {
-            Assert.That(InstantiateDirectors()).Properties<Person, string>("Name").ContainsExactly(InstantiateWriters().Properties("Name"));
+            Assert.That(InstantiateDirectors()).Properties<Person, string>("Name").ContainsExactly(InstantiateWriters().Properties<Person, string>("Name"));
         }
 
         [Test]
