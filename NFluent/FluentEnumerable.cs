@@ -72,7 +72,7 @@ namespace NFluent
         ///   <c>true</c> if the specified enumerable contains exactly the specified expected values; throws a <see cref="FluentAssertionException" /> otherwise, <c>false</c>.
         /// </returns>
         /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
-        public void ContainsExactly(IFluentEnumerable otherEnumerable)
+        public void ContainsExactly(IEnumerable otherEnumerable)
         {
             // TODO: Refactor this implementation
             if (otherEnumerable == null)

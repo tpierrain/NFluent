@@ -23,7 +23,7 @@ namespace NFluent
 
         bool ContainsOnly<T>(params T[] expectedValues);
 
-        void ContainsExactly(IFluentEnumerable otherEnumerable);
+        void ContainsExactly(IEnumerable otherEnumerable);
 
         bool ContainsExactly<R>(params R[] expectedValues);
     }
