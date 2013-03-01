@@ -27,7 +27,7 @@ Usage sample
 ------------
 
 With NFluent, you can write simple assertions like this:
-	
+```c#	
     var first = new int[] { 1, 2, 3, 4, 5, 666 };
     Assert.That(first.Contains(5, 666, 3));
 
@@ -36,11 +36,11 @@ With NFluent, you can write simple assertions like this:
 
 	var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
     Assert.That(guitarHeroes.ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell"));
-
+```
 note: the Assert.That is here part of the NUnit library.
 
 with NFluent, you can also write assertions like this:
-
+```c#
 	 var enumerable = new List<Person>
                                  {
                                      new Person { Name = "Thomas", Age = 38 },
@@ -60,7 +60,7 @@ with NFluent, you can also write assertions like this:
 
      // java version (FEST fluent assert)
      // assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
-        
+```   
 
 - - -
 
