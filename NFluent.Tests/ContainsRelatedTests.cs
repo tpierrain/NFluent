@@ -168,7 +168,7 @@
         [Test]
         public void ContainsExactlyAlsoWorksWithEnumerableParameter()
         {
-            Assert.That(InstantiateDirectors()).Properties<Person, string>("Name").ContainsExactly(InstantiateDirectors().Properties<Person, string>("Name"));
+            Assert.That(InstantiateDirectors().Properties("Name")).ContainsExactly(InstantiateDirectors().Properties("Name"));
         }
 
         [Test]
@@ -183,7 +183,7 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Michel Gondry"", ""Joon-ho Bong"", ""Darren Aronofsky""] (3 items) instead of the expected [""Steve Tesich"", ""Albert Camus"", ""Eiji Yoshikawa"", ""Friedrich Nietzsche""] (4 items).")]
         public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithEnumerable()
         {
-            Assert.That(InstantiateDirectors()).Properties<Person, string>("Name").ContainsExactly(InstantiateWriters().Properties<Person, string>("Name"));
+            Assert.That(InstantiateDirectors().Properties("Name")).ContainsExactly(InstantiateWriters().Properties("Name"));
         }
 
         [Test]
@@ -191,7 +191,7 @@
         public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithNullEnumerable()
         {
             IEnumerable<string> expectedValues = null;
-            Assert.That(InstantiateDirectors()).Properties<Person, string>("Name").ContainsExactly(expectedValues);
+            Assert.That(InstantiateDirectors().Properties("Name")).ContainsExactly(expectedValues);
         }
 
         #endregion

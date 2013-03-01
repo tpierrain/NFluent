@@ -49,10 +49,15 @@ namespace NFluent
             }
         }
 
-        public static IFluentEnumerable<T> That<T>(IEnumerable<T> enumerable)
+        public static IFluentEnumerable That(IEnumerable enumerable)
         {
-            return new FluentEnumerable<T>(enumerable);
+            return new FluentEnumerable(enumerable);
         }
+
+        //public static IFluentEnumerable<T> That<T>(IEnumerable<T> enumerable)
+        //{
+        //    return new FluentEnumerable<T>(enumerable);
+        //}
 
         public static IFluentString That(string value)
         {

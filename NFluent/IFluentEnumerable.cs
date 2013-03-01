@@ -17,16 +17,13 @@ namespace NFluent
     using System.Collections;
     using System.Collections.Generic;
 
-    public interface IFluentEnumerable : IEnumerator
+    public interface IFluentEnumerable : IEnumerable
     {
-        
-    }
+        bool Contains<T>(params T[] expectedValues);
 
-    public interface IFluentEnumerable<T> : IEnumerable<T>
-    {
-        //IFluentEnumerable<R> Properties<T, R>(string propertyName);
+        bool ContainsOnly<T>(params T[] expectedValues);
 
-        void ContainsExactly(IFluentEnumerable<T> otherEnumerable);
+        void ContainsExactly(IFluentEnumerable otherEnumerable);
 
         bool ContainsExactly<R>(params R[] expectedValues);
     }

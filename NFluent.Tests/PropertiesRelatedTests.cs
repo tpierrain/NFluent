@@ -23,9 +23,9 @@
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
             // TODO: find a way to get rid of the lack of type inference here (<Person, string> is not really fluent...)
-            Assert.That(enumerable).Properties<Person, string>("Name").ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
-            Assert.That(enumerable).Properties<Person, int>("Age").ContainsExactly(38, 10, 7, 7);
-            Assert.That(enumerable).Properties<Person, Nationality>("Nationality").ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+            Assert.That(enumerable.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+            Assert.That(enumerable.Properties("Age")).ContainsExactly(38, 10, 7, 7);
+            Assert.That(enumerable.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
 
             // more fluent than the following classical NUnit way, isn't it? 
             //CollectionAssert.AreEquivalent(enumerable).Properties("Age"), new[] { 38, 10, 7, 7 });
@@ -47,7 +47,7 @@
                                  };
 
             // Forced to enumerate the result so that the Properties extension method is executed (IEnumerable's lazy evaluation)
-            foreach (var propertyValue in enumerable.Properties<Person, string>("Portnaouaq"))
+            foreach (var propertyValue in enumerable.Properties("Portnaouaq"))
             {
             }
         }
@@ -61,7 +61,7 @@
                                      new Person { Name = "Borat" }
                                  };
 
-            Assert.That(enumerable).Properties<Person, string>("PrivateHesitation").ContainsExactly("Kamoulox !", "Kamoulox !");
+            Assert.That(enumerable.Properties("PrivateHesitation")).ContainsExactly("Kamoulox !", "Kamoulox !");
         }
 
         #endregion
@@ -79,9 +79,9 @@
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
 
-            Assert.That(array).Properties<Person, string>("Name").ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
-            Assert.That(array).Properties<Person, int>("Age").ContainsExactly(38, 10, 7, 7);
-            Assert.That(array).Properties<Person, Nationality>("Nationality").ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+            Assert.That(array.Properties<Person>("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+            Assert.That(array.Properties<Person>("Age")).ContainsExactly(38, 10, 7, 7);
+            Assert.That(array.Properties<Person>("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
         }
 
         #endregion
