@@ -2,6 +2,7 @@ NFluent backlog
 ===============
 
 + Continue the library breakthrough (from an extension method model to a IFluentStuff one)
+	+ migrate methods from bool to void
 + Restore the code coverage 
 + Fix the methods documentation (after the breakthrough)
 + Fix the StyleCop warnings

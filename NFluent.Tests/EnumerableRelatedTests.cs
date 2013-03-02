@@ -4,6 +4,8 @@
 
     using NUnit.Framework;
 
+    using Assert = NFluent.Assert;
+
     [TestFixture]
     public class EnumerableRelatedTests
     {
@@ -14,7 +16,7 @@
         {
             var array = new int[] { 45, 43, 54, 666 };
 
-            Assert.That(array.HasSize(4));
+            Assert.That(array).HasSize(4);
         }
 
         [Test]
@@ -22,7 +24,7 @@
         {
             var enumerable = new List<int>() { 45, 43, 54, 666 };
 
-            Assert.That(enumerable.HasSize(4));
+            Assert.That(enumerable).HasSize(4);
         }
 
         [Test]
@@ -31,7 +33,7 @@
         {
             var enumerable = new List<int>() { 45, 43, 54, 666 };
 
-            Assert.That(enumerable.HasSize(2));
+            Assert.That(enumerable).HasSize(2);
         }
 
         #endregion
@@ -43,7 +45,7 @@
         {
             var emptyEnumerable = new List<int>();
 
-            Assert.That(emptyEnumerable.IsEmpty());
+            Assert.That(emptyEnumerable).IsEmpty();
         }
 
         [Test]
@@ -52,7 +54,7 @@
         {
             var nobody = new List<Person>() { null, null, new Person() { Name = "Thomas" } };
             
-            Assert.That(nobody.IsEmpty());
+            Assert.That(nobody).IsEmpty();
         }
 
         #endregion

@@ -16,8 +16,7 @@ namespace NFluent
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
-    using System.Reflection;
+    using System.Linq;
 
     internal class FluentEnumerable : IFluentEnumerable
     {
@@ -50,14 +49,14 @@ namespace NFluent
         ///   <c>true</c> if the enumerable contains all the specified expected values, in any order; throws a <see cref="FluentAssertionException"/> otherwise.
         /// </returns>
         /// <exception cref="NFluent.FluentAssertionException">The enumerable does not contains all the expected values.</exception>
-        public bool Contains<T>(params T[] expectedValues)
+        public void Contains<T>(params T[] expectedValues)
         {
             // TODO: move the ContainsExtensions.ExtractNotFoundValues method to the FluentEnumerable.cs file
             var notFoundValues = ContainsExtensions.ExtractNotFoundValues(this.enumerable, expectedValues);
 
             if (notFoundValues.Count == 0)
             {
-                return true;
+                return;
             }
 
             throw new FluentAssertionException(String.Format("The enumerable does not contain the expected value(s): [{0}].", notFoundValues.ToEnumeratedString()));
@@ -161,7 +160,7 @@ namespace NFluent
         /// <summary>
         /// Verifies that the actual enumerable contains only the given expected values and nothing else, in order.
         /// This assertion should only be used with IEnumerable that have a consistent iteration order 
-        /// (i.e. don't use it with <see cref="Hashtable"/>, prefer <see cref="ContainsOnly"/> in that case).
+        /// (i.e. don't use it with <see cref="Hashtable"/>, prefer <see cref="ContainsOnly{T}"/> in that case).
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the <see cref="expectedValues"/> array.</typeparam>
         /// <param name="enumerable">The enumerable to verify.</param>
@@ -170,7 +169,7 @@ namespace NFluent
         ///   <c>true</c> if the enumerable contains exactly the specified expected values; throws a <see cref="FluentAssertionException"/> otherwise.
         /// </returns>
         /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
-        public bool ContainsExactly<R>(params R[] expectedValues)
+        public void ContainsExactly<R>(params R[] expectedValues)
         {
             IEnumerable enumerable = this.enumerable;
 
@@ -194,8 +193,6 @@ namespace NFluent
 
                 i++;
             }
-
-            return true;
         }
 
         /// <summary>
@@ -249,16 +246,42 @@ namespace NFluent
         /// <returns>
         ///   <c>true</c> if the specified enumerable contains only the given values and nothing else, in any order; otherwise, throws a <see cref="FluentAssertionException"/>.
         /// </returns>
-        public bool ContainsOnly<T>(params T[] expectedValues)
+        public void ContainsOnly<T>(params T[] expectedValues)
         {
-            var unexpectedValuesFound = ContainsExtensions.ExtractUnexpectedValues(enumerable, expectedValues);
+            var unexpectedValuesFound = ContainsExtensions.ExtractUnexpectedValues(this.enumerable, expectedValues);
 
             if (unexpectedValuesFound.Count > 0)
             {
                 throw new FluentAssertionException(String.Format("The enumerable does not contain only the expected value(s). It contains also other values: [{0}].", unexpectedValuesFound.ToEnumeratedString()));
             }
+        }
 
-            return true;
+        /// <summary>
+        /// Determines whether the SUT enumerable has the proper size (i.e. number of elements).
+        /// </summary>
+        /// <param name="expectedSize">The expected size.</param>
+        /// <exception cref="FluentAssertionException">The SUT enumerable has not the expected size.</exception>
+        public void HasSize(long expectedSize)
+        {
+            long itemsCount = this.enumerable.Cast<object>().LongCount();
+
+            if (expectedSize != itemsCount)
+            {
+                throw new FluentAssertionException(String.Format("Has [{0}] items instead of the expected value [{1}].", itemsCount, expectedSize));
+            }
+        }
+
+        /// <summary>
+        /// Verifies whether the enumerable is empty, and throws a <see cref="FluentAssertionException" /> if not empty.
+        /// </summary>
+        /// <param name="enumerable">The enumerable to check.</param>
+        /// <exception cref="FluentAssertionException">The actual enumeration is not empty.</exception>
+        public void IsEmpty()
+        {
+            if (this.enumerable.Cast<object>().Any())
+            {
+                throw new FluentAssertionException(String.Format("Enumerable not empty. Contains the element(s): [{0}].", this.enumerable.ToEnumeratedString()));
+            }
         }
     }
 }

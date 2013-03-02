@@ -15,16 +15,19 @@
 namespace NFluent
 {
     using System.Collections;
-    using System.Collections.Generic;
 
     public interface IFluentEnumerable : IEnumerable
     {
-        bool Contains<T>(params T[] expectedValues);
+        void Contains<T>(params T[] expectedValues);
 
-        bool ContainsOnly<T>(params T[] expectedValues);
+        void ContainsOnly<T>(params T[] expectedValues);
 
         void ContainsExactly(IEnumerable otherEnumerable);
 
-        bool ContainsExactly<R>(params R[] expectedValues);
+        void ContainsExactly<R>(params R[] expectedValues);
+
+        void HasSize(long expectedSize);
+
+        void IsEmpty();
     }
 }
