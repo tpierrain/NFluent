@@ -41,10 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assert.cs" />
-    <Compile Include="ContainsExtensions.cs" />
-    <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="EqualityHelper.cs" />
-    <Compile Include="ExtensionsCommonHelpers.cs" />
+    <Compile Include="Extensions\ContainsExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Helpers\EqualityHelper.cs" />
+    <Compile Include="Helpers\ExtensionsCommonHelpers.cs" />
     <Compile Include="NumericalFluentAssert.cs" />
     <Compile Include="FluentAssertionException.cs" />
     <Compile Include="EnumerableFluentAssert.cs" />

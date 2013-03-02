@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("NFluent")]
-[assembly: AssemblyDescription("Smooth your .NET TDD experience with NFluent! NFluent provides some extension methods for a fluent .NET TDD experience based on simple Assert.That(bool condition) statements. NFluent aims your tests to be fluent to write (with auto completion support) but also fluent to read (i.e. as close as possible to plain english expression).NFluent is highly inspired by the awesome Java FEST EqualityFluentAssert assertion/reflection library (http://fest.easytesting.org/)")]
+[assembly: AssemblyDescription("Smooth your .NET TDD experience with NFluent! NFluent provides some extension methods for a fluent .NET TDD experience based on simple Assert.That statements. NFluent aims your tests to be fluent to write (with auto completion support) but also fluent to read (i.e. as close as possible to plain english expression).NFluent is highly inspired by the awesome Java FEST EqualityFluentAssert assertion/reflection library (http://fest.easytesting.org/)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Thomas PIERRAIN (thomas@pierrain.net)")]
 [assembly: AssemblyProduct("NFluent")]
