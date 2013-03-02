@@ -1,7 +1,5 @@
 ﻿namespace NFluent.Tests
 {
-    using System;
-
     using NUnit.Framework;
 
     [TestFixture]

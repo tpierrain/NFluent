@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IFluentEnumerable.cs" company="">
+// // <copyright file="IStringEqualityFluentAssert.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,20 +14,10 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System.Collections;
-
-    public interface IFluentEnumerable : IEnumerable
+    public interface IStringEqualityFluentAssert : IEqualityFluentAssert
     {
-        void Contains<T>(params T[] expectedValues);
+        void Contains(params string[] values);
 
-        void ContainsOnly<T>(params T[] expectedValues);
-
-        void ContainsExactly(IEnumerable otherEnumerable);
-
-        void ContainsExactly<R>(params R[] expectedValues);
-
-        void HasSize(long expectedSize);
-
-        void IsEmpty();
+        void StartsWith(string prefix);
     }
 }

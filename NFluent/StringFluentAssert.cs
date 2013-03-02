@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="FluentString.cs" company="">
+// // <copyright file="StringEqualityFluentAssert.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -16,21 +16,31 @@ namespace NFluent
 {
     using System.Collections.Generic;
 
-    internal class FluentString : IFluentString
+    internal class StringEqualityFluentAssert : IStringEqualityFluentAssert
     {
-        private readonly string wrappedString;
+        private readonly string sut;
 
-        public FluentString(string value)
+        public StringEqualityFluentAssert(string value)
         {
-            this.wrappedString = value;
+            this.sut = value;
         }
 
         public void StartsWith(string expectedPrefix)
         {
-            if (!this.wrappedString.StartsWith(expectedPrefix))
+            if (!this.sut.StartsWith(expectedPrefix))
             {
-                throw new FluentAssertionException(string.Format(@"The string [""{0}""] does not start with [""{1}""].", this.wrappedString, expectedPrefix));
+                throw new FluentAssertionException(string.Format(@"The string [""{0}""] does not start with [""{1}""].", this.sut, expectedPrefix));
             }
+        }
+
+        public void IsEqualTo(object expected)
+        {
+            EqualityHelper.IsEqualTo(this.sut, expected);
+        }
+
+        public void IsNotEqualTo(object expected)
+        {
+            EqualityHelper.IsNotEqualTo(this.sut, expected);
         }
 
         /// <summary>
@@ -42,12 +52,12 @@ namespace NFluent
         ///   <c>true</c> if the string contains the specified actual value in any order;  throw a <see cref="FluentException"/> otherwise.
         /// </returns>
         /// <exception cref="FluentAssertionException">The string does not contains all the given strings.</exception>
-        public bool Contains(params string[] values)
+        public void Contains(params string[] values)
         {
             var notFound = new List<string>();
             foreach (string value in values)
             {
-                if (!this.wrappedString.Contains(value))
+                if (!this.sut.Contains(value))
                 {
                     notFound.Add(value);
                 }
@@ -55,10 +65,8 @@ namespace NFluent
 
             if (notFound.Count > 0)
             {
-                throw new FluentAssertionException(string.Format(@"The string [""{0}""] does not contain the expected value(s): [{1}].", this.wrappedString, notFound.ToEnumeratedString()));
+                throw new FluentAssertionException(string.Format(@"The string [""{0}""] does not contain the expected value(s): [{1}].", this.sut, notFound.ToEnumeratedString()));
             }
-
-            return true;
         }
     }
 }

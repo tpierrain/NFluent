@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IFluentString.cs" company="">
+// // <copyright file="IEnumerableFluentAssert.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,10 +14,20 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    public interface IFluentString
-    {
-        bool Contains(params string[] values);
+    using System.Collections;
 
-        void StartsWith(string prefix);
+    public interface IEnumerableFluentAssert : IEqualityFluentAssert, IEnumerable
+    {
+        void Contains<T>(params T[] expectedValues);
+
+        void ContainsOnly<T>(params T[] expectedValues);
+
+        void ContainsExactly(IEnumerable otherEnumerable);
+
+        void ContainsExactly<R>(params R[] expectedValues);
+
+        void HasSize(long expectedSize);
+
+        void IsEmpty();
     }
 }

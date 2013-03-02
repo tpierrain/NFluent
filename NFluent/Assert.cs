@@ -22,29 +22,29 @@ namespace NFluent
     public static class Assert
     {
         /// <summary>
-        /// Returns a <see cref="IFluentEnumerable"/> instance that will provide assertion methods to be executed on the System Under Test enumerable instance.
+        /// Returns a <see cref="IEnumerableFluentAssert"/> instance that will provide assertion methods to be executed on the System Under Test enumerable instance.
         /// </summary>
         /// <remarks>
-        ///     Methods of the returned <see cref="IFluentEnumerable"/> instance will usually throw a <see cref="T:FluentAssertionException"/> when failing.
+        ///     Methods of the returned <see cref="IEnumerableFluentAssert"/> instance will usually throw a <see cref="T:FluentAssertionException"/> when failing.
         /// </remarks>
         /// <param name="enumerable">The System Under Test enumerable instance.</param>
-        /// <returns>A <see cref="IFluentEnumerable"/> instance to use in order to assert things on the System Under Test enumerable instance.</returns>
-        public static IFluentEnumerable That(IEnumerable enumerable)
+        /// <returns>A <see cref="IEnumerableFluentAssert"/> instance to use in order to assert things on the System Under Test enumerable instance.</returns>
+        public static IEnumerableFluentAssert That(IEnumerable enumerable)
         {
-            return new FluentEnumerable(enumerable);
+            return new EnumerableFluentAssert(enumerable);
         }
 
         /// <summary>
-        /// Returns a <see cref="IFluentString"/> instance that will provide assertion methods to be executed on the System Under Test string instance.
+        /// Returns a <see cref="IStringEqualityFluentAssert"/> instance that will provide assertion methods to be executed on the System Under Test string instance.
         /// </summary>
         /// <remarks>
-        ///     Methods of the returned <see cref="IFluentString"/> instance will usually throw a <see cref="T:FluentAssertionException"/> when failing.
+        ///     Methods of the returned <see cref="IStringEqualityFluentAssert"/> instance will usually throw a <see cref="T:FluentAssertionException"/> when failing.
         /// </remarks>
         /// <param name="value">The System Under Test string instance.</param>
-        /// <returns>A <see cref="IFluentString"/> instance to use in order to assert things on the System Under Test string instance.</returns>
-        public static IFluentString That(string value)
+        /// <returns>A <see cref="IStringEqualityFluentAssert"/> instance to use in order to assert things on the System Under Test string instance.</returns>
+        public static IStringEqualityFluentAssert That(string value)
         {
-            return new FluentString(value);
+            return new StringEqualityFluentAssert(value);
         }
     }
 }

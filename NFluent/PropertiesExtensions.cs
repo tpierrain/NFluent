@@ -60,7 +60,7 @@ namespace NFluent
         ///// <returns>
         ///// An enumerable of all the property values for every <see cref="T"/> objects in the <see cref="enumerable"/>.
         ///// </returns>
-        //public static IFluentEnumerable<R> Properties<T,R>(this IEnumerable<T> enumerable, string propertyName)
+        //public static IEnumerableFluentAssert<R> Properties<T,R>(this IEnumerable<T> enumerable, string propertyName)
         //{
         //    Type type = typeof(T);
         //    var getter = type.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
@@ -78,7 +78,7 @@ namespace NFluent
         //        propertyValues.Add((R)propertyValue);
         //    }
 
-        //    return new FluentEnumerable<R>(propertyValues);
+        //    return new EnumerableFluentAssert<R>(propertyValues);
         //}
     }
 }

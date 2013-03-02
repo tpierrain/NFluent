@@ -11,6 +11,8 @@
     {
         #region Contains with arrays
 
+        // TODO: write tests with enumerable with various types of objects.
+
         [Test]
         public void ContainsWithArraysWorks()
         {

@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="FluentEnumerable.cs" company="">
+// // <copyright file="EnumerableFluentAssert.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -18,26 +18,33 @@ namespace NFluent
     using System.Collections;
     using System.Linq;
 
-    internal class FluentEnumerable : IFluentEnumerable
+    internal class EnumerableFluentAssert : IEnumerableFluentAssert
     {
-        private readonly IEnumerable enumerable;
+        private readonly IEnumerable sutEnumerable;
 
-        //public FluentEnumerable(IEnumerable<T> enumerable)
-        //{
-        //    this.enumerable = enumerable;
-        //}
-
-        public FluentEnumerable(IEnumerable enumerable)
+        public EnumerableFluentAssert(IEnumerable sutEnumerable)
         {
-            this.enumerable = enumerable;
+            this.sutEnumerable = sutEnumerable;
         }
 
         public IEnumerator GetEnumerator()
         {
-            return this.enumerable.GetEnumerator();
+            return this.sutEnumerable.GetEnumerator();
         }
 
+        #region IEqualityFluentAssert members
 
+        public void IsEqualTo(object expected)
+        {
+            EqualityHelper.IsEqualTo(this.sutEnumerable, expected);
+        }
+
+        public void IsNotEqualTo(object expected)
+        {
+            EqualityHelper.IsNotEqualTo(this.sutEnumerable, expected);
+        }
+
+        #endregion
 
         /// <summary>
         /// Verifies that the specified enumerable contains the given expected values, in any order.
@@ -51,8 +58,8 @@ namespace NFluent
         /// <exception cref="NFluent.FluentAssertionException">The enumerable does not contains all the expected values.</exception>
         public void Contains<T>(params T[] expectedValues)
         {
-            // TODO: move the ContainsExtensions.ExtractNotFoundValues method to the FluentEnumerable.cs file
-            var notFoundValues = ContainsExtensions.ExtractNotFoundValues(this.enumerable, expectedValues);
+            // TODO: move the ContainsExtensions.ExtractNotFoundValues method to the EnumerableFluentAssert.cs file
+            var notFoundValues = ContainsExtensions.ExtractNotFoundValues(this.sutEnumerable, expectedValues);
 
             if (notFoundValues.Count == 0)
             {
@@ -77,12 +84,12 @@ namespace NFluent
             if (otherEnumerable == null)
             {
                 long foundCount;
-                var foundItems = this.enumerable.ToEnumeratedString(out foundCount);
+                var foundItems = this.sutEnumerable.ToEnumeratedString(out foundCount);
                 var foundItemsCount = ContainsExtensions.FormatItemCount(foundCount);
                 throw new FluentAssertionException(String.Format("Found: [{0}] ({1}) instead of the expected [] (0 item).", foundItems, foundItemsCount));
             }
 
-            var first = this.enumerable.GetEnumerator();
+            var first = this.sutEnumerable.GetEnumerator();
             var second = otherEnumerable.GetEnumerator();
 
             while (first.MoveNext())
@@ -90,7 +97,7 @@ namespace NFluent
                 if (!second.MoveNext() || !Equals(first.Current, second.Current))
                 {
                     long foundCount;
-                    var foundItems = this.enumerable.ToEnumeratedString(out foundCount);
+                    var foundItems = this.sutEnumerable.ToEnumeratedString(out foundCount);
                     var formatedFoundCount = ContainsExtensions.FormatItemCount(foundCount);
 
                     long expectedCount;
@@ -102,7 +109,7 @@ namespace NFluent
             }
         }
 
-        // TODO: Move the FormatItemCount() method from ContainsExtensions to FluentEnumerable. 
+        // TODO: Move the FormatItemCount() method from ContainsExtensions to EnumerableFluentAssert. 
 
         ///// <summary>
         ///// Verifies that the actual enumerable contains only the given expected values and nothing else, in order.
@@ -148,13 +155,13 @@ namespace NFluent
         /// <param name="enumerable">The enumerable collection of objects.</param>
         /// <param name="propertyName">Name of the property to extract value from for every object of the collection.</param>
         /// <returns>
-        /// An enumerable of all the property values for every <see cref="T"/> objects in the <see cref="enumerable"/>.
+        /// An enumerable of all the property values for every <see cref="T"/> objects in the <see cref="sutEnumerable"/>.
         /// </returns>
-        //public IFluentEnumerable<R> Properties<T, R>(string propertyName)
+        //public IEnumerableFluentAssert<R> Properties<T, R>(string propertyName)
         //{
         //    IEnumerable properties = this.enumerable.Properties(propertyName);
 
-        //    return new FluentEnumerable<R>(properties as IEnumerable<R>);
+        //    return new EnumerableFluentAssert<R>(properties as IEnumerable<R>);
         //}
 
         /// <summary>
@@ -171,17 +178,17 @@ namespace NFluent
         /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
         public void ContainsExactly<R>(params R[] expectedValues)
         {
-            IEnumerable enumerable = this.enumerable;
+            IEnumerable enumerable = this.sutEnumerable;
 
             long i = 0;
-            foreach (var obj in this.enumerable)
+            foreach (var obj in this.sutEnumerable)
             {
                 if (!Equals(obj, expectedValues[i]))
                 {
                     var expectedNumberOfItemsDescription = ContainsExtensions.FormatItemCount(expectedValues.LongLength);
 
                     var enumerableCount = 0;
-                    foreach (var item in this.enumerable)
+                    foreach (var item in this.sutEnumerable)
                     {
                         enumerableCount++;
                     }
@@ -248,7 +255,7 @@ namespace NFluent
         /// </returns>
         public void ContainsOnly<T>(params T[] expectedValues)
         {
-            var unexpectedValuesFound = ContainsExtensions.ExtractUnexpectedValues(this.enumerable, expectedValues);
+            var unexpectedValuesFound = ContainsExtensions.ExtractUnexpectedValues(this.sutEnumerable, expectedValues);
 
             if (unexpectedValuesFound.Count > 0)
             {
@@ -263,7 +270,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The SUT enumerable has not the expected size.</exception>
         public void HasSize(long expectedSize)
         {
-            long itemsCount = this.enumerable.Cast<object>().LongCount();
+            long itemsCount = this.sutEnumerable.Cast<object>().LongCount();
 
             if (expectedSize != itemsCount)
             {
@@ -278,9 +285,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual enumeration is not empty.</exception>
         public void IsEmpty()
         {
-            if (this.enumerable.Cast<object>().Any())
+            if (this.sutEnumerable.Cast<object>().Any())
             {
-                throw new FluentAssertionException(String.Format("Enumerable not empty. Contains the element(s): [{0}].", this.enumerable.ToEnumeratedString()));
+                throw new FluentAssertionException(String.Format("Enumerable not empty. Contains the element(s): [{0}].", this.sutEnumerable.ToEnumeratedString()));
             }
         }
     }
