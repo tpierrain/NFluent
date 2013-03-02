@@ -1,11 +1,8 @@
 ﻿namespace NFluent.Tests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     using NUnit.Framework;
+
+    using Assert = NFluent.Assert;
 
     [TestFixture]
     public class NumbersRelatedTests
@@ -26,16 +23,16 @@
             ushort ushortValue = 0;
             ulong ulongValue = 0;
 
-            Assert.That(intValue.IsZero());
-            Assert.That(longValue.IsZero());
-            Assert.That(doubleValue.IsZero());
-            Assert.That(decimalValue.IsZero());
-            Assert.That(floatValue.IsZero());
-            Assert.That(shortValue.IsZero());
-            Assert.That(byteValue.IsZero());
-            Assert.That(uintValue.IsZero());
-            Assert.That(ushortValue.IsZero());
-            Assert.That(ulongValue.IsZero());
+            Assert.That(intValue).IsZero();
+            Assert.That(longValue).IsZero();
+            Assert.That(doubleValue).IsZero();
+            Assert.That(decimalValue).IsZero();
+            Assert.That(floatValue).IsZero();
+            Assert.That(shortValue).IsZero();
+            Assert.That(byteValue).IsZero();
+            Assert.That(uintValue).IsZero();
+            Assert.That(ushortValue).IsZero();
+            Assert.That(ulongValue).IsZero();
         }
 
         [Test]
@@ -44,7 +41,7 @@
         {
             int a = 9;
 
-            Assert.That(a.IsZero());
+            Assert.That(a).IsZero();
         }
 
         #endregion 
@@ -65,16 +62,16 @@
             ushort ushortValue = 2;
             ulong ulongValue = 2;
 
-            Assert.That(intValue.IsNotZero());
-            Assert.That(longValue.IsNotZero());
-            Assert.That(doubleValue.IsNotZero());
-            Assert.That(decimalValue.IsNotZero());
-            Assert.That(floatValue.IsNotZero());
-            Assert.That(shortValue.IsNotZero());
-            Assert.That(byteValue.IsNotZero());
-            Assert.That(uintValue.IsNotZero());
-            Assert.That(ushortValue.IsNotZero());
-            Assert.That(ulongValue.IsNotZero());
+            Assert.That(intValue).IsNotZero();
+            Assert.That(longValue).IsNotZero();
+            Assert.That(doubleValue).IsNotZero();
+            Assert.That(decimalValue).IsNotZero();
+            Assert.That(floatValue).IsNotZero();
+            Assert.That(shortValue).IsNotZero();
+            Assert.That(byteValue).IsNotZero();
+            Assert.That(uintValue).IsNotZero();
+            Assert.That(ushortValue).IsNotZero();
+            Assert.That(ulongValue).IsNotZero();
         }
 
         [Test]
@@ -83,7 +80,7 @@
         {
             double a = 0D;
 
-            Assert.That(a.IsNotZero());
+            Assert.That(a).IsNotZero();
         }
 
         #endregion 
@@ -94,7 +91,7 @@
         public void IsPositiveWorks()
         {
             int a = 2;
-            Assert.That(a.IsPositive());
+            Assert.That(a).IsPositive();
         }
 
         [Test]
@@ -102,7 +99,7 @@
         public void IsPositiveThrowExceptionWhenEqualToZero()
         {
             float a = 0F;
-            Assert.That(a.IsPositive());
+            Assert.That(a).IsPositive();
         }
 
         [Test]
@@ -111,7 +108,7 @@
         {
             double a = -50D;
 
-            Assert.That(a.IsPositive());
+            Assert.That(a).IsPositive();
         }
 
         #endregion

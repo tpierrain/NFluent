@@ -45,15 +45,16 @@
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="EqualityHelper.cs" />
     <Compile Include="ExtensionsCommonHelpers.cs" />
+    <Compile Include="NumericalFluentAssert.cs" />
     <Compile Include="FluentAssertionException.cs" />
     <Compile Include="EnumerableFluentAssert.cs" />
     <Compile Include="IEqualityFluentAssert.cs" />
+    <Compile Include="INumericalFluentAssert.cs" />
     <Compile Include="StringFluentAssert.cs" />
     <Compile Include="FluentTests.cs" />
     <Compile Include="IEnumerableFluentAssert.cs" />
     <Compile Include="IStringFluentAssert.cs" />
     <Compile Include="IsInstanceExtensions.cs" />
-    <Compile Include="NumbersRelatedExtension.cs" />
     <Compile Include="Extensions\PropertiesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
