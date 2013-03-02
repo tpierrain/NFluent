@@ -15,50 +15,33 @@
 namespace NFluent
 {
     using System.Collections;
-    using System.Collections.Generic;
-    using System.Reflection;
 
     /// <summary>
-    /// Contains a collection of static methods that implement the only assertions you need to be fluent (if your favorite .NET unit test framework doesn't provide it).
-    /// If you are using NUnit, this <see cref="T:NFluent.Assert"/> class is useless (since NUnit provides now few Assert.That() overloads).
-    /// On the other hand, xUnit users may benefit to this class.
+    /// Provides a set of static methods that return fluent objects to be used then to assert things on a System Under Test (SUT) instance. 
     /// </summary>
     public static class Assert
     {
         /// <summary>
-        /// Asserts that a condition is true. If the condition is false the method throw a <see cref="T:FluentAssertionException"/>.
+        /// Returns a <see cref="IFluentEnumerable"/> instance that will provide assertion methods to be executed on the System Under Test enumerable instance.
         /// </summary>
-        /// <param name="condition">The evaluated condition.</param>
-        public static void That(bool condition)
-        {
-            // TODO: improve the default message of failing Assert.That
-            That(condition, string.Empty);
-        }
-
-        /// <summary>
-        /// Asserts that a condition is true. If the condition is false the method throw a <see cref="T:FluentAssertionException" />.
-        /// </summary>
-        /// <param name="condition">The evaluated condition.</param>
-        /// <param name="message">The message for the <see cref="FluentAssertionException"/> if assertion fails.</param>
-        /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        public static void That(bool condition, string message)
-        {
-            if (!condition)
-            {
-                throw new FluentAssertionException(message);
-            }
-        }
-
+        /// <remarks>
+        ///     Methods of the returned <see cref="IFluentEnumerable"/> instance will usually throw a <see cref="T:FluentAssertionException"/> when failing.
+        /// </remarks>
+        /// <param name="enumerable">The System Under Test enumerable instance.</param>
+        /// <returns>A <see cref="IFluentEnumerable"/> instance to use in order to assert things on the System Under Test enumerable instance.</returns>
         public static IFluentEnumerable That(IEnumerable enumerable)
         {
             return new FluentEnumerable(enumerable);
         }
 
-        //public static IFluentEnumerable<T> That<T>(IEnumerable<T> enumerable)
-        //{
-        //    return new FluentEnumerable<T>(enumerable);
-        //}
-
+        /// <summary>
+        /// Returns a <see cref="IFluentString"/> instance that will provide assertion methods to be executed on the System Under Test string instance.
+        /// </summary>
+        /// <remarks>
+        ///     Methods of the returned <see cref="IFluentString"/> instance will usually throw a <see cref="T:FluentAssertionException"/> when failing.
+        /// </remarks>
+        /// <param name="value">The System Under Test string instance.</param>
+        /// <returns>A <see cref="IFluentString"/> instance to use in order to assert things on the System Under Test string instance.</returns>
         public static IFluentString That(string value)
         {
             return new FluentString(value);
