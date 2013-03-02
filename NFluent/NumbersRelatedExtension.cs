@@ -15,9 +15,6 @@
 namespace NFluent
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// Extension methods for exploiting enumerable content in a fluent manner (i.e. with auto completion support and in an english readable way).

@@ -43,8 +43,7 @@
     <Compile Include="Assert.cs" />
     <Compile Include="ContainsExtensions.cs" />
     <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="EqualityExtensions.cs" />
-    <Compile Include="EqualityFluentAssert.cs" />
+    <Compile Include="EqualityHelper.cs" />
     <Compile Include="ExtensionsCommonHelpers.cs" />
     <Compile Include="FluentAssertionException.cs" />
     <Compile Include="EnumerableFluentAssert.cs" />
