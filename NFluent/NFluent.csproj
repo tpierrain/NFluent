@@ -54,7 +54,7 @@
     <Compile Include="IStringFluentAssert.cs" />
     <Compile Include="IsInstanceExtensions.cs" />
     <Compile Include="NumbersRelatedExtension.cs" />
-    <Compile Include="PropertiesExtensions.cs" />
+    <Compile Include="Extensions\PropertiesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

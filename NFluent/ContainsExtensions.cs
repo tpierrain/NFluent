@@ -14,8 +14,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System.Collections;
-    using System.Collections.Generic;
+    // TODO : delete this file.
 
     /// <summary>
     /// Extension methods for exploiting enumerable content in a fluent manner (i.e. with auto completion support and in an english readable way).
@@ -101,71 +100,5 @@ namespace NFluent
 
         //    return true;
         //}
-
-        /// <summary>
-        /// Returns all expected values that aren't present in the enumerable.
-        /// </summary>
-        /// <typeparam name="T">Type of data to enumerate and find.</typeparam>
-        /// <param name="enumerable">The enumerable to inspect.</param>
-        /// <param name="expectedValues">The expected values to search within the enumerable.</param>
-        /// <returns>A list containing all the expected values that aren't present in the enumerable.</returns>
-        internal static IList ExtractNotFoundValues<T>(IEnumerable enumerable, T[] expectedValues)
-        {
-            var notFoundValues = new List<T>(expectedValues);
-            foreach (var element in enumerable)
-            {
-                foreach (var expectedValue in expectedValues)
-                {
-                    if (object.Equals(element, expectedValue))
-                    {
-                        notFoundValues.RemoveAll((one) => one.Equals(expectedValue));
-                        break;
-                    }
-                }
-            }
-
-            return notFoundValues;
-        }
-
-        /// <summary>
-        /// Returns all the values of the enumerable that don't belong to the expected ones. 
-        /// </summary>
-        /// <typeparam name="T">Type of enumerable and expected values.</typeparam>
-        /// <param name="enumerable">The enumerable to inspect.</param>
-        /// <param name="expectedValues">The allowed values to be part of the enumerable.</param>
-        /// <returns>A list with all the values found in the enumerable that don't belong to the expected ones.</returns>
-        internal static IList ExtractUnexpectedValues<T>(IEnumerable enumerable, T[] expectedValues)
-        {
-            var unexpectedValuesFound = new List<T>();
-            foreach (var element in enumerable)
-            {
-                var isExpectedValue = false;
-                foreach (var expectedValue in expectedValues)
-                {
-                    if (object.Equals(element, expectedValue))
-                    {
-                        isExpectedValue = true;
-                        break;
-                    }
-                }
-
-                if (!isExpectedValue)
-                {
-                    unexpectedValuesFound.Add((T)element);
-                }
-            }
-
-            return unexpectedValuesFound;
-        }
-
-        /// <summary>
-        /// Generates the proper description for the items count, based on their numbers.
-        /// </summary>
-        /// <param name="itemsCount">The number of items.</param>
-        /// <returns>The proper description for the items count.</returns>
-        internal static string FormatItemCount(long itemsCount)
-        {
-            return string.Format(itemsCount <= 1 ? "{0} item" : "{0} items", itemsCount);
-        }
     }
 }

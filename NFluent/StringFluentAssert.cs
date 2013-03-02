@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="StringEqualityFluentAssert.cs" company="">
+// // <copyright file="StringFluentAssert.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@ namespace NFluent
 {
     using System.Collections.Generic;
 
-    internal class StringEqualityFluentAssert : IStringEqualityFluentAssert
+    internal class StringFluentAssert : IStringFluentAssert
     {
         private readonly string sut;
 
-        public StringEqualityFluentAssert(string value)
+        public StringFluentAssert(string value)
         {
             this.sut = value;
         }

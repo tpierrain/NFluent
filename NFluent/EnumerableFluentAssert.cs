@@ -16,6 +16,7 @@ namespace NFluent
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
 
     internal class EnumerableFluentAssert : IEnumerableFluentAssert
@@ -59,14 +60,14 @@ namespace NFluent
         public void Contains<T>(params T[] expectedValues)
         {
             // TODO: move the ContainsExtensions.ExtractNotFoundValues method to the EnumerableFluentAssert.cs file
-            var notFoundValues = ContainsExtensions.ExtractNotFoundValues(this.sutEnumerable, expectedValues);
+            var notFoundValues = ExtractNotFoundValues(this.sutEnumerable, expectedValues);
 
             if (notFoundValues.Count == 0)
             {
                 return;
             }
 
-            throw new FluentAssertionException(String.Format("The enumerable does not contain the expected value(s): [{0}].", notFoundValues.ToEnumeratedString()));
+            throw new FluentAssertionException(String.Format("The enumerable does not contain the expected value(s): [{0}].", EnumerableExtensions.ToEnumeratedString(notFoundValues)));
         }
 
         /// <summary>
@@ -85,7 +86,7 @@ namespace NFluent
             {
                 long foundCount;
                 var foundItems = this.sutEnumerable.ToEnumeratedString(out foundCount);
-                var foundItemsCount = ContainsExtensions.FormatItemCount(foundCount);
+                var foundItemsCount = FormatItemCount(foundCount);
                 throw new FluentAssertionException(String.Format("Found: [{0}] ({1}) instead of the expected [] (0 item).", foundItems, foundItemsCount));
             }
 
@@ -98,11 +99,11 @@ namespace NFluent
                 {
                     long foundCount;
                     var foundItems = this.sutEnumerable.ToEnumeratedString(out foundCount);
-                    var formatedFoundCount = ContainsExtensions.FormatItemCount(foundCount);
+                    var formatedFoundCount = FormatItemCount(foundCount);
 
                     long expectedCount;
                     object expectedItems = otherEnumerable.ToEnumeratedString(out expectedCount);
-                    var formatedExpectedCount = ContainsExtensions.FormatItemCount(expectedCount);
+                    var formatedExpectedCount = FormatItemCount(expectedCount);
 
                     throw new FluentAssertionException(String.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
                 }
@@ -185,7 +186,7 @@ namespace NFluent
             {
                 if (!Equals(obj, expectedValues[i]))
                 {
-                    var expectedNumberOfItemsDescription = ContainsExtensions.FormatItemCount(expectedValues.LongLength);
+                    var expectedNumberOfItemsDescription = FormatItemCount(expectedValues.LongLength);
 
                     var enumerableCount = 0;
                     foreach (var item in this.sutEnumerable)
@@ -255,11 +256,11 @@ namespace NFluent
         /// </returns>
         public void ContainsOnly<T>(params T[] expectedValues)
         {
-            var unexpectedValuesFound = ContainsExtensions.ExtractUnexpectedValues(this.sutEnumerable, expectedValues);
+            var unexpectedValuesFound = ExtractUnexpectedValues(this.sutEnumerable, expectedValues);
 
             if (unexpectedValuesFound.Count > 0)
             {
-                throw new FluentAssertionException(String.Format("The enumerable does not contain only the expected value(s). It contains also other values: [{0}].", unexpectedValuesFound.ToEnumeratedString()));
+                throw new FluentAssertionException(String.Format("The enumerable does not contain only the expected value(s). It contains also other values: [{0}].", EnumerableExtensions.ToEnumeratedString(unexpectedValuesFound)));
             }
         }
 
@@ -289,6 +290,72 @@ namespace NFluent
             {
                 throw new FluentAssertionException(String.Format("Enumerable not empty. Contains the element(s): [{0}].", this.sutEnumerable.ToEnumeratedString()));
             }
+        }
+
+        /// <summary>
+        /// Returns all expected values that aren't present in the enumerable.
+        /// </summary>
+        /// <typeparam name="T">Type of data to enumerate and find.</typeparam>
+        /// <param name="enumerable">The enumerable to inspect.</param>
+        /// <param name="expectedValues">The expected values to search within the enumerable.</param>
+        /// <returns>A list containing all the expected values that aren't present in the enumerable.</returns>
+        internal static IList ExtractNotFoundValues<T>(IEnumerable enumerable, T[] expectedValues)
+        {
+            var notFoundValues = new List<T>(expectedValues);
+            foreach (var element in enumerable)
+            {
+                foreach (var expectedValue in expectedValues)
+                {
+                    if (Equals(element, expectedValue))
+                    {
+                        notFoundValues.RemoveAll((one) => one.Equals(expectedValue));
+                        break;
+                    }
+                }
+            }
+
+            return notFoundValues;
+        }
+
+        /// <summary>
+        /// Returns all the values of the enumerable that don't belong to the expected ones. 
+        /// </summary>
+        /// <typeparam name="T">Type of enumerable and expected values.</typeparam>
+        /// <param name="enumerable">The enumerable to inspect.</param>
+        /// <param name="expectedValues">The allowed values to be part of the enumerable.</param>
+        /// <returns>A list with all the values found in the enumerable that don't belong to the expected ones.</returns>
+        internal static IList ExtractUnexpectedValues<T>(IEnumerable enumerable, T[] expectedValues)
+        {
+            var unexpectedValuesFound = new List<T>();
+            foreach (var element in enumerable)
+            {
+                var isExpectedValue = false;
+                foreach (var expectedValue in expectedValues)
+                {
+                    if (Equals(element, expectedValue))
+                    {
+                        isExpectedValue = true;
+                        break;
+                    }
+                }
+
+                if (!isExpectedValue)
+                {
+                    unexpectedValuesFound.Add((T)element);
+                }
+            }
+
+            return unexpectedValuesFound;
+        }
+
+        /// <summary>
+        /// Generates the proper description for the items count, based on their numbers.
+        /// </summary>
+        /// <param name="itemsCount">The number of items.</param>
+        /// <returns>The proper description for the items count.</returns>
+        internal static string FormatItemCount(long itemsCount)
+        {
+            return String.Format(itemsCount <= 1 ? "{0} item" : "{0} items", itemsCount);
         }
     }
 }

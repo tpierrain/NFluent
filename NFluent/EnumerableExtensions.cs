@@ -15,7 +15,6 @@
 namespace NFluent
 {
     using System.Collections;
-    using System.Linq;
     using System.Text;
 
     // TODO: check performances

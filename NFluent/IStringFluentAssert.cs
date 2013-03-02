@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IStringEqualityFluentAssert.cs" company="">
+// // <copyright file="IStringFluentAssert.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    public interface IStringEqualityFluentAssert : IEqualityFluentAssert
+    public interface IStringFluentAssert : IEqualityFluentAssert
     {
         void Contains(params string[] values);
 

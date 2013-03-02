@@ -35,16 +35,16 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Returns a <see cref="IStringEqualityFluentAssert"/> instance that will provide assertion methods to be executed on the System Under Test string instance.
+        /// Returns a <see cref="IStringFluentAssert"/> instance that will provide assertion methods to be executed on the System Under Test string instance.
         /// </summary>
         /// <remarks>
-        ///     Methods of the returned <see cref="IStringEqualityFluentAssert"/> instance will usually throw a <see cref="T:FluentAssertionException"/> when failing.
+        ///     Methods of the returned <see cref="IStringFluentAssert"/> instance will usually throw a <see cref="T:FluentAssertionException"/> when failing.
         /// </remarks>
         /// <param name="value">The System Under Test string instance.</param>
-        /// <returns>A <see cref="IStringEqualityFluentAssert"/> instance to use in order to assert things on the System Under Test string instance.</returns>
-        public static IStringEqualityFluentAssert That(string value)
+        /// <returns>A <see cref="IStringFluentAssert"/> instance to use in order to assert things on the System Under Test string instance.</returns>
+        public static IStringFluentAssert That(string value)
         {
-            return new StringEqualityFluentAssert(value);
+            return new StringFluentAssert(value);
         }
     }
 }
