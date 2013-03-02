@@ -28,7 +28,7 @@
             Assert.That(enumerable.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
 
             // more fluent than the following classical NUnit way, isn't it? 
-            //CollectionAssert.AreEquivalent(enumerable).Properties("Age"), new[] { 38, 10, 7, 7 });
+            //CollectionAssert.AreEquivalent(enumerable.Properties("Age"), new[] { 38, 10, 7, 7 });
 
             // NFluent relies intensively on intellisense to make you more productive in your day to day TDD
 
@@ -79,9 +79,9 @@
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
 
-            Assert.That(array.Properties<Person>("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
-            Assert.That(array.Properties<Person>("Age")).ContainsExactly(38, 10, 7, 7);
-            Assert.That(array.Properties<Person>("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+            Assert.That(array.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+            Assert.That(array.Properties("Age")).ContainsExactly(38, 10, 7, 7);
+            Assert.That(array.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
         }
 
         #endregion
