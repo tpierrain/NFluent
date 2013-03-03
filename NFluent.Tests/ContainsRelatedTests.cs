@@ -1,5 +1,6 @@
 ﻿namespace NFluent.Tests
 {
+    using System.Collections;
     using System.Collections.Generic;
 
     using NUnit.Framework;
@@ -39,7 +40,7 @@
 
         // TODO: remove or rename tests since there will be no more extension methods on Arrays
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable does not contain the expected value(s): [666, 1974].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable [1, 2, 3] does not contain the expected value(s): [666, 1974].")]
         public void ContainsWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 1, 2, 3 };
@@ -54,16 +55,36 @@
         public void ContainsWithEnumerableWorks()
         {
             var integers = new List<int>() { 1, 2, 3, 1974 };
-            Assert.That(integers).Contains(3, 2, 1);
+            IEnumerable expected = new List<int>() { 3, 2, 1 };
+            Assert.That(integers).Contains(expected);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable does not contain the expected value(s): [666, 1974].")]
-        public void ContainsThrowsExceptionWithClearStatusWhenFails()
+        public void ContainsWithGenericEnumerableWorks()
+        {
+            var integers = new List<int>() { 1, 2, 3, 1974 };
+            IEnumerable<int> expected = new List<int>() { 3, 2, 1 };
+            Assert.That(integers).Contains(expected);
+        }
+
+        [Test]
+        public void ContainsWithEnumerableWorksWithSameContent()
         {
             var integers = new List<int>() { 1, 2, 3 };
-            Assert.That(integers).Contains(3, 2, 666, 1974);
+            IEnumerable expected = new List<int>() { 1, 2, 3 };
+            Assert.That(integers).Contains(expected);
         }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable [1, 2, 3] does not contain the expected value(s): [666, 1974].")]
+        public void ContainsWithEnumerableThrowsExceptionWithClearStatusWhenFails()
+        {
+            var integers = new List<int>() { 1, 2, 3 };
+            IEnumerable expected = new List<int>() { 3, 2, 666, 1974 };
+            Assert.That(integers).Contains(expected);
+        }
+
+        // TODO: write a Contains test with IEnumerable containing of objects with various types
 
         #endregion
 
@@ -86,10 +107,8 @@
             Assert.That(integers).ContainsOnly(3, 2, 3, 2, 2, 1);
         }
 
-        // TODO: get rid of tests with arrays since we will remove the extension methods on array
- 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable does not contain only the expected value(s). It contains also other values: [666, 1974].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable [3, 2, 666, 1974, 1] does not contain only the expected value(s). It contains also other values: [666, 1974].")]
         public void ContainsOnlyWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 3, 2, 666, 1974, 1 };
@@ -104,25 +123,56 @@
         public void ContainsOnlyWithEnumerableWorks()
         {
             var integers = new List<int>() { 1, 2, 3 };
-            Assert.That(integers).ContainsOnly(3, 2, 1);
-
-            var enumerable = new List<string>() { "un", "dos", "tres" };
-            Assert.That(enumerable).ContainsOnly("dos", "un", "tres");
+            IEnumerable expectedIntegers = new List<int>() { 3, 2, 1 };
+            Assert.That(integers).ContainsOnly(expectedIntegers);
         }
+
+        [Test]
+        public void ContainsOnlyWithGenericEnumerableWorks()
+        {
+            var integers = new List<int>() { 1, 2, 3 };
+            IEnumerable<int> expectedIntegers = new List<int>() { 3, 2, 1 };
+            Assert.That(integers).ContainsOnly(expectedIntegers);
+        }
+
+        [Test]
+        public void ContainsOnlyWithStringEnumerableWorks()
+        {
+            var enumerable = new List<string>() { "un", "dos", "tres" };
+            IEnumerable expectedValues = new List<string>() { "un", "dos", "tres" };
+            Assert.That(enumerable).ContainsOnly(expectedValues);
+        }
+
+        // TODO: write a ContainsOnly test with IEnumerable containing of objects with various types
 
         [Test]
         public void ContainsOnlyWithEnumerableWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
             var integers = new List<int> { 1, 2, 3 };
-            Assert.That(integers).ContainsOnly(3, 2, 3, 2, 2, 1);
+            IEnumerable expectedValues = new List<int> { 3, 2, 3, 2, 2, 1 };
+
+            Assert.That(integers).ContainsOnly(expectedValues);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable does not contain only the expected value(s). It contains also other values: [666, 1974].")]
+        [Ignore("to be fixed")]
+        public void ContainsOnlyWithListWorksEvenWhenGivingSameExpectedValueMultipleTimes()
+        {
+            List<int> integers = new List<int> { 1, 2, 3 };
+            List<int> expectedValues = new List<int> { 3, 2, 3, 2, 2, 1 };
+
+            Assert.That(integers).ContainsOnly(expectedValues);
+        }
+
+        // TODO : write tests with old .NET non-generic collections (note: T4 may help here)
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable [3, 2, 666, 1974, 1] does not contain only the expected value(s). It contains also other values: [666, 1974].")]
         public void ContainsOnlyWithEnumerableThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
-            Assert.That(integers).ContainsOnly(1, 2, 3);
+            IEnumerable expectedValues = new List<int> { 1, 2, 3 };
+            Assert.That(integers).ContainsOnly(expectedValues);
         }
 
         #endregion
@@ -178,23 +228,36 @@
         public void ContainsExactlyWithEnumerableThrowsExceptionWhenSameItemsInWrongOrder()
         {
             var integers = new List<int>() { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers).ContainsExactly(666, 3, 1, 2, 4, 5);
+            IEnumerable expectedValues = new List<int>() { 666, 3, 1, 2, 4, 5 };
+            Assert.That(integers).ContainsExactly(expectedValues);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "Found: [1, 2, 3, 4, 5, 666] (6 items) instead of the expected [666, 3, 1, 2, 4, 5] (6 items).")]
+        public void ContainsExactlyWithGenericEnumerableThrowsExceptionWhenSameItemsInWrongOrder()
+        {
+            var integers = new List<int>() { 1, 2, 3, 4, 5, 666 };
+            IEnumerable<int> expectedValues = new List<int>() { 666, 3, 1, 2, 4, 5 };
+            Assert.That(integers).ContainsExactly(expectedValues);
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Michel Gondry"", ""Joon-ho Bong"", ""Darren Aronofsky""] (3 items) instead of the expected [""Steve Tesich"", ""Albert Camus"", ""Eiji Yoshikawa"", ""Friedrich Nietzsche""] (4 items).")]
         public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithEnumerable()
         {
-            Assert.That(InstantiateDirectors().Properties("Name")).ContainsExactly(InstantiateWriters().Properties("Name"));
+            IEnumerable expectedValues = InstantiateWriters().Properties("Name");
+            Assert.That(InstantiateDirectors().Properties("Name")).ContainsExactly(expectedValues);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Michel Gondry"", ""Joon-ho Bong"", ""Darren Aronofsky""] (3 items) instead of the expected [null] (1 item).")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Michel Gondry"", ""Joon-ho Bong"", ""Darren Aronofsky""] (3 items) instead of the expected [null] (0 item).")]
         public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithNullEnumerable()
         {
-            IEnumerable<string> expectedValues = null;
+            IEnumerable expectedValues = null;
             Assert.That(InstantiateDirectors().Properties("Name")).ContainsExactly(expectedValues);
         }
+
+        // TODO: write a ContainsExactly test with IEnumerable containing of objects with various types
 
         #endregion
 

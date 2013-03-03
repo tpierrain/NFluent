@@ -19,6 +19,7 @@ namespace NFluent
     using System.Collections.Generic;
     using System.Linq;
 
+    
     internal class EnumerableFluentAssert : IEnumerableFluentAssert
     {
         private readonly IEnumerable sutEnumerable;
@@ -26,11 +27,6 @@ namespace NFluent
         public EnumerableFluentAssert(IEnumerable sutEnumerable)
         {
             this.sutEnumerable = sutEnumerable;
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return this.sutEnumerable.GetEnumerator();
         }
 
         #region IEqualityFluentAssert members
@@ -59,25 +55,39 @@ namespace NFluent
         /// <exception cref="NFluent.FluentAssertionException">The enumerable does not contains all the expected values.</exception>
         public void Contains<T>(params T[] expectedValues)
         {
-            // TODO: move the ContainsExtensions.ExtractNotFoundValues method to the EnumerableFluentAssert.cs file
-            var notFoundValues = ExtractNotFoundValues(this.sutEnumerable, expectedValues);
+            this.Contains(expectedValues as IEnumerable);          
+        }
+
+        public void Contains<T>(IEnumerable<T> otherEnumerable)
+        {
+            this.Contains(otherEnumerable as IEnumerable);
+        }
+
+        public void Contains(IEnumerable otherEnumerable)
+        {
+            var notFoundValues = ExtractNotFoundValues(this.sutEnumerable, otherEnumerable);
 
             if (notFoundValues.Count == 0)
             {
                 return;
             }
 
-            throw new FluentAssertionException(String.Format("The enumerable does not contain the expected value(s): [{0}].", EnumerableExtensions.ToEnumeratedString(notFoundValues)));
+            throw new FluentAssertionException(String.Format("The enumerable [{0}] does not contain the expected value(s): [{1}].", EnumerableExtensions.ToEnumeratedString(this.sutEnumerable),  EnumerableExtensions.ToEnumeratedString(notFoundValues)));
         }
 
+
+        public void ContainsExactly<T>(IEnumerable<T> otherEnumerable)
+        {
+            this.ContainsExactly(otherEnumerable as IEnumerable);
+        }
+
+        // TODO: make all EnumerableFluentAssert failure messages the same. I.e. "the enumerable [sut] does not contain ... [...]."
+
         /// <summary>
-        /// Determines whether the specified enumerable contains exactly some expected values.
+        /// Determines whether the enumerable contains exactly some expected values present in another given enumerable. 
         /// </summary>
-        /// <param name="enumerable">The enumerable.</param>
         /// <param name="otherEnumerable">The other enumerable.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified enumerable contains exactly the specified expected values; throws a <see cref="FluentAssertionException" /> otherwise, <c>false</c>.
-        /// </returns>
+        /// <exception cref="FluentAssertionException"></exception>
         /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
         public void ContainsExactly(IEnumerable otherEnumerable)
         {
@@ -87,7 +97,7 @@ namespace NFluent
                 long foundCount;
                 var foundItems = this.sutEnumerable.ToEnumeratedString(out foundCount);
                 var foundItemsCount = FormatItemCount(foundCount);
-                throw new FluentAssertionException(String.Format("Found: [{0}] ({1}) instead of the expected [] (0 item).", foundItems, foundItemsCount));
+                throw new FluentAssertionException(String.Format("Found: [{0}] ({1}) instead of the expected [null] (0 item).", foundItems, foundItemsCount));
             }
 
             var first = this.sutEnumerable.GetEnumerator();
@@ -177,30 +187,30 @@ namespace NFluent
         ///   <c>true</c> if the enumerable contains exactly the specified expected values; throws a <see cref="FluentAssertionException"/> otherwise.
         /// </returns>
         /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
-        public void ContainsExactly<R>(params R[] expectedValues)
+        public void ContainsExactly<T>(params T[] expectedValues)
         {
-            IEnumerable enumerable = this.sutEnumerable;
+            this.ContainsExactly(expectedValues as IEnumerable);
 
-            long i = 0;
-            foreach (var obj in this.sutEnumerable)
-            {
-                if (!Equals(obj, expectedValues[i]))
-                {
-                    var expectedNumberOfItemsDescription = FormatItemCount(expectedValues.LongLength);
+            //long i = 0;
+            //foreach (var obj in this.sutEnumerable)
+            //{
+            //    if (!Equals(obj, expectedValues[i]))
+            //    {
+            //        var expectedNumberOfItemsDescription = FormatItemCount(expectedValues.LongLength);
 
-                    var enumerableCount = 0;
-                    foreach (var item in this.sutEnumerable)
-                    {
-                        enumerableCount++;
-                    }
+            //        var enumerableCount = 0;
+            //        foreach (var item in this.sutEnumerable)
+            //        {
+            //            enumerableCount++;
+            //        }
 
-                    var foundNumberOfItemsDescription = String.Format(enumerableCount <= 1 ? "{0} item" : "{0} items", enumerableCount);
+            //        var foundNumberOfItemsDescription = String.Format(enumerableCount <= 1 ? "{0} item" : "{0} items", enumerableCount);
 
-                    throw new FluentAssertionException(String.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", enumerable.ToEnumeratedString(), foundNumberOfItemsDescription, expectedValues.ToEnumeratedString(), expectedNumberOfItemsDescription));
-                }
+            //        throw new FluentAssertionException(String.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", this.sutEnumerable.ToEnumeratedString(), foundNumberOfItemsDescription, expectedValues.ToEnumeratedString(), expectedNumberOfItemsDescription));
+            //    }
 
-                i++;
-            }
+            //    i++;
+            //}
         }
 
         /// <summary>
@@ -256,11 +266,21 @@ namespace NFluent
         /// </returns>
         public void ContainsOnly<T>(params T[] expectedValues)
         {
-            var unexpectedValuesFound = ExtractUnexpectedValues(this.sutEnumerable, expectedValues);
+            this.ContainsOnly((IEnumerable)expectedValues);
+        }
+
+        public void ContainsOnly<T>(IEnumerable<T> otherEnumerable)
+        {
+            this.ContainsOnly(otherEnumerable as IEnumerable);
+        }
+
+        public void ContainsOnly(IEnumerable otherEnumerable)
+        {
+            var unexpectedValuesFound = ExtractUnexpectedValues(this.sutEnumerable, otherEnumerable);
 
             if (unexpectedValuesFound.Count > 0)
             {
-                throw new FluentAssertionException(String.Format("The enumerable does not contain only the expected value(s). It contains also other values: [{0}].", EnumerableExtensions.ToEnumeratedString(unexpectedValuesFound)));
+                throw new FluentAssertionException(String.Format("The enumerable [{0}] does not contain only the expected value(s). It contains also other values: [{1}].", EnumerableExtensions.ToEnumeratedString(this.sutEnumerable), EnumerableExtensions.ToEnumeratedString(unexpectedValuesFound)));
             }
         }
 
@@ -299,9 +319,15 @@ namespace NFluent
         /// <param name="enumerable">The enumerable to inspect.</param>
         /// <param name="expectedValues">The expected values to search within the enumerable.</param>
         /// <returns>A list containing all the expected values that aren't present in the enumerable.</returns>
-        internal static IList ExtractNotFoundValues<T>(IEnumerable enumerable, T[] expectedValues)
+        internal static IList ExtractNotFoundValues(IEnumerable enumerable, IEnumerable expectedValues)
         {
-            var notFoundValues = new List<T>(expectedValues);
+            // Prepares the list to return
+            var notFoundValues = new List<object>();
+            foreach (var expectedValue in expectedValues)
+            {
+                notFoundValues.Add(expectedValue);
+            }
+
             foreach (var element in enumerable)
             {
                 foreach (var expectedValue in expectedValues)
@@ -324,9 +350,9 @@ namespace NFluent
         /// <param name="enumerable">The enumerable to inspect.</param>
         /// <param name="expectedValues">The allowed values to be part of the enumerable.</param>
         /// <returns>A list with all the values found in the enumerable that don't belong to the expected ones.</returns>
-        internal static IList ExtractUnexpectedValues<T>(IEnumerable enumerable, T[] expectedValues)
+        internal static IList ExtractUnexpectedValues(IEnumerable enumerable, IEnumerable expectedValues)
         {
-            var unexpectedValuesFound = new List<T>();
+            var unexpectedValuesFound = new List<object>();
             foreach (var element in enumerable)
             {
                 var isExpectedValue = false;
@@ -341,7 +367,7 @@ namespace NFluent
 
                 if (!isExpectedValue)
                 {
-                    unexpectedValuesFound.Add((T)element);
+                    unexpectedValuesFound.Add(element);
                 }
             }
 

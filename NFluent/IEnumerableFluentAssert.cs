@@ -15,16 +15,30 @@
 namespace NFluent
 {
     using System.Collections;
+    using System.Collections.Generic;
 
-    public interface IEnumerableFluentAssert : IEqualityFluentAssert, IEnumerable
+    public interface IEnumerableFluentAssert : IEqualityFluentAssert
     {
         void Contains<T>(params T[] expectedValues);
+        
+        void Contains<T>(IEnumerable<T> otherEnumerable);
+       
+        void Contains(IEnumerable otherEnumerable);
+
 
         void ContainsOnly<T>(params T[] expectedValues);
 
+        void ContainsOnly<T>(IEnumerable<T> otherEnumerable);
+        
+        void ContainsOnly(IEnumerable otherEnumerable);
+
+
+        void ContainsExactly<T>(params T[] expectedValues);
+
+        void ContainsExactly<T>(IEnumerable<T> otherEnumerable);
+
         void ContainsExactly(IEnumerable otherEnumerable);
 
-        void ContainsExactly<R>(params R[] expectedValues);
 
         void HasSize(long expectedSize);
 
