@@ -51,7 +51,6 @@
     <Compile Include="IEqualityFluentAssert.cs" />
     <Compile Include="INumericalFluentAssert.cs" />
     <Compile Include="StringFluentAssert.cs" />
-    <Compile Include="FluentTests.cs" />
     <Compile Include="IEnumerableFluentAssert.cs" />
     <Compile Include="IStringFluentAssert.cs" />
     <Compile Include="IsInstanceExtensions.cs" />
