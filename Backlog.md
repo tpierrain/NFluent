@@ -3,9 +3,8 @@ NFluent backlog
 
 + Continue the library breakthrough (from an extension method model to a IFluentStuff one)
 	+ migrate all methods from bool to void
-	+ Make all FluentExceptionMessage a two liners
-	+ Generate IEnumerable unit tests via T4 templates
-+ Restore the code coverage 
+	+ Make every FluentExceptionMessage a two liners
+	+ Generate IEnumerable unit tests via T4 templates? (to test with all concrete collection type)
 + Fix the methods documentation (after the breakthrough)
 + Fix the StyleCop warnings
 + Decide which entry point to provie for the lib
