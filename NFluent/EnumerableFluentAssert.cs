@@ -266,17 +266,29 @@ namespace NFluent
         /// </returns>
         public void ContainsOnly<T>(params T[] expectedValues)
         {
-            this.ContainsOnly((IEnumerable)expectedValues);
+            IEnumerable expectedValuesEnumerable;
+
+            if (IsAConcreteCollection(expectedValues))
+            {
+                // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
+                expectedValuesEnumerable = expectedValues[0] as IEnumerable;
+            }
+            else
+            {
+                expectedValuesEnumerable = expectedValues as IEnumerable;
+            }
+
+            this.ContainsOnly(expectedValuesEnumerable);
         }
 
-        public void ContainsOnly<T>(IEnumerable<T> otherEnumerable)
+        private static bool IsAConcreteCollection<T>(T[] expectedValues)
         {
-            this.ContainsOnly(otherEnumerable as IEnumerable);
+            return expectedValues != null && (expectedValues.LongLength == 1) && (expectedValues[0] is IEnumerable);
         }
 
-        public void ContainsOnly(IEnumerable otherEnumerable)
+        public void ContainsOnly(IEnumerable expectedValues)
         {
-            var unexpectedValuesFound = ExtractUnexpectedValues(this.sutEnumerable, otherEnumerable);
+            var unexpectedValuesFound = ExtractUnexpectedValues(this.sutEnumerable, expectedValues);
 
             if (unexpectedValuesFound.Count > 0)
             {

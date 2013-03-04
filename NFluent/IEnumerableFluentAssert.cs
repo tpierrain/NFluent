@@ -28,9 +28,13 @@ namespace NFluent
 
         void ContainsOnly<T>(params T[] expectedValues);
 
-        void ContainsOnly<T>(IEnumerable<T> otherEnumerable);
+        //void ContainsOnly<T>(IEnumerable<T> expectedValues);
         
-        void ContainsOnly(IEnumerable otherEnumerable);
+        //void ContainsOnly<T>(List<T> expectedValues);
+
+        //void ContainsOnly(ArrayList expectedValues);
+        
+        void ContainsOnly(IEnumerable expectedValues);
 
 
         void ContainsExactly<T>(params T[] expectedValues);
