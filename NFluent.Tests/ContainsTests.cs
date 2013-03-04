@@ -12,12 +12,16 @@
         #region Contains with arrays
 
         [Test]
-        public void ContainsWithArraysWorks()
+        public void ContainsWithIntArraysWorks()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
             Assert.That(integers).Contains(3, 5, 666);
+        }
 
-            var enumerable = new List<string>() { "un", "dos", "tres" };
+        [Test]
+        public void ContainsWithStringArraysWorks()
+        {
+            List<string> enumerable = new List<string>() { "un", "dos", "tres" };
             Assert.That(enumerable).Contains("dos");
         }
 

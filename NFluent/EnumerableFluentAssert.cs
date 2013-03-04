@@ -17,6 +17,7 @@ namespace NFluent
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.Linq;
 
     
@@ -55,12 +56,17 @@ namespace NFluent
         /// <exception cref="NFluent.FluentAssertionException">The enumerable does not contains all the expected values.</exception>
         public void Contains<T>(params T[] expectedValues)
         {
-            this.Contains(expectedValues as IEnumerable);          
-        }
+            IEnumerable properExpectedValues;
+            if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
+            {
+                properExpectedValues = expectedValues[0] as IEnumerable;
+            }
+            else
+            {
+                properExpectedValues = expectedValues as IEnumerable;
+            }
 
-        public void Contains<T>(IEnumerable<T> otherEnumerable)
-        {
-            this.Contains(otherEnumerable as IEnumerable);
+            this.Contains(properExpectedValues);
         }
 
         public void Contains(IEnumerable otherEnumerable)
@@ -75,13 +81,34 @@ namespace NFluent
             throw new FluentAssertionException(String.Format("The enumerable [{0}] does not contain the expected value(s): [{1}].", EnumerableExtensions.ToEnumeratedString(this.sutEnumerable),  EnumerableExtensions.ToEnumeratedString(notFoundValues)));
         }
 
-
-        public void ContainsExactly<T>(IEnumerable<T> otherEnumerable)
-        {
-            this.ContainsExactly(otherEnumerable as IEnumerable);
-        }
-
         // TODO: make all EnumerableFluentAssert failure messages the same. I.e. "the enumerable [sut] does not contain ... [...]."
+
+        /// <summary>
+        /// Verifies that the actual enumerable contains only the given expected values and nothing else, in order.
+        /// This assertion should only be used with IEnumerable that have a consistent iteration order 
+        /// (i.e. don't use it with <see cref="Hashtable"/>, prefer <see cref="ContainsOnly{T}"/> in that case).
+        /// </summary>
+        /// <typeparam name="T">Type of the elements contained in the <see cref="expectedValues"/> array.</typeparam>
+        /// <param name="enumerable">The enumerable to verify.</param>
+        /// <param name="expectedValues">The expected values to be searched.</param>
+        /// <returns>
+        ///   <c>true</c> if the enumerable contains exactly the specified expected values; throws a <see cref="FluentAssertionException"/> otherwise.
+        /// </returns>
+        /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
+        public void ContainsExactly<T>(params T[] expectedValues)
+        {
+            IEnumerable properExpectedValues;
+            if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
+            {
+                properExpectedValues = expectedValues[0] as IEnumerable;
+            }
+            else
+            {
+                properExpectedValues = expectedValues as IEnumerable;
+            }
+
+            this.ContainsExactly(properExpectedValues);
+        }
 
         /// <summary>
         /// Determines whether the enumerable contains exactly some expected values present in another given enumerable. 
@@ -175,43 +202,7 @@ namespace NFluent
         //    return new EnumerableFluentAssert<R>(properties as IEnumerable<R>);
         //}
 
-        /// <summary>
-        /// Verifies that the actual enumerable contains only the given expected values and nothing else, in order.
-        /// This assertion should only be used with IEnumerable that have a consistent iteration order 
-        /// (i.e. don't use it with <see cref="Hashtable"/>, prefer <see cref="ContainsOnly{T}"/> in that case).
-        /// </summary>
-        /// <typeparam name="T">Type of the elements contained in the <see cref="expectedValues"/> array.</typeparam>
-        /// <param name="enumerable">The enumerable to verify.</param>
-        /// <param name="expectedValues">The expected values to be searched.</param>
-        /// <returns>
-        ///   <c>true</c> if the enumerable contains exactly the specified expected values; throws a <see cref="FluentAssertionException"/> otherwise.
-        /// </returns>
-        /// <exception cref="NFluent.FluentAssertionException">The specified enumerable does not contains exactly the specified expected values.</exception>
-        public void ContainsExactly<T>(params T[] expectedValues)
-        {
-            this.ContainsExactly(expectedValues as IEnumerable);
-
-            //long i = 0;
-            //foreach (var obj in this.sutEnumerable)
-            //{
-            //    if (!Equals(obj, expectedValues[i]))
-            //    {
-            //        var expectedNumberOfItemsDescription = FormatItemCount(expectedValues.LongLength);
-
-            //        var enumerableCount = 0;
-            //        foreach (var item in this.sutEnumerable)
-            //        {
-            //            enumerableCount++;
-            //        }
-
-            //        var foundNumberOfItemsDescription = String.Format(enumerableCount <= 1 ? "{0} item" : "{0} items", enumerableCount);
-
-            //        throw new FluentAssertionException(String.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", this.sutEnumerable.ToEnumeratedString(), foundNumberOfItemsDescription, expectedValues.ToEnumeratedString(), expectedNumberOfItemsDescription));
-            //    }
-
-            //    i++;
-            //}
-        }
+        
 
         /// <summary>
         /// Verifies that the specified array contains the given expected values, in any order.
@@ -266,24 +257,28 @@ namespace NFluent
         /// </returns>
         public void ContainsOnly<T>(params T[] expectedValues)
         {
-            IEnumerable expectedValuesEnumerable;
-
-            if (IsAConcreteCollection(expectedValues))
+            IEnumerable properExpectedValues;
+            if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
             {
-                // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
-                expectedValuesEnumerable = expectedValues[0] as IEnumerable;
+                properExpectedValues = expectedValues[0] as IEnumerable;
             }
             else
             {
-                expectedValuesEnumerable = expectedValues as IEnumerable;
+                properExpectedValues = expectedValues as IEnumerable;
             }
 
-            this.ContainsOnly(expectedValuesEnumerable);
+            this.ContainsOnly(properExpectedValues);
         }
 
-        private static bool IsAConcreteCollection<T>(T[] expectedValues)
+        private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
         {
-            return expectedValues != null && (expectedValues.LongLength == 1) && (expectedValues[0] is IEnumerable);
+            // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
+            return expectedValues != null && (expectedValues.LongLength == 1) && (IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]));
+        }
+
+        private static bool IsAnEnumerableButNotAnEnumerableOfChars<T>(T element)
+        {
+            return (element is IEnumerable) && !(element is IEnumerable<char>);
         }
 
         public void ContainsOnly(IEnumerable expectedValues)
