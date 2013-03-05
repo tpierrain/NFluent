@@ -13,14 +13,14 @@
         #region ContainsExactly with arrays
 
         [Test]
-        public void ContainsExactlyWithArrayOfIntWorks()
+        public void ContainsExactlyWorksWithArrayOfInt()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
             Assert.That(integers).ContainsExactly(1, 2, 3, 4, 5, 666);
         }
 
         [Test]
-        public void ContainsExactlyWithArrayOfStringsWorks()
+        public void ContainsExactlyWorksWithArrayOfStrings()
         {
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
             Assert.That(guitarHeroes).ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell");
