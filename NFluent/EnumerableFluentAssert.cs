@@ -19,7 +19,6 @@ namespace NFluent
     using System.Collections.Generic;
     using System.Linq;
 
-    
     internal class EnumerableFluentAssert : IEnumerableFluentAssert
     {
         private readonly IEnumerable sutEnumerable;
@@ -42,6 +41,21 @@ namespace NFluent
         }
 
         #endregion
+
+        #region IFluentAssert members
+
+        public void IsInstanceOf(Type expectedType)
+        {
+            IsInstanceHelper.IsInstanceOf(this.sutEnumerable, expectedType);
+        }
+
+        public void IsNotInstanceOf(Type expectedType)
+        {
+            IsInstanceHelper.IsNotInstanceOf(this.sutEnumerable, expectedType);
+        }
+
+        #endregion
+
 
         /// <summary>
         /// Verifies that the specified enumerable contains the given expected values, in any order.

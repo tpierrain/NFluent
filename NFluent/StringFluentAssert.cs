@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
     using System.Collections.Generic;
 
     internal class StringFluentAssert : IStringFluentAssert
@@ -33,6 +34,8 @@ namespace NFluent
             }
         }
 
+        #region IEqualityFluentAssert members
+
         public void IsEqualTo(object expected)
         {
             EqualityHelper.IsEqualTo(this.sut, expected);
@@ -42,6 +45,22 @@ namespace NFluent
         {
             EqualityHelper.IsNotEqualTo(this.sut, expected);
         }
+
+        #endregion
+
+        #region IFluentAssert members
+
+        public void IsInstanceOf(Type expectedType)
+        {
+            IsInstanceHelper.IsInstanceOf(this.sut, expectedType);
+        }
+
+        public void IsNotInstanceOf(Type expectedType)
+        {
+            IsInstanceHelper.IsNotInstanceOf(this.sut, expectedType);
+        }
+
+        #endregion
 
         /// <summary>
         /// Verifies that the specified string contains the given expected values, in any order.

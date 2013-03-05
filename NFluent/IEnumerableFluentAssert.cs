@@ -16,7 +16,7 @@ namespace NFluent
 {
     using System.Collections;
 
-    public interface IEnumerableFluentAssert : IEqualityFluentAssert
+    public interface IEnumerableFluentAssert : IEqualityFluentAssert, IFluentAssert
     {
         void Contains<T>(params T[] expectedValues);
         

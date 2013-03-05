@@ -1,6 +1,7 @@
 ﻿namespace NFluent.Tests
 {
     using NUnit.Framework;
+    using Assert = NFluent.Assert;
 
     [TestFixture]
     public class IsInstanceOfTests
@@ -14,11 +15,12 @@
             const double DoubleObj = 23d;
             var person = new Person();
 
-            Assert.That(StringObj.IsInstanceOf(typeof(string)));
-            Assert.That(IntObj.IsInstanceOf(typeof(int)));
-            Assert.That(LongObj.IsInstanceOf(typeof(long)));
-            Assert.That(DoubleObj.IsInstanceOf(typeof(double)));
-            Assert.That(person.IsInstanceOf(typeof(Person)));
+            Assert.That(StringObj).IsInstanceOf(typeof(string));
+            Assert.That(IntObj).IsInstanceOf(typeof(int));
+            Assert.That(LongObj).IsInstanceOf(typeof(long));
+            Assert.That(DoubleObj).IsInstanceOf(typeof(double));
+            Assert.That(person).IsInstanceOf(typeof(Person));
+            Assert.That(person).IsNotInstanceOf(typeof(string));
         }
 
         [Test]
@@ -27,7 +29,7 @@
         {
             const int IntObject = 23;
 
-            Assert.That(IntObject.IsInstanceOf(typeof(Person)));
+            Assert.That(IntObject).IsInstanceOf(typeof(Person));
         }
 
         [Test]
@@ -36,7 +38,7 @@
         {
             const string StringObj = "for unit testing";
             
-            Assert.That(StringObj.IsInstanceOf(typeof(Person)));
+            Assert.That(StringObj).IsInstanceOf(typeof(Person));
         }
 
         [Test]
@@ -44,7 +46,7 @@
         {
             const double DoubleObj = 23d;
 
-            Assert.That(DoubleObj.IsNotInstanceOf(typeof(string)));
+            Assert.That(DoubleObj).IsNotInstanceOf(typeof(string));
         }
 
         [Test]
@@ -53,7 +55,7 @@
         {
             const int IntObject = 23;
 
-            Assert.That(IntObject.IsNotInstanceOf(typeof(int)));
+            Assert.That(IntObject).IsNotInstanceOf(typeof(int));
         }
 
         [Test]
@@ -62,7 +64,9 @@
         {
             const string Statement = "Failure is mother of success";
 
-            Assert.That(Statement.IsNotInstanceOf(typeof(string)));
+            Assert.That(Statement).IsNotInstanceOf(typeof(string));
         }
+
+        // TODO: add unit test related to theIsNotInstance error messages (for IEnumerable, object, etc)
     }
 }

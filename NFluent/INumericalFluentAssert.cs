@@ -14,7 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    public interface INumericalFluentAssert
+    public interface INumericalFluentAssert : IFluentAssert
     {
         /// <summary>
         /// Verifies that the actual value is equal to zero.

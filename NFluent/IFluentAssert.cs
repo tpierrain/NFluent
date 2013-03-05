@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IStringFluentAssert.cs" company="">
+// // <copyright file="IFluentAssert.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,10 +14,12 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    public interface IStringFluentAssert : IEqualityFluentAssert, IFluentAssert
-    {
-        void Contains(params string[] values);
+    using System;
 
-        void StartsWith(string prefix);
+    public interface IFluentAssert
+    {
+        void IsInstanceOf(Type expectedType);
+
+        void IsNotInstanceOf(Type expectedType);
     }
 }

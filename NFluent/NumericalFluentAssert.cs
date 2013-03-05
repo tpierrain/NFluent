@@ -75,5 +75,20 @@ namespace NFluent
         {
             return Convert.ToInt64(value) == 0;
         }
+
+        #region IFluentAssert members
+
+        public void IsInstanceOf(Type expectedType)
+        {
+            IsInstanceHelper.IsInstanceOf(this.sut, expectedType);
+        }
+
+        public void IsNotInstanceOf(Type expectedType)
+        {
+            IsInstanceHelper.IsNotInstanceOf(this.sut, expectedType);
+        }
+
+        #endregion
+
     }
 }

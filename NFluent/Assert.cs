@@ -203,6 +203,11 @@ namespace NFluent
             return new NumericalFluentAssert<ulong>(value);
         }
 
+        public static IFluentAssert That(object value)
+        {
+            return new FluentAssert(value);
+        }
+
         #endregion
     }
 }
