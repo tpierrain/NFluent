@@ -22,12 +22,10 @@ namespace NFluent
     internal class IsInstanceHelper
     {
         /// <summary>
-        /// Determines whether an object is an instance of a given type, and throws a <see cref="FluentAssertionException"/> with proper details if not the case.
+        /// Determines whether an object is an instance of a given type, and throws a <see cref="FluentAssertionException" /> with proper details if not the case.
         /// </summary>
+        /// <param name="sut">The sut.</param>
         /// <param name="expectedType">The type we expect the object to be.</param>
-        /// <returns>
-        ///   <c>true</c> if this object is an instance of this type; otherwise, throws a <see cref="FluentAssertionException"/> with proper details.
-        /// </returns>
         /// <exception cref="FluentAssertionException">The object is not an instance of this type.</exception>
         internal static void IsInstanceOf(object sut, Type expectedType)
         {
@@ -38,13 +36,10 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that an object is not an instance of a given type, and throws a <see cref="FluentAssertionException"/> with proper details if not the case.
+        /// Verifies that an object is not an instance of a given type, and throws a <see cref="FluentAssertionException" /> with proper details if not the case.
         /// </summary>
-        /// <param name="obj">The current object instance to check.</param>
+        /// <param name="sut">The sut.</param>
         /// <param name="expectedType">The type we expect the object to be.</param>
-        /// <returns>
-        ///   <c>true</c> if this object is not an instance of this type; otherwise, throws a <see cref="FluentAssertionException"/> with proper details.
-        /// </returns>
         /// <exception cref="FluentAssertionException">The object is an instance of this type (which is not expected).</exception>
         internal static void IsNotInstanceOf(object sut, Type expectedType)
         {
