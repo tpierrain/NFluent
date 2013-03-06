@@ -35,7 +35,7 @@ namespace NFluent
 
             if (!res)
             {
-                throw new FluentAssertionException(String.Format("[{0}] is not equal to zero.", this.sut));
+                throw new FluentAssertionException(string.Format("[{0}] is not equal to zero.", this.sut));
             }
         }
 
@@ -49,7 +49,7 @@ namespace NFluent
 
             if (res)
             {
-                throw new FluentAssertionException(String.Format("[{0}] is equal to zero.", this.sut));
+                throw new FluentAssertionException(string.Format("[{0}] is equal to zero.", this.sut));
             }
         }
 
@@ -61,7 +61,7 @@ namespace NFluent
         {
             if (Convert.ToInt32(this.sut) <= 0)
             {
-                throw new FluentAssertionException(String.Format("[{0}] is not a strictly positive value.", this.sut));
+                throw new FluentAssertionException(string.Format("[{0}] is not a strictly positive value.", this.sut));
             }
         }
 
