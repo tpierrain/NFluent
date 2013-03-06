@@ -14,35 +14,26 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    /// <summary>
+    /// Provides assertion methods to be executed on the numerical System Under Test (SUT) instance.
+    /// </summary>
     public interface INumericalFluentAssert : IFluentAssert
     {
         /// <summary>
         /// Verifies that the actual value is equal to zero.
         /// </summary>
-        /// <param name="value">The value to check.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified value is equal to zero; throws a <see cref="FluentAssertionException" /> otherwise.
-        /// </returns>
         /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
         void IsZero();
 
         /// <summary>
         /// Verifies that the actual value is NOT equal to zero.
         /// </summary>
-        /// <param name="value">The value to check.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified value is NOT equal to zero; throws a <see cref="FluentAssertionException" /> otherwise.
-        /// </returns>
         /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
         void IsNotZero();
 
         /// <summary>
         /// Verifies that the actual value is strictly positive.
         /// </summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified value is strictly positive; otherwise throws a <see cref="FluentAssertionException"/>.
-        /// </returns>
         /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
         void IsPositive();
     }

@@ -16,6 +16,9 @@ namespace NFluent
 {
     using System.Collections;
 
+    /// <summary>
+    /// Provides assertion methods to be executed on the enumerable System Under Test (SUT) instance.
+    /// </summary>
     public interface IEnumerableFluentAssert : IEqualityFluentAssert, IFluentAssert
     {
         void Contains<T>(params T[] expectedValues);

@@ -14,6 +14,9 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    /// <summary>
+    /// Provides assertion methods to be executed on the string System Under Test (SUT) instance.
+    /// </summary>
     public interface IStringFluentAssert : IEqualityFluentAssert, IFluentAssert
     {
         void Contains(params string[] values);

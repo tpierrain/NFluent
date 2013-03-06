@@ -14,6 +14,9 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    /// <summary>
+    /// Provides assertion methods related to Equality to be executed on the System Under Test (SUT) instance.
+    /// </summary>
     public interface IEqualityFluentAssert
     {
         void IsEqualTo(object expected);
