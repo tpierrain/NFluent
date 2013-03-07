@@ -28,14 +28,14 @@ Usage sample
 
 With NFluent, you can write simple assertions like this:
 ```c#	
-    var first = new int[] { 1, 2, 3, 4, 5, 666 };
-    Assert.That(first.Contains(5, 666, 3));
+    var integers = new int[] { 1, 2, 3, 4, 5, 666 };
+    Assert.That(integers).Contains(3, 5, 666);
 
-	var list = new List<int>() { 1, 666, 3 };
-    Assert.That(list.ContainsOnly(3, 666, 1));
+	var integers = new int[] { 1, 2, 3 };
+    Assert.That(integers).ContainsOnly(3, 2, 1);
 
 	var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
-    Assert.That(guitarHeroes.ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell"));
+    Assert.That(guitarHeroes).ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell");
 ```
 note: the Assert.That is here part of the NUnit library.
 
