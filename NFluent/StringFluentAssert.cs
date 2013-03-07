@@ -17,6 +17,9 @@ namespace NFluent
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Provides assertion methods to be executed on the string System Under Test (SUT) instance.
+    /// </summary>
     internal class StringFluentAssert : IStringFluentAssert
     {
         private readonly string sut;
@@ -36,11 +39,21 @@ namespace NFluent
 
         #region IEqualityFluentAssert members
 
+        /// <summary>
+        /// Checks that the actual value is equal to another expected value.
+        /// </summary>
+        /// <param name="expected">The expected value.</param>
+        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public void IsEqualTo(object expected)
         {
             EqualityHelper.IsEqualTo(this.sut, expected);
         }
 
+        /// <summary>
+        /// Checks that the actual value is not equal to another expected value.
+        /// </summary>
+        /// <param name="expected">The expected value.</param>
+        /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public void IsNotEqualTo(object expected)
         {
             EqualityHelper.IsNotEqualTo(this.sut, expected);

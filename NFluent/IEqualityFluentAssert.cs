@@ -19,8 +19,18 @@ namespace NFluent
     /// </summary>
     public interface IEqualityFluentAssert
     {
+        /// <summary>
+        /// Checks that the actual value is equal to another expected value.
+        /// </summary>
+        /// <param name="expected">The expected value.</param>
+        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         void IsEqualTo(object expected);
 
+        /// <summary>
+        /// Checks that the actual value is not equal to another expected value.
+        /// </summary>
+        /// <param name="expected">The expected.</param>
+        /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         void IsNotEqualTo(object expected);
     }
 }

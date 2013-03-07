@@ -20,36 +20,30 @@ namespace NFluent
     internal static class EqualityHelper
     {
         /// <summary>
-        /// Checks that an object is equal to another instance, and throws a <see cref="FluentAssertionException"/> if they are not equal.
-        /// This method is provided as a replacement to the classic Equals() method because we need it to throw exception with proper message (which is of course not the case of the .NET Equals methods).
+        /// Checks that a given instance is considered to be equal to another expected instance. Throws <see cref="FluentAssertionException"/> otherwise.
         /// </summary>
-        /// <remarks>This method is not named EqualsOrThrowException to ensure english readability when used within an Assert.That() statement.</remarks>
-        /// <param name="obj">The current object instance.</param>
-        /// <param name="expected">The object that we expect to be equal.</param>
-        /// <returns><c>true</c> if the two objects are equal, or throws a <see cref="FluentAssertionException"/> otherwise.</returns>
-        /// <exception cref="NFluent.FluentAssertionException">The two objects are not equal.</exception>
-        public static void IsEqualTo(object sut, object expected)
+        /// <param name="instance">The considered instance.</param>
+        /// <param name="expected">The expected instance.</param>
+        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
+        public static void IsEqualTo(object instance, object expected)
         {
-            if (!object.Equals(sut, expected))
+            if (!object.Equals(instance, expected))
             {
-                throw new FluentAssertionException(string.Format("[{0}] not equals to the expected [{1}]", sut.ToStringProperlyFormated(), expected.ToStringProperlyFormated()));
+                throw new FluentAssertionException(string.Format("[{0}] not equals to the expected [{1}]", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated()));
             }
         }
 
         /// <summary>
-        /// Checks that an object is NOT equal to another instance, and throws a <see cref="FluentAssertionException"/> if they are equal.
-        /// This method is provided as a replacement to the classic Equals() method because we need it to throw exception with proper message (which is of course not the case of the .NET Equals methods).
+        /// Checks that a given instance is not considered to be equal to another expected instance. Throws <see cref="FluentAssertionException"/> otherwise.
         /// </summary>
-        /// <remarks>This method is not named NotEqualsOrThrowException to ensure english readability when used within an Assert.That() statement.</remarks>
-        /// <param name="obj">The current object instance.</param>
-        /// <param name="expected">The object that we expect to be NOT equal.</param>
-        /// <returns><c>true</c> if the two objects are not equal, or throws a <see cref="FluentAssertionException"/> otherwise.</returns>
-        /// <exception cref="NFluent.FluentAssertionException">The two objects are equal.</exception>
-        public static void IsNotEqualTo(object sut, object expected)
+        /// <param name="instance">The considered instance.</param>
+        /// <param name="expected">The expected instance.</param>
+        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
+        public static void IsNotEqualTo(object instance, object expected)
         {
-            if (object.Equals(sut, expected))
+            if (object.Equals(instance, expected))
             {
-                throw new FluentAssertionException(string.Format("[{0}] equals to the value [{1}] which is not expected.", sut.ToStringProperlyFormated(), expected.ToStringProperlyFormated()));
+                throw new FluentAssertionException(string.Format("[{0}] equals to the value [{1}] which is not expected.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated()));
             }
         }
     }

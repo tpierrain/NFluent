@@ -17,7 +17,7 @@ namespace NFluent
     using System;
 
     /// <summary>
-    /// Provides assertion methods related to Type equality to be executed on the System Under Test (SUT) instance.
+    /// Provides core assertion methods to be executed on the System Under Test (SUT) instance.
     /// </summary>
     public interface IFluentAssert
     {

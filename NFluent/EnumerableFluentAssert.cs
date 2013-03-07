@@ -19,6 +19,9 @@ namespace NFluent
     using System.Collections.Generic;
     using System.Linq;
 
+    /// <summary>
+    /// Provides assertion methods to be executed on the enumerable System Under Test (SUT) instance.
+    /// </summary>
     internal class EnumerableFluentAssert : IEnumerableFluentAssert
     {
         private readonly IEnumerable sutEnumerable;
@@ -30,11 +33,21 @@ namespace NFluent
 
         #region IEqualityFluentAssert members
 
+        /// <summary>
+        /// Checks that the actual value is equal to another expected value.
+        /// </summary>
+        /// <param name="expected">The expected value.</param>
+        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public void IsEqualTo(object expected)
         {
             EqualityHelper.IsEqualTo(this.sutEnumerable, expected);
         }
 
+        /// <summary>
+        /// Checks that the actual value is not equal to another expected value.
+        /// </summary>
+        /// <param name="expected">The expected value.</param>
+        /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public void IsNotEqualTo(object expected)
         {
             EqualityHelper.IsNotEqualTo(this.sutEnumerable, expected);
