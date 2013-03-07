@@ -43,8 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssertThatTests.cs" />
-    <Compile Include="ContainsRelatedTests.cs" />
+    <Compile Include="ContainsOnlyTests.cs" />
+    <Compile Include="ContainsExactlyTests.cs" />
+    <Compile Include="ContainsTests.cs" />
     <Compile Include="IsInstanceOfTests.cs" />
     <Compile Include="NumbersRelatedTests.cs" />
     <Compile Include="PropertiesRelatedTests.cs" />

@@ -5,6 +5,8 @@
 
     using NUnit.Framework;
 
+    using Assert = NFluent.Assert;
+
     [TestFixture]
     public class PropertiesRelatedTests
     {
@@ -20,17 +22,19 @@
                                      new Person { Name = "Anton", Age = 7, Nationality = Nationality.French },
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
-            
-            Assert.That(enumerable.Properties("Name").ContainsExactly("Thomas", "Achille", "Anton", "Arjun"));
-            Assert.That(enumerable.Properties("Age").ContainsExactly(38, 10, 7, 7));
-            Assert.That(enumerable.Properties("Nationality").ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian));
+
+            // TODO: find a way to get rid of the lack of type inference here (<Person, string> is not really fluent...)
+            Assert.That(enumerable.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+            Assert.That(enumerable.Properties("Age")).ContainsExactly(38, 10, 7, 7);
+            Assert.That(enumerable.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
 
             // more fluent than the following classical NUnit way, isn't it? 
-            CollectionAssert.AreEquivalent(enumerable.Properties("Age"), new[] { 38, 10, 7, 7 });
+            // CollectionAssert.AreEquivalent(enumerable.Properties("Age"), new[] { 38, 10, 7, 7 });
 
-            // NFluent relies intensively on intellisense to make you more productive in your day to day TDD
-
-            // java version (FEST fluent assert)
+            // maybe even more fluent than the java versions
+            // FEST fluent assert v 2.x:
+            // assertThat(extractProperty("name" , String.class).from(inn.getItems())).containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
+            // FEST fluent assert v 1.x:
             // assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
         }
 
@@ -59,7 +63,7 @@
                                      new Person { Name = "Borat" }
                                  };
 
-            Assert.That(enumerable.Properties("PrivateHesitation").ContainsExactly("Kamoulox !", "Kamoulox !"));
+            Assert.That(enumerable.Properties("PrivateHesitation")).ContainsExactly("Kamoulox !", "Kamoulox !");
         }
 
         #endregion
@@ -77,9 +81,9 @@
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
 
-            Assert.That(array.Properties("Name").ContainsExactly("Thomas", "Achille", "Anton", "Arjun"));
-            Assert.That(array.Properties("Age").ContainsExactly(38, 10, 7, 7));
-            Assert.That(array.Properties("Nationality").ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian));
+            Assert.That(array.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+            Assert.That(array.Properties("Age")).ContainsExactly(38, 10, 7, 7);
+            Assert.That(array.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
         }
 
         #endregion

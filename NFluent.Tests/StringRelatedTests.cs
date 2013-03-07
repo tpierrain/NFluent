@@ -7,6 +7,8 @@
     using System.Text;
     using NUnit.Framework;
 
+    using Assert = NFluent.Assert;
+
     [TestFixture]
     public class StringRelatedTests
     {
@@ -14,7 +16,7 @@
         public void ContainsWork()
         {
             var alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Assert.That(alphabet.Contains("c", "z", "u"));
+            Assert.That(alphabet).Contains("c", "z", "u");
         }
 
         [Test]
@@ -22,7 +24,7 @@
         public void ContainsThrowsExceptionWhenFails()
         {
             var alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Assert.That(alphabet.Contains("c", "0", "4"));
+            Assert.That(alphabet).Contains("c", "0", "4");
         }
 
         [Test]
@@ -30,14 +32,14 @@
         public void ContainsIsCaseSensitive()
         {
             var alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Assert.That(alphabet.Contains("C", "a", "A", "z"));
+            Assert.That(alphabet).Contains("C", "a", "A", "z");
         }
 
         [Test]
         public void StartWithWorks()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Assert.That(alphabet.StartWith("abcdef"));
+            Assert.That(alphabet).StartsWith("abcdef");
         }
 
         [Test]
@@ -45,7 +47,7 @@
         public void StartWithIsCaseSensitive()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Assert.That(alphabet.StartWith("ABCDEF"));
+            Assert.That(alphabet).StartsWith("ABCDEF");
         }
     }
 }

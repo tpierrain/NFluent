@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="FluentTests.cs" company="">
+// // <copyright file="INumericalFluentAssert.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -15,17 +15,26 @@
 namespace NFluent
 {
     /// <summary>
-    /// Base class for Test fixtures with an AssertThat() method.
+    /// Provides assertion methods to be executed on the numerical System Under Test (SUT) instance.
     /// </summary>
-    public class FluentTests
+    public interface INumericalFluentAssert : IFluentAssert
     {
         /// <summary>
-        /// Asserts that a condition is true. If the condition is false the method throw a <see cref="T:FluentAssertionException"/>.
+        /// Verifies that the actual value is equal to zero.
         /// </summary>
-        /// <param name="condition">The evaluated condition.</param>
-        public void AssertThat(bool condition)
-        {
-            Assert.That(condition);
-        }
+        /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
+        void IsZero();
+
+        /// <summary>
+        /// Verifies that the actual value is NOT equal to zero.
+        /// </summary>
+        /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
+        void IsNotZero();
+
+        /// <summary>
+        /// Verifies that the actual value is strictly positive.
+        /// </summary>
+        /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
+        void IsPositive();
     }
 }

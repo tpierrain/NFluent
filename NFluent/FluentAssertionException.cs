@@ -16,8 +16,6 @@ namespace NFluent
 {
     using System;
 
-    // using System.Runtime.Serialization;
-
     /// <summary>
     /// Thrown when an assertion failed.
     /// </summary>

@@ -41,17 +41,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assert.cs" />
-    <Compile Include="ContainsExtensions.cs" />
-    <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="EqualityExtensions.cs" />
-    <Compile Include="ExtensionsCommonHelpers.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="FluentAssert.cs" />
+    <Compile Include="Helpers\EqualityHelper.cs" />
+    <Compile Include="Helpers\ExtensionsCommonHelpers.cs" />
+    <Compile Include="IFluentAssert.cs" />
+    <Compile Include="NumericalFluentAssert.cs" />
     <Compile Include="FluentAssertionException.cs" />
-    <Compile Include="FluentTests.cs" />
-    <Compile Include="IsInstanceExtensions.cs" />
-    <Compile Include="NumbersRelatedExtension.cs" />
-    <Compile Include="PropertiesExtensions.cs" />
+    <Compile Include="EnumerableFluentAssert.cs" />
+    <Compile Include="IEqualityFluentAssert.cs" />
+    <Compile Include="INumericalFluentAssert.cs" />
+    <Compile Include="StringFluentAssert.cs" />
+    <Compile Include="IEnumerableFluentAssert.cs" />
+    <Compile Include="IStringFluentAssert.cs" />
+    <Compile Include="Helpers\IsInstanceHelper.cs" />
+    <Compile Include="Extensions\PropertiesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
