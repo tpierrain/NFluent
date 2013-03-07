@@ -21,8 +21,18 @@ namespace NFluent
     /// </summary>
     public interface IFluentAssert
     {
+        /// <summary>
+        /// Checks that the actual is an instance of the given expected type.
+        /// </summary>
+        /// <param name="expectedType">The expected type.</param>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
         void IsInstanceOf(Type expectedType);
 
+        /// <summary>
+        /// Checks that the actual is not an instance of the given expected type.
+        /// </summary>
+        /// <param name="expectedType">The expected type.</param>
+        /// <exception cref="FluentAssertionException">The actual instance is of the expected type.</exception>
         void IsNotInstanceOf(Type expectedType);
     }
 }

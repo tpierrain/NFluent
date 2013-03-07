@@ -16,20 +16,39 @@ namespace NFluent
 {
     using System;
 
+    using NFluent.Helpers;
+
+    /// <summary>
+    /// Provides core assertion methods to be executed on the System Under Test (SUT) instance.
+    /// </summary>
     public class FluentAssert : IFluentAssert
     {
         private readonly object sut;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FluentAssert" /> class.
+        /// </summary>
+        /// <param name="sut">The System Under Test.</param>
         public FluentAssert(object sut)
         {
             this.sut = sut;
         }
 
+        /// <summary>
+        /// Checks that the actual is an instance of the given expected type.
+        /// </summary>
+        /// <param name="expectedType">The expected type.</param>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
         public void IsInstanceOf(Type expectedType)
         {
             IsInstanceHelper.IsInstanceOf(this.sut, expectedType);
         }
 
+        /// <summary>
+        /// Checks that the actual is not an instance of the given expected type.
+        /// </summary>
+        /// <param name="expectedType">The expected type.</param>
+        /// <exception cref="FluentAssertionException">The actual instance is of the expected type.</exception>
         public void IsNotInstanceOf(Type expectedType)
         {
             IsInstanceHelper.IsNotInstanceOf(this.sut, expectedType);

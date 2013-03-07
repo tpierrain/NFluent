@@ -17,6 +17,8 @@ namespace NFluent
     using System;
     using System.Collections.Generic;
 
+    using NFluent.Helpers;
+
     /// <summary>
     /// Provides assertion methods to be executed on the string System Under Test (SUT) instance.
     /// </summary>
@@ -24,6 +26,10 @@ namespace NFluent
     {
         private readonly string sut;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StringFluentAssert" /> class.
+        /// </summary>
+        /// <param name="value">The String Under Test.</param>
         public StringFluentAssert(string value)
         {
             this.sut = value;
@@ -63,11 +69,21 @@ namespace NFluent
 
         #region IFluentAssert members
 
+        /// <summary>
+        /// Checks that the actual is an instance of the given expected type.
+        /// </summary>
+        /// <param name="expectedType">The expected type.</param>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
         public void IsInstanceOf(Type expectedType)
         {
             IsInstanceHelper.IsInstanceOf(this.sut, expectedType);
         }
 
+        /// <summary>
+        /// Checks that the actual is not an instance of the given expected type.
+        /// </summary>
+        /// <param name="expectedType">The expected type.</param>
+        /// <exception cref="FluentAssertionException">The actual instance is of the expected type.</exception>
         public void IsNotInstanceOf(Type expectedType)
         {
             IsInstanceHelper.IsNotInstanceOf(this.sut, expectedType);

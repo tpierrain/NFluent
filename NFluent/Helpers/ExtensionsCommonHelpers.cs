@@ -12,7 +12,7 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent
+namespace NFluent.Helpers
 {
     /// <summary>
     /// Common helper methods for the NFluent extension methods.

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FluentAssert.cs" company="">
+// <copyright file="IsInstanceHelper.cs" company="">
 //   Copyright 2013 Thomas PIERRAIN
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -12,40 +12,40 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent
+namespace NFluent.Helpers
 {
     using System;
 
     /// <summary>
     /// Helper class related to Is(Not)Instance methods (used like a traits).
     /// </summary>
-    internal class IsInstanceHelper
+    internal static class IsInstanceHelper
     {
         /// <summary>
-        /// Determines whether an object is an instance of a given type, and throws a <see cref="FluentAssertionException" /> with proper details if not the case.
+        /// Checks that an instance is of the given expected type.
         /// </summary>
-        /// <param name="sut">The sut.</param>
-        /// <param name="expectedType">The type we expect the object to be.</param>
-        /// <exception cref="FluentAssertionException">The object is not an instance of this type.</exception>
-        internal static void IsInstanceOf(object sut, Type expectedType)
+        /// <param name="instance">The instance to be checked.</param>
+        /// <param name="expectedType">The expected type.</param>
+        /// <exception cref="FluentAssertionException">The instance is not of the expected type.</exception>
+        internal static void IsInstanceOf(object instance, Type expectedType)
         {
-            if (sut.GetType() != expectedType)
+            if (instance.GetType() != expectedType)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is not an instance of the expectedType [{1}] but of [{2}] instead.", sut.ToStringProperlyFormated(), expectedType, sut.GetType()));
+                throw new FluentAssertionException(string.Format("[{0}] is not an instance of the expectedType [{1}] but of [{2}] instead.", instance.ToStringProperlyFormated(), expectedType, instance.GetType()));
             }
         }
 
         /// <summary>
-        /// Verifies that an object is not an instance of a given type, and throws a <see cref="FluentAssertionException" /> with proper details if not the case.
+        /// Checks that an instance is not of the given expected type.
         /// </summary>
-        /// <param name="sut">The sut.</param>
-        /// <param name="expectedType">The type we expect the object to be.</param>
-        /// <exception cref="FluentAssertionException">The object is an instance of this type (which is not expected).</exception>
-        internal static void IsNotInstanceOf(object sut, Type expectedType)
+        /// <param name="instance">The instance to be checked.</param>
+        /// <param name="expectedType">The expected type.</param>
+        /// <exception cref="FluentAssertionException">The instance is of the expected type.</exception>
+        internal static void IsNotInstanceOf(object instance, Type expectedType)
         {
-            if (sut.GetType() == expectedType)
+            if (instance.GetType() == expectedType)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is an instance of the type [{1}] which is not expected.", sut.ToStringProperlyFormated(), sut.GetType()));
+                throw new FluentAssertionException(string.Format("[{0}] is an instance of the type [{1}] which is not expected.", instance.ToStringProperlyFormated(), instance.GetType()));
             }
         }
     }

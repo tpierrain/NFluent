@@ -16,10 +16,16 @@ namespace NFluent
 {
     using System;
 
+    using NFluent.Helpers;
+
     public class NumericalFluentAssert<T> : INumericalFluentAssert
     {
         private T sut;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NumericalFluentAssert{T}" /> class.
+        /// </summary>
+        /// <param name="sut">The System Under Test.</param>
         public NumericalFluentAssert(T sut)
         {
             this.sut = sut;
@@ -78,11 +84,21 @@ namespace NFluent
 
         #region IFluentAssert members
 
+        /// <summary>
+        /// Checks that the actual is an instance of the given expected type.
+        /// </summary>
+        /// <param name="expectedType">The expected type.</param>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
         public void IsInstanceOf(Type expectedType)
         {
             IsInstanceHelper.IsInstanceOf(this.sut, expectedType);
         }
 
+        /// <summary>
+        /// Checks that the actual is not an instance of the given expected type.
+        /// </summary>
+        /// <param name="expectedType">The expected type.</param>
+        /// <exception cref="FluentAssertionException">The actual instance is of the expected type.</exception>
         public void IsNotInstanceOf(Type expectedType)
         {
             IsInstanceHelper.IsNotInstanceOf(this.sut, expectedType);
