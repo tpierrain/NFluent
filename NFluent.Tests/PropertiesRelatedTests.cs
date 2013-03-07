@@ -31,9 +31,10 @@
             // more fluent than the following classical NUnit way, isn't it? 
             // CollectionAssert.AreEquivalent(enumerable.Properties("Age"), new[] { 38, 10, 7, 7 });
 
-            // NFluent relies intensively on intellisense to make you more productive in your day to day TDD
-
-            // java version (FEST fluent assert)
+            // maybe even more fluent than the java versions
+            // FEST fluent assert v 2.x:
+            // assertThat(extractProperty("name" , String.class).from(inn.getItems())).containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
+            // FEST fluent assert v 1.x:
             // assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
         }
 
