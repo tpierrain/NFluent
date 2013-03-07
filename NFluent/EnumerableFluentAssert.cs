@@ -205,18 +205,19 @@ namespace NFluent
             }
 
             var first = this.sutEnumerable.GetEnumerator();
-            var second = otherEnumerable.GetEnumerator();
+            var enumerable = otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
+            var second = enumerable.GetEnumerator();
 
             while (first.MoveNext())
             {
-                if (!second.MoveNext() || !Equals(first.Current, second.Current))
+                if (!second.MoveNext() || !object.Equals(first.Current, second.Current))
                 {
                     long foundCount;
                     var foundItems = this.sutEnumerable.ToEnumeratedString(out foundCount);
                     var formatedFoundCount = FormatItemCount(foundCount);
 
                     long expectedCount;
-                    object expectedItems = otherEnumerable.ToEnumeratedString(out expectedCount);
+                    object expectedItems = enumerable.ToEnumeratedString(out expectedCount);
                     var formatedExpectedCount = FormatItemCount(expectedCount);
 
                     throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
@@ -252,19 +253,7 @@ namespace NFluent
         }
 
         // TODO: Move the FormatItemCount() method from ContainsExtensions to EnumerableFluentAssert. 
-
         #endregion
-
-        private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
-        {
-            // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
-            return expectedValues != null && (expectedValues.LongLength == 1) && (IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]));
-        }
-
-        private static bool IsAnEnumerableButNotAnEnumerableOfChars<T>(T element)
-        {
-            return (element is IEnumerable) && !(element is IEnumerable<char>);
-        }
 
         /// <summary>
         /// Returns all expected values that aren't present in the enumerable.
@@ -287,7 +276,7 @@ namespace NFluent
             {
                 foreach (var expectedValue in expectedValues)
                 {
-                    if (Equals(element, expectedValue))
+                    if (object.Equals(element, expectedValue))
                     {
                         notFoundValues.RemoveAll((one) => one.Equals(expectedValue));
                         break;
@@ -314,7 +303,7 @@ namespace NFluent
                 var isExpectedValue = false;
                 foreach (var expectedValue in expectedValues)
                 {
-                    if (Equals(element, expectedValue))
+                    if (object.Equals(element, expectedValue))
                     {
                         isExpectedValue = true;
                         break;
@@ -340,6 +329,17 @@ namespace NFluent
         internal static string FormatItemCount(long itemsCount)
         {
             return string.Format(itemsCount <= 1 ? "{0} item" : "{0} items", itemsCount);
+        }
+
+        private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
+        {
+            // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
+            return expectedValues != null && (expectedValues.LongLength == 1) && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
+        }
+
+        private static bool IsAnEnumerableButNotAnEnumerableOfChars<T>(T element)
+        {
+            return (element is IEnumerable) && !(element is IEnumerable<char>);
         }
     }
 }

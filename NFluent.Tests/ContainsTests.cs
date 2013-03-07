@@ -85,7 +85,6 @@
         }
 
         // TODO: write a Contains test with IEnumerable containing of objects with various types
-
         #endregion
     }
 }

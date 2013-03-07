@@ -19,8 +19,18 @@ namespace NFluent
     /// </summary>
     public interface IStringFluentAssert : IEqualityFluentAssert, IFluentAssert
     {
+        /// <summary>
+        /// Checks that the string contains the given expected values, in any order.
+        /// </summary>
+        /// <param name="values">The expected values to be found.</param>
+        /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
         void Contains(params string[] values);
 
-        void StartsWith(string prefix);
+        /// <summary>
+        /// Checks that the string starts with the given expected prefix.
+        /// </summary>
+        /// <param name="expectedPrefix">The expected prefix.</param>
+        /// <exception cref="FluentAssertionException">The string does not start with the expected prefix.</exception>
+        void StartsWith(string expectedPrefix);
     }
 }

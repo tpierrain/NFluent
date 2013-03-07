@@ -111,7 +111,6 @@
         }
 
         // TODO: write a ContainsOnly test with IEnumerable containing of objects with various types
-
         #endregion
     }
 }

@@ -35,15 +35,7 @@ namespace NFluent
             this.sut = value;
         }
 
-        public void StartsWith(string expectedPrefix)
-        {
-            if (!this.sut.StartsWith(expectedPrefix))
-            {
-                throw new FluentAssertionException(string.Format(@"The string [""{0}""] does not start with [""{1}""].", this.sut, expectedPrefix));
-            }
-        }
-
-        #region IEqualityFluentAssert members
+       #region IEqualityFluentAssert members
 
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
@@ -91,15 +83,13 @@ namespace NFluent
 
         #endregion
 
+        #region IStringFluentAssert members
+
         /// <summary>
-        /// Verifies that the specified string contains the given expected values, in any order.
+        /// Checks that the string contains the given expected values, in any order.
         /// </summary>
-        /// <param name="actualValue">The actual value.</param>
-        /// <param name="values">The expected values.</param>
-        /// <returns>
-        ///   <c>true</c> if the string contains the specified actual value in any order;  throw a <see cref="FluentException"/> otherwise.
-        /// </returns>
-        /// <exception cref="FluentAssertionException">The string does not contains all the given strings.</exception>
+        /// <param name="values">The expected values to be found.</param>
+        /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
         public void Contains(params string[] values)
         {
             var notFound = new List<string>();
@@ -113,8 +103,28 @@ namespace NFluent
 
             if (notFound.Count > 0)
             {
-                throw new FluentAssertionException(string.Format(@"The string [""{0}""] does not contain the expected value(s): [{1}].", this.sut, notFound.ToEnumeratedString()));
+                throw new FluentAssertionException(
+                    string.Format(
+                        @"The string [""{0}""] does not contain the expected value(s): [{1}].",
+                        this.sut,
+                        notFound.ToEnumeratedString()));
             }
         }
+
+        /// <summary>
+        /// Checks that the string starts with the given expected prefix.
+        /// </summary>
+        /// <param name="expectedPrefix">The expected prefix.</param>
+        /// <exception cref="FluentAssertionException">The string does not start with the expected prefix.</exception>
+        public void StartsWith(string expectedPrefix)
+        {
+            if (!this.sut.StartsWith(expectedPrefix))
+            {
+                throw new FluentAssertionException(
+                    string.Format(@"The string [""{0}""] does not start with [""{1}""].", this.sut, expectedPrefix));
+            }
+        }
+
+        #endregion
     }
 }

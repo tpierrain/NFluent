@@ -22,13 +22,14 @@
                                      new Person { Name = "Anton", Age = 7, Nationality = Nationality.French },
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
+
             // TODO: find a way to get rid of the lack of type inference here (<Person, string> is not really fluent...)
             Assert.That(enumerable.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
             Assert.That(enumerable.Properties("Age")).ContainsExactly(38, 10, 7, 7);
             Assert.That(enumerable.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
 
             // more fluent than the following classical NUnit way, isn't it? 
-            //CollectionAssert.AreEquivalent(enumerable.Properties("Age"), new[] { 38, 10, 7, 7 });
+            // CollectionAssert.AreEquivalent(enumerable.Properties("Age"), new[] { 38, 10, 7, 7 });
 
             // NFluent relies intensively on intellisense to make you more productive in your day to day TDD
 

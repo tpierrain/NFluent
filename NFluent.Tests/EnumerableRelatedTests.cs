@@ -52,8 +52,6 @@
             Assert.That(arrayList).HasSize(4);
         }
 
-        
-
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "Has [4] items instead of the expected value [2].")]
         public void HasSizeThrowsExceptionWithClearStatusWhenFails()
