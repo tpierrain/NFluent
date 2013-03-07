@@ -18,9 +18,13 @@ namespace NFluent
 
     using NFluent.Helpers;
 
+    /// <summary>
+    /// Provides assertion methods to be executed on the numerical System Under Test (SUT) instance.
+    /// </summary>
+    /// <typeparam name="T">Type of the numerical value.</typeparam>
     public class NumericalFluentAssert<T> : INumericalFluentAssert
     {
-        private T sut;
+        private readonly T sut;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NumericalFluentAssert{T}" /> class.
@@ -37,7 +41,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
         public void IsZero()
         {
-            bool res = InternalIsZero(this.sut);
+            var res = InternalIsZero(this.sut);
 
             if (!res)
             {
@@ -71,17 +75,6 @@ namespace NFluent
             }
         }
 
-        /// <summary>
-        /// Checks whether a given value is equal to zero.
-        /// </summary>
-        /// <typeparam name="T">Type of the value.</typeparam>
-        /// <param name="value">The value.</param>
-        /// <returns><c>true</c> if the specified value is equal to zero; false otherwise.</returns>
-        private static bool InternalIsZero<T>(T value)
-        {
-            return Convert.ToInt64(value) == 0;
-        }
-
         #region IFluentAssert members
 
         /// <summary>
@@ -106,5 +99,16 @@ namespace NFluent
 
         #endregion
 
+        /// <summary>
+        /// Checks whether a given value is equal to zero.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified value is equal to zero; false otherwise.
+        /// </returns>
+        private static bool InternalIsZero(T value)
+        {
+            return Convert.ToInt64(value) == 0;
+        }
     }
 }
