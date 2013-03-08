@@ -12,16 +12,17 @@ __NFluent will make your tests__:
 + __helpful to reverse engineer legacy code__: indeed, temporarily write an on-purpose failing assert on a legacy method, so you can understand it and leverage on the "ready-to-be-copied-and-paste-for-arrays-or-collections-initialization-purpose" NFluent assert failure messages.
 + __less error-prone__: indeed, no more confusion about the order of the "expected" and "actual" values.
 
-NFluent is __highly inspired by the awesome Java FEST Fluent__ assertion/reflection library (http://fest.easytesting.org/)
+NFluent is __highly inspired by the awesome Java FEST Fluent__ assertion/reflection library (http://fest.easytesting.org/).
 
-
-Disclaimer
-----------
+NFluent & unit test frameworks
+-------------------------------
 __NFluent is not coupled to any .NET unit test framework. It is fully designed to work in collaboration with your favorite one.__
 
-With NUnit for instance, you can simply use all the NFluent method extensions from any NUnit Assert.That(bool condition) statement.
+Your favorite unit test framework (e.g. NUnit, xUnit, ...) will still handle the test identification, execution & Co, but you will simply now replace your usage of its Assert class by the NFluent assertions statements. That's all!
 
-If you are using another .NET unit tests framework which don't provide such nice and simple Assert.That() bootstraping method (e.g. xUnit), you can use the one gracefully provided by the NFluent library ;-) 
+Uses cases
+----------
+__[NFluent use cases are available here](./UseCases.md)__.
 
 Usage sample
 ------------
@@ -64,11 +65,26 @@ with NFluent, you can also write assertions like this:
 			// assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
 ```        
 
+Why NFluent, and not another .NET fluent assertion framework?
+----------------------------------------------------------------------------
++ Because you don't think that writing a lambda expression within an assertion statement is really a fluent experience (neither a fluent reading experience too).
++ Because this API is completely driven by the __[super-duper-happy-path](https://github.com/NancyFx/Nancy/wiki/Introduction)__ principle to fluent your .NET TDD-practitioner life. For instance, we consider the 'dot' autocompletion experience as crucial. Thus, it should not be a painful experience (intellisense flooding).
++ Because you dislike the SubjectUnderTest.Should()... syntax like me (which is not semantically as strong as the Assert or Check one).
++ And because you like *killer feature* such as the Properties() extension method for IEnumerable for instance (as showed within the usage sample above). 
+
 - - -
 
 Newsgroup
 ---------
 For any comment, remark or question, please use the __[NFluent-Discuss google group](https://groups.google.com/forum/#!forum/nfluent-discuss)__.
+
+BackLog
+-------
+Nfluent __[backlog is available here](./BackLog.md)__
+
+Quality chart
+-------------
+You want to contribute? See the __[NFluent definition of done for development](./DevDoD.md)__ before. But welcome!
 
 - - -
 

@@ -6,7 +6,7 @@ NFluent use cases
 As a Developer,  
 I want to be able to rely on the autocompletion when I write test assertions  
 So that I can write them in a fluent manner, and without any hesitation about the kind of assertion that is possible and available regarding my current System Under Test (SUT).  
-
+  
 
 2. Provide a fluent reading experience for unit tests
 -----------------------------------------------------
