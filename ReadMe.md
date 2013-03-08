@@ -80,7 +80,7 @@ For any comment, remark or question, please use the __[NFluent-Discuss google gr
 
 BackLog
 -------
-Nfluent __[backlog is available here](./BackLog.md)__
+Nfluent __[backlog is available here](./Backlog.md)__
 
 Quality chart
 -------------
