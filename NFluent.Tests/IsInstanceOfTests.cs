@@ -66,6 +66,13 @@
         }
 
         [Test]
+        public void IsNotInstanceOfWorksWithString()
+        {
+            const string MotivationalSaying = "Failure is mother of success.";
+            Assert.That(MotivationalSaying).IsNotInstanceOf(typeof(int));
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[23] is an instance of the type [System.Int32] which is not expected.")]
         public void IsNotInstanceOfThrowsExceptionWithProperFormatWhenFailsWithInt()
         {
