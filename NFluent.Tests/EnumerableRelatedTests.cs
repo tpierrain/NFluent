@@ -5,8 +5,6 @@
 
     using NUnit.Framework;
 
-    using Assert = NFluent.Assert;
-
     [TestFixture]
     public class EnumerableRelatedTests
     {
@@ -17,7 +15,7 @@
         {
             var array = new int[] { 45, 43, 54, 666 };
 
-            Assert.That(array).HasSize(4);
+            Check.That(array).HasSize(4);
         }
 
         [Test]
@@ -25,7 +23,7 @@
         {
             var enumerable = new List<string>(500);
 
-            Assert.That(enumerable).HasSize(0);
+            Check.That(enumerable).HasSize(0);
         }
 
         [Test]
@@ -33,7 +31,7 @@
         {
             List<int> enumerable = new List<int>() { 45, 43, 54, 666 };
 
-            Assert.That(enumerable).HasSize(4);
+            Check.That(enumerable).HasSize(4);
         }
 
         [Test]
@@ -41,7 +39,7 @@
         {
             IEnumerable<int> enumerable = new List<int>() { 45, 43, 54, 666 };
 
-            Assert.That(enumerable).HasSize(4);
+            Check.That(enumerable).HasSize(4);
         }
 
         [Test]
@@ -49,7 +47,7 @@
         {
             ArrayList arrayList = new ArrayList() { 45, 43, 54, 666 };
 
-            Assert.That(arrayList).HasSize(4);
+            Check.That(arrayList).HasSize(4);
         }
 
         [Test]
@@ -58,7 +56,7 @@
         {
             var enumerable = new List<int>() { 45, 43, 54, 666 };
 
-            Assert.That(enumerable).HasSize(2);
+            Check.That(enumerable).HasSize(2);
         }
 
         #endregion
@@ -70,7 +68,7 @@
         {
             var emptyEnumerable = new List<int>();
 
-            Assert.That(emptyEnumerable).IsEmpty();
+            Check.That(emptyEnumerable).IsEmpty();
         }
 
         [Test]
@@ -79,7 +77,7 @@
         {
             var nobody = new List<Person>() { null, null, new Person() { Name = "Thomas" } };
             
-            Assert.That(nobody).IsEmpty();
+            Check.That(nobody).IsEmpty();
         }
 
         #endregion

@@ -6,8 +6,6 @@
 
     using NUnit.Framework;
 
-    using Assert = NFluent.Assert;
-
     public class ContainsOnlyTests
     {
         #region ContainsOnly with arrays
@@ -16,17 +14,17 @@
         public void ContainsOnlyWithArraysWorks()
         {
             var integers = new int[] { 1, 2, 3 };
-            Assert.That(integers).ContainsOnly(3, 2, 1);
+            Check.That(integers).ContainsOnly(3, 2, 1);
 
             var enumerable = new List<string>() { "un", "dos", "tres" };
-            Assert.That(enumerable).ContainsOnly("dos", "un", "tres");
+            Check.That(enumerable).ContainsOnly("dos", "un", "tres");
         }
 
         [Test]
         public void ContainsOnlyWithArraysWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
             var integers = new int[] { 1, 2, 3 };
-            Assert.That(integers).ContainsOnly(3, 2, 3, 2, 2, 1);
+            Check.That(integers).ContainsOnly(3, 2, 3, 2, 2, 1);
         }
 
         [Test]
@@ -34,7 +32,7 @@
         public void ContainsOnlyWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 3, 2, 666, 1974, 1 };
-            Assert.That(integers).ContainsOnly(1, 2, 3);
+            Check.That(integers).ContainsOnly(1, 2, 3);
         }
 
         #endregion
@@ -46,7 +44,7 @@
         {
             var integers = new List<int>() { 1, 2, 3 };
             IEnumerable expectedIntegers = new List<int>() { 3, 2, 1 };
-            Assert.That(integers).ContainsOnly(expectedIntegers);
+            Check.That(integers).ContainsOnly(expectedIntegers);
         }
 
         [Test]
@@ -54,7 +52,7 @@
         {
             var integers = new List<int>() { 1, 2, 3 };
             IEnumerable<int> expectedIntegers = new List<int>() { 3, 2, 1 };
-            Assert.That(integers).ContainsOnly(expectedIntegers);
+            Check.That(integers).ContainsOnly(expectedIntegers);
         }
 
         [Test]
@@ -62,7 +60,7 @@
         {
             var enumerable = new List<string>() { "un", "dos", "tres" };
             IEnumerable expectedValues = new List<string>() { "un", "dos", "tres" };
-            Assert.That(enumerable).ContainsOnly(expectedValues);
+            Check.That(enumerable).ContainsOnly(expectedValues);
         }
 
         [Test]
@@ -71,7 +69,7 @@
             var integers = new List<int> { 1, 2, 3 };
             IEnumerable expectedValues = new List<int> { 3, 2, 3, 2, 2, 1 };
 
-            Assert.That(integers).ContainsOnly(expectedValues);
+            Check.That(integers).ContainsOnly(expectedValues);
         }
 
         [Test]
@@ -80,7 +78,7 @@
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
             IEnumerable expectedValues = new List<int> { 1, 2, 3 };
-            Assert.That(integers).ContainsOnly(expectedValues);
+            Check.That(integers).ContainsOnly(expectedValues);
         }
 
         [Test]
@@ -89,7 +87,7 @@
             List<int> integers = new List<int> { 1, 2, 3 };
             List<int> expectedValues = new List<int> { 3, 2, 3, 2, 2, 1 };
 
-            Assert.That(integers).ContainsOnly(expectedValues);
+            Check.That(integers).ContainsOnly(expectedValues);
         }
 
         [Test]
@@ -98,7 +96,7 @@
             List<int> integers = new List<int> { 1, 2, 3 };
             ArrayList expectedValues = new ArrayList() { 3, 2, 3, 2, 2, 1 };
 
-            Assert.That(integers).ContainsOnly(expectedValues);
+            Check.That(integers).ContainsOnly(expectedValues);
         }
 
         [Test]
@@ -107,7 +105,7 @@
             List<string> values = new List<string> { "one", "two", "three" };
             StringCollection expectedValues = new StringCollection() { "three", "two", "three", "two", "two", "one" };
 
-            Assert.That(values).ContainsOnly(expectedValues);
+            Check.That(values).ContainsOnly(expectedValues);
         }
 
         // TODO: write a ContainsOnly test with IEnumerable containing of objects with various types

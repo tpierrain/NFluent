@@ -2,8 +2,6 @@
 {
     using NUnit.Framework;
 
-    using Assert = NFluent.Assert;
-
     [TestFixture]
     public class EqualRelatedTests
     {
@@ -11,13 +9,13 @@
         public void IsEqualToWorks()
         {
             var first = "Son of a test";
-            Assert.That(first).IsEqualTo("Son of a test");
+            Check.That(first).IsEqualTo("Son of a test");
 
             var array = new int[] { 45, 43, 54, 666 };
             var otherReference = array;
 
-            Assert.That(array).IsEqualTo(array);
-            Assert.That(array).IsEqualTo(otherReference);
+            Check.That(array).IsEqualTo(array);
+            Check.That(array).IsEqualTo(otherReference);
         }
 
         [Test]
@@ -27,7 +25,7 @@
             var array = new int[] { 45, 43, 54, 666 };
             var otherSimilarButNotEqualArray = new int[] { 45, 43, 54, 666 };
 
-            Assert.That(array).IsEqualTo(otherSimilarButNotEqualArray);
+            Check.That(array).IsEqualTo(otherSimilarButNotEqualArray);
         }
 
         [Test]
@@ -35,21 +33,21 @@
         public void IsEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";
-            Assert.That(first).IsEqualTo("no way");
+            Check.That(first).IsEqualTo("no way");
         }
 
         [Test]
         public void IsNotEqualToWorks()
         {
             var first = "Son of a test";
-            Assert.That(first).IsNotEqualTo("other text");
+            Check.That(first).IsNotEqualTo("other text");
 
             var array = new int[] { 45, 43, 54, 666 };
             var otherArray = new int[] { 666, 74 };
             var similarButNotEqualArray = new int[] { 45, 43, 54, 666 };
 
-            Assert.That(array).IsNotEqualTo(otherArray);
-            Assert.That(array).IsNotEqualTo(similarButNotEqualArray);
+            Check.That(array).IsNotEqualTo(otherArray);
+            Check.That(array).IsNotEqualTo(similarButNotEqualArray);
         }
 
         [Test]
@@ -58,7 +56,7 @@
         {
             var first = "Son of a test";
             var otherReferenceToSameObject = first;
-            Assert.That(first).IsNotEqualTo(otherReferenceToSameObject);
+            Check.That(first).IsNotEqualTo(otherReferenceToSameObject);
         }
     }
 }

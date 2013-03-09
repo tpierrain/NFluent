@@ -4,7 +4,6 @@
     using System.Collections.Generic;
 
     using NUnit.Framework;
-    using Assert = NFluent.Assert;
 
     [TestFixture]
     public class IsInstanceOfTests
@@ -21,22 +20,22 @@
             int[] integers = new int[10];
 
             // numerics
-            Assert.That(StringObj).IsInstanceOf(typeof(string));
-            Assert.That(IntObj).IsInstanceOf(typeof(int));
-            Assert.That(LongObj).IsInstanceOf(typeof(long));
-            Assert.That(DoubleObj).IsInstanceOf(typeof(double));
+            Check.That(StringObj).IsInstanceOf(typeof(string));
+            Check.That(IntObj).IsInstanceOf(typeof(int));
+            Check.That(LongObj).IsInstanceOf(typeof(long));
+            Check.That(DoubleObj).IsInstanceOf(typeof(double));
            
             // objects
-            Assert.That(person).IsInstanceOf(typeof(Person));
-            Assert.That(person).IsNotInstanceOf(typeof(string));
+            Check.That(person).IsInstanceOf(typeof(Person));
+            Check.That(person).IsNotInstanceOf(typeof(string));
             
             // IEnumerable
-            Assert.That(strings).IsInstanceOf(typeof(List<string>));
-            Assert.That(strings).IsInstanceOf(typeof(List<string>));
-            Assert.That(strings).IsNotInstanceOf(typeof(IEnumerable<string>));
+            Check.That(strings).IsInstanceOf(typeof(List<string>));
+            Check.That(strings).IsInstanceOf(typeof(List<string>));
+            Check.That(strings).IsNotInstanceOf(typeof(IEnumerable<string>));
 
-            Assert.That(integers).IsInstanceOf(typeof(int[]));
-            Assert.That(integers).IsNotInstanceOf(typeof(IEnumerable));
+            Check.That(integers).IsInstanceOf(typeof(int[]));
+            Check.That(integers).IsNotInstanceOf(typeof(IEnumerable));
         }
 
         [Test]
@@ -45,7 +44,7 @@
         {
             const int IntObject = 23;
 
-            Assert.That(IntObject).IsInstanceOf(typeof(Person));
+            Check.That(IntObject).IsInstanceOf(typeof(Person));
         }
 
         [Test]
@@ -54,7 +53,7 @@
         {
             const string StringObj = "for unit testing";
             
-            Assert.That(StringObj).IsInstanceOf(typeof(Person));
+            Check.That(StringObj).IsInstanceOf(typeof(Person));
         }
 
         [Test]
@@ -62,14 +61,14 @@
         {
             const double DoubleObj = 23d;
 
-            Assert.That(DoubleObj).IsNotInstanceOf(typeof(string));
+            Check.That(DoubleObj).IsNotInstanceOf(typeof(string));
         }
 
         [Test]
         public void IsNotInstanceOfWorksWithString()
         {
             const string MotivationalSaying = "Failure is mother of success.";
-            Assert.That(MotivationalSaying).IsNotInstanceOf(typeof(int));
+            Check.That(MotivationalSaying).IsNotInstanceOf(typeof(int));
         }
 
         [Test]
@@ -78,16 +77,16 @@
         {
             const int IntObject = 23;
 
-            Assert.That(IntObject).IsNotInstanceOf(typeof(int));
+            Check.That(IntObject).IsNotInstanceOf(typeof(int));
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""Failure is mother of success""] is an instance of the type [System.String] which is not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).""] is an instance of the type [System.String] which is not expected.")]
         public void IsNotInstanceOfThrowsExceptionWithProperFormatWhenFailsWithString()
         {
-            const string Statement = "Failure is mother of success";
+            const string Statement = "If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).";
 
-            Assert.That(Statement).IsNotInstanceOf(typeof(string));
+            Check.That(Statement).IsNotInstanceOf(typeof(string));
         }
 
         // TODO: add unit test related to theIsNotInstance error messages (for IEnumerable, object, etc)

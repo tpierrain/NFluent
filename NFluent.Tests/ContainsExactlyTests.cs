@@ -5,8 +5,6 @@
 
     using NUnit.Framework;
 
-    using Assert = NFluent.Assert;
-
     [TestFixture]
     public class ContainsExactlyTests
     {
@@ -16,14 +14,14 @@
         public void ContainsExactlyWorksWithArrayOfInt()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers).ContainsExactly(1, 2, 3, 4, 5, 666);
+            Check.That(integers).ContainsExactly(1, 2, 3, 4, 5, 666);
         }
 
         [Test]
         public void ContainsExactlyWorksWithArrayOfStrings()
         {
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
-            Assert.That(guitarHeroes).ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell");
+            Check.That(guitarHeroes).ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell");
         }
 
         [Test]
@@ -31,7 +29,7 @@
         public void ContainsExactlyWithArraysThrowsExceptionWhenSameItemsInWrongOrder()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers).ContainsExactly(666, 3, 1, 2, 4, 5);
+            Check.That(integers).ContainsExactly(666, 3, 1, 2, 4, 5);
         }
 
         [Test]
@@ -39,7 +37,7 @@
         public void ContainsExactlyWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers).ContainsExactly(42, 42, 42);
+            Check.That(integers).ContainsExactly(42, 42, 42);
         }
 
         [Test]
@@ -47,7 +45,7 @@
         public void ContainsExactlyWithArraysThrowsExceptionWithClearStatusWhenFailsWithStrings()
         {
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
-            Assert.That(guitarHeroes).ContainsExactly("Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell");
+            Check.That(guitarHeroes).ContainsExactly("Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell");
         }
 
         #endregion
@@ -57,7 +55,7 @@
         [Test]
         public void ContainsExactlyAlsoWorksWithEnumerableParameter()
         {
-            Assert.That(InstantiateDirectors().Properties("Name")).ContainsExactly(InstantiateDirectors().Properties("Name"));
+            Check.That(InstantiateDirectors().Properties("Name")).ContainsExactly(InstantiateDirectors().Properties("Name"));
         }
 
         [Test]
@@ -66,7 +64,7 @@
         {
             var integers = new List<int>() { 1, 2, 3, 4, 5, 666 };
             IEnumerable expectedValues = new List<int>() { 666, 3, 1, 2, 4, 5 };
-            Assert.That(integers).ContainsExactly(expectedValues);
+            Check.That(integers).ContainsExactly(expectedValues);
         }
 
         [Test]
@@ -75,7 +73,7 @@
         {
             var integers = new List<int>() { 1, 2, 3, 4, 5, 666 };
             IEnumerable<int> expectedValues = new List<int>() { 666, 3, 1, 2, 4, 5 };
-            Assert.That(integers).ContainsExactly(expectedValues);
+            Check.That(integers).ContainsExactly(expectedValues);
         }
 
         [Test]
@@ -83,7 +81,7 @@
         public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithEnumerable()
         {
             IEnumerable expectedValues = InstantiateWriters().Properties("Name");
-            Assert.That(InstantiateDirectors().Properties("Name")).ContainsExactly(expectedValues);
+            Check.That(InstantiateDirectors().Properties("Name")).ContainsExactly(expectedValues);
         }
 
         [Test]
@@ -91,7 +89,7 @@
         public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithNullEnumerable()
         {
             IEnumerable expectedValues = null;
-            Assert.That(InstantiateDirectors().Properties("Name")).ContainsExactly(expectedValues);
+            Check.That(InstantiateDirectors().Properties("Name")).ContainsExactly(expectedValues);
         }
 
         // TODO: write a ContainsExactly test with IEnumerable containing of objects with various types

@@ -5,8 +5,6 @@
 
     using NUnit.Framework;
 
-    using Assert = NFluent.Assert;
-
     public class ContainsTests
     {
         #region Contains with arrays
@@ -15,28 +13,28 @@
         public void ContainsWithIntArraysWorks()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers).Contains(3, 5, 666);
+            Check.That(integers).Contains(3, 5, 666);
         }
 
         [Test]
         public void ContainsWithStringArraysWorks()
         {
             List<string> enumerable = new List<string>() { "un", "dos", "tres" };
-            Assert.That(enumerable).Contains("dos");
+            Check.That(enumerable).Contains("dos");
         }
 
         [Test]
         public void ContainsWithArraysWorksWhateverTheOrder()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers).Contains(666, 3, 5);
+            Check.That(integers).Contains(666, 3, 5);
         }
 
         [Test]
         public void ContainsWithArraysWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
             var integers = new int[] { 1, 2, 3, 4, 5, 666 };
-            Assert.That(integers).Contains(5, 3, 666, 3, 3, 666);
+            Check.That(integers).Contains(5, 3, 666, 3, 3, 666);
         }
 
         [Test]
@@ -44,7 +42,7 @@
         public void ContainsWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 1, 2, 3 };
-            Assert.That(integers).Contains(3, 2, 666, 1974);
+            Check.That(integers).Contains(3, 2, 666, 1974);
         }
 
         #endregion
@@ -56,7 +54,7 @@
         {
             var integers = new List<int>() { 1, 2, 3, 1974 };
             IEnumerable expected = new List<int>() { 3, 2, 1 };
-            Assert.That(integers).Contains(expected);
+            Check.That(integers).Contains(expected);
         }
 
         [Test]
@@ -64,7 +62,7 @@
         {
             var integers = new List<int>() { 1, 2, 3, 1974 };
             IEnumerable<int> expected = new List<int>() { 3, 2, 1 };
-            Assert.That(integers).Contains(expected);
+            Check.That(integers).Contains(expected);
         }
 
         [Test]
@@ -72,7 +70,7 @@
         {
             var integers = new List<int>() { 1, 2, 3 };
             IEnumerable expected = new List<int>() { 1, 2, 3 };
-            Assert.That(integers).Contains(expected);
+            Check.That(integers).Contains(expected);
         }
 
         [Test]
@@ -81,7 +79,7 @@
         {
             var integers = new List<int>() { 1, 2, 3 };
             IEnumerable expected = new List<int>() { 3, 2, 666, 1974 };
-            Assert.That(integers).Contains(expected);
+            Check.That(integers).Contains(expected);
         }
 
         // TODO: write a Contains test with IEnumerable containing of objects with various types

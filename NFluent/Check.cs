@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Assert.cs" company="">
+// <copyright file="Check.cs" company="">
 //   Copyright 2013 Thomas PIERRAIN
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@ namespace NFluent
     using System.Collections;
 
     /// <summary>
-    /// Provides a set of static methods that return fluent objects to be used then to assert things on a System Under Test (SUT) instance. 
+    /// Provides a set of static methods that always return an <see cref="IFluentAssert"/> instance to be used in order to make a check on the provided System Under Test (SUT) instance. 
     /// </summary>
-    public static class Assert
+    public static class Check
     {
         /// <summary>
         /// Returns a <see cref="IEnumerableFluentAssert" /> instance that will provide assertion methods to be executed on the System Under Test enumerable instance.
