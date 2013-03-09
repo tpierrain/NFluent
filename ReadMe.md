@@ -48,8 +48,6 @@ With NFluent, you can write simple assertions like this:
     Check.That(motivationalSaying).IsNotInstanceOf<int>();
 
 ```
-note: the Check.That is here part of the NUnit library.
-
 with NFluent, you can also write assertions like this:
 ```c#
 	 var enumerable = new List<Person>
