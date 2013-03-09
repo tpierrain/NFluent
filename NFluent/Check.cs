@@ -203,9 +203,9 @@ namespace NFluent
             return new NumberFluentAssert<ulong>(value);
         }
 
-        public static IFluentAssertion That(object value)
+        public static IObjectFluentAssertion That(object value)
         {
-            return new FluentAssertion(value);
+            return new ObjectFluentAssertion(value);
         }
 
         #endregion

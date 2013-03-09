@@ -43,7 +43,8 @@
     <Compile Include="ChainableFluentAssert.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="FluentAssertion.cs" />
+    <Compile Include="IObjectFluentAssertion.cs" />
+    <Compile Include="ObjectFluentAssertion.cs" />
     <Compile Include="Helpers\EqualityHelper.cs" />
     <Compile Include="Helpers\ExtensionsCommonHelpers.cs" />
     <Compile Include="IChainableFluentAssert.cs" />

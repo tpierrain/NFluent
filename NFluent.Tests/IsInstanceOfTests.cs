@@ -30,7 +30,7 @@
             Check.That(DoubleObj).IsInstanceOf<double>();
 
             //// objects
-            //Check.That(person).IsInstanceOf<Person>();
+            Check.That(person).IsInstanceOf<Person>();
 
             //// IEnumerable
             //Check.That(strings).IsInstanceOf<List<string>>();
@@ -80,7 +80,7 @@
             Check.That(DoubleObj).IsNotInstanceOf<int>();
 
             // objects
-            //Check.That(person).IsNotInstanceOf<NumbersRelatedTests>();
+            Check.That(person).IsNotInstanceOf<NumbersRelatedTests>();
 
             // IEnumerable
             //Check.That(strings).IsNotInstanceOf<List<int>>();
