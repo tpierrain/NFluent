@@ -43,11 +43,10 @@
     <Compile Include="ChainableFluentAssert.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="FluentAssert.cs" />
+    <Compile Include="FluentAssertion.cs" />
     <Compile Include="Helpers\EqualityHelper.cs" />
     <Compile Include="Helpers\ExtensionsCommonHelpers.cs" />
     <Compile Include="IChainableFluentAssert.cs" />
-    <Compile Include="IFluentAssert.cs" />
     <Compile Include="NumberFluentAssert.cs" />
     <Compile Include="FluentAssertionException.cs" />
     <Compile Include="EnumerableFluentAssert.cs" />

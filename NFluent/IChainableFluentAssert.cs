@@ -14,8 +14,19 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    public interface IChainableFluentAssert<T>
+    /// <summary>
+    /// Allows to chain two <see cref="IFluentAssertion"/> instances. 
+    /// </summary>
+    /// <typeparam name="T">Type of the <see cref="IFluentAssertion"/> to be chained.</typeparam>
+    public interface IChainableFluentAssert<T> : IFluentAssertion where T : IFluentAssertion
     {
         T And { get; }
+    }
+
+    /// <summary>
+    /// Represents a fluent assertion (marker interface).
+    /// </summary>
+    public interface IFluentAssertion
+    {
     }
 }

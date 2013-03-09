@@ -19,7 +19,7 @@ namespace NFluent
     /// <summary>
     /// Provides assertion methods to be executed on the enumerable System Under Test (SUT) instance.
     /// </summary>
-    public interface IEnumerableFluentAssert : IEqualityFluentAssert, IFluentAssert
+    public interface IEnumerableFluentAssert : IEqualityFluentAssert, IFluentAssertion
     {
         /// <summary>
         /// Checks that the enumerable contains all the given expected values, in any order.

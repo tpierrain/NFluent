@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="FluentAssert.cs" company="">
+// // <copyright file="FluentAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -21,15 +21,15 @@ namespace NFluent
     /// <summary>
     /// Provides core assertion methods to be executed on the System Under Test (SUT) instance.
     /// </summary>
-    public class FluentAssert : IFluentAssert
+    public class FluentAssertion : IFluentAssertion
     {
         private readonly object sut;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FluentAssert" /> class.
+        /// Initializes a new instance of the <see cref="FluentAssertion" /> class.
         /// </summary>
         /// <param name="sut">The System Under Test.</param>
-        public FluentAssert(object sut)
+        public FluentAssertion(object sut)
         {
             this.sut = sut;
         }
@@ -49,7 +49,7 @@ namespace NFluent
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
         /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
-        public IFluentAssert IsInstanceOf<T>()
+        public IFluentAssertion IsInstanceOf<T>()
         {
             IsInstanceHelper.IsInstanceOf(this.sut, typeof(T));
             return this;

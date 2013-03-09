@@ -14,7 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    public class ChainableFluentAssert<T> : IChainableFluentAssert<T>
+    public class ChainableFluentAssert<T> : IChainableFluentAssert<T> where T : IFluentAssertion
     {
         private readonly T previousFluentAssert;
 

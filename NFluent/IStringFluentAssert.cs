@@ -17,7 +17,7 @@ namespace NFluent
     /// <summary>
     /// Provides assertion methods to be executed on the string System Under Test (SUT) instance.
     /// </summary>
-    public interface IStringFluentAssert : IEqualityFluentAssert, IFluentAssert
+    public interface IStringFluentAssert : IEqualityFluentAssert, IFluentAssertion
     {
         /// <summary>
         /// Checks that the string contains the given expected values, in any order.
@@ -37,8 +37,16 @@ namespace NFluent
         /// Checks that the actual instance is an instance of the given expected type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <returns></returns>
+        /// <returns>A chainable fluent assertion.</returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
         IChainableFluentAssert<IStringFluentAssert> IsInstanceOf<T>();
+
+        /// <summary>
+        /// Checks that the actual instance is not an instance of the given expected type.
+        /// </summary>
+        /// <typeparam name="T">The type not expected for this instance.</typeparam>
+        /// <returns>A chainable fluent assertion.</returns>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
+        IChainableFluentAssert<IStringFluentAssert> IsNotInstanceOf<T>();
     }
 }

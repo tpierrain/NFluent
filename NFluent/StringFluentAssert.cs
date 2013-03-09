@@ -62,19 +62,12 @@ namespace NFluent
         #region IFluentAssert members
 
         /// <summary>
-        /// Checks that the actual is an instance of the given expected type.
-        /// </summary>
-        /// <param name="expectedType">The expected type.</param>
-        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
-        public void IsInstanceOf(Type expectedType)
-        {
-            IsInstanceHelper.IsInstanceOf(this.sut, expectedType);
-        }
-
-        /// <summary>
         /// Checks that the actual instance is an instance of the given expected type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
         public IChainableFluentAssert<IStringFluentAssert> IsInstanceOf<T>()
         {
@@ -85,20 +78,13 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual instance is not an instance of the given expected type.
         /// </summary>
-        /// <param name="typeNotExpected">The type not expected for this instance.</param>
-        /// <exception cref="FluentAssertionException">The actual instance is of the expected type.</exception>
-        public void IsNotInstanceOf(Type typeNotExpected)
-        {
-            IsInstanceHelper.IsNotInstanceOf(this.sut, typeNotExpected);
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given expected type.
-        /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        public void IsNotInstanceOf<T>()
+        /// <returns>A chainable fluent assertion.</returns>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
+        public IChainableFluentAssert<IStringFluentAssert> IsNotInstanceOf<T>()
         {
             IsInstanceHelper.IsNotInstanceOf(this.sut, typeof(T));
+            return new ChainableFluentAssert<IStringFluentAssert>(this);
         }
 
         #endregion

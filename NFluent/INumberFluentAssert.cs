@@ -17,7 +17,7 @@ namespace NFluent
     /// <summary>
     /// Provides assertion methods to be executed on the numerical System Under Test (SUT) instance.
     /// </summary>
-    public interface INumberFluentAssert : IFluentAssert
+    public interface INumberFluentAssert : IFluentAssertion
     {
         /// <summary>
         /// Verifies that the actual value is equal to zero.
