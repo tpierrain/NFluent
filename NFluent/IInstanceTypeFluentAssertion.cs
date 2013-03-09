@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="INumberFluentAssert.cs" company="">
+// // <copyright file="IInstanceTypeFluentAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,27 +14,22 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    /// <summary>
-    /// Provides assertion methods to be executed on the numerical System Under Test (SUT) instance.
-    /// </summary>
-    public interface INumberFluentAssert : IInstanceTypeFluentAssertion<INumberFluentAssert>
+    public interface IInstanceTypeFluentAssertion<FAT> : IFluentAssertion where FAT : IFluentAssertion
     {
         /// <summary>
-        /// Verifies that the actual value is equal to zero.
+        /// Checks that the actual instance is an instance of the given expected type.
         /// </summary>
-        /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
-        void IsZero();
+        /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <returns>A chainable fluent assertion.</returns>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
+        IChainableFluentAssert<FAT> IsInstanceOf<T>();
 
         /// <summary>
-        /// Verifies that the actual value is NOT equal to zero.
+        /// Checks that the actual instance is not an instance of the given expected type.
         /// </summary>
-        /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
-        void IsNotZero();
-
-        /// <summary>
-        /// Verifies that the actual value is strictly positive.
-        /// </summary>
-        /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
-        void IsPositive();
+        /// <typeparam name="T">The type not expected for this instance.</typeparam>
+        /// <returns>A chainable fluent assertion.</returns>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
+        IChainableFluentAssert<FAT> IsNotInstanceOf<T>();
     }
 }

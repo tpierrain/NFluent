@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IChainableFluentAssert.cs" company="">
+// // <copyright file="IFluentAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -15,11 +15,9 @@
 namespace NFluent
 {
     /// <summary>
-    /// Allows to chain two <see cref="IFluentAssertion"/> instances. 
+    /// Represents a fluent assertion (marker interface).
     /// </summary>
-    /// <typeparam name="T">Type of the <see cref="IFluentAssertion"/> to be chained.</typeparam>
-    public interface IChainableFluentAssert<T> : IFluentAssertion where T : IFluentAssertion
+    public interface IFluentAssertion
     {
-        T And { get; }
     }
 }

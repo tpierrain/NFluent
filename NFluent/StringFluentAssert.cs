@@ -59,7 +59,7 @@ namespace NFluent
 
         #endregion
 
-        #region IFluentAssert members
+        #region IInstanceTypeFluentAssertion members
 
         /// <summary>
         /// Checks that the actual instance is an instance of the given expected type.

@@ -47,6 +47,8 @@
     <Compile Include="Helpers\EqualityHelper.cs" />
     <Compile Include="Helpers\ExtensionsCommonHelpers.cs" />
     <Compile Include="IChainableFluentAssert.cs" />
+    <Compile Include="IFluentAssertion.cs" />
+    <Compile Include="IInstanceTypeFluentAssertion.cs" />
     <Compile Include="NumberFluentAssert.cs" />
     <Compile Include="FluentAssertionException.cs" />
     <Compile Include="EnumerableFluentAssert.cs" />
