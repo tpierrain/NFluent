@@ -61,46 +61,18 @@ namespace NFluent
 
         #endregion
 
-        #region IFluentAssert members
+        #region IInstanceTypeFluentAssertion members
 
-        /// <summary>
-        /// Checks that the actual is an instance of the given expected type.
-        /// </summary>
-        /// <param name="expectedType">The expected type.</param>
-        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
-        public void IsInstanceOf(Type expectedType)
-        {
-            IsInstanceHelper.IsInstanceOf(this.sutEnumerable, expectedType);
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is an instance of the given expected type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
-        public IFluentAssertion IsInstanceOf<T>()
+        IChainableFluentAssert<IEnumerableFluentAssert> IInstanceTypeFluentAssertion<IEnumerableFluentAssert>.IsInstanceOf<T>()
         {
             IsInstanceHelper.IsInstanceOf(this.sutEnumerable, typeof(T));
-            return this;
+            return new ChainableFluentAssert<IEnumerableFluentAssert>(this);
         }
 
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given expected type.
-        /// </summary>
-        /// <param name="typeNotExpected">The type not expected for this instance.</param>
-        /// <exception cref="FluentAssertionException">The actual instance is of the expected type.</exception>
-        public void IsNotInstanceOf(Type typeNotExpected)
-        {
-            IsInstanceHelper.IsNotInstanceOf(this.sutEnumerable, typeNotExpected);
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given expected type.
-        /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        public void IsNotInstanceOf<T>()
+        IChainableFluentAssert<IEnumerableFluentAssert> IInstanceTypeFluentAssertion<IEnumerableFluentAssert>.IsNotInstanceOf<T>()
         {
             IsInstanceHelper.IsNotInstanceOf(this.sutEnumerable, typeof(T));
+            return new ChainableFluentAssert<IEnumerableFluentAssert>(this);
         }
 
         #endregion

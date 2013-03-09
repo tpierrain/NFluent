@@ -1,6 +1,5 @@
 ﻿namespace NFluent.Tests
 {
-    using System.Collections;
     using System.Collections.Generic;
 
     using NUnit.Framework;
@@ -18,8 +17,8 @@
             const long LongObj = long.MaxValue;
             const double DoubleObj = 23d;
             var person = new Person();
-            List<string> strings = new List<string>();
-            int[] integers = new int[10];
+            List<string> stringList = new List<string>();
+            int[] integerArray = new int[10];
 
             // string
             Check.That(StringObj).IsInstanceOf<string>();
@@ -33,8 +32,8 @@
             Check.That(person).IsInstanceOf<Person>();
 
             //// IEnumerable
-            //Check.That(strings).IsInstanceOf<List<string>>();
-            //Check.That(integers).IsInstanceOf<int[]>();
+            Check.That(stringList).IsInstanceOf<List<string>>();
+            Check.That(integerArray).IsInstanceOf<int[]>();
         }
 
         [Test]
@@ -67,14 +66,13 @@
             const long LongObj = long.MaxValue;
             const double DoubleObj = 23d;
             var person = new Person();
-            List<string> strings = new List<string>();
-            int[] integers = new int[10];
+            List<string> stringList = new List<string>();
+            int[] integerArray = new int[10];
 
             // string
             Check.That(StringObj).IsNotInstanceOf<int>();
 
             // numerics
-            Check.That(StringObj).IsNotInstanceOf<int>();
             Check.That(IntObj).IsNotInstanceOf<long>();
             Check.That(LongObj).IsNotInstanceOf<string>();
             Check.That(DoubleObj).IsNotInstanceOf<int>();
@@ -83,10 +81,9 @@
             Check.That(person).IsNotInstanceOf<NumbersRelatedTests>();
 
             // IEnumerable
-            //Check.That(strings).IsNotInstanceOf<List<int>>();
-            //Check.That(integers).IsNotInstanceOf<string[]>();
+            Check.That(stringList).IsNotInstanceOf<List<int>>();
+            Check.That(integerArray).IsNotInstanceOf<string[]>();
         }
-
         
         [Test]
         public void IsNotInstanceOfWorksWithString()

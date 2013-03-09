@@ -16,10 +16,12 @@ namespace NFluent
 {
     using System.Collections;
 
+    // TODO: add the IFluentAssertion interface to all I...FluentAssert?
+
     /// <summary>
     /// Provides assertion methods to be executed on the enumerable System Under Test (SUT) instance.
     /// </summary>
-    public interface IEnumerableFluentAssert : IEqualityFluentAssert, IFluentAssertion
+    public interface IEnumerableFluentAssert : IEqualityFluentAssert, IInstanceTypeFluentAssertion<IEnumerableFluentAssert>
     {
         /// <summary>
         /// Checks that the enumerable contains all the given expected values, in any order.
