@@ -46,11 +46,11 @@
     <Compile Include="Helpers\EqualityHelper.cs" />
     <Compile Include="Helpers\ExtensionsCommonHelpers.cs" />
     <Compile Include="IFluentAssert.cs" />
-    <Compile Include="NumericalFluentAssert.cs" />
+    <Compile Include="NumberFluentAssert.cs" />
     <Compile Include="FluentAssertionException.cs" />
     <Compile Include="EnumerableFluentAssert.cs" />
     <Compile Include="IEqualityFluentAssert.cs" />
-    <Compile Include="INumericalFluentAssert.cs" />
+    <Compile Include="INumberFluentAssert.cs" />
     <Compile Include="StringFluentAssert.cs" />
     <Compile Include="IEnumerableFluentAssert.cs" />
     <Compile Include="IStringFluentAssert.cs" />

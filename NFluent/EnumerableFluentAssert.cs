@@ -74,6 +74,16 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual instance is an instance of the given expected type.
+        /// </summary>
+        /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
+        public void IsInstanceOf<T>()
+        {
+            IsInstanceHelper.IsInstanceOf(this.sutEnumerable, typeof(T));
+        }
+
+        /// <summary>
         /// Checks that the actual is not an instance of the given expected type.
         /// </summary>
         /// <param name="expectedType">The expected type.</param>

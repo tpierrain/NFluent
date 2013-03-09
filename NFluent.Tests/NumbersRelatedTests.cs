@@ -10,36 +10,36 @@
         [Test]
         public void IsZeroWorks()
         {
-            int intValue = 0;
-            long longValue = 0L;
-            double doubleValue = 0D;
-            decimal decimalValue = 0M;
-            float floatValue = 0F;
-            short shortValue = 0;
-            byte byteValue = 0;
-            uint uintValue = 0;
-            ushort ushortValue = 0;
-            ulong ulongValue = 0;
+            const int IntZero = 0;
+            const long LongZero = 0L;
+            const double DoubleZero = 0D;
+            const decimal DecimalZero = 0M;
+            const float FloatZero = 0F;
+            const short ShortZero = 0;
+            const byte ByteZero = 0;
+            const uint UintZero = 0;
+            const ushort UshortZero = 0;
+            const ulong UlongZero = 0;
 
-            Check.That(intValue).IsZero();
-            Check.That(longValue).IsZero();
-            Check.That(doubleValue).IsZero();
-            Check.That(decimalValue).IsZero();
-            Check.That(floatValue).IsZero();
-            Check.That(shortValue).IsZero();
-            Check.That(byteValue).IsZero();
-            Check.That(uintValue).IsZero();
-            Check.That(ushortValue).IsZero();
-            Check.That(ulongValue).IsZero();
+            Check.That(IntZero).IsZero();
+            Check.That(LongZero).IsZero();
+            Check.That(DoubleZero).IsZero();
+            Check.That(DecimalZero).IsZero();
+            Check.That(FloatZero).IsZero();
+            Check.That(ShortZero).IsZero();
+            Check.That(ByteZero).IsZero();
+            Check.That(UintZero).IsZero();
+            Check.That(UshortZero).IsZero();
+            Check.That(UlongZero).IsZero();
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[9] is not equal to zero.")]
         public void IsZeroThrowsExceptionWhenFails()
         {
-            int a = 9;
+            int nine = 9;
 
-            Check.That(a).IsZero();
+            Check.That(nine).IsZero();
         }
 
         #endregion 
@@ -49,36 +49,36 @@
         [Test]
         public void IsNotZeroWorks()
         {
-            int intValue = 2;
-            long longValue = 2L;
-            double doubleValue = 2D;
-            decimal decimalValue = 2M;
-            float floatValue = 2F;
-            short shortValue = 2;
-            byte byteValue = 2;
-            uint uintValue = 2;
-            ushort ushortValue = 2;
-            ulong ulongValue = 2;
+            const int IntValue = 2;
+            const long LongValue = 2L;
+            const double DoubleValue = 2D;
+            const decimal DecimalValue = 2M;
+            const float FloatValue = 2F;
+            const short ShortValue = 2;
+            const byte ByteValue = 2;
+            const uint UintValue = 2;
+            const ushort UshortValue = 2;
+            const ulong UlongValue = 2;
 
-            Check.That(intValue).IsNotZero();
-            Check.That(longValue).IsNotZero();
-            Check.That(doubleValue).IsNotZero();
-            Check.That(decimalValue).IsNotZero();
-            Check.That(floatValue).IsNotZero();
-            Check.That(shortValue).IsNotZero();
-            Check.That(byteValue).IsNotZero();
-            Check.That(uintValue).IsNotZero();
-            Check.That(ushortValue).IsNotZero();
-            Check.That(ulongValue).IsNotZero();
+            Check.That(IntValue).IsNotZero();
+            Check.That(LongValue).IsNotZero();
+            Check.That(DoubleValue).IsNotZero();
+            Check.That(DecimalValue).IsNotZero();
+            Check.That(FloatValue).IsNotZero();
+            Check.That(ShortValue).IsNotZero();
+            Check.That(ByteValue).IsNotZero();
+            Check.That(UintValue).IsNotZero();
+            Check.That(UshortValue).IsNotZero();
+            Check.That(UlongValue).IsNotZero();
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[0] is equal to zero.")]
         public void IsNotZeroThrowsExceptionWhenFails()
         {
-            double a = 0D;
+            double zero = 0D;
 
-            Check.That(a).IsNotZero();
+            Check.That(zero).IsNotZero();
         }
 
         #endregion 
@@ -88,25 +88,25 @@
         [Test]
         public void IsPositiveWorks()
         {
-            int a = 2;
-            Check.That(a).IsPositive();
+            int two = 2;
+            Check.That(two).IsPositive();
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[0] is not a strictly positive value.")]
         public void IsPositiveThrowExceptionWhenEqualToZero()
         {
-            float a = 0F;
-            Check.That(a).IsPositive();
+            float zero = 0F;
+            Check.That(zero).IsPositive();
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[-50] is not a strictly positive value.")]
         public void IsPositiveThrowExceptionWhenValueIsNegative()
         {
-            double a = -50D;
+            double negativeDouble = -50D;
 
-            Check.That(a).IsPositive();
+            Check.That(negativeDouble).IsPositive();
         }
 
         #endregion

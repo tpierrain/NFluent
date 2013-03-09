@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="INumericalFluentAssert.cs" company="">
+// // <copyright file="INumberFluentAssert.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ namespace NFluent
     /// <summary>
     /// Provides assertion methods to be executed on the numerical System Under Test (SUT) instance.
     /// </summary>
-    public interface INumericalFluentAssert : IFluentAssert
+    public interface INumberFluentAssert : IFluentAssert
     {
         /// <summary>
         /// Verifies that the actual value is equal to zero.

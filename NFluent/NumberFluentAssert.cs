@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="NumericalFluentAssert.cs" company="">
+// // <copyright file="NumberFluentAssert.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -22,15 +22,15 @@ namespace NFluent
     /// Provides assertion methods to be executed on the numerical System Under Test (SUT) instance.
     /// </summary>
     /// <typeparam name="T">Type of the numerical value.</typeparam>
-    public class NumericalFluentAssert<T> : INumericalFluentAssert
+    public class NumberFluentAssert<T> : INumberFluentAssert
     {
         private readonly T sut;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NumericalFluentAssert{T}" /> class.
+        /// Initializes a new instance of the <see cref="NumberFluentAssert{T}" /> class.
         /// </summary>
         /// <param name="sut">The System Under Test.</param>
-        public NumericalFluentAssert(T sut)
+        public NumberFluentAssert(T sut)
         {
             this.sut = sut;
         }
@@ -85,6 +85,16 @@ namespace NFluent
         public void IsInstanceOf(Type expectedType)
         {
             IsInstanceHelper.IsInstanceOf(this.sut, expectedType);
+        }
+
+        /// <summary>
+        /// Checks that the actual instance is an instance of the given expected type.
+        /// </summary>
+        /// <typeparam name="U">The expected Type of the instance.</typeparam>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
+        public void IsInstanceOf<U>()
+        {
+            IsInstanceHelper.IsInstanceOf(this.sut, typeof(U));
         }
 
         /// <summary>
