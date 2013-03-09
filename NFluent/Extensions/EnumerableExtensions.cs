@@ -22,7 +22,7 @@ namespace NFluent
     // TODO: check performances
 
     /// <summary>
-    /// Extension methods for exploiting enumerable content in a fluent manner (i.e. with auto completion support and in an english readable way).
+    /// Extension methods for adding new fluent methods to enumerable.
     /// </summary>
     public static class EnumerableExtensions
     {

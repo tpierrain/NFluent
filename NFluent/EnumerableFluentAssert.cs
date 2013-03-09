@@ -122,7 +122,7 @@ namespace NFluent
                 return;
             }
 
-            throw new FluentAssertionException(string.Format("The enumerable [{0}] does not contain the expected value(s): [{1}].", EnumerableExtensions.ToEnumeratedString(this.sutEnumerable), EnumerableExtensions.ToEnumeratedString(notFoundValues)));
+            throw new FluentAssertionException(string.Format("The enumerable [{0}] does not contain the expected value(s): [{1}].", this.sutEnumerable.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
         }
 
         // TODO: make all EnumerableFluentAssert failure messages the same. I.e. "the enumerable [sut] does not contain ... [...]."
@@ -159,7 +159,7 @@ namespace NFluent
 
             if (unexpectedValuesFound.Count > 0)
             {
-                throw new FluentAssertionException(string.Format("The enumerable [{0}] does not contain only the expected value(s). It contains also other values: [{1}].", EnumerableExtensions.ToEnumeratedString(this.sutEnumerable), EnumerableExtensions.ToEnumeratedString(unexpectedValuesFound)));
+                throw new FluentAssertionException(string.Format("The enumerable [{0}] does not contain only the expected value(s). It contains also other values: [{1}].", this.sutEnumerable.ToEnumeratedString(), unexpectedValuesFound.ToEnumeratedString()));
             }
         }
 
@@ -252,7 +252,6 @@ namespace NFluent
             }
         }
 
-        // TODO: Move the FormatItemCount() method from ContainsExtensions to EnumerableFluentAssert. 
         #endregion
 
         /// <summary>
