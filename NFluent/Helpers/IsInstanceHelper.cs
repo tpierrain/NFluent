@@ -31,7 +31,7 @@ namespace NFluent.Helpers
         {
             if (instance.GetType() != expectedType)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is not an instance of the expectedType [{1}] but of [{2}] instead.", instance.ToStringProperlyFormated(), expectedType, instance.GetType()));
+                throw new FluentAssertionException(string.Format("[{0}] is not an instance of the expected type [{1}] but of [{2}] instead.", instance.ToStringProperlyFormated(), expectedType, instance.GetType()));
             }
         }
 
@@ -39,11 +39,11 @@ namespace NFluent.Helpers
         /// Checks that an instance is not of the given expected type.
         /// </summary>
         /// <param name="instance">The instance to be checked.</param>
-        /// <param name="expectedType">The expected type.</param>
-        /// <exception cref="FluentAssertionException">The instance is of the expected type.</exception>
-        internal static void IsNotInstanceOf(object instance, Type expectedType)
+        /// <param name="typeNotExpected">The type not expected.</param>
+        /// <exception cref="FluentAssertionException">The instance is of the type not expected.</exception>
+        internal static void IsNotInstanceOf(object instance, Type typeNotExpected)
         {
-            if (instance.GetType() == expectedType)
+            if (instance.GetType() == typeNotExpected)
             {
                 throw new FluentAssertionException(string.Format("[{0}] is an instance of the type [{1}] which is not expected.", instance.ToStringProperlyFormated(), instance.GetType()));
             }

@@ -30,15 +30,9 @@
             // objects
             Check.That(person).IsInstanceOf<Person>();
 
-            // Check.That(person).IsNotInstanceOf<string>();
-
             // IEnumerable
             Check.That(strings).IsInstanceOf<List<string>>();
-            
-            // Check.That(strings).IsNotInstanceOf(typeof(IEnumerable<string>));
             Check.That(integers).IsInstanceOf<int[]>();
-            
-            // Check.That(integers).IsNotInstanceOf(typeof(IEnumerable));
         }
 
         #endregion
@@ -75,7 +69,7 @@
         [Test]
         [ExpectedException(typeof(FluentAssertionException),
             ExpectedMessage =
-                "[23] is not an instance of the expectedType [NFluent.Tests.Person] but of [System.Int32] instead.")]
+                "[23] is not an instance of the expected type [NFluent.Tests.Person] but of [System.Int32] instead.")]
         public void IsInstanceOfThrowsExceptionWithProperFormatWhenFailsWithInt()
         {
             const int IntObject = 23;
@@ -83,11 +77,40 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""for unit testing""] is not an instance of the expectedType [NFluent.Tests.Person] but of [System.String] instead.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""for unit testing""] is not an instance of the expected type [NFluent.Tests.Person] but of [System.String] instead.")]
         public void IsInstanceOfThrowsExceptionWithProperFormatWhenFailsWithString()
         {
             const string StringObj = "for unit testing";
             Check.That(StringObj).IsInstanceOf(typeof(Person));
+        }
+
+        #endregion
+
+        #region Generic IsNotInstanceOf tests
+
+        [Test]
+        public void GenericIsNotInstanceOfWorks()
+        {
+            const string StringObj = "for unit testing";
+            const int IntObj = 23;
+            const long LongObj = long.MaxValue;
+            const double DoubleObj = 23d;
+            var person = new Person();
+            List<string> strings = new List<string>();
+            int[] integers = new int[10];
+
+            // numerics
+            Check.That(StringObj).IsNotInstanceOf<int>();
+            Check.That(IntObj).IsNotInstanceOf<long>();
+            Check.That(LongObj).IsNotInstanceOf<string>();
+            Check.That(DoubleObj).IsNotInstanceOf<int>();
+
+            // objects
+            Check.That(person).IsNotInstanceOf<NumbersRelatedTests>();
+
+            // IEnumerable
+            Check.That(strings).IsNotInstanceOf<List<int>>();
+            Check.That(integers).IsNotInstanceOf<string[]>();
         }
 
         #endregion
