@@ -49,9 +49,10 @@ namespace NFluent
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
         /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
-        public void IsInstanceOf<T>()
+        public IFluentAssert IsInstanceOf<T>()
         {
             IsInstanceHelper.IsInstanceOf(this.sut, typeof(T));
+            return this;
         }
 
         /// <summary>

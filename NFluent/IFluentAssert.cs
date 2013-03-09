@@ -33,7 +33,7 @@ namespace NFluent
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
         /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
-        void IsInstanceOf<T>();
+        //I IsInstanceOf<T>();
 
         /// <summary>
         /// Checks that the actual instance is not an instance of the given expected type.

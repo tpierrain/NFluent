@@ -23,16 +23,16 @@
 
             // numerics
             Check.That(StringObj).IsInstanceOf<string>();
-            Check.That(IntObj).IsInstanceOf<int>();
-            Check.That(LongObj).IsInstanceOf<long>();
-            Check.That(DoubleObj).IsInstanceOf<double>();
+            //Check.That(IntObj).IsInstanceOf<int>();
+            //Check.That(LongObj).IsInstanceOf<long>();
+            //Check.That(DoubleObj).IsInstanceOf<double>();
 
-            // objects
-            Check.That(person).IsInstanceOf<Person>();
+            //// objects
+            //Check.That(person).IsInstanceOf<Person>();
 
-            // IEnumerable
-            Check.That(strings).IsInstanceOf<List<string>>();
-            Check.That(integers).IsInstanceOf<int[]>();
+            //// IEnumerable
+            //Check.That(strings).IsInstanceOf<List<string>>();
+            //Check.That(integers).IsInstanceOf<int[]>();
         }
 
         #endregion

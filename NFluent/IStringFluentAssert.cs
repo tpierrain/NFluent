@@ -24,13 +24,21 @@ namespace NFluent
         /// </summary>
         /// <param name="values">The expected values to be found.</param>
         /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
-        void Contains(params string[] values);
+        IChainableFluentAssert<IStringFluentAssert> Contains(params string[] values);
 
         /// <summary>
         /// Checks that the string starts with the given expected prefix.
         /// </summary>
         /// <param name="expectedPrefix">The expected prefix.</param>
         /// <exception cref="FluentAssertionException">The string does not start with the expected prefix.</exception>
-        void StartsWith(string expectedPrefix);
+        IChainableFluentAssert<IStringFluentAssert> StartsWith(string expectedPrefix);
+
+        /// <summary>
+        /// Checks that the actual instance is an instance of the given expected type.
+        /// </summary>
+        /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <returns></returns>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
+        IChainableFluentAssert<IStringFluentAssert> IsInstanceOf<T>();
     }
 }

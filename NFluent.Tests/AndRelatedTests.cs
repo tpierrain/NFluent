@@ -1,0 +1,17 @@
+﻿namespace NFluent.Tests
+{
+    using NUnit.Framework;
+
+    [TestFixture]
+    public class AndRelatedTests
+    {
+        [Test]
+        public void CanUseAndInAnyOrderForAllFluentStringAssertOperations()
+        {
+            var heroes = "Batman and Robin";
+            Check.That(heroes).Contains("Robin").And.StartsWith("Batman").And.IsInstanceOf<string>();
+            Check.That(heroes).IsInstanceOf<string>().And.Contains("Batman", "Robin").And.StartsWith("Batm");
+            Check.That(heroes).StartsWith("Batma").And.Contains("Robin");
+        }
+    }
+}

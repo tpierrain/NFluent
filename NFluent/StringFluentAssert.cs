@@ -76,9 +76,10 @@ namespace NFluent
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
         /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
-        public void IsInstanceOf<T>()
+        public IChainableFluentAssert<IStringFluentAssert> IsInstanceOf<T>()
         {
             IsInstanceHelper.IsInstanceOf(this.sut, typeof(T));
+            return new ChainableFluentAssert<IStringFluentAssert>(this);
         }
 
         /// <summary>
@@ -109,7 +110,7 @@ namespace NFluent
         /// </summary>
         /// <param name="values">The expected values to be found.</param>
         /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
-        public void Contains(params string[] values)
+        public IChainableFluentAssert<IStringFluentAssert> Contains(params string[] values)
         {
             var notFound = new List<string>();
             foreach (string value in values)
@@ -128,6 +129,8 @@ namespace NFluent
                         this.sut,
                         notFound.ToEnumeratedString()));
             }
+
+            return new ChainableFluentAssert<IStringFluentAssert>(this);
         }
 
         /// <summary>
@@ -135,13 +138,15 @@ namespace NFluent
         /// </summary>
         /// <param name="expectedPrefix">The expected prefix.</param>
         /// <exception cref="FluentAssertionException">The string does not start with the expected prefix.</exception>
-        public void StartsWith(string expectedPrefix)
+        public IChainableFluentAssert<IStringFluentAssert> StartsWith(string expectedPrefix)
         {
             if (!this.sut.StartsWith(expectedPrefix))
             {
                 throw new FluentAssertionException(
                     string.Format(@"The string [""{0}""] does not start with [""{1}""].", this.sut, expectedPrefix));
             }
+
+            return new ChainableFluentAssert<IStringFluentAssert>(this);
         }
 
         #endregion
