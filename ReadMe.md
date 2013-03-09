@@ -74,7 +74,7 @@ with NFluent, you can also write assertions like this:
 Why NFluent, and not another .NET fluent assertion framework?
 ----------------------------------------------------------------------------
 + Because you don't think that writing a lambda expression within an assertion statement is really a fluent experience (neither on a reading perspective).
-+ Because NFluent is completely driven by the __[super-duper-happy-path](https://github.com/NancyFx/Nancy/wiki/Introduction)__ principle to fluent your TDD experience. For instance, we consider the 'dot' autocompletion experience as crucial. Thus, it should not be a polluted by things not related to unit testing (which occurs with extension methods on classical .NET types - intellisense flooding).
++ Because NFluent is completely driven by the __[super-duper-happy-path](https://github.com/NancyFx/Nancy/wiki/Introduction)__ principle to fluent your TDD experience. For instance, we consider the 'dot' autocompletion experience as crucial. Thus, it should not be polluted by things not related to the current unit testing context (which occurs with extension methods on classical .NET types - intellisense flooding).
 + Because you dislike the `<subjectUnderTest>.Should().` syntax like me (which I find not semantically as strong as the `Assert` or the `Check.That` ones).
 + And because you like *killing features* such as the Properties() extension method for IEnumerable (as showed within the usage sample above). 
 
