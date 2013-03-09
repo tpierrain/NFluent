@@ -1,7 +1,8 @@
 NFluent backlog
 ===============
 
-+ Decide what beheviour to implement for the IFluentAssert.IsInstance() methods with subtypes.
++ Tackle all the TODO comments
++ Decide what beheviour to implement for the IFluentAssert.IsInstance() methods with subtypes
 + Decide which entry point to provie for the lib
 	+ may be interesting to introduce t4 template to generate the various versions of this entry-point
 + Publish v1.0 into nuget
