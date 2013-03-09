@@ -22,36 +22,36 @@ namespace NFluent
     public static class Check
     {
         /// <summary>
-        /// Returns a <see cref="IEnumerableFluentAssert" /> instance that will provide assertion methods to be executed on the System Under Test enumerable instance.
+        /// Returns a <see cref="IEnumerableFluentAssertion" /> instance that will provide assertion methods to be executed on the System Under Test enumerable instance.
         /// </summary>
         /// <param name="enumerable">The enumerable instance to be tested.</param>
         /// <returns>
-        /// A <see cref="IEnumerableFluentAssert" /> instance to use in order to assert things on the System Under Test enumerable instance.
+        /// A <see cref="IEnumerableFluentAssertion" /> instance to use in order to assert things on the System Under Test enumerable instance.
         /// </returns>
         /// <remarks>
-        /// Methods of the returned <see cref="IEnumerableFluentAssert" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
+        /// Methods of the returned <see cref="IEnumerableFluentAssertion" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
         /// </remarks>
-        public static IEnumerableFluentAssert That(IEnumerable enumerable)
+        public static IEnumerableFluentAssertion That(IEnumerable enumerable)
         {
-            return new EnumerableFluentAssert(enumerable);
+            return new EnumerableFluentAssertion(enumerable);
         }
 
         /// <summary>
-        /// Returns a <see cref="IStringFluentAssert" /> instance that will provide assertion methods to be executed on a given string instance.
+        /// Returns a <see cref="IStringFluentAssertion" /> instance that will provide assertion methods to be executed on a given string instance.
         /// </summary>
         /// <param name="value">The string instance to be tested.</param>
         /// <returns>
-        /// A <see cref="IStringFluentAssert" /> instance to use in order to assert things on the given string instance.
+        /// A <see cref="IStringFluentAssertion" /> instance to use in order to assert things on the given string instance.
         /// </returns>
         /// <remarks>
-        /// Methods of the returned <see cref="IStringFluentAssert" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
+        /// Methods of the returned <see cref="IStringFluentAssertion" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
         /// </remarks>
-        public static IStringFluentAssert That(string value)
+        public static IStringFluentAssertion That(string value)
         {
-            return new StringFluentAssert(value);
+            return new StringFluentAssertion(value);
         }
 
-        #region INumberFluentAssert related
+        #region INumberFluentAssertion related
 
         /// <summary>
         /// Returns a <see cref="INumberFluentAssertberFluentAssert" /> instance that will provide assertion methods to be executed on a given value.
@@ -63,24 +63,9 @@ namespace NFluent
         /// <remarks>
         /// Methods of the returned <see cref="INumberFluentAssertberFluentAssert" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
         /// </remarks>
-        public static INumberFluentAssert That(int value)
+        public static INumberFluentAssertion That(int value)
         {
-            return new NumberFluentAssert<int>(value);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="INumberFluentAssertberFluentAssert" /> instance that will provide assertion methods to be executed on a given value.
-        /// </summary>
-        /// <param name="value">The value to be tested.</param>
-        /// <returns>
-        /// A <see cref="INumberFluentAssertberFluentAssert" /> instance to use in order to assert things on the value (System Under Test).
-        /// </returns>
-        /// <remarks>
-        /// Methods of the returned <see cref="INumberFluentAssertberFluentAssert" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
-        /// </remarks>
-        public static INumberFluentAssert That(long value)
-        {
-            return new NumberFluentAssert<long>(value);
+            return new NumberFluentAssertion<int>(value);
         }
 
         /// <summary>
@@ -93,9 +78,9 @@ namespace NFluent
         /// <remarks>
         /// Methods of the returned <see cref="INumberFluentAssertberFluentAssert" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
         /// </remarks>
-        public static INumberFluentAssert That(double value)
+        public static INumberFluentAssertion That(long value)
         {
-            return new NumberFluentAssert<double>(value);
+            return new NumberFluentAssertion<long>(value);
         }
 
         /// <summary>
@@ -108,9 +93,9 @@ namespace NFluent
         /// <remarks>
         /// Methods of the returned <see cref="INumberFluentAssertberFluentAssert" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
         /// </remarks>
-        public static INumberFluentAssert That(decimal value)
+        public static INumberFluentAssertion That(double value)
         {
-            return new NumberFluentAssert<decimal>(value);
+            return new NumberFluentAssertion<double>(value);
         }
 
         /// <summary>
@@ -123,9 +108,9 @@ namespace NFluent
         /// <remarks>
         /// Methods of the returned <see cref="INumberFluentAssertberFluentAssert" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
         /// </remarks>
-        public static INumberFluentAssert That(float value)
+        public static INumberFluentAssertion That(decimal value)
         {
-            return new NumberFluentAssert<float>(value);
+            return new NumberFluentAssertion<decimal>(value);
         }
 
         /// <summary>
@@ -138,9 +123,9 @@ namespace NFluent
         /// <remarks>
         /// Methods of the returned <see cref="INumberFluentAssertberFluentAssert" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
         /// </remarks>
-        public static INumberFluentAssert That(short value)
+        public static INumberFluentAssertion That(float value)
         {
-            return new NumberFluentAssert<short>(value);
+            return new NumberFluentAssertion<float>(value);
         }
 
         /// <summary>
@@ -153,9 +138,9 @@ namespace NFluent
         /// <remarks>
         /// Methods of the returned <see cref="INumberFluentAssertberFluentAssert" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
         /// </remarks>
-        public static INumberFluentAssert That(byte value)
+        public static INumberFluentAssertion That(short value)
         {
-            return new NumberFluentAssert<byte>(value);
+            return new NumberFluentAssertion<short>(value);
         }
 
         /// <summary>
@@ -168,9 +153,9 @@ namespace NFluent
         /// <remarks>
         /// Methods of the returned <see cref="INumberFluentAssertberFluentAssert" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
         /// </remarks>
-        public static INumberFluentAssert That(uint value)
+        public static INumberFluentAssertion That(byte value)
         {
-            return new NumberFluentAssert<uint>(value);
+            return new NumberFluentAssertion<byte>(value);
         }
 
         /// <summary>
@@ -183,9 +168,9 @@ namespace NFluent
         /// <remarks>
         /// Methods of the returned <see cref="INumberFluentAssertberFluentAssert" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
         /// </remarks>
-        public static INumberFluentAssert That(ushort value)
+        public static INumberFluentAssertion That(uint value)
         {
-            return new NumberFluentAssert<ushort>(value);
+            return new NumberFluentAssertion<uint>(value);
         }
 
         /// <summary>
@@ -198,9 +183,24 @@ namespace NFluent
         /// <remarks>
         /// Methods of the returned <see cref="INumberFluentAssertberFluentAssert" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
         /// </remarks>
-        public static INumberFluentAssert That(ulong value)
+        public static INumberFluentAssertion That(ushort value)
         {
-            return new NumberFluentAssert<ulong>(value);
+            return new NumberFluentAssertion<ushort>(value);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="INumberFluentAssertberFluentAssert" /> instance that will provide assertion methods to be executed on a given value.
+        /// </summary>
+        /// <param name="value">The value to be tested.</param>
+        /// <returns>
+        /// A <see cref="INumberFluentAssertberFluentAssert" /> instance to use in order to assert things on the value (System Under Test).
+        /// </returns>
+        /// <remarks>
+        /// Methods of the returned <see cref="INumberFluentAssertberFluentAssert" /> instance will usually throw a <see cref="T:FluentAssertionException" /> when failing.
+        /// </remarks>
+        public static INumberFluentAssertion That(ulong value)
+        {
+            return new NumberFluentAssertion<ulong>(value);
         }
 
         public static IObjectFluentAssertion That(object value)

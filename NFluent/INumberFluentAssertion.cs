@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IStringFluentAssert.cs" company="">
+// // <copyright file="INumberFluentAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -15,22 +15,26 @@
 namespace NFluent
 {
     /// <summary>
-    /// Provides assertion methods to be executed on the string System Under Test (SUT) instance.
+    /// Provides assertion methods to be executed on a number instance.
     /// </summary>
-    public interface IStringFluentAssert : IEqualityFluentAssert, IInstanceTypeFluentAssertion<IStringFluentAssert>
+    public interface INumberFluentAssertion : IFluentAssertion, IInstanceTypeFluentAssertion<INumberFluentAssertion>
     {
         /// <summary>
-        /// Checks that the string contains the given expected values, in any order.
+        /// Verifies that the actual value is equal to zero.
         /// </summary>
-        /// <param name="values">The expected values to be found.</param>
-        /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
-        IChainableFluentAssert<IStringFluentAssert> Contains(params string[] values);
+        /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
+        void IsZero();
 
         /// <summary>
-        /// Checks that the string starts with the given expected prefix.
+        /// Verifies that the actual value is NOT equal to zero.
         /// </summary>
-        /// <param name="expectedPrefix">The expected prefix.</param>
-        /// <exception cref="FluentAssertionException">The string does not start with the expected prefix.</exception>
-        IChainableFluentAssert<IStringFluentAssert> StartsWith(string expectedPrefix);
+        /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
+        void IsNotZero();
+
+        /// <summary>
+        /// Verifies that the actual value is strictly positive.
+        /// </summary>
+        /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
+        void IsPositive();
     }
 }

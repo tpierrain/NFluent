@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ChainableFluentAssert.cs" company="">
+// // <copyright file="ChainableFluentAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,15 +14,32 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    public class ChainableFluentAssert<T> : IChainableFluentAssert<T> where T : IFluentAssertion
+    using System.Diagnostics.CodeAnalysis;
+
+    /// <summary>
+    /// Provides a way to chain two <see cref="IFluentAssertion"/> instances. 
+    /// </summary>
+    /// <typeparam name="T">Type of the <see cref="IFluentAssertion"/> to be chained.</typeparam>
+    public class ChainableFluentAssertion<T> : IChainableFluentAssertion<T> where T : IFluentAssertion
     {
         private readonly T previousFluentAssert;
 
-        public ChainableFluentAssert(T previousFluentAssert)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChainableFluentAssertion{T}" /> class.
+        /// </summary>
+        /// <param name="previousFluentAssert">The previous fluent assert.</param>
+        public ChainableFluentAssertion(T previousFluentAssert)
         {
             this.previousFluentAssert = previousFluentAssert;
         }
 
+        /// <summary>
+        /// Links a new fluent assertion to the current one.
+        /// </summary>
+        /// <value>
+        /// The new fluent assertion instance which has been linked to the previous one.
+        /// </value>
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here.")]
         public T And
         {
             get

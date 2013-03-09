@@ -14,12 +14,10 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System;
-
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides core assertion methods to be executed on the System Under Test (SUT) instance.
+    /// Provides assertion methods to be executed on an object instance.
     /// </summary>
     public class ObjectFluentAssertion : IObjectFluentAssertion
     {
@@ -34,16 +32,36 @@ namespace NFluent
             this.sut = sut;
         }
 
-        public IChainableFluentAssert<IObjectFluentAssertion> IsInstanceOf<T>()
+        #region IInstanceTypeFluentAssertion members
+
+        /// <summary>
+        /// Checks that the actual instance is an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
+        public IChainableFluentAssertion<IObjectFluentAssertion> IsInstanceOf<T>()
         {
             IsInstanceHelper.IsInstanceOf(this.sut, typeof(T));
-            return new ChainableFluentAssert<IObjectFluentAssertion>(this);
+            return new ChainableFluentAssertion<IObjectFluentAssertion>(this);
         }
 
-        public IChainableFluentAssert<IObjectFluentAssertion> IsNotInstanceOf<T>()
+        /// <summary>
+        /// Checks that the actual instance is not an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type not expected for this instance.</typeparam>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
+        public IChainableFluentAssertion<IObjectFluentAssertion> IsNotInstanceOf<T>()
         {
             IsInstanceHelper.IsNotInstanceOf(this.sut, typeof(T));
-            return new ChainableFluentAssert<IObjectFluentAssertion>(this);
+            return new ChainableFluentAssertion<IObjectFluentAssertion>(this);
         }
+
+        #endregion
     }
 }

@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IEnumerableFluentAssert.cs" company="">
+// // <copyright file="IEnumerableFluentAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ namespace NFluent
     // TODO: add the IFluentAssertion interface to all I...FluentAssert?
 
     /// <summary>
-    /// Provides assertion methods to be executed on the enumerable System Under Test (SUT) instance.
+    /// Provides assertion methods to be executed on an enumerable instance.
     /// </summary>
-    public interface IEnumerableFluentAssert : IEqualityFluentAssert, IInstanceTypeFluentAssertion<IEnumerableFluentAssert>
+    public interface IEnumerableFluentAssertion : IFluentAssertion, IEqualityFluentAssertion, IInstanceTypeFluentAssertion<IEnumerableFluentAssertion>
     {
         /// <summary>
         /// Checks that the enumerable contains all the given expected values, in any order.

@@ -14,22 +14,30 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    public interface IInstanceTypeFluentAssertion<FAT> : IFluentAssertion where FAT : IFluentAssertion
+    /// <summary>
+    /// Provides assertion methods related to the type of the System Under Test (SUT) instance.
+    /// </summary>
+    /// <typeparam name="F">Type of the considered IFluentAssertion.</typeparam>
+    public interface IInstanceTypeFluentAssertion<F> where F : IFluentAssertion
     {
         /// <summary>
-        /// Checks that the actual instance is an instance of the given expected type.
+        /// Checks that the actual instance is an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <returns>A chainable fluent assertion.</returns>
-        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
-        IChainableFluentAssert<FAT> IsInstanceOf<T>();
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
+        IChainableFluentAssertion<F> IsInstanceOf<T>();
 
         /// <summary>
-        /// Checks that the actual instance is not an instance of the given expected type.
+        /// Checks that the actual instance is not an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <returns>A chainable fluent assertion.</returns>
-        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
-        IChainableFluentAssert<FAT> IsNotInstanceOf<T>();
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
+        IChainableFluentAssertion<F> IsNotInstanceOf<T>();
     }
 }

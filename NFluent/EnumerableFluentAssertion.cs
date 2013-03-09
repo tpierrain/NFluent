@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="EnumerableFluentAssert.cs" company="">
+// // <copyright file="EnumerableFluentAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
@@ -24,20 +23,20 @@ namespace NFluent
     /// <summary>
     /// Provides assertion methods to be executed on the enumerable System Under Test (SUT) instance.
     /// </summary>
-    internal class EnumerableFluentAssert : IEnumerableFluentAssert
+    internal class EnumerableFluentAssertion : IEnumerableFluentAssertion
     {
         private readonly IEnumerable sutEnumerable;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnumerableFluentAssert" /> class.
+        /// Initializes a new instance of the <see cref="EnumerableFluentAssertion" /> class.
         /// </summary>
         /// <param name="sutEnumerable">The System Under Test enumerable.</param>
-        public EnumerableFluentAssert(IEnumerable sutEnumerable)
+        public EnumerableFluentAssertion(IEnumerable sutEnumerable)
         {
             this.sutEnumerable = sutEnumerable;
         }
 
-        #region IEqualityFluentAssert members
+        #region IEqualityFluentAssertion members
 
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
@@ -63,21 +62,37 @@ namespace NFluent
 
         #region IInstanceTypeFluentAssertion members
 
-        IChainableFluentAssert<IEnumerableFluentAssert> IInstanceTypeFluentAssertion<IEnumerableFluentAssert>.IsInstanceOf<T>()
+        /// <summary>
+        /// Checks that the actual instance is an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
+        IChainableFluentAssertion<IEnumerableFluentAssertion> IInstanceTypeFluentAssertion<IEnumerableFluentAssertion>.IsInstanceOf<T>()
         {
             IsInstanceHelper.IsInstanceOf(this.sutEnumerable, typeof(T));
-            return new ChainableFluentAssert<IEnumerableFluentAssert>(this);
+            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
         }
 
-        IChainableFluentAssert<IEnumerableFluentAssert> IInstanceTypeFluentAssertion<IEnumerableFluentAssert>.IsNotInstanceOf<T>()
+        /// <summary>
+        /// Checks that the actual instance is not an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type not expected for this instance.</typeparam>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
+        IChainableFluentAssertion<IEnumerableFluentAssertion> IInstanceTypeFluentAssertion<IEnumerableFluentAssertion>.IsNotInstanceOf<T>()
         {
             IsInstanceHelper.IsNotInstanceOf(this.sutEnumerable, typeof(T));
-            return new ChainableFluentAssert<IEnumerableFluentAssert>(this);
+            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
         }
 
         #endregion
 
-        #region IEnumerableFluentAssert members
+        #region IEnumerableFluentAssertion members
         
         /// <summary>
         /// Checks that the enumerable contains all the given expected values, in any order.
@@ -117,7 +132,7 @@ namespace NFluent
             throw new FluentAssertionException(string.Format("The enumerable [{0}] does not contain the expected value(s): [{1}].", this.sutEnumerable.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
         }
 
-        // TODO: make all EnumerableFluentAssert failure messages the same. I.e. "the enumerable [sut] does not contain ... [...]."
+        // TODO: make all EnumerableFluentAssertion failure messages the same. I.e. "the enumerable [sut] does not contain ... [...]."
 
         /// <summary>
         /// Checks that the enumerable contains only the given values and nothing else, in any order.

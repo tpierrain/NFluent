@@ -41,8 +41,11 @@ With NFluent, you can write simple assertions like this:
 	var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
     Check.That(guitarHeroes).ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell");
 
+	var heroes = "Batman and Robin";
+    Check.That(heroes).StartsWith("Bat").And.Contains("Robin");
+
 	string motivationalSaying = "Failure is mother of success.";
-    Check.That(motivationalSaying).IsNotInstanceOf(typeof(int));
+    Check.That(motivationalSaying).IsNotInstanceOf<int>();
 
 ```
 note: the Check.That is here part of the NUnit library.

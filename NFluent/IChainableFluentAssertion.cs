@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IEqualityFluentAssert.cs" company="">
+// // <copyright file="IChainableFluentAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,23 +14,21 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
-    /// Provides assertion methods related to Equality to be executed on the System Under Test (SUT) instance.
+    /// Provides a way to chain two <see cref="IFluentAssertion"/> instances. 
     /// </summary>
-    public interface IEqualityFluentAssert
+    /// <typeparam name="T">Type of the <see cref="IFluentAssertion"/> to be chained.</typeparam>
+    public interface IChainableFluentAssertion<T> : IFluentAssertion where T : IFluentAssertion
     {
         /// <summary>
-        /// Checks that the actual value is equal to another expected value.
+        /// Links a new fluent assertion to the current one.
         /// </summary>
-        /// <param name="expected">The expected value.</param>
-        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        void IsEqualTo(object expected);
-
-        /// <summary>
-        /// Checks that the actual value is not equal to another expected value.
-        /// </summary>
-        /// <param name="expected">The expected.</param>
-        /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        void IsNotEqualTo(object expected);
+        /// <value>
+        /// The new fluent assertion instance which has been linked to the previous one.
+        /// </value>
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here.")]
+        T And { get; }
     }
 }

@@ -40,24 +40,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChainableFluentAssert.cs" />
+    <Compile Include="ChainableFluentAssertion.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="IObjectFluentAssertion.cs" />
     <Compile Include="ObjectFluentAssertion.cs" />
     <Compile Include="Helpers\EqualityHelper.cs" />
     <Compile Include="Helpers\ExtensionsCommonHelpers.cs" />
-    <Compile Include="IChainableFluentAssert.cs" />
+    <Compile Include="IChainableFluentAssertion.cs" />
     <Compile Include="IFluentAssertion.cs" />
     <Compile Include="IInstanceTypeFluentAssertion.cs" />
-    <Compile Include="NumberFluentAssert.cs" />
+    <Compile Include="NumberFluentAssertion.cs" />
     <Compile Include="FluentAssertionException.cs" />
-    <Compile Include="EnumerableFluentAssert.cs" />
-    <Compile Include="IEqualityFluentAssert.cs" />
-    <Compile Include="INumberFluentAssert.cs" />
-    <Compile Include="StringFluentAssert.cs" />
-    <Compile Include="IEnumerableFluentAssert.cs" />
-    <Compile Include="IStringFluentAssert.cs" />
+    <Compile Include="EnumerableFluentAssertion.cs" />
+    <Compile Include="IEqualityFluentAssertion.cs" />
+    <Compile Include="INumberFluentAssertion.cs" />
+    <Compile Include="StringFluentAssertion.cs" />
+    <Compile Include="IEnumerableFluentAssertion.cs" />
+    <Compile Include="IStringFluentAssertion.cs" />
     <Compile Include="Helpers\IsInstanceHelper.cs" />
     <Compile Include="Extensions\PropertiesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -15,10 +15,9 @@
 namespace NFluent
 {
     /// <summary>
-    /// Provides assertion methods to be executed on the System Under Test (SUT) instance.
+    /// Provides assertion methods to be executed on an object instance.
     /// </summary>
-    public interface IObjectFluentAssertion : IInstanceTypeFluentAssertion<IObjectFluentAssertion>
+    public interface IObjectFluentAssertion : IFluentAssertion, IInstanceTypeFluentAssertion<IObjectFluentAssertion>
     {
-        
     }
 }

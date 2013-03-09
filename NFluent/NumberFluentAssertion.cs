@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="NumberFluentAssert.cs" company="">
+// // <copyright file="NumberFluentAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -15,24 +15,23 @@
 namespace NFluent
 {
     using System;
-
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides assertion methods to be executed on the numerical System Under Test (SUT) instance.
+    /// Provides assertion methods to be executed on a number instance.
     /// </summary>
-    /// <typeparam name="T">Type of the numerical value.</typeparam>
-    public class NumberFluentAssert<T> : INumberFluentAssert
+    /// <typeparam name="N">Type of the numerical value.</typeparam>
+    public class NumberFluentAssertion<N> : INumberFluentAssertion
     {
-        private readonly T sut;
+        private readonly N number;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NumberFluentAssert{T}" /> class.
+        /// Initializes a new instance of the <see cref="NumberFluentAssertion{N}" /> class.
         /// </summary>
-        /// <param name="sut">The System Under Test.</param>
-        public NumberFluentAssert(T sut)
+        /// <param name="number">The number to assert on.</param>
+        public NumberFluentAssertion(N number)
         {
-            this.sut = sut;
+            this.number = number;
         }
 
         /// <summary>
@@ -41,11 +40,11 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
         public void IsZero()
         {
-            var res = InternalIsZero(this.sut);
+            var res = InternalIsZero(this.number);
 
             if (!res)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is not equal to zero.", this.sut));
+                throw new FluentAssertionException(string.Format("[{0}] is not equal to zero.", this.number));
             }
         }
 
@@ -55,11 +54,11 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
         public void IsNotZero()
         {
-            bool res = InternalIsZero(this.sut);
+            bool res = InternalIsZero(this.number);
 
             if (res)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is equal to zero.", this.sut));
+                throw new FluentAssertionException(string.Format("[{0}] is equal to zero.", this.number));
             }
         }
 
@@ -69,38 +68,40 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
         public void IsPositive()
         {
-            if (Convert.ToInt32(this.sut) <= 0)
+            if (Convert.ToInt32(this.number) <= 0)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is not a strictly positive value.", this.sut));
+                throw new FluentAssertionException(string.Format("[{0}] is not a strictly positive value.", this.number));
             }
         }
 
         #region IInstanceTypeFluentAssertion members
 
         /// <summary>
-        /// Checks that the actual instance is an instance of the given expected type.
+        /// Checks that the actual instance is an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
-        public IChainableFluentAssert<INumberFluentAssert> IsInstanceOf<T>()
+        /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
+        public IChainableFluentAssertion<INumberFluentAssertion> IsInstanceOf<T>()
         {
-            IsInstanceHelper.IsInstanceOf(this.sut, typeof(T));
-            return new ChainableFluentAssert<INumberFluentAssert>(this);
+            IsInstanceHelper.IsInstanceOf(this.number, typeof(T));
+            return new ChainableFluentAssertion<INumberFluentAssertion>(this);
         }
 
         /// <summary>
-        /// Checks that the actual instance is not an instance of the given expected type.
+        /// Checks that the actual instance is not an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <returns>A chainable fluent assertion.</returns>
-        /// <exception cref="FluentAssertionException">The actual instance is not of the expected type.</exception>
-        public IChainableFluentAssert<INumberFluentAssert> IsNotInstanceOf<T>()
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
+        public IChainableFluentAssertion<INumberFluentAssertion> IsNotInstanceOf<T>()
         {
-            IsInstanceHelper.IsNotInstanceOf(this.sut, typeof(T));
-            return new ChainableFluentAssert<INumberFluentAssert>(this);
+            IsInstanceHelper.IsNotInstanceOf(this.number, typeof(T));
+            return new ChainableFluentAssertion<INumberFluentAssertion>(this);
         }
 
         #endregion
@@ -112,7 +113,7 @@ namespace NFluent
         /// <returns>
         ///   <c>true</c> if the specified value is equal to zero; false otherwise.
         /// </returns>
-        private static bool InternalIsZero(T value)
+        private static bool InternalIsZero(N value)
         {
             return Convert.ToInt64(value) == 0;
         }
