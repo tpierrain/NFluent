@@ -51,5 +51,20 @@ namespace NFluent
                 yield return value;
             }
         }
+
+        /// <summary>
+        /// Extract all the values of a given property given its name, from an array of objects holding that property.
+        /// </summary>
+        /// <typeparam name="T">Type of the objects belonging to the array.</typeparam>
+        /// <param name="array">The array of <see cref="T"/>.</param>
+        /// <param name="propertyName">Name of the property to extract value from for every object of the array.</param>
+        /// <returns>
+        /// An enumerable of all the property values for every <see cref="T"/> objects in the <see cref="Array"/>.
+        /// </returns>
+        public static IEnumerable Properties<T>(this T[] array, string propertyName)
+        {
+            var enumerableArray = array as IEnumerable<T>;
+            return enumerableArray.Properties<T>(propertyName);
+        }
     }
 }

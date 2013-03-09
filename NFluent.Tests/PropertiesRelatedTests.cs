@@ -73,7 +73,7 @@
         [Test]
         public void PropertiesWorksWithArray()
         {
-            var array = new Person[]
+            Person[] persons = new Person[]
                                  {
                                      new Person { Name = "Thomas", Age = 38 },
                                      new Person { Name = "Achille", Age = 10, Nationality = Nationality.French },
@@ -81,9 +81,9 @@
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
 
-            Assert.That(array.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
-            Assert.That(array.Properties("Age")).ContainsExactly(38, 10, 7, 7);
-            Assert.That(array.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+            Assert.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+            Assert.That(persons.Properties("Age")).ContainsExactly(38, 10, 7, 7);
+            Assert.That(persons.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
         }
 
         #endregion
