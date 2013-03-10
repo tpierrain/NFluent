@@ -15,7 +15,7 @@
 namespace NFluent
 {
     /// <summary>
-    /// Represents a fluent assertion (marker interface).
+    /// Represents a fluent assertion (marker interface for chainable assertions).
     /// </summary>
     public interface IFluentAssertion
     {
