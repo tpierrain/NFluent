@@ -23,12 +23,39 @@
         }
 
         [Test]
-        public void IsEqualToWorksObject()
+        public void IsEqualToWorksWithObject()
         {
             var heroe = new Person() { Name = "Gandhi" };
             var otherReference = heroe;
 
             Check.That(heroe).IsEqualTo(otherReference);
+        }
+
+        [Test]
+        public void IsEqualWorksWithIntNumbers()
+        {
+            int firstInt = 23;
+            int secondButIdenticalInt = 23;
+
+            Check.That(secondButIdenticalInt).IsEqualTo(firstInt);
+        }
+
+        [Test]
+        public void IsEqualWorksWithDoubleNumbers()
+        {
+            double firstDouble = 23.7D;
+            double secondButIdenticalDouble = 23.7D;
+
+            Check.That(secondButIdenticalDouble).IsEqualTo(firstDouble);
+        }
+
+        [Test]
+        public void IsEqualWorksWithFloatNumbers()
+        {
+            float firstFloat = 23.56F;
+            float secondButIdenticalFloat = 23.56F;
+
+            Check.That(secondButIdenticalFloat).IsEqualTo(firstFloat);
         }
 
         [Test]
@@ -74,6 +101,33 @@
             var badGuy = new Person() { Name = "Pol Pot" };
 
             Check.That(heroe).IsNotEqualTo(badGuy);
+        }
+
+        [Test]
+        public void IsNotEqualWorksWithIntNumbers()
+        {
+            int firstInt = 23;
+            int secondButIdenticalInt = 7;
+
+            Check.That(secondButIdenticalInt).IsNotEqualTo(firstInt);
+        }
+
+        [Test]
+        public void IsNotEqualWorksWithDoubleNumbers()
+        {
+            double firstDouble = 23.7D;
+            double secondButIdenticalDouble = 23.75D;
+
+            Check.That(secondButIdenticalDouble).IsNotEqualTo(firstDouble);
+        }
+
+        [Test]
+        public void IsNotEqualWorksWithFloatNumbers()
+        {
+            float firstFloat = 23.56F;
+            float secondButIdenticalFloat = 23.99999F;
+
+            Check.That(secondButIdenticalFloat).IsNotEqualTo(firstFloat);
         }
 
         [Test]

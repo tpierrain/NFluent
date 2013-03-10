@@ -56,7 +56,6 @@ namespace NFluent
 
         #endregion
 
-
         #region IInstanceTypeFluentAssertion members
 
         /// <summary>

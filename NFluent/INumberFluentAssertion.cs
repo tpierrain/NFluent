@@ -17,7 +17,7 @@ namespace NFluent
     /// <summary>
     /// Provides assertion methods to be executed on a number instance.
     /// </summary>
-    public interface INumberFluentAssertion : IFluentAssertion, IInstanceTypeFluentAssertion<INumberFluentAssertion>
+    public interface INumberFluentAssertion : IFluentAssertion, IEqualityFluentAssertion, IInstanceTypeFluentAssertion<INumberFluentAssertion>
     {
         /// <summary>
         /// Verifies that the actual value is equal to zero.
