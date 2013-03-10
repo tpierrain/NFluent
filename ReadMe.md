@@ -41,6 +41,10 @@ With NFluent, you can write simple assertions like this:
 	var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
     Check.That(guitarHeroes).ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell");
 
+	var camus = new Person() { Name = "Camus" };
+    var sartre = new Person() { Name = "Sartre" };
+    Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<Person>();
+
 	var heroes = "Batman and Robin";
     Check.That(heroes).StartsWith("Bat").And.Contains("Robin");
 
