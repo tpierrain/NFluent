@@ -6,16 +6,29 @@
     public class EqualRelatedTests
     {
         [Test]
-        public void IsEqualToWorks()
+        public void IsEqualToWorksWithString()
         {
             var first = "Son of a test";
             Check.That(first).IsEqualTo("Son of a test");
+        }
 
+        [Test]
+        public void IsEqualToWorksWithArray()
+        {
             var array = new int[] { 45, 43, 54, 666 };
             var otherReference = array;
 
             Check.That(array).IsEqualTo(array);
             Check.That(array).IsEqualTo(otherReference);
+        }
+
+        [Test]
+        public void IsEqualToWorksObject()
+        {
+            var heroe = new Person() { Name = "Gandhi" };
+            var otherReference = heroe;
+
+            Check.That(heroe).IsEqualTo(otherReference);
         }
 
         [Test]
@@ -37,17 +50,30 @@
         }
 
         [Test]
-        public void IsNotEqualToWorks()
+        public void IsNotEqualToWorksWithString()
         {
             var first = "Son of a test";
             Check.That(first).IsNotEqualTo("other text");
+        }
 
+        [Test]
+        public void IsNotEqualToWorksWithArray()
+        {
             var array = new int[] { 45, 43, 54, 666 };
             var otherArray = new int[] { 666, 74 };
             var similarButNotEqualArray = new int[] { 45, 43, 54, 666 };
 
             Check.That(array).IsNotEqualTo(otherArray);
             Check.That(array).IsNotEqualTo(similarButNotEqualArray);
+        }
+
+        [Test]
+        public void IsNotEqualToWorksObject()
+        {
+            var heroe = new Person() { Name = "Gandhi" };
+            var badGuy = new Person() { Name = "Pol Pot" };
+
+            Check.That(heroe).IsNotEqualTo(badGuy);
         }
 
         [Test]

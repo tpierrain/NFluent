@@ -32,6 +32,31 @@ namespace NFluent
             this.sut = sut;
         }
 
+        #region IEqualityFluentAssertion members
+
+        /// <summary>
+        /// Checks that the actual value is equal to another expected value.
+        /// </summary>
+        /// <param name="expected">The expected value.</param>
+        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
+        public void IsEqualTo(object expected)
+        {
+            EqualityHelper.IsEqualTo(this.sut, expected);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is not equal to another expected value.
+        /// </summary>
+        /// <param name="expected">The expected value.</param>
+        /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
+        public void IsNotEqualTo(object expected)
+        {
+            EqualityHelper.IsNotEqualTo(this.sut, expected);
+        }
+
+        #endregion
+
+
         #region IInstanceTypeFluentAssertion members
 
         /// <summary>
