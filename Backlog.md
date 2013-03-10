@@ -2,6 +2,7 @@ NFluent backlog
 ===============
 
 + Tackle all the TODO comments
++ Make all IFluentAssertion methods returning chainable assertion
 + Decide which behavior to implement for the IInstanceTypeFluentAssertion methods with subtypes (when type is not exactly of )
 + Find an offical Software factory
 	+ Including SONAR quality analysis
