@@ -78,20 +78,6 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual value is equal to another expected value.
-        /// </summary>
-        /// <param name="expected">
-        /// The expected value.
-        /// </param>
-        /// <exception cref="FluentAssertionException">
-        /// The actual value is not equal to the expected value.
-        /// </exception>
-        public void IsEqualTo(object expected)
-        {
-            EqualityHelper.IsEqualTo(this.sut, expected);
-        }
-
-        /// <summary>
         ///     Checks that the actual instance is an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
@@ -106,17 +92,35 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value is equal to another expected value.
+        /// </summary>
+        /// <returns>A chainable assertion.</returns>
+        /// <param name="expected">
+        ///     The expected value.
+        /// </param>
+        /// <exception cref="FluentAssertionException">
+        /// The actual value is not equal to the expected value.
+        /// </exception>
+        public IChainableFluentAssertion<IStringFluentAssertion> IsEqualTo(object expected)
+        {
+            EqualityHelper.IsEqualTo(this.sut, expected);
+            return new ChainableFluentAssertion<IStringFluentAssertion>(this);
+        }
+
+        /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
+        /// <returns>A chainable assertion.</returns>
         /// <param name="expected">
-        /// The expected value.
+        ///     The expected value.
         /// </param>
         /// <exception cref="FluentAssertionException">
         /// The actual value is equal to the expected value.
         /// </exception>
-        public void IsNotEqualTo(object expected)
+        public IChainableFluentAssertion<IStringFluentAssertion> IsNotEqualTo(object expected)
         {
             EqualityHelper.IsNotEqualTo(this.sut, expected);
+            return new ChainableFluentAssertion<IStringFluentAssertion>(this);
         }
 
         /// <summary>

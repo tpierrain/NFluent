@@ -112,7 +112,7 @@
         #endregion
 
         [Test]
-        public void AndCanChainMultipleAssertionOnNumber()
+        public void AndOperatorCanChainMultipleAssertionOnNumber()
         {
             double doubleNumber = 37.2D;
 

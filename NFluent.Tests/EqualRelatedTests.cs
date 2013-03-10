@@ -138,5 +138,34 @@
             var otherReferenceToSameObject = first;
             Check.That(first).IsNotEqualTo(otherReferenceToSameObject);
         }
+
+        [Test]
+        public void AndOperatorCanChainMultipleAssertionsForDoubleNumber()
+        {
+            double doubleNumber = 37.2D;
+
+            Check.That(doubleNumber).IsEqualTo(37.2D).And.IsNotEqualTo(40.0D).And.IsNotZero().And.IsPositive();
+            Check.That(doubleNumber).IsNotEqualTo(40.0D).And.IsEqualTo(37.2D);
+        }
+
+        [Test]
+        public void AndOperatorCanChainMultipleAssertionsForObject()
+        {
+            var camus = new Person() { Name = "Camus" };
+            var sartre = new Person() { Name = "Sartre" };
+
+            Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<Person>();
+            Check.That(sartre).IsEqualTo(sartre).And.IsInstanceOf<Person>();
+        }
+
+        [Test]
+        public void AndOperatorCanChainMultipleAssertionsForString()
+        {
+            var camus = "Camus";
+            var sartre = "Sartre";
+
+            Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<string>();
+            Check.That(sartre).IsEqualTo(sartre).And.IsInstanceOf<string>();
+        }
     }
 }

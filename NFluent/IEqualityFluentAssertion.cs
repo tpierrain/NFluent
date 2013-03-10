@@ -17,20 +17,25 @@ namespace NFluent
     /// <summary>
     /// Provides assertion methods related to the equality of the object instance.
     /// </summary>
-    public interface IEqualityFluentAssertion
+    /// <typeparam name="T">Type of the fluent assertion to be chained.</typeparam>
+    public interface IEqualityFluentAssertion<T> : IFluentAssertion where T : IFluentAssertion
     {
+        // TODO: make IsEqualTo handling a typeparam instead of object if possible.
+
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
+        /// <returns>A chainable assertion.</returns>
         /// <param name="expected">The expected value.</param>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        void IsEqualTo(object expected);
+        IChainableFluentAssertion<T> IsEqualTo(object expected);
 
         /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
+        /// <returns>A chainable assertion.</returns>
         /// <param name="expected">The expected.</param>
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        void IsNotEqualTo(object expected);
+        IChainableFluentAssertion<T> IsNotEqualTo(object expected);
     }
 }

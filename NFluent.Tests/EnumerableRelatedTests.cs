@@ -91,7 +91,9 @@
             Check.That(killingSeries).Contains("The wire").And.ContainsOnly("Game of Thrones", "The wire").And.HasSize(2);
             Check.That(killingSeries).ContainsExactly("The wire", "Game of Thrones").And.ContainsOnly("Game of Thrones", "The wire").And.HasSize(2);
             Check.That(killingSeries).ContainsOnly("Game of Thrones", "The wire").And.Contains("The wire").And.HasSize(2);
-
+            Check.That(killingSeries).IsEqualTo(killingSeries).And.Contains("The wire");
+            Check.That(killingSeries).IsNotEqualTo(null).And.Contains("Game of Thrones");
+            
             var integerEmptyList = new List<int>();
             Check.That(integerEmptyList).IsEmpty().And.HasSize(0);
         }

@@ -41,21 +41,25 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
+        /// <returns>A chainable assertion.</returns>
         /// <param name="expected">The expected value.</param>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public void IsEqualTo(object expected)
+        public IChainableFluentAssertion<IEnumerableFluentAssertion> IsEqualTo(object expected)
         {
             EqualityHelper.IsEqualTo(this.sutEnumerable, expected);
+            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
         }
 
         /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
+        /// <returns>A chainable assertion.</returns>
         /// <param name="expected">The expected value.</param>
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public void IsNotEqualTo(object expected)
+        public IChainableFluentAssertion<IEnumerableFluentAssertion> IsNotEqualTo(object expected)
         {
             EqualityHelper.IsNotEqualTo(this.sutEnumerable, expected);
+            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
         }
 
         #endregion

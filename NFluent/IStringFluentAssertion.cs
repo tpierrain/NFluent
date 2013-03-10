@@ -17,7 +17,7 @@ namespace NFluent
     /// <summary>
     /// Provides assertion methods to be executed on a string instance.
     /// </summary>
-    public interface IStringFluentAssertion : IFluentAssertion, IEqualityFluentAssertion, IInstanceTypeFluentAssertion<IStringFluentAssertion>
+    public interface IStringFluentAssertion : IFluentAssertion, IEqualityFluentAssertion<IStringFluentAssertion>, IInstanceTypeFluentAssertion<IStringFluentAssertion>
     {
         /// <summary>
         /// Checks that the string contains the given expected values, in any order.

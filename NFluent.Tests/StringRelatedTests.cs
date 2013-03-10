@@ -5,38 +5,38 @@
     [TestFixture]
     public class StringRelatedTests
     {
-        #region Contains related tests
+        #region Public Methods and Operators
 
         [Test]
-        public void ContainsWork()
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The string [""abcdefghijklmnopqrstuvwxyz""] does not contain the expected value(s): [""C"", ""A""].")]
+        public void ContainsIsCaseSensitive()
         {
-            var alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Contains("c", "z", "u");
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(alphabet).Contains("C", "a", "A", "z");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException),
-            ExpectedMessage =
-                @"The string [""abcdefghijklmnopqrstuvwxyz""] does not contain the expected value(s): [""0"", ""4""].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The string [""abcdefghijklmnopqrstuvwxyz""] does not contain the expected value(s): [""0"", ""4""].")]
         public void ContainsThrowsExceptionWhenFails()
         {
-            var alphabet = "abcdefghijklmnopqrstuvwxyz";
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
             Check.That(alphabet).Contains("c", "0", "4");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException),
-            ExpectedMessage =
-                @"The string [""abcdefghijklmnopqrstuvwxyz""] does not contain the expected value(s): [""C"", ""A""].")]
-        public void ContainsIsCaseSensitive()
+        public void ContainsWork()
         {
-            var alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Contains("C", "a", "A", "z");
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(alphabet).Contains("c", "z", "u");
         }
 
-        #endregion
-
-        #region StartsWith related tests
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The string [""abcdefghijklmnopqrstuvwxyz""] does not start with [""ABCDEF""].")]
+        public void StartWithIsCaseSensitive()
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(alphabet).StartsWith("ABCDEF");
+        }
 
         [Test]
         public void StartWithWorks()
@@ -45,15 +45,13 @@
             Check.That(alphabet).StartsWith("abcdef");
         }
 
+        #endregion
+
         [Test]
-        [ExpectedException(typeof(FluentAssertionException),
-            ExpectedMessage = @"The string [""abcdefghijklmnopqrstuvwxyz""] does not start with [""ABCDEF""].")]
-        public void StartWithIsCaseSensitive()
+        public void AndOperatorCanChainMultipleAssertionsOnString()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).StartsWith("ABCDEF");
+            Check.That(alphabet).Contains("i").And.StartsWith("abcd").And.IsInstanceOf<string>();
         }
-
-        #endregion
     }
 }
