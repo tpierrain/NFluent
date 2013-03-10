@@ -110,5 +110,14 @@
         }
 
         #endregion
+
+        [Test]
+        public void AndCanChainMultipleAssertionOnNumber()
+        {
+            double doubleNumber = 37.2D;
+
+            Check.That(doubleNumber).IsNotZero().And.IsPositive();
+            Check.That(doubleNumber).IsPositive().And.IsNotZero();
+        }
     }
 }

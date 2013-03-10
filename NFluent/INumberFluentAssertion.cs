@@ -22,19 +22,22 @@ namespace NFluent
         /// <summary>
         /// Verifies that the actual value is equal to zero.
         /// </summary>
+        /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
-        void IsZero();
+        IChainableFluentAssertion<INumberFluentAssertion> IsZero();
 
         /// <summary>
         /// Verifies that the actual value is NOT equal to zero.
         /// </summary>
+        /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
-        void IsNotZero();
+        IChainableFluentAssertion<INumberFluentAssertion> IsNotZero();
 
         /// <summary>
         /// Verifies that the actual value is strictly positive.
         /// </summary>
+        /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
-        void IsPositive();
+        IChainableFluentAssertion<INumberFluentAssertion> IsPositive();
     }
 }

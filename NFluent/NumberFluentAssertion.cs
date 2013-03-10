@@ -37,8 +37,11 @@ namespace NFluent
         /// <summary>
         /// Verifies that the actual value is equal to zero.
         /// </summary>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
-        public void IsZero()
+        public IChainableFluentAssertion<INumberFluentAssertion> IsZero()
         {
             var res = InternalIsZero(this.number);
 
@@ -46,13 +49,18 @@ namespace NFluent
             {
                 throw new FluentAssertionException(string.Format("[{0}] is not equal to zero.", this.number));
             }
+
+            return new ChainableFluentAssertion<INumberFluentAssertion>(this);
         }
 
         /// <summary>
         /// Verifies that the actual value is NOT equal to zero.
         /// </summary>
+        /// <returns>
+        /// <returns>A chainable assertion.</returns>
+        /// </returns>
         /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
-        public void IsNotZero()
+        public IChainableFluentAssertion<INumberFluentAssertion> IsNotZero()
         {
             bool res = InternalIsZero(this.number);
 
@@ -60,18 +68,23 @@ namespace NFluent
             {
                 throw new FluentAssertionException(string.Format("[{0}] is equal to zero.", this.number));
             }
+
+            return new ChainableFluentAssertion<INumberFluentAssertion>(this);
         }
 
         /// <summary>
         /// Verifies that the actual value is strictly positive.
         /// </summary>
+        /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
-        public void IsPositive()
+        public IChainableFluentAssertion<INumberFluentAssertion> IsPositive()
         {
             if (Convert.ToInt32(this.number) <= 0)
             {
                 throw new FluentAssertionException(string.Format("[{0}] is not a strictly positive value.", this.number));
             }
+
+            return new ChainableFluentAssertion<INumberFluentAssertion>(this);
         }
 
         #region IEqualityFluentAssertion members
