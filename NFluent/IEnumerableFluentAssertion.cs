@@ -16,8 +16,6 @@ namespace NFluent
 {
     using System.Collections;
 
-    // TODO: add the IFluentAssertion interface to all I...FluentAssert?
-
     /// <summary>
     /// Provides assertion methods to be executed on an enumerable instance.
     /// </summary>
