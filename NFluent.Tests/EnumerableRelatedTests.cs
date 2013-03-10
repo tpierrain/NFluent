@@ -29,7 +29,7 @@
         [Test]
         public void HasSizeWorksWithEnumerable()
         {
-            List<int> enumerable = new List<int>() { 45, 43, 54, 666 };
+            IEnumerable enumerable = new List<int>() { 45, 43, 54, 666 };
 
             Check.That(enumerable).HasSize(4);
         }
@@ -39,7 +39,7 @@
         {
             IEnumerable<int> enumerable = new List<int>() { 45, 43, 54, 666 };
 
-            Check.That(enumerable).HasSize(4);
+            Check.That(enumerable).HasSize(4).And.Contains(666);
         }
 
         [Test]
@@ -75,11 +75,39 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Enumerable not empty. Contains the element(s): [null, null, Thomas].")]
         public void IsEmptyThrowsExceptionWhenNotEmpty()
         {
-            var nobody = new List<Person>() { null, null, new Person() { Name = "Thomas" } };
+            var persons = new List<Person>() { null, null, new Person() { Name = "Thomas" } };
             
-            Check.That(nobody).IsEmpty();
+            Check.That(persons).IsEmpty();
         }
 
         #endregion
+
+        [Test]
+        public void AndOperatorWorksWithAllMethodsOfEnumerableFluentAssertion()
+        {
+            var killingSeries = new List<string>() { "The wire", "Game of Thrones" };
+            
+            Check.That(killingSeries).HasSize(2).And.ContainsOnly("Game of Thrones", "The wire").And.ContainsExactly("The wire", "Game of Thrones");
+            Check.That(killingSeries).Contains("The wire").And.ContainsOnly("Game of Thrones", "The wire").And.HasSize(2);
+            Check.That(killingSeries).ContainsExactly("The wire", "Game of Thrones").And.ContainsOnly("Game of Thrones", "The wire").And.HasSize(2);
+            Check.That(killingSeries).ContainsOnly("Game of Thrones", "The wire").And.Contains("The wire").And.HasSize(2);
+
+            var integerEmptyList = new List<int>();
+            Check.That(integerEmptyList).IsEmpty().And.HasSize(0);
+        }
+
+        [Test]
+        public void AndOperatorWorksWithAllMethodsOfEnumerableFluentAssertionOnEnumerable()
+        {
+            IEnumerable killingSeries = new List<string>() { "The wire", "Game of Thrones" };
+
+            Check.That(killingSeries).HasSize(2).And.ContainsOnly("Game of Thrones", "The wire").And.ContainsExactly("The wire", "Game of Thrones");
+            Check.That(killingSeries).Contains("The wire").And.ContainsOnly("Game of Thrones", "The wire").And.HasSize(2);
+            Check.That(killingSeries).ContainsExactly("The wire", "Game of Thrones").And.ContainsOnly("Game of Thrones", "The wire").And.HasSize(2);
+            Check.That(killingSeries).ContainsOnly("Game of Thrones", "The wire").And.Contains("The wire").And.HasSize(2);
+
+            IEnumerable integerEmptyList = new List<int>();
+            Check.That(integerEmptyList).IsEmpty().And.HasSize(0);
+        }
     }
 }

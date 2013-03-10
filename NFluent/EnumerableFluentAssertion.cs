@@ -93,14 +93,14 @@ namespace NFluent
         #endregion
 
         #region IEnumerableFluentAssertion members
-        
+
         /// <summary>
         /// Checks that the enumerable contains all the given expected values, in any order.
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the enumerable.</typeparam>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <exception cref="FluentAssertionException">The enumerable does not contain all the expected values.</exception>
-        public void Contains<T>(params T[] expectedValues)
+        public IChainableFluentAssertion<IEnumerableFluentAssertion> Contains<T>(params T[] expectedValues)
         {
             IEnumerable properExpectedValues;
             if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
@@ -113,6 +113,7 @@ namespace NFluent
             }
 
             this.Contains(properExpectedValues);
+            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
         }
 
         /// <summary>
@@ -120,13 +121,13 @@ namespace NFluent
         /// </summary>
         /// <param name="otherEnumerable">The enumerable containing the expected values to be found.</param>
         /// <exception cref="FluentAssertionException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
-        public void Contains(IEnumerable otherEnumerable)
+        public IChainableFluentAssertion<IEnumerableFluentAssertion> Contains(IEnumerable otherEnumerable)
         {
             var notFoundValues = ExtractNotFoundValues(this.sutEnumerable, otherEnumerable);
 
             if (notFoundValues.Count == 0)
             {
-                return;
+                return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
             }
 
             throw new FluentAssertionException(string.Format("The enumerable [{0}] does not contain the expected value(s): [{1}].", this.sutEnumerable.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
@@ -140,7 +141,7 @@ namespace NFluent
         /// <typeparam name="T">Type of the expected values to be found.</typeparam>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <exception cref="FluentAssertionException">The enumerable does not contain only the expected values provided.</exception>
-        public void ContainsOnly<T>(params T[] expectedValues)
+        public IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsOnly<T>(params T[] expectedValues)
         {
             IEnumerable properExpectedValues;
             if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
@@ -153,6 +154,8 @@ namespace NFluent
             }
 
             this.ContainsOnly(properExpectedValues);
+
+            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
         }
 
         /// <summary>
@@ -160,7 +163,7 @@ namespace NFluent
         /// </summary>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <exception cref="FluentAssertionException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
-        public void ContainsOnly(IEnumerable expectedValues)
+        public IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsOnly(IEnumerable expectedValues)
         {
             var unexpectedValuesFound = ExtractUnexpectedValues(this.sutEnumerable, expectedValues);
 
@@ -168,6 +171,8 @@ namespace NFluent
             {
                 throw new FluentAssertionException(string.Format("The enumerable [{0}] does not contain only the expected value(s). It contains also other values: [{1}].", this.sutEnumerable.ToEnumeratedString(), unexpectedValuesFound.ToEnumeratedString()));
             }
+
+            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
         }
 
         /// <summary>
@@ -178,7 +183,7 @@ namespace NFluent
         /// <typeparam name="T">Type of the elements to be found.</typeparam>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <exception cref="FluentAssertionException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
-        public void ContainsExactly<T>(params T[] expectedValues)
+        public IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsExactly<T>(params T[] expectedValues)
         {
             IEnumerable properExpectedValues;
             if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
@@ -191,6 +196,8 @@ namespace NFluent
             }
 
             this.ContainsExactly(properExpectedValues);
+
+            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
         }
 
         /// <summary>
@@ -200,7 +207,7 @@ namespace NFluent
         /// </summary>
         /// <param name="otherEnumerable">The other enumerable containing the exact expected values to be found.</param>
         /// <exception cref="FluentAssertionException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
-        public void ContainsExactly(IEnumerable otherEnumerable)
+        public IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsExactly(IEnumerable otherEnumerable)
         {
             // TODO: Refactor this implementation
             if (otherEnumerable == null)
@@ -230,6 +237,8 @@ namespace NFluent
                     throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
                 }
             }
+
+            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
         }
 
         /// <summary>
@@ -237,7 +246,7 @@ namespace NFluent
         /// </summary>
         /// <param name="expectedSize">The expected size to be found.</param>
         /// <exception cref="FluentAssertionException">The enumerable has not the expected number of elements.</exception>
-        public void HasSize(long expectedSize)
+        public IChainableFluentAssertion<IEnumerableFluentAssertion> HasSize(long expectedSize)
         {
             long itemsCount = this.sutEnumerable.Cast<object>().LongCount();
 
@@ -245,18 +254,22 @@ namespace NFluent
             {
                 throw new FluentAssertionException(string.Format("Has [{0}] items instead of the expected value [{1}].", itemsCount, expectedSize));
             }
+
+            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
         }
 
         /// <summary>
         /// Checks that the enumerable is empty.
         /// </summary>
         /// <exception cref="FluentAssertionException">The enumerable is not empty.</exception>
-        public void IsEmpty()
+        public IChainableFluentAssertion<IEnumerableFluentAssertion> IsEmpty()
         {
             if (this.sutEnumerable.Cast<object>().Any())
             {
                 throw new FluentAssertionException(string.Format("Enumerable not empty. Contains the element(s): [{0}].", this.sutEnumerable.ToEnumeratedString()));
             }
+
+            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
         }
 
         #endregion
