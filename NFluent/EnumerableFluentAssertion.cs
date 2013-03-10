@@ -99,6 +99,7 @@ namespace NFluent
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the enumerable.</typeparam>
         /// <param name="expectedValues">The expected values to be found.</param>
+        /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain all the expected values.</exception>
         public IChainableFluentAssertion<IEnumerableFluentAssertion> Contains<T>(params T[] expectedValues)
         {
@@ -120,6 +121,7 @@ namespace NFluent
         /// Checks that the enumerable contains all the values present in another enumerable, in any order.
         /// </summary>
         /// <param name="otherEnumerable">The enumerable containing the expected values to be found.</param>
+        /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
         public IChainableFluentAssertion<IEnumerableFluentAssertion> Contains(IEnumerable otherEnumerable)
         {
@@ -140,6 +142,7 @@ namespace NFluent
         /// </summary>
         /// <typeparam name="T">Type of the expected values to be found.</typeparam>
         /// <param name="expectedValues">The expected values to be found.</param>
+        /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain only the expected values provided.</exception>
         public IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsOnly<T>(params T[] expectedValues)
         {
@@ -162,6 +165,7 @@ namespace NFluent
         /// Checks that the enumerable contains only the values present in another enumerable, and nothing else, in any order.
         /// </summary>
         /// <param name="expectedValues">The expected values to be found.</param>
+        /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
         public IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsOnly(IEnumerable expectedValues)
         {
@@ -182,6 +186,7 @@ namespace NFluent
         /// </summary>
         /// <typeparam name="T">Type of the elements to be found.</typeparam>
         /// <param name="expectedValues">The expected values to be found.</param>
+        /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
         public IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsExactly<T>(params T[] expectedValues)
         {
@@ -206,6 +211,7 @@ namespace NFluent
         /// (i.e. don't use it with <see cref="Hashtable" />, prefer <see cref="ContainsOnly{T}" /> in that case).
         /// </summary>
         /// <param name="otherEnumerable">The other enumerable containing the exact expected values to be found.</param>
+        /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
         public IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsExactly(IEnumerable otherEnumerable)
         {
@@ -245,6 +251,7 @@ namespace NFluent
         /// Checks that the enumerable has the proper number of elements.
         /// </summary>
         /// <param name="expectedSize">The expected size to be found.</param>
+        /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The enumerable has not the expected number of elements.</exception>
         public IChainableFluentAssertion<IEnumerableFluentAssertion> HasSize(long expectedSize)
         {
@@ -261,6 +268,7 @@ namespace NFluent
         /// <summary>
         /// Checks that the enumerable is empty.
         /// </summary>
+        /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The enumerable is not empty.</exception>
         public IChainableFluentAssertion<IEnumerableFluentAssertion> IsEmpty()
         {
