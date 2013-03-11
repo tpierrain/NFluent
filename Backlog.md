@@ -2,7 +2,8 @@ NFluent backlog
 ===============
 
 + Tackle all the TODO comments
-+ Add a Check.That().ThrowsException<e>(message) method to IFluentAssertion.
++ Add a Check.That().ThrowsException<e>(message) method to IFluentAssertion
++ Add a IDateTimeFluentAssertion interface (getting semantic inspiration from: https://github.com/joel-costigliola/fest-joda-time-assert)
 + Decide which behavior to implement for the IInstanceTypeFluentAssertion methods with subtypes (when type is not exactly of )
 + Find an offical Software factory
 	+ Including SONAR quality analysis
