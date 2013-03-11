@@ -18,7 +18,7 @@ NFluent & unit test frameworks
 -------------------------------
 __NFluent is not coupled to any .NET unit test framework. It is fully designed to work in collaboration with your favorite one.__
 
-Your favorite unit test framework (e.g. NUnit, xUnit, ...) will still handle the test identification, execution & Co. __All you have to do is to replace your usage of its `Assert` statements, by the `Check.That()` NFluent statement form. That's all!__
+Your favorite unit test framework (e.g. NUnit, xUnit, ...) will still handle the test identification, execution & Co. __All you have to do is to replace your usage of its `Assert` or `Assert.That()` statements, by the `Check.That()` NFluent statement form. That's all!__
 
 Indeed, we decided to use the `Check.That()` syntax to avoid collisions and name ambiguity with the traditional `Assert` class you can find in most of your .NET unit test frameworks (therefore, no need to declare an alias in your test fixtures).
 
