@@ -12,12 +12,12 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+// ReSharper disable CheckNamespace
 namespace NFluent
+// ReSharper restore CheckNamespace
 {
     using System.Collections;
     using System.Text;
-
-    using NFluent.Helpers;
 
     // TODO: check performances
 

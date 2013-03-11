@@ -12,7 +12,9 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent.Helpers
+// ReSharper disable CheckNamespace
+namespace NFluent
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Common helper methods for the NFluent extension methods.
