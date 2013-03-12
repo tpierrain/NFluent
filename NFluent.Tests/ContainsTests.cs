@@ -19,8 +19,8 @@
         [Test]
         public void ContainsWithStringArraysWorks()
         {
-            List<string> enumerable = new List<string>() { "un", "dos", "tres" };
-            Check.That(enumerable).Contains("dos");
+            List<string> tresAmigos = new List<string>() { "un", "dos", "tres" };
+            Check.That(tresAmigos).Contains("dos");
         }
 
         [Test]
@@ -78,8 +78,8 @@
         public void ContainsWithEnumerableThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new List<int>() { 1, 2, 3 };
-            IEnumerable expected = new List<int>() { 3, 2, 666, 1974 };
-            Check.That(integers).Contains(expected);
+            IEnumerable expectedNumbers = new List<int>() { 3, 2, 666, 1974 };
+            Check.That(integers).Contains(expectedNumbers);
         }
 
         // TODO: write a Contains test with IEnumerable containing of objects with various types

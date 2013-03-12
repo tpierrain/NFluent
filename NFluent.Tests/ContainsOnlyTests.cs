@@ -11,13 +11,17 @@
         #region ContainsOnly with arrays
 
         [Test]
-        public void ContainsOnlyWithArraysWorks()
+        public void ContainsOnlyWithIntArrayWorks()
         {
             var integers = new int[] { 1, 2, 3 };
             Check.That(integers).ContainsOnly(3, 2, 1);
+        }
 
-            var enumerable = new List<string>() { "un", "dos", "tres" };
-            Check.That(enumerable).ContainsOnly("dos", "un", "tres");
+        [Test]
+        public void ContainsOnlyWithStringArraysWorks()
+        {
+            var tresAmigos = new string[] { "un", "dos", "tres" };
+            Check.That(tresAmigos).ContainsOnly("dos", "un", "tres");
         }
 
         [Test]
