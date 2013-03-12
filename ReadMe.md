@@ -54,7 +54,7 @@ With NFluent, you can write simple assertions like this:
 ```
 with NFluent, you can also write assertions like this:
 ```c#
-	 var enumerable = new List<Person>
+	 var persons = new List<Person>
                                  {
                                      new Person { Name = "Thomas", Age = 38 },
                                      new Person { Name = "Achille", Age = 10, Nationality = Nationality.French },
@@ -62,26 +62,26 @@ with NFluent, you can also write assertions like this:
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
 
-            Check.That(enumerable.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
-            Check.That(enumerable.Properties("Age")).ContainsExactly(38, 10, 7, 7);
-            Check.That(enumerable.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+    Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+    Check.That(persons.Properties("Age")).ContainsExactly(38, 10, 7, 7);
+    Check.That(persons.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
 
-            // more fluent than the following classical NUnit way, isn't it? 
-            // CollectionAssert.AreEquivalent(enumerable.Properties("Age"), new[] { 38, 10, 7, 7 });
+    // more fluent than the following classical NUnit way, isn't it? 
+    // CollectionAssert.AreEquivalent(persons.Properties("Age"), new[] { 38, 10, 7, 7 });
 
-            // it's maybe even more fluent than the java versions
-			// FEST fluent assert v 2.x:
-            // assertThat(extractProperty("name" , String.class).from(inn.getItems())).containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
-			// FEST fluent assert v 1.x:
-			// assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
+    // it's maybe even more fluent than the java versions
+	// FEST fluent assert v 2.x:
+    // assertThat(extractProperty("name" , String.class).from(inn.getItems())).containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
+	// FEST fluent assert v 1.x:
+	// assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
 ```        
 
 Why NFluent, and not another .NET fluent assertion framework?
 ----------------------------------------------------------------------------
-+ Because you don't think that writing a lambda expression within an assertion statement is really a fluent experience (neither on a reading perspective).
 + Because NFluent is completely driven by the __[super-duper-happy-path](https://github.com/NancyFx/Nancy/wiki/Introduction)__ principle to fluent your TDD experience. For instance, we consider the 'dot' autocompletion experience as crucial. Thus, it should not be polluted by things not related to the current unit testing context (which occurs with extension methods on classical .NET types - intellisense flooding).
-+ Because you dislike the `<subjectUnderTest>.Should().` syntax like me (which I find not semantically as strong as the `Assert` or the `Check.That` ones).
-+ And because you like *killing features* such as the Properties() extension method for IEnumerable (as showed within the usage sample above). 
++ Because you don't think that writing a lambda expression within an assertion statement is really a fluent experience (neither on a reading perspective).
++ Because like us, you dislike the `<subjectUnderTest>.Should().` syntax (which we find not semantically as strong as the `Assert` or the `Check.That` ones).
++ And because you like *killing features* added as bonus, such as the Properties() extension method for IEnumerable for instance (as showed within the usage sample above). 
 
 - - -
 
