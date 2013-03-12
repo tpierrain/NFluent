@@ -8,7 +8,8 @@ NFluent backlog
 + Find an offical Software factory
 	+ Including SONAR quality analysis
 + Publish v1.0 into nuget
-+ Make every FluentExceptionMessage a two liners
++ Make every FluentException message a two liners
++ Improve the output of the FluentException messages when objects are not of the same types but return the same ToString() value. 
 + Add new assertion methods to complete the offer of NFluent
 + Introduce Not operators for the IChainableFluentAssertion interface?
 + Spread the word about the library to have feedback and first users
