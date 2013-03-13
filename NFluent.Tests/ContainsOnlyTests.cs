@@ -62,9 +62,9 @@
         [Test]
         public void ContainsOnlyWithStringEnumerableWorks()
         {
-            var enumerable = new List<string>() { "un", "dos", "tres" };
-            IEnumerable expectedValues = new List<string>() { "un", "dos", "tres" };
-            Check.That(enumerable).ContainsOnly(expectedValues);
+            var tresAmigos = new List<string>() { "un", "dos", "tres" };
+            IEnumerable expectedValues = new List<string>() { "un", "tres", "dos" };
+            Check.That(tresAmigos).ContainsOnly(expectedValues);
         }
 
         [Test]
@@ -106,10 +106,10 @@
         [Test]
         public void ContainsOnlyWithStringCollectionWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
-            List<string> values = new List<string> { "one", "two", "three" };
+            List<string> oneTwoThree = new List<string> { "one", "two", "three" };
             StringCollection expectedValues = new StringCollection() { "three", "two", "three", "two", "two", "one" };
 
-            Check.That(values).ContainsOnly(expectedValues);
+            Check.That(oneTwoThree).ContainsOnly(expectedValues);
         }
 
         // TODO: write a ContainsOnly test with IEnumerable containing of objects with various types

@@ -19,7 +19,7 @@
         [Test]
         public void ContainsWithStringArraysWorks()
         {
-            List<string> tresAmigos = new List<string>() { "un", "dos", "tres" };
+            var tresAmigos = new string[] { "un", "dos", "tres" };
             Check.That(tresAmigos).Contains("dos");
         }
 
@@ -82,7 +82,14 @@
             Check.That(integers).Contains(expectedNumbers);
         }
 
-        // TODO: write a Contains test with IEnumerable containing of objects with various types
+        [Test]
+        public void ContainsWithEnumerableOfVariousObjectsTypesWorks()
+        {
+            var variousObjects = new ArrayList() { 1, "uno", "tres", 45.3F };
+            IEnumerable expectedVariousObjects = new ArrayList() { "tres", 45.3F };
+            Check.That(variousObjects).Contains(expectedVariousObjects);
+        }
+
         #endregion
     }
 }

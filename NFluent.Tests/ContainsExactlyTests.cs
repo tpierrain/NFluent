@@ -80,16 +80,16 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Michel Gondry"", ""Joon-ho Bong"", ""Darren Aronofsky""] (3 items) instead of the expected [""Steve Tesich"", ""Albert Camus"", ""Eiji Yoshikawa"", ""Friedrich Nietzsche""] (4 items).")]
         public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithEnumerable()
         {
-            IEnumerable expectedValues = InstantiateWriters().Properties("Name");
-            Check.That(InstantiateDirectors().Properties("Name")).ContainsExactly(expectedValues);
+            IEnumerable writersNames = InstantiateWriters().Properties("Name");
+            Check.That(InstantiateDirectors().Properties("Name")).ContainsExactly(writersNames);
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Michel Gondry"", ""Joon-ho Bong"", ""Darren Aronofsky""] (3 items) instead of the expected [null] (0 item).")]
         public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithNullEnumerable()
         {
-            IEnumerable expectedValues = null;
-            Check.That(InstantiateDirectors().Properties("Name")).ContainsExactly(expectedValues);
+            IEnumerable nullEnumerable = null;
+            Check.That(InstantiateDirectors().Properties("Name")).ContainsExactly(nullEnumerable);
         }
 
         // TODO: write a ContainsExactly test with IEnumerable containing of objects with various types
