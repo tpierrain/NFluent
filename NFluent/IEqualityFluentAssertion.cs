@@ -20,8 +20,6 @@ namespace NFluent
     /// <typeparam name="T">Type of the fluent assertion to be chained.</typeparam>
     public interface IEqualityFluentAssertion<T> : IFluentAssertion where T : IFluentAssertion
     {
-        // TODO: make IsEqualTo handling a typeparam instead of object if possible.
-
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>

@@ -139,8 +139,6 @@ namespace NFluent
             throw new FluentAssertionException(string.Format("The enumerable [{0}] does not contain the expected value(s): [{1}].", this.sutEnumerable.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
         }
 
-        // TODO: make all EnumerableFluentAssertion failure messages the same. I.e. "the enumerable [sut] does not contain ... [...]."
-
         /// <summary>
         /// Checks that the enumerable contains only the given values and nothing else, in any order.
         /// </summary>
