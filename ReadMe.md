@@ -98,6 +98,11 @@ New feature to be added?
 + If you want to join the project and contribute: see the __[NFluent DoD for development](./DevDoD.md)__ before, but be my guest. 
 + If you don't want to contribute on the library, but you need a feature not yet implemented, don't hesitate to request it on the __[NFluent-Discuss google group](https://groups.google.com/forum/#!forum/nfluent-discuss)__.
 __In any cases: you are welcome!__
+
+Many thanks
+------
+To the mates that gave me ideas and feedbacks to make this lib as fluent as possible: __[Joel COSTIGLIOLA](https://github.com/joel-costigliola)__, __[Rui CARVALHO](http://www.codedistillers.com/)__, __[Cyrille DUPUYDAUBY](http://dupdob.wordpress.com/)__, __Benoit LABAERE__, ... 
+
 - - -
 
-[thomas@pierrain.net](mailto:thomas@pierrain.net) / February 6th 2013
+[thomas@pierrain.net](mailto:thomas@pierrain.net) / March 2013
