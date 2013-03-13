@@ -92,7 +92,14 @@
             Check.That(InstantiateDirectors().Properties("Name")).ContainsExactly(nullEnumerable);
         }
 
-        // TODO: write a ContainsExactly test with IEnumerable containing of objects with various types
+        [Test]
+        public void ContainsExactlyWithEnumerableOfVariousObjectsTypesWorks()
+        {
+            var variousObjects = new ArrayList() { 1, "uno", "tres", 45.3F };
+            IEnumerable expectedVariousObjects = new ArrayList() { 1, "uno", "tres", 45.3F };
+            Check.That(variousObjects).ContainsExactly(expectedVariousObjects);
+        }
+
         #endregion
 
         #region test helpers

@@ -170,7 +170,7 @@ namespace NFluent
         /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
         public IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsOnly(IEnumerable expectedValues)
-        {
+        {   
             var unexpectedValuesFound = ExtractUnexpectedValues(this.sutEnumerable, expectedValues);
 
             if (unexpectedValuesFound.Count > 0)

@@ -112,7 +112,23 @@
             Check.That(oneTwoThree).ContainsOnly(expectedValues);
         }
 
-        // TODO: write a ContainsOnly test with IEnumerable containing of objects with various types
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The enumerable [1, ""uno"", ""tres"", 45,3] does not contain only the expected value(s). It contains also other values: [""uno"", ""tres""].")]
+        public void ContainsOnlyWithEnumerableThrowCaseSensitiveException()
+        {
+            var variousObjects = new ArrayList() { 1, "uno", "tres", 45.3F };
+            IEnumerable expectedVariousObjectsWithBadCase = new ArrayList() { 1, "Tres", 45.3F };
+            Check.That(variousObjects).ContainsOnly(expectedVariousObjectsWithBadCase);
+        }
+
+        [Test]
+        public void ContainsOnlyWithEnumerableOfVariousObjectsTypesWorks()
+        {
+            var variousObjects = new ArrayList() { 1, "uno", "tres", 45.3F };
+            IEnumerable expectedVariousObjects = new ArrayList() { 1, "uno", "uno", 45.3F, "tres" };
+            Check.That(variousObjects).ContainsOnly(expectedVariousObjects);
+        }
+
         #endregion
     }
 }
