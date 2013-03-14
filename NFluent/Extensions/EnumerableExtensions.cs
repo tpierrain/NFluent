@@ -19,8 +19,6 @@ namespace NFluent
     using System.Collections;
     using System.Text;
 
-    // TODO: check performances
-
     /// <summary>
     /// Extension methods for adding new fluent methods to enumerable.
     /// </summary>
@@ -40,26 +38,25 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Return a string containing all the elements of an <see cref="IEnumerable" />, separated by a comma.
+        /// Return a string containing all the elements of an <see cref="IEnumerable" />, separated by a given separator.
         /// </summary>
         /// <param name="enumerable">The enumerable to transform into a string.</param>
-        /// <param name="itemsCount">The number of items within the <see cref="IEnumerable"/>.</param>
+        /// <param name="itemsCount">The number of items within the <see cref="IEnumerable" />.</param>
+        /// <param name="separator">The separator.</param>
         /// <returns>
-        /// A string containing all the <see cref="IEnumerable" /> elements, separated by a comma.
+        /// A string containing all the <see cref="IEnumerable" /> elements, separated by a separator.
         /// </returns>
-        public static string ToEnumeratedString(this IEnumerable enumerable, out long itemsCount)
+        public static string ToEnumeratedString(this IEnumerable enumerable, out long itemsCount, string separator)
         {
-            // TODO: extract method to introduce Separator as a parameter (and using comma as Default value)
             var firstTime = true;
             var sb = new StringBuilder();
-            const string Separator = ", ";
             itemsCount = 0;
 
             foreach (var obj in enumerable)
             {
                 if (!firstTime)
                 {
-                    sb.Append(Separator);
+                    sb.Append(separator);
                 }
 
                 if (obj == null)
@@ -76,6 +73,33 @@ namespace NFluent
             }
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Return a string containing all the elements of an <see cref="IEnumerable" />, separated by a comma.
+        /// </summary>
+        /// <param name="enumerable">The enumerable to transform into a string.</param>
+        /// <param name="itemsCount">The number of items within the <see cref="IEnumerable"/>.</param>
+        /// <returns>
+        /// A string containing all the <see cref="IEnumerable" /> elements, separated by a comma.
+        /// </returns>
+        public static string ToEnumeratedString(this IEnumerable enumerable, out long itemsCount)
+        {
+            const string Separator = ", ";
+            return ToEnumeratedString(enumerable, out itemsCount, Separator);
+        }
+
+        /// <summary>
+        /// Return a string containing all the elements of an <see cref="IEnumerable" />, separated by a given separator.
+        /// </summary>
+        /// <param name="enumerable">The enumerable to transform into a string.</param>
+        /// <param name="separator">The separator.</param>
+        /// <returns>A string containing all the <see cref="IEnumerable" /> elements, separated by the given separator.</returns>
+        /// A string containing all the <see cref="IEnumerable" /> elements, separated by the given separator.
+        public static string ToEnumeratedString(this IEnumerable enumerable, string separator)
+        {
+            long dontCareItemsCount;
+            return ToEnumeratedString(enumerable, out dontCareItemsCount, separator);
         }
     }
 }
