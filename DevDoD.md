@@ -19,6 +19,7 @@ Before modifying this library, it is very important to keep in mind that __this 
 
 Thus, it means that:
 + __names__ of the assertion methods __should be chosen carefully__ and smartly embrace the intellisense autocompletion mechanism (i.e. the 'dot' experience).
++ you should __avoid using lambda expressions within the assertion methods__ (cause writing a lambda expression within an assertion statement is not really a fluent experience, neither on a reading perspective)
 + every __assertion method should return a chainable assertion, and should throw a FluentAssertionException when failing__ (to make your favorite unit test framwork fail __with a clear status message__.
 + the message of all the FluentAssertionException you throw should be clear as crystal, but also compliant with the ready-to-be-copied-and-paste-for-arrays-or-collections-initialization-purpose objective of NFluent  
 
