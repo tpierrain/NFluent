@@ -219,5 +219,11 @@ namespace NFluent
         }
 
         #endregion
+
+
+        public static IHttpWebResponseFluentAssertion That(System.Net.HttpWebResponse value)
+        {
+            return new HttpWebResponseFluentAssertion(value);
+        }
     }
 }

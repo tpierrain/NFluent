@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="ChainableFluentAssertion.cs" />
     <Compile Include="Check.cs" />
+    <Compile Include="HttpWebResponseFluentAssertion.cs" />
+    <Compile Include="IHttpWebResponseFluentAssertion.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="IObjectFluentAssertion.cs" />
     <Compile Include="ObjectFluentAssertion.cs" />
