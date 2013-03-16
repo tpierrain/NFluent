@@ -13,3 +13,6 @@ NFluent backlog
 + Add new assertion methods to complete the offer of NFluent
 + Introduce Not operators for the IChainableFluentAssertion interface?
 + Spread the word about the library to have feedback and first users
+
++ Test with different unit testing libraries
++ Push backlog to github as issues
