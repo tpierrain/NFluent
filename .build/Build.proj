@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="RunAll" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    
+    <PropertyGroup>
+        <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
+        <ProjectRoot>$(MSBuildProjectDirectory)\..</ProjectRoot>
+        <ProjectName>NFluent</ProjectName>
+        <ToolsPath>$(ProjectRoot)\tools\</ToolsPath>
+        <ArtifactsPath>$(ProjectRoot)\Artifacts</ArtifactsPath>
+        <BinariesPath>$(ArtifactsPath)\Binaries</BinariesPath>
+        <PackagesPath>$(ArtifactsPath)\Packages</PackagesPath>
+        <DocPath>$(ArtifactsPath)\Docs</DocPath>
+        <NuGetToolsPath>$(ProjectRoot)\.nuget</NuGetToolsPath>
+        <NuGetExePath>$(NuGetToolsPath)\nuget.exe</NuGetExePath>
+        <DocuExePath>$(ToolsPath)docu\docu.exe</DocuExePath>
+        <ZipExe>$(ToolsPath)7za\7za.exe</ZipExe>
+        <TestRunnerPath>$(ProjectRoot)\packages\NUnit.Runners.2.6.2\tools\nunit-console.exe</TestRunnerPath>
+       <TestAssembly>$(ProjectRoot)\$(ProjectName).Tests\bin\$(Configuration)\$(ProjectName).Tests.dll</TestAssembly>
+    </PropertyGroup>
+    
+    <Target Name="RunAll" DependsOnTargets="Build; BuildDocs; RunTests; Package" />
+    <Target Name="CI" DependsOnTargets="Build; BuildDocs" />
+
+    <!-- 1- Do the BUILD -->
+    <Target Name="Build">
+        <Message Importance="high" Text="
+---------------------------------------------------------------
+BUILD PROJECT
+---------------------------------------------------------------
+        "  />
+        
+        <MSBuild Projects="$(ProjectRoot)\$(ProjectName).sln" 
+                 Targets="Build" 
+                 Properties="Configuration=$(Configuration)" />
+    </Target>
+    
+    
+    <!-- 2- BUILD THE DOCS -->
+    <Target Name="BuildDocs">
+        <Message Importance="high" Text="
+---------------------------------------------------------------
+GENERATING DOCS for:
+    - $(BinariesPath)\$(ProjectName).dll
+---------------------------------------------------------------
+            "  />
+        <MakeDir Directories="$(DocPath)" Condition="!Exists('$(DocPath)')" />
+        <Exec Command="$(DocuExePath) $(BinariesPath)\$(ProjectName).dll --output=$(DocPath)" />
+        <Exec Command="&quot;$(ZipExe)&quot; a -tzip &quot;$(PackagesPath)\$(ProjectName).docs.zip&quot; &quot;$(DocPath)&quot;" />
+    </Target>
+
+
+    <!-- 3- Run the TESTS -->
+    <ItemGroup>
+        <TestAssembly Include="$(ProjectRoot)\$(ProjectName).Tests\bin\$(Configuration)\$(ProjectName).Tests.dll" />
+    </ItemGroup>
+
+    <Target Name="RunTests" DependsOnTargets="Build">
+        <Message Importance="high" Text="
+---------------------------------------------------------------
+RUN ALL UNIT TESTS
+---------------------------------------------------------------
+            "  />
+
+        <Exec Command="&quot;$(TestRunnerPath)&quot; &quot;$(TestAssembly)&quot;"
+          LogStandardErrorAsError="true" />
+    </Target>
+    
+
+    <!-- 4- Then Package -->
+    <Target Name="Package" DependsOnTargets="RunTests">
+        <Message Importance="high" Text="
+---------------------------------------------------------------
+CREATING NUGET PACKAGE IN:
+    - $(PackagesPath)
+---------------------------------------------------------------
+            "  />
+        <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
+        <Exec Command="&quot;$(NuGetExePath)&quot; pack &quot;$(ProjectRoot)\$(ProjectName).nuspec&quot; -o &quot;$(PackagesPath)&quot;"
+          LogStandardErrorAsError="true" />
+    </Target>
+
+    
+
+</Project>

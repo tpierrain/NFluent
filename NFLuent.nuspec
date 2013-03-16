@@ -16,6 +16,6 @@
         <tags>tdd bdd test fluent</tags>
     </metadata>
     <files>
-        <file src="Build\Binaries\NFluent.dll" target="lib\net40\NFluent.dll" />
+        <file src="Artifacts\Binaries\NFluent.dll" target="lib\net40\NFluent.dll" />
     </files>
 </package>
