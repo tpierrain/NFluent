@@ -17,7 +17,9 @@ namespace NFluent
     using System.Collections;
 
     /// <summary>
-    /// Provides a set of static methods that always return an <see cref="IFluentAssertion"/> instance to be used in order to make a check on the provided System Under Test (SUT) instance. 
+    /// Provides a set of static methods, returning all an instance of a specific subtype of 
+    /// <see cref="IFluentAssertion"/> to be used in order to make check(s) on the provided 
+    /// system under test (sut) instance.
     /// </summary>
     public static class Check
     {

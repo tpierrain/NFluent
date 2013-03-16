@@ -21,7 +21,7 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides assertion methods to be executed on the enumerable System Under Test (SUT) instance.
+    /// Provides assertion methods to be executed on an enumerable instance.
     /// </summary>
     internal class EnumerableFluentAssertion : IEnumerableFluentAssertion
     {
@@ -36,7 +36,7 @@ namespace NFluent
             this.sutEnumerable = sutEnumerable;
         }
 
-        #region IEqualityFluentAssertion members
+        #region IEqualityFluentAssertionTrait members
 
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
@@ -64,7 +64,7 @@ namespace NFluent
 
         #endregion
 
-        #region IInstanceTypeFluentAssertion members
+        #region IInstanceTypeFluentAssertionTrait members
 
         /// <summary>
         /// Checks that the actual instance is an instance of the given type.
@@ -74,7 +74,7 @@ namespace NFluent
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        IChainableFluentAssertion<IEnumerableFluentAssertion> IInstanceTypeFluentAssertion<IEnumerableFluentAssertion>.IsInstanceOf<T>()
+        IChainableFluentAssertion<IEnumerableFluentAssertion> IInstanceTypeFluentAssertionTrait<IEnumerableFluentAssertion>.IsInstanceOf<T>()
         {
             IsInstanceHelper.IsInstanceOf(this.sutEnumerable, typeof(T));
             return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
@@ -88,7 +88,7 @@ namespace NFluent
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        IChainableFluentAssertion<IEnumerableFluentAssertion> IInstanceTypeFluentAssertion<IEnumerableFluentAssertion>.IsNotInstanceOf<T>()
+        IChainableFluentAssertion<IEnumerableFluentAssertion> IInstanceTypeFluentAssertionTrait<IEnumerableFluentAssertion>.IsNotInstanceOf<T>()
         {
             IsInstanceHelper.IsNotInstanceOf(this.sutEnumerable, typeof(T));
             return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);

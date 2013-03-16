@@ -19,7 +19,7 @@ namespace NFluent
     /// <summary>
     /// Provides assertion methods to be executed on an enumerable instance.
     /// </summary>
-    public interface IEnumerableFluentAssertion : IFluentAssertion, IEqualityFluentAssertion<IEnumerableFluentAssertion>, IInstanceTypeFluentAssertion<IEnumerableFluentAssertion>
+    public interface IEnumerableFluentAssertion : IFluentAssertion, IEqualityFluentAssertionTrait<IEnumerableFluentAssertion>, IInstanceTypeFluentAssertionTrait<IEnumerableFluentAssertion>
     {
         /// <summary>
         /// Checks that the enumerable contains all the given expected values, in any order.

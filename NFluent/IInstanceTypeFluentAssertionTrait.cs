@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IInstanceTypeFluentAssertion.cs" company="">
+// // <copyright file="IInstanceTypeFluentAssertionTrait.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
 namespace NFluent
 {
     /// <summary>
-    /// Provides assertion methods related to the type of the System Under Test (SUT) instance.
+    /// Assertion methods related to the type of the System Under Test (SUT) instance.
     /// </summary>
     /// <typeparam name="F">Type of the considered IFluentAssertion.</typeparam>
-    public interface IInstanceTypeFluentAssertion<F> where F : IFluentAssertion
+    public interface IInstanceTypeFluentAssertionTrait<F> where F : IFluentAssertion
     {
         /// <summary>
         /// Checks that the actual instance is an instance of the given type.
@@ -39,5 +39,9 @@ namespace NFluent
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
         IChainableFluentAssertion<F> IsNotInstanceOf<T>();
+
+        // TODO: implement the following methods 
+        // IChainableFluentAssertion<F> IsAssignableTo<T>();
+        // IChainableFluentAssertion<F> IsNotAssignableTo<T>();
     }
 }

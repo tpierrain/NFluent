@@ -49,11 +49,11 @@
     <Compile Include="Extensions\ExtensionsCommonHelpers.cs" />
     <Compile Include="IChainableFluentAssertion.cs" />
     <Compile Include="IFluentAssertion.cs" />
-    <Compile Include="IInstanceTypeFluentAssertion.cs" />
+    <Compile Include="IInstanceTypeFluentAssertionTrait.cs" />
     <Compile Include="NumberFluentAssertion.cs" />
     <Compile Include="FluentAssertionException.cs" />
     <Compile Include="EnumerableFluentAssertion.cs" />
-    <Compile Include="IEqualityFluentAssertion.cs" />
+    <Compile Include="IEqualityFluentAssertionTrait.cs" />
     <Compile Include="INumberFluentAssertion.cs" />
     <Compile Include="StringFluentAssertion.cs" />
     <Compile Include="IEnumerableFluentAssertion.cs" />

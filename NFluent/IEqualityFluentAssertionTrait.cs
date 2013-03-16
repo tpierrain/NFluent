@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IEqualityFluentAssertion.cs" company="">
+// // <copyright file="IEqualityFluentAssertionTrait.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
 namespace NFluent
 {
     /// <summary>
-    /// Provides assertion methods related to the equality of the object instance.
+    /// Assertion methods related to the equality of the object instance.
     /// </summary>
     /// <typeparam name="T">Type of the fluent assertion to be chained.</typeparam>
-    public interface IEqualityFluentAssertion<T> : IFluentAssertion where T : IFluentAssertion
+    public interface IEqualityFluentAssertionTrait<T> where T : IFluentAssertion
     {
         /// <summary>
         /// Checks that the actual value is equal to another expected value.

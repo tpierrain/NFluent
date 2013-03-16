@@ -19,7 +19,7 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    ///     Provides assertion methods to be executed on a string instance.
+    /// Provides assertion methods to be executed on a string instance.
     /// </summary>
     internal class StringFluentAssertion : IStringFluentAssertion
     {
