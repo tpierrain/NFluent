@@ -11,7 +11,7 @@ Artifacts/Binaries/*.dll
 Artifacts/Binaries/*.xml
 Artifacts/Packages/
 Artifacts/Docs/
-
+TestResult.xml
 
 [Dd]ebug/
 [Rr]elease/
