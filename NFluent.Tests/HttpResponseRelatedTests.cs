@@ -8,18 +8,6 @@
     public class HttpResponseRelatedTests
     {
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[\"Trailer\"] header was not found in the response headers")]
-        public void HasHeaderThrowsExceptionWhenNotExistsWithEnum()
-        {
-            var request = this.CreateGoogleHttpRequest();
-            
-            using (var response = (HttpWebResponse)request.GetResponse())
-            {
-                Check.That(response).HasHeader(HttpResponseHeader.Trailer);
-            }
-        }
-
-        [Test]
         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The http response content is not encoded using gzip.")]
         public void IsGZipEncodedThrowsExceptionWhenNotEncoded()
         {
@@ -80,6 +68,30 @@
         }
 
         [Test]
+        public void HasHeaderWhichContainsWorks()
+        {
+            var request = this.CreateGoogleHttpRequest();
+
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).HasHeader(HttpResponseHeader.Server).Which.Contains("gws")
+                                    .And.HasHeader("X-Frame-Options").Which.Contains("SAMEORIGIN");
+            }
+        }
+
+        [Test]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[\"Trailer\"] header was not found in the response headers")]
+        public void HasHeaderThrowsExceptionWhenNotExistsWithEnum()
+        {
+            var request = this.CreateGoogleHttpRequest();
+
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).HasHeader(HttpResponseHeader.Trailer);
+            }
+        }
+
+        [Test]
         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[\"NFluent\"] header was not found in the response headers")]
         public void HasHeaderThrowsExceptionWhenHeaderIsNotFoundWithString()
         {
@@ -126,21 +138,20 @@
                 Check.That(response).HasHeader("Server").Which.Contains("Robin");
             }
         }
-        
+
         [Test]
-        public void HeaderContainsWorks()
+        public void ContainsWorks()
         {
             var request = this.CreateGoogleHttpRequest();
-            
+
             using (var response = (HttpWebResponse)request.GetResponse())
             {
-                Check.That(response).HasHeader(HttpResponseHeader.Server).Which.Contains("gws")
-                                    .And.HasHeader("X-Frame-Options").Which.Contains("SAMEORIGIN");
+                Check.That(response).Contains("Google");
             }
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The response content does not contain the expected value(s): [\"Robin\", \"Batman\"].")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "The http response content does not contain the expected value(s): [\"Robin\", \"Batman\"].")]
         public void ContainsThrowsException()
         {
             var request = this.CreateGoogleHttpRequest();
@@ -152,18 +163,7 @@
         }
        
         [Test]
-        public void ContainsWorks()
-        {
-            var request = this.CreateGoogleHttpRequest();
-            
-            using (var response = (HttpWebResponse)request.GetResponse())
-            {
-                Check.That(response).Contains("Google");
-            }
-        }
-
-        [Test]
-        public void WorksWithNonGZipResponseStream()
+        public void IsNotGZipEncodedWorks()
         {
             var request = this.CreateHttpRequest("http://www.gitbub.com");
 
@@ -174,7 +174,7 @@
         }
 
         [Test]
-        public void AndOperatorWorksWithHttpWebResponseAssertions()
+        public void AndOperatorWorksWithVariousAssertionTypes()
         {
             var request = this.CreateGoogleHttpRequest();
             request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip");
@@ -191,6 +191,8 @@
                                     .And.IsEqualTo(response).And.IsNotEqualTo("Batman");
 
                 // X-Frame-Options: SAMEORIGIN
+
+                // TODO: Allow usage of multiple assertions on a given header such as:  .And.HasHeader("X-Frame-Options").Which.Contains("SAMEORIGIN").And.StartsWith("SAME").And.EndsWith("ORIGIN")
             }
         }
 

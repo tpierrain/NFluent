@@ -144,7 +144,7 @@ namespace NFluent
 
             if (notFound.Count > 0)
             {
-                throw new FluentAssertionException(string.Format(@"The response content does not contain the expected value(s): [{0}].", notFound.ToEnumeratedString()));
+                throw new FluentAssertionException(string.Format(@"The http response content does not contain the expected value(s): [{0}].", notFound.ToEnumeratedString()));
             }
 
             return this.ChainFluentAssertion();
