@@ -70,13 +70,10 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The response headers of the <see cref="HttpWebResponse"/> instance does not contain any header with the specified name.</exception>
         public IChainableHttpHeaderOrHttpWebResponseFluentAssertion HasHeader(HttpResponseHeader header)
         {
+            string headerName = header.ToString();
             string headerContent = this.hwrut.Headers[header];
-            if (string.IsNullOrEmpty(headerContent))
-            {
-                throw new FluentAssertionException(string.Format("[{0}] header was not found in the response headers", header.ToStringProperlyFormated()));
-            }
 
-            return new ChainableHttpHeaderOrHttpWebResponseFluentAssertion(header.ToString(), headerContent, this);
+            return this.HasHeaderInternal(headerContent, headerName);
         }
 
         /// <summary>
@@ -89,12 +86,7 @@ namespace NFluent
         {
             string headerContent = this.hwrut.Headers[headerName];
 
-            if (string.IsNullOrEmpty(headerContent))
-            {
-                throw new FluentAssertionException(string.Format("[{0}] header was not found in the response headers", headerName.ToStringProperlyFormated()));
-            }
-
-            return new ChainableHttpHeaderOrHttpWebResponseFluentAssertion(headerName, headerContent, this);
+            return this.HasHeaderInternal(headerContent, headerName);
         }
 
         /// <summary>
@@ -218,6 +210,16 @@ namespace NFluent
         private bool IsGZipEncodedInternal()
         {
             return this.hwrut.ContentEncoding == "gzip";
+        }
+
+        private IChainableHttpHeaderOrHttpWebResponseFluentAssertion HasHeaderInternal(string headerContent, string headerName)
+        {
+            if (string.IsNullOrEmpty(headerContent))
+            {
+                throw new FluentAssertionException(string.Format("[{0}] header was not found in the response headers", headerName.ToStringProperlyFormated()));
+            }
+
+            return new ChainableHttpHeaderOrHttpWebResponseFluentAssertion(headerName, headerContent, this);
         }
     }
 }

@@ -8,7 +8,7 @@
     public class HttpResponseRelatedTests
     {
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[Trailer] header was not found in the response headers")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[\"Trailer\"] header was not found in the response headers")]
         public void HasHeaderThrowsExceptionWhenNotExistsWithEnum()
         {
             var request = this.CreateGoogleHttpRequest();
@@ -81,13 +81,25 @@
 
         [Test]
         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[\"NFluent\"] header was not found in the response headers")]
-        public void HasHeaderThrowsExceptionWhenNotExistsWithString()
+        public void HasHeaderThrowsExceptionWhenHeaderIsNotFoundWithString()
         {
             var request = this.CreateGoogleHttpRequest();
             
             using (var response = (HttpWebResponse)request.GetResponse())
             {
                 Check.That(response).HasHeader("NFluent");
+            }
+        }
+
+        [Test]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[\"ContentMd5\"] header was not found in the response headers")]
+        public void HasHeaderThrowsExceptionWhenHeaderIsNotFoundWithEnumeration()
+        {
+            var request = this.CreateGoogleHttpRequest();
+
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).HasHeader(HttpResponseHeader.ContentMd5);
             }
         }
 
