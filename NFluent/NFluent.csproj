@@ -46,9 +46,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChainableFluentAssertion.cs" />
+    <Compile Include="ChainableHttpHeaderOrHttpWebResponseFluentAssertion.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="Helpers\HttpHelper.cs" />
+    <Compile Include="HttpHeaderFluentAssertion.cs" />
     <Compile Include="HttpWebResponseFluentAssertion.cs" />
+    <Compile Include="IChainableHttpHeaderOrHttpWebResponseFluentAssertion.cs" />
+    <Compile Include="IHttpHeaderFluentAssertion.cs" />
     <Compile Include="IHttpWebResponseFluentAssertion.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="IObjectFluentAssertion.cs" />

@@ -5,7 +5,6 @@
     using NUnit.Framework;
 
     [TestFixture]
-    [Ignore("note from Thomas to Marco: these tests are much more integration tests than unit tests. Also, a lot of tests are failing here, due to timeout exception. Would it be feasible to mock every http response creation, or to memoize answers to speed up and make those tests reliable?")]
     public class HttpResponseRelatedTests
     {
         [Test]
@@ -13,9 +12,11 @@
         public void HasHeaderThrowsExceptionWhenNotExistsWithEnum()
         {
             var request = this.CreateGoogleHttpRequest();
-            var response = (HttpWebResponse)request.GetResponse();
-
-            Check.That(response).HasHeader(HttpResponseHeader.Trailer);
+            
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).HasHeader(HttpResponseHeader.Trailer);
+            }
         }
 
         [Test]
@@ -23,9 +24,11 @@
         public void IsGZipEncodedThrowsExceptionWhenNotEncoded()
         {
             var request = this.CreateGoogleHttpRequest();
-            var response = (HttpWebResponse)request.GetResponse();
-
-            Check.That(response).IsGZipEncoded();
+            
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).IsGZipEncoded();
+            }
         }
         
         [Test]
@@ -34,9 +37,11 @@
         {
             var request = this.CreateGoogleHttpRequest();
             request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip");
-            var response = (HttpWebResponse)request.GetResponse();
-
-            Check.That(response).IsNotGZipEncoded();
+            
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).IsNotGZipEncoded();
+            }
         }
 
         [Test]
@@ -44,9 +49,11 @@
         {
             var request = this.CreateGoogleHttpRequest();
             request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip");
-            var response = (HttpWebResponse)request.GetResponse();
-
-            Check.That(response).IsGZipEncoded();
+            
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).IsGZipEncoded();
+            }
         }
 
         [Test]
@@ -54,18 +61,22 @@
         public void StatusCodeEqualToThrowsExceptionWhenNotEqual()
         {
             var request = this.CreateGoogleHttpRequest();
-            var response = (HttpWebResponse)request.GetResponse();
-
-            Check.That(response).StatusCodeEqualsTo(HttpStatusCode.InternalServerError);
+            
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).StatusCodeEqualsTo(HttpStatusCode.InternalServerError);
+            }
         }
 
         [Test]
         public void StatusCodeEqualsToWorks()
         {
             var request = this.CreateGoogleHttpRequest();
-            var response = (HttpWebResponse)request.GetResponse();
-
-            Check.That(response).StatusCodeEqualsTo(HttpStatusCode.OK);
+            
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).StatusCodeEqualsTo(HttpStatusCode.OK);
+            }
         }
 
         [Test]
@@ -73,49 +84,47 @@
         public void HasHeaderThrowsExceptionWhenNotExistsWithString()
         {
             var request = this.CreateGoogleHttpRequest();
-            var response = (HttpWebResponse)request.GetResponse();
-
-            Check.That(response).HasHeader("NFluent");
+            
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).HasHeader("NFluent");
+            }
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "HasHeader() must be called before beeing able to look his value")]
-        public void HeaderContainsThrowsExceptionWhenHasHeaderHasNotBeenCalled()
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "Response header with name [\"Server\"] does not contain [\"Batman\"]. Header content is [\"gws\"].")]
+        public void HasHeaderWhichContainsThrowsExceptionWithProperMessageWithHeaderEnumeration()
         {
             var request = this.CreateGoogleHttpRequest();
-            var response = (HttpWebResponse)request.GetResponse();
-            Check.That(response).HeaderContains("gws");
+            
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).HasHeader(HttpResponseHeader.Server).Which.Contains("Batman");
+            }
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "Response header [Server] is not equal to the expected header value [\"Batman\"]")]
-        public void HeaderContainsThrowsExceptionWhenHeaderValueIsNotEqual()
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "Response header with name [\"Server\"] does not contain [\"Robin\"]. Header content is [\"gws\"].")]
+        public void HasHeaderWhichContainsThrowsExceptionWithProperMessageWithCustomHeaderName()
         {
             var request = this.CreateGoogleHttpRequest();
-            var response = (HttpWebResponse)request.GetResponse();
-
-            Check.That(response).HasHeader(HttpResponseHeader.Server).And.HeaderContains("Batman");
-            Check.That(response).HasHeader("NFluent").And.HeaderContains("gws");
-        }
-
-        [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "Response header [\"Server\"] is not equal to the expected header value [\"Robin\"]")]
-        public void HeaderContainsThrowsExceptionWhenHeaderValueIsNotEqualWithCustomHeader()
-        {
-            var request = this.CreateGoogleHttpRequest();
-            var response = (HttpWebResponse)request.GetResponse();
-
-            Check.That(response).HasHeader("Server").And.HeaderContains("Robin");
+            
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).HasHeader("Server").Which.Contains("Robin");
+            }
         }
         
         [Test]
         public void HeaderContainsWorks()
         {
             var request = this.CreateGoogleHttpRequest();
-            var response = (HttpWebResponse)request.GetResponse();
-
-            Check.That(response).HasHeader(HttpResponseHeader.Server).And.HeaderContains("gws").And
-                                .HasHeader("X-Frame-Options").And.HeaderContains("SAMEORIGIN");
+            
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).HasHeader(HttpResponseHeader.Server).Which.Contains("gws")
+                                    .And.HasHeader("X-Frame-Options").Which.Contains("SAMEORIGIN");
+            }
         }
 
         [Test]
@@ -123,48 +132,54 @@
         public void ContainsThrowsException()
         {
             var request = this.CreateGoogleHttpRequest();
-            var response = (HttpWebResponse)request.GetResponse();
-
-            Check.That(response).Contains("Robin", "Batman");
+            
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).Contains("Robin", "Batman");
+            }
         }
        
         [Test]
         public void ContainsWorks()
         {
             var request = this.CreateGoogleHttpRequest();
-            var response = (HttpWebResponse)request.GetResponse();
-
-            Check.That(response).Contains("Google");
+            
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).Contains("Google");
+            }
         }
 
         [Test]
         public void WorksWithNonGZipResponseStream()
         {
             var request = this.CreateHttpRequest("http://www.gitbub.com");
-            var response = (HttpWebResponse)request.GetResponse();
 
-            Check.That(response).IsNotGZipEncoded();
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).IsNotGZipEncoded();
+            }
         }
 
         [Test]
-        public void CheckThatHttpWebResponseAssertionsWorks()
+        public void AndOperatorWorksWithHttpWebResponseAssertions()
         {
             var request = this.CreateGoogleHttpRequest();
             request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip");
-            
-            var response = (HttpWebResponse)request.GetResponse();
 
-            Check.That(response)
-                .StatusCodeEqualsTo(HttpStatusCode.OK).And
-                .HasHeader(HttpResponseHeader.CacheControl).And
-                .HasHeader("X-Frame-Options").And.HeaderContains("SAMEORIGIN").And
-                .HasHeader(HttpResponseHeader.Server).And.HeaderContains("gws").And
-                .IsGZipEncoded().And
-                .Contains("Google").And
-                .IsInstanceOf<HttpWebResponse>().And.IsNotInstanceOf<WebResponse>().And
-                .IsEqualTo(response).And.IsNotEqualTo("Batman");
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Check.That(response).StatusCodeEqualsTo(HttpStatusCode.OK)
+                                    .And.HasHeader(HttpResponseHeader.CacheControl)
+                                    .And.HasHeader("X-Frame-Options").Which.Contains("SAMEORIGIN")
+                                    .And.HasHeader(HttpResponseHeader.Server).Which.Contains("gws")
+                                    .And.IsGZipEncoded().And.Contains("Google")
+                                    .And.IsInstanceOf<HttpWebResponse>()
+                                    .And.IsNotInstanceOf<WebResponse>()
+                                    .And.IsEqualTo(response).And.IsNotEqualTo("Batman");
 
-            // X-Frame-Options: SAMEORIGIN
+                // X-Frame-Options: SAMEORIGIN
+            }
         }
 
         private HttpWebRequest CreateGoogleHttpRequest()

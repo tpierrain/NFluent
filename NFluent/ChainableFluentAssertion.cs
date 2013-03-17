@@ -22,15 +22,15 @@ namespace NFluent
     /// <typeparam name="T">Type of the <see cref="IFluentAssertion"/> to be chained.</typeparam>
     public class ChainableFluentAssertion<T> : IChainableFluentAssertion<T> where T : IFluentAssertion
     {
-        private readonly T previousFluentAssert;
+        private readonly T previousFluentAssertion;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChainableFluentAssertion{T}" /> class.
         /// </summary>
-        /// <param name="previousFluentAssert">The previous fluent assert.</param>
-        public ChainableFluentAssertion(T previousFluentAssert)
+        /// <param name="previousFluentAssertion">The previous fluent assert.</param>
+        public ChainableFluentAssertion(T previousFluentAssertion)
         {
-            this.previousFluentAssert = previousFluentAssert;
+            this.previousFluentAssertion = previousFluentAssertion;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace NFluent
         {
             get
             {
-                return this.previousFluentAssert;
+                return this.previousFluentAssertion;
             }
         }
     }

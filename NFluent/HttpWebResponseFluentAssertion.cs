@@ -29,10 +29,6 @@ namespace NFluent
 
         private readonly HttpWebResponse hwrut;
 
-        private HttpResponseHeader? lastCheckedHeader;
-
-        private string lastCheckedCustomHeader;
-
         #endregion
 
         #region Constructors and Destructors
@@ -67,39 +63,38 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Check whether the specified header is contains within the response headers.
+        /// Check whether the specified header is part of the response headers of the <see cref="HttpWebResponse"/>.
         /// </summary>
-        /// <param name="header">The expected response header.</param>
-        /// <returns>A chainable assertion.</returns>
-        /// <exception cref="FluentAssertionException">The header was not contains in response headers.</exception>
-        public IChainableFluentAssertion<IHttpWebResponseFluentAssertion> HasHeader(HttpResponseHeader header)
+        /// <param name="header">The expected response header value.</param>
+        /// <returns>A chainable assertion that may be used to assert on the given header or on the <see cref="HttpWebResponse"/>.</returns>
+        /// <exception cref="FluentAssertionException">The response headers of the <see cref="HttpWebResponse"/> instance does not contain any header with the specified name.</exception>
+        public IChainableHttpHeaderOrHttpWebResponseFluentAssertion HasHeader(HttpResponseHeader header)
         {
-            if (string.IsNullOrEmpty(this.hwrut.Headers[header]))
+            string headerContent = this.hwrut.Headers[header];
+            if (string.IsNullOrEmpty(headerContent))
             {
                 throw new FluentAssertionException(string.Format("[{0}] header was not found in the response headers", header.ToStringProperlyFormated()));
             }
 
-            this.lastCheckedHeader = header;
-            this.lastCheckedCustomHeader = null;
-            return this.ChainFluentAssertion();
+            return new ChainableHttpHeaderOrHttpWebResponseFluentAssertion(header.ToString(), headerContent, this);
         }
 
         /// <summary>
-        /// Check whether the specified header is contains within the response headers.
+        /// Check whether the specified header is part of the response headers of the <see cref="HttpWebResponse"/>.
         /// </summary>
-        /// <param name="header">The expected response header.</param>
-        /// <returns>A chainable assertion.</returns>
-        /// <exception cref="FluentAssertionException">The header was not contains in response headers.</exception>
-        public IChainableFluentAssertion<IHttpWebResponseFluentAssertion> HasHeader(string header)
+        /// <param name="headerName">The expected response header name.</param>
+        /// <returns>A chainable assertion that may be used to assert on the given header or on the <see cref="HttpWebResponse"/>.</returns>
+        /// <exception cref="FluentAssertionException">The response headers of the <see cref="HttpWebResponse"/> instance does not contain any header with the specified name.</exception>
+        public IChainableHttpHeaderOrHttpWebResponseFluentAssertion HasHeader(string headerName)
         {
-            if (string.IsNullOrEmpty(this.hwrut.Headers[header]))
+            string headerContent = this.hwrut.Headers[headerName];
+
+            if (string.IsNullOrEmpty(headerContent))
             {
-                throw new FluentAssertionException(string.Format("[{0}] header was not found in the response headers", header.ToStringProperlyFormated()));
+                throw new FluentAssertionException(string.Format("[{0}] header was not found in the response headers", headerName.ToStringProperlyFormated()));
             }
 
-            this.lastCheckedCustomHeader = header;
-            this.lastCheckedHeader = null;
-            return this.ChainFluentAssertion();
+            return new ChainableHttpHeaderOrHttpWebResponseFluentAssertion(headerName, headerContent, this);
         }
 
         /// <summary>
@@ -131,39 +126,6 @@ namespace NFluent
             if (this.IsGZipEncodedInternal())
             {
                 throw new FluentAssertionException("The http response content is encoded using gzip.");
-            }
-
-            return this.ChainFluentAssertion();
-        }
-
-        /// <summary>
-        /// Checks that the specified header is equal to the provided value.
-        /// </summary>
-        /// <param name="headerValue">
-        /// The expected response header value.
-        /// </param>
-        /// <returns>
-        /// A chainable fluent assertion.
-        /// </returns>
-        /// <exception cref="FluentAssertionException">
-        /// The header value is not equal to the expected value.
-        /// The HasHeader method as not being called.
-        /// </exception>
-        public IChainableFluentAssertion<IHttpWebResponseFluentAssertion> HeaderContains(string headerValue)
-        {
-            if (this.lastCheckedHeader.HasValue && this.hwrut.Headers[this.lastCheckedHeader.Value] != headerValue)
-            {
-                throw new FluentAssertionException(string.Format("Response header [{0}] is not equal to the expected header value [{1}]", this.lastCheckedHeader.Value.ToStringProperlyFormated(), headerValue.ToStringProperlyFormated()));
-            }
-
-            if (!string.IsNullOrEmpty(this.lastCheckedCustomHeader) && this.hwrut.Headers[this.lastCheckedCustomHeader] != headerValue)
-            {
-                throw new FluentAssertionException(string.Format("Response header [{0}] is not equal to the expected header value [{1}]", this.lastCheckedCustomHeader.ToStringProperlyFormated(), headerValue.ToStringProperlyFormated()));
-            }
-
-            if (string.IsNullOrEmpty(this.lastCheckedCustomHeader) && !this.lastCheckedHeader.HasValue)
-            {
-                throw new FluentAssertionException("HasHeader() must be called before beeing able to look his value");
             }
 
             return this.ChainFluentAssertion();

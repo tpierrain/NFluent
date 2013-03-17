@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IChainableFluentAssertion.cs" company="">
+// // <copyright file="IChainableHttpHeaderOrHttpWebResponseFluentAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -17,18 +17,17 @@ namespace NFluent
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Provides a way to chain two <see cref="IFluentAssertion"/> instances. 
+    /// Provides a way to chain another instance of <see cref="IHttpWebResponseFluentAssertion"/> or <see cref="IHttpHeaderFluentAssertion"/>.
     /// </summary>
-    /// <typeparam name="T">Type of the <see cref="IFluentAssertion"/> to be chained.</typeparam>
-    public interface IChainableFluentAssertion<T> where T : IFluentAssertion
+    public interface IChainableHttpHeaderOrHttpWebResponseFluentAssertion : IChainableFluentAssertion<IHttpWebResponseFluentAssertion>
     {
         /// <summary>
-        /// Chains a new fluent assertion to the current one.
+        /// Chains a new <see cref="IHttpHeaderFluentAssertion"/> instance to the current assertion.
         /// </summary>
         /// <value>
         /// The new fluent assertion instance which has been chained to the previous one.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        T And { get; }
+        IHttpHeaderFluentAssertion Which { get; }
     }
 }

@@ -31,20 +31,20 @@ namespace NFluent
         IChainableFluentAssertion<IHttpWebResponseFluentAssertion> StatusCodeEqualsTo(HttpStatusCode statusCode);
 
         /// <summary>
-        /// Check whether the specified header is contains within the response headers.
+        /// Check whether the specified header is part of the response headers of the <see cref="HttpWebResponse"/>.
         /// </summary>
-        /// <param name="header">The expected response header.</param>
-        /// <returns>A chainable assertion.</returns>
-        /// <exception cref="FluentAssertionException">The header was not contains in response headers.</exception>
-        IChainableFluentAssertion<IHttpWebResponseFluentAssertion> HasHeader(HttpResponseHeader header);
+        /// <param name="header">The expected response header value.</param>
+        /// <returns>A chainable assertion that may be used to assert on the given header or on the <see cref="HttpWebResponse"/>.</returns>
+        /// <exception cref="FluentAssertionException">The response headers of the <see cref="HttpWebResponse"/> instance does not contain any header with the specified name.</exception>
+        IChainableHttpHeaderOrHttpWebResponseFluentAssertion HasHeader(HttpResponseHeader header);
 
         /// <summary>
-        /// Check whether the specified header is contains within the response headers.
+        /// Check whether the specified header is part of the response headers of the <see cref="HttpWebResponse"/>.
         /// </summary>
-        /// <param name="header">The expected response header.</param>
-        /// <returns>A chainable assertion.</returns>
-        /// <exception cref="FluentAssertionException">The header was not contains in response headers.</exception>
-        IChainableFluentAssertion<IHttpWebResponseFluentAssertion> HasHeader(string header);
+        /// <param name="headerName">The expected response header name.</param>
+        /// <returns>A chainable assertion that may be used to assert on the given header or on the <see cref="HttpWebResponse"/>.</returns>
+        /// <exception cref="FluentAssertionException">The response headers of the <see cref="HttpWebResponse"/> instance does not contain any header with the specified name.</exception>
+        IChainableHttpHeaderOrHttpWebResponseFluentAssertion HasHeader(string headerName);
 
         /// <summary>
         /// Checks that the actual response content is "gzip" encoded.
@@ -63,20 +63,6 @@ namespace NFluent
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual response content is encoded using gzip.</exception>
         IChainableFluentAssertion<IHttpWebResponseFluentAssertion> IsNotGZipEncoded();
-
-        /// <summary>
-        /// Checks that the specified header is equal to the provided value.
-        /// </summary>
-        /// <param name="headerValue">
-        /// The expected response header value.
-        /// </param>
-        /// <returns>
-        /// A chainable fluent assertion.
-        /// </returns>
-        /// <exception cref="FluentAssertionException">
-        /// The header value is not equal to the expected value.
-        /// </exception>
-        IChainableFluentAssertion<IHttpWebResponseFluentAssertion> HeaderContains(string headerValue);
 
         /// <summary>
         /// Checks that the response content contains the given expected values, in any order.
