@@ -16,7 +16,7 @@ namespace NFluent
 {
     /// <summary>
     /// Provides fluent assertion methods to be executed on the system under test (sut).
-    /// Every method should return a <see cref="IChainableFluentAssertion"/> instance
+    /// Every method should return a <see cref="IChainableFluentAssertion{T}"/> instance
     /// of the same fluent assertion type (closure of operations), or throw an 
     /// <see cref="FluentAssertionException"/> when failing.
     /// This 'marker' interface is mandatory for the chainable assertion mechanism. 

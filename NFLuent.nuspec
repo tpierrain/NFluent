@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>NFluent</id>
+        <version>1.0.0.0</version>
+        <authors>Thomas PERRAIN and contributors</authors>
+        <owners>Thomas PERRAIN</owners>
+        <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+        <projectUrl>https://github.com/tpierrain/NFluent</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Smooth your .NET TDD experience with NFluent! NFluent is an ergonomic assertion library which aims to fluent your .NET TDD experience (based on simple Check.That() assertion statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is also directly inspired by the awesome Java FEST Fluent assertion/reflection library (http://fest.easytesting.org/)</description>
+        <summary>NFluent is an ergonomic assertion library which aims to fluent your .NET TDD experience</summary>
+        <releaseNotes />
+        <copyright>Copyright ??  2013  Thomas PERRAIN</copyright>
+        <language>en-US</language>
+        <tags>tdd bdd test fluent</tags>
+    </metadata>
+    <files>
+        <file src="Artifacts\Binaries\NFluent.dll" target="lib\net40\NFluent.dll" />
+    </files>
+</package>

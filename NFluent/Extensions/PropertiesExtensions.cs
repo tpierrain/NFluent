@@ -33,8 +33,9 @@ namespace NFluent
         /// <param name="enumerable">The enumerable collection of objects.</param>
         /// <param name="propertyName">Name of the property to extract value from for every object of the collection.</param>
         /// <returns>
-        /// An enumerable of all the property values for every <see cref="T"/> objects in the <see cref="enumerable"/>.
+        /// An enumerable of all the property values for every <typeparamref name="T"/> objects in the <paramref name="enumerable"/>.
         /// </returns>
+        /// <exception cref="System.InvalidOperationException">The object of type <typeparamref name="T"/> don't have a property with the given property name.</exception>
         public static IEnumerable Properties<T>(this IEnumerable<T> enumerable, string propertyName)
         {
             Type type = typeof(T);
@@ -56,10 +57,10 @@ namespace NFluent
         /// Extract all the values of a given property given its name, from an array of objects holding that property.
         /// </summary>
         /// <typeparam name="T">Type of the objects belonging to the array.</typeparam>
-        /// <param name="array">The array of <see cref="T"/>.</param>
+        /// <param name="array">The array of <typeparamref name="T"/>.</param>
         /// <param name="propertyName">Name of the property to extract value from for every object of the array.</param>
         /// <returns>
-        /// An enumerable of all the property values for every <see cref="T"/> objects in the <see cref="Array"/>.
+        /// An enumerable of all the property values for every <typeparamref name="T"/> objects in the <see cref="Array"/>.
         /// </returns>
         public static IEnumerable Properties<T>(this T[] array, string propertyName)
         {
