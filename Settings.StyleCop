@@ -1,6 +1,7 @@
 <StyleCopSettings Version="105">
   <GlobalSettings>
     <CollectionProperty Name="RecognizedWords">
+      <Value>gzip</Value>
       <Value>sut</Value>
     </CollectionProperty>
   </GlobalSettings>

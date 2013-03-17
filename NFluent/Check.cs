@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Check.cs" company="">
-//   Copyright 2013 Thomas PIERRAIN
+//   Copyright 2013 Thomas PIERRAIN, Marc-Antoine LATOUR
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -221,5 +221,20 @@ namespace NFluent
         }
 
         #endregion
+
+        /// <summary>
+        /// Returns a <see cref="IHttpWebResponseFluentAssertion" /> instance that will provide assertion methods to be executed on a given HttpWebResponse instance.
+        /// </summary>
+        /// <param name="value">The HttpWebResponse instance to be tested.</param>
+        /// <returns>
+        /// A <see cref="IHttpWebResponseFluentAssertion" /> instance to use in order to assert things on the given HttpWebResponse instance.
+        /// </returns>
+        /// <remarks>
+        /// Methods of the returned <see cref="IHttpWebResponseFluentAssertion" /> instance will usually throw a <see cref="FluentAssertionException" /> when failing.
+        /// </remarks>
+        public static IHttpWebResponseFluentAssertion That(System.Net.HttpWebResponse value)
+        {
+            return new HttpWebResponseFluentAssertion(value);
+        }
     }
 }
