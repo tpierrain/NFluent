@@ -17,8 +17,8 @@
        <TestAssembly>$(ProjectRoot)\$(ProjectName).Tests\bin\$(Configuration)\$(ProjectName).Tests.dll</TestAssembly>
     </PropertyGroup>
     
-    <Target Name="RunAll" DependsOnTargets="Build; BuildDocs; RunTests; Package" />
-    <Target Name="CI" DependsOnTargets="Build; BuildDocs" />
+    <Target Name="RunAll" DependsOnTargets="Build; RunTests; BuildDocs; Package" />
+    <Target Name="CI" DependsOnTargets="Build;" />
 
     <!-- 1- Do the BUILD -->
     <Target Name="NugetRestore">
@@ -55,7 +55,7 @@ GENERATING DOCS for:
         <TestAssembly Include="$(ProjectRoot)\$(ProjectName).Tests\bin\$(Configuration)\$(ProjectName).Tests.dll" />
     </ItemGroup>
 
-    <Target Name="RunTests" DependsOnTargets="Build">
+    <Target Name="RunTests">
         <Message Importance="high" Text="
 ---------------------------------------------------------------
 RUN ALL UNIT TESTS
@@ -63,12 +63,12 @@ RUN ALL UNIT TESTS
             "  />
 
         <Exec Command="&quot;$(TestRunnerPath)&quot; &quot;$(TestAssembly)&quot;"
-          LogStandardErrorAsError="true" />
+          />
     </Target>
     
 
     <!-- 4- Then Package -->
-    <Target Name="Package" DependsOnTargets="RunTests">
+    <Target Name="Package">
         <Message Importance="high" Text="
 ---------------------------------------------------------------
 CREATING NUGET PACKAGE IN:
@@ -77,7 +77,7 @@ CREATING NUGET PACKAGE IN:
             "  />
         <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
         <Exec Command="&quot;$(NuGetExePath)&quot; pack &quot;$(ProjectRoot)\$(ProjectName).nuspec&quot; -o &quot;$(PackagesPath)&quot;"
-          LogStandardErrorAsError="true" />
+         />
     </Target>
 
     
