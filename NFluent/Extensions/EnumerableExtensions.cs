@@ -19,6 +19,8 @@ namespace NFluent
     using System.Collections;
     using System.Text;
 
+    using NFluent.Extensions;
+
     /// <summary>
     /// Extension methods for adding new fluent methods to enumerable.
     /// </summary>

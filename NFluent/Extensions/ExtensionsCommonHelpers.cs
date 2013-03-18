@@ -12,9 +12,7 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-// ReSharper disable CheckNamespace
-namespace NFluent
-// ReSharper restore CheckNamespace
+namespace NFluent.Extensions
 {
     /// <summary>
     /// Common helper methods for the NFluent extension methods.
@@ -26,7 +24,7 @@ namespace NFluent
         /// </summary>
         /// <param name="theObject">The theObject.</param>
         /// <returns>A string that represents the current object. If the object is already a string, this method will surround it with brackets.</returns>
-        internal static string ToStringProperlyFormated(this object theObject)
+        public static string ToStringProperlyFormated(this object theObject)
         {
             if (theObject is string)
             {

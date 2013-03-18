@@ -16,10 +16,12 @@ namespace NFluent.Helpers
 {
     using System;
 
+    using NFluent.Extensions;
+
     /// <summary>
     /// Helper class related to Is(Not)Instance methods (used like a traits).
     /// </summary>
-    internal static class IsInstanceHelper
+    public static class IsInstanceHelper
     {
         /// <summary>
         /// Checks that an instance is of the given expected type.
@@ -27,7 +29,7 @@ namespace NFluent.Helpers
         /// <param name="instance">The instance to be checked.</param>
         /// <param name="expectedType">The expected type.</param>
         /// <exception cref="FluentAssertionException">The instance is not of the expected type.</exception>
-        internal static void IsInstanceOf(object instance, Type expectedType)
+        public static void IsInstanceOf(object instance, Type expectedType)
         {
             if (instance.GetType() != expectedType)
             {
@@ -41,7 +43,7 @@ namespace NFluent.Helpers
         /// <param name="instance">The instance to be checked.</param>
         /// <param name="typeNotExpected">The type not expected.</param>
         /// <exception cref="FluentAssertionException">The instance is of the type not expected.</exception>
-        internal static void IsNotInstanceOf(object instance, Type typeNotExpected)
+        public static void IsNotInstanceOf(object instance, Type typeNotExpected)
         {
             if (instance.GetType() == typeNotExpected)
             {

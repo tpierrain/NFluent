@@ -50,7 +50,6 @@
     <Compile Include="ContainsOnlyTests.cs" />
     <Compile Include="ContainsExactlyTests.cs" />
     <Compile Include="ContainsTests.cs" />
-    <Compile Include="HttpResponseRelatedTests.cs" />
     <Compile Include="IsInstanceOfTests.cs" />
     <Compile Include="NumbersRelatedTests.cs" />
     <Compile Include="PropertiesRelatedTests.cs" />

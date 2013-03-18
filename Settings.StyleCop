@@ -18,6 +18,11 @@
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>
         </Rule>
+        <Rule Name="FileHeaderMustHaveValidCompanyText">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
       </Rules>
       <AnalyzerSettings />
     </Analyzer>
