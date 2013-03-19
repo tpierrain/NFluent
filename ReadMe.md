@@ -3,7 +3,7 @@
 NFluent overview
 ==============
 
-NFluent is __an ergonomic assertion library__ which aims __to fluent your .NET TDD experience__.
+NFluent is __an assertion library__ which aims __to fluent your .NET TDD experience__.
 
 __NFluent will make your tests__:
 + __fluent to write__: with a __[super-duper-happy](https://github.com/NancyFx/Nancy/wiki/Introduction) auto-completion 'dot' experience__. Indeed, just type the Check.That( followed by one of your object and a dot, and your IDE will show you all the assertions available for the type of the given object to verify. No more, no less (i.e. no auto completion flooding).
@@ -105,7 +105,7 @@ Nfluent __backlog is available as github issues__
 
 New feature to be added?
 ------------------------
-+ If you want to join the project and contribute: see the __[NFluent DoD for development](./DevDoD.md)__ before, but be my guest. 
++ If you want to join the project and contribute: see the __[NFluent DoD for development](./DevDoD.md)__ before, but be our guest. 
 + If you don't want to contribute on the library, but you need a feature not yet implemented, don't hesitate to request it on the __[NFluent-Discuss google group](https://groups.google.com/forum/#!forum/nfluent-discuss)__.
 __In any cases: you are welcome!__
 
