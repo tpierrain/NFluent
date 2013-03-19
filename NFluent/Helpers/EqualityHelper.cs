@@ -19,7 +19,7 @@ namespace NFluent.Helpers
     /// <summary>
     /// Helper class related to Equality methods (used like a traits).
     /// </summary>
-    public static class EqualityHelper
+    internal static class EqualityHelper
     {
         /// <summary>
         /// Checks that a given instance is considered to be equal to another expected instance. Throws <see cref="FluentAssertionException"/> otherwise.
