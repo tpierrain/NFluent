@@ -21,7 +21,7 @@ namespace NFluent.Helpers
     /// <summary>
     /// Helper class related to Is(Not)Instance methods (used like a traits).
     /// </summary>
-    public static class IsInstanceHelper
+    internal static class IsInstanceHelper
     {
         /// <summary>
         /// Checks that an instance is of the given expected type.

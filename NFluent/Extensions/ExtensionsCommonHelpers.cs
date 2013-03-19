@@ -17,7 +17,7 @@ namespace NFluent.Extensions
     /// <summary>
     /// Common helper methods for the NFluent extension methods.
     /// </summary>
-    public static class ExtensionsCommonHelpers
+    internal static class ExtensionsCommonHelpers
     {
         /// <summary>
         /// Returns a string that represents the current object. If the object is already a string, this method will surround it with brackets.
