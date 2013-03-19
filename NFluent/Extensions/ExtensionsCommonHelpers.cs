@@ -14,6 +14,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Extensions
 {
+    using System;
+    using System.Globalization;
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// Common helper methods for the NFluent extension methods.
     /// </summary>
@@ -30,10 +34,24 @@ namespace NFluent.Extensions
             {
                 return string.Format(@"""{0}""", theObject);
             }
-            else
+            
+            if (theObject is DateTime)
             {
-                return theObject.ToString();
+                return ToStringProperlyFormated((DateTime)theObject);
             }
+            
+            return theObject.ToString();
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current DateTime.         
+        /// </summary>
+        /// <param name="theDateTime">The DateTime.</param>
+        /// <returns>A string that represents the current object with current culture ignore.</returns>
+        public static string ToStringProperlyFormated(this DateTime theDateTime)
+        {
+            // return a ISO-8601 Date format
+            return theDateTime.ToString("o", CultureInfo.InvariantCulture);
         }
     }
 }
