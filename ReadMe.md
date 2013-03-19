@@ -23,9 +23,14 @@ Your favorite unit test framework (e.g. NUnit, xUnit, ...) will still handle the
 Indeed, we decided to use the `Check.That()` syntax to avoid collisions and name ambiguity with the traditional `Assert` class you can find in most of your .NET unit test frameworks (therefore, no need to declare an alias in your test fixtures).
 
 
-Uses cases
-----------
-__[NFluent use cases are available here](./UseCases.md)__.
+As simple as possible
+=====================
+
+With NFluent assertion libraries:
+
+All you've got to remember is: `Check.That`, cause every assertion is then provided via a super-duper-auto-completion-dot-experience ;-)
+------------------------------------------------------------------------------------------------------------------------
+
 
 Usage sample
 ------------
@@ -84,6 +89,11 @@ Why NFluent, and not another .NET fluent assertion framework?
 + And because you like *killing features* added as bonus, such as the Properties() extension method for IEnumerable for instance (as showed within the usage sample above). 
 
 - - -
+
+Uses cases
+----------
+__[NFluent use cases are available here](./UseCases.md)__.
+
 
 Newsgroup
 ---------
