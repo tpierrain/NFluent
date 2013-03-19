@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Helpers
 {
+    using NFluent.Extensions;
+
     /// <summary>
     /// Helper class related to Equality methods (used like a traits).
     /// </summary>

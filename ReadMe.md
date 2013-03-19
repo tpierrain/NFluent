@@ -23,9 +23,14 @@ Your favorite unit test framework (e.g. NUnit, xUnit, ...) will still handle the
 Indeed, we decided to use the `Check.That()` syntax to avoid collisions and name ambiguity with the traditional `Assert` class you can find in most of your .NET unit test frameworks (therefore, no need to declare an alias in your test fixtures).
 
 
-Uses cases
-----------
-__[NFluent use cases are available here](./UseCases.md)__.
+As simple as possible
+=====================
+
+With NFluent assertion libraries:
+
+All you've got to remember is: `Check.That`, cause every assertion is then provided via a super-duper-auto-completion-dot-experience ;-)
+------------------------------------------------------------------------------------------------------------------------
+
 
 Usage sample
 ------------
@@ -85,13 +90,18 @@ Why NFluent, and not another .NET fluent assertion framework?
 
 - - -
 
+Uses cases
+----------
+__[NFluent use cases are available here](./UseCases.md)__.
+
+
 Newsgroup
 ---------
 For any comment, remark or question on the library, please use the __[NFluent-Discuss google group](https://groups.google.com/forum/#!forum/nfluent-discuss)__.
 
 BackLog
 -------
-Nfluent __[backlog is available here](./Backlog.md)__
+Nfluent __backlog is available as github issues__
 
 New feature to be added?
 ------------------------
@@ -101,7 +111,9 @@ __In any cases: you are welcome!__
 
 Many thanks
 ------
-To the mates that gave me ideas and feedbacks to make this lib as fluent as possible: __[Joel COSTIGLIOLA](https://github.com/joel-costigliola)__, __[Rui CARVALHO](http://www.codedistillers.com/)__, __[Cyrille DUPUYDAUBY](http://dupdob.wordpress.com/)__, __Benoit LABAERE__, ... 
++ To the contributors: __[Marc-Antoine LATOUR](https://github.com/malat)__, __[Rui CARVALHO](http://www.codedistillers.com/)__.
+
++ To the mates that gave me ideas and feedbacks to make this lib as fluent as possible: __[Joel COSTIGLIOLA](https://github.com/joel-costigliola)__, __[Rui CARVALHO](http://www.codedistillers.com/)__, __[Cyrille DUPUYDAUBY](http://dupdob.wordpress.com/)__, __Benoit LABAERE__, ... 
 
 - - -
 

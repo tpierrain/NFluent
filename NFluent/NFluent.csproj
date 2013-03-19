@@ -46,14 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChainableFluentAssertion.cs" />
-    <Compile Include="ChainableHttpHeaderOrHttpWebResponseFluentAssertion.cs" />
     <Compile Include="Check.cs" />
-    <Compile Include="Helpers\HttpHelper.cs" />
-    <Compile Include="HttpHeaderFluentAssertion.cs" />
-    <Compile Include="HttpWebResponseFluentAssertion.cs" />
-    <Compile Include="IChainableHttpHeaderOrHttpWebResponseFluentAssertion.cs" />
-    <Compile Include="IHttpHeaderFluentAssertion.cs" />
-    <Compile Include="IHttpWebResponseFluentAssertion.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="IObjectFluentAssertion.cs" />
     <Compile Include="ObjectFluentAssertion.cs" />
@@ -73,6 +66,9 @@
     <Compile Include="Helpers\IsInstanceHelper.cs" />
     <Compile Include="Extensions\PropertiesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Settings.StyleCop" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
