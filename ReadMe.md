@@ -101,7 +101,7 @@ For any comment, remark or question on the library, please use the __[NFluent-Di
 
 BackLog
 -------
-Nfluent __[backlog is available here](./Backlog.md)__
+Nfluent __backlog is available as github issues__
 
 New feature to be added?
 ------------------------
