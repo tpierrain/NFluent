@@ -16,7 +16,6 @@ namespace NFluent.Extensions
 {
     using System;
     using System.Globalization;
-    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Common helper methods for the NFluent extension methods.
@@ -39,7 +38,12 @@ namespace NFluent.Extensions
             {
                 return ToStringProperlyFormated((DateTime)theObject);
             }
-            
+
+            if (theObject is bool)
+            {
+                return ToStringProperlyFormated((bool)theObject);
+            }
+
             return theObject.ToString();
         }
 
@@ -52,6 +56,17 @@ namespace NFluent.Extensions
         {
             // return a ISO-8601 Date format
             return theDateTime.ToString("o", CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current Boolean.         
+        /// </summary>
+        /// <param name="theBoolean">The Boolean.</param>
+        /// <returns>A string that represents the current object with current culture ignore.</returns>
+        public static string ToStringProperlyFormated(this bool theBoolean)
+        {
+            // Ensure that boolean values are not localized 
+            return theBoolean.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

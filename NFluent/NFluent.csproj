@@ -45,10 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BooleanFluentAssertion.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ChainableFluentAssertion.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="DateTimeFluentAssertion.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="IBooleanFluentAssertion.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IDateTimeFluentAssertion.cs" />
     <Compile Include="IObjectFluentAssertion.cs" />
     <Compile Include="ObjectFluentAssertion.cs" />

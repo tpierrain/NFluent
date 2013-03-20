@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
 // // <copyright file="IBooleanFluentAssertion.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
+// //   Copyright 2013 Marc-Antoine LATOUR
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -14,8 +14,31 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    public interface IBooleanFluentAssertion
+    /// <summary>
+    /// Provides assertion methods to be executed on a boolean instance.
+    /// </summary>
+    public interface IBooleanFluentAssertion : IFluentAssertion, IEqualityFluentAssertionTrait<IBooleanFluentAssertion>
     {
-         
+        /// <summary>
+        /// Checks that the actual value is true.
+        /// </summary>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">
+        /// The actual value is not true.
+        /// </exception>
+        IChainableFluentAssertion<IBooleanFluentAssertion> IsTrue();
+
+        /// <summary>
+        /// Checks that the actual value is false.
+        /// </summary>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">
+        /// The actual value is not false.
+        /// </exception>
+        IChainableFluentAssertion<IBooleanFluentAssertion> IsFalse();
     }
 }

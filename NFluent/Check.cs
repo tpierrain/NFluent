@@ -237,5 +237,20 @@ namespace NFluent
         {
             return new DateTimeFluentAssertion(value);
         }
+
+        /// <summary>
+        /// Returns a <see cref="IBooleanFluentAssertion" /> instance that will provide assertion methods to be executed on a given Boolean instance.
+        /// </summary>
+        /// <param name="value">The Boolean instance to be tested.</param>
+        /// <returns>
+        /// A <see cref="IBooleanFluentAssertion" /> instance to use in order to assert things on the given Boolean instance.
+        /// </returns>
+        /// <remarks>
+        /// Methods of the returned <see cref="IBooleanFluentAssertion" /> instance will usually throw a <see cref="FluentAssertionException" /> when failing.
+        /// </remarks>
+        public static IBooleanFluentAssertion That(bool value)
+        {
+            return new BooleanFluentAssertion(value);
+        }
     }
 }
