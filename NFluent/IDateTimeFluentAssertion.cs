@@ -88,7 +88,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time is not equals to the given one with the milliseconds ignored.
+        /// The actual date time is not equal to the given one with the milliseconds ignored.
         /// </exception>
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsEqualToIgnoringMillis(DateTime other);
 
@@ -103,7 +103,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time is not equals to the given one with second and millisecond fields ignored.
+        /// The actual date time is not equal to the given one with second and millisecond fields ignored.
         /// </exception>
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsEqualToIgnoringSeconds(DateTime other);
 
@@ -118,7 +118,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time is not equals to the given one with minute, second and millisecond fields ignored.
+        /// The actual date time is not equal to the given one with minute, second and millisecond fields ignored.
         /// </exception>
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsEqualToIgnoringMinutes(DateTime other);
 
@@ -133,7 +133,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time is not equals to the given one with hour, minute, second and millisecond fields ignored.
+        /// The actual date time is not equal to the given one with hour, minute, second and millisecond fields ignored.
         /// </exception>
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsEqualToIgnoringHours(DateTime other);
 
@@ -147,7 +147,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time year is not equals to the given year.
+        /// The actual date time year is not equal to the given year.
         /// </exception>
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsInSameYearAs(DateTime other);
 
@@ -161,7 +161,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time month is not equals to the given month.
+        /// The actual date time month is not equal to the given month.
         /// </exception>
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsInSameMonthAs(DateTime other);
 
@@ -175,7 +175,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time day is not equals to the given day.
+        /// The actual date time day is not equal to the given day.
         /// </exception>
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsInSameDayAs(DateTime other);
     }

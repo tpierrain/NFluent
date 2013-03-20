@@ -34,7 +34,7 @@ namespace NFluent.Tests
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-31T00:00:00.0000000] is not before the expected [2013-12-25T00:00:00.0000000]")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-31T00:00:00.0000000] is not before the given one [2013-12-25T00:00:00.0000000]")]
          public void IsBeforeThrowExceptionWhenNotBefore()
          {
              var christmas2013 = new DateTime(2013, 12, 25);
@@ -44,7 +44,7 @@ namespace NFluent.Tests
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-31T00:00:00.0000000] is not before or equal to the expected [2013-12-25T00:00:00.0000000]")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-31T00:00:00.0000000] is not before or equals to the given one [2013-12-25T00:00:00.0000000]")]
          public void IsBeforeOrEqualThrowExceptionWhenNotBeforeOrEqual()
          {
              var christmas2013 = new DateTime(2013, 12, 25);
@@ -64,7 +64,7 @@ namespace NFluent.Tests
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-25T00:00:00.0000000] is not after the expected [2013-12-31T00:00:00.0000000]")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-25T00:00:00.0000000] is not after the given one [2013-12-31T00:00:00.0000000]")]
          public void IsAfterThrowExceptionWhenNotAfter()
          {
              var christmas2013 = new DateTime(2013, 12, 25);
@@ -74,7 +74,7 @@ namespace NFluent.Tests
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-25T00:00:00.0000000] is not after or equal to the expected [2013-12-31T00:00:00.0000000]")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-25T00:00:00.0000000] is not after or equals to the given one [2013-12-31T00:00:00.0000000]")]
          public void IsAfterOrEqualThrowExceptionWhenNotAfterOrEqual()
          {
              var christmas2013 = new DateTime(2013, 12, 25);
