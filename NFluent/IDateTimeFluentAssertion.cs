@@ -22,7 +22,7 @@ namespace NFluent
     public interface IDateTimeFluentAssertion : IFluentAssertion, IEqualityFluentAssertionTrait<IDateTimeFluentAssertion>, IInstanceTypeFluentAssertionTrait<IDateTimeFluentAssertion>
     {
         /// <summary>
-        /// Check that the actual DateTime is strictly before the expected.
+        /// Checks that the actual DateTime is strictly before the expected.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -36,7 +36,7 @@ namespace NFluent
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsBefore(DateTime other);
 
         /// <summary>
-        /// Check that the actual DateTime is before or equals to the expected.
+        /// Checks that the actual DateTime is before or equals to the expected.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -50,7 +50,7 @@ namespace NFluent
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsBeforeOrEqualTo(DateTime other);
 
         /// <summary>
-        /// Check that the actual DateTime is strictly after the expected.
+        /// Checks that the actual DateTime is strictly after the expected.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -64,7 +64,7 @@ namespace NFluent
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsAfter(DateTime other);
 
         /// <summary>
-        /// Check that the actual DateTime is after or equals to the expected.
+        /// Checks that the actual DateTime is after or equals to the expected.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -78,7 +78,7 @@ namespace NFluent
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsAfterOrEqualTo(DateTime other);
 
         /// <summary>
-        /// Check that actual and given DateTime have same year, month, day, hour, minute and second fields,
+        /// Checks that actual and given DateTime have same year, month, day, hour, minute and second fields,
         /// * (millisecond fields are ignored in comparison).
         /// </summary>
         /// <param name="other">
@@ -93,7 +93,7 @@ namespace NFluent
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsEqualToIgnoringMillis(DateTime other);
 
         /// <summary>
-        /// Check that actual and given DateTime have same year, month, day, hour and minute fields,
+        /// Checks that actual and given DateTime have same year, month, day, hour and minute fields,
         /// * (Seconds and millisecond fields are ignored in comparison).
         /// </summary>
         /// <param name="other">
@@ -108,7 +108,7 @@ namespace NFluent
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsEqualToIgnoringSeconds(DateTime other);
 
         /// <summary>
-        /// Check that actual and given DateTime have same year, month, day and hour fields,
+        /// Checks that actual and given DateTime have same year, month, day and hour fields,
         /// * (Minutes, seconds and millisecond fields are ignored in comparison).
         /// </summary>
         /// <param name="other">
@@ -123,7 +123,7 @@ namespace NFluent
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsEqualToIgnoringMinutes(DateTime other);
 
         /// <summary>
-        /// Check that actual and given DateTime have same year, month and day fields,
+        /// Checks that actual and given DateTime have same year, month and day fields,
         /// * (Hours, minutes, seconds and millisecond fields are ignored in comparison).
         /// </summary>
         /// <param name="other">
@@ -138,7 +138,7 @@ namespace NFluent
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsEqualToIgnoringHours(DateTime other);
 
         /// <summary>
-        /// Check that actual and given DateTime have same year.
+        /// Checks that actual and given DateTime have same year.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -152,7 +152,7 @@ namespace NFluent
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsInSameYearAs(DateTime other);
 
         /// <summary>
-        /// Check that actual and given DateTime have same month.
+        /// Checks that actual and given DateTime have same month.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -166,7 +166,7 @@ namespace NFluent
         IChainableFluentAssertion<IDateTimeFluentAssertion> IsInSameMonthAs(DateTime other);
 
         /// <summary>
-        /// Check that actual and given DateTime have same day.
+        /// Checks that actual and given DateTime have same day.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
