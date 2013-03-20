@@ -109,7 +109,7 @@ namespace NFluent
         #endregion
 
         /// <summary>
-        /// Checks that the actual DateTime is strictly before the expected.
+        /// Checks that the actual DateTime is strictly before the given one.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -118,7 +118,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time is not before the expected.
+        /// The actual date time is not before the given one.
         /// </exception>
         public IChainableFluentAssertion<IDateTimeFluentAssertion> IsBefore(DateTime other)
         {
@@ -131,7 +131,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual DateTime is before or equals to the expected.
+        /// Checks that the actual DateTime is before or equals to the given one.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -140,7 +140,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time is not before or equal to the expected.
+        /// The actual date time is not before or equals to the given one.
         /// </exception>
         public IChainableFluentAssertion<IDateTimeFluentAssertion> IsBeforeOrEqualTo(DateTime other)
         {
@@ -153,7 +153,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual DateTime is strictly after the expected.
+        /// Checks that the actual DateTime is strictly after the given one.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -162,7 +162,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time is not after the expected.
+        /// The actual date time is not after the given one.
         /// </exception>
         public IChainableFluentAssertion<IDateTimeFluentAssertion> IsAfter(DateTime other)
         {
@@ -175,7 +175,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual DateTime is after or equals to the expected.
+        /// Checks that the actual DateTime is after or equals to the given one.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -184,7 +184,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time is not after or equal to the expected.
+        /// The actual date time is not after or equals to the given one.
         /// </exception>
         public IChainableFluentAssertion<IDateTimeFluentAssertion> IsAfterOrEqualTo(DateTime other)
         {
@@ -207,7 +207,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time is not equal to the expected with the milliseconds ignore.
+        /// The actual date time is not equals to the given one with the milliseconds ignored.
         /// </exception>
         public IChainableFluentAssertion<IDateTimeFluentAssertion> IsEqualToIgnoringMillis(DateTime other)
         {
@@ -237,7 +237,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time is not equal to the expected with second and millisecond fields ignore.
+        /// The actual date time is not equals to the given one with second and millisecond fields ignored.
         /// </exception>
         public IChainableFluentAssertion<IDateTimeFluentAssertion> IsEqualToIgnoringSeconds(DateTime other)
         {
@@ -266,7 +266,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time is not equal to the expected with minute, second and millisecond fields ignore.
+        /// The actual date time is not equals to the given one with minute, second and millisecond fields ignored.
         /// </exception>
         public IChainableFluentAssertion<IDateTimeFluentAssertion> IsEqualToIgnoringMinutes(DateTime other)
         {
@@ -295,7 +295,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time is not equal to the expected with hour, minute, second and millisecond fields ignore.
+        /// The actual date time is not equals to the given one with hour, minute, second and millisecond fields ignored.
         /// </exception>
         public IChainableFluentAssertion<IDateTimeFluentAssertion> IsEqualToIgnoringHours(DateTime other)
         {
@@ -322,7 +322,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time year is not equal to the given DateTime year.
+        /// The actual date time year is not equals to the given year.
         /// </exception>
         public IChainableFluentAssertion<IDateTimeFluentAssertion> IsInSameYearAs(DateTime other)
         {
@@ -344,7 +344,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time month is not equal to the given DateTime month.
+        /// The actual date time month is not equals to the given month.
         /// </exception>
         public IChainableFluentAssertion<IDateTimeFluentAssertion> IsInSameMonthAs(DateTime other)
         {
@@ -366,7 +366,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">
-        /// The actual date time day is not equal to the given DateTime day.
+        /// The actual date time day is not equals to the given day.
         /// </exception>
         public IChainableFluentAssertion<IDateTimeFluentAssertion> IsInSameDayAs(DateTime other)
         {

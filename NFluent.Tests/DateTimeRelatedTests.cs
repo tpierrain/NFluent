@@ -28,6 +28,8 @@ namespace NFluent.Tests
              var newYearsEve2014 = new DateTime(2013, 12, 31);
 
              Check.That(christmas2013).IsBefore(newYearsEve2014);
+             Check.That(christmas2013).IsBeforeOrEqualTo(newYearsEve2014);
+             Check.That(christmas2013).IsBeforeOrEqualTo(christmas2013);
              Check.That(christmas2013).IsBeforeOrEqualTo(new DateTime(2013, 12, 25));
          }
 
@@ -42,13 +44,13 @@ namespace NFluent.Tests
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-31T00:00:00.0000000] is not before the expected [2013-12-25T00:00:00.0000000]")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-31T00:00:00.0000000] is not before or equal to the expected [2013-12-25T00:00:00.0000000]")]
          public void IsBeforeOrEqualThrowExceptionWhenNotBeforeOrEqual()
          {
              var christmas2013 = new DateTime(2013, 12, 25);
              var newYearsEve2014 = new DateTime(2013, 12, 31);
 
-             Check.That(newYearsEve2014).IsBefore(christmas2013);
+             Check.That(newYearsEve2014).IsBeforeOrEqualTo(christmas2013);
          }
 
          [Test]
@@ -315,6 +317,7 @@ namespace NFluent.Tests
 
              Check.That(newYears).IsInSameDayAs(new DateTime(2014, 2, 2));
          }
+
          [Test]
          public void IsEqualToWorks()
          {
