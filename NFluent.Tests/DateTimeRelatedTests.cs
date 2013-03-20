@@ -24,91 +24,98 @@ namespace NFluent.Tests
          [Test]
          public void IsBeforeWorks()
          {
-             var actual = new DateTime(2013, 1, 1);
+             var christmas2013 = new DateTime(2013, 12, 25);
+             var newYearsEve2014 = new DateTime(2013, 12, 31);
 
-             Check.That(actual).IsBefore(new DateTime(2013, 1, 2));
-             Check.That(actual).IsBeforeOrEqualTo(new DateTime(2013, 1, 1));
+             Check.That(christmas2013).IsBefore(newYearsEve2014);
+             Check.That(christmas2013).IsBeforeOrEqualTo(new DateTime(2013, 12, 25));
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-01-01T00:00:00.0000000] is not before the expected [2012-12-01T00:00:00.0000000]")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-31T00:00:00.0000000] is not before the expected [2013-12-25T00:00:00.0000000]")]
          public void IsBeforeThrowExceptionWhenNotBefore()
          {
-             var actual = new DateTime(2013, 1, 1);
+             var christmas2013 = new DateTime(2013, 12, 25);
+             var newYearsEve2014 = new DateTime(2013, 12, 31);
              
-             Check.That(actual).IsBefore(new DateTime(2012, 12, 1));
+             Check.That(newYearsEve2014).IsBefore(christmas2013);
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-01-01T02:00:00.0000000] is not before or equal to the expected [2013-01-01T01:00:00.0000000]")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-31T00:00:00.0000000] is not before the expected [2013-12-25T00:00:00.0000000]")]
          public void IsBeforeOrEqualThrowExceptionWhenNotBeforeOrEqual()
          {
-             var actual = new DateTime(2013, 1, 1, 2, 0, 0, 0);
+             var christmas2013 = new DateTime(2013, 12, 25);
+             var newYearsEve2014 = new DateTime(2013, 12, 31);
 
-             Check.That(actual).IsBeforeOrEqualTo(new DateTime(2013, 1, 1, 1, 0, 0, 0));
+             Check.That(newYearsEve2014).IsBefore(christmas2013);
          }
 
          [Test]
          public void IsAfterWorks()
          {
-             var actual = new DateTime(2013, 1, 1);
+             var christmas2013 = new DateTime(2013, 12, 25);
+             var newYearsEve2014 = new DateTime(2013, 12, 31);
 
-             Check.That(actual).IsAfter(new DateTime(2012, 1, 1));
-             Check.That(actual).IsAfterOrEqualTo(new DateTime(2013, 1, 1));
+             Check.That(newYearsEve2014).IsAfter(christmas2013);
+             Check.That(newYearsEve2014).IsAfterOrEqualTo(new DateTime(2013, 12, 31));
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-01-01T00:00:00.0000000] is not after the expected [2014-12-01T00:00:00.0000000]")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-25T00:00:00.0000000] is not after the expected [2013-12-31T00:00:00.0000000]")]
          public void IsAfterThrowExceptionWhenNotAfter()
          {
-             var actual = new DateTime(2013, 1, 1);
+             var christmas2013 = new DateTime(2013, 12, 25);
+             var newYearsEve2014 = new DateTime(2013, 12, 31);
 
-             Check.That(actual).IsAfter(new DateTime(2014, 12, 1));
+             Check.That(christmas2013).IsAfter(newYearsEve2014);
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-01-01T01:00:00.0000000] is not after or equal to the expected [2013-01-01T02:00:00.0000000]")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual date time [2013-12-25T00:00:00.0000000] is not after or equal to the expected [2013-12-31T00:00:00.0000000]")]
          public void IsAfterOrEqualThrowExceptionWhenNotAfterOrEqual()
          {
-             var actual = new DateTime(2013, 1, 1, 1, 0, 0, 0);
+             var christmas2013 = new DateTime(2013, 12, 25);
+             var newYearsEve2014 = new DateTime(2013, 12, 31);
 
-             Check.That(actual).IsAfterOrEqualTo(new DateTime(2013, 1, 1, 2, 0, 0, 0));
+             Check.That(christmas2013).IsAfterOrEqualTo(newYearsEve2014);
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-01-01T06:00:00.0000000Z] not equals to the expected [2013-01-01T07:00:00.0000000Z]")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-12-25T05:00:00.0000000Z] not equals to the expected [2013-12-31T05:00:00.0000000Z]")]
          public void IsEqualToThrowExceptionWhenNotEqual()
          {
-             var actual = new DateTime(2013, 1, 1, 1, 0, 0, 0);
+             var christmas2013 = new DateTime(2013, 12, 25);
+             var newYearsEve2014 = new DateTime(2013, 12, 31); 
 
-             Check.That(actual).IsEqualTo(new DateTime(2013, 1, 1, 2, 0, 0, 0));
+             Check.That(christmas2013).IsEqualTo(newYearsEve2014);
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-01-01T06:00:00.0000000Z] not equals to the expected [\"Batman\"]")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-12-25T05:00:00.0000000Z] not equals to the expected [\"Batman\"]")]
          public void IsEqualToThrowExceptionWhenTypeDiffer()
          {
-             var actual = new DateTime(2013, 1, 1, 1, 0, 0, 0);
+             var christmas2013 = new DateTime(2013, 12, 25);
 
-             Check.That(actual).IsEqualTo("Batman");
+             Check.That(christmas2013).IsEqualTo("Batman");
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-01-01T05:00:00.0000000Z] equals to the value [2013-01-01T05:00:00.0000000Z] which is not expected.")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-12-25T05:00:00.0000000Z] equals to the value [2013-12-25T05:00:00.0000000Z] which is not expected.")]
          public void IsNotEqualToThrowExceptionWhenEqual()
          {
-             var actual = new DateTime(2013, 1, 1);
+             var christmas2013 = new DateTime(2013, 12, 25);
 
-             Check.That(actual).IsNotEqualTo(new DateTime(2013, 1, 1));
+             Check.That(christmas2013).IsNotEqualTo(christmas2013);
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-01-01T01:00:00.0000000] is not an instance of the expected type [System.String] but of [System.DateTime] instead.")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-12-25T00:00:00.0000000] is not an instance of the expected type [System.String] but of [System.DateTime] instead.")]
          public void IsInstanceOfThrowExceptionWhenNotInstanceOf()
          {
-             var actual = new DateTime(2013, 1, 1, 1, 0, 0, 0);
+             var christmas2013 = new DateTime(2013, 12, 25);
 
-             Check.That(actual).IsInstanceOf<string>();
+             Check.That(christmas2013).IsInstanceOf<string>();
          }
 
          [Test]
@@ -284,54 +291,54 @@ namespace NFluent.Tests
 
          [Test]
          [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual year [2013] is not equal to the given date time year [2014]")]
-         public void HaveSameYearThrowExceptionWhenYearDiffer()
+         public void IsInSameYearAsThrowExceptionWhenYearDiffer()
          {
              var actual = new DateTime(2013, 1, 1);
 
-             Check.That(actual).HaveSameYear(new DateTime(2014, 1, 1));
+             Check.That(actual).IsInSameYearAs(new DateTime(2014, 1, 1));
          }
 
          [Test]
          [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual month [1] is not equal to the given date time month [2]")]
-         public void HaveSameMonthThrowExceptionWhenMonthDiffer()
+         public void IsInSameMonthAsThrowExceptionWhenMonthDiffer()
          {
              var actual = new DateTime(2013, 1, 1);
 
-             Check.That(actual).HaveSameMonth(new DateTime(2014, 2, 1));
+             Check.That(actual).IsInSameMonthAs(new DateTime(2014, 2, 1));
          }
 
          [Test]
          [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual day [1] is not equal to the given date time day [2]")]
-         public void HaveSameDayThrowExceptionWhenDayDiffer()
+         public void IsInSameDayAsThrowExceptionWhenDayDiffer()
          {
-             var actual = new DateTime(2013, 1, 1);
+             var newYears = new DateTime(2013, 1, 1);
 
-             Check.That(actual).HaveSameDay(new DateTime(2014, 2, 2));
+             Check.That(newYears).IsInSameDayAs(new DateTime(2014, 2, 2));
          }
          [Test]
          public void IsEqualToWorks()
          {
-             var actual = new DateTime(2013, 1, 1);
+             var newYears = new DateTime(2013, 1, 1);
 
-             Check.That(actual).IsEqualTo(new DateTime(2013, 1, 1));
+             Check.That(newYears).IsEqualTo(new DateTime(2013, 1, 1));
              
-             Check.That(actual).IsEqualToIgnoringHours(new DateTime(2013, 1, 1, 1, 1, 1, 1));
-             Check.That(actual).IsEqualToIgnoringMinutes(new DateTime(2013, 1, 1, 0, 1, 1, 1));
-             Check.That(actual).IsEqualToIgnoringSeconds(new DateTime(2013, 1, 1, 0, 0, 1, 1));
-             Check.That(actual).IsEqualToIgnoringMillis(new DateTime(2013, 1, 1, 0, 0, 0, 1));
+             Check.That(newYears).IsEqualToIgnoringHours(new DateTime(2013, 1, 1, 1, 1, 1, 1));
+             Check.That(newYears).IsEqualToIgnoringMinutes(new DateTime(2013, 1, 1, 0, 1, 1, 1));
+             Check.That(newYears).IsEqualToIgnoringSeconds(new DateTime(2013, 1, 1, 0, 0, 1, 1));
+             Check.That(newYears).IsEqualToIgnoringMillis(new DateTime(2013, 1, 1, 0, 0, 0, 1));
              
-             Check.That(actual).HaveSameYear(new DateTime(2013, 2, 15));
+             Check.That(newYears).IsInSameYearAs(new DateTime(2013, 2, 15));
          }
 
          [Test]
          public void AndOperatorCanChainMultipleAssertionOnDateTime()
          {
-             var actual = new DateTime(2013, 1, 1);
+             var newYears = new DateTime(2013, 1, 1);
              
-             Check.That(actual)
-                 .HaveSameYear(new DateTime(2013, 2, 1)).And
-                 .HaveSameMonth(new DateTime(2014, 1, 1)).And
-                 .HaveSameDay(new DateTime(2014, 1, 1)).And
+             Check.That(newYears)
+                 .IsInSameYearAs(new DateTime(2013, 2, 1)).And
+                 .IsInSameMonthAs(new DateTime(2014, 1, 1)).And
+                 .IsInSameDayAs(new DateTime(2014, 1, 1)).And
                  .IsBefore(new DateTime(2014, 1, 1)).And
                  .IsAfter(new DateTime(2012, 1, 1)).And
                  .IsEqualToIgnoringHours(new DateTime(2013, 1, 1, 1, 0, 0)).And

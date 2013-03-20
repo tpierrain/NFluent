@@ -109,7 +109,7 @@ namespace NFluent
         #endregion
 
         /// <summary>
-        /// Verifies that the actual DateTime is strictly before the expected.
+        /// Check that the actual DateTime is strictly before the expected.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -131,7 +131,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that the actual DateTime is before or equals to the expected.
+        /// Check that the actual DateTime is before or equals to the expected.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -153,7 +153,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that the actual DateTime is strictly after the expected.
+        /// Check that the actual DateTime is strictly after the expected.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -175,7 +175,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that the actual DateTime is after or equals to the expected.
+        /// Check that the actual DateTime is after or equals to the expected.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -197,7 +197,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that actual and given DateTime have same year, month, day, hour, minute and second fields,
+        /// Check that actual and given DateTime have same year, month, day, hour, minute and second fields,
         /// * (millisecond fields are ignored in comparison).
         /// </summary>
         /// <param name="other">
@@ -227,7 +227,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that actual and given DateTime have same year, month, day, hour and minute fields,
+        /// Check that actual and given DateTime have same year, month, day, hour and minute fields,
         /// * (Seconds and millisecond fields are ignored in comparison).
         /// </summary>
         /// <param name="other">
@@ -256,7 +256,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that actual and given DateTime have same year, month, day and hour fields,
+        /// Check that actual and given DateTime have same year, month, day and hour fields,
         /// * (Minutes, seconds and millisecond fields are ignored in comparison).
         /// </summary>
         /// <param name="other">
@@ -285,7 +285,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that actual and given DateTime have same year, month and day fields,
+        /// Check that actual and given DateTime have same year, month and day fields,
         /// * (Hours, minutes, seconds and millisecond fields are ignored in comparison).
         /// </summary>
         /// <param name="other">
@@ -313,7 +313,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that actual and given DateTime have same year.
+        /// Check that actual and given DateTime have same year.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -324,7 +324,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">
         /// The actual date time year is not equal to the given DateTime year.
         /// </exception>
-        public IChainableFluentAssertion<IDateTimeFluentAssertion> HaveSameYear(DateTime other)
+        public IChainableFluentAssertion<IDateTimeFluentAssertion> IsInSameYearAs(DateTime other)
         {
             if (this.dateTimeUnderTest.ToUniversalTime().Year == other.ToUniversalTime().Year)
             {
@@ -335,7 +335,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that actual and given DateTime have same month.
+        /// Check that actual and given DateTime have same month.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -346,7 +346,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">
         /// The actual date time month is not equal to the given DateTime month.
         /// </exception>
-        public IChainableFluentAssertion<IDateTimeFluentAssertion> HaveSameMonth(DateTime other)
+        public IChainableFluentAssertion<IDateTimeFluentAssertion> IsInSameMonthAs(DateTime other)
         {
             if (this.dateTimeUnderTest.ToUniversalTime().Month == other.ToUniversalTime().Month)
             {
@@ -357,7 +357,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that actual and given DateTime have same day.
+        /// Check that actual and given DateTime have same day.
         /// </summary>
         /// <param name="other">
         /// The other DateTime.
@@ -368,7 +368,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">
         /// The actual date time day is not equal to the given DateTime day.
         /// </exception>
-        public IChainableFluentAssertion<IDateTimeFluentAssertion> HaveSameDay(DateTime other)
+        public IChainableFluentAssertion<IDateTimeFluentAssertion> IsInSameDayAs(DateTime other)
         {
             if (this.dateTimeUnderTest.ToUniversalTime().Day == other.ToUniversalTime().Day)
             {

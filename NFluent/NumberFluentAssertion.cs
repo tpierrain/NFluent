@@ -35,7 +35,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that the actual value is equal to zero.
+        /// Check that the actual value is equal to zero.
         /// </summary>
         /// <returns>
         /// A chainable assertion.
@@ -54,7 +54,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that the actual value is NOT equal to zero.
+        /// Check that the actual value is NOT equal to zero.
         /// </summary>
         /// <returns>
         /// <returns>A chainable assertion.</returns>
@@ -73,7 +73,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Verifies that the actual value is strictly positive.
+        /// Check that the actual value is strictly positive.
         /// </summary>
         /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
