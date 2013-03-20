@@ -20,21 +20,21 @@ namespace NFluent
     public interface INumberFluentAssertion : IFluentAssertion, IEqualityFluentAssertionTrait<INumberFluentAssertion>, IInstanceTypeFluentAssertionTrait<INumberFluentAssertion>
     {
         /// <summary>
-        /// Verifies that the actual value is equal to zero.
+        /// Checks that the actual value is equal to zero.
         /// </summary>
         /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
         IChainableFluentAssertion<INumberFluentAssertion> IsZero();
 
         /// <summary>
-        /// Verifies that the actual value is NOT equal to zero.
+        /// Checks that the actual value is NOT equal to zero.
         /// </summary>
         /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
         IChainableFluentAssertion<INumberFluentAssertion> IsNotZero();
 
         /// <summary>
-        /// Verifies that the actual value is strictly positive.
+        /// Checks that the actual value is strictly positive.
         /// </summary>
         /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
