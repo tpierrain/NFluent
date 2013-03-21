@@ -87,28 +87,32 @@ namespace NFluent.Tests
          [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-12-25T05:00:00.0000000Z] not equals to the expected [2013-12-31T05:00:00.0000000Z]")]
          public void IsEqualToThrowExceptionWhenNotEqual()
          {
-             var christmas2013 = new DateTime(2013, 12, 25);
-             var newYearsEve2014 = new DateTime(2013, 12, 31); 
+             var christmasUtc2013 = new DateTime(2013, 12, 25).ToUniversalTime();
+             var christmasInMontreal2013 = TimeZoneInfo.ConvertTimeFromUtc(christmasUtc2013, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+             var newYearsEveUtc2014 = new DateTime(2013, 12, 31).ToUniversalTime();
+             var newYearsEveInMontreal2013 = TimeZoneInfo.ConvertTimeFromUtc(newYearsEveUtc2014, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
 
-             Check.That(christmas2013).IsEqualTo(newYearsEve2014);
+             Check.That(christmasInMontreal2013.ToUniversalTime()).IsEqualTo(newYearsEveInMontreal2013.ToUniversalTime());
          }
 
          [Test]
          [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-12-25T05:00:00.0000000Z] not equals to the expected [\"Batman\"]")]
          public void IsEqualToThrowExceptionWhenTypeDiffer()
          {
-             var christmas2013 = new DateTime(2013, 12, 25);
+             var christmasUtc2013 = new DateTime(2013, 12, 25).ToUniversalTime();
+             var christmasInMontreal2013 = TimeZoneInfo.ConvertTimeFromUtc(christmasUtc2013, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
 
-             Check.That(christmas2013).IsEqualTo("Batman");
+             Check.That(christmasInMontreal2013.ToUniversalTime()).IsEqualTo("Batman");
          }
 
          [Test]
          [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-12-25T05:00:00.0000000Z] equals to the value [2013-12-25T05:00:00.0000000Z] which is not expected.")]
          public void IsNotEqualToThrowExceptionWhenEqual()
          {
-             var christmas2013 = new DateTime(2013, 12, 25);
+             var christmasUtc2013 = new DateTime(2013, 12, 25).ToUniversalTime();
+             var christmasInMontreal2013 = TimeZoneInfo.ConvertTimeFromUtc(christmasUtc2013, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
 
-             Check.That(christmas2013).IsNotEqualTo(christmas2013);
+             Check.That(christmasInMontreal2013.ToUniversalTime()).IsNotEqualTo(christmasInMontreal2013.ToUniversalTime());
          }
 
          [Test]
