@@ -13,7 +13,7 @@ Making Changes
 1. Clone your fork locally
 1. Configure the upstream repo (`git remote add upstream git://github.com/tpierrain/NFluent`)
 1. Create a local branch (`git checkout -b myBranch`)
-1. Work on your feature, following the [NFluent Definition of Done (DoD) for Development](https://github.com/tpierrain/NFluent/blob/master/DevDoD.md).
+1. Work on your feature, following the [NFluent Definition of Done (DoD) for Development](./DevDoD.md).
 1. Rebase if required (see below)
 1. Push the branch up to GitHub (`git push origin myBranch`)
 1. Send a Pull Request on GitHub
@@ -39,7 +39,7 @@ If you're working on a long running feature then you may want to do this quite o
 Sending a Pull Request
 ----------------------
 
-First of all, check that your code is in line with the [NFluent Definition of Done (DoD) for Development](https://github.com/tpierrain/NFluent/blob/master/DevDoD.md).
+First of all, check that your code is in line with the [NFluent Definition of Done (DoD) for Development](./DevDoD.md).
 
 Then, while working on your feature you may well create several branches, which is fine, but before you send a pull request you should ensure that you have rebased back to a single "Feature branch" - we care about your commits, and we care about your feature branch; but we don't care about how many or which branches you created while you were working on it :-)
 
