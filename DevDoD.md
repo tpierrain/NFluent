@@ -3,7 +3,7 @@ NFluent Definition of Done (DoD) for Development
 
 These are the rules that should be followed in order to contribute to this project:
 
-1. Apache 2.0 License header is set on every source code file
+1. Apache 2.0 License header is set on every source code file (but not mandatory for unit test files).
 2. No warning during the build (warn as error)
 3. No StyleCop warning
 	+ this includes to have a proper documentation for the NFluent project (but not for the unit test one)
