@@ -55,7 +55,7 @@ namespace NFluent.Extensions
         public static string ToStringProperlyFormated(this DateTime theDateTime)
         {
             // return a ISO-8601 Date format
-            return theDateTime.ToString("o", CultureInfo.InvariantCulture);
+            return string.Format(CultureInfo.InvariantCulture, "{0:o}, Kind = {1}", theDateTime, theDateTime.Kind);
         }
 
         /// <summary>
