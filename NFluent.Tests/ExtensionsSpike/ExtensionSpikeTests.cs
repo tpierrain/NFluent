@@ -22,7 +22,7 @@
         }
 
         [Test]
-        public void DoNotThrowExceptionWhenSutIsASubTypeOfTheTypeReferencedInTheExtensionMethod()
+        public void WorksWhenSutIsADerivedTypeOfTheInterfaceReferencedAsTheTypeParameterOfTheFluentAssertion()
         {
             Version v1 = new Version(1,0);
             Version v2 = new Version(2,0);
