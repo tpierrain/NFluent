@@ -24,6 +24,9 @@
         [Test]
         public void WorksWhenSutIsADerivedTypeOfTheInterfaceReferencedAsTheTypeParameterOfTheFluentAssertion()
         {
+            // here: 
+            // the interface referenced as the type parameter of the fluent assertion: IComparable
+            // and the sut type: System.Version
             Version v1 = new Version(1,0);
             Version v2 = new Version(2,0);
 
