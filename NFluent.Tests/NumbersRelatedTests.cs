@@ -94,7 +94,7 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[0] is not a strictly positive value.")]
-        public void IsPositiveThrowExceptionWhenEqualToZero()
+        public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
             float zero = 0F;
             Check.That(zero).IsPositive();
@@ -102,7 +102,7 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[-50] is not a strictly positive value.")]
-        public void IsPositiveThrowExceptionWhenValueIsNegative()
+        public void IsPositiveThrowsExceptionWhenValueIsNegative()
         {
             double negativeDouble = -50D;
 

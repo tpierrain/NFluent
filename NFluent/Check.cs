@@ -14,6 +14,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
     using System.Collections;
 
     /// <summary>
@@ -221,5 +222,35 @@ namespace NFluent
         }
 
         #endregion
+
+        /// <summary>
+        /// Returns a <see cref="IDateTimeFluentAssertion" /> instance that will provide assertion methods to be executed on a given DateTime instance.
+        /// </summary>
+        /// <param name="value">The DateTime instance to be tested.</param>
+        /// <returns>
+        /// A <see cref="IDateTimeFluentAssertion" /> instance to use in order to assert things on the given DateTime instance.
+        /// </returns>
+        /// <remarks>
+        /// Methods of the returned <see cref="IDateTimeFluentAssertion" /> instance will usually throw a <see cref="FluentAssertionException" /> when failing.
+        /// </remarks>
+        public static IDateTimeFluentAssertion That(DateTime value)
+        {
+            return new DateTimeFluentAssertion(value);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="IBooleanFluentAssertion" /> instance that will provide assertion methods to be executed on a given Boolean instance.
+        /// </summary>
+        /// <param name="value">The Boolean instance to be tested.</param>
+        /// <returns>
+        /// A <see cref="IBooleanFluentAssertion" /> instance to use in order to assert things on the given Boolean instance.
+        /// </returns>
+        /// <remarks>
+        /// Methods of the returned <see cref="IBooleanFluentAssertion" /> instance will usually throw a <see cref="FluentAssertionException" /> when failing.
+        /// </remarks>
+        public static IBooleanFluentAssertion That(bool value)
+        {
+            return new BooleanFluentAssertion(value);
+        }
     }
 }
