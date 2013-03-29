@@ -52,10 +52,12 @@
     <Compile Include="ContainsTests.cs" />
     <Compile Include="ExtensionsSpike\Core\Check.cs" />
     <Compile Include="ExtensionsSpike\Core\FluentAssertFactory.cs" />
-    <Compile Include="ExtensionsSpike\Core\IGenericFluent.cs" />
-    <Compile Include="ExtensionsSpike\Core\ObjectFluent.cs" />
+    <Compile Include="ExtensionsSpike\Core\IFluentAssertion.cs" />
+    <Compile Include="ExtensionsSpike\Core\ObjectFluentAssertion.cs" />
     <Compile Include="ExtensionsSpike\ExtensionSpikeTests.cs" />
     <Compile Include="ExtensionsSpike\Plugins\Plugins.cs" />
+    <Compile Include="ExtensionsSpike\Plugins\StringFluentAssertions.cs" />
+    <Compile Include="ExtensionsSpike\Plugins\StringFluentAssertion.cs" />
     <Compile Include="IsInstanceOfTests.cs" />
     <Compile Include="NumbersRelatedTests.cs" />
     <Compile Include="PropertiesRelatedTests.cs" />

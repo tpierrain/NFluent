@@ -1,6 +1,6 @@
 ﻿namespace Spike.Core
 {
-    public interface IGenericFluent<out T>
+    public interface IFluentAssertion<out T>
     {
         T Sut { get; }
     }

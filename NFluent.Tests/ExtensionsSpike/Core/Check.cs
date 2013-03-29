@@ -14,8 +14,10 @@
         /// </summary>
         static Check()
         {
-            var types = Assembly.GetExecutingAssembly().GetTypes().Where(
-                x => x.GetInterfaces().Any(i => i.Name.StartsWith("IGenericFluent")));
+            // TOOD search plugins within the appdomain instead of within the ExecutingAssembly 
+            var types = Assembly.GetExecutingAssembly().GetTypes()
+                                                        .Where(x => x.GetInterfaces()
+                                                        .Any(i => i.Name.StartsWith("IFluentAssertion")));
 
             foreach (var type in types)
             {
@@ -27,21 +29,21 @@
             }
         }
 
-        public static IGenericFluent<T> That<T>(T sut)
+        public static IFluentAssertion<T> That<T>(T sut)
         {
-            return wrapper(sut);
+            return GetSutWrapper(sut);
         }
 
-        private static IGenericFluent<T> wrapper<T>(T typedSut)
+        private static IFluentAssertion<T> GetSutWrapper<T>(T typedSut)
         {
             if (registry.ContainsKey(typedSut.GetType()))
             {
-                return Activator.CreateInstance(registry[typedSut.GetType()], typedSut) as IGenericFluent<T>;
+                return Activator.CreateInstance(registry[typedSut.GetType()], typedSut) as IFluentAssertion<T>;
             }
 
             var factory = new FluentAssertFactory();
             var interfacesut = factory.GetInterface(typedSut);
-            var result = interfacesut as IGenericFluent<T>;
+            var result = interfacesut as IFluentAssertion<T>;
             return result;
         }
 

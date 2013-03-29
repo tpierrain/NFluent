@@ -2,9 +2,9 @@
 {
     public class FluentAssertFactory
     {
-        public IGenericFluent<object> GetInterface(object sut)
+        public IFluentAssertion<object> GetInterface(object sut)
         {
-            return new ObjectFluent(sut);
+            return new ObjectFluentAssertion(sut);
         }
     }
 }

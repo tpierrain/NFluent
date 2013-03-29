@@ -1,9 +1,9 @@
 ﻿namespace Spike.Core
 {
-    public class ObjectFluent : IGenericFluent<object>
+    public class ObjectFluentAssertion : IFluentAssertion<object>
     {
         public object Sut { get; private set; }
-        public ObjectFluent(object sut)
+        public ObjectFluentAssertion(object sut)
         {
             this.Sut = sut;
         }
