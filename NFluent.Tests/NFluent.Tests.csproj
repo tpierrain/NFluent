@@ -49,6 +49,7 @@
     <Compile Include="ContainsOnlyTests.cs" />
     <Compile Include="ContainsExactlyTests.cs" />
     <Compile Include="ContainsTests.cs" />
+    <Compile Include="ExtensionsSpike\Core\FluentAssertion.cs" />
     <Compile Include="ExtensionsSpike\Plugins\ComparableFluentAssertionExtensions.cs" />
     <Compile Include="ExtensionsSpike\Plugins\ComparableFluentAssertion.cs" />
     <Compile Include="ExtensionsSpike\Core\Check.cs" />

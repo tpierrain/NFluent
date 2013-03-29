@@ -31,6 +31,11 @@
             Version v2 = new Version(2,0);
 
             Check.That(v1).IsBefore(v2);
+
+            Decimal one = new decimal(1);
+            Decimal pi = new decimal(Math.PI);
+            // TODO make the next line to build
+            //Check.That(one).IsBefore(pi);
         }
     }
 }

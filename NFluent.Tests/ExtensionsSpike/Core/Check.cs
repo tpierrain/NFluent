@@ -5,6 +5,8 @@
     using System.Linq;
     using System.Reflection;
 
+    using NFluent.Tests.ExtensionsSpike.Core;
+
     public static class Check
     {
         // TODO :create a dedicated collection for this registry with properties such as FluentInterfaceType & FluentImplementationType 
@@ -35,7 +37,7 @@
             return GetSutWrapper<T>(sut);
         }
 
-        private static IFluentAssertion<T> GetSutWrapper<T>(object sut)
+        private static IFluentAssertion<T> GetSutWrapper<T>(T sut)
         {
             if (fluentInterfacesToFluentImplementationRegistry.ContainsKey(sut.GetType()))
             {
@@ -44,12 +46,18 @@
             else
             {
                 // No direct entry for the concrete type of this sut; thus,
+                IFluentAssertion<T> newFluentAssertion = new FluentAssertion<T>(sut);
+                fluentInterfacesToFluentImplementationRegistry.Add(typeof(IFluentAssertion<T>), newFluentAssertion.GetType());
+
+                return newFluentAssertion;
+
                 // try to find one of its base type as an alternative
                 // or, would be nice to create the corresponding "enveloppe type" on the fly ;-)
                 foreach (var type in fluentInterfacesToFluentImplementationRegistry)
                 {
                     if (type.Key.IsAssignableFrom(sut.GetType()) && !type.Key.Equals(typeof(object)))
                     {
+                        
                         var temp = Activator.CreateInstance(type.Value, sut);
                         // incorrect, cause IFluentAssertion<IComparable> is not assignable to IFluentAssertion<Version> ;-(
                         return temp as IFluentAssertion<T>;
