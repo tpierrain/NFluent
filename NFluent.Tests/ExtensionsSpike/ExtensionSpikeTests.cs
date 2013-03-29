@@ -2,11 +2,8 @@
 {
     using System;
 
-    using NFluent;
-
     using NUnit.Framework;
 
-    using Spike.Core;
     using Spike.Plugins;
 
     using Check = Spike.Core.Check;
@@ -31,29 +28,6 @@
             Version v2 = new Version(2,0);
 
             Check.That(v1).IsBefore(v2);
-        }
-    }
-
-    public class ComparableFluentAssertionAssertion : IFluentAssertion<IComparable>
-    {
-        public IComparable Sut { get; private set; }
-
-        public ComparableFluentAssertionAssertion(IComparable sut)
-        {
-            this.Sut = sut;
-        }
-    }
-
-    public static class ComparableExtensions
-    {
-        public static IFluentAssertion<IComparable> IsBefore(this IFluentAssertion<IComparable> fluentAssertionInterface, IComparable other)
-        {
-            if (fluentAssertionInterface.Sut.CompareTo(other) >= 0)
-            {
-                throw new FluentAssertionException("is not before.");
-            }
-            
-            return fluentAssertionInterface;
         }
     }
 }

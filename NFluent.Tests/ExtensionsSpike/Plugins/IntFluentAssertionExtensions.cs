@@ -1,15 +1,10 @@
 ﻿namespace Spike.Plugins
 {
     using System;
+
     using Spike.Core;
 
-    public class IntFluentAssertion : IFluentAssertion<int>
-    {
-        public int Sut { get; private set; }
-        public IntFluentAssertion(int? sut) { Sut = sut ?? 0; }
-    }
-
-    public static class IntExt
+    public static class IntFluentAssertionExtensions
     {
         public static void IsCoolNumber(this IFluentAssertion<int> fluentAssertionInterface)
         {

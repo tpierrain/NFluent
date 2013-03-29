@@ -41,7 +41,6 @@
     <Reference Include="System.Net" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -50,13 +49,17 @@
     <Compile Include="ContainsOnlyTests.cs" />
     <Compile Include="ContainsExactlyTests.cs" />
     <Compile Include="ContainsTests.cs" />
+    <Compile Include="ExtensionsSpike\ComparableFluentAssertionExtensions.cs" />
+    <Compile Include="ExtensionsSpike\ComparableFluentAssertion.cs" />
     <Compile Include="ExtensionsSpike\Core\Check.cs" />
     <Compile Include="ExtensionsSpike\Core\FluentAssertFactory.cs" />
     <Compile Include="ExtensionsSpike\Core\IFluentAssertion.cs" />
     <Compile Include="ExtensionsSpike\Core\ObjectFluentAssertion.cs" />
     <Compile Include="ExtensionsSpike\ExtensionSpikeTests.cs" />
-    <Compile Include="ExtensionsSpike\Plugins\Plugins.cs" />
-    <Compile Include="ExtensionsSpike\Plugins\StringFluentAssertions.cs" />
+    <Compile Include="ExtensionsSpike\FluentAssertionRepositoryTests.cs" />
+    <Compile Include="ExtensionsSpike\Plugins\IntFluentAssertionExtensions.cs" />
+    <Compile Include="ExtensionsSpike\Plugins\IntFluentAssertion.cs" />
+    <Compile Include="ExtensionsSpike\Plugins\StringFluentAssertionExtensions.cs" />
     <Compile Include="ExtensionsSpike\Plugins\StringFluentAssertion.cs" />
     <Compile Include="IsInstanceOfTests.cs" />
     <Compile Include="NumbersRelatedTests.cs" />
