@@ -6,11 +6,11 @@
 
     public static class IntFluentAssertionExtensions
     {
-        public static IFluentAssertion<int> IsCoolNumber(this IFluentAssertion<int> fluentAssertion)
+        public static IFluentAssertion<int> IsTheUltimateQuestionOfLifeAnswer(this IFluentAssertion<int> fluentAssertion)
         {
             if (fluentAssertion.Sut != 42)
             {
-                throw new Exception("Not cool, try 42!");
+                throw new Exception("Not!!!! Try again!");
             }
             return fluentAssertion;
         }

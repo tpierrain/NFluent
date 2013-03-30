@@ -1,6 +1,10 @@
 ﻿namespace Spike.Tests
 {
     using System;
+    using System.Collections.Generic;
+
+    using NFluent.Tests;
+    using NFluent.Tests.Extensions;
 
     using NUnit.Framework;
 
@@ -14,11 +18,11 @@
         [Test]
         public void CanUseVariousExtensions()
         {
-            const int x = 42;
-            const string yoda = "Has the force";
+            const int MythicNumber = 42;
+            const string Yoda = "Has the force";
 
-            Check.That(x).IsCoolNumber();
-            Check.That(yoda).HasTheForce();
+            Check.That(MythicNumber).IsTheUltimateQuestionOfLifeAnswer();
+            Check.That(Yoda).HasTheForce();
         }
 
         [Test]
@@ -43,6 +47,15 @@
 
             // TODO make the next line to build
             //Check.That(one).IsBefore(pi);
+        }
+
+        [Test]
+        public void CanLoadExtensionsFromAnotherAssembly()
+        {
+            var eternalSunshineOfTheSpotlessMind = new Movie("Eternal sunshine of the spotless mind", new Person() { Name = "Michel GONDRY" }, new List<Nationality>() { Nationality.American });
+
+            Check.That(eternalSunshineOfTheSpotlessMind).IsDirectedBy("Michel GONDRY");
+            Check.That(eternalSunshineOfTheSpotlessMind).IsAFGreatMovie();
         }
     }
 }

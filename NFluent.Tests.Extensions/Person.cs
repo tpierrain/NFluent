@@ -3,7 +3,7 @@
     /// <summary>
     /// Dummy class for unit testing purpose.
     /// </summary>
-    internal class Person
+    public class Person
     {
         public string Name { get; set; }
 
