@@ -65,21 +65,6 @@ namespace NFluent
         /// <remarks>
         /// Methods of the returned <see cref="INumberFluentAssertion" /> instance will usually throw a <see cref="FluentAssertionException" /> when failing.
         /// </remarks>
-        public static INumberFluentAssertion That(int value)
-        {
-            return new NumberFluentAssertion<int>(value);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="INumberFluentAssertion" /> instance that will provide assertion methods to be executed on a given value.
-        /// </summary>
-        /// <param name="value">The value to be tested.</param>
-        /// <returns>
-        /// A <see cref="INumberFluentAssertion" /> instance to use in order to assert things on the value (System Under Test).
-        /// </returns>
-        /// <remarks>
-        /// Methods of the returned <see cref="INumberFluentAssertion" /> instance will usually throw a <see cref="FluentAssertionException" /> when failing.
-        /// </remarks>
         public static INumberFluentAssertion That(long value)
         {
             return new NumberFluentAssertion<long>(value);
@@ -98,21 +83,6 @@ namespace NFluent
         public static INumberFluentAssertion That(double value)
         {
             return new NumberFluentAssertion<double>(value);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="INumberFluentAssertion" /> instance that will provide assertion methods to be executed on a given value.
-        /// </summary>
-        /// <param name="value">The value to be tested.</param>
-        /// <returns>
-        /// A <see cref="INumberFluentAssertion" /> instance to use in order to assert things on the value (System Under Test).
-        /// </returns>
-        /// <remarks>
-        /// Methods of the returned <see cref="INumberFluentAssertion" /> instance will usually throw a <see cref="FluentAssertionException" /> when failing.
-        /// </remarks>
-        public static INumberFluentAssertion That(decimal value)
-        {
-            return new NumberFluentAssertion<decimal>(value);
         }
 
         /// <summary>

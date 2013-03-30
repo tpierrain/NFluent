@@ -1,6 +1,7 @@
 ﻿namespace NFluent.Tests
 {
     using NUnit.Framework;
+    using Spike.Ext;
 
     [TestFixture]
     public class EqualRelatedTests
@@ -37,7 +38,7 @@
             int firstInt = 23;
             int secondButIdenticalInt = 23;
 
-            Check.That(secondButIdenticalInt).IsEqualTo(firstInt);
+            Spike.Check.That(secondButIdenticalInt).IsEqualTo(firstInt);
         }
 
         [Test]

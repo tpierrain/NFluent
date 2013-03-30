@@ -4,6 +4,8 @@
 
     using NUnit.Framework;
 
+    using Spike.Ext;
+
     [TestFixture]
     public class IsInstanceOfTests
     {
@@ -24,7 +26,7 @@
             Check.That(StringObj).IsInstanceOf<string>();
 
             // numerics
-            Check.That(IntObj).IsInstanceOf<int>();
+            Spike.Check.That(IntObj).IsInstanceOf<int>();
             Check.That(LongObj).IsInstanceOf<long>();
             Check.That(DoubleObj).IsInstanceOf<double>();
 
@@ -43,7 +45,7 @@
         public void IsInstanceOfThrowsExceptionWithProperFormatWhenFailsWithInt()
         {
             const int IntObject = 23;
-            Check.That(IntObject).IsInstanceOf<Person>();
+            Spike.Check.That(IntObject).IsInstanceOf<Person>();
         }
 
         [Test]
@@ -99,7 +101,7 @@
         {
             const int IntObject = 23;
 
-            Check.That(IntObject).IsNotInstanceOf<int>();
+            Spike.Check.That(IntObject).IsNotInstanceOf<int>();
         }
 
         [Test]
