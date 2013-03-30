@@ -1,6 +1,7 @@
 ﻿namespace NFluent.Tests
 {
     using NUnit.Framework;
+    using Spike.Ext;
 
     [TestFixture]
     public class NumbersRelatedTests
@@ -24,7 +25,8 @@
             Check.That(IntZero).IsZero();
             Check.That(LongZero).IsZero();
             Check.That(DoubleZero).IsZero();
-            Check.That(DecimalZero).IsZero();
+
+            Spike.Check.That(DecimalZero).IsZero();
             Check.That(FloatZero).IsZero();
             Check.That(ShortZero).IsZero();
             Check.That(ByteZero).IsZero();
@@ -63,7 +65,7 @@
             Check.That(IntValue).IsNotZero();
             Check.That(LongValue).IsNotZero();
             Check.That(DoubleValue).IsNotZero();
-            Check.That(DecimalValue).IsNotZero();
+            Spike.Check.That(DecimalValue).IsNotZero();
             Check.That(FloatValue).IsNotZero();
             Check.That(ShortValue).IsNotZero();
             Check.That(ByteValue).IsNotZero();

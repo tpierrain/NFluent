@@ -50,7 +50,6 @@
     <Compile Include="ContainsExactlyTests.cs" />
     <Compile Include="ContainsTests.cs" />
     <Compile Include="ExtensionSpikeTests.cs" />
-    <Compile Include="FluentAssertionRepositoryTests.cs" />
     <Compile Include="IsInstanceOfTests.cs" />
     <Compile Include="NumbersRelatedTests.cs" />
     <Compile Include="PropertiesRelatedTests.cs" />
@@ -62,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NFluent.Tests.Extensions\NFluent.Tests.Extensions.csproj">
