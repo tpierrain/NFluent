@@ -1,4 +1,4 @@
-﻿namespace Spike.Plugins
+﻿    namespace Spike.Plugins
 {
     using System;
 
@@ -6,9 +6,13 @@
 
     public static class IntFluentAssertionExtensions
     {
-        public static void IsCoolNumber(this IFluentAssertion<int> fluentAssertionInterface)
+        public static IFluentAssertion<int> IsCoolNumber(this IFluentAssertion<int> fluentAssertion)
         {
-            if (fluentAssertionInterface.Sut != 42) throw new Exception("Not cool, try 42!");
+            if (fluentAssertion.Sut != 42)
+            {
+                throw new Exception("Not cool, try 42!");
+            }
+            return fluentAssertion;
         }
     }
 }
