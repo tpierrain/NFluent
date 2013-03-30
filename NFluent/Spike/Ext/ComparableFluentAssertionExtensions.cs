@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IntFluentAssertionExtensions.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN, Rui CARVALHO
+// // <copyright file="ComparableFluentAssertionExtensions.cs" company="">
+// //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -12,32 +12,33 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace Spike
+namespace Spike.Ext
 {
     using System;
     using NFluent;
 
     /// <summary>
-    /// Provides assertion methods to be executed on an integer value.
+    /// Provides assertion methods to be executed on an <see cref="IComparable"/> instance.
     /// </summary>
-    public static class IntFluentAssertionExtensions
+    public static class ComparableFluentAssertionExtensions
     {
         /// <summary>
-        /// Dummy method for spike purpose (to be deleted). Determines whether [is the ultimate question of life answer] [the specified fluent assertion].
+        /// Determines whether the specified value is before the other one.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion.</param>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="otherValue">The other value.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="System.Exception">The current value is not the answer to the ultimate question of life.</exception>
-        public static ChainableFluentAssertion<IFluentAssertion<int>> IsTheUltimateQuestionOfLifeAnswer(this IFluentAssertion<int> fluentAssertion)
+        /// <exception cref="NFluent.FluentAssertionException">The current value is not before the other one.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<IComparable>> IsBefore(this IFluentAssertion<IComparable> fluentAssertion, IComparable otherValue)
         {
-            if (fluentAssertion.Value != 42)
+            if (fluentAssertion.Value.CompareTo(otherValue) >= 0)
             {
-                throw new Exception("Not!!!! Try again!");
+                throw new FluentAssertionException("is not before.");
             }
 
-            return new ChainableFluentAssertion<IFluentAssertion<int>>(fluentAssertion);
+            return new ChainableFluentAssertion<IFluentAssertion<IComparable>>(fluentAssertion);
         }
     }
 }

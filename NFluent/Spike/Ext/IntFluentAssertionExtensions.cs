@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="StringFluentAssertionExtensions.cs" company="">
+// // <copyright file="IntFluentAssertionExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN, Rui CARVALHO
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -12,32 +12,32 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace Spike
+namespace Spike.Ext
 {
     using System;
     using NFluent;
 
     /// <summary>
-    /// Provides assertion methods to be executed on a string instance.
+    /// Provides assertion methods to be executed on an integer value.
     /// </summary>
-    public static class StringFluentAssertionExtensions
+    public static class IntFluentAssertionExtensions
     {
         /// <summary>
-        /// Dummy method for spike purpose (to be deleted). Determines whether [has the force] [the specified fluent assertion].
+        /// Dummy method for spike purpose (to be deleted). Determines whether [is the ultimate question of life answer] [the specified fluent assertion].
         /// </summary>
         /// <param name="fluentAssertion">The fluent assertion.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="System.Exception">The current value has not "force".</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<string>> HasTheForce(this IFluentAssertion<string> fluentAssertion)
+        /// <exception cref="System.Exception">The current value is not the answer to the ultimate question of life.</exception>
+        public static ChainableFluentAssertion<IFluentAssertion<int>> IsTheUltimateQuestionOfLifeAnswer(this IFluentAssertion<int> fluentAssertion)
         {
-            if (!fluentAssertion.Value.ToLower().Contains("force"))
+            if (fluentAssertion.Value != 42)
             {
-                throw new Exception("damn, you're so common!");
+                throw new Exception("Not!!!! Try again!");
             }
 
-            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+            return new ChainableFluentAssertion<IFluentAssertion<int>>(fluentAssertion);
         }
     }
 }

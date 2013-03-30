@@ -47,13 +47,6 @@
   <ItemGroup>
     <Compile Include="ChainableFluentAssertion.cs" />
     <Compile Include="Check.cs" />
-    <Compile Include="ExtensionsSpike\Core\Check.cs" />
-    <Compile Include="ExtensionsSpike\Core\FluentAssertion.cs" />
-    <Compile Include="ExtensionsSpike\Core\IFluentAssertion.cs" />
-    <Compile Include="ExtensionsSpike\Plugins\ComparableFluentAssertionExtensions.cs" />
-    <Compile Include="ExtensionsSpike\Plugins\DecimalFluentAssertionExtensions.cs" />
-    <Compile Include="ExtensionsSpike\Plugins\IntFluentAssertionExtensions.cs" />
-    <Compile Include="ExtensionsSpike\Plugins\StringFluentAssertionExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="IObjectFluentAssertion.cs" />
     <Compile Include="ObjectFluentAssertion.cs" />
@@ -67,6 +60,13 @@
     <Compile Include="EnumerableFluentAssertion.cs" />
     <Compile Include="IEqualityFluentAssertionTrait.cs" />
     <Compile Include="INumberFluentAssertion.cs" />
+    <Compile Include="Spike\Check.cs" />
+    <Compile Include="Spike\Ext\ComparableFluentAssertionExtensions.cs" />
+    <Compile Include="Spike\Ext\DecimalFluentAssertionExtensions.cs" />
+    <Compile Include="Spike\FluentAssertion.cs" />
+    <Compile Include="Spike\IFluentAssertion.cs" />
+    <Compile Include="Spike\Ext\IntFluentAssertionExtensions.cs" />
+    <Compile Include="Spike\Ext\StringFluentAssertionExtensions.cs" />
     <Compile Include="StringFluentAssertion.cs" />
     <Compile Include="IEnumerableFluentAssertion.cs" />
     <Compile Include="IStringFluentAssertion.cs" />

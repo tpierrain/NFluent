@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ComparableFluentAssertionExtensions.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
+// // <copyright file="StringFluentAssertionExtensions.cs" company="">
+// //   Copyright 2013 Thomas PIERRAIN, Rui CARVALHO
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -12,33 +12,32 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace Spike
+namespace Spike.Ext
 {
     using System;
     using NFluent;
 
     /// <summary>
-    /// Provides assertion methods to be executed on an <see cref="IComparable"/> instance.
+    /// Provides assertion methods to be executed on a string instance.
     /// </summary>
-    public static class ComparableFluentAssertionExtensions
+    public static class StringFluentAssertionExtensions
     {
         /// <summary>
-        /// Determines whether the specified value is before the other one.
+        /// Dummy method for spike purpose (to be deleted). Determines whether [has the force] [the specified fluent assertion].
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
-        /// <param name="otherValue">The other value.</param>
+        /// <param name="fluentAssertion">The fluent assertion.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="NFluent.FluentAssertionException">The current value is not before the other one.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<IComparable>> IsBefore(this IFluentAssertion<IComparable> fluentAssertion, IComparable otherValue)
+        /// <exception cref="System.Exception">The current value has not "force".</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> HasTheForce(this IFluentAssertion<string> fluentAssertion)
         {
-            if (fluentAssertion.Value.CompareTo(otherValue) >= 0)
+            if (!fluentAssertion.Value.ToLower().Contains("force"))
             {
-                throw new FluentAssertionException("is not before.");
+                throw new Exception("damn, you're so common!");
             }
 
-            return new ChainableFluentAssertion<IFluentAssertion<IComparable>>(fluentAssertion);
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
     }
 }
