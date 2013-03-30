@@ -22,7 +22,7 @@
             const ushort UshortZero = 0;
             const ulong UlongZero = 0;
 
-            Check.That(IntZero).IsZero();
+            Spike.Check.That(IntZero).IsZero();
             Check.That(LongZero).IsZero();
             Check.That(DoubleZero).IsZero();
 
@@ -41,7 +41,7 @@
         {
             int nine = 9;
 
-            Check.That(nine).IsZero();
+            Spike.Check.That(nine).IsZero();
         }
 
         #endregion 
@@ -62,7 +62,7 @@
             const ushort UshortValue = 2;
             const ulong UlongValue = 2;
 
-            Check.That(IntValue).IsNotZero();
+            Spike.Check.That(IntValue).IsNotZero();
             Check.That(LongValue).IsNotZero();
             Check.That(DoubleValue).IsNotZero();
             Spike.Check.That(DecimalValue).IsNotZero();
@@ -91,7 +91,7 @@
         public void IsPositiveWorks()
         {
             int two = 2;
-            Check.That(two).IsPositive();
+            Spike.Check.That(two).IsPositive();
         }
 
         [Test]

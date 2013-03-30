@@ -32,7 +32,7 @@ namespace Spike.Ext
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static IChainableFluentAssertion<INumberFluentAssertion> IsEqualTo(this IFluentAssertion<decimal> fluentAssertion, object expected)
         {
-            // TODO transform NumberFluentAssertion<T> into a static class with functions only
+            // TODO transform NumberFluentAssertion<T> into a static class with functions only?
             var numberAssertionStrategy = new NumberFluentAssertion<decimal>(fluentAssertion.Value);
             return numberAssertionStrategy.IsEqualTo(expected);
         }

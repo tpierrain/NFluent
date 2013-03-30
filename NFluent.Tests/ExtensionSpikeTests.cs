@@ -19,7 +19,8 @@
             const int MythicNumber = 42;
             const string Yoda = "Has the force";
 
-            Check.That(MythicNumber).IsTheUltimateQuestionOfLifeAnswer();
+            Check.That(MythicNumber as IComparable).IsBefore(100).And.IsBefore(200);
+            Check.That(MythicNumber).IsNotZero().And.IsInstanceOf<int>();
             Check.That(Yoda).HasTheForce();
         }
 
