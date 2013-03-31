@@ -4,6 +4,8 @@
 
     using Spike;
 
+    using global::Spike;
+
     public static class MovieFluentAssertionExtensions
     {
         public static IFluentAssertion<Movie> IsDirectedBy(this IFluentAssertion<Movie> fluentAssertion, string directorFullName)

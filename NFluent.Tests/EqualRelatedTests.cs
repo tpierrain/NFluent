@@ -66,7 +66,7 @@
             var array = new int[] { 45, 43, 54, 666 };
             var otherSimilarButNotEqualArray = new int[] { 45, 43, 54, 666 };
 
-            Check.That(array).IsEqualTo(otherSimilarButNotEqualArray);
+            Spike.Check.That(array).IsEqualTo(otherSimilarButNotEqualArray);
         }
 
         [Test]
@@ -91,8 +91,8 @@
             var otherArray = new int[] { 666, 74 };
             var similarButNotEqualArray = new int[] { 45, 43, 54, 666 };
 
-            Check.That(array).IsNotEqualTo(otherArray);
-            Check.That(array).IsNotEqualTo(similarButNotEqualArray);
+            Spike.Check.That(array).IsNotEqualTo(otherArray);
+            Spike.Check.That(array).IsNotEqualTo(similarButNotEqualArray);
         }
 
         [Test]

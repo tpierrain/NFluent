@@ -34,8 +34,8 @@
             Check.That(person).IsInstanceOf<Person>();
 
             //// IEnumerable
-            Check.That(stringList).IsInstanceOf<List<string>>();
-            Check.That(integerArray).IsInstanceOf<int[]>();
+            Spike.Check.That(stringList).IsInstanceOf<List<string>>();
+            Spike.Check.That(integerArray).IsInstanceOf<int[]>();
         }
 
         [Test]
@@ -83,8 +83,8 @@
             Check.That(person).IsNotInstanceOf<NumbersRelatedTests>();
 
             // IEnumerable
-            Check.That(stringList).IsNotInstanceOf<List<int>>();
-            Check.That(integerArray).IsNotInstanceOf<string[]>();
+            Spike.Check.That(stringList).IsNotInstanceOf<List<int>>();
+            Spike.Check.That(integerArray).IsNotInstanceOf<string[]>();
         }
         
         [Test]

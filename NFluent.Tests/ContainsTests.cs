@@ -5,6 +5,9 @@
 
     using NUnit.Framework;
 
+    using Spike.Ext;
+    using Check = Spike.Check;
+
     public class ContainsTests
     {
         #region Contains with arrays

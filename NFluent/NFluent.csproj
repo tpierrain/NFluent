@@ -63,6 +63,7 @@
     <Compile Include="Spike\Check.cs" />
     <Compile Include="Spike\Ext\ComparableFluentAssertionExtensions.cs" />
     <Compile Include="Spike\Ext\DecimalFluentAssertionExtensions.cs" />
+    <Compile Include="Spike\Ext\EnumerableFluentAssertionExtensions.cs" />
     <Compile Include="Spike\FluentAssertion.cs" />
     <Compile Include="Spike\IFluentAssertion.cs" />
     <Compile Include="Spike\Ext\IntFluentAssertionExtensions.cs" />

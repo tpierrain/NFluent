@@ -3,6 +3,8 @@
     using System.Collections;
 
     using NUnit.Framework;
+    using Spike.Ext;
+    using Check = Spike.Check;
 
     public class ToEnumeratedStringTests
     {
