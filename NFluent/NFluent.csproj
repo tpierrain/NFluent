@@ -56,11 +56,8 @@
     <Compile Include="Extensions\ExtensionsCommonHelpers.cs" />
     <Compile Include="IChainableFluentAssertion.cs" />
     <Compile Include="IFluentAssertionBase.cs" />
-    <Compile Include="IInstanceTypeFluentAssertionTrait.cs" />
     <Compile Include="NumberFluentAssertion.cs" />
     <Compile Include="FluentAssertionException.cs" />
-    <Compile Include="IEqualityFluentAssertionTrait.cs" />
-    <Compile Include="INumberFluentAssertion.cs" />
     <Compile Include="ComparableFluentAssertionExtensions.cs" />
     <Compile Include="ByteFluentAssertionExtensions.cs" />
     <Compile Include="ShortFluentAssertionExtensions.cs" />
