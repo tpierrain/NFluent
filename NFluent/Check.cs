@@ -23,36 +23,6 @@ namespace NFluent
     /// </summary>
     public static class Check
     {
-        /// <summary>
-        /// Returns a <see cref="IEnumerableFluentAssertion" /> instance that will provide assertion methods to be executed on the System Under Test enumerable instance.
-        /// </summary>
-        /// <param name="enumerable">The enumerable instance to be tested.</param>
-        /// <returns>
-        /// A <see cref="IEnumerableFluentAssertion" /> instance to use in order to assert things on the System Under Test enumerable instance.
-        /// </returns>
-        /// <remarks>
-        /// Methods of the returned <see cref="IEnumerableFluentAssertion" /> instance will usually throw a <see cref="FluentAssertionException" /> when failing.
-        /// </remarks>
-        public static IEnumerableFluentAssertion That(IEnumerable enumerable)
-        {
-            return new EnumerableFluentAssertion(enumerable);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="IStringFluentAssertion" /> instance that will provide assertion methods to be executed on a given string instance.
-        /// </summary>
-        /// <param name="value">The string instance to be tested.</param>
-        /// <returns>
-        /// A <see cref="IStringFluentAssertion" /> instance to use in order to assert things on the given string instance.
-        /// </returns>
-        /// <remarks>
-        /// Methods of the returned <see cref="IStringFluentAssertion" /> instance will usually throw a <see cref="FluentAssertionException" /> when failing.
-        /// </remarks>
-        public static IStringFluentAssertion That(string value)
-        {
-            return new StringFluentAssertion(value);
-        }
-
         #region INumberFluentAssertion related
 
         /// <summary>
