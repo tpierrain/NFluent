@@ -69,7 +69,6 @@
     <Compile Include="Spike\IFluentAssertion.cs" />
     <Compile Include="Spike\Ext\IntFluentAssertionExtensions.cs" />
     <Compile Include="Spike\Ext\StringFluentAssertionExtensions.cs" />
-    <Compile Include="StringFluentAssertion.cs" />
     <Compile Include="IEnumerableFluentAssertion.cs" />
     <Compile Include="IStringFluentAssertion.cs" />
     <Compile Include="Helpers\IsInstanceHelper.cs" />

@@ -14,8 +14,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System.Collections;
-
     /// <summary>
     /// Provides a set of static methods, returning all an instance of a specific subtype of 
     /// <see cref="IFluentAssertion"/> to be used in order to make check(s) on the provided 

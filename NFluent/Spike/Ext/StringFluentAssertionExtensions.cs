@@ -14,7 +14,10 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace Spike.Ext
 {
+    using System.Collections.Generic;
+
     using NFluent;
+    using NFluent.Helpers;
 
     /// <summary>
     /// Provides assertion methods to be executed on a string instance.
@@ -30,10 +33,10 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IStringFluentAssertion> IsEqualTo(this IFluentAssertion<string> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<string>> IsEqualTo(this IFluentAssertion<string> fluentAssertion, object expected)
         {
-            var assertStrategy = new StringFluentAssertion(fluentAssertion.Value);
-            return assertStrategy.IsEqualTo(expected);
+            EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
 
         /// <summary>
@@ -45,10 +48,10 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IStringFluentAssertion> IsNotEqualTo(this IFluentAssertion<string> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<string>> IsNotEqualTo(this IFluentAssertion<string> fluentAssertion, object expected)
         {
-            var assertStrategy = new StringFluentAssertion(fluentAssertion.Value);
-            return assertStrategy.IsNotEqualTo(expected);
+            EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
 
         /// <summary>
@@ -60,10 +63,10 @@ namespace Spike.Ext
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public static IChainableFluentAssertion<IStringFluentAssertion> IsInstanceOf<T>(this IFluentAssertion<string> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<string>> IsInstanceOf<T>(this IFluentAssertion<string> fluentAssertion)
         {
-            var assertStrategy = new StringFluentAssertion(fluentAssertion.Value);
-            return assertStrategy.IsInstanceOf<T>();
+            IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
 
         /// <summary>
@@ -75,10 +78,10 @@ namespace Spike.Ext
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public static IChainableFluentAssertion<IStringFluentAssertion> IsNotInstanceOf<T>(this IFluentAssertion<string> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<string>> IsNotInstanceOf<T>(this IFluentAssertion<string> fluentAssertion)
         {
-            var assertStrategy = new StringFluentAssertion(fluentAssertion.Value);
-            return assertStrategy.IsNotInstanceOf<T>();
+            IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
 
         /// <summary>
@@ -90,10 +93,24 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
-        public static IChainableFluentAssertion<IStringFluentAssertion> Contains(this IFluentAssertion<string> fluentAssertion, params string[] values)
+        public static IChainableFluentAssertion<IFluentAssertion<string>> Contains(this IFluentAssertion<string> fluentAssertion, params string[] values)
         {
-            var assertStrategy = new StringFluentAssertion(fluentAssertion.Value);
-            return assertStrategy.Contains(values);
+            var notFound = new List<string>();
+            foreach (string value in values)
+            {
+                if (!fluentAssertion.Value.Contains(value))
+                {
+                    notFound.Add(value);
+                }
+            }
+
+            if (notFound.Count > 0)
+            {
+                // TODO replace all the [""{xxx}""] by ToStringProperlyFormated() on values instead
+                throw new FluentAssertionException(string.Format(@"The string [""{0}""] does not contain the expected value(s): [{1}].", fluentAssertion.Value, notFound.ToEnumeratedString()));
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
 
         /// <summary>
@@ -105,10 +122,14 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The string does not start with the expected prefix.</exception>
-        public static IChainableFluentAssertion<IStringFluentAssertion> StartsWith(this IFluentAssertion<string> fluentAssertion, string expectedPrefix)
+        public static IChainableFluentAssertion<IFluentAssertion<string>> StartsWith(this IFluentAssertion<string> fluentAssertion, string expectedPrefix)
         {
-            var assertStrategy = new StringFluentAssertion(fluentAssertion.Value);
-            return assertStrategy.StartsWith(expectedPrefix);
+            if (!fluentAssertion.Value.StartsWith(expectedPrefix))
+            {
+                throw new FluentAssertionException(string.Format(@"The string [""{0}""] does not start with [""{1}""].", fluentAssertion.Value, expectedPrefix));
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
     }
 }
