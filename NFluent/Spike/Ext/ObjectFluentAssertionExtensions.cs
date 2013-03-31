@@ -15,6 +15,7 @@
 namespace Spike.Ext
 {
     using NFluent;
+    using NFluent.Helpers;
 
     /// <summary>
     /// Provides assertion methods to be executed on an object instance.
@@ -30,10 +31,10 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IObjectFluentAssertion> IsEqualTo(this IFluentAssertion<object> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<object>> IsEqualTo(this IFluentAssertion<object> fluentAssertion, object expected)
         {
-            var assertionStrategy = new ObjectFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.IsEqualTo(expected);
+            EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
         }
 
         /// <summary>
@@ -45,10 +46,10 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IObjectFluentAssertion> IsNotEqualTo(this IFluentAssertion<object> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<object>> IsNotEqualTo(this IFluentAssertion<object> fluentAssertion, object expected)
         {
-            var assertionStrategy = new ObjectFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.IsNotEqualTo(expected);
+            EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
         }
 
         /// <summary>
@@ -60,10 +61,10 @@ namespace Spike.Ext
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public static IChainableFluentAssertion<IObjectFluentAssertion> IsInstanceOf<T>(this IFluentAssertion<object> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<object>> IsInstanceOf<T>(this IFluentAssertion<object> fluentAssertion)
         {
-            var assertionStrategy = new ObjectFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.IsInstanceOf<T>();
+            IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
         }
 
         /// <summary>
@@ -75,10 +76,11 @@ namespace Spike.Ext
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public static IChainableFluentAssertion<IObjectFluentAssertion> IsNotInstanceOf<T>(this IFluentAssertion<object> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<object>> IsNotInstanceOf<T>(this IFluentAssertion<object> fluentAssertion)
         {
-            var assertionStrategy = new ObjectFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.IsNotInstanceOf<T>();
+            IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+
         }
     }
 }

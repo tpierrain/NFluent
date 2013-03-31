@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    // TODO: dismantle this useless interface (when spike will be merged)
+
     /// <summary>
     /// Provides fluent assertion methods to be executed on the system under test (sut).
     /// Every method should return a <see cref="IChainableFluentAssertion{T}"/> instance

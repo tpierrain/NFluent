@@ -48,8 +48,6 @@
     <Compile Include="ChainableFluentAssertion.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="IObjectFluentAssertion.cs" />
-    <Compile Include="ObjectFluentAssertion.cs" />
     <Compile Include="Helpers\EqualityHelper.cs" />
     <Compile Include="Extensions\ExtensionsCommonHelpers.cs" />
     <Compile Include="IChainableFluentAssertion.cs" />
@@ -68,8 +66,6 @@
     <Compile Include="Spike\IFluentAssertion.cs" />
     <Compile Include="Spike\Ext\IntFluentAssertionExtensions.cs" />
     <Compile Include="Spike\Ext\StringFluentAssertionExtensions.cs" />
-    <Compile Include="IEnumerableFluentAssertion.cs" />
-    <Compile Include="IStringFluentAssertion.cs" />
     <Compile Include="Helpers\IsInstanceHelper.cs" />
     <Compile Include="Extensions\PropertiesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
