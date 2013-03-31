@@ -45,7 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BooleanFluentAssertionExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ChainableFluentAssertion.cs" />
+    <Compile Include="Check.cs" />
+    <Compile Include="DateTimeFluentAssertionExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Helpers\EqualityHelper.cs" />
     <Compile Include="Extensions\ExtensionsCommonHelpers.cs" />
@@ -56,7 +61,6 @@
     <Compile Include="FluentAssertionException.cs" />
     <Compile Include="IEqualityFluentAssertionTrait.cs" />
     <Compile Include="INumberFluentAssertion.cs" />
-    <Compile Include="Check.cs" />
     <Compile Include="ComparableFluentAssertionExtensions.cs" />
     <Compile Include="ByteFluentAssertionExtensions.cs" />
     <Compile Include="ShortFluentAssertionExtensions.cs" />
