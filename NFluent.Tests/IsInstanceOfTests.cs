@@ -23,7 +23,7 @@
             int[] integerArray = new int[10];
 
             // string
-            Check.That(StringObj).IsInstanceOf<string>();
+            Spike.Check.That(StringObj).IsInstanceOf<string>();
 
             // numerics
             Spike.Check.That(IntObj).IsInstanceOf<int>();
@@ -53,7 +53,7 @@
         public void IsInstanceOfThrowsExceptionWithProperFormatWhenFailsWithString()
         {
             const string StringObj = "for unit testing";
-            Check.That(StringObj).IsInstanceOf<Person>();
+            Spike.Check.That(StringObj).IsInstanceOf<Person>();
         }
 
         #endregion
@@ -72,7 +72,7 @@
             int[] integerArray = new int[10];
 
             // string
-            Check.That(StringObj).IsNotInstanceOf<int>();
+            Spike.Check.That(StringObj).IsNotInstanceOf<int>();
 
             // numerics
             Check.That(IntObj).IsNotInstanceOf<long>();
@@ -91,7 +91,7 @@
         public void IsNotInstanceOfWorksWithString()
         {
             const string MotivationalSaying = "Failure is mother of success.";
-            Check.That(MotivationalSaying).IsNotInstanceOf<int>();
+            Spike.Check.That(MotivationalSaying).IsNotInstanceOf<int>();
         }
 
         [Test]
@@ -110,7 +110,7 @@
         {
             const string Statement = "If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).";
 
-            Check.That(Statement).IsNotInstanceOf<string>();
+            Spike.Check.That(Statement).IsNotInstanceOf<string>();
         }
 
         #endregion

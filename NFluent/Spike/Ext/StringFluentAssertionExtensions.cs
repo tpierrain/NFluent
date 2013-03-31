@@ -14,7 +14,6 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace Spike.Ext
 {
-    using System;
     using NFluent;
 
     /// <summary>
@@ -23,21 +22,93 @@ namespace Spike.Ext
     public static class StringFluentAssertionExtensions
     {
         /// <summary>
-        /// Dummy method for spike purpose (to be deleted). Determines whether [has the force] [the specified fluent assertion].
+        /// Checks that the actual value is equal to another expected value.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion.</param>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="expected">The expected value.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="System.Exception">The current value has not "force".</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<string>> HasTheForce(this IFluentAssertion<string> fluentAssertion)
+        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
+        public static IChainableFluentAssertion<IStringFluentAssertion> IsEqualTo(this IFluentAssertion<string> fluentAssertion, object expected)
         {
-            if (!fluentAssertion.Value.ToLower().Contains("force"))
-            {
-                throw new Exception("damn, you're so common!");
-            }
+            var assertStrategy = new StringFluentAssertion(fluentAssertion.Value);
+            return assertStrategy.IsEqualTo(expected);
+        }
 
-            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+        /// <summary>
+        /// Checks that the actual value is not equal to another expected value.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
+        public static IChainableFluentAssertion<IStringFluentAssertion> IsNotEqualTo(this IFluentAssertion<string> fluentAssertion, object expected)
+        {
+            var assertStrategy = new StringFluentAssertion(fluentAssertion.Value);
+            return assertStrategy.IsNotEqualTo(expected);
+        }
+
+        /// <summary>
+        /// Checks that the actual instance is an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
+        public static IChainableFluentAssertion<IStringFluentAssertion> IsInstanceOf<T>(this IFluentAssertion<string> fluentAssertion)
+        {
+            var assertStrategy = new StringFluentAssertion(fluentAssertion.Value);
+            return assertStrategy.IsInstanceOf<T>();
+        }
+
+        /// <summary>
+        /// Checks that the actual instance is not an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type not expected for this instance.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
+        public static IChainableFluentAssertion<IStringFluentAssertion> IsNotInstanceOf<T>(this IFluentAssertion<string> fluentAssertion)
+        {
+            var assertStrategy = new StringFluentAssertion(fluentAssertion.Value);
+            return assertStrategy.IsNotInstanceOf<T>();
+        }
+
+        /// <summary>
+        /// Checks that the string contains the given expected values, in any order.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="values">The expected values to be found.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
+        public static IChainableFluentAssertion<IStringFluentAssertion> Contains(this IFluentAssertion<string> fluentAssertion, params string[] values)
+        {
+            var assertStrategy = new StringFluentAssertion(fluentAssertion.Value);
+            return assertStrategy.Contains(values);
+        }
+
+        /// <summary>
+        /// Checks that the string starts with the given expected prefix.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="expectedPrefix">The expected prefix.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string does not start with the expected prefix.</exception>
+        public static IChainableFluentAssertion<IStringFluentAssertion> StartsWith(this IFluentAssertion<string> fluentAssertion, string expectedPrefix)
+        {
+            var assertStrategy = new StringFluentAssertion(fluentAssertion.Value);
+            return assertStrategy.StartsWith(expectedPrefix);
         }
     }
 }

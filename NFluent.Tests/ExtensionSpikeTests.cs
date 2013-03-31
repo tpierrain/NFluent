@@ -17,11 +17,11 @@
         public void CanUseVariousExtensions()
         {
             const int MythicNumber = 42;
-            const string Yoda = "Has the force";
+            const string YodaStatement = "Has the force";
 
             Check.That(MythicNumber as IComparable).IsBefore(100).And.IsBefore(200);
             Check.That(MythicNumber).IsNotZero().And.IsInstanceOf<int>();
-            Check.That(Yoda).HasTheForce();
+            Check.That(YodaStatement).Contains("force");
         }
 
         [Test]

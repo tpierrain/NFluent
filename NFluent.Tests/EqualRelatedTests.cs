@@ -10,7 +10,7 @@
         public void IsEqualToWorksWithString()
         {
             var first = "Son of a test";
-            Check.That(first).IsEqualTo("Son of a test");
+            Spike.Check.That(first).IsEqualTo("Son of a test");
         }
 
         [Test]
@@ -74,14 +74,14 @@
         public void IsEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";
-            Check.That(first).IsEqualTo("no way");
+            Spike.Check.That(first).IsEqualTo("no way");
         }
 
         [Test]
         public void IsNotEqualToWorksWithString()
         {
             var first = "Son of a test";
-            Check.That(first).IsNotEqualTo("other text");
+            Spike.Check.That(first).IsNotEqualTo("other text");
         }
 
         [Test]
@@ -137,7 +137,7 @@
         {
             var first = "Son of a test";
             var otherReferenceToSameObject = first;
-            Check.That(first).IsNotEqualTo(otherReferenceToSameObject);
+            Spike.Check.That(first).IsNotEqualTo(otherReferenceToSameObject);
         }
 
         [Test]
@@ -165,8 +165,8 @@
             var camus = "Camus";
             var sartre = "Sartre";
 
-            Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<string>();
-            Check.That(sartre).IsEqualTo(sartre).And.IsInstanceOf<string>();
+            Spike.Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<string>();
+            Spike.Check.That(sartre).IsEqualTo(sartre).And.IsInstanceOf<string>();
         }
     }
 }
