@@ -14,8 +14,13 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace Spike.Ext
 {
+    using System;
     using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using NFluent;
+    using NFluent.Helpers;
 
     /// <summary>
     /// Provides assertion methods to be executed on an <see cref="IEnumerable"/> value.
@@ -31,10 +36,10 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IEnumerableFluentAssertion> IsEqualTo(this IFluentAssertion<IEnumerable> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsEqualTo(this IFluentAssertion<IEnumerable> fluentAssertion, object expected)
         {
-            var assertionStrategy = new EnumerableFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.IsEqualTo(expected);
+            EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
@@ -46,10 +51,10 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IEnumerableFluentAssertion> IsNotEqualTo(this IFluentAssertion<IEnumerable> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsNotEqualTo(this IFluentAssertion<IEnumerable> fluentAssertion, object expected)
         {
-            var assertionStrategy = new EnumerableFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.IsNotEqualTo(expected);
+            EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
@@ -61,11 +66,10 @@ namespace Spike.Ext
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public static IChainableFluentAssertion<IEnumerableFluentAssertion> IsInstanceOf<T>(this IFluentAssertion<IEnumerable> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsInstanceOf<T>(this IFluentAssertion<IEnumerable> fluentAssertion)
         {
-            // TODO review whether it is necessary or not to have such explicit interface implementation on the EnumerableFluentAssertion type. 
-            var assertionStrategy = new EnumerableFluentAssertion(fluentAssertion.Value) as IInstanceTypeFluentAssertionTrait<IEnumerableFluentAssertion>;
-            return assertionStrategy.IsInstanceOf<T>();
+            IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
@@ -77,10 +81,10 @@ namespace Spike.Ext
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public static IChainableFluentAssertion<IEnumerableFluentAssertion> IsNotInstanceOf<T>(this IFluentAssertion<IEnumerable> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsNotInstanceOf<T>(this IFluentAssertion<IEnumerable> fluentAssertion)
         {
-            var assertionStrategy = new EnumerableFluentAssertion(fluentAssertion.Value) as IInstanceTypeFluentAssertionTrait<IEnumerableFluentAssertion>;
-            return assertionStrategy.IsNotInstanceOf<T>();
+            IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
@@ -93,10 +97,21 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain all the expected values.</exception>
-        public static IChainableFluentAssertion<IEnumerableFluentAssertion> Contains<T>(this IFluentAssertion<IEnumerable> fluentAssertion, params T[] expectedValues)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> Contains<T>(this IFluentAssertion<IEnumerable> fluentAssertion, params T[] expectedValues)
         {
-            var assertionStrategy = new EnumerableFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.Contains(expectedValues);
+            IEnumerable properExpectedValues;
+            if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
+            {
+                properExpectedValues = expectedValues[0] as IEnumerable;
+            }
+            else
+            {
+                properExpectedValues = expectedValues as IEnumerable;
+            }
+
+            fluentAssertion.Contains(properExpectedValues);
+
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
@@ -108,10 +123,16 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
-        public static IChainableFluentAssertion<IEnumerableFluentAssertion> Contains(this IFluentAssertion<IEnumerable> fluentAssertion, IEnumerable otherEnumerable)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> Contains(this IFluentAssertion<IEnumerable> fluentAssertion, IEnumerable otherEnumerable)
         {
-            var assertionStrategy = new EnumerableFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.Contains(otherEnumerable);
+            var notFoundValues = ExtractNotFoundValues(fluentAssertion.Value, otherEnumerable);
+
+            if (notFoundValues.Count == 0)
+            {
+                return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
+            }
+
+            throw new FluentAssertionException(String.Format("The enumerable [{0}] does not contain the expected value(s): [{1}].", fluentAssertion.Value.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
         }
 
         /// <summary>
@@ -124,10 +145,21 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain only the expected values provided.</exception>
-        public static IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsOnly<T>(this IFluentAssertion<IEnumerable> fluentAssertion, params T[] expectedValues)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> ContainsOnly<T>(this IFluentAssertion<IEnumerable> fluentAssertion, params T[] expectedValues)
         {
-            var assertionStrategy = new EnumerableFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.ContainsOnly(expectedValues);
+            IEnumerable properExpectedValues;
+            if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
+            {
+                properExpectedValues = expectedValues[0] as IEnumerable;
+            }
+            else
+            {
+                properExpectedValues = expectedValues as IEnumerable;
+            }
+
+            fluentAssertion.ContainsOnly(properExpectedValues);
+
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
@@ -139,10 +171,16 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
-        public static IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsOnly(this IFluentAssertion<IEnumerable> fluentAssertion, IEnumerable expectedValues)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> ContainsOnly(this IFluentAssertion<IEnumerable> fluentAssertion, IEnumerable expectedValues)
         {
-            var assertionStrategy = new EnumerableFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.ContainsOnly(expectedValues);
+            var unexpectedValuesFound = ExtractUnexpectedValues(fluentAssertion.Value, expectedValues);
+
+            if (unexpectedValuesFound.Count > 0)
+            {
+                throw new FluentAssertionException(String.Format("The enumerable [{0}] does not contain only the expected value(s). It contains also other values: [{1}].", fluentAssertion.Value.ToEnumeratedString(), unexpectedValuesFound.ToEnumeratedString()));
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
@@ -157,10 +195,21 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
-        public static IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsExactly<T>(this IFluentAssertion<IEnumerable> fluentAssertion, params T[] expectedValues)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> ContainsExactly<T>(this IFluentAssertion<IEnumerable> fluentAssertion, params T[] expectedValues)
         {
-            var assertionStrategy = new EnumerableFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.ContainsExactly(expectedValues);
+            IEnumerable properExpectedValues;
+            if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
+            {
+                properExpectedValues = expectedValues[0] as IEnumerable;
+            }
+            else
+            {
+                properExpectedValues = expectedValues as IEnumerable;
+            }
+
+            fluentAssertion.ContainsExactly(properExpectedValues);
+
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
@@ -174,10 +223,38 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
-        public static IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsExactly(this IFluentAssertion<IEnumerable> fluentAssertion, IEnumerable otherEnumerable)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> ContainsExactly(this IFluentAssertion<IEnumerable> fluentAssertion, IEnumerable otherEnumerable)
         {
-            var assertionStrategy = new EnumerableFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.ContainsExactly(otherEnumerable);
+            // TODO: Refactor this implementation
+            if (otherEnumerable == null)
+            {
+                long foundCount;
+                var foundItems = fluentAssertion.Value.ToEnumeratedString(out foundCount);
+                var foundItemsCount = FormatItemCount(foundCount);
+                throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [null] (0 item).", foundItems, foundItemsCount));
+            }
+
+            var first = fluentAssertion.Value.GetEnumerator();
+            var enumerable = otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
+            var second = enumerable.GetEnumerator();
+
+            while (first.MoveNext())
+            {
+                if (!second.MoveNext() || !Equals(first.Current, second.Current))
+                {
+                    long foundCount;
+                    var foundItems = fluentAssertion.Value.ToEnumeratedString(out foundCount);
+                    var formatedFoundCount = FormatItemCount(foundCount);
+
+                    long expectedCount;
+                    object expectedItems = enumerable.ToEnumeratedString(out expectedCount);
+                    var formatedExpectedCount = FormatItemCount(expectedCount);
+
+                    throw new FluentAssertionException(String.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
+                }
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
@@ -189,10 +266,16 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable has not the expected number of elements.</exception>
-        public static IChainableFluentAssertion<IEnumerableFluentAssertion> HasSize(this IFluentAssertion<IEnumerable> fluentAssertion, long expectedSize)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> HasSize(this IFluentAssertion<IEnumerable> fluentAssertion, long expectedSize)
         {
-            var assertionStrategy = new EnumerableFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.HasSize(expectedSize);
+            long itemsCount = fluentAssertion.Value.Cast<object>().LongCount();
+
+            if (expectedSize != itemsCount)
+            {
+                throw new FluentAssertionException(string.Format("Has [{0}] items instead of the expected value [{1}].", itemsCount, expectedSize));
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
@@ -203,10 +286,106 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable is not empty.</exception>
-        public static IChainableFluentAssertion<IEnumerableFluentAssertion> IsEmpty(this IFluentAssertion<IEnumerable> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsEmpty(this IFluentAssertion<IEnumerable> fluentAssertion)
         {
-            var assertionStrategy = new EnumerableFluentAssertion(fluentAssertion.Value);
-            return assertionStrategy.IsEmpty();
+            if (fluentAssertion.Value.Cast<object>().Any())
+            {
+                throw new FluentAssertionException(string.Format("Enumerable not empty. Contains the element(s): [{0}].", fluentAssertion.Value.ToEnumeratedString()));
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
+
+        #region private or internal methods
+
+        private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
+        {
+            // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
+            return expectedValues != null && (expectedValues.LongLength == 1) && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
+        }
+
+        private static bool IsAnEnumerableButNotAnEnumerableOfChars<T>(T element)
+        {
+            return (element is IEnumerable) && !(element is IEnumerable<char>);
+        }
+
+        /// <summary>
+        /// Returns all expected values that aren't present in the enumerable.
+        /// </summary>
+        /// <param name="enumerable">The enumerable to inspect.</param>
+        /// <param name="expectedValues">The expected values to search within the enumerable.</param>
+        /// <returns>
+        /// A list containing all the expected values that aren't present in the enumerable.
+        /// </returns>
+        internal static IList ExtractNotFoundValues(IEnumerable enumerable, IEnumerable expectedValues)
+        {
+            // Prepares the list to return
+            var notFoundValues = new List<object>();
+            foreach (var expectedValue in expectedValues)
+            {
+                notFoundValues.Add(expectedValue);
+            }
+
+            foreach (var element in enumerable)
+            {
+                foreach (var expectedValue in expectedValues)
+                {
+                    if (Equals(element, expectedValue))
+                    {
+                        notFoundValues.RemoveAll((one) => one.Equals(expectedValue));
+                        break;
+                    }
+                }
+            }
+
+            return notFoundValues;
+        }
+
+        /// <summary>
+        /// Returns all the values of the enumerable that don't belong to the expected ones.
+        /// </summary>
+        /// <param name="enumerable">The enumerable to inspect.</param>
+        /// <param name="expectedValues">The allowed values to be part of the enumerable.</param>
+        /// <returns>
+        /// A list with all the values found in the enumerable that don't belong to the expected ones.
+        /// </returns>
+        internal static IList ExtractUnexpectedValues(IEnumerable enumerable, IEnumerable expectedValues)
+        {
+            var unexpectedValuesFound = new List<object>();
+            foreach (var element in enumerable)
+            {
+                var isExpectedValue = false;
+                foreach (var expectedValue in expectedValues)
+                {
+                    if (Equals(element, expectedValue))
+                    {
+                        isExpectedValue = true;
+                        break;
+                    }
+                }
+
+                if (!isExpectedValue)
+                {
+                    unexpectedValuesFound.Add(element);
+                }
+            }
+
+            return unexpectedValuesFound;
+        }
+
+        /// <summary>
+        /// Generates the proper description for the items count, based on their numbers.
+        /// </summary>
+        /// <param name="itemsCount">The number of items.</param>
+        /// <returns>
+        /// The proper description for the items count.
+        /// </returns>
+        internal static string FormatItemCount(long itemsCount)
+        {
+            return String.Format(itemsCount <= 1 ? "{0} item" : "{0} items", itemsCount);
+        }
+
+        #endregion
+
     }
 }
