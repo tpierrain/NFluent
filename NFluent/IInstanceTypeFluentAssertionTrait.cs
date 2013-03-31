@@ -18,7 +18,7 @@ namespace NFluent
     /// Assertion methods related to the type of the System Under Test (SUT) instance.
     /// </summary>
     /// <typeparam name="F">Type of the considered IFluentAssertion.</typeparam>
-    public interface IInstanceTypeFluentAssertionTrait<F> where F : IFluentAssertion
+    public interface IInstanceTypeFluentAssertionTrait<F> where F : IFluentAssertionBase
     {
         /// <summary>
         /// Checks that the actual instance is an instance of the given type.

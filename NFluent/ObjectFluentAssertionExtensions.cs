@@ -12,9 +12,8 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace Spike.Ext
+namespace NFluent
 {
-    using NFluent;
     using NFluent.Helpers;
 
     /// <summary>
@@ -80,7 +79,6 @@ namespace Spike.Ext
         {
             IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
             return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
-
         }
     }
 }

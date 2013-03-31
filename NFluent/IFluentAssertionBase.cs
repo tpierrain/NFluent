@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IFluentAssertion.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN, Rui CARVALHO
+// // <copyright file="IFluentAssertionBase.cs" company="">
+// //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -12,24 +12,18 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace Spike
+namespace NFluent
 {
-    using System.ComponentModel;
-    using NFluent;
+    // TODO: dismantle this useless interface?
 
     /// <summary>
-    /// Provides assertion methods to be executed on a given value.
+    /// Provides fluent assertion methods to be executed on the system under test (sut).
+    /// Every method should return a <see cref="IChainableFluentAssertion{T}"/> instance
+    /// of the same fluent assertion type (closure of operations), or throw an 
+    /// <see cref="FluentAssertionException"/> when failing.
+    /// This 'marker' interface is mandatory for the chainable assertion mechanism. 
     /// </summary>
-    /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IFluentAssertion<out T> : IFluentAssertion
+    public interface IFluentAssertionBase
     {
-        /// <summary>
-        /// Gets the value to be tested (provided for any extension method to be able to test it).
-        /// </summary>
-        /// <value>
-        /// The value to be tested by any fluent assertion extension method.
-        /// </value>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        T Value { get; }
     }
 }

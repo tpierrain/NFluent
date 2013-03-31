@@ -4,9 +4,6 @@
 
     using NUnit.Framework;
 
-    using Spike;
-    using Spike.Ext;
-
     [TestFixture]
     public class ComparableRelatedTests
     {

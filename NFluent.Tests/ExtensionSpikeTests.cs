@@ -1,14 +1,12 @@
-﻿namespace Spike.Tests
+﻿namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
-    using NFluent.Tests;
+
+    using NFluent;
     using NFluent.Tests.Extensions;
+
     using NUnit.Framework;
-
-    using Spike.Ext;
-
-    using Check = Spike.Check;
 
     [TestFixture]
     public class ExtensionSpikeTests

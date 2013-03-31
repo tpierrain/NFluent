@@ -12,10 +12,10 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace Spike.Ext
+namespace NFluent
 {
     using System;
-    using NFluent;
+
     using NFluent.Extensions;
 
     /// <summary>

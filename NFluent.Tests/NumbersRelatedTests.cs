@@ -1,7 +1,6 @@
 ﻿namespace NFluent.Tests
 {
     using NUnit.Framework;
-    using Spike.Ext;
 
     [TestFixture]
     public class NumbersRelatedTests
@@ -22,11 +21,11 @@
             const ushort UshortZero = 0;
             const ulong UlongZero = 0;
 
-            Spike.Check.That(IntZero).IsZero();
+            Check.That(IntZero).IsZero();
             Check.That(LongZero).IsZero();
             Check.That(DoubleZero).IsZero();
 
-            Spike.Check.That(DecimalZero).IsZero();
+            Check.That(DecimalZero).IsZero();
             Check.That(FloatZero).IsZero();
             Check.That(ShortZero).IsZero();
             Check.That(ByteZero).IsZero();
@@ -39,9 +38,9 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[9] is not equal to zero.")]
         public void IsZeroThrowsExceptionWhenFails()
         {
-            int nine = 9;
+            const int Nine = 9;
 
-            Spike.Check.That(nine).IsZero();
+            Check.That(Nine).IsZero();
         }
 
         #endregion 
@@ -62,10 +61,10 @@
             const ushort UshortValue = 2;
             const ulong UlongValue = 2;
 
-            Spike.Check.That(IntValue).IsNotZero();
+            Check.That(IntValue).IsNotZero();
             Check.That(LongValue).IsNotZero();
             Check.That(DoubleValue).IsNotZero();
-            Spike.Check.That(DecimalValue).IsNotZero();
+            Check.That(DecimalValue).IsNotZero();
             Check.That(FloatValue).IsNotZero();
             Check.That(ShortValue).IsNotZero();
             Check.That(ByteValue).IsNotZero();
@@ -78,9 +77,9 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[0] is equal to zero.")]
         public void IsNotZeroThrowsExceptionWhenFails()
         {
-            double zero = 0D;
+            const double Zero = 0D;
 
-            Check.That(zero).IsNotZero();
+            Check.That(Zero).IsNotZero();
         }
 
         #endregion 
@@ -90,25 +89,25 @@
         [Test]
         public void IsPositiveWorks()
         {
-            int two = 2;
-            Spike.Check.That(two).IsPositive();
+            const int Two = 2;
+            Check.That(Two).IsPositive();
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[0] is not a strictly positive value.")]
         public void IsPositiveThrowExceptionWhenEqualToZero()
         {
-            float zero = 0F;
-            Check.That(zero).IsPositive();
+            const float Zero = 0F;
+            Check.That(Zero).IsPositive();
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[-50] is not a strictly positive value.")]
         public void IsPositiveThrowExceptionWhenValueIsNegative()
         {
-            double negativeDouble = -50D;
+            const double NegativeDouble = -50D;
 
-            Check.That(negativeDouble).IsPositive();
+            Check.That(NegativeDouble).IsPositive();
         }
 
         #endregion
@@ -116,10 +115,10 @@
         [Test]
         public void AndOperatorCanChainMultipleAssertionOnNumber()
         {
-            double doubleNumber = 37.2D;
+            const double DoubleNumber = 37.2D;
 
-            Check.That(doubleNumber).IsNotZero().And.IsPositive();
-            Check.That(doubleNumber).IsPositive().And.IsNotZero();
+            Check.That(DoubleNumber).IsNotZero().And.IsPositive();
+            Check.That(DoubleNumber).IsPositive().And.IsNotZero();
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="DecimalFluentAssertionExtensions.cs" company="">
+// // --------------------------------------------------------------------------------------------------------------------
+// // <copyright file="ULongFluentAssertionExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -12,14 +12,12 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace Spike.Ext
+namespace NFluent
 {
-    using NFluent;
-
     /// <summary>
-    /// Provides assertion methods to be executed on a decimal value.
+    /// Provides assertion methods to be executed on a long value.
     /// </summary>
-    public static class DecimalFluentAssertionExtensions
+    public static class ULongFluentAssertionExtensions
     {
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
@@ -30,10 +28,10 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public static IChainableFluentAssertion<INumberFluentAssertion> IsEqualTo(this IFluentAssertion<decimal> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsEqualTo(this IFluentAssertion<ulong> fluentAssertion, object expected)
         {
             // TODO transform NumberFluentAssertion<T> into a static class with functions only?
-            var numberAssertionStrategy = new NumberFluentAssertion<decimal>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion.Value);
             return numberAssertionStrategy.IsEqualTo(expected);
         }
 
@@ -46,9 +44,9 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public static IChainableFluentAssertion<INumberFluentAssertion> IsNotEqualTo(this IFluentAssertion<decimal> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsNotEqualTo(this IFluentAssertion<ulong> fluentAssertion, object expected)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<decimal>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion.Value);
             return numberAssertionStrategy.IsNotEqualTo(expected);
         }
 
@@ -61,9 +59,9 @@ namespace Spike.Ext
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public static IChainableFluentAssertion<INumberFluentAssertion> IsInstanceOf<T>(this IFluentAssertion<decimal> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsInstanceOf<T>(this IFluentAssertion<ulong> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<decimal>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion.Value);
             return numberAssertionStrategy.IsInstanceOf<T>();
         }
 
@@ -76,9 +74,9 @@ namespace Spike.Ext
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public static IChainableFluentAssertion<INumberFluentAssertion> IsNotInstanceOf<T>(this IFluentAssertion<decimal> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsNotInstanceOf<T>(this IFluentAssertion<ulong> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<decimal>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion.Value);
             return numberAssertionStrategy.IsNotInstanceOf<T>();
         }
 
@@ -90,9 +88,9 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
-        public static IChainableFluentAssertion<INumberFluentAssertion> IsZero(this IFluentAssertion<decimal> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsZero(this IFluentAssertion<ulong> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<decimal>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion.Value);
             return numberAssertionStrategy.IsZero();
         }
 
@@ -104,9 +102,9 @@ namespace Spike.Ext
         ///   <returns>A chainable assertion.</returns>
         /// </returns>
         /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
-        public static IChainableFluentAssertion<INumberFluentAssertion> IsNotZero(this IFluentAssertion<decimal> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsNotZero(this IFluentAssertion<ulong> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<decimal>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion.Value);
             return numberAssertionStrategy.IsNotZero();
         }
 
@@ -118,9 +116,9 @@ namespace Spike.Ext
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
-        public static IChainableFluentAssertion<INumberFluentAssertion> IsPositive(this IFluentAssertion<decimal> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsPositive(this IFluentAssertion<ulong> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<decimal>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion.Value);
             return numberAssertionStrategy.IsPositive();
         }
     }

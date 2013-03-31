@@ -12,14 +12,12 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace Spike.Ext
+namespace NFluent
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
-    using NFluent;
     using NFluent.Helpers;
 
     /// <summary>
@@ -177,7 +175,7 @@ namespace Spike.Ext
 
             if (unexpectedValuesFound.Count > 0)
             {
-                throw new FluentAssertionException(String.Format("The enumerable [{0}] does not contain only the expected value(s). It contains also other values: [{1}].", fluentAssertion.Value.ToEnumeratedString(), unexpectedValuesFound.ToEnumeratedString()));
+                throw new FluentAssertionException(string.Format("The enumerable [{0}] does not contain only the expected value(s). It contains also other values: [{1}].", fluentAssertion.Value.ToEnumeratedString(), unexpectedValuesFound.ToEnumeratedString()));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
@@ -240,7 +238,7 @@ namespace Spike.Ext
 
             while (first.MoveNext())
             {
-                if (!second.MoveNext() || !Equals(first.Current, second.Current))
+                if (!second.MoveNext() || !object.Equals(first.Current, second.Current))
                 {
                     long foundCount;
                     var foundItems = fluentAssertion.Value.ToEnumeratedString(out foundCount);
@@ -250,7 +248,7 @@ namespace Spike.Ext
                     object expectedItems = enumerable.ToEnumeratedString(out expectedCount);
                     var formatedExpectedCount = FormatItemCount(expectedCount);
 
-                    throw new FluentAssertionException(String.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
+                    throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
                 }
             }
 
@@ -298,17 +296,6 @@ namespace Spike.Ext
 
         #region private or internal methods
 
-        private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
-        {
-            // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
-            return expectedValues != null && (expectedValues.LongLength == 1) && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
-        }
-
-        private static bool IsAnEnumerableButNotAnEnumerableOfChars<T>(T element)
-        {
-            return (element is IEnumerable) && !(element is IEnumerable<char>);
-        }
-
         /// <summary>
         /// Returns all expected values that aren't present in the enumerable.
         /// </summary>
@@ -330,7 +317,7 @@ namespace Spike.Ext
             {
                 foreach (var expectedValue in expectedValues)
                 {
-                    if (Equals(element, expectedValue))
+                    if (object.Equals(element, expectedValue))
                     {
                         notFoundValues.RemoveAll((one) => one.Equals(expectedValue));
                         break;
@@ -357,7 +344,7 @@ namespace Spike.Ext
                 var isExpectedValue = false;
                 foreach (var expectedValue in expectedValues)
                 {
-                    if (Equals(element, expectedValue))
+                    if (object.Equals(element, expectedValue))
                     {
                         isExpectedValue = true;
                         break;
@@ -382,10 +369,20 @@ namespace Spike.Ext
         /// </returns>
         internal static string FormatItemCount(long itemsCount)
         {
-            return String.Format(itemsCount <= 1 ? "{0} item" : "{0} items", itemsCount);
+            return string.Format(itemsCount <= 1 ? "{0} item" : "{0} items", itemsCount);
+        }
+
+        private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
+        {
+            // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
+            return expectedValues != null && (expectedValues.LongLength == 1) && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
+        }
+
+        private static bool IsAnEnumerableButNotAnEnumerableOfChars<T>(T element)
+        {
+            return (element is IEnumerable) && !(element is IEnumerable<char>);
         }
 
         #endregion
-
     }
 }

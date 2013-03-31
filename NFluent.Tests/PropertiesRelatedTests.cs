@@ -4,7 +4,6 @@
     using System.Collections.Generic;
 
     using NUnit.Framework;
-    using Spike.Ext;
 
     [TestFixture]
     public class PropertiesRelatedTests
@@ -22,9 +21,9 @@
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
 
-            Spike.Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
-            Spike.Check.That(persons.Properties("Age")).ContainsExactly(38, 10, 7, 7);
-            Spike.Check.That(persons.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+            Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+            Check.That(persons.Properties("Age")).ContainsExactly(38, 10, 7, 7);
+            Check.That(persons.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
 
             // more fluent than the following classical NUnit way, isn't it? 
             // CollectionAssert.AreEquivalent(enumerable.Properties("Age"), new[] { 38, 10, 7, 7 });
@@ -61,7 +60,7 @@
                                      new Person { Name = "Borat" }
                                  };
 
-            Spike.Check.That(persons.Properties("PrivateHesitation")).ContainsExactly("Kamoulox !", "Kamoulox !");
+            Check.That(persons.Properties("PrivateHesitation")).ContainsExactly("Kamoulox !", "Kamoulox !");
         }
 
         #endregion
@@ -79,9 +78,9 @@
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
 
-            Spike.Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
-            Spike.Check.That(persons.Properties("Age")).ContainsExactly(38, 10, 7, 7);
-            Spike.Check.That(persons.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+            Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+            Check.That(persons.Properties("Age")).ContainsExactly(38, 10, 7, 7);
+            Check.That(persons.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
         }
 
         #endregion

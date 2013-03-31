@@ -4,8 +4,6 @@
 
     using NUnit.Framework;
 
-    using Spike.Ext;
-
     [TestFixture]
     public class IsInstanceOfTests
     {
@@ -23,19 +21,19 @@
             int[] integerArray = new int[10];
 
             // string
-            Spike.Check.That(StringObj).IsInstanceOf<string>();
+            Check.That(StringObj).IsInstanceOf<string>();
 
             // numerics
-            Spike.Check.That(IntObj).IsInstanceOf<int>();
+            Check.That(IntObj).IsInstanceOf<int>();
             Check.That(LongObj).IsInstanceOf<long>();
             Check.That(DoubleObj).IsInstanceOf<double>();
 
             //// objects
-            Spike.Check.That(person).IsInstanceOf<Person>();
+            Check.That(person).IsInstanceOf<Person>();
 
             //// IEnumerable
-            Spike.Check.That(stringList).IsInstanceOf<List<string>>();
-            Spike.Check.That(integerArray).IsInstanceOf<int[]>();
+            Check.That(stringList).IsInstanceOf<List<string>>();
+            Check.That(integerArray).IsInstanceOf<int[]>();
         }
 
         [Test]
@@ -45,7 +43,7 @@
         public void IsInstanceOfThrowsExceptionWithProperFormatWhenFailsWithInt()
         {
             const int IntObject = 23;
-            Spike.Check.That(IntObject).IsInstanceOf<Person>();
+            Check.That(IntObject).IsInstanceOf<Person>();
         }
 
         [Test]
@@ -53,7 +51,7 @@
         public void IsInstanceOfThrowsExceptionWithProperFormatWhenFailsWithString()
         {
             const string StringObj = "for unit testing";
-            Spike.Check.That(StringObj).IsInstanceOf<Person>();
+            Check.That(StringObj).IsInstanceOf<Person>();
         }
 
         #endregion
@@ -72,7 +70,7 @@
             int[] integerArray = new int[10];
 
             // string
-            Spike.Check.That(StringObj).IsNotInstanceOf<int>();
+            Check.That(StringObj).IsNotInstanceOf<int>();
 
             // numerics
             Check.That(IntObj).IsNotInstanceOf<long>();
@@ -80,18 +78,18 @@
             Check.That(DoubleObj).IsNotInstanceOf<int>();
 
             // objects
-            Spike.Check.That(person).IsNotInstanceOf<NumbersRelatedTests>();
+            Check.That(person).IsNotInstanceOf<NumbersRelatedTests>();
 
             // IEnumerable
-            Spike.Check.That(stringList).IsNotInstanceOf<List<int>>();
-            Spike.Check.That(integerArray).IsNotInstanceOf<string[]>();
+            Check.That(stringList).IsNotInstanceOf<List<int>>();
+            Check.That(integerArray).IsNotInstanceOf<string[]>();
         }
         
         [Test]
         public void IsNotInstanceOfWorksWithString()
         {
             const string MotivationalSaying = "Failure is mother of success.";
-            Spike.Check.That(MotivationalSaying).IsNotInstanceOf<int>();
+            Check.That(MotivationalSaying).IsNotInstanceOf<int>();
         }
 
         [Test]
@@ -101,7 +99,7 @@
         {
             const int IntObject = 23;
 
-            Spike.Check.That(IntObject).IsNotInstanceOf<int>();
+            Check.That(IntObject).IsNotInstanceOf<int>();
         }
 
         [Test]
@@ -110,7 +108,7 @@
         {
             const string Statement = "If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).";
 
-            Spike.Check.That(Statement).IsNotInstanceOf<string>();
+            Check.That(Statement).IsNotInstanceOf<string>();
         }
 
         #endregion

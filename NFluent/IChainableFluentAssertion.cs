@@ -17,10 +17,10 @@ namespace NFluent
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Provides a way to chain two <see cref="IFluentAssertion"/> instances. 
+    /// Provides a way to chain two <see cref="IFluentAssertionBase"/> instances. 
     /// </summary>
-    /// <typeparam name="T">Type of the <see cref="IFluentAssertion"/> to be chained.</typeparam>
-    public interface IChainableFluentAssertion<T> where T : IFluentAssertion
+    /// <typeparam name="T">Type of the <see cref="IFluentAssertionBase"/> to be chained.</typeparam>
+    public interface IChainableFluentAssertion<T> where T : IFluentAssertionBase
     {
         /// <summary>
         /// Chains a new fluent assertion to the current one.

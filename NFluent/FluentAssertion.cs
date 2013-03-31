@@ -12,7 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace Spike
+namespace NFluent
 {
     /// <summary>
     /// Provides assertion methods to be executed on a given value.

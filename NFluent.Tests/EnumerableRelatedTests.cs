@@ -5,9 +5,6 @@
 
     using NUnit.Framework;
 
-    using Spike.Ext;
-    using Check = Spike.Check;
-
     [TestFixture]
     public class EnumerableRelatedTests
     {

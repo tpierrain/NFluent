@@ -1,7 +1,6 @@
 ﻿namespace NFluent.Tests
 {
     using NUnit.Framework;
-    using Spike.Ext;
 
     [TestFixture]
     public class EqualRelatedTests
@@ -10,7 +9,7 @@
         public void IsEqualToWorksWithString()
         {
             var first = "Son of a test";
-            Spike.Check.That(first).IsEqualTo("Son of a test");
+            Check.That(first).IsEqualTo("Son of a test");
         }
 
         [Test]
@@ -19,8 +18,8 @@
             var array = new int[] { 45, 43, 54, 666 };
             var otherReference = array;
 
-            Spike.Check.That(array).IsEqualTo(array);
-            Spike.Check.That(array).IsEqualTo(otherReference);
+            Check.That(array).IsEqualTo(array);
+            Check.That(array).IsEqualTo(otherReference);
         }
 
         [Test]
@@ -29,7 +28,7 @@
             var heroe = new Person() { Name = "Gandhi" };
             var otherReference = heroe;
 
-            Spike.Check.That(heroe).IsEqualTo(otherReference);
+            Check.That(heroe).IsEqualTo(otherReference);
         }
 
         [Test]
@@ -38,7 +37,7 @@
             int firstInt = 23;
             int secondButIdenticalInt = 23;
 
-            Spike.Check.That(secondButIdenticalInt).IsEqualTo(firstInt);
+            Check.That(secondButIdenticalInt).IsEqualTo(firstInt);
         }
 
         [Test]
@@ -66,7 +65,7 @@
             var array = new int[] { 45, 43, 54, 666 };
             var otherSimilarButNotEqualArray = new int[] { 45, 43, 54, 666 };
 
-            Spike.Check.That(array).IsEqualTo(otherSimilarButNotEqualArray);
+            Check.That(array).IsEqualTo(otherSimilarButNotEqualArray);
         }
 
         [Test]
@@ -74,14 +73,14 @@
         public void IsEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";
-            Spike.Check.That(first).IsEqualTo("no way");
+            Check.That(first).IsEqualTo("no way");
         }
 
         [Test]
         public void IsNotEqualToWorksWithString()
         {
             var first = "Son of a test";
-            Spike.Check.That(first).IsNotEqualTo("other text");
+            Check.That(first).IsNotEqualTo("other text");
         }
 
         [Test]
@@ -91,8 +90,8 @@
             var otherArray = new int[] { 666, 74 };
             var similarButNotEqualArray = new int[] { 45, 43, 54, 666 };
 
-            Spike.Check.That(array).IsNotEqualTo(otherArray);
-            Spike.Check.That(array).IsNotEqualTo(similarButNotEqualArray);
+            Check.That(array).IsNotEqualTo(otherArray);
+            Check.That(array).IsNotEqualTo(similarButNotEqualArray);
         }
 
         [Test]
@@ -101,7 +100,7 @@
             var heroe = new Person() { Name = "Gandhi" };
             var badGuy = new Person() { Name = "Pol Pot" };
 
-            Spike.Check.That(heroe).IsNotEqualTo(badGuy);
+            Check.That(heroe).IsNotEqualTo(badGuy);
         }
 
         [Test]
@@ -110,7 +109,7 @@
             int firstInt = 23;
             int secondButIdenticalInt = 7;
 
-            Spike.Check.That(secondButIdenticalInt).IsNotEqualTo(firstInt);
+            Check.That(secondButIdenticalInt).IsNotEqualTo(firstInt);
         }
 
         [Test]
@@ -137,7 +136,7 @@
         {
             var first = "Son of a test";
             var otherReferenceToSameObject = first;
-            Spike.Check.That(first).IsNotEqualTo(otherReferenceToSameObject);
+            Check.That(first).IsNotEqualTo(otherReferenceToSameObject);
         }
 
         [Test]
@@ -155,8 +154,8 @@
             var camus = new Person() { Name = "Camus" };
             var sartre = new Person() { Name = "Sartre" };
 
-            Spike.Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<Person>();
-            Spike.Check.That(sartre).IsEqualTo(sartre).And.IsInstanceOf<Person>();
+            Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<Person>();
+            Check.That(sartre).IsEqualTo(sartre).And.IsInstanceOf<Person>();
         }
 
         [Test]
@@ -165,8 +164,8 @@
             var camus = "Camus";
             var sartre = "Sartre";
 
-            Spike.Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<string>();
-            Spike.Check.That(sartre).IsEqualTo(sartre).And.IsInstanceOf<string>();
+            Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<string>();
+            Check.That(sartre).IsEqualTo(sartre).And.IsInstanceOf<string>();
         }
     }
 }

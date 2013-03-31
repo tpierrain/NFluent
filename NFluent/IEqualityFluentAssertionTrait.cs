@@ -18,7 +18,7 @@ namespace NFluent
     /// Assertion methods related to the equality of the object instance.
     /// </summary>
     /// <typeparam name="T">Type of the fluent assertion to be chained.</typeparam>
-    public interface IEqualityFluentAssertionTrait<T> where T : IFluentAssertion
+    public interface IEqualityFluentAssertionTrait<T> where T : IFluentAssertionBase
     {
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
