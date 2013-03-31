@@ -1,7 +1,6 @@
 ﻿namespace NFluent.Tests
 {
     using NUnit.Framework;
-    using Spike.Ext;
 
     [TestFixture]
     public class NumbersRelatedTests
@@ -22,15 +21,11 @@
             const ushort UshortZero = 0;
             const ulong UlongZero = 0;
 
-            Check.That(IntZero).IsZero();
+            Spike.Check.That(IntZero).IsZero();
             Check.That(LongZero).IsZero();
             Check.That(DoubleZero).IsZero();
 
-<<<<<<< HEAD
             Check.That(DecimalZero).IsZero();
-=======
-            Spike.Check.That(DecimalZero).IsZero();
->>>>>>> Continues the refactoring by adding the proper documentation, fixing the StyleCop issues and changing some namespaces.
             Check.That(FloatZero).IsZero();
             Check.That(ShortZero).IsZero();
             Check.That(ByteZero).IsZero();
@@ -44,7 +39,6 @@
         public void IsZeroThrowsExceptionWhenFails()
         {
             const int Nine = 9;
-
             Check.That(Nine).IsZero();
         }
 
@@ -66,10 +60,10 @@
             const ushort UshortValue = 2;
             const ulong UlongValue = 2;
 
-            Check.That(IntValue).IsNotZero();
+            Spike.Check.That(IntValue).IsNotZero();
             Check.That(LongValue).IsNotZero();
             Check.That(DoubleValue).IsNotZero();
-            Spike.Check.That(DecimalValue).IsNotZero();
+            Check.That(DecimalValue).IsNotZero();
             Check.That(FloatValue).IsNotZero();
             Check.That(ShortValue).IsNotZero();
             Check.That(ByteValue).IsNotZero();

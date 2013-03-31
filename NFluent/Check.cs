@@ -14,8 +14,6 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System;
-
     /// <summary>
     /// Provides <see cref="IFluentAssertion{T}"/> instances to be used in order to make 
     /// check(s) on the provided value.

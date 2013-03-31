@@ -2,22 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
-<<<<<<< HEAD
-
     using NFluent;
-=======
-    using NFluent.Tests;
->>>>>>> Continues the refactoring by adding the proper documentation, fixing the StyleCop issues and changing some namespaces.
     using NFluent.Tests.Extensions;
     using NUnit.Framework;
 
-<<<<<<< HEAD
-=======
-    using Spike.Ext;
-
-    using Check = Spike.Check;
-
->>>>>>> Continues the refactoring by adding the proper documentation, fixing the StyleCop issues and changing some namespaces.
     [TestFixture]
     public class ExtensionSpikeTests
     {
