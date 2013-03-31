@@ -31,7 +31,7 @@
             Check.That(DoubleObj).IsInstanceOf<double>();
 
             //// objects
-            Check.That(person).IsInstanceOf<Person>();
+            Spike.Check.That(person).IsInstanceOf<Person>();
 
             //// IEnumerable
             Spike.Check.That(stringList).IsInstanceOf<List<string>>();
@@ -80,7 +80,7 @@
             Check.That(DoubleObj).IsNotInstanceOf<int>();
 
             // objects
-            Check.That(person).IsNotInstanceOf<NumbersRelatedTests>();
+            Spike.Check.That(person).IsNotInstanceOf<NumbersRelatedTests>();
 
             // IEnumerable
             Spike.Check.That(stringList).IsNotInstanceOf<List<int>>();

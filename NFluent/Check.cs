@@ -145,21 +145,6 @@ namespace NFluent
             return new NumberFluentAssertion<ulong>(value);
         }
 
-        /// <summary>
-        /// Returns a <see cref="IObjectFluentAssertion" /> instance that will provide assertion methods to be executed on a given object.
-        /// </summary>
-        /// <param name="value">The object to be tested.</param>
-        /// <returns>
-        /// A <see cref="IObjectFluentAssertion" /> instance to use in order to assert things on the object (System Under Test).
-        /// </returns>
-        /// <remarks>
-        /// Methods of the returned <see cref="IObjectFluentAssertion" /> instance will usually throw a <see cref="FluentAssertionException" /> when failing.
-        /// </remarks>
-        public static IObjectFluentAssertion That(object value)
-        {
-            return new ObjectFluentAssertion(value);
-        }
-
         #endregion
     }
 }

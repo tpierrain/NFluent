@@ -19,8 +19,8 @@
             var array = new int[] { 45, 43, 54, 666 };
             var otherReference = array;
 
-            Check.That(array).IsEqualTo(array);
-            Check.That(array).IsEqualTo(otherReference);
+            Spike.Check.That(array).IsEqualTo(array);
+            Spike.Check.That(array).IsEqualTo(otherReference);
         }
 
         [Test]
@@ -29,7 +29,7 @@
             var heroe = new Person() { Name = "Gandhi" };
             var otherReference = heroe;
 
-            Check.That(heroe).IsEqualTo(otherReference);
+            Spike.Check.That(heroe).IsEqualTo(otherReference);
         }
 
         [Test]
@@ -101,7 +101,7 @@
             var heroe = new Person() { Name = "Gandhi" };
             var badGuy = new Person() { Name = "Pol Pot" };
 
-            Check.That(heroe).IsNotEqualTo(badGuy);
+            Spike.Check.That(heroe).IsNotEqualTo(badGuy);
         }
 
         [Test]
@@ -110,7 +110,7 @@
             int firstInt = 23;
             int secondButIdenticalInt = 7;
 
-            Check.That(secondButIdenticalInt).IsNotEqualTo(firstInt);
+            Spike.Check.That(secondButIdenticalInt).IsNotEqualTo(firstInt);
         }
 
         [Test]
@@ -155,8 +155,8 @@
             var camus = new Person() { Name = "Camus" };
             var sartre = new Person() { Name = "Sartre" };
 
-            Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<Person>();
-            Check.That(sartre).IsEqualTo(sartre).And.IsInstanceOf<Person>();
+            Spike.Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<Person>();
+            Spike.Check.That(sartre).IsEqualTo(sartre).And.IsInstanceOf<Person>();
         }
 
         [Test]
