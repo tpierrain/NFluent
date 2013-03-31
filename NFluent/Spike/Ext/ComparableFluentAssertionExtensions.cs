@@ -16,6 +16,7 @@ namespace Spike.Ext
 {
     using System;
     using NFluent;
+    using NFluent.Extensions;
 
     /// <summary>
     /// Provides assertion methods to be executed on an <see cref="IComparable"/> instance.
@@ -35,7 +36,7 @@ namespace Spike.Ext
         {
             if (fluentAssertion.Value.CompareTo(otherValue) >= 0)
             {
-                throw new FluentAssertionException("is not before.");
+                throw new FluentAssertionException(string.Format(@"[{0}] as comparable is not before [{1}].", fluentAssertion.Value.ToStringProperlyFormated(), otherValue.ToStringProperlyFormated()));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<IComparable>>(fluentAssertion);

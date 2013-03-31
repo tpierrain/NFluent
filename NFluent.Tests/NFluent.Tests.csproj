@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndRelatedTests.cs" />
+    <Compile Include="ComparableRelatedTests.cs" />
     <Compile Include="ContainsOnlyTests.cs" />
     <Compile Include="ContainsExactlyTests.cs" />
     <Compile Include="ContainsTests.cs" />
