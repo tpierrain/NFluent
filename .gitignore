@@ -20,6 +20,9 @@ build/
 [Bb]in/
 [Oo]bj/
 
+# KDiff3 backup files
+*.orig
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
