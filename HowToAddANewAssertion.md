@@ -10,7 +10,7 @@ Now, let's see together how to make it properly:
 
 NFluent extensibility model
 ---------------------------
-It's based on .NET assertion methods that you may add on `IFluentAssertion<T>` instances.
+It's based on .NET assertion methods that you may add on `IFluentAssertion<T>` instances (with T as the system under test. a.k.a. sut).
 
 1. Create the .NET extension method you need
 --------------------------------------------
