@@ -25,8 +25,9 @@ b. Implementing the following guidelines
 c. Throwing proper FluentAssertionException when failing
 --------------------------------------------------------
 
-2. Use it within your tests
----------------------------
+2. Reference and use it from within your tests
+----------------------------------------------
+
 
 
 General recommendations
