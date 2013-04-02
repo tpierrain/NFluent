@@ -1,7 +1,7 @@
 How to create a new assertion method in NFluent
 ===============================================
 
-Fortunately, NFluent may be extended very easily for your own needs.
+Fortunately, __NFluent may be extended very easily for your own needs__.
 Whether you want to add a new assertion method on an already covered type, 
 or you want to add assertion methods on a type not already covered by the library 
 (one of your specific business domain object type for instance): both are easily feasible.
@@ -10,7 +10,7 @@ Now, let's see together how to make it properly:
 
 NFluent extensibility model
 ---------------------------
-It's based on .NET assertion method that you may add on `IFluentAssertion<T>` instances.
+It's based on .NET assertion methods that you may add on `IFluentAssertion<T>` instances.
 
 1. Create the .NET extension method you need
 --------------------------------------------
@@ -25,6 +25,7 @@ b. Throwing proper FluentAssertionException when failing
 c. Implementing the following guidelines
 ----------------------------------------
 
+  
 
 2. Reference and use it from within your tests
 ----------------------------------------------
