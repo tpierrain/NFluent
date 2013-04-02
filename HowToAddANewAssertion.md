@@ -19,11 +19,12 @@ On the type you wanna test.
 a. Returning the proper IChainableFluentAssertion
 -------------------------------------------------
 
-b. Implementing the following guidelines
+b. Throwing proper FluentAssertionException when failing
+--------------------------------------------------------
+
+c. Implementing the following guidelines
 ----------------------------------------
 
-c. Throwing proper FluentAssertionException when failing
---------------------------------------------------------
 
 2. Reference and use it from within your tests
 ----------------------------------------------
