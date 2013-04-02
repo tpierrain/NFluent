@@ -113,6 +113,8 @@ Many thanks
 ------
 + To the contributors: __[Marc-Antoine LATOUR](https://github.com/malat)__, __[Rui CARVALHO](http://www.codedistillers.com/)__.
 
++ To __[Rui CARVALHO](http://www.codedistillers.com/)__, for the nice NFluent logo he has designed.
+
 + To the mates that gave me ideas and feedbacks to make this lib as fluent as possible: __[Joel COSTIGLIOLA](https://github.com/joel-costigliola)__, __[Rui CARVALHO](http://www.codedistillers.com/)__, __[Cyrille DUPUYDAUBY](http://dupdob.wordpress.com/)__, __Benoit LABAERE__, ... 
 
 - - -
