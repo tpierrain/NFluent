@@ -13,4 +13,4 @@ These are the rules that should be followed in order to contribute to this proje
 1. The entire build (i.e. including all the unit tests execution) takes less than a minute
 
 
-And there are rules and advices too on __[how to extend NFluent with your own methods](.\HowToAddANewAssertion.md)__.
+And there are rules and advices too on __[how to extend NFluent with your own methods](./HowToAddANewAssertion.md)__.
