@@ -45,38 +45,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BooleanFluentAssertionExtensions.cs">
+    <Compile Include="Assertions\BooleanFluentAssertionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ChainableFluentAssertion.cs" />
     <Compile Include="Check.cs" />
-    <Compile Include="DateTimeFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\DateTimeFluentAssertionExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Helpers\EqualityHelper.cs" />
     <Compile Include="Extensions\ExtensionsCommonHelpers.cs" />
     <Compile Include="IChainableFluentAssertion.cs" />
     <Compile Include="IFluentAssertionBase.cs" />
-    <Compile Include="NumberFluentAssertion.cs" />
+    <Compile Include="Assertions\NumberFluentAssertion.cs" />
     <Compile Include="FluentAssertionException.cs" />
-    <Compile Include="ComparableFluentAssertionExtensions.cs" />
-    <Compile Include="ByteFluentAssertionExtensions.cs" />
-    <Compile Include="ShortFluentAssertionExtensions.cs" />
-    <Compile Include="FloatFluentAssertionExtensions.cs" />
-    <Compile Include="DoubleFluentAssertionExtensions.cs" />
-    <Compile Include="LongFluentAssertionExtensions.cs" />
-    <Compile Include="DecimalFluentAssertionExtensions.cs" />
-    <Compile Include="EnumerableFluentAssertionExtensions.cs" />
-    <Compile Include="ObjectFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\ComparableFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\ByteFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\ShortFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\FloatFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\DoubleFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\LongFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\DecimalFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\EnumerableFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\ObjectFluentAssertionExtensions.cs" />
     <Compile Include="FluentAssertion.cs" />
     <Compile Include="IFluentAssertion.cs" />
-    <Compile Include="IntFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\IntFluentAssertionExtensions.cs" />
     <Compile Include="Helpers\IsInstanceHelper.cs" />
     <Compile Include="Extensions\PropertiesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringFluentAssertionExtensions.cs" />
-    <Compile Include="UIntFluentAssertionExtensions.cs" />
-    <Compile Include="ULongFluentAssertionExtensions.cs" />
-    <Compile Include="UShortFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\StringFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\UIntFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\ULongFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\UShortFluentAssertionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Settings.StyleCop" />
