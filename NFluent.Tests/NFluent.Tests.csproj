@@ -54,6 +54,7 @@
     <Compile Include="BooleanRelatedTests.cs" />
     <Compile Include="DateTimeRelatedTests.cs" />
     <Compile Include="IsInstanceOfTests.cs" />
+    <Compile Include="LambdaRelatedTests.cs" />
     <Compile Include="NumbersRelatedTests.cs" />
     <Compile Include="PropertiesRelatedTests.cs" />
     <Compile Include="EqualRelatedTests.cs" />

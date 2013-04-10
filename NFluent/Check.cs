@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
     /// <summary>
     /// Provides <see cref="IFluentAssertion{T}"/> instances to be used in order to make 
     /// check(s) on the provided value.
@@ -35,5 +37,21 @@ namespace NFluent
         {
             return new FluentAssertion<T>(value);
         }
+
+        /// <summary>
+        /// Returns a <see cref="IFluentAssertion{T}" /> instance that will provide assertion methods to be executed on a given value.
+        /// </summary>
+        /// <param name="value">The value to be tested.</param>
+        /// <returns>
+        /// A <see cref="IFluentAssertion{T}" /> instance to use in order to assert things on the given value.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="IFluentAssertion{T}" /> instance will throw a <see cref="FluentAssertionException" /> when failing.
+        /// </remarks>
+        public static LambdaAssertion That(Action value)
+        {
+            return new LambdaAssertion(value);
+        }
+
     }
 }
