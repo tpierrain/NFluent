@@ -25,6 +25,14 @@
         }
 
         [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "Found: [\"Luke\", \"Yoda\", \"Chewie\"] (3 items) instead of the expected [\"Luke\", \"Yoda\", \"Chewie\", \"Vador\"] (4 items).")]
+        public void ContainsExactlyThrowsExceptionWhenMoreItemsAreIndicated()
+        {
+            var heroes = new[] { "Luke", "Yoda", "Chewie" };
+            Check.That(heroes).ContainsExactly("Luke", "Yoda", "Chewie", "Vador");
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "Found: [1, 2, 3, 4, 5, 666] (6 items) instead of the expected [666, 3, 1, 2, 4, 5] (6 items).")]
         public void ContainsExactlyWithArraysThrowsExceptionWhenSameItemsInWrongOrder()
         {

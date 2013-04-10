@@ -240,16 +240,13 @@ namespace NFluent
             {
                 if (!second.MoveNext() || !object.Equals(first.Current, second.Current))
                 {
-                    long foundCount;
-                    var foundItems = fluentAssertion.Value.ToEnumeratedString(out foundCount);
-                    var formatedFoundCount = FormatItemCount(foundCount);
-
-                    long expectedCount;
-                    object expectedItems = enumerable.ToEnumeratedString(out expectedCount);
-                    var formatedExpectedCount = FormatItemCount(expectedCount);
-
-                    throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
+                    ThrowsNotExactlyException(fluentAssertion, enumerable);
                 }
+            }
+            
+            if (second.MoveNext())
+            {
+                ThrowsNotExactlyException(fluentAssertion, enumerable);
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
@@ -381,6 +378,19 @@ namespace NFluent
         private static bool IsAnEnumerableButNotAnEnumerableOfChars<T>(T element)
         {
             return (element is IEnumerable) && !(element is IEnumerable<char>);
+        }
+
+        private static void ThrowsNotExactlyException(IFluentAssertion<IEnumerable> fluentAssertion, IList<object> enumerable)
+        {
+            long foundCount;
+            var foundItems = fluentAssertion.Value.ToEnumeratedString(out foundCount);
+            var formatedFoundCount = FormatItemCount(foundCount);
+
+            long expectedCount;
+            object expectedItems = enumerable.ToEnumeratedString(out expectedCount);
+            var formatedExpectedCount = FormatItemCount(expectedCount);
+
+            throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
         }
 
         #endregion
