@@ -84,22 +84,36 @@ namespace NFluent.Tests
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-12-24T23:00:00.0000000Z, Kind = Utc] not equals to the expected [2013-12-30T23:00:00.0000000Z, Kind = Utc]")]
+         public void IsEqualToWorksWhenMixingDateKind()
+         {
+             var christmasUtc2013 = new DateTime(2013, 12, 25, 0, 0, 0, DateTimeKind.Utc);
+             var christmas2013WithUnspecifiedDateKindExplicit = new DateTime(2013, 12, 25, 0, 0, 0, DateTimeKind.Unspecified);
+             var christmas2013WithUnspecifiedDateKindImplicit = new DateTime(2013, 12, 25);
+             var christmasInLocalTime2013 = new DateTime(2013, 12, 25, 0, 0, 0, DateTimeKind.Local);
+
+             Check.That(christmasUtc2013)
+                 .IsEqualTo(christmas2013WithUnspecifiedDateKindExplicit).And
+                 .IsEqualTo(christmas2013WithUnspecifiedDateKindImplicit).And
+                 .IsEqualTo(christmasInLocalTime2013);
+         }
+         
+         [Test]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-12-25T00:00:00.0000000, Kind = Unspecified] not equals to the expected [2013-12-31T00:00:00.0000000, Kind = Unspecified]")]
          public void IsEqualToThrowsExceptionWhenNotEqual()
          {
-             var christmasUtc2013 = new DateTime(2013, 12, 25).ToUniversalTime();
-             var newYearsEveUtc2014 = new DateTime(2013, 12, 31).ToUniversalTime();
+             var christmas2013 = new DateTime(2013, 12, 25);
+             var newYearsEve2014 = new DateTime(2013, 12, 31);
 
-             Check.That(christmasUtc2013).IsEqualTo(newYearsEveUtc2014);
+             Check.That(christmas2013).IsEqualTo(newYearsEve2014);
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-12-24T23:00:00.0000000Z, Kind = Utc] not equals to the expected [\"Batman\"]")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[2013-12-25T00:00:00.0000000, Kind = Unspecified] not equals to the expected [\"Batman\"]")]
          public void IsEqualToThrowsExceptionWhenTypeDiffer()
          {
-             var christmasUtc2013 = new DateTime(2013, 12, 25).ToUniversalTime();
+             var christmas2013 = new DateTime(2013, 12, 25);
 
-             Check.That(christmasUtc2013).IsEqualTo("Batman");
+             Check.That(christmas2013).IsEqualTo("Batman");
          }
 
          [Test]
