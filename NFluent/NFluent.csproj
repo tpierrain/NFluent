@@ -80,7 +80,7 @@
     <Compile Include="Assertions\UIntFluentAssertionExtensions.cs" />
     <Compile Include="Assertions\ULongFluentAssertionExtensions.cs" />
     <Compile Include="Assertions\UShortFluentAssertionExtensions.cs" />
-    <Compile Include="TimeHelper.cs" />
+    <Compile Include="Helpers\TimeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Settings.StyleCop" />

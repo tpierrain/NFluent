@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="LambdaRelatedTests.cs" company="">
+// // <copyright file="TimeHelperTest.cs" company="">
 // //   Copyright 2013 Cyrille DUPUYDAUBY
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,22 +14,26 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
-    using System;
-    using System.Threading;
-
     using NFluent.Helpers;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class LambdaRelatedTests
+    public class TimeHelperTest
     {
         [Test]
-        public void DurationTest()
+        public void CheckUnits()
         {
-            TimeSpan duration = TimeSpan.FromMilliseconds(500);
-            //Check.That(duration).InMilliseconds().IsLessThan(10);
-            Check.That(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+            Assert.AreEqual(1.0, TimeHelper.GetInNanoSeconds(1, TimeUnit.NanoSeconds));
+            Assert.AreEqual(1000.0, TimeHelper.GetInNanoSeconds(1, TimeUnit.MicroSeconds));
+            Assert.AreEqual(1000000, TimeHelper.GetInNanoSeconds(1, TimeUnit.Milliseconds));
+            Assert.AreEqual(1000000000, TimeHelper.GetInNanoSeconds(1, TimeUnit.Seconds));
+            Assert.AreEqual(60000000000, TimeHelper.GetInNanoSeconds(1, TimeUnit.Minutes));
+            Assert.AreEqual(3600000000000, TimeHelper.GetInNanoSeconds(1, TimeUnit.Hours));
+            Assert.AreEqual(3600000000000*24, TimeHelper.GetInNanoSeconds(1, TimeUnit.Days));
+            Assert.AreEqual(3600000000000 * 24*7, TimeHelper.GetInNanoSeconds(1, TimeUnit.Weeks));
+
+
         }
     }
 }

@@ -91,6 +91,10 @@
         {
             const int Two = 2;
             Check.That(Two).IsPositive();
+
+            Check.That((byte)1).IsPositive();
+
+            Check.That((decimal)1).IsPositive();
         }
 
         [Test]

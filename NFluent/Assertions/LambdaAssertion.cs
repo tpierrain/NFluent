@@ -18,6 +18,8 @@ namespace NFluent
     using System;
     using System.Diagnostics;
 
+    using NFluent.Helpers;
+
     /// <summary>
     /// Implements lambda/action specific assertion.
     /// </summary>
@@ -46,6 +48,7 @@ namespace NFluent
         /// The value to be tested by any fluent assertion extension method.
         /// </value>
         public Action Value { get; private set; }
+
         /// <summary>
         /// Checks that the execution time is below a specified threshold.
         /// </summary>

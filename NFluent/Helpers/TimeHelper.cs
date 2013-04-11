@@ -12,7 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent
+namespace NFluent.Helpers
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -84,7 +84,7 @@ namespace NFluent
         /// <returns>
         /// The number of nanoseconds.
         /// </returns>
-        internal static double GetInNanoSeconds(double value, TimeUnit unit)
+        public static double GetInNanoSeconds(double value, TimeUnit unit)
         {
             if (unit == TimeUnit.NanoSeconds)
             {
