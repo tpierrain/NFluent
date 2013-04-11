@@ -50,17 +50,15 @@
     </Compile>
     <Compile Include="ChainableFluentAssertion.cs" />
     <Compile Include="Check.cs" />
-    <Compile Include="DateTimeFluentAssertionExtensions.cs" />
-    <Compile Include="TimeSpanFluentAssertionExtension.cs" />
+    <Compile Include="Assertions\TimeSpanFluentAssertionExtension.cs" />
     <Compile Include="Assertions\DateTimeFluentAssertionExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Helpers\EqualityHelper.cs" />
     <Compile Include="Extensions\ExtensionsCommonHelpers.cs" />
     <Compile Include="IChainableFluentAssertion.cs" />
     <Compile Include="IFluentAssertionBase.cs" />
-    <Compile Include="LambdaAssertion.cs" />
-    <Compile Include="LambdaAssertionExtension.cs" />
-    <Compile Include="NumberFluentAssertion.cs" />
+    <Compile Include="Assertions\LambdaAssertion.cs" />
+    <Compile Include="Extensions\LambdaAssertionExtension.cs" />
     <Compile Include="Assertions\NumberFluentAssertion.cs" />
     <Compile Include="FluentAssertionException.cs" />
     <Compile Include="Assertions\ComparableFluentAssertionExtensions.cs" />
@@ -82,6 +80,7 @@
     <Compile Include="Assertions\UIntFluentAssertionExtensions.cs" />
     <Compile Include="Assertions\ULongFluentAssertionExtensions.cs" />
     <Compile Include="Assertions\UShortFluentAssertionExtensions.cs" />
+    <Compile Include="TimeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Settings.StyleCop" />

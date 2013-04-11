@@ -15,6 +15,7 @@
 namespace NFluent
 {
     using System;
+    using System.ComponentModel;
 
     /// <summary>
     /// Provides <see cref="IFluentAssertion{T}"/> instances to be used in order to make 
@@ -48,6 +49,7 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="IFluentAssertion{T}" /> instance will throw a <see cref="FluentAssertionException" /> when failing.
         /// </remarks>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static LambdaAssertion That(Action value)
         {
             return new LambdaAssertion(value);

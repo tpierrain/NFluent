@@ -25,6 +25,8 @@ namespace NFluent
     {
         private Exception exception;
 
+        private double durationInNs;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LambdaAssertion"/> class. 
         /// </summary>
@@ -34,6 +36,7 @@ namespace NFluent
         public LambdaAssertion(Action action)
         {
             this.Value = action;
+            this.Execute();
         }
 
         /// <summary>
@@ -43,36 +46,50 @@ namespace NFluent
         /// The value to be tested by any fluent assertion extension method.
         /// </value>
         public Action Value { get; private set; }
-
         /// <summary>
-        /// Gets an IFluentAssertion instance to test the duration of the lambda.
+        /// Checks that the execution time is below a specified threshold.
         /// </summary>
-        /// <value>
-        /// The duration of the lambda.
-        /// </value>
-        public IFluentAssertion<TimeSpan> Duration
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <param name="timeUnit">
+        /// The time Unit.
+        /// </param>
+        /// <exception cref="FluentAssertionException">
+        /// When execution is strictly above limit.
+        /// </exception>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        public IChainableFluentAssertion<LambdaAssertion> LastsLessThan(double value, TimeUnit timeUnit)
         {
-            get
+            double comparand = TimeHelper.GetInNanoSeconds(value, timeUnit);
+            if (this.durationInNs > comparand)
             {
-                var watch = new Stopwatch();
-                try
-                {
-                    watch.Start();
-                    this.Value();
-                }
-                catch (Exception e)
-                {
-                    this.exception = e;
-                }
-                finally
-                {
-                    watch.Stop();
-                }
-// ReSharper disable PossibleLossOfFraction
-                TimeSpan duration = TimeSpan.FromMilliseconds(watch.ElapsedTicks * 1000 / Stopwatch.Frequency);
-// ReSharper restore PossibleLossOfFraction
-                return new FluentAssertion<TimeSpan>(duration);
+                throw new FluentAssertionException(string.Format("Code execution lasted more than {0} {1}.", value, timeUnit));
             }
+            return new ChainableFluentAssertion<LambdaAssertion>(this);
         }
+
+        private void Execute()
+        {
+            var watch = new Stopwatch();
+            try
+            {
+                watch.Start();
+                this.Value();
+            }
+            catch (Exception e)
+            {
+                this.exception = e;
+            }
+            finally
+            {
+                watch.Stop();
+            }
+            // ReSharper disable PossibleLossOfFraction
+            this.durationInNs = watch.ElapsedTicks * 1000000000 / Stopwatch.Frequency;
+        }
+
     }
 }

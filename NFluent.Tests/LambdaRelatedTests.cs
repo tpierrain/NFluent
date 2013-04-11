@@ -26,8 +26,8 @@ namespace NFluent.Tests
         public void DurationTest()
         {
             TimeSpan duration = TimeSpan.FromMilliseconds(500);
-            Check.That(duration).InMilliseconds().IsLessThan(10);
-            Check.That(() => Thread.Sleep(30));
+            //Check.That(duration).InMilliseconds().IsLessThan(10);
+            Check.That(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
         }
     }
 }

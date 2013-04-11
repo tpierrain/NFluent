@@ -15,6 +15,8 @@
 namespace NFluent
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+
 
     /// <summary>
     /// Provides assertion methods to be executed on a TimeSpan.
@@ -32,5 +34,6 @@ namespace NFluent
         {
             return new FluentAssertion<double>(fluentAssertion.Value.TotalMilliseconds);
         }
+
     }
 }
