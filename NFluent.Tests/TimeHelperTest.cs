@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using System;
+
     using NFluent.Helpers;
 
     using NUnit.Framework;
@@ -26,14 +28,19 @@ namespace NFluent.Tests
         {
             Assert.AreEqual(1.0, TimeHelper.GetInNanoSeconds(1, TimeUnit.NanoSeconds));
             Assert.AreEqual(1000.0, TimeHelper.GetInNanoSeconds(1, TimeUnit.MicroSeconds));
-            Assert.AreEqual(1000000, TimeHelper.GetInNanoSeconds(1, TimeUnit.Milliseconds));
-            Assert.AreEqual(1000000000, TimeHelper.GetInNanoSeconds(1, TimeUnit.Seconds));
-            Assert.AreEqual(60000000000, TimeHelper.GetInNanoSeconds(1, TimeUnit.Minutes));
-            Assert.AreEqual(3600000000000, TimeHelper.GetInNanoSeconds(1, TimeUnit.Hours));
-            Assert.AreEqual(3600000000000*24, TimeHelper.GetInNanoSeconds(1, TimeUnit.Days));
-            Assert.AreEqual(3600000000000 * 24*7, TimeHelper.GetInNanoSeconds(1, TimeUnit.Weeks));
+            Assert.AreEqual(1000000.0, TimeHelper.GetInNanoSeconds(1, TimeUnit.Milliseconds));
+            Assert.AreEqual(1000000000.0, TimeHelper.GetInNanoSeconds(1, TimeUnit.Seconds));
+            Assert.AreEqual(1000000000.0 * 60, TimeHelper.GetInNanoSeconds(1, TimeUnit.Minutes));
+            Assert.AreEqual(1000000000.0 * 60 * 60, TimeHelper.GetInNanoSeconds(1, TimeUnit.Hours));
+            Assert.AreEqual(1000000000.0*60*60 *24, TimeHelper.GetInNanoSeconds(1, TimeUnit.Days));
+            Assert.AreEqual(1000000000.0 * 60 * 60 * 24 * 7, TimeHelper.GetInNanoSeconds(1, TimeUnit.Weeks));
+        }
 
-
+        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
+        public void CheckInvalidUnits()
+        {
+            Assert.AreNotEqual(0, TimeHelper.GetInNanoSeconds(10, (TimeUnit)100));
         }
     }
 }
