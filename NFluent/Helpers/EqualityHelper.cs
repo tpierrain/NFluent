@@ -45,7 +45,7 @@ namespace NFluent.Helpers
                 }
                 else
                 {
-                    // same instance type. Do they have the same ToString() value? In that case we should include the hashcode of each instance within the error message
+                    // same instance type. Do they have the same ToString() value? In that case we should include the hashcodex of each instance within the error message
                     if (string.Compare(instance.ToString(), expected.ToString()) == 0)
                     {
                         includeHashCode = true;
@@ -54,7 +54,7 @@ namespace NFluent.Helpers
                     }
                 }
 
-                throw new FluentAssertionException(string.Format("\nExpecting:\n\t[{0}]{2}\n but was\n\t[{1}]{3}.", expected.ToStringProperlyFormated(), instance.ToStringProperlyFormated(), expectedTypeMessage, instanceTypeMessage));
+                throw new FluentAssertionException(string.Format("\nWas:\n\t[{0}]{2}\n instead of the expected:\n\t[{1}]{3}.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage));
             }
         }
 

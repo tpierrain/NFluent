@@ -73,7 +73,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nExpecting:\n\t[\"no way\"]\n but was\n\t[\"Son of a test\"].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[\"Son of a test\"]\n instead of the expected:\n\t[\"no way\"].")]
         public void IsEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";
@@ -81,7 +81,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nExpecting:\n\t[null]\n but was\n\t[\"Son of a test\"] of type: [System.String].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[\"Son of a test\"] of type: [System.String]\n instead of the expected:\n\t[null].")]
         public void IsEqualToThrowsProperExceptionEvenWithNullAsExpected()
         {
             var first = "Son of a test";
@@ -89,7 +89,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nExpecting:\n\t[\"Kamoulox !\"] of type: [System.String]\n but was\n\t[null].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[null]\n instead of the expected:\n\t[\"Kamoulox !\"] of type: [System.String].")]
         public void IsEqualToThrowsProperExceptionEvenWithNullAsValue()
         {
             string first = null;
@@ -97,7 +97,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nExpecting:\n\t[John] of type: [NFluent.Tests.Person]\n but was\n\t[John] of type: [NFluent.Tests.Children].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[John] of type: [NFluent.Tests.Children]\n instead of the expected:\n\t[John] of type: [NFluent.Tests.Person].")]
         public void WeCanSeeTheDifferenceBewteenTwoDifferentObjectsThatHaveTheSameToString()
         {
             Person dad = new Person() { Name = "John" };
@@ -106,7 +106,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = LineFeed + Blabla + "(\\[NFluent\\.Tests\\.Person\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[NFluent\\.Tests\\.Person\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + ".")]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[NFluent\\.Tests\\.Person\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[NFluent\\.Tests\\.Person\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + ".")]
         public void WeCanAlsoSeeTheDifferenceBetweenTwoDifferentInstancesOfTheSameTypeWhichHaveSameToString()
         {
             // e.g.: "\nExpecting:\n\t[John] of type: [NFluent.Tests.Person] with HashCode: [45523402]\n but was\n\t[John] of type: [NFluent.Tests.Person] with HashCode: [35287174]."
@@ -115,7 +115,6 @@
             Check.That(uncle).IsEqualTo(dad);
         }
 
-        // TODO write a test with two different persons with the same ToString (John) (should also display their hashcode IN THAT CASE ONLY). Same thing with 42 (int) and 42 (long)
         [Test]
         public void IsNotEqualToWorksWithString()
         {

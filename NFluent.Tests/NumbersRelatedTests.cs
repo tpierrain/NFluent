@@ -120,5 +120,15 @@
             Check.That(DoubleNumber).IsNotZero().And.IsPositive();
             Check.That(DoubleNumber).IsPositive().And.IsNotZero();
         }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[42] of type: [System.Int32]\n instead of the expected:\n\t[42] of type: [System.Int64].")]
+        public void IsEqualToThrowsWhenSameNumberOfDifferentTypes()
+        {
+            const int IntValue = 42;
+            const long LongValue = 42L;
+
+            Check.That(IntValue).IsEqualTo(LongValue);
+        }
     }
 }
