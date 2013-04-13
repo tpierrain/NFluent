@@ -33,13 +33,25 @@ namespace NFluent.Helpers
         {
             if (!object.Equals(instance, expected))
             {
+                // Should throw
                 var expectedTypeMessage = string.Empty;
                 var instanceTypeMessage = string.Empty;
+                bool includeHashCode = false;
 
                 if (instance.GetTypeWithoutThrowingException() != expected.GetTypeWithoutThrowingException())
                 {
-                    expectedTypeMessage = BuildTypeDescriptionMessage(expected);
-                    instanceTypeMessage = BuildTypeDescriptionMessage(instance);    
+                    expectedTypeMessage = BuildTypeDescriptionMessage(expected, includeHashCode);
+                    instanceTypeMessage = BuildTypeDescriptionMessage(instance, includeHashCode);
+                }
+                else
+                {
+                    // same instance type. Do they have the same ToString() value? In that case we should include the hashcode of each instance within the error message
+                    if (string.Compare(instance.ToString(), expected.ToString()) == 0)
+                    {
+                        includeHashCode = true;
+                        expectedTypeMessage = BuildTypeDescriptionMessage(expected, includeHashCode);
+                        instanceTypeMessage = BuildTypeDescriptionMessage(instance, includeHashCode);
+                    }
                 }
 
                 throw new FluentAssertionException(string.Format("\nExpecting:\n\t[{0}]{2}\n but was\n\t[{1}]{3}.", expected.ToStringProperlyFormated(), instance.ToStringProperlyFormated(), expectedTypeMessage, instanceTypeMessage));
@@ -60,12 +72,19 @@ namespace NFluent.Helpers
             }
         }
 
-        private static string BuildTypeDescriptionMessage(object expected)
+        private static string BuildTypeDescriptionMessage(object expected, bool includeHashCode)
         {
             string expectedTypeMessage = string.Empty;
             if (expected != null)
             {
-                expectedTypeMessage = string.Format(" of type: {0}", expected.GetType());
+                if (includeHashCode)
+                {
+                    expectedTypeMessage = string.Format(" of type: [{0}] with HashCode: [{1}]", expected.GetType(), expected.GetHashCode());
+                }
+                else
+                {
+                    expectedTypeMessage = string.Format(" of type: [{0}]", expected.GetType());
+                }
             }
 
             return expectedTypeMessage;
