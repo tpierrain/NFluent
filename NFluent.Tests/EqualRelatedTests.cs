@@ -93,6 +93,15 @@
         }
 
         [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nExpecting:\n\t[John] of type: NFluent.Tests.Person\n but was\n\t[John] of type: NFluent.Tests.Children.")]
+        public void WeCanSeeTheDifferenceBewteenTwoDifferentObjectsThatHaveTheSameToString()
+        {
+            Person dad = new Person() { Name = "John" };
+            Person son = new Children() { Name = "John" };
+            Check.That(son).IsEqualTo(dad);
+        }
+
+        [Test]
         public void IsNotEqualToWorksWithString()
         {
             var first = "Son of a test";
