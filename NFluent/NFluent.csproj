@@ -58,7 +58,6 @@
     <Compile Include="IChainableFluentAssertion.cs" />
     <Compile Include="IFluentAssertionBase.cs" />
     <Compile Include="Assertions\LambdaAssertion.cs" />
-    <Compile Include="Extensions\LambdaAssertionExtension.cs" />
     <Compile Include="Assertions\NumberFluentAssertion.cs" />
     <Compile Include="FluentAssertionException.cs" />
     <Compile Include="Assertions\ComparableFluentAssertionExtensions.cs" />

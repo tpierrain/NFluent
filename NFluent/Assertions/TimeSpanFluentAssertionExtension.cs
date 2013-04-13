@@ -15,8 +15,6 @@
 namespace NFluent
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
-
 
     /// <summary>
     /// Provides assertion methods to be executed on a TimeSpan.

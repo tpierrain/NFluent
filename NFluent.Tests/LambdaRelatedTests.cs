@@ -27,9 +27,54 @@ namespace NFluent.Tests
         [Test]
         public void DurationTest()
         {
-            TimeSpan duration = TimeSpan.FromMilliseconds(500);
-            //Check.That(duration).InMilliseconds().IsLessThan(10);
             Check.That(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+        }
+
+        [Test]
+        [ExpectedException(exceptionType: typeof(FluentAssertionException))]
+        public void FailDurationTest()
+        {
+            Check.That(() => Thread.Sleep(30)).LastsLessThan(0, TimeUnit.Milliseconds);
+        }
+
+        [Test]
+        public void NoExceptionRaised()
+        {
+            Check.That(() => new object()).DoesNotThrow();
+        }
+
+        [Test]
+        [ExpectedException(exceptionType: typeof(FluentAssertionException))]
+        public void UnexpectedExceptionRaised()
+        {
+            Check.That(() => { throw new ApplicationException(); }).DoesNotThrow();
+        }
+
+        [Test]
+        public void ExpectedExceptionRaised()
+        {
+            Check.That(() => { throw new ApplicationException(); }).Throws<ApplicationException>();
+            Check.That(() => { throw new ApplicationException(); }).ThrowsAny();
+        }
+
+        [Test]
+        [ExpectedException(exceptionType: typeof(FluentAssertionException))]
+        public void DidNotRaiseExpected()
+        {
+            Check.That(() => { throw new Exception(); }).Throws<ApplicationException>();
+        }
+
+        [Test]
+        [ExpectedException(exceptionType: typeof(FluentAssertionException))]
+        public void DidNotRaiseAny()
+        {
+            Check.That(() => { new object(); }).ThrowsAny();
+        }
+        [Test]
+        [ExpectedException(exceptionType: typeof(FluentAssertionException))]
+        public void DidNotRaiseAnyTypedCheck()
+        {
+            Check.That(() => { new object(); }).Throws<Exception>();
         }
     }
 }
