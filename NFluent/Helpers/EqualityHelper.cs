@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Helpers
 {
+    using System;
+
     using NFluent.Extensions;
 
     /// <summary>
@@ -31,7 +33,10 @@ namespace NFluent.Helpers
         {
             if (!object.Equals(instance, expected))
             {
-                throw new FluentAssertionException(string.Format("[{0}] not equals to the expected [{1}]", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated()));
+                var expectedTypeMessage = BuildTypeDescriptionMessage(expected);
+                var instanceTypeMessage = BuildTypeDescriptionMessage(instance);
+
+                throw new FluentAssertionException(string.Format("\nExpecting:\n\t[{0}]{2}\n but was\n\t[{1}]{3}.", expected.ToStringProperlyFormated(), instance.ToStringProperlyFormated(), expectedTypeMessage, instanceTypeMessage));
             }
         }
 
@@ -47,6 +52,17 @@ namespace NFluent.Helpers
             {
                 throw new FluentAssertionException(string.Format("[{0}] equals to the value [{1}] which is not expected.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated()));
             }
+        }
+
+        private static string BuildTypeDescriptionMessage(object expected)
+        {
+            string expectedTypeMessage = string.Empty;
+            if (expected != null)
+            {
+                expectedTypeMessage = string.Format(" of type: {0}", expected.GetType());
+            }
+
+            return expectedTypeMessage;
         }
     }
 }

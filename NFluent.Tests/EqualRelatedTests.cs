@@ -69,11 +69,27 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""Son of a test""] not equals to the expected [""no way""]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nExpecting:\n\t[\"no way\"] of type: System.String\n but was\n\t[\"Son of a test\"] of type: System.String.")]
         public void IsEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";
             Check.That(first).IsEqualTo("no way");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nExpecting:\n\t[null]\n but was\n\t[\"Son of a test\"] of type: System.String.")]
+        public void IsEqualToThrowsProperExceptionEvenWithNullAsExpected()
+        {
+            var first = "Son of a test";
+            Check.That(first).IsEqualTo(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nExpecting:\n\t[\"Kamoulox !\"] of type: System.String\n but was\n\t[null].")]
+        public void IsEqualToThrowsProperExceptionEvenWithNullAsValue()
+        {
+            string first = null;
+            Check.That(first).IsEqualTo("Kamoulox !");
         }
 
         [Test]
