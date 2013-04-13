@@ -101,6 +101,8 @@
             Check.That(son).IsEqualTo(dad);
         }
 
+        // TODO write a test with two different persons with the same ToString (John) (should also display their hashcode IN THAT CASE ONLY). Same thing with 42 (int) and 42 (long)
+
         [Test]
         public void IsNotEqualToWorksWithString()
         {
