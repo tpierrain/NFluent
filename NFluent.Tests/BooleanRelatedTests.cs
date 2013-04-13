@@ -49,7 +49,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nExpecting:\n\t[False] of type: System.Boolean\n but was\n\t[True] of type: System.Boolean.")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nExpecting:\n\t[False]\n but was\n\t[True].")]
         public void IsEqualThrowsExceptionWhenNotEqual()
         {
             const bool IsFunny = true;

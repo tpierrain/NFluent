@@ -69,7 +69,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nExpecting:\n\t[\"no way\"] of type: System.String\n but was\n\t[\"Son of a test\"] of type: System.String.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nExpecting:\n\t[\"no way\"]\n but was\n\t[\"Son of a test\"].")]
         public void IsEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";
@@ -102,7 +102,6 @@
         }
 
         // TODO write a test with two different persons with the same ToString (John) (should also display their hashcode IN THAT CASE ONLY). Same thing with 42 (int) and 42 (long)
-
         [Test]
         public void IsNotEqualToWorksWithString()
         {

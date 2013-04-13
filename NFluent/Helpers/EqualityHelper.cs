@@ -33,8 +33,14 @@ namespace NFluent.Helpers
         {
             if (!object.Equals(instance, expected))
             {
-                var expectedTypeMessage = BuildTypeDescriptionMessage(expected);
-                var instanceTypeMessage = BuildTypeDescriptionMessage(instance);
+                var expectedTypeMessage = string.Empty;
+                var instanceTypeMessage = string.Empty;
+
+                if (instance.GetTypeWithoutThrowingException() != expected.GetTypeWithoutThrowingException())
+                {
+                    expectedTypeMessage = BuildTypeDescriptionMessage(expected);
+                    instanceTypeMessage = BuildTypeDescriptionMessage(instance);    
+                }
 
                 throw new FluentAssertionException(string.Format("\nExpecting:\n\t[{0}]{2}\n but was\n\t[{1}]{3}.", expected.ToStringProperlyFormated(), instance.ToStringProperlyFormated(), expectedTypeMessage, instanceTypeMessage));
             }
