@@ -130,7 +130,7 @@ namespace NFluent
                 return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("The enumerable [{0}] does not contain the expected value(s): [{1}].", fluentAssertion.Value.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
+            throw new FluentAssertionException(string.Format("\nThe enumerable:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}]", fluentAssertion.Value.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
         }
 
         /// <summary>
