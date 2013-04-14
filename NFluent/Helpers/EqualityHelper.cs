@@ -68,7 +68,8 @@ namespace NFluent.Helpers
         {
             if (object.Equals(instance, expected))
             {
-                throw new FluentAssertionException(string.Format("[{0}] equals to the value [{1}] which is not expected.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated()));
+                var instanceTypeMessage = BuildTypeDescriptionMessage(expected, false);
+                throw new FluentAssertionException(string.Format("\nThe variable is equal to the unexpected value:\n\t[{0}]{1}.", instance.ToStringProperlyFormated(), instanceTypeMessage));
             }
         }
 

@@ -9,6 +9,8 @@
         private const string LineFeed = "\\n";
         private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
 
+        #region IsEqualTo()
+
         [Test]
         public void IsEqualToWorksWithString()
         {
@@ -115,6 +117,10 @@
             Check.That(uncle).IsEqualTo(dad);
         }
 
+        #endregion
+
+        #region IsNotEqualTo()
+
         [Test]
         public void IsNotEqualToWorksWithString()
         {
@@ -170,13 +176,15 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""Son of a test""] equals to the value [""Son of a test""] which is not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe variable is equal to the unexpected value:\n\t[\"Son of a test\"] of type: [System.String].")]
         public void IsNotEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";
             var otherReferenceToSameObject = first;
             Check.That(first).IsNotEqualTo(otherReferenceToSameObject);
         }
+
+        #endregion
 
         [Test]
         public void AndOperatorCanChainMultipleAssertionsForDoubleNumber()
