@@ -53,6 +53,10 @@ namespace NFluent
             var firstTime = true;
             var sb = new StringBuilder();
             itemsCount = 0;
+            if (enumerable == null)
+            {
+                return "null";
+            }
 
             foreach (var obj in enumerable)
             {

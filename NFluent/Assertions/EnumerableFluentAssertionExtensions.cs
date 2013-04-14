@@ -223,13 +223,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> ContainsExactly(this IFluentAssertion<IEnumerable> fluentAssertion, IEnumerable otherEnumerable)
         {
-            // TODO: Refactor this implementation
             if (otherEnumerable == null)
             {
-                long foundCount;
-                var foundItems = fluentAssertion.Value.ToEnumeratedString(out foundCount);
-                var foundItemsCount = FormatItemCount(foundCount);
-                throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [null] (0 item).", foundItems, foundItemsCount));
+                ThrowsNotExactlyException(fluentAssertion, null);
             }
 
             var first = fluentAssertion.Value.GetEnumerator();

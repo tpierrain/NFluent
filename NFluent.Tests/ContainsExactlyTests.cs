@@ -94,7 +94,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Found: [""Michel Gondry"", ""Joon-ho Bong"", ""Darren Aronofsky""] (3 items) instead of the expected [null] (0 item).")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe enumerable:\n\t[\"Michel Gondry\", \"Joon-ho Bong\", \"Darren Aronofsky\"] (3 items)\ndoes not contain exactly the expected value(s):\n\t[null] (0 item).")]
         public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithNullEnumerable()
         {
             IEnumerable nullEnumerable = null;
