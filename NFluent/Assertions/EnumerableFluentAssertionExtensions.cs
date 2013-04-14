@@ -267,7 +267,19 @@ namespace NFluent
 
             if (expectedSize != itemsCount)
             {
-                throw new FluentAssertionException(string.Format("Has [{0}] items instead of the expected value [{1}].", itemsCount, expectedSize));
+                string foundElementsNumberDescription = itemsCount.ToString();
+                if (itemsCount > 1)
+                {
+                    foundElementsNumberDescription += " elements";
+                }
+                else
+                {
+                    foundElementsNumberDescription += " element";
+                }
+                
+                var elements = fluentAssertion.Value.ToEnumeratedString();
+
+                throw new FluentAssertionException(string.Format("\nFound {0} instead of {1}.\nFound:\n\t[{2}]", foundElementsNumberDescription, expectedSize, elements));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);

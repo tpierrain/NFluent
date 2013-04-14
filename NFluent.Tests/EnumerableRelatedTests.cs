@@ -51,12 +51,21 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "Has [4] items instead of the expected value [2].")]
-        public void HasSizeThrowsExceptionWithClearStatusWhenFails()
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nFound 1 element instead of 5.\nFound:\n\t[666]")]
+        public void HasSizeThrowsExceptionWithClearStatusWhenFailsWithOneElementFound()
+        {
+            var enumerable = new List<int>() { 666 };
+
+            Check.That(enumerable).HasSize(5);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nFound 4 elements instead of 1.\nFound:\n\t[45, 43, 54, 666]")]
+        public void HasSizeThrowsExceptionWithClearStatusWhenFailsWithOneExpectedElement()
         {
             var enumerable = new List<int>() { 45, 43, 54, 666 };
 
-            Check.That(enumerable).HasSize(2);
+            Check.That(enumerable).HasSize(1);
         }
 
         #endregion
