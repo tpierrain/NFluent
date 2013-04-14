@@ -125,12 +125,12 @@ namespace NFluent
         {
             var notFoundValues = ExtractNotFoundValues(fluentAssertion.Value, otherEnumerable);
 
-            if (notFoundValues.Count == 0)
+            if (notFoundValues.Count > 0)
             {
-                return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
+                throw new FluentAssertionException(string.Format("\nThe enumerable:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}]", fluentAssertion.Value.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
             }
 
-            throw new FluentAssertionException(string.Format("\nThe enumerable:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}]", fluentAssertion.Value.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace NFluent
 
             if (unexpectedValuesFound.Count > 0)
             {
-                throw new FluentAssertionException(string.Format("The enumerable [{0}] does not contain only the expected value(s). It contains also other values: [{1}].", fluentAssertion.Value.ToEnumeratedString(), unexpectedValuesFound.ToEnumeratedString()));
+                throw new FluentAssertionException(string.Format("\nThe enumerable:\n\t[{0}]\ndoes not contain only the expected value(s):\n\t[{1}].\nIt contains also other values:\n\t[{2}]", fluentAssertion.Value.ToEnumeratedString(), expectedValues.ToEnumeratedString(), unexpectedValuesFound.ToEnumeratedString()));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
