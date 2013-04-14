@@ -402,7 +402,9 @@ namespace NFluent
             object expectedItems = enumerable.ToEnumeratedString(out expectedCount);
             var formatedExpectedCount = FormatItemCount(expectedCount);
 
-            throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
+            throw new FluentAssertionException(string.Format("\nThe enumerable:\n\t[{0}] ({1})\ndoes not contain exactly the expected value(s):\n\t[{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
+            
+            // throw new FluentAssertionException(string.Format("\nThe enumerable:\n\t[{0}] ({1})\ndoes not contain exactly the expected value(s):\n\t[{2}] ({3}).\nIt contains also:\n\t[\"Vador\"]", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
         }
 
         #endregion
