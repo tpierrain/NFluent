@@ -81,7 +81,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"Enumerable not empty. Contains the element(s): [null, null, Thomas].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe enumerable is not empty. Contains:\n\t[null, null, Thomas]")]
         public void IsEmptyThrowsExceptionWhenNotEmpty()
         {
             var persons = new List<Person>() { null, null, new Person() { Name = "Thomas" } };

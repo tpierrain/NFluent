@@ -297,7 +297,7 @@ namespace NFluent
         {
             if (fluentAssertion.Value.Cast<object>().Any())
             {
-                throw new FluentAssertionException(string.Format("Enumerable not empty. Contains the element(s): [{0}].", fluentAssertion.Value.ToEnumeratedString()));
+                throw new FluentAssertionException(string.Format("\nThe enumerable is not empty. Contains:\n\t[{0}]", fluentAssertion.Value.ToEnumeratedString()));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
