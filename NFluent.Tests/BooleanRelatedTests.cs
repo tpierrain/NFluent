@@ -49,17 +49,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[True] not equals to the expected [False]")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[True]\n instead of the expected:\n\t[False].")]
         public void IsEqualThrowsExceptionWhenNotEqual()
         {
             const bool IsFunny = true;
             const bool WinterIsFunny = false;
-
             Check.That(IsFunny).IsEqualTo(WinterIsFunny);
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "[True] equals to the value [True] which is not expected.")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe variable is equal to the unexpected value:\n\t[True] of type: [System.Boolean].")]
         public void IsNotEqualThrowsExceptionWhenEqual()
         {
             const bool IsFunny = true;

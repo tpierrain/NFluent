@@ -44,7 +44,14 @@ namespace NFluent.Extensions
                 return ToStringProperlyFormated((bool)theObject);
             }
 
-            return theObject.ToString();
+            if (theObject == null)
+            {
+                return "null";
+            }
+            else
+            {
+                return theObject.ToString();    
+            }
         }
 
         /// <summary>

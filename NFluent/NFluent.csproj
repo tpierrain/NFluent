@@ -56,6 +56,7 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Helpers\EqualityHelper.cs" />
     <Compile Include="Extensions\ExtensionsCommonHelpers.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="IChainableFluentAssertion.cs" />
     <Compile Include="IFluentAssertionBase.cs" />
     <Compile Include="Assertions\LambdaAssertion.cs" />
