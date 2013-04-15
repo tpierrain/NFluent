@@ -41,7 +41,11 @@ namespace NFluent.Tests
         {
             Assert.AreEqual(TimeSpan.FromMilliseconds(212), TimeHelper.ToTimeSpan(212, TimeUnit.Milliseconds));
         }
-
+        [Test]
+        public void CheckTimeSpan()
+        {
+            Assert.AreEqual(TimeSpan.FromMilliseconds(212), TimeHelper.ToTimeSpan(212, TimeUnit.Milliseconds));
+        }
         [ExpectedException(typeof(InvalidOperationException))]
         [Test]
         public void CheckInvalidUnits()
