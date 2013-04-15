@@ -135,6 +135,23 @@ namespace NFluent.Helpers
 
             throw new InvalidOperationException(string.Format("{0} is not a supported time unit.", unit));
         }
-         
+
+
+        /// <summary>
+        /// To the time span.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <param name="timeUnit">
+        /// The time unit.
+        /// </param>
+        /// <returns>
+        /// A <see cref="TimeSpan"/> instance of that duration.
+        /// </returns>
+        public static TimeSpan ToTimeSpan(double value, TimeUnit timeUnit)
+        {
+            return TimeSpan.FromTicks((long)(GetInNanoSeconds(value, timeUnit) / 100));
+        }
     }
 }
