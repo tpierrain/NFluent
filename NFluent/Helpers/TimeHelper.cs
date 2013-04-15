@@ -136,7 +136,6 @@ namespace NFluent.Helpers
             throw new InvalidOperationException(string.Format("{0} is not a supported time unit.", unit));
         }
 
-
         /// <summary>
         /// To the time span.
         /// </summary>

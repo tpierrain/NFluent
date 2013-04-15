@@ -29,7 +29,6 @@
             Check.That(DoubleObj).IsInstanceOf<double>();
             Check.That((byte)2).IsInstanceOf<byte>();
 
-
             //// objects
             Check.That(person).IsInstanceOf<Person>();
 

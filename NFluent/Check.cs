@@ -54,6 +54,5 @@ namespace NFluent
         {
             return new LambdaAssertion(value);
         }
-
     }
 }

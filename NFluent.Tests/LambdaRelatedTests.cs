@@ -70,6 +70,7 @@ namespace NFluent.Tests
         {
             Check.That(() => { new object(); }).ThrowsAny();
         }
+
         [Test]
         [ExpectedException(exceptionType: typeof(FluentAssertionException))]
         public void DidNotRaiseAnyTypedCheck()

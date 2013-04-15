@@ -32,14 +32,16 @@ namespace NFluent.Tests
             Assert.AreEqual(1000000000.0, TimeHelper.GetInNanoSeconds(1, TimeUnit.Seconds));
             Assert.AreEqual(1000000000.0 * 60, TimeHelper.GetInNanoSeconds(1, TimeUnit.Minutes));
             Assert.AreEqual(1000000000.0 * 60 * 60, TimeHelper.GetInNanoSeconds(1, TimeUnit.Hours));
-            Assert.AreEqual(1000000000.0*60*60 *24, TimeHelper.GetInNanoSeconds(1, TimeUnit.Days));
+            Assert.AreEqual(1000000000.0 * 60 * 60 * 24, TimeHelper.GetInNanoSeconds(1, TimeUnit.Days));
             Assert.AreEqual(1000000000.0 * 60 * 60 * 24 * 7, TimeHelper.GetInNanoSeconds(1, TimeUnit.Weeks));
         }
+
         [Test]
         public void CheckTimeSpan()
         {
             Assert.AreEqual(TimeSpan.FromMilliseconds(212), TimeHelper.ToTimeSpan(212, TimeUnit.Milliseconds));
         }
+
         [ExpectedException(typeof(InvalidOperationException))]
         [Test]
         public void CheckInvalidUnits()

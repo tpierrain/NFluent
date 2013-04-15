@@ -24,16 +24,21 @@ namespace NFluent
     public static class TimeSpanFluentAssertionExtensions
     {
         /// <summary>
-        /// Lesses the than.
+        /// Check that the actual value is less (strictly) than a comparand.
         /// </summary>
         /// <param name="fluentAssertion">The fluent assertion.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="unit">The unit.</param>
-        /// <returns></returns>
+        /// <param name="value">The duration.</param>
+        /// <param name="unit">Unit in which the duration is expressed.</param>
+        /// <returns>A chainable assertion.</returns>
          public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsLessThan(
              this IFluentAssertion<TimeSpan> fluentAssertion, double value, TimeUnit unit)
          {
              TimeSpan comparand = TimeHelper.ToTimeSpan(value, unit);
+             if (fluentAssertion.Value >= comparand)
+             {
+                 throw new FluentAssertionException("");
+             }
+
              return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
          }
     }

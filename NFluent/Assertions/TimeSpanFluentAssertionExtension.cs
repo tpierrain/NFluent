@@ -32,6 +32,5 @@ namespace NFluent
         {
             return new FluentAssertion<double>(fluentAssertion.Value.TotalMilliseconds);
         }
-
     }
 }
