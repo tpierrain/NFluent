@@ -48,6 +48,7 @@
     <Compile Include="Assertions\BooleanFluentAssertionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Assertions\TimeSpanFluentAssertionExtensions.cs" />
     <Compile Include="ChainableFluentAssertion.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="Assertions\TimeSpanFluentAssertionExtension.cs" />

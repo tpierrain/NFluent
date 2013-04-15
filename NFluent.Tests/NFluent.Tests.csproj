@@ -62,6 +62,7 @@
     <Compile Include="EnumerableRelatedTests.cs" />
     <Compile Include="StringRelatedTests.cs" />
     <Compile Include="TimeHelperTest.cs" />
+    <Compile Include="TimeSpanTests.cs" />
     <Compile Include="ToEnumeratedStringTests.cs" />
   </ItemGroup>
   <ItemGroup>
