@@ -117,7 +117,7 @@ namespace NFluent.Tests
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe variable is equal to the unexpected value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime].")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime].")]
          public void IsNotEqualToThrowsExceptionWhenEqual()
          {
              var christmas2013 = new DateTime(2013, 12, 25);

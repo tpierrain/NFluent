@@ -176,7 +176,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe variable is equal to the unexpected value:\n\t[\"Son of a test\"] of type: [System.String].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[\"Son of a test\"] of type: [System.String].")]
         public void IsNotEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";

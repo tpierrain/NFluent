@@ -37,12 +37,12 @@ namespace NFluent
         {
             if (fluentAssertion.Value == null)
             {
-                throw new FluentAssertionException(string.Format("\nWas:\n\t[{0}]{1}\nwhich is not before:\n\t[{2}]{3}.", fluentAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(fluentAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not before:\n\t[{2}]{3}.", fluentAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(fluentAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
             }
 
             if (fluentAssertion.Value.CompareTo(otherValue) >= 0)
             {
-                throw new FluentAssertionException(string.Format("\nWas:\n\t[{0}]{1}\nwhich is not before:\n\t[{2}]{3}.", fluentAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(fluentAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not before:\n\t[{2}]{3}.", fluentAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(fluentAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<IComparable>>(fluentAssertion);

@@ -69,7 +69,7 @@ namespace NFluent.Helpers
             if (object.Equals(instance, expected))
             {
                 var instanceTypeMessage = BuildTypeDescriptionMessage(expected, false);
-                throw new FluentAssertionException(string.Format("\nThe variable is equal to the unexpected value:\n\t[{0}]{1}.", instance.ToStringProperlyFormated(), instanceTypeMessage));
+                throw new FluentAssertionException(string.Format("\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[{0}]{1}.", instance.ToStringProperlyFormated(), instanceTypeMessage));
             }
         }
 

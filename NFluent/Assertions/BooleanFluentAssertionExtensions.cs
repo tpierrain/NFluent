@@ -87,7 +87,7 @@ namespace NFluent
                 return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("\nWas:\n\t[{0}]\ninstead of:\n\t[False].", fluentAssertion.Value.ToStringProperlyFormated()));
+            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not false.", fluentAssertion.Value.ToStringProperlyFormated()));
         }
     }
 }
