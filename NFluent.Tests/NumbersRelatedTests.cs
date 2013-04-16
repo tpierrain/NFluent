@@ -1,5 +1,7 @@
 ﻿namespace NFluent.Tests
 {
+    using System;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -35,7 +37,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[9] is not equal to zero.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[9] of type: [System.Int32]\nis not equal to zero.")]
         public void IsZeroThrowsExceptionWhenFails()
         {
             const int Nine = 9;
@@ -74,7 +76,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[0] is equal to zero.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0] of type: [System.Double]\nis equal to zero.")]
         public void IsNotZeroThrowsExceptionWhenFails()
         {
             const double Zero = 0D;
@@ -94,7 +96,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[0] is not a strictly positive value.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0] of type: [System.Single]\nis not a strictly positive value.")]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
             const float Zero = 0F;
@@ -102,7 +104,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[-50] is not a strictly positive value.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[-50] of type: [System.Double]\nis not a strictly positive value.")]
         public void IsPositiveThrowsExceptionWhenValueIsNegative()
         {
             const double NegativeDouble = -50D;
@@ -122,7 +124,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[42] of type: [System.Int32]\ninstead of the expected:\n\t[42] of type: [System.Int64].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[42] of type: [System.Int32]\nis not equal to the expected one, i.e.:\n\t[42] of type: [System.Int64].")]
         public void IsEqualToThrowsWhenSameNumberOfDifferentTypes()
         {
             const int IntValue = 42;

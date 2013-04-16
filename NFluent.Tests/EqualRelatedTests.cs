@@ -75,7 +75,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[\"Son of a test\"]\ninstead of the expected:\n\t[\"no way\"].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"Son of a test\"]\nis not equal to the expected one, i.e.:\n\t[\"no way\"].")]
         public void IsEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";
@@ -83,7 +83,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[\"Son of a test\"] of type: [System.String]\ninstead of the expected:\n\t[null].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"Son of a test\"] of type: [System.String]\nis not equal to the expected one, i.e.:\n\t[null].")]
         public void IsEqualToThrowsProperExceptionEvenWithNullAsExpected()
         {
             var first = "Son of a test";
@@ -91,7 +91,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[null]\ninstead of the expected:\n\t[\"Kamoulox !\"] of type: [System.String].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not equal to the expected one, i.e.:\n\t[\"Kamoulox !\"] of type: [System.String].")]
         public void IsEqualToThrowsProperExceptionEvenWithNullAsValue()
         {
             string first = null;
@@ -99,7 +99,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[John] of type: [NFluent.Tests.Children]\ninstead of the expected:\n\t[John] of type: [NFluent.Tests.Person].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[John] of type: [NFluent.Tests.Children]\nis not equal to the expected one, i.e.:\n\t[John] of type: [NFluent.Tests.Person].")]
         public void WeCanSeeTheDifferenceBewteenTwoDifferentObjectsThatHaveTheSameToString()
         {
             Person dad = new Person() { Name = "John" };

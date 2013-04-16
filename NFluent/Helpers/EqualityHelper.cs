@@ -54,7 +54,7 @@ namespace NFluent.Helpers
                     }
                 }
 
-                throw new FluentAssertionException(string.Format("\nWas:\n\t[{0}]{2}\ninstead of the expected:\n\t[{1}]{3}.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage));
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{2}\nis not equal to the expected one, i.e.:\n\t[{1}]{3}.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage));
             }
         }
 
@@ -73,23 +73,23 @@ namespace NFluent.Helpers
             }
         }
 
-        internal static string BuildTypeDescriptionMessage(object expected)
+        internal static string BuildTypeDescriptionMessage(object obj)
         {
-            return BuildTypeDescriptionMessage(expected, false);
+            return BuildTypeDescriptionMessage(obj, false);
         }
 
-        internal static string BuildTypeDescriptionMessage(object expected, bool includeHashCode)
+        internal static string BuildTypeDescriptionMessage(object obj, bool includeHashCode)
         {
             string expectedTypeMessage = string.Empty;
-            if (expected != null)
+            if (obj != null)
             {
                 if (includeHashCode)
                 {
-                    expectedTypeMessage = string.Format(" of type: [{0}] with HashCode: [{1}]", expected.GetType(), expected.GetHashCode());
+                    expectedTypeMessage = string.Format(" of type: [{0}] with HashCode: [{1}]", obj.GetType(), obj.GetHashCode());
                 }
                 else
                 {
-                    expectedTypeMessage = string.Format(" of type: [{0}]", expected.GetType());
+                    expectedTypeMessage = string.Format(" of type: [{0}]", obj.GetType());
                 }
             }
 
