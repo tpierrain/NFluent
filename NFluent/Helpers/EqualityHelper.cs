@@ -54,7 +54,7 @@ namespace NFluent.Helpers
                     }
                 }
 
-                throw new FluentAssertionException(string.Format("\nWas:\n\t[{0}]{2}\n instead of the expected:\n\t[{1}]{3}.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage));
+                throw new FluentAssertionException(string.Format("\nWas:\n\t[{0}]{2}\ninstead of the expected:\n\t[{1}]{3}.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage));
             }
         }
 

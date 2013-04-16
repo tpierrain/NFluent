@@ -40,7 +40,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual boolean value [False] is not true")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[False]\ninstead of:\n\t[True].")]
         public void IsTrueThrowsExceptionWhenFalse()
         {
             const bool IsFunny = false;
@@ -49,7 +49,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[True]\n instead of the expected:\n\t[False].")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[True]\ninstead of the expected:\n\t[False].")]
         public void IsEqualThrowsExceptionWhenNotEqual()
         {
             const bool IsFunny = true;
@@ -68,7 +68,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The actual boolean value [True] is not false")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nWas:\n\t[True]\ninstead of:\n\t[False].")]
         public void IsFalseThrowsExceptionWhenTrue()
         {
             const bool IsFunny = true;
