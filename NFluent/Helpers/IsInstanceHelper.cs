@@ -33,7 +33,7 @@ namespace NFluent.Helpers
         {
             if (instance.GetType() != expectedType)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is not an instance of the expected type [{1}] but of [{2}] instead.", instance.ToStringProperlyFormated(), expectedType, instance.GetType()));
+                throw new FluentAssertionException(string.Format("\nThe current value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", instance.ToStringProperlyFormated(), expectedType, instance.GetType()));
             }
         }
 
@@ -47,7 +47,7 @@ namespace NFluent.Helpers
         {
             if (instance.GetType() == typeNotExpected)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is an instance of the type [{1}] which is not expected.", instance.ToStringProperlyFormated(), instance.GetType()));
+                throw new FluentAssertionException(string.Format("\nThe current value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", instance.ToStringProperlyFormated(), instance.GetType()));
             }
         }
     }
