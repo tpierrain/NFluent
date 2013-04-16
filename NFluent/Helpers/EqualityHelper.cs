@@ -73,7 +73,12 @@ namespace NFluent.Helpers
             }
         }
 
-        private static string BuildTypeDescriptionMessage(object expected, bool includeHashCode)
+        internal static string BuildTypeDescriptionMessage(object expected)
+        {
+            return BuildTypeDescriptionMessage(expected, false);
+        }
+
+        internal static string BuildTypeDescriptionMessage(object expected, bool includeHashCode)
         {
             string expectedTypeMessage = string.Empty;
             if (expected != null)
