@@ -120,7 +120,7 @@ __In any cases: you are welcome!__
 
 Many thanks
 ------
-+ To the contributors: __[Marc-Antoine LATOUR](https://github.com/malat)__, __[Rui CARVALHO](http://www.codedistillers.com/)__.
++ To the contributors: __[Marc-Antoine LATOUR](https://github.com/malat)__, __[Rui CARVALHO](http://www.codedistillers.com/)__ & __[Cyrille DUPUYDAUBY](http://dupdob.wordpress.com/)__.
 
 + To __[Rui CARVALHO](http://www.codedistillers.com/)__, for the nice NFluent logo he has designed.
 
