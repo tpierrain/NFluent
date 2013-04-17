@@ -56,6 +56,12 @@ With NFluent, you can write simple assertions like this:
 	string motivationalSaying = "Failure is mother of success.";
     Check.That(motivationalSaying).IsNotInstanceOf<int>();
 
+	// Works also with lambda for exception checking
+	Check.That(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
+
+	// or execution duration checking
+	Check.That(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+
 ```
 with NFluent, you can also write assertions like this:
 ```c#

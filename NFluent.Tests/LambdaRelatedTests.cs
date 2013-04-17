@@ -53,7 +53,7 @@ namespace NFluent.Tests
         [Test]
         public void ExpectedExceptionRaised()
         {
-            Check.That(() => { throw new ApplicationException(); }).Throws<ApplicationException>();
+            Check.That(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
             Check.That(() => { throw new ApplicationException(); }).ThrowsAny();
         }
 
