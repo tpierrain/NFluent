@@ -56,12 +56,6 @@ With NFluent, you can write simple assertions like this:
 	string motivationalSaying = "Failure is mother of success.";
     Check.That(motivationalSaying).IsNotInstanceOf<int>();
 
-	// Works also with lambda for exception checking
-	Check.That(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
-
-	// or execution duration checking
-	Check.That(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
-
 ```
 with NFluent, you can also write assertions like this:
 ```c#
@@ -86,12 +80,20 @@ with NFluent, you can also write assertions like this:
 	// FEST fluent assert v 1.x:
 	// assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
 ```        
+or like this:
+```c#
+	// Works also with lambda for exception checking
+	Check.That(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
 
+	// or execution duration checking
+	Check.That(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+	
+``` 
 Why NFluent, and not another .NET fluent assertion framework?
 ----------------------------------------------------------------------------
++ Because you don't think like us that writing a lambda expression within an assertion statement is really a fluent experience (neither on a reading perspective).
 + Because NFluent is completely driven by the __[super-duper-happy-path](https://github.com/NancyFx/Nancy/wiki/Introduction)__ principle to fluent your TDD experience. For instance, we consider the 'dot' autocompletion experience as crucial. Thus, it should not be polluted by things not related to the current unit testing context (which occurs with extension methods on classical .NET types - intellisense flooding).
-+ Because you don't think that writing a lambda expression within an assertion statement is really a fluent experience (neither on a reading perspective).
-+ Because like us, you dislike the `<subjectUnderTest>.Should().` syntax (which we find not semantically as strong as the `Assert` or the `Check.That` ones).
++ Because you think like us that those frameworks have not chosen the proper semantic with: `<subjectUnderTest>.Should().` (which we find not semantically as strong as 'Must', `Assert` or the `Check.That` ones).
 + And because you like *killing features* added as bonus, such as the Properties() extension method for IEnumerable for instance (as showed within the usage sample above). 
 
 - - -
