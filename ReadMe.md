@@ -8,7 +8,7 @@ NFluent is __an assertion library__ which aims __to fluent your .NET TDD experie
 __NFluent will make your tests__:
 + __fluent to write__: with a __[super-duper-happy](https://github.com/NancyFx/Nancy/wiki/Introduction) auto-completion 'dot' experience__. Indeed, just type the Check.That( followed by one of your object and a dot, and your IDE will show you all the assertions available for the type of the given object to verify. No more, no less (i.e. no auto completion flooding).
 + __fluent to read__: very close to plain English, making it easier for non-technical people to read test code.
-+ __fluent to troubleshoot__: every failing assertion of the NFluent library throws an Exception with a crystal-clear message status to ease your TDD experience. Thus, no need to set a breakpoint and to debug in order to be able to figure out what went wrong. 
++ __fluent to troubleshoot__: every failing assertion of the NFluent library throws an Exception with a crystal-clear message status to ease your TDD experience (see examples below). Thus, no need to set a breakpoint and to debug in order to be able to figure out what went wrong. 
 + __helpful to reverse engineer legacy code__: indeed, temporarily write an on-purpose failing assert on a legacy method, so you can understand it and leverage on the "ready-to-be-copied-and-paste-for-arrays-or-collections-initialization-purpose" NFluent assert failure messages.
 + __less error-prone__: indeed, no more confusion about the order of the "expected" and "actual" values you can find in the classical .NET unit tests frameworks.
 
@@ -126,7 +126,7 @@ Many thanks
 
 + To the mates that gave me ideas and feedbacks to make this lib as fluent as possible: __[Joel COSTIGLIOLA](https://github.com/joel-costigliola)__, __[Rui CARVALHO](http://www.codedistillers.com/)__, __[Cyrille DUPUYDAUBY](http://dupdob.wordpress.com/)__, __Benoit LABAERE__, ... 
 
-+ To __Omer Raviv__, which supports the NFluent project by offering us some free licenses for the nice __[BugAid](http://www.bugaidsoftware.com/features/)__ Visual Studio extensions.
++ To __Omer RAVIV__, which supports the NFluent project by offering us some free licenses for the nice __[BugAid](http://www.bugaidsoftware.com/features/)__ Visual Studio extensions.
 
 - - -
 
