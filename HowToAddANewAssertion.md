@@ -22,7 +22,7 @@ a. Returning the proper IChainableFluentAssertion
 b. Throwing proper FluentAssertionException when failing
 --------------------------------------------------------
 Must respect the pattern:
- "\nThe actual <value|string|enumerable|...><specific explanation>:\n\t<actual value>\n<specific explanation>:\n\t<given value>."
+"`\n`The actual <value|string|enumerable|...><specific explanation>:`\n\t`<actual value>`\n`<specific explanation>:`\n\t`<given value>`.`"
 
 c. Implementing the following guidelines
 ----------------------------------------
