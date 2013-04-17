@@ -132,7 +132,7 @@ namespace NFluent
         {
             if (this.Value.CompareTo(comparand) <= 0)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is not greater than {1}.", this.Value, comparand));
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not greater than:\n\t[{1}].", this.Value, comparand));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<N>>(this);

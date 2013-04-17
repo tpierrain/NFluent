@@ -52,92 +52,78 @@ namespace NFluent
         /// <summary>
         /// Checks that the execution time is below a specified threshold.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="timeUnit">
-        /// The time Unit.
-        /// </param>
-        /// <exception cref="FluentAssertionException">
-        /// When execution is strictly above limit.
-        /// </exception>
+        /// <param name="threshold">The threshold.</param>
+        /// <param name="timeUnit">The time unit of the given threshold.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        public IChainableFluentAssertion<LambdaAssertion> LastsLessThan(double value, TimeUnit timeUnit)
+        /// <exception cref="FluentAssertionException">Execution was strictly above limit.</exception>
+        public IChainableFluentAssertion<ILambdaAssertion> LastsLessThan(double threshold, TimeUnit timeUnit)
         {
-            double comparand = TimeHelper.GetInNanoSeconds(value, timeUnit);
+            double comparand = TimeHelper.GetInNanoSeconds(threshold, timeUnit);
             if (this.durationInNs > comparand)
             {
-                throw new FluentAssertionException(string.Format("Code execution lasted more than {0} {1}.", value, timeUnit));
+                throw new FluentAssertionException(string.Format("\nThe actual code execution lasted more than {0} {1}.", threshold, timeUnit));
             }
 
-            return new ChainableFluentAssertion<LambdaAssertion>(this);
+            return new ChainableFluentAssertion<ILambdaAssertion>(this);
         }
 
         /// <summary>
-        /// Check that the code does not throw.
+        /// Check that the code does not throw an exception.
         /// </summary>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">
-        /// When the code raises an exception.
-        /// </exception>
-        public IChainableFluentAssertion<LambdaAssertion> DoesNotThrow()
+        /// <exception cref="FluentAssertionException">The code raised an exception.</exception>
+        public IChainableFluentAssertion<ILambdaAssertion> DoesNotThrow()
         {
             if (this.exception != null)
             {
-                throw new FluentAssertionException(string.Format("Code raised the exception {0}.", this.exception));
+                throw new FluentAssertionException(string.Format("\nThe actual code raised the exception:\n----\n[{0}]\n----", this.exception));
             }
 
-            return new ChainableFluentAssertion<LambdaAssertion>(this);
+            return new ChainableFluentAssertion<ILambdaAssertion>(this);
         }
 
         /// <summary>
-        /// Checks if the code did throw an exception.
+        /// Checks that the code did throw an exception of a specified type.
         /// </summary>
-        /// <typeparam name="T">
-        /// Expected exception type.
-        /// </typeparam>
+        /// <typeparam name="T">Expected exception type.</typeparam>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">
-        /// Code did not raised an exception or not of the expected type.
-        /// </exception>
-        public IChainableFluentAssertion<LambdaAssertion> Throws<T>()
+        /// <exception cref="FluentAssertionException">The code did not raised an exception of the specified type, or did not raised an exception at all.</exception>
+        public IChainableFluentAssertion<ILambdaAssertion> Throws<T>()
         {
             if (this.exception == null)
             {
-                throw new FluentAssertionException("Code did not raised an exception");
+                throw new FluentAssertionException(string.Format("\nThe actual code did not raise an exception of type:\n\t[{0}]\nas expected.", typeof(T)));
             }
 
             if (!(this.exception is T))
             {
-                throw new FluentAssertionException(string.Format("Code raised not the expected exception but {0}.", this.exception));
+                throw new FluentAssertionException(string.Format("\nThe actual code thrown exception of type:\n\t[{0}]\ninstead of the expected exception type:\n\t[{1}].\nThrown exception was:\n----\n[{2}]\n----", this.exception.GetType(), typeof(T), this.exception));
             }
 
-            return new ChainableFluentAssertion<LambdaAssertion>(this);
+            return new ChainableFluentAssertion<ILambdaAssertion>(this);
         }
 
         /// <summary>
-        /// Checks if the code did throw an exception.
+        /// Checks that the code did throw an exception of any type.
         /// </summary>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">
-        /// Code did not raised an exception or not of the expected type.
-        /// </exception>
-        public IChainableFluentAssertion<LambdaAssertion> ThrowsAny()
+        /// <exception cref="FluentAssertionException">The code did not raised an exception of any type.</exception>
+        public IChainableFluentAssertion<ILambdaAssertion> ThrowsAny()
         {
             if (this.exception == null)
             {
-                throw new FluentAssertionException("Code did not raised an exception");
+                throw new FluentAssertionException("\nThe actual code did not raise an exception as expected.");
             }
 
-            return new ChainableFluentAssertion<LambdaAssertion>(this);
+            return new ChainableFluentAssertion<ILambdaAssertion>(this);
         }
 
         private void Execute()

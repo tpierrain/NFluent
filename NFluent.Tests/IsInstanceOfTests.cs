@@ -16,6 +16,7 @@
             const int IntObj = 23;
             const long LongObj = long.MaxValue;
             const double DoubleObj = 23d;
+            const decimal DecimalObj = 2;
             var person = new Person();
             List<string> stringList = new List<string>();
             int[] integerArray = new int[10];
@@ -27,6 +28,7 @@
             Check.That(IntObj).IsInstanceOf<int>();
             Check.That(LongObj).IsInstanceOf<long>();
             Check.That(DoubleObj).IsInstanceOf<double>();
+            Check.That(DecimalObj).IsInstanceOf<decimal>();
             Check.That((byte)2).IsInstanceOf<byte>();
 
             //// objects
@@ -64,6 +66,7 @@
             const int IntObj = 23;
             const long LongObj = long.MaxValue;
             const double DoubleObj = 23d;
+            const decimal DecimalObj = 2;
             var person = new Person();
             List<string> stringList = new List<string>();
             int[] integerArray = new int[10];
@@ -75,6 +78,7 @@
             Check.That(IntObj).IsNotInstanceOf<long>();
             Check.That(LongObj).IsNotInstanceOf<string>();
             Check.That(DoubleObj).IsNotInstanceOf<int>();
+            Check.That(DecimalObj).IsNotInstanceOf<float>();
             Check.That((byte)1).IsNotInstanceOf<string>();
 
             // objects

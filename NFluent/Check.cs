@@ -50,7 +50,7 @@ namespace NFluent
         /// Every method of the returned <see cref="IFluentAssertion{T}" /> instance will throw a <see cref="FluentAssertionException" /> when failing.
         /// </remarks>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static LambdaAssertion That(Action value)
+        public static ILambdaAssertion That(Action value)
         {
             return new LambdaAssertion(value);
         }

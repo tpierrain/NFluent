@@ -137,8 +137,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">
         /// The value is not less than the comparand.
         /// </exception>
-        public static IChainableFluentAssertion<IFluentAssertion<double>> IsLessThan(
-            this IFluentAssertion<double> fluentAssertion, double comparand)
+        public static IChainableFluentAssertion<IFluentAssertion<double>> IsLessThan(this IFluentAssertion<double> fluentAssertion, double comparand)
         {
             var numberAssertionStrategy = new NumberFluentAssertion<double>(fluentAssertion.Value);
             return numberAssertionStrategy.IsLessThan(comparand);
@@ -159,8 +158,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">
         /// The value is not less than the comparand.
         /// </exception>
-        public static IChainableFluentAssertion<IFluentAssertion<double>> IsGreaterThan(
-            this IFluentAssertion<double> fluentAssertion, double comparand)
+        public static IChainableFluentAssertion<IFluentAssertion<double>> IsGreaterThan(this IFluentAssertion<double> fluentAssertion, double comparand)
         {
             var numberAssertionStrategy = new NumberFluentAssertion<double>(fluentAssertion.Value);
             return numberAssertionStrategy.IsGreaterThan(comparand);

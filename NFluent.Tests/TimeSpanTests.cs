@@ -32,14 +32,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), UserMessage = "Should have failed")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value of:\n\t[500 Milliseconds]\nis not less than:\n\t[100 Milliseconds]\nas expected.")]
         public void LessThanTestFails()
         {
             Check.That(TimeSpan.FromMilliseconds(500)).IsLessThan(100, TimeUnit.Milliseconds);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), UserMessage = "Should have failed")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value of:\n\t[500 Milliseconds]\nis not less than:\n\t[100 Milliseconds]\nas expected.")]
         public void LessThanTestFailsWithSpan()
         {
             Check.That(TimeSpan.FromMilliseconds(500)).IsLessThan(TimeSpan.FromMilliseconds(100));
@@ -54,14 +54,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), UserMessage = "Should have failed")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value of:\n\t[50 Milliseconds]\nis not greater than:\n\t[100 Milliseconds]\nas expected.")]
         public void GreaterThanTestFails()
         {
             Check.That(TimeSpan.FromMilliseconds(50)).IsGreaterThan(100, TimeUnit.Milliseconds);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), UserMessage = "Should have failed")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value of:\n\t[50 Milliseconds]\nis not greater than:\n\t[100 Milliseconds]\nas expected.")]
         public void GreaterThanTestFailsWithSpan()
         {
             Check.That(TimeSpan.FromMilliseconds(50)).IsGreaterThan(TimeSpan.FromMilliseconds(100));
@@ -75,14 +75,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), UserMessage = "Should have failed")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value of:\n\t[50 Milliseconds]\nis not equal to:\n\t[40 Milliseconds]\nas expected.")]
         public void EqualTofails()
         {
             Check.That(TimeSpan.FromMilliseconds(50)).IsEqualTo(40, TimeUnit.Milliseconds);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), UserMessage = "Should have failed")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value of:\n\t[50 Milliseconds]\nis not equal to:\n\t[40 Milliseconds]\nas expected.")]
         public void EqualTofailsWithSpan()
         {
             Check.That(TimeSpan.FromMilliseconds(50)).IsEqualTo(TimeSpan.FromMilliseconds(40));

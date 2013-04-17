@@ -1,12 +1,30 @@
 ﻿namespace NFluent.Tests
 {
-    using System;
+    using System.Globalization;
+    using System.Threading;
 
     using NUnit.Framework;
 
     [TestFixture]
     public class NumbersRelatedTests
     {
+        private CultureInfo savedCulture;
+
+        [SetUp]
+        public void SetUp()
+        {
+            // Important so that ToString() versions of decimal works whatever the current culture.
+            this.savedCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("fr-FR");
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            // Boy scout rule ;-)
+            Thread.CurrentThread.CurrentCulture = this.savedCulture;
+        }
+
         #region IsZero
 
         [Test]
@@ -119,6 +137,25 @@
         #endregion
 
         [Test]
+        public void IsLessThanWorksForDouble()
+        {
+            const double SmallDouble = 1.0D;
+            const double BigDouble = 37.2D;
+
+            Check.That(SmallDouble).IsLessThan(BigDouble);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis not greater than:\n\t[37,2].")]
+        public void IsGreaterThanWorksForDouble()
+        {
+            const double SmallDouble = 1.0D;
+            const double BigDouble = 37.2D;
+
+            Check.That(SmallDouble).IsGreaterThan(BigDouble);
+        }
+
+        [Test]
         public void AndOperatorCanChainMultipleAssertionOnNumber()
         {
             const double DoubleNumber = 37.2D;
@@ -126,6 +163,8 @@
             Check.That(DoubleNumber).IsNotZero().And.IsPositive();
             Check.That(DoubleNumber).IsPositive().And.IsNotZero();
         }
+
+        #region IsEqualTo / IsNotEqualTo
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[42] of type: [System.Int32]\nis not equal to the expected one:\n\t[42] of type: [System.Int64].")]
@@ -136,5 +175,44 @@
 
             Check.That(IntValue).IsEqualTo(LongValue);
         }
+
+        [Test]
+        public void IsEqualToWorksWithDecimal()
+        {
+            const decimal Value = 42;
+            const decimal SameValue = 42;
+
+            Check.That(Value).IsEqualTo(SameValue);
+        }
+
+        [Test]
+        public void IsNotEqualToWorksWithDecimal()
+        {
+            const decimal Value = 42;
+            const decimal DifferentValue = 13;
+
+            Check.That(Value).IsNotEqualTo(DifferentValue);
+        }
+
+        [Test]
+        public void IsEqualToWorksWithByte()
+        {
+            const byte Value = 2;
+            const byte SameValue = 2;
+
+            Check.That(Value).IsEqualTo(SameValue);
+        }
+
+        [Test]
+        public void IsNotEqualToWorksWithByte()
+        {
+            const byte Value = 42;
+            const byte DifferentValue = 13;
+
+            Check.That(Value).IsNotEqualTo(DifferentValue);
+        }
+
+        #endregion
+
     }
 }
