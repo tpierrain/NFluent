@@ -48,6 +48,8 @@
     <Compile Include="Assertions\BooleanFluentAssertionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ILambdaAssertion.cs" />
+    <Compile Include="Assertions\TimeSpanFluentAssertionExtensions.cs" />
     <Compile Include="ChainableFluentAssertion.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="Assertions\DateTimeFluentAssertionExtensions.cs" />
@@ -57,6 +59,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="IChainableFluentAssertion.cs" />
     <Compile Include="IFluentAssertionBase.cs" />
+    <Compile Include="Assertions\LambdaAssertion.cs" />
     <Compile Include="Assertions\NumberFluentAssertion.cs" />
     <Compile Include="FluentAssertionException.cs" />
     <Compile Include="Assertions\ComparableFluentAssertionExtensions.cs" />
@@ -78,6 +81,7 @@
     <Compile Include="Assertions\UIntFluentAssertionExtensions.cs" />
     <Compile Include="Assertions\ULongFluentAssertionExtensions.cs" />
     <Compile Include="Assertions\UShortFluentAssertionExtensions.cs" />
+    <Compile Include="Helpers\TimeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Settings.StyleCop" />

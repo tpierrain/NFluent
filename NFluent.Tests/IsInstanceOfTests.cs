@@ -27,6 +27,7 @@
             Check.That(IntObj).IsInstanceOf<int>();
             Check.That(LongObj).IsInstanceOf<long>();
             Check.That(DoubleObj).IsInstanceOf<double>();
+            Check.That((byte)2).IsInstanceOf<byte>();
 
             //// objects
             Check.That(person).IsInstanceOf<Person>();
@@ -74,6 +75,7 @@
             Check.That(IntObj).IsNotInstanceOf<long>();
             Check.That(LongObj).IsNotInstanceOf<string>();
             Check.That(DoubleObj).IsNotInstanceOf<int>();
+            Check.That((byte)1).IsNotInstanceOf<string>();
 
             // objects
             Check.That(person).IsNotInstanceOf<NumbersRelatedTests>();

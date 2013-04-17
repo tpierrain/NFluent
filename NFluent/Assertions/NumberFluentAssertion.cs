@@ -22,6 +22,7 @@ namespace NFluent
     /// </summary>
     /// <typeparam name="N">Type of the numerical value.</typeparam>
     public class NumberFluentAssertion<N> : IFluentAssertion<N>
+        where N : IComparable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberFluentAssertion{N}" /> class.
@@ -88,6 +89,50 @@ namespace NFluent
             if (Convert.ToInt32(this.Value) <= 0)
             {
                 throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not a strictly positive value.", this.Value, EqualityHelper.BuildTypeDescriptionMessage(this.Value)));
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is less than a comparand.
+        /// </summary>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">
+        /// The value is not less than the comparand.
+        /// </exception>
+        public IChainableFluentAssertion<IFluentAssertion<N>> IsLessThan(N comparand)
+        {
+            if (this.Value.CompareTo(comparand) >= 0)
+            {
+                throw new FluentAssertionException(string.Format("[{0}] is not less than {1}.", this.Value, comparand));
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is more than a comparand.
+        /// </summary>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">
+        /// The value is not less than the comparand.
+        /// </exception>
+        public IChainableFluentAssertion<IFluentAssertion<N>> IsGreaterThan(N comparand)
+        {
+            if (this.Value.CompareTo(comparand) <= 0)
+            {
+                throw new FluentAssertionException(string.Format("[{0}] is not greater than {1}.", this.Value, comparand));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
