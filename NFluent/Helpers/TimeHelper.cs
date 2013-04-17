@@ -85,7 +85,7 @@ namespace NFluent.Helpers
 
         private const int NanoSecondsPerTick = 100;
 
-        private const int minimumUnitAmount = 2;
+        private const int MinimumUnitAmount = 2;
 
         /// <summary>
         /// Converts a duration in nanoseconds.
@@ -143,41 +143,49 @@ namespace NFluent.Helpers
         public static TimeUnit DiscoverUnit(TimeSpan timeSpan)
         {
             double nanoseconds = Convert(timeSpan, TimeUnit.Nanoseconds);
+
             // if at least two weeks
-            if (nanoseconds >= GetConversionFactor(TimeUnit.Weeks) * minimumUnitAmount)
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Weeks) * MinimumUnitAmount)
             {
                 return TimeUnit.Weeks;
             }
+
             // if at least two days
-            if (nanoseconds >= GetConversionFactor(TimeUnit.Days) * minimumUnitAmount)
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Days) * MinimumUnitAmount)
             {
                 return TimeUnit.Days;
             }
+
             // if at least two hours
-            if (nanoseconds >= GetConversionFactor(TimeUnit.Hours) * minimumUnitAmount)
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Hours) * MinimumUnitAmount)
             {
                 return TimeUnit.Hours;
             }
+
             // if at least two hours
-            if (nanoseconds >= GetConversionFactor(TimeUnit.Minutes) * minimumUnitAmount)
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Minutes) * MinimumUnitAmount)
             {
                 return TimeUnit.Minutes;
             }
+
             // if at least two hours
-            if (nanoseconds >= GetConversionFactor(TimeUnit.Seconds) * minimumUnitAmount)
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Seconds) * MinimumUnitAmount)
             {
                 return TimeUnit.Seconds;
             }
+
             // if at least two hours
-            if (nanoseconds >= GetConversionFactor(TimeUnit.Milliseconds) * minimumUnitAmount)
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Milliseconds) * MinimumUnitAmount)
             {
                 return TimeUnit.Milliseconds;
             }
+
             // if at least two hours
-            if (nanoseconds >= GetConversionFactor(TimeUnit.Microseconds) * minimumUnitAmount)
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Microseconds) * MinimumUnitAmount)
             {
                 return TimeUnit.Microseconds;
             }
+
             return TimeUnit.Nanoseconds;
         }
 

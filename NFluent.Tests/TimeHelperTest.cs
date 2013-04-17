@@ -67,7 +67,6 @@ namespace NFluent.Tests
             Assert.AreEqual(TimeUnit.Hours, TimeHelper.DiscoverUnit(TimeSpan.FromHours(10)));
             Assert.AreEqual(TimeUnit.Days, TimeHelper.DiscoverUnit(TimeSpan.FromDays(2)));
             Assert.AreEqual(TimeUnit.Weeks, TimeHelper.DiscoverUnit(TimeSpan.FromDays(30)));
-
         }
     }
 }
