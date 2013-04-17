@@ -90,10 +90,19 @@ Why NFluent, and not another .NET fluent assertion framework?
 
 - - -
 
+Crystal-clear error message samples
+-----------------------------------
+
+![ErrorSample1](https://github.com/tpierrain/nfluent/blob/master/Images/ErrorSample1.png?raw=true)
+
+![ErrorSample2](https://github.com/tpierrain/nfluent/blob/master/Images/ErrorSample2.png?raw=true)
+
+![ErrorSample3](https://github.com/tpierrain/nfluent/blob/master/Images/ErrorSample3.png?raw=true)
+
+
 Uses cases
 ----------
 __[NFluent use cases are available here](./UseCases.md)__.
-
 
 Newsgroup
 ---------
@@ -116,6 +125,8 @@ Many thanks
 + To __[Rui CARVALHO](http://www.codedistillers.com/)__, for the nice NFluent logo he has designed.
 
 + To the mates that gave me ideas and feedbacks to make this lib as fluent as possible: __[Joel COSTIGLIOLA](https://github.com/joel-costigliola)__, __[Rui CARVALHO](http://www.codedistillers.com/)__, __[Cyrille DUPUYDAUBY](http://dupdob.wordpress.com/)__, __Benoit LABAERE__, ... 
+
++ To __Omer Raviv__, which supports the NFluent project by offering us some free licenses for the nice __[BugAid](http://www.bugaidsoftware.com/features/)__ Visual Studio extensions.
 
 - - -
 
