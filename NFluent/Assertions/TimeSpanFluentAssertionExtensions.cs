@@ -24,7 +24,7 @@ namespace NFluent
     public static class TimeSpanFluentAssertionExtensions
     {
         /// <summary>
-        /// Check that the actual value is less (strictly) than a comparand.
+        /// Check that the actual duration is less (strictly) than a comparand.
         /// </summary>
         /// <param name="fluentAssertion">The fluent assertion.</param>
         /// <param name="value">The duration.</param>
@@ -36,7 +36,147 @@ namespace NFluent
              TimeSpan comparand = TimeHelper.ToTimeSpan(value, unit);
              if (fluentAssertion.Value >= comparand)
              {
-                 throw new FluentAssertionException("");
+                 throw new FluentAssertionException(
+                     string.Format(
+                         "\nWas:\n\t[{0} {2}]\nExpected: Less than\n\t[{1} {2}]",
+                         TimeHelper.Convert(fluentAssertion.Value, unit),
+                         value,
+                         unit));
+             }
+
+            return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
+         }
+
+         /// <summary>
+         /// Check that the actual duration is less (strictly) than a comparand.
+         /// </summary>
+         /// <param name="fluentAssertion">
+         /// The fluent assertion.
+         /// </param>
+         /// <param name="comparand">
+         /// Value to compare to.
+         /// </param>
+         /// <returns>
+         /// A chainable assertion.
+         /// </returns>
+         public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsLessThan(
+             this IFluentAssertion<TimeSpan> fluentAssertion, TimeSpan comparand)
+         {
+             if (fluentAssertion.Value >= comparand)
+             {
+                 TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
+                 throw new FluentAssertionException(
+                     string.Format(
+                         "\nWas:\n\t[{0} {2}]\nExpected: Less than\n\t[{1} {2}]",
+                         TimeHelper.Convert(fluentAssertion.Value, unit),
+                         TimeHelper.Convert(comparand, unit),
+                         unit));
+             }
+
+             return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
+         }
+
+         /// <summary>
+         /// Check that the actual duration is greater (strictly) than a comparand.
+         /// </summary>
+         /// <param name="fluentAssertion">The fluent assertion.</param>
+         /// <param name="value">The duration.</param>
+         /// <param name="unit">Unit in which the duration is expressed.</param>
+         /// <returns>A chainable assertion.</returns>
+         public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsGreaterThan(
+             this IFluentAssertion<TimeSpan> fluentAssertion, double value, TimeUnit unit)
+         {
+             TimeSpan comparand = TimeHelper.ToTimeSpan(value, unit);
+             if (fluentAssertion.Value <= comparand)
+             {
+                 throw new FluentAssertionException(
+                     string.Format(
+                         "\nWas:\n\t[{0} {2}]\nExpected: Greater than\n\t[{1} {2}]",
+                         TimeHelper.Convert(fluentAssertion.Value, unit),
+                         value,
+                         unit));
+             }
+
+             return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
+         }
+
+         /// <summary>
+         /// Check that the actual duration is greater (strictly) than a comparand.
+         /// </summary>
+         /// <param name="fluentAssertion">The fluent assertion.</param>
+         /// <param name="comparand">
+         /// Value to compare to.
+         /// </param>
+         /// <returns>A chainable assertion.</returns>
+         public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsGreaterThan(
+             this IFluentAssertion<TimeSpan> fluentAssertion, TimeSpan comparand)
+         {
+             if (fluentAssertion.Value <= comparand)
+             {
+                 TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
+                 throw new FluentAssertionException(
+                     string.Format(
+                         "\nWas:\n\t[{0} {2}]\nExpected: Greater than\n\t[{1} {2}]",
+                         TimeHelper.Convert(fluentAssertion.Value, unit),
+                         TimeHelper.Convert(comparand, unit),
+                         unit));
+             }
+
+             return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
+         }
+
+         /// <summary>
+         /// Checks that the actual duration is equal to a target duration.
+         /// </summary>
+         /// <param name="fluentAssertion">
+         /// The fluent assertion.
+         /// </param>
+         /// <param name="duration">
+         /// The duration.
+         /// </param>
+         /// <param name="unit">
+         /// The <see cref="TimeUnit"/> in which duration is expressed.
+         /// </param>
+         /// <returns>
+         /// A chainable assertion.
+         /// </returns>
+         public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsEqualTo(
+            this IFluentAssertion<TimeSpan> fluentAssertion, double duration, TimeUnit unit)
+        {
+            TimeSpan comparand = TimeHelper.ToTimeSpan(duration, unit);
+            if (fluentAssertion.Value != comparand)
+            {
+                throw new FluentAssertionException(
+                    string.Format(
+                        "\nWas:\n\t[{0} {2}]\nExpected:\n\t[{1} {2}]",
+                        TimeHelper.Convert(fluentAssertion.Value, unit),
+                        duration,
+                        unit));
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
+        }
+
+         /// <summary>
+         /// Checks that the actual duration is equal to a target duration.
+         /// </summary>
+         /// <param name="fluentAssertion">The fluent assertion.</param>
+         /// <param name="comparand">
+         /// Value to compare to.
+         /// </param>
+         /// <returns>A chainable assertion.</returns>
+         public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsEqualTo(
+            this IFluentAssertion<TimeSpan> fluentAssertion, TimeSpan comparand)
+         {
+             if (fluentAssertion.Value != comparand)
+             {
+                 TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
+                 throw new FluentAssertionException(
+                     string.Format(
+                         "\nWas:\n\t[{0} {2}]\nExpected:\n\t[{1} {2}]",
+                         TimeHelper.Convert(fluentAssertion.Value, unit),
+                         TimeHelper.Convert(comparand, unit),
+                         unit));
              }
 
              return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);

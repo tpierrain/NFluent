@@ -26,8 +26,8 @@ namespace NFluent.Tests
         [Test]
         public void CheckUnits()
         {
-            Assert.AreEqual(1.0, TimeHelper.GetInNanoSeconds(1, TimeUnit.NanoSeconds));
-            Assert.AreEqual(1000.0, TimeHelper.GetInNanoSeconds(1, TimeUnit.MicroSeconds));
+            Assert.AreEqual(1.0, TimeHelper.GetInNanoSeconds(1, TimeUnit.Nanoseconds));
+            Assert.AreEqual(1000.0, TimeHelper.GetInNanoSeconds(1, TimeUnit.Microseconds));
             Assert.AreEqual(1000000.0, TimeHelper.GetInNanoSeconds(1, TimeUnit.Milliseconds));
             Assert.AreEqual(1000000000.0, TimeHelper.GetInNanoSeconds(1, TimeUnit.Seconds));
             Assert.AreEqual(1000000000.0 * 60, TimeHelper.GetInNanoSeconds(1, TimeUnit.Minutes));
@@ -41,16 +41,33 @@ namespace NFluent.Tests
         {
             Assert.AreEqual(TimeSpan.FromMilliseconds(212), TimeHelper.ToTimeSpan(212, TimeUnit.Milliseconds));
         }
+
         [Test]
-        public void CheckTimeSpan()
+        public void CheckConversion()
         {
-            Assert.AreEqual(TimeSpan.FromMilliseconds(212), TimeHelper.ToTimeSpan(212, TimeUnit.Milliseconds));
+            Assert.AreEqual(500.0, TimeHelper.Convert(TimeSpan.FromMilliseconds(500), TimeUnit.Milliseconds));
         }
+
         [ExpectedException(typeof(InvalidOperationException))]
         [Test]
         public void CheckInvalidUnits()
         {
             Assert.AreNotEqual(0, TimeHelper.GetInNanoSeconds(10, (TimeUnit)100));
+        }
+
+        [Test]
+        public void DiscoverUnitTest()
+        {
+            Assert.AreEqual(TimeUnit.Seconds, TimeHelper.DiscoverUnit(TimeSpan.FromMilliseconds(2500)));
+            Assert.AreEqual(TimeUnit.Nanoseconds, TimeHelper.DiscoverUnit(TimeSpan.FromTicks(1)));
+            Assert.AreEqual(TimeUnit.Microseconds, TimeHelper.DiscoverUnit(TimeSpan.FromTicks(50)));
+            Assert.AreEqual(TimeUnit.Milliseconds, TimeHelper.DiscoverUnit(TimeSpan.FromMilliseconds(20)));
+            Assert.AreEqual(TimeUnit.Seconds, TimeHelper.DiscoverUnit(TimeSpan.FromSeconds(10)));
+            Assert.AreEqual(TimeUnit.Minutes, TimeHelper.DiscoverUnit(TimeSpan.FromMinutes(10)));
+            Assert.AreEqual(TimeUnit.Hours, TimeHelper.DiscoverUnit(TimeSpan.FromHours(10)));
+            Assert.AreEqual(TimeUnit.Days, TimeHelper.DiscoverUnit(TimeSpan.FromDays(2)));
+            Assert.AreEqual(TimeUnit.Weeks, TimeHelper.DiscoverUnit(TimeSpan.FromDays(30)));
+
         }
     }
 }

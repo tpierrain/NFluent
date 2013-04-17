@@ -23,7 +23,7 @@ namespace NFluent
     /// <summary>
     /// Implements lambda/action specific assertion.
     /// </summary>
-    public class LambdaAssertion : IFluentAssertion<Action>
+    public class LambdaAssertion : ILambdaAssertion
     {
         private Exception exception;
 

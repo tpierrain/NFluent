@@ -25,12 +25,12 @@ namespace NFluent.Helpers
         /// <summary>
         /// The nanoseconds.
         /// </summary>
-        NanoSeconds,
+        Nanoseconds,
 
         /// <summary>
         /// The Microseconds.
         /// </summary>
-        MicroSeconds,
+        Microseconds,
 
         /// <summary>
         /// The Milliseconds.
@@ -63,95 +63,175 @@ namespace NFluent.Helpers
         /// </summary>
         Weeks
     }
-    
+
     /// <summary>
     /// Static class hosting various time helper.
     /// </summary>
     public static class TimeHelper
     {
+        private const int NanoSecondsInOneMicroSecond = 1000;
+
+        private const int MicroSecondsInOneMillisecond = 1000;
+
+        private const int MillisecondInOneSecond = 1000;
+
+        private const int SecondsInOneMinute = 60;
+
+        private const int MinutesInOneHour = 60;
+
+        private const int HoursInOneDay = 24;
+
+        private const int DaysInWeek = 7;
+
+        private const int NanoSecondsPerTick = 100;
+
+        private const int minimumUnitAmount = 2;
+
         /// <summary>
         /// Converts a duration in nanoseconds.
         /// </summary>
-        /// <param name="value">
-        /// Number of time units.
-        /// </param>
-        /// <param name="unit">
-        /// Time unit in which value is expressed.
-        /// </param>
-        /// <exception cref="InvalidOperationException">
-        /// Raised if time unit is not recognized.
-        /// </exception>
+        /// <param name="value">Number of time units.</param>
+        /// <param name="unit">Time unit in which duration is expressed.</param>
         /// <returns>
         /// The number of nanoseconds.
         /// </returns>
+        /// <exception cref="InvalidOperationException">Raised if time unit is not recognized.</exception>
         public static double GetInNanoSeconds(double value, TimeUnit unit)
         {
-            if (unit == TimeUnit.NanoSeconds)
+            return value * GetConversionFactor(unit);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="TimeSpan"/> representing the duration expressed in <see cref="TimeUnit"/>.
+        /// </summary>
+        /// <param name="value">
+        /// Duration duration.
+        /// </param>
+        /// <param name="timeUnit">
+        /// Duration unit.
+        /// </param>
+        /// <returns>
+        /// A <see cref="TimeSpan"/> instance of that duration.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">Raised if time unit is not recognized.</exception>
+        public static TimeSpan ToTimeSpan(double value, TimeUnit timeUnit)
+        {
+            return TimeSpan.FromTicks((long)(GetInNanoSeconds(value, timeUnit) / NanoSecondsPerTick));
+        }
+
+        /// <summary>
+        /// Expresses a <see cref="TimeSpan"/> duration in the desired <see cref="TimeUnit"/>.
+        /// </summary>
+        /// <param name="value">Duration to convert.</param>
+        /// <param name="unit"><see cref="TimeUnit"/> to convert to.</param>
+        /// <returns>The duration in <see cref="TimeUnit"/>.</returns>
+        /// <exception cref="InvalidOperationException">Raised if time unit is not recognized.</exception>
+        public static double Convert(TimeSpan value, TimeUnit unit)
+        {
+            return ((double)value.Ticks) * NanoSecondsPerTick / GetConversionFactor(unit);
+        }
+
+        /// <summary>
+        /// Discover the most appropriate <see cref="TimeUnit"/> to express the given duration.
+        /// </summary>
+        /// <param name="timeSpan">
+        /// Duration to analyze.
+        /// </param>
+        /// <returns>
+        /// The most appropriate <see cref="TimeUnit"/>.
+        /// </returns>
+        public static TimeUnit DiscoverUnit(TimeSpan timeSpan)
+        {
+            double nanoseconds = Convert(timeSpan, TimeUnit.Nanoseconds);
+            // if at least two weeks
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Weeks) * minimumUnitAmount)
+            {
+                return TimeUnit.Weeks;
+            }
+            // if at least two days
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Days) * minimumUnitAmount)
+            {
+                return TimeUnit.Days;
+            }
+            // if at least two hours
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Hours) * minimumUnitAmount)
+            {
+                return TimeUnit.Hours;
+            }
+            // if at least two hours
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Minutes) * minimumUnitAmount)
+            {
+                return TimeUnit.Minutes;
+            }
+            // if at least two hours
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Seconds) * minimumUnitAmount)
+            {
+                return TimeUnit.Seconds;
+            }
+            // if at least two hours
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Milliseconds) * minimumUnitAmount)
+            {
+                return TimeUnit.Milliseconds;
+            }
+            // if at least two hours
+            if (nanoseconds >= GetConversionFactor(TimeUnit.Microseconds) * minimumUnitAmount)
+            {
+                return TimeUnit.Microseconds;
+            }
+            return TimeUnit.Nanoseconds;
+        }
+
+        private static long GetConversionFactor(TimeUnit unit)
+        {
+            long value = 1;
+            if (unit == TimeUnit.Nanoseconds)
             {
                 return value;
             }
 
-            value = value * 1000;
-            if (unit == TimeUnit.MicroSeconds)
+            value = value * NanoSecondsInOneMicroSecond;
+            if (unit == TimeUnit.Microseconds)
             {
                 return value;
             }
 
-            value = value * 1000;
+            value = value * MicroSecondsInOneMillisecond;
             if (unit == TimeUnit.Milliseconds)
             {
                 return value;
             }
 
-            value = value * 1000;
+            value = value * MillisecondInOneSecond;
             if (unit == TimeUnit.Seconds)
             {
                 return value;
             }
 
-            value = value * 60;
+            value = value * SecondsInOneMinute;
             if (unit == TimeUnit.Minutes)
             {
                 return value;
             }
 
-            value = value * 60;
+            value = value * MinutesInOneHour;
             if (unit == TimeUnit.Hours)
             {
                 return value;
             }
 
-            value = value * 24;
+            value = value * HoursInOneDay;
             if (unit == TimeUnit.Days)
             {
                 return value;
             }
 
-            value = value * 7;
+            value = value * DaysInWeek;
             if (unit == TimeUnit.Weeks)
             {
                 return value;
             }
 
             throw new InvalidOperationException(string.Format("{0} is not a supported time unit.", unit));
-        }
-
-
-        /// <summary>
-        /// To the time span.
-        /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="timeUnit">
-        /// The time unit.
-        /// </param>
-        /// <returns>
-        /// A <see cref="TimeSpan"/> instance of that duration.
-        /// </returns>
-        public static TimeSpan ToTimeSpan(double value, TimeUnit timeUnit)
-        {
-            return TimeSpan.FromTicks((long)(GetInNanoSeconds(value, timeUnit) / 100));
         }
     }
 }

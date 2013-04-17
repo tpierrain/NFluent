@@ -26,14 +26,66 @@ namespace NFluent.Tests
         [Test]
         public void LessThanTest()
         {
-            Check.That(TimeSpan.FromMilliseconds(500)).IsLessThan(100, TimeUnit.Milliseconds);
+            TimeSpan testValue = TimeSpan.FromMilliseconds(500);
+            Check.That(testValue).IsLessThan(600, TimeUnit.Milliseconds);
+            Check.That(testValue).IsLessThan(TimeSpan.FromMilliseconds(600));
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), UserMessage = "Should have failed")]
         public void LessThanTestFails()
         {
-            Check.That(TimeSpan.FromMilliseconds(50)).IsLessThan(100, TimeUnit.Milliseconds);
+            Check.That(TimeSpan.FromMilliseconds(500)).IsLessThan(100, TimeUnit.Milliseconds);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), UserMessage = "Should have failed")]
+        public void LessThanTestFailsWithSpan()
+        {
+            Check.That(TimeSpan.FromMilliseconds(500)).IsLessThan(TimeSpan.FromMilliseconds(100));
+        }
+
+        [Test]
+        public void GreaterThanTest()
+        {
+            TimeSpan testValue = TimeSpan.FromMilliseconds(500);
+            Check.That(testValue).IsGreaterThan(100, TimeUnit.Milliseconds);
+            Check.That(testValue).IsGreaterThan(TimeSpan.FromMilliseconds(100));
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), UserMessage = "Should have failed")]
+        public void GreaterThanTestFails()
+        {
+            Check.That(TimeSpan.FromMilliseconds(50)).IsGreaterThan(100, TimeUnit.Milliseconds);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), UserMessage = "Should have failed")]
+        public void GreaterThanTestFailsWithSpan()
+        {
+            Check.That(TimeSpan.FromMilliseconds(50)).IsGreaterThan(TimeSpan.FromMilliseconds(100));
+        }
+
+        [Test]
+        public void EqualTo()
+        {
+            Check.That(TimeSpan.FromMilliseconds(50)).IsEqualTo(50, TimeUnit.Milliseconds);
+            Check.That(TimeSpan.FromMilliseconds(50)).IsEqualTo(TimeSpan.FromMilliseconds(50));
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), UserMessage = "Should have failed")]
+        public void EqualTofails()
+        {
+            Check.That(TimeSpan.FromMilliseconds(50)).IsEqualTo(40, TimeUnit.Milliseconds);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), UserMessage = "Should have failed")]
+        public void EqualTofailsWithSpan()
+        {
+            Check.That(TimeSpan.FromMilliseconds(50)).IsEqualTo(TimeSpan.FromMilliseconds(40));
         }
     }
 }
