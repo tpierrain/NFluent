@@ -54,12 +54,15 @@
     <Compile Include="BooleanRelatedTests.cs" />
     <Compile Include="DateTimeRelatedTests.cs" />
     <Compile Include="IsInstanceOfTests.cs" />
+    <Compile Include="LambdaRelatedTests.cs" />
     <Compile Include="NumbersRelatedTests.cs" />
     <Compile Include="PropertiesRelatedTests.cs" />
     <Compile Include="EqualRelatedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EnumerableRelatedTests.cs" />
     <Compile Include="StringRelatedTests.cs" />
+    <Compile Include="TimeHelperTest.cs" />
+    <Compile Include="TimeSpanTests.cs" />
     <Compile Include="ToEnumeratedStringTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -121,5 +121,49 @@ namespace NFluent
             var numberAssertionStrategy = new NumberFluentAssertion<double>(fluentAssertion.Value);
             return numberAssertionStrategy.IsPositive();
         }
+
+        /// <summary>
+        /// Checks that the actual value is less than an operand.
+        /// </summary>
+        /// <param name="fluentAssertion">
+        /// The Fluent assertion to be extended.
+        /// </param>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">
+        /// The value is not less than the comparand.
+        /// </exception>
+        public static IChainableFluentAssertion<IFluentAssertion<double>> IsLessThan(
+            this IFluentAssertion<double> fluentAssertion, double comparand)
+        {
+            var numberAssertionStrategy = new NumberFluentAssertion<double>(fluentAssertion.Value);
+            return numberAssertionStrategy.IsLessThan(comparand);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is more than an operand.
+        /// </summary>
+        /// <param name="fluentAssertion">
+        /// The Fluent assertion to be extended.
+        /// </param>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">
+        /// The value is not less than the comparand.
+        /// </exception>
+        public static IChainableFluentAssertion<IFluentAssertion<double>> IsGreaterThan(
+            this IFluentAssertion<double> fluentAssertion, double comparand)
+        {
+            var numberAssertionStrategy = new NumberFluentAssertion<double>(fluentAssertion.Value);
+            return numberAssertionStrategy.IsGreaterThan(comparand);
+        }
     }
 }
