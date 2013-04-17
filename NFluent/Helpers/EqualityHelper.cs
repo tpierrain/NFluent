@@ -54,7 +54,7 @@ namespace NFluent.Helpers
                     }
                 }
 
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{2}\nis not equal to the expected one, i.e.:\n\t[{1}]{3}.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage));
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{2}\nis not equal to the expected one:\n\t[{1}]{3}.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage));
             }
         }
 
