@@ -37,7 +37,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe current value:\n\t[23]\nis not an instance of:\n\t[NFluent.Tests.Person]\nbut an instance of:\n\t[System.Int32]\ninstead.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[23]\nis not an instance of:\n\t[NFluent.Tests.Person]\nbut an instance of:\n\t[System.Int32]\ninstead.")]
         public void IsInstanceOfThrowsExceptionWithProperFormatWhenFailsWithInt()
         {
             const int IntObject = 23;
@@ -45,7 +45,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe current value:\n\t[\"for unit testing\"]\nis not an instance of:\n\t[NFluent.Tests.Person]\nbut an instance of:\n\t[System.String]\ninstead.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"for unit testing\"]\nis not an instance of:\n\t[NFluent.Tests.Person]\nbut an instance of:\n\t[System.String]\ninstead.")]
         public void IsInstanceOfThrowsExceptionWithProperFormatWhenFailsWithString()
         {
             const string StringObj = "for unit testing";
@@ -91,7 +91,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe current value:\n\t[23]\nis an instance of:\n\t[System.Int32]\nwhich is not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[23]\nis an instance of:\n\t[System.Int32]\nwhich is not expected.")]
         public void IsNotInstanceOfThrowsExceptionWithProperFormatWhenFailsWithInt()
         {
             const int IntObject = 23;
@@ -100,7 +100,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe current value:\n\t[\"If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).\"]\nis an instance of:\n\t[System.String]\nwhich is not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).\"]\nis an instance of:\n\t[System.String]\nwhich is not expected.")]
         public void IsNotInstanceOfThrowsExceptionWithProperFormatWhenFailsWithString()
         {
             const string Statement = "If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).";

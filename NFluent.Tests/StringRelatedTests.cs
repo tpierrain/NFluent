@@ -8,7 +8,7 @@
         #region Public Methods and Operators
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\ndoes not contain the expected value(s):\n\t[\"C\", \"A\"].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\ndoes not contain the expected value(s):\n\t[\"C\", \"A\"].")]
         public void ContainsIsCaseSensitive()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -16,7 +16,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\ndoes not contain the expected value(s):\n\t[\"0\", \"4\"].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\ndoes not contain the expected value(s):\n\t[\"0\", \"4\"].")]
         public void ContainsThrowsExceptionWhenFails()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -31,7 +31,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\ndoes not start with:\n\t[\"ABCDEF\"].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\ndoes not start with:\n\t[\"ABCDEF\"].")]
         public void StartWithIsCaseSensitive()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";

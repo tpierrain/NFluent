@@ -127,7 +127,7 @@ namespace NFluent.Tests
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe current value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nis not an instance of:\n\t[System.String]\nbut an instance of:\n\t[System.DateTime]\ninstead.")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nis not an instance of:\n\t[System.String]\nbut an instance of:\n\t[System.DateTime]\ninstead.")]
          public void IsInstanceOfThrowsExceptionWhenNotInstanceOf()
          {
              var christmas2013 = new DateTime(2013, 12, 25);
@@ -136,7 +136,7 @@ namespace NFluent.Tests
          }
 
          [Test]
-         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe current value:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis an instance of:\n\t[System.DateTime]\nwhich is not expected.")]
+         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis an instance of:\n\t[System.DateTime]\nwhich is not expected.")]
          public void IsNotInstanceOfThrowsExceptionWhenInstanceOf()
          {
              var actual = new DateTime(2013, 1, 1);

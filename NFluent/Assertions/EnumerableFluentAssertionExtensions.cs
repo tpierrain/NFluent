@@ -127,7 +127,7 @@ namespace NFluent
 
             if (notFoundValues.Count > 0)
             {
-                throw new FluentAssertionException(string.Format("\nThe enumerable:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}]", fluentAssertion.Value.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
+                throw new FluentAssertionException(string.Format("\nThe actual enumerable:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}]", fluentAssertion.Value.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
@@ -175,7 +175,7 @@ namespace NFluent
 
             if (unexpectedValuesFound.Count > 0)
             {
-                throw new FluentAssertionException(string.Format("\nThe enumerable:\n\t[{0}]\ndoes not contain only the expected value(s):\n\t[{1}].\nIt contains also other values:\n\t[{2}]", fluentAssertion.Value.ToEnumeratedString(), expectedValues.ToEnumeratedString(), unexpectedValuesFound.ToEnumeratedString()));
+                throw new FluentAssertionException(string.Format("\nThe actual enumerable:\n\t[{0}]\ndoes not contain only the expected value(s):\n\t[{1}].\nIt contains also other values:\n\t[{2}]", fluentAssertion.Value.ToEnumeratedString(), expectedValues.ToEnumeratedString(), unexpectedValuesFound.ToEnumeratedString()));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
@@ -275,7 +275,7 @@ namespace NFluent
                 
                 var elements = fluentAssertion.Value.ToEnumeratedString();
 
-                throw new FluentAssertionException(string.Format("\nFound {0} instead of {1}.\nFound:\n\t[{2}]", foundElementsNumberDescription, expectedSize, elements));
+                throw new FluentAssertionException(string.Format("\nThe actual enumerable has {0} instead of {1}.\nActual content is:\n\t[{2}].", foundElementsNumberDescription, expectedSize, elements));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
@@ -293,7 +293,7 @@ namespace NFluent
         {
             if (fluentAssertion.Value.Cast<object>().Any())
             {
-                throw new FluentAssertionException(string.Format("\nThe enumerable is not empty. Contains:\n\t[{0}]", fluentAssertion.Value.ToEnumeratedString()));
+                throw new FluentAssertionException(string.Format("\nThe actual enumerable is not empty. Contains:\n\t[{0}]", fluentAssertion.Value.ToEnumeratedString()));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
@@ -398,9 +398,7 @@ namespace NFluent
             object expectedItems = enumerable.ToEnumeratedString(out expectedCount);
             var formatedExpectedCount = FormatItemCount(expectedCount);
 
-            throw new FluentAssertionException(string.Format("\nThe enumerable:\n\t[{0}] ({1})\ndoes not contain exactly the expected value(s):\n\t[{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
-            
-            // throw new FluentAssertionException(string.Format("\nThe enumerable:\n\t[{0}] ({1})\ndoes not contain exactly the expected value(s):\n\t[{2}] ({3}).\nIt contains also:\n\t[\"Vador\"]", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
+            throw new FluentAssertionException(string.Format("\nThe actual enumerable:\n\t[{0}] ({1})\ndoes not contain exactly the expected value(s):\n\t[{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
         }
 
         #endregion

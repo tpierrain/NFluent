@@ -51,7 +51,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nFound 1 element instead of 5.\nFound:\n\t[666]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable has 1 element instead of 5.\nActual content is:\n\t[666].")]
         public void HasSizeThrowsExceptionWithClearStatusWhenFailsWithOneElementFound()
         {
             var enumerable = new List<int>() { 666 };
@@ -60,7 +60,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nFound 4 elements instead of 1.\nFound:\n\t[45, 43, 54, 666]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable has 4 elements instead of 1.\nActual content is:\n\t[45, 43, 54, 666].")]
         public void HasSizeThrowsExceptionWithClearStatusWhenFailsWithOneExpectedElement()
         {
             var enumerable = new List<int>() { 45, 43, 54, 666 };
@@ -81,7 +81,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe enumerable is not empty. Contains:\n\t[null, null, Thomas]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable is not empty. Contains:\n\t[null, null, Thomas]")]
         public void IsEmptyThrowsExceptionWhenNotEmpty()
         {
             var persons = new List<Person>() { null, null, new Person() { Name = "Thomas" } };

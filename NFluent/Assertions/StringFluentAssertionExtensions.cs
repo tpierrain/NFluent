@@ -107,7 +107,7 @@ namespace NFluent
             if (notFound.Count > 0)
             {
                 // TODO replace all the [""{xxx}""] by ToStringProperlyFormated() on values instead
-                throw new FluentAssertionException(string.Format("\nThe string:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), notFound.ToEnumeratedString()));
+                throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), notFound.ToEnumeratedString()));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
@@ -126,7 +126,7 @@ namespace NFluent
         {
             if (!fluentAssertion.Value.StartsWith(expectedPrefix))
             {
-                throw new FluentAssertionException(string.Format("\nThe string:\n\t[{0}]\ndoes not start with:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), expectedPrefix.ToStringProperlyFormated()));
+                throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not start with:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), expectedPrefix.ToStringProperlyFormated()));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
