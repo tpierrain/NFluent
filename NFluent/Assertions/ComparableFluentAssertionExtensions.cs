@@ -17,6 +17,7 @@ namespace NFluent
     using System;
 
     using NFluent.Extensions;
+    using NFluent.Helpers;
 
     /// <summary>
     /// Provides assertion methods to be executed on an <see cref="IComparable"/> instance.
@@ -34,9 +35,14 @@ namespace NFluent
         /// <exception cref="NFluent.FluentAssertionException">The current value is not before the other one.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<IComparable>> IsBefore(this IFluentAssertion<IComparable> fluentAssertion, IComparable otherValue)
         {
+            if (fluentAssertion.Value == null)
+            {
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not before:\n\t[{2}]{3}.", fluentAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(fluentAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
+            }
+
             if (fluentAssertion.Value.CompareTo(otherValue) >= 0)
             {
-                throw new FluentAssertionException(string.Format(@"[{0}] as comparable is not before [{1}].", fluentAssertion.Value.ToStringProperlyFormated(), otherValue.ToStringProperlyFormated()));
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not before:\n\t[{2}]{3}.", fluentAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(fluentAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<IComparable>>(fluentAssertion);

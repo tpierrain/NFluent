@@ -54,7 +54,7 @@ namespace NFluent
 
             if (!res)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is not equal to zero.", this.Value));
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not equal to zero.", this.Value, EqualityHelper.BuildTypeDescriptionMessage(this.Value)));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
@@ -73,7 +73,7 @@ namespace NFluent
 
             if (res)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is equal to zero.", this.Value));
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis equal to zero.", this.Value, EqualityHelper.BuildTypeDescriptionMessage(this.Value)));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
@@ -88,7 +88,7 @@ namespace NFluent
         {
             if (Convert.ToInt32(this.Value) <= 0)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is not a strictly positive value.", this.Value));
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not a strictly positive value.", this.Value, EqualityHelper.BuildTypeDescriptionMessage(this.Value)));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
@@ -132,7 +132,7 @@ namespace NFluent
         {
             if (this.Value.CompareTo(comparand) <= 0)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is not greater than {1}.", this.Value, comparand));
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not greater than:\n\t[{1}].", this.Value, comparand));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<N>>(this);

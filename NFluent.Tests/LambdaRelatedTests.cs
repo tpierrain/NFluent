@@ -31,7 +31,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(exceptionType: typeof(FluentAssertionException))]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual code execution lasted more than 0 Milliseconds.")]
         public void FailDurationTest()
         {
             Check.That(() => Thread.Sleep(30)).LastsLessThan(0, TimeUnit.Milliseconds);
@@ -44,7 +44,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(exceptionType: typeof(FluentAssertionException))]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe actual code raised the exception:\n----\n[System.ApplicationException: Error in the application")]
         public void UnexpectedExceptionRaised()
         {
             Check.That(() => { throw new ApplicationException(); }).DoesNotThrow();
@@ -53,26 +53,26 @@ namespace NFluent.Tests
         [Test]
         public void ExpectedExceptionRaised()
         {
-            Check.That(() => { throw new ApplicationException(); }).Throws<ApplicationException>();
+            Check.That(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
             Check.That(() => { throw new ApplicationException(); }).ThrowsAny();
         }
 
         [Test]
-        [ExpectedException(exceptionType: typeof(FluentAssertionException))]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe actual code thrown exception of type:\n\t[System.Exception]\ninstead of the expected exception type:\n\t[System.ApplicationException].\nThrown exception was:\n----\n[System.Exception: Exception of ")]
         public void DidNotRaiseExpected()
         {
             Check.That(() => { throw new Exception(); }).Throws<ApplicationException>();
         }
 
         [Test]
-        [ExpectedException(exceptionType: typeof(FluentAssertionException))]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual code did not raise an exception as expected.")]
         public void DidNotRaiseAny()
         {
             Check.That(() => { new object(); }).ThrowsAny();
         }
 
         [Test]
-        [ExpectedException(exceptionType: typeof(FluentAssertionException))]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual code did not raise an exception of type:\n\t[System.Exception]\nas expected.")]
         public void DidNotRaiseAnyTypedCheck()
         {
             Check.That(() => { new object(); }).Throws<Exception>();

@@ -31,10 +31,30 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[2.0] as comparable is not before [1.0].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[2.0] of type: [System.Version]\nis not before:\n\t[1.0] of type: [System.Version].")]
         public void IsBeforeThrowsExceptionWhenFailing()
         {
             Version v1 = new Version(1, 0);
+            Version v2 = new Version(2, 0);
+
+            Check.That(v2).IsBefore(v1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not before:\n\t[1.0] of type: [System.Version].")]
+        public void IsBeforeDoesNotThrowNullReferenceExceptionWithNullAsInput()
+        {
+            Version v1 = new Version(1, 0);
+            Version v2 = null;
+
+            Check.That(v2).IsBefore(v1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[2.0] of type: [System.Version]\nis not before:\n\t[null].")]
+        public void IsBeforeDoesNotThrowNullReferenceExceptionWithNullAsAfterValue()
+        {
+            Version v1 = null;
             Version v2 = new Version(2, 0);
 
             Check.That(v2).IsBefore(v1);

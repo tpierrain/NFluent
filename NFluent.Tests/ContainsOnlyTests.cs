@@ -51,7 +51,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe enumerable:\n\t[3, 2, 666, 1974, 1]\ndoes not contain only the expected value(s):\n\t[1, 2, 3].\nIt contains also other values:\n\t[666, 1974]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[3, 2, 666, 1974, 1]\ndoes not contain only the expected value(s):\n\t[1, 2, 3].\nIt contains also other values:\n\t[666, 1974]")]
         public void ContainsOnlyWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 3, 2, 666, 1974, 1 };
@@ -96,7 +96,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe enumerable:\n\t[3, 2, 666, 1974, 1]\ndoes not contain only the expected value(s):\n\t[1, 2, 3].\nIt contains also other values:\n\t[666, 1974]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[3, 2, 666, 1974, 1]\ndoes not contain only the expected value(s):\n\t[1, 2, 3].\nIt contains also other values:\n\t[666, 1974]")]
         public void ContainsOnlyWithEnumerableThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
@@ -132,7 +132,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe enumerable:\n\t[1, \"uno\", \"tres\", 45,3]\ndoes not contain only the expected value(s):\n\t[1, \"Tres\", 45,3].\nIt contains also other values:\n\t[\"uno\", \"tres\"]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[1, \"uno\", \"tres\", 45,3]\ndoes not contain only the expected value(s):\n\t[1, \"Tres\", 45,3].\nIt contains also other values:\n\t[\"uno\", \"tres\"]")]
         public void ContainsOnlyWithEnumerableThrowCaseSensitiveException()
         {
             var variousObjects = new ArrayList() { 1, "uno", "tres", 45.3F };

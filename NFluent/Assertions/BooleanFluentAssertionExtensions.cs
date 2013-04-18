@@ -69,7 +69,7 @@ namespace NFluent
                 return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("The actual boolean value [{0}] is not true", fluentAssertion.Value.ToStringProperlyFormated()));
+            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not true.", fluentAssertion.Value.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace NFluent
                 return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("The actual boolean value [{0}] is not false", fluentAssertion.Value.ToStringProperlyFormated()));
+            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not false.", fluentAssertion.Value.ToStringProperlyFormated()));
         }
     }
 }

@@ -109,7 +109,7 @@ namespace NFluent
                 return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("The actual date time [{0}] is not before the given one [{1}]", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not before the given one:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace NFluent
                 return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("The actual date time [{0}] is not before or equals to the given one [{1}]", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not before or equals to the given one:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace NFluent
                 return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("The actual date time [{0}] is not after the given one [{1}]", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not after the given one:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace NFluent
                 return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("The actual date time [{0}] is not after or equals to the given one [{1}]", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not after or equals to the given one:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         // TODO : replace the FEST assert assertThat samples by NFluent assertions
@@ -209,7 +209,7 @@ namespace NFluent
                 return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("The actual date time [{0}] is not equal to the given date time [{1}] ignoring milliseconds", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring milliseconds.", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace NFluent
                 return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("The actual date time [{0}] is not equal to the given date time [{1}] ignoring seconds", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring seconds.", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -288,7 +288,7 @@ namespace NFluent
                 return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("The actual date time [{0}] is not equal to the given date time [{1}] ignoring minutes", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring minutes.", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -325,8 +325,8 @@ namespace NFluent
             {
                 return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
             }
-            
-            throw new FluentAssertionException(string.Format("The actual date time [{0}] is not equal to the given date time [{1}] ignoring hours", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+
+            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring hours.", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -344,8 +344,8 @@ namespace NFluent
             {
                 return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
             }
-            
-            throw new FluentAssertionException(string.Format("The actual year [{0}] is not equal to the given date time year [{1}]", fluentAssertion.Value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated()));
+
+            throw new FluentAssertionException(string.Format("\nThe year of the actual date time:\n\t[{0}]\nis not equal to the year of the given date time:\n\t[{1}].", fluentAssertion.Value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -364,7 +364,7 @@ namespace NFluent
                 return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("The actual month [{0}] is not equal to the given date time month [{1}]", fluentAssertion.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated()));
+            throw new FluentAssertionException(string.Format("\nThe month of the actual date time:\n\t[{0}]\nis not equal to the month of the given date time:\n\t[{1}].", fluentAssertion.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -383,7 +383,7 @@ namespace NFluent
                 return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("The actual day [{0}] is not equal to the given date time day [{1}]", fluentAssertion.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated()));
+            throw new FluentAssertionException(string.Format("\nThe day of the actual date time:\n\t[{0}]\nis not equal to the day of the given date time:\n\t[{1}].", fluentAssertion.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated()));
         }
     }
 }

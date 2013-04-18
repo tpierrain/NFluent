@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
 // // <copyright file="ILambdaAssertion.cs" company="">
-// //   Copyright 2013 Cyrille DUPUYDAUBY
+// //   Copyright 2013 Cyrille DUPUYDAUBY, Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -25,54 +25,40 @@ namespace NFluent
         /// <summary>
         /// Checks that the execution time is below a specified threshold.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="timeUnit">
-        /// The time Unit.
-        /// </param>
-        /// <exception cref="FluentAssertionException">
-        /// When execution is strictly above limit.
-        /// </exception>
+        /// <param name="threshold">The threshold.</param>
+        /// <param name="timeUnit">The time unit of the given threshold.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        IChainableFluentAssertion<LambdaAssertion> LastsLessThan(double value, TimeUnit timeUnit);
+        /// <exception cref="FluentAssertionException">Execution was strictly above limit.</exception>
+        IChainableFluentAssertion<ILambdaAssertion> LastsLessThan(double threshold, TimeUnit timeUnit);
 
         /// <summary>
-        /// Check that the code does not throw.
+        /// Check that the code does not throw an exception.
         /// </summary>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">
-        /// When the code raises an exception.
-        /// </exception>
-        IChainableFluentAssertion<LambdaAssertion> DoesNotThrow();
+        /// <exception cref="FluentAssertionException">The code raised an exception.</exception>
+        IChainableFluentAssertion<ILambdaAssertion> DoesNotThrow();
 
         /// <summary>
-        /// Checks if the code did throw an exception.
+        /// Checks that the code did throw an exception of a specified type.
         /// </summary>
-        /// <typeparam name="T">
-        /// Expected exception type.
-        /// </typeparam>
+        /// <typeparam name="T">Expected exception type.</typeparam>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">
-        /// Code did not raised an exception or not of the expected type.
-        /// </exception>
-        IChainableFluentAssertion<LambdaAssertion> Throws<T>();
+        /// <exception cref="FluentAssertionException">The code did not raised an exception of the specified type, or did not raised an exception at all.</exception>
+        IChainableFluentAssertion<ILambdaAssertion> Throws<T>();
 
         /// <summary>
-        /// Checks if the code did throw an exception.
+        /// Checks that the code did throw an exception of any type.
         /// </summary>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">
-        /// Code did not raised an exception or not of the expected type.
-        /// </exception>
-        IChainableFluentAssertion<LambdaAssertion> ThrowsAny();
+        /// <exception cref="FluentAssertionException">The code did not raised an exception of any type.</exception>
+        IChainableFluentAssertion<ILambdaAssertion> ThrowsAny();
     }
 }

@@ -16,6 +16,7 @@
             const int IntObj = 23;
             const long LongObj = long.MaxValue;
             const double DoubleObj = 23d;
+            const decimal DecimalObj = 2;
             var person = new Person();
             List<string> stringList = new List<string>();
             int[] integerArray = new int[10];
@@ -27,6 +28,7 @@
             Check.That(IntObj).IsInstanceOf<int>();
             Check.That(LongObj).IsInstanceOf<long>();
             Check.That(DoubleObj).IsInstanceOf<double>();
+            Check.That(DecimalObj).IsInstanceOf<decimal>();
             Check.That((byte)2).IsInstanceOf<byte>();
 
             //// objects
@@ -38,9 +40,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException),
-            ExpectedMessage =
-                "[23] is not an instance of the expected type [NFluent.Tests.Person] but of [System.Int32] instead.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[23]\nis not an instance of:\n\t[NFluent.Tests.Person]\nbut an instance of:\n\t[System.Int32]\ninstead.")]
         public void IsInstanceOfThrowsExceptionWithProperFormatWhenFailsWithInt()
         {
             const int IntObject = 23;
@@ -48,7 +48,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""for unit testing""] is not an instance of the expected type [NFluent.Tests.Person] but of [System.String] instead.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"for unit testing\"]\nis not an instance of:\n\t[NFluent.Tests.Person]\nbut an instance of:\n\t[System.String]\ninstead.")]
         public void IsInstanceOfThrowsExceptionWithProperFormatWhenFailsWithString()
         {
             const string StringObj = "for unit testing";
@@ -66,6 +66,7 @@
             const int IntObj = 23;
             const long LongObj = long.MaxValue;
             const double DoubleObj = 23d;
+            const decimal DecimalObj = 2;
             var person = new Person();
             List<string> stringList = new List<string>();
             int[] integerArray = new int[10];
@@ -77,6 +78,7 @@
             Check.That(IntObj).IsNotInstanceOf<long>();
             Check.That(LongObj).IsNotInstanceOf<string>();
             Check.That(DoubleObj).IsNotInstanceOf<int>();
+            Check.That(DecimalObj).IsNotInstanceOf<float>();
             Check.That((byte)1).IsNotInstanceOf<string>();
 
             // objects
@@ -95,8 +97,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException),
-            ExpectedMessage = "[23] is an instance of the type [System.Int32] which is not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[23]\nis an instance of:\n\t[System.Int32]\nwhich is not expected.")]
         public void IsNotInstanceOfThrowsExceptionWithProperFormatWhenFailsWithInt()
         {
             const int IntObject = 23;
@@ -105,7 +106,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).""] is an instance of the type [System.String] which is not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).\"]\nis an instance of:\n\t[System.String]\nwhich is not expected.")]
         public void IsNotInstanceOfThrowsExceptionWithProperFormatWhenFailsWithString()
         {
             const string Statement = "If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).";

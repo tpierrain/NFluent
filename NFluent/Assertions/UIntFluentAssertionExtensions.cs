@@ -51,14 +51,14 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
+        /// Checks that the actual value is an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
+        /// <exception cref="FluentAssertionException">The actual value is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<uint>> IsInstanceOf<T>(this IFluentAssertion<uint> fluentAssertion)
         {
             var numberAssertionStrategy = new NumberFluentAssertion<uint>(fluentAssertion.Value);
@@ -66,14 +66,14 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
+        /// Checks that the actual value is not an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
+        /// <exception cref="FluentAssertionException">The actual value is of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<uint>> IsNotInstanceOf<T>(this IFluentAssertion<uint> fluentAssertion)
         {
             var numberAssertionStrategy = new NumberFluentAssertion<uint>(fluentAssertion.Value);
