@@ -100,8 +100,8 @@ Why NFluent, and not another .NET fluent assertion framework?
 
 - - -
 
-Crystal-clear error message samples
------------------------------------
+Samples of crystal-clear error messages
+---------------------------------------
 
 ![ErrorSample1](https://github.com/tpierrain/nfluent/blob/master/Images/ErrorSample1.png?raw=true)
 
