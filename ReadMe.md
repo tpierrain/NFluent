@@ -22,6 +22,8 @@ Your favorite unit test framework (e.g. NUnit, xUnit, ...) will still handle the
 
 Indeed, we decided to use the `Check.That()` syntax to avoid collisions and name ambiguity with the traditional `Assert` class you can find in most of your .NET unit test frameworks (therefore, no need to declare an alias in your test fixtures).
 
+In fact, __test runners and assertion libraries are two orthogonal topics and concerns__.
+
 
 As simple as possible
 =====================
@@ -93,7 +95,7 @@ Why NFluent, and not another .NET fluent assertion framework?
 ----------------------------------------------------------------------------
 + Because you think like us that writing a lambda expression within an assertion statement is not really a fluent experience (neither on a reading perspective).
 + Because NFluent is completely driven by the __[super-duper-happy-path](https://github.com/NancyFx/Nancy/wiki/Introduction)__ principle to fluent your TDD experience. For instance, we consider the 'dot' autocompletion experience as crucial. Thus, it should not be polluted by things not related to the current unit testing context (which occurs with extension methods on classical .NET types - intellisense flooding).
-+ Because you think that those other assertion libraries have not chosen the proper vocabulary (`<subjectUnderTest>.Should().`... why don't they choose `Must` instead?). And thus, you'd rather rely on a stronger semantic for your assertions (i.e. NFluent's `Check.That`).
++ Because you think that those other assertion libraries have not chosen the proper vocabulary (`<subjectUnderTest>.Should().`... why don't they choose `Must` instead?!?). And thus, you'd rather rely on a stronger semantic for your assertions (i.e. NFluent's `Check.That`).
 + And because you like *killing features* and extra bonus, such as the Properties() extension method for IEnumerable for instance (as showed within the usage sample above). 
 
 - - -
