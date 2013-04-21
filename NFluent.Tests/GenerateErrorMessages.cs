@@ -88,8 +88,14 @@ namespace NFluent.Tests
                                 {
                                     if (e.InnerException is FluentAssertionException)
                                     {
-                                        this.Log(string.Format("{0} generated:\n{1}", specificTest.Name, e.InnerException.Message));
+                                        FluentAssertionException fluExc = e.InnerException as FluentAssertionException;
+                                        MethodBase method;
+                                        Type testedtype;
 
+                                        GetCheckAndType(fluExc, out method, out testedtype);
+                                        this.Log(string.Format("{0} on {1} generated\n****\n{2}\n****", method.Name, testedtype .Name, e.Message));
+                                       // this.Log(string.Format("{0} generated:\n{1}", specificTest.Name, e.InnerException.Message));
+                                        
                                     }
                                     else
                                     {
@@ -113,6 +119,31 @@ namespace NFluent.Tests
                 {
                     Log(string.Format("Exception while working on type:{0}\n{1}", type.FullName, e));
                 }
+            }
+        }
+
+        private static void GetCheckAndType(FluentAssertionException fluExc, out MethodBase method, out Type testedtype)
+        {
+            // identify failing test
+            StackTrace trace = new StackTrace(fluExc);
+            // get fluententrypoint stackframe
+            StackFrame frame = trace.GetFrame(0);
+            // get method
+            method = frame.GetMethod();
+            // get first parameter:
+            ParameterInfo param = method.GetParameters()[0];
+            Type paramType = param.ParameterType;
+            Type testedtype;
+            if (paramType.IsGenericType)
+            {
+                // this is a IFluent<T> esxtensionmethod, identify type on which test is applied
+                testedtype = paramType.GetGenericArguments()[0];
+            }
+            else
+            {
+                // this is a IFLuent<T> implementation extension method, extrawork is required
+                // TODO: identify IFluentAssertion<T> implementation type
+                testedtype = null;
             }
         }
 
