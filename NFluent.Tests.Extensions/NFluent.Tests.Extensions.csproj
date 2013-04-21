@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
     <Compile Include="Children.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieFluentAssertionExtensions.cs" />
