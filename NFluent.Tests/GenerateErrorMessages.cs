@@ -17,151 +17,277 @@ namespace NFluent.Tests
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
 
     using NUnit.Framework;
 
     [TestFixture]
     public class GenerateErrorMessages
     {
-
-        private void Log(string message)
-        {
-            Debug.WriteLine(message);
-        }
         [Test]
         [Explicit]
+
+        // run this test to debug a specific test that the code is unable to properly identify
+        public void SpecificTest()
+        {
+            var test = new LambdaRelatedTests();
+
+            // test.SetUp();
+            MethodInfo method = test.GetType()
+                                    .GetMethod(
+                                        "FailDurationTest",
+                                        BindingFlags.Instance | BindingFlags.Public);
+            if (method != null)
+            {
+                this.RunMethod(method, test);
+            }
+
+            // test.TearDown();
+        }
+
+        [Test]
+        [Explicit]
+
+        // Run this test to get all error messages
+        /* Algo is:
+         * - Get all Types from this assembly and with a TestFixture Attribute
+         * - For each of those types:
+         *   - find all methods with Test and ExpectedExceptionAttribute with a FluentException type (if precised)
+         *   - if any is found, run all methods with TestFixtureSetUp and attributes
+         *   - each test is run, an error is logged is no fluentexception is raised
+         *     - Setup and TearDown methods are run (if any)
+         *   - exception is analyzed to identify the related test
+         *   - all TestFixtureTeardown are run
+         */
         public void ScanAndGenerate()
         {
+            FullRunDescription report = new FullRunDescription();
+      
             // get all test fixtures
             foreach (
                 var type in
                     Assembly.GetExecutingAssembly()
                             .GetTypes()
-                            .Where((type) => type.GetCustomAttributes(typeof(TestFixtureAttribute), false).Length > 0))
+                            .Where(type => type.GetCustomAttributes(typeof(TestFixtureAttribute), false).Length > 0))
             {
                 try
                 {
-                    // enumerate testmethods with expected exception flags
+                    // enumerate testmethods with expectedexception attribute with an FluentException type
                     IEnumerable<MethodInfo> tests =
                         type.GetMethods()
-                            .Where((method) => method.GetCustomAttributes(typeof(TestAttribute), false).Length > 0)
+                            .Where(method => method.GetCustomAttributes(typeof(TestAttribute), false).Length > 0)
                             .Where(
-                                (method) =>
-                                    { object [] attributes=
+                                method =>
+                                    {
+                                        object[] attributes =
                                             method.GetCustomAttributes(typeof(ExpectedExceptionAttribute), false);
                                         if (attributes.Length == 1)
                                         {
                                             var attrib =
                                                 attributes[0] as ExpectedExceptionAttribute;
-                                            return attrib.ExpectedException == typeof(FluentAssertionException);
+                                            return attrib == null
+                                                   || attrib.ExpectedException == typeof(FluentAssertionException);
                                         }
-                                        else
-                                        {
-                                            return false;
-                                        }
+
+                                        return false;
                                     });
-                    if (tests.Any())
+                    var specificTests = tests as IList<MethodInfo> ?? tests.ToList();
+                    if (specificTests.Count > 0)
                     {
-                        Log(string.Format("TestFixture :{0}", type.FullName));
+                        this.Log(string.Format("TestFixture :{0}", type.FullName));
+
                         // creates an instance
-                        object Test = type.InvokeMember(
+                        var test = type.InvokeMember(
                             "TestClass",
                             BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance,
-                            null, null, new object[] { });
+                            null,
+                            null,
+                            new object[] { });
 
                         // run TestFixtureSetup
-                        this.RunAllSpecificMethods(type, typeof(TestFixtureSetUpAttribute), Test);
+                        this.RunAllSpecificMethods(type, typeof(TestFixtureSetUpAttribute), test);
+
                         // run all tests
-                        foreach (var specificTest in tests)
+                        foreach (var specificTest in specificTests)
                         {
-                            this.RunAllSpecificMethods(type, typeof(SetUpAttribute), Test);
+                            this.RunAllSpecificMethods(type, typeof(SetUpAttribute), test);
  
-                            try
+                            var result=this.RunMethod(specificTest, test);
+                            if (result != null)
                             {
-                                specificTest.Invoke(Test, new object[] { });
+                                report.AddEntry(result);
                             }
-                            catch (Exception e)
-                            {
-                                if (e.InnerException != null)
-                                {
-                                    if (e.InnerException is FluentAssertionException)
-                                    {
-                                        FluentAssertionException fluExc = e.InnerException as FluentAssertionException;
-                                        MethodBase method;
-                                        Type testedtype;
-
-                                        GetCheckAndType(fluExc, out method, out testedtype);
-                                        this.Log(string.Format("{0} on {1} generated\n****\n{2}\n****", method.Name, testedtype .Name, e.Message));
-                                       // this.Log(string.Format("{0} generated:\n{1}", specificTest.Name, e.InnerException.Message));
-                                        
-                                    }
-                                    else
-                                    {
-                                        this.Log(string.Format("{0} did not generate a FLUENT ASSERTION:\n{1}", specificTest.Name, e.InnerException.Message));
-
-                                    }
-                                }
-                                else
-                                {
-                                    this.Log(string.Format("{0} failed to run:\n{1}", specificTest.Name, e));
-                                }
-                            }
-                            this.RunAllSpecificMethods(type, typeof(TearDownAttribute), Test);
-                            
+                            this.RunAllSpecificMethods(type, typeof(TearDownAttribute), test);
                         }
-                        this.RunAllSpecificMethods(type, typeof(TestFixtureTearDownAttribute), Test);
-                    }
 
+                        this.RunAllSpecificMethods(type, typeof(TestFixtureTearDownAttribute), test);
+                    }
                 }
                 catch (Exception e)
                 {
-                    Log(string.Format("Exception while working on type:{0}\n{1}", type.FullName, e));
+                    this.Log(string.Format("Exception while working on type:{0}\n{1}", type.FullName, e));
                 }
             }
+
+            // does not work yet
+//            string name = "FluentReport.xml";
+//            report.Save(name);
+//            Debug.Write("Report generated in {0}", Path.GetFullPath(name));
         }
 
-        private static void GetCheckAndType(FluentAssertionException fluExc, out MethodBase method, out Type testedtype)
+        private static CheckDescription GetCheckAndType(FluentAssertionException fluExc, out MethodBase method, out Type testedtype)
         {
+            var result = new CheckDescription();
+
             // identify failing test
-            StackTrace trace = new StackTrace(fluExc);
+            var trace = new StackTrace(fluExc);
+
             // get fluententrypoint stackframe
-            StackFrame frame = trace.GetFrame(0);
+            int frameIndex = trace.FrameCount - 2;
+            if (frameIndex < 0)
+            {
+                frameIndex = 0;
+            }
+
+            StackFrame frame = trace.GetFrame(frameIndex);
+
             // get method
             method = frame.GetMethod();
-            // get first parameter:
-            ParameterInfo param = method.GetParameters()[0];
-            Type paramType = param.ParameterType;
-            Type testedtype;
-            if (paramType.IsGenericType)
+            result.Check = method;
+
+            if (method.IsStatic)
             {
-                // this is a IFluent<T> esxtensionmethod, identify type on which test is applied
-                testedtype = paramType.GetGenericArguments()[0];
+                // check if this is an extension method
+                if (method.GetCustomAttributes(typeof(ExtensionAttribute), false).Length > 0)
+                {
+                    ParameterInfo[] parameters = method.GetParameters();
+                    ParameterInfo param = parameters[0];
+                    Type paramType = param.ParameterType;
+
+                    // identify type subjected to test
+                    testedtype = paramType.IsGenericType ? paramType.GetGenericArguments()[0] : null;
+                    result.CheckedType = testedtype;
+
+                    // get other parameters
+                    result.CheckParameters = new List<Type>(parameters.Length - 1);
+                    for (int i = 1; i < parameters.Length; i++)
+                    {
+                        result.CheckParameters.Add(parameters[i].ParameterType);
+                    }
+                }
+                else
+                {
+                    // unexpected case: check is a static method which is not an extension method
+                    throw new InvalidOperationException("Fluent checks cannot be implementedd through non extension static method.");
+                }
             }
             else
             {
-                // this is a IFLuent<T> implementation extension method, extrawork is required
-                // TODO: identify IFluentAssertion<T> implementation type
-                testedtype = null;
+                // this is an instance method, tested type is part of type defintion
+                Debug.Assert(method.DeclaringType != null, "method.DeclaringType != null");
+                Type scanning = method.DeclaringType.GetInterface("IFluent`1");
+                if (scanning != null && scanning.IsGenericType)
+                {
+                    // the type implements IFluentAssertion<T>
+                    testedtype = scanning.IsGenericType ? scanning.GetGenericArguments()[0] : null;
+                    result.CheckedType = testedtype;
+                    // get other parameters
+                    result.CheckParameters = new List<Type>();
+                    foreach (ParameterInfo t in method.GetParameters())
+                    {
+                        result.CheckParameters.Add(t.ParameterType);
+                    }
+                }
+                else
+                {
+                    // type does not implement IFluentAssertion<T>, we try to find a 'Value' property
+                    var prop = method.DeclaringType.GetProperty("Value");
+                    if (prop != null)
+                    {
+                        testedtype = prop.PropertyType;
+                        result.CheckedType = testedtype;
+                        // get other parameters
+                        result.CheckParameters = new List<Type>();
+                        foreach (ParameterInfo t in method.GetParameters())
+                        {
+                            result.CheckParameters.Add(t.ParameterType);
+                        }
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Instance method needs to implement a Value property");
+                    }
+                }
             }
+
+            return result;
         }
 
-        private void RunAllSpecificMethods(Type type, Type attributeTypeToScan, object Test)
+        private CheckDescription RunMethod(MethodInfo specificTest, object test)
+        {
+            try
+            {
+                specificTest.Invoke(test, new object[] { });
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException != null)
+                {
+                    if (e.InnerException is FluentAssertionException)
+                    {
+                        var fluExc = e.InnerException as FluentAssertionException;
+                        MethodBase method;
+                        Type testedtype;
+                        CheckDescription desc;
+                        desc = GetCheckAndType(fluExc, out method, out testedtype);
+                        if (desc != null)
+                        {
+                            desc.ErrorSampleMessage = fluExc.Message;
+                        }
+                        this.Log(
+                            string.Format("Check.That({1} sut).{0} failure message\n****\n{2}\n****", method.Name, testedtype.Name, fluExc.Message));
+                        return desc;
+                    }
+                    else
+                    {
+                        this.Log(
+                            string.Format(
+                                "{0} did not generate a FLUENT ASSERTION:\n{1}", specificTest.Name, e.InnerException.Message));
+                        return null;
+                    }
+                }
+                else
+                {
+                    this.Log(string.Format("{0} failed to run:\n{1}", specificTest.Name, e));;
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        private void RunAllSpecificMethods(Type type, Type attributeTypeToScan, object test)
         {
             IEnumerable<MethodInfo> startup =
-                type.GetMethods().Where((method) => method.GetCustomAttributes(attributeTypeToScan, false).Length > 0);
+                type.GetMethods().Where(method => method.GetCustomAttributes(attributeTypeToScan, false).Length > 0);
             foreach (var methodInfo in startup)
             {
                 try
                 {
-                    methodInfo.Invoke(Test, new object[] { });
+                    methodInfo.Invoke(test, new object[] { });
                 }
                 catch (Exception e)
                 {
                     this.Log(string.Format("Error: {0} failed, {1}", methodInfo.Name, e.Message));
                 }
             }
+        }
+
+        private void Log(string message)
+        {
+            Debug.WriteLine(message);
         }
     }
 }

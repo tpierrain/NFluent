@@ -80,7 +80,7 @@ namespace NFluent
         {
             if (this.exception != null)
             {
-                throw new FluentAssertionException(string.Format("Code raised the exception {0}.", this.exception.Message));
+                throw new FluentAssertionException(string.Format("\nThe actual code raised the exception:\n----\n[{0}]\n----", this.exception));
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);
@@ -103,7 +103,7 @@ namespace NFluent
 
             if (!(this.exception is T))
             {
-                throw new FluentAssertionException(string.Format("Code raised not the expected exception but {0}.", this.exception.Message));
+                throw new FluentAssertionException(string.Format("\nThe actual code thrown exception of type:\n\t[{0}]\ninstead of the expected exception type:\n\t[{1}].\nThrown exception was:\n----\n[{2}]\n----", this.exception.GetType(), typeof(T), this.exception));
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);
