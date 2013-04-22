@@ -109,6 +109,15 @@ Samples of crystal-clear error messages
 
 ![ErrorSample3](https://github.com/tpierrain/nfluent/blob/master/Images/ErrorSample3.png?raw=true)
 
+- - - 
+
+Wanna try NFluent?
+------------------
+Can't be more easy: NFluent is [available on nuget.org](http://nuget.org/packages/NFluent/)
+
+![nuget](https://github.com/tpierrain/nfluent/blob/master/Images/nuget.png?raw=true)
+
+
 
 Uses cases
 ----------
