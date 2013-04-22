@@ -109,7 +109,7 @@ Samples of crystal-clear error messages
 
 ![ErrorSample3](https://github.com/tpierrain/nfluent/blob/master/Images/ErrorSample3.png?raw=true)
 
-- - - 
+
 
 Wanna try NFluent?
 ------------------
