@@ -49,6 +49,7 @@
       <Link>Version.cs</Link>
     </Compile>
     <Compile Include="AndRelatedTests.cs" />
+    <Compile Include="CheckDescription.cs" />
     <Compile Include="ComparableRelatedTests.cs" />
     <Compile Include="ContainsOnlyTests.cs" />
     <Compile Include="ContainsExactlyTests.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="ExtensionSpikeTests.cs" />
     <Compile Include="BooleanRelatedTests.cs" />
     <Compile Include="DateTimeRelatedTests.cs" />
+    <Compile Include="GenerateErrorMessages.cs" />
     <Compile Include="IsInstanceOfTests.cs" />
     <Compile Include="LambdaRelatedTests.cs" />
     <Compile Include="NumbersRelatedTests.cs" />
