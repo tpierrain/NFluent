@@ -3,7 +3,7 @@
     /// <summary>
     /// Nationality for people, things, etc.
     /// </summary>
-    internal enum Nationality
+    public enum Nationality
     {
         /// <summary>
         /// Unknown nationality.

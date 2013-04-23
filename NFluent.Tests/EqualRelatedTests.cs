@@ -5,6 +5,12 @@
     [TestFixture]
     public class EqualRelatedTests
     {
+        private const string Blabla = ".*?";
+        private const string LineFeed = "\\n";
+        private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
+
+        #region IsEqualTo()
+
         [Test]
         public void IsEqualToWorksWithString()
         {
@@ -69,12 +75,51 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""Son of a test""] not equals to the expected [""no way""]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"Son of a test\"]\nis not equal to the expected one:\n\t[\"no way\"].")]
         public void IsEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";
             Check.That(first).IsEqualTo("no way");
         }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"Son of a test\"] of type: [System.String]\nis not equal to the expected one:\n\t[null].")]
+        public void IsEqualToThrowsProperExceptionEvenWithNullAsExpected()
+        {
+            var first = "Son of a test";
+            Check.That(first).IsEqualTo(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not equal to the expected one:\n\t[\"Kamoulox !\"] of type: [System.String].")]
+        public void IsEqualToThrowsProperExceptionEvenWithNullAsValue()
+        {
+            string first = null;
+            Check.That(first).IsEqualTo("Kamoulox !");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[John] of type: [NFluent.Tests.Children]\nis not equal to the expected one:\n\t[John] of type: [NFluent.Tests.Person].")]
+        public void WeCanSeeTheDifferenceBewteenTwoDifferentObjectsThatHaveTheSameToString()
+        {
+            Person dad = new Person() { Name = "John" };
+            Person son = new Children() { Name = "John" };
+            Check.That(son).IsEqualTo(dad);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[NFluent\\.Tests\\.Person\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[NFluent\\.Tests\\.Person\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + ".")]
+        public void WeCanAlsoSeeTheDifferenceBetweenTwoDifferentInstancesOfTheSameTypeWhichHaveSameToString()
+        {
+            // e.g.: "\nExpecting:\n\t[John] of type: [NFluent.Tests.Person] with HashCode: [45523402]\n but was\n\t[John] of type: [NFluent.Tests.Person] with HashCode: [35287174]."
+            Person dad = new Person() { Name = "John" };
+            Person uncle = new Person() { Name = "John" };
+            Check.That(uncle).IsEqualTo(dad);
+        }
+
+        #endregion
+
+        #region IsNotEqualTo()
 
         [Test]
         public void IsNotEqualToWorksWithString()
@@ -131,13 +176,15 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"[""Son of a test""] equals to the value [""Son of a test""] which is not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[\"Son of a test\"] of type: [System.String].")]
         public void IsNotEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";
             var otherReferenceToSameObject = first;
             Check.That(first).IsNotEqualTo(otherReferenceToSameObject);
         }
+
+        #endregion
 
         [Test]
         public void AndOperatorCanChainMultipleAssertionsForDoubleNumber()

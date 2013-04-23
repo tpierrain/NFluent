@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="RunAll" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <PropertyGroup>
+    <ProjectRoot>$(MSBuildProjectDirectory)\..</ProjectRoot>
+    <MSBuildCommunityTasksPath>$(ProjectRoot)\.build</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+  
     <PropertyGroup>
         <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
-        <ProjectRoot>$(MSBuildProjectDirectory)\..</ProjectRoot>
+        <!--<ProjectRoot>$(MSBuildProjectDirectory)\..</ProjectRoot>-->
         <ProjectName>NFluent</ProjectName>
         <ToolsPath>$(ProjectRoot)\tools\</ToolsPath>
         <ArtifactsPath>$(ProjectRoot)\Artifacts</ArtifactsPath>
@@ -17,8 +25,8 @@
        <TestAssembly>$(ProjectRoot)\$(ProjectName).Tests\bin\$(Configuration)\$(ProjectName).Tests.dll</TestAssembly>
     </PropertyGroup>
     
-    <Target Name="RunAll" DependsOnTargets="Build; RunTests; BuildDocs; Package" />
-    <Target Name="CI" DependsOnTargets="Build;" />
+    <Target Name="RunAll" DependsOnTargets="Build; BuildDocs; RunTests; Package" />
+    <Target Name="CI" DependsOnTargets="Build; BuildDocs" />
 
     <!-- 1- Do the BUILD -->
     <Target Name="NugetRestore">
@@ -55,7 +63,7 @@ GENERATING DOCS for:
         <TestAssembly Include="$(ProjectRoot)\$(ProjectName).Tests\bin\$(Configuration)\$(ProjectName).Tests.dll" />
     </ItemGroup>
 
-    <Target Name="RunTests">
+    <Target Name="RunTests" DependsOnTargets="Build">
         <Message Importance="high" Text="
 ---------------------------------------------------------------
 RUN ALL UNIT TESTS
@@ -63,21 +71,43 @@ RUN ALL UNIT TESTS
             "  />
 
         <Exec Command="&quot;$(TestRunnerPath)&quot; &quot;$(TestAssembly)&quot;"
-          />
+          LogStandardErrorAsError="true" />
     </Target>
     
 
     <!-- 4- Then Package -->
+    <!--<Target Name="Package" DependsOnTargets="RunTests">-->
     <Target Name="Package">
-        <Message Importance="high" Text="
+ 
+      <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
+      <GetAssemblyIdentity AssemblyFiles="$(BinariesPath)\$(ProjectName).dll">
+        <Output TaskParameter="Assemblies" ItemName="AsmInfo" />
+      </GetAssemblyIdentity>
+
+      <PropertyGroup>
+        <NuspecFilePath>$(ProjectRoot)\$(ProjectName).nuspec</NuspecFilePath>
+        <PackageVersion>%(AsmInfo.Version)</PackageVersion>
+      </PropertyGroup>
+
+      <Message Importance="high" Text="[Print] PackageVersion: '$(PackageVersion)'" />
+      <Message Importance="high" Text="[Print] NuspecFilePath: '$(NuspecFilePath)'" />
+
+      <!-- insert the version number into the nuspec files -->
+      <XmlPoke 
+        XmlInputPath="$(NuspecFilePath)"
+         Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
+        Query="x:package/x:metadata/x:version" 
+        Value="$(PackageVersion)" />
+      
+      <Message Importance="high" Text="
 ---------------------------------------------------------------
 CREATING NUGET PACKAGE IN:
     - $(PackagesPath)
 ---------------------------------------------------------------
             "  />
         <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
-        <Exec Command="&quot;$(NuGetExePath)&quot; pack &quot;$(ProjectRoot)\$(ProjectName).nuspec&quot; -o &quot;$(PackagesPath)&quot;"
-         />
+        <Exec Command="&quot;$(NuGetExePath)&quot; pack &quot;$(NuspecFilePath)&quot; -o &quot;$(PackagesPath)&quot;"
+          LogStandardErrorAsError="true" />
     </Target>
 
     

@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IObjectFluentAssertion.cs" company="">
+// // <copyright file="IFluentAssertionBase.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,10 +14,16 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    // TODO: dismantle this useless interface?
+
     /// <summary>
-    /// Provides assertion methods to be executed on an object instance.
+    /// Provides fluent assertion methods to be executed on the system under test (sut).
+    /// Every method should return a <see cref="IChainableFluentAssertion{T}"/> instance
+    /// of the same fluent assertion type (closure of operations), or throw an 
+    /// <see cref="FluentAssertionException"/> when failing.
+    /// This 'marker' interface is mandatory for the chainable assertion mechanism. 
     /// </summary>
-    public interface IObjectFluentAssertion : IFluentAssertion, IEqualityFluentAssertionTrait<IObjectFluentAssertion>, IInstanceTypeFluentAssertionTrait<IObjectFluentAssertion>
+    public interface IFluentAssertionBase
     {
     }
 }

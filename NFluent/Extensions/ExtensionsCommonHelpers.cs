@@ -14,10 +14,13 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Extensions
 {
+    using System;
+    using System.Globalization;
+
     /// <summary>
     /// Common helper methods for the NFluent extension methods.
     /// </summary>
-    internal static class ExtensionsCommonHelpers
+    public static class ExtensionsCommonHelpers
     {
         /// <summary>
         /// Returns a string that represents the current object. If the object is already a string, this method will surround it with brackets.
@@ -30,10 +33,47 @@ namespace NFluent.Extensions
             {
                 return string.Format(@"""{0}""", theObject);
             }
+            
+            if (theObject is DateTime)
+            {
+                return ToStringProperlyFormated((DateTime)theObject);
+            }
+
+            if (theObject is bool)
+            {
+                return ToStringProperlyFormated((bool)theObject);
+            }
+
+            if (theObject == null)
+            {
+                return "null";
+            }
             else
             {
-                return theObject.ToString();
+                return theObject.ToString();    
             }
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current DateTime.         
+        /// </summary>
+        /// <param name="theDateTime">The DateTime.</param>
+        /// <returns>A string that represents the current object with current culture ignore.</returns>
+        public static string ToStringProperlyFormated(this DateTime theDateTime)
+        {
+            // return a ISO-8601 Date format
+            return string.Format(CultureInfo.InvariantCulture, "{0:o}, Kind = {1}", theDateTime, theDateTime.Kind);
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current Boolean.         
+        /// </summary>
+        /// <param name="theBoolean">The Boolean.</param>
+        /// <returns>A string that represents the current object with current culture ignore.</returns>
+        public static string ToStringProperlyFormated(this bool theBoolean)
+        {
+            // Ensure that boolean values are not localized 
+            return theBoolean.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

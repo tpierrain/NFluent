@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ObjectFluentAssertion.cs" company="">
+// // <copyright file="ObjectFluentAssertionExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -19,77 +19,66 @@ namespace NFluent
     /// <summary>
     /// Provides assertion methods to be executed on an object instance.
     /// </summary>
-    public class ObjectFluentAssertion : IObjectFluentAssertion
+    public static class ObjectFluentAssertionExtensions
     {
-        private readonly object sut;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectFluentAssertion" /> class.
-        /// </summary>
-        /// <param name="sut">The System Under Test.</param>
-        public ObjectFluentAssertion(object sut)
-        {
-            this.sut = sut;
-        }
-
-        #region IEqualityFluentAssertion members
-
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
-        /// <returns>A chainable assertion.</returns>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public IChainableFluentAssertion<IObjectFluentAssertion> IsEqualTo(object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<object>> IsEqualTo(this IFluentAssertion<object> fluentAssertion, object expected)
         {
-            EqualityHelper.IsEqualTo(this.sut, expected);
-            return new ChainableFluentAssertion<IObjectFluentAssertion>(this);
+            EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
         }
 
         /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
-        /// <returns>A chainable assertion.</returns>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public IChainableFluentAssertion<IObjectFluentAssertion> IsNotEqualTo(object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<object>> IsNotEqualTo(this IFluentAssertion<object> fluentAssertion, object expected)
         {
-            EqualityHelper.IsNotEqualTo(this.sut, expected);
-            return new ChainableFluentAssertion<IObjectFluentAssertion>(this);
+            EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
         }
-
-        #endregion
-
-        #region IInstanceTypeFluentAssertion members
 
         /// <summary>
         /// Checks that the actual instance is an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public IChainableFluentAssertion<IObjectFluentAssertion> IsInstanceOf<T>()
+        public static IChainableFluentAssertion<IFluentAssertion<object>> IsInstanceOf<T>(this IFluentAssertion<object> fluentAssertion)
         {
-            IsInstanceHelper.IsInstanceOf(this.sut, typeof(T));
-            return new ChainableFluentAssertion<IObjectFluentAssertion>(this);
+            IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
         }
 
         /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
+        /// Checks that the actual instance is an instance of the given type.
         /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
+        /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public IChainableFluentAssertion<IObjectFluentAssertion> IsNotInstanceOf<T>()
+        /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<object>> IsNotInstanceOf<T>(this IFluentAssertion<object> fluentAssertion)
         {
-            IsInstanceHelper.IsNotInstanceOf(this.sut, typeof(T));
-            return new ChainableFluentAssertion<IObjectFluentAssertion>(this);
+            IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
         }
-
-        #endregion
     }
 }

@@ -3,11 +3,30 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
+    using System.Threading;
 
     using NUnit.Framework;
 
     public class ContainsOnlyTests
     {
+        private CultureInfo savedCulture;
+
+        [SetUp]
+        public void SetUp()
+        {
+            // Important so that ToString() versions of decimal works whatever the current culture.
+            this.savedCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("fr-FR");
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            // Boy scout rule ;-)
+            Thread.CurrentThread.CurrentCulture = this.savedCulture;
+        }
+
         #region ContainsOnly with arrays
 
         [Test]
@@ -32,7 +51,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable [3, 2, 666, 1974, 1] does not contain only the expected value(s). It contains also other values: [666, 1974].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[3, 2, 666, 1974, 1]\ndoes not contain only the expected value(s):\n\t[1, 2, 3].\nIt contains also other values:\n\t[666, 1974]")]
         public void ContainsOnlyWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 3, 2, 666, 1974, 1 };
@@ -77,7 +96,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable [3, 2, 666, 1974, 1] does not contain only the expected value(s). It contains also other values: [666, 1974].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[3, 2, 666, 1974, 1]\ndoes not contain only the expected value(s):\n\t[1, 2, 3].\nIt contains also other values:\n\t[666, 1974]")]
         public void ContainsOnlyWithEnumerableThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
@@ -113,7 +132,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The enumerable [1, ""uno"", ""tres"", 45,3] does not contain only the expected value(s). It contains also other values: [""uno"", ""tres""].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[1, \"uno\", \"tres\", 45,3]\ndoes not contain only the expected value(s):\n\t[1, \"Tres\", 45,3].\nIt contains also other values:\n\t[\"uno\", \"tres\"]")]
         public void ContainsOnlyWithEnumerableThrowCaseSensitiveException()
         {
             var variousObjects = new ArrayList() { 1, "uno", "tres", 45.3F };

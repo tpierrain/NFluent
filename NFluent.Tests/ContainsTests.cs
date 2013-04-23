@@ -38,7 +38,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable [1, 2, 3] does not contain the expected value(s): [666, 1974].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[1, 2, 3]\ndoes not contain the expected value(s):\n\t[666, 1974]")]
         public void ContainsWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 1, 2, 3 };
@@ -74,7 +74,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The enumerable [1, 2, 3] does not contain the expected value(s): [666, 1974].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[1, 2, 3]\ndoes not contain the expected value(s):\n\t[666, 1974]")]
         public void ContainsWithEnumerableThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new List<int>() { 1, 2, 3 };

@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Helpers
 {
+    using System;
+
     using NFluent.Extensions;
 
     /// <summary>
@@ -31,7 +33,28 @@ namespace NFluent.Helpers
         {
             if (!object.Equals(instance, expected))
             {
-                throw new FluentAssertionException(string.Format("[{0}] not equals to the expected [{1}]", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated()));
+                // Should throw
+                var expectedTypeMessage = string.Empty;
+                var instanceTypeMessage = string.Empty;
+                bool includeHashCode = false;
+
+                if (instance.GetTypeWithoutThrowingException() != expected.GetTypeWithoutThrowingException())
+                {
+                    expectedTypeMessage = BuildTypeDescriptionMessage(expected, includeHashCode);
+                    instanceTypeMessage = BuildTypeDescriptionMessage(instance, includeHashCode);
+                }
+                else
+                {
+                    // same instance type. Do they have the same ToString() value? In that case we should include the hashcodex of each instance within the error message
+                    if (string.Compare(instance.ToString(), expected.ToString()) == 0)
+                    {
+                        includeHashCode = true;
+                        expectedTypeMessage = BuildTypeDescriptionMessage(expected, includeHashCode);
+                        instanceTypeMessage = BuildTypeDescriptionMessage(instance, includeHashCode);
+                    }
+                }
+
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{2}\nis not equal to the expected one:\n\t[{1}]{3}.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage));
             }
         }
 
@@ -45,8 +68,32 @@ namespace NFluent.Helpers
         {
             if (object.Equals(instance, expected))
             {
-                throw new FluentAssertionException(string.Format("[{0}] equals to the value [{1}] which is not expected.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated()));
+                var instanceTypeMessage = BuildTypeDescriptionMessage(expected, false);
+                throw new FluentAssertionException(string.Format("\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[{0}]{1}.", instance.ToStringProperlyFormated(), instanceTypeMessage));
             }
+        }
+
+        internal static string BuildTypeDescriptionMessage(object obj)
+        {
+            return BuildTypeDescriptionMessage(obj, false);
+        }
+
+        internal static string BuildTypeDescriptionMessage(object obj, bool includeHashCode)
+        {
+            string expectedTypeMessage = string.Empty;
+            if (obj != null)
+            {
+                if (includeHashCode)
+                {
+                    expectedTypeMessage = string.Format(" of type: [{0}] with HashCode: [{1}]", obj.GetType(), obj.GetHashCode());
+                }
+                else
+                {
+                    expectedTypeMessage = string.Format(" of type: [{0}]", obj.GetType());
+                }
+            }
+
+            return expectedTypeMessage;
         }
     }
 }

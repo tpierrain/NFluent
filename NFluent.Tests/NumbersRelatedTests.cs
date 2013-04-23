@@ -1,10 +1,30 @@
 ﻿namespace NFluent.Tests
 {
+    using System.Globalization;
+    using System.Threading;
+
     using NUnit.Framework;
 
     [TestFixture]
     public class NumbersRelatedTests
     {
+        private CultureInfo savedCulture;
+
+        [SetUp]
+        public void SetUp()
+        {
+            // Important so that ToString() versions of decimal works whatever the current culture.
+            this.savedCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("fr-FR");
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            // Boy scout rule ;-)
+            Thread.CurrentThread.CurrentCulture = this.savedCulture;
+        }
+
         #region IsZero
 
         [Test]
@@ -24,6 +44,7 @@
             Check.That(IntZero).IsZero();
             Check.That(LongZero).IsZero();
             Check.That(DoubleZero).IsZero();
+
             Check.That(DecimalZero).IsZero();
             Check.That(FloatZero).IsZero();
             Check.That(ShortZero).IsZero();
@@ -34,12 +55,12 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[9] is not equal to zero.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[9] of type: [System.Int32]\nis not equal to zero.")]
         public void IsZeroThrowsExceptionWhenFails()
         {
-            int nine = 9;
+            const int Nine = 9;
 
-            Check.That(nine).IsZero();
+            Check.That(Nine).IsZero();
         }
 
         #endregion 
@@ -73,12 +94,12 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[0] is equal to zero.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0] of type: [System.Double]\nis equal to zero.")]
         public void IsNotZeroThrowsExceptionWhenFails()
         {
-            double zero = 0D;
+            const double Zero = 0D;
 
-            Check.That(zero).IsNotZero();
+            Check.That(Zero).IsNotZero();
         }
 
         #endregion 
@@ -88,36 +109,110 @@
         [Test]
         public void IsPositiveWorks()
         {
-            int two = 2;
-            Check.That(two).IsPositive();
+            const int Two = 2;
+            Check.That(Two).IsPositive();
+
+            Check.That((byte)1).IsPositive();
+
+            Check.That((decimal)1).IsPositive();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[0] is not a strictly positive value.")]
-        public void IsPositiveThrowExceptionWhenEqualToZero()
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0] of type: [System.Single]\nis not a strictly positive value.")]
+        public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
-            float zero = 0F;
-            Check.That(zero).IsPositive();
+            const float Zero = 0F;
+            Check.That(Zero).IsPositive();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "[-50] is not a strictly positive value.")]
-        public void IsPositiveThrowExceptionWhenValueIsNegative()
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[-50] of type: [System.Double]\nis not a strictly positive value.")]
+        public void IsPositiveThrowsExceptionWhenValueIsNegative()
         {
-            double negativeDouble = -50D;
+            const double NegativeDouble = -50D;
 
-            Check.That(negativeDouble).IsPositive();
+            Check.That(NegativeDouble).IsPositive();
         }
 
         #endregion
 
         [Test]
+        public void IsLessThanWorksForDouble()
+        {
+            const double SmallDouble = 1.0D;
+            const double BigDouble = 37.2D;
+
+            Check.That(SmallDouble).IsLessThan(BigDouble);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis not greater than:\n\t[37,2].")]
+        public void IsGreaterThanWorksForDouble()
+        {
+            const double SmallDouble = 1.0D;
+            const double BigDouble = 37.2D;
+
+            Check.That(SmallDouble).IsGreaterThan(BigDouble);
+        }
+
+        [Test]
         public void AndOperatorCanChainMultipleAssertionOnNumber()
         {
-            double doubleNumber = 37.2D;
+            const double DoubleNumber = 37.2D;
 
-            Check.That(doubleNumber).IsNotZero().And.IsPositive();
-            Check.That(doubleNumber).IsPositive().And.IsNotZero();
+            Check.That(DoubleNumber).IsNotZero().And.IsPositive();
+            Check.That(DoubleNumber).IsPositive().And.IsNotZero();
         }
+
+        #region IsEqualTo / IsNotEqualTo
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[42] of type: [System.Int32]\nis not equal to the expected one:\n\t[42] of type: [System.Int64].")]
+        public void IsEqualToThrowsWhenSameNumberOfDifferentTypes()
+        {
+            const int IntValue = 42;
+            const long LongValue = 42L;
+
+            Check.That(IntValue).IsEqualTo(LongValue);
+        }
+
+        [Test]
+        public void IsEqualToWorksWithDecimal()
+        {
+            const decimal Value = 42;
+            const decimal SameValue = 42;
+
+            Check.That(Value).IsEqualTo(SameValue);
+        }
+
+        [Test]
+        public void IsNotEqualToWorksWithDecimal()
+        {
+            const decimal Value = 42;
+            const decimal DifferentValue = 13;
+
+            Check.That(Value).IsNotEqualTo(DifferentValue);
+        }
+
+        [Test]
+        public void IsEqualToWorksWithByte()
+        {
+            const byte Value = 2;
+            const byte SameValue = 2;
+
+            Check.That(Value).IsEqualTo(SameValue);
+        }
+
+        [Test]
+        public void IsNotEqualToWorksWithByte()
+        {
+            const byte Value = 42;
+            const byte DifferentValue = 13;
+
+            Check.That(Value).IsNotEqualTo(DifferentValue);
+        }
+
+        #endregion
+
     }
 }

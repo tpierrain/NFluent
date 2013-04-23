@@ -21,70 +21,121 @@ namespace NFluent
     /// Provides assertion methods to be executed on a number instance.
     /// </summary>
     /// <typeparam name="N">Type of the numerical value.</typeparam>
-    public class NumberFluentAssertion<N> : INumberFluentAssertion
+    public class NumberFluentAssertion<N> : IFluentAssertion<N>
+        where N : IComparable
     {
-        private readonly N number;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberFluentAssertion{N}" /> class.
         /// </summary>
         /// <param name="number">The number to assert on.</param>
         public NumberFluentAssertion(N number)
         {
-            this.number = number;
+            this.Value = number;
         }
 
         /// <summary>
-        /// Verifies that the actual value is equal to zero.
+        /// Gets the value to be tested (provided for any extension method to be able to test it).
+        /// </summary>
+        /// <value>
+        /// The value to be tested by any fluent assertion extension method.
+        /// </value>
+        public N Value { get; private set; }
+
+        /// <summary>
+        /// Checks that the actual value is equal to zero.
         /// </summary>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
-        public IChainableFluentAssertion<INumberFluentAssertion> IsZero()
+        public IChainableFluentAssertion<IFluentAssertion<N>> IsZero()
         {
-            var res = InternalIsZero(this.number);
+            var res = InternalIsZero(this.Value);
 
             if (!res)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is not equal to zero.", this.number));
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not equal to zero.", this.Value, EqualityHelper.BuildTypeDescriptionMessage(this.Value)));
             }
 
-            return new ChainableFluentAssertion<INumberFluentAssertion>(this);
+            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
         }
 
         /// <summary>
-        /// Verifies that the actual value is NOT equal to zero.
+        /// Checks that the actual value is NOT equal to zero.
         /// </summary>
         /// <returns>
         /// <returns>A chainable assertion.</returns>
         /// </returns>
         /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
-        public IChainableFluentAssertion<INumberFluentAssertion> IsNotZero()
+        public IChainableFluentAssertion<IFluentAssertion<N>> IsNotZero()
         {
-            bool res = InternalIsZero(this.number);
+            bool res = InternalIsZero(this.Value);
 
             if (res)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is equal to zero.", this.number));
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis equal to zero.", this.Value, EqualityHelper.BuildTypeDescriptionMessage(this.Value)));
             }
 
-            return new ChainableFluentAssertion<INumberFluentAssertion>(this);
+            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
         }
 
         /// <summary>
-        /// Verifies that the actual value is strictly positive.
+        /// Checks that the actual value is strictly positive.
         /// </summary>
         /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
-        public IChainableFluentAssertion<INumberFluentAssertion> IsPositive()
+        public IChainableFluentAssertion<IFluentAssertion<N>> IsPositive()
         {
-            if (Convert.ToInt32(this.number) <= 0)
+            if (Convert.ToInt32(this.Value) <= 0)
             {
-                throw new FluentAssertionException(string.Format("[{0}] is not a strictly positive value.", this.number));
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not a strictly positive value.", this.Value, EqualityHelper.BuildTypeDescriptionMessage(this.Value)));
             }
 
-            return new ChainableFluentAssertion<INumberFluentAssertion>(this);
+            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is less than a comparand.
+        /// </summary>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">
+        /// The value is not less than the comparand.
+        /// </exception>
+        public IChainableFluentAssertion<IFluentAssertion<N>> IsLessThan(N comparand)
+        {
+            if (this.Value.CompareTo(comparand) >= 0)
+            {
+                throw new FluentAssertionException(string.Format("[{0}] is not less than {1}.", this.Value, comparand));
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is more than a comparand.
+        /// </summary>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">
+        /// The value is not less than the comparand.
+        /// </exception>
+        public IChainableFluentAssertion<IFluentAssertion<N>> IsGreaterThan(N comparand)
+        {
+            if (this.Value.CompareTo(comparand) <= 0)
+            {
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not greater than:\n\t[{1}].", this.Value, comparand));
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
         }
 
         #region IEqualityFluentAssertion members
@@ -95,10 +146,10 @@ namespace NFluent
         /// <returns>A chainable assertion.</returns>
         /// <param name="expected">The expected value.</param>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public IChainableFluentAssertion<INumberFluentAssertion> IsEqualTo(object expected)
+        public IChainableFluentAssertion<IFluentAssertion<N>> IsEqualTo(object expected)
         {
-            EqualityHelper.IsEqualTo(this.number, expected);
-            return new ChainableFluentAssertion<INumberFluentAssertion>(this);
+            EqualityHelper.IsEqualTo(this.Value, expected);
+            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
         }
 
         /// <summary>
@@ -107,10 +158,10 @@ namespace NFluent
         /// <returns>A chainable assertion.</returns>
         /// <param name="expected">The expected value.</param>
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public IChainableFluentAssertion<INumberFluentAssertion> IsNotEqualTo(object expected)
+        public IChainableFluentAssertion<IFluentAssertion<N>> IsNotEqualTo(object expected)
         {
-            EqualityHelper.IsNotEqualTo(this.number, expected);
-            return new ChainableFluentAssertion<INumberFluentAssertion>(this);
+            EqualityHelper.IsNotEqualTo(this.Value, expected);
+            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
         }
 
         #endregion
@@ -125,10 +176,10 @@ namespace NFluent
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public IChainableFluentAssertion<INumberFluentAssertion> IsInstanceOf<T>()
+        public IChainableFluentAssertion<IFluentAssertion<N>> IsInstanceOf<T>()
         {
-            IsInstanceHelper.IsInstanceOf(this.number, typeof(T));
-            return new ChainableFluentAssertion<INumberFluentAssertion>(this);
+            IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
+            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
         }
 
         /// <summary>
@@ -139,10 +190,10 @@ namespace NFluent
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public IChainableFluentAssertion<INumberFluentAssertion> IsNotInstanceOf<T>()
+        public IChainableFluentAssertion<IFluentAssertion<N>> IsNotInstanceOf<T>()
         {
-            IsInstanceHelper.IsNotInstanceOf(this.number, typeof(T));
-            return new ChainableFluentAssertion<INumberFluentAssertion>(this);
+            IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(T));
+            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
         }
 
         #endregion

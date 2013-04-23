@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="EnumerableFluentAssertion.cs" company="">
+// // <copyright file="EnumerableFluentAssertionExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -21,91 +21,81 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides assertion methods to be executed on an enumerable instance.
+    /// Provides assertion methods to be executed on an <see cref="IEnumerable"/> value.
     /// </summary>
-    internal class EnumerableFluentAssertion : IEnumerableFluentAssertion
+    public static class EnumerableFluentAssertionExtensions
     {
-        private readonly IEnumerable sutEnumerable;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumerableFluentAssertion" /> class.
-        /// </summary>
-        /// <param name="sutEnumerable">The System Under Test enumerable.</param>
-        public EnumerableFluentAssertion(IEnumerable sutEnumerable)
-        {
-            this.sutEnumerable = sutEnumerable;
-        }
-
-        #region IEqualityFluentAssertionTrait members
-
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
-        /// <returns>A chainable assertion.</returns>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public IChainableFluentAssertion<IEnumerableFluentAssertion> IsEqualTo(object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsEqualTo(this IFluentAssertion<IEnumerable> fluentAssertion, object expected)
         {
-            EqualityHelper.IsEqualTo(this.sutEnumerable, expected);
-            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
+            EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
-        /// <returns>A chainable assertion.</returns>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public IChainableFluentAssertion<IEnumerableFluentAssertion> IsNotEqualTo(object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsNotEqualTo(this IFluentAssertion<IEnumerable> fluentAssertion, object expected)
         {
-            EqualityHelper.IsNotEqualTo(this.sutEnumerable, expected);
-            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
+            EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
-
-        #endregion
-
-        #region IInstanceTypeFluentAssertionTrait members
 
         /// <summary>
         /// Checks that the actual instance is an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        IChainableFluentAssertion<IEnumerableFluentAssertion> IInstanceTypeFluentAssertionTrait<IEnumerableFluentAssertion>.IsInstanceOf<T>()
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsInstanceOf<T>(this IFluentAssertion<IEnumerable> fluentAssertion)
         {
-            IsInstanceHelper.IsInstanceOf(this.sutEnumerable, typeof(T));
-            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
+            IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
         /// Checks that the actual instance is not an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        IChainableFluentAssertion<IEnumerableFluentAssertion> IInstanceTypeFluentAssertionTrait<IEnumerableFluentAssertion>.IsNotInstanceOf<T>()
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsNotInstanceOf<T>(this IFluentAssertion<IEnumerable> fluentAssertion)
         {
-            IsInstanceHelper.IsNotInstanceOf(this.sutEnumerable, typeof(T));
-            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
+            IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
-
-        #endregion
-
-        #region IEnumerableFluentAssertion members
 
         /// <summary>
         /// Checks that the enumerable contains all the given expected values, in any order.
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the enumerable.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
-        /// <returns>A chainable assertion.</returns>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain all the expected values.</exception>
-        public IChainableFluentAssertion<IEnumerableFluentAssertion> Contains<T>(params T[] expectedValues)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> Contains<T>(this IFluentAssertion<IEnumerable> fluentAssertion, params T[] expectedValues)
         {
             IEnumerable properExpectedValues;
             if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
@@ -117,36 +107,43 @@ namespace NFluent
                 properExpectedValues = expectedValues as IEnumerable;
             }
 
-            this.Contains(properExpectedValues);
-            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
+            fluentAssertion.Contains(properExpectedValues);
+
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
         /// Checks that the enumerable contains all the values present in another enumerable, in any order.
         /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <param name="otherEnumerable">The enumerable containing the expected values to be found.</param>
-        /// <returns>A chainable assertion.</returns>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
-        public IChainableFluentAssertion<IEnumerableFluentAssertion> Contains(IEnumerable otherEnumerable)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> Contains(this IFluentAssertion<IEnumerable> fluentAssertion, IEnumerable otherEnumerable)
         {
-            var notFoundValues = ExtractNotFoundValues(this.sutEnumerable, otherEnumerable);
+            var notFoundValues = ExtractNotFoundValues(fluentAssertion.Value, otherEnumerable);
 
-            if (notFoundValues.Count == 0)
+            if (notFoundValues.Count > 0)
             {
-                return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
+                throw new FluentAssertionException(string.Format("\nThe actual enumerable:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}]", fluentAssertion.Value.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
             }
 
-            throw new FluentAssertionException(string.Format("The enumerable [{0}] does not contain the expected value(s): [{1}].", this.sutEnumerable.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
         /// Checks that the enumerable contains only the given values and nothing else, in any order.
         /// </summary>
         /// <typeparam name="T">Type of the expected values to be found.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
-        /// <returns>A chainable assertion.</returns>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain only the expected values provided.</exception>
-        public IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsOnly<T>(params T[] expectedValues)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> ContainsOnly<T>(this IFluentAssertion<IEnumerable> fluentAssertion, params T[] expectedValues)
         {
             IEnumerable properExpectedValues;
             if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
@@ -158,27 +155,30 @@ namespace NFluent
                 properExpectedValues = expectedValues as IEnumerable;
             }
 
-            this.ContainsOnly(properExpectedValues);
+            fluentAssertion.ContainsOnly(properExpectedValues);
 
-            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
         /// Checks that the enumerable contains only the values present in another enumerable, and nothing else, in any order.
         /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
-        /// <returns>A chainable assertion.</returns>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
-        public IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsOnly(IEnumerable expectedValues)
-        {   
-            var unexpectedValuesFound = ExtractUnexpectedValues(this.sutEnumerable, expectedValues);
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> ContainsOnly(this IFluentAssertion<IEnumerable> fluentAssertion, IEnumerable expectedValues)
+        {
+            var unexpectedValuesFound = ExtractUnexpectedValues(fluentAssertion.Value, expectedValues);
 
             if (unexpectedValuesFound.Count > 0)
             {
-                throw new FluentAssertionException(string.Format("The enumerable [{0}] does not contain only the expected value(s). It contains also other values: [{1}].", this.sutEnumerable.ToEnumeratedString(), unexpectedValuesFound.ToEnumeratedString()));
+                throw new FluentAssertionException(string.Format("\nThe actual enumerable:\n\t[{0}]\ndoes not contain only the expected value(s):\n\t[{1}].\nIt contains also other values:\n\t[{2}]", fluentAssertion.Value.ToEnumeratedString(), expectedValues.ToEnumeratedString(), unexpectedValuesFound.ToEnumeratedString()));
             }
 
-            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
@@ -187,10 +187,13 @@ namespace NFluent
         /// (i.e. don't use it with <see cref="Hashtable" />, prefer <see cref="ContainsOnly{T}" /> in that case).
         /// </summary>
         /// <typeparam name="T">Type of the elements to be found.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
-        /// <returns>A chainable assertion.</returns>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
-        public IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsExactly<T>(params T[] expectedValues)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> ContainsExactly<T>(this IFluentAssertion<IEnumerable> fluentAssertion, params T[] expectedValues)
         {
             IEnumerable properExpectedValues;
             if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
@@ -202,9 +205,9 @@ namespace NFluent
                 properExpectedValues = expectedValues as IEnumerable;
             }
 
-            this.ContainsExactly(properExpectedValues);
+            fluentAssertion.ContainsExactly(properExpectedValues);
 
-            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
@@ -212,21 +215,20 @@ namespace NFluent
         /// This assertion should only be used with IEnumerable that have a consistent iteration order
         /// (i.e. don't use it with <see cref="Hashtable" />, prefer <see cref="ContainsOnly{T}" /> in that case).
         /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <param name="otherEnumerable">The other enumerable containing the exact expected values to be found.</param>
-        /// <returns>A chainable assertion.</returns>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
-        public IChainableFluentAssertion<IEnumerableFluentAssertion> ContainsExactly(IEnumerable otherEnumerable)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> ContainsExactly(this IFluentAssertion<IEnumerable> fluentAssertion, IEnumerable otherEnumerable)
         {
-            // TODO: Refactor this implementation
             if (otherEnumerable == null)
             {
-                long foundCount;
-                var foundItems = this.sutEnumerable.ToEnumeratedString(out foundCount);
-                var foundItemsCount = FormatItemCount(foundCount);
-                throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [null] (0 item).", foundItems, foundItemsCount));
+                ThrowsNotExactlyException(fluentAssertion, null);
             }
 
-            var first = this.sutEnumerable.GetEnumerator();
+            var first = fluentAssertion.Value.GetEnumerator();
             var enumerable = otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
             var second = enumerable.GetEnumerator();
 
@@ -234,55 +236,70 @@ namespace NFluent
             {
                 if (!second.MoveNext() || !object.Equals(first.Current, second.Current))
                 {
-                    long foundCount;
-                    var foundItems = this.sutEnumerable.ToEnumeratedString(out foundCount);
-                    var formatedFoundCount = FormatItemCount(foundCount);
-
-                    long expectedCount;
-                    object expectedItems = enumerable.ToEnumeratedString(out expectedCount);
-                    var formatedExpectedCount = FormatItemCount(expectedCount);
-
-                    throw new FluentAssertionException(string.Format("Found: [{0}] ({1}) instead of the expected [{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
+                    ThrowsNotExactlyException(fluentAssertion, enumerable);
                 }
             }
+            
+            if (second.MoveNext())
+            {
+                ThrowsNotExactlyException(fluentAssertion, enumerable);
+            }
 
-            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
         /// Checks that the enumerable has the proper number of elements.
         /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <param name="expectedSize">The expected size to be found.</param>
-        /// <returns>A chainable assertion.</returns>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable has not the expected number of elements.</exception>
-        public IChainableFluentAssertion<IEnumerableFluentAssertion> HasSize(long expectedSize)
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> HasSize(this IFluentAssertion<IEnumerable> fluentAssertion, long expectedSize)
         {
-            long itemsCount = this.sutEnumerable.Cast<object>().LongCount();
+            long itemsCount = fluentAssertion.Value.Cast<object>().LongCount();
 
             if (expectedSize != itemsCount)
             {
-                throw new FluentAssertionException(string.Format("Has [{0}] items instead of the expected value [{1}].", itemsCount, expectedSize));
+                string foundElementsNumberDescription = itemsCount.ToString();
+                if (itemsCount > 1)
+                {
+                    foundElementsNumberDescription += " elements";
+                }
+                else
+                {
+                    foundElementsNumberDescription += " element";
+                }
+                
+                var elements = fluentAssertion.Value.ToEnumeratedString();
+
+                throw new FluentAssertionException(string.Format("\nThe actual enumerable has {0} instead of {1}.\nActual content is:\n\t[{2}].", foundElementsNumberDescription, expectedSize, elements));
             }
 
-            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
         /// <summary>
         /// Checks that the enumerable is empty.
         /// </summary>
-        /// <returns>A chainable assertion.</returns>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable is not empty.</exception>
-        public IChainableFluentAssertion<IEnumerableFluentAssertion> IsEmpty()
+        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsEmpty(this IFluentAssertion<IEnumerable> fluentAssertion)
         {
-            if (this.sutEnumerable.Cast<object>().Any())
+            if (fluentAssertion.Value.Cast<object>().Any())
             {
-                throw new FluentAssertionException(string.Format("Enumerable not empty. Contains the element(s): [{0}].", this.sutEnumerable.ToEnumeratedString()));
+                throw new FluentAssertionException(string.Format("\nThe actual enumerable is not empty. Contains:\n\t[{0}]", fluentAssertion.Value.ToEnumeratedString()));
             }
 
-            return new ChainableFluentAssertion<IEnumerableFluentAssertion>(this);
+            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
-        #endregion
+        #region private or internal methods
 
         /// <summary>
         /// Returns all expected values that aren't present in the enumerable.
@@ -370,5 +387,20 @@ namespace NFluent
         {
             return (element is IEnumerable) && !(element is IEnumerable<char>);
         }
+
+        private static void ThrowsNotExactlyException(IFluentAssertion<IEnumerable> fluentAssertion, IList<object> enumerable)
+        {
+            long foundCount;
+            var foundItems = fluentAssertion.Value.ToEnumeratedString(out foundCount);
+            var formatedFoundCount = FormatItemCount(foundCount);
+
+            long expectedCount;
+            object expectedItems = enumerable.ToEnumeratedString(out expectedCount);
+            var formatedExpectedCount = FormatItemCount(expectedCount);
+
+            throw new FluentAssertionException(string.Format("\nThe actual enumerable:\n\t[{0}] ({1})\ndoes not contain exactly the expected value(s):\n\t[{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
+        }
+
+        #endregion
     }
 }
