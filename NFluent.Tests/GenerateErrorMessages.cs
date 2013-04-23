@@ -133,9 +133,9 @@ namespace NFluent.Tests
             }
 
             // does not work yet
-//            string name = "FluentReport.xml";
-//            report.Save(name);
-//            Debug.Write("Report generated in {0}", Path.GetFullPath(name));
+            string name = "FluentReport.xml";
+            report.Save(name);
+            Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(name)));
         }
 
         private static CheckDescription GetCheckAndType(FluentAssertionException fluExc, out MethodBase method, out Type testedtype)
