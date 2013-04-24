@@ -12,7 +12,7 @@ __NFluent will make your tests__:
 + __helpful to reverse engineer legacy code__: indeed, temporarily write an on-purpose failing assert on a legacy method, so you can understand it and leverage on the "ready-to-be-copied-and-paste-for-arrays-or-collections-initialization-purpose" NFluent assert failure messages.
 + __less error-prone__: indeed, no more confusion about the order of the "expected" and "actual" values you can find in the classical .NET unit tests frameworks.
 
-NFluent is __directly inspired by the awesome Java FEST Fluent__ assertion/reflection library (http://fest.easytesting.org/) which had been recently forked by one of its most active contributor, to create the more prolific __[AssertJ](https://github.com/joel-costigliola/assertj-core)__ library.
+NFluent is __directly inspired by the awesome Java FEST Fluent__ assertion/reflection library (http://fest.easytesting.org/) which had been recently forked (by one of its most active contributor) to create the more prolific __[AssertJ](https://github.com/joel-costigliola/assertj-core)__ library.
 
 NFluent & unit test frameworks
 -------------------------------
