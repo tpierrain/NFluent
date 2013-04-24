@@ -147,9 +147,10 @@ Many thanks
 
 + To __Omer RAVIV__, which supports the NFluent project by offering us some free licenses for the nice __[BugAid](http://www.bugaidsoftware.com/features/)__ Visual Studio extensions.
 
-+ To __[Jetbrains](http://www.jetbrains.com/)__, which still creates some of the coolest tools for developers (whatever the language), and __which supports our NFluent project__ by providing us some space within their [TeamCity code better instance](http://teamcity.codebetter.com/) (note: you can enter as guest).
++ To __[Jetbrains](http://www.jetbrains.com/)__, which still creates some of the coolest tools for developers (whatever the language), and __which supports our NFluent project__ by providing us some space within their __[TeamCity code better instance](http://teamcity.codebetter.com/)__ (note: you can enter as guest).
 
-![jetbrains](http://www.jetbrains.com/img/banners/Codebetter.png) [YouTrack by JetBrains: keyboard-centric bug tracker](http://www.jetbrains.com/youtrack) - [TeamCity by JetBrains: continuous integration server](http://www.jetbrains.com/teamcity)
+![jetbrains](http://www.jetbrains.com/img/banners/Codebetter.png)
+[YouTrack by JetBrains: keyboard-centric bug tracker](http://www.jetbrains.com/youtrack) - [TeamCity by JetBrains: continuous integration server](http://www.jetbrains.com/teamcity)
 
 - - -
 
