@@ -1,8 +1,17 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CheckDescription.cs" company="">
-//   
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// // --------------------------------------------------------------------------------------------------------------------
+// // <copyright file="CheckDescription.cs" company="">
+// //   Copyright 2013 Cyrille DUPUYDAUBY
+// //   Licensed under the Apache License, Version 2.0 (the "License");
+// //   you may not use this file except in compliance with the License.
+// //   You may obtain a copy of the License at
+// //       http://www.apache.org/licenses/LICENSE-2.0
+// //   Unless required by applicable law or agreed to in writing, software
+// //   distributed under the License is distributed on an "AS IS" BASIS,
+// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// //   See the License for the specific language governing permissions and
+// //   limitations under the License.
+// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent.Tests
 {
@@ -37,24 +46,33 @@ namespace NFluent.Tests
         {
             get
             {
-                StringBuilder parameters = new StringBuilder(CheckParameters.Count*20);
-                // build parameter list
-                if (CheckParameters.Count > 0)
+                var checkParameters = this.CheckParameters;
+                if (checkParameters != null)
                 {
-                    parameters.Append(CheckParameters[0].Name);
-                    for (int i = 1; i < CheckParameters.Count; i++)
+                    var parameters = new StringBuilder(checkParameters.Count * 20);
+
+                    // build parameter list
+                    if (checkParameters.Count > 0)
                     {
-                        parameters.Append(", ");
-                        parameters.Append(CheckParameters[i].Name);
+                        parameters.Append(checkParameters[0].Name);
+                        for (int i = 1; i < checkParameters.Count; i++)
+                        {
+                            parameters.Append(", ");
+                            parameters.Append(checkParameters[i].Name);
+                        }
                     }
+
+                    return string.Format("Check.That({0} sut).{1}({2})", this.CheckedType.Name, this.Check.Name, parameters);
                 }
-                return string.Format("Check.That({0} sut).{1}({2})", CheckedType.Name, Check.Name, parameters);
+
+                return string.Empty;
             }
+
             set
             {
-                
             }
         }
+
         [XmlIgnore]
         public Type CheckedType { get; set; }
 
@@ -132,9 +150,12 @@ namespace NFluent.Tests
         {
             get
             {
-                return CheckedType.Name;
+                return this.CheckedType.Name;
             }
-            set {}
+
+            set
+            {
+            }
         }
 
         public Type CheckedType
