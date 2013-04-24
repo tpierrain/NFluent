@@ -17,7 +17,6 @@ namespace NFluent.Tests
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -29,10 +28,9 @@ namespace NFluent.Tests
     [TestFixture]
     public class GenerateErrorMessages
     {
+        // run this test to debug a specific test that the code is unable to properly identify
         [Test]
         [Explicit]
-
-        // run this test to debug a specific test that the code is unable to properly identify
         public void SpecificTest()
         {
             var test = new LambdaRelatedTests();
@@ -50,9 +48,6 @@ namespace NFluent.Tests
             // test.TearDown();
         }
 
-        [Test]
-        [Explicit]
-
         // Run this test to get all error messages
         /* Algo is:
          * - Get all Types from this assembly and with a TestFixture Attribute
@@ -64,6 +59,8 @@ namespace NFluent.Tests
          *   - exception is analyzed to identify the related test
          *   - all TestFixtureTeardown are run
          */
+        [Test]
+        [Explicit]
         public void ScanAndGenerate()
         {
             FullRunDescription report = new FullRunDescription();
