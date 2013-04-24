@@ -4,6 +4,7 @@
 
     using NUnit.Framework;
 
+    [TestFixture]
     public class ToEnumeratedStringTests
     {
         [Test]
