@@ -149,8 +149,9 @@ Many thanks
 
 + To __[Jetbrains](http://www.jetbrains.com/)__, which still creates some of the coolest tools for developers (whatever the language), and __which supports our NFluent project__ by providing us some space within their __[TeamCity code better instance](http://teamcity.codebetter.com/)__ (note: you can enter as guest).
 
-![jetbrains](http://www.jetbrains.com/img/banners/Codebetter.png)
-[YouTrack by JetBrains: keyboard-centric bug tracker](http://www.jetbrains.com/youtrack) - [TeamCity by JetBrains: continuous integration server](http://www.jetbrains.com/teamcity)
+![jetbrains](http://www.jetbrains.com/img/banners/Codebetter.png) 
+
+__[YouTrack by JetBrains](http://www.jetbrains.com/youtrack)__: keyboard-centric bug tracker - __[TeamCity by JetBrains](http://www.jetbrains.com/teamcity)__: continuous integration server
 
 - - -
 
