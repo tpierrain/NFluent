@@ -12,7 +12,7 @@ __NFluent will make your tests__:
 + __helpful to reverse engineer legacy code__: indeed, temporarily write an on-purpose failing assert on a legacy method, so you can understand it and leverage on the "ready-to-be-copied-and-paste-for-arrays-or-collections-initialization-purpose" NFluent assert failure messages.
 + __less error-prone__: indeed, no more confusion about the order of the "expected" and "actual" values you can find in the classical .NET unit tests frameworks.
 
-NFluent is __directly inspired by the awesome Java FEST Fluent__ assertion/reflection library (http://fest.easytesting.org/).
+NFluent is __directly inspired by the awesome Java FEST Fluent__ assertion/reflection library (http://fest.easytesting.org/) which had been forked since by one of its most active contributor, to create a more prolific [AssertJ](https://github.com/joel-costigliola/assertj-core) library.
 
 NFluent & unit test frameworks
 -------------------------------
@@ -143,7 +143,7 @@ Many thanks
 
 + To __[Rui CARVALHO](http://www.codedistillers.com/)__, for the nice NFluent logo he has designed.
 
-+ To the mates that gave me ideas and feedbacks to make this lib as fluent as possible: __[Joel COSTIGLIOLA](https://github.com/joel-costigliola)__, __[Rui CARVALHO](http://www.codedistillers.com/)__, __[Cyrille DUPUYDAUBY](http://dupdob.wordpress.com/)__, __Benoit LABAERE__, ... 
++ To the mates that gave me ideas and feedbacks to make this lib as fluent as possible: __[Joel COSTIGLIOLA](https://github.com/joel-costigliola)__(former active contributor of Java FEST Assert, which now works on his [AssertJ fork](https://github.com/joel-costigliola/assertj-core)), __[Rui CARVALHO](http://www.codedistillers.com/)__, __[Cyrille DUPUYDAUBY](http://dupdob.wordpress.com/)__, __Benoit LABAERE__, ... 
 
 + To __Omer RAVIV__, which supports the NFluent project by offering us some free licenses for the nice __[BugAid](http://www.bugaidsoftware.com/features/)__ Visual Studio extensions.
 
