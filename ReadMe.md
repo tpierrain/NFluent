@@ -151,7 +151,7 @@ Many thanks
 
     ![jetbrains](http://www.jetbrains.com/img/banners/Codebetter.png)
 
-__[YouTrack by JetBrains](http://www.jetbrains.com/youtrack)__: keyboard-centric bug tracker - __[TeamCity by JetBrains](http://www.jetbrains.com/teamcity)__: continuous integration server
+    __[YouTrack by JetBrains](http://www.jetbrains.com/youtrack)__: keyboard-centric bug tracker - __[TeamCity by JetBrains](http://www.jetbrains.com/teamcity)__: continuous integration server
 
 - - -
 
