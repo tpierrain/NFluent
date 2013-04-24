@@ -70,8 +70,9 @@ namespace NFluent.Tests
             foreach (
                 var type in
                     Assembly.GetExecutingAssembly()
-                            .GetTypes()
-                            .Where(type => type.GetCustomAttributes(typeof(TestFixtureAttribute), false).Length > 0))
+                            .GetTypes())
+
+// .Where(type => type.GetCustomAttributes(typeof(TestFixtureAttribute), false).Length > 0))
             {
                 try
                 {
@@ -101,7 +102,7 @@ namespace NFluent.Tests
 
                         // creates an instance
                         var test = type.InvokeMember(
-                            "TestClass",
+                            string.Empty,
                             BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance,
                             null,
                             null,
@@ -113,13 +114,20 @@ namespace NFluent.Tests
                         // run all tests
                         foreach (var specificTest in specificTests)
                         {
+                            if (specificTest.GetCustomAttributes(typeof(ExplicitAttribute), false).Length > 0
+                                || specificTest.GetCustomAttributes(typeof(IgnoreAttribute), false).Length > 0)
+                            {
+                                // test must be skipped
+                            }
+
                             this.RunAllSpecificMethods(type, typeof(SetUpAttribute), test);
- 
-                            var result=this.RunMethod(specificTest, test);
+
+                            var result = this.RunMethod(specificTest, test);
                             if (result != null)
                             {
                                 report.AddEntry(result);
                             }
+
                             this.RunAllSpecificMethods(type, typeof(TearDownAttribute), test);
                         }
 
@@ -194,6 +202,7 @@ namespace NFluent.Tests
                     // the type implements IFluentAssertion<T>
                     testedtype = scanning.IsGenericType ? scanning.GetGenericArguments()[0] : null;
                     result.CheckedType = testedtype;
+
                     // get other parameters
                     result.CheckParameters = new List<Type>();
                     foreach (ParameterInfo t in method.GetParameters())
@@ -209,6 +218,7 @@ namespace NFluent.Tests
                     {
                         testedtype = prop.PropertyType;
                         result.CheckedType = testedtype;
+
                         // get other parameters
                         result.CheckParameters = new List<Type>();
                         foreach (ParameterInfo t in method.GetParameters())
@@ -241,30 +251,27 @@ namespace NFluent.Tests
                         var fluExc = e.InnerException as FluentAssertionException;
                         MethodBase method;
                         Type testedtype;
-                        CheckDescription desc;
-                        desc = GetCheckAndType(fluExc, out method, out testedtype);
+                        CheckDescription desc = GetCheckAndType(fluExc, out method, out testedtype);
                         if (desc != null)
                         {
                             desc.ErrorSampleMessage = fluExc.Message;
                         }
+
                         this.Log(
                             string.Format("Check.That({1} sut).{0} failure message\n****\n{2}\n****", method.Name, testedtype.Name, fluExc.Message));
                         return desc;
                     }
-                    else
-                    {
-                        this.Log(
-                            string.Format(
-                                "{0} did not generate a FLUENT ASSERTION:\n{1}", specificTest.Name, e.InnerException.Message));
-                        return null;
-                    }
-                }
-                else
-                {
-                    this.Log(string.Format("{0} failed to run:\n{1}", specificTest.Name, e));;
+
+                    this.Log(
+                        string.Format(
+                            "{0} did not generate a FLUENT ASSERTION:\n{1}", specificTest.Name, e.InnerException.Message));
                     return null;
                 }
+
+                this.Log(string.Format("{0} failed to run:\n{1}", specificTest.Name, e));
+                return null;
             }
+
             return null;
         }
 
