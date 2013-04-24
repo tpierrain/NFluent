@@ -44,7 +44,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe actual code raised the exception:\n----\n[System.ApplicationException: Error in the application")]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe actual code raised the exception:\n----\n[System.ApplicationException: ")]
         public void UnexpectedExceptionRaised()
         {
             Check.That(() => { throw new ApplicationException(); }).DoesNotThrow();
@@ -58,7 +58,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe actual code thrown exception of type:\n\t[System.Exception]\ninstead of the expected exception type:\n\t[System.ApplicationException].\nThrown exception was:\n----\n[System.Exception: Exception of ")]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe actual code thrown exception of type:\n\t[System.Exception]\ninstead of the expected exception type:\n\t[System.ApplicationException].\nThrown exception was:\n----\n[System.Exception: ")]
         public void DidNotRaiseExpected()
         {
             Check.That(() => { throw new Exception(); }).Throws<ApplicationException>();
