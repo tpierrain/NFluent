@@ -8,6 +8,7 @@
 
     using NUnit.Framework;
 
+    [TestFixture]
     public class ContainsOnlyTests
     {
         private CultureInfo savedCulture;

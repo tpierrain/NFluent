@@ -17,20 +17,20 @@ namespace NFluent.Tests
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+
+    using NFluent.Tests.ForDocumentation;
 
     using NUnit.Framework;
 
     [TestFixture]
     public class GenerateErrorMessages
     {
+        // run this test to debug a specific test that the code is unable to properly identify
         [Test]
         [Explicit]
-
-        // run this test to debug a specific test that the code is unable to properly identify
         public void SpecificTest()
         {
             var test = new LambdaRelatedTests();
@@ -48,9 +48,6 @@ namespace NFluent.Tests
             // test.TearDown();
         }
 
-        [Test]
-        [Explicit]
-
         // Run this test to get all error messages
         /* Algo is:
          * - Get all Types from this assembly and with a TestFixture Attribute
@@ -62,6 +59,8 @@ namespace NFluent.Tests
          *   - exception is analyzed to identify the related test
          *   - all TestFixtureTeardown are run
          */
+        [Test]
+        [Explicit]
         public void ScanAndGenerate()
         {
             FullRunDescription report = new FullRunDescription();
@@ -218,7 +217,7 @@ namespace NFluent.Tests
                     {
                         testedtype = prop.PropertyType;
                         result.CheckedType = testedtype;
-
+                        
                         // get other parameters
                         result.CheckParameters = new List<Type>();
                         foreach (ParameterInfo t in method.GetParameters())
@@ -257,20 +256,18 @@ namespace NFluent.Tests
                             desc.ErrorSampleMessage = fluExc.Message;
                         }
 
-                        this.Log(
-                            string.Format("Check.That({1} sut).{0} failure message\n****\n{2}\n****", method.Name, testedtype.Name, fluExc.Message));
+                        this.Log(string.Format("Check.That({1} sut).{0} failure message\n****\n{2}\n****", method.Name, testedtype.Name, fluExc.Message));
                         return desc;
                     }
 
-                    this.Log(
-                        string.Format(
-                            "{0} did not generate a FLUENT ASSERTION:\n{1}", specificTest.Name, e.InnerException.Message));
+                        this.Log(string.Format("{0} did not generate a FLUENT ASSERTION:\n{1}", specificTest.Name, e.InnerException.Message));
                     return null;
                 }
 
                 this.Log(string.Format("{0} failed to run:\n{1}", specificTest.Name, e));
                 return null;
             }
+
 
             return null;
         }

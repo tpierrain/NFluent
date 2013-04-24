@@ -1,4 +1,5 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
+namespace NFluent.Tests.ForDocumentation
+// // --------------------------------------------------------------------------------------------------------------------
 // // <copyright file="CheckDescription.cs" company="">
 // //   Copyright 2013 Cyrille DUPUYDAUBY
 // //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,22 +14,13 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-namespace NFluent.Tests
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Reflection;
     using System.Text;
     using System.Xml.Serialization;
 
-    // information for one check
-    public class CheckDescription
-    {
         #region Public Properties
-
-        [XmlIgnore]
-        public MethodBase Check { get; set; }
 
         [XmlIgnore]
         public string CheckName
@@ -38,8 +30,6 @@ namespace NFluent.Tests
                 return this.Check.Name;
             }
         }
-
-        [XmlIgnore]
         public List<Type> CheckParameters { get; set; }
 
         public string Signature
@@ -75,8 +65,6 @@ namespace NFluent.Tests
 
         [XmlIgnore]
         public Type CheckedType { get; set; }
-
-        public string ErrorSampleMessage { get; set; }
 
         #endregion
     }
@@ -202,8 +190,6 @@ namespace NFluent.Tests
         }
 
         #endregion
-    }
-
     public class FullRunDescription
     {
         #region Fields
@@ -236,6 +222,7 @@ namespace NFluent.Tests
             foreach (TypeChecks typeCheckse in this.runDescription)
             {
                 if (typeCheckse.CheckedType == desc.CheckedType)
+
                 {
                     typeCheckse.AddCheck(desc);
                     return;

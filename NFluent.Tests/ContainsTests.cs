@@ -5,6 +5,7 @@
 
     using NUnit.Framework;
 
+    [TestFixture]
     public class ContainsTests
     {
         #region Contains with arrays
