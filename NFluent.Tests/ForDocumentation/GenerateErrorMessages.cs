@@ -12,16 +12,15 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent.Tests
+namespace NFluent.Tests.ForDocumentation
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-
-    using NFluent.Tests.ForDocumentation;
 
     using NUnit.Framework;
 
@@ -30,7 +29,7 @@ namespace NFluent.Tests
     {
         // run this test to debug a specific test that the code is unable to properly identify
         [Test]
-        [Explicit]
+        [Ignore("Use to debug dectetion when failing.")]
         public void SpecificTest()
         {
             var test = new LambdaRelatedTests();
@@ -60,18 +59,16 @@ namespace NFluent.Tests
          *   - all TestFixtureTeardown are run
          */
         [Test]
-        [Explicit]
-        public void ScanAndGenerate()
+        [Explicit("Scan all assemblies, execute tests and generate a report for error messages.")]
+        public void ScanUnitTestsAndGenerateReport()
         {
-            FullRunDescription report = new FullRunDescription();
-      
+            var report = new FullRunDescription();
+     
             // get all test fixtures
             foreach (
                 var type in
                     Assembly.GetExecutingAssembly()
                             .GetTypes())
-
-// .Where(type => type.GetCustomAttributes(typeof(TestFixtureAttribute), false).Length > 0))
             {
                 try
                 {
@@ -139,16 +136,71 @@ namespace NFluent.Tests
                 }
             }
 
-            // does not work yet
-            string name = "FluentReport.xml";
-            report.Save(name);
-            Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(name)));
+            const string Name = "FluentReport.xml";
+            report.Save(Name);
+            Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(Name)));
         }
 
-        private static CheckDescription GetCheckAndType(FluentAssertionException fluExc, out MethodBase method, out Type testedtype)
+        [Test]
+        [Explicit("Scan all assemblies and generate a report listing existing cheks.")]
+        public void ScanAssembliesForCheckAndGenerateReport()
         {
-            var result = new CheckDescription();
+            var report = new FullRunDescription();
 
+            // scan all assemblies
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                // get all test fixtures
+                foreach (var type in
+                    assembly.GetTypes()
+                            .Where(
+                                type =>
+                                ((type.GetInterface("IFluentAssertionBase") != null
+                                  && (type.Attributes & TypeAttributes.Abstract) == 0)
+                                 || type.GetCustomAttributes(typeof(ExtensionAttribute), false).Length > 0)
+                                && ((type.Attributes & TypeAttributes.Public) == TypeAttributes.Public)))
+                {
+                    try
+                    {
+                        // enumerate public methods
+                        IEnumerable<MethodInfo> tests =
+                            type.GetMethods(
+                                BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static
+                                | BindingFlags.DeclaredOnly)
+                                .Where(
+                                    method =>
+                                    method.MemberType == MemberTypes.Method
+                                    && ((method.Attributes & MethodAttributes.SpecialName) == 0));
+                        var publicMethods = tests as IList<MethodInfo> ?? tests.ToList();
+                        if (publicMethods.Count > 0)
+                        {
+                            // run all tests
+                            foreach (var checkMethod in publicMethods)
+                            {
+                                CheckDescription desc = AnalyzeSignature(checkMethod);
+
+                                if (desc != null)
+                                {
+                                    this.Log(string.Format("Method :{0}.{1}({2})", type.Name, checkMethod.Name, desc.CheckedType.Name));
+                                    report.AddEntry(desc);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        this.Log(string.Format("Exception while working on type:{0}\n{1}", type.FullName, e));
+                    }
+                }
+            }
+
+            const string Name = "FluentChecks.xml";
+            report.Save(Name);
+            Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(Name)));
+        }
+
+        private static CheckDescription GetCheckAndType(FluentAssertionException fluExc)
+        {
             // identify failing test
             var trace = new StackTrace(fluExc);
 
@@ -162,8 +214,14 @@ namespace NFluent.Tests
             StackFrame frame = trace.GetFrame(frameIndex);
 
             // get method
-            method = frame.GetMethod();
-            result.Check = method;
+            var method = frame.GetMethod();
+
+            return AnalyzeSignature(method);
+        }
+
+        private static CheckDescription AnalyzeSignature(MethodBase method)
+        {
+            var result = new CheckDescription { Check = method };
 
             if (method.IsStatic)
             {
@@ -173,9 +231,20 @@ namespace NFluent.Tests
                     ParameterInfo[] parameters = method.GetParameters();
                     ParameterInfo param = parameters[0];
                     Type paramType = param.ParameterType;
+                    if (!paramType.IsGenericType)
+                    {
+                        // this is not an check implementation
+                        return null;
+                    }
+
+                    if (paramType.Name != "IFluentAssertion`1" && paramType.GetInterface("IFluentAssertion`1") == null)
+                    {
+                        // this is not an check implementation
+                        return null;
+                    }
 
                     // identify type subjected to test
-                    testedtype = paramType.IsGenericType ? paramType.GetGenericArguments()[0] : null;
+                    var testedtype = paramType.GetGenericArguments()[0];
                     result.CheckedType = testedtype;
 
                     // get other parameters
@@ -188,19 +257,18 @@ namespace NFluent.Tests
                 else
                 {
                     // unexpected case: check is a static method which is not an extension method
-                    throw new InvalidOperationException("Fluent checks cannot be implementedd through non extension static method.");
+                    return null;
                 }
             }
             else
             {
                 // this is an instance method, tested type is part of type defintion
                 Debug.Assert(method.DeclaringType != null, "method.DeclaringType != null");
-                Type scanning = method.DeclaringType.GetInterface("IFluent`1");
+                Type scanning = method.DeclaringType.GetInterface("IFluentAssertion`1");
                 if (scanning != null && scanning.IsGenericType)
                 {
                     // the type implements IFluentAssertion<T>
-                    testedtype = scanning.IsGenericType ? scanning.GetGenericArguments()[0] : null;
-                    result.CheckedType = testedtype;
+                    result.CheckedType = scanning.IsGenericType ? scanning.GetGenericArguments()[0] : null;
 
                     // get other parameters
                     result.CheckParameters = new List<Type>();
@@ -215,8 +283,7 @@ namespace NFluent.Tests
                     var prop = method.DeclaringType.GetProperty("Value");
                     if (prop != null)
                     {
-                        testedtype = prop.PropertyType;
-                        result.CheckedType = testedtype;
+                        result.CheckedType = prop.PropertyType;
                         
                         // get other parameters
                         result.CheckParameters = new List<Type>();
@@ -227,7 +294,8 @@ namespace NFluent.Tests
                     }
                     else
                     {
-                        throw new InvalidOperationException("Instance method needs to implement a Value property");
+                        // not a check method
+                        Debug.WriteLine(string.Format("Type {0} needs to implement a Value property (method {1})", method.DeclaringType.Name, method.Name));
                     }
                 }
             }
@@ -248,14 +316,12 @@ namespace NFluent.Tests
                     if (e.InnerException is FluentAssertionException)
                     {
                         var fluExc = e.InnerException as FluentAssertionException;
-                        MethodBase method;
                         Type testedtype;
-                        CheckDescription desc = GetCheckAndType(fluExc, out method, out testedtype);
-                        if (desc != null)
-                        {
-                            desc.ErrorSampleMessage = fluExc.Message;
-                        }
-
+                        CheckDescription desc = GetCheckAndType(fluExc);
+                        MethodBase method = desc.Check;
+                        testedtype = desc.CheckedType;
+                        desc.ErrorSampleMessage = fluExc.Message;
+                        
                         this.Log(string.Format("Check.That({1} sut).{0} failure message\n****\n{2}\n****", method.Name, testedtype.Name, fluExc.Message));
                         return desc;
                     }
@@ -267,7 +333,6 @@ namespace NFluent.Tests
                 this.Log(string.Format("{0} failed to run:\n{1}", specificTest.Name, e));
                 return null;
             }
-
 
             return null;
         }

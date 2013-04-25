@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FullRunDescription.cs" company="">
+// <copyright file="CheckList.cs" company="">
 //   Copyright 2013 Cyrille DUPUYDAUBY
 //   // //   Licensed under the Apache License, Version 2.0 (the "License");
 //   // //   you may not use this file except in compliance with the License.
@@ -19,29 +19,31 @@
 namespace NFluent.Tests.ForDocumentation
 {
     using System.Collections.Generic;
-    using System.IO;
     using System.Xml.Serialization;
 
-    public class FullRunDescription
+    public class CheckList
     {
         #region Fields
 
-        private List<TypeChecks> runDescription = new List<TypeChecks>();
+        private List<CheckDescription> checks = new List<CheckDescription>();
 
         #endregion
 
         #region Public Properties
 
-        public List<TypeChecks> RunDescription
+        [XmlAttribute]
+        public string CheckName { get; set; }
+
+        public List<CheckDescription> Checks
         {
             get
             {
-                return this.runDescription;
+                return this.checks;
             }
 
             set
             {
-                this.runDescription = value;
+                this.checks = value;
             }
         }
 
@@ -49,29 +51,9 @@ namespace NFluent.Tests.ForDocumentation
 
         #region Public Methods and Operators
 
-        public void AddEntry(CheckDescription desc)
+        public void AddCheck(CheckDescription description)
         {
-            foreach (TypeChecks typeCheckse in this.runDescription)
-            {
-                if (typeCheckse.CheckedType == desc.CheckedType)
-                {
-                    typeCheckse.AddCheck(desc);
-                    return;
-                }
-            }
-
-            var addedType = new TypeChecks(desc.CheckedType);
-            addedType.AddCheck(desc);
-            this.runDescription.Add(addedType);
-        }
-
-        public void Save(string name)
-        {
-            var serialier = new XmlSerializer(typeof(FullRunDescription));
-            using (var file = new FileStream(name, FileMode.Create))
-            {
-                serialier.Serialize(file, this);
-            }
+            this.checks.Add(description);
         }
 
         #endregion

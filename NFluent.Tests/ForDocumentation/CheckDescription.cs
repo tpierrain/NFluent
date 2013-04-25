@@ -17,16 +17,66 @@ namespace NFluent.Tests.ForDocumentation
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using System.Text;
+    using System.Xml.Serialization;
 
     [Serializable]
     public class CheckDescription
     {
-        public MethodBase Check { get; set; }
+        #region Public Properties
 
+        [XmlIgnore]
+        public string CheckName
+        {
+            get
+            {
+                return this.Check.Name;
+            }
+        }
+
+        public string Signature
+        {
+            get
+            {
+                var checkParameters = this.CheckParameters;
+                if (checkParameters != null)
+                {
+                    var parameters = new StringBuilder(checkParameters.Count * 20);
+
+                    // build parameter list
+                    if (checkParameters.Count > 0)
+                    {
+                        parameters.Append(checkParameters[0].Name);
+                        for (int i = 1; i < checkParameters.Count; i++)
+                        {
+                            parameters.Append(", ");
+                            parameters.Append(checkParameters[i].Name);
+                        }
+                    }
+
+                    return string.Format("Check.That({0} sut).{1}({2})", this.CheckedType.Name, this.Check.Name, parameters);
+                }
+
+                return string.Empty;
+            }
+
+            // ReSharper disable ValueParameterNotUsed
+            set
+            // ReSharper restore ValueParameterNotUsed
+            {
+            }
+        }
+
+        [XmlIgnore]
         public Type CheckedType { get; set; }
 
+        [XmlIgnore]
+        public MethodBase Check { get; set; }
+
+        [XmlIgnore]
         public IList<Type> CheckParameters { get; set; }
 
         public string ErrorSampleMessage { get; set; }
+        #endregion
     }
 }
