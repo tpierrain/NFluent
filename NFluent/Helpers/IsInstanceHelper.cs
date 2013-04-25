@@ -50,5 +50,20 @@ namespace NFluent.Helpers
                 throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", instance.ToStringProperlyFormated(), instance.GetType()));
             }
         }
+
+        /// <summary>
+        /// Checks that an instance is in the inheritance hierarchy of a specified type.
+        /// </summary>
+        /// <param name="instance">The instance to be checked.</param>
+        /// <param name="expectedBaseType">The Type which is expected to be a base Type of the instance.</param>
+        /// <exception cref="FluentAssertionException">The instance is not in the inheritance hierarchy of the specified type.</exception>
+        public static void InheritsFrom(object instance, Type expectedBaseType)
+        {
+            Type instanceType = instance.GetTypeWithoutThrowingException();
+            if (!expectedBaseType.IsAssignableFrom(instanceType))
+            {
+                throw new FluentAssertionException(string.Format("\nThe checked expression is not of part of the inheritance hierarchy, or of the same type than the specified one.\nIndeed, checked expression type:\n\t[{0}]\nis not a derived type of\n\t[{1}].", instanceType.ToStringProperlyFormated(), expectedBaseType.ToStringProperlyFormated()));
+            }
+        }
     }
 }

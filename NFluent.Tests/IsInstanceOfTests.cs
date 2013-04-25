@@ -40,6 +40,14 @@
         }
 
         [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[Telemachus]\nis not an instance of:\n\t[NFluent.Tests.Person]\nbut an instance of:\n\t[NFluent.Tests.Child]\ninstead.")]
+        public void IsInstanceOfThrowsExceptionWithDerivedTypeAsCheckedExpression()
+        {
+            var child = new Child() { Name = "Telemachus" };
+            Check.That(child).IsInstanceOf<Person>();
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[23]\nis not an instance of:\n\t[NFluent.Tests.Person]\nbut an instance of:\n\t[System.Int32]\ninstead.")]
         public void IsInstanceOfThrowsExceptionWithProperFormatWhenFailsWithInt()
         {
@@ -115,6 +123,28 @@
         }
 
         #endregion
+
+        [Test]
+        public void InheritsFromWorks()
+        {
+            var child = new Child() { Name = "Telemachus" };
+            Check.That(child).InheritsFrom<Person>();
+        }
+
+        [Test]
+        public void InheritsFromWorksAlsoWithTheSameType()
+        {
+            var child = new Child() { Name = "Telemachus" };
+            Check.That(child).InheritsFrom<Child>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked expression is not of part of the inheritance hierarchy, or of the same type than the specified one.\nIndeed, checked expression type:\n\t[NFluent.Tests.Person]\nis not a derived type of\n\t[NFluent.Tests.Child].")]
+        public void InheritsFromThrowsExceptionWhenFailing()
+        {
+            var father = new Person() { Name = "Odysseus" };
+            Check.That(father).InheritsFrom<Child>();
+        }
 
         // TODO: add unit test related to theIsNotInstance error messages (for IEnumerable, object, etc)
     }
