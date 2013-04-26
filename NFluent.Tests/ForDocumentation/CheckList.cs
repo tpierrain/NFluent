@@ -20,7 +20,10 @@ namespace NFluent.Tests.ForDocumentation
 {
     using System.Collections.Generic;
     using System.Xml.Serialization;
-
+    
+    /// <summary>
+    /// describes a list of nFluent Checks.
+    /// </summary>
     public class CheckList
     {
         #region Fields
@@ -34,6 +37,9 @@ namespace NFluent.Tests.ForDocumentation
         [XmlAttribute]
         public string CheckName { get; set; }
 
+        /// <summary>
+        /// Gets or sets a list of checks with varying signatures
+        /// </summary>
         public List<CheckDescription> Checks
         {
             get

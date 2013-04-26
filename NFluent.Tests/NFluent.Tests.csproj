@@ -60,6 +60,8 @@
     <Compile Include="ForDocumentation\CheckList.cs" />
     <Compile Include="ForDocumentation\FullRunDescription.cs" />
     <Compile Include="ForDocumentation\GenerateErrorMessages.cs" />
+    <Compile Include="ForDocumentation\LocaleChecks.cs" />
+    <Compile Include="ForDocumentation\RunnerHelper.cs" />
     <Compile Include="ForDocumentation\TypeChecks.cs" />
     <Compile Include="IsInstanceOfTests.cs" />
     <Compile Include="LambdaRelatedTests.cs" />
