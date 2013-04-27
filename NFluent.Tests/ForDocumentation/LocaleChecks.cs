@@ -22,47 +22,34 @@ namespace NFluent.Tests.ForDocumentation
     [TestFixture]
     public class LocaleChecks
     {
-        private CultureInfo original; 
-        
-        [TestFixtureSetUp]
-        public void SaveLocal()
-        {
-            this.original = Thread.CurrentThread.CurrentCulture;
-        }
-
-        [TestFixtureTearDown]
-        public void RestoreLocal()
-        {
-            Thread.CurrentThread.CurrentCulture = this.original;
-        }
 
         [Test]
+        [SetCulture("es-ES")]
         [Explicit("Scan all assemblies, execute tests in Spanish.")]
         public void Spanish()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("es-ES", false);
             RunnerHelper.RunAllTests();
         }
 
         [Test]
+        [SetCulture("zh-CN")]
         public void Chinese()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-CN", false);
             RunnerHelper.RunAllTests();
         }
 
         [Test]
+        [SetCulture("fr-CA")]
         public void CanadianFrench()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA", false);
             RunnerHelper.RunAllTests();
         }
 
         [Test]
+        [SetCulture("ja-JP")]
         [Explicit("Scan all assemblies, execute tests in Japanese.")]
         public void Japanese()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("ja-JP", false);
             RunnerHelper.RunAllTests();
         }
     }
