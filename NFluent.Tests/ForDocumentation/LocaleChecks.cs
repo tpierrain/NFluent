@@ -14,15 +14,11 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests.ForDocumentation
 {
-    using System.Globalization;
-    using System.Threading;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class LocaleChecks
     {
-
         [Test]
         [SetCulture("es-ES")]
         [Explicit("Scan all assemblies, execute tests in Spanish.")]
