@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FullRunDescription.cs" company="">
+// <copyright file="TypeChecks.cs" company="">
 //   Copyright 2013 Cyrille DUPUYDAUBY
 //   // //   Licensed under the Apache License, Version 2.0 (the "License");
 //   // //   you may not use this file except in compliance with the License.
@@ -18,30 +18,69 @@
 
 namespace NFluent.Tests.ForDocumentation
 {
+    using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Xml.Serialization;
 
-    public class FullRunDescription
+    public class TypeChecks
     {
         #region Fields
 
-        private List<TypeChecks> runDescription = new List<TypeChecks>();
+        private readonly Type checkedType;
+
+        private List<CheckList> checks = new List<CheckList>();
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public TypeChecks(Type checkedType)
+        {
+            this.checkedType = checkedType;
+        }
+
+        public TypeChecks()
+        {
+        }
 
         #endregion
 
         #region Public Properties
 
-        public List<TypeChecks> RunDescription
+        [XmlAttribute]
+        public string Typename
         {
             get
             {
-                return this.runDescription;
+                return this.CheckedType.Name;
+            }
+
+// ReSharper disable ValueParameterNotUsed
+            set
+// ReSharper restore ValueParameterNotUsed
+            {
+            }
+        }
+
+        public Type CheckedType
+        {
+            get
+            {
+                return this.checkedType;
+            }
+        }
+
+        [XmlArray]
+        public List<CheckList> Checks
+        {
+            get
+            {
+                return this.checks;
             }
 
             set
             {
-                this.runDescription = value;
+                this.checks = value;
             }
         }
 
@@ -49,29 +88,21 @@ namespace NFluent.Tests.ForDocumentation
 
         #region Public Methods and Operators
 
-        public void AddEntry(CheckDescription desc)
+        public void AddCheck(CheckDescription description)
         {
-            foreach (TypeChecks typeCheckse in this.runDescription)
+            foreach (CheckList checkList in this.checks)
             {
-                if (typeCheckse.CheckedType == desc.CheckedType)
+                if (checkList.CheckName == description.CheckName)
                 {
-                    typeCheckse.AddCheck(desc);
+                    checkList.AddCheck(description);
                     return;
                 }
             }
 
-            var addedType = new TypeChecks(desc.CheckedType);
-            addedType.AddCheck(desc);
-            this.runDescription.Add(addedType);
-        }
-
-        public void Save(string name)
-        {
-            var serialier = new XmlSerializer(typeof(FullRunDescription));
-            using (var file = new FileStream(name, FileMode.Create))
-            {
-                serialier.Serialize(file, this);
-            }
+            var toAdd = new CheckList();
+            toAdd.CheckName = description.CheckName;
+            toAdd.AddCheck(description);
+            this.checks.Add(toAdd);
         }
 
         #endregion

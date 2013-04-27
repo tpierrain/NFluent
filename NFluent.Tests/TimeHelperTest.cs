@@ -46,6 +46,7 @@ namespace NFluent.Tests
         public void CheckConversion()
         {
             Assert.AreEqual(500.0, TimeHelper.Convert(TimeSpan.FromMilliseconds(500), TimeUnit.Milliseconds));
+            Assert.AreEqual(500, TimeHelper.GetFromNanoSeconds(500000000, TimeUnit.Milliseconds));
         }
 
         [ExpectedException(typeof(InvalidOperationException))]

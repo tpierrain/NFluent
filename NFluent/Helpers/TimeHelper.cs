@@ -102,6 +102,26 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
+        /// Converts a duration in nanoseconds to the desired <see cref="TimeUnit"/>.
+        /// </summary>
+        /// <param name="duration">
+        /// The duration in nanoseconds.
+        /// </param>
+        /// <param name="timeUnit">
+        /// The time unit desired.
+        /// </param>
+        /// <returns>
+        /// The duration expressed in the desired unit.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Raised if time unit is not recognized.
+        /// </exception>
+        public static double GetFromNanoSeconds(double duration, TimeUnit timeUnit)
+        {
+            return duration / GetConversionFactor(timeUnit);
+        }
+
+        /// <summary>
         /// Creates a <see cref="TimeSpan"/> representing the duration expressed in <see cref="TimeUnit"/>.
         /// </summary>
         /// <param name="value">

@@ -25,12 +25,19 @@ namespace NFluent
     /// </summary>
     public class LambdaAssertion : ILambdaAssertion
     {
-        private Exception exception;
+        #region Fields
+        private const string SutName = "The checked code";
 
         private double durationInNs;
 
+        private Exception exception;
+
+        #endregion
+
+        #region Constructors and Destructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="LambdaAssertion"/> class. 
+        /// Initializes a new instance of the <see cref="LambdaAssertion"/> class.
         /// </summary>
         /// <param name="action">
         /// Action to be assessed.
@@ -41,6 +48,10 @@ namespace NFluent
             this.Execute();
         }
 
+        #endregion
+
+        #region Public Properties
+
         /// <summary>
         /// Gets the value to be tested (provided for any extension method to be able to test it).
         /// </summary>
@@ -49,25 +60,9 @@ namespace NFluent
         /// </value>
         public Action Value { get; private set; }
 
-        /// <summary>
-        /// Checks that the execution time is below a specified threshold.
-        /// </summary>
-        /// <param name="threshold">The threshold.</param>
-        /// <param name="timeUnit">The time unit of the given threshold.</param>
-        /// <returns>
-        /// A chainable assertion.
-        /// </returns>
-        /// <exception cref="FluentAssertionException">Execution was strictly above limit.</exception>
-        public IChainableFluentAssertion<ILambdaAssertion> LastsLessThan(double threshold, TimeUnit timeUnit)
-        {
-            double comparand = TimeHelper.GetInNanoSeconds(threshold, timeUnit);
-            if (this.durationInNs > comparand)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual code execution lasted more than {0} {1}.", threshold, timeUnit));
-            }
+        #endregion
 
-            return new ChainableFluentAssertion<ILambdaAssertion>(this);
-        }
+        #region Public Methods and Operators
 
         /// <summary>
         /// Check that the code does not throw an exception.
@@ -75,12 +70,47 @@ namespace NFluent
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The code raised an exception.</exception>
+        /// <exception cref="FluentAssertionException">
+        /// The code raised an exception.
+        /// </exception>
         public IChainableFluentAssertion<ILambdaAssertion> DoesNotThrow()
         {
             if (this.exception != null)
             {
-                throw new FluentAssertionException(string.Format("\nThe actual code raised the exception:\n----\n[{0}]\n----", this.exception));
+                throw new FluentAssertionException(
+                    string.Format("{0} raised an exception, whereas it must not.\n{0} raised the exception:\n----\n{1}\n----", SutName, ExceptionReport(this.exception)));
+            }
+
+            return new ChainableFluentAssertion<ILambdaAssertion>(this);
+        }
+
+        /// <summary>
+        /// Checks that the execution time is below a specified threshold.
+        /// </summary>
+        /// <param name="threshold">
+        /// The threshold.
+        /// </param>
+        /// <param name="timeUnit">
+        /// The time unit of the given threshold.
+        /// </param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">
+        /// Execution was strictly above limit.
+        /// </exception>
+        public IChainableFluentAssertion<ILambdaAssertion> LastsLessThan(double threshold, TimeUnit timeUnit)
+        {
+            double comparand = TimeHelper.GetInNanoSeconds(threshold, timeUnit);
+            if (this.durationInNs > comparand)
+            {
+                throw new FluentAssertionException(
+                    string.Format(
+                        "{0} took too much time to execute.\n{0} execution time:\n\t{1} {3}\nExpected execution time:\n\t{2} {3}",
+                        SutName,
+                        TimeHelper.GetFromNanoSeconds(this.durationInNs, timeUnit),
+                        threshold,
+                        timeUnit));
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);
@@ -89,21 +119,34 @@ namespace NFluent
         /// <summary>
         /// Checks that the code did throw an exception of a specified type.
         /// </summary>
-        /// <typeparam name="T">Expected exception type.</typeparam>
+        /// <typeparam name="T">
+        /// Expected exception type.
+        /// </typeparam>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The code did not raised an exception of the specified type, or did not raised an exception at all.</exception>
+        /// <exception cref="FluentAssertionException">
+        /// The code did not raised an exception of the specified type, or did not raised an exception at all.
+        /// </exception>
         public IChainableFluentAssertion<ILambdaAssertion> Throws<T>()
         {
             if (this.exception == null)
             {
-                throw new FluentAssertionException(string.Format("\nThe actual code did not raise an exception of type:\n\t[{0}]\nas expected.", typeof(T)));
+                throw new FluentAssertionException(
+                    string.Format(
+                        "{0} did not raise an exception, whereas it must.\nExpected exception type is:\n\t[{1}]",
+                        SutName,
+                        typeof(T).Name));
             }
 
             if (!(this.exception is T))
             {
-                throw new FluentAssertionException(string.Format("\nThe actual code thrown exception of type:\n\t[{0}]\ninstead of the expected exception type:\n\t[{1}].\nThrown exception was:\n----\n[{2}]\n----", this.exception.GetType(), typeof(T), this.exception));
+                throw new FluentAssertionException(
+                    string.Format(
+                        "{0} raised an exception of a different type than expected.\n{0} raised:\n\t{1}\nExpected exception type:\n\t[{2}].\n", 
+                        SutName,
+                        ExceptionReport(this.exception),
+                        typeof(T).Name));
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);
@@ -115,15 +158,27 @@ namespace NFluent
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The code did not raised an exception of any type.</exception>
+        /// <exception cref="FluentAssertionException">
+        /// The code did not raised an exception of any type.
+        /// </exception>
         public IChainableFluentAssertion<ILambdaAssertion> ThrowsAny()
         {
             if (this.exception == null)
             {
-                throw new FluentAssertionException("\nThe actual code did not raise an exception as expected.");
+                throw new FluentAssertionException(string.Format("{0} did not raise an exception, whereas it must.", SutName));
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);
+        }
+
+        #endregion
+
+        #region Methods
+
+        // build an exception description string
+        private static string ExceptionReport(Exception e)
+        {
+            return string.Format("[{0}]: {1}", e.GetType().FullName, e.Message);
         }
 
         private void Execute()
@@ -142,8 +197,11 @@ namespace NFluent
             {
                 watch.Stop();
             }
+
             // ReSharper disable PossibleLossOfFraction
             this.durationInNs = watch.ElapsedTicks * 1000000000 / Stopwatch.Frequency;
         }
+        
+        #endregion
     }
 }
