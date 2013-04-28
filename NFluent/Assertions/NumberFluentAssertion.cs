@@ -15,14 +15,15 @@
 namespace NFluent
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+
     using NFluent.Helpers;
 
     /// <summary>
     /// Provides assertion methods to be executed on a number instance.
     /// </summary>
     /// <typeparam name="N">Type of the numerical value.</typeparam>
-    public class NumberFluentAssertion<N> : IFluentAssertion<N>
-        where N : IComparable
+    public class NumberFluentAssertion<N> : IFluentAssertion<N> where N : IComparable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberFluentAssertion{N}" /> class.
@@ -40,6 +41,23 @@ namespace NFluent
         /// The value to be tested by any fluent assertion extension method.
         /// </value>
         public N Value { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="FluentAssertion{T}" /> should be negated or not.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
+        /// </value>
+        public bool Negated { get; private set; }
+
+        /// <summary>
+        /// Negates the next assertion.
+        /// </summary>
+        /// <value>
+        /// The next assertion negated.
+        /// </value>
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
+        public IFluentAssertion<N> Not { get; private set; }
 
         /// <summary>
         /// Checks that the actual value is equal to zero.

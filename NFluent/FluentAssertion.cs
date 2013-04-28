@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// Provides assertion methods to be executed on a given value.
     /// </summary>
@@ -24,9 +26,19 @@ namespace NFluent
         /// Initializes a new instance of the <see cref="FluentAssertion{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
-        public FluentAssertion(T value)
+        public FluentAssertion(T value) : this(value, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FluentAssertion{T}" /> class.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="negated">A boolean value indicating whether the assertion should be negated or not.</param>
+        private FluentAssertion(T value, bool negated)
         {
             this.Value = value;
+            this.Negated = negated;
         }
 
         /// <summary>
@@ -36,5 +48,29 @@ namespace NFluent
         /// The value to be tested by any fluent assertion extension method.
         /// </value>
         public T Value { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="FluentAssertion{T}" /> should be negated or not.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
+        /// </value>
+        public bool Negated { get; private set;  }
+
+        /// <summary>
+        /// Negates the next assertion.
+        /// </summary>
+        /// <value>
+        /// The next assertion negated.
+        /// </value>
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
+        public IFluentAssertion<T> Not 
+        { 
+            get
+            {
+                bool negated = true;
+                return new FluentAssertion<T>(this.Value, negated);
+            }
+        }
     }
 }

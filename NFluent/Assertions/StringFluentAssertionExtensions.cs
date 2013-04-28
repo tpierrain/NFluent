@@ -95,21 +95,39 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> Contains(this IFluentAssertion<string> fluentAssertion, params string[] values)
         {
-            var notFound = new List<string>();
-            foreach (string value in values)
+            if (!fluentAssertion.Negated)
             {
-                if (!fluentAssertion.Value.Contains(value))
+                var notFound = new List<string>();
+                foreach (string value in values)
                 {
-                    notFound.Add(value);
+                    if (!fluentAssertion.Value.Contains(value))
+                    {
+                        notFound.Add(value);
+                    }
+                }
+
+                if (notFound.Count > 0)
+                {
+                    throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), notFound.ToEnumeratedString()));
                 }
             }
-
-            if (notFound.Count > 0)
+            else
             {
-                // TODO replace all the [""{xxx}""] by ToStringProperlyFormated() on values instead
-                throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), notFound.ToEnumeratedString()));
-            }
+                var foundItems = new List<string>();
+                foreach (string value in values)
+                {
+                    if (fluentAssertion.Value.Contains(value))
+                    {
+                        foundItems.Add(value);
+                    }
+                }
 
+                if (foundItems.Count > 0)
+                {
+                    throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\n contains the value(s):\n\t[{1}]\nwhich was not expected.", fluentAssertion.Value.ToStringProperlyFormated(), foundItems.ToEnumeratedString()));
+                }
+            }
+            
             return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
 
