@@ -95,40 +95,50 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> Contains(this IFluentAssertion<string> fluentAssertion, params string[] values)
         {
-            if (!fluentAssertion.Negated)
+            if (fluentAssertion.Negated)
             {
-                var notFound = new List<string>();
-                foreach (string value in values)
-                {
-                    if (!fluentAssertion.Value.Contains(value))
-                    {
-                        notFound.Add(value);
-                    }
-                }
-
-                if (notFound.Count > 0)
-                {
-                    throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), notFound.ToEnumeratedString()));
-                }
+                DoContainsNegated(fluentAssertion, values);
             }
             else
             {
-                var foundItems = new List<string>();
-                foreach (string value in values)
-                {
-                    if (fluentAssertion.Value.Contains(value))
-                    {
-                        foundItems.Add(value);
-                    }
-                }
+                DoContains(fluentAssertion, values);
+            }
 
-                if (foundItems.Count > 0)
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+        }
+
+        private static void DoContainsNegated(IFluentAssertion<string> fluentAssertion, string[] values)
+        {
+            var foundItems = new List<string>();
+            foreach (string value in values)
+            {
+                if (fluentAssertion.Value.Contains(value))
                 {
-                    throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\n contains the value(s):\n\t[{1}]\nwhich was not expected.", fluentAssertion.Value.ToStringProperlyFormated(), foundItems.ToEnumeratedString()));
+                    foundItems.Add(value);
                 }
             }
-            
-            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+
+            if (foundItems.Count > 0)
+            {
+                throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\n contains the value(s):\n\t[{1}]\nwhich was not expected.", fluentAssertion.Value.ToStringProperlyFormated(), foundItems.ToEnumeratedString()));
+            }
+        }
+
+        private static void DoContains(IFluentAssertion<string> fluentAssertion, string[] values)
+        {
+            var notFound = new List<string>();
+            foreach (string value in values)
+            {
+                if (!fluentAssertion.Value.Contains(value))
+                {
+                    notFound.Add(value);
+                }
+            }
+
+            if (notFound.Count > 0)
+            {
+                throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), notFound.ToEnumeratedString()));
+            }
         }
 
         /// <summary>
