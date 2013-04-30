@@ -72,5 +72,16 @@ namespace NFluent
                 return new FluentAssertion<T>(this.Value, negated);
             }
         }
+
+        /// <summary>
+        /// Creates a new instance of the same fluent assertion type, with the same Value property.
+        /// </summary>
+        /// <returns>
+        /// A new instance of the same fluent assertion type, with the same Value property.
+        /// </returns>
+        public object CreateNewInstanceWithSameValue()
+        {
+            return new FluentAssertion<T>(this.Value);
+        }
     }
 }

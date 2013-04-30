@@ -42,10 +42,23 @@ namespace NFluent
         /// <param name="action">
         /// Action to be assessed.
         /// </param>
-        public LambdaAssertion(Action action)
+        public LambdaAssertion(Action action) : this(action, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LambdaAssertion" /> class.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <param name="alreadyExecuted">A value indicating whether the action has already been executed or not.</param>
+        public LambdaAssertion(Action action, bool alreadyExecuted)
         {
             this.Value = action;
-            this.Execute();
+
+            if (!alreadyExecuted)
+            {
+                this.Execute();
+            }
         }
 
         #endregion
@@ -65,6 +78,22 @@ namespace NFluent
         #region Public Methods and Operators
 
         /// <summary>
+        /// Creates a new instance of the same fluent assertion type, with the same Value property.
+        /// </summary>
+        /// <returns>
+        /// A new instance of the same fluent assertion type, with the same Value property.
+        /// </returns>
+        public object CreateNewInstanceWithSameValue()
+        {
+            bool alreadyExecuted = true;
+            var newInstance = new LambdaAssertion(this.Value, alreadyExecuted);
+            newInstance.durationInNs = this.durationInNs;
+            newInstance.exception = this.exception;
+
+            return newInstance;
+        }
+
+        /// <summary>
         /// Check that the code does not throw an exception.
         /// </summary>
         /// <returns>
@@ -77,8 +106,7 @@ namespace NFluent
         {
             if (this.exception != null)
             {
-                throw new FluentAssertionException(
-                    string.Format("{0} raised an exception, whereas it must not.\n{0} raised the exception:\n----\n{1}\n----", SutName, ExceptionReport(this.exception)));
+                throw new FluentAssertionException(string.Format("{0} raised an exception, whereas it must not.\n{0} raised the exception:\n----\n{1}\n----", SutName, ExceptionReport(this.exception)));
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);
@@ -104,13 +132,7 @@ namespace NFluent
             double comparand = TimeHelper.GetInNanoSeconds(threshold, timeUnit);
             if (this.durationInNs > comparand)
             {
-                throw new FluentAssertionException(
-                    string.Format(
-                        "{0} took too much time to execute.\n{0} execution time:\n\t{1} {3}\nExpected execution time:\n\t{2} {3}",
-                        SutName,
-                        TimeHelper.GetFromNanoSeconds(this.durationInNs, timeUnit),
-                        threshold,
-                        timeUnit));
+                throw new FluentAssertionException(string.Format("{0} took too much time to execute.\n{0} execution time:\n\t{1} {3}\nExpected execution time:\n\t{2} {3}", SutName, TimeHelper.GetFromNanoSeconds(this.durationInNs, timeUnit), threshold, timeUnit));
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);
@@ -132,21 +154,12 @@ namespace NFluent
         {
             if (this.exception == null)
             {
-                throw new FluentAssertionException(
-                    string.Format(
-                        "{0} did not raise an exception, whereas it must.\nExpected exception type is:\n\t[{1}]",
-                        SutName,
-                        typeof(T).Name));
+                throw new FluentAssertionException(string.Format("{0} did not raise an exception, whereas it must.\nExpected exception type is:\n\t[{1}]", SutName, typeof(T).Name));
             }
 
             if (!(this.exception is T))
             {
-                throw new FluentAssertionException(
-                    string.Format(
-                        "{0} raised an exception of a different type than expected.\n{0} raised:\n\t{1}\nExpected exception type:\n\t[{2}].\n", 
-                        SutName,
-                        ExceptionReport(this.exception),
-                        typeof(T).Name));
+                throw new FluentAssertionException(string.Format("{0} raised an exception of a different type than expected.\n{0} raised:\n\t{1}\nExpected exception type:\n\t[{2}].\n", SutName, ExceptionReport(this.exception), typeof(T).Name));
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);

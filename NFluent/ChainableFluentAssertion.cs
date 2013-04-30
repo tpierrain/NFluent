@@ -20,9 +20,9 @@ namespace NFluent
     /// Provides a way to chain two <see cref="IFluentAssertionBase"/> instances. 
     /// </summary>
     /// <typeparam name="T">Type of the <see cref="IFluentAssertionBase"/> to be chained.</typeparam>
-    public class ChainableFluentAssertion<T> : IChainableFluentAssertion<T> where T : IFluentAssertionBase
+    public class ChainableFluentAssertion<T> : IChainableFluentAssertion<T> where T : class, IFluentAssertionBase
     {
-        private readonly T previousFluentAssertion;
+        private readonly T assertionWithSameValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChainableFluentAssertion{T}" /> class.
@@ -30,7 +30,7 @@ namespace NFluent
         /// <param name="previousFluentAssertion">The previous fluent assert.</param>
         public ChainableFluentAssertion(T previousFluentAssertion)
         {
-            this.previousFluentAssertion = previousFluentAssertion;
+            this.assertionWithSameValue = previousFluentAssertion.CreateNewInstanceWithSameValue() as T;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace NFluent
         {
             get
             {
-                return this.previousFluentAssertion;
+                return this.assertionWithSameValue;
             }
         }
     }

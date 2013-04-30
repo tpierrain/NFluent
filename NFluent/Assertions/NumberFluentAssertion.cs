@@ -49,7 +49,7 @@ namespace NFluent
         ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
         /// </value>
         public bool Negated { get; private set; }
-
+        
         /// <summary>
         /// Negates the next assertion.
         /// </summary>
@@ -58,6 +58,17 @@ namespace NFluent
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         public IFluentAssertion<N> Not { get; private set; }
+
+        /// <summary>
+        /// Creates a new instance of the same fluent assertion type, with the same Value property.
+        /// </summary>
+        /// <returns>
+        /// A new instance of the same fluent assertion type, with the same Value property.
+        /// </returns>
+        public object CreateNewInstanceWithSameValue()
+        {
+            return new NumberFluentAssertion<N>(this.Value);
+        }
 
         /// <summary>
         /// Checks that the actual value is equal to zero.

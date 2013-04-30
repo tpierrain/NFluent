@@ -97,17 +97,17 @@ namespace NFluent
         {
             if (fluentAssertion.Negated)
             {
-                DoContainsNegated(fluentAssertion, values);
+                ContainsNegatedImpl(fluentAssertion, values);
             }
             else
             {
-                DoContains(fluentAssertion, values);
+                ContainsImpl(fluentAssertion, values);
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
 
-        private static void DoContainsNegated(IFluentAssertion<string> fluentAssertion, string[] values)
+        private static void ContainsNegatedImpl(IFluentAssertion<string> fluentAssertion, string[] values)
         {
             var foundItems = new List<string>();
             foreach (string value in values)
@@ -124,7 +124,7 @@ namespace NFluent
             }
         }
 
-        private static void DoContains(IFluentAssertion<string> fluentAssertion, string[] values)
+        private static void ContainsImpl(IFluentAssertion<string> fluentAssertion, string[] values)
         {
             var notFound = new List<string>();
             foreach (string value in values)
@@ -152,12 +152,32 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The string does not start with the expected prefix.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> StartsWith(this IFluentAssertion<string> fluentAssertion, string expectedPrefix)
         {
+            if (fluentAssertion.Negated)
+            {
+                StartsWithNegatedImpl(fluentAssertion, expectedPrefix);
+            }
+            else
+            {
+                StartsWithImpl(fluentAssertion, expectedPrefix);    
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+        }
+
+        private static void StartsWithImpl(IFluentAssertion<string> fluentAssertion, string expectedPrefix)
+        {
             if (!fluentAssertion.Value.StartsWith(expectedPrefix))
             {
                 throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not start with:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), expectedPrefix.ToStringProperlyFormated()));
             }
+        }
 
-            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+        private static void StartsWithNegatedImpl(IFluentAssertion<string> fluentAssertion, string expectedPrefix)
+        {
+            if (fluentAssertion.Value.StartsWith(expectedPrefix))
+            {
+                throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nstarts with:\n\t[\"abcdef\"]\nwhich is not expected.", fluentAssertion.Value.ToStringProperlyFormated(), expectedPrefix.ToStringProperlyFormated()));
+            }
         }
     }
 }
