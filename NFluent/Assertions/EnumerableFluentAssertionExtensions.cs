@@ -104,7 +104,7 @@ namespace NFluent
             }
             else
             {
-                properExpectedValues = expectedValues as IEnumerable;
+                properExpectedValues = expectedValues;
             }
 
             fluentAssertion.Contains(properExpectedValues);
@@ -152,7 +152,7 @@ namespace NFluent
             }
             else
             {
-                properExpectedValues = expectedValues as IEnumerable;
+                properExpectedValues = expectedValues;
             }
 
             fluentAssertion.ContainsOnly(properExpectedValues);
@@ -202,7 +202,7 @@ namespace NFluent
             }
             else
             {
-                properExpectedValues = expectedValues as IEnumerable;
+                properExpectedValues = expectedValues;
             }
 
             fluentAssertion.ContainsExactly(properExpectedValues);
@@ -322,9 +322,9 @@ namespace NFluent
             {
                 foreach (var expectedValue in expectedValues)
                 {
-                    if (object.Equals(element, expectedValue))
+                    if (Equals(element, expectedValue))
                     {
-                        notFoundValues.RemoveAll((one) => one.Equals(expectedValue));
+                        notFoundValues.RemoveAll(one => one.Equals(expectedValue));
                         break;
                     }
                 }
@@ -349,7 +349,7 @@ namespace NFluent
                 var isExpectedValue = false;
                 foreach (var expectedValue in expectedValues)
                 {
-                    if (object.Equals(element, expectedValue))
+                    if (Equals(element, expectedValue))
                     {
                         isExpectedValue = true;
                         break;

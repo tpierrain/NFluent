@@ -13,7 +13,7 @@
         [Test]
         public void HasSizeWorksWithArray()
         {
-            var array = new int[] { 45, 43, 54, 666 };
+            var array = new[] { 45, 43, 54, 666 };
 
             Check.That(array).HasSize(4);
         }
@@ -29,7 +29,7 @@
         [Test]
         public void HasSizeWorksWithEnumerable()
         {
-            IEnumerable enumerable = new List<int>() { 45, 43, 54, 666 };
+            IEnumerable enumerable = new List<int> { 45, 43, 54, 666 };
 
             Check.That(enumerable).HasSize(4);
         }
@@ -37,7 +37,7 @@
         [Test]
         public void HasSizeWorksWithGenericEnumerable()
         {
-            IEnumerable<int> enumerable = new List<int>() { 45, 43, 54, 666 };
+            IEnumerable<int> enumerable = new List<int> { 45, 43, 54, 666 };
 
             Check.That(enumerable).HasSize(4).And.Contains(666);
         }
@@ -45,7 +45,7 @@
         [Test]
         public void HasSizeWorksWithArrayList()
         {
-            ArrayList arrayList = new ArrayList() { 45, 43, 54, 666 };
+            var arrayList = new ArrayList { 45, 43, 54, 666 };
 
             Check.That(arrayList).HasSize(4);
         }
@@ -54,7 +54,7 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable has 1 element instead of 5.\nActual content is:\n\t[666].")]
         public void HasSizeThrowsExceptionWithClearStatusWhenFailsWithOneElementFound()
         {
-            var enumerable = new List<int>() { 666 };
+            var enumerable = new List<int> { 666 };
 
             Check.That(enumerable).HasSize(5);
         }
@@ -63,7 +63,7 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable has 4 elements instead of 1.\nActual content is:\n\t[45, 43, 54, 666].")]
         public void HasSizeThrowsExceptionWithClearStatusWhenFailsWithOneExpectedElement()
         {
-            var enumerable = new List<int>() { 45, 43, 54, 666 };
+            var enumerable = new List<int> { 45, 43, 54, 666 };
 
             Check.That(enumerable).HasSize(1);
         }
@@ -84,7 +84,7 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable is not empty. Contains:\n\t[null, null, Thomas]")]
         public void IsEmptyThrowsExceptionWhenNotEmpty()
         {
-            var persons = new List<Person>() { null, null, new Person() { Name = "Thomas" } };
+            var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
             
             Check.That(persons).IsEmpty();
         }
@@ -94,7 +94,7 @@
         [Test]
         public void AndOperatorWorksWithAllMethodsOfEnumerableFluentAssertion()
         {
-            var killingSeries = new List<string>() { "The wire", "Game of Thrones" };
+            var killingSeries = new List<string> { "The wire", "Game of Thrones" };
             
             Check.That(killingSeries).HasSize(2).And.ContainsOnly("Game of Thrones", "The wire").And.ContainsExactly("The wire", "Game of Thrones");
             Check.That(killingSeries).Contains("The wire").And.ContainsOnly("Game of Thrones", "The wire").And.HasSize(2);
@@ -110,7 +110,7 @@
         [Test]
         public void AndOperatorWorksWithAllMethodsOfEnumerableFluentAssertionOnEnumerable()
         {
-            IEnumerable killingSeries = new List<string>() { "The wire", "Game of Thrones" };
+            IEnumerable killingSeries = new List<string> { "The wire", "Game of Thrones" };
 
             Check.That(killingSeries).HasSize(2).And.ContainsOnly("Game of Thrones", "The wire").And.ContainsExactly("The wire", "Game of Thrones");
             Check.That(killingSeries).Contains("The wire").And.ContainsOnly("Game of Thrones", "The wire").And.HasSize(2);
