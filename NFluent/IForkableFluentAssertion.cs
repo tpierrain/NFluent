@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IFluentAssertionBase.cs" company="">
+// // <copyright file="IForkableFluentAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,21 +14,21 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    // TODO: dismantle this useless interface?
-
     /// <summary>
     /// Provides fluent assertion methods to be executed on the system under test (sut).
     /// Every method should return a <see cref="IChainableFluentAssertion{T}"/> instance
     /// of the same fluent assertion type (closure of operations), or throw an 
     /// <see cref="FluentAssertionException"/> when failing.
-    /// This 'marker' interface is mandatory for the chainable assertion mechanism. 
+    /// This interface is mandatory for the chainable assertion mechanism. 
     /// </summary>
-    public interface IFluentAssertionBase
+    public interface IForkableFluentAssertion
     {
         /// <summary>
-        /// Creates a new instance of the same fluent assertion type, with the same Value property.
+        /// Creates a new instance of the same fluent assertion type, injecting the same Value property 
+        /// (i.e. the system under test), but with a false Negated property in any case.
         /// </summary>
+        /// <remarks>This method is used during the chaining of multiple assertions.</remarks>
         /// <returns>A new instance of the same fluent assertion type, with the same Value property.</returns>
-        object CreateNewInstanceWithSameValue();
+        object ForkInstance();
     }
 }

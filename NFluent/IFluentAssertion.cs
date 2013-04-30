@@ -21,7 +21,7 @@ namespace NFluent
     /// Provides assertion methods to be executed on a given value.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IFluentAssertion<out T> : IFluentAssertionBase
+    public interface IFluentAssertion<out T> : IForkableFluentAssertion
     {
         /// <summary>
         /// Gets the value to be tested (provided for any extension method to be able to test it).

@@ -20,7 +20,7 @@ namespace NFluent
     /// <summary>
     /// Implements lambda/action specific assertion.
     /// </summary>
-    public interface ILambdaAssertion : IFluentAssertionBase
+    public interface ILambdaAssertion : IForkableFluentAssertion
     {
         /// <summary>
         /// Checks that the execution time is below a specified threshold.

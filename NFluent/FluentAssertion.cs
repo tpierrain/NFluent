@@ -74,12 +74,16 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Creates a new instance of the same fluent assertion type, with the same Value property.
+        /// Creates a new instance of the same fluent assertion type, injecting the same Value property
+        /// (i.e. the system under test), but with a false Negated property in any case.
         /// </summary>
         /// <returns>
         /// A new instance of the same fluent assertion type, with the same Value property.
         /// </returns>
-        public object CreateNewInstanceWithSameValue()
+        /// <remarks>
+        /// This method is used during the chaining of multiple assertions.
+        /// </remarks>
+        public object ForkInstance()
         {
             return new FluentAssertion<T>(this.Value);
         }
