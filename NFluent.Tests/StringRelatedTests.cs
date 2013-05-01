@@ -80,7 +80,7 @@
         public void AndOperatorCanChainMultipleAssertionsOnString()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Contains("i").And.StartsWith("abcd").And.IsInstanceOf<string>();
+            Check.That(alphabet).Contains("i").And.StartsWith("abcd").And.Not.IsInstanceOf<int>();
         }
     }
 }

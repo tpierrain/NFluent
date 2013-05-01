@@ -31,7 +31,7 @@ namespace NFluent
         public static IChainableFluentAssertion<IFluentAssertion<short>> IsEqualTo(this IFluentAssertion<short> fluentAssertion, object expected)
         {
             // TODO transform NumberFluentAssertion<T> into a static class with functions only?
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
             return numberAssertionStrategy.IsEqualTo(expected);
         }
 
@@ -46,7 +46,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<short>> IsNotEqualTo(this IFluentAssertion<short> fluentAssertion, object expected)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
             return numberAssertionStrategy.IsNotEqualTo(expected);
         }
 
@@ -61,7 +61,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<short>> IsInstanceOf<T>(this IFluentAssertion<short> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
             return numberAssertionStrategy.IsInstanceOf<T>();
         }
 
@@ -76,7 +76,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<short>> IsNotInstanceOf<T>(this IFluentAssertion<short> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
             return numberAssertionStrategy.IsNotInstanceOf<T>();
         }
 
@@ -90,7 +90,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<short>> IsZero(this IFluentAssertion<short> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
             return numberAssertionStrategy.IsZero();
         }
 
@@ -104,7 +104,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<short>> IsNotZero(this IFluentAssertion<short> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
             return numberAssertionStrategy.IsNotZero();
         }
 
@@ -118,7 +118,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<short>> IsPositive(this IFluentAssertion<short> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
             return numberAssertionStrategy.IsPositive();
         }
     }

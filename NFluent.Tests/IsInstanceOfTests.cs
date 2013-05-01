@@ -75,6 +75,7 @@
             const long LongObj = long.MaxValue;
             const double DoubleObj = 23d;
             const decimal DecimalObj = 2;
+            const byte ByteObj = (byte)1;
             var person = new Person();
             List<string> stringList = new List<string>();
             int[] integerArray = new int[10];
@@ -83,11 +84,11 @@
             Check.That(StringObj).IsNotInstanceOf<int>();
 
             // numerics
-            Check.That(IntObj).IsNotInstanceOf<long>();
+            Check.That(IntObj).Not.IsInstanceOf<long>();
             Check.That(LongObj).IsNotInstanceOf<string>();
             Check.That(DoubleObj).IsNotInstanceOf<int>();
             Check.That(DecimalObj).IsNotInstanceOf<float>();
-            Check.That((byte)1).IsNotInstanceOf<string>();
+            Check.That(ByteObj).Not.IsInstanceOf<string>();
 
             // objects
             Check.That(person).IsNotInstanceOf<NumbersRelatedTests>();
@@ -110,7 +111,7 @@
         {
             const int IntObject = 23;
 
-            Check.That(IntObject).IsNotInstanceOf<int>();
+            Check.That(IntObject).Not.IsInstanceOf<int>();
         }
 
         [Test]

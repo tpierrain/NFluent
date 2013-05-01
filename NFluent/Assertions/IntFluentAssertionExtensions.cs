@@ -33,7 +33,7 @@ namespace NFluent
         public static IChainableFluentAssertion<IFluentAssertion<int>> IsEqualTo(this IFluentAssertion<int> fluentAssertion, object expected)
         {
             // TODO transform NumberFluentAssertion<T> into a static class with functions only?
-            var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion);
             return numberAssertionStrategy.IsEqualTo(expected);
         }
 
@@ -48,7 +48,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<int>> IsNotEqualTo(this IFluentAssertion<int> fluentAssertion, object expected)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion);
             return numberAssertionStrategy.IsNotEqualTo(expected);
         }
 
@@ -63,23 +63,8 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<int>> IsInstanceOf<T>(this IFluentAssertion<int> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion);
             return numberAssertionStrategy.IsInstanceOf<T>();
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
-        /// <returns>
-        /// A chainable fluent assertion.
-        /// </returns>
-        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<int>> IsNotInstanceOf<T>(this IFluentAssertion<int> fluentAssertion)
-        {
-            var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion.Value);
-            return numberAssertionStrategy.IsNotInstanceOf<T>();
         }
 
         /// <summary>
@@ -92,7 +77,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<int>> IsZero(this IFluentAssertion<int> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion);
             return numberAssertionStrategy.IsZero();
         }
 
@@ -106,7 +91,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<int>> IsNotZero(this IFluentAssertion<int> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion);
             return numberAssertionStrategy.IsNotZero();
         }
 
@@ -120,7 +105,7 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<int>> IsPositive(this IFluentAssertion<int> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion.Value);
+            var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion);
             return numberAssertionStrategy.IsPositive();
         }
     }
