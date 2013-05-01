@@ -222,27 +222,12 @@ namespace NFluent
             if (this.fluentAssertion.Negated)
             {
                 IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(T));
-                return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
             }
             else
             {
                 IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
-                return new ChainableFluentAssertion<IFluentAssertion<N>>(this);    
             }
-        }
 
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <returns>
-        /// A chainable fluent assertion.
-        /// </returns>
-        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public IChainableFluentAssertion<IFluentAssertion<N>> IsNotInstanceOf<T>()
-        {
-            
-            IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(T));
             return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
         }
 

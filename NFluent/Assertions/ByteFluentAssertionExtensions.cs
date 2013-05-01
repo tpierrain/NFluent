@@ -61,16 +61,8 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<byte>> IsInstanceOf<T>(this IFluentAssertion<byte> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
-            {
-                var numberAssertionStrategy = new NumberFluentAssertion<byte>(fluentAssertion);
-                return numberAssertionStrategy.IsNotInstanceOf<T>();
-            }
-            else
-            {
-                var numberAssertionStrategy = new NumberFluentAssertion<byte>(fluentAssertion);
-                return numberAssertionStrategy.IsInstanceOf<T>();    
-            }
+            var numberAssertionStrategy = new NumberFluentAssertion<byte>(fluentAssertion);
+            return numberAssertionStrategy.IsInstanceOf<T>();    
         }
 
         /// <summary>

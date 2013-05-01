@@ -65,7 +65,7 @@
 
         #endregion
 
-        #region IsNotInstanceOf tests
+        #region Not.IsInstanceOf tests
 
         [Test]
         public void IsNotInstanceOfWorks()
@@ -81,28 +81,28 @@
             int[] integerArray = new int[10];
 
             // string
-            Check.That(StringObj).IsNotInstanceOf<int>();
+            Check.That(StringObj).Not.IsInstanceOf<int>();
 
             // numerics
             Check.That(IntObj).Not.IsInstanceOf<long>();
-            Check.That(LongObj).IsNotInstanceOf<string>();
-            Check.That(DoubleObj).IsNotInstanceOf<int>();
-            Check.That(DecimalObj).IsNotInstanceOf<float>();
+            Check.That(LongObj).Not.IsInstanceOf<string>();
+            Check.That(DoubleObj).Not.IsInstanceOf<int>();
+            Check.That(DecimalObj).Not.IsInstanceOf<float>();
             Check.That(ByteObj).Not.IsInstanceOf<string>();
 
             // objects
-            Check.That(person).IsNotInstanceOf<NumbersRelatedTests>();
+            Check.That(person).Not.IsInstanceOf<NumbersRelatedTests>();
 
             // IEnumerable
-            Check.That(stringList).IsNotInstanceOf<List<int>>();
-            Check.That(integerArray).IsNotInstanceOf<string[]>();
+            Check.That(stringList).Not.IsInstanceOf<List<int>>();
+            Check.That(integerArray).Not.IsInstanceOf<string[]>();
         }
         
         [Test]
         public void IsNotInstanceOfWorksWithString()
         {
             const string MotivationalSaying = "Failure is mother of success.";
-            Check.That(MotivationalSaying).IsNotInstanceOf<int>();
+            Check.That(MotivationalSaying).Not.IsInstanceOf<int>();
         }
 
         [Test]
@@ -120,7 +120,7 @@
         {
             const string Statement = "If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).";
 
-            Check.That(Statement).IsNotInstanceOf<string>();
+            Check.That(Statement).Not.IsInstanceOf<string>();
         }
 
         #endregion

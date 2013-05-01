@@ -66,21 +66,6 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
-        /// <returns>
-        /// A chainable fluent assertion.
-        /// </returns>
-        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<ushort>> IsNotInstanceOf<T>(this IFluentAssertion<ushort> fluentAssertion)
-        {
-            var numberAssertionStrategy = new NumberFluentAssertion<ushort>(fluentAssertion);
-            return numberAssertionStrategy.IsNotInstanceOf<T>();
-        }
-
-        /// <summary>
         /// Checks that the actual value is equal to zero.
         /// </summary>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
