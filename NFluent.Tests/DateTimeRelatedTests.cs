@@ -141,7 +141,7 @@ namespace NFluent.Tests
          {
              var actual = new DateTime(2013, 1, 1);
 
-             Check.That(actual).Not.IsInstanceOf<DateTime>();
+             Check.That(actual).IsNotInstanceOf<DateTime>();
          }
 
          [Test]
@@ -360,7 +360,7 @@ namespace NFluent.Tests
                  .IsBefore(new DateTime(2014, 1, 1)).And
                  .IsAfter(new DateTime(2012, 1, 1)).And
                  .IsEqualToIgnoringHours(new DateTime(2013, 1, 1, 1, 0, 0)).And
-                 .Not.IsInstanceOf<string>().And
+                 .IsNotInstanceOf<string>().And
                  .IsInstanceOf<DateTime>().And
                  .IsNotEqualTo("Batman").And.IsNotEqualTo(new DateTime(2014));
          }

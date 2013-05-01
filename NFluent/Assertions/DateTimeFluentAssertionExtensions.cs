@@ -71,18 +71,26 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsInstanceOf<T>(this IFluentAssertion<DateTime> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
-            {
-                Helpers.IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
-            }
-            else
-            {
-                Helpers.IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));    
-            }
+            Helpers.IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
 
             return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
         }
 
+        /// <summary>
+        /// Checks that the actual instance is not an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type not expected for this instance.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsNotInstanceOf<T>(this IFluentAssertion<DateTime> fluentAssertion)
+        {
+            Helpers.IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+
+            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
+        }
         #endregion
 
         /// <summary>

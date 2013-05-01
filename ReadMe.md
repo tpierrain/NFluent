@@ -56,7 +56,7 @@ With NFluent, you can write simple assertions like this:
     Check.That(heroes).StartsWith("Bat").And.Contains("Robin");
 
 	string motivationalSaying = "Failure is mother of success.";
-    Check.That(motivationalSaying).Not.IsInstanceOf<int>();
+    Check.That(motivationalSaying).IsNotInstanceOf<int>();
 
 ```
 with NFluent, you can also write assertions like this:

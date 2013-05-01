@@ -25,15 +25,13 @@ namespace NFluent
     /// <typeparam name="N">Type of the numerical value.</typeparam>
     public class NumberFluentAssertion<N> : IFluentAssertion<N> where N : IComparable
     {
-        private IFluentAssertion<N> fluentAssertion;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberFluentAssertion{N}" /> class.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion.</param>
-        public NumberFluentAssertion(IFluentAssertion<N> fluentAssertion)
+        /// <param name="number">The number to assert on.</param>
+        public NumberFluentAssertion(N number)
         {
-            this.fluentAssertion = fluentAssertion;
+            this.Value = number;
         }
 
         /// <summary>
@@ -42,13 +40,7 @@ namespace NFluent
         /// <value>
         /// The value to be tested by any fluent assertion extension method.
         /// </value>
-        public N Value
-        {
-            get
-            {
-                return this.fluentAssertion.Value;
-            }
-        }
+        public N Value { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="FluentAssertion{T}" /> should be negated or not.
@@ -79,7 +71,7 @@ namespace NFluent
         /// </remarks>
         public object ForkInstance()
         {
-            return new NumberFluentAssertion<N>(this.fluentAssertion);
+            return new NumberFluentAssertion<N>(this.Value);
         }
 
         /// <summary>
@@ -219,15 +211,21 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public IChainableFluentAssertion<IFluentAssertion<N>> IsInstanceOf<T>()
         {
-            if (this.fluentAssertion.Negated)
-            {
-                IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(T));
-            }
-            else
-            {
-                IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
-            }
+            IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
+            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+        }
 
+        /// <summary>
+        /// Checks that the actual instance is not an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type not expected for this instance.</typeparam>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
+        public IChainableFluentAssertion<IFluentAssertion<N>> IsNotInstanceOf<T>()
+        {
+            IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(T));
             return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
         }
 
