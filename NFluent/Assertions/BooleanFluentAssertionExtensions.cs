@@ -89,5 +89,51 @@ namespace NFluent
 
             throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not false.", fluentAssertion.Value.ToStringProperlyFormated()));
         }
+
+        /// <summary>
+        /// Checks that the actual instance is an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<bool>> IsInstanceOf<T>(this IFluentAssertion<bool> fluentAssertion)
+        {
+            if (fluentAssertion.Negated)
+            {
+                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+            }
+            else
+            {
+                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
+        }
+
+        /// <summary>
+        /// Checks that the actual instance is not an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type not expected for this instance.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<bool>> IsNotInstanceOf<T>(this IFluentAssertion<bool> fluentAssertion)
+        {
+            if (fluentAssertion.Negated)
+            {
+                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+            }
+            else
+            {
+                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
+        }
     }
 }

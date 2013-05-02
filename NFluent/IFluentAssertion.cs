@@ -34,11 +34,12 @@ namespace NFluent
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="FluentAssertion{T}" /> should be negated or not.
+        /// This property is useful when you implement assertion methods. 
         /// </summary>
         /// <value>
         ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
         /// </value>
-        bool Negated { get;  }
+        bool Negated { get; }
 
         /// <summary>
         /// Negates the next assertion.
