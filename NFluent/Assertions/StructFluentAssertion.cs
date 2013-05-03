@@ -88,19 +88,5 @@ namespace NFluent
         {
             return new StructFluentAssertion<T>(this.Value);
         }
-
-        /// <summary>
-        /// Checks that the actual value is equal to another expected value.
-        /// </summary>
-        /// <param name="expected">The expected value.</param>
-        /// <returns>
-        /// A chainable assertion.
-        /// </returns>
-        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public IChainableFluentAssertion<IStructFluentAssertion<T>> IsEqualTo(T expected)
-        {
-            EqualityHelper.IsEqualTo(this.Value, expected);
-            return new ChainableFluentAssertion<IStructFluentAssertion<T>>(this);
-        }
     }
 }
