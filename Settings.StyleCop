@@ -1,7 +1,9 @@
 <StyleCopSettings Version="105">
   <GlobalSettings>
     <CollectionProperty Name="RecognizedWords">
+      <Value>enum</Value>
       <Value>gzip</Value>
+      <Value>struct</Value>
       <Value>sut</Value>
     </CollectionProperty>
   </GlobalSettings>

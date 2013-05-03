@@ -49,6 +49,7 @@
       <Link>Version.cs</Link>
     </Compile>
     <Compile Include="AndRelatedTests.cs" />
+    <Compile Include="EnumOrStructRelatedTests.cs" />
     <Compile Include="ForDocumentation\CheckDescription.cs" />
     <Compile Include="ComparableRelatedTests.cs" />
     <Compile Include="ContainsOnlyTests.cs" />

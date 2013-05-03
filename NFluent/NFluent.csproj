@@ -51,6 +51,9 @@
     <Compile Include="Assertions\BooleanFluentAssertionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Assertions\StructFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\StructFluentAssertion.cs" />
+    <Compile Include="IStructFluentAssertion.cs" />
     <Compile Include="ILambdaAssertion.cs" />
     <Compile Include="Assertions\TimeSpanFluentAssertionExtensions.cs" />
     <Compile Include="ChainableFluentAssertion.cs" />

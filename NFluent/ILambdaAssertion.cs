@@ -18,7 +18,7 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Implements lambda/action specific assertion.
+    /// Provides lambda/action specific assertion.
     /// </summary>
     public interface ILambdaAssertion : IForkableFluentAssertion
     {

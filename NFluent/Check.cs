@@ -44,7 +44,7 @@ namespace NFluent
         /// </summary>
         /// <param name="value">The value to be tested.</param>
         /// <returns>
-        /// A <see cref="IFluentAssertion{T}" /> instance to use in order to assert things on the given value.
+        /// A <see cref="ILambdaAssertion" /> instance to use in order to assert things on the given value.
         /// </returns>
         /// <remarks>
         /// Every method of the returned <see cref="IFluentAssertion{T}" /> instance will throw a <see cref="FluentAssertionException" /> when failing.
@@ -53,6 +53,22 @@ namespace NFluent
         public static ILambdaAssertion That(Action value)
         {
             return new LambdaAssertion(value);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="IStructFluentAssertion{T}" /> instance that will provide assertion methods to be executed on a given enum or struct value.
+        /// </summary>
+        /// <typeparam name="T">Type of the enum or struct value to be tested.</typeparam>
+        /// <param name="value">The value to be tested.</param>
+        /// <returns>
+        /// A <see cref="IStructFluentAssertion{T}" /> instance to use in order to assert things on the given enum or struct value.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="IStructFluentAssertion{T}" /> instance will throw a <see cref="FluentAssertionException" /> when failing.
+        /// </remarks>
+        public static IStructFluentAssertion<T> ThatEnumOrStruct<T>(T value) where T : struct
+        {
+            return new StructFluentAssertion<T>(value);
         }
     }
 }

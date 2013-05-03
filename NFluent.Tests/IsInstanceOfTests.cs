@@ -23,10 +23,10 @@
 
         private readonly DateTime dateTimeObj = new DateTime();
         private readonly TimeSpan timeSpanObj = new TimeSpan();
+        private readonly int[] integerArray = new int[10];
         private int[] emptyIntegerArray = new int[10];
         private List<string> stringList = new List<string>();
         private Person person = new Person() { Name = "Charles BAUDELAIRE" };
-        private readonly int[] integerArray = new int[10];
 
         #region IsInstanceOf tests
 
