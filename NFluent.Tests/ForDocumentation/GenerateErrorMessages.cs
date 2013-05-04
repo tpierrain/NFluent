@@ -17,12 +17,10 @@ namespace NFluent.Tests.ForDocumentation
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using System.Threading;
 
     using NUnit.Framework;
 
@@ -120,7 +118,7 @@ namespace NFluent.Tests.ForDocumentation
                     assembly.GetTypes()
                             .Where(
                                 type =>
-                                ((type.GetInterface("IFluentAssertionBase") != null
+                                ((type.GetInterface("IForkableFluentAssertion") != null
                                   && (type.Attributes & TypeAttributes.Abstract) == 0)
                                  || type.GetCustomAttributes(typeof(ExtensionAttribute), false).Length > 0)
                                 && ((type.Attributes & TypeAttributes.Public) == TypeAttributes.Public)))

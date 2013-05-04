@@ -99,11 +99,11 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[John] of type: [NFluent.Tests.Children]\nis not equal to the expected one:\n\t[John] of type: [NFluent.Tests.Person].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[John] of type: [NFluent.Tests.Child]\nis not equal to the expected one:\n\t[John] of type: [NFluent.Tests.Person].")]
         public void WeCanSeeTheDifferenceBewteenTwoDifferentObjectsThatHaveTheSameToString()
         {
             Person dad = new Person() { Name = "John" };
-            Person son = new Children() { Name = "John" };
+            Person son = new Child() { Name = "John" };
             Check.That(son).IsEqualTo(dad);
         }
 

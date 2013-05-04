@@ -17,12 +17,12 @@ namespace NFluent
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Provides a way to chain two <see cref="IFluentAssertionBase"/> instances. 
+    /// Provides a way to chain two <see cref="IForkableFluentAssertion"/> instances. 
     /// </summary>
-    /// <typeparam name="T">Type of the <see cref="IFluentAssertionBase"/> to be chained.</typeparam>
-    public class ChainableFluentAssertion<T> : IChainableFluentAssertion<T> where T : IFluentAssertionBase
+    /// <typeparam name="T">Type of the <see cref="IForkableFluentAssertion"/> to be chained.</typeparam>
+    public class ChainableFluentAssertion<T> : IChainableFluentAssertion<T> where T : class, IForkableFluentAssertion
     {
-        private readonly T previousFluentAssertion;
+        private readonly T newAssertionWithSameValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChainableFluentAssertion{T}" /> class.
@@ -30,7 +30,7 @@ namespace NFluent
         /// <param name="previousFluentAssertion">The previous fluent assert.</param>
         public ChainableFluentAssertion(T previousFluentAssertion)
         {
-            this.previousFluentAssertion = previousFluentAssertion;
+            this.newAssertionWithSameValue = previousFluentAssertion.ForkInstance() as T;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace NFluent
         {
             get
             {
-                return this.previousFluentAssertion;
+                return this.newAssertionWithSameValue;
             }
         }
     }

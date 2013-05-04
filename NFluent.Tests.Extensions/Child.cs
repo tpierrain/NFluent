@@ -3,7 +3,7 @@
     /// <summary>
     ///  Dummy class for unit testing purpose.
     /// </summary>
-    public class Children : Person
+    public class Child : Person
     {
         /// <summary>
         /// Gets or sets the name of the school where the children goes this year.

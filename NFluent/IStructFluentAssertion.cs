@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IChainableFluentAssertion.cs" company="">
+// // <copyright file="IStructFluentAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,21 +14,40 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Provides a way to chain two <see cref="IForkableFluentAssertion"/> instances. 
+    /// Provides assertion methods to be executed on a given value of type struct.
     /// </summary>
-    /// <typeparam name="T">Type of the <see cref="IForkableFluentAssertion"/> to be chained.</typeparam>
-    public interface IChainableFluentAssertion<T> where T : IForkableFluentAssertion
+    /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
+    public interface IStructFluentAssertion<T> : IForkableFluentAssertion where T : struct
     {
         /// <summary>
-        /// Chains a new fluent assertion to the current one.
+        /// Gets the value to be tested (provided for any extension method to be able to test it).
         /// </summary>
         /// <value>
-        /// The new fluent assertion instance which has been chained to the previous one.
+        /// The value to be tested by any fluent assertion extension method.
+        /// </value>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        T Value { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="FluentAssertion{T}" /> should be negated or not.
+        /// This property is useful when you implement assertion methods. 
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
+        /// </value>
+        bool Negated { get; }
+
+        /// <summary>
+        /// Negates the next assertion.
+        /// </summary>
+        /// <value>
+        /// The next assertion negated.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        T And { get; }
+        IStructFluentAssertion<T> Not { get; }
     }
 }

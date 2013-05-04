@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="FluentAssertion.cs" company="">
+// // <copyright file="StructFluentAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -15,27 +15,28 @@
 namespace NFluent
 {
     using System.Diagnostics.CodeAnalysis;
+    using NFluent.Helpers;
 
     /// <summary>
-    /// Provides assertion methods to be executed on a given value.
+    /// Provides assertion methods to be executed on a given struct value.
     /// </summary>
-    /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public class FluentAssertion<T> : IFluentAssertion<T>
+    /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
+    public class StructFluentAssertion<T> : IStructFluentAssertion<T> where T : struct
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FluentAssertion{T}" /> class.
+        /// Initializes a new instance of the <see cref="StructFluentAssertion{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
-        public FluentAssertion(T value) : this(value, false)
+        public StructFluentAssertion(T value) : this(value, false)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FluentAssertion{T}" /> class.
+        /// Initializes a new instance of the <see cref="StructFluentAssertion{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="negated">A boolean value indicating whether the assertion should be negated or not.</param>
-        private FluentAssertion(T value, bool negated)
+        private StructFluentAssertion(T value, bool negated)
         {
             this.Value = value;
             this.Negated = negated;
@@ -55,7 +56,7 @@ namespace NFluent
         /// <value>
         ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
         /// </value>
-        public bool Negated { get; private set;  }
+        public bool Negated { get; private set; }
 
         /// <summary>
         /// Negates the next assertion.
@@ -64,12 +65,12 @@ namespace NFluent
         /// The next assertion negated.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public IFluentAssertion<T> Not 
-        { 
+        public IStructFluentAssertion<T> Not
+        {
             get
             {
                 bool negated = true;
-                return new FluentAssertion<T>(this.Value, negated);
+                return new StructFluentAssertion<T>(this.Value, negated);
             }
         }
 
@@ -85,7 +86,7 @@ namespace NFluent
         /// </remarks>
         public object ForkInstance()
         {
-            return new FluentAssertion<T>(this.Value);
+            return new StructFluentAssertion<T>(this.Value);
         }
     }
 }

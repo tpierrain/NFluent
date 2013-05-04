@@ -51,6 +51,9 @@
     <Compile Include="Assertions\BooleanFluentAssertionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Assertions\StructFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\StructFluentAssertion.cs" />
+    <Compile Include="IStructFluentAssertion.cs" />
     <Compile Include="ILambdaAssertion.cs" />
     <Compile Include="Assertions\TimeSpanFluentAssertionExtensions.cs" />
     <Compile Include="ChainableFluentAssertion.cs" />
@@ -61,7 +64,7 @@
     <Compile Include="Extensions\ExtensionsCommonHelpers.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="IChainableFluentAssertion.cs" />
-    <Compile Include="IFluentAssertionBase.cs" />
+    <Compile Include="IForkableFluentAssertion.cs" />
     <Compile Include="Assertions\LambdaAssertion.cs" />
     <Compile Include="Assertions\NumberFluentAssertion.cs" />
     <Compile Include="FluentAssertionException.cs" />

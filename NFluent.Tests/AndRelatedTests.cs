@@ -8,13 +8,13 @@
         [Test]
         public void CanUseAndInAnyOrderForAllFluentStringAssertOperations()
         {
-            var heroes = "Batman and Robin";
+            const string Heroes = "Batman and Robin";
 
-            Check.That(heroes).StartsWith("Bat").And.Contains("Robin");
-            Check.That(heroes).Contains("and").And.IsInstanceOf<string>().And.IsNotInstanceOf<Person>().And.IsNotEqualTo(null);
-            Check.That(heroes).Contains("Robin").And.StartsWith("Batman").And.IsInstanceOf<string>();
-            Check.That(heroes).IsInstanceOf<string>().And.Contains("Batman", "Robin").And.StartsWith("Batm");
-            Check.That(heroes).Contains("and").And.IsNotInstanceOf<Person>().And.IsInstanceOf<string>();
+            Check.That(Heroes).StartsWith("Bat").And.Contains("Robin");
+            Check.That(Heroes).Contains("and").And.IsInstanceOf<string>().And.IsNotInstanceOf<Person>().And.IsNotEqualTo(null);
+            Check.That(Heroes).Contains("Robin").And.StartsWith("Batman").And.IsInstanceOf<string>();
+            Check.That(Heroes).IsInstanceOf<string>().And.Contains("Batman", "Robin").And.StartsWith("Batm");
+            Check.That(Heroes).Contains("and").And.IsNotInstanceOf<Person>().And.IsInstanceOf<string>();
         }
     }
 }

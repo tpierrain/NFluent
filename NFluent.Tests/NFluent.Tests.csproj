@@ -49,6 +49,7 @@
       <Link>Version.cs</Link>
     </Compile>
     <Compile Include="AndRelatedTests.cs" />
+    <Compile Include="EnumOrStructRelatedTests.cs" />
     <Compile Include="ForDocumentation\CheckDescription.cs" />
     <Compile Include="ComparableRelatedTests.cs" />
     <Compile Include="ContainsOnlyTests.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="ForDocumentation\TypeChecks.cs" />
     <Compile Include="IsInstanceOfTests.cs" />
     <Compile Include="LambdaRelatedTests.cs" />
+    <Compile Include="NotRelatedTests.cs" />
     <Compile Include="NumbersRelatedTests.cs" />
     <Compile Include="PropertiesRelatedTests.cs" />
     <Compile Include="EqualRelatedTests.cs" />

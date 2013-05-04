@@ -15,22 +15,25 @@
 namespace NFluent
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+
     using NFluent.Helpers;
 
     /// <summary>
     /// Provides assertion methods to be executed on a number instance.
     /// </summary>
     /// <typeparam name="N">Type of the numerical value.</typeparam>
-    public class NumberFluentAssertion<N> : IFluentAssertion<N>
-        where N : IComparable
+    public class NumberFluentAssertion<N> : IFluentAssertion<N> where N : IComparable
     {
+        private IFluentAssertion<N> fluentAssertion;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberFluentAssertion{N}" /> class.
         /// </summary>
-        /// <param name="number">The number to assert on.</param>
-        public NumberFluentAssertion(N number)
+        /// <param name="fluentAssertion">The fluent assertion.</param>
+        public NumberFluentAssertion(IFluentAssertion<N> fluentAssertion)
         {
-            this.Value = number;
+            this.fluentAssertion = fluentAssertion;
         }
 
         /// <summary>
@@ -39,7 +42,45 @@ namespace NFluent
         /// <value>
         /// The value to be tested by any fluent assertion extension method.
         /// </value>
-        public N Value { get; private set; }
+        public N Value 
+        { 
+            get
+            {
+                return this.fluentAssertion.Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="FluentAssertion{T}" /> should be negated or not.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
+        /// </value>
+        public bool Negated { get; private set; }
+        
+        /// <summary>
+        /// Negates the next assertion.
+        /// </summary>
+        /// <value>
+        /// The next assertion negated.
+        /// </value>
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
+        public IFluentAssertion<N> Not { get; private set; }
+
+        /// <summary>
+        /// Creates a new instance of the same fluent assertion type, injecting the same Value property
+        /// (i.e. the system under test), but with a false Negated property in any case.
+        /// </summary>
+        /// <returns>
+        /// A new instance of the same fluent assertion type, with the same Value property.
+        /// </returns>
+        /// <remarks>
+        /// This method is used during the chaining of multiple assertions.
+        /// </remarks>
+        public object ForkInstance()
+        {
+            return new NumberFluentAssertion<N>(this.fluentAssertion);
+        }
 
         /// <summary>
         /// Checks that the actual value is equal to zero.
@@ -178,7 +219,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public IChainableFluentAssertion<IFluentAssertion<N>> IsInstanceOf<T>()
         {
-            IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
+            if (this.fluentAssertion.Negated)
+            {
+                IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(T));
+            }
+            else
+            {
+                IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
+            }
+
             return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
         }
 
@@ -192,7 +241,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
         public IChainableFluentAssertion<IFluentAssertion<N>> IsNotInstanceOf<T>()
         {
-            IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(T));
+            if (this.fluentAssertion.Negated)
+            {
+                IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
+            }
+            else
+            {
+                IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(T));
+            }
+
             return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
         }
 

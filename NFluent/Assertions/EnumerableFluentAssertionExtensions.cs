@@ -66,7 +66,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsInstanceOf<T>(this IFluentAssertion<IEnumerable> fluentAssertion)
         {
-            IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+            if (fluentAssertion.Negated)
+            {
+                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+            }
+            else
+            {
+                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+            }
+
             return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 
@@ -81,7 +89,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsNotInstanceOf<T>(this IFluentAssertion<IEnumerable> fluentAssertion)
         {
-            IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+            if (fluentAssertion.Negated)
+            {
+                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+            }
+            else
+            {
+                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+            }
+
             return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
         }
 

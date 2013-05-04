@@ -62,7 +62,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<object>> IsInstanceOf<T>(this IFluentAssertion<object> fluentAssertion)
         {
-            IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+            if (fluentAssertion.Negated)
+            {
+                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+            }
+            else
+            {
+                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+            }
+
             return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
         }
 
@@ -77,7 +85,30 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<object>> IsNotInstanceOf<T>(this IFluentAssertion<object> fluentAssertion)
         {
-            IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+            if (fluentAssertion.Negated)
+            {
+                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+            }
+            else
+            {
+                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+        }
+
+        /// <summary>
+        /// Checks that the actual expression is in the inheritance hierarchy of the given type or of the same type.
+        /// </summary>
+        /// <typeparam name="T">The Type which is expected to be a base Type of the actual expression.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The checked expression is not in the inheritance hierarchy of the given type.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<object>> InheritsFrom<T>(this IFluentAssertion<object> fluentAssertion)
+        {
+            IsInstanceHelper.InheritsFrom(fluentAssertion.Value, typeof(T));
             return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
         }
     }
