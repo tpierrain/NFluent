@@ -8,7 +8,6 @@ Now available on github: https://github.com/tpierrain/NFluent/issues?state=open
 Temporary backlog
 -------
 
-1. Implement the Not for all the IsNotInstanceOf
 1. Implement 'Not' for InheritsFrom
 1. Implement 'Not' for every assertion method
 1. Update md documentation to indicate that it is mandatory to implement std and negated versions for every new assertion method

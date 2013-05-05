@@ -234,11 +234,26 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked expression is not of part of the inheritance hierarchy, or of the same type than the specified one.\nIndeed, checked expression type:\n\t[NFluent.Tests.Person]\nis not a derived type of\n\t[NFluent.Tests.Child].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked expression is not part of the inheritance hierarchy or of the same type than the specified one.\nIndeed, checked expression type:\n\t[NFluent.Tests.Person]\nis not a derived type of\n\t[NFluent.Tests.Child].")]
         public void InheritsFromThrowsExceptionWhenFailing()
         {
             var father = new Person() { Name = "Odysseus" };
             Check.That(father).InheritsFrom<Child>();
+        }
+
+        [Test]
+        public void NotInheritsFromWorks()
+        {
+            var hero = new Person() { Name = "Arjuna" };
+            Check.That(hero).Not.InheritsFrom<int>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked expression is part of the inheritance hierarchy or of the same type than the specified one.\nIndeed, checked expression type:\n\t[NFluent.Tests.Person]\nis a derived type of\n\t[NFluent.Tests.Person].")]
+        public void NotInheritsFromThrowsExceptionWhenFailing()
+        {
+            var father = new Person() { Name = "Odysseus" };
+            Check.That(father).Not.InheritsFrom<Person>();
         }
     }
 }
