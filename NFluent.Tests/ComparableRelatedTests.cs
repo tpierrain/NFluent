@@ -23,7 +23,7 @@
         {
             const int First = 1;
             const int Second = 2;
-
+            
             Check.That(First as IComparable).IsBefore(Second);
 
             // TODO: make the next line build
@@ -58,6 +58,25 @@
             Version v2 = new Version(2, 0);
 
             Check.That(v2).IsBefore(v1);
+        }
+
+        [Test]
+        public void NotOperatorWorksWithIsBefore()
+        {
+            Version v1 = new Version(1, 0);
+            Version v2 = new Version(2, 0);
+
+            Check.That(v2).Not.IsBefore(v1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1.0] of type: [System.Version]\nis before:\n\t[2.0] of type: [System.Version].")]
+        public void IsBeforeWithNotOperatorCanThrowException()
+        {
+            Version v1 = new Version(1, 0);
+            Version v2 = new Version(2, 0);
+
+            Check.That(v1).Not.IsBefore(v2);
         }
     }
 }
