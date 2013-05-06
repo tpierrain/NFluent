@@ -49,12 +49,7 @@ namespace NFluent
 
         private static void IsBeforeImpl(IFluentAssertion<IComparable> fluentAssertion, IComparable otherValue)
         {
-            if (fluentAssertion.Value == null)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not before:\n\t[{2}]{3}.", fluentAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(fluentAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
-            }
-
-            if (fluentAssertion.Value.CompareTo(otherValue) >= 0)
+            if (fluentAssertion.Value == null || fluentAssertion.Value.CompareTo(otherValue) >= 0)
             {
                 throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not before:\n\t[{2}]{3}.", fluentAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(fluentAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
             }
@@ -62,15 +57,16 @@ namespace NFluent
 
         private static void IsBeforeNegatedImpl(IFluentAssertion<IComparable> fluentAssertion, IComparable otherValue)
         {
-            if (fluentAssertion.Value == null)
+            try
             {
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis before:\n\t[{2}]{3}.", fluentAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(fluentAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
+                IsBeforeImpl(fluentAssertion, otherValue);
+            }
+            catch (FluentAssertionException)
+            {
+                return;
             }
 
-            if (fluentAssertion.Value.CompareTo(otherValue) < 0)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis before:\n\t[{2}]{3}.", fluentAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(fluentAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
-            }
+            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis before:\n\t[{2}]{3}.", fluentAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(fluentAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
         }
     }
 }
