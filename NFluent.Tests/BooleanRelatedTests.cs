@@ -50,12 +50,30 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[False]\nis false.")]
+        public void NotIsFalseMayThrowExceptions()
+        {
+            const bool TddSucks = false;
+
+            Check.That(TddSucks).Not.IsFalse();
+        }
+
+        [Test]
         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[False]\nis not true.")]
         public void IsTrueThrowsExceptionWhenFalse()
         {
             const bool NFluentRocks = false;
 
             Check.That(NFluentRocks).IsTrue();
+        }
+
+        [Test]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[True]\nis true.")]
+        public void NotIsTrueThrowsExceptionWhenFalse()
+        {
+            const bool NFluentRocks = true;
+
+            Check.That(NFluentRocks).Not.IsTrue();
         }
 
         [Test]

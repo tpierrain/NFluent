@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
     using NFluent.Extensions;
     using NFluent.Helpers;
 
@@ -100,10 +102,16 @@ namespace NFluent
 
         private static void IsTrueNegatedImpl(IFluentAssertion<bool> fluentAssertion)
         {
-            if (fluentAssertion.Value)
+            try
             {
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis true.", fluentAssertion.Value.ToStringProperlyFormated()));
+                IsTrueImpl(fluentAssertion);
             }
+            catch (FluentAssertionException)
+            {
+                return;
+            }
+
+            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis true.", fluentAssertion.Value.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -138,10 +146,16 @@ namespace NFluent
 
         private static void IsFalseNegatedImpl(IFluentAssertion<bool> fluentAssertion)
         {
-            if (!fluentAssertion.Value)
+            try
             {
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis false.", fluentAssertion.Value.ToStringProperlyFormated()));
+                IsFalseImpl(fluentAssertion);
             }
+            catch (FluentAssertionException)
+            {
+                return;
+            }
+            
+            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis false.", fluentAssertion.Value.ToStringProperlyFormated()));
         }
 
         /// <summary>
