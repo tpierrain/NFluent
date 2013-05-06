@@ -22,58 +22,68 @@ namespace NFluent.Tests
         [Test]
         public void CheckThatWorksOnBoolean()
         {
-            const bool IsFunny = true;
-            const bool WinterIsFunny = false;
+            const bool NFluentRocks = true;
+            const bool TddSucks = false;
 
-            Check.That(IsFunny).IsTrue();
-            Check.That(WinterIsFunny).IsFalse();
+            Check.That(NFluentRocks).IsTrue();
+            Check.That(TddSucks).IsFalse();
         }
 
         [Test]
         public void AndOperatorCanChainMultipleAssertionOnBoolean()
         {
-            const bool IsFunny = true;
-            const bool WinterIsFunny = false;
+            const bool NFluentRocks = true;
+            const bool TddSucks = false;
 
-            Check.That(IsFunny).IsTrue().And.IsEqualTo(true).And.IsNotEqualTo(WinterIsFunny);
-            Check.That(WinterIsFunny).IsFalse().And.IsEqualTo(false).And.IsNotEqualTo(IsFunny);
+            Check.That(NFluentRocks).IsTrue().And.IsEqualTo(true).And.IsNotEqualTo(TddSucks);
+            Check.That(TddSucks).IsFalse().And.IsEqualTo(false).And.IsNotEqualTo(NFluentRocks);
+        }
+
+        [Test]
+        public void NotOperatorWorks()
+        {
+            const bool NFluentRocks = true;
+            const bool TddSucks = false;
+
+            Check.That(NFluentRocks).Not.IsFalse();
+            Check.That(TddSucks).Not.IsTrue();
         }
 
         [Test]
         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[False]\nis not true.")]
         public void IsTrueThrowsExceptionWhenFalse()
         {
-            const bool IsFunny = false;
+            const bool NFluentRocks = false;
 
-            Check.That(IsFunny).IsTrue();
+            Check.That(NFluentRocks).IsTrue();
         }
 
         [Test]
         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[True]\nis not equal to the expected one:\n\t[False].")]
         public void IsEqualThrowsExceptionWhenNotEqual()
         {
-            const bool IsFunny = true;
-            const bool WinterIsFunny = false;
-            Check.That(IsFunny).IsEqualTo(WinterIsFunny);
+            const bool NFluentRocks = true;
+            const bool TddSucks = false;
+            Check.That(NFluentRocks).IsEqualTo(TddSucks);
         }
 
         [Test]
         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[True] of type: [System.Boolean].")]
         public void IsNotEqualThrowsExceptionWhenEqual()
         {
-            const bool IsFunny = true;
-            const bool WinterNotIsFunny = true;
+            const bool NFluentRocks = true;
+            const bool WinterNotNFluentRocks = true;
 
-            Check.That(IsFunny).IsNotEqualTo(WinterNotIsFunny);
+            Check.That(NFluentRocks).IsNotEqualTo(WinterNotNFluentRocks);
         }
 
         [Test]
         [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[True]\nis not false.")]
         public void IsFalseThrowsExceptionWhenTrue()
         {
-            const bool IsFunny = true;
+            const bool NFluentRocks = true;
 
-            Check.That(IsFunny).IsFalse();
+            Check.That(NFluentRocks).IsFalse();
         }
     }
 }
