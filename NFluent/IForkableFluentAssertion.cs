@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
     /// <summary>
     /// Provides fluent assertion methods to be executed on the system under test (sut).
     /// Every method should return a <see cref="IChainableFluentAssertion{T}"/> instance
@@ -21,6 +23,10 @@ namespace NFluent
     /// <see cref="FluentAssertionException"/> when failing.
     /// This interface is mandatory for the chainable assertion mechanism. 
     /// </summary>
+    /// <remarks>
+    ///     The .NET standard <see cref="ICloneable"/> interface is not used here since it doesn't 
+    ///     support and include the 'Negated' property value reset.
+    /// </remarks>
     public interface IForkableFluentAssertion
     {
         /// <summary>
