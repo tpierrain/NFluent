@@ -11,7 +11,7 @@
     <AssemblyName>NFluent</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -51,10 +51,13 @@
     <Compile Include="Assertions\BooleanFluentAssertionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IExtendableFluentAssertion.cs" />
     <Compile Include="Assertions\StructFluentAssertionExtensions.cs" />
     <Compile Include="Assertions\StructFluentAssertion.cs" />
     <Compile Include="INegateableFluentAssertion.cs" />
     <Compile Include="IStructFluentAssertion.cs" />
+    <Compile Include="Assertions\ExtendableFluentAssertion.cs" />
+    <Compile Include="Assertions\EnumerableFluentSyntaxExtension.cs" />
     <Compile Include="ILambdaAssertion.cs" />
     <Compile Include="Assertions\TimeSpanFluentAssertionExtensions.cs" />
     <Compile Include="ChainableFluentAssertion.cs" />

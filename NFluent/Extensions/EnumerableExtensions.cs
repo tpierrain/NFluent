@@ -35,7 +35,7 @@ namespace NFluent
         /// </returns>
         public static string ToEnumeratedString(this IEnumerable enumerable)
         {
-            long itemsCount = 0;
+            long itemsCount;
             return ToEnumeratedString(enumerable, out itemsCount);
         }
 

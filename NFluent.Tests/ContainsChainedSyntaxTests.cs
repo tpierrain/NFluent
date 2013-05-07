@@ -58,6 +58,7 @@ namespace NFluent.Tests
             var tresAmigos = new[] { "un", "dos", "tres" };
             Check.That(tresAmigos).Contains("dos", "un", "tres").InThatOrder();
         }
+
         [Test]
         [ExpectedException(typeof(FluentAssertionException))]
         public void ContainsInThatOrderFails3()

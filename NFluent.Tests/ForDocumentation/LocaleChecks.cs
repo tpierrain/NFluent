@@ -29,7 +29,7 @@ namespace NFluent.Tests.ForDocumentation
 
         [Test]
         [SetCulture("zh-CN")]
-        [Explicit("Scan all assemblies, execute tests in Japanese.")]
+        [Explicit("Scan all assemblies, execute tests in Chinese.")]
         public void Chinese()
         {
             RunnerHelper.RunAllTests();
@@ -37,7 +37,7 @@ namespace NFluent.Tests.ForDocumentation
 
         [Test]
         [SetCulture("fr-CA")]
-        [Explicit("Scan all assemblies, execute tests in Japanese.")]
+        [Explicit("Scan all assemblies, execute tests in Canadian French.")]
         public void CanadianFrench()
         {
             RunnerHelper.RunAllTests();

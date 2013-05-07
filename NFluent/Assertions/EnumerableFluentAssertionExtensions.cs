@@ -111,7 +111,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain all the expected values.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> Contains<T>(this IFluentAssertion<IEnumerable> fluentAssertion, params T[] expectedValues)
+        public static ExtendableFluentAssertion<IEnumerable> Contains<T>(this IFluentAssertion<IEnumerable> fluentAssertion, params T[] expectedValues)
         {
             IEnumerable properExpectedValues;
             if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
@@ -125,7 +125,7 @@ namespace NFluent
 
             fluentAssertion.Contains(properExpectedValues);
 
-            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
+            return new ExtendableFluentAssertion<IEnumerable>(fluentAssertion, expectedValues);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace NFluent
                 throw new FluentAssertionException(string.Format("\nThe actual enumerable:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}]", fluentAssertion.Value.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
             }
 
-            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
+            return new ExtendableFluentAssertion<IEnumerable>(fluentAssertion, otherEnumerable);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace NFluent
             fluentAssertion.ContainsOnly(properExpectedValues);
 
             return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
-        }
+       }
 
         /// <summary>
         /// Checks that the enumerable contains only the values present in another enumerable, and nothing else, in any order.
@@ -275,11 +275,11 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The enumerable has not the expected number of elements.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> HasSize(this IFluentAssertion<IEnumerable> fluentAssertion, long expectedSize)
         {
-            long itemsCount = fluentAssertion.Value.Cast<object>().LongCount();
+            var itemsCount = fluentAssertion.Value.Cast<object>().LongCount();
 
             if (expectedSize != itemsCount)
             {
-                string foundElementsNumberDescription = itemsCount.ToString();
+                var foundElementsNumberDescription = itemsCount.ToString();
                 if (itemsCount > 1)
                 {
                     foundElementsNumberDescription += " elements";
@@ -338,7 +338,7 @@ namespace NFluent
             {
                 foreach (var expectedValue in expectedValues)
                 {
-                    if (Equals(element, expectedValue))
+                    if (object.Equals(element, expectedValue))
                     {
                         notFoundValues.RemoveAll(one => one.Equals(expectedValue));
                         break;
@@ -362,15 +362,7 @@ namespace NFluent
             var unexpectedValuesFound = new List<object>();
             foreach (var element in enumerable)
             {
-                var isExpectedValue = false;
-                foreach (var expectedValue in expectedValues)
-                {
-                    if (Equals(element, expectedValue))
-                    {
-                        isExpectedValue = true;
-                        break;
-                    }
-                }
+                var isExpectedValue = expectedValues.Cast<object>().Contains(element);
 
                 if (!isExpectedValue)
                 {
@@ -404,7 +396,7 @@ namespace NFluent
             return (element is IEnumerable) && !(element is IEnumerable<char>);
         }
 
-        private static void ThrowsNotExactlyException(IFluentAssertion<IEnumerable> fluentAssertion, IList<object> enumerable)
+        private static void ThrowsNotExactlyException(IFluentAssertion<IEnumerable> fluentAssertion, IEnumerable<object> enumerable)
         {
             long foundCount;
             var foundItems = fluentAssertion.Value.ToEnumeratedString(out foundCount);
