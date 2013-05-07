@@ -24,9 +24,46 @@ b. Throwing proper FluentAssertionException when failing
 Must respect the pattern:
 "`\n`The actual \<value|string|enumerable|...\>\<specific explanation\>:`\n\t`\<actual value\>`\n`\<specific explanation\>:`\n\t`\<given value\>`.`"
 
-c. Implementing the following guidelines
-----------------------------------------
-  
+c. Making your method compliant with the Not operator
+-----------------------------------------------------
+Thus, make your method implementation following the structure:
+
+```c#
+	// sample of the IsTrue assertion method (for bool):
+	public static IChainableFluentAssertion<IFluentAssertion<bool>> IsTrue(this IFluentAssertion<bool> fluentAssertion)
+    {
+        if (fluentAssertion.Negated)
+        {
+            IsTrueNegatedImpl(fluentAssertion);
+        }
+        else
+        {
+            IsTrueImpl(fluentAssertion);    
+        }
+
+        return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
+    }
+```  
+To be consistent with the rest of the lib, make all your ...Impl and ...NegatedImpl static private methods throw the exceptions.
+
+Also in order to improve the rightness of the lib, make your ...NegatedImpl the opposite of the ...Impl. 
+Concretely speaking, it lead to code such as:
+
+```c#
+	private static void IsTrueNegatedImpl(IFluentAssertion<bool> fluentAssertion)
+    {
+        try
+        {
+            IsTrueImpl(fluentAssertion);
+        }
+        catch (FluentAssertionException)
+        {
+            return;
+        }
+
+        throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis true.", fluentAssertion.Value.ToStringProperlyFormated()));
+    }
+```
 
 2. Reference and use it from within your tests
 ----------------------------------------------

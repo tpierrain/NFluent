@@ -12,6 +12,20 @@
         #region IsEqualTo()
 
         [Test]
+        public void IsEqualToWorksWithBooleans()
+        {
+            const bool TddSucks = false;
+            Check.That(TddSucks).IsNotEqualTo(true);
+        }
+
+        [Test]
+        public void CanNegateIsEqualToWithBooleans()
+        {
+            const bool TddSucks = false;
+            Check.That(TddSucks).Not.IsNotEqualTo(false);
+        }
+
+        [Test]
         public void IsEqualToWorksWithString()
         {
             var first = "Son of a test";
@@ -120,6 +134,20 @@
         #endregion
 
         #region IsNotEqualTo()
+
+        [Test]
+        public void IsNotEqualToWorksWithBooleans()
+        {
+            const bool TddSucks = false;
+            Check.That(TddSucks).IsEqualTo(false);
+        }
+
+        [Test]
+        public void CanNegateIsNotEqualToWithBooleans()
+        {
+            const bool TddSucks = false;
+            Check.That(TddSucks).Not.IsEqualTo(true);
+        }
 
         [Test]
         public void IsNotEqualToWorksWithString()

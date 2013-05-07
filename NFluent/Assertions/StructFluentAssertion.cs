@@ -15,7 +15,6 @@
 namespace NFluent
 {
     using System.Diagnostics.CodeAnalysis;
-    using NFluent.Helpers;
 
     /// <summary>
     /// Provides assertion methods to be executed on a given struct value.

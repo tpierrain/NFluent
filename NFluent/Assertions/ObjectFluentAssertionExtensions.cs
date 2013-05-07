@@ -108,7 +108,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The checked expression is not in the inheritance hierarchy of the given type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<object>> InheritsFrom<T>(this IFluentAssertion<object> fluentAssertion)
         {
-            IsInstanceHelper.InheritsFrom(fluentAssertion.Value, typeof(T));
+            if (fluentAssertion.Negated)
+            {
+                IsInstanceHelper.NotInheritsFrom(fluentAssertion.Value, typeof(T));
+            }
+            else
+            {
+                IsInstanceHelper.InheritsFrom(fluentAssertion.Value, typeof(T));
+            }
+            
             return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
         }
     }

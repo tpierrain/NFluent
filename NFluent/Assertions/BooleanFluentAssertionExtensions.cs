@@ -33,7 +33,14 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<bool>> IsEqualTo(this IFluentAssertion<bool> fluentAssertion, object expected)
         {
-            EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+            if (fluentAssertion.Negated)
+            {
+                EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+            }
+            else
+            {
+                EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+            }
 
             return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
         }
@@ -49,7 +56,14 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<bool>> IsNotEqualTo(this IFluentAssertion<bool> fluentAssertion, object expected)
         {
-            EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+            if (fluentAssertion.Negated)
+            {
+                EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+            }
+            else
+            {
+                EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+            }
 
             return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
         }
@@ -64,12 +78,38 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not true.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<bool>> IsTrue(this IFluentAssertion<bool> fluentAssertion)
         {
-            if (fluentAssertion.Value)
+            if (fluentAssertion.Negated)
             {
-                return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
+                IsTrueNegatedImpl(fluentAssertion);
+            }
+            else
+            {
+                IsTrueImpl(fluentAssertion);    
             }
 
-            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not true.", fluentAssertion.Value.ToStringProperlyFormated()));
+            return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
+        }
+
+        private static void IsTrueImpl(IFluentAssertion<bool> fluentAssertion)
+        {
+            if (!fluentAssertion.Value)
+            {
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not true.", fluentAssertion.Value.ToStringProperlyFormated()));
+            }
+        }
+
+        private static void IsTrueNegatedImpl(IFluentAssertion<bool> fluentAssertion)
+        {
+            try
+            {
+                IsTrueImpl(fluentAssertion);
+            }
+            catch (FluentAssertionException)
+            {
+                return;
+            }
+
+            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis true.", fluentAssertion.Value.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -82,12 +122,38 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not false.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<bool>> IsFalse(this IFluentAssertion<bool> fluentAssertion)
         {
-            if (!fluentAssertion.Value)
+            if (fluentAssertion.Negated)
             {
-                return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
+                IsFalseNegatedImpl(fluentAssertion);
+            }
+            else
+            {
+                IsFalseImpl(fluentAssertion);
             }
 
-            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not false.", fluentAssertion.Value.ToStringProperlyFormated()));
+            return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
+        }
+
+        private static void IsFalseImpl(IFluentAssertion<bool> fluentAssertion)
+        {
+            if (fluentAssertion.Value)
+            {
+                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not false.", fluentAssertion.Value.ToStringProperlyFormated()));
+            }
+        }
+
+        private static void IsFalseNegatedImpl(IFluentAssertion<bool> fluentAssertion)
+        {
+            try
+            {
+                IsFalseImpl(fluentAssertion);
+            }
+            catch (FluentAssertionException)
+            {
+                return;
+            }
+            
+            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis false.", fluentAssertion.Value.ToStringProperlyFormated()));
         }
 
         /// <summary>

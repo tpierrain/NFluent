@@ -14,14 +14,14 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
     using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Provides assertion methods to be executed on a given value of type struct.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public interface IStructFluentAssertion<T> : IForkableFluentAssertion where T : struct
+    public interface IStructFluentAssertion<T> : IForkableFluentAssertion, INegateableFluentAssertion<IStructFluentAssertion<T>> where T : struct
     {
         /// <summary>
         /// Gets the value to be tested (provided for any extension method to be able to test it).
@@ -31,23 +31,5 @@ namespace NFluent
         /// </value>
         [EditorBrowsable(EditorBrowsableState.Never)]
         T Value { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="FluentAssertion{T}" /> should be negated or not.
-        /// This property is useful when you implement assertion methods. 
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
-        /// </value>
-        bool Negated { get; }
-
-        /// <summary>
-        /// Negates the next assertion.
-        /// </summary>
-        /// <value>
-        /// The next assertion negated.
-        /// </value>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        IStructFluentAssertion<T> Not { get; }
     }
 }

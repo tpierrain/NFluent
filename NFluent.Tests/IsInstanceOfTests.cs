@@ -24,6 +24,7 @@
         private readonly DateTime dateTimeObj = new DateTime();
         private readonly TimeSpan timeSpanObj = new TimeSpan();
         private readonly int[] integerArray = new int[10];
+        private readonly Version firstVersion = new Version(1, 0, 0, 0);
         private int[] emptyIntegerArray = new int[10];
         private List<string> stringList = new List<string>();
         private Person person = new Person() { Name = "Charles BAUDELAIRE" };
@@ -61,6 +62,9 @@
             // IEnumerable
             Check.That(this.stringList).IsInstanceOf<List<string>>();
             Check.That(this.integerArray).IsInstanceOf<int[]>();
+            
+            // Version
+            Check.That(this.firstVersion).IsInstanceOf<Version>();
         }
 
         [Test]
@@ -94,6 +98,9 @@
             // IEnumerable
             Check.That(this.stringList).Not.IsInstanceOf<string>();
             Check.That(this.integerArray).Not.IsInstanceOf<string>();
+
+            // Version
+            Check.That(this.firstVersion).Not.IsInstanceOf<string>();
         }
 
         [Test]
@@ -153,6 +160,9 @@
             // IEnumerable
             Check.That(this.stringList).IsNotInstanceOf<string>();
             Check.That(this.integerArray).IsNotInstanceOf<string>();
+
+            // Version
+            Check.That(this.firstVersion).IsNotInstanceOf<string>();
         }
 
         [Test]
@@ -186,6 +196,9 @@
             // IEnumerable
             Check.That(this.stringList).Not.IsNotInstanceOf<List<string>>();
             Check.That(this.integerArray).Not.IsNotInstanceOf<int[]>();
+            
+            // Version
+            Check.That(this.firstVersion).Not.IsNotInstanceOf<Version>();
         }
 
         [Test]
@@ -221,11 +234,26 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked expression is not of part of the inheritance hierarchy, or of the same type than the specified one.\nIndeed, checked expression type:\n\t[NFluent.Tests.Person]\nis not a derived type of\n\t[NFluent.Tests.Child].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked expression is not part of the inheritance hierarchy or of the same type than the specified one.\nIndeed, checked expression type:\n\t[NFluent.Tests.Person]\nis not a derived type of\n\t[NFluent.Tests.Child].")]
         public void InheritsFromThrowsExceptionWhenFailing()
         {
             var father = new Person() { Name = "Odysseus" };
             Check.That(father).InheritsFrom<Child>();
+        }
+
+        [Test]
+        public void NotInheritsFromWorks()
+        {
+            var hero = new Person() { Name = "Arjuna" };
+            Check.That(hero).Not.InheritsFrom<int>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked expression is part of the inheritance hierarchy or of the same type than the specified one.\nIndeed, checked expression type:\n\t[NFluent.Tests.Person]\nis a derived type of\n\t[NFluent.Tests.Person].")]
+        public void NotInheritsFromThrowsExceptionWhenFailing()
+        {
+            var father = new Person() { Name = "Odysseus" };
+            Check.That(father).Not.InheritsFrom<Person>();
         }
     }
 }
