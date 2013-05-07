@@ -29,22 +29,10 @@ namespace NFluent.Tests.ForDocumentation
     {
         // run this test to debug a specific test that the code is unable to properly identify
         [Test]
-        [Ignore("Use to debug dectetion when failing.")]
+        [Ignore("Use to debug detection when failing.")]
         public void SpecificTest()
         {
-            var test = new LambdaRelatedTests();
-
-            // test.SetUp();
-            MethodInfo method = test.GetType()
-                                    .GetMethod(
-                                        "FailDurationTest",
-                                        BindingFlags.Instance | BindingFlags.Public);
-            if (method != null)
-            {
-                RunnerHelper.RunMethod(method, test, null);
-            }
-
-            // test.TearDown();
+            RunnerHelper.RunAction(new ContainsChainedSyntaxTests().ContainsInThatOrderFails);
         }
 
         // Run this test to get all error messages
