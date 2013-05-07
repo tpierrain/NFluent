@@ -35,7 +35,7 @@
     <Target Name="Build" DependsOnTargets="NugetRestore">
         <Message Importance="high" Text="
 ---------------------------------------------------------------
-BUILD PROJECT
+BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
 ---------------------------------------------------------------
         "  />
         <MSBuild Projects="$(ProjectRoot)\$(ProjectName).sln" 
