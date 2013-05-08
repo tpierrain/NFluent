@@ -239,7 +239,8 @@ namespace NFluent
             var assertionRunner = this.fluentAssertion as IFluentAssertionRunner<N>;
             var runnableAssertion = this;
 
-            return assertionRunner.ExecuteAssertion(() =>
+            return assertionRunner.ExecuteAssertion(
+                () =>
                 {
                     IsInstanceHelper.IsInstanceOf(runnableAssertion.Value, typeof(T));
                 },

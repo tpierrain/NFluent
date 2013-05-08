@@ -17,8 +17,9 @@ namespace NFluent
     using System.ComponentModel;
 
     /// <summary>
-    /// Fluent assertion which is runnable by a <see cref="IFluentAssertionRunner{T}"/>.
+    /// Fluent assertion which is runnable by a <see cref="IFluentAssertionRunner{T}" />.
     /// </summary>
+    /// <typeparam name="T">Type of the value to assert on.</typeparam>
     public interface IRunnableAssertion<out T> : IForkableFluentAssertion, INegated
     {
         /// <summary>

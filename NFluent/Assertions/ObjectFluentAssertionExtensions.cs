@@ -68,7 +68,8 @@ namespace NFluent
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<object>;
             var runnableAssertion = fluentAssertion as IRunnableAssertion<object>;
 
-            return assertionRunner.ExecuteAssertion(() =>
+            return assertionRunner.ExecuteAssertion(
+                () =>
                 {
                     IsInstanceHelper.IsInstanceOf(runnableAssertion.Value, typeof(T));
                 },
@@ -89,7 +90,8 @@ namespace NFluent
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<object>;
             var runnableAssertion = fluentAssertion as IRunnableAssertion<object>;
 
-            return assertionRunner.ExecuteAssertion(() =>
+            return assertionRunner.ExecuteAssertion(
+                () =>
                 {
                     IsInstanceHelper.IsNotInstanceOf(runnableAssertion.Value, typeof(T));
                 },
@@ -113,7 +115,8 @@ namespace NFluent
             Type instanceType = runnableAssertion.Value.GetTypeWithoutThrowingException();
             Type expectedBaseType = typeof(T);
 
-            return assertionRunner.ExecuteAssertion(() =>
+            return assertionRunner.ExecuteAssertion(
+                () =>
                 {
                     IsInstanceHelper.InheritsFrom(runnableAssertion.Value, expectedBaseType);
                 },

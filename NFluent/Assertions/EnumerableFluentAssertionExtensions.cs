@@ -70,7 +70,8 @@ namespace NFluent
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<IEnumerable>;
             var runnableAssertion = fluentAssertion as IRunnableAssertion<IEnumerable>;
 
-            return assertionRunner.ExecuteAssertion(() =>
+            return assertionRunner.ExecuteAssertion(
+                () =>
                 {
                     IsInstanceHelper.IsInstanceOf(runnableAssertion.Value, typeof(T));
                 },
@@ -91,7 +92,8 @@ namespace NFluent
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<IEnumerable>;
             var runnableAssertion = fluentAssertion as IRunnableAssertion<IEnumerable>;
 
-            return assertionRunner.ExecuteAssertion(() =>
+            return assertionRunner.ExecuteAssertion(
+                () =>
                 {
                     IsInstanceHelper.IsNotInstanceOf(runnableAssertion.Value, typeof(T));
                 },
