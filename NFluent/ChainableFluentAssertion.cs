@@ -28,7 +28,7 @@ namespace NFluent
         /// Initializes a new instance of the <see cref="ChainableFluentAssertion{T}" /> class.
         /// </summary>
         /// <param name="previousFluentAssertion">The previous fluent assert.</param>
-        public ChainableFluentAssertion(T previousFluentAssertion)
+        public ChainableFluentAssertion(IForkableFluentAssertion previousFluentAssertion)
         {
             this.newAssertionWithSameValue = previousFluentAssertion.ForkInstance() as T;
         }

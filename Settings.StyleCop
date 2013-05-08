@@ -3,8 +3,11 @@
     <CollectionProperty Name="RecognizedWords">
       <Value>enum</Value>
       <Value>gzip</Value>
+      <Value>Intellisense</Value>
+      <Value>IntelliSense</Value>
       <Value>struct</Value>
       <Value>sut</Value>
+      <Value>vs</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Analyzers>

@@ -14,14 +14,17 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Provides assertion methods to be executed on a given value.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public class FluentAssertion<T> : IFluentAssertion<T>
+    internal class FluentAssertion<T> : IFluentAssertion<T>, IFluentAssertionRunner<T>, INegatedAndForkableAssertion
     {
+        private readonly FluentAssertionRunner<T> fluentAssertionRunner;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FluentAssertion{T}" /> class.
         /// </summary>
@@ -37,6 +40,7 @@ namespace NFluent
         /// <param name="negated">A boolean value indicating whether the assertion should be negated or not.</param>
         private FluentAssertion(T value, bool negated)
         {
+            this.fluentAssertionRunner = new FluentAssertionRunner<T>();
             this.Value = value;
             this.Negated = negated;
         }
@@ -74,6 +78,21 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Executes the assertion provided as an happy-path lambda (vs lambda for negated version).
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion.</param>
+        /// <param name="action">The action.</param>
+        /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
+        /// <returns>
+        /// A new chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">TODO: to be replaced</exception>
+        IChainableFluentAssertion<IFluentAssertion<T>> IFluentAssertionRunner<T>.ExecuteAssertion(INegatedAndForkableAssertion fluentAssertion, Action action, string negatedExceptionMessage)
+        {
+            return this.fluentAssertionRunner.ExecuteAssertion(fluentAssertion, action, negatedExceptionMessage);
+        }
+
+        /// <summary>
         /// Creates a new instance of the same fluent assertion type, injecting the same Value property
         /// (i.e. the system under test), but with a false Negated property in any case.
         /// </summary>
@@ -83,7 +102,7 @@ namespace NFluent
         /// <remarks>
         /// This method is used during the chaining of multiple assertions.
         /// </remarks>
-        public object ForkInstance()
+        object IForkableFluentAssertion.ForkInstance()
         {
             return new FluentAssertion<T>(this.Value);
         }

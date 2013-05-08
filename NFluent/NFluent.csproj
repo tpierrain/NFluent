@@ -52,7 +52,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Assertions\StructFluentAssertionExtensions.cs" />
-    <Compile Include="Assertions\StructFluentAssertion.cs" />
+    <Compile Include="StructFluentAssertion.cs" />
+    <Compile Include="FluentAssertionRunner.cs" />
+    <Compile Include="IFluentAssertionRunner.cs" />
     <Compile Include="INegateableFluentAssertion.cs" />
     <Compile Include="IStructFluentAssertion.cs" />
     <Compile Include="ILambdaAssertion.cs" />

@@ -14,14 +14,17 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Provides assertion methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public class StructFluentAssertion<T> : IStructFluentAssertion<T> where T : struct
+    public class StructFluentAssertion<T> : IStructFluentAssertion<T>, IFluentAssertionRunner<T>, INegatedAndForkableAssertion where T : struct
     {
+        private FluentAssertionRunner<T> fluentAssertionRunner;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="StructFluentAssertion{T}" /> class.
         /// </summary>
@@ -37,6 +40,7 @@ namespace NFluent
         /// <param name="negated">A boolean value indicating whether the assertion should be negated or not.</param>
         private StructFluentAssertion(T value, bool negated)
         {
+            this.fluentAssertionRunner = new FluentAssertionRunner<T>();
             this.Value = value;
             this.Negated = negated;
         }
@@ -73,6 +77,11 @@ namespace NFluent
             }
         }
 
+        IChainableFluentAssertion<IFluentAssertion<T>> IFluentAssertionRunner<T>.ExecuteAssertion(INegatedAndForkableAssertion fluentAssertion, Action action, string negatedExceptionMessage)
+        {
+            return this.fluentAssertionRunner.ExecuteAssertion(fluentAssertion, action, negatedExceptionMessage);
+        }
+
         /// <summary>
         /// Creates a new instance of the same fluent assertion type, injecting the same Value property
         /// (i.e. the system under test), but with a false Negated property in any case.
@@ -83,7 +92,7 @@ namespace NFluent
         /// <remarks>
         /// This method is used during the chaining of multiple assertions.
         /// </remarks>
-        public object ForkInstance()
+        object IForkableFluentAssertion.ForkInstance()
         {
             return new StructFluentAssertion<T>(this.Value);
         }

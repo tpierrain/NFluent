@@ -17,10 +17,17 @@ namespace NFluent
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Fluent assertion that has the ability to be negated via a 'Not' operator.
+    /// TODO: .... for runner purpose.
     /// </summary>
-    /// <typeparam name="T">Fluent assertion type to be negated.</typeparam>
-    public interface INegateableFluentAssertion<out T>
+    public interface INegatedAndForkableAssertion : IForkableFluentAssertion, INegated
+    {
+        
+    }
+
+    /// <summary>
+    /// klmkmdsklmds jmklm A rédiger...
+    /// </summary>
+    public interface INegated
     {
         /// <summary>
         /// Gets a value indicating whether this <see cref="FluentAssertion{T}" /> should be negated or not.
@@ -30,7 +37,14 @@ namespace NFluent
         ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
         /// </value>
         bool Negated { get; }
+    }
 
+    /// <summary>
+    /// Fluent assertion that has the ability to be negated via a 'Not' operator.
+    /// </summary>
+    /// <typeparam name="T">Fluent assertion type to be negated.</typeparam>
+    public interface INegateableFluentAssertion<out T> : INegated
+    {
         /// <summary>
         /// Negates the next assertion.
         /// </summary>
