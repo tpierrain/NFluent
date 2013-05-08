@@ -33,13 +33,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<bool>> IsEqualTo(this IFluentAssertion<bool> fluentAssertion, object expected)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<bool> assertion = fluentAssertion as FluentAssertion<bool>;
+
+            if (assertion.Negated)
             {
-                EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+                EqualityHelper.IsNotEqualTo(assertion.Value, expected);
             }
             else
             {
-                EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+                EqualityHelper.IsEqualTo(assertion.Value, expected);
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
@@ -56,13 +58,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<bool>> IsNotEqualTo(this IFluentAssertion<bool> fluentAssertion, object expected)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<bool> assertion = fluentAssertion as FluentAssertion<bool>;
+
+            if (assertion.Negated)
             {
-                EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+                EqualityHelper.IsEqualTo(assertion.Value, expected);
             }
             else
             {
-                EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+                EqualityHelper.IsNotEqualTo(assertion.Value, expected);
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
@@ -78,7 +82,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not true.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<bool>> IsTrue(this IFluentAssertion<bool> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<bool> assertion = fluentAssertion as FluentAssertion<bool>;
+
+            if (assertion.Negated)
             {
                 IsTrueNegatedImpl(fluentAssertion);
             }
@@ -149,13 +155,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<bool>> IsInstanceOf<T>(this IFluentAssertion<bool> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<bool> assertion = fluentAssertion as FluentAssertion<bool>;
+
+            if (assertion.Negated)
             {
-                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+                IsInstanceHelper.IsNotInstanceOf(assertion.Value, typeof(T));
             }
             else
             {
-                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+                IsInstanceHelper.IsInstanceOf(assertion.Value, typeof(T));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);
@@ -172,13 +180,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<bool>> IsNotInstanceOf<T>(this IFluentAssertion<bool> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<bool> assertion = fluentAssertion as FluentAssertion<bool>;
+
+            if (assertion.Negated)
             {
-                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+                IsInstanceHelper.IsInstanceOf(assertion.Value, typeof(T));
             }
             else
             {
-                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+                IsInstanceHelper.IsNotInstanceOf(assertion.Value, typeof(T));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<bool>>(fluentAssertion);

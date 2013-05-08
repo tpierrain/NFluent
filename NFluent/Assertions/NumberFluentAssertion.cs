@@ -17,15 +17,17 @@ namespace NFluent
     using System;
     using System.Diagnostics.CodeAnalysis;
 
+    using NFluent.Extensions;
     using NFluent.Helpers;
 
     /// <summary>
     /// Provides assertion methods to be executed on a number instance.
     /// </summary>
     /// <typeparam name="N">Type of the numerical value.</typeparam>
-    public class NumberFluentAssertion<N> : IFluentAssertion<N> where N : IComparable
+    public class NumberFluentAssertion<N> : IFluentAssertion<N>, INegatedAndForkableAssertion, IFluentAssertionRunner<N> where N : IComparable
     {
         private IFluentAssertion<N> fluentAssertion;
+        private readonly FluentAssertionRunner<N> fluentAssertionRunner;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberFluentAssertion{N}" /> class.
@@ -34,6 +36,7 @@ namespace NFluent
         public NumberFluentAssertion(IFluentAssertion<N> fluentAssertion)
         {
             this.fluentAssertion = fluentAssertion;
+            this.fluentAssertionRunner = new FluentAssertionRunner<N>();
         }
 
         /// <summary>
@@ -66,6 +69,21 @@ namespace NFluent
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         public IFluentAssertion<N> Not { get; private set; }
+
+        /// <summary>
+        /// Executes the assertion provided as an happy-path lambda (vs lambda for negated version).
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion.</param>
+        /// <param name="action">The action.</param>
+        /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
+        /// <returns>
+        /// A new chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The assertion fails.</exception>
+        IChainableFluentAssertion<IFluentAssertion<N>> IFluentAssertionRunner<N>.ExecuteAssertion(INegatedAndForkableAssertion fluentAssertion, Action action, string negatedExceptionMessage)
+        {
+            return this.fluentAssertionRunner.ExecuteAssertion(fluentAssertion, action, negatedExceptionMessage);
+        }
 
         /// <summary>
         /// Creates a new instance of the same fluent assertion type, injecting the same Value property
@@ -219,16 +237,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public IChainableFluentAssertion<IFluentAssertion<N>> IsInstanceOf<T>()
         {
-            if (this.fluentAssertion.Negated)
-            {
-                IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(T));
-            }
-            else
-            {
-                IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
-            }
+            var assertionRunner = this.fluentAssertion as IFluentAssertionRunner<N>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+            return assertionRunner.ExecuteAssertion(
+                fluentAssertion as INegatedAndForkableAssertion,
+                () =>
+                {
+                    IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
+                },
+                string.Format(string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", this.Value.ToStringProperlyFormated(), this.Value.GetType())));
         }
 
         /// <summary>
@@ -241,7 +258,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
         public IChainableFluentAssertion<IFluentAssertion<N>> IsNotInstanceOf<T>()
         {
-            if (this.fluentAssertion.Negated)
+            FluentAssertion<N> assertion = this.fluentAssertion as FluentAssertion<N>;
+
+            if (assertion.Negated)
             {
                 IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
             }

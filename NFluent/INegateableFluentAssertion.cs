@@ -43,7 +43,7 @@ namespace NFluent
     /// Fluent assertion that has the ability to be negated via a 'Not' operator.
     /// </summary>
     /// <typeparam name="T">Fluent assertion type to be negated.</typeparam>
-    public interface INegateableFluentAssertion<out T> : INegated
+    public interface INegateableFluentAssertion<out T> 
     {
         /// <summary>
         /// Negates the next assertion.

@@ -33,13 +33,14 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static IChainableFluentAssertion<IStructFluentAssertion<T>> IsEqualTo<T>(this IStructFluentAssertion<T> fluentAssertion, T expected) where T : struct
         {
-            if (fluentAssertion.Negated)
+            StructFluentAssertion<T> assertion = fluentAssertion as StructFluentAssertion<T>;
+            if (assertion.Negated)
             {
-                EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+                EqualityHelper.IsNotEqualTo(assertion.Value, expected);
             }
             else
             {
-                EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+                EqualityHelper.IsEqualTo(assertion.Value, expected);
             }
 
             return new ChainableFluentAssertion<IStructFluentAssertion<T>>(fluentAssertion);
@@ -57,13 +58,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public static IChainableFluentAssertion<IStructFluentAssertion<T>> IsNotEqualTo<T>(this IStructFluentAssertion<T> fluentAssertion, object expected) where T : struct
         {
-            if (fluentAssertion.Negated)
+            StructFluentAssertion<T> assertion = fluentAssertion as StructFluentAssertion<T>;
+
+            if (assertion.Negated)
             {
-                EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+                EqualityHelper.IsEqualTo(assertion.Value, expected);
             }
             else
             {
-                EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+                EqualityHelper.IsNotEqualTo(assertion.Value, expected);
             }
             
             return new ChainableFluentAssertion<IStructFluentAssertion<T>>(fluentAssertion);

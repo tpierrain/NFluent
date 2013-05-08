@@ -14,6 +14,9 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
+    using NFluent.Extensions;
     using NFluent.Helpers;
 
     /// <summary>
@@ -62,16 +65,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<object>> IsInstanceOf<T>(this IFluentAssertion<object> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
-            }
-            else
-            {
-                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<object>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                fluentAssertion as INegatedAndForkableAssertion,
+                () =>
+                {
+                    IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+                },
+                string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", fluentAssertion.Value.ToStringProperlyFormated(), fluentAssertion.Value.GetType()));
         }
 
         /// <summary>
@@ -85,16 +87,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<object>> IsNotInstanceOf<T>(this IFluentAssertion<object> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
-            }
-            else
-            {
-                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<object>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                fluentAssertion as INegatedAndForkableAssertion,
+                () =>
+                {
+                    IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+                },
+                string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", fluentAssertion.Value.ToStringProperlyFormated(), typeof(T), fluentAssertion.Value.GetType()));
         }
 
         /// <summary>
@@ -108,16 +109,18 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The checked expression is not in the inheritance hierarchy of the given type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<object>> InheritsFrom<T>(this IFluentAssertion<object> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsInstanceHelper.NotInheritsFrom(fluentAssertion.Value, typeof(T));
-            }
-            else
-            {
-                IsInstanceHelper.InheritsFrom(fluentAssertion.Value, typeof(T));
-            }
-            
-            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+            Type instanceType = fluentAssertion.Value.GetTypeWithoutThrowingException();
+            Type expectedBaseType = typeof(T);
+
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<object>;
+
+            return assertionRunner.ExecuteAssertion(
+                fluentAssertion as INegatedAndForkableAssertion,
+                () =>
+                {
+                    IsInstanceHelper.InheritsFrom(fluentAssertion.Value, expectedBaseType);
+                },
+                string.Format("\nThe checked expression is part of the inheritance hierarchy or of the same type than the specified one.\nIndeed, checked expression type:\n\t[{0}]\nis a derived type of\n\t[{1}].", instanceType.ToStringProperlyFormated(), expectedBaseType.ToStringProperlyFormated()));
         }
     }
 }

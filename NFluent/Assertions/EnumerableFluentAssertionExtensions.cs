@@ -18,6 +18,7 @@ namespace NFluent
     using System.Collections.Generic;
     using System.Linq;
 
+    using NFluent.Extensions;
     using NFluent.Helpers;
 
     /// <summary>
@@ -66,16 +67,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsInstanceOf<T>(this IFluentAssertion<IEnumerable> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
-            }
-            else
-            {
-                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<IEnumerable>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                fluentAssertion as INegatedAndForkableAssertion,
+                () =>
+                {
+                    IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+                },
+                string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", fluentAssertion.Value.ToStringProperlyFormated(), fluentAssertion.Value.GetType()));
         }
 
         /// <summary>
@@ -89,16 +89,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsNotInstanceOf<T>(this IFluentAssertion<IEnumerable> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
-            }
-            else
-            {
-                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<IEnumerable>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                fluentAssertion as INegatedAndForkableAssertion,
+                () =>
+                {
+                    IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+                },
+                string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nwhich is not expected.", fluentAssertion.Value.ToStringProperlyFormated(), fluentAssertion.Value.GetType()));
         }
 
         /// <summary>

@@ -54,7 +54,7 @@ namespace NFluent.Tests
         public void NotIsFalseMayThrowExceptions()
         {
             const bool TddSucks = false;
-
+            
             Check.That(TddSucks).Not.IsFalse();
         }
 

@@ -86,7 +86,7 @@ namespace NFluent
         /// <returns>
         /// A new chainable fluent assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">TODO: to be replaced</exception>
+        /// <exception cref="FluentAssertionException">The assertion fails.</exception>
         IChainableFluentAssertion<IFluentAssertion<T>> IFluentAssertionRunner<T>.ExecuteAssertion(INegatedAndForkableAssertion fluentAssertion, Action action, string negatedExceptionMessage)
         {
             return this.fluentAssertionRunner.ExecuteAssertion(fluentAssertion, action, negatedExceptionMessage);

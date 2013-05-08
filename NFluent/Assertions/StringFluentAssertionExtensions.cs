@@ -65,13 +65,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> IsInstanceOf<T>(this IFluentAssertion<string> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<string> assertion = fluentAssertion as FluentAssertion<string>;
+
+            if (assertion.Negated)
             {
-                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+                IsInstanceHelper.IsNotInstanceOf(assertion.Value, typeof(T));
             }
             else
             {
-                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+                IsInstanceHelper.IsInstanceOf(assertion.Value, typeof(T));
             }
             
             return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
@@ -88,13 +90,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> IsNotInstanceOf<T>(this IFluentAssertion<string> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<string> assertion = fluentAssertion as FluentAssertion<string>;
+
+            if (assertion.Negated)
             {
-                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+                IsInstanceHelper.IsInstanceOf(assertion.Value, typeof(T));
             }
             else
             {
-                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+                IsInstanceHelper.IsNotInstanceOf(assertion.Value, typeof(T));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
@@ -111,7 +115,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> Contains(this IFluentAssertion<string> fluentAssertion, params string[] values)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<string> assertion = fluentAssertion as FluentAssertion<string>;
+
+            if (assertion.Negated)
             {
                 ContainsNegatedImpl(fluentAssertion, values);
             }
@@ -168,7 +174,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The string does not start with the expected prefix.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> StartsWith(this IFluentAssertion<string> fluentAssertion, string expectedPrefix)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<string> assertion = fluentAssertion as FluentAssertion<string>;
+
+            if (assertion.Negated)
             {
                 StartsWithNegatedImpl(fluentAssertion, expectedPrefix);
             }

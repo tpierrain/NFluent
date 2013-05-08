@@ -145,13 +145,15 @@ namespace NFluent
          /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
          public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsInstanceOf<T>(this IFluentAssertion<TimeSpan> fluentAssertion)
          {
-             if (fluentAssertion.Negated)
+             FluentAssertion<TimeSpan> assertion = fluentAssertion as FluentAssertion<TimeSpan>;
+
+             if (assertion.Negated)
              {
-                 IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+                 IsInstanceHelper.IsNotInstanceOf(assertion.Value, typeof(T));
              }
              else
              {
-                 IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+                 IsInstanceHelper.IsInstanceOf(assertion.Value, typeof(T));
              }
 
              return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
@@ -168,13 +170,15 @@ namespace NFluent
          /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
          public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsNotInstanceOf<T>(this IFluentAssertion<TimeSpan> fluentAssertion)
          {
-             if (fluentAssertion.Negated)
+             FluentAssertion<TimeSpan> assertion = fluentAssertion as FluentAssertion<TimeSpan>;
+
+             if (assertion.Negated)
              {
-                 Helpers.IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+                 Helpers.IsInstanceHelper.IsInstanceOf(assertion.Value, typeof(T));
              }
              else
              {
-                 Helpers.IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+                 Helpers.IsInstanceHelper.IsNotInstanceOf(assertion.Value, typeof(T));
              }
 
              return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);

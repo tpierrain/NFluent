@@ -35,13 +35,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualTo(this IFluentAssertion<DateTime> fluentAssertion, object expected)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+            
+            if (assertion.Negated)
             {
-                Helpers.EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+                Helpers.EqualityHelper.IsNotEqualTo(assertion.Value, expected);
             }
             else
             {
-                Helpers.EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+                Helpers.EqualityHelper.IsEqualTo(assertion.Value, expected);
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
@@ -58,13 +60,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsNotEqualTo(this IFluentAssertion<DateTime> fluentAssertion, object expected)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+
+            if (assertion.Negated)
             {
-                Helpers.EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+                Helpers.EqualityHelper.IsEqualTo(assertion.Value, expected);
             }
             else
             {
-                Helpers.EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+                Helpers.EqualityHelper.IsNotEqualTo(assertion.Value, expected);
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
@@ -85,13 +89,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsInstanceOf<T>(this IFluentAssertion<DateTime> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+
+            if (assertion.Negated)
             {
-                Helpers.IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+                Helpers.IsInstanceHelper.IsNotInstanceOf(assertion.Value, typeof(T));
             }
             else
             {
-                Helpers.IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+                Helpers.IsInstanceHelper.IsInstanceOf(assertion.Value, typeof(T));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
@@ -108,13 +114,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsNotInstanceOf<T>(this IFluentAssertion<DateTime> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+
+            if (assertion.Negated)
             {
-                Helpers.IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+                Helpers.IsInstanceHelper.IsInstanceOf(assertion.Value, typeof(T));
             }
             else
             {
-                Helpers.IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+                Helpers.IsInstanceHelper.IsNotInstanceOf(assertion.Value, typeof(T));
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
@@ -133,7 +141,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time is not before the given one.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsBefore(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+
+            if (assertion.Negated)
             {
                 IsBeforeNegatedImpl(fluentAssertion, other);
             }
@@ -178,13 +188,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time is not before or equals to the given one.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsBeforeOrEqualTo(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+
+            if (assertion.Negated)
             {
-                IsBeforeOrEqualToNegatedImpl(fluentAssertion, other);
+                IsBeforeOrEqualToNegatedImpl(assertion, other);
             }
             else
             {
-                IsBeforeOrEqualToImpl(fluentAssertion, other);
+                IsBeforeOrEqualToImpl(assertion, other);
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
@@ -223,7 +235,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time is not after the given one.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsAfter(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+
+            if (assertion.Negated)
             {
                 IsAfterNegatedImpl(fluentAssertion, other);
             }
@@ -268,7 +282,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time is not after or equals to the given one.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsAfterOrEqualTo(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+
+            if (assertion.Negated)
             {
                 IsAfterOrEqualToNegatedImpl(fluentAssertion, other);
             }
@@ -332,7 +348,9 @@ namespace NFluent
         /// </remarks>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualToIgnoringMillis(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+
+            if (assertion.Negated)
             {
                 IsEqualToIgnoringMillisNegatedImpl(fluentAssertion, other);
             }
@@ -393,8 +411,10 @@ namespace NFluent
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual date time is not equal to the given one with second and millisecond fields ignored.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualToIgnoringSeconds(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {  
-            if (fluentAssertion.Negated)
+        {
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+ 
+            if (assertion.Negated)
             {
                 IsEqualToIgnoringSecondsNegatedImpl(fluentAssertion, other);
             }
@@ -456,7 +476,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time is not equal to the given one with minute, second and millisecond fields ignored.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualToIgnoringMinutes(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+
+            if (assertion.Negated)
             {
                 IsEqualToIgnoringMinutesNegatedImpl(fluentAssertion, other);
             }
@@ -518,7 +540,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time is not equal to the given one with hour, minute, second and millisecond fields ignored.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualToIgnoringHours(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+
+            if (assertion.Negated)
             {
                 IsEqualToIgnoringHoursNegatedImpl(fluentAssertion, other);
             }
@@ -563,7 +587,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time year is not equal to the given year.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsInSameYearAs(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+
+            if (assertion.Negated)
             {
                 IsInSameYearAsNegatedImpl(fluentAssertion, other);
             }
@@ -602,7 +628,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time month is not equal to the given month, whatever the year.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsInSameMonthAs(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+
+            if (assertion.Negated)
             {
                 IsInSameMonthAsNegatedImpl(fluentAssertion, other);
             }
@@ -647,7 +675,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time day is not equal to the given day, whatever the year or the month.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsInSameDayAs(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
+            FluentAssertion<DateTime> assertion = fluentAssertion as FluentAssertion<DateTime>;
+
+            if (assertion.Negated)
             {
                 IsInSameDayAsNegatedImpl(fluentAssertion, other);
             }
