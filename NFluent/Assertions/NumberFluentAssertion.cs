@@ -36,7 +36,8 @@ namespace NFluent
         public NumberFluentAssertion(IFluentAssertion<N> fluentAssertion)
         {
             this.fluentAssertion = fluentAssertion;
-            this.fluentAssertionRunner = new FluentAssertionRunner<N>();
+            var runnableAssertion = fluentAssertion as IRunnableAssertion;
+            this.fluentAssertionRunner = new FluentAssertionRunner<N>(this);
         }
 
         /// <summary>
@@ -73,16 +74,15 @@ namespace NFluent
         /// <summary>
         /// Executes the assertion provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion.</param>
         /// <param name="action">The action.</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
         /// A new chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        IChainableFluentAssertion<IFluentAssertion<N>> IFluentAssertionRunner<N>.ExecuteAssertion(IRunnableAssertion fluentAssertion, Action action, string negatedExceptionMessage)
+        IChainableFluentAssertion<IFluentAssertion<N>> IFluentAssertionRunner<N>.ExecuteAssertion(Action action, string negatedExceptionMessage)
         {
-            return this.fluentAssertionRunner.ExecuteAssertion(fluentAssertion, action, negatedExceptionMessage);
+            return this.fluentAssertionRunner.ExecuteAssertion(action, negatedExceptionMessage);
         }
 
         /// <summary>
@@ -239,9 +239,7 @@ namespace NFluent
         {
             var assertionRunner = this.fluentAssertion as IFluentAssertionRunner<N>;
 
-            return assertionRunner.ExecuteAssertion(
-                this.fluentAssertion as IRunnableAssertion,
-                () =>
+            return assertionRunner.ExecuteAssertion(() =>
                 {
                     IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
                 },

@@ -25,19 +25,25 @@ namespace NFluent
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
     internal class FluentAssertionRunner<T> : IFluentAssertionRunner<T>
     {
+        private IRunnableAssertion runnableFluentAssertion;
+
+        public FluentAssertionRunner(IRunnableAssertion runnableFluentAssertion)
+        {
+            this.runnableFluentAssertion = runnableFluentAssertion;
+        }
+
         /// <summary>
         /// Executes the assertion provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion.</param>
         /// <param name="action">The action.</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
         /// A new chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        public IChainableFluentAssertion<IFluentAssertion<T>> ExecuteAssertion(IRunnableAssertion fluentAssertion, Action action, string negatedExceptionMessage)
+        public IChainableFluentAssertion<IFluentAssertion<T>> ExecuteAssertion(Action action, string negatedExceptionMessage)
         {
-            if (fluentAssertion.Negated)
+            if (this.runnableFluentAssertion.Negated)
             {
                 // The exact opposite ;-)
                 bool mustThrow = false;
@@ -61,7 +67,7 @@ namespace NFluent
                 action();
             }
 
-            return new ChainableFluentAssertion<IFluentAssertion<T>>(fluentAssertion);
+            return new ChainableFluentAssertion<IFluentAssertion<T>>(this.runnableFluentAssertion);
         }
     }
 }

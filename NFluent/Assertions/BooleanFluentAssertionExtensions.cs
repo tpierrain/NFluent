@@ -130,9 +130,7 @@ namespace NFluent
         {
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<bool>;
 
-            return assertionRunner.ExecuteAssertion(
-                fluentAssertion as IRunnableAssertion,
-                () =>
+            return assertionRunner.ExecuteAssertion(() =>
                 {
                     if (fluentAssertion.Value)
                     {

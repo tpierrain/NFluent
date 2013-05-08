@@ -28,13 +28,12 @@ namespace NFluent
         /// <summary>
         /// Executes the assertion provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion.</param>
         /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified).</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
         /// A new chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        IChainableFluentAssertion<IFluentAssertion<T>> ExecuteAssertion(IRunnableAssertion fluentAssertion, Action action, string negatedExceptionMessage);
+        IChainableFluentAssertion<IFluentAssertion<T>> ExecuteAssertion(Action action, string negatedExceptionMessage);
     }
 }

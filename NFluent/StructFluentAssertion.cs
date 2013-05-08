@@ -40,9 +40,9 @@ namespace NFluent
         /// <param name="negated">A boolean value indicating whether the assertion should be negated or not.</param>
         private StructFluentAssertion(T value, bool negated)
         {
-            this.fluentAssertionRunner = new FluentAssertionRunner<T>();
             this.Value = value;
             this.Negated = negated;
+            this.fluentAssertionRunner = new FluentAssertionRunner<T>(this);
         }
 
         /// <summary>
@@ -80,16 +80,15 @@ namespace NFluent
         /// <summary>
         /// Executes the assertion provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion.</param>
         /// <param name="action">The action.</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
         /// A new chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        IChainableFluentAssertion<IFluentAssertion<T>> IFluentAssertionRunner<T>.ExecuteAssertion(IRunnableAssertion fluentAssertion, Action action, string negatedExceptionMessage)
+        IChainableFluentAssertion<IFluentAssertion<T>> IFluentAssertionRunner<T>.ExecuteAssertion(Action action, string negatedExceptionMessage)
         {
-            return this.fluentAssertionRunner.ExecuteAssertion(fluentAssertion, action, negatedExceptionMessage);
+            return this.fluentAssertionRunner.ExecuteAssertion(action, negatedExceptionMessage);
         }
 
         /// <summary>
