@@ -52,6 +52,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Assertions\StructFluentAssertionExtensions.cs" />
+    <Compile Include="INegated.cs" />
+    <Compile Include="IRunnableAssertion.cs" />
     <Compile Include="StructFluentAssertion.cs" />
     <Compile Include="FluentAssertionRunner.cs" />
     <Compile Include="IFluentAssertionRunner.cs" />

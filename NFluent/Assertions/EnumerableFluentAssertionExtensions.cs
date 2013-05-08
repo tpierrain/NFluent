@@ -70,7 +70,7 @@ namespace NFluent
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<IEnumerable>;
 
             return assertionRunner.ExecuteAssertion(
-                fluentAssertion as INegatedAndForkableAssertion,
+                fluentAssertion as IRunnableAssertion,
                 () =>
                 {
                     IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
@@ -92,7 +92,7 @@ namespace NFluent
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<IEnumerable>;
 
             return assertionRunner.ExecuteAssertion(
-                fluentAssertion as INegatedAndForkableAssertion,
+                fluentAssertion as IRunnableAssertion,
                 () =>
                 {
                     IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));

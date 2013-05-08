@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="INegateableFluentAssertion.cs" company="">
+// // <copyright file="INegated.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,21 +14,18 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System.Diagnostics.CodeAnalysis;
-
     /// <summary>
-    /// Fluent assertion that has the ability to be negated via a 'Not' operator.
+    /// Indicates whether the fluent assertion is negated or not.
     /// </summary>
-    /// <typeparam name="T">Fluent assertion type to be negated.</typeparam>
-    public interface INegateableFluentAssertion<out T> 
+    public interface INegated
     {
         /// <summary>
-        /// Negates the next assertion.
+        /// Gets a value indicating whether this <see cref="FluentAssertion{T}" /> should be negated or not.
+        /// This property is useful when you implement assertion methods. 
         /// </summary>
         /// <value>
-        /// The next assertion negated.
+        ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
         /// </value>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        T Not { get; }
+        bool Negated { get; }
     }
 }

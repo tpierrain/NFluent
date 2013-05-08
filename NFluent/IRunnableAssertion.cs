@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="INegateableFluentAssertion.cs" company="">
+// // <copyright file="IRunnableAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,21 +14,10 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System.Diagnostics.CodeAnalysis;
-
     /// <summary>
-    /// Fluent assertion that has the ability to be negated via a 'Not' operator.
+    /// Fluent assertion which is runnable by a <see cref="IFluentAssertionRunner{T}"/>.
     /// </summary>
-    /// <typeparam name="T">Fluent assertion type to be negated.</typeparam>
-    public interface INegateableFluentAssertion<out T> 
+    public interface IRunnableAssertion : IForkableFluentAssertion, INegated
     {
-        /// <summary>
-        /// Negates the next assertion.
-        /// </summary>
-        /// <value>
-        /// The next assertion negated.
-        /// </value>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        T Not { get; }
     }
 }

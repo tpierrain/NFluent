@@ -38,7 +38,7 @@ namespace NFluent
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<IComparable>;
 
             return assertionRunner.ExecuteAssertion(
-                fluentAssertion as INegatedAndForkableAssertion,
+                fluentAssertion as IRunnableAssertion,
                 () =>
                 {
                     if (fluentAssertion.Value == null || fluentAssertion.Value.CompareTo(otherValue) >= 0)

@@ -21,7 +21,7 @@ namespace NFluent
     /// Provides assertion methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public class StructFluentAssertion<T> : IStructFluentAssertion<T>, IFluentAssertionRunner<T>, INegatedAndForkableAssertion where T : struct
+    public class StructFluentAssertion<T> : IStructFluentAssertion<T>, IFluentAssertionRunner<T>, IRunnableAssertion where T : struct
     {
         private FluentAssertionRunner<T> fluentAssertionRunner;
 
@@ -87,7 +87,7 @@ namespace NFluent
         /// A new chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        IChainableFluentAssertion<IFluentAssertion<T>> IFluentAssertionRunner<T>.ExecuteAssertion(INegatedAndForkableAssertion fluentAssertion, Action action, string negatedExceptionMessage)
+        IChainableFluentAssertion<IFluentAssertion<T>> IFluentAssertionRunner<T>.ExecuteAssertion(IRunnableAssertion fluentAssertion, Action action, string negatedExceptionMessage)
         {
             return this.fluentAssertionRunner.ExecuteAssertion(fluentAssertion, action, negatedExceptionMessage);
         }

@@ -24,9 +24,9 @@ namespace NFluent
     /// Provides assertion methods to be executed on a number instance.
     /// </summary>
     /// <typeparam name="N">Type of the numerical value.</typeparam>
-    public class NumberFluentAssertion<N> : IFluentAssertion<N>, INegatedAndForkableAssertion, IFluentAssertionRunner<N> where N : IComparable
+    public class NumberFluentAssertion<N> : IFluentAssertion<N>, IRunnableAssertion, IFluentAssertionRunner<N> where N : IComparable
     {
-        private IFluentAssertion<N> fluentAssertion;
+        private readonly IFluentAssertion<N> fluentAssertion;
         private readonly FluentAssertionRunner<N> fluentAssertionRunner;
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace NFluent
         /// A new chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        IChainableFluentAssertion<IFluentAssertion<N>> IFluentAssertionRunner<N>.ExecuteAssertion(INegatedAndForkableAssertion fluentAssertion, Action action, string negatedExceptionMessage)
+        IChainableFluentAssertion<IFluentAssertion<N>> IFluentAssertionRunner<N>.ExecuteAssertion(IRunnableAssertion fluentAssertion, Action action, string negatedExceptionMessage)
         {
             return this.fluentAssertionRunner.ExecuteAssertion(fluentAssertion, action, negatedExceptionMessage);
         }
@@ -240,7 +240,7 @@ namespace NFluent
             var assertionRunner = this.fluentAssertion as IFluentAssertionRunner<N>;
 
             return assertionRunner.ExecuteAssertion(
-                fluentAssertion as INegatedAndForkableAssertion,
+                this.fluentAssertion as IRunnableAssertion,
                 () =>
                 {
                     IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
