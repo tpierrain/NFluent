@@ -14,10 +14,20 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System.ComponentModel;
+
     /// <summary>
     /// Fluent assertion which is runnable by a <see cref="IFluentAssertionRunner{T}"/>.
     /// </summary>
-    public interface IRunnableAssertion : IForkableFluentAssertion, INegated
+    public interface IRunnableAssertion<out T> : IForkableFluentAssertion, INegated
     {
+        /// <summary>
+        /// Gets the value to be tested (provided for any extension method to be able to test it).
+        /// </summary>
+        /// <value>
+        /// The value to be tested by any fluent assertion extension method.
+        /// </value>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        T Value { get; }
     }
 }

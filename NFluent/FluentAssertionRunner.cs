@@ -25,9 +25,9 @@ namespace NFluent
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
     internal class FluentAssertionRunner<T> : IFluentAssertionRunner<T>
     {
-        private IRunnableAssertion runnableFluentAssertion;
+        private IRunnableAssertion<T> runnableFluentAssertion;
 
-        public FluentAssertionRunner(IRunnableAssertion runnableFluentAssertion)
+        public FluentAssertionRunner(IRunnableAssertion<T> runnableFluentAssertion)
         {
             this.runnableFluentAssertion = runnableFluentAssertion;
         }

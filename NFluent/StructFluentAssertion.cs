@@ -21,7 +21,7 @@ namespace NFluent
     /// Provides assertion methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public class StructFluentAssertion<T> : IStructFluentAssertion<T>, IFluentAssertionRunner<T>, IRunnableAssertion where T : struct
+    public class StructFluentAssertion<T> : IStructFluentAssertion<T>, IFluentAssertionRunner<T>, IRunnableAssertion<T> where T : struct
     {
         private FluentAssertionRunner<T> fluentAssertionRunner;
 

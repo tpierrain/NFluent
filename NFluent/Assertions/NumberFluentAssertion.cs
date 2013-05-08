@@ -24,7 +24,7 @@ namespace NFluent
     /// Provides assertion methods to be executed on a number instance.
     /// </summary>
     /// <typeparam name="N">Type of the numerical value.</typeparam>
-    public class NumberFluentAssertion<N> : IFluentAssertion<N>, IRunnableAssertion, IFluentAssertionRunner<N> where N : IComparable
+    public class NumberFluentAssertion<N> : IFluentAssertion<N>, IRunnableAssertion<N>, IFluentAssertionRunner<N> where N : IComparable
     {
         private readonly IFluentAssertion<N> fluentAssertion;
         private readonly FluentAssertionRunner<N> fluentAssertionRunner;
@@ -36,7 +36,6 @@ namespace NFluent
         public NumberFluentAssertion(IFluentAssertion<N> fluentAssertion)
         {
             this.fluentAssertion = fluentAssertion;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion;
             this.fluentAssertionRunner = new FluentAssertionRunner<N>(this);
         }
 
@@ -238,12 +237,13 @@ namespace NFluent
         public IChainableFluentAssertion<IFluentAssertion<N>> IsInstanceOf<T>()
         {
             var assertionRunner = this.fluentAssertion as IFluentAssertionRunner<N>;
+            var runnableAssertion = this;
 
             return assertionRunner.ExecuteAssertion(() =>
                 {
-                    IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
+                    IsInstanceHelper.IsInstanceOf(runnableAssertion.Value, typeof(T));
                 },
-                string.Format(string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", this.Value.ToStringProperlyFormated(), this.Value.GetType())));
+                string.Format(string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", runnableAssertion.Value.ToStringProperlyFormated(), runnableAssertion.Value.GetType())));
         }
 
         /// <summary>

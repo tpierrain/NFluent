@@ -68,12 +68,13 @@ namespace NFluent
         public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsInstanceOf<T>(this IFluentAssertion<IEnumerable> fluentAssertion)
         {
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<IEnumerable>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<IEnumerable>;
 
             return assertionRunner.ExecuteAssertion(() =>
                 {
-                    IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
+                    IsInstanceHelper.IsInstanceOf(runnableAssertion.Value, typeof(T));
                 },
-                string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", fluentAssertion.Value.ToStringProperlyFormated(), fluentAssertion.Value.GetType()));
+                string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", runnableAssertion.Value.ToStringProperlyFormated(), runnableAssertion.Value.GetType()));
         }
 
         /// <summary>
@@ -88,12 +89,13 @@ namespace NFluent
         public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsNotInstanceOf<T>(this IFluentAssertion<IEnumerable> fluentAssertion)
         {
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<IEnumerable>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<IEnumerable>;
 
             return assertionRunner.ExecuteAssertion(() =>
                 {
-                    IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
+                    IsInstanceHelper.IsNotInstanceOf(runnableAssertion.Value, typeof(T));
                 },
-                string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nwhich is not expected.", fluentAssertion.Value.ToStringProperlyFormated(), fluentAssertion.Value.GetType()));
+                string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nwhich is not expected.", runnableAssertion.Value.ToStringProperlyFormated(), runnableAssertion.Value.GetType()));
         }
 
         /// <summary>

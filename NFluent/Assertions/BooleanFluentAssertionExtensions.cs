@@ -129,15 +129,16 @@ namespace NFluent
         public static IChainableFluentAssertion<IFluentAssertion<bool>> IsFalse(this IFluentAssertion<bool> fluentAssertion)
         {
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<bool>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<bool>;
 
             return assertionRunner.ExecuteAssertion(() =>
                 {
-                    if (fluentAssertion.Value)
+                    if (runnableAssertion.Value)
                     {
-                        throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not false.", fluentAssertion.Value.ToStringProperlyFormated()));
+                        throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not false.", runnableAssertion.Value.ToStringProperlyFormated()));
                     }
                 },
-                string.Format("\nThe actual value:\n\t[{0}]\nis false.", fluentAssertion.Value.ToStringProperlyFormated()));
+                string.Format("\nThe actual value:\n\t[{0}]\nis false.", runnableAssertion.Value.ToStringProperlyFormated()));
         }
 
         // throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis false.", fluentAssertion.Value.ToStringProperlyFormated()));

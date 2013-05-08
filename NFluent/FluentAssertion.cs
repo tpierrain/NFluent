@@ -21,7 +21,7 @@ namespace NFluent
     /// Provides assertion methods to be executed on a given value.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    internal class FluentAssertion<T> : IFluentAssertion<T>, IFluentAssertionRunner<T>, IRunnableAssertion
+    internal class FluentAssertion<T> : IFluentAssertion<T>, IFluentAssertionRunner<T>, IRunnableAssertion<T>
     {
         private readonly FluentAssertionRunner<T> fluentAssertionRunner;
 
