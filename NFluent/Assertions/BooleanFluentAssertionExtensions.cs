@@ -65,7 +65,7 @@ namespace NFluent
                 {
                     EqualityHelper.IsNotEqualTo(runnableAssertion.Value, expected);
                 },
-                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected));
+                EqualityHelper.BuildErrorMessageForIsEqual(runnableAssertion.Value, expected, false));
         }
 
         /// <summary>

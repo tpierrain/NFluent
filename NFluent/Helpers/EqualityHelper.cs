@@ -34,13 +34,13 @@ namespace NFluent.Helpers
             if (!object.Equals(instance, expected))
             {
                 // Should throw
-                var errorMessage = BuildErrorMessage(instance, expected);
+                var errorMessage = BuildErrorMessageForIsEqual(instance, expected, true);
 
                 throw new FluentAssertionException(errorMessage);
             }
         }
 
-        internal static string BuildErrorMessage(object instance, object expected)
+        internal static string BuildErrorMessageForIsEqual(object instance, object expected, bool isEqual)
         {
             var expectedTypeMessage = string.Empty;
             var instanceTypeMessage = string.Empty;
@@ -62,7 +62,16 @@ namespace NFluent.Helpers
                 }
             }
 
-            string errorMessage = string.Format("\nThe actual value:\n\t[{0}]{2}\nis not equal to the expected one:\n\t[{1}]{3}.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage);
+            string errorMessage;
+            if (isEqual)
+            {
+                errorMessage = string.Format("\nThe actual value:\n\t[{0}]{2}\nis equal to:\n\t[{1}]{3}\nwhich is unexpected.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage);
+            }
+            else
+            {
+                errorMessage = string.Format("\nThe actual value:\n\t[{0}]{2}\nis not equal to the expected one:\n\t[{1}]{3}.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage); 
+            }
+
             return errorMessage;
         }
 

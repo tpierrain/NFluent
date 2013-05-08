@@ -167,7 +167,7 @@
         #region IsEqualTo / IsNotEqualTo
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[42] of type: [System.Int32]\nis not equal to the expected one:\n\t[42] of type: [System.Int64].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[42] of type: [System.Int32]\nis equal to:\n\t[42] of type: [System.Int64]\nwhich is unexpected.")]
         public void IsEqualToThrowsWhenSameNumberOfDifferentTypes()
         {
             const int IntValue = 42;

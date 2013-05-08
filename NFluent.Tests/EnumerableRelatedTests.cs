@@ -8,6 +8,10 @@
     [TestFixture]
     public class EnumerableRelatedTests
     {
+        private const string Blabla = ".*?";
+        private const string LineFeed = "\\n";
+        private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
+
         #region HasSize
 
         [Test]
@@ -90,6 +94,22 @@
         }
 
         #endregion
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[45, 43, 54, 666\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[45, 43, 54, 666\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + ".")]
+        public void NotIsEqualToThrowsExceptionWhenFailing()
+        {
+            IEnumerable enumerable = new List<int>() { 45, 43, 54, 666 };
+            Check.That(enumerable).Not.IsEqualTo(enumerable);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[45, 43, 54, 666] of type: [System.Collections.Generic.List`1[System.Int32]]\nis not equal to the expected one:\n\t[null].")]
+        public void NotIsNotEqualToThrowsExceptionWhenFailing()
+        {
+            IEnumerable enumerable = new List<int>() { 45, 43, 54, 666 };
+            Check.That(enumerable).Not.IsNotEqualTo(null);
+        }
 
         [Test]
         public void AndOperatorWorksWithAllMethodsOfEnumerableFluentAssertion()

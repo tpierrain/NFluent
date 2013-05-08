@@ -15,6 +15,7 @@
 namespace NFluent.Extensions
 {
     using System;
+    using System.Collections;
     using System.Globalization;
 
     /// <summary>
@@ -42,6 +43,11 @@ namespace NFluent.Extensions
             if (theObject is bool)
             {
                 return ToStringProperlyFormated((bool)theObject);
+            }
+
+            if (theObject is IEnumerable)
+            {
+                return ((IEnumerable)theObject).ToEnumeratedString();
             }
 
             if (theObject == null)

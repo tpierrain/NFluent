@@ -37,8 +37,17 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsEqualTo(this IFluentAssertion<IEnumerable> fluentAssertion, object expected)
         {
-            EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
-            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<IEnumerable>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<IEnumerable>;
+
+            var expectedEnumerable = expected as IEnumerable;
+
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsEqualTo(runnableAssertion.Value, expected);
+                    },
+                EqualityHelper.BuildErrorMessageForIsEqual(runnableAssertion.Value, expectedEnumerable, true));
         }
 
         /// <summary>
@@ -52,8 +61,17 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> IsNotEqualTo(this IFluentAssertion<IEnumerable> fluentAssertion, object expected)
         {
-            EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
-            return new ChainableFluentAssertion<IFluentAssertion<IEnumerable>>(fluentAssertion);
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<IEnumerable>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<IEnumerable>;
+
+            var expectedEnumerable = expected as IEnumerable;
+
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsNotEqualTo(runnableAssertion.Value, expected);
+                    },
+                EqualityHelper.BuildErrorMessageForIsEqual(runnableAssertion.Value, expectedEnumerable, false));
         }
 
         /// <summary>
