@@ -21,7 +21,7 @@ namespace NFluent.Helpers
     /// <summary>
     /// Helper class related to Equality methods (used like a traits).
     /// </summary>
-    internal static class EqualityHelper
+    public static class EqualityHelper
     {
         /// <summary>
         /// Checks that a given instance is considered to be equal to another expected instance. Throws <see cref="FluentAssertionException"/> otherwise.
@@ -81,6 +81,7 @@ namespace NFluent.Helpers
             }
         }
 
+        // TODO: make internal methods visible?
         internal static string BuildTypeDescriptionMessage(object obj)
         {
             return BuildTypeDescriptionMessage(obj, false);

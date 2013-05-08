@@ -23,7 +23,7 @@ namespace NFluent
     public interface INegateableFluentAssertion<out T> 
     {
         /// <summary>
-        /// Negates the next assertion.
+        /// Negates the next assertion, and the next assertion only.
         /// </summary>
         /// <value>
         /// The next assertion negated.

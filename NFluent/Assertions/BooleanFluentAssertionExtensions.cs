@@ -116,8 +116,6 @@ namespace NFluent
                 string.Format("\nThe actual value:\n\t[{0}]\nis false.", runnableAssertion.Value.ToStringProperlyFormated()));
         }
 
-        // throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis false.", fluentAssertion.Value.ToStringProperlyFormated()));
-
         /// <summary>
         /// Checks that the actual instance is an instance of the given type.
         /// </summary>

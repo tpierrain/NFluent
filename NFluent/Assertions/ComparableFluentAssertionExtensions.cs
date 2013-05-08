@@ -48,27 +48,5 @@ namespace NFluent
                 },
                 string.Format("\nThe actual value:\n\t[{0}]{1}\nis before:\n\t[{2}]{3}.", runnableAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(runnableAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
         }
-
-        private static void IsBeforeImpl(IFluentAssertion<IComparable> fluentAssertion, IComparable otherValue)
-        {
-            if (fluentAssertion.Value == null || fluentAssertion.Value.CompareTo(otherValue) >= 0)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not before:\n\t[{2}]{3}.", fluentAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(fluentAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
-            }
-        }
-
-        private static void IsBeforeNegatedImpl(IFluentAssertion<IComparable> fluentAssertion, IComparable otherValue)
-        {
-            try
-            {
-                IsBeforeImpl(fluentAssertion, otherValue);
-            }
-            catch (FluentAssertionException)
-            {
-                return;
-            }
-
-            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis before:\n\t[{2}]{3}.", fluentAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(fluentAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
-        }
     }
 }
