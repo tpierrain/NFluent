@@ -115,6 +115,14 @@
         }
 
         [Test]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(Son)" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + LineFeed + Blabla + LineFeed + Blabla + "(Son)" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + LineFeed + Blabla + "(unexpected)")]
+        public void NotIsEqualToThrowsExceptionWhenFailingWithString()
+        {
+            var first = "Son of a test";
+            Check.That(first).Not.IsEqualTo(first);
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[Gandhi]\nis not equal to the expected one:\n\t[PolPot].")]
         public void IsEqualToThrowsExceptionWhenFailingWithObject()
         {
@@ -238,6 +246,15 @@
             var first = "Son of a test";
             var otherReferenceToSameObject = first;
             Check.That(first).IsNotEqualTo(otherReferenceToSameObject);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"Son of a test\"]\nis not equal to the expected one:\n\t[\"what?\"].")]
+        public void NotIsNotEqualToThrowsExceptionWhenFailing()
+        {
+            var first = "Son of a test";
+            var otherReferenceToSameObject = first;
+            Check.That(first).Not.IsNotEqualTo("what?");
         }
 
         #endregion

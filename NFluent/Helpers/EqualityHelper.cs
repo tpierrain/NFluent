@@ -34,13 +34,20 @@ namespace NFluent.Helpers
             if (!object.Equals(instance, expected))
             {
                 // Should throw
-                var errorMessage = BuildErrorMessageForIsEqual(instance, expected, false);
+                var errorMessage = BuildErrorMessage(instance, expected, false);
 
                 throw new FluentAssertionException(errorMessage);
             }
         }
 
-        internal static string BuildErrorMessageForIsEqual(object instance, object expected, bool isEqual)
+        /// <summary>
+        /// Builds the error message related to the Equality verification. This should be called only if the test failed (no matter it is negated or not).
+        /// </summary>
+        /// <param name="instance">The checked instance.</param>
+        /// <param name="expected">The other operand.</param>
+        /// <param name="isEqual">A value indicating whether the two values are equal or not. <c>true</c> if they are equal; <c>false</c> otherwise.</param>
+        /// <returns>The error message related to the Equality verification.</returns>
+        public static string BuildErrorMessage(object instance, object expected, bool isEqual)
         {
             var expectedTypeMessage = string.Empty;
             var instanceTypeMessage = string.Empty;

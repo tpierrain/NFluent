@@ -174,11 +174,11 @@ namespace NFluent
 
              if (assertion.Negated)
              {
-                 Helpers.IsInstanceHelper.IsInstanceOf(assertion.Value, typeof(T));
+                 IsInstanceHelper.IsInstanceOf(assertion.Value, typeof(T));
              }
              else
              {
-                 Helpers.IsInstanceHelper.IsNotInstanceOf(assertion.Value, typeof(T));
+                 IsInstanceHelper.IsNotInstanceOf(assertion.Value, typeof(T));
              }
 
              return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);

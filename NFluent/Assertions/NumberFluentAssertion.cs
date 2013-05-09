@@ -244,7 +244,7 @@ namespace NFluent
                 {
                     IsInstanceHelper.IsInstanceOf(runnableAssertion.Value, typeof(T));
                 },
-                string.Format(string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", runnableAssertion.Value.ToStringProperlyFormated(), runnableAssertion.Value.GetType())));
+                IsInstanceHelper.BuildErrorMessage(runnableAssertion, typeof(T), true));
         }
 
         /// <summary>

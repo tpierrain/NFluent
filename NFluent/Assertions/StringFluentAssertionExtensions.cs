@@ -35,8 +35,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> IsEqualTo(this IFluentAssertion<string> fluentAssertion, object expected)
         {
-            EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
-            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<string>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+                    },
+                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, true));
         }
 
         /// <summary>
@@ -50,8 +57,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> IsNotEqualTo(this IFluentAssertion<string> fluentAssertion, object expected)
         {
-            EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
-            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<string>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsNotEqualTo(runnableAssertion.Value, expected);
+                    },
+                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, false));
         }
 
         /// <summary>
@@ -65,18 +79,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> IsInstanceOf<T>(this IFluentAssertion<string> fluentAssertion)
         {
-            FluentAssertion<string> assertion = fluentAssertion as FluentAssertion<string>;
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<string>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
 
-            if (assertion.Negated)
-            {
-                IsInstanceHelper.IsNotInstanceOf(assertion.Value, typeof(T));
-            }
-            else
-            {
-                IsInstanceHelper.IsInstanceOf(assertion.Value, typeof(T));
-            }
-            
-            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        IsInstanceHelper.IsInstanceOf(runnableAssertion.Value, typeof(T));
+                    },
+                IsInstanceHelper.BuildErrorMessage(runnableAssertion, typeof(T), true));
         }
 
         /// <summary>
@@ -90,18 +101,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> IsNotInstanceOf<T>(this IFluentAssertion<string> fluentAssertion)
         {
-            FluentAssertion<string> assertion = fluentAssertion as FluentAssertion<string>;
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<string>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
 
-            if (assertion.Negated)
-            {
-                IsInstanceHelper.IsInstanceOf(assertion.Value, typeof(T));
-            }
-            else
-            {
-                IsInstanceHelper.IsNotInstanceOf(assertion.Value, typeof(T));
-            }
-
-            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        IsInstanceHelper.IsNotInstanceOf(runnableAssertion.Value, typeof(T));
+                    },
+                IsInstanceHelper.BuildErrorMessage(runnableAssertion, typeof(T), false));
         }
 
         /// <summary>
@@ -115,52 +123,46 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> Contains(this IFluentAssertion<string> fluentAssertion, params string[] values)
         {
-            FluentAssertion<string> assertion = fluentAssertion as FluentAssertion<string>;
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<string>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
 
-            if (assertion.Negated)
-            {
-                ContainsNegatedImpl(fluentAssertion, values);
-            }
-            else
-            {
-                ContainsImpl(fluentAssertion, values);
-            }
-
-            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        ContainsImpl(runnableAssertion.Value, values);
+                    },
+                BuildContainsNegatedExceptionMessage(runnableAssertion.Value, values));
         }
 
-        private static void ContainsNegatedImpl(IFluentAssertion<string> fluentAssertion, string[] values)
-        {
-            var foundItems = new List<string>();
-            foreach (string value in values)
-            {
-                if (fluentAssertion.Value.Contains(value))
-                {
-                    foundItems.Add(value);
-                }
-            }
-
-            if (foundItems.Count > 0)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\n contains the value(s):\n\t[{1}]\nwhich was not expected.", fluentAssertion.Value.ToStringProperlyFormated(), foundItems.ToEnumeratedString()));
-            }
-        }
-
-        private static void ContainsImpl(IFluentAssertion<string> fluentAssertion, string[] values)
+        private static void ContainsImpl(string checkedValue, string[] values)
         {
             var notFound = new List<string>();
-            foreach (string value in values)
+            foreach (string item in values)
             {
-                if (!fluentAssertion.Value.Contains(value))
+                if (!checkedValue.Contains(item))
                 {
-                    notFound.Add(value);
+                    notFound.Add(item);
                 }
             }
 
             if (notFound.Count > 0)
             {
-                throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), notFound.ToEnumeratedString()));
+                throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}].", checkedValue.ToStringProperlyFormated(), notFound.ToEnumeratedString()));
             }
+        }
+
+        private static string BuildContainsNegatedExceptionMessage(string value, string[] values)
+        {
+            var foundItems = new List<string>();
+            foreach (string item in values)
+            {
+                if (value.Contains(item))
+                {
+                    foundItems.Add(item);
+                }
+            }
+
+            return string.Format("\nThe actual string:\n\t[{0}]\n contains the value(s):\n\t[{1}]\nwhich was not expected.", value.ToStringProperlyFormated(), foundItems.ToEnumeratedString());
         }
 
         /// <summary>
@@ -174,34 +176,18 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The string does not start with the expected prefix.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> StartsWith(this IFluentAssertion<string> fluentAssertion, string expectedPrefix)
         {
-            FluentAssertion<string> assertion = fluentAssertion as FluentAssertion<string>;
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<string>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
 
-            if (assertion.Negated)
-            {
-                StartsWithNegatedImpl(fluentAssertion, expectedPrefix);
-            }
-            else
-            {
-                StartsWithImpl(fluentAssertion, expectedPrefix);    
-            }
-
-            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
-        }
-
-        private static void StartsWithImpl(IFluentAssertion<string> fluentAssertion, string expectedPrefix)
-        {
-            if (!fluentAssertion.Value.StartsWith(expectedPrefix))
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not start with:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), expectedPrefix.ToStringProperlyFormated()));
-            }
-        }
-
-        private static void StartsWithNegatedImpl(IFluentAssertion<string> fluentAssertion, string expectedPrefix)
-        {
-            if (fluentAssertion.Value.StartsWith(expectedPrefix))
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nstarts with:\n\t[\"abcdef\"]\nwhich is not expected.", fluentAssertion.Value.ToStringProperlyFormated(), expectedPrefix.ToStringProperlyFormated()));
-            }
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (!runnableAssertion.Value.StartsWith(expectedPrefix))
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not start with:\n\t[{1}].", runnableAssertion.Value.ToStringProperlyFormated(), expectedPrefix.ToStringProperlyFormated()));
+                        }
+                    },
+                string.Format("\nThe actual string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nstarts with:\n\t[\"abcdef\"]\nwhich is not expected.", runnableAssertion.Value.ToStringProperlyFormated(), expectedPrefix.ToStringProperlyFormated()));
         }
     }
 }

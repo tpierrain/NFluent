@@ -33,7 +33,7 @@ namespace NFluent.Helpers
         {
             if (instance.GetType() != expectedType)
             {
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", instance.ToStringProperlyFormated(), expectedType, instance.GetType()));
+                throw new FluentAssertionException(BuildErrorMessage(instance, expectedType, false));
             }
         }
 
@@ -47,7 +47,7 @@ namespace NFluent.Helpers
         {
             if (instance.GetType() == typeNotExpected)
             {
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", instance.ToStringProperlyFormated(), instance.GetType()));
+                throw new FluentAssertionException(BuildErrorMessage(instance, typeNotExpected, true));
             }
         }
 
@@ -67,17 +67,23 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
-        /// Checks that an instance is not in the inheritance hierarchy of a specified type.
+        /// Builds the error message related to the type comparison. This should be called only if the test failed (no matter it is negated or not).
         /// </summary>
-        /// <param name="instance">The instance to be checked.</param>
-        /// <param name="expectedBaseType">The Type which is expected not to be a base Type of the instance.</param>
-        /// <exception cref="FluentAssertionException">The instance is in the inheritance hierarchy of the specified type.</exception>
-        public static void NotInheritsFrom(object instance, Type expectedBaseType)
+        /// <param name="value">The checked value.</param>
+        /// <param name="typeOperand">The other type operand.</param>
+        /// <param name="isSameType">A value indicating whether the two types are identical or not. <c>true</c> if they are equal; <c>false</c> otherwise.</param>
+        /// <returns>
+        /// The error message related to the type comparison.
+        /// </returns>
+        public static string BuildErrorMessage(object value, Type typeOperand, bool isSameType)
         {
-            Type instanceType = instance.GetTypeWithoutThrowingException();
-            if (expectedBaseType.IsAssignableFrom(instanceType))
+            if (isSameType)
             {
-                throw new FluentAssertionException(string.Format("\nThe checked expression is part of the inheritance hierarchy or of the same type than the specified one.\nIndeed, checked expression type:\n\t[{0}]\nis a derived type of\n\t[{1}].", instanceType.ToStringProperlyFormated(), expectedBaseType.ToStringProperlyFormated()));
+                return string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", value.ToStringProperlyFormated(), value.GetType());
+            }
+            else
+            {
+                return string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", value.ToStringProperlyFormated(), typeOperand, value.GetType());
             }
         }
     }

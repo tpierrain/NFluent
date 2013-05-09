@@ -47,7 +47,7 @@ namespace NFluent
                     {
                         EqualityHelper.IsEqualTo(runnableAssertion.Value, expected);
                     },
-                EqualityHelper.BuildErrorMessageForIsEqual(runnableAssertion.Value, expectedEnumerable, true));
+                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expectedEnumerable, true));
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace NFluent
                     {
                         EqualityHelper.IsNotEqualTo(runnableAssertion.Value, expected);
                     },
-                EqualityHelper.BuildErrorMessageForIsEqual(runnableAssertion.Value, expectedEnumerable, false));
+                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expectedEnumerable, false));
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace NFluent
                 {
                     IsInstanceHelper.IsInstanceOf(runnableAssertion.Value, typeof(T));
                 },
-                string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", runnableAssertion.Value.ToStringProperlyFormated(), runnableAssertion.Value.GetType()));
+                IsInstanceHelper.BuildErrorMessage(runnableAssertion, typeof(T), true));
         }
 
         /// <summary>
