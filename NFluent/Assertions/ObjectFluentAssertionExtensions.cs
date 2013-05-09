@@ -35,8 +35,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<object>> IsEqualTo(this IFluentAssertion<object> fluentAssertion, object expected)
         {
-            EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
-            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<object>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<object>;
+
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsEqualTo(runnableAssertion.Value, expected);
+                    },
+                EqualityHelper.BuildErrorMessageForIsEqual(runnableAssertion.Value, expected, true));
         }
 
         /// <summary>
@@ -50,8 +57,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<object>> IsNotEqualTo(this IFluentAssertion<object> fluentAssertion, object expected)
         {
-            EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
-            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<object>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<object>;
+
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
+                    },
+                EqualityHelper.BuildErrorMessageForIsEqual(runnableAssertion.Value, expected, false));
         }
 
         /// <summary>

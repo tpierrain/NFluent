@@ -34,7 +34,7 @@ namespace NFluent.Helpers
             if (!object.Equals(instance, expected))
             {
                 // Should throw
-                var errorMessage = BuildErrorMessageForIsEqual(instance, expected, true);
+                var errorMessage = BuildErrorMessageForIsEqual(instance, expected, false);
 
                 throw new FluentAssertionException(errorMessage);
             }

@@ -52,6 +52,24 @@
         }
 
         [Test]
+        public void CanNegateIsEqualToWithObject()
+        {
+            var heroe = new Person() { Name = "Gandhi" };
+
+            Check.That(heroe).Not.IsEqualTo(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[Gandhi])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[Gandhi\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + "unexpected.")]
+        public void NotIsEqualToWithObjectThrowsExceptionWhenFailing()
+        {
+            var heroe = new Person() { Name = "Gandhi" };
+            var otherReference = heroe;
+
+            Check.That(heroe).Not.IsEqualTo(otherReference);
+        }
+
+        [Test]
         public void IsEqualWorksWithIntNumbers()
         {
             int firstInt = 23;
@@ -80,7 +98,7 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException))]
-        public void IsEqualToThrowsExceptionWhenFails()
+        public void IsEqualToThrowsExceptionWhenFailingWithIntArray()
         {
             var array = new int[] { 45, 43, 54, 666 };
             var otherSimilarButNotEqualArray = new int[] { 45, 43, 54, 666 };
@@ -89,15 +107,25 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"Son of a test\"]\nis equal to:\n\t[\"no way\"]\nwhich is unexpected.")]
-        public void IsEqualToThrowsExceptionWithClearStatusWhenFails()
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"Son of a test\"]\nis not equal to the expected one:\n\t[\"no way\"].")]
+        public void IsEqualToThrowsExceptionWhenFailingWithString()
         {
             var first = "Son of a test";
             Check.That(first).IsEqualTo("no way");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"Son of a test\"] of type: [System.String]\nis equal to:\n\t[null]\nwhich is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[Gandhi]\nis not equal to the expected one:\n\t[PolPot].")]
+        public void IsEqualToThrowsExceptionWhenFailingWithObject()
+        {
+            var heroe = new Person() { Name = "Gandhi" };
+            var bastard = new Person() { Name = "PolPot" };
+
+            Check.That(heroe).IsEqualTo(bastard);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"Son of a test\"] of type: [System.String]\nis not equal to the expected one:\n\t[null].")]
         public void IsEqualToThrowsProperExceptionEvenWithNullAsExpected()
         {
             var first = "Son of a test";
@@ -105,7 +133,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis equal to:\n\t[\"Kamoulox !\"] of type: [System.String]\nwhich is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not equal to the expected one:\n\t[\"Kamoulox !\"] of type: [System.String].")]
         public void IsEqualToThrowsProperExceptionEvenWithNullAsValue()
         {
             string first = null;
@@ -113,7 +141,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[John] of type: [NFluent.Tests.Child]\nis equal to:\n\t[John] of type: [NFluent.Tests.Person]\nwhich is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[John] of type: [NFluent.Tests.Child]\nis not equal to the expected one:\n\t[John] of type: [NFluent.Tests.Person].")]
         public void WeCanSeeTheDifferenceBewteenTwoDifferentObjectsThatHaveTheSameToString()
         {
             Person dad = new Person() { Name = "John" };
