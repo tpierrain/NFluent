@@ -46,6 +46,21 @@
             Check.That(integers).Contains(3, 2, 666, 1974);
         }
 
+        [Test]
+        public void NotContainsWithArraysWorks()
+        {
+            var integers = new int[] { 1, 2, 3 };
+            Check.That(integers).Not.Contains(3, 2, 666, 1974);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[1, 2, 3]\ncontains all the given value(s):\n\t[3, 2, 1]\nwhich is unexpected.")]
+        public void NotContainsThrowsExceptionWhenFailingWithArrays()
+        {
+            var integers = new int[] { 1, 2, 3 };
+            Check.That(integers).Not.Contains(3, 2, 1);
+        }
+
         #endregion
 
         #region Contains with IEnumerable

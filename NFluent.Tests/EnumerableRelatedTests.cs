@@ -56,11 +56,28 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable has 1 element instead of 5.\nActual content is:\n\t[666].")]
-        public void HasSizeThrowsExceptionWithClearStatusWhenFailsWithOneElementFound()
+        public void HasSizeThrowsExceptionWhenFailingWithOneElementFound()
         {
             var enumerable = new List<int>() { 666 };
 
             Check.That(enumerable).HasSize(5);
+        }
+
+        [Test]
+        public void NotHasSizeWorks()
+        {
+            var enumerable = new List<int>() { 666 };
+            
+            Check.That(enumerable).Not.HasSize(5);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable has 1 element which is unexpected.\nActual content is:\n\t[666].")]
+        public void NotHasSizeThrowsExceptionWhenFailing()
+        {
+            var enumerable = new List<int>() { 666 };
+
+            Check.That(enumerable).Not.HasSize(1);
         }
 
         [Test]
@@ -91,6 +108,23 @@
             var persons = new List<Person>() { null, null, new Person() { Name = "Thomas" } };
             
             Check.That(persons).IsEmpty();
+        }
+
+        [Test]
+        public void NotIsEmptyWorks()
+        {
+            var persons = new List<Person>() { null, null, new Person() { Name = "Thomas" } };
+            
+            Check.That(persons).Not.IsEmpty();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable is empty, which is unexpected.")]
+        public void NotIsEmptyThrowsExceptionWhenFailing()
+        {
+            var persons = new List<Person>();
+
+            Check.That(persons).Not.IsEmpty();
         }
 
         #endregion

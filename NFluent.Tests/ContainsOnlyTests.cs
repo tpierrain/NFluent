@@ -98,11 +98,28 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[3, 2, 666, 1974, 1]\ndoes not contain only the expected value(s):\n\t[1, 2, 3].\nIt contains also other values:\n\t[666, 1974]")]
-        public void ContainsOnlyWithEnumerableThrowsExceptionWithClearStatusWhenFails()
+        public void ContainsOnlyWithEnumerableThrowsExceptionWhenFailing()
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
             IEnumerable expectedValues = new List<int> { 1, 2, 3 };
             Check.That(integers).ContainsOnly(expectedValues);
+        }
+
+        [Test]
+        public void NotContainsOnlyWithEnumerableWorks()
+        {
+            var integers = new List<int> { 3, 2, 666, 1974, 1 };
+            IEnumerable expectedValues = new List<int> { 1, 666, 1974 };
+            Check.That(integers).Not.ContainsOnly(expectedValues);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[3, 2, 666, 1974, 1]\ncontains only the expected value(s):\n\t[1, 2, 3, 666, 1974].\nwhich is unexpected.")]
+        public void NotContainsOnlyWithEnumerableThrowsExceptionWhenFailing()
+        {
+            var integers = new List<int> { 3, 2, 666, 1974, 1 };
+            IEnumerable expectedValues = new List<int> { 1, 2, 3, 666, 1974 };
+            Check.That(integers).Not.ContainsOnly(expectedValues);
         }
 
         [Test]

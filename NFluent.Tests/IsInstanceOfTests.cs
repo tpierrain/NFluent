@@ -19,7 +19,12 @@
             Check.That(this.emptyIntegerArray).Not.IsNotInstanceOf<int[]>();            // IEnumerable            Check.That(this.stringList).Not.IsNotInstanceOf<List<string>>();            Check.That(this.integerArray).Not.IsNotInstanceOf<int[]>();                        // Version            Check.That(this.firstVersion).Not.IsNotInstanceOf<Version>();        }        [Test]        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[23]\nis an instance of:\n\t[System.Int32]\nwhich is not expected.")]        public void IsNotInstanceOfThrowsExceptionWithProperFormatWhenFailsWithInt()        {            const int IntObject = 23;            Check.That(IntObject).IsNotInstanceOf<int>();        }        [Test]        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).\"]\nis an instance of:\n\t[System.String]\nwhich is not expected.")]        public void IsNotInstanceOfThrowsExceptionWithProperFormatWhenFailsWithString()        {            const string Statement = "If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).";            Check.That(Statement).IsNotInstanceOf<string>();        }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]\nis not an instance of:\n\t[System.Int32[]]\nwhich is not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]\nis an instance of:\n\t[System.Int32[]]\nwhich is not expected.")]
+        public void NotIsInstanceOfThrowsExceptionWhenFailingWithIntArray()
+        {
+            Check.That(this.emptyIntegerArray).Not.IsInstanceOf<int[]>();
+        }        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]\nis not an instance of:\n\t[System.Int32]\nbut an instance of:\n\t[System.Int32[]]\ninstead.")]
         public void NotIsNotInstanceOfThrowsExceptionWhenFailingWithIntArray()
         {
             Check.That(this.emptyIntegerArray).Not.IsNotInstanceOf<int>();
