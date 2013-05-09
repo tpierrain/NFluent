@@ -33,17 +33,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static IChainableFluentAssertion<IStructFluentAssertion<T>> IsEqualTo<T>(this IStructFluentAssertion<T> fluentAssertion, T expected) where T : struct
         {
-            StructFluentAssertion<T> assertion = fluentAssertion as StructFluentAssertion<T>;
-            if (assertion.Negated)
-            {
-                EqualityHelper.IsNotEqualTo(assertion.Value, expected);
-            }
-            else
-            {
-                EqualityHelper.IsEqualTo(assertion.Value, expected);
-            }
+            var assertionRunner = fluentAssertion as IStructFluentAssertionRunner<T>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<T>;
 
-            return new ChainableFluentAssertion<IStructFluentAssertion<T>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsEqualTo(runnableAssertion.Value, expected);
+                    },
+                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, true));
         }
 
         /// <summary>
@@ -58,18 +56,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public static IChainableFluentAssertion<IStructFluentAssertion<T>> IsNotEqualTo<T>(this IStructFluentAssertion<T> fluentAssertion, object expected) where T : struct
         {
-            StructFluentAssertion<T> assertion = fluentAssertion as StructFluentAssertion<T>;
+            var assertionRunner = fluentAssertion as IStructFluentAssertionRunner<T>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<T>;
 
-            if (assertion.Negated)
-            {
-                EqualityHelper.IsEqualTo(assertion.Value, expected);
-            }
-            else
-            {
-                EqualityHelper.IsNotEqualTo(assertion.Value, expected);
-            }
-            
-            return new ChainableFluentAssertion<IStructFluentAssertion<T>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsNotEqualTo(runnableAssertion.Value, expected);
+                    },
+                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, false));
         }
     }
 }

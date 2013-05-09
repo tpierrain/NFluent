@@ -80,7 +80,7 @@ namespace NFluent
         /// <summary>
         /// Executes the assertion provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
-        /// <param name="action">The action.</param>
+        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentAssertionException"/> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
         /// A new chainable fluent assertion.

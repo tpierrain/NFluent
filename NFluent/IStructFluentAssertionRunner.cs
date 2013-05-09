@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="FluentAssertionRunner.cs" company="">
+// // <copyright file="IStructFluentAssertionRunner.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -17,57 +17,26 @@ namespace NFluent
     using System;
 
     /// <summary>
-    /// Provides a mean to execute a fluent assertion, taking care of whether it should be negated or not, etc.
-    /// This interface is designed for developers that need to add new assertion (extension) methods.
-    /// Thus, it should not be exposed via Intellisense to developers that are using NFluent to write 
-    /// assertions statements.
+    ///     Provides a mean to execute a fluent assertion on a struct or an enum value, taking care of 
+    ///     whether it should be negated or not, etc.
+    /// <para>
+    ///     This interface is designed for developers that need to add new assertion (extension) methods.
+    ///     Thus, it should not be exposed via Intellisense to developers that are using NFluent to write 
+    ///     assertions statements.
+    /// </para>
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    internal class FluentAssertionRunner<T> : IFluentAssertionRunner<T>
+    public interface IStructFluentAssertionRunner<T> where T : struct
     {
-        private IRunnableAssertion<T> runnableFluentAssertion;
-
-        public FluentAssertionRunner(IRunnableAssertion<T> runnableFluentAssertion)
-        {
-            this.runnableFluentAssertion = runnableFluentAssertion;
-        }
-
         /// <summary>
         /// Executes the assertion provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
         /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentAssertionException"/> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
-        /// A new chainable fluent assertion.
+        /// A new chainable fluent assertion for struct or enum.
         /// </returns>
         /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        public IChainableFluentAssertion<IFluentAssertion<T>> ExecuteAssertion(Action action, string negatedExceptionMessage)
-        {
-            if (this.runnableFluentAssertion.Negated)
-            {
-                // The exact opposite ;-)
-                bool mustThrow = false;
-                try
-                {
-                    action();
-                    mustThrow = true;
-                }
-                catch (FluentAssertionException)
-                {
-                }
-
-                if (mustThrow)
-                {
-                    throw new FluentAssertionException(negatedExceptionMessage);
-                }
-            }
-            else
-            {
-                // May throw FluentAssertionException
-                action();
-            }
-
-            return new ChainableFluentAssertion<IFluentAssertion<T>>(this.runnableFluentAssertion);
-        }
+        IChainableFluentAssertion<IStructFluentAssertion<T>> ExecuteAssertion(Action action, string negatedExceptionMessage);
     }
 }

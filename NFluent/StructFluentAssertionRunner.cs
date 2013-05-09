@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="FluentAssertionRunner.cs" company="">
+// // <copyright file="StructFluentAssertionRunner.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -23,11 +23,11 @@ namespace NFluent
     /// assertions statements.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    internal class FluentAssertionRunner<T> : IFluentAssertionRunner<T>
+    internal class StructFluentAssertionRunner<T> : IStructFluentAssertionRunner<T> where T : struct
     {
-        private IRunnableAssertion<T> runnableFluentAssertion;
+        private readonly IRunnableAssertion<T> runnableFluentAssertion;
 
-        public FluentAssertionRunner(IRunnableAssertion<T> runnableFluentAssertion)
+        public StructFluentAssertionRunner(IRunnableAssertion<T> runnableFluentAssertion)
         {
             this.runnableFluentAssertion = runnableFluentAssertion;
         }
@@ -38,10 +38,10 @@ namespace NFluent
         /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentAssertionException"/> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
-        /// A new chainable fluent assertion.
+        /// A new chainable fluent assertion for struct or enum.
         /// </returns>
         /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        public IChainableFluentAssertion<IFluentAssertion<T>> ExecuteAssertion(Action action, string negatedExceptionMessage)
+        public IChainableFluentAssertion<IStructFluentAssertion<T>> ExecuteAssertion(Action action, string negatedExceptionMessage)
         {
             if (this.runnableFluentAssertion.Negated)
             {
@@ -67,7 +67,7 @@ namespace NFluent
                 action();
             }
 
-            return new ChainableFluentAssertion<IFluentAssertion<T>>(this.runnableFluentAssertion);
+            return new ChainableFluentAssertion<IStructFluentAssertion<T>>(this.runnableFluentAssertion);
         }
     }
 }

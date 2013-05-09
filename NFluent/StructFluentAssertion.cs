@@ -21,9 +21,9 @@ namespace NFluent
     /// Provides assertion methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public class StructFluentAssertion<T> : IStructFluentAssertion<T>, IFluentAssertionRunner<T>, IRunnableAssertion<T> where T : struct
+    public class StructFluentAssertion<T> : IStructFluentAssertion<T>, IStructFluentAssertionRunner<T>, IRunnableAssertion<T> where T : struct
     {
-        private FluentAssertionRunner<T> fluentAssertionRunner;
+        private StructFluentAssertionRunner<T> fluentAssertionRunner;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StructFluentAssertion{T}" /> class.
@@ -42,7 +42,7 @@ namespace NFluent
         {
             this.Value = value;
             this.Negated = negated;
-            this.fluentAssertionRunner = new FluentAssertionRunner<T>(this);
+            this.fluentAssertionRunner = new StructFluentAssertionRunner<T>(this);
         }
 
         /// <summary>
@@ -80,13 +80,13 @@ namespace NFluent
         /// <summary>
         /// Executes the assertion provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
-        /// <param name="action">The action.</param>
+        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentAssertionException"/> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
-        /// A new chainable fluent assertion.
+        /// A new chainable fluent assertion for struct or enum.
         /// </returns>
         /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        IChainableFluentAssertion<IFluentAssertion<T>> IFluentAssertionRunner<T>.ExecuteAssertion(Action action, string negatedExceptionMessage)
+        IChainableFluentAssertion<IStructFluentAssertion<T>> IStructFluentAssertionRunner<T>.ExecuteAssertion(Action action, string negatedExceptionMessage)
         {
             return this.fluentAssertionRunner.ExecuteAssertion(action, negatedExceptionMessage);
         }
