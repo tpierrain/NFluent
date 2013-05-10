@@ -79,7 +79,7 @@ namespace NFluent.Helpers
         {
             if (isSameType)
             {
-                return string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich is not expected.", value.ToStringProperlyFormated(), value.GetType());
+                return string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich was not expected.", value.ToStringProperlyFormated(), value.GetType());
             }
             else
             {

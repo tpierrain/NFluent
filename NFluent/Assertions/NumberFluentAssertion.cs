@@ -195,7 +195,7 @@ namespace NFluent
                         throw new FluentAssertionException(string.Format("[{0}] is not less than {1}.", runnableAssertion.Value, comparand));
                     }
                 },
-                string.Format("\nThe checked value:\n\t[{0}]\nis less than than:\n\t[{1}]\nwhich is not expected.", runnableAssertion.Value, comparand.ToStringProperlyFormated()));
+                string.Format("\nThe checked value:\n\t[{0}]\nis less than than:\n\t[{1}]\nwhich was not expected.", runnableAssertion.Value, comparand.ToStringProperlyFormated()));
         }
 
         /// <summary>

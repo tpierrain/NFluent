@@ -255,7 +255,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[1]\nis less than than:\n\t[37,2]\nwhich is not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[1]\nis less than than:\n\t[37,2]\nwhich was not expected.")]
         public void NotIsLessThanThrowsExceptionWhenFailing()
         {
             const double SmallDouble = 1.0D;
