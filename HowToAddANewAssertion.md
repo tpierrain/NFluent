@@ -22,25 +22,27 @@ as the one used for the StartsWith() assertion (applying on string) presented be
 ```c#
 		public static IChainableFluentAssertion<IFluentAssertion<string>> StartsWith(this IFluentAssertion<string> fluentAssertion, string expectedPrefix)
         {
-			// Every assertion method starts by a cast step in order to retrieve the assertion runner
+			// Every assertion method starts by some cast operations in order to retrieve the assertion runner
 			// and the runnable assertion (both are implemented by the concrete type FluentAssertion<T>)
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<string>;
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
 
-			// Then, we make the runner's ExecuteAssertion() method return the chainable result
-			// This method needs:
-			//	 - a lambda that check what's necessary, and throws a FluentAssertionException in case of failure
-			//   - a string containing the exception message that should be thrown by the assertion runner
-			//	   if the negated version of the assertion is requested (i.e. when the 'Not' operator has 
-			//     been set just before) and is failing.
+			// Then, we make the runner's ExecuteAssertion() method returning the chainable result
+			// This method needs 2 arguments:
+			//	 1- a lambda that checks what's necessary, and throws a FluentAssertionException in case of failure
+			//   2- a string containing the exception message that should be thrown by the assertion runner
+			//	    if the negated version of the assertion is requested (i.e. when the 'Not' operator has 
+			//      been set just before) and only if it fails.
             return assertionRunner.ExecuteAssertion(
                 () =>
                     {
+						// the lambda that do the job
                         if (!runnableAssertion.Value.StartsWith(expectedPrefix))
                         {
                             throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not start with:\n\t[{1}].", runnableAssertion.Value.ToStringProperlyFormated(), expectedPrefix.ToStringProperlyFormated()));
                         }
                     },
+				// The error message for the negatable un-happy path
                 string.Format("\nThe actual string:\n\t[{0}]\nstarts with:\n\t[{1}]\nwhich was not expected.", runnableAssertion.Value.ToStringProperlyFormated(), expectedPrefix.ToStringProperlyFormated()));
         }
 ```
