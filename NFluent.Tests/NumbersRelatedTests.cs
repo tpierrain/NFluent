@@ -8,6 +8,10 @@
     [TestFixture]
     public class NumbersRelatedTests
     {
+        private const string Blabla = ".*?";
+        private const string LineFeed = "\\n";
+        private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
+
         private CultureInfo savedCulture;
 
         [SetUp]
@@ -102,7 +106,84 @@
             Check.That(Zero).IsNotZero();
         }
 
-        #endregion 
+        #endregion
+
+        #region NotIsZero
+
+        [Test]
+        public void NotIsZeroWorks()
+        {
+            const int IntValue = 2;
+            const long LongValue = 2L;
+            const double DoubleValue = 2D;
+            const decimal DecimalValue = 2M;
+            const float FloatValue = 2F;
+            const short ShortValue = 2;
+            const byte ByteValue = 2;
+            const uint UintValue = 2;
+            const ushort UshortValue = 2;
+            const ulong UlongValue = 2;
+
+            Check.That(IntValue).Not.IsZero();
+            Check.That(LongValue).Not.IsZero();
+            Check.That(DoubleValue).Not.IsZero();
+            Check.That(DecimalValue).Not.IsZero();
+            Check.That(FloatValue).Not.IsZero();
+            Check.That(ShortValue).Not.IsZero();
+            Check.That(ByteValue).Not.IsZero();
+            Check.That(UintValue).Not.IsZero();
+            Check.That(UshortValue).Not.IsZero();
+            Check.That(UlongValue).Not.IsZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to zero which is unexpected.")]
+        public void NotIsZeroThrowsExceptionWhenFailing()
+        {
+            const byte ByteValue = 0;
+            Check.That(ByteValue).Not.IsZero();
+        }
+
+        #endregion
+
+        #region NotIsNotZero
+
+        [Test]
+        public void NotIsNotZeroWorks()
+        {
+            const int IntZero = 0;
+            const long LongZero = 0L;
+            const double DoubleZero = 0D;
+            const decimal DecimalZero = 0M;
+            const float FloatZero = 0F;
+            const short ShortZero = 0;
+            const byte ByteZero = 0;
+            const uint UintZero = 0;
+            const ushort UshortZero = 0;
+            const ulong UlongZero = 0;
+
+            Check.That(IntZero).Not.IsNotZero();
+            Check.That(LongZero).Not.IsNotZero();
+            Check.That(DoubleZero).Not.IsNotZero();
+
+            Check.That(DecimalZero).Not.IsNotZero();
+            Check.That(FloatZero).Not.IsNotZero();
+            Check.That(ShortZero).Not.IsNotZero();
+            Check.That(ByteZero).Not.IsNotZero();
+            Check.That(UintZero).Not.IsNotZero();
+            Check.That(UshortZero).Not.IsNotZero();
+            Check.That(UlongZero).Not.IsNotZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[2] of type: [System.Byte]\nis not equal to zero which is unexpected.")]
+        public void NotIsNotZeroThrowsExceptionWhenFailing()
+        {
+            const byte ByteValue = 2;
+            Check.That(ByteValue).Not.IsNotZero();
+        }
+
+        #endregion
 
         #region IsPositive
 
@@ -134,7 +215,26 @@
             Check.That(NegativeDouble).IsPositive();
         }
 
+        [Test]
+        public void NotIsPositiveWorks()
+        {
+            const double NegativeDouble = -50D;
+
+            Check.That(NegativeDouble).Not.IsPositive();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[3] of type: [System.Double]\nis a strictly positive value, which is unexpected.")]
+        public void NotIsPositiveThrowsExceptionWhenFailing()
+        {
+            const double PositiveDouble = 3D;
+
+            Check.That(PositiveDouble).Not.IsPositive();
+        }
+
         #endregion
+
+        #region IsLessThan & Co
 
         [Test]
         public void IsLessThanWorksForDouble()
@@ -146,13 +246,53 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis not greater than:\n\t[37,2].")]
+        public void NotIsLessThanWorksForDouble()
+        {
+            const double SmallDouble = 1.0D;
+            const double BigDouble = 37.2D;
+
+            Check.That(BigDouble).Not.IsLessThan(SmallDouble);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[1]\nis less than than:\n\t[37,2]\nwhich is not expected.")]
+        public void NotIsLessThanThrowsExceptionWhenFailing()
+        {
+            const double SmallDouble = 1.0D;
+            const double BigDouble = 37.2D;
+
+            Check.That(SmallDouble).Not.IsLessThan(BigDouble);
+        }
+
+        #endregion
+
+        [Test]
         public void IsGreaterThanWorksForDouble()
         {
             const double SmallDouble = 1.0D;
             const double BigDouble = 37.2D;
 
+            Check.That(BigDouble).IsGreaterThan(SmallDouble);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[1]\nis not greater than:\n\t[37,2].")]
+        public void IsGreaterThanThrowsExceptionWhenFailingWithDouble()
+        {
+            const double SmallDouble = 1.0D;
+            const double BigDouble = 37.2D;
+
             Check.That(SmallDouble).IsGreaterThan(BigDouble);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[37,2]\nis greater than:\n\t[1]\nwhich is unexpected.")]
+        public void NotIsGreaterThanThrowsExceptionWhenFailingWithDouble()
+        {
+            const double SmallDouble = 1.0D;
+            const double BigDouble = 37.2D;
+
+            Check.That(BigDouble).Not.IsGreaterThan(SmallDouble);
         }
 
         [Test]
@@ -165,6 +305,24 @@
         }
 
         #region IsEqualTo / IsNotEqualTo
+
+        [Test]
+        public void NotIsEqualToWorks()
+        {
+            const int IntValue = 42;
+            const long LongValue = 21L;
+
+            Check.That(IntValue).Not.IsEqualTo(LongValue);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[42])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[42\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + "unexpected.")]
+        public void NotIsEqualToThrowsExceptionWhenFailing()
+        {
+            const int IntValue = 42;
+
+            Check.That(IntValue).Not.IsEqualTo(IntValue);
+        }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[42] of type: [System.Int32]\nis not equal to the expected one:\n\t[42] of type: [System.Int64].")]
@@ -210,6 +368,25 @@
             const byte DifferentValue = 13;
 
             Check.That(Value).IsNotEqualTo(DifferentValue);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[42] of type: [System.Byte].")]
+        public void IsNotEqualToThrowsExceptionWhenFailing()
+        {
+            const byte Value = 42;
+
+            Check.That(Value).IsNotEqualTo(Value);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[42]\nis not equal to the expected one:\n\t[13].")]
+        public void NotIsNotEqualToThrowsExceptionWhenFailing()
+        {
+            const byte Value = 42;
+            const byte DifferentValue = 13;
+
+            Check.That(Value).Not.IsNotEqualTo(DifferentValue);
         }
 
         #endregion

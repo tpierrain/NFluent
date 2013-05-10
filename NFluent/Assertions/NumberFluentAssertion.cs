@@ -108,14 +108,20 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
         public IChainableFluentAssertion<IFluentAssertion<N>> IsZero()
         {
-            var res = InternalIsZero(this.Value);
+            var assertionRunner = this.fluentAssertion as IFluentAssertionRunner<N>;
+            IRunnableAssertion<N> runnableAssertion = this;
 
-            if (!res)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not equal to zero.", this.Value, EqualityHelper.BuildTypeDescriptionMessage(this.Value)));
-            }
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        var res = InternalIsZero(runnableAssertion.Value);
 
-            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+                        if (!res)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not equal to zero.", runnableAssertion.Value, EqualityHelper.BuildTypeDescriptionMessage(runnableAssertion.Value)));
+                        }
+                    },
+                "The checked value is equal to zero which is unexpected.");
         }
 
         /// <summary>
@@ -127,14 +133,20 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
         public IChainableFluentAssertion<IFluentAssertion<N>> IsNotZero()
         {
-            bool res = InternalIsZero(this.Value);
+            var assertionRunner = this.fluentAssertion as IFluentAssertionRunner<N>;
+            IRunnableAssertion<N> runnableAssertion = this;
 
-            if (res)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis equal to zero.", this.Value, EqualityHelper.BuildTypeDescriptionMessage(this.Value)));
-            }
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        bool res = InternalIsZero(runnableAssertion.Value);
 
-            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+                        if (res)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis equal to zero.", runnableAssertion.Value, EqualityHelper.BuildTypeDescriptionMessage(runnableAssertion.Value)));
+                        }
+                    },
+                string.Format("\nThe checked value:\n\t[{0}] of type: [{1}]\nis not equal to zero which is unexpected.", runnableAssertion.Value, runnableAssertion.Value.GetTypeWithoutThrowingException()));
         }
 
         /// <summary>
@@ -144,12 +156,18 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
         public IChainableFluentAssertion<IFluentAssertion<N>> IsPositive()
         {
-            if (Convert.ToInt32(this.Value) <= 0)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not a strictly positive value.", this.Value, EqualityHelper.BuildTypeDescriptionMessage(this.Value)));
-            }
+            var assertionRunner = this.fluentAssertion as IFluentAssertionRunner<N>;
+            IRunnableAssertion<N> runnableAssertion = this;
 
-            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (Convert.ToInt32(runnableAssertion.Value) <= 0)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not a strictly positive value.", runnableAssertion.Value, EqualityHelper.BuildTypeDescriptionMessage(runnableAssertion.Value)));
+                        }
+                    },
+                string.Format("\nThe checked value:\n\t[{0}]{1}\nis a strictly positive value, which is unexpected.", runnableAssertion.Value, EqualityHelper.BuildTypeDescriptionMessage(runnableAssertion.Value)));
         }
 
         /// <summary>
@@ -166,12 +184,18 @@ namespace NFluent
         /// </exception>
         public IChainableFluentAssertion<IFluentAssertion<N>> IsLessThan(N comparand)
         {
-            if (this.Value.CompareTo(comparand) >= 0)
-            {
-                throw new FluentAssertionException(string.Format("[{0}] is not less than {1}.", this.Value, comparand));
-            }
+            var assertionRunner = this.fluentAssertion as IFluentAssertionRunner<N>;
+            IRunnableAssertion<N> runnableAssertion = this;
 
-            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    if (runnableAssertion.Value.CompareTo(comparand) >= 0)
+                    {
+                        throw new FluentAssertionException(string.Format("[{0}] is not less than {1}.", runnableAssertion.Value, comparand));
+                    }
+                },
+                string.Format("\nThe checked value:\n\t[{0}]\nis less than than:\n\t[{1}]\nwhich is not expected.", runnableAssertion.Value, comparand.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -188,12 +212,18 @@ namespace NFluent
         /// </exception>
         public IChainableFluentAssertion<IFluentAssertion<N>> IsGreaterThan(N comparand)
         {
-            if (this.Value.CompareTo(comparand) <= 0)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not greater than:\n\t[{1}].", this.Value, comparand));
-            }
+            var assertionRunner = this.fluentAssertion as IFluentAssertionRunner<N>;
+            IRunnableAssertion<N> runnableAssertion = this;
 
-            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (runnableAssertion.Value.CompareTo(comparand) <= 0)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe checked value:\n\t[{0}]\nis not greater than:\n\t[{1}].", runnableAssertion.Value, comparand));
+                        }
+                    },
+                string.Format("\nThe checked value:\n\t[{0}]\nis greater than:\n\t[{1}]\nwhich is unexpected.", runnableAssertion.Value.ToStringProperlyFormated(), comparand.ToStringProperlyFormated()));
         }
 
         #region IEqualityFluentAssertion members
@@ -206,8 +236,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public IChainableFluentAssertion<IFluentAssertion<N>> IsEqualTo(object expected)
         {
-            EqualityHelper.IsEqualTo(this.Value, expected);
-            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+            var assertionRunner = this.fluentAssertion as IFluentAssertionRunner<N>;
+            IRunnableAssertion<N> runnableAssertion = this;
+
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsEqualTo(runnableAssertion.Value, expected);
+                    },
+                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, true));
         }
 
         /// <summary>
@@ -218,8 +255,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public IChainableFluentAssertion<IFluentAssertion<N>> IsNotEqualTo(object expected)
         {
-            EqualityHelper.IsNotEqualTo(this.Value, expected);
-            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+            var assertionRunner = this.fluentAssertion as IFluentAssertionRunner<N>;
+            IRunnableAssertion<N> runnableAssertion = this;
+
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsNotEqualTo(runnableAssertion.Value, expected);
+                    },
+                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, false));
         }
 
         #endregion
@@ -257,18 +301,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
         public IChainableFluentAssertion<IFluentAssertion<N>> IsNotInstanceOf<T>()
         {
-            FluentAssertion<N> assertion = this.fluentAssertion as FluentAssertion<N>;
+            var assertionRunner = this.fluentAssertion as IFluentAssertionRunner<N>;
+            var runnableAssertion = this;
 
-            if (assertion.Negated)
-            {
-                IsInstanceHelper.IsInstanceOf(this.Value, typeof(T));
-            }
-            else
-            {
-                IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(T));
-            }
-
-            return new ChainableFluentAssertion<IFluentAssertion<N>>(this);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    IsInstanceHelper.IsNotInstanceOf(runnableAssertion.Value, typeof(T));
+                },
+                IsInstanceHelper.BuildErrorMessage(runnableAssertion, typeof(T), false));
         }
 
         #endregion
