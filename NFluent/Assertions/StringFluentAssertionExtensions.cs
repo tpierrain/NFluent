@@ -41,7 +41,7 @@ namespace NFluent
             return assertionRunner.ExecuteAssertion(
                 () =>
                     {
-                        EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
+                        EqualityHelper.IsEqualTo(runnableAssertion.Value, expected);
                     },
                 EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, true));
         }

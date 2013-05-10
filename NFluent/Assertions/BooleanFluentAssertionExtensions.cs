@@ -84,7 +84,7 @@ namespace NFluent
             return assertionRunner.ExecuteAssertion(
                 () =>
                 {
-                    if (!fluentAssertion.Value)
+                    if (!runnableAssertion.Value)
                     {
                         throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not true.", runnableAssertion.Value.ToStringProperlyFormated()));
                     }

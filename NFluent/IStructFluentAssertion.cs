@@ -14,21 +14,11 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System.ComponentModel;
-
     /// <summary>
     /// Provides assertion methods to be executed on a given value of type struct.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
     public interface IStructFluentAssertion<T> : IForkableFluentAssertion, INegateableFluentAssertion<IStructFluentAssertion<T>> where T : struct
     {
-        /// <summary>
-        /// Gets the value to be tested (provided for any extension method to be able to test it).
-        /// </summary>
-        /// <value>
-        /// The value to be tested by any fluent assertion extension method.
-        /// </value>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        T Value { get; }
     }
 }

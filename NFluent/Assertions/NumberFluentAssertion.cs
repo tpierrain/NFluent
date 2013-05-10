@@ -49,7 +49,7 @@ namespace NFluent
         { 
             get
             {
-                return this.fluentAssertion.Value;
+                return ((IRunnableAssertion<N>)this.fluentAssertion).Value;
             }
         }
 
