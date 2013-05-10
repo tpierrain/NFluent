@@ -53,7 +53,10 @@ With NFluent, you can write simple assertions like this:
     Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<Person>();
 
 	var heroes = "Batman and Robin";
-    Check.That(heroes).StartsWith("Bat").And.Contains("Robin");
+    Check.That(Heroes).Not.Contains("Joker").And.StartsWith("Bat").And.Contains("Robin");
+
+	const Nationality FrenchNationality = Nationality.French;
+    Check.ThatEnumOrStruct(FrenchNationality).IsNotEqualTo(Nationality.Korean);
 
 	string motivationalSaying = "Failure is mother of success.";
     Check.That(motivationalSaying).IsNotInstanceOf<int>();
@@ -139,7 +142,7 @@ __In any cases: you are welcome!__
 
 Many thanks
 ------
-+ To the other contributors: __[Marc-Antoine LATOUR](https://github.com/malat)__, __[Rui CARVALHO](http://www.codedistillers.com/)__ & __[Cyrille DUPUYDAUBY](http://dupdob.wordpress.com/)__.
++ To the other amazing contributors: __[Marc-Antoine LATOUR](https://github.com/malat)__, __[Rui CARVALHO](http://www.codedistillers.com/)__ & __[Cyrille DUPUYDAUBY](http://dupdob.wordpress.com/)__.
 
 + To __[Rui CARVALHO](http://www.codedistillers.com/)__, for the nice NFluent logo he has designed.
 

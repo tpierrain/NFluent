@@ -30,7 +30,7 @@
         public void IsNotEqualToWorksWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnumOrStruct(FrenchNationality).IsNotEqualTo(Nationality.American);
+            Check.ThatEnumOrStruct(FrenchNationality).IsNotEqualTo(Nationality.Korean);
         }
 
         [Test]
