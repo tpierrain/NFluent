@@ -38,17 +38,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
     <Compile Include="AndRelatedTests.cs" />
+    <Compile Include="AutomaticNUnitExceptionDetectionTest.cs" />
     <Compile Include="EnumOrStructRelatedTests.cs" />
     <Compile Include="ContainsChainedSyntaxTests.cs" />
     <Compile Include="ForDocumentation\CheckDescription.cs" />

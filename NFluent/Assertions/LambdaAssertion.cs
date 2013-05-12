@@ -17,7 +17,6 @@ namespace NFluent
 {
     using System;
     using System.Diagnostics;
-
     using NFluent.Helpers;
 
     /// <summary>
@@ -89,10 +88,12 @@ namespace NFluent
         /// </remarks>
         public object ForkInstance()
         {
-            bool alreadyExecuted = true;
-            var newInstance = new LambdaAssertion(this.Value, alreadyExecuted);
-            newInstance.durationInNs = this.durationInNs;
-            newInstance.exception = this.exception;
+            const bool AlreadyExecuted = true;
+            var newInstance = new LambdaAssertion(this.Value, AlreadyExecuted)
+                                  {
+                                      durationInNs = this.durationInNs,
+                                      exception = this.exception
+                                  };
 
             return newInstance;
         }
@@ -133,10 +134,11 @@ namespace NFluent
         /// </exception>
         public IChainableFluentAssertion<ILambdaAssertion> LastsLessThan(double threshold, TimeUnit timeUnit)
         {
-            double comparand = TimeHelper.GetInNanoSeconds(threshold, timeUnit);
+            var comparand = TimeHelper.GetInNanoSeconds(threshold, timeUnit);
             if (this.durationInNs > comparand)
             {
-                throw new FluentAssertionException(string.Format("{0} took too much time to execute.\n{0} execution time:\n\t{1} {3}\nExpected execution time:\n\t{2} {3}", SutName, TimeHelper.GetFromNanoSeconds(this.durationInNs, timeUnit), threshold, timeUnit));
+                var message = string.Format("{0} took too much time to execute.\n{0} execution time:\n\t{1} {3}\nExpected execution time:\n\t{2} {3}", SutName, TimeHelper.GetFromNanoSeconds(this.durationInNs, timeUnit), threshold, timeUnit);
+                throw new FluentAssertionException(message);
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);

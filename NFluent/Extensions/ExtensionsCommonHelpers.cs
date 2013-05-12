@@ -15,6 +15,7 @@
 namespace NFluent.Extensions
 {
     using System;
+    using System.Collections;
     using System.Globalization;
 
     /// <summary>
@@ -44,14 +45,18 @@ namespace NFluent.Extensions
                 return ToStringProperlyFormated((bool)theObject);
             }
 
+            var asIEnum = theObject as IEnumerable;
+            if (asIEnum != null)
+            {
+                return asIEnum.ToEnumeratedString();
+            }
+
             if (theObject == null)
             {
                 return "null";
             }
-            else
-            {
-                return theObject.ToString();    
-            }
+
+            return theObject.ToString();
         }
 
         /// <summary>

@@ -19,7 +19,9 @@
 namespace NFluent
 {
     using System.Collections;
-    using System.Text;
+
+    using NFluent.Extensions;
+    using NFluent.Helpers;
 
     /// <summary>
     /// Provides extension method on a IChainableFluentAssertion for IEnumerable types.
@@ -42,6 +44,49 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the checked <see cref="IEnumerable"/> contains the expected list of items only once.
+        /// </summary>
+        /// <param name="chainedFluentAssertion">
+        /// The chained fluent assertion.
+        /// </param>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        public static IExtendableFluentAssertion<IEnumerable> Once(
+            this IExtendableFluentAssertion<IEnumerable> chainedFluentAssertion)
+        {
+            int itemidx = 0;
+            var expectedList = ConvertToArrayList(chainedFluentAssertion);
+            var listedItems = new ArrayList();
+            foreach (var item in chainedFluentAssertion.And.Value)
+            {
+                if (expectedList.Contains(item))
+                {
+                    listedItems.Add(item);
+                    expectedList.Remove(item);
+                }
+                else if (listedItems.Contains(item))
+                {
+                    // failure, we found one extra occurence of one item
+                    var message =
+                        ExceptionHelper.BuildStandardMessage(
+                            string.Format(
+                                "The checked enumerable has extra occurences of the expected items. Item '{0}' at position {1} is redundant.",
+                                item,
+                                itemidx.ToStringProperlyFormated()),
+                            "enumerable",
+                            chainedFluentAssertion.And.Value,
+                            chainedFluentAssertion.OriginalComparand);
+                    throw new FluentAssertionException(message);
+                }
+
+                itemidx++;
+            }
+
+            return chainedFluentAssertion;
+        }
+
+        /// <summary>
         /// Checks that the checked <see cref="IEnumerable"/> contains items in the expected order.
         /// </summary>
         /// <param name="chainedFluentAssertion">
@@ -53,12 +98,8 @@ namespace NFluent
         public static IExtendableFluentAssertion<IEnumerable> InThatOrder(
             this IExtendableFluentAssertion<IEnumerable> chainedFluentAssertion)
         {
-            var orderedList = new ArrayList();
-            foreach (var item in chainedFluentAssertion.OriginalComparand)
-            {
-                orderedList.Add(item);
-            }
-            
+            var orderedList = ConvertToArrayList(chainedFluentAssertion);
+
             var faillingIndex = 0;
             var scanIndex = 0;
             foreach (var item in chainedFluentAssertion.And.Value)
@@ -81,12 +122,14 @@ namespace NFluent
                     else
                     {
                         var currentReference = orderedList[scanIndex];
-
+                        
+                        // skip all similar entries in the expected list (tolerance: the checked enumerables may not contains as many instances of one item as expected
                         while (currentReference == orderedList[++scanIndex] 
                             && scanIndex < orderedList.Count)
                         {
                         }
 
+                        // check if skipped only similar items
                         if (scanIndex < index)
                         {
                             failed = true;
@@ -98,17 +141,18 @@ namespace NFluent
                         // check failed. Now we have to refine the issue type.
                         // we assume that Contains was executed (imposed by chaining syntax)
                         // the item violating the order is the previous one!
-                        var message = new StringBuilder(200);
-                        message.AppendFormat(
-                            "The checked enumerable does not follow to the expected order. Item '{0}' appears too {2} in the list, at index '{1}'.",
-                            item,
-                            faillingIndex,
-                            index > scanIndex ? "early" : "late");
-                        message.AppendFormat(
-                            "\nChecked enumerable:\n\t[{0}]\nExpected enumerable order:\n\t[{1}]",
-                            chainedFluentAssertion.And.Value.ToEnumeratedString(),
-                            chainedFluentAssertion.OriginalComparand.ToEnumeratedString());
-                        throw new FluentAssertionException(message.ToString());
+                        var message =
+                            ExceptionHelper.BuildStandardMessage(
+                                string.Format(
+                                    "The checked enumerable does not follow to the expected order. Item '{0}' appears too {2} in the list, at index '{1}'.",
+                                    item.ToStringProperlyFormated(),
+                                    faillingIndex,
+                                    index > scanIndex ? "early" : "late"),
+                                "enumerable",
+                                chainedFluentAssertion.And.Value,
+                                chainedFluentAssertion.OriginalComparand);
+
+                        throw new FluentAssertionException(message);
                     }
 
                     if (index >= 0)
@@ -121,6 +165,17 @@ namespace NFluent
             }
 
             return chainedFluentAssertion;
+        }
+
+        private static ArrayList ConvertToArrayList(IExtendableFluentAssertion<IEnumerable> chainedFluentAssertion)
+        {
+            var orderedList = new ArrayList();
+            foreach (var item in chainedFluentAssertion.OriginalComparand)
+            {
+                orderedList.Add(item);
+            }
+
+            return orderedList;
         }
     }
 }

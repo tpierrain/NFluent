@@ -18,53 +18,69 @@
 
 namespace NFluent.Tests
 {
-    using System;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class ContainsChainedSyntaxTests
     {
+        private readonly string[] tresAmigos = new[] { "un", "dos", "tres" };
+
         [Test]
         public void ContainsOnlySucessTest()
         {
-           var tresAmigos = new string[] { "un", "dos", "tres" };
-           Check.That(tresAmigos).Contains("dos", "un", "tres").Only();
+           Check.That(this.tresAmigos).Contains("dos", "un", "tres").Only();
         }
 
         [Test]
         public void ContainsInThatOrderSucessTest()
         {
-            var tresAmigos = new[] { "un", "dos", "tres" };
-
-            Check.That(tresAmigos).Contains("un", "dos").InThatOrder();
-            Check.That(tresAmigos).Contains("un", "dos", "tres").InThatOrder();
-            Check.That(tresAmigos).Contains("un", "un", "dos", "tres").InThatOrder();
-            Check.That(tresAmigos).Contains("dos", "tres").InThatOrder();
+            Check.That(this.tresAmigos).Contains("un", "dos").InThatOrder();
+            Check.That(this.tresAmigos).Contains("un", "dos", "tres").InThatOrder();
+            Check.That(this.tresAmigos).Contains("un", "un", "dos", "tres").InThatOrder();
+            Check.That(this.tresAmigos).Contains("dos", "tres").InThatOrder();
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException))]
         public void ContainsInThatOrderFails()
         {
-            var tresAmigos = new[] { "un", "dos", "un", "tres" };
-            Check.That(tresAmigos).Contains("un", "dos", "tres").InThatOrder();
+            var tresAmigosAndMore = new[] { "un", "dos", "un", "tres" };
+            Check.That(tresAmigosAndMore).Contains(this.tresAmigos).InThatOrder();
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException))]
         public void ContainsInThatOrderFails2()
         {
-            var tresAmigos = new[] { "un", "dos", "tres" };
-            Check.That(tresAmigos).Contains("dos", "un", "tres").InThatOrder();
+            Check.That(this.tresAmigos).Contains("dos", "un", "tres").InThatOrder();
         }
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException))]
         public void ContainsInThatOrderFails3()
         {
-            var tresAmigos = new[] { "un", "dos", "tres" };
-            Check.That(tresAmigos).Contains("un", "tres", "dos").InThatOrder();
+            Check.That(this.tresAmigos).Contains("un", "tres", "dos").InThatOrder();
+        }
+
+        [Test]
+        public void ContainsOnceSucceeds()
+        {
+            Check.That(this.tresAmigos).Contains(this.tresAmigos).Once();
+        }
+
+        [Test]
+        public void ContainsOnceSucceedsWithMultipleOccurences()
+        {
+            var tresAmigosAndMore = new[] { "un", "dos", "tres", "tres" };
+            Check.That(tresAmigosAndMore).Contains(tresAmigosAndMore).Once();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException))]
+        public void ContainsOnceFails()
+        {
+            var tresAmigosAndMore = new[] { "un", "dos", "tres", "tres" };
+            Check.That(tresAmigosAndMore).Contains(this.tresAmigos).Once();
         }
     }
 }

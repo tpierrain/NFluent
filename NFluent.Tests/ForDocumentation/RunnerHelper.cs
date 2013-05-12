@@ -57,7 +57,7 @@ namespace NFluent.Tests.ForDocumentation
                         paramType = paramType.GetGenericArguments()[0];
                     }
 
-                    if (paramType.Name != "IFluentAssertion`1" && paramType.GetInterface("IFluentAssertion`1") == null)
+                    if (paramType.Name != "IExtendableFluentAssertion`1" && paramType.Name != "IFluentAssertion`1" && paramType.GetInterface("IFluentAssertion`1") == null)
                     {
                         // this is not an check implementation
                         return null;

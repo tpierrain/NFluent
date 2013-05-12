@@ -29,7 +29,7 @@ namespace NFluent.Tests.ForDocumentation
     {
         // run this test to debug a specific test that the code is unable to properly identify
         [Test]
-        [Ignore("Use to debug detection when failing.")]
+        [Explicit("Use to debug detection when failing.")]
         public void SpecificTest()
         {
             RunnerHelper.RunAction(new ContainsChainedSyntaxTests().ContainsInThatOrderFails);
