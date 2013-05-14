@@ -15,7 +15,9 @@
 namespace NFluent
 {
     using System;
+
     using NFluent.Extensions;
+    using NFluent.Helpers;
 
     /// <summary>
     /// Provides assertion methods to be executed on a date time instance. 
@@ -35,16 +37,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualTo(this IFluentAssertion<DateTime> fluentAssertion, object expected)
         {
-            if (fluentAssertion.Negated)
-            {
-                Helpers.EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
-            }
-            else
-            {
-                Helpers.EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsEqualTo(runnableAssertion.Value, expected);
+                    },
+                string.Format("\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[{0}]{1}.", runnableAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(expected, false)));
         }
 
         /// <summary>
@@ -58,16 +59,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsNotEqualTo(this IFluentAssertion<DateTime> fluentAssertion, object expected)
         {
-            if (fluentAssertion.Negated)
-            {
-                Helpers.EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
-            }
-            else
-            {
-                Helpers.EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsNotEqualTo(runnableAssertion.Value, expected);
+                    },
+                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, false));
         }
 
         #endregion
@@ -85,16 +85,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsInstanceOf<T>(this IFluentAssertion<DateTime> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
-            {
-                Helpers.IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
-            }
-            else
-            {
-                Helpers.IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        IsInstanceHelper.IsInstanceOf(runnableAssertion.Value, typeof(T));
+                    },
+                    IsInstanceHelper.BuildErrorMessage(runnableAssertion, typeof(T), true));
         }
 
         /// <summary>
@@ -108,16 +107,16 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsNotInstanceOf<T>(this IFluentAssertion<DateTime> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
-            {
-                Helpers.IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
-            }
-            else
-            {
-                Helpers.IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
+            var expectedType = typeof(T);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        IsInstanceHelper.IsNotInstanceOf(runnableAssertion.Value, expectedType);
+                    },
+                string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", runnableAssertion.Value.ToStringProperlyFormated(), expectedType, runnableAssertion.Value.GetType()));
         }
 
         #endregion
@@ -133,38 +132,18 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time is not before the given one.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsBefore(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsBeforeNegatedImpl(fluentAssertion, other);
-            }
-            else
-            {
-                IsBeforeImpl(fluentAssertion, other);
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
-        }
-
-        private static void IsBeforeImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            if (fluentAssertion.Value >= other)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not before the given one:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
-            }
-        }
-
-        private static void IsBeforeNegatedImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            try
-            {
-                IsBeforeImpl(fluentAssertion, other);
-            }
-            catch (FluentAssertionException)
-            {
-                return;
-            }
-
-            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis before the given one:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (runnableAssertion.Value >= other)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not before the given one:\n\t[{1}].", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                        }
+                    },
+                string.Format("\nThe actual date time:\n\t[{0}]\nis before the given one:\n\t[{1}].", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -178,38 +157,18 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time is not before or equals to the given one.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsBeforeOrEqualTo(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsBeforeOrEqualToNegatedImpl(fluentAssertion, other);
-            }
-            else
-            {
-                IsBeforeOrEqualToImpl(fluentAssertion, other);
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
-        }
-
-        private static void IsBeforeOrEqualToImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            if (fluentAssertion.Value > other)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not before or equals to the given one:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
-            }
-        }
-
-        private static void IsBeforeOrEqualToNegatedImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            try
-            {
-                IsBeforeOrEqualToImpl(fluentAssertion, other);
-            }
-            catch (FluentAssertionException)
-            {
-                return;
-            }
-
-            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis before or equals to the given one:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (runnableAssertion.Value > other)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not before or equals to the given one:\n\t[{1}].", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                        }
+                    },
+                string.Format("\nThe actual date time:\n\t[{0}]\nis before or equals to the given one:\n\t[{1}].", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -223,38 +182,18 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time is not after the given one.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsAfter(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsAfterNegatedImpl(fluentAssertion, other);
-            }
-            else
-            {
-                IsAfterImpl(fluentAssertion, other);
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
-        }
-
-        private static void IsAfterImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            if (fluentAssertion.Value <= other)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not after the given one:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
-            }
-        }
-
-        private static void IsAfterNegatedImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            try
-            {
-                IsAfterImpl(fluentAssertion, other);
-            }
-            catch (FluentAssertionException)
-            {
-                return;
-            }
-
-            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis after the given one:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (runnableAssertion.Value <= other)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not after the given one:\n\t[{1}].", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                        }
+                    },
+                string.Format("\nThe actual date time:\n\t[{0}]\nis after the given one:\n\t[{1}].", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -268,38 +207,18 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time is not after or equals to the given one.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsAfterOrEqualTo(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsAfterOrEqualToNegatedImpl(fluentAssertion, other);
-            }
-            else
-            {
-                IsAfterOrEqualToImpl(fluentAssertion, other);
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
-        }
-
-        private static void IsAfterOrEqualToImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            if (fluentAssertion.Value < other)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not after or equals to the given one:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
-            }
-        }
-
-        private static void IsAfterOrEqualToNegatedImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            try
-            {
-                IsAfterOrEqualToImpl(fluentAssertion, other);
-            }
-            catch (FluentAssertionException)
-            {
-                return;
-            }
-
-            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis after or equals to the given one:\n\t[{1}].", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (runnableAssertion.Value < other)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not after or equals to the given one:\n\t[{1}].", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                        }
+                    },
+                string.Format("\nThe actual date time:\n\t[{0}]\nis after or equals to the given one:\n\t[{1}].", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         // TODO : replace the FEST assert assertThat samples by NFluent assertions
@@ -332,38 +251,18 @@ namespace NFluent
         /// </remarks>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualToIgnoringMillis(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsEqualToIgnoringMillisNegatedImpl(fluentAssertion, other);
-            }
-            else
-            {
-                IsEqualToIgnoringMillisImpl(fluentAssertion, other);
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
-        }
-
-        private static void IsEqualToIgnoringMillisImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            if (fluentAssertion.Value.Year != other.Year || fluentAssertion.Value.Month != other.Month || fluentAssertion.Value.Day != other.Day || fluentAssertion.Value.Hour != other.Hour || fluentAssertion.Value.Minute != other.Minute || fluentAssertion.Value.Second != other.Second)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring milliseconds.", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
-            }
-        }
-
-        private static void IsEqualToIgnoringMillisNegatedImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            try
-            {
-                IsEqualToIgnoringMillisImpl(fluentAssertion, other);
-            }
-            catch (FluentAssertionException)
-            {
-                return;
-            }
-
-            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring milliseconds.", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (runnableAssertion.Value.Year != other.Year || runnableAssertion.Value.Month != other.Month || runnableAssertion.Value.Day != other.Day || runnableAssertion.Value.Hour != other.Hour || runnableAssertion.Value.Minute != other.Minute || runnableAssertion.Value.Second != other.Second)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring milliseconds.", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                        }
+                    },
+                string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring milliseconds.", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -393,39 +292,19 @@ namespace NFluent
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual date time is not equal to the given one with second and millisecond fields ignored.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualToIgnoringSeconds(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {  
-            if (fluentAssertion.Negated)
-            {
-                IsEqualToIgnoringSecondsNegatedImpl(fluentAssertion, other);
-            }
-            else
-            {
-                IsEqualToIgnoringSecondsImpl(fluentAssertion, other);
-            }
-
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
-        }
-
-        private static void IsEqualToIgnoringSecondsImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Value.Year != other.Year || fluentAssertion.Value.Month != other.Month || fluentAssertion.Value.Day != other.Day || fluentAssertion.Value.Hour != other.Hour || fluentAssertion.Value.Minute != other.Minute)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring seconds.", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
-            }
-        }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-        private static void IsEqualToIgnoringSecondsNegatedImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            try
-            {
-                IsEqualToIgnoringSecondsImpl(fluentAssertion, other);
-            }
-            catch (FluentAssertionException)
-            {
-                return;
-            }
-
-            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring seconds.", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (runnableAssertion.Value.Year != other.Year || runnableAssertion.Value.Month != other.Month || runnableAssertion.Value.Day != other.Day || runnableAssertion.Value.Hour != other.Hour || runnableAssertion.Value.Minute != other.Minute)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring seconds.", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                        }
+                    },
+                string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring seconds.", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -456,38 +335,18 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time is not equal to the given one with minute, second and millisecond fields ignored.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualToIgnoringMinutes(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsEqualToIgnoringMinutesNegatedImpl(fluentAssertion, other);
-            }
-            else
-            {
-                IsEqualToIgnoringMinutesImpl(fluentAssertion, other);
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
-        }
-
-        private static void IsEqualToIgnoringMinutesImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            if (fluentAssertion.Value.Year != other.Year || fluentAssertion.Value.Month != other.Month || fluentAssertion.Value.Day != other.Day || fluentAssertion.Value.Hour != other.Hour)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring minutes.", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
-            }
-        }
-
-        private static void IsEqualToIgnoringMinutesNegatedImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            try
-            {
-                IsEqualToIgnoringMinutesImpl(fluentAssertion, other);
-            }
-            catch (FluentAssertionException)
-            {
-                return;
-            }
-
-            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring minutes.", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (runnableAssertion.Value.Year != other.Year || runnableAssertion.Value.Month != other.Month || runnableAssertion.Value.Day != other.Day || runnableAssertion.Value.Hour != other.Hour)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring minutes.", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                        }
+                    },
+                string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring minutes.", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -518,38 +377,18 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time is not equal to the given one with hour, minute, second and millisecond fields ignored.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualToIgnoringHours(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsEqualToIgnoringHoursNegatedImpl(fluentAssertion, other);
-            }
-            else
-            {
-                IsEqualToIgnoringHoursImpl(fluentAssertion, other);
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
-        }
-
-        private static void IsEqualToIgnoringHoursImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            if (fluentAssertion.Value.Year != other.Year || fluentAssertion.Value.Month != other.Month || fluentAssertion.Value.Day != other.Day)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring hours.", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
-            }
-        }
-
-        private static void IsEqualToIgnoringHoursNegatedImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            try
-            {
-                IsEqualToIgnoringHoursImpl(fluentAssertion, other);
-            }
-            catch (FluentAssertionException)
-            {
-                return;
-            }
-
-            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring hours.", fluentAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (runnableAssertion.Value.Year != other.Year || runnableAssertion.Value.Month != other.Month || runnableAssertion.Value.Day != other.Day)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring hours.", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                        }
+                    },
+                string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring hours.", runnableAssertion.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -563,32 +402,18 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time year is not equal to the given year.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsInSameYearAs(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsInSameYearAsNegatedImpl(fluentAssertion, other);
-            }
-            else
-            {
-                IsInSameYearAsImpl(fluentAssertion, other);
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
-        }
-
-        private static void IsInSameYearAsImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            if (fluentAssertion.Value.Year != other.Year)
-            {
-                throw new FluentAssertionException(string.Format("\nThe year of the actual date time:\n\t[{0}]\nis not equal to the year of the given date time:\n\t[{1}].", fluentAssertion.Value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated()));
-            }
-        }
-
-        private static void IsInSameYearAsNegatedImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            if (fluentAssertion.Value.Year == other.Year)
-            {
-                throw new FluentAssertionException(string.Format("\nThe year of the actual date time:\n\t[{0}]\nis equal to the year of the given date time:\n\t[{1}].", fluentAssertion.Value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated()));
-            }
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (runnableAssertion.Value.Year != other.Year)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe year of the actual date time:\n\t[{0}]\nis not equal to the year of the given date time:\n\t[{1}].", runnableAssertion.Value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated()));
+                        }
+                    },
+                string.Format("\nThe year of the actual date time:\n\t[{0}]\nis equal to the year of the given date time:\n\t[{1}].", runnableAssertion.Value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -602,38 +427,18 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time month is not equal to the given month, whatever the year.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsInSameMonthAs(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsInSameMonthAsNegatedImpl(fluentAssertion, other);
-            }
-            else
-            {
-                IsInSameMonthAsImpl(fluentAssertion, other);
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
-        }
-
-        private static void IsInSameMonthAsImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            if (fluentAssertion.Value.Month != other.Month)
-            {
-                throw new FluentAssertionException(string.Format("\nThe month of the actual date time:\n\t[{0}]\nis not equal to the month of the given date time:\n\t[{1}].", fluentAssertion.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated()));
-            }
-        }
-
-        private static void IsInSameMonthAsNegatedImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            try
-            {
-                IsInSameMonthAsImpl(fluentAssertion, other);
-            }
-            catch (FluentAssertionException)
-            {
-                return;
-            }
-
-            throw new FluentAssertionException(string.Format("\nThe month of the actual date time:\n\t[{0}]\nis equal to the month of the given date time:\n\t[{1}].", fluentAssertion.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated()));
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (runnableAssertion.Value.Month != other.Month)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe month of the actual date time:\n\t[{0}]\nis not equal to the month of the given date time:\n\t[{1}].", runnableAssertion.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated()));
+                        }
+                    },
+                string.Format("\nThe month of the actual date time:\n\t[{0}]\nis equal to the month of the given date time:\n\t[{1}].", runnableAssertion.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated()));
         }
 
         /// <summary>
@@ -647,38 +452,18 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual date time day is not equal to the given day, whatever the year or the month.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsInSameDayAs(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsInSameDayAsNegatedImpl(fluentAssertion, other);
-            }
-            else
-            {
-                IsInSameDayAsImpl(fluentAssertion, other);
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<DateTime>>(fluentAssertion);
-        }
-
-        private static void IsInSameDayAsImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            if (fluentAssertion.Value.Day != other.Day)
-            {
-                throw new FluentAssertionException(string.Format("\nThe day of the actual date time:\n\t[{0}]\nis not equal to the day of the given date time:\n\t[{1}].", fluentAssertion.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated()));
-            }
-        }
-
-        private static void IsInSameDayAsNegatedImpl(IFluentAssertion<DateTime> fluentAssertion, DateTime other)
-        {
-            try
-            {
-                IsInSameDayAsImpl(fluentAssertion, other);
-            }
-            catch (FluentAssertionException)
-            {
-                return;
-            }
-
-            throw new FluentAssertionException(string.Format("\nThe day of the actual date time:\n\t[{0}]\nis equal to the day of the given date time:\n\t[{1}].", fluentAssertion.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated()));
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        if (runnableAssertion.Value.Day != other.Day)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe day of the actual date time:\n\t[{0}]\nis not equal to the day of the given date time:\n\t[{1}].", runnableAssertion.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated()));
+                        }
+                    },
+                string.Format("\nThe day of the actual date time:\n\t[{0}]\nis equal to the day of the given date time:\n\t[{1}].", runnableAssertion.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated()));
         }
     }
 }

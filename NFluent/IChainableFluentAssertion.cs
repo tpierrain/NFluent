@@ -20,7 +20,7 @@ namespace NFluent
     /// Provides a way to chain two <see cref="IForkableFluentAssertion"/> instances. 
     /// </summary>
     /// <typeparam name="T">Type of the <see cref="IForkableFluentAssertion"/> to be chained.</typeparam>
-    public interface IChainableFluentAssertion<T> where T : IForkableFluentAssertion
+    public interface IChainableFluentAssertion<out T> where T : IForkableFluentAssertion
     {
         /// <summary>
         /// Chains a new fluent assertion to the current one.

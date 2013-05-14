@@ -261,5 +261,22 @@ namespace NFluent.Helpers
 
             throw new InvalidOperationException(string.Format("{0} is not a supported time unit.", unit));
         }
+
+        /// <summary>
+        /// Convert a duration timeUnit pair to a string.
+        /// </summary>
+        /// <param name="duration">
+        /// The duration.
+        /// </param>
+        /// <param name="timeUnit">
+        /// The time unit.
+        /// </param>
+        /// <returns>
+        /// A properly formatted string.
+        /// </returns>
+        public static string ToStringWithUnit(double duration, TimeUnit timeUnit)
+        {
+            return string.Format("{0} {1}", duration, timeUnit);
+        }
     }
 }

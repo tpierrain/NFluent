@@ -26,7 +26,7 @@ namespace NFluent
     /// <typeparam name="T">
     /// Type managed by this extension.
     /// </typeparam>
-    public class ExtendableFluentAssertion<T> : ChainableFluentAssertion<IFluentAssertion<T>>, IExtendableFluentAssertion<T>
+    internal class ExtendableFluentAssertion<T> : ChainableFluentAssertion<IFluentAssertion<T>>, IExtendableFluentAssertion<T>
     {
         private readonly T originalComparand;
 

@@ -21,7 +21,7 @@ namespace NFluent.Helpers
     /// <summary>
     /// Helper class related to Equality methods (used like a traits).
     /// </summary>
-    internal static class EqualityHelper
+    public static class EqualityHelper
     {
         /// <summary>
         /// Checks that a given instance is considered to be equal to another expected instance. Throws <see cref="FluentAssertionException"/> otherwise.
@@ -34,28 +34,52 @@ namespace NFluent.Helpers
             if (!object.Equals(instance, expected))
             {
                 // Should throw
-                var expectedTypeMessage = string.Empty;
-                var instanceTypeMessage = string.Empty;
-                bool includeHashCode = false;
+                var errorMessage = BuildErrorMessage(instance, expected, false);
 
-                if (instance.GetTypeWithoutThrowingException() != expected.GetTypeWithoutThrowingException())
+                throw new FluentAssertionException(errorMessage);
+            }
+        }
+
+        /// <summary>
+        /// Builds the error message related to the Equality verification. This should be called only if the test failed (no matter it is negated or not).
+        /// </summary>
+        /// <param name="instance">The checked instance.</param>
+        /// <param name="expected">The other operand.</param>
+        /// <param name="isEqual">A value indicating whether the two values are equal or not. <c>true</c> if they are equal; <c>false</c> otherwise.</param>
+        /// <returns>The error message related to the Equality verification.</returns>
+        public static string BuildErrorMessage(object instance, object expected, bool isEqual)
+        {
+            var expectedTypeMessage = string.Empty;
+            var instanceTypeMessage = string.Empty;
+            bool includeHashCode = false;
+
+            if (instance.GetTypeWithoutThrowingException() != expected.GetTypeWithoutThrowingException())
+            {
+                expectedTypeMessage = BuildTypeDescriptionMessage(expected, includeHashCode);
+                instanceTypeMessage = BuildTypeDescriptionMessage(instance, includeHashCode);
+            }
+            else
+            {
+                // same instance type. Do they have the same ToString() value? In that case we should include the hashcodex of each instance within the error message
+                if (string.Compare(instance.ToString(), expected.ToString()) == 0)
                 {
+                    includeHashCode = true;
                     expectedTypeMessage = BuildTypeDescriptionMessage(expected, includeHashCode);
                     instanceTypeMessage = BuildTypeDescriptionMessage(instance, includeHashCode);
                 }
-                else
-                {
-                    // same instance type. Do they have the same ToString() value? In that case we should include the hashcodex of each instance within the error message
-                    if (string.Compare(instance.ToString(), expected.ToString()) == 0)
-                    {
-                        includeHashCode = true;
-                        expectedTypeMessage = BuildTypeDescriptionMessage(expected, includeHashCode);
-                        instanceTypeMessage = BuildTypeDescriptionMessage(instance, includeHashCode);
-                    }
-                }
-
-                throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{2}\nis not equal to the expected one:\n\t[{1}]{3}.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage));
             }
+
+            string errorMessage;
+            if (isEqual)
+            {
+                errorMessage = string.Format("\nThe actual value:\n\t[{0}]{2}\nis equal to:\n\t[{1}]{3}\nwhich is unexpected.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage);
+            }
+            else
+            {
+                errorMessage = string.Format("\nThe actual value:\n\t[{0}]{2}\nis not equal to the expected one:\n\t[{1}]{3}.", instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated(), instanceTypeMessage, expectedTypeMessage); 
+            }
+
+            return errorMessage;
         }
 
         /// <summary>
@@ -73,6 +97,7 @@ namespace NFluent.Helpers
             }
         }
 
+        // TODO: make internal methods visible?
         internal static string BuildTypeDescriptionMessage(object obj)
         {
             return BuildTypeDescriptionMessage(obj, false);

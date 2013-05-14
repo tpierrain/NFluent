@@ -31,7 +31,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "The checked code took too much time to execute.\n")]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "The checked code took too much time to execute.\r\n")]
         public void FailDurationTest()
         {
             Check.That(() => Thread.Sleep(30)).LastsLessThan(0, TimeUnit.Milliseconds);

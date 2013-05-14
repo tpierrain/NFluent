@@ -182,7 +182,7 @@
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis an instance of:\n\t[System.DateTime]\nwhich is not expected.")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis an instance of:\n\t[System.DateTime]\nwhich was not expected.")]
         public void IsNotInstanceOfThrowsExceptionWhenInstanceOf()
         {
             var actual = new DateTime(2013, 1, 1);

@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="INegateableFluentAssertion.cs" company="">
+// // <copyright file="IRunnableAssertion.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,21 +14,21 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System.Diagnostics.CodeAnalysis;
+    using System.ComponentModel;
 
     /// <summary>
-    /// Fluent assertion that has the ability to be negated via a 'Not' operator.
+    /// Fluent assertion which is runnable by a <see cref="IFluentAssertionRunner{T}" />.
     /// </summary>
-    /// <typeparam name="T">Fluent assertion type to be negated.</typeparam>
-    public interface INegateableFluentAssertion<out T> 
+    /// <typeparam name="T">Type of the value to assert on.</typeparam>
+    public interface IRunnableAssertion<out T> : IForkableFluentAssertion, INegated
     {
         /// <summary>
-        /// Negates the next assertion, and the next assertion only.
+        /// Gets the value to be tested (provided for any extension method to be able to test it).
         /// </summary>
         /// <value>
-        /// The next assertion negated.
+        /// The value to be tested by any fluent assertion extension method.
         /// </value>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        T Not { get; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        T Value { get; }
     }
 }

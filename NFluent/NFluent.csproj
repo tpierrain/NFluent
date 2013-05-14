@@ -51,7 +51,12 @@
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="IExtendableFluentAssertion.cs" />
     <Compile Include="Assertions\StructFluentAssertionExtensions.cs" />
-    <Compile Include="Assertions\StructFluentAssertion.cs" />
+    <Compile Include="INegated.cs" />
+    <Compile Include="IRunnableAssertion.cs" />
+    <Compile Include="IStructFluentAssertionRunner.cs" />
+    <Compile Include="StructFluentAssertion.cs" />
+    <Compile Include="FluentAssertionRunner.cs" />
+    <Compile Include="IFluentAssertionRunner.cs" />
     <Compile Include="INegateableFluentAssertion.cs" />
     <Compile Include="IStructFluentAssertion.cs" />
     <Compile Include="Assertions\ExtendableFluentAssertion.cs" />
@@ -90,6 +95,7 @@
     <Compile Include="Assertions\ULongFluentAssertionExtensions.cs" />
     <Compile Include="Assertions\UShortFluentAssertionExtensions.cs" />
     <Compile Include="Helpers\TimeHelper.cs" />
+    <Compile Include="StructFluentAssertionRunner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

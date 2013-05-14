@@ -7,6 +7,10 @@
     [TestFixture]
     public class EnumOrStructRelatedTests
     {
+        private const string Blabla = ".*?";
+        private const string LineFeed = "\\n";
+        private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
+
         [Test]
         public void IsEqualToWorksWithEnum()
         {
@@ -15,10 +19,26 @@
         }
 
         [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[French]\nis not equal to the expected one:\n\t[American].")]
+        public void IsEqualToThrowsExceptionWhenFailingWithEnum()
+        {
+            const Nationality FrenchNationality = Nationality.French;
+            Check.ThatEnumOrStruct(FrenchNationality).IsEqualTo(Nationality.American);
+        }
+
+        [Test]
         public void IsNotEqualToWorksWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnumOrStruct(FrenchNationality).IsNotEqualTo(Nationality.American);
+            Check.ThatEnumOrStruct(FrenchNationality).IsNotEqualTo(Nationality.Korean);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[French] of type: [NFluent.Tests.Nationality].")]
+        public void IsNotEqualToThrowsExceptionWhenFailingWithEnum()
+        {
+            const Nationality FrenchNationality = Nationality.French;
+            Check.ThatEnumOrStruct(FrenchNationality).IsNotEqualTo(Nationality.French);
         }
 
         [Test]
@@ -26,6 +46,14 @@
         {
             const Nationality FrenchNationality = Nationality.French;
             Check.ThatEnumOrStruct(FrenchNationality).Not.IsEqualTo(Nationality.American);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[French\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[French\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + Blabla + LineFeed + "(which)" + Blabla)]
+        public void NotIsEqualToThrowsExceptionWhenFailingWithEnum()
+        {
+            const Nationality FrenchNationality = Nationality.French;
+            Check.ThatEnumOrStruct(FrenchNationality).Not.IsEqualTo(Nationality.French);
         }
 
         [Test]

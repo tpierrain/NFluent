@@ -65,14 +65,7 @@ namespace NFluent
                     sb.Append(separator);
                 }
 
-                if (obj == null)
-                {
-                    sb.Append("null");
-                }
-                else
-                {
-                    sb.Append(obj.ToStringProperlyFormated());
-                }
+                sb.Append(obj == null ? "null" : obj.ToStringProperlyFormated());
 
                 firstTime = false;
                 itemsCount++;

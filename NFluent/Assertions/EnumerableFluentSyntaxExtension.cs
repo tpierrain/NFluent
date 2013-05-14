@@ -55,10 +55,11 @@ namespace NFluent
         public static IExtendableFluentAssertion<IEnumerable> Once(
             this IExtendableFluentAssertion<IEnumerable> chainedFluentAssertion)
         {
+            var runnableAssertion = chainedFluentAssertion.And as IRunnableAssertion<IEnumerable>;
             int itemidx = 0;
             var expectedList = ConvertToArrayList(chainedFluentAssertion);
             var listedItems = new ArrayList();
-            foreach (var item in chainedFluentAssertion.And.Value)
+            foreach (var item in runnableAssertion.Value)
             {
                 if (expectedList.Contains(item))
                 {
@@ -75,7 +76,7 @@ namespace NFluent
                                 item,
                                 itemidx.ToStringProperlyFormated()),
                             "enumerable",
-                            chainedFluentAssertion.And.Value,
+                            runnableAssertion.Value,
                             chainedFluentAssertion.OriginalComparand);
                     throw new FluentAssertionException(message);
                 }
@@ -98,11 +99,12 @@ namespace NFluent
         public static IExtendableFluentAssertion<IEnumerable> InThatOrder(
             this IExtendableFluentAssertion<IEnumerable> chainedFluentAssertion)
         {
+            var runnableAssertion =  chainedFluentAssertion.And as IRunnableAssertion<IEnumerable>;
             var orderedList = ConvertToArrayList(chainedFluentAssertion);
 
             var faillingIndex = 0;
             var scanIndex = 0;
-            foreach (var item in chainedFluentAssertion.And.Value)
+            foreach (var item in runnableAssertion.Value)
             {
                 if (item != orderedList[scanIndex])
                 {
@@ -149,7 +151,7 @@ namespace NFluent
                                     faillingIndex,
                                     index > scanIndex ? "early" : "late"),
                                 "enumerable",
-                                chainedFluentAssertion.And.Value,
+                                runnableAssertion.Value,
                                 chainedFluentAssertion.OriginalComparand);
 
                         throw new FluentAssertionException(message);

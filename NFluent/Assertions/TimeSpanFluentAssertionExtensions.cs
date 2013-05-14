@@ -33,13 +33,19 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not less than the provided duration.</exception>
          public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsLessThan(this IFluentAssertion<TimeSpan> fluentAssertion, double providedDuration, TimeUnit unit)
          {
-             TimeSpan comparand = TimeHelper.ToTimeSpan(providedDuration, unit);
-             if (fluentAssertion.Value >= comparand)
-             {
-                 throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not less than:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(fluentAssertion.Value, unit), providedDuration, unit));
-             }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
-             return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        TimeSpan comparand = TimeHelper.ToTimeSpan(providedDuration, unit);
+                        if (runnableAssertion.Value >= comparand)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not less than:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(runnableAssertion.Value, unit), providedDuration, unit));
+                        }
+                    },
+                string.Format("\nThe actual value of:\n\t[{0} {2}]\nis less than:\n\t[{1} {2}]\nwhich is unexpected.", TimeHelper.Convert(runnableAssertion.Value, unit), providedDuration, unit));
          }
 
          /// <summary>
@@ -51,13 +57,20 @@ namespace NFluent
          /// <exception cref="FluentAssertionException">The actual value is not less than the provided comparand.</exception>
          public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsLessThan(this IFluentAssertion<TimeSpan> fluentAssertion, TimeSpan comparand)
          {
-             if (fluentAssertion.Value >= comparand)
-             {
-                 TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
-                 throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not less than:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(fluentAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
-             }
+             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
-             return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
+             TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
+
+             return assertionRunner.ExecuteAssertion(
+                 () =>
+                     {
+                         if (runnableAssertion.Value >= comparand)
+                         {
+                             throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not less than:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
+                         }
+                     },
+                 string.Format("\nThe actual value of:\n\t[{0} {2}]\nis less than:\n\t[{1} {2}]\nwhich is unexpected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
          }
 
          /// <summary>
@@ -70,13 +83,20 @@ namespace NFluent
          /// <exception cref="FluentAssertionException">The actual value is not greater than the provided comparand.</exception>
          public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsGreaterThan(this IFluentAssertion<TimeSpan> fluentAssertion, double providedDuration, TimeUnit unit)
          {
-             TimeSpan comparand = TimeHelper.ToTimeSpan(providedDuration, unit);
-             if (fluentAssertion.Value <= comparand)
-             {
-                 throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not greater than:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(fluentAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
-             }
+             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
-             return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
+             TimeSpan comparand = TimeHelper.ToTimeSpan(providedDuration, unit);
+
+             return assertionRunner.ExecuteAssertion(
+                 () =>
+                     {
+                         if (runnableAssertion.Value <= comparand)
+                         {
+                             throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not greater than:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
+                         }
+                     },
+                 string.Format("\nThe actual value of:\n\t[{0} {2}]\nis greater than:\n\t[{1} {2}]\nwhich is unexpected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
          }
 
          /// <summary>
@@ -88,13 +108,20 @@ namespace NFluent
          /// <exception cref="FluentAssertionException">The actual value is not greater than the provided comparand.</exception>
          public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsGreaterThan(this IFluentAssertion<TimeSpan> fluentAssertion, TimeSpan comparand)
          {
-             if (fluentAssertion.Value <= comparand)
-             {
-                 TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
-                 throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not greater than:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(fluentAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
-             }
+             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
-             return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
+             TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
+
+             return assertionRunner.ExecuteAssertion(
+                 () =>
+                     {
+                         if (runnableAssertion.Value <= comparand)
+                         {
+                             throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not greater than:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
+                         }
+                     },
+                 string.Format("\nThe actual value of:\n\t[{0} {2}]\nis greater than:\n\t[{1} {2}]\nwhich is unexpected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
          }
 
          /// <summary>
@@ -107,13 +134,20 @@ namespace NFluent
          /// <exception cref="FluentAssertionException">The actual value is not equal to the target duration.</exception>
          public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsEqualTo(this IFluentAssertion<TimeSpan> fluentAssertion, double duration, TimeUnit unit)
          {
-            TimeSpan comparand = TimeHelper.ToTimeSpan(duration, unit);
-            if (fluentAssertion.Value != comparand)
-            {
-                throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not equal to:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(fluentAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
-            }
+             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
+             TimeSpan comparand = TimeHelper.ToTimeSpan(duration, unit);
+
+             return assertionRunner.ExecuteAssertion(
+                 () =>
+                     {
+                         if (runnableAssertion.Value != comparand)
+                         {
+                             throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not equal to:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
+                         }
+                     },
+                 string.Format("\nThe actual value of:\n\t[{0} {2}]\nis equal to:\n\t[{1} {2}]\nwhich is unexpected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
          }
 
          /// <summary>
@@ -125,13 +159,20 @@ namespace NFluent
          /// /// <exception cref="FluentAssertionException">The actual value is not equal to the target duration.</exception>
          public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsEqualTo(this IFluentAssertion<TimeSpan> fluentAssertion, TimeSpan comparand)
          {
-             if (fluentAssertion.Value != comparand)
-             {
-                 TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
-                 throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not equal to:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(fluentAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
-             }
+             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
-             return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
+             TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
+
+             return assertionRunner.ExecuteAssertion(
+                 () =>
+                     {
+                         if (runnableAssertion.Value != comparand)
+                         {
+                             throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not equal to:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
+                         }
+                     },
+                 string.Format("\nThe actual value of:\n\t[{0} {2}]\nis equal to:\n\t[{1} {2}]\nwhich is unexpected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
          }
 
          /// <summary>
@@ -145,16 +186,15 @@ namespace NFluent
          /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
          public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsInstanceOf<T>(this IFluentAssertion<TimeSpan> fluentAssertion)
          {
-             if (fluentAssertion.Negated)
-             {
-                 IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
-             }
-             else
-             {
-                 IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
-             }
+             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
-             return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
+             return assertionRunner.ExecuteAssertion(
+                 () =>
+                     {
+                         IsInstanceHelper.IsInstanceOf(runnableAssertion.Value, typeof(T));
+                     },
+                 IsInstanceHelper.BuildErrorMessage(runnableAssertion.Value, typeof(T), true));
          }
 
          /// <summary>
@@ -168,16 +208,15 @@ namespace NFluent
          /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
          public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsNotInstanceOf<T>(this IFluentAssertion<TimeSpan> fluentAssertion)
          {
-             if (fluentAssertion.Negated)
-             {
-                 Helpers.IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
-             }
-             else
-             {
-                 Helpers.IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
-             }
+             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
-             return new ChainableFluentAssertion<IFluentAssertion<TimeSpan>>(fluentAssertion);
+             return assertionRunner.ExecuteAssertion(
+                 () =>
+                     {
+                         IsInstanceHelper.IsNotInstanceOf(runnableAssertion.Value, typeof(T));
+                     },
+                 IsInstanceHelper.BuildErrorMessage(runnableAssertion.Value, typeof(T), false));
          }
     }
 }

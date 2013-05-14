@@ -67,7 +67,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nstarts with:\n\t[\"abcdef\"]\nwhich is not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nstarts with:\n\t[\"abcdef\"]\nwhich was not expected.")]
         public void NegatedStartWithThrowsException()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";

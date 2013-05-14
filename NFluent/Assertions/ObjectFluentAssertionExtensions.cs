@@ -14,6 +14,9 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
+    using NFluent.Extensions;
     using NFluent.Helpers;
 
     /// <summary>
@@ -32,8 +35,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<object>> IsEqualTo(this IFluentAssertion<object> fluentAssertion, object expected)
         {
-            EqualityHelper.IsEqualTo(fluentAssertion.Value, expected);
-            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<object>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<object>;
+
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsEqualTo(runnableAssertion.Value, expected);
+                    },
+                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, true));
         }
 
         /// <summary>
@@ -47,8 +57,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<object>> IsNotEqualTo(this IFluentAssertion<object> fluentAssertion, object expected)
         {
-            EqualityHelper.IsNotEqualTo(fluentAssertion.Value, expected);
-            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<object>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<object>;
+
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                    {
+                        EqualityHelper.IsNotEqualTo(runnableAssertion.Value, expected);
+                    },
+                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, false));
         }
 
         /// <summary>
@@ -62,16 +79,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<object>> IsInstanceOf<T>(this IFluentAssertion<object> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
-            }
-            else
-            {
-                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<object>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<object>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    IsInstanceHelper.IsInstanceOf(runnableAssertion.Value, typeof(T));
+                },
+                IsInstanceHelper.BuildErrorMessage(runnableAssertion, typeof(T), true));
         }
 
         /// <summary>
@@ -85,16 +101,15 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<object>> IsNotInstanceOf<T>(this IFluentAssertion<object> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsInstanceHelper.IsInstanceOf(fluentAssertion.Value, typeof(T));
-            }
-            else
-            {
-                IsInstanceHelper.IsNotInstanceOf(fluentAssertion.Value, typeof(T));
-            }
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<object>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<object>;
 
-            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    IsInstanceHelper.IsNotInstanceOf(runnableAssertion.Value, typeof(T));
+                },
+                string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", runnableAssertion.Value.ToStringProperlyFormated(), typeof(T), runnableAssertion.Value.GetType()));
         }
 
         /// <summary>
@@ -108,16 +123,18 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The checked expression is not in the inheritance hierarchy of the given type.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<object>> InheritsFrom<T>(this IFluentAssertion<object> fluentAssertion)
         {
-            if (fluentAssertion.Negated)
-            {
-                IsInstanceHelper.NotInheritsFrom(fluentAssertion.Value, typeof(T));
-            }
-            else
-            {
-                IsInstanceHelper.InheritsFrom(fluentAssertion.Value, typeof(T));
-            }
-            
-            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<object>;
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<object>;
+
+            Type instanceType = runnableAssertion.Value.GetTypeWithoutThrowingException();
+            Type expectedBaseType = typeof(T);
+
+            return assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    IsInstanceHelper.InheritsFrom(runnableAssertion.Value, expectedBaseType);
+                },
+                string.Format("\nThe checked expression is part of the inheritance hierarchy or of the same type than the specified one.\nIndeed, checked expression type:\n\t[{0}]\nis a derived type of\n\t[{1}].", instanceType.ToStringProperlyFormated(), expectedBaseType.ToStringProperlyFormated()));
         }
     }
 }

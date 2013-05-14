@@ -87,10 +87,27 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[\"Michel Gondry\", \"Joon-ho Bong\", \"Darren Aronofsky\"] (3 items)\ndoes not contain exactly the expected value(s):\n\t[\"Steve Tesich\", \"Albert Camus\", \"Eiji Yoshikawa\", \"Friedrich Nietzsche\"] (4 items).")]
-        public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithEnumerable()
+        public void ContainsExactlyThrowsExceptionWhenFailingWithEnumerable()
         {
             IEnumerable writersNames = InstantiateWriters().Properties("Name");
             Check.That(InstantiateDirectors().Properties("Name")).ContainsExactly(writersNames);
+        }
+
+        [Test]
+        public void NotContainsExactlyWorksWithEnumerable()
+        {
+            IEnumerable writersNames = InstantiateWriters().Properties("Name");
+            IEnumerable directorsNames = InstantiateDirectors().Properties("Name");
+            
+            Check.That(directorsNames).Not.ContainsExactly(writersNames);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[\"Steve Tesich\", \"Albert Camus\", \"Eiji Yoshikawa\", \"Friedrich Nietzsche\"] (4 items).\ncontains exactly the value(s):\n\t[\"Steve Tesich\", \"Albert Camus\", \"Eiji Yoshikawa\", \"Friedrich Nietzsche\"] (4 items).\nwhich is unexpected.")]
+        public void NotContainsExactlyThrowsExceptionWhenFailingWithEnumerable()
+        {
+            IEnumerable writersNames = InstantiateWriters().Properties("Name");
+            Check.That(writersNames).Not.ContainsExactly(writersNames);
         }
 
         [Test]

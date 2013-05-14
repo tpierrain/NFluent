@@ -34,7 +34,7 @@ namespace NFluent.Tests
         [Test]
         public void MessageBuilderTest()
         {
-            string message = ExceptionHelper.BuildStandardMessage("The {0} was different from the {1}.","object", new object(), new object());
+            string message = ExceptionHelper.BuildStandardMessage("The {0} was different from the {1}.", "object", new object(), new object());
             Check.That(message.Split('\n')).HasSize(5);
         }
     }

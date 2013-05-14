@@ -8,6 +8,10 @@
     [TestFixture]
     public class EnumerableRelatedTests
     {
+        private const string Blabla = ".*?";
+        private const string LineFeed = "\\n";
+        private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
+
         #region HasSize
 
         [Test]
@@ -52,11 +56,28 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable has 1 element instead of 5.\nActual content is:\n\t[666].")]
-        public void HasSizeThrowsExceptionWithClearStatusWhenFailsWithOneElementFound()
+        public void HasSizeThrowsExceptionWhenFailingWithOneElementFound()
         {
             var enumerable = new List<int> { 666 };
 
             Check.That(enumerable).HasSize(5);
+        }
+
+        [Test]
+        public void NotHasSizeWorks()
+        {
+            var enumerable = new List<int>() { 666 };
+            
+            Check.That(enumerable).Not.HasSize(5);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable has 1 element which is unexpected.\nActual content is:\n\t[666].")]
+        public void NotHasSizeThrowsExceptionWhenFailing()
+        {
+            var enumerable = new List<int>() { 666 };
+
+            Check.That(enumerable).Not.HasSize(1);
         }
 
         [Test]
@@ -89,7 +110,40 @@
             Check.That(persons).IsEmpty();
         }
 
+        [Test]
+        public void NotIsEmptyWorks()
+        {
+            var persons = new List<Person>() { null, null, new Person() { Name = "Thomas" } };
+            
+            Check.That(persons).Not.IsEmpty();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable is empty, which is unexpected.")]
+        public void NotIsEmptyThrowsExceptionWhenFailing()
+        {
+            var persons = new List<Person>();
+
+            Check.That(persons).Not.IsEmpty();
+        }
+
         #endregion
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[45, 43, 54, 666\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[45, 43, 54, 666\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + ".")]
+        public void NotIsEqualToThrowsExceptionWhenFailing()
+        {
+            IEnumerable enumerable = new List<int>() { 45, 43, 54, 666 };
+            Check.That(enumerable).Not.IsEqualTo(enumerable);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[45, 43, 54, 666] of type: [System.Collections.Generic.List`1[System.Int32]]\nis not equal to the expected one:\n\t[null].")]
+        public void NotIsNotEqualToThrowsExceptionWhenFailing()
+        {
+            IEnumerable enumerable = new List<int>() { 45, 43, 54, 666 };
+            Check.That(enumerable).Not.IsNotEqualTo(null);
+        }
 
         [Test]
         public void AndOperatorWorksWithAllMethodsOfEnumerableFluentAssertion()

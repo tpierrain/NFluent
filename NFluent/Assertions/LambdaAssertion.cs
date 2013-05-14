@@ -134,10 +134,16 @@ namespace NFluent
         /// </exception>
         public IChainableFluentAssertion<ILambdaAssertion> LastsLessThan(double threshold, TimeUnit timeUnit)
         {
-            var comparand = TimeHelper.GetInNanoSeconds(threshold, timeUnit);
-            if (this.durationInNs > comparand)
+            var comparand = TimeHelper.GetFromNanoSeconds(this.durationInNs, timeUnit);
+            if (comparand > threshold)
             {
-                var message = string.Format("{0} took too much time to execute.\n{0} execution time:\n\t{1} {3}\nExpected execution time:\n\t{2} {3}", SutName, TimeHelper.GetFromNanoSeconds(this.durationInNs, timeUnit), threshold, timeUnit);
+                string message = ExceptionHelper.BuildAttributeMessage(
+                    "The {0} took too much time to execute.",
+                    "code",
+                    "execution time",
+                    "less than",
+                    TimeHelper.ToStringWithUnit(comparand, timeUnit),
+                    TimeHelper.ToStringWithUnit(threshold, timeUnit));
                 throw new FluentAssertionException(message);
             }
 
@@ -184,7 +190,9 @@ namespace NFluent
         {
             if (this.exception == null)
             {
-                throw new FluentAssertionException(string.Format("{0} did not raise an exception, whereas it must.", SutName));
+                string message =
+                    ExceptionHelper.BuildSimpleMessage("The {0} did not raise an exception, whereas it must.", "code");
+                throw new FluentAssertionException(message);
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);
