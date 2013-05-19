@@ -66,7 +66,7 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="IStructFluentAssertion{T}" /> instance will throw a <see cref="FluentAssertionException" /> when failing.
         /// </remarks>
-        public static IStructFluentAssertion<T> ThatEnumOrStruct<T>(T value) where T : struct
+        public static IStructFluentAssertion<T> ThatEnum<T>(T value) where T : struct
         {
             return new StructFluentAssertion<T>(value);
         }

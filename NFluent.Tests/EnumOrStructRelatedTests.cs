@@ -15,7 +15,7 @@
         public void IsEqualToWorksWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnumOrStruct(FrenchNationality).IsEqualTo(Nationality.French);
+            Check.ThatEnum(FrenchNationality).IsEqualTo(Nationality.French);
         }
 
         [Test]
@@ -23,14 +23,14 @@
         public void IsEqualToThrowsExceptionWhenFailingWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnumOrStruct(FrenchNationality).IsEqualTo(Nationality.American);
+            Check.ThatEnum(FrenchNationality).IsEqualTo(Nationality.American);
         }
 
         [Test]
         public void IsNotEqualToWorksWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnumOrStruct(FrenchNationality).IsNotEqualTo(Nationality.Korean);
+            Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.Korean);
         }
 
         [Test]
@@ -38,14 +38,14 @@
         public void IsNotEqualToThrowsExceptionWhenFailingWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnumOrStruct(FrenchNationality).IsNotEqualTo(Nationality.French);
+            Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.French);
         }
 
         [Test]
         public void NotOperatorWorksOnIsEqualToForEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnumOrStruct(FrenchNationality).Not.IsEqualTo(Nationality.American);
+            Check.ThatEnum(FrenchNationality).Not.IsEqualTo(Nationality.American);
         }
 
         [Test]
@@ -53,14 +53,14 @@
         public void NotIsEqualToThrowsExceptionWhenFailingWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnumOrStruct(FrenchNationality).Not.IsEqualTo(Nationality.French);
+            Check.ThatEnum(FrenchNationality).Not.IsEqualTo(Nationality.French);
         }
 
         [Test]
         public void NotOperatorWorksOnIsNotEqualToForEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnumOrStruct(FrenchNationality).Not.IsNotEqualTo(Nationality.French);
+            Check.ThatEnum(FrenchNationality).Not.IsNotEqualTo(Nationality.French);
         }
 
         // TODO: write tests related to error message of IsNotEqualTo (cause the error message seems not so good)
@@ -68,7 +68,7 @@
         public void IsEqualToWorksWithStruct()
         {
             var inLove = new Mood { Description = "In love", IsPositive = true };
-            Check.ThatEnumOrStruct(inLove).IsEqualTo(inLove);
+            Check.ThatEnum(inLove).IsEqualTo(inLove);
         }
     }
 }
