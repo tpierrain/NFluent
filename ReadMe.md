@@ -56,7 +56,7 @@ With NFluent, you can write simple assertions like this:
     Check.That(Heroes).Not.Contains("Joker").And.StartsWith("Bat").And.Contains("Robin");
 
 	const Nationality FrenchNationality = Nationality.French;
-    Check.ThatEnumOrStruct(FrenchNationality).IsNotEqualTo(Nationality.Korean);
+    Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.Korean);
 
 	string motivationalSaying = "Failure is mother of success.";
     Check.That(motivationalSaying).IsNotInstanceOf<int>();
