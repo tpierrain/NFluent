@@ -3,7 +3,7 @@
   <metadata>
     <id>NFluent</id>
     <title>Smooth your .NET TDD experience with NFluent!</title>
-    <version>0.5.1.0</version>
+    <version>0.6.0.0</version>
     <authors>Thomas PIERRAIN, Marc-Antoine LATOUR, Cyrille DUPUYDAUBY, Rui CARVALHO</authors>
     <owners>Thomas PIERRAIN</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -12,7 +12,13 @@
     <iconUrl>https://raw.github.com/tpierrain/NFluent/master/Images/Icon.png</iconUrl>
     <description>NFluent is an ergonomic assertion library which aims to fluent your .NET TDD experience (based on simple Check.That() assertion statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is also directly, but also freely, inspired by the awesome Java FEST Fluent assertion/reflection library (http://fest.easytesting.org/).</description>
     <summary>NFluent is an ergonomic assertion library which aims to fluent your .NET TDD experience.</summary>
-    <releaseNotes />
+    <releaseNotes>- Adds the Not operator for all assertion methods (except the lambda related ones)
+
+- Covers the Enum types with the Check.ThatEnum() statement (e.g.: Check.ThatEnum(Nationality.French).IsEqualTo(Nationality.French); )
+
+- Hides the 'Value' and 'Negatable' properties from the IntelliSense
+
+- Introduces a new concept of IRunnableAssertion and IFluentAssertionRunner for everyone that need to add new assertion methods (improvements to come for those like us that write assertion methods).</releaseNotes>
     <copyright>Copyright 2013  Thomas PIERRAIN</copyright>
     <language>en-US</language>
     <tags>tdd bdd test fluent assertion assertions easy</tags>

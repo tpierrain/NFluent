@@ -1,0 +1,5 @@
+- Adds the Not operator for all assertion methods (except the lambda related ones)
+- Covers the Enum types with the Check.ThatEnum() statement (e.g.: Check.ThatEnum(Nationality.French).IsEqualTo(Nationality.French); )
+- Hides the 'Value' and 'Negatable' properties from the IntelliSense
+- Introduces a new concept of IRunnableAssertion and IFluentAssertionRunner for everyone that need to add new assertion methods (improvements to come for those like us that write assertion methods).
+
