@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("NFluent")]
-[assembly: AssemblyDescription("Smooth your .NET TDD experience with NFluent! NFluent is an ergonomic assertion library which aims to fluent your .NET TDD experience (based on simple Check.That() assertion statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is also directly inspired by the awesome Java FEST Fluent assertion/reflection library (http://fest.easytesting.org/)")]
+[assembly: AssemblyDescription("NFluent is an ergonomic assertion library which aims to fluent your .NET TDD experience (based on simple Check.That() assertion statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST Fluent assertion/reflection library (http://fest.easytesting.org/).")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Thomas PIERRAIN (thomas@pierrain.net), Marc-Antoine LATOUR and contributors.")]
 [assembly: AssemblyProduct("NFluent")]
