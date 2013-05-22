@@ -99,15 +99,26 @@ RUN ALL UNIT TESTS
         Query="x:package/x:metadata/x:version" 
         Value="$(PackageVersion)" />
 
-      <!-- insert the release note content into the nuspec file -->
+      <!-- Gets the release note content from the proper file -->
       <ReadLinesFromFile File="$(ProjectRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.txt">
         <Output TaskParameter="Lines" ItemName="FileContents" />
       </ReadLinesFromFile>
+      
+      <!-- Sets its content into a variable with n/a as the default value -->
+      <PropertyGroup>
+        <ReleaseNoteContent>n/a</ReleaseNoteContent>
+      </PropertyGroup>
+
+      <PropertyGroup Condition=" '@(FileContents,'%0a%0d')' != '' ">
+        <ReleaseNoteContent>@(FileContents,'%0a%0d')</ReleaseNoteContent>
+      </PropertyGroup>
+
+      <!-- Updates the nuspec file with this variable content -->
       <XmlPoke
         XmlInputPath="$(NuspecFilePath)"
          Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
         Query="x:package/x:metadata/x:releaseNotes"
-        Value="@(FileContents,'%0a%0d')" />
+        Value="$(ReleaseNoteContent)" />
 
       <Message Importance="high" Text="
 ---------------------------------------------------------------
