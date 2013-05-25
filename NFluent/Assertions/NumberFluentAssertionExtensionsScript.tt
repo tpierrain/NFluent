@@ -40,7 +40,7 @@
 		// Creates a TextInfo based on the "en-US" culture in order to use the ToTitleCase() method
 		System.Globalization.TextInfo textInfo = new System.Globalization.CultureInfo("en-US", false).TextInfo;
 		string properlyCasedTypeName = textInfo.ToTitleCase(typeName);
-		string assertionClassName =  properlyCasedTypeName + "FluentAssertionExtensionsBis"; // FloatFluentAssertionExtensions
+		string assertionClassName =  properlyCasedTypeName + "FluentAssertionExtensions"; // FloatFluentAssertionExtensions
 		
 		manager.StartNewFile(assertionClassName + ".cs");
 		

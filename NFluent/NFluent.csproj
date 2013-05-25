@@ -57,19 +57,19 @@
     <Compile Include="Assertions\BooleanFluentAssertionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Assertions\ByteFluentAssertionExtensionsBis.cs">
+    <Compile Include="Assertions\ByteFluentAssertionExtensions.cs">
       <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\DecimalFluentAssertionExtensionsBis.cs">
+    <Compile Include="Assertions\DecimalFluentAssertionExtensions.cs">
       <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\DoubleFluentAssertionExtensionsBis.cs">
+    <Compile Include="Assertions\DoubleFluentAssertionExtensions.cs">
       <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\FloatFluentAssertionExtensionsBis.cs">
+    <Compile Include="Assertions\FloatFluentAssertionExtensions.cs">
       <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\LongFluentAssertionExtensionsBis.cs">
+    <Compile Include="Assertions\LongFluentAssertionExtensions.cs">
       <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
     </Compile>
     <Compile Include="Assertions\NumberFluentAssertionExtensionsScript.cs">
@@ -77,17 +77,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\ShortFluentAssertionExtensionsBis.cs">
+    <Compile Include="Assertions\ShortFluentAssertionExtensions.cs">
       <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
     </Compile>
     <Compile Include="Assertions\StructFluentAssertionExtensions.cs" />
-    <Compile Include="Assertions\UintFluentAssertionExtensionsBis.cs">
+    <Compile Include="Assertions\UintFluentAssertionExtensions.cs">
       <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\UlongFluentAssertionExtensionsBis.cs">
+    <Compile Include="Assertions\UlongFluentAssertionExtensions.cs">
       <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\UshortFluentAssertionExtensionsBis.cs">
+    <Compile Include="Assertions\UshortFluentAssertionExtensions.cs">
       <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
     </Compile>
     <Compile Include="Constants.cs" />
