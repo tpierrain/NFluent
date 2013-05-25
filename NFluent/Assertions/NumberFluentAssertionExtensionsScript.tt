@@ -3,7 +3,8 @@
 <#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
 <#@ assembly name="EnvDTE" #>
 <#@ import namespace="EnvDTE" #>
-<#@ include file="TemplateFileManagerV2.1.ttinclude" #>
+<#@ include file="..\T4\TemplateFileManagerV2.1.ttinclude" #>
+<#@ include file="..\T4\TypeCloningHelper.ttinclude" #>
 <#
     // --------------------------------------------------------------------------------------------------------------------
     // <copyright file="NumberFluentAssertionExtensionsScript.tt" company="">
@@ -20,38 +21,32 @@
     // </copyright>
     // --------------------------------------------------------------------------------------------------------------------
 	
-	// uses the method http://t4-editor.tangible-engineering.com/blog/how-to-generate-multiple-output-files-from-a-single-t4-template.html#Part1
+	// T4 template responsible to clone assertions extensions methods for all number types from 
+	// a "golden source" one (the one for int)
+	// uses the method of: http://t4-editor.tangible-engineering.com/blog/how-to-generate-multiple-output-files-from-a-single-t4-template.html#Part1
  
 	IServiceProvider hostServiceProvider = (IServiceProvider)Host;
 	EnvDTE.DTE dte = (EnvDTE.DTE)hostServiceProvider.GetService(typeof(EnvDTE.DTE));
 	var manager = TemplateFileManager.Create(this);
 
-	string projects = string.Empty;
-	foreach(Project project in dte.Solution.Projects)
-    {
-		projects += project.Name.ToString();
-		projects += " ";
-    }
+	var typesToGenerateAssertionsFor = new string[] { "byte", "decimal", "double", "float", "long", "short", "uint", "ulong", "ushort" };
+	
+	// TODO: make the path relative
+	string goldenSourceClassFileName = @"C:\Dev\GitHub\NFluent\NFluent\Assertions\IntFluentAssertionExtensions.cs"; 
 
-	var numberTypes = new Type[] { typeof(long), typeof(double), typeof(float) };
-
-	foreach(Type type in numberTypes)
+	foreach(string typeName in typesToGenerateAssertionsFor)
     {
 		// Creates new output file
-		string assertionClassName = type.Name.ToString() + "Assertion";
-		manager.StartNewFile(assertionClassName+".cs");
-#>
-namespace NFluent
-{
-    internal static class <#= assertionClassName #>
-    {
-        internal static string GetNumberType()
-        {
-            return "<#= assertionClassName #>";
-        }
-    }
-}
-<#
+		// Creates a TextInfo based on the "en-US" culture in order to use the ToTitleCase() method
+		System.Globalization.TextInfo textInfo = new System.Globalization.CultureInfo("en-US", false).TextInfo;
+		string properlyCasedTypeName = textInfo.ToTitleCase(typeName);
+		string assertionClassName =  properlyCasedTypeName + "FluentAssertionExtensionsBis"; // FloatFluentAssertionExtensions
+		
+		manager.StartNewFile(assertionClassName + ".cs");
+		
+		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, assertionClassName, typeName);
+		
+		Write(sourceCode);
     }
 	
 	// Write output code into multiple files

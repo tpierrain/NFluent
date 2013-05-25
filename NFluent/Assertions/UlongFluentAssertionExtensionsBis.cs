@@ -1,5 +1,5 @@
-// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ShortFluentAssertionExtensions.cs" company="">
+﻿// // --------------------------------------------------------------------------------------------------------------------
+// // <copyright file="UlongFluentAssertionExtensionsBis.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -15,10 +15,17 @@
 namespace NFluent
 {
     /// <summary>
-    /// Provides assertion methods to be executed on a long value.
+    /// Provides assertion methods to be executed on a ulong value.
     /// </summary>
-    public static class ShortFluentAssertionExtensions
+    public static class UlongFluentAssertionExtensionsBis
     {
+        // ---------------------- WARNING ----------------------
+        // auto-generated file which should not be modified.
+        // To change this class, change the one that is used
+        // as the golden source/model for this autogeneration
+        // (i.e. the one dedicated to the integer values).
+        // -----------------------------------------------------
+
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
@@ -28,10 +35,10 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<short>> IsEqualTo(this IFluentAssertion<short> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsEqualTo(this IFluentAssertion<ulong> fluentAssertion, object expected)
         {
             // TODO transform NumberFluentAssertion<T> into a static class with functions only?
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion);
             return numberAssertionStrategy.IsEqualTo(expected);
         }
 
@@ -44,9 +51,9 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<short>> IsNotEqualTo(this IFluentAssertion<short> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsNotEqualTo(this IFluentAssertion<ulong> fluentAssertion, object expected)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion);
             return numberAssertionStrategy.IsNotEqualTo(expected);
         }
 
@@ -59,9 +66,9 @@ namespace NFluent
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<short>> IsInstanceOf<T>(this IFluentAssertion<short> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsInstanceOf<T>(this IFluentAssertion<ulong> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion);
             return numberAssertionStrategy.IsInstanceOf<T>();
         }
 
@@ -74,9 +81,9 @@ namespace NFluent
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<short>> IsNotInstanceOf<T>(this IFluentAssertion<short> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsNotInstanceOf<T>(this IFluentAssertion<ulong> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion);
             return numberAssertionStrategy.IsNotInstanceOf<T>();
         }
 
@@ -88,9 +95,9 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<short>> IsZero(this IFluentAssertion<short> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsZero(this IFluentAssertion<ulong> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion);
             return numberAssertionStrategy.IsZero();
         }
 
@@ -102,9 +109,9 @@ namespace NFluent
         ///   <returns>A chainable assertion.</returns>
         /// </returns>
         /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<short>> IsNotZero(this IFluentAssertion<short> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsNotZero(this IFluentAssertion<ulong> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion);
             return numberAssertionStrategy.IsNotZero();
         }
 
@@ -116,10 +123,52 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<short>> IsPositive(this IFluentAssertion<short> fluentAssertion)
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsPositive(this IFluentAssertion<ulong> fluentAssertion)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<short>(fluentAssertion);
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion);
             return numberAssertionStrategy.IsPositive();
+        }
+
+        /// <summary>
+        /// Checks that the actual value is less than an operand.
+        /// </summary>
+        /// <param name="fluentAssertion">
+        /// The Fluent assertion to be extended.
+        /// </param>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">
+        /// The value is not less than the comparand.
+        /// </exception>
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsLessThan(this IFluentAssertion<ulong> fluentAssertion, ulong comparand)
+        {
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion);
+            return numberAssertionStrategy.IsLessThan(comparand);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is more than an operand.
+        /// </summary>
+        /// <param name="fluentAssertion">
+        /// The Fluent assertion to be extended.
+        /// </param>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">
+        /// The value is not less than the comparand.
+        /// </exception>
+        public static IChainableFluentAssertion<IFluentAssertion<ulong>> IsGreaterThan(this IFluentAssertion<ulong> fluentAssertion, ulong comparand)
+        {
+            var numberAssertionStrategy = new NumberFluentAssertion<ulong>(fluentAssertion);
+            return numberAssertionStrategy.IsGreaterThan(comparand);
         }
     }
 }
