@@ -57,9 +57,18 @@
     <Compile Include="Assertions\BooleanFluentAssertionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Assertions\DoubleAssertion.cs">
+      <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Assertions\Int64Assertion.cs">
+      <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
+    </Compile>
     <Compile Include="Assertions\NumberFluentAssertionExtensionsScript.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Assertions\SingleAssertion.cs">
       <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
     </Compile>
     <Compile Include="Assertions\StructFluentAssertionExtensions.cs" />
@@ -113,6 +122,7 @@
       <LastGenOutput>NumberFluentAssertionExtensionsScript.cs</LastGenOutput>
       <LastOutputs>.\NumberFluentAssertionExtensionsScript.cs</LastOutputs>
     </None>
+    <None Include="Assertions\TemplateFileManagerV2.1.ttinclude" />
     <None Include="packages.config" />
     <None Include="Settings.StyleCop" />
   </ItemGroup>

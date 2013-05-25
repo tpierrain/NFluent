@@ -3,6 +3,7 @@
 <#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
 <#@ assembly name="EnvDTE" #>
 <#@ import namespace="EnvDTE" #>
+<#@ include file="TemplateFileManagerV2.1.ttinclude" #>
 <#
     // --------------------------------------------------------------------------------------------------------------------
     // <copyright file="NumberFluentAssertionExtensionsScript.tt" company="">
@@ -18,22 +19,41 @@
     //   limitations under the License.
     // </copyright>
     // --------------------------------------------------------------------------------------------------------------------
+	
+	// uses the method http://t4-editor.tangible-engineering.com/blog/how-to-generate-multiple-output-files-from-a-single-t4-template.html#Part1
+ 
 	IServiceProvider hostServiceProvider = (IServiceProvider)Host;
 	EnvDTE.DTE dte = (EnvDTE.DTE)hostServiceProvider.GetService(typeof(EnvDTE.DTE));
+	var manager = TemplateFileManager.Create(this);
+
 	string projects = string.Empty;
 	foreach(Project project in dte.Solution.Projects)
     {
 		projects += project.Name.ToString();
 		projects += " ";
     }
+
+	var numberTypes = new Type[] { typeof(long), typeof(double), typeof(float) };
+
+	foreach(Type type in numberTypes)
+    {
+		// Creates new output file
+		string assertionClassName = type.Name.ToString() + "Assertion";
+		manager.StartNewFile(assertionClassName+".cs");
 #>
 namespace NFluent
 {
-    internal static class Toto
+    internal static class <#= assertionClassName #>
     {
-        internal static string GetToto()
+        internal static string GetNumberType()
         {
-            return "<#=projects#>";
+            return "<#= assertionClassName #>";
         }
     }
 }
+<#
+    }
+	
+	// Write output code into multiple files
+	manager.Process();
+ #>
