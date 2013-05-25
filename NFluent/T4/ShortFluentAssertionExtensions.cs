@@ -19,12 +19,16 @@ namespace NFluent
     /// </summary>
     public static class ShortFluentAssertionExtensions
     {
-        // ---------------------- WARNING ----------------------
-        // AUTO-GENERATED FILE WHICH SHOULD NOT BE MODIFIED!
-        // To change this class, change the one that is used
-        // as the golden source/model for this autogeneration
-        // (i.e. the one dedicated to the integer values).
-        // -----------------------------------------------------
+        #pragma warning disable 169
+
+        //// ---------------------- WARNING ----------------------
+        //// AUTO-GENERATED FILE WHICH SHOULD NOT BE MODIFIED!
+        //// To change this class, change the one that is used
+        //// as the golden source/model for this autogeneration
+        //// (i.e. the one dedicated to the integer values).
+        //// -----------------------------------------------------
+
+        #pragma warning restore 169
 
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
