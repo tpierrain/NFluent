@@ -126,6 +126,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastOutputs>.\NumberFluentAssertionExtensionsScript.cs</LastOutputs>
       <TransformOnBuild>False</TransformOnBuild>
+      <LastGenOutput>NumberFluentAssertionGenerator.txt</LastGenOutput>
     </None>
     <None Include="T4\TemplateFileManagerV2.1.ttinclude" />
     <None Include="packages.config" />
@@ -134,6 +135,13 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="T4\NumberFluentAssertionGenerator.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

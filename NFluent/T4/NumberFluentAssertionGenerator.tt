@@ -1,5 +1,5 @@
 <#@ template language="C#" hostspecific="true" debug="True" #>
-<#@ output extension="/" #>
+<#@ output extension="txt" #>
 <#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
 <#@ assembly name="EnvDTE" #>
 <#@ import namespace="EnvDTE" #>

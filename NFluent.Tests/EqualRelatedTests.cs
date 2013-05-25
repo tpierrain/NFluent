@@ -263,7 +263,7 @@
         public void AndOperatorCanChainMultipleAssertionsForDoubleNumber()
         {
             double doubleNumber = 37.2D;
-
+            
             Check.That(doubleNumber).IsEqualTo(37.2D).And.IsNotEqualTo(40.0D).And.IsNotZero().And.IsPositive();
             Check.That(doubleNumber).IsNotEqualTo(40.0D).And.IsEqualTo(37.2D);
         }
