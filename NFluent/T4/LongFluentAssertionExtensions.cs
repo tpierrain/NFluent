@@ -20,7 +20,7 @@ namespace NFluent
     public static class LongFluentAssertionExtensions
     {
         // ---------------------- WARNING ----------------------
-        // auto-generated file which should not be modified.
+        // AUTO-GENERATED FILE WHICH SHOULD NOT BE MODIFIED!
         // To change this class, change the one that is used
         // as the golden source/model for this autogeneration
         // (i.e. the one dedicated to the integer values).
