@@ -57,38 +57,33 @@
     <Compile Include="Assertions\BooleanFluentAssertionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Assertions\ByteFluentAssertionExtensions.cs">
-      <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
+    <Compile Include="T4\ByteFluentAssertionExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\DecimalFluentAssertionExtensions.cs">
-      <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
+    <Compile Include="T4\DecimalFluentAssertionExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\DoubleFluentAssertionExtensions.cs">
-      <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
+    <Compile Include="T4\DoubleFluentAssertionExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\FloatFluentAssertionExtensions.cs">
-      <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
+    <Compile Include="T4\FloatFluentAssertionExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\LongFluentAssertionExtensions.cs">
-      <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
+    <Compile Include="T4\LongFluentAssertionExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\NumberFluentAssertionExtensionsScript.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Assertions\ShortFluentAssertionExtensions.cs">
-      <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
+    <Compile Include="T4\ShortFluentAssertionExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="Assertions\StructFluentAssertionExtensions.cs" />
-    <Compile Include="Assertions\UintFluentAssertionExtensions.cs">
-      <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
+    <Compile Include="T4\UintFluentAssertionExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\UlongFluentAssertionExtensions.cs">
-      <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
+    <Compile Include="T4\UlongFluentAssertionExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="Assertions\UshortFluentAssertionExtensions.cs">
-      <DependentUpon>NumberFluentAssertionExtensionsScript.tt</DependentUpon>
+    <Compile Include="T4\UshortFluentAssertionExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="INegated.cs" />
@@ -127,9 +122,8 @@
     <Compile Include="StructFluentAssertionRunner.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assertions\NumberFluentAssertionExtensionsScript.tt">
+    <None Include="T4\NumberFluentAssertionGenerator.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>NumberFluentAssertionExtensionsScript.cs</LastGenOutput>
       <LastOutputs>.\NumberFluentAssertionExtensionsScript.cs</LastOutputs>
       <TransformOnBuild>False</TransformOnBuild>
     </None>

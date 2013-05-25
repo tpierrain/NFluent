@@ -1,5 +1,5 @@
 <#@ template language="C#" hostspecific="true" debug="True" #>
-<#@ output extension="cs" #>
+<#@ output extension="/" #>
 <#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
 <#@ assembly name="EnvDTE" #>
 <#@ import namespace="EnvDTE" #>
@@ -7,7 +7,7 @@
 <#@ include file="..\T4\TypeCloningHelper.ttinclude" #>
 <#
     // --------------------------------------------------------------------------------------------------------------------
-    // <copyright file="NumberFluentAssertionExtensionsScript.tt" company="">
+    // <copyright file="NumberFluentAssertionGenerator.tt" company="">
     //   Copyright 2013 Thomas PIERRAIN
     //   Licensed under the Apache License, Version 2.0 (the "License");
     //   you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@
 	var typesToGenerateAssertionsFor = new string[] { "byte", "decimal", "double", "float", "long", "short", "uint", "ulong", "ushort" };
 	
 	// TODO: make the path relative
-	string goldenSourceClassFileName = Host.ResolvePath("IntFluentAssertionExtensions.cs");
+	string goldenSourceClassFileName = Host.ResolvePath(@"..\Assertions\IntFluentAssertionExtensions.cs");
 
 	foreach(string typeName in typesToGenerateAssertionsFor)
     {

@@ -7,6 +7,9 @@
       <Value>IntelliSense</Value>
       <Value>struct</Value>
       <Value>sut</Value>
+      <Value>uint</Value>
+      <Value>ulong</Value>
+      <Value>ushort</Value>
       <Value>vs</Value>
     </CollectionProperty>
   </GlobalSettings>
