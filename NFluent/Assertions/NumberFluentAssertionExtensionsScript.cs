@@ -4,7 +4,7 @@ namespace NFluent
     {
         internal static string GetToto()
         {
-            return "Totoq";
+            return "Solution Items NFluent NFluent.Tests .nuget .build NFluent.Tests.Extensions Miscellaneous Files ";
         }
     }
 }

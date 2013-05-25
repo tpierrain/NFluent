@@ -20,7 +20,12 @@
     // --------------------------------------------------------------------------------------------------------------------
 	IServiceProvider hostServiceProvider = (IServiceProvider)Host;
 	EnvDTE.DTE dte = (EnvDTE.DTE)hostServiceProvider.GetService(typeof(EnvDTE.DTE));
-	
+	string projects = string.Empty;
+	foreach(Project project in dte.Solution.Projects)
+    {
+		projects += project.Name.ToString();
+		projects += " ";
+    }
 #>
 namespace NFluent
 {
@@ -28,7 +33,7 @@ namespace NFluent
     {
         internal static string GetToto()
         {
-            return "Totoq";
+            return "<#=projects#>";
         }
     }
 }
