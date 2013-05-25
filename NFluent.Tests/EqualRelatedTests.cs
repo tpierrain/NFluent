@@ -60,6 +60,16 @@
         }
 
         [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[42] of type: [System.Int32]\nis not equal to the expected one:\n\t[42] of type: [System.Int64].")]
+        public void IsEqualToThrowsWhenSameNumberOfDifferentTypes()
+        {
+            const int IntValue = 42;
+            const long LongValue = 42L;
+
+            Check.That(IntValue).IsEqualTo(LongValue);
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[Gandhi])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[Gandhi\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + "unexpected.")]
         public void NotIsEqualToWithObjectThrowsExceptionWhenFailing()
         {
