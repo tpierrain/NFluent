@@ -32,7 +32,7 @@
 	var typesToGenerateAssertionsFor = new string[] { "byte", "decimal", "double", "float", "long", "short", "uint", "ulong", "ushort" };
 	
 	// TODO: make the path relative
-	string goldenSourceClassFileName = @"C:\Dev\GitHub\NFluent\NFluent\Assertions\IntFluentAssertionExtensions.cs"; 
+	string goldenSourceClassFileName = Host.ResolvePath("IntFluentAssertionExtensions.cs");
 
 	foreach(string typeName in typesToGenerateAssertionsFor)
     {
