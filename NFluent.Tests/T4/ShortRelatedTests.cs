@@ -163,7 +163,7 @@
         }
 
         [Test]
-        public void NotIsLessThanWorksForDouble()
+        public void NotIsLessThanWorks()
         {
             const short One = 1;
             const short Twenty = 20;
@@ -184,7 +184,7 @@
         #endregion
 
         [Test]
-        public void IsGreaterThanWorksForDouble()
+        public void IsGreaterThanWorks()
         {
             const short One = 1;
             const short Twenty = 20;
@@ -194,7 +194,7 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[1]\nis not greater than:\n\t[20].")]
-        public void IsGreaterThanThrowsExceptionWhenFailingWithDouble()
+        public void IsGreaterThanThrowsExceptionWhenFailing()
         {
             const short One = 1;
             const short Twenty = 20;
@@ -204,7 +204,7 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[20]\nis greater than:\n\t[1]\nwhich is unexpected.")]
-        public void NotIsGreaterThanThrowsExceptionWhenFailingWithDouble()
+        public void NotIsGreaterThanThrowsExceptionWhenFailing()
         {
             const short One = 1;
             const short Twenty = 20;
@@ -224,6 +224,15 @@
         #region IsEqualTo / IsNotEqualTo
 
         [Test]
+        public void IsEqualToWorksWithOtherSameValue()
+        {
+            const short Twenty = 20;
+            const short OtherTwenty = 20;
+
+            Check.That(Twenty).IsEqualTo(OtherTwenty);
+        }
+
+        [Test]
         public void NotIsEqualToWorks()
         {
             const short One = 1;
@@ -239,6 +248,15 @@
             const short Twenty = 20;
 
             Check.That(Twenty).Not.IsEqualTo(Twenty);
+        }
+
+        [Test]
+        public void IsNotEqualToWorks()
+        {
+            const short One = 1;
+            const short Twenty = 20;
+
+            Check.That(One).IsNotEqualTo(Twenty);
         }
 
         [Test]

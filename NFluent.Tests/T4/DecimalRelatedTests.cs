@@ -163,7 +163,7 @@
         }
 
         [Test]
-        public void NotIsLessThanWorksForDouble()
+        public void NotIsLessThanWorks()
         {
             const decimal One = 1M;
             const decimal Twenty = 20M;
@@ -184,7 +184,7 @@
         #endregion
 
         [Test]
-        public void IsGreaterThanWorksForDouble()
+        public void IsGreaterThanWorks()
         {
             const decimal One = 1M;
             const decimal Twenty = 20M;
@@ -194,7 +194,7 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[1]\nis not greater than:\n\t[20].")]
-        public void IsGreaterThanThrowsExceptionWhenFailingWithDouble()
+        public void IsGreaterThanThrowsExceptionWhenFailing()
         {
             const decimal One = 1M;
             const decimal Twenty = 20M;
@@ -204,7 +204,7 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[20]\nis greater than:\n\t[1]\nwhich is unexpected.")]
-        public void NotIsGreaterThanThrowsExceptionWhenFailingWithDouble()
+        public void NotIsGreaterThanThrowsExceptionWhenFailing()
         {
             const decimal One = 1M;
             const decimal Twenty = 20M;
@@ -224,6 +224,15 @@
         #region IsEqualTo / IsNotEqualTo
 
         [Test]
+        public void IsEqualToWorksWithOtherSameValue()
+        {
+            const decimal Twenty = 20M;
+            const decimal OtherTwenty = 20M;
+
+            Check.That(Twenty).IsEqualTo(OtherTwenty);
+        }
+
+        [Test]
         public void NotIsEqualToWorks()
         {
             const decimal One = 1M;
@@ -239,6 +248,15 @@
             const decimal Twenty = 20M;
 
             Check.That(Twenty).Not.IsEqualTo(Twenty);
+        }
+
+        [Test]
+        public void IsNotEqualToWorks()
+        {
+            const decimal One = 1M;
+            const decimal Twenty = 20M;
+
+            Check.That(One).IsNotEqualTo(Twenty);
         }
 
         [Test]

@@ -31,33 +31,35 @@
 
 	var typesToWriteTestsFor = new List<UnitTestsConfigurationForType>()
 		{
+			// sygned types
+			new UnitTestsConfigurationForType() { TypeName = "decimal", DetailedTypeName = "System.Decimal", ValueForZero = "0M", ValueForOne = "1M", ValueForTwo = "2M", ValueForTwenty = "20M", ValueForMinusFifty = "-50M" },
+			new UnitTestsConfigurationForType() { TypeName = "double", DetailedTypeName = "System.Double", ValueForZero = "0D", ValueForOne = "1D", ValueForTwo = "2D", ValueForTwenty = "20D", ValueForMinusFifty = "-50D" },
+			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "System.Single", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F", ValueForMinusFifty = "-50F" },
+			new UnitTestsConfigurationForType() { TypeName = "long", DetailedTypeName = "System.Int64", ValueForZero = "0L", ValueForOne = "1L", ValueForTwo = "2L", ValueForTwenty = "20L", ValueForMinusFifty = "-50L" },
+			new UnitTestsConfigurationForType() { TypeName = "short", DetailedTypeName = "System.Int16", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
+			// unsigned types
 			new UnitTestsConfigurationForType() { TypeName = "byte", DetailedTypeName = "System.Byte", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" },
-			new UnitTestsConfigurationForType() { TypeName = "decimal", DetailedTypeName = "System.Decimal", ValueForZero = "0M", ValueForOne = "1M", ValueForTwo = "2M", ValueForTwenty = "20M" },
-			new UnitTestsConfigurationForType() { TypeName = "double", DetailedTypeName = "System.Double", ValueForZero = "0D", ValueForOne = "1D", ValueForTwo = "2D", ValueForTwenty = "20D" },
-			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "System.Single", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F" },
-			new UnitTestsConfigurationForType() { TypeName = "long", DetailedTypeName = "System.Int64", ValueForZero = "0L", ValueForOne = "1L", ValueForTwo = "2L", ValueForTwenty = "20L" },
-			new UnitTestsConfigurationForType() { TypeName = "short", DetailedTypeName = "System.Int16", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" },
 			new UnitTestsConfigurationForType() { TypeName = "uint", DetailedTypeName = "System.UInt32", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" },
 			new UnitTestsConfigurationForType() { TypeName = "ulong", DetailedTypeName = "System.UInt64", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" },
 			new UnitTestsConfigurationForType() { TypeName = "ushort", DetailedTypeName = "System.UInt16", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" }
 		};
 
+	// ...RelatedTests ----------------------------------------------------
 	string goldenSourceClassFileName = Host.ResolvePath(@"..\IntRelatedTests.cs");
-
-	foreach(var unitTestConfig in typesToWriteTestsFor)
-    {
-		// Creates new output file
-		// Creates a TextInfo based on the "en-US" culture in order to use the ToTitleCase() method
-		System.Globalization.TextInfo textInfo = new System.Globalization.CultureInfo("en-US", false).TextInfo;
-		string properlyCasedTypeName = textInfo.ToTitleCase(unitTestConfig.TypeName);
-		string assertionClassName =  properlyCasedTypeName + "RelatedTests";
-		
-		manager.StartNewFile(assertionClassName + ".cs");
-		
-		string sourceCode = TypeCloningHelper.GenerateTestSourceCode(goldenSourceClassFileName, assertionClassName, unitTestConfig);
-		
-		Write(sourceCode);
-    }
+	TypeCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntRelatedTests", "RelatedTests", typesToWriteTestsFor, manager, this);
+	
+	// Signed...RelatedTests ----------------------------------------------------
+	var signedTypesToWriteTestsFor = new List<UnitTestsConfigurationForType>()
+		{
+			// sygned types
+			new UnitTestsConfigurationForType() { TypeName = "decimal", DetailedTypeName = "System.Decimal", ValueForZero = "0M", ValueForOne = "1M", ValueForTwo = "2M", ValueForTwenty = "20M", ValueForMinusFifty = "-50M" },
+			new UnitTestsConfigurationForType() { TypeName = "double", DetailedTypeName = "System.Double", ValueForZero = "0D", ValueForOne = "1D", ValueForTwo = "2D", ValueForTwenty = "20D", ValueForMinusFifty = "-50D" },
+			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "System.Single", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F", ValueForMinusFifty = "-50F" },
+			new UnitTestsConfigurationForType() { TypeName = "long", DetailedTypeName = "System.Int64", ValueForZero = "0L", ValueForOne = "1L", ValueForTwo = "2L", ValueForTwenty = "20L", ValueForMinusFifty = "-50L" },
+			new UnitTestsConfigurationForType() { TypeName = "short", DetailedTypeName = "System.Int16", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
+		};
+	goldenSourceClassFileName = Host.ResolvePath(@"..\SignedIntRelatedTests.cs");
+	TypeCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "SignedIntRelatedTests", "SignedRelatedTests", signedTypesToWriteTestsFor, manager, this);
 	
 	// Write output code into multiple files
 	manager.Process();

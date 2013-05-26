@@ -36,12 +36,17 @@
 
 // Generated helper templates
 // Generated items
+// NFluent\NFluent.Tests\T4\ShortSignedRelatedTests.cs
+// NFluent\NFluent.Tests\T4\LongSignedRelatedTests.cs
+// NFluent\NFluent.Tests\T4\FloatSignedRelatedTests.cs
+// NFluent\NFluent.Tests\T4\DoubleSignedRelatedTests.cs
+// NFluent\NFluent.Tests\T4\DecimalSignedRelatedTests.cs
 // NFluent\NFluent.Tests\T4\UshortRelatedTests.cs
 // NFluent\NFluent.Tests\T4\UlongRelatedTests.cs
 // NFluent\NFluent.Tests\T4\UintRelatedTests.cs
+// NFluent\NFluent.Tests\T4\ByteRelatedTests.cs
 // NFluent\NFluent.Tests\T4\ShortRelatedTests.cs
 // NFluent\NFluent.Tests\T4\LongRelatedTests.cs
 // NFluent\NFluent.Tests\T4\FloatRelatedTests.cs
 // NFluent\NFluent.Tests\T4\DoubleRelatedTests.cs
 // NFluent\NFluent.Tests\T4\DecimalRelatedTests.cs
-// NFluent\NFluent.Tests\T4\ByteRelatedTests.cs

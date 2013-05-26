@@ -49,6 +49,7 @@
     </Compile>
     <Compile Include="AndRelatedTests.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="SignedIntRelatedTests.cs" />
     <Compile Include="IntRelatedTests.cs" />
     <Compile Include="EnumOrStructRelatedTests.cs" />
     <Compile Include="ForDocumentation\CheckDescription.cs" />
@@ -68,7 +69,7 @@
     <Compile Include="IsInstanceOfTests.cs" />
     <Compile Include="LambdaRelatedTests.cs" />
     <Compile Include="NotRelatedTests.cs" />
-    <Compile Include="NumbersRelatedTests.cs" />
+    <Compile Include="NumbersOfDifferentTypesRelatedTests.cs" />
     <Compile Include="PropertiesRelatedTests.cs" />
     <Compile Include="EqualRelatedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,16 +81,31 @@
     <Compile Include="T4\DecimalRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
+    <Compile Include="T4\DecimalSignedRelatedTests.cs">
+      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
+    </Compile>
     <Compile Include="T4\DoubleRelatedTests.cs">
+      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T4\DoubleSignedRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="T4\FloatRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
+    <Compile Include="T4\FloatSignedRelatedTests.cs">
+      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
+    </Compile>
     <Compile Include="T4\LongRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
+    <Compile Include="T4\LongSignedRelatedTests.cs">
+      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
+    </Compile>
     <Compile Include="T4\ShortRelatedTests.cs">
+      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T4\ShortSignedRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="T4\UintRelatedTests.cs">
