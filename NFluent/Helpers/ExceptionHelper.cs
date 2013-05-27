@@ -153,21 +153,21 @@ namespace NFluent.Helpers
         /// Builds the standard error message, made of 5 lines of text.
         /// </summary>
         /// <param name="message">
-        /// The general message. You can use {0} and {1} as placeholders for the checked and expected item labels.
-        /// </param>
-        /// <param name="testedEntity">
-        /// The tested entity label.
+        ///     The general message. You can use {0} and {1} as placeholders for the checked and expected item labels.
         /// </param>
         /// <param name="checkedObject">
-        /// The checked Object.
+        ///     The checked Object.
         /// </param>
         /// <param name="expectedObject">
-        /// The expected Object.
+        ///     The expected Object.
+        /// </param>
+        /// <param name="testedEntity">
+        ///     The tested entity attribute.
         /// </param>
         /// <returns>
         /// The properly structured error message.
         /// </returns>
-        public static string BuildStandardMessage(string message, string testedEntity, object checkedObject, object expectedObject)
+        public static string BuildStandardMessage(string message, object checkedObject, object expectedObject, string testedEntity = "value")
         {
             var builder = new StringBuilder(200);
             var checkedLabel = GetCheckedLabel(testedEntity);
@@ -191,19 +191,19 @@ namespace NFluent.Helpers
         /// Builds the standard error message for attributes related checks.
         /// </summary>
         /// <param name="specificMessage">The specific error message.</param>
-        /// <param name="entity">The tested type label.</param>
         /// <param name="attributeName">Name of the attribute.</param>
-        /// <param name="comparisonMessage">The comparison message.</param>
         /// <param name="checkedValue">The checked value.</param>
         /// <param name="expectedValue">The expected value.</param>
+        /// <param name="comparisonMessage">The comparison message.</param>
+        /// <param name="entity">The tested type attribute.</param>
         /// <returns>
         /// A string with the properly formatted message.
         /// </returns>
-        public static string BuildAttributeMessage(string specificMessage, string entity, string attributeName, string comparisonMessage, object checkedValue, object expectedValue)
+        public static string BuildAttributeMessage(string specificMessage, string attributeName, object checkedValue, object expectedValue, string comparisonMessage, string entity)
         {
             var builder = new StringBuilder(200);
-            var checkedLabel = GetCheckedLabel(attributeName);
-            var expectedLabel = GetExpectedLabel(attributeName);
+            var checkedLabel = GetCheckedLabel(entity, attributeName);
+            var expectedLabel = GetExpectedLabel(entity, attributeName);
 
             // build the summary message
             builder.Append(BuildSimpleMessage(specificMessage, entity));
@@ -226,26 +226,36 @@ namespace NFluent.Helpers
         /// The message.
         /// </param>
         /// <param name="entity">
-        /// The type label.
+        /// The type attribute.
         /// </param>
         /// <returns>
         /// A properly formatted message.
         /// </returns>
-        public static string BuildSimpleMessage(string message, string entity)
+        private static string BuildSimpleMessage(string message, string entity)
         {
             return string.Format(message, GetCheckedLabel(entity), GetExpectedLabel(entity));
         }
 
+        /// <summary>
+        /// Builds the message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>A fluent message builder.</returns>
+        internal static FluentMessage BuildMessage(string message)
+        {
+            return new FluentMessage(message);
+        }
+        
         private static string BuildDescriptionBlock(string blockLabel, object blockValue, string extraMessage = null)
         {
             var builder = new StringBuilder(100);
             if (extraMessage == null)
             {
-                builder.AppendFormat("{0}:", blockLabel);                
+                builder.AppendFormat("The {0}:", blockLabel);                
             }
             else
             {
-                builder.AppendFormat("{0}: {1}", blockLabel, extraMessage);
+                builder.AppendFormat("The {0}: {1}", blockLabel, extraMessage);
             }
 
             builder.AppendLine();
@@ -253,15 +263,25 @@ namespace NFluent.Helpers
             return builder.ToString();
         }
 
-        private static string GetExpectedLabel(string testedEntity)
+        private static string GetExpectedLabel(string testedEntity, string attribute = null)
         {
             var expectedLabel = "expected " + testedEntity;
+            if (!string.IsNullOrEmpty(attribute))
+            {
+                expectedLabel += "'s " + attribute;
+            }
+
             return expectedLabel;
         }
 
-        private static string GetCheckedLabel(string testedEntity)
+        private static string GetCheckedLabel(string testedEntity, string attribute = null)
         {
             var checkedLabel = "checked " + testedEntity;
+            if (!string.IsNullOrEmpty(attribute))
+            {
+                checkedLabel += "'s " + attribute;
+            }
+
             return checkedLabel;
         }
 

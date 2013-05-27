@@ -34,7 +34,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "The checked code took too much time to execute.\r\n")]
         public void FailDurationTest()
         {
-            Check.That(() => Thread.Sleep(30)).LastsLessThan(0, TimeUnit.Milliseconds);
+            Check.That(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "The checked code raised an exception, whereas it must not.\nThe checked code raised the exception:\n----\n[System.ApplicationException]:")]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "The checked code raised an exception, whereas it must not.")]
         public void UnexpectedExceptionRaised()
         {
             Check.That(() => { throw new ApplicationException(); }).DoesNotThrow();
@@ -58,7 +58,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Contains, ExpectedMessage = "The checked code raised an exception of a different type than expected.\nThe checked code raised:\n\t[System.Exception]:")]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Contains, ExpectedMessage = "The checked code raised an exception of a different type than expected.")]
         public void DidNotRaiseExpected()
         {
             Check.That(() => { throw new Exception(); }).Throws<ApplicationException>();
@@ -72,7 +72,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked code did not raise an exception, whereas it must.\nExpected exception type is:\n\t[Exception]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked code did not raise an exception, whereas it must.\r\nExpected exception type is:\r\n\t[System.Exception]")]
         public void DidNotRaiseAnyTypedCheck()
         {
             Check.That(() => { new object(); }).Throws<Exception>();

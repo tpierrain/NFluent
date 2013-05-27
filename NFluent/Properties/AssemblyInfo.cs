@@ -36,4 +36,4 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("2959f969-9a70-4126-bbb2-ee2a03420e4f")]
 
-[assembly: InternalsVisibleTo("NFluent.Web")]
+[assembly: InternalsVisibleTo("NFluent.Web"), InternalsVisibleTo("NFluent.Tests")]

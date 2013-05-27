@@ -57,22 +57,27 @@ namespace NFluent.Tests.ForDocumentation
                         paramType = paramType.GetGenericArguments()[0];
                     }
 
-                    if (paramType.Name != "IExtendableFluentAssertion`1" && paramType.Name != "IFluentAssertion`1" && paramType.GetInterface("IFluentAssertion`1") == null)
+                    if (paramType.Name == "IExtendableFluentAssertion`1" || paramType.Name == "IFluentAssertion`1"
+                        || paramType.GetInterface("IFluentAssertion`1") != null
+                        || paramType.Name == "IStructFluentAssertion`1")
+                    {
+                        var testedtype = paramType.GetGenericArguments()[0];
+                        result.CheckedType = testedtype;
+
+                        // get other parameters
+                        result.CheckParameters = new List<Type>(parameters.Length - 1);
+                        for (var i = 1; i < parameters.Length; i++)
+                        {
+                            result.CheckParameters.Add(parameters[i].ParameterType);
+                        }
+                    }
+                    else
                     {
                         // this is not an check implementation
                         return null;
                     }
 
                     // identify type subjected to test
-                    var testedtype = paramType.GetGenericArguments()[0];
-                    result.CheckedType = testedtype;
-
-                    // get other parameters
-                    result.CheckParameters = new List<Type>(parameters.Length - 1);
-                    for (var i = 1; i < parameters.Length; i++)
-                    {
-                        result.CheckParameters.Add(parameters[i].ParameterType);
-                    }
                 }
                 else
                 {
@@ -111,7 +116,7 @@ namespace NFluent.Tests.ForDocumentation
 
                         // get other parameters
                         result.CheckParameters = new List<Type>();
-                        foreach (ParameterInfo t in method.GetParameters())
+                        foreach (var t in method.GetParameters())
                         {
                             result.CheckParameters.Add(t.ParameterType);
                         }
@@ -127,7 +132,7 @@ namespace NFluent.Tests.ForDocumentation
             return result;
         }
 
-        public static void RunThoseTests(IEnumerable<MethodInfo> tests, Type type, FullRunDescription report)
+        public static void RunThoseTests(IEnumerable<MethodInfo> tests, Type type, FullRunDescription report, bool log)
         {
             var specificTests = tests as IList<MethodInfo> ?? tests.ToList();
             if (specificTests.Count > 0)
@@ -157,7 +162,7 @@ namespace NFluent.Tests.ForDocumentation
                         try
                         {
                             // we have to caputre eceptions
-                            RunMethod(specificTest, test, report);
+                            RunMethod(specificTest, test, report, log);
                         }
                         finally
                         {
@@ -174,10 +179,10 @@ namespace NFluent.Tests.ForDocumentation
 
         public static void RunAction(Action action)
         {
-            RunMethod(action.Method, action.Target, null);
+            RunMethod(action.Method, action.Target, null, false);
         }
 
-        private static void RunMethod(MethodInfo specificTest, object test, FullRunDescription report)
+        private static void RunMethod(MethodBase specificTest, object test, FullRunDescription report, bool log)
         {
             try
             {
@@ -206,7 +211,7 @@ namespace NFluent.Tests.ForDocumentation
                             desc.ErrorSampleMessage = fluExc.Message;
 
                             // are we building a report
-                            if (report != null)
+                            if (log)
                             {
                                 Log(
                                     string.Format(
@@ -214,6 +219,10 @@ namespace NFluent.Tests.ForDocumentation
                                         method.Name,
                                         testedtype.Name,
                                         fluExc.Message));
+                            }
+
+                            if (report != null)
+                            {
                                 report.AddEntry(desc);
                             }
                         }
@@ -259,7 +268,8 @@ namespace NFluent.Tests.ForDocumentation
         /// <summary>
         /// Runs all tests found in current assembly.
         /// </summary>
-        public static void RunAllTests()
+        /// <param name="log">if set to <c>true</c> log the activity (to Debug output).</param>
+        public static void RunAllTests(bool log)
         {
             // prevent recursion
             if (inProcess)
@@ -278,7 +288,7 @@ namespace NFluent.Tests.ForDocumentation
                     // enumerate testmethods with expectedexception attribute with an FluentException type
                     var tests =
                         type.GetMethods().Where(method => method.GetCustomAttributes(typeof(TestAttribute), false).Length > 0);
-                    RunThoseTests(tests, type, null);
+                    RunThoseTests(tests, type, null, log);
                 }
             }
             finally

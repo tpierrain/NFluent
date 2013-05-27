@@ -131,7 +131,6 @@ namespace NFluent
         {
             IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             return fluentAssertion.Contains(properExpectedValues);
-           // return new ExtendableFluentAssertion<IEnumerable>(fluentAssertion, expectedValues);
         }
 
         /// <summary>
@@ -241,10 +240,7 @@ namespace NFluent
             var runnableAssertion = fluentAssertion as IRunnableAssertion<IEnumerable>;
 
             return assertionRunner.ExecuteAssertion(
-                () =>
-                    {
-                        ContainsExactlyImpl(runnableAssertion, otherEnumerable);
-                    },
+                () => ContainsExactlyImpl(runnableAssertion, otherEnumerable),
                 BuildExceptionMessageForContainsExactly(runnableAssertion.Value, otherEnumerable));
         }
 

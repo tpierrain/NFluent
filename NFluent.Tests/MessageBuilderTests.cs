@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="LocaleChecks.cs" company="">
+// // <copyright file="MessageBuilderTests.cs" company="">
 // //   Copyright 2013 Cyrille DUPUYDAUBY
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -12,45 +12,38 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent.Tests.ForDocumentation
+
+namespace NFluent.Tests
 {
+    using System;
+
+    using NFluent.Helpers;
+
     using NUnit.Framework;
 
     [TestFixture]
-    public class LocaleChecks
+    public class MessageBuilderTests
     {
         [Test]
-        [SetCulture("es-ES")]
-        [Explicit("Scan all assemblies, execute tests in Spanish.")]
-        public void Spanish()
+        public void BasicTest()
         {
-            RunnerHelper.RunAllTests(false);
-        }
+            var message = ExceptionHelper.BuildMessage("The {0} is ok.").ToString();
 
+            Assert.AreEqual("The checked value is ok.", message);
+
+            // override entity
+            message = ExceptionHelper.BuildMessage("The {0} is ok.").For("string").ToString();
+            Assert.AreEqual("The checked string is ok.", message);
+        }
+        
         [Test]
-        [SetCulture("zh-CN")]
-        [Explicit("Scan all assemblies, execute tests in Chinese.")]
-        public void Chinese()
+        public void CheckedBlockTest()
         {
-            RunnerHelper.RunAllTests(false);
+            DateTime test = DateTime.Today;
+            string message = ExceptionHelper.BuildMessage("The {0} is below.").On(test).ToString();
+            var lines = message.Split('\n');
+            Assert.AreEqual(3, lines.Length);
+            Assert.IsTrue(lines[1].Contains("checked"));
         }
-
-        [Test]
-        [SetCulture("fr-CA")]
-        [Explicit("Scan all assemblies, execute tests in Canadian French.")]
-        public void CanadianFrench()
-        {
-            RunnerHelper.RunAllTests(false);
-        }
-
-        [Test]
-        [SetCulture("ja-JP")]
-        [Explicit("Scan all assemblies, execute tests in Japanese.")]
-        public void Japanese()
-        {
-            RunnerHelper.RunAllTests(false);
-        }
-
-        // TODO: makes the teamcity build execute Explicit tests
     }
 }

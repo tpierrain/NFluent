@@ -45,15 +45,22 @@ namespace NFluent.Extensions
                 return ToStringProperlyFormated((bool)theObject);
             }
 
-            if (theObject is IEnumerable)
+            var ienum = theObject as IEnumerable;
+            if (ienum != null)
             {
-                return ((IEnumerable)theObject).ToEnumeratedString();
+                return ienum.ToEnumeratedString();
             }
 
-            var asIEnum = theObject as IEnumerable;
-            if (asIEnum != null)
+            var exc = theObject as Exception;
+            if (exc != null)
             {
-                return asIEnum.ToEnumeratedString();
+                return string.Format("{{{0}}}: '{1}'", exc.GetType().FullName, exc.Message);
+            }
+
+            var tp = theObject as Type;
+            if (tp != null)
+            {
+                return string.Format("{0}", tp.FullName);
             }
 
             return theObject == null ? "null" : theObject.ToString();

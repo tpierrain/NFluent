@@ -19,6 +19,7 @@
 namespace NFluent
 {
     using System.Collections;
+    using System.Diagnostics;
 
     using NFluent.Extensions;
     using NFluent.Helpers;
@@ -59,6 +60,7 @@ namespace NFluent
             int itemidx = 0;
             var expectedList = ConvertToArrayList(chainedFluentAssertion);
             var listedItems = new ArrayList();
+            Debug.Assert(runnableAssertion != null, "runnableAssertion != null");
             foreach (var item in runnableAssertion.Value)
             {
                 if (expectedList.Contains(item))
@@ -75,9 +77,9 @@ namespace NFluent
                                 "The checked enumerable has extra occurences of the expected items. Item '{0}' at position {1} is redundant.",
                                 item,
                                 itemidx.ToStringProperlyFormated()),
-                            "enumerable",
                             runnableAssertion.Value,
-                            chainedFluentAssertion.OriginalComparand);
+                            chainedFluentAssertion.OriginalComparand,
+                            "enumerable");
                     throw new FluentAssertionException(message);
                 }
 
@@ -99,11 +101,12 @@ namespace NFluent
         public static IExtendableFluentAssertion<IEnumerable> InThatOrder(
             this IExtendableFluentAssertion<IEnumerable> chainedFluentAssertion)
         {
-            var runnableAssertion =  chainedFluentAssertion.And as IRunnableAssertion<IEnumerable>;
+            var runnableAssertion = chainedFluentAssertion.And as IRunnableAssertion<IEnumerable>;
             var orderedList = ConvertToArrayList(chainedFluentAssertion);
 
             var faillingIndex = 0;
             var scanIndex = 0;
+            Debug.Assert(runnableAssertion != null, "runnableAssertion != null");
             foreach (var item in runnableAssertion.Value)
             {
                 if (item != orderedList[scanIndex])
@@ -150,9 +153,9 @@ namespace NFluent
                                     item.ToStringProperlyFormated(),
                                     faillingIndex,
                                     index > scanIndex ? "early" : "late"),
-                                "enumerable",
                                 runnableAssertion.Value,
-                                chainedFluentAssertion.OriginalComparand);
+                                chainedFluentAssertion.OriginalComparand,
+                                "enumerable");
 
                         throw new FluentAssertionException(message);
                     }

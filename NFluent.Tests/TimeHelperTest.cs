@@ -69,5 +69,31 @@ namespace NFluent.Tests
             Assert.AreEqual(TimeUnit.Days, TimeHelper.DiscoverUnit(TimeSpan.FromDays(2)));
             Assert.AreEqual(TimeUnit.Weeks, TimeHelper.DiscoverUnit(TimeSpan.FromDays(30)));
         }
+
+        [Test]
+        public void TestDurationClass()
+        {
+            var test = new Duration(200, TimeUnit.Minutes);
+
+            Assert.AreEqual(200, test.RawDuration);
+
+            Assert.AreEqual(TimeUnit.Minutes, test.Unit);
+
+            Assert.AreEqual("200 Minutes", test.ToString());
+
+            Assert.IsTrue(test > new Duration(100, TimeUnit.Seconds));
+            Assert.IsTrue(test < new Duration(100, TimeUnit.Hours));
+        }
+
+        [Test]
+        public void TestDurationConversion()
+        {
+            var test = new Duration(2, TimeUnit.Milliseconds);
+            var converted = test.ConvertTo(TimeUnit.Microseconds);
+
+            Assert.AreEqual(2000, converted.RawDuration);
+
+            Assert.AreEqual(TimeUnit.Microseconds, converted.Unit);
+        }
     }
 }
