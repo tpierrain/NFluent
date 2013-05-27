@@ -30,12 +30,5 @@ namespace NFluent.Tests
             var ex = ExceptionHelper.BuildException("the message");
             Assert.IsInstanceOf<AssertionException>(ex);
         }
-
-        [Test]
-        public void MessageBuilderTest()
-        {
-            string message = ExceptionHelper.BuildStandardMessage("The {0} was different from the {1}.", new object(), new object(), "object");
-            Check.That(message.Split('\n')).HasSize(5);
-        }
     }
 }

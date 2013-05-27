@@ -57,7 +57,7 @@ namespace NFluent
             this IExtendableFluentAssertion<IEnumerable> chainedFluentAssertion)
         {
             var runnableAssertion = chainedFluentAssertion.And as IRunnableAssertion<IEnumerable>;
-            int itemidx = 0;
+            var itemidx = 0;
             var expectedList = ConvertToArrayList(chainedFluentAssertion);
             var listedItems = new ArrayList();
             Debug.Assert(runnableAssertion != null, "runnableAssertion != null");
@@ -72,15 +72,16 @@ namespace NFluent
                 {
                     // failure, we found one extra occurence of one item
                     var message =
-                        ExceptionHelper.BuildStandardMessage(
+                        ExceptionHelper.BuildMessage(
                             string.Format(
-                                "The checked enumerable has extra occurences of the expected items. Item '{0}' at position {1} is redundant.",
-                                item,
-                                itemidx.ToStringProperlyFormated()),
-                            runnableAssertion.Value,
-                            chainedFluentAssertion.OriginalComparand,
-                            "enumerable");
-                    throw new FluentAssertionException(message);
+                                "The {{0}} has extra occurences of the expected items. Tiem '{0}' at position {1} is redundant.",
+                                item.ToStringProperlyFormated(),
+                                itemidx))
+                                       .For("enumerable")
+                                       .On(runnableAssertion.Value)
+                                       .Expected(chainedFluentAssertion.OriginalComparand);
+
+                    throw new FluentAssertionException(message.ToString());
                 }
 
                 itemidx++;
@@ -147,17 +148,17 @@ namespace NFluent
                         // we assume that Contains was executed (imposed by chaining syntax)
                         // the item violating the order is the previous one!
                         var message =
-                            ExceptionHelper.BuildStandardMessage(
+                            ExceptionHelper.BuildMessage(
                                 string.Format(
                                     "The checked enumerable does not follow to the expected order. Item '{0}' appears too {2} in the list, at index '{1}'.",
                                     item.ToStringProperlyFormated(),
                                     faillingIndex,
-                                    index > scanIndex ? "early" : "late"),
-                                runnableAssertion.Value,
-                                chainedFluentAssertion.OriginalComparand,
-                                "enumerable");
+                                    index > scanIndex ? "early" : "late"))
+                                           .For("enumerable")
+                                           .On(runnableAssertion.Value)
+                                           .Expected(chainedFluentAssertion.OriginalComparand);
 
-                        throw new FluentAssertionException(message);
+                        throw new FluentAssertionException(message.ToString());
                     }
 
                     if (index >= 0)

@@ -22,9 +22,6 @@ namespace NFluent.Helpers
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
-
-    using NFluent.Extensions;
 
     /// <summary>
     /// Offer factory services to get adequate exception type depending on testing framework.
@@ -150,93 +147,6 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
-        /// Builds the standard error message, made of 5 lines of text.
-        /// </summary>
-        /// <param name="message">
-        ///     The general message. You can use {0} and {1} as placeholders for the checked and expected item labels.
-        /// </param>
-        /// <param name="checkedObject">
-        ///     The checked Object.
-        /// </param>
-        /// <param name="expectedObject">
-        ///     The expected Object.
-        /// </param>
-        /// <param name="testedEntity">
-        ///     The tested entity attribute.
-        /// </param>
-        /// <returns>
-        /// The properly structured error message.
-        /// </returns>
-        public static string BuildStandardMessage(string message, object checkedObject, object expectedObject, string testedEntity = "value")
-        {
-            var builder = new StringBuilder(200);
-            var checkedLabel = GetCheckedLabel(testedEntity);
-            var expectedLabel = GetExpectedLabel(testedEntity);
-
-            // build the summary message
-            builder.Append(BuildSimpleMessage(message, testedEntity));
-            builder.AppendLine();
-
-            // add the checked item description
-            builder.Append(BuildDescriptionBlock(checkedLabel, checkedObject));
-            builder.AppendLine();
-  
-            // add the expected item description
-            builder.Append(BuildDescriptionBlock(expectedLabel, expectedObject));
-
-            return builder.ToString();
-        }
-
-        /// <summary>
-        /// Builds the standard error message for attributes related checks.
-        /// </summary>
-        /// <param name="specificMessage">The specific error message.</param>
-        /// <param name="attributeName">Name of the attribute.</param>
-        /// <param name="checkedValue">The checked value.</param>
-        /// <param name="expectedValue">The expected value.</param>
-        /// <param name="comparisonMessage">The comparison message.</param>
-        /// <param name="entity">The tested type attribute.</param>
-        /// <returns>
-        /// A string with the properly formatted message.
-        /// </returns>
-        public static string BuildAttributeMessage(string specificMessage, string attributeName, object checkedValue, object expectedValue, string comparisonMessage, string entity)
-        {
-            var builder = new StringBuilder(200);
-            var checkedLabel = GetCheckedLabel(entity, attributeName);
-            var expectedLabel = GetExpectedLabel(entity, attributeName);
-
-            // build the summary message
-            builder.Append(BuildSimpleMessage(specificMessage, entity));
-            builder.AppendLine();
-
-            // add the checked item description
-            builder.Append(BuildDescriptionBlock(checkedLabel, checkedValue));
-            builder.AppendLine();
-
-            // add the expected item description
-            builder.Append(BuildDescriptionBlock(expectedLabel, expectedValue, comparisonMessage));
-
-            return builder.ToString();
-        }
-
-        /// <summary>
-        /// Builds a single line error message, when no description is available.
-        /// </summary>
-        /// <param name="message">
-        /// The message.
-        /// </param>
-        /// <param name="entity">
-        /// The type attribute.
-        /// </param>
-        /// <returns>
-        /// A properly formatted message.
-        /// </returns>
-        private static string BuildSimpleMessage(string message, string entity)
-        {
-            return string.Format(message, GetCheckedLabel(entity), GetExpectedLabel(entity));
-        }
-
-        /// <summary>
         /// Builds the message.
         /// </summary>
         /// <param name="message">The message.</param>
@@ -246,45 +156,6 @@ namespace NFluent.Helpers
             return new FluentMessage(message);
         }
         
-        private static string BuildDescriptionBlock(string blockLabel, object blockValue, string extraMessage = null)
-        {
-            var builder = new StringBuilder(100);
-            if (extraMessage == null)
-            {
-                builder.AppendFormat("The {0}:", blockLabel);                
-            }
-            else
-            {
-                builder.AppendFormat("The {0}: {1}", blockLabel, extraMessage);
-            }
-
-            builder.AppendLine();
-            builder.AppendFormat("\t[{0}]", blockValue.ToStringProperlyFormated());
-            return builder.ToString();
-        }
-
-        private static string GetExpectedLabel(string testedEntity, string attribute = null)
-        {
-            var expectedLabel = "expected " + testedEntity;
-            if (!string.IsNullOrEmpty(attribute))
-            {
-                expectedLabel += "'s " + attribute;
-            }
-
-            return expectedLabel;
-        }
-
-        private static string GetCheckedLabel(string testedEntity, string attribute = null)
-        {
-            var checkedLabel = "checked " + testedEntity;
-            if (!string.IsNullOrEmpty(attribute))
-            {
-                checkedLabel += "'s " + attribute;
-            }
-
-            return checkedLabel;
-        }
-
         /// <summary>
         /// Stores adequate constructors.
         /// </summary>
