@@ -6,7 +6,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class DoubleSignedRelatedTests
+    public class LongSignedNumberRelatedTests
     {
         #pragma warning disable 169
 
@@ -38,18 +38,18 @@
         #region IsPositive
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0] of type: [System.Double]\nis not a strictly positive value.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0] of type: [System.Int64]\nis not a strictly positive value.")]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
-            const double Zero = 0D;
+            const long Zero = 0L;
             Check.That(Zero).IsPositive();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[-50] of type: [System.Double]\nis not a strictly positive value.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[-50] of type: [System.Int64]\nis not a strictly positive value.")]
         public void IsPositiveThrowsExceptionWhenValueIsNegative()
         {
-            const double MinusFifty = -50D;
+            const long MinusFifty = -50L;
 
             Check.That(MinusFifty).IsPositive();
         }
@@ -57,16 +57,16 @@
         [Test]
         public void NotIsPositiveWorks()
         {
-            const double MinusFifty = -50D;
+            const long MinusFifty = -50L;
 
             Check.That(MinusFifty).Not.IsPositive();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[2] of type: [System.Double]\nis a strictly positive value, which is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[2] of type: [System.Int64]\nis a strictly positive value, which is unexpected.")]
         public void NotIsPositiveThrowsExceptionWhenFailing()
         {
-            const double Two = 2D;
+            const long Two = 2L;
 
             Check.That(Two).Not.IsPositive();
         }

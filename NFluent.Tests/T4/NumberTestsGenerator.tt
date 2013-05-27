@@ -58,8 +58,8 @@
 			new UnitTestsConfigurationForType() { TypeName = "long", DetailedTypeName = "System.Int64", ValueForZero = "0L", ValueForOne = "1L", ValueForTwo = "2L", ValueForTwenty = "20L", ValueForMinusFifty = "-50L" },
 			new UnitTestsConfigurationForType() { TypeName = "short", DetailedTypeName = "System.Int16", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
 		};
-	goldenSourceClassFileName = Host.ResolvePath(@"..\SignedIntRelatedTests.cs");
-	TypeCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "SignedIntRelatedTests", "SignedRelatedTests", signedTypesToWriteTestsFor, manager, this);
+	goldenSourceClassFileName = Host.ResolvePath(@"..\IntSignedNumberRelatedTests.cs");
+	TypeCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntSignedNumberRelatedTests", "SignedNumberRelatedTests", signedTypesToWriteTestsFor, manager, this);
 	
 	// Write output code into multiple files
 	manager.Process();

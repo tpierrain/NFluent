@@ -49,7 +49,7 @@
     </Compile>
     <Compile Include="AndRelatedTests.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="SignedIntRelatedTests.cs" />
+    <Compile Include="IntSignedNumberRelatedTests.cs" />
     <Compile Include="IntRelatedTests.cs" />
     <Compile Include="EnumOrStructRelatedTests.cs" />
     <Compile Include="ForDocumentation\CheckDescription.cs" />
@@ -81,31 +81,31 @@
     <Compile Include="T4\DecimalRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="T4\DecimalSignedRelatedTests.cs">
+    <Compile Include="T4\DecimalSignedNumberRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="T4\DoubleRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="T4\DoubleSignedRelatedTests.cs">
+    <Compile Include="T4\DoubleSignedNumberRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="T4\FloatRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="T4\FloatSignedRelatedTests.cs">
+    <Compile Include="T4\FloatSignedNumberRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="T4\LongRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="T4\LongSignedRelatedTests.cs">
+    <Compile Include="T4\LongSignedNumberRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="T4\ShortRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="T4\ShortSignedRelatedTests.cs">
+    <Compile Include="T4\ShortSignedNumberRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="T4\UintRelatedTests.cs">

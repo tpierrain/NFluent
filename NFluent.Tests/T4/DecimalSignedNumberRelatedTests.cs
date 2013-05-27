@@ -6,7 +6,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class ShortSignedRelatedTests
+    public class DecimalSignedNumberRelatedTests
     {
         #pragma warning disable 169
 
@@ -38,18 +38,18 @@
         #region IsPositive
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0] of type: [System.Int16]\nis not a strictly positive value.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0] of type: [System.Decimal]\nis not a strictly positive value.")]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
-            const short Zero = 0;
+            const decimal Zero = 0M;
             Check.That(Zero).IsPositive();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[-50] of type: [System.Int16]\nis not a strictly positive value.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[-50] of type: [System.Decimal]\nis not a strictly positive value.")]
         public void IsPositiveThrowsExceptionWhenValueIsNegative()
         {
-            const short MinusFifty = -50;
+            const decimal MinusFifty = -50M;
 
             Check.That(MinusFifty).IsPositive();
         }
@@ -57,16 +57,16 @@
         [Test]
         public void NotIsPositiveWorks()
         {
-            const short MinusFifty = -50;
+            const decimal MinusFifty = -50M;
 
             Check.That(MinusFifty).Not.IsPositive();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[2] of type: [System.Int16]\nis a strictly positive value, which is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[2] of type: [System.Decimal]\nis a strictly positive value, which is unexpected.")]
         public void NotIsPositiveThrowsExceptionWhenFailing()
         {
-            const short Two = 2;
+            const decimal Two = 2M;
 
             Check.That(Two).Not.IsPositive();
         }

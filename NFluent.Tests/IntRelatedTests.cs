@@ -176,6 +176,8 @@
 
         #endregion
 
+        #region IsGreaterThan
+
         [Test]
         public void IsGreaterThanWorks()
         {
@@ -204,6 +206,8 @@
 
             Check.That(Twenty).Not.IsGreaterThan(One);
         }
+
+        #endregion
 
         [Test]
         public void AndOperatorCanChainMultipleAssertionOnNumber()
