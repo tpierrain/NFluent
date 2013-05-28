@@ -43,6 +43,22 @@
         }
 
         [Test]
+        public void IsZeroWorksWithNullable()
+        {
+            int? zero = 0;
+
+            Check.That(zero).IsZero();
+        }
+
+        [Test]
+        public void IsZeroWorksWithNullNullable()
+        {
+            int? zero = null;
+
+            Check.That(zero).IsZero();
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[2] of type: [System.Int32]\nis not equal to zero.")]
         public void IsZeroThrowsExceptionWhenFails()
         {

@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
     /// <summary>
     /// Provides assertion methods to be executed on an integer value.
     /// </summary>
@@ -96,6 +98,35 @@ namespace NFluent
         {
             var numberAssertionStrategy = new NumberFluentAssertion<int>(fluentAssertion);
             return numberAssertionStrategy.IsZero();
+        }
+
+        /// <summary>
+        /// Checks that the actual value is equal to zero.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<int?>> IsZero(this IFluentAssertion<int?> fluentAssertion)
+        {
+
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<int?>;
+            IRunnableAssertion<int?> runnableAssertion = fluentAssertion as IRunnableAssertion<int?>;
+
+            assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    var res = Convert.ToInt64(runnableAssertion.Value) == 0;
+
+                    if (!res)
+                    {
+                        throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not equal to zero.", runnableAssertion.Value, NFluent.Helpers.EqualityHelper.BuildTypeDescriptionMessage(runnableAssertion.Value)));
+                    }
+                },
+                "The checked value is equal to zero which is unexpected.");
+
+            return new ChainableFluentAssertion<IFluentAssertion<int?>>(fluentAssertion);
         }
 
         /// <summary>
