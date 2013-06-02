@@ -1,0 +1,1 @@
+* Supports nullables for all the number types (int, long, double, decimal, byte, uint, ...) 
