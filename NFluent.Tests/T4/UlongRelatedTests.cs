@@ -283,5 +283,78 @@
         }
 
         #endregion
+
+        #region Nullables
+
+        [Test]
+        public void IsNullWorksWithNullable()
+        {
+            ulong? noValue = null;
+
+            Check.That(noValue).IsNull();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nis not null as expected.")]
+        public void IsNullThrowsExceptionWhenFailingWithNullable()
+        {
+            ulong? one = 1;
+
+            Check.That(one).IsNull();
+        }
+
+        [Test]
+        public void NotIsNullWorksWithNullable()
+        {
+            ulong? one = 1;
+
+            Check.That(one).Not.IsNull();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value is null which is unexpected.")]
+        public void NotIsNullThrowsExceptionWhenFailingWithNullable()
+        {
+            ulong? noValue = null;
+
+            Check.That(noValue).Not.IsNull();
+        }
+
+        [Test]
+        public void IsInstanceOfWorksWithNullable()
+        {
+            ulong? one = 1;
+
+            Check.That(one).IsInstanceOf<ulong?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis an instance of:\n\t[System.Nullable`1[System.UInt64]]\nwhich was not expected.")]
+        public void NotIsInstanceOfWorksWithNullable()
+        {
+            ulong? one = 1;
+
+            Check.That(one).Not.IsInstanceOf<ulong?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis an instance of:\n\t[System.Nullable`1[System.UInt64]]\nwhich was not expected.")]
+        public void NotIsInstanceOfWorksWithNullableWithoutValue()
+        {
+            ulong? noValue = null;
+
+            Check.That(noValue).Not.IsInstanceOf<ulong?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not an instance of:\n\t[System.String]\nbut an instance of:\n\t[System.Nullable`1[System.UInt64]]\ninstead.")]
+        public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
+        {
+            ulong? one = null;
+
+            Check.That(one).IsInstanceOf<string>();
+        }
+
+        #endregion
     }
 }

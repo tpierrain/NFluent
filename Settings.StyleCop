@@ -5,6 +5,7 @@
       <Value>gzip</Value>
       <Value>Intellisense</Value>
       <Value>IntelliSense</Value>
+      <Value>nullable</Value>
       <Value>struct</Value>
       <Value>sut</Value>
       <Value>uint</Value>

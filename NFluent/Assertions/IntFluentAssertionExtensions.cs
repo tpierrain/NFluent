@@ -16,6 +16,8 @@ namespace NFluent
 {
     using System;
 
+    using NFluent.Helpers;
+
     /// <summary>
     /// Provides assertion methods to be executed on an integer value.
     /// </summary>
@@ -72,6 +74,30 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual instance is an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<int?>> IsInstanceOf<T>(this IFluentAssertion<int?> fluentAssertion)
+        {
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<int?>;
+            IRunnableAssertion<int?> runnableAssertion = fluentAssertion as IRunnableAssertion<int?>;
+
+            assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    IsInstanceHelper.IsSameType(typeof(Nullable<int>), typeof(T), runnableAssertion.Value);
+                },
+                IsInstanceHelper.BuildErrorMessageForNullable(typeof(Nullable<int>), typeof(T), runnableAssertion.Value, true));
+
+            return new ChainableFluentAssertion<IFluentAssertion<int?>>(fluentAssertion);
+        }
+
+        /// <summary>
         /// Checks that the actual instance is not an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
@@ -101,32 +127,25 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual value is equal to zero.
+        /// Checks that the actual nullable value is null. 
+        /// Note: this method does not return a chainable assertion.
         /// </summary>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
-        /// <returns>
-        /// A chainable assertion.
-        /// </returns>
-        /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<int?>> IsZero(this IFluentAssertion<int?> fluentAssertion)
+        /// <exception cref="FluentAssertionException">The value is not null.</exception>
+        public static void IsNull(this IFluentAssertion<int?> fluentAssertion)
         {
-
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<int?>;
             IRunnableAssertion<int?> runnableAssertion = fluentAssertion as IRunnableAssertion<int?>;
 
             assertionRunner.ExecuteAssertion(
                 () =>
                 {
-                    var res = Convert.ToInt64(runnableAssertion.Value) == 0;
-
-                    if (!res)
+                    if (runnableAssertion.Value != null)
                     {
-                        throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not equal to zero.", runnableAssertion.Value, NFluent.Helpers.EqualityHelper.BuildTypeDescriptionMessage(runnableAssertion.Value)));
+                        throw new FluentAssertionException(string.Format("\nThe checked nullable value:\n\t[{0}]\nis not null as expected.", runnableAssertion.Value));
                     }
                 },
-                "The checked value is equal to zero which is unexpected.");
-
-            return new ChainableFluentAssertion<IFluentAssertion<int?>>(fluentAssertion);
+                "\nThe checked nullable value is null which is unexpected.");
         }
 
         /// <summary>

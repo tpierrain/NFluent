@@ -24,6 +24,8 @@ namespace NFluent
     /// </summary>
     public static class ObjectFluentAssertionExtensions
     {
+        // TODO: add IsNull()
+
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>

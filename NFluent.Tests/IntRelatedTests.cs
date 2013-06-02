@@ -43,22 +43,6 @@
         }
 
         [Test]
-        public void IsZeroWorksWithNullable()
-        {
-            int? zero = 0;
-
-            Check.That(zero).IsZero();
-        }
-
-        [Test]
-        public void IsZeroWorksWithNullNullable()
-        {
-            int? zero = null;
-
-            Check.That(zero).IsZero();
-        }
-
-        [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[2] of type: [System.Int32]\nis not equal to zero.")]
         public void IsZeroThrowsExceptionWhenFails()
         {
@@ -289,6 +273,79 @@
             const int Twenty = 20;
 
             Check.That(One).Not.IsNotEqualTo(Twenty);
+        }
+
+        #endregion
+
+        #region Nullables
+
+        [Test]
+        public void IsNullWorksWithNullable()
+        {
+            int? noValue = null;
+
+            Check.That(noValue).IsNull();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nis not null as expected.")]
+        public void IsNullThrowsExceptionWhenFailingWithNullable()
+        {
+            int? one = 1;
+
+            Check.That(one).IsNull();
+        }
+
+        [Test]
+        public void NotIsNullWorksWithNullable()
+        {
+            int? one = 1;
+
+            Check.That(one).Not.IsNull();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value is null which is unexpected.")]
+        public void NotIsNullThrowsExceptionWhenFailingWithNullable()
+        {
+            int? noValue = null;
+
+            Check.That(noValue).Not.IsNull();
+        }
+
+        [Test]
+        public void IsInstanceOfWorksWithNullable()
+        {
+            int? one = 1;
+
+            Check.That(one).IsInstanceOf<int?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis an instance of:\n\t[System.Nullable`1[System.Int32]]\nwhich was not expected.")]
+        public void NotIsInstanceOfWorksWithNullable()
+        {
+            int? one = 1;
+
+            Check.That(one).Not.IsInstanceOf<int?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis an instance of:\n\t[System.Nullable`1[System.Int32]]\nwhich was not expected.")]
+        public void NotIsInstanceOfWorksWithNullableWithoutValue()
+        {
+            int? noValue = null;
+
+            Check.That(noValue).Not.IsInstanceOf<int?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not an instance of:\n\t[System.String]\nbut an instance of:\n\t[System.Nullable`1[System.Int32]]\ninstead.")]
+        public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
+        {
+            int? one = null;
+
+            Check.That(one).IsInstanceOf<string>();
         }
 
         #endregion

@@ -14,6 +14,10 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
+    using NFluent.Helpers;
+
     /// <summary>
     /// Provides assertion methods to be executed on a ushort value.
     /// </summary>
@@ -77,6 +81,30 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual instance is an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<ushort?>> IsInstanceOf<T>(this IFluentAssertion<ushort?> fluentAssertion)
+        {
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<ushort?>;
+            IRunnableAssertion<ushort?> runnableAssertion = fluentAssertion as IRunnableAssertion<ushort?>;
+
+            assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    IsInstanceHelper.IsSameType(typeof(Nullable<ushort>), typeof(T), runnableAssertion.Value);
+                },
+                IsInstanceHelper.BuildErrorMessageForNullable(typeof(Nullable<ushort>), typeof(T), runnableAssertion.Value, true));
+
+            return new ChainableFluentAssertion<IFluentAssertion<ushort?>>(fluentAssertion);
+        }
+
+        /// <summary>
         /// Checks that the actual instance is not an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
@@ -103,6 +131,28 @@ namespace NFluent
         {
             var numberAssertionStrategy = new NumberFluentAssertion<ushort>(fluentAssertion);
             return numberAssertionStrategy.IsZero();
+        }
+
+        /// <summary>
+        /// Checks that the actual nullable value is null. 
+        /// Note: this method does not return a chainable assertion.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <exception cref="FluentAssertionException">The value is not null.</exception>
+        public static void IsNull(this IFluentAssertion<ushort?> fluentAssertion)
+        {
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<ushort?>;
+            IRunnableAssertion<ushort?> runnableAssertion = fluentAssertion as IRunnableAssertion<ushort?>;
+
+            assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    if (runnableAssertion.Value != null)
+                    {
+                        throw new FluentAssertionException(string.Format("\nThe checked nullable value:\n\t[{0}]\nis not null as expected.", runnableAssertion.Value));
+                    }
+                },
+                "\nThe checked nullable value is null which is unexpected.");
         }
 
         /// <summary>

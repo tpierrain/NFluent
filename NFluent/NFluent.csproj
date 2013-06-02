@@ -51,7 +51,6 @@
     <Compile Include="Assertions\BooleanFluentAssertionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Assertions\NullableNumberFluentAssertion.cs" />
     <Compile Include="Assertions\StructFluentAssertionExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="INegated.cs" />
