@@ -279,7 +279,7 @@
 
         #region Nullables
 
-        #region IsNull
+        #region IsNull (which is not chainable by the way; on purpose)
 
         [Test]
         public void IsNullWorksWithNullable()
@@ -317,7 +317,45 @@
 
         #endregion
 
-        #region IsInstanceOf
+        #region IsNotNull (which is not chainable by the way, since Not.IsNotNull() can work with nullable without Value => which can't be chained afterward)
+
+        [Test]
+        public void IsNotNullWorks()
+        {
+            int? one = 1;
+
+            Check.That(one).IsNotNull();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value is null which is unexpected.")]
+        public void IsNotNullThrowsExceptionWhenFailing()
+        {
+            int? noValue = null;
+
+            Check.That(noValue).IsNotNull();
+        }
+
+        [Test]
+        public void NotIsNotNullWorks()
+        {
+            int? noValue = null;
+
+            Check.That(noValue).Not.IsNotNull();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nis not null which is unexpected.")]
+        public void NotIsNotNullThrowsExceptionWhenFailing()
+        {
+            int? one = 1;
+
+            Check.That(one).Not.IsNotNull();
+        }
+
+        #endregion
+
+        #region IsInstanceOf (which is chainable)
 
         [Test]
         public void IsInstanceOfWorksWithNullable()

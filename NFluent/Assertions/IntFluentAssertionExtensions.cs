@@ -16,6 +16,7 @@ namespace NFluent
 {
     using System;
 
+    using NFluent.Extensions;
     using NFluent.Helpers;
 
     /// <summary>
@@ -146,6 +147,28 @@ namespace NFluent
                     }
                 },
                 "\nThe checked nullable value is null which is unexpected.");
+        }
+
+        /// <summary>
+        /// Checks that the actual nullable value is not null. 
+        /// Note: this method does not return a chainable assertion since it may lead to problem when calling Not.IsNotNull() with a nullable with null as Value.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <exception cref="FluentAssertionException">The value is null.</exception>
+        public static void IsNotNull(this IFluentAssertion<int?> fluentAssertion)
+        {
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<int?>;
+            IRunnableAssertion<int?> runnableAssertion = fluentAssertion as IRunnableAssertion<int?>;
+
+            assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    if (runnableAssertion.Value == null)
+                    {
+                        throw new FluentAssertionException(string.Format("\nThe checked nullable value is null which is unexpected."));
+                    }
+                },
+                string.Format("\nThe checked nullable value:\n\t[{0}]\nis not null which is unexpected.", runnableAssertion.Value.ToStringProperlyFormated()));
         }
 
         /// <summary>
