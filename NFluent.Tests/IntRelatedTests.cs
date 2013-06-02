@@ -279,6 +279,8 @@
 
         #region Nullables
 
+        #region IsNull
+
         [Test]
         public void IsNullWorksWithNullable()
         {
@@ -312,6 +314,10 @@
 
             Check.That(noValue).Not.IsNull();
         }
+
+        #endregion
+
+        #region IsInstanceOf
 
         [Test]
         public void IsInstanceOfWorksWithNullable()
@@ -347,6 +353,8 @@
 
             Check.That(one).IsInstanceOf<string>();
         }
+
+        #endregion
 
         #endregion
     }
