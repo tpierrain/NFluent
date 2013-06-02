@@ -153,6 +153,7 @@ namespace NFluent
         /// Checks that the actual nullable value is not null. 
         /// Note: this method does not return a chainable assertion since it may lead to problem when calling Not.IsNotNull() with a nullable with null as Value.
         /// </summary>
+        /// <remarks>Could return a chainable assertion only if we disable the Not operator for this method (to be investigated).</remarks>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <exception cref="FluentAssertionException">The value is null.</exception>
         public static void IsNotNull(this IFluentAssertion<int?> fluentAssertion)
