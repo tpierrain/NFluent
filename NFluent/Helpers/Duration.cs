@@ -23,7 +23,7 @@ namespace NFluent.Helpers
     /// <summary>
     /// Represents a duration as an unit and a quantity.
     /// </summary>
-    public struct Duration
+    internal struct Duration
     {
         private readonly double rawDuration;
 
