@@ -257,7 +257,8 @@ namespace NFluent
 
             while (first.MoveNext())
             {
-                if (!second.MoveNext() || !object.Equals(first.Current, second.Current))
+                if (!second.MoveNext() 
+                    || !object.Equals(first.Current, second.Current))
                 {
                     ThrowsNotExactlyException(runnableAssertion.Value, enumerable);
                 }

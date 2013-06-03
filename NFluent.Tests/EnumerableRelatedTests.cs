@@ -130,7 +130,9 @@
         #endregion
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[45, 43, 54, 666\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[45, 43, 54, 666\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + ".")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
+The expected value: different from
+	[45, 43, 54, 666] of type: [System.Collections.Generic.List`1[System.Int32]]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             IEnumerable enumerable = new List<int>() { 45, 43, 54, 666 };
@@ -138,7 +140,11 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[45, 43, 54, 666] of type: [System.Collections.Generic.List`1[System.Int32]]\nis not equal to the expected one:\n\t[null].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
+The checked value:
+	[45, 43, 54, 666] of type: [System.Collections.Generic.List`1[System.Int32]]
+The expected value:
+	[null]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             IEnumerable enumerable = new List<int>() { 45, 43, 54, 666 };

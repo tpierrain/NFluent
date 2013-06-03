@@ -19,7 +19,11 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[French]\nis not equal to the expected one:\n\t[American].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
+The checked value:
+	[French]
+The expected value:
+	[American]")]
         public void IsEqualToThrowsExceptionWhenFailingWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
@@ -34,7 +38,9 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[French] of type: [NFluent.Tests.Nationality].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
+The expected value: different from
+	[French] of type: [NFluent.Tests.Nationality]")]
         public void IsNotEqualToThrowsExceptionWhenFailingWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
@@ -49,7 +55,9 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[French\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[French\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + Blabla + LineFeed + "(which)" + Blabla)]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
+The expected value: different from
+	[French] of type: [NFluent.Tests.Nationality]")]
         public void NotIsEqualToThrowsExceptionWhenFailingWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;

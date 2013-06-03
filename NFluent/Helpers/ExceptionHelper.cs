@@ -62,17 +62,32 @@ namespace NFluent.Helpers
                                 switch (type.Name)
                                 {
                                     case "AssertionException":
-                                        result.FailedException = type.GetConstructor(defaultSignature) ?? result.FailedException;
+                                        var info = type.GetConstructor(defaultSignature);
+                                        if (info != null)
+                                        {
+                                            result.FailedException = info;
+                                        }
+
                                         testingFrameworkFound = true;
                                         foundExceptions++;
                                         break;
                                     case "IgnoreException":
-                                        result.IgnoreException = type.GetConstructor(defaultSignature) ?? result.IgnoreException;
+                                        info = type.GetConstructor(defaultSignature);
+                                        if (info != null)
+                                        {
+                                            result.IgnoreException = info;
+                                        }
+
                                         testingFrameworkFound = true;
                                         foundExceptions++;
                                         break;
                                     case "InconclusiveException":
-                                        result.InconclusiveException = type.GetConstructor(defaultSignature) ?? result.InconclusiveException;
+                                        info = type.GetConstructor(defaultSignature);
+                                        if (info != null)
+                                        {
+                                            result.InconclusiveException = info;
+                                        }
+
                                         testingFrameworkFound = true;
                                         foundExceptions++;
                                         break;
@@ -101,15 +116,26 @@ namespace NFluent.Helpers
                             {
                                 if (type.Namespace != null && type.Namespace.StartsWith("Microsoft.VisualStudio.TestTools"))
                                 {
+                                    ConstructorInfo info;
                                     switch (type.Name)
                                     {
                                         case "AssertFailedException":
-                                            result.FailedException = type.GetConstructor(defaultSignature) ?? result.FailedException;
+                                            info = type.GetConstructor(defaultSignature);
+                                            if (info != null)
+                                            {
+                                                result.FailedException = info;
+                                            }
+
                                             testingFrameworkFound = true;
                                             foundExceptions++;
                                             break;
                                         case "AssertInconclusiveException":
-                                            result.InconclusiveException = type.GetConstructor(defaultSignature) ?? result.InconclusiveException;
+                                            info = type.GetConstructor(defaultSignature);
+                                            if (info != null)
+                                            {
+                                                result.InconclusiveException = info;
+                                            }
+
                                             testingFrameworkFound = true;
                                             foundExceptions++;
                                             break;
@@ -146,16 +172,6 @@ namespace NFluent.Helpers
             return Constructors.FailedException.Invoke(new object[] { theMessage }) as Exception;
         }
 
-        /// <summary>
-        /// Builds the message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <returns>A fluent message builder.</returns>
-        internal static FluentMessage BuildMessage(string message)
-        {
-            return new FluentMessage(message);
-        }
-        
         /// <summary>
         /// Stores adequate constructors.
         /// </summary>

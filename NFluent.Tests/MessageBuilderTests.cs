@@ -27,23 +27,44 @@ namespace NFluent.Tests
         [Test]
         public void BasicTest()
         {
-            var message = ExceptionHelper.BuildMessage("The {0} is ok.").ToString();
+            var message = FluentMessage.BuildMessage("The {0} is ok.").ToString();
 
             Assert.AreEqual("The checked value is ok.", message);
 
             // override entity
-            message = ExceptionHelper.BuildMessage("The {0} is ok.").For("string").ToString();
+            message = FluentMessage.BuildMessage("The {0} is ok.").For("string").ToString();
             Assert.AreEqual("The checked string is ok.", message);
         }
         
         [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void BlockFailTest()
+        {
+            var block = new FluentMessage.MessageBlock(null, null, string.Empty);
+        }
+
+        [Test]
         public void CheckedBlockTest()
         {
-            DateTime test = DateTime.Today;
-            string message = ExceptionHelper.BuildMessage("The {0} is below.").On(test).ToString();
+            var test = DateTime.Today;
+            var message = FluentMessage.BuildMessage("The {0} is below.").On(test).ToString();
             var lines = message.Split('\n');
             Assert.AreEqual(3, lines.Length);
             Assert.IsTrue(lines[1].Contains("checked"));
+        }
+
+        [Test]
+        public void BlockTest()
+        {
+            var message = new FluentMessage("test");
+            var x = 4;
+            var block = new FluentMessage.MessageBlock(message, x, string.Empty);
+
+            Assert.AreEqual("The  value:\r\n\t[4]", block.GetMessage());
+
+            block.WithHashCode().WithType();
+
+            Assert.AreEqual("The  value:\r\n\t[4] of type: [System.Int32] with HashCode: [4]", block.GetMessage());
         }
     }
 }

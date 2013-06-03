@@ -60,7 +60,11 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[42] of type: [System.Int32]\nis not equal to the expected one:\n\t[42] of type: [System.Int64].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
+The checked value:
+	[42] of type: [System.Int32]
+The expected value:
+	[42] of type: [System.Int64]")]
         public void IsEqualToThrowsWhenSameNumberOfDifferentTypes()
         {
             const int IntValue = 42;
@@ -70,7 +74,9 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[Gandhi])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[Gandhi\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + "unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
+The expected value: different from
+	[Gandhi] of type: [NFluent.Tests.Person]")]
         public void NotIsEqualToWithObjectThrowsExceptionWhenFailing()
         {
             var heroe = new Person() { Name = "Gandhi" };
@@ -117,7 +123,11 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"Son of a test\"]\nis not equal to the expected one:\n\t[\"no way\"].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
+The checked value:
+	[""Son of a test""]
+The expected value:
+	[""no way""]")]
         public void IsEqualToThrowsExceptionWhenFailingWithString()
         {
             var first = "Son of a test";
@@ -125,7 +135,9 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(Son)" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + LineFeed + Blabla + LineFeed + Blabla + "(Son)" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + LineFeed + Blabla + "(unexpected)")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
+The expected value: different from
+	[""Son of a test""] of type: [System.String]")]
         public void NotIsEqualToThrowsExceptionWhenFailingWithString()
         {
             var first = "Son of a test";
@@ -133,7 +145,11 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[Gandhi]\nis not equal to the expected one:\n\t[PolPot].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
+The checked value:
+	[Gandhi]
+The expected value:
+	[PolPot]")]
         public void IsEqualToThrowsExceptionWhenFailingWithObject()
         {
             var heroe = new Person() { Name = "Gandhi" };
@@ -143,7 +159,11 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"Son of a test\"] of type: [System.String]\nis not equal to the expected one:\n\t[null].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
+The checked value:
+	[""Son of a test""] of type: [System.String]
+The expected value:
+	[null]")]
         public void IsEqualToThrowsProperExceptionEvenWithNullAsExpected()
         {
             var first = "Son of a test";
@@ -151,7 +171,11 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not equal to the expected one:\n\t[\"Kamoulox !\"] of type: [System.String].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
+The checked value:
+	[null]
+The expected value:
+	[""Kamoulox !""] of type: [System.String]")]
         public void IsEqualToThrowsProperExceptionEvenWithNullAsValue()
         {
             string first = null;
@@ -159,7 +183,11 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[John] of type: [NFluent.Tests.Child]\nis not equal to the expected one:\n\t[John] of type: [NFluent.Tests.Person].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
+The checked value:
+	[John] of type: [NFluent.Tests.Child]
+The expected value:
+	[John] of type: [NFluent.Tests.Person]")]
         public void WeCanSeeTheDifferenceBewteenTwoDifferentObjectsThatHaveTheSameToString()
         {
             Person dad = new Person() { Name = "John" };
@@ -168,7 +196,11 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[NFluent\\.Tests\\.Person\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[NFluent\\.Tests\\.Person\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + Blabla)]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = @"The checked value is different from the expected one.
+The checked value:
+\t\[John\] with HashCode: \[.*\]
+The expected value:
+\t\[John\] with HashCode: \[.*\]")]
         public void WeCanAlsoSeeTheDifferenceBetweenTwoDifferentInstancesOfTheSameTypeWhichHaveSameToString()
         {
             // e.g.: "\nExpecting:\n\t[John] of type: [NFluent.Tests.Person] with HashCode: [45523402]\n but was\n\t[John] of type: [NFluent.Tests.Person] with HashCode: [35287174]."
@@ -250,7 +282,9 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[\"Son of a test\"] of type: [System.String].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
+The expected value: different from
+	[""Son of a test""] of type: [System.String]")]
         public void IsNotEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";
@@ -259,7 +293,11 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[\"Son of a test\"]\nis not equal to the expected one:\n\t[\"what?\"].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
+The checked value:
+	[""Son of a test""]
+The expected value:
+	[""what?""]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             var first = "Son of a test";

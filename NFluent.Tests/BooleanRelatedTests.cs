@@ -77,7 +77,11 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[True]\nis not equal to the expected one:\n\t[False].")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
+The checked value:
+	[True]
+The expected value:
+	[False]")]
         public void IsEqualThrowsExceptionWhenNotEqual()
         {
             const bool NFluentRocks = true;
@@ -86,12 +90,13 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[True] of type: [System.Boolean].")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
+The expected value: different from
+	[True] of type: [System.Boolean]")]
         public void IsNotEqualThrowsExceptionWhenEqual()
         {
             const bool NFluentRocks = true;
             const bool WinterNotNFluentRocks = true;
-
             Check.That(NFluentRocks).IsNotEqualTo(WinterNotNFluentRocks);
         }
 

@@ -68,24 +68,38 @@ namespace NFluent.Tests.ForDocumentation
                 {
                     foreach (var checkDescription in check.Checks)
                     {
-                        var lines = checkDescription.ErrorSampleMessage.Split('\n');
-                        if (lines.Length == 0 && string.IsNullOrEmpty(lines[0]))
+                        string error;
+                        if (!CheckMessage(checkDescription.ErrorSampleMessage, out error))
                         {
                             // failing
-                            RunnerHelper.Log(string.Format("Error for {0}: empty message!", checkDescription.Signature));
-                            break;
-                        }
-
-                        if (!lines[0].ToLowerInvariant().Contains("checked"))
-                        {
-                            // failing
-                            RunnerHelper.Log(string.Format("Error for {0}: message first line must contain 'checked'.", checkDescription.Signature));
+                            RunnerHelper.Log(string.Format("Error for {0}: {1}", checkDescription.Signature, error));
                             RunnerHelper.Log(checkDescription.ErrorSampleMessage);
                             break;
                         }
                     }
                 }
             }
+        }
+
+        internal static bool CheckMessage(string message, out string error)
+        {
+            var lines = message.Split('\n');
+            if (lines.Length == 0 && string.IsNullOrEmpty(lines[0]))
+            {
+                // failing
+                error = "empty message!";
+                return false;
+            }
+
+            if (!lines[0].ToLowerInvariant().Contains("checked"))
+            {
+                // failing
+                error = "message first line must contain 'checked'.";
+                return false;
+            }
+
+            error = string.Empty;
+            return true;
         }
 
         [Test]

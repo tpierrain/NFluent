@@ -72,7 +72,7 @@ namespace NFluent
                 {
                     // failure, we found one extra occurence of one item
                     var message =
-                        ExceptionHelper.BuildMessage(
+                        FluentMessage.BuildMessage(
                             string.Format(
                                 "The {{0}} has extra occurences of the expected items. Tiem '{0}' at position {1} is redundant.",
                                 item.ToStringProperlyFormated(),
@@ -148,7 +148,7 @@ namespace NFluent
                         // we assume that Contains was executed (imposed by chaining syntax)
                         // the item violating the order is the previous one!
                         var message =
-                            ExceptionHelper.BuildMessage(
+                            FluentMessage.BuildMessage(
                                 string.Format(
                                     "The checked enumerable does not follow to the expected order. Item '{0}' appears too {2} in the list, at index '{1}'.",
                                     item.ToStringProperlyFormated(),

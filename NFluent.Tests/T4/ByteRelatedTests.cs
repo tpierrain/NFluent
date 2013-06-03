@@ -18,9 +18,6 @@
         //// -----------------------------------------------------
 
         #pragma warning restore 169
-        private const string Blabla = ".*?";
-        private const string LineFeed = "\\n";
-        private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
 
         private CultureInfo savedCulture;
 
@@ -246,7 +243,9 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[20])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[20\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + "unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
+The expected value: different from
+	[20] of type: [System.Byte]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             const byte Twenty = 20;
@@ -264,7 +263,9 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[20] of type: [System.Byte].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
+The expected value: different from
+	[20] of type: [System.Byte]")]
         public void IsNotEqualToThrowsExceptionWhenFailing()
         {
             const byte Twenty = 20;
@@ -273,7 +274,11 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis not equal to the expected one:\n\t[20].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
+The checked value:
+	[1]
+The expected value:
+	[20]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             const byte One = 1;

@@ -110,7 +110,7 @@ namespace NFluent
             if (this.exception != null)
             {
                 var message1 =
-                    ExceptionHelper.BuildMessage("The {0} raised an exception, whereas it must not.")
+                    FluentMessage.BuildMessage("The {0} raised an exception, whereas it must not.")
                                    .For("code")
                                    .On(this.exception).Label("The raised exception:").ToString();
                 throw new FluentAssertionException(message1);
@@ -141,7 +141,7 @@ namespace NFluent
             if (comparand > durationThreshold)
             {
                 var message =
-                    ExceptionHelper.BuildMessage("The checked code took too much time to execute.")
+                    FluentMessage.BuildMessage("The checked code took too much time to execute.")
                                    .For("excecution time")
                                    .On(comparand)
                                    .Expected(durationThreshold)
@@ -171,7 +171,7 @@ namespace NFluent
             if (this.exception == null)
             {
                 var message =
-                    ExceptionHelper.BuildMessage(
+                    FluentMessage.BuildMessage(
                         "The {0} did not raise an exception, whereas it must.").For("code").Expected(typeof(T)).Label("Expected exception type is:").ToString();
                 throw new FluentAssertionException(message);
             }
@@ -179,7 +179,7 @@ namespace NFluent
             if (!(this.exception is T))
             {
                 var message =
-                    ExceptionHelper.BuildMessage("The {0} raised an exception of a different type than expected.")
+                    FluentMessage.BuildMessage("The {0} raised an exception of a different type than expected.")
                                    .For("code").On(this.exception).Label("Raised Exception").Expected(typeof(T)).Label("Expected exception type is:")
                                    .ToString();
 
@@ -203,7 +203,7 @@ namespace NFluent
             if (this.exception == null)
             {
                 var message =
-                    ExceptionHelper.BuildMessage("The {0} did not raise an exception, whereas it must.").For("code").ToString();
+                    FluentMessage.BuildMessage("The {0} did not raise an exception, whereas it must.").For("code").ToString();
                 throw new FluentAssertionException(message);
             }
 

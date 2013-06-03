@@ -39,12 +39,12 @@ namespace NFluent
             var testedDuration = new Duration(runnableAssertion.Value, unit);
             var expected = new Duration(providedDuration, unit);
             var notMessage =
-                ExceptionHelper.BuildMessage("The {0} is not more than the limit.")
+                FluentMessage.BuildMessage("The {0} is not more than the limit.")
                                .On(testedDuration)
                                .Expected(expected)
                                .Comparison("more than or equal to");
             var message =
-                ExceptionHelper.BuildMessage("The {0} is more than the limit.")
+                FluentMessage.BuildMessage("The {0} is more than the limit.")
                                .On(testedDuration)
                                .Expected(expected).Comparison("less than");
 
@@ -77,12 +77,12 @@ namespace NFluent
              var expected = new Duration(comparand, unit);
 
              var notMessage =
-                 ExceptionHelper.BuildMessage("The {0} is not more than the limit.")
+                 FluentMessage.BuildMessage("The {0} is not more than the limit.")
                                 .On(testedDuration)
                                 .Expected(expected)
                                 .Comparison("more than or equal to");
              var message =
-                 ExceptionHelper.BuildMessage("The {0} is more than the limit.")
+                 FluentMessage.BuildMessage("The {0} is more than the limit.")
                                 .On(testedDuration)
                                 .Expected(expected).Comparison("less than");
 
@@ -113,12 +113,12 @@ namespace NFluent
              var testedDuration = new Duration(runnableAssertion.Value, unit);
              var expected = new Duration(providedDuration, unit);
              var message =
-                 ExceptionHelper.BuildMessage("The {0} is not more than the limit.")
+                 FluentMessage.BuildMessage("The {0} is not more than the limit.")
                                 .On(testedDuration)
                                 .Expected(expected)
                                 .Comparison("less than or equal to");
              var notMessage =
-                 ExceptionHelper.BuildMessage("The {0} is more than the limit.")
+                 FluentMessage.BuildMessage("The {0} is more than the limit.")
                                 .On(testedDuration)
                                 .Expected(expected).Comparison("more than");
 
@@ -150,12 +150,12 @@ namespace NFluent
              var expected = new Duration(comparand, unit);
 
              var message =
-             ExceptionHelper.BuildMessage("The {0} is not more than the limit.")
+             FluentMessage.BuildMessage("The {0} is not more than the limit.")
                             .On(testedDuration)
                             .Expected(expected)
                             .Comparison("more than");
              var notMessage =
-                 ExceptionHelper.BuildMessage("The {0} is more than the limit.")
+                 FluentMessage.BuildMessage("The {0} is more than the limit.")
                                 .On(testedDuration)
                                 .Expected(expected).Comparison("less than or equal to");
 
@@ -187,11 +187,11 @@ namespace NFluent
              var expected = new Duration(duration, unit);
 
              var message =
-             ExceptionHelper.BuildMessage("The {0} is different from the {1}.")
+             FluentMessage.BuildMessage("The {0} is different from the {1}.")
                             .On(testedDuration)
                             .Expected(expected);
              var notMessage =
-                 ExceptionHelper.BuildMessage("The {0} is the same than {1}.")
+                 FluentMessage.BuildMessage("The {0} is the same than {1}.")
                                 .On(testedDuration)
                                 .Expected(expected)
                                 .Comparison("different than");
@@ -224,11 +224,11 @@ namespace NFluent
              var expected = new Duration(comparand, unit);
 
              var message =
-             ExceptionHelper.BuildMessage("The {0} is different from the {1}.")
+             FluentMessage.BuildMessage("The {0} is different from the {1}.")
                             .On(testedDuration)
                             .Expected(expected);
              var notMessage =
-                 ExceptionHelper.BuildMessage("The {0} is the same than {1}.")
+                 FluentMessage.BuildMessage("The {0} is the same than {1}.")
                                 .On(testedDuration)
                                 .Expected(expected)
                                 .Comparison("different than");

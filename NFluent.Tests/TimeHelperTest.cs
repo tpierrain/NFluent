@@ -83,6 +83,15 @@ namespace NFluent.Tests
 
             Assert.IsTrue(test > new Duration(100, TimeUnit.Seconds));
             Assert.IsTrue(test < new Duration(100, TimeUnit.Hours));
+
+            var altDuration = new Duration(200, TimeUnit.Minutes);
+
+            // test objects override
+            Assert.AreEqual(altDuration.GetHashCode(), test.GetHashCode());
+            Assert.AreEqual(altDuration, test);
+            Assert.IsTrue(altDuration.Equals(test));
+            Assert.IsTrue(altDuration == test);
+            Assert.IsFalse(altDuration.Equals(null));
         }
 
         [Test]

@@ -144,7 +144,7 @@ The expected value: less than or equal to
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = 
-@"The checked value is different from the expected value.
+@"The checked value is different from the expected one.
 The checked value:
 	[50 Milliseconds]
 The expected value:
@@ -156,7 +156,7 @@ The expected value:
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = 
-@"The checked value is the same than expected value.
+@"The checked value is the same than expected one.
 The checked value:
 	[50 Milliseconds]
 The expected value: different than
@@ -167,7 +167,7 @@ The expected value: different than
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected value.
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
 The checked value:
 	[50 Milliseconds]
 The expected value:
@@ -178,7 +178,7 @@ The expected value:
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is the same than expected value.
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is the same than expected one.
 The checked value:
 	[50 Milliseconds]
 The expected value: different than

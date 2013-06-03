@@ -18,6 +18,7 @@
 
 namespace NFluent.Helpers
 {
+    using System;
     using System.Collections.Generic;
     using System.Text;
 
@@ -28,28 +29,69 @@ namespace NFluent.Helpers
     /// </summary>
     internal class FluentMessage
     {
+        private const string DefaultEntity = "value";
+
+        private const string TestedAdjective = "checked";
+
+        private const string ExpectedAdjective = "expected";
+
         private readonly string message;
-        private readonly List<SubBlock> subBlocks = new List<SubBlock>();
-        private string entity;
+        private readonly List<MessageBlock> subBlocks = new List<MessageBlock>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FluentMessage"/> class.
         /// </summary>
         /// <param name="message">
-        /// The message.
+        /// The main message.
         /// </param>
+        /// <remarks>
+        /// You can use {x} as place holders for standard wordings:
+        /// - {0}. 
+        /// </remarks>
         public FluentMessage(string message)
         {
             this.message = message;
-            this.entity = "value";
+            this.Entity = DefaultEntity;
         }
 
-        private string Entity
+        private string Entity { get; set; }
+
+        /// <summary>
+        /// Gets the expected value label.
+        /// </summary>
+        /// <value>
+        /// The expected label.
+        /// </value>
+        public string ExpectedLabel
         {
             get
             {
-                return this.entity;
+                return string.Format("{0} {1}", ExpectedAdjective, "one");
             }
+        }
+
+        /// <summary>
+        /// Gets the tested value label.
+        /// </summary>
+        /// <value>
+        /// The tested label.
+        /// </value>
+        public string TestedLabel
+        {
+            get
+            {
+                return string.Format("{0} {1}", TestedAdjective, this.Entity);
+            }
+        }
+
+        /// <summary>
+        /// Builds the message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>A fluent message builder.</returns>
+        public static FluentMessage BuildMessage(string message)
+        {
+            return new FluentMessage(message);
         }
 
         /// <summary>
@@ -61,7 +103,7 @@ namespace NFluent.Helpers
         public override string ToString()
         {
             var builder = new StringBuilder();
-            builder.AppendFormat(this.message, string.Format("checked {0}", this.entity), string.Format("expected {0}", this.entity));
+            builder.AppendFormat(this.message, this.TestedLabel, this.ExpectedLabel);
             foreach (var subBlock in this.subBlocks)
             {
                 builder.AppendLine();
@@ -78,7 +120,7 @@ namespace NFluent.Helpers
         /// <returns>The same fluent message.</returns>
         public FluentMessage For(string newEntity)
         {
-            this.entity = newEntity;
+            this.Entity = newEntity;
             return this;
         }
 
@@ -87,9 +129,9 @@ namespace NFluent.Helpers
         /// </summary>
         /// <param name="test">The tested object/value.</param>
         /// <returns>A <see cref="FluentMessage"/> to continue build the message.</returns>
-        public SubBlock On(object test)
+        public MessageBlock On(object test)
         {
-            var subBlock = new SubBlock(this, test, "checked");
+            var subBlock = new MessageBlock(this, test, TestedAdjective);
             this.subBlocks.Add(subBlock);
             return subBlock;
         }
@@ -98,18 +140,27 @@ namespace NFluent.Helpers
         /// Adds a message block to describe the expected result.
         /// </summary>
         /// <param name="expected">The expected value.</param>
-        /// <returns>The created SubBlock.</returns>
-        public SubBlock Expected(object expected)
+        /// <returns>The created MessageBlock.</returns>
+        public MessageBlock Expected(object expected)
         {
-            var subBlock = new SubBlock(this, expected, "expected");
+            var subBlock = new MessageBlock(this, expected, ExpectedAdjective);
             this.subBlocks.Add(subBlock);
             return subBlock;
         }
 
         /// <summary>
+        /// Adds the block to the message.
+        /// </summary>
+        /// <param name="subBlock">The block <see cref="MessageBlock"/>.</param>
+        public void AddBlock(MessageBlock subBlock)
+        {
+            this.subBlocks.Add(subBlock);
+        }
+
+        /// <summary>
         /// Class describing a message block.
         /// </summary>
-        internal class SubBlock
+        public class MessageBlock
         {
             private readonly FluentMessage message;
 
@@ -121,14 +172,23 @@ namespace NFluent.Helpers
 
             private string comparisonLabel;
 
+            private bool includeHash;
+
+            private bool includeType;
+
             /// <summary>
-            /// Initializes a new instance of the <see cref="SubBlock"/> class.
+            /// Initializes a new instance of the <see cref="MessageBlock"/> class.
             /// </summary>
             /// <param name="message">The message.</param>
             /// <param name="test">The tested object.</param>
             /// <param name="attribute">The block attribute.</param>
-            public SubBlock(FluentMessage message, object test, string attribute)
+            public MessageBlock(FluentMessage message, object test, string attribute)
             {
+                if (message == null)
+                {
+                    throw new ArgumentNullException("message");
+                }
+
                 this.message = message;
                 this.test = test;
                 this.attribute = attribute;
@@ -151,9 +211,28 @@ namespace NFluent.Helpers
                 }
 
                 builder.AppendLine();
-                builder.AppendFormat(
-                    "\t[{0}]",
-                    this.test.ToStringProperlyFormated());
+                if (this.test == null)
+                {
+                    builder.AppendFormat("\t[null]");
+                }
+                else
+                {
+                    builder.AppendFormat(
+                        "\t[{0}]",
+                        this.test.ToStringProperlyFormated());
+                    if (this.includeType)
+                    {
+                        builder.AppendFormat(
+                            " of type: [{0}]", this.test.GetType());
+                    }
+
+                    if (this.includeHash)
+                    {
+                        builder.AppendFormat(
+                            " with HashCode: [{0}]", this.test.GetHashCode());
+                    }
+                }
+
                 return builder.ToString();
             }
 
@@ -165,20 +244,45 @@ namespace NFluent.Helpers
             /// </returns>
             public override string ToString()
             {
-                if (this.message != null)
-                {
-                    return this.message.ToString();                    
-                }
+                return this.message.ToString();                    
+            }
 
-                return this.GetMessage();
+            /// <summary>
+            /// Requests that the Hash value is included in the description block.
+            /// </summary>
+            /// <param name="active">
+            /// True to include the type. This is the default value.
+            /// </param>
+            /// <returns>
+            /// Returns this instance for chained calls.
+            /// </returns>
+            public MessageBlock WithHashCode(bool active = true)
+            {
+                this.includeHash = active;
+                return this;
+            }
+
+            /// <summary>
+            /// Requests that the type is included in the description block.
+            /// </summary>
+            /// <param name="active">
+            /// True to include the type. This is the default value.
+            /// </param>
+            /// <returns>
+            /// Returns this instance for chained calls.
+            /// </returns>
+            public MessageBlock WithType(bool active = true)
+            {
+                this.includeType = active;
+                return this;
             }
 
             /// <summary>
             /// Adds a message block to describe the expected result.
             /// </summary>
             /// <param name="expected">The expected value.</param>
-            /// <returns>The created SubBlock.</returns>
-            public SubBlock Expected(object expected)
+            /// <returns>The created MessageBlock.</returns>
+            public MessageBlock Expected(object expected)
             {
                 return this.message.Expected(expected);
             }
@@ -190,9 +294,9 @@ namespace NFluent.Helpers
             /// The comparison suffix.
             /// </param>
             /// <returns>
-            /// The <see cref="SubBlock"/> for fluent API.
+            /// The <see cref="MessageBlock"/> for fluent API.
             /// </returns>
-            public SubBlock Comparison(string comparison)
+            public MessageBlock Comparison(string comparison)
             {
                 this.comparisonLabel = comparison;
                 return this;
@@ -202,8 +306,8 @@ namespace NFluent.Helpers
             /// Specifies a specific attribute for the message.
             /// </summary>
             /// <param name="newLabel">The new attribute.</param>
-            /// <returns>This <see cref="SubBlock"/>.</returns>
-            public SubBlock Label(string newLabel)
+            /// <returns>This <see cref="MessageBlock"/>.</returns>
+            public MessageBlock Label(string newLabel)
             {
                 this.customMessage = newLabel;
                 return this;
