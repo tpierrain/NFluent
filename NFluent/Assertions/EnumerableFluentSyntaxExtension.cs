@@ -150,7 +150,7 @@ namespace NFluent
                         var message =
                             FluentMessage.BuildMessage(
                                 string.Format(
-                                    "The checked enumerable does not follow to the expected order. Item '{0}' appears too {2} in the list, at index '{1}'.",
+                                    "The {{0}} does not follow to the expected order. Item '{0}' appears too {2} in the list, at index '{1}'.",
                                     item.ToStringProperlyFormated(),
                                     faillingIndex,
                                     index > scanIndex ? "early" : "late"))

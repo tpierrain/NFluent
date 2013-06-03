@@ -5,10 +5,6 @@
     [TestFixture]
     public class EqualRelatedTests
     {
-        private const string Blabla = ".*?";
-        private const string LineFeed = "\\n";
-        private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
-
         #region IsEqualTo()
 
         [Test]
