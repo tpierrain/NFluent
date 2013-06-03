@@ -45,11 +45,14 @@ public static class TypeCloningHelper
 				line = line.Replace(originalSourceClassName, assertionClassName);
 				line = line.Replace("<int>", "<" + config.TypeName + ">");
 				line = line.Replace("int ", config.TypeName + " ");
+				line = line.Replace("(int)", "(" + config.TypeName + ")");
 				line = line.Replace("int?", config.TypeName + "?");
 				line = line.Replace("on an integer value", "on a " + config.TypeName + " value");
 				line = line.Replace(@"// Since this class is the model/template for the generation of the tests on all the other numbers types, don't forget to re-generate all the other classes every time you change this one. To do that, just save the .\T4\NumberTestsGenerator.tt file within Visual Studio 2012. This will trigger the T4 code generation process.", @"#pragma warning restore 169");
 				line = line.Replace("Zero = 0;", "Zero = " + config.ValueForZero + ";");
 				line = line.Replace("One = 1;", "One = " + config.ValueForOne + ";");
+				line = line.Replace("one = 1;", "one = " + config.ValueForOne + ";");
+				line = line.Replace("(1)", "(" + config.ValueForOne + ")");
 				line = line.Replace("Two = 2;", "Two = " + config.ValueForTwo + ";");
 				line = line.Replace("Twenty = 20;", "Twenty = " + config.ValueForTwenty + ";");
 				line = line.Replace("MinusFifty = -50;", "MinusFifty = " + config.ValueForMinusFifty + ";");

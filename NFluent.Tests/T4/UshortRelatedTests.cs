@@ -401,6 +401,107 @@
 
         #endregion
 
+        #region IsEqualTo
+
+        [Test]
+        public void IsEqualToWorksWithNullable()
+        {
+            ushort? one = 1;
+
+            Check.That(one).IsEqualTo((ushort)1);
+        }
+
+        [Test]
+        public void NotIsEqualToWorksWithNullable()
+        {
+            ushort? one = 1;
+            const ushort Twenty = 20;
+
+            Check.That(one).Not.IsEqualTo(Twenty).And.IsPositive().And.Not.IsGreaterThan(1).And.IsGreaterThan(0);
+        }
+
+        [Test]
+        public void IsEqualToWithNullableIsChainableWithStandardIntFluentAssertions()
+        {
+            ushort? one = 1;
+
+            Check.That(one).IsEqualTo(one).And.IsPositive().And.Not.IsGreaterThan(1).And.IsGreaterThan(0);
+        }
+
+        [Test]
+        public void IsEqualToWorksWithNullableWithoutValue()
+        {
+            ushort? noValue = null;
+
+            Check.That(noValue).IsEqualTo(null);
+        }
+
+        [Test]
+        public void NotIsEqualToWorksWithNullableWithoutValue()
+        {
+            ushort? noValue = null;
+            const ushort Twenty = 20;
+
+            Check.That(noValue).Not.IsEqualTo(Twenty);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not equal to the expected one:\n\t[20].")]
+        public void IsEqualToThrowsExceptionWithNullableWithoutValue()
+        {
+            ushort? noValue = null;
+            const ushort Twenty = 20;
+
+            Check.That(noValue).IsEqualTo(Twenty);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis equal to:\n\t[null]\nwhich is unexpected.")]
+        public void NotIsEqualToThrowsExceptionWithNullableWithoutValue()
+        {
+            ushort? noValue = null;
+
+            Check.That(noValue).Not.IsEqualTo(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis not equal to the expected one:\n\t[20].")]
+        public void IsEqualToThrowsExceptionWhenFailingWithNullableOfSameType()
+        {
+            ushort? one = 1;
+            const ushort Twenty = 20;
+
+            Check.That(one).IsEqualTo(Twenty);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[1])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[1\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + "unexpected.")]
+        public void NotIsEqualToThrowsExceptionWhenFailingWithNullableOfSameType()
+        {
+            ushort? one = 1;
+
+            Check.That(one).Not.IsEqualTo((ushort)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1] of type: [System.UInt16]\nis not equal to the expected one:\n\t[\"What da...\"] of type: [System.String].")]
+        public void IsEqualToThrowsExceptionWhenFailingWithNullable()
+        {
+            ushort? one = 1;
+
+            Check.That(one).IsEqualTo("What da...");
+        }
+
+        [Test]
+        public void NotIsEqualToWorksWithNullableAndOtherTypeOfValue()
+        {
+            ushort? one = 1;
+
+            Check.That(one).Not.IsEqualTo("What da...");
+        }
+
+        #endregion
+
         #endregion
     }
 }

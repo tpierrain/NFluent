@@ -45,6 +45,54 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value is equal to another expected value.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<int>> IsEqualTo(this IFluentAssertion<int?> fluentAssertion, object expected)
+        {
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<int?>;
+            IRunnableAssertion<int?> runnableAssertion = fluentAssertion as IRunnableAssertion<int?>;
+            
+            object value = null;
+            if (runnableAssertion.Value.HasValue)
+            {
+                value = runnableAssertion.Value.Value;
+            }
+
+            assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    if (value == null)
+                    {
+                        if (expected != null)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[null]\nis not equal to the expected one:\n\t[{0}].", expected.ToStringProperlyFormated()));
+                        }
+                    }
+                    else
+                    {
+                        EqualityHelper.IsEqualTo(value, expected);
+                    }
+                },
+                EqualityHelper.BuildErrorMessage(value, expected, true));
+
+            if (value != null)
+            {
+                IFluentAssertion<int> fakePreviousAssertion = new FluentAssertion<int>((int)value);
+                return new ChainableFluentAssertion<IFluentAssertion<int>>(fakePreviousAssertion);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>

@@ -61,7 +61,7 @@ namespace NFluent.Helpers
             else
             {
                 // same instance type. Do they have the same ToString() value? In that case we should include the hashcodex of each instance within the error message
-                if (string.Compare(instance.ToString(), expected.ToString()) == 0)
+                if (string.Compare(instance.ToStringProperlyFormated(), expected.ToStringProperlyFormated()) == 0)
                 {
                     includeHashCode = true;
                     expectedTypeMessage = BuildTypeDescriptionMessage(expected, includeHashCode);

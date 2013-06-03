@@ -52,6 +52,54 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value is equal to another expected value.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<short>> IsEqualTo(this IFluentAssertion<short?> fluentAssertion, object expected)
+        {
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<short?>;
+            IRunnableAssertion<short?> runnableAssertion = fluentAssertion as IRunnableAssertion<short?>;
+            
+            object value = null;
+            if (runnableAssertion.Value.HasValue)
+            {
+                value = runnableAssertion.Value.Value;
+            }
+
+            assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    if (value == null)
+                    {
+                        if (expected != null)
+                        {
+                            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[null]\nis not equal to the expected one:\n\t[{0}].", expected.ToStringProperlyFormated()));
+                        }
+                    }
+                    else
+                    {
+                        EqualityHelper.IsEqualTo(value, expected);
+                    }
+                },
+                EqualityHelper.BuildErrorMessage(value, expected, true));
+
+            if (value != null)
+            {
+                IFluentAssertion<short> fakePreviousAssertion = new FluentAssertion<short>((short)value);
+                return new ChainableFluentAssertion<IFluentAssertion<short>>(fakePreviousAssertion);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
@@ -160,6 +208,7 @@ namespace NFluent
         /// Checks that the actual nullable value is not null. 
         /// Note: this method does not return a chainable assertion since it may lead to problem when calling Not.IsNotNull() with a nullable with null as Value.
         /// </summary>
+        /// <remarks>Could return a chainable assertion only if we disable the Not operator for this method (to be investigated).</remarks>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <exception cref="FluentAssertionException">The value is null.</exception>
         public static void IsNotNull(this IFluentAssertion<short?> fluentAssertion)
