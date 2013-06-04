@@ -109,7 +109,7 @@ namespace NFluent.Tests.ForDocumentation
                 else
                 {
                     // type does not implement IFluentAssertion<T>, we try to find a 'Value' property
-                    var prop = method.DeclaringType.GetProperty("Value");
+                    var prop = method.DeclaringType.GetProperty("Value", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
                     if (prop != null)
                     {
                         result.CheckedType = prop.PropertyType;

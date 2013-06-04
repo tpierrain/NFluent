@@ -68,7 +68,7 @@ namespace NFluent
         /// <value>
         /// The value to be tested by any fluent assertion extension method.
         /// </value>
-        public Action Value { get; set; }
+        private Action Value { get; set; }
 
         #endregion
 
