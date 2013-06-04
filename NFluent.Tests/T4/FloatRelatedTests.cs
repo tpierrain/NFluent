@@ -286,78 +286,79 @@
 
         #region Nullables
 
-        #region IsNull (which is not chainable by the way; on purpose)
+        #region HasValue
 
         [Test]
-        public void IsNullWorksWithNullable()
-        {
-            float? noValue = null;
-
-            Check.That(noValue).IsNull();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nis not null as expected.")]
-        public void IsNullThrowsExceptionWhenFailingWithNullable()
+        public void HasValueWorks()
         {
             float? one = 1F;
 
-            Check.That(one).IsNull();
+            Check.That(one).HasValue();
         }
 
         [Test]
-        public void NotIsNullWorksWithNullable()
-        {
-            float? one = 1F;
-
-            Check.That(one).Not.IsNull();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value is null which is unexpected.")]
-        public void NotIsNullThrowsExceptionWhenFailingWithNullable()
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value has no value, which is unexpected.")]
+        public void HasValueThrowsExceptionWhenFailing()
         {
             float? noValue = null;
 
-            Check.That(noValue).Not.IsNull();
+            Check.That(noValue).HasValue();
         }
 
+        [Test]
+        public void NotHasValueWorks()
+        {
+            float? noValue = null;
+
+            Check.That(noValue).Not.HasValue();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nhas a value, which is unexpected.")]
+        public void NotHasValueThrowsExceptionWhenFailing()
+        {
+            float? one = 1F;
+
+            Check.That(one).Not.HasValue();
+        }
+
+        // TODO add Which statement support here
         #endregion
 
-        #region IsNotNull (which is not chainable by the way, since Not.IsNotNull() can work with nullable without Value => which can't be chained afterward)
-
+        #region HasNoValue
+        
         [Test]
-        public void IsNotNullWorks()
-        {
-            float? one = 1F;
-
-            Check.That(one).IsNotNull();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value is null which is unexpected.")]
-        public void IsNotNullThrowsExceptionWhenFailing()
+        public void HasNoValueWorks()
         {
             float? noValue = null;
 
-            Check.That(noValue).IsNotNull();
+            Check.That(noValue).HasNoValue();
         }
 
         [Test]
-        public void NotIsNotNullWorks()
-        {
-            float? noValue = null;
-
-            Check.That(noValue).Not.IsNotNull();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nis not null which is unexpected.")]
-        public void NotIsNotNullThrowsExceptionWhenFailing()
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nhas a value, which is unexpected.")]
+        public void HasNoValueThrowsExceptionWhenFailing()
         {
             float? one = 1F;
 
-            Check.That(one).Not.IsNotNull();
+            Check.That(one).HasNoValue();
+        }
+
+        [Test]
+        public void NotHasNoValueWorks()
+        {
+            float? one = 1F;
+
+            Check.That(one).Not.HasNoValue();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value has no value, which is unexpected.")]
+        public void NotHasNoValueThrowsExceptionWhenFailing()
+        {
+            float? noValue = null;
+
+            Check.That(noValue).Not.HasNoValue();
         }
 
         #endregion

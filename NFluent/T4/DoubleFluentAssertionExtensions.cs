@@ -183,35 +183,13 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual nullable value is null. 
-        /// Note: this method does not return a chainable assertion.
-        /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
-        /// <exception cref="FluentAssertionException">The value is not null.</exception>
-        public static void IsNull(this IFluentAssertion<double?> fluentAssertion)
-        {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<double?>;
-            IRunnableAssertion<double?> runnableAssertion = fluentAssertion as IRunnableAssertion<double?>;
-
-            assertionRunner.ExecuteAssertion(
-                () =>
-                {
-                    if (runnableAssertion.Value != null)
-                    {
-                        throw new FluentAssertionException(string.Format("\nThe checked nullable value:\n\t[{0}]\nis not null as expected.", runnableAssertion.Value));
-                    }
-                },
-                "\nThe checked nullable value is null which is unexpected.");
-        }
-
-        /// <summary>
-        /// Checks that the actual nullable value is not null. 
+        /// Checks that the actual nullable value has a value and thus, is not null. 
         /// Note: this method does not return a chainable assertion since it may lead to problem when calling Not.IsNotNull() with a nullable with null as Value.
         /// </summary>
         /// <remarks>Could return a chainable assertion only if we disable the Not operator for this method (to be investigated).</remarks>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <exception cref="FluentAssertionException">The value is null.</exception>
-        public static void IsNotNull(this IFluentAssertion<double?> fluentAssertion)
+        public static void HasValue(this IFluentAssertion<double?> fluentAssertion)
         {
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<double?>;
             IRunnableAssertion<double?> runnableAssertion = fluentAssertion as IRunnableAssertion<double?>;
@@ -221,12 +199,38 @@ namespace NFluent
                 {
                     if (runnableAssertion.Value == null)
                     {
-                        throw new FluentAssertionException(string.Format("\nThe checked nullable value is null which is unexpected."));
+                        throw new FluentAssertionException(string.Format("\nThe checked nullable value has no value, which is unexpected."));
                     }
                 },
-                string.Format("\nThe checked nullable value:\n\t[{0}]\nis not null which is unexpected.", runnableAssertion.Value.ToStringProperlyFormated()));
+                string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", runnableAssertion.Value.ToStringProperlyFormated()));
+
+            // todo: allow the usage of the Which statement afterward
         }
 
+        /// <summary>
+        /// Checks that the actual nullable value has no value and thus, is null. 
+        /// Note: this method does not return a chainable assertion.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <exception cref="FluentAssertionException">The value is not null.</exception>
+        public static void HasNoValue(this IFluentAssertion<double?> fluentAssertion)
+        {
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<double?>;
+            IRunnableAssertion<double?> runnableAssertion = fluentAssertion as IRunnableAssertion<double?>;
+
+            assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    if (runnableAssertion.Value != null)
+                    {
+                        throw new FluentAssertionException(string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", runnableAssertion.Value));
+                    }
+                },
+                "\nThe checked nullable value has no value, which is unexpected.");
+
+            // todo: allow the usage of the Which statement afterward
+        }
+        
         /// <summary>
         /// Checks that the actual value is NOT equal to zero.
         /// </summary>
