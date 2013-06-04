@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NFluent")]
 [assembly: AssemblyDescription("NFluent is an ergonomic assertion library which aims to fluent your .NET TDD experience (based on simple Check.That() assertion statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST Fluent assertion/reflection library (http://fest.easytesting.org/).")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Thomas PIERRAIN (thomas@pierrain.net), Marc-Antoine LATOUR and contributors.")]
+[assembly: AssemblyCompany("Thomas PIERRAIN (thomas@pierrain.net), Cyrille DUPUYDAUBY, Marc-Antoine LATOUR and contributors.")]
 [assembly: AssemblyProduct("NFluent")]
 [assembly: AssemblyCopyright("Copyright ©  2013. Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).")]
 [assembly: AssemblyTrademark("")]
@@ -36,4 +36,5 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("2959f969-9a70-4126-bbb2-ee2a03420e4f")]
 
+// Friend assemblies
 [assembly: InternalsVisibleTo("NFluent.Web"), InternalsVisibleTo("NFluent.Tests")]

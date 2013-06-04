@@ -14,6 +14,11 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
+    using NFluent.Extensions;
+    using NFluent.Helpers;
+
     /// <summary>
     /// Provides assertion methods to be executed on a ulong value.
     /// </summary>
@@ -77,6 +82,30 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual instance is an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The expected Type of the instance.</typeparam>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable fluent assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<ulong?>> IsInstanceOf<T>(this IFluentAssertion<ulong?> fluentAssertion)
+        {
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<ulong?>;
+            IRunnableAssertion<ulong?> runnableAssertion = fluentAssertion as IRunnableAssertion<ulong?>;
+
+            assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    IsInstanceHelper.IsSameType(typeof(Nullable<ulong>), typeof(T), runnableAssertion.Value);
+                },
+                IsInstanceHelper.BuildErrorMessageForNullable(typeof(Nullable<ulong>), typeof(T), runnableAssertion.Value, true));
+
+            return new ChainableFluentAssertion<IFluentAssertion<ulong?>>(fluentAssertion);
+        }
+
+        /// <summary>
         /// Checks that the actual instance is not an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
@@ -105,6 +134,52 @@ namespace NFluent
             return numberAssertionStrategy.IsZero();
         }
 
+        /// <summary>
+        /// Checks that the actual nullable value has a value and thus, is not null.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>A chainable fluent assertion.</returns>
+        /// <exception cref="FluentAssertionException">The value is null.</exception>
+        public static IChainableNullableFluentAssertionOrNumberFluentAssertion<ulong> HasAValue(this IFluentAssertion<ulong?> fluentAssertion)
+        {
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<ulong?>;
+            IRunnableAssertion<ulong?> runnableAssertion = fluentAssertion as IRunnableAssertion<ulong?>;
+
+            assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    if (runnableAssertion.Value == null)
+                    {
+                        throw new FluentAssertionException(string.Format("\nThe checked nullable value has no value, which is unexpected."));
+                    }
+                },
+                string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", runnableAssertion.Value.ToStringProperlyFormated()));
+
+            return new ChainableNullableFluentAssertionOrNumberFluentAssertion<ulong>(fluentAssertion);
+        }
+
+        /// <summary>
+        /// Checks that the actual nullable value has no value and thus, is null. 
+        /// Note: this method does not return a chainable assertion since the nullable is null.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <exception cref="FluentAssertionException">The value is not null.</exception>
+        public static void HasNoValue(this IFluentAssertion<ulong?> fluentAssertion)
+        {
+            var assertionRunner = fluentAssertion as IFluentAssertionRunner<ulong?>;
+            IRunnableAssertion<ulong?> runnableAssertion = fluentAssertion as IRunnableAssertion<ulong?>;
+
+            assertionRunner.ExecuteAssertion(
+                () =>
+                {
+                    if (runnableAssertion.Value != null)
+                    {
+                        throw new FluentAssertionException(string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", runnableAssertion.Value));
+                    }
+                },
+                "\nThe checked nullable value has no value, which is unexpected.");
+        }
+        
         /// <summary>
         /// Checks that the actual value is NOT equal to zero.
         /// </summary>

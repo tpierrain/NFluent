@@ -291,5 +291,149 @@ The expected value:
         }
 
         #endregion
+
+        #region Nullables
+
+        #region HasAValue
+
+        [Test]
+        public void HasValueWorks()
+        {
+            short? one = 1;
+
+            Check.That(one).HasAValue();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value has no value, which is unexpected.")]
+        public void HasValueThrowsExceptionWhenFailing()
+        {
+            short? noValue = null;
+
+            Check.That(noValue).HasAValue();
+        }
+
+        [Test]
+        public void NotHasValueWorks()
+        {
+            short? noValue = null;
+
+            Check.That(noValue).Not.HasAValue();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nhas a value, which is unexpected.")]
+        public void NotHasValueThrowsExceptionWhenFailing()
+        {
+            short? one = 1;
+
+            Check.That(one).Not.HasAValue();
+        }
+
+        [Test]
+        public void HasValueSupportsToBeChainedWithTheWhichOperator()
+        {
+            short? one = 1;
+
+            Check.That(one).HasAValue().Which.IsPositive().And.IsEqualTo((short)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable has no value to be checked.")]
+        public void TryingToChainANullableWithoutAValueIsPossibleButThrowsAnException()
+        {
+            short? noValue = null;
+
+            Check.That(noValue).Not.HasAValue().Which.IsPositive();
+        }
+
+        #endregion
+
+        #region HasNoValue
+        
+        [Test]
+        public void HasNoValueWorks()
+        {
+            short? noValue = null;
+
+            Check.That(noValue).HasNoValue();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nhas a value, which is unexpected.")]
+        public void HasNoValueThrowsExceptionWhenFailing()
+        {
+            short? one = 1;
+
+            Check.That(one).HasNoValue();
+        }
+
+        [Test]
+        public void NotHasNoValueWorks()
+        {
+            short? one = 1;
+
+            Check.That(one).Not.HasNoValue();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value has no value, which is unexpected.")]
+        public void NotHasNoValueThrowsExceptionWhenFailing()
+        {
+            short? noValue = null;
+
+            Check.That(noValue).Not.HasNoValue();
+        }
+
+        #endregion
+
+        #region IsInstanceOf (which is chainable)
+
+        [Test]
+        public void IsInstanceOfWorksWithNullable()
+        {
+            short? one = 1;
+
+            Check.That(one).IsInstanceOf<short?>().And.HasAValue().Which.IsEqualTo((short)1);
+        }
+
+        [Test]
+        public void IsInstanceOfWithNullableIsChainable()
+        {
+            short? one = 1;
+
+            Check.That(one).IsInstanceOf<short?>().And.HasAValue().Which.IsEqualTo((short)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis an instance of:\n\t[System.Nullable`1[System.Int16]]\nwhich was not expected.")]
+        public void NotIsInstanceOfWorksWithNullable()
+        {
+            short? one = 1;
+
+            Check.That(one).Not.IsInstanceOf<short?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis an instance of:\n\t[System.Nullable`1[System.Int16]]\nwhich was not expected.")]
+        public void NotIsInstanceOfWorksWithNullableWithoutValue()
+        {
+            short? noValue = null;
+
+            Check.That(noValue).Not.IsInstanceOf<short?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not an instance of:\n\t[System.String]\nbut an instance of:\n\t[System.Nullable`1[System.Int16]]\ninstead.")]
+        public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
+        {
+            short? one = null;
+
+            Check.That(one).IsInstanceOf<string>();
+        }
+
+        #endregion
+
+        #endregion
     }
 }

@@ -24,6 +24,20 @@ namespace NFluent.Helpers
     internal static class IsInstanceHelper
     {
         /// <summary>
+        /// Checks that a type is the same as the expected one.
+        /// </summary>
+        /// <param name="instanceType">The type of the instance to be checked.</param>
+        /// <param name="expectedType">The expected type for the instance to be checked.</param>
+        /// <param name="value">The value of the instance to be checked (may be a nullable instance).</param>
+        public static void IsSameType(Type instanceType, Type expectedType, object value)
+        {
+            if (instanceType != expectedType)
+            {
+                throw new FluentAssertionException(BuildErrorMessageForNullable(instanceType, expectedType, value, false));
+            }
+        }
+
+        /// <summary>
         /// Checks that an instance is of the given expected type.
         /// </summary>
         /// <param name="instance">The instance to be checked.</param>
@@ -68,6 +82,8 @@ namespace NFluent.Helpers
 
         /// <summary>
         /// Builds the error message related to the type comparison. This should be called only if the test failed (no matter it is negated or not).
+        /// Warning: Should not call this method with nullable types. Indeed, the Nullable types are treated specially by CLR and it is impossible to have a boxed instance of a nullable type.
+        /// Instead, boxing a nullable type will result in a null reference (if HasValue is false), or the boxed value (if there is a value).
         /// </summary>
         /// <param name="value">The checked value.</param>
         /// <param name="typeOperand">The other type operand.</param>
@@ -84,6 +100,18 @@ namespace NFluent.Helpers
             else
             {
                 return string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", value.ToStringProperlyFormated(), typeOperand, value.GetType());
+            }
+        }
+
+        public static string BuildErrorMessageForNullable(Type instanceType, Type expectedType, object value, bool isSameType)
+        {
+            if (isSameType)
+            {
+                return string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich was not expected.", value.ToStringProperlyFormated(), instanceType.ToStringProperlyFormated());
+            }
+            else
+            {
+                return string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", value.ToStringProperlyFormated(), expectedType.ToStringProperlyFormated(), instanceType.ToStringProperlyFormated());
             }
         }
     }

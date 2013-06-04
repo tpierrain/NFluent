@@ -1,4 +1,4 @@
-
+* Supports nullables for all the number types (int, long, double, decimal, byte, uint, ...) 
 New features
 ============
  - New extensible syntax for Check.That(IEnumerable xxx).Contains(...) that permits to add suffixes narrowing the conditions.
@@ -12,4 +12,3 @@ New features
 Changes
 =======
 - New error message structure that clearly states what is wrong
-

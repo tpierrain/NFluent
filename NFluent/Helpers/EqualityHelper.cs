@@ -80,7 +80,7 @@ namespace NFluent.Helpers
         /// <param name="expected">The expected instance.</param>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static void IsNotEqualTo(object instance, object expected)
-        {   
+        {
             if (object.Equals(instance, expected))
             {
                 throw new FluentAssertionException(BuildErrorMessage(instance, expected, true));
