@@ -72,8 +72,7 @@ namespace NFluent
         { 
             get
             {
-                bool negated = true;
-                return new FluentAssertion<T>(this.Value, negated);
+                return new FluentAssertion<T>(this.Value, true);
             }
         }
 

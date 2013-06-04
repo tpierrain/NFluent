@@ -33,11 +33,7 @@ namespace NFluent.Tests
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = 
-@"The checked value is more than the limit.
-The checked value:
-	[500 Milliseconds]
-The expected value: less than
-	[100 Milliseconds]")]
+"The checked value is more than the limit.\nThe checked value:\n\t[500 Milliseconds]\nThe expected value: less than\n\t[100 Milliseconds]")]
         public void LessThanThrowsExceptionWhenFailing()
         {
             Check.That(TimeSpan.FromMilliseconds(500)).IsLessThan(100, TimeUnit.Milliseconds);
@@ -45,11 +41,7 @@ The expected value: less than
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = 
-@"The checked value is not more than the limit.
-The checked value:
-	[100 Milliseconds]
-The expected value: more than or equal to
-	[600 Milliseconds]")]
+"The checked value is not more than the limit.\nThe checked value:\n\t[100 Milliseconds]\nThe expected value: more than or equal to\n\t[600 Milliseconds]")]
         public void NotLessThanThrowsExceptionWhenFailing()
         {
             Check.That(TimeSpan.FromMilliseconds(100)).Not.IsLessThan(600, TimeUnit.Milliseconds);
@@ -57,11 +49,7 @@ The expected value: more than or equal to
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = 
-@"The checked value is more than the limit.
-The checked value:
-	[500 Milliseconds]
-The expected value: less than
-	[100 Milliseconds]")]
+"The checked value is more than the limit.\nThe checked value:\n\t[500 Milliseconds]\nThe expected value: less than\n\t[100 Milliseconds]")]
         public void LessThanThrowsExceptionWhenFailingWithSpan()
         {
             Check.That(TimeSpan.FromMilliseconds(500)).IsLessThan(TimeSpan.FromMilliseconds(100));
@@ -69,11 +57,7 @@ The expected value: less than
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = 
-@"The checked value is not more than the limit.
-The checked value:
-	[100 Milliseconds]
-The expected value: more than or equal to
-	[600 Milliseconds]")]
+"The checked value is not more than the limit.\nThe checked value:\n\t[100 Milliseconds]\nThe expected value: more than or equal to\n\t[600 Milliseconds]")]
         public void NotLessThanThrowsExceptionWhenFailingWithSpan()
         {
             Check.That(TimeSpan.FromMilliseconds(100)).Not.IsLessThan(TimeSpan.FromMilliseconds(600));
@@ -89,11 +73,7 @@ The expected value: more than or equal to
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = 
-@"The checked value is not more than the limit.
-The checked value:
-	[50 Milliseconds]
-The expected value: less than or equal to
-	[100 Milliseconds]")]
+"The checked value is not more than the limit.\nThe checked value:\n\t[50 Milliseconds]\nThe expected value: less than or equal to\n\t[100 Milliseconds]")]
         public void IsGreaterThanThrowsExceptionWhenFailing()
         {
             Check.That(TimeSpan.FromMilliseconds(50)).IsGreaterThan(100, TimeUnit.Milliseconds);
@@ -101,11 +81,7 @@ The expected value: less than or equal to
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = 
-@"The checked value is more than the limit.
-The checked value:
-	[100 Milliseconds]
-The expected value: more than
-	[50 Milliseconds]")]
+"The checked value is more than the limit.\nThe checked value:\n\t[100 Milliseconds]\nThe expected value: more than\n\t[50 Milliseconds]")]
         public void NotIsGreaterThanThrowsExceptionWhenFailing()
         {
             Check.That(TimeSpan.FromMilliseconds(100)).Not.IsGreaterThan(50, TimeUnit.Milliseconds);
@@ -113,11 +89,7 @@ The expected value: more than
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = 
-@"The checked value is not more than the limit.
-The checked value:
-	[50 Milliseconds]
-The expected value: more than
-	[100 Milliseconds]")]
+"The checked value is not more than the limit.\nThe checked value:\n\t[50 Milliseconds]\nThe expected value: more than\n\t[100 Milliseconds]")]
         public void IsGreaterThanThrowsExceptionWhenFailingWithSpan()
         {
             Check.That(TimeSpan.FromMilliseconds(50)).IsGreaterThan(TimeSpan.FromMilliseconds(100));
@@ -125,11 +97,7 @@ The expected value: more than
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = 
-@"The checked value is more than the limit.
-The checked value:
-	[100 Milliseconds]
-The expected value: less than or equal to
-	[50 Milliseconds]")]
+"The checked value is more than the limit.\nThe checked value:\n\t[100 Milliseconds]\nThe expected value: less than or equal to\n\t[50 Milliseconds]")]
         public void NotIsGreaterThanThrowsExceptionWhenFailingWithSpan()
         {
             Check.That(TimeSpan.FromMilliseconds(100)).Not.IsGreaterThan(TimeSpan.FromMilliseconds(50));
@@ -144,11 +112,7 @@ The expected value: less than or equal to
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = 
-@"The checked value is different from the expected one.
-The checked value:
-	[50 Milliseconds]
-The expected value:
-	[40 Milliseconds]")]
+"The checked value is different from the expected one.\nThe checked value:\n\t[50 Milliseconds]\nThe expected value:\n\t[40 Milliseconds]")]
         public void IsEqualToThrowsExceptionWhenFailing()
         {
             Check.That(TimeSpan.FromMilliseconds(50)).IsEqualTo(40, TimeUnit.Milliseconds);
@@ -156,33 +120,21 @@ The expected value:
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = 
-@"The checked value is the same than expected one.
-The checked value:
-	[50 Milliseconds]
-The expected value: different than
-	[50 Milliseconds]")]
+"The checked value is the same than expected one.\nThe checked value:\n\t[50 Milliseconds]\nThe expected value: different than\n\t[50 Milliseconds]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             Check.That(TimeSpan.FromMilliseconds(50)).Not.IsEqualTo(50, TimeUnit.Milliseconds);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
-The checked value:
-	[50 Milliseconds]
-The expected value:
-	[40 Milliseconds]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from the expected one.\nThe checked value:\n\t[50 Milliseconds]\nThe expected value:\n\t[40 Milliseconds]")]
         public void IsEqualToThrowsExceptionWhenFailingWithSpan()
         {
             Check.That(TimeSpan.FromMilliseconds(50)).IsEqualTo(TimeSpan.FromMilliseconds(40));
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is the same than expected one.
-The checked value:
-	[50 Milliseconds]
-The expected value: different than
-	[50 Milliseconds]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is the same than expected one.\nThe checked value:\n\t[50 Milliseconds]\nThe expected value: different than\n\t[50 Milliseconds]")]
         public void NotIsEqualToThrowsExceptionWhenFailingWithSpan()
         {
             Check.That(TimeSpan.FromMilliseconds(50)).Not.IsEqualTo(TimeSpan.FromMilliseconds(50));

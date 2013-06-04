@@ -31,7 +31,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "The checked code took too much time to execute.\r\n")]
+        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "The checked code took too much time to execute.\n")]
         public void FailDurationTest()
         {
             Check.That(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
@@ -72,7 +72,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked code did not raise an exception, whereas it must.\r\nExpected exception type is:\r\n\t[System.Exception]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked code did not raise an exception, whereas it must.\nExpected exception type is:\n\t[System.Exception]")]
         public void DidNotRaiseAnyTypedCheck()
         {
             Check.That(() => { new object(); }).Throws<Exception>();

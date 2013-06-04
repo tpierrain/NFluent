@@ -15,8 +15,6 @@
 
 namespace NFluent
 {
-    using System;
-
     using NFluent.Helpers;
 
     /// <summary>

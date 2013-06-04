@@ -106,7 +106,7 @@ namespace NFluent.Helpers
             builder.AppendFormat(this.message, this.TestedLabel, this.ExpectedLabel);
             foreach (var subBlock in this.subBlocks)
             {
-                builder.AppendLine();
+                builder.Append("\n");
                 builder.Append(subBlock.GetMessage());
             }
 
@@ -210,7 +210,7 @@ namespace NFluent.Helpers
                     builder.AppendFormat(this.customMessage ?? "The {0} {1}: {2}", this.attribute, this.message.Entity, this.comparisonLabel);
                 }
 
-                builder.AppendLine();
+                builder.Append("\n");
                 if (this.test == null)
                 {
                     builder.AppendFormat("\t[null]");

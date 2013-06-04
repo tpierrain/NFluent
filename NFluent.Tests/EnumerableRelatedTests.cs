@@ -130,9 +130,7 @@
         #endregion
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
-The expected value: different from
-	[45, 43, 54, 666] of type: [System.Collections.Generic.List`1[System.Int32]]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[45, 43, 54, 666] of type: [System.Collections.Generic.List`1[System.Int32]]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             IEnumerable enumerable = new List<int>() { 45, 43, 54, 666 };
@@ -140,11 +138,7 @@ The expected value: different from
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
-The checked value:
-	[45, 43, 54, 666] of type: [System.Collections.Generic.List`1[System.Int32]]
-The expected value:
-	[null]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from the expected one.\nThe checked value:\n\t[45, 43, 54, 666] of type: [System.Collections.Generic.List`1[System.Int32]]\nThe expected value:\n\t[null]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             IEnumerable enumerable = new List<int>() { 45, 43, 54, 666 };

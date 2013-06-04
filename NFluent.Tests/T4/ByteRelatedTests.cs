@@ -243,9 +243,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
-The expected value: different from
-	[20] of type: [System.Byte]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Byte]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             const byte Twenty = 20;
@@ -263,9 +261,7 @@ The expected value: different from
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
-The expected value: different from
-	[20] of type: [System.Byte]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Byte]")]
         public void IsNotEqualToThrowsExceptionWhenFailing()
         {
             const byte Twenty = 20;
@@ -274,11 +270,7 @@ The expected value: different from
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
-The checked value:
-	[1]
-The expected value:
-	[20]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from the expected one.\nThe checked value:\n\t[1]\nThe expected value:\n\t[20]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             const byte One = 1;

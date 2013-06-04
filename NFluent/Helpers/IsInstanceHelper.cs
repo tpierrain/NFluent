@@ -73,11 +73,19 @@ namespace NFluent.Helpers
         /// <exception cref="FluentAssertionException">The instance is not in the inheritance hierarchy of the specified type.</exception>
         public static void InheritsFrom(object instance, Type expectedBaseType)
         {
-            Type instanceType = instance.GetTypeWithoutThrowingException();
-            if (!expectedBaseType.IsAssignableFrom(instanceType))
+            var instanceType = instance.GetTypeWithoutThrowingException();
+            if (expectedBaseType.IsAssignableFrom(instanceType))
             {
-                throw new FluentAssertionException(string.Format("\nThe checked expression is not part of the inheritance hierarchy or of the same type than the specified one.\nIndeed, checked expression type:\n\t[{0}]\nis not a derived type of\n\t[{1}].", instanceType.ToStringProperlyFormated(), expectedBaseType.ToStringProperlyFormated()));
+                return;
             }
+            var message =
+                FluentMessage.BuildMessage("The {0} does not have the expected inheritance.")
+                             .For("expression type")
+                             .On(instanceType)
+                             .Label("Indeed, the {0} {1}")
+                             .Expected(expectedBaseType)
+                             .Label("is not a derived type of");
+            throw new FluentAssertionException(message.ToString());
         }
 
         /// <summary>
@@ -95,11 +103,13 @@ namespace NFluent.Helpers
         {
             if (isSameType)
             {
-                return string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich was not expected.", value.ToStringProperlyFormated(), value.GetType());
+                var message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of {0} whereas it must not.", typeOperand)).On(value).WithType().Expected(typeOperand).Label("The {0} type: different from");
+                return message.ToString();
             }
             else
             {
-                return string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", value.ToStringProperlyFormated(), typeOperand, value.GetType());
+                var message = FluentMessage.BuildMessage("The {0} is not an instance of the expected type.").On(value).WithType().Expected(typeOperand).Label("The {0} type:");
+                return message.ToString();
             }
         }
 

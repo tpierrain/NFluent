@@ -77,11 +77,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
-The checked value:
-	[True]
-The expected value:
-	[False]")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from the expected one.\nThe checked value:\n\t[True]\nThe expected value:\n\t[False]")]
         public void IsEqualThrowsExceptionWhenNotEqual()
         {
             const bool NFluentRocks = true;
@@ -90,9 +86,7 @@ The expected value:
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
-The expected value: different from
-	[True] of type: [System.Boolean]")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[True] of type: [System.Boolean]")]
         public void IsNotEqualThrowsExceptionWhenEqual()
         {
             const bool NFluentRocks = true;

@@ -144,11 +144,7 @@
         }
          
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
-The checked value:
-	[2013-12-25T00:00:00.0000000, Kind = Unspecified]
-The expected value:
-	[2013-12-31T00:00:00.0000000, Kind = Unspecified]")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from the expected one.\nThe checked value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nThe expected value:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]")]
         public void IsEqualToThrowsExceptionWhenNotEqual()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -158,11 +154,7 @@ The expected value:
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
-The checked value:
-	[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]
-The expected value:
-	[""Batman""] of type: [System.String]")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from the expected one.\nThe checked value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]\nThe expected value:\n\t[\"Batman\"] of type: [System.String]")]
         public void IsEqualToThrowsExceptionWhenTypeDiffer()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -171,9 +163,7 @@ The expected value:
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
-The expected value: different from
-	[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]")]
         public void IsNotEqualToThrowsExceptionWhenEqual()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -183,7 +173,7 @@ The expected value: different from
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nis not an instance of:\n\t[System.String]\nbut an instance of:\n\t[System.DateTime]\ninstead.")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The checked value is not an instance of the expected type.\nThe checked value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]\nThe expected type:\n\t[System.String]")]
         public void IsInstanceOfThrowsExceptionWhenNotInstanceOf()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -192,7 +182,7 @@ The expected value: different from
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis an instance of:\n\t[System.DateTime]\nwhich was not expected.")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The checked value is an instance of System.DateTime whereas it must not.\nThe checked value:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]\nThe expected type: different from\n\t[System.DateTime]")]
         public void IsNotInstanceOfThrowsExceptionWhenInstanceOf()
         {
             var actual = new DateTime(2013, 1, 1);

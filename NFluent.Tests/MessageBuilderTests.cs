@@ -60,11 +60,11 @@ namespace NFluent.Tests
             var x = 4;
             var block = new FluentMessage.MessageBlock(message, x, string.Empty);
 
-            Assert.AreEqual("The  value:\r\n\t[4]", block.GetMessage());
+            Assert.AreEqual("The  value:\n\t[4]", block.GetMessage());
 
             block.WithHashCode().WithType();
 
-            Assert.AreEqual("The  value:\r\n\t[4] of type: [System.Int32] with HashCode: [4]", block.GetMessage());
+            Assert.AreEqual("The  value:\n\t[4] of type: [System.Int32] with HashCode: [4]", block.GetMessage());
         }
     }
 }
