@@ -52,7 +52,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Assertions\StructFluentAssertionExtensions.cs" />
+    <Compile Include="ChainableNullableFluentAssertionOrNumberFluentAssertion.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="IChainableNullableFluentAssertionOrNumberFluentAssertion.cs" />
     <Compile Include="INegated.cs" />
     <Compile Include="IRunnableAssertion.cs" />
     <Compile Include="IStructFluentAssertionRunner.cs" />

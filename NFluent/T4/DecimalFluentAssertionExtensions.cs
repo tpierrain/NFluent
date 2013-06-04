@@ -52,54 +52,6 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual value is equal to another expected value.
-        /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
-        /// <param name="expected">The expected value.</param>
-        /// <returns>
-        /// A chainable assertion.
-        /// </returns>
-        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<decimal>> IsEqualTo(this IFluentAssertion<decimal?> fluentAssertion, object expected)
-        {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<decimal?>;
-            IRunnableAssertion<decimal?> runnableAssertion = fluentAssertion as IRunnableAssertion<decimal?>;
-            
-            object value = null;
-            if (runnableAssertion.Value.HasValue)
-            {
-                value = runnableAssertion.Value.Value;
-            }
-
-            assertionRunner.ExecuteAssertion(
-                () =>
-                {
-                    if (value == null)
-                    {
-                        if (expected != null)
-                        {
-                            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[null]\nis not equal to the expected one:\n\t[{0}].", expected.ToStringProperlyFormated()));
-                        }
-                    }
-                    else
-                    {
-                        EqualityHelper.IsEqualTo(value, expected);
-                    }
-                },
-                EqualityHelper.BuildErrorMessage(value, expected, true));
-
-            if (value != null)
-            {
-                IFluentAssertion<decimal> fakePreviousAssertion = new FluentAssertion<decimal>((decimal)value);
-                return new ChainableFluentAssertion<IFluentAssertion<decimal>>(fakePreviousAssertion);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
@@ -183,13 +135,12 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual nullable value has a value and thus, is not null. 
-        /// Note: this method does not return a chainable assertion since it may lead to problem when calling Not.IsNotNull() with a nullable with null as Value.
+        /// Checks that the actual nullable value has a value and thus, is not null.
         /// </summary>
-        /// <remarks>Could return a chainable assertion only if we disable the Not operator for this method (to be investigated).</remarks>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>A chainable fluent assertion.</returns>
         /// <exception cref="FluentAssertionException">The value is null.</exception>
-        public static void HasValue(this IFluentAssertion<decimal?> fluentAssertion)
+        public static IChainableNullableFluentAssertionOrNumberFluentAssertion<decimal> HasAValue(this IFluentAssertion<decimal?> fluentAssertion)
         {
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<decimal?>;
             IRunnableAssertion<decimal?> runnableAssertion = fluentAssertion as IRunnableAssertion<decimal?>;
@@ -204,12 +155,12 @@ namespace NFluent
                 },
                 string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", runnableAssertion.Value.ToStringProperlyFormated()));
 
-            // todo: allow the usage of the Which statement afterward
+            return new ChainableNullableFluentAssertionOrNumberFluentAssertion<decimal>(fluentAssertion);
         }
 
         /// <summary>
         /// Checks that the actual nullable value has no value and thus, is null. 
-        /// Note: this method does not return a chainable assertion.
+        /// Note: this method does not return a chainable assertion since the nullable is null.
         /// </summary>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
         /// <exception cref="FluentAssertionException">The value is not null.</exception>
@@ -227,8 +178,6 @@ namespace NFluent
                     }
                 },
                 "\nThe checked nullable value has no value, which is unexpected.");
-
-            // todo: allow the usage of the Which statement afterward
         }
         
         /// <summary>

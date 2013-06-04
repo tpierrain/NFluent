@@ -286,14 +286,14 @@
 
         #region Nullables
 
-        #region HasValue
+        #region HasAValue
 
         [Test]
         public void HasValueWorks()
         {
             double? one = 1D;
 
-            Check.That(one).HasValue();
+            Check.That(one).HasAValue();
         }
 
         [Test]
@@ -302,7 +302,7 @@
         {
             double? noValue = null;
 
-            Check.That(noValue).HasValue();
+            Check.That(noValue).HasAValue();
         }
 
         [Test]
@@ -310,7 +310,7 @@
         {
             double? noValue = null;
 
-            Check.That(noValue).Not.HasValue();
+            Check.That(noValue).Not.HasAValue();
         }
 
         [Test]
@@ -319,10 +319,26 @@
         {
             double? one = 1D;
 
-            Check.That(one).Not.HasValue();
+            Check.That(one).Not.HasAValue();
         }
 
-        // TODO add Which statement support here
+        [Test]
+        public void HasValueSupportsToBeChainedWithTheWhichOperator()
+        {
+            double? one = 1D;
+
+            Check.That(one).HasAValue().Which.IsPositive().And.IsEqualTo((double)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable has no value to be checked.")]
+        public void TryingToChainANullableWithoutAValueIsPossibleButThrowsAnException()
+        {
+            double? noValue = null;
+
+            Check.That(noValue).Not.HasAValue().Which.IsPositive();
+        }
+
         #endregion
 
         #region HasNoValue
@@ -370,7 +386,15 @@
         {
             double? one = 1D;
 
-            Check.That(one).IsInstanceOf<double?>();
+            Check.That(one).IsInstanceOf<double?>().And.HasAValue().Which.IsEqualTo((double)1);
+        }
+
+        [Test]
+        public void IsInstanceOfWithNullableIsChainable()
+        {
+            double? one = 1D;
+
+            Check.That(one).IsInstanceOf<double?>().And.HasAValue().Which.IsEqualTo((double)1);
         }
 
         [Test]
@@ -398,107 +422,6 @@
             double? one = null;
 
             Check.That(one).IsInstanceOf<string>();
-        }
-
-        #endregion
-
-        #region IsEqualTo
-
-        [Test]
-        public void IsEqualToWorksWithNullable()
-        {
-            double? one = 1D;
-
-            Check.That(one).IsEqualTo((double)1);
-        }
-
-        [Test]
-        public void NotIsEqualToWorksWithNullable()
-        {
-            double? one = 1D;
-            const double Twenty = 20D;
-
-            Check.That(one).Not.IsEqualTo(Twenty).And.IsPositive().And.Not.IsGreaterThan(1D).And.IsGreaterThan(0);
-        }
-
-        [Test]
-        public void IsEqualToWithNullableIsChainableWithStandardIntFluentAssertions()
-        {
-            double? one = 1D;
-
-            Check.That(one).IsEqualTo(one).And.IsPositive().And.Not.IsGreaterThan(1D).And.IsGreaterThan(0);
-        }
-
-        [Test]
-        public void IsEqualToWorksWithNullableWithoutValue()
-        {
-            double? noValue = null;
-
-            Check.That(noValue).IsEqualTo(null);
-        }
-
-        [Test]
-        public void NotIsEqualToWorksWithNullableWithoutValue()
-        {
-            double? noValue = null;
-            const double Twenty = 20D;
-
-            Check.That(noValue).Not.IsEqualTo(Twenty);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not equal to the expected one:\n\t[20].")]
-        public void IsEqualToThrowsExceptionWithNullableWithoutValue()
-        {
-            double? noValue = null;
-            const double Twenty = 20D;
-
-            Check.That(noValue).IsEqualTo(Twenty);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis equal to:\n\t[null]\nwhich is unexpected.")]
-        public void NotIsEqualToThrowsExceptionWithNullableWithoutValue()
-        {
-            double? noValue = null;
-
-            Check.That(noValue).Not.IsEqualTo(null);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis not equal to the expected one:\n\t[20].")]
-        public void IsEqualToThrowsExceptionWhenFailingWithNullableOfSameType()
-        {
-            double? one = 1D;
-            const double Twenty = 20D;
-
-            Check.That(one).IsEqualTo(Twenty);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[1])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[1\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + "unexpected.")]
-        public void NotIsEqualToThrowsExceptionWhenFailingWithNullableOfSameType()
-        {
-            double? one = 1D;
-
-            Check.That(one).Not.IsEqualTo((double)1);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1] of type: [System.Double]\nis not equal to the expected one:\n\t[\"What da...\"] of type: [System.String].")]
-        public void IsEqualToThrowsExceptionWhenFailingWithNullable()
-        {
-            double? one = 1D;
-
-            Check.That(one).IsEqualTo("What da...");
-        }
-
-        [Test]
-        public void NotIsEqualToWorksWithNullableAndOtherTypeOfValue()
-        {
-            double? one = 1D;
-
-            Check.That(one).Not.IsEqualTo("What da...");
         }
 
         #endregion
