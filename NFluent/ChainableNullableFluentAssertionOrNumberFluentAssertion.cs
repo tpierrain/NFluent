@@ -24,9 +24,6 @@ namespace NFluent
     {
         private readonly IFluentAssertion<N?> previousFluentAssertion;
 
-        // used only for check discovery by helpers
-        private N? Value { get; set; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ChainableNullableFluentAssertionOrNumberFluentAssertion{N}" /> class.
         /// </summary>
@@ -35,6 +32,9 @@ namespace NFluent
         {
             this.previousFluentAssertion = previousFluentAssertion;
         }
+
+        // used only for check discovery by helpers
+        private N? Value { get; set; }
 
         /// <summary>
         /// Chains a new fluent assertion on the current one for the nullable value.

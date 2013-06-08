@@ -78,6 +78,7 @@ namespace NFluent.Helpers
             {
                 return;
             }
+
             var message =
                 FluentMessage.BuildMessage("The {0} does not have the expected inheritance.")
                              .For("expression type")
@@ -101,28 +102,48 @@ namespace NFluent.Helpers
         /// </returns>
         public static string BuildErrorMessage(object value, Type typeOperand, bool isSameType)
         {
+            FluentMessage.MessageBlock message;
             if (isSameType)
             {
-                var message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of {0} whereas it must not.", typeOperand)).On(value).WithType().Expected(typeOperand).Label("The {0} type: different from");
-                return message.ToString();
+                message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of {0} whereas it must not.", typeOperand))
+                                       .On(value)
+                                       .WithType()
+                                       .Expected(typeOperand)
+                                       .Label("The {0} type: different from");
             }
             else
             {
-                var message = FluentMessage.BuildMessage("The {0} is not an instance of the expected type.").On(value).WithType().Expected(typeOperand).Label("The {0} type:");
-                return message.ToString();
+                message = FluentMessage.BuildMessage("The {0} is not an instance of the expected type.")
+                                       .On(value)
+                                       .WithType()
+                                       .Expected(typeOperand)
+                                       .Label("The {0} type:");
             }
+        
+            return message.ToString();
         }
 
         public static string BuildErrorMessageForNullable(Type instanceType, Type expectedType, object value, bool isSameType)
         {
+            FluentMessage.MessageBlock message;
             if (isSameType)
             {
-                return string.Format("\nThe actual value:\n\t[{0}]\nis an instance of:\n\t[{1}]\nwhich was not expected.", value.ToStringProperlyFormated(), instanceType.ToStringProperlyFormated());
+                message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of {0} whereas it must not.", expectedType))
+                    .On(value)
+                    .WithType(instanceType)
+                    .Expected(expectedType)
+                    .Label("The {0} type: different from");
             }
             else
             {
-                return string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", value.ToStringProperlyFormated(), expectedType.ToStringProperlyFormated(), instanceType.ToStringProperlyFormated());
+                message = FluentMessage.BuildMessage(string.Format("The {{0}} is not an instance of {0}.", expectedType))
+                    .On(value)
+                    .WithType(instanceType)
+                    .Expected(expectedType)
+                    .Label("The {0} type:");
             }
+
+            return message.ToString();
         }
     }
 }

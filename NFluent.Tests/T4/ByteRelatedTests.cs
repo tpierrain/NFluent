@@ -18,6 +18,9 @@
         //// -----------------------------------------------------
 
         #pragma warning restore 169
+        private const string Blabla = ".*?";
+        private const string LineFeed = "\\n";
+        private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
 
         private CultureInfo savedCulture;
 
@@ -395,7 +398,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis an instance of:\n\t[System.Nullable`1[System.Byte]]\nwhich was not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is an instance of System.Nullable`1[System.Byte] whereas it must not.\nThe checked value:\n\t[1] of type: [System.Nullable`1[System.Byte]]\nThe expected type: different from\n\t[System.Nullable`1[System.Byte]]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
             byte? one = 1;
@@ -404,7 +407,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis an instance of:\n\t[System.Nullable`1[System.Byte]]\nwhich was not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is an instance of System.Nullable`1[System.Byte] whereas it must not.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Byte]]\nThe expected type: different from\n\t[System.Nullable`1[System.Byte]]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             byte? noValue = null;
@@ -413,7 +416,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not an instance of:\n\t[System.String]\nbut an instance of:\n\t[System.Nullable`1[System.Byte]]\ninstead.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is not an instance of System.String.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Byte]]\nThe expected type:\n\t[System.String]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
             byte? one = null;

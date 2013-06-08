@@ -176,6 +176,8 @@ namespace NFluent.Helpers
 
             private bool includeType;
 
+            private Type type;
+
             /// <summary>
             /// Initializes a new instance of the <see cref="MessageBlock"/> class.
             /// </summary>
@@ -191,6 +193,7 @@ namespace NFluent.Helpers
 
                 this.message = message;
                 this.test = test;
+                this.type = test.GetTypeWithoutThrowingException();
                 this.attribute = attribute;
             }
 
@@ -220,19 +223,20 @@ namespace NFluent.Helpers
                     builder.AppendFormat(
                         "\t[{0}]",
                         this.test.ToStringProperlyFormated());
-                    if (this.includeType)
-                    {
-                        builder.AppendFormat(
-                            " of type: [{0}]", this.test.GetType());
-                    }
-
-                    if (this.includeHash)
-                    {
-                        builder.AppendFormat(
-                            " with HashCode: [{0}]", this.test.GetHashCode());
-                    }
                 }
 
+                if (this.includeType && this.type != null)
+                {
+                    builder.AppendFormat(
+                        " of type: [{0}]", this.type);
+                }
+
+                if (this.includeHash && this.test != null)
+                {
+                    builder.AppendFormat(
+                        " with HashCode: [{0}]", this.test.GetHashCode());
+                }
+                
                 return builder.ToString();
             }
 
@@ -274,6 +278,21 @@ namespace NFluent.Helpers
             public MessageBlock WithType(bool active = true)
             {
                 this.includeType = active;
+                return this;
+            }
+
+            /// <summary>
+            /// Requests that a specific type is included in the description block.
+            /// </summary>
+            /// <param name="forcedType">Type to include in the description.</param>
+            /// <remarks>Default type is the type of the object instance given in constructor.</remarks>
+            /// <returns>
+            /// Returns this instance for chained calls.
+            /// </returns>
+            public MessageBlock WithType(Type forcedType)
+            {
+                this.type = forcedType;
+                this.includeType = true;
                 return this;
             }
 

@@ -57,12 +57,6 @@ namespace NFluent.Extensions
                 return string.Format("{{{0}}}: '{1}'", exc.GetType().FullName, exc.Message);
             }
 
-            var tp = theObject as Type;
-            if (tp != null)
-            {
-                return string.Format("{0}", tp.FullName);
-            }
-
             return theObject == null ? "null" : theObject.ToString();
         }
 

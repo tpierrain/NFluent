@@ -239,9 +239,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
-The expected value: different from
-	[20] of type: [System.Int32]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Int32]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             const int Twenty = 20;
@@ -259,9 +257,7 @@ The expected value: different from
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is equal to the expected one whereas it must not.
-The expected value: different from
-	[20] of type: [System.Int32]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Int32]")]
         public void IsNotEqualToThrowsExceptionWhenFailing()
         {
             const int Twenty = 20;
@@ -270,11 +266,7 @@ The expected value: different from
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = @"The checked value is different from the expected one.
-The checked value:
-	[1]
-The expected value:
-	[20]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from the expected one.\nThe checked value:\n\t[1]\nThe expected value:\n\t[20]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             const int One = 1;
@@ -399,7 +391,7 @@ The expected value:
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis an instance of:\n\t[System.Nullable`1[System.Int32]]\nwhich was not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is an instance of System.Nullable`1[System.Int32] whereas it must not.\nThe checked value:\n\t[1] of type: [System.Nullable`1[System.Int32]]\nThe expected type: different from\n\t[System.Nullable`1[System.Int32]]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
             int? one = 1;
@@ -408,7 +400,7 @@ The expected value:
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis an instance of:\n\t[System.Nullable`1[System.Int32]]\nwhich was not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is an instance of System.Nullable`1[System.Int32] whereas it must not.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Int32]]\nThe expected type: different from\n\t[System.Nullable`1[System.Int32]]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             int? noValue = null;
@@ -417,7 +409,7 @@ The expected value:
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not an instance of:\n\t[System.String]\nbut an instance of:\n\t[System.Nullable`1[System.Int32]]\ninstead.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is not an instance of System.String.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Int32]]\nThe expected type:\n\t[System.String]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
             int? one = null;

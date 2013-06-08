@@ -398,7 +398,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis an instance of:\n\t[System.Nullable`1[System.Double]]\nwhich was not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is an instance of System.Nullable`1[System.Double] whereas it must not.\nThe checked value:\n\t[1] of type: [System.Nullable`1[System.Double]]\nThe expected type: different from\n\t[System.Nullable`1[System.Double]]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
             double? one = 1D;
@@ -407,7 +407,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis an instance of:\n\t[System.Nullable`1[System.Double]]\nwhich was not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is an instance of System.Nullable`1[System.Double] whereas it must not.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Double]]\nThe expected type: different from\n\t[System.Nullable`1[System.Double]]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             double? noValue = null;
@@ -416,7 +416,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not an instance of:\n\t[System.String]\nbut an instance of:\n\t[System.Nullable`1[System.Double]]\ninstead.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is not an instance of System.String.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Double]]\nThe expected type:\n\t[System.String]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
             double? one = null;
