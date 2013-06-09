@@ -149,15 +149,6 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
-        /// Adds the block to the message.
-        /// </summary>
-        /// <param name="subBlock">The block <see cref="MessageBlock"/>.</param>
-        public void AddBlock(MessageBlock subBlock)
-        {
-            this.subBlocks.Add(subBlock);
-        }
-
-        /// <summary>
         /// Class describing a message block.
         /// </summary>
         public class MessageBlock

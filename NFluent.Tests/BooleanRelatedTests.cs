@@ -50,7 +50,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[False]\nis false.")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The checked value is false, while it must be true.\nThe checked value:\n\t[False]")]
         public void NotIsFalseMayThrowExceptions()
         {
             const bool TddSucks = false;
@@ -59,7 +59,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[False]\nis not true.")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The checked value is false, while it must be true.\nThe checked value:\n\t[False]")]
         public void IsTrueThrowsExceptionWhenFalse()
         {
             const bool NFluentRocks = false;
@@ -68,7 +68,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[True]\nis true.")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The checked value is true, while it must be false.\nThe checked value:\n\t[True]")]
         public void NotIsTrueThrowsExceptionWhenFalse()
         {
             const bool NFluentRocks = true;
@@ -95,7 +95,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[True]\nis not false.")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "The checked value is true, while it must be false.\nThe checked value:\n\t[True]")]
         public void IsFalseThrowsExceptionWhenTrue()
         {
             const bool NFluentRocks = true;
