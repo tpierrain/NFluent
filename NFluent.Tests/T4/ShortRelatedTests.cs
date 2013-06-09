@@ -50,7 +50,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[2] of type: [System.Int16]\nis not equal to zero.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from zero.\nThe checked value:\n\t[2]")]
         public void IsZeroThrowsExceptionWhenFails()
         {
             const short Two = 2;
@@ -71,7 +71,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0] of type: [System.Int16]\nis equal to zero.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to zero, whereas it must not.\nThe checked value:\n\t[0]")]
         public void IsNotZeroThrowsExceptionWhenFails()
         {
             const short Zero = 0;
@@ -92,7 +92,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to zero which is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to zero whereas it must not.")]
         public void NotIsZeroThrowsExceptionWhenFailing()
         {
             const short Zero = 0;
@@ -113,7 +113,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[2] of type: [System.Int16]\nis not equal to zero which is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from zero.\nThe checked value:\n\t[2]")]
         public void NotIsNotZeroThrowsExceptionWhenFailing()
         {
             const short Two = 2;
@@ -133,7 +133,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0] of type: [System.Int16]\nis not a strictly positive value.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is not strictly positive.\nThe checked value:\n\t[0]")]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
             const short Zero = 0;
@@ -141,7 +141,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[2] of type: [System.Int16]\nis a strictly positive value, which is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
         public void NotIsPositiveThrowsExceptionWhenFailing()
         {
             const short Two = 2;
@@ -172,7 +172,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[1]\nis less than than:\n\t[20]\nwhich was not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
         public void NotIsLessThanThrowsExceptionWhenFailing()
         {
             const short One = 1;
@@ -195,7 +195,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[1]\nis not greater than:\n\t[20].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
         public void IsGreaterThanThrowsExceptionWhenFailing()
         {
             const short One = 1;
@@ -205,7 +205,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[20]\nis greater than:\n\t[1]\nwhich is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is greater than the threshold.\nThe checked value:\n\t[20]\nThe expected value: less than\n\t[1]")]
         public void NotIsGreaterThanThrowsExceptionWhenFailing()
         {
             const short One = 1;

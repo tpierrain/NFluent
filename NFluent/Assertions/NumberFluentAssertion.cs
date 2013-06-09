@@ -26,6 +26,8 @@ namespace NFluent
     /// <typeparam name="N">Type of the numerical value.</typeparam>
     public class NumberFluentAssertion<N> : IFluentAssertion<N>, IRunnableAssertion<N>, IFluentAssertionRunner<N> where N : IComparable
     {
+        private const string MustBeZeroMessage = "The {0} is different from zero.";
+
         private readonly IFluentAssertion<N> fluentAssertion;
         private readonly FluentAssertionRunner<N> fluentAssertionRunner;
 
@@ -118,10 +120,10 @@ namespace NFluent
 
                         if (!res)
                         {
-                            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not equal to zero.", runnableAssertion.Value, EqualityHelper.BuildTypeDescriptionMessage(runnableAssertion.Value)));
+                            throw new FluentAssertionException(FluentMessage.BuildMessage(MustBeZeroMessage).On(runnableAssertion.Value).ToString());
                         }
                     },
-                "The checked value is equal to zero which is unexpected.");
+                FluentMessage.BuildMessage("The {0} is equal to zero whereas it must not.").ToString());
         }
 
         /// <summary>
@@ -143,10 +145,13 @@ namespace NFluent
 
                         if (res)
                         {
-                            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis equal to zero.", runnableAssertion.Value, EqualityHelper.BuildTypeDescriptionMessage(runnableAssertion.Value)));
+                            throw new FluentAssertionException(
+                                FluentMessage.BuildMessage("The {0} is equal to zero, whereas it must not.")
+                                             .On(runnableAssertion.Value)
+                                             .ToString());
                         }
                     },
-                string.Format("\nThe checked value:\n\t[{0}] of type: [{1}]\nis not equal to zero which is unexpected.", runnableAssertion.Value, runnableAssertion.Value.GetTypeWithoutThrowingException()));
+                FluentMessage.BuildMessage("The {0} is different from zero.").On(runnableAssertion.Value).ToString());
         }
 
         /// <summary>
@@ -164,10 +169,10 @@ namespace NFluent
                     {
                         if (Convert.ToInt32(runnableAssertion.Value) <= 0)
                         {
-                            throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not a strictly positive value.", runnableAssertion.Value, EqualityHelper.BuildTypeDescriptionMessage(runnableAssertion.Value)));
+                            throw new FluentAssertionException(FluentMessage.BuildMessage("The {0} is not strictly positive.").On(runnableAssertion.Value).ToString());
                         }
                     },
-                string.Format("\nThe checked value:\n\t[{0}]{1}\nis a strictly positive value, which is unexpected.", runnableAssertion.Value, EqualityHelper.BuildTypeDescriptionMessage(runnableAssertion.Value)));
+                FluentMessage.BuildMessage("The {0} is positive, whereas it must not.").On(runnableAssertion.Value).ToString());
         }
 
         /// <summary>
@@ -192,10 +197,10 @@ namespace NFluent
                 {
                     if (runnableAssertion.Value.CompareTo(comparand) >= 0)
                     {
-                        throw new FluentAssertionException(string.Format("[{0}] is not less than {1}.", runnableAssertion.Value, comparand));
+                        throw new FluentAssertionException(FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(runnableAssertion.Value).Expected(comparand).Comparison("less than").ToString());
                     }
                 },
-                string.Format("\nThe checked value:\n\t[{0}]\nis less than than:\n\t[{1}]\nwhich was not expected.", runnableAssertion.Value, comparand.ToStringProperlyFormated()));
+                FluentMessage.BuildMessage("The {0} is less than the threshold.").On(runnableAssertion.Value).Expected(comparand).Comparison("more than").ToString());
         }
 
         /// <summary>
@@ -220,10 +225,10 @@ namespace NFluent
                     {
                         if (runnableAssertion.Value.CompareTo(comparand) <= 0)
                         {
-                            throw new FluentAssertionException(string.Format("\nThe checked value:\n\t[{0}]\nis not greater than:\n\t[{1}].", runnableAssertion.Value, comparand));
+                            throw new FluentAssertionException(FluentMessage.BuildMessage("The {0} is less than the threshold.").On(runnableAssertion.Value).Expected(comparand).Comparison("more than").ToString());
                         }
                     },
-                string.Format("\nThe checked value:\n\t[{0}]\nis greater than:\n\t[{1}]\nwhich is unexpected.", runnableAssertion.Value.ToStringProperlyFormated(), comparand.ToStringProperlyFormated()));
+                FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(runnableAssertion.Value).Expected(comparand).Comparison("less than").ToString());
         }
 
         #region IEqualityFluentAssertion members
