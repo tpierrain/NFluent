@@ -39,7 +39,7 @@ namespace NFluent
         /// <param name="originalComparand">
         /// Comparand used for the first check.
         /// </param>
-        public ExtendableFluentAssertion(IFluentAssertion<T> previousFluentAssertion, T originalComparand)
+        public ExtendableFluentAssertion(IForkableFluentAssertion previousFluentAssertion, T originalComparand)
             : base(previousFluentAssertion)
         {
             this.originalComparand = originalComparand;
