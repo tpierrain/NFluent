@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
     using System.Collections.Generic;
 
     using NFluent.Extensions;
@@ -37,13 +38,60 @@ namespace NFluent
         {
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<string>;
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+            var actual = runnableAssertion.Value;
 
-            return assertionRunner.ExecuteAssertion(
-                () =>
+            if (EqualityHelper.FluentEquals(actual, expected) != runnableAssertion.Negated)
+            {
+                return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+            }
+            if (runnableAssertion.Negated)
+            {
+                // should have been different
+                throw new FluentAssertionException(EqualityHelper.BuildErrorMessage(actual, expected, true));
+            }
+
+            // we try to refine the difference
+            var expectedString = expected as string;
+            FluentMessage mainMessage = null;
+            if (expectedString != null && actual != null)
+            {
+                if (expectedString.Length == actual.Length)
+                {
+                    // same length
+                    if (string.Compare(actual, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0)
                     {
-                        EqualityHelper.IsEqualTo(runnableAssertion.Value, expected);
-                    },
-                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, true));
+                        mainMessage = FluentMessage.BuildMessage("The {0} is different from the {1} but only in case.");
+                    }
+                    else
+                    {
+                        mainMessage = FluentMessage.BuildMessage("The {0} is different from the {1} but has same length.");
+                    }
+                }
+                else
+                {
+                    if (expectedString.Length > actual.Length)
+                    {
+                        if (expectedString.StartsWith(actual))
+                        {
+                            mainMessage = FluentMessage.BuildMessage("The {0} is different from {1}, it is missing the end.");
+                        }
+                    }
+                    else
+                    {
+                        if (actual.StartsWith(expectedString))
+                        {
+                            mainMessage = FluentMessage.BuildMessage("The {0} is different from {1}, it contains extra text at the end.");
+                        }
+                        
+                    }
+                }
+            }
+            if (mainMessage == null)
+            {
+                mainMessage = FluentMessage.BuildMessage("The {0} is different from {1}.");
+            }
+
+            throw new FluentAssertionException(mainMessage.For("string").On(actual).Expected(expected).ToString());
         }
 
         /// <summary>

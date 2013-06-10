@@ -17,7 +17,7 @@ namespace NFluent.Helpers
     /// <summary>
     /// Helper class related to Equality methods (used like a traits).
     /// </summary>
-    public static class EqualityHelper
+    internal static class EqualityHelper
     {
         /// <summary>
         /// Checks that a given instance is considered to be equal to another expected instance. Throws <see cref="FluentAssertionException"/> otherwise.
@@ -27,13 +27,20 @@ namespace NFluent.Helpers
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static void IsEqualTo(object instance, object expected)
         {
-            if (!object.Equals(instance, expected))
+            if (FluentEquals(instance, expected))
             {
-                // Should throw
-                var errorMessage = BuildErrorMessage(instance, expected, false);
-
-                throw new FluentAssertionException(errorMessage);
+                return;
             }
+
+            // Should throw
+            var errorMessage = BuildErrorMessage(instance, expected, false);
+
+            throw new FluentAssertionException(errorMessage);
+        }
+
+        public static bool FluentEquals(object instance, object expected)
+        {
+            return object.Equals(instance, expected);
         }
 
         /// <summary>

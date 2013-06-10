@@ -70,11 +70,57 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nstarts with:\n\t[\"abcdef\"]\nwhich was not expected.")]
         public void NegatedStartWithThrowsException()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            var alphabet = "abcdefghijklmnopqrstuvwxyz";
             Check.That(alphabet).Not.StartsWith("abcdef");
         }
 
-        #endregion
+        [Test]
+        public void EqualWorks()
+        {
+            var check = "toto";
+            Check.That(check).IsEqualTo("toto");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string is different from the expected one but has same length.\nThe checked string:\n\t[\"toto\"]\nThe expected string:\n\t[\"tutu\"]")]
+        public void EqualFailsWithSameLength()
+        {
+            var check = "toto";
+            Check.That(check).IsEqualTo("tutu");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string is different from the expected one but only in case.\nThe checked string:\n\t[\"toto\"]\nThe expected string:\n\t[\"TOTO\"]")]
+        public void EqualFailsWithDiffCase()
+        {
+            var check = "toto";
+            Check.That(check).IsEqualTo("TOTO");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string is different from expected one.\nThe checked string:\n\t[\"toto\"]\nThe expected string:\n\t[\"tititutu\"]")]
+        public void EqualFailsInGeneral()
+        {
+            var check = "toto";
+            Check.That(check).IsEqualTo("tititutu");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string is different from expected one, it is missing the end.\nThe checked string:\n\t[\"titi\"]\nThe expected string:\n\t[\"tititutu\"]")]
+        public void EqualFailshWhenShorter()
+        {
+            var check = "titi";
+            Check.That(check).IsEqualTo("tititutu");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string is different from expected one, it contains extra text at the end.\nThe checked string:\n\t[\"tititutu\"]\nThe expected string:\n\t[\"titi\"]")]
+        public void EqualFailshWhenStartSame()
+        {
+            var check = "tititutu";
+            Check.That(check).IsEqualTo("titi");
+        }
+#endregion
 
         [Test]
         public void AndOperatorCanChainMultipleAssertionsOnString()
