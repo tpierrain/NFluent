@@ -203,7 +203,7 @@ namespace NFluent
             return messageText;
         }
 
-        private static void ContainsImpl(string checkedValue, string[] values)
+        private static void ContainsImpl(string checkedValue, IEnumerable<string> values)
         {
             var notFound = new List<string>();
             foreach (var item in values)
@@ -216,22 +216,32 @@ namespace NFluent
 
             if (notFound.Count > 0)
             {
-                throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}].", checkedValue.ToStringProperlyFormated(), notFound.ToEnumeratedString()));
+                string message =
+                    FluentMessage.BuildMessage("The {0} does not contains the expected value(s): " + notFound.ToEnumeratedString())
+                                 .For("string")
+                                 .On(checkedValue)
+                                 .Expected(values).Label("The expected substring(s):")
+                                 .ToString();
+                throw new FluentAssertionException(message);
             }
         }
 
-        private static string BuildContainsNegatedExceptionMessage(string value, IEnumerable<string> values)
+        private static string BuildContainsNegatedExceptionMessage(string checkedValue, IEnumerable<string> values)
         {
             var foundItems = new List<string>();
-            foreach (string item in values)
+            foreach (var item in values)
             {
-                if (value.Contains(item))
+                if (checkedValue.Contains(item))
                 {
                     foundItems.Add(item);
                 }
             }
 
-            return string.Format("\nThe actual string:\n\t[{0}]\n contains the value(s):\n\t[{1}]\nwhich was not expected.", value.ToStringProperlyFormated(), foundItems.ToEnumeratedString());
+            return FluentMessage.BuildMessage("The {0} contains unauthorized value(s): " + foundItems.ToEnumeratedString())
+                             .For("string")
+                             .On(checkedValue)
+                             .Expected(values).Label("The unauthorized substring(s):")
+                             .ToString();
         }
 
         /// <summary>

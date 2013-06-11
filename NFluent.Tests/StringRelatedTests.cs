@@ -22,7 +22,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\ndoes not contain the expected value(s):\n\t[\"C\", \"A\"].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string does not contains the expected value(s): \"C\", \"A\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected substring(s):\n\t[\"C\", \"a\", \"A\", \"z\"]")]
         public void ContainsIsCaseSensitive()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -30,7 +30,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\ndoes not contain the expected value(s):\n\t[\"0\", \"4\"].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string does not contains the expected value(s): \"0\", \"4\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected substring(s):\n\t[\"c\", \"0\", \"4\"]")]
         public void ContainsThrowsExceptionWhenFails()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
