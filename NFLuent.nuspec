@@ -4,7 +4,7 @@
     <id>NFluent</id>
     <title>Smooth your .NET TDD experience with NFluent!</title>
     <version>0.6.0.0</version>
-    <authors>Thomas PIERRAIN, Marc-Antoine LATOUR, Cyrille DUPUYDAUBY, Rui CARVALHO</authors>
+    <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Marc-Antoine LATOUR, Rui CARVALHO</authors>
     <owners>Thomas PIERRAIN</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://www.n-fluent.net</projectUrl>
