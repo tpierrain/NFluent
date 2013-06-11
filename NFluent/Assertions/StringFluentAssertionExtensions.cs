@@ -36,62 +36,16 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> IsEqualTo(this IFluentAssertion<string> fluentAssertion, object expected)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<string>;
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
             var actual = runnableAssertion.Value;
-
-            if (EqualityHelper.FluentEquals(actual, expected) != runnableAssertion.Negated)
+ 
+            var messageText = AssessEquals(expected, runnableAssertion.Negated, actual);
+            if (!string.IsNullOrEmpty(messageText))
             {
-                return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
-            }
-            if (runnableAssertion.Negated)
-            {
-                // should have been different
-                throw new FluentAssertionException(EqualityHelper.BuildErrorMessage(actual, expected, true));
+                throw new FluentAssertionException(messageText);
             }
 
-            // we try to refine the difference
-            var expectedString = expected as string;
-            FluentMessage mainMessage = null;
-            if (expectedString != null && actual != null)
-            {
-                if (expectedString.Length == actual.Length)
-                {
-                    // same length
-                    if (string.Compare(actual, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0)
-                    {
-                        mainMessage = FluentMessage.BuildMessage("The {0} is different from the {1} but only in case.");
-                    }
-                    else
-                    {
-                        mainMessage = FluentMessage.BuildMessage("The {0} is different from the {1} but has same length.");
-                    }
-                }
-                else
-                {
-                    if (expectedString.Length > actual.Length)
-                    {
-                        if (expectedString.StartsWith(actual))
-                        {
-                            mainMessage = FluentMessage.BuildMessage("The {0} is different from {1}, it is missing the end.");
-                        }
-                    }
-                    else
-                    {
-                        if (actual.StartsWith(expectedString))
-                        {
-                            mainMessage = FluentMessage.BuildMessage("The {0} is different from {1}, it contains extra text at the end.");
-                        }
-                        
-                    }
-                }
-            }
-            if (mainMessage == null)
-            {
-                mainMessage = FluentMessage.BuildMessage("The {0} is different from {1}.");
-            }
-
-            throw new FluentAssertionException(mainMessage.For("string").On(actual).Expected(expected).ToString());
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
 
         /// <summary>
@@ -105,15 +59,16 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> IsNotEqualTo(this IFluentAssertion<string> fluentAssertion, object expected)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<string>;
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+            var actual = runnableAssertion.Value;
 
-            return assertionRunner.ExecuteAssertion(
-                () =>
-                    {
-                        EqualityHelper.IsNotEqualTo(runnableAssertion.Value, expected);
-                    },
-                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, false));
+            var messageText = AssessEquals(expected, !runnableAssertion.Negated, actual);
+            if (!string.IsNullOrEmpty(messageText))
+            {
+                throw new FluentAssertionException(messageText);
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
 
         /// <summary>
@@ -182,10 +137,76 @@ namespace NFluent
                 BuildContainsNegatedExceptionMessage(runnableAssertion.Value, values));
         }
 
+        private static string AssessEquals(object expected, bool negated, string actual)
+        {
+            if (EqualityHelper.FluentEquals(actual, expected) != negated)
+            {
+                return null;
+            }
+
+            string messageText;
+            if (negated)
+            {
+                messageText =
+                    FluentMessage.BuildMessage("The {0} is equal to the {1} whereas it must not.")
+                                 .Expected(expected)
+                                 .Comparison("different from")
+                                 .ToString();
+            }
+            else
+            {
+                // we try to refine the difference
+                // should have been different
+                var expectedString = expected as string;
+                FluentMessage mainMessage = null;
+                if (expectedString != null && actual != null)
+                {
+                    if (expectedString.Length == actual.Length)
+                    {
+                        // same length
+                        mainMessage =
+                            FluentMessage.BuildMessage(
+                                string.Compare(actual, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0
+                                    ? "The {0} is different from the {1} but only in case."
+                                    : "The {0} is different from the {1} but has same length.");
+                    }
+                    else
+                    {
+                        if (expectedString.Length > actual.Length)
+                        {
+                            if (expectedString.StartsWith(actual))
+                            {
+                                mainMessage = FluentMessage.BuildMessage(
+                                    "The {0} is different from {1}, it is missing the end.");
+                            }
+                        }
+                        else
+                        {
+                            if (actual.StartsWith(expectedString))
+                            {
+                                mainMessage =
+                                    FluentMessage.BuildMessage(
+                                        "The {0} is different from {1}, it contains extra text at the end.");
+                            }
+                        }
+                    }
+                }
+
+                if (mainMessage == null)
+                {
+                    mainMessage = FluentMessage.BuildMessage("The {0} is different from {1}.");
+                }
+
+                messageText = mainMessage.For("string").On(actual).Expected(expected).ToString();
+            }
+
+            return messageText;
+        }
+
         private static void ContainsImpl(string checkedValue, string[] values)
         {
             var notFound = new List<string>();
-            foreach (string item in values)
+            foreach (var item in values)
             {
                 if (!checkedValue.Contains(item))
                 {
@@ -199,7 +220,7 @@ namespace NFluent
             }
         }
 
-        private static string BuildContainsNegatedExceptionMessage(string value, string[] values)
+        private static string BuildContainsNegatedExceptionMessage(string value, IEnumerable<string> values)
         {
             var foundItems = new List<string>();
             foreach (string item in values)

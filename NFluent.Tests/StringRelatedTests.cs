@@ -120,7 +120,7 @@
             var check = "tititutu";
             Check.That(check).IsEqualTo("titi");
         }
-#endregion
+        #endregion
 
         [Test]
         public void AndOperatorCanChainMultipleAssertionsOnString()
