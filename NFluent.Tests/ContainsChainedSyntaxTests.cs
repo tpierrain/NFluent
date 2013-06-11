@@ -45,6 +45,7 @@ namespace NFluent.Tests
         public void ContainsInThatOrderFails()
         {
             var tresAmigosAndMore = new[] { "un", "dos", "un", "tres" };
+
             Check.That(tresAmigosAndMore).Contains(this.tresAmigos).InThatOrder();
         }
 
