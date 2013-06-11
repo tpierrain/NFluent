@@ -16,6 +16,7 @@ namespace NFluent
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using NFluent.Extensions;
     using NFluent.Helpers;
@@ -126,15 +127,16 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> Contains(this IFluentAssertion<string> fluentAssertion, params string[] values)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<string>;
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
 
-            return assertionRunner.ExecuteAssertion(
-                () =>
-                    {
-                        ContainsImpl(runnableAssertion.Value, values);
-                    },
-                BuildContainsNegatedExceptionMessage(runnableAssertion.Value, values));
+            var result = ContainsImpl(runnableAssertion.Value, values, runnableAssertion.Negated);
+
+            if (string.IsNullOrEmpty(result))
+            {
+                return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+            }
+
+            throw new FluentAssertionException(result);
         }
 
         private static string AssessEquals(object expected, bool negated, string actual)
@@ -203,44 +205,40 @@ namespace NFluent
             return messageText;
         }
 
-        private static void ContainsImpl(string checkedValue, IEnumerable<string> values)
+        private static string ContainsImpl(string checkedValue, IEnumerable<string> values, bool negated)
         {
-            var notFound = new List<string>();
-            foreach (var item in values)
+            // special case if checkedvalue is null
+            if (checkedValue == null)
             {
-                if (!checkedValue.Contains(item))
-                {
-                    notFound.Add(item);
-                }
+                return negated ? null : FluentMessage.BuildMessage("The {0} is null.").Expected(values).Label("The {0} substrin(s):").ToString();
             }
 
-            if (notFound.Count > 0)
+            var items = values.Where(item => checkedValue.Contains(item) == negated).ToList();
+
+            if (items.Count == 0)
             {
-                string message =
-                    FluentMessage.BuildMessage("The {0} does not contains the expected value(s): " + notFound.ToEnumeratedString())
+                return null;
+            }
+
+            if (negated)
+            {
+                return 
+                    FluentMessage.BuildMessage(
+                        "The {0} contains unauthorized value(s): " + items.ToEnumeratedString())
                                  .For("string")
                                  .On(checkedValue)
-                                 .Expected(values).Label("The expected substring(s):")
+                                 .Expected(values)
+                                 .Label("The unauthorized substring(s):")
                                  .ToString();
-                throw new FluentAssertionException(message);
-            }
-        }
-
-        private static string BuildContainsNegatedExceptionMessage(string checkedValue, IEnumerable<string> values)
-        {
-            var foundItems = new List<string>();
-            foreach (var item in values)
-            {
-                if (checkedValue.Contains(item))
-                {
-                    foundItems.Add(item);
-                }
             }
 
-            return FluentMessage.BuildMessage("The {0} contains unauthorized value(s): " + foundItems.ToEnumeratedString())
+            return 
+                FluentMessage.BuildMessage(
+                    "The {0} does not contains the expected value(s): " + items.ToEnumeratedString())
                              .For("string")
                              .On(checkedValue)
-                             .Expected(values).Label("The unauthorized substring(s):")
+                             .Expected(values)
+                             .Label("The {0} substring(s):")
                              .ToString();
         }
 
@@ -255,18 +253,49 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The string does not start with the expected prefix.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> StartsWith(this IFluentAssertion<string> fluentAssertion, string expectedPrefix)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<string>;
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
 
-            return assertionRunner.ExecuteAssertion(
-                () =>
-                    {
-                        if (!runnableAssertion.Value.StartsWith(expectedPrefix))
-                        {
-                            throw new FluentAssertionException(string.Format("\nThe actual string:\n\t[{0}]\ndoes not start with:\n\t[{1}].", runnableAssertion.Value.ToStringProperlyFormated(), expectedPrefix.ToStringProperlyFormated()));
-                        }
-                    },
-                string.Format("\nThe actual string:\n\t[{0}]\nstarts with:\n\t[{1}]\nwhich was not expected.", runnableAssertion.Value.ToStringProperlyFormated(), expectedPrefix.ToStringProperlyFormated()));
+            var result = StartsWithImpl(runnableAssertion.Value, expectedPrefix, runnableAssertion.Negated);
+            if (string.IsNullOrEmpty(result))
+            {
+                return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+            }
+
+            throw new FluentAssertionException(result);
+        }
+
+        private static string StartsWithImpl(string checkedValue, string starts, bool negated)
+        {
+            // special case if checkedvalue is null
+            if (checkedValue == null)
+            {
+                return negated ? null : FluentMessage.BuildMessage("The {0} is null.").Expected(starts).Comparison("starts with").ToString();
+            }
+            
+            if (checkedValue.StartsWith(starts) != negated)
+            {
+                // success
+                return null;
+            }
+
+            if (negated)
+            {
+                return
+                    FluentMessage.BuildMessage("The {0} starts with {1}, whereas it must not.")
+                    .For("string")
+                                 .On(checkedValue)
+                                 .Expected(starts)
+                                 .Comparison("does not start with")
+                                 .ToString();
+            }
+  
+            return
+                FluentMessage.BuildMessage("The {0}'s start is different from the {1}.")
+                .For("string")
+                             .On(checkedValue)
+                             .Expected(starts)
+                             .Comparison("starts with")
+                             .ToString();
         }
     }
 }

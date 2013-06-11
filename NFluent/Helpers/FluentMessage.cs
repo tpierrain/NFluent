@@ -38,6 +38,8 @@ namespace NFluent.Helpers
         private readonly string message;
         private readonly List<MessageBlock> subBlocks = new List<MessageBlock>();
 
+        private string entity;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FluentMessage"/> class.
         /// </summary>
@@ -51,10 +53,21 @@ namespace NFluent.Helpers
         public FluentMessage(string message)
         {
             this.message = message;
-            this.Entity = DefaultEntity;
+            this.Entity = null;
         }
 
-        private string Entity { get; set; }
+        private string Entity
+        {
+            get
+            {
+                return this.entity ?? DefaultEntity;
+            }
+
+            set
+            {
+                this.entity = value;
+            }
+        }
 
         /// <summary>
         /// Gets the expected value label.

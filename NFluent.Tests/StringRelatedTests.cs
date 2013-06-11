@@ -22,6 +22,13 @@
         }
 
         [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is null.\nThe expected substrin(s):\n\t[\"fails\", \"anyway\"]")]
+        public void ContainsFailsProperlyOnNullString()
+        {
+            Check.That((string)null).Contains("fails", "anyway");
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string does not contains the expected value(s): \"C\", \"A\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected substring(s):\n\t[\"C\", \"a\", \"A\", \"z\"]")]
         public void ContainsIsCaseSensitive()
         {
@@ -45,11 +52,18 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\ndoes not start with:\n\t[\"ABCDEF\"].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string's start is different from the expected one.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: starts with\n\t[\"ABCDEF\"]")]
         public void StartWithIsCaseSensitive()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
             Check.That(alphabet).StartsWith("ABCDEF");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is null.\nThe expected value: starts with\n\t[\"fails\"]")]
+        public void StartsWithFailsProperlyOnNullString()
+        {
+            Check.That((string)null).StartsWith("fails");
         }
 
         [Test]
@@ -67,7 +81,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nstarts with:\n\t[\"abcdef\"]\nwhich was not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string starts with expected one, whereas it must not.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: does not start with\n\t[\"abcdef\"]")]
         public void NegatedStartWithThrowsException()
         {
             var alphabet = "abcdefghijklmnopqrstuvwxyz";
