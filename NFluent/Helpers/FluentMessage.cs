@@ -19,6 +19,7 @@
 namespace NFluent.Helpers
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Text;
 
@@ -36,7 +37,10 @@ namespace NFluent.Helpers
         private const string ExpectedAdjective = "expected";
 
         private readonly string message;
-        private readonly List<MessageBlock> subBlocks = new List<MessageBlock>();
+
+        private MessageBlock expectedBlock = null;
+
+        private MessageBlock checkedBlock = null;
 
         private string entity;
 
@@ -93,7 +97,11 @@ namespace NFluent.Helpers
         {
             get
             {
-                return string.Format("{0} {1}", TestedAdjective, this.Entity);
+                if (this.checkedBlock == null)
+                {
+                    return string.Format("{0} {1}", TestedAdjective, this.Entity);
+                }
+                return this.checkedBlock.GetBlockLabel();
             }
         }
 
@@ -117,12 +125,17 @@ namespace NFluent.Helpers
         {
             var builder = new StringBuilder();
             builder.AppendFormat(this.message, this.TestedLabel, this.ExpectedLabel);
-            foreach (var subBlock in this.subBlocks)
+            if (checkedBlock != null)
             {
                 builder.Append("\n");
-                builder.Append(subBlock.GetMessage());
+                builder.Append(checkedBlock.GetMessage());
             }
 
+            if (expectedBlock != null)
+            {
+                builder.Append("\n");
+                builder.Append(expectedBlock.GetMessage());
+            }
             return builder.ToString();
         }
 
@@ -144,9 +157,8 @@ namespace NFluent.Helpers
         /// <returns>A <see cref="FluentMessage"/> to continue build the message.</returns>
         public MessageBlock On(object test)
         {
-            var subBlock = new MessageBlock(this, test, TestedAdjective);
-            this.subBlocks.Add(subBlock);
-            return subBlock;
+            this.checkedBlock = new MessageBlock(this, test, TestedAdjective);
+            return this.checkedBlock;
         }
 
         /// <summary>
@@ -156,9 +168,42 @@ namespace NFluent.Helpers
         /// <returns>The created MessageBlock.</returns>
         public MessageBlock Expected(object expected)
         {
-            var subBlock = new MessageBlock(this, expected, ExpectedAdjective);
-            this.subBlocks.Add(subBlock);
-            return subBlock;
+            this.expectedBlock = new MessageBlock(this, expected, ExpectedAdjective);
+            return this.expectedBlock;
+        }
+
+        /// <summary>
+        /// Gets the entity label based on the given type.
+        /// </summary>
+        /// <param name="value">The value to get the type from.</param>
+        /// <returns>The appropriate entity label.</returns>
+        private string GetEntityFromType(object value)
+        {
+            if (this.entity != null)
+            {
+                return this.entity;
+            }
+
+ /*
+  *         if (value != null)
+            {
+                // TODO review which type to examine for auto label
+               
+                if (value is string)
+                {
+                    return "string";
+                }
+                if (value is IEnumerable)
+                {
+                    return "enumerable";
+                }
+                if (value is Delegate)
+                {
+                    return "code";
+                }
+            }
+  */
+            return DefaultEntity;
         }
 
         /// <summary>
@@ -210,11 +255,11 @@ namespace NFluent.Helpers
                 var builder = new StringBuilder();
                 if (string.IsNullOrEmpty(this.comparisonLabel))
                 {
-                    builder.AppendFormat(this.customMessage ?? "The {0} {1}:", this.attribute, this.message.Entity);
+                    builder.AppendFormat(this.customMessage ?? "The {0} {1}:", this.attribute, this.message.GetEntityFromType(this.test));
                 }
                 else
                 {
-                    builder.AppendFormat(this.customMessage ?? "The {0} {1}: {2}", this.attribute, this.message.Entity, this.comparisonLabel);
+                    builder.AppendFormat(this.customMessage ?? "The {0} {1}: {2}", this.attribute, this.message.GetEntityFromType(this.test), this.comparisonLabel);
                 }
 
                 builder.Append("\n");
@@ -334,6 +379,15 @@ namespace NFluent.Helpers
             {
                 this.customMessage = newLabel;
                 return this;
+            }
+
+            /// <summary>
+            /// Gets the block label.
+            /// </summary>
+            /// <returns>The block Label.</returns>
+            public string GetBlockLabel()
+            {
+                return string.Format("{0} {1}", this.attribute, this.message.GetEntityFromType(this.test));
             }
         }
     }
