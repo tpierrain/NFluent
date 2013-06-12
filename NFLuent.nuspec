@@ -3,7 +3,7 @@
   <metadata>
     <id>NFluent</id>
     <title>Smooth your .NET TDD experience with NFluent!</title>
-    <version>0.6.0.0</version>
+    <version>0.8.0.0</version>
     <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Marc-Antoine LATOUR, Rui CARVALHO</authors>
     <owners>Thomas PIERRAIN</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -12,13 +12,20 @@
     <iconUrl>https://raw.github.com/tpierrain/NFluent/master/Images/Icon.png</iconUrl>
     <description>NFluent is an ergonomic assertion library which aims to fluent your .NET TDD experience (based on simple Check.That() assertion statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST Fluent assertion/reflection library (http://fest.easytesting.org/).</description>
     <summary>NFluent is an ergonomic assertion library which aims to fluent your .NET TDD experience.</summary>
-    <releaseNotes>- Adds the Not operator for all assertion methods (except the lambda related ones)
-
-- Covers the Enum types with the Check.ThatEnum() statement (e.g.: Check.ThatEnum(Nationality.French).IsEqualTo(Nationality.French); )
-
-- Hides the 'Value' and 'Negatable' properties from the IntelliSense
-
-- Introduces a new concept of IRunnableAssertion and IFluentAssertionRunner for everyone that need to add new assertion methods (improvements to come for those like us that write assertion methods).</releaseNotes>
+    <releaseNotes>New features
+------------
+* New extensible syntax for Check.That(IEnumerable xxx).Contains(...) that permits to add suffixes narrowing the conditions.
+e.g.: Check.That(IEnumerable xxx).Contains(...).InThatOrder().
+Possible suffixes:
+- Only(): raises if the enumerable contains items that were not listed in Contains.
+e.g.: Check.That( new []{1,2,3,4}).Contains(new [] {1,2,3}).Only() fails due to '4' being present.
+- Once(): raises if the enumerable contains expected items more than once.
+e.g.: Check.That( new []{1,2,3,2}).Contains(new [] {1,2,3}).Once() fails due to '2' being present twice.
+- InThatOrder(): raises if the enumerable does not contain expected items in the listed order.
+e.g.: Check.That( new []{1,3,2}).Contains(new [] {1,2,3}).InThatOrder() fails due to '2' and '3' being inversed.
+Changes
+-------
+* New error message structure that clearly states what is wrong</releaseNotes>
     <copyright>Copyright 2013  Thomas PIERRAIN</copyright>
     <language>en-US</language>
     <tags>tdd bdd test fluent assertion assertions easy</tags>
