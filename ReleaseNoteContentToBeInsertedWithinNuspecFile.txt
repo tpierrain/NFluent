@@ -13,3 +13,5 @@ New features
 Changes
 -------
 * New error message structure that clearly states what is wrong
+
+* Now, the Equals() method of the IFluentAssertion<T> instances always throw an exception in order to avoid confusion with the assertion methods.
