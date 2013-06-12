@@ -89,6 +89,35 @@
         }
 
         [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string's end is different from the expected one.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: ends with\n\t[\"UWXYZ\"]")]
+        public void EndsWithIsCaseSensitive()
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(alphabet).EndsWith("UWXYZ");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is null.\nThe expected value: ends with\n\t[\"fails\"]")]
+        public void EndsWithFailsProperlyOnNullString()
+        {
+            Check.That((string)null).EndsWith("fails");
+        }
+
+        [Test]
+        public void EndsWithWorks()
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(alphabet).EndsWith("uvwxyz");
+        }
+
+        [Test]
+        public void EndsWithIsNegatable()
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(alphabet).Not.EndsWith("hehehe");
+        }
+
+        [Test]
         public void EqualWorks()
         {
             var check = "toto";

@@ -296,5 +296,62 @@ namespace NFluent
                              .Comparison("starts with")
                              .ToString();
         }
+
+        /// <summary>
+        /// Checks that the string ends with the given expected prefix.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="expectedEnd">The expected prefix.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string does not end with the expected prefix.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> EndsWith(
+            this IFluentAssertion<string> fluentAssertion, string expectedEnd)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = EndsWithImpl(runnableAssertion.Value, expectedEnd, runnableAssertion.Negated);
+            if (string.IsNullOrEmpty(result))
+            {
+                return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+            }
+
+            throw new FluentAssertionException(result);
+        }
+
+        private static string EndsWithImpl(string checkedValue, string ends, bool negated)
+        {
+            // special case if checkedvalue is null
+            if (checkedValue == null)
+            {
+                return negated ? null : FluentMessage.BuildMessage("The {0} is null.").Expected(ends).Comparison("ends with").ToString();
+            }
+
+            if (checkedValue.EndsWith(ends) != negated)
+            {
+                // success
+                return null;
+            }
+
+            if (negated)
+            {
+                return
+                    FluentMessage.BuildMessage("The {0} ends with {1}, whereas it must not.")
+                    .For("string")
+                                 .On(checkedValue)
+                                 .Expected(ends)
+                                 .Comparison("does not end with")
+                                 .ToString();
+            }
+
+            return
+                FluentMessage.BuildMessage("The {0}'s end is different from the {1}.")
+                .For("string")
+                             .On(checkedValue)
+                             .Expected(ends)
+                             .Comparison("ends with")
+                             .ToString();
+        }
     }
 }
