@@ -19,6 +19,8 @@
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
             Check.That(alphabet).Not.Contains("1234");
+
+            Check.That((string)null).Not.Contains("test");
         }
 
         [Test]
@@ -89,6 +91,13 @@
         }
 
         [Test]
+        public void NegatedStartsWithWorks()
+        {
+            Check.That("test").Not.StartsWith("Toto");
+            Check.That((string)null).Not.StartsWith("Toto");
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string's end is different from the expected one.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: ends with\n\t[\"UWXYZ\"]")]
         public void EndsWithIsCaseSensitive()
         {
@@ -115,6 +124,15 @@
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
             Check.That(alphabet).Not.EndsWith("hehehe");
+            Check.That((string)null).Not.EndsWith("test");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string ends with expected one, whereas it must not.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: does not end with\n\t[\"vwxyz\"]")]
+        public void EndsWithIsNegatableFails()
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(alphabet).Not.EndsWith("vwxyz");
         }
 
         [Test]
@@ -184,11 +202,19 @@
         {
             Check.That("AC 12").Matches("[0-9]. [a-z]*");
         }
-        
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is null.\nThe expected value: matches\n\t[\"[0-9]. [a-z]*\"]")]
+        public void StringMatchesFailsProperlyForNull()
+        {
+            Check.That((string)null).Matches("[0-9]. [a-z]*");
+        }
+
         [Test]
         public void NotStringMatchesWorks()
         {
             Check.That("AC 12").Not.Matches("[0-9]. [a-z]*");
+            Check.That((string)null).Not.Matches("[0-9]. [a-z]*");
         }
 
         [Test]
