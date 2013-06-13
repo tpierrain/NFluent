@@ -46,12 +46,12 @@ namespace NFluent
                             throw new FluentAssertionException(
                                 FluentMessage.BuildMessage("The {0} is after the reference value.")
                                              .On(runnableAssertion.Value)
-                                             .Expected(otherValue)
+                                             .And.Expected(otherValue)
                                              .Comparison("before")
                                              .ToString());
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is after the before value.").On(runnableAssertion.Value).Expected(otherValue).Comparison("after").ToString());
+                FluentMessage.BuildMessage("The {0} is after the before value.").On(runnableAssertion.Value).And.Expected(otherValue).Comparison("after").ToString());
         }
     }
 }

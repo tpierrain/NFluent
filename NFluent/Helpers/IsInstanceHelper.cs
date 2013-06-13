@@ -84,7 +84,7 @@ namespace NFluent.Helpers
                              .For("expression type")
                              .On(instanceType)
                              .Label("Indeed, the {0} {1}")
-                             .Expected(expectedBaseType)
+                             .And.Expected(expectedBaseType)
                              .Label("is not a derived type of");
             throw new FluentAssertionException(message.ToString());
         }
@@ -108,7 +108,7 @@ namespace NFluent.Helpers
                 message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of {0} whereas it must not.", typeOperand))
                                        .On(value)
                                        .WithType()
-                                       .Expected(typeOperand)
+                                       .And.Expected(typeOperand)
                                        .Label("The {0} type: different from");
             }
             else
@@ -116,7 +116,7 @@ namespace NFluent.Helpers
                 message = FluentMessage.BuildMessage("The {0} is not an instance of the expected type.")
                                        .On(value)
                                        .WithType()
-                                       .Expected(typeOperand)
+                                       .And.Expected(typeOperand)
                                        .Label("The {0} type:");
             }
         
@@ -131,7 +131,7 @@ namespace NFluent.Helpers
                 message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of {0} whereas it must not.", expectedType))
                     .On(value)
                     .WithType(instanceType)
-                    .Expected(expectedType)
+                    .And.Expected(expectedType)
                     .Label("The {0} type: different from");
             }
             else
@@ -139,7 +139,7 @@ namespace NFluent.Helpers
                 message = FluentMessage.BuildMessage(string.Format("The {{0}} is not an instance of {0}.", expectedType))
                     .On(value)
                     .WithType(instanceType)
-                    .Expected(expectedType)
+                    .And.Expected(expectedType)
                     .Label("The {0} type:");
             }
 

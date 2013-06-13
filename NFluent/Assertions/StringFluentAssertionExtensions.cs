@@ -199,7 +199,7 @@ namespace NFluent
                     mainMessage = FluentMessage.BuildMessage("The {0} is different from {1}.");
                 }
 
-                messageText = mainMessage.For("string").On(actual).Expected(expected).ToString();
+                messageText = mainMessage.For("string").On(actual).And.Expected(expected).ToString();
             }
 
             return messageText;
@@ -227,7 +227,7 @@ namespace NFluent
                         "The {0} contains unauthorized value(s): " + items.ToEnumeratedString())
                                  .For("string")
                                  .On(checkedValue)
-                                 .Expected(values)
+                                 .And.Expected(values)
                                  .Label("The unauthorized substring(s):")
                                  .ToString();
             }
@@ -237,7 +237,7 @@ namespace NFluent
                     "The {0} does not contains the expected value(s): " + items.ToEnumeratedString())
                              .For("string")
                              .On(checkedValue)
-                             .Expected(values)
+                             .And.Expected(values)
                              .Label("The {0} substring(s):")
                              .ToString();
         }
@@ -284,7 +284,7 @@ namespace NFluent
                     FluentMessage.BuildMessage("The {0} starts with {1}, whereas it must not.")
                     .For("string")
                                  .On(checkedValue)
-                                 .Expected(starts)
+                                 .And.Expected(starts)
                                  .Comparison("does not start with")
                                  .ToString();
             }
@@ -293,7 +293,7 @@ namespace NFluent
                 FluentMessage.BuildMessage("The {0}'s start is different from the {1}.")
                 .For("string")
                              .On(checkedValue)
-                             .Expected(starts)
+                             .And.Expected(starts)
                              .Comparison("starts with")
                              .ToString();
         }
@@ -341,7 +341,7 @@ namespace NFluent
                     FluentMessage.BuildMessage("The {0} ends with {1}, whereas it must not.")
                     .For("string")
                                  .On(checkedValue)
-                                 .Expected(ends)
+                                 .And.Expected(ends)
                                  .Comparison("does not end with")
                                  .ToString();
             }
@@ -350,7 +350,7 @@ namespace NFluent
                 FluentMessage.BuildMessage("The {0}'s end is different from the {1}.")
                 .For("string")
                              .On(checkedValue)
-                             .Expected(ends)
+                             .And.Expected(ends)
                              .Comparison("ends with")
                              .ToString();
         }
@@ -399,7 +399,7 @@ namespace NFluent
                     FluentMessage.BuildMessage("The {0} matches {1}, whereas it must not.")
                     .For("string")
                                  .On(checkedValue)
-                                 .Expected(regExp)
+                                 .And.Expected(regExp)
                                  .Comparison("does not match")
                                  .ToString();
             }
@@ -408,7 +408,7 @@ namespace NFluent
                 FluentMessage.BuildMessage("The {0} does not match the {1}.")
                 .For("string")
                              .On(checkedValue)
-                             .Expected(regExp)
+                             .And.Expected(regExp)
                              .Comparison("matches")
                              .ToString();
         }

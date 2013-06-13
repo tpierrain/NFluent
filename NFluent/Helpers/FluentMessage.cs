@@ -249,6 +249,20 @@ namespace NFluent.Helpers
             }
 
             /// <summary>
+            /// Gets the Message.
+            /// </summary>
+            /// <value>
+            /// The <see cref="FluentMessage"/> holding that block.
+            /// </value>
+            public FluentMessage And
+            {
+                get
+                {
+                    return this.message;
+                }
+            }
+
+            /// <summary>
             /// Gets the message as a string.
             /// </summary>
             /// <returns>A string with the properly formatted message.</returns>
@@ -345,16 +359,6 @@ namespace NFluent.Helpers
                 this.type = forcedType;
                 this.includeType = true;
                 return this;
-            }
-
-            /// <summary>
-            /// Adds a message block to describe the expected result.
-            /// </summary>
-            /// <param name="expected">The expected value.</param>
-            /// <returns>The created MessageBlock.</returns>
-            public MessageBlock Expected(object expected)
-            {
-                return this.message.Expected(expected);
             }
 
             /// <summary>

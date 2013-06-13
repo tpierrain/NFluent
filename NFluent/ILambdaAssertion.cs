@@ -45,7 +45,7 @@ namespace NFluent
         /// <summary>
         /// Checks that the code did throw an exception of a specified type.
         /// </summary>
-        /// <typeparam name="T">Expected exception type.</typeparam>
+        /// <typeparam name="T">And.Expected exception type.</typeparam>
         /// <returns>
         /// A chainable assertion.
         /// </returns>

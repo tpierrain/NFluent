@@ -72,7 +72,7 @@ namespace NFluent.Helpers
                     .On(instance)
                     .WithType(withType)
                     .WithHashCode(withHash)
-                    .Expected(expected)
+                    .And.Expected(expected)
                     .WithType(withType)
                     .WithHashCode(withHash).ToString();                
             }

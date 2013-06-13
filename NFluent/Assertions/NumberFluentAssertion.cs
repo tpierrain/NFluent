@@ -17,7 +17,6 @@ namespace NFluent
     using System;
     using System.Diagnostics.CodeAnalysis;
 
-    using NFluent.Extensions;
     using NFluent.Helpers;
 
     /// <summary>
@@ -197,10 +196,10 @@ namespace NFluent
                 {
                     if (runnableAssertion.Value.CompareTo(comparand) >= 0)
                     {
-                        throw new FluentAssertionException(FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(runnableAssertion.Value).Expected(comparand).Comparison("less than").ToString());
+                        throw new FluentAssertionException(FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(runnableAssertion.Value).And.Expected(comparand).Comparison("less than").ToString());
                     }
                 },
-                FluentMessage.BuildMessage("The {0} is less than the threshold.").On(runnableAssertion.Value).Expected(comparand).Comparison("more than").ToString());
+                FluentMessage.BuildMessage("The {0} is less than the threshold.").On(runnableAssertion.Value).And.Expected(comparand).Comparison("more than").ToString());
         }
 
         /// <summary>
@@ -225,10 +224,10 @@ namespace NFluent
                     {
                         if (runnableAssertion.Value.CompareTo(comparand) <= 0)
                         {
-                            throw new FluentAssertionException(FluentMessage.BuildMessage("The {0} is less than the threshold.").On(runnableAssertion.Value).Expected(comparand).Comparison("more than").ToString());
+                            throw new FluentAssertionException(FluentMessage.BuildMessage("The {0} is less than the threshold.").On(runnableAssertion.Value).And.Expected(comparand).Comparison("more than").ToString());
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(runnableAssertion.Value).Expected(comparand).Comparison("less than").ToString());
+                FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(runnableAssertion.Value).And.Expected(comparand).Comparison("less than").ToString());
         }
 
         #region IEqualityFluentAssertion members
