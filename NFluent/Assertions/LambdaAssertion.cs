@@ -172,7 +172,7 @@ namespace NFluent
             {
                 var message =
                     FluentMessage.BuildMessage(
-                        "The {0} did not raise an exception, whereas it must.").For("code").Expected(typeof(T)).Label("And.Expected exception type is:").ToString();
+                        "The {0} did not raise an exception, whereas it must.").For("code").Expected(typeof(T)).Label("Expected exception type is:").ToString();
                 throw new FluentAssertionException(message);
             }
 
@@ -180,7 +180,7 @@ namespace NFluent
             {
                 var message =
                     FluentMessage.BuildMessage("The {0} raised an exception of a different type than expected.")
-                                   .For("code").On(this.exception).Label("Raised Exception").And.Expected(typeof(T)).Label("And.Expected exception type is:")
+                                   .For("code").On(this.exception).Label("Raised Exception").And.Expected(typeof(T)).Label("Expected exception type is:")
                                    .ToString();
 
                 throw new FluentAssertionException(message);
