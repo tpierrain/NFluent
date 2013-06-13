@@ -101,6 +101,7 @@ namespace NFluent.Helpers
                 {
                     return string.Format("{0} {1}", TestedAdjective, this.Entity);
                 }
+
                 return this.checkedBlock.GetBlockLabel();
             }
         }
@@ -125,17 +126,18 @@ namespace NFluent.Helpers
         {
             var builder = new StringBuilder();
             builder.AppendFormat(this.message, this.TestedLabel, this.ExpectedLabel);
-            if (checkedBlock != null)
+            if (this.checkedBlock != null)
             {
                 builder.Append("\n");
-                builder.Append(checkedBlock.GetMessage());
+                builder.Append(this.checkedBlock.GetMessage());
             }
 
-            if (expectedBlock != null)
+            if (this.expectedBlock != null)
             {
                 builder.Append("\n");
-                builder.Append(expectedBlock.GetMessage());
+                builder.Append(this.expectedBlock.GetMessage());
             }
+
             return builder.ToString();
         }
 

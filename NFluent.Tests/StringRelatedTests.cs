@@ -171,5 +171,31 @@
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
             Check.That(alphabet).Contains("i").And.StartsWith("abcd").And.IsInstanceOf<string>().And.IsNotInstanceOf<int>().And.Not.IsNotInstanceOf<string>();
         }
+
+        [Test]
+        public void StringMatchesWorks()
+        {
+            Check.That("12 ac").Matches("[0-9]*. [a-z]*");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string does not match the expected one.\nThe checked string:\n\t[\"AC 12\"]\nThe expected string: matches\n\t[\"[0-9]. [a-z]*\"]")]
+        public void StringMatchesFails()
+        {
+            Check.That("AC 12").Matches("[0-9]. [a-z]*");
+        }
+        
+        [Test]
+        public void NotStringMatchesWorks()
+        {
+            Check.That("AC 12").Not.Matches("[0-9]. [a-z]*");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string matches expected one, whereas it must not.\nThe checked string:\n\t[\"12 ac\"]\nThe expected string: does not match\n\t[\"[0-9]*. [a-z]*\"]")]
+        public void NotStringMatchesFails()
+        {
+            Check.That("12 ac").Not.Matches("[0-9]*. [a-z]*");
+        }
     }
 }

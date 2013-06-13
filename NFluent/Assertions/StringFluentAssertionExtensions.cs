@@ -17,6 +17,7 @@ namespace NFluent
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     using NFluent.Helpers;
 
@@ -298,10 +299,10 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the string ends with the given expected prefix.
+        /// Checks that the string ends with the given expected suffix.
         /// </summary>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
-        /// <param name="expectedEnd">The expected prefix.</param>
+        /// <param name="expectedEnd">The expected suffix.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
@@ -351,6 +352,64 @@ namespace NFluent
                              .On(checkedValue)
                              .Expected(ends)
                              .Comparison("ends with")
+                             .ToString();
+        }
+
+        /// <summary>
+        /// Checks that the string matches a given regular expression.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="regExp">The expected prefix.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string does not end with the expected prefix.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> Matches(
+            this IFluentAssertion<string> fluentAssertion, string regExp)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = MatchesImpl(runnableAssertion.Value, regExp, runnableAssertion.Negated);
+            if (string.IsNullOrEmpty(result))
+            {
+                return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+            }
+
+            throw new FluentAssertionException(result);
+        }
+
+        private static string MatchesImpl(string checkedValue, string regExp, bool negated)
+        {
+            // special case if checkedvalue is null
+            if (checkedValue == null)
+            {
+                return negated ? null : FluentMessage.BuildMessage("The {0} is null.").Expected(regExp).Comparison("matches").ToString();
+            }
+
+            Regex exp = new Regex(regExp);
+            if (exp.IsMatch(checkedValue) != negated)
+            {
+                // success
+                return null;
+            }
+
+            if (negated)
+            {
+                return
+                    FluentMessage.BuildMessage("The {0} matches {1}, whereas it must not.")
+                    .For("string")
+                                 .On(checkedValue)
+                                 .Expected(regExp)
+                                 .Comparison("does not match")
+                                 .ToString();
+            }
+
+            return
+                FluentMessage.BuildMessage("The {0} does not match the {1}.")
+                .For("string")
+                             .On(checkedValue)
+                             .Expected(regExp)
+                             .Comparison("matches")
                              .ToString();
         }
     }
