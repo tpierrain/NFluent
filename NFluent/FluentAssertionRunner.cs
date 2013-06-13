@@ -25,7 +25,7 @@ namespace NFluent
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
     internal class FluentAssertionRunner<T> : IFluentAssertionRunner<T>
     {
-        private IRunnableAssertion<T> runnableFluentAssertion;
+        private readonly IRunnableAssertion<T> runnableFluentAssertion;
 
         public FluentAssertionRunner(IRunnableAssertion<T> runnableFluentAssertion)
         {
@@ -43,28 +43,27 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">The assertion fails.</exception>
         public IChainableFluentAssertion<IFluentAssertion<T>> ExecuteAssertion(Action action, string negatedExceptionMessage)
         {
-            if (this.runnableFluentAssertion.Negated)
+            try
             {
-                // The exact opposite ;-)
-                bool mustThrow = false;
-                try
-                {
-                    action();
-                    mustThrow = true;
-                }
-                catch (FluentAssertionException)
-                {
+                // execute test
+                action();
+            }
+            catch (FluentAssertionException)
+            {
+                // exception raised, and this was not expected
+                if (!this.runnableFluentAssertion.Negated)
+                { 
+                    throw;
                 }
 
-                if (mustThrow)
-                {
-                    throw new FluentAssertionException(negatedExceptionMessage);
-                }
+                // exception was expected
+                return new ChainableFluentAssertion<IFluentAssertion<T>>(this.runnableFluentAssertion);
             }
-            else
+
+            if (this.runnableFluentAssertion.Negated)
             {
-                // May throw FluentAssertionException
-                action();
+                // the expected exception did not occur
+                throw new FluentAssertionException(negatedExceptionMessage);
             }
 
             return new ChainableFluentAssertion<IFluentAssertion<T>>(this.runnableFluentAssertion);

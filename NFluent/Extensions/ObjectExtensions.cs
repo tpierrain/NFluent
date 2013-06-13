@@ -13,25 +13,26 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
-internal static class ObjectExtensions
+namespace NFluent.Extensions
 {
-    /// <summary>
-    /// Gets the type of the specified reference, or null if it is null.
-    /// </summary>
-    /// <param name="reference">The reference we interested in retrieving the type (may be null).</param>
-    /// <returns>
-    /// The type of the specified reference, or null if the reference is null.
-    /// </returns>
-    internal static Type GetTypeWithoutThrowingException(this object reference)
+    using System;
+
+    internal static class ObjectExtensions
     {
-        if (reference == null)
+        /// <summary>
+        /// Gets the type of the specified reference, or null if it is null.
+        /// </summary>
+        /// <param name="reference">The reference we interested in retrieving the type (may be null).</param>
+        /// <returns>
+        /// The type of the specified reference, or null if the reference is null.
+        /// </returns>
+        public static Type GetTypeWithoutThrowingException(this object reference)
         {
-            return null;
-        }
-        else
-        {
+            if (reference == null)
+            {
+                return null;
+            }
+
             return reference.GetType();
         }
     }

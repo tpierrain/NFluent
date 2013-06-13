@@ -29,22 +29,10 @@ namespace NFluent.Tests.ForDocumentation
     {
         // run this test to debug a specific test that the code is unable to properly identify
         [Test]
-        [Ignore("Use to debug dectetion when failing.")]
+        [Explicit("Use to debug detection when failing.")]
         public void SpecificTest()
         {
-            var test = new LambdaRelatedTests();
-
-            // test.SetUp();
-            MethodInfo method = test.GetType()
-                                    .GetMethod(
-                                        "FailDurationTest",
-                                        BindingFlags.Instance | BindingFlags.Public);
-            if (method != null)
-            {
-                RunnerHelper.RunMethod(method, test, null);
-            }
-
-            // test.TearDown();
+            RunnerHelper.RunAction(new EnumOrStructRelatedTests().IsEqualToThrowsExceptionWhenFailingWithEnum);
         }
 
         // Run this test to get all error messages
@@ -62,46 +50,56 @@ namespace NFluent.Tests.ForDocumentation
         [Explicit("Scan all assemblies, execute tests and generate a report for error messages.")]
         public void ScanUnitTestsAndGenerateReport()
         {
-            var report = new FullRunDescription();
-     
-            // get all test fixtures
-            foreach (
-                var type in
-                    Assembly.GetExecutingAssembly()
-                            .GetTypes())
-            {
-                try
-                {
-                    // enumerate testmethods with expectedexception attribute with an FluentException type
-                    IEnumerable<MethodInfo> tests =
-                        type.GetMethods()
-                            .Where(method => method.GetCustomAttributes(typeof(TestAttribute), false).Length > 0)
-                            .Where(
-                                method =>
-                                    {
-                                        object[] attributes =
-                                            method.GetCustomAttributes(typeof(ExpectedExceptionAttribute), false);
-                                        if (attributes.Length == 1)
-                                        {
-                                            var attrib =
-                                                attributes[0] as ExpectedExceptionAttribute;
-                                            return attrib == null
-                                                   || attrib.ExpectedException == typeof(FluentAssertionException);
-                                        }
-
-                                        return false;
-                                    });
-                    RunnerHelper.RunThoseTests(tests, type, report);
-                }
-                catch (Exception e)
-                {
-                    RunnerHelper.Log(string.Format("Exception while working on type:{0}\n{1}", type.FullName, e));
-                }
-            }
+            var report = RunFailingTests(true);
 
             const string Name = "FluentReport.xml";
             report.Save(Name);
             Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(Name)));
+        }
+
+        [Test]
+        [Explicit("Assess error message quality")]
+        public void ScanUnitTestsAndAssessMessages()
+        {
+            var report = RunFailingTests(false);
+            foreach (var typeChecks in report.RunDescription)
+            {
+                foreach (var check in typeChecks.Checks)
+                {
+                    foreach (var checkDescription in check.Checks)
+                    {
+                        string error;
+                        if (!CheckMessage(checkDescription.ErrorSampleMessage, out error))
+                        {
+                            // failing
+                            RunnerHelper.Log(string.Format("Error for {0}: {1}", checkDescription.Signature, error));
+                            RunnerHelper.Log(checkDescription.ErrorSampleMessage);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        internal static bool CheckMessage(string message, out string error)
+        {
+            var lines = message.Split('\n');
+            if (lines.Length == 0 && string.IsNullOrEmpty(lines[0]))
+            {
+                // failing
+                error = "empty message!";
+                return false;
+            }
+
+            if (!lines[0].ToLowerInvariant().Contains("checked"))
+            {
+                // failing
+                error = "message first line must contain 'checked'.";
+                return false;
+            }
+
+            error = string.Empty;
+            return true;
         }
 
         [Test]
@@ -140,7 +138,7 @@ namespace NFluent.Tests.ForDocumentation
                             // run all tests
                             foreach (var checkMethod in publicMethods)
                             {
-                                CheckDescription desc = RunnerHelper.AnalyzeSignature(checkMethod);
+                                var desc = RunnerHelper.AnalyzeSignature(checkMethod);
 
                                 if (desc != null)
                                 {
@@ -163,5 +161,42 @@ namespace NFluent.Tests.ForDocumentation
         }
 
         // run a set of test
+        private static FullRunDescription RunFailingTests(bool log)
+        {
+            var report = new FullRunDescription();
+
+            // get all test fixtures
+            foreach (var type in
+                Assembly.GetExecutingAssembly().GetTypes())
+            {
+                try
+                {
+                    // enumerate testmethods with expectedexception attribute with an FluentException type
+                    var tests =
+                        type.GetMethods()
+                            .Where(method => method.GetCustomAttributes(typeof(TestAttribute), false).Length > 0)
+                            .Where(
+                                method =>
+                                {
+                                    var attributes = method.GetCustomAttributes(typeof(ExpectedExceptionAttribute), false);
+                                    if (attributes.Length == 1)
+                                    {
+                                        var attrib = attributes[0] as ExpectedExceptionAttribute;
+                                        return attrib == null
+                                               || attrib.ExpectedException == typeof(FluentAssertionException);
+                                    }
+
+                                    return false;
+                                });
+                    RunnerHelper.RunThoseTests(tests, type, report, log);
+                }
+                catch (Exception e)
+                {
+                    RunnerHelper.Log(string.Format("Exception while working on type:{0}\n{1}", type.FullName, e));
+                }
+            }
+
+            return report;
+        }
     }
 }

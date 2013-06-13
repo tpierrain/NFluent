@@ -40,13 +40,18 @@ namespace NFluent
 
             return assertionRunner.ExecuteAssertion(
                 () =>
-                {
-                    if (runnableAssertion.Value == null || runnableAssertion.Value.CompareTo(otherValue) >= 0)
                     {
-                        throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]{1}\nis not before:\n\t[{2}]{3}.", runnableAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(runnableAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
-                    }
-                },
-                string.Format("\nThe actual value:\n\t[{0}]{1}\nis before:\n\t[{2}]{3}.", runnableAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(runnableAssertion.Value), otherValue.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(otherValue)));
+                        if (runnableAssertion.Value == null || runnableAssertion.Value.CompareTo(otherValue) >= 0)
+                        {
+                            throw new FluentAssertionException(
+                                FluentMessage.BuildMessage("The {0} is after the reference value.")
+                                             .On(runnableAssertion.Value)
+                                             .And.Expected(otherValue)
+                                             .Comparison("before")
+                                             .ToString());
+                        }
+                    },
+                FluentMessage.BuildMessage("The {0} is after the before value.").On(runnableAssertion.Value).And.Expected(otherValue).Comparison("after").ToString());
         }
     }
 }

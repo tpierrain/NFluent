@@ -127,7 +127,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain all the expected values.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> Contains<T>(this IFluentAssertion<IEnumerable> fluentAssertion, params T[] expectedValues)
+        public static IExtendableFluentAssertion<IEnumerable> Contains<T>(this IFluentAssertion<IEnumerable> fluentAssertion, params T[] expectedValues)
         {
             IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             return fluentAssertion.Contains(properExpectedValues);
@@ -142,12 +142,12 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<IEnumerable>> Contains(this IFluentAssertion<IEnumerable> fluentAssertion, IEnumerable otherEnumerable)
+        public static IExtendableFluentAssertion<IEnumerable> Contains(this IFluentAssertion<IEnumerable> fluentAssertion, IEnumerable otherEnumerable)
         {
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<IEnumerable>;
             var runnableAssertion = fluentAssertion as IRunnableAssertion<IEnumerable>;
 
-            return assertionRunner.ExecuteAssertion(
+            assertionRunner.ExecuteAssertion(
                 () =>
                     {
                         var notFoundValues = ExtractNotFoundValues(runnableAssertion.Value, otherEnumerable);
@@ -158,6 +158,7 @@ namespace NFluent
                         }
                     },
                 string.Format("\nThe actual enumerable:\n\t[{0}]\ncontains all the given value(s):\n\t[{1}]\nwhich is unexpected.", runnableAssertion.Value.ToEnumeratedString(), otherEnumerable.ToEnumeratedString()));
+            return new ExtendableFluentAssertion<IEnumerable>(fluentAssertion, otherEnumerable);
         }
 
         /// <summary>
@@ -175,7 +176,7 @@ namespace NFluent
             IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
 
             return fluentAssertion.ContainsOnly(properExpectedValues);
-        }
+       }
 
         /// <summary>
         /// Checks that the enumerable contains only the values present in another enumerable, and nothing else, in any order.
@@ -239,10 +240,7 @@ namespace NFluent
             var runnableAssertion = fluentAssertion as IRunnableAssertion<IEnumerable>;
 
             return assertionRunner.ExecuteAssertion(
-                () =>
-                    {
-                        ContainsExactlyImpl(runnableAssertion, otherEnumerable);
-                    },
+                () => ContainsExactlyImpl(runnableAssertion, otherEnumerable),
                 BuildExceptionMessageForContainsExactly(runnableAssertion.Value, otherEnumerable));
         }
 
@@ -259,7 +257,8 @@ namespace NFluent
 
             while (first.MoveNext())
             {
-                if (!second.MoveNext() || !object.Equals(first.Current, second.Current))
+                if (!second.MoveNext() 
+                    || !object.Equals(first.Current, second.Current))
                 {
                     ThrowsNotExactlyException(runnableAssertion.Value, enumerable);
                 }
@@ -379,7 +378,7 @@ namespace NFluent
                 {
                     if (object.Equals(element, expectedValue))
                     {
-                        notFoundValues.RemoveAll((one) => one.Equals(expectedValue));
+                        notFoundValues.RemoveAll(one => one.Equals(expectedValue));
                         break;
                     }
                 }
@@ -401,15 +400,7 @@ namespace NFluent
             var unexpectedValuesFound = new List<object>();
             foreach (var element in enumerable)
             {
-                var isExpectedValue = false;
-                foreach (var expectedValue in expectedValues)
-                {
-                    if (object.Equals(element, expectedValue))
-                    {
-                        isExpectedValue = true;
-                        break;
-                    }
-                }
+                var isExpectedValue = expectedValues.Cast<object>().Contains(element);
 
                 if (!isExpectedValue)
                 {

@@ -33,14 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="nunit.framework">
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -48,10 +46,12 @@
       <Link>Version.cs</Link>
     </Compile>
     <Compile Include="AndRelatedTests.cs" />
+    <Compile Include="AutomaticNUnitExceptionDetectionTest.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="IntSignedNumberRelatedTests.cs" />
     <Compile Include="IntRelatedTests.cs" />
     <Compile Include="EnumOrStructRelatedTests.cs" />
+    <Compile Include="ContainsChainedSyntaxTests.cs" />
     <Compile Include="ForDocumentation\CheckDescription.cs" />
     <Compile Include="ComparableRelatedTests.cs" />
     <Compile Include="ContainsOnlyTests.cs" />
@@ -68,6 +68,7 @@
     <Compile Include="ForDocumentation\TypeChecks.cs" />
     <Compile Include="IsInstanceOfTests.cs" />
     <Compile Include="LambdaRelatedTests.cs" />
+    <Compile Include="MessageBuilderTests.cs" />
     <Compile Include="NotRelatedTests.cs" />
     <Compile Include="NumbersOfDifferentTypesRelatedTests.cs" />
     <Compile Include="PropertiesRelatedTests.cs" />

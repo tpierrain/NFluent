@@ -35,7 +35,7 @@ namespace NFluent
         /// </returns>
         public static string ToEnumeratedString(this IEnumerable enumerable)
         {
-            long itemsCount = 0;
+            long itemsCount;
             return ToEnumeratedString(enumerable, out itemsCount);
         }
 
@@ -65,14 +65,7 @@ namespace NFluent
                     sb.Append(separator);
                 }
 
-                if (obj == null)
-                {
-                    sb.Append("null");
-                }
-                else
-                {
-                    sb.Append(obj.ToStringProperlyFormated());
-                }
+                sb.Append(obj == null ? "null" : obj.ToStringProperlyFormated());
 
                 firstTime = false;
                 itemsCount++;

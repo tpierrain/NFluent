@@ -17,7 +17,6 @@ namespace NFluent
 {
     using System;
     using System.Diagnostics;
-
     using NFluent.Helpers;
 
     /// <summary>
@@ -26,8 +25,6 @@ namespace NFluent
     public class LambdaAssertion : ILambdaAssertion
     {
         #region Fields
-        private const string SutName = "The checked code";
-
         private double durationInNs;
 
         private Exception exception;
@@ -51,7 +48,7 @@ namespace NFluent
         /// </summary>
         /// <param name="action">The action.</param>
         /// <param name="alreadyExecuted">A value indicating whether the action has already been executed or not.</param>
-        public LambdaAssertion(Action action, bool alreadyExecuted)
+        private LambdaAssertion(Action action, bool alreadyExecuted)
         {
             this.Value = action;
 
@@ -66,12 +63,12 @@ namespace NFluent
         #region Public Properties
 
         /// <summary>
-        /// Gets the value to be tested (provided for any extension method to be able to test it).
+        /// Gets or sets the value to be tested (provided for any extension method to be able to test it).
         /// </summary>
         /// <value>
         /// The value to be tested by any fluent assertion extension method.
         /// </value>
-        public Action Value { get; private set; }
+        private Action Value { get; set; }
 
         #endregion
 
@@ -89,10 +86,12 @@ namespace NFluent
         /// </remarks>
         public object ForkInstance()
         {
-            bool alreadyExecuted = true;
-            var newInstance = new LambdaAssertion(this.Value, alreadyExecuted);
-            newInstance.durationInNs = this.durationInNs;
-            newInstance.exception = this.exception;
+            const bool AlreadyExecuted = true;
+            var newInstance = new LambdaAssertion(this.Value, AlreadyExecuted)
+                                  {
+                                      durationInNs = this.durationInNs,
+                                      exception = this.exception
+                                  };
 
             return newInstance;
         }
@@ -110,7 +109,11 @@ namespace NFluent
         {
             if (this.exception != null)
             {
-                throw new FluentAssertionException(string.Format("{0} raised an exception, whereas it must not.\n{0} raised the exception:\n----\n{1}\n----", SutName, ExceptionReport(this.exception)));
+                var message1 =
+                    FluentMessage.BuildMessage("The {0} raised an exception, whereas it must not.")
+                                   .For("code")
+                                   .On(this.exception).Label("The raised exception:").ToString();
+                throw new FluentAssertionException(message1);
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);
@@ -133,10 +136,19 @@ namespace NFluent
         /// </exception>
         public IChainableFluentAssertion<ILambdaAssertion> LastsLessThan(double threshold, TimeUnit timeUnit)
         {
-            double comparand = TimeHelper.GetInNanoSeconds(threshold, timeUnit);
-            if (this.durationInNs > comparand)
+            var comparand = new Duration(this.durationInNs, TimeUnit.Nanoseconds).ConvertTo(timeUnit);
+            var durationThreshold = new Duration(threshold, timeUnit);
+            if (comparand > durationThreshold)
             {
-                throw new FluentAssertionException(string.Format("{0} took too much time to execute.\n{0} execution time:\n\t{1} {3}\nExpected execution time:\n\t{2} {3}", SutName, TimeHelper.GetFromNanoSeconds(this.durationInNs, timeUnit), threshold, timeUnit));
+                var message =
+                    FluentMessage.BuildMessage("The checked code took too much time to execute.")
+                                   .For("excecution time")
+                                   .On(comparand)
+                                   .And.Expected(durationThreshold)
+                                   .Comparison("less than")
+                                   .ToString();
+
+                throw new FluentAssertionException(message);
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);
@@ -146,7 +158,7 @@ namespace NFluent
         /// Checks that the code did throw an exception of a specified type.
         /// </summary>
         /// <typeparam name="T">
-        /// Expected exception type.
+        /// And.Expected exception type.
         /// </typeparam>
         /// <returns>
         /// A chainable assertion.
@@ -158,12 +170,20 @@ namespace NFluent
         {
             if (this.exception == null)
             {
-                throw new FluentAssertionException(string.Format("{0} did not raise an exception, whereas it must.\nExpected exception type is:\n\t[{1}]", SutName, typeof(T).Name));
+                var message =
+                    FluentMessage.BuildMessage(
+                        "The {0} did not raise an exception, whereas it must.").For("code").Expected(typeof(T)).Label("Expected exception type is:").ToString();
+                throw new FluentAssertionException(message);
             }
 
             if (!(this.exception is T))
             {
-                throw new FluentAssertionException(string.Format("{0} raised an exception of a different type than expected.\n{0} raised:\n\t{1}\nExpected exception type:\n\t[{2}].\n", SutName, ExceptionReport(this.exception), typeof(T).Name));
+                var message =
+                    FluentMessage.BuildMessage("The {0} raised an exception of a different type than expected.")
+                                   .For("code").On(this.exception).Label("Raised Exception").And.Expected(typeof(T)).Label("Expected exception type is:")
+                                   .ToString();
+
+                throw new FluentAssertionException(message);
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);
@@ -182,7 +202,9 @@ namespace NFluent
         {
             if (this.exception == null)
             {
-                throw new FluentAssertionException(string.Format("{0} did not raise an exception, whereas it must.", SutName));
+                var message =
+                    FluentMessage.BuildMessage("The {0} did not raise an exception, whereas it must.").For("code").ToString();
+                throw new FluentAssertionException(message);
             }
 
             return new ChainableFluentAssertion<ILambdaAssertion>(this);
@@ -191,13 +213,7 @@ namespace NFluent
         #endregion
 
         #region Methods
-
-        // build an exception description string
-        private static string ExceptionReport(Exception e)
-        {
-            return string.Format("[{0}]: {1}", e.GetType().FullName, e.Message);
-        }
-
+ 
         private void Execute()
         {
             var watch = new Stopwatch();

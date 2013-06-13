@@ -50,7 +50,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[2] of type: [System.Byte]\nis not equal to zero.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from zero.\nThe checked value:\n\t[2]")]
         public void IsZeroThrowsExceptionWhenFails()
         {
             const byte Two = 2;
@@ -71,7 +71,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0] of type: [System.Byte]\nis equal to zero.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to zero, whereas it must not.\nThe checked value:\n\t[0]")]
         public void IsNotZeroThrowsExceptionWhenFails()
         {
             const byte Zero = 0;
@@ -92,7 +92,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to zero which is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to zero whereas it must not.")]
         public void NotIsZeroThrowsExceptionWhenFailing()
         {
             const byte Zero = 0;
@@ -113,7 +113,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[2] of type: [System.Byte]\nis not equal to zero which is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from zero.\nThe checked value:\n\t[2]")]
         public void NotIsNotZeroThrowsExceptionWhenFailing()
         {
             const byte Two = 2;
@@ -133,7 +133,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0] of type: [System.Byte]\nis not a strictly positive value.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is not strictly positive.\nThe checked value:\n\t[0]")]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
             const byte Zero = 0;
@@ -141,7 +141,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[2] of type: [System.Byte]\nis a strictly positive value, which is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
         public void NotIsPositiveThrowsExceptionWhenFailing()
         {
             const byte Two = 2;
@@ -172,7 +172,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[1]\nis less than than:\n\t[20]\nwhich was not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
         public void NotIsLessThanThrowsExceptionWhenFailing()
         {
             const byte One = 1;
@@ -195,7 +195,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[1]\nis not greater than:\n\t[20].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
         public void IsGreaterThanThrowsExceptionWhenFailing()
         {
             const byte One = 1;
@@ -205,7 +205,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[20]\nis greater than:\n\t[1]\nwhich is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is greater than the threshold.\nThe checked value:\n\t[20]\nThe expected value: less than\n\t[1]")]
         public void NotIsGreaterThanThrowsExceptionWhenFailing()
         {
             const byte One = 1;
@@ -246,7 +246,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = Blabla + "(\\[20])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + LineFeed + Blabla + "(\\[20\\])" + Blabla + "(with)" + Blabla + "(HashCode)" + Blabla + NumericalHashCodeWithinBrackets + LineFeed + Blabla + "unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Byte]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             const byte Twenty = 20;
@@ -264,7 +264,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[20] of type: [System.Byte].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Byte]")]
         public void IsNotEqualToThrowsExceptionWhenFailing()
         {
             const byte Twenty = 20;
@@ -273,7 +273,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis not equal to the expected one:\n\t[20].")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from the expected one.\nThe checked value:\n\t[1]\nThe expected value:\n\t[20]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             const byte One = 1;
@@ -398,7 +398,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[1]\nis an instance of:\n\t[System.Nullable`1[System.Byte]]\nwhich was not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is an instance of System.Nullable`1[System.Byte] whereas it must not.\nThe checked value:\n\t[1] of type: [System.Nullable`1[System.Byte]]\nThe expected type: different from\n\t[System.Nullable`1[System.Byte]]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
             byte? one = 1;
@@ -407,7 +407,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis an instance of:\n\t[System.Nullable`1[System.Byte]]\nwhich was not expected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is an instance of System.Nullable`1[System.Byte] whereas it must not.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Byte]]\nThe expected type: different from\n\t[System.Nullable`1[System.Byte]]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             byte? noValue = null;
@@ -416,7 +416,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[null]\nis not an instance of:\n\t[System.String]\nbut an instance of:\n\t[System.Nullable`1[System.Byte]]\ninstead.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is not an instance of System.String.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Byte]]\nThe expected type:\n\t[System.String]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
             byte? one = null;

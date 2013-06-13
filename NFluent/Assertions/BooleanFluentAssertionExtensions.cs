@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
     using NFluent.Extensions;
     using NFluent.Helpers;
 
@@ -22,6 +24,12 @@ namespace NFluent
     /// </summary>
     public static class BooleanFluentAssertionExtensions
     {
+        // message when the value must be false
+        private const string MustBeFalseMessage = "The {0} is true, while it must be false.";
+
+        // message when the value must be true
+        private const string MustBeTrueMessage = "The {0} is false, while it must be true.";
+
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
@@ -36,14 +44,12 @@ namespace NFluent
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<bool>;
             var runnableAssertion = fluentAssertion as IRunnableAssertion<bool>;
             
-            var instanceTypeMessage = EqualityHelper.BuildTypeDescriptionMessage(expected, false);
-
             return assertionRunner.ExecuteAssertion(
                 () =>
                 {
                     EqualityHelper.IsEqualTo(runnableAssertion.Value, expected);
                 },
-                string.Format("\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[{0}]{1}.", runnableAssertion.ToStringProperlyFormated(), instanceTypeMessage));
+                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, true));
         }
 
         /// <summary>
@@ -86,10 +92,10 @@ namespace NFluent
                 {
                     if (!runnableAssertion.Value)
                     {
-                        throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not true.", runnableAssertion.Value.ToStringProperlyFormated()));
+                        throw new FluentAssertionException(FluentMessage.BuildMessage(MustBeTrueMessage).On(runnableAssertion.Value).ToString());
                     }
                 },
-                string.Format("\nThe actual value:\n\t[{0}]\nis true.", runnableAssertion.Value.ToStringProperlyFormated()));
+                FluentMessage.BuildMessage(MustBeFalseMessage).On(runnableAssertion.Value).ToString());
         }
 
         /// <summary>
@@ -110,10 +116,10 @@ namespace NFluent
                 {
                     if (runnableAssertion.Value)
                     {
-                        throw new FluentAssertionException(string.Format("\nThe actual value:\n\t[{0}]\nis not false.", runnableAssertion.Value.ToStringProperlyFormated()));
+                        throw new FluentAssertionException(FluentMessage.BuildMessage(MustBeFalseMessage).On(runnableAssertion.Value).ToString());
                     }
                 },
-                string.Format("\nThe actual value:\n\t[{0}]\nis false.", runnableAssertion.Value.ToStringProperlyFormated()));
+                FluentMessage.BuildMessage(MustBeTrueMessage).On(runnableAssertion.Value).ToString());
         }
 
         /// <summary>
@@ -156,10 +162,10 @@ namespace NFluent
 
             return assertionRunner.ExecuteAssertion(
                 () =>
-                {
-                    IsInstanceHelper.IsNotInstanceOf(runnableAssertion.Value, expectedType);
-                },
-                string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", runnableAssertion.Value.ToStringProperlyFormated(), expectedType, runnableAssertion.Value.GetType()));
+                    {
+                        IsInstanceHelper.IsNotInstanceOf(runnableAssertion.Value, expectedType);
+                    },
+                IsInstanceHelper.BuildErrorMessage(runnableAssertion.Value, typeof(T), true));
         }
     }
 }

@@ -38,7 +38,7 @@
         #region IsPositive
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[0] of type: [System.Int16]\nis not a strictly positive value.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is not strictly positive.\nThe checked value:\n\t[0]")]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
             const short Zero = 0;
@@ -46,7 +46,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual value:\n\t[-50] of type: [System.Int16]\nis not a strictly positive value.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is not strictly positive.\nThe checked value:\n\t[-50]")]
         public void IsPositiveThrowsExceptionWhenValueIsNegative()
         {
             const short MinusFifty = -50;
@@ -63,7 +63,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value:\n\t[2] of type: [System.Int16]\nis a strictly positive value, which is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
         public void NotIsPositiveThrowsExceptionWhenFailing()
         {
             const short Two = 2;

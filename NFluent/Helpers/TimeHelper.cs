@@ -209,7 +209,7 @@ namespace NFluent.Helpers
             return TimeUnit.Nanoseconds;
         }
 
-        private static long GetConversionFactor(TimeUnit unit)
+        internal static long GetConversionFactor(TimeUnit unit)
         {
             long value = 1;
             if (unit == TimeUnit.Nanoseconds)

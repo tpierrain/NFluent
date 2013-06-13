@@ -11,7 +11,7 @@
     <AssemblyName>NFluent</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -25,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\NFluent.XML</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,6 +52,10 @@
     <Compile Include="Assertions\BooleanFluentAssertionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helpers\Duration.cs" />
+    <Compile Include="Helpers\ExceptionHelper.cs" />
+    <Compile Include="Helpers\FluentMessage.cs" />
+    <Compile Include="IExtendableFluentAssertion.cs" />
     <Compile Include="Assertions\StructFluentAssertionExtensions.cs" />
     <Compile Include="ChainableNullableFluentAssertionOrNumberFluentAssertion.cs" />
     <Compile Include="Constants.cs" />
@@ -63,6 +68,8 @@
     <Compile Include="IFluentAssertionRunner.cs" />
     <Compile Include="INegateableFluentAssertion.cs" />
     <Compile Include="IStructFluentAssertion.cs" />
+    <Compile Include="Assertions\ExtendableFluentAssertion.cs" />
+    <Compile Include="Assertions\EnumerableFluentSyntaxExtension.cs" />
     <Compile Include="ILambdaAssertion.cs" />
     <Compile Include="Assertions\TimeSpanFluentAssertionExtensions.cs" />
     <Compile Include="ChainableFluentAssertion.cs" />

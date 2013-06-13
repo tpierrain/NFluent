@@ -19,6 +19,7 @@ namespace NFluent
     /// <summary>
     /// Thrown when an assertion failed.
     /// </summary>
+    [Serializable]
     public class FluentAssertionException : Exception
     {
         /// <summary>

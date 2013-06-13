@@ -42,31 +42,42 @@ namespace NFluent.Tests.ForDocumentation
                 // check if this is an extension method
                 if (method.GetCustomAttributes(typeof(ExtensionAttribute), false).Length > 0)
                 {
-                    ParameterInfo[] parameters = method.GetParameters();
-                    ParameterInfo param = parameters[0];
-                    Type paramType = param.ParameterType;
+                    var parameters = method.GetParameters();
+                    var param = parameters[0];
+                    var paramType = param.ParameterType;
                     if (!paramType.IsGenericType)
                     {
                         // this is not an check implementation
                         return null;
                     }
 
-                    if (paramType.Name != "IFluentAssertion`1" && paramType.GetInterface("IFluentAssertion`1") == null)
+                    // if it is specific to chains
+                    if (paramType.Name == "IChainableFluentAssertion`1")
+                    {
+                        paramType = paramType.GetGenericArguments()[0];
+                    }
+
+                    if (paramType.Name == "IExtendableFluentAssertion`1" || paramType.Name == "IFluentAssertion`1"
+                        || paramType.GetInterface("IFluentAssertion`1") != null
+                        || paramType.Name == "IStructFluentAssertion`1")
+                    {
+                        var testedtype = paramType.GetGenericArguments()[0];
+                        result.CheckedType = testedtype;
+
+                        // get other parameters
+                        result.CheckParameters = new List<Type>(parameters.Length - 1);
+                        for (var i = 1; i < parameters.Length; i++)
+                        {
+                            result.CheckParameters.Add(parameters[i].ParameterType);
+                        }
+                    }
+                    else
                     {
                         // this is not an check implementation
                         return null;
                     }
 
                     // identify type subjected to test
-                    var testedtype = paramType.GetGenericArguments()[0];
-                    result.CheckedType = testedtype;
-
-                    // get other parameters
-                    result.CheckParameters = new List<Type>(parameters.Length - 1);
-                    for (int i = 1; i < parameters.Length; i++)
-                    {
-                        result.CheckParameters.Add(parameters[i].ParameterType);
-                    }
                 }
                 else
                 {
@@ -90,7 +101,7 @@ namespace NFluent.Tests.ForDocumentation
 
                     // get other parameters
                     result.CheckParameters = new List<Type>();
-                    foreach (ParameterInfo t in method.GetParameters())
+                    foreach (var t in method.GetParameters())
                     {
                         result.CheckParameters.Add(t.ParameterType);
                     }
@@ -98,14 +109,14 @@ namespace NFluent.Tests.ForDocumentation
                 else
                 {
                     // type does not implement IFluentAssertion<T>, we try to find a 'Value' property
-                    var prop = method.DeclaringType.GetProperty("Value");
+                    var prop = method.DeclaringType.GetProperty("Value", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
                     if (prop != null)
                     {
                         result.CheckedType = prop.PropertyType;
 
                         // get other parameters
                         result.CheckParameters = new List<Type>();
-                        foreach (ParameterInfo t in method.GetParameters())
+                        foreach (var t in method.GetParameters())
                         {
                             result.CheckParameters.Add(t.ParameterType);
                         }
@@ -121,7 +132,7 @@ namespace NFluent.Tests.ForDocumentation
             return result;
         }
 
-        public static void RunThoseTests(IEnumerable<MethodInfo> tests, Type type, FullRunDescription report)
+        public static void RunThoseTests(IEnumerable<MethodInfo> tests, Type type, FullRunDescription report, bool log)
         {
             var specificTests = tests as IList<MethodInfo> ?? tests.ToList();
             if (specificTests.Count > 0)
@@ -137,7 +148,7 @@ namespace NFluent.Tests.ForDocumentation
                     new object[] { });
 
                 // run TestFixtureSetup
-                RunAllSpecificMethods(type, typeof(TestFixtureSetUpAttribute), test);
+                RunAllMethodsWithASpecificAttribute(type, typeof(TestFixtureSetUpAttribute), test);
 
                 try
                 {
@@ -146,27 +157,32 @@ namespace NFluent.Tests.ForDocumentation
                         specificTest => specificTest.GetCustomAttributes(typeof(ExplicitAttribute), false).Length == 0 
                         && specificTest.GetCustomAttributes(typeof(IgnoreAttribute), false).Length == 0))
                     {
-                        RunAllSpecificMethods(type, typeof(SetUpAttribute), test);
+                        RunAllMethodsWithASpecificAttribute(type, typeof(SetUpAttribute), test);
 
                         try
                         {
                             // we have to caputre eceptions
-                            RunMethod(specificTest, test, report);
+                            RunMethod(specificTest, test, report, log);
                         }
                         finally
                         {
-                            RunAllSpecificMethods(type, typeof(TearDownAttribute), test);
+                            RunAllMethodsWithASpecificAttribute(type, typeof(TearDownAttribute), test);
                         }
                     }
                 }
                 finally
                 {
-                    RunAllSpecificMethods(type, typeof(TestFixtureTearDownAttribute), test);
+                    RunAllMethodsWithASpecificAttribute(type, typeof(TestFixtureTearDownAttribute), test);
                 }
             }
         }
 
-        public static void RunMethod(MethodInfo specificTest, object test, FullRunDescription report)
+        public static void RunAction(Action action)
+        {
+            RunMethod(action.Method, action.Target, null, false);
+        }
+
+        private static void RunMethod(MethodBase specificTest, object test, FullRunDescription report, bool log)
         {
             try
             {
@@ -187,22 +203,32 @@ namespace NFluent.Tests.ForDocumentation
                     if (e.InnerException is FluentAssertionException)
                     {
                         var fluExc = e.InnerException as FluentAssertionException;
-                        Type testedtype;
-                        CheckDescription desc = GetCheckAndType(fluExc);
-                        MethodBase method = desc.Check;
-                        testedtype = desc.CheckedType;
-                        desc.ErrorSampleMessage = fluExc.Message;
-
-                        // are we building a report
-                        if (report != null)
+                        var desc = GetCheckAndType(fluExc);
+                        if (desc != null)
                         {
-                            Log(
-                                string.Format(
-                                    "Check.That({1} sut).{0} failure message\n****\n{2}\n****",
-                                    method.Name,
-                                    testedtype.Name,
-                                    fluExc.Message));
-                            report.AddEntry(desc);
+                            var method = desc.Check;
+                            var testedtype = desc.CheckedType;
+                            desc.ErrorSampleMessage = fluExc.Message;
+
+                            // are we building a report
+                            if (log)
+                            {
+                                Log(
+                                    string.Format(
+                                        "Check.That({1} sut).{0} failure message\n****\n{2}\n****",
+                                        method.Name,
+                                        testedtype.Name,
+                                        fluExc.Message));
+                            }
+
+                            if (report != null)
+                            {
+                                report.AddEntry(desc);
+                            }
+                        }
+                        else
+                        {
+                            Log(string.Format("Failed to parse the method signature {0}", specificTest.Name));
                         }
 
                         return;
@@ -242,7 +268,8 @@ namespace NFluent.Tests.ForDocumentation
         /// <summary>
         /// Runs all tests found in current assembly.
         /// </summary>
-        public static void RunAllTests()
+        /// <param name="log">if set to <c>true</c> log the activity (to Debug output).</param>
+        public static void RunAllTests(bool log)
         {
             // prevent recursion
             if (inProcess)
@@ -259,9 +286,9 @@ namespace NFluent.Tests.ForDocumentation
                     Assembly.GetExecutingAssembly().GetTypes())
                 {
                     // enumerate testmethods with expectedexception attribute with an FluentException type
-                    IEnumerable<MethodInfo> tests =
+                    var tests =
                         type.GetMethods().Where(method => method.GetCustomAttributes(typeof(TestAttribute), false).Length > 0);
-                    RunThoseTests(tests, type, null);
+                    RunThoseTests(tests, type, null, log);
                 }
             }
             finally
@@ -276,13 +303,13 @@ namespace NFluent.Tests.ForDocumentation
             var trace = new StackTrace(fluExc);
 
             // get fluententrypoint stackframe
-            int frameIndex = trace.FrameCount - 2;
+            var frameIndex = trace.FrameCount - 2;
             if (frameIndex < 0)
             {
                 frameIndex = 0;
             }
 
-            StackFrame frame = trace.GetFrame(frameIndex);
+            var frame = trace.GetFrame(frameIndex);
 
             // get method
             var method = frame.GetMethod();
@@ -290,7 +317,7 @@ namespace NFluent.Tests.ForDocumentation
             return AnalyzeSignature(method);
         }
 
-        private static void RunAllSpecificMethods(Type type, Type attributeTypeToScan, object test)
+        private static void RunAllMethodsWithASpecificAttribute(Type type, Type attributeTypeToScan, object test)
         {
             IEnumerable<MethodInfo> startup =
                 type.GetMethods().Where(method => method.GetCustomAttributes(attributeTypeToScan, false).Length > 0);

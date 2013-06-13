@@ -47,7 +47,7 @@ namespace NFluent.Tests.ForDocumentation
                     if (checkParameters.Count > 0)
                     {
                         parameters.Append(checkParameters[0].Name);
-                        for (int i = 1; i < checkParameters.Count; i++)
+                        for (var i = 1; i < checkParameters.Count; i++)
                         {
                             parameters.Append(", ");
                             parameters.Append(checkParameters[i].Name);

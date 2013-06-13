@@ -36,16 +36,27 @@ namespace NFluent
             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
+            var testedDuration = new Duration(runnableAssertion.Value, unit);
+            var expected = new Duration(providedDuration, unit);
+            var notMessage =
+                FluentMessage.BuildMessage("The {0} is not more than the limit.")
+                               .On(testedDuration)
+                               .And.Expected(expected)
+                               .Comparison("more than or equal to");
+            var message =
+                FluentMessage.BuildMessage("The {0} is more than the limit.")
+                               .On(testedDuration)
+                               .And.Expected(expected).Comparison("less than");
+
             return assertionRunner.ExecuteAssertion(
                 () =>
                     {
-                        TimeSpan comparand = TimeHelper.ToTimeSpan(providedDuration, unit);
-                        if (runnableAssertion.Value >= comparand)
+                        if (testedDuration >= expected)
                         {
-                            throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not less than:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(runnableAssertion.Value, unit), providedDuration, unit));
+                            throw new FluentAssertionException(message.ToString());
                         }
                     },
-                string.Format("\nThe actual value of:\n\t[{0} {2}]\nis less than:\n\t[{1} {2}]\nwhich is unexpected.", TimeHelper.Convert(runnableAssertion.Value, unit), providedDuration, unit));
+                notMessage.ToString());
          }
 
          /// <summary>
@@ -60,17 +71,30 @@ namespace NFluent
              var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
              var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
-             TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
+             var unit = TimeHelper.DiscoverUnit(comparand);
+
+             var testedDuration = new Duration(runnableAssertion.Value, unit);
+             var expected = new Duration(comparand, unit);
+
+             var notMessage =
+                 FluentMessage.BuildMessage("The {0} is not more than the limit.")
+                                .On(testedDuration)
+                                .And.Expected(expected)
+                                .Comparison("more than or equal to");
+             var message =
+                 FluentMessage.BuildMessage("The {0} is more than the limit.")
+                                .On(testedDuration)
+                                .And.Expected(expected).Comparison("less than");
 
              return assertionRunner.ExecuteAssertion(
                  () =>
+                 {
+                     if (testedDuration >= expected)
                      {
-                         if (runnableAssertion.Value >= comparand)
-                         {
-                             throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not less than:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
-                         }
-                     },
-                 string.Format("\nThe actual value of:\n\t[{0} {2}]\nis less than:\n\t[{1} {2}]\nwhich is unexpected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
+                         throw new FluentAssertionException(message.ToString());
+                     }
+                 },
+                 notMessage.ToString());
          }
 
          /// <summary>
@@ -86,17 +110,27 @@ namespace NFluent
              var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
              var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
-             TimeSpan comparand = TimeHelper.ToTimeSpan(providedDuration, unit);
+             var testedDuration = new Duration(runnableAssertion.Value, unit);
+             var expected = new Duration(providedDuration, unit);
+             var message =
+                 FluentMessage.BuildMessage("The {0} is not more than the limit.")
+                                .On(testedDuration)
+                                .And.Expected(expected)
+                                .Comparison("less than or equal to");
+             var notMessage =
+                 FluentMessage.BuildMessage("The {0} is more than the limit.")
+                                .On(testedDuration)
+                                .And.Expected(expected).Comparison("more than");
 
              return assertionRunner.ExecuteAssertion(
                  () =>
                      {
-                         if (runnableAssertion.Value <= comparand)
+                         if (testedDuration <= expected)
                          {
-                             throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not greater than:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
+                             throw new FluentAssertionException(message.ToString());
                          }
                      },
-                 string.Format("\nThe actual value of:\n\t[{0} {2}]\nis greater than:\n\t[{1} {2}]\nwhich is unexpected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
+                 notMessage.ToString());
          }
 
          /// <summary>
@@ -112,16 +146,28 @@ namespace NFluent
              var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
              TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
+             var testedDuration = new Duration(runnableAssertion.Value, unit);
+             var expected = new Duration(comparand, unit);
+
+             var message =
+             FluentMessage.BuildMessage("The {0} is not more than the limit.")
+                            .On(testedDuration)
+                            .And.Expected(expected)
+                            .Comparison("more than");
+             var notMessage =
+                 FluentMessage.BuildMessage("The {0} is more than the limit.")
+                                .On(testedDuration)
+                                .And.Expected(expected).Comparison("less than or equal to");
 
              return assertionRunner.ExecuteAssertion(
                  () =>
+                 {
+                     if (testedDuration <= expected)
                      {
-                         if (runnableAssertion.Value <= comparand)
-                         {
-                             throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not greater than:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
-                         }
-                     },
-                 string.Format("\nThe actual value of:\n\t[{0} {2}]\nis greater than:\n\t[{1} {2}]\nwhich is unexpected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
+                         throw new FluentAssertionException(message.ToString());
+                     }
+                 },
+                 notMessage.ToString());
          }
 
          /// <summary>
@@ -137,17 +183,28 @@ namespace NFluent
              var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
              var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
-             TimeSpan comparand = TimeHelper.ToTimeSpan(duration, unit);
+             var testedDuration = new Duration(runnableAssertion.Value, unit);
+             var expected = new Duration(duration, unit);
+
+             var message =
+             FluentMessage.BuildMessage("The {0} is different from the {1}.")
+                            .On(testedDuration)
+                            .And.Expected(expected);
+             var notMessage =
+                 FluentMessage.BuildMessage("The {0} is the same than {1}.")
+                                .On(testedDuration)
+                                .And.Expected(expected)
+                                .Comparison("different than");
 
              return assertionRunner.ExecuteAssertion(
                  () =>
+                 {
+                     if (testedDuration != expected)
                      {
-                         if (runnableAssertion.Value != comparand)
-                         {
-                             throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not equal to:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
-                         }
-                     },
-                 string.Format("\nThe actual value of:\n\t[{0} {2}]\nis equal to:\n\t[{1} {2}]\nwhich is unexpected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
+                         throw new FluentAssertionException(message.ToString());
+                     }
+                 },
+                 notMessage.ToString());
          }
 
          /// <summary>
@@ -163,16 +220,28 @@ namespace NFluent
              var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
 
              TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
+             var testedDuration = new Duration(runnableAssertion.Value, unit);
+             var expected = new Duration(comparand, unit);
+
+             var message =
+             FluentMessage.BuildMessage("The {0} is different from the {1}.")
+                            .On(testedDuration)
+                            .And.Expected(expected);
+             var notMessage =
+                 FluentMessage.BuildMessage("The {0} is the same than {1}.")
+                                .On(testedDuration)
+                                .And.Expected(expected)
+                                .Comparison("different than");
 
              return assertionRunner.ExecuteAssertion(
                  () =>
                      {
                          if (runnableAssertion.Value != comparand)
                          {
-                             throw new FluentAssertionException(string.Format("\nThe actual value of:\n\t[{0} {2}]\nis not equal to:\n\t[{1} {2}]\nas expected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
+                             throw new FluentAssertionException(message.ToString());
                          }
                      },
-                 string.Format("\nThe actual value of:\n\t[{0} {2}]\nis equal to:\n\t[{1} {2}]\nwhich is unexpected.", TimeHelper.Convert(runnableAssertion.Value, unit), TimeHelper.Convert(comparand, unit), unit));
+                 notMessage.ToString());
          }
 
          /// <summary>
