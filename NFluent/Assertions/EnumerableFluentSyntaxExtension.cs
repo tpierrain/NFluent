@@ -79,7 +79,7 @@ namespace NFluent
                                 itemidx))
                                        .For("enumerable")
                                        .On(runnableAssertion.Value)
-                                       .Expected(chainedFluentAssertion.OriginalComparand);
+                                       .And.Expected(chainedFluentAssertion.OriginalComparand);
 
                     throw new FluentAssertionException(message.ToString());
                 }
@@ -154,7 +154,7 @@ namespace NFluent
                                                                         index > scanIndex ? "early" : "late"))
                                          .For("enumerable")
                                          .On(runnableAssertion.Value)
-                                         .Expected(chainedFluentAssertion.OriginalComparand);
+                                           .And.Expected(chainedFluentAssertion.OriginalComparand);
 
                         throw new FluentAssertionException(message.ToString());
                     }

@@ -49,8 +49,8 @@ namespace NFluent.Tests
             Assert.AreEqual(500, TimeHelper.GetFromNanoSeconds(500000000, TimeUnit.Milliseconds));
         }
 
-        [ExpectedException(typeof(InvalidOperationException))]
         [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void CheckInvalidUnits()
         {
             Assert.AreNotEqual(0, TimeHelper.GetInNanoSeconds(10, (TimeUnit)100));

@@ -41,12 +41,12 @@ namespace NFluent
             var notMessage =
                 FluentMessage.BuildMessage("The {0} is not more than the limit.")
                                .On(testedDuration)
-                               .Expected(expected)
+                               .And.Expected(expected)
                                .Comparison("more than or equal to");
             var message =
                 FluentMessage.BuildMessage("The {0} is more than the limit.")
                                .On(testedDuration)
-                               .Expected(expected).Comparison("less than");
+                               .And.Expected(expected).Comparison("less than");
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -79,12 +79,12 @@ namespace NFluent
              var notMessage =
                  FluentMessage.BuildMessage("The {0} is not more than the limit.")
                                 .On(testedDuration)
-                                .Expected(expected)
+                                .And.Expected(expected)
                                 .Comparison("more than or equal to");
              var message =
                  FluentMessage.BuildMessage("The {0} is more than the limit.")
                                 .On(testedDuration)
-                                .Expected(expected).Comparison("less than");
+                                .And.Expected(expected).Comparison("less than");
 
              return assertionRunner.ExecuteAssertion(
                  () =>
@@ -115,12 +115,12 @@ namespace NFluent
              var message =
                  FluentMessage.BuildMessage("The {0} is not more than the limit.")
                                 .On(testedDuration)
-                                .Expected(expected)
+                                .And.Expected(expected)
                                 .Comparison("less than or equal to");
              var notMessage =
                  FluentMessage.BuildMessage("The {0} is more than the limit.")
                                 .On(testedDuration)
-                                .Expected(expected).Comparison("more than");
+                                .And.Expected(expected).Comparison("more than");
 
              return assertionRunner.ExecuteAssertion(
                  () =>
@@ -152,12 +152,12 @@ namespace NFluent
              var message =
              FluentMessage.BuildMessage("The {0} is not more than the limit.")
                             .On(testedDuration)
-                            .Expected(expected)
+                            .And.Expected(expected)
                             .Comparison("more than");
              var notMessage =
                  FluentMessage.BuildMessage("The {0} is more than the limit.")
                                 .On(testedDuration)
-                                .Expected(expected).Comparison("less than or equal to");
+                                .And.Expected(expected).Comparison("less than or equal to");
 
              return assertionRunner.ExecuteAssertion(
                  () =>
@@ -189,11 +189,11 @@ namespace NFluent
              var message =
              FluentMessage.BuildMessage("The {0} is different from the {1}.")
                             .On(testedDuration)
-                            .Expected(expected);
+                            .And.Expected(expected);
              var notMessage =
                  FluentMessage.BuildMessage("The {0} is the same than {1}.")
                                 .On(testedDuration)
-                                .Expected(expected)
+                                .And.Expected(expected)
                                 .Comparison("different than");
 
              return assertionRunner.ExecuteAssertion(
@@ -226,11 +226,11 @@ namespace NFluent
              var message =
              FluentMessage.BuildMessage("The {0} is different from the {1}.")
                             .On(testedDuration)
-                            .Expected(expected);
+                            .And.Expected(expected);
              var notMessage =
                  FluentMessage.BuildMessage("The {0} is the same than {1}.")
                                 .On(testedDuration)
-                                .Expected(expected)
+                                .And.Expected(expected)
                                 .Comparison("different than");
 
              return assertionRunner.ExecuteAssertion(
