@@ -225,6 +225,20 @@
             Check.That(Twenty).IsPositive().And.IsNotZero();
         }
 
+        #region Equals should always throw
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nEquals method should not be called in this context since it is not a fluent assertion. Too bad we can't remove it from Intellisense or redirect it to the proper IsEqualTo method.")]
+        public void EqualsShouldAlwaysThrowAnExceptionToAvoidConfusionWithIsEqualToAssertion()
+        {
+            const uint Twenty = 20;
+            const uint OtherTwenty = 20;
+
+            Check.That(Twenty).Equals(OtherTwenty);
+        }
+
+        #endregion
+
         #region IsEqualTo / IsNotEqualTo
 
         [Test]

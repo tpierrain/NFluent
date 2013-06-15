@@ -436,28 +436,24 @@ namespace NFluent
 
         private static string BuildExceptionMessageForContainsExactly(IEnumerable checkedValue, IEnumerable enumerable)
         {
-            long foundCount;
-            var foundItems = checkedValue.ToEnumeratedString(out foundCount);
-            var formatedFoundCount = FormatItemCount(foundCount);
-
-            long expectedCount;
-            object expectedItems = enumerable.ToEnumeratedString(out expectedCount);
-            var formatedExpectedCount = FormatItemCount(expectedCount);
-
-            return string.Format("\nThe actual enumerable:\n\t[{0}] ({1}).\ncontains exactly the value(s):\n\t[{2}] ({3}).\nwhich is unexpected.", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount);
+            return FluentMessage.BuildMessage("\nThe {0} contains exactly the given values whereas it must not.")
+                                    .For("enumerable")
+                                    .On(checkedValue)
+                                    .WithEnumerableCount(checkedValue.Count())
+                                    .ToString();
         }
 
         private static void ThrowsNotExactlyException(IEnumerable checkedValue, IList<object> enumerable)
         {
-            long foundCount;
-            var foundItems = checkedValue.ToEnumeratedString(out foundCount);
-            var formatedFoundCount = FormatItemCount(foundCount);
+            var message = FluentMessage.BuildMessage("\nThe {0} does not contain exactly the expected value(s).")
+                                        .For("enumerable")
+                                        .On(checkedValue)
+                                        .WithEnumerableCount(checkedValue.Count())
+                                        .And.Expected(enumerable)
+                                        .WithEnumerableCount(enumerable.Count())
+                                        .ToString();
 
-            long expectedCount;
-            object expectedItems = enumerable.ToEnumeratedString(out expectedCount);
-            var formatedExpectedCount = FormatItemCount(expectedCount);
-
-            throw new FluentAssertionException(string.Format("\nThe actual enumerable:\n\t[{0}] ({1})\ndoes not contain exactly the expected value(s):\n\t[{2}] ({3}).", foundItems, formatedFoundCount, expectedItems, formatedExpectedCount));
+            throw new FluentAssertionException(message);
         }
 
         private static IEnumerable ExtractEnumerableValueFromPossibleOneValueArray<T>(T[] expectedValues)

@@ -74,7 +74,7 @@ namespace NFluent
                     var message =
                         FluentMessage.BuildMessage(
                             string.Format(
-                                "The {{0}} has extra occurences of the expected items. Tiem '{0}' at position {1} is redundant.",
+                                "\nThe {{0}} has extra occurences of the expected items. Item [{0}] at position {1} is redundant.",
                                 item.ToStringProperlyFormated(),
                                 itemidx))
                                        .For("enumerable")
@@ -99,8 +99,7 @@ namespace NFluent
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
-        public static IExtendableFluentAssertion<IEnumerable> InThatOrder(
-            this IExtendableFluentAssertion<IEnumerable> chainedFluentAssertion)
+        public static IExtendableFluentAssertion<IEnumerable> InThatOrder(this IExtendableFluentAssertion<IEnumerable> chainedFluentAssertion)
         {
             var runnableAssertion = chainedFluentAssertion.And as IRunnableAssertion<IEnumerable>;
             var orderedList = ConvertToArrayList(chainedFluentAssertion);
@@ -148,14 +147,13 @@ namespace NFluent
                         // we assume that Contains was executed (imposed by chaining syntax)
                         // the item violating the order is the previous one!
                         var message =
-                            FluentMessage.BuildMessage(
-                                string.Format(
-                                    "The {{0}} does not follow to the expected order. Item '{0}' appears too {2} in the list, at index '{1}'.",
-                                    item.ToStringProperlyFormated(),
-                                    faillingIndex,
-                                    index > scanIndex ? "early" : "late"))
-                                           .For("enumerable")
-                                           .On(runnableAssertion.Value)
+                            FluentMessage.BuildMessage(string.Format(
+                                                                        "\nThe {{0}} does not follow to the expected order. Item [{0}] appears too {2} in the list, at index '{1}'.",
+                                                                        item.ToStringProperlyFormated(),
+                                                                        faillingIndex,
+                                                                        index > scanIndex ? "early" : "late"))
+                                         .For("enumerable")
+                                         .On(runnableAssertion.Value)
                                            .And.Expected(chainedFluentAssertion.OriginalComparand);
 
                         throw new FluentAssertionException(message.ToString());

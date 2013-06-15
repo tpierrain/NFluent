@@ -229,6 +229,8 @@ namespace NFluent.Helpers
 
             private Type type;
 
+            private long? enumerableCount;
+
             /// <summary>
             /// Initializes a new instance of the <see cref="MessageBlock"/> class.
             /// </summary>
@@ -279,27 +281,35 @@ namespace NFluent.Helpers
                 }
 
                 builder.Append("\n");
+
                 if (this.test == null)
                 {
                     builder.AppendFormat("\t[null]");
                 }
                 else
                 {
-                    builder.AppendFormat(
-                        "\t[{0}]",
-                        this.test.ToStringProperlyFormated());
+                    builder.AppendFormat("\t[{0}]", this.test.ToStringProperlyFormated());
+                }
+
+                if (this.enumerableCount.HasValue)
+                {
+                    var description = "items";
+                    if (this.enumerableCount <= 1)
+                    {
+                        description = "item";
+                    }
+
+                    builder.AppendFormat(" ({0} {1})", this.enumerableCount, description);
                 }
 
                 if (this.includeType && this.type != null)
                 {
-                    builder.AppendFormat(
-                        " of type: [{0}]", this.type);
+                    builder.AppendFormat(" of type: [{0}]", this.type);
                 }
 
                 if (this.includeHash && this.test != null)
                 {
-                    builder.AppendFormat(
-                        " with HashCode: [{0}]", this.test.GetHashCode());
+                    builder.AppendFormat(" with HashCode: [{0}]", this.test.GetHashCode());
                 }
                 
                 return builder.ToString();
@@ -394,6 +404,17 @@ namespace NFluent.Helpers
             public string GetBlockLabel()
             {
                 return string.Format("{0} {1}", this.attribute, this.message.GetEntityFromType(this.test));
+            }
+
+            /// <summary>
+            /// Adds a description of the number of items (only relevant if the object is an enumerable).
+            /// </summary>
+            /// <param name="enumerableCount">The number of items of the enumerable instance.</param>
+            /// <returns>The description of the number of items (only relevant if the object is an enumerable).</returns>
+            public MessageBlock WithEnumerableCount(long enumerableCount)
+            {
+                this.enumerableCount = enumerableCount;
+                return this;
             }
         }
     }

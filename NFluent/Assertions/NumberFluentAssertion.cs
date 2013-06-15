@@ -16,7 +16,6 @@ namespace NFluent
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-
     using NFluent.Helpers;
 
     /// <summary>
@@ -98,6 +97,19 @@ namespace NFluent
         public object ForkInstance()
         {
             return new NumberFluentAssertion<N>(this.fluentAssertion);
+        }
+
+        /// <summary>
+        /// Throws a <see cref="FluentAssertionException"/> in any cases, since it is not a fluent assertion. Too bad we can't remove it from Intellisense or redirect it to the proper IsEqualTo method.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">In any cases, since it is not a fluent assertion. Too bad we can't remove it from Intellisense or redirect it to the proper IsEqualTo method.</exception>
+        public new bool Equals(object obj)
+        {
+            throw new FluentAssertionException("\nEquals method should not be called in this context since it is not a fluent assertion. Too bad we can't remove it from Intellisense or redirect it to the proper IsEqualTo method.");
         }
 
         /// <summary>

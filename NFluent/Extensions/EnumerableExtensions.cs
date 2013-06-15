@@ -40,6 +40,29 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Returns the number of items present within the specified enumerable (returns 0 if the enumerable is null).
+        /// </summary>
+        /// <param name="enumerable">The enumerable.</param>
+        /// <returns>The number of items present within the specified enumerable (returns 0 if the enumerable is null).</returns>
+        public static long Count(this IEnumerable enumerable)
+        {
+            if (enumerable == null)
+            {
+                return 0;
+            }
+            else
+            {
+                long itemsCount = 0;
+                foreach (var item in enumerable)
+                {
+                    itemsCount++;
+                }
+
+                return itemsCount;
+            }
+        }
+
+        /// <summary>
         /// Return a string containing all the elements of an <see cref="IEnumerable" />, separated by a given separator.
         /// </summary>
         /// <param name="enumerable">The enumerable to transform into a string.</param>
