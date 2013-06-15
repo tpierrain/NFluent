@@ -1,17 +1,6 @@
-New features
-------------
-* New extensible syntax for Check.That(IEnumerable xxx).Contains(...) that permits to add suffixes narrowing the conditions.
-    e.g.: Check.That(IEnumerable xxx).Contains(...).InThatOrder(). 
-	Possible suffixes:
-	- Only(): raises if the enumerable contains items that were not listed in Contains. 
-		e.g.: Check.That( new []{1,2,3,4}).Contains(new [] {1,2,3}).Only() fails due to '4' being present.
-	- Once(): raises if the enumerable contains expected items more than once.
-		e.g.: Check.That( new []{1,2,3,2}).Contains(new [] {1,2,3}).Once() fails due to '2' being present twice.
-	- InThatOrder(): raises if the enumerable does not contain expected items in the listed order.
-		e.g.: Check.That( new []{1,3,2}).Contains(new [] {1,2,3}).InThatOrder() fails due to '2' and '3' being inversed.
-
-* Now, the Equals() method of the IFluentAssertion<T> instances is a real fluent assertions.
-
-Changes
--------
+New features:
+* Now, the Equals() method of the IFluentAssertion&lt;T&gt; instances is a real fluent assertions.
+* New extensible syntax for Check.That(IEnumerable xxx).Contains(...) that permits to add suffixes narrowing the conditions (e.g.: Check.That(IEnumerable xxx).Contains(...).InThatOrder()). Possible suffixes are (Only, Once or InThatOrder)
+--------------
+Changes:
 * New error message structure that clearly states what is wrong.
