@@ -305,6 +305,41 @@
         {
             Check.That((string)null).Not.IsNotEmpty();
         }
+
+        [Test]
+        public void IsNullOrEmptyWorks()
+        {
+            Check.That(string.Empty).IsNullOrEmpty();
+            Check.That((string)null).IsNullOrEmpty();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is not empty or null.\nThe checked string:\n\t[\"test\"]")]
+        public void IsNullEmptyFailsIfNotEmpty()
+        {
+            Check.That("test").IsNullOrEmpty();
+        }
+
+        [Test]
+        public void HasContentWorks()
+        {
+            Check.That("test").HasContent();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is empty, whereas it must not.")]
+        public void HasContentFailsIfEmpty()
+        {
+            Check.That(string.Empty).HasContent();
+        }
+        
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is null whereas it must have content.")]
+        public void HasContentFailsIfNull()
+        {
+            Check.That((string)null).HasContent();
+        }
+
         #endregion
     }
 }

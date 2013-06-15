@@ -411,18 +411,6 @@ namespace NFluent
             return unexpectedValuesFound;
         }
 
-        /// <summary>
-        /// Generates the proper description for the items count, based on their numbers.
-        /// </summary>
-        /// <param name="itemsCount">The number of items.</param>
-        /// <returns>
-        /// The proper description for the items count.
-        /// </returns>
-        internal static string FormatItemCount(long itemsCount)
-        {
-            return string.Format(itemsCount <= 1 ? "{0} item" : "{0} items", itemsCount);
-        }
-
         private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
         {
             // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.

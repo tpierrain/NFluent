@@ -20,14 +20,13 @@
         private const ulong ULongObj = 2;
         private const float FloatObj = 3.14F;
         private const bool BoolObj = true;
-
+        private readonly Person person = new Person() { Name = "Charles BAUDELAIRE" };
         private readonly DateTime dateTimeObj = new DateTime();
         private readonly TimeSpan timeSpanObj = new TimeSpan();
         private readonly int[] integerArray = new int[10];
         private readonly Version firstVersion = new Version(1, 0, 0, 0);
         private readonly int[] emptyIntegerArray = new int[10];
         private List<string> stringList = new List<string>();
-        private readonly Person person = new Person() { Name = "Charles BAUDELAIRE" };
 
         #region IsInstanceOf tests
 

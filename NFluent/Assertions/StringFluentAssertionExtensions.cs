@@ -459,6 +459,27 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the string is empty or null.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string is neither empty or null.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> IsNullOrEmpty(this IFluentAssertion<string> fluentAssertion)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = IsEmptyImpl(runnableAssertion.Value, true, runnableAssertion.Negated);
+            if (!string.IsNullOrEmpty(result))
+            {
+                throw new FluentAssertionException(result);
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);            
+        }
+
+        /// <summary>
         /// Checks that the string is not empty.
         /// </summary>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
@@ -480,6 +501,27 @@ namespace NFluent
             return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
 
+        /// <summary>
+        /// Checks that the string has content.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string is empty or null.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> HasContent(this IFluentAssertion<string> fluentAssertion)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = IsEmptyImpl(runnableAssertion.Value, true, !runnableAssertion.Negated);
+            if (!string.IsNullOrEmpty(result))
+            {
+                throw new FluentAssertionException(result);
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+        }
+
         private static string IsEmptyImpl(string checkedValue, bool canBeNull, bool negated)
         {
             // special case if checkedvalue is null
@@ -490,7 +532,7 @@ namespace NFluent
                     return null;
                 }
 
-                return negated ? FluentMessage.BuildMessage("The {0} is null whereas it must not.").For("string").Expected(string.Empty).Comparison("different from").ToString()
+                return negated ? FluentMessage.BuildMessage("The {0} is null whereas it must have content.").For("string").ToString()
                     : FluentMessage.BuildMessage("The {0} is null instead of being empty.").For("string").ToString();
             }
 
