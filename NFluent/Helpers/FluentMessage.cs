@@ -124,7 +124,7 @@ namespace NFluent.Helpers
         /// </returns>
         public override string ToString()
         {
-            var builder = new StringBuilder();
+            var builder = new StringBuilder("\n");
             builder.AppendFormat(this.message, this.TestedLabel, this.ExpectedLabel);
             if (this.checkedBlock != null)
             {

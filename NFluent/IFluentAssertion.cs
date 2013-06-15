@@ -21,13 +21,13 @@ namespace NFluent
     public interface IFluentAssertion<out T> : IForkableFluentAssertion, INegateableFluentAssertion<IFluentAssertion<T>>
     {
         /// <summary>
-        /// Throws a <see cref="FluentAssertionException"/> in any cases, since it is not a fluent assertion. Too bad we can't remove it from Intellisense or redirect it to the proper IsEqualTo method.
+        /// Checks whether the specified <see cref="System.Object" /> is equal to this instance or not.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns>
-        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; throws a <see cref="FluentAssertionException"/> otherwise.
         /// </returns>
-        /// <exception cref="FluentAssertionException">In any cases, since it is not a fluent assertion. Too bad we can't remove it from Intellisense or redirect it to the proper IsEqualTo method.</exception>
+        /// <exception cref="FluentAssertionException">The specified <see cref="System.Object"/> is not equal to this instance.</exception>
         bool Equals(object obj);
     }
 }

@@ -12,7 +12,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string contains unauthorized value(s): \"Batman\"\nThe checked string:\n\t[\"Batman and Robin\"]\nThe unauthorized substring(s):\n\t[\"Batman\"]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string contains unauthorized value(s): \"Batman\"\nThe checked string:\n\t[\"Batman and Robin\"]\nThe unauthorized substring(s):\n\t[\"Batman\"]")]
         public void NotThrowsException()
         {
             Check.That("Batman and Robin").Not.Contains("Batman");
@@ -25,7 +25,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string contains unauthorized value(s): \"Robin\"\nThe checked string:\n\t[\"Batman and Robin\"]\nThe unauthorized substring(s):\n\t[\"Robin\"]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string contains unauthorized value(s): \"Robin\"\nThe checked string:\n\t[\"Batman and Robin\"]\nThe unauthorized substring(s):\n\t[\"Robin\"]")]
         public void ThrowsProperExceptionWhenCombineNotAndAndOperatorsInTheSameCheckStatement()
         {
             Check.That("Batman and Robin").Not.Contains("Joker").And.StartsWith("Bat").And.Not.Contains("Robin");

@@ -43,7 +43,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from zero.\nThe checked value:\n\t[2]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from zero.\nThe checked value:\n\t[2]")]
         public void IsZeroThrowsExceptionWhenFails()
         {
             const int Two = 2;
@@ -64,7 +64,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to zero, whereas it must not.\nThe checked value:\n\t[0]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to zero, whereas it must not.\nThe checked value:\n\t[0]")]
         public void IsNotZeroThrowsExceptionWhenFails()
         {
             const int Zero = 0;
@@ -85,7 +85,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to zero whereas it must not.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to zero whereas it must not.")]
         public void NotIsZeroThrowsExceptionWhenFailing()
         {
             const int Zero = 0;
@@ -106,7 +106,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from zero.\nThe checked value:\n\t[2]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from zero.\nThe checked value:\n\t[2]")]
         public void NotIsNotZeroThrowsExceptionWhenFailing()
         {
             const int Two = 2;
@@ -126,7 +126,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is not strictly positive.\nThe checked value:\n\t[0]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[0]")]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
             const int Zero = 0;
@@ -134,7 +134,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
         public void NotIsPositiveThrowsExceptionWhenFailing()
         {
             const int Two = 2;
@@ -165,7 +165,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
         public void NotIsLessThanThrowsExceptionWhenFailing()
         {
             const int One = 1;
@@ -188,7 +188,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
         public void IsGreaterThanThrowsExceptionWhenFailing()
         {
             const int One = 1;
@@ -198,7 +198,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is greater than the threshold.\nThe checked value:\n\t[20]\nThe expected value: less than\n\t[1]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is greater than the threshold.\nThe checked value:\n\t[20]\nThe expected value: less than\n\t[1]")]
         public void NotIsGreaterThanThrowsExceptionWhenFailing()
         {
             const int One = 1;
@@ -218,21 +218,7 @@
             Check.That(Twenty).IsPositive().And.IsNotZero();
         }
 
-        #region Equals should always throw
-
-        [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nEquals method should not be called in this context since it is not a fluent assertion. Too bad we can't remove it from Intellisense or redirect it to the proper IsEqualTo method.")]
-        public void EqualsShouldAlwaysThrowAnExceptionToAvoidConfusionWithIsEqualToAssertion()
-        {
-            const int Twenty = 20;
-            const int OtherTwenty = 20;
-
-            Check.That(Twenty).Equals(OtherTwenty);
-        }
-
-        #endregion
-
-        #region IsEqualTo / IsNotEqualTo
+        #region Equals / IsEqualTo / IsNotEqualTo
 
         [Test]
         public void IsEqualToWorksWithOtherSameValue()
@@ -241,6 +227,15 @@
             const int OtherTwenty = 20;
 
             Check.That(Twenty).IsEqualTo(OtherTwenty);
+        }
+
+        [Test]
+        public void EqualsWorksToo()
+        {
+            const int Twenty = 20;
+            const int OtherTwenty = 20;
+
+            Check.That(Twenty).Equals(OtherTwenty);
         }
 
         [Test]
@@ -253,12 +248,30 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Int32]")]
+        public void NotEqualsWorksToo()
+        {
+            const int One = 1;
+            const int Twenty = 20;
+
+            Check.That(One).Not.Equals(Twenty);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Int32]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             const int Twenty = 20;
 
             Check.That(Twenty).Not.IsEqualTo(Twenty);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Int32]")]
+        public void NotEqualsThrowsExceptionWhenFailing()
+        {
+            const int Twenty = 20;
+
+            Check.That(Twenty).Not.Equals(Twenty);
         }
 
         [Test]
@@ -271,7 +284,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Int32]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Int32]")]
         public void IsNotEqualToThrowsExceptionWhenFailing()
         {
             const int Twenty = 20;
@@ -280,7 +293,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from the expected one.\nThe checked value:\n\t[1]\nThe expected value:\n\t[20]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[1]\nThe expected value:\n\t[20]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             const int One = 1;
@@ -405,7 +418,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is an instance of System.Nullable`1[System.Int32] whereas it must not.\nThe checked value:\n\t[1] of type: [System.Nullable`1[System.Int32]]\nThe expected type: different from\n\t[System.Nullable`1[System.Int32]]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is an instance of System.Nullable`1[System.Int32] whereas it must not.\nThe checked value:\n\t[1] of type: [System.Nullable`1[System.Int32]]\nThe expected type: different from\n\t[System.Nullable`1[System.Int32]]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
             int? one = 1;
@@ -414,7 +427,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is an instance of System.Nullable`1[System.Int32] whereas it must not.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Int32]]\nThe expected type: different from\n\t[System.Nullable`1[System.Int32]]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is an instance of System.Nullable`1[System.Int32] whereas it must not.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Int32]]\nThe expected type: different from\n\t[System.Nullable`1[System.Int32]]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             int? noValue = null;
@@ -423,7 +436,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is not an instance of System.String.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Int32]]\nThe expected type:\n\t[System.String]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is not an instance of System.String.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Int32]]\nThe expected type:\n\t[System.String]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
             int? one = null;

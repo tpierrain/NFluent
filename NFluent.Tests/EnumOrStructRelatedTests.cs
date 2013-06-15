@@ -19,7 +19,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is different from the expected one.\nThe checked value:\n\t[French]\nThe expected value:\n\t[American]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[French]\nThe expected value:\n\t[American]")]
         public void IsEqualToThrowsExceptionWhenFailingWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
@@ -34,7 +34,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[French] of type: [NFluent.Tests.Nationality]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[French] of type: [NFluent.Tests.Nationality]")]
         public void IsNotEqualToThrowsExceptionWhenFailingWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
@@ -49,7 +49,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[French] of type: [NFluent.Tests.Nationality]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[French] of type: [NFluent.Tests.Nationality]")]
         public void NotIsEqualToThrowsExceptionWhenFailingWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;

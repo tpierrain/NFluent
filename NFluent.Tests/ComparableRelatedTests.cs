@@ -31,7 +31,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is after the reference value.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[1.0]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is after the reference value.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[1.0]")]
         public void IsBeforeThrowsExceptionWhenFailing()
         {
             Version v1 = new Version(1, 0);
@@ -41,7 +41,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is after the reference value.\nThe checked value:\n\t[null]\nThe expected value: before\n\t[1.0]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is after the reference value.\nThe checked value:\n\t[null]\nThe expected value: before\n\t[1.0]")]
         public void IsBeforeDoesNotThrowNullReferenceExceptionWithNullAsInput()
         {
             Version v1 = new Version(1, 0);
@@ -51,7 +51,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is after the reference value.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[null]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is after the reference value.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[null]")]
         public void IsBeforeDoesNotThrowNullReferenceExceptionWithNullAsAfterValue()
         {
             Version v1 = null;
@@ -70,7 +70,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is after the before value.\nThe checked value:\n\t[1.0]\nThe expected value: after\n\t[2.0]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is after the before value.\nThe checked value:\n\t[1.0]\nThe expected value: after\n\t[2.0]")]
         public void IsBeforeWithNotOperatorCanThrowException()
         {
             Version v1 = new Version(1, 0);
