@@ -190,6 +190,7 @@
             Check.That(alphabet).Contains("i").And.StartsWith("abcd").And.IsInstanceOf<string>().And.IsNotInstanceOf<int>().And.Not.IsNotInstanceOf<string>();
         }
 
+        #region Match
         [Test]
         public void StringMatchesWorks()
         {
@@ -223,5 +224,87 @@
         {
             Check.That("12 ac").Not.Matches("[0-9]*. [a-z]*");
         }
+ 
+        #endregion
+
+        #region Match
+        [Test]
+        public void StringDoesNotMatchWorks()
+        {
+            Check.That("ac 12").DoesNotMatch("[0-9]. [a-z]*");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string matches expected one, whereas it must not.\nThe checked string:\n\t[\"12 AC\"]\nThe expected string: does not match\n\t[\"[0-9]. [a-z]*\"]")]
+        public void StringDoesNotMatchFails()
+        {
+            Check.That("12 AC").DoesNotMatch("[0-9]. [a-z]*");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked value is null.\nThe expected value: matches\n\t[\"[0-9]. [a-z]*\"]")]
+        public void StringDoesNotMatchProperlyForNull()
+        {
+            Check.That((string)null).Matches("[0-9]. [a-z]*");
+        }
+
+        [Test]
+        public void NotStringDoesNotMatchWorks()
+        {
+            Check.That("AC 12").Not.Matches("[0-9]. [a-z]*");
+            Check.That((string)null).Not.Matches("[0-9]. [a-z]*");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string matches expected one, whereas it must not.\nThe checked string:\n\t[\"12 ac\"]\nThe expected string: does not match\n\t[\"[0-9]*. [a-z]*\"]")]
+        public void NotStringDoesNotMatchFails()
+        {
+            Check.That("12 ac").Not.Matches("[0-9]*. [a-z]*");
+        }
+        
+        [Test]
+        public void IsEmptyWorks()
+        {
+            Check.That(string.Empty).IsEmpty();
+            Check.That(string.Empty).Not.IsNotEmpty();
+            Check.That("test").Not.IsEmpty();
+            Check.That("test").IsNotEmpty();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string is not empty or null.\nThe checked string:\n\t[\"test\"]")]
+        public void IsEmptyFailsIfNotEmpty()
+        {
+            Check.That("test").IsEmpty();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string is null instead of being empty.")]
+        public void IsEmptyFailsIfNnull()
+        {
+            Check.That((string)null).IsEmpty();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string is not empty or null.\nThe checked string:\n\t[\"test\"]")]
+        public void NegatedIsNotEmptyFailsIfNotEmpty()
+        {
+            Check.That("test").Not.IsNotEmpty();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string is empty, whereas it must not.")]
+        public void IsNotEmptyFailsIfEmpty()
+        {
+            Check.That(string.Empty).IsNotEmpty();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "The checked string is null instead of being empty.")]
+        public void NegatedIsNotEmptyFailsIfNull()
+        {
+            Check.That((string)null).Not.IsNotEmpty();
+        }
+        #endregion
     }
 }

@@ -359,7 +359,7 @@ namespace NFluent
         /// Checks that the string matches a given regular expression.
         /// </summary>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
-        /// <param name="regExp">The expected prefix.</param>
+        /// <param name="regExp">The regular expression.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
@@ -370,14 +370,37 @@ namespace NFluent
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
 
             var result = MatchesImpl(runnableAssertion.Value, regExp, runnableAssertion.Negated);
-            if (string.IsNullOrEmpty(result))
+            if (!string.IsNullOrEmpty(result))
             {
-                return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+                throw new FluentAssertionException(result);
             }
 
-            throw new FluentAssertionException(result);
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
 
+        /// <summary>
+        /// Checks that the string does not match a given regular expression.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="regExp">The regular expression prefix.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string does not end with the expected prefix.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> DoesNotMatch(
+            this IFluentAssertion<string> fluentAssertion, string regExp)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = MatchesImpl(runnableAssertion.Value, regExp, !runnableAssertion.Negated);
+            if (!string.IsNullOrEmpty(result))
+            {
+                throw new FluentAssertionException(result);
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+        }
+        
         private static string MatchesImpl(string checkedValue, string regExp, bool negated)
         {
             // special case if checkedvalue is null
@@ -410,6 +433,85 @@ namespace NFluent
                              .On(checkedValue)
                              .And.Expected(regExp)
                              .Comparison("matches")
+                             .ToString();
+        }
+
+        /// <summary>
+        /// Checks that the string is empty.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string is not empty.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> IsEmpty(
+            this IFluentAssertion<string> fluentAssertion)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = IsEmptyImpl(runnableAssertion.Value, false, runnableAssertion.Negated);
+            if (!string.IsNullOrEmpty(result))
+            {
+                throw new FluentAssertionException(result);
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+        }
+
+        /// <summary>
+        /// Checks that the string is not empty.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string is empty.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> IsNotEmpty(
+            this IFluentAssertion<string> fluentAssertion)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = IsEmptyImpl(runnableAssertion.Value, false, !runnableAssertion.Negated);
+            if (!string.IsNullOrEmpty(result))
+            {
+                throw new FluentAssertionException(result);
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+        }
+
+        private static string IsEmptyImpl(string checkedValue, bool canBeNull, bool negated)
+        {
+            // special case if checkedvalue is null
+            if (checkedValue == null)
+            {
+                if (canBeNull != negated)
+                {
+                    return null;
+                }
+
+                return negated ? FluentMessage.BuildMessage("The {0} is null whereas it must not.").For("string").Expected(string.Empty).Comparison("different from").ToString()
+                    : FluentMessage.BuildMessage("The {0} is null instead of being empty.").For("string").ToString();
+            }
+
+            if (string.IsNullOrEmpty(checkedValue) != negated)
+            {
+                // success
+                return null;
+            }
+
+            if (negated)
+            {
+                return
+                    FluentMessage.BuildMessage("The {0} is empty, whereas it must not.")
+                    .For("string")
+                                 .ToString();
+            }
+
+            return
+                FluentMessage.BuildMessage("The {0} is not empty or null.")
+                .For("string")
+                             .On(checkedValue)
                              .ToString();
         }
     }
