@@ -29,11 +29,11 @@ namespace NFluent.Tests
         {
             var message = FluentMessage.BuildMessage("The {0} is ok.").ToString();
 
-            Assert.AreEqual("The checked value is ok.", message);
+            Assert.AreEqual("\nThe checked value is ok.", message);
 
             // override entity
             message = FluentMessage.BuildMessage("The {0} is ok.").For("string").ToString();
-            Assert.AreEqual("The checked string is ok.", message);
+            Assert.AreEqual("\nThe checked string is ok.", message);
         }
         
         [Test]
@@ -49,7 +49,7 @@ namespace NFluent.Tests
             var test = DateTime.Today;
             var message = FluentMessage.BuildMessage("The {0} is below.").On(test).ToString();
             var lines = message.Split('\n');
-            Assert.AreEqual(3, lines.Length);
+            Assert.AreEqual(4, lines.Length);
             Assert.IsTrue(lines[1].Contains("checked"));
         }
 

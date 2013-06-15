@@ -436,7 +436,7 @@ namespace NFluent
 
         private static string BuildExceptionMessageForContainsExactly(IEnumerable checkedValue, IEnumerable enumerable)
         {
-            return FluentMessage.BuildMessage("\nThe {0} contains exactly the given values whereas it must not.")
+            return FluentMessage.BuildMessage("The {0} contains exactly the given values whereas it must not.")
                                     .For("enumerable")
                                     .On(checkedValue)
                                     .WithEnumerableCount(checkedValue.Count())
@@ -445,7 +445,7 @@ namespace NFluent
 
         private static void ThrowsNotExactlyException(IEnumerable checkedValue, IList<object> enumerable)
         {
-            var message = FluentMessage.BuildMessage("\nThe {0} does not contain exactly the expected value(s).")
+            var message = FluentMessage.BuildMessage("The {0} does not contain exactly the expected value(s).")
                                         .For("enumerable")
                                         .On(checkedValue)
                                         .WithEnumerableCount(checkedValue.Count())

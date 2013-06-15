@@ -19,8 +19,6 @@
 namespace NFluent.Helpers
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Text;
 
     using NFluent.Extensions;
@@ -125,6 +123,7 @@ namespace NFluent.Helpers
         public override string ToString()
         {
             var builder = new StringBuilder();
+            builder.Append("\n");
             builder.AppendFormat(this.message, this.TestedLabel, this.ExpectedLabel);
             if (this.checkedBlock != null)
             {
