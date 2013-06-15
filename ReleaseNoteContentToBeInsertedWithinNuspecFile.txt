@@ -10,8 +10,8 @@ New features
 	- InThatOrder(): raises if the enumerable does not contain expected items in the listed order.
 		e.g.: Check.That( new []{1,3,2}).Contains(new [] {1,2,3}).InThatOrder() fails due to '2' and '3' being inversed.
 
+* Now, the Equals() method of the IFluentAssertion<T> instances is a real fluent assertions.
+
 Changes
 -------
 * New error message structure that clearly states what is wrong.
-
-* Now, the Equals() method of the IFluentAssertion<T> instances are fluent assertions.
