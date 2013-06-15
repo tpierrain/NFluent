@@ -19,8 +19,6 @@
 namespace NFluent.Helpers
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Text;
 
     using NFluent.Extensions;
@@ -126,6 +124,7 @@ namespace NFluent.Helpers
         {
             var builder = new StringBuilder("\n");
             builder.AppendFormat(this.message, this.TestedLabel, this.ExpectedLabel);
+
             if (this.checkedBlock != null)
             {
                 builder.Append("\n");
