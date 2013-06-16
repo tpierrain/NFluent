@@ -52,7 +52,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[3, 2, 666, 1974, 1]\ndoes not contain only the expected value(s):\n\t[1, 2, 3].\nIt contains also other values:\n\t[666, 1974]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[666, 1974]\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected enumerable:\n\t[1, 2, 3]")]
         public void ContainsOnlyWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new int[] { 3, 2, 666, 1974, 1 };
@@ -97,7 +97,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[3, 2, 666, 1974, 1]\ndoes not contain only the expected value(s):\n\t[1, 2, 3].\nIt contains also other values:\n\t[666, 1974]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[666, 1974]\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected enumerable:\n\t[1, 2, 3]")]
         public void ContainsOnlyWithEnumerableThrowsExceptionWhenFailing()
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
@@ -114,7 +114,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[3, 2, 666, 1974, 1]\ncontains only the expected value(s):\n\t[1, 2, 3, 666, 1974].\nwhich is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable contains only the given values whereas it must not.\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected enumerable:\n\t[1, 2, 3, 666, 1974]")]
         public void NotContainsOnlyWithEnumerableThrowsExceptionWhenFailing()
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
@@ -141,6 +141,16 @@
         }
 
         [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable contains only the given values whereas it must not.\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected enumerable:\n\t[3, 2, 3, 2, 2, 1]")]
+        public void NotContainsOnlyWithArrayListThrowsWhenFailing()
+        {
+            List<int> integers = new List<int> { 1, 2, 3 };
+            ArrayList expectedValues = new ArrayList() { 3, 2, 3, 2, 2, 1 };
+
+            Check.That(integers).Not.ContainsOnly(expectedValues);
+        }
+
+        [Test]
         public void ContainsOnlyWithStringCollectionWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
             List<string> oneTwoThree = new List<string> { "one", "two", "three" };
@@ -150,7 +160,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[1, \"uno\", \"tres\", 45,3]\ndoes not contain only the expected value(s):\n\t[1, \"Tres\", 45,3].\nIt contains also other values:\n\t[\"uno\", \"tres\"]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[\"uno\", \"tres\"]\nThe checked enumerable:\n\t[1, \"uno\", \"tres\", 45,3]\nThe expected enumerable:\n\t[1, \"Tres\", 45,3]")]
         public void ContainsOnlyWithEnumerableThrowCaseSensitiveException()
         {
             var variousObjects = new ArrayList() { 1, "uno", "tres", 45.3F };

@@ -218,21 +218,7 @@
             Check.That(Twenty).IsPositive().And.IsNotZero();
         }
 
-        #region Equals should always throw
-
-        [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nEquals method should not be called in this context since it is not a fluent assertion. Too bad we can't remove it from Intellisense or redirect it to the proper IsEqualTo method.")]
-        public void EqualsShouldAlwaysThrowAnExceptionToAvoidConfusionWithIsEqualToAssertion()
-        {
-            const int Twenty = 20;
-            const int OtherTwenty = 20;
-
-            Check.That(Twenty).Equals(OtherTwenty);
-        }
-
-        #endregion
-
-        #region IsEqualTo / IsNotEqualTo
+        #region Equals / IsEqualTo / IsNotEqualTo
 
         [Test]
         public void IsEqualToWorksWithOtherSameValue()
@@ -241,6 +227,15 @@
             const int OtherTwenty = 20;
 
             Check.That(Twenty).IsEqualTo(OtherTwenty);
+        }
+
+        [Test]
+        public void EqualsWorksToo()
+        {
+            const int Twenty = 20;
+            const int OtherTwenty = 20;
+
+            Check.That(Twenty).Equals(OtherTwenty);
         }
 
         [Test]
@@ -254,11 +249,29 @@
 
         [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Int32]")]
+        {
+            const int One = 1;
+            const int Twenty = 20;
+
+            Check.That(One).Not.Equals(Twenty);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Int32]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             const int Twenty = 20;
 
             Check.That(Twenty).Not.IsEqualTo(Twenty);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Int32]")]
+        public void NotEqualsThrowsExceptionWhenFailing()
+        {
+            const int Twenty = 20;
+
+            Check.That(Twenty).Not.Equals(Twenty);
         }
 
         [Test]

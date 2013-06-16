@@ -225,21 +225,7 @@
             Check.That(Twenty).IsPositive().And.IsNotZero();
         }
 
-        #region Equals should always throw
-
-        [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nEquals method should not be called in this context since it is not a fluent assertion. Too bad we can't remove it from Intellisense or redirect it to the proper IsEqualTo method.")]
-        public void EqualsShouldAlwaysThrowAnExceptionToAvoidConfusionWithIsEqualToAssertion()
-        {
-            const double Twenty = 20D;
-            const double OtherTwenty = 20D;
-
-            Check.That(Twenty).Equals(OtherTwenty);
-        }
-
-        #endregion
-
-        #region IsEqualTo / IsNotEqualTo
+        #region Equals / IsEqualTo / IsNotEqualTo
 
         [Test]
         public void IsEqualToWorksWithOtherSameValue()
@@ -248,6 +234,15 @@
             const double OtherTwenty = 20D;
 
             Check.That(Twenty).IsEqualTo(OtherTwenty);
+        }
+
+        [Test]
+        public void EqualsWorksToo()
+        {
+            const double Twenty = 20D;
+            const double OtherTwenty = 20D;
+
+            Check.That(Twenty).Equals(OtherTwenty);
         }
 
         [Test]
@@ -260,12 +255,30 @@
         }
 
         [Test]
+        public void NotEqualsWorksToo()
+        {
+            const double One = 1D;
+            const double Twenty = 20D;
+
+            Check.That(One).Not.Equals(Twenty);
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Double]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             const double Twenty = 20D;
 
             Check.That(Twenty).Not.IsEqualTo(Twenty);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Double]")]
+        public void NotEqualsThrowsExceptionWhenFailing()
+        {
+            const double Twenty = 20D;
+
+            Check.That(Twenty).Not.Equals(Twenty);
         }
 
         [Test]

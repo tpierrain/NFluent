@@ -194,15 +194,16 @@ namespace NFluent
 
             return assertionRunner.ExecuteAssertion(
                 () =>
-                    {
-                        var unexpectedValuesFound = ExtractUnexpectedValues(runnableAssertion.Value, expectedValues);
+                {
+                    var unexpectedValuesFound = ExtractUnexpectedValues(runnableAssertion.Value, expectedValues);
 
-                        if (unexpectedValuesFound.Count > 0)
-                        {
-                            throw new FluentAssertionException(string.Format("\nThe actual enumerable:\n\t[{0}]\ndoes not contain only the expected value(s):\n\t[{1}].\nIt contains also other values:\n\t[{2}]", runnableAssertion.Value.ToEnumeratedString(), expectedValues.ToEnumeratedString(), unexpectedValuesFound.ToEnumeratedString()));
-                        }
-                    },
-                string.Format("\nThe actual enumerable:\n\t[{0}]\ncontains only the expected value(s):\n\t[{1}].\nwhich is unexpected.", runnableAssertion.Value.ToEnumeratedString(), expectedValues.ToEnumeratedString()));
+                    if (unexpectedValuesFound.Count > 0)
+                    {
+                        var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain only the given value(s).\nIt contains also other values:\n\t[{0}]", unexpectedValuesFound.ToEnumeratedString())).For("enumerable").On(runnableAssertion.Value).And.Expected(expectedValues).ToString();
+                        throw new FluentAssertionException(message);
+                    }
+                }, 
+                FluentMessage.BuildMessage("The {0} contains only the given values whereas it must not.").For("enumerable").On(runnableAssertion.Value).And.Expected(expectedValues).ToString());
         }
 
         /// <summary>

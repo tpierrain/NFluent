@@ -268,12 +268,30 @@
         #region Equals should always throw
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nEquals method should not be called in this context since it is not a fluent assertion. Too bad we can't remove it from Intellisense or redirect it to the proper IsEqualTo method.")]
-        public void EqualsShouldAlwaysThrowAnExceptionToAvoidConfusionWithIsEqualToAssertion()
+        public void EqualsWorksAsAnAssertion()
         {
             object obj = new object();
 
             Check.That(obj).Equals(obj);
+        }
+
+        [Test]
+        public void NotEqualsWorksToo()
+        {
+            object obj = new object();
+            object other = new object();
+
+            Check.That(obj).Not.Equals(other);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[\"What is the question?\"] of type: [System.String]\nThe expected value:\n\t[42] of type: [System.Int32]")]
+        public void EqualsThrowsExceptionWhenFailing()
+        {
+            string question = "What is the question?";
+            int magicNumber = 42;
+
+            Check.That(question).Equals(magicNumber);
         }
 
         #endregion
