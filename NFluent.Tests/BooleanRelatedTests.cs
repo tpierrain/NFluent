@@ -50,7 +50,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is false, while it must be true.\nThe checked value:\n\t[False]")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe checked boolean is false whereas it must be true.\nThe checked boolean:\n\t[False]")]
         public void NotIsFalseMayThrowExceptions()
         {
             const bool TddSucks = false;
@@ -59,7 +59,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is false, while it must be true.\nThe checked value:\n\t[False]")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe checked boolean is false whereas it must be true.\nThe checked boolean:\n\t[False]")]
         public void IsTrueThrowsExceptionWhenFalse()
         {
             const bool NFluentRocks = false;
@@ -68,7 +68,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is true, while it must be false.\nThe checked value:\n\t[True]")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe checked boolean is true whereas it must be false.\nThe checked boolean:\n\t[True]")]
         public void NotIsTrueThrowsExceptionWhenFalse()
         {
             const bool NFluentRocks = true;
@@ -95,7 +95,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is true, while it must be false.\nThe checked value:\n\t[True]")]
+        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe checked boolean is true whereas it must be false.\nThe checked boolean:\n\t[True]")]
         public void IsFalseThrowsExceptionWhenTrue()
         {
             const bool NFluentRocks = true;

@@ -14,9 +14,6 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System;
-
-    using NFluent.Extensions;
     using NFluent.Helpers;
 
     /// <summary>
@@ -25,10 +22,10 @@ namespace NFluent
     public static class BooleanFluentAssertionExtensions
     {
         // message when the value must be false
-        private const string MustBeFalseMessage = "The {0} is true, while it must be false.";
+        private const string MustBeFalseMessage = "The {0} is true whereas it must be false.";
 
         // message when the value must be true
-        private const string MustBeTrueMessage = "The {0} is false, while it must be true.";
+        private const string MustBeTrueMessage = "The {0} is false whereas it must be true.";
 
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
@@ -92,10 +89,10 @@ namespace NFluent
                 {
                     if (!runnableAssertion.Value)
                     {
-                        throw new FluentAssertionException(FluentMessage.BuildMessage(MustBeTrueMessage).On(runnableAssertion.Value).ToString());
+                        throw new FluentAssertionException(FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(runnableAssertion.Value).ToString());
                     }
                 },
-                FluentMessage.BuildMessage(MustBeFalseMessage).On(runnableAssertion.Value).ToString());
+                FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(runnableAssertion.Value).ToString());
         }
 
         /// <summary>
@@ -116,10 +113,10 @@ namespace NFluent
                 {
                     if (runnableAssertion.Value)
                     {
-                        throw new FluentAssertionException(FluentMessage.BuildMessage(MustBeFalseMessage).On(runnableAssertion.Value).ToString());
+                        throw new FluentAssertionException(FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(runnableAssertion.Value).ToString());
                     }
                 },
-                FluentMessage.BuildMessage(MustBeTrueMessage).On(runnableAssertion.Value).ToString());
+                FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(runnableAssertion.Value).ToString());
         }
 
         /// <summary>
