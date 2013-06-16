@@ -243,6 +243,9 @@
             const double OtherTwenty = 20D;
 
             Check.That(Twenty).Equals(OtherTwenty);
+
+            // check the 'other implementation of equals
+            Check.That(Twenty).IsPositive().And.Equals(OtherTwenty);
         }
 
         [Test]
@@ -252,15 +255,6 @@
             const double Twenty = 20D;
 
             Check.That(One).Not.IsEqualTo(Twenty);
-        }
-
-        [Test]
-        public void NotEqualsWorksToo()
-        {
-            const double One = 1D;
-            const double Twenty = 20D;
-
-            Check.That(One).Not.Equals(Twenty);
         }
 
         [Test]

@@ -236,6 +236,9 @@
             const int OtherTwenty = 20;
 
             Check.That(Twenty).Equals(OtherTwenty);
+
+            // check the 'other implementation of equals
+            Check.That(Twenty).IsPositive().And.Equals(OtherTwenty);
         }
 
         [Test]
@@ -245,15 +248,6 @@
             const int Twenty = 20;
 
             Check.That(One).Not.IsEqualTo(Twenty);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Int32]")]
-        {
-            const int One = 1;
-            const int Twenty = 20;
-
-            Check.That(One).Not.Equals(Twenty);
         }
 
         [Test]

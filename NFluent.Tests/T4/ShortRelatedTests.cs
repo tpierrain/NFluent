@@ -243,6 +243,9 @@
             const short OtherTwenty = 20;
 
             Check.That(Twenty).Equals(OtherTwenty);
+
+            // check the 'other implementation of equals
+            Check.That(Twenty).IsPositive().And.Equals(OtherTwenty);
         }
 
         [Test]
@@ -252,15 +255,6 @@
             const short Twenty = 20;
 
             Check.That(One).Not.IsEqualTo(Twenty);
-        }
-
-        [Test]
-        public void NotEqualsWorksToo()
-        {
-            const short One = 1;
-            const short Twenty = 20;
-
-            Check.That(One).Not.Equals(Twenty);
         }
 
         [Test]

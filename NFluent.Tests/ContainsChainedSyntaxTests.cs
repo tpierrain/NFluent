@@ -41,7 +41,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\n\nThe checked enumerable does not follow to the expected order. Item [\"un\"] appears too late in the list, at index '2'.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"un\", \"tres\"]\nThe expected enumerable:\n\t[\"un\", \"dos\", \"tres\"]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not follow to the expected order. Item [\"un\"] appears too late in the list, at index '2'.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"un\", \"tres\"]\nThe expected enumerable:\n\t[\"un\", \"dos\", \"tres\"]")]
         public void ContainsInThatOrderFails()
         {
             var tresAmigosAndMore = new[] { "un", "dos", "un", "tres" };
@@ -50,14 +50,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\n\nThe checked enumerable does not follow to the expected order. Item [\"dos\"] appears too late in the list, at index '1'.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"tres\"]\nThe expected enumerable:\n\t[\"dos\", \"un\", \"tres\"]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not follow to the expected order. Item [\"dos\"] appears too late in the list, at index '1'.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"tres\"]\nThe expected enumerable:\n\t[\"dos\", \"un\", \"tres\"]")]
         public void ContainsInThatOrderFails2()
         {
             Check.That(this.tresAmigos).Contains("dos", "un", "tres").InThatOrder();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\n\nThe checked enumerable does not follow to the expected order. Item [\"dos\"] appears too early in the list, at index '1'.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"tres\"]\nThe expected enumerable:\n\t[\"un\", \"tres\", \"dos\"]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not follow to the expected order. Item [\"dos\"] appears too early in the list, at index '1'.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"tres\"]\nThe expected enumerable:\n\t[\"un\", \"tres\", \"dos\"]")]
         public void ContainsInThatOrderFails3()
         {
             Check.That(this.tresAmigos).Contains("un", "tres", "dos").InThatOrder();
@@ -77,7 +77,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\n\nThe checked enumerable has extra occurences of the expected items. Item [\"tres\"] at position 3 is redundant.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"tres\", \"tres\"]\nThe expected enumerable:\n\t[\"un\", \"dos\", \"tres\"]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable has extra occurences of the expected items. Item [\"tres\"] at position 3 is redundant.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"tres\", \"tres\"]\nThe expected enumerable:\n\t[\"un\", \"dos\", \"tres\"]")]
         public void ContainsOnceFails()
         {
             var tresAmigosAndMore = new[] { "un", "dos", "tres", "tres" };

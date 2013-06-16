@@ -243,6 +243,9 @@
             const float OtherTwenty = 20F;
 
             Check.That(Twenty).Equals(OtherTwenty);
+
+            // check the 'other implementation of equals
+            Check.That(Twenty).IsPositive().And.Equals(OtherTwenty);
         }
 
         [Test]
@@ -252,15 +255,6 @@
             const float Twenty = 20F;
 
             Check.That(One).Not.IsEqualTo(Twenty);
-        }
-
-        [Test]
-        public void NotEqualsWorksToo()
-        {
-            const float One = 1F;
-            const float Twenty = 20F;
-
-            Check.That(One).Not.Equals(Twenty);
         }
 
         [Test]

@@ -243,6 +243,9 @@
             const long OtherTwenty = 20L;
 
             Check.That(Twenty).Equals(OtherTwenty);
+
+            // check the 'other implementation of equals
+            Check.That(Twenty).IsPositive().And.Equals(OtherTwenty);
         }
 
         [Test]
@@ -252,15 +255,6 @@
             const long Twenty = 20L;
 
             Check.That(One).Not.IsEqualTo(Twenty);
-        }
-
-        [Test]
-        public void NotEqualsWorksToo()
-        {
-            const long One = 1L;
-            const long Twenty = 20L;
-
-            Check.That(One).Not.Equals(Twenty);
         }
 
         [Test]
