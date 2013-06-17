@@ -1,4 +1,18 @@
-﻿namespace NFluent.Tests
+﻿// // --------------------------------------------------------------------------------------------------------------------
+// // <copyright file="IsInstanceOfTests.cs" company="">
+// //   Copyright 2013 Thomas PIERRAIN
+// //   Licensed under the Apache License, Version 2.0 (the "License");
+// //   you may not use this file except in compliance with the License.
+// //   You may obtain a copy of the License at
+// //       http://www.apache.org/licenses/LICENSE-2.0
+// //   Unless required by applicable law or agreed to in writing, software
+// //   distributed under the License is distributed on an "AS IS" BASIS,
+// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// //   See the License for the specific language governing permissions and
+// //   limitations under the License.
+// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------------
+namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -26,7 +40,7 @@
         private readonly int[] integerArray = new int[10];
         private readonly Version firstVersion = new Version(1, 0, 0, 0);
         private readonly int[] emptyIntegerArray = new int[10];
-        private List<string> stringList = new List<string>();
+        private readonly List<string> stringList = new List<string>();
 
         #region IsInstanceOf tests
 
@@ -64,7 +78,7 @@
             // IEnumerable
             Check.That(this.stringList).IsInstanceOf<List<string>>();
             Check.That(this.integerArray).IsInstanceOf<int[]>();
-            
+
             // Version
             Check.That(this.firstVersion).IsInstanceOf<Version>();
         }
@@ -112,7 +126,7 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[Telemachus] of type: [NFluent.Tests.Child]\nThe expected type:\n\t[NFluent.Tests.Person]")]
         public void IsInstanceOfThrowsExceptionWithDerivedTypeAsCheckedExpression()
         {
-            var child = new Child() { Name = "Telemachus" };
+            var child = new Child { Name = "Telemachus" };
             Check.That(child).IsInstanceOf<Person>();
         }
 
@@ -205,7 +219,7 @@
             Check.That(UIntObj).Not.IsNotInstanceOf<uint>();
             Check.That(ULongObj).Not.IsNotInstanceOf<ulong>();
             Check.That(FloatObj).Not.IsNotInstanceOf<float>();
-            
+
             // POCO
             Check.That(this.person).Not.IsNotInstanceOf<Person>();
 
@@ -215,7 +229,7 @@
             // IEnumerable
             Check.That(this.stringList).Not.IsNotInstanceOf<List<string>>();
             Check.That(this.integerArray).Not.IsNotInstanceOf<int[]>();
-            
+
             // Version
             Check.That(this.firstVersion).Not.IsNotInstanceOf<Version>();
         }
@@ -271,14 +285,14 @@
         [Test]
         public void InheritsFromWorks()
         {
-            var child = new Child() { Name = "Telemachus" };
+            var child = new Child { Name = "Telemachus" };
             Check.That(child).InheritsFrom<Person>();
         }
 
         [Test]
         public void InheritsFromWorksAlsoWithTheSameType()
         {
-            var child = new Child() { Name = "Telemachus" };
+            var child = new Child { Name = "Telemachus" };
             Check.That(child).InheritsFrom<Child>();
         }
 
@@ -286,14 +300,14 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked expression type does not have the expected inheritance.\nIndeed, the checked expression type\n\t[NFluent.Tests.Person]\nis not a derived type of\n\t[NFluent.Tests.Child]")]
         public void InheritsFromThrowsExceptionWhenFailing()
         {
-            var father = new Person() { Name = "Odysseus" };
+            var father = new Person { Name = "Odysseus" };
             Check.That(father).InheritsFrom<Child>();
         }
 
         [Test]
         public void NotInheritsFromWorks()
         {
-            var hero = new Person() { Name = "Arjuna" };
+            var hero = new Person { Name = "Arjuna" };
             Check.That(hero).Not.InheritsFrom<int>();
         }
 
@@ -301,7 +315,7 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked expression is part of the inheritance hierarchy or of the same type than the specified one.\nIndeed, checked expression type:\n\t[NFluent.Tests.Person]\nis a derived type of\n\t[NFluent.Tests.Person].")]
         public void NotInheritsFromThrowsExceptionWhenFailing()
         {
-            var father = new Person() { Name = "Odysseus" };
+            var father = new Person { Name = "Odysseus" };
             Check.That(father).Not.InheritsFrom<Person>();
         }
     }

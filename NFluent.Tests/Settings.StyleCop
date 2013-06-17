@@ -12,9 +12,9 @@
     </Analyzer>
     <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
       <Rules>
-        <Rule Name="ElementsMustBeDocumented">
+        <Rule Name="FileMustHaveHeader">
           <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
+            <BooleanProperty Name="Enabled">True</BooleanProperty>
           </RuleSettings>
         </Rule>
       </Rules>

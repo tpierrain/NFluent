@@ -15,8 +15,6 @@
 namespace NFluent
 {
     using System;
-
-    using NFluent.Extensions;
     using NFluent.Helpers;
 
     /// <summary>
@@ -44,14 +42,14 @@ namespace NFluent
                         if (runnableAssertion.Value == null || runnableAssertion.Value.CompareTo(otherValue) >= 0)
                         {
                             throw new FluentAssertionException(
-                                FluentMessage.BuildMessage("The {0} is after the reference value.")
+                                FluentMessage.BuildMessage("The {0} is after the reference value whereas it must not.")
                                              .On(runnableAssertion.Value)
                                              .And.Expected(otherValue)
                                              .Comparison("before")
                                              .ToString());
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is after the before value.").On(runnableAssertion.Value).And.Expected(otherValue).Comparison("after").ToString());
+                FluentMessage.BuildMessage("The {0} is before the reference value whereas it must not.").On(runnableAssertion.Value).And.Expected(otherValue).Comparison("after").ToString());
         }
     }
 }
