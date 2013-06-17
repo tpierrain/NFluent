@@ -1,4 +1,18 @@
-﻿namespace NFluent.Tests
+﻿// // --------------------------------------------------------------------------------------------------------------------
+// // <copyright file="EnumerableRelatedTests.cs" company="">
+// //   Copyright 2013 Thomas PIERRAIN, Cyrille DUPUYDAUBY
+// //   Licensed under the Apache License, Version 2.0 (the "License");
+// //   you may not use this file except in compliance with the License.
+// //   You may obtain a copy of the License at
+// //       http://www.apache.org/licenses/LICENSE-2.0
+// //   Unless required by applicable law or agreed to in writing, software
+// //   distributed under the License is distributed on an "AS IS" BASIS,
+// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// //   See the License for the specific language governing permissions and
+// //   limitations under the License.
+// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------------
+namespace NFluent.Tests
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -66,7 +80,7 @@
         [Test]
         public void NotHasSizeWorks()
         {
-            var enumerable = new List<int>() { 666 };
+            var enumerable = new List<int> { 666 };
             
             Check.That(enumerable).Not.HasSize(5);
         }
@@ -75,7 +89,7 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable has 1 element which is unexpected.\nActual content is:\n\t[666].")]
         public void NotHasSizeThrowsExceptionWhenFailing()
         {
-            var enumerable = new List<int>() { 666 };
+            var enumerable = new List<int> { 666 };
 
             Check.That(enumerable).Not.HasSize(1);
         }
@@ -113,7 +127,7 @@
         [Test]
         public void NotIsEmptyWorks()
         {
-            var persons = new List<Person>() { null, null, new Person() { Name = "Thomas" } };
+            var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
             
             Check.That(persons).Not.IsEmpty();
         }
@@ -133,7 +147,7 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[45, 43, 54, 666] of type: [System.Collections.Generic.List`1[System.Int32]]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
-            IEnumerable enumerable = new List<int>() { 45, 43, 54, 666 };
+            IEnumerable enumerable = new List<int> { 45, 43, 54, 666 };
             Check.That(enumerable).Not.IsEqualTo(enumerable);
         }
 
@@ -141,7 +155,7 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[45, 43, 54, 666] of type: [System.Collections.Generic.List`1[System.Int32]]\nThe expected value:\n\t[null]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
-            IEnumerable enumerable = new List<int>() { 45, 43, 54, 666 };
+            IEnumerable enumerable = new List<int> { 45, 43, 54, 666 };
             Check.That(enumerable).Not.IsNotEqualTo(null);
         }
 

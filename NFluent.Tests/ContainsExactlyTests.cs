@@ -1,4 +1,18 @@
-﻿namespace NFluent.Tests
+﻿// // --------------------------------------------------------------------------------------------------------------------
+// // <copyright file="ContainsExactlyTests.cs" company="">
+// //   Copyright 2013 Thomas PIERRAIN
+// //   Licensed under the Apache License, Version 2.0 (the "License");
+// //   you may not use this file except in compliance with the License.
+// //   You may obtain a copy of the License at
+// //       http://www.apache.org/licenses/LICENSE-2.0
+// //   Unless required by applicable law or agreed to in writing, software
+// //   distributed under the License is distributed on an "AS IS" BASIS,
+// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// //   See the License for the specific language governing permissions and
+// //   limitations under the License.
+// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------------
+namespace NFluent.Tests
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -13,7 +27,7 @@
         [Test]
         public void ContainsExactlyWorksWithArrayOfInt()
         {
-            var integers = new int[] { 1, 2, 3, 4, 5, 666 };
+            var integers = new[] { 1, 2, 3, 4, 5, 666 };
             Check.That(integers).ContainsExactly(1, 2, 3, 4, 5, 666);
         }
 
@@ -37,7 +51,7 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[1, 2, 3, 4, 5, 666] (6 items)\nThe expected enumerable:\n\t[666, 3, 1, 2, 4, 5] (6 items)")]
         public void ContainsExactlyWithArraysThrowsExceptionWhenSameItemsInWrongOrder()
         {
-            var integers = new int[] { 1, 2, 3, 4, 5, 666 };
+            var integers = new[] { 1, 2, 3, 4, 5, 666 };
             Check.That(integers).ContainsExactly(666, 3, 1, 2, 4, 5);
         }
 
@@ -45,7 +59,7 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[1, 2, 3, 4, 5, 666] (6 items)\nThe expected enumerable:\n\t[42, 42, 42] (3 items)")]
         public void ContainsExactlyWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
-            var integers = new int[] { 1, 2, 3, 4, 5, 666 };
+            var integers = new[] { 1, 2, 3, 4, 5, 666 };
             Check.That(integers).ContainsExactly(42, 42, 42);
         }
 
@@ -71,8 +85,8 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[1, 2, 3, 4, 5, 666] (6 items)\nThe expected enumerable:\n\t[666, 3, 1, 2, 4, 5] (6 items)")]
         public void ContainsExactlyWithEnumerableThrowsExceptionWhenSameItemsInWrongOrder()
         {
-            var integers = new List<int>() { 1, 2, 3, 4, 5, 666 };
-            IEnumerable expectedValues = new List<int>() { 666, 3, 1, 2, 4, 5 };
+            var integers = new List<int> { 1, 2, 3, 4, 5, 666 };
+            IEnumerable expectedValues = new List<int> { 666, 3, 1, 2, 4, 5 };
             Check.That(integers).ContainsExactly(expectedValues);
         }
 
@@ -80,8 +94,8 @@
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[1, 2, 3, 4, 5, 666] (6 items)\nThe expected enumerable:\n\t[666, 3, 1, 2, 4, 5] (6 items)")]
         public void ContainsExactlyWithGenericEnumerableThrowsExceptionWhenSameItemsInWrongOrder()
         {
-            var integers = new List<int>() { 1, 2, 3, 4, 5, 666 };
-            IEnumerable<int> expectedValues = new List<int>() { 666, 3, 1, 2, 4, 5 };
+            var integers = new List<int> { 1, 2, 3, 4, 5, 666 };
+            IEnumerable<int> expectedValues = new List<int> { 666, 3, 1, 2, 4, 5 };
             Check.That(integers).ContainsExactly(expectedValues);
         }
 
@@ -121,8 +135,8 @@
         [Test]
         public void ContainsExactlyWithEnumerableOfVariousObjectsTypesWorks()
         {
-            var variousObjects = new ArrayList() { 1, "uno", "tres", 45.3F };
-            IEnumerable expectedVariousObjects = new ArrayList() { 1, "uno", "tres", 45.3F };
+            var variousObjects = new ArrayList { 1, "uno", "tres", 45.3F };
+            IEnumerable expectedVariousObjects = new ArrayList { 1, "uno", "tres", 45.3F };
             Check.That(variousObjects).ContainsExactly(expectedVariousObjects);
         }
 
@@ -132,22 +146,20 @@
 
         private static IEnumerable<Person> InstantiateDirectors()
         {
-            return new List<Person>()
-                       {
-                           new Person() { Name = "Michel Gondry", Nationality = Nationality.French },
-                           new Person() { Name = "Joon-ho Bong", Nationality = Nationality.Korean },
-                           new Person() { Name = "Darren Aronofsky", Nationality = Nationality.American }
+            return new List<Person> {
+                           new Person { Name = "Michel Gondry", Nationality = Nationality.French }, 
+                           new Person { Name = "Joon-ho Bong", Nationality = Nationality.Korean }, 
+                           new Person { Name = "Darren Aronofsky", Nationality = Nationality.American }
                        };
         }
 
         private static IEnumerable<Person> InstantiateWriters()
         {
-            return new List<Person>()
-                       {
-                           new Person() { Name = "Steve Tesich", Nationality = Nationality.Serbian },
-                           new Person() { Name = "Albert Camus", Nationality = Nationality.French },
-                           new Person() { Name = "Eiji Yoshikawa", Nationality = Nationality.Japanese },
-                           new Person() { Name = "Friedrich Nietzsche", Nationality = Nationality.German }
+            return new List<Person> {
+                           new Person { Name = "Steve Tesich", Nationality = Nationality.Serbian }, 
+                           new Person { Name = "Albert Camus", Nationality = Nationality.French }, 
+                           new Person { Name = "Eiji Yoshikawa", Nationality = Nationality.Japanese }, 
+                           new Person { Name = "Friedrich Nietzsche", Nationality = Nationality.German }
                        };
         }
 
