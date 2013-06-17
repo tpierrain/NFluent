@@ -54,6 +54,21 @@
         }
 
         [Test]
+        public void DoesNotContainsWorks()
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(alphabet).DoesNotContain("one", "two", "three");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string contains unauthorized value(s): \"c\", \"z\", \"u\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe unauthorized substring(s):\n\t[\"c\", \"z\", \"u\"]")]
+        public void DoesNotContainsFailsWhenAppropriate()
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(alphabet).DoesNotContain("c", "z", "u");
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string's start is different from the expected one.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: starts with\n\t[\"ABCDEF\"]")]
         public void StartWithIsCaseSensitive()
         {
@@ -338,6 +353,27 @@
         public void HasContentFailsIfNull()
         {
             Check.That((string)null).HasContent();
+        }
+
+        [Test]
+        public void CompareNoCaseWorks()
+        {
+            Check.That("test").IsEqualIgnoringCase("TEST");
+            Check.That("tESt").IsEqualIgnoringCase("TEst");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"test\"]\nThe expected string:\n\t[\"TOAST\"]")]
+        public void CompareNoCaseFails()
+        {
+            Check.That("test").IsEqualIgnoringCase("TOAST");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is different from expected one, it contains extra text at the end.\nThe checked string:\n\t[\"test\"]\nThe expected string:\n\t[\"Te\"]")]
+        public void CompareNoCaseFailsWithStartOnly()
+        {
+            Check.That("test").IsEqualIgnoringCase("Te");
         }
 
         #endregion

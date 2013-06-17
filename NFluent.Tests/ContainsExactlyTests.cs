@@ -34,6 +34,14 @@
         }
 
         [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)\nThe expected enumerable:\n\t[\"Luke\", \"Yoda\"] (2 items)")]
+        public void ContainsExactlyThrowsExceptionWhenItemsAreMissing()
+        {
+            var heroes = new[] { "Luke", "Yoda", "Chewie" };
+            Check.That(heroes).ContainsExactly("Luke", "Yoda");
+        }
+        
+        [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[1, 2, 3, 4, 5, 666] (6 items)\nThe expected enumerable:\n\t[666, 3, 1, 2, 4, 5] (6 items)")]
         public void ContainsExactlyWithArraysThrowsExceptionWhenSameItemsInWrongOrder()
         {

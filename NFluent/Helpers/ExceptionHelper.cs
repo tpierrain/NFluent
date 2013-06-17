@@ -57,7 +57,7 @@ namespace NFluent.Helpers
                     {
                         foreach (var type in assembly.GetExportedTypes())
                         {
-                            if (type.Namespace != null && type.Namespace.StartsWith("NUnit."))
+                            if (type.Namespace.StartsWith("NUnit."))
                             {
                                 switch (type.Name)
                                 {
@@ -114,7 +114,7 @@ namespace NFluent.Helpers
                         {
                             foreach (var type in assembly.GetExportedTypes())
                             {
-                                if (type.Namespace != null && type.Namespace.StartsWith("Microsoft.VisualStudio.TestTools"))
+                                if (type.Namespace.StartsWith("Microsoft.VisualStudio.TestTools"))
                                 {
                                     ConstructorInfo info;
                                     switch (type.Name)

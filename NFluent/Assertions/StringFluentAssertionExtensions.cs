@@ -40,7 +40,7 @@ namespace NFluent
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
             var actual = runnableAssertion.Value;
  
-            var messageText = AssessEquals(expected, runnableAssertion.Negated, actual);
+            var messageText = AssessEquals(actual, expected, runnableAssertion.Negated);
             if (!string.IsNullOrEmpty(messageText))
             {
                 throw new FluentAssertionException(messageText);
@@ -63,7 +63,7 @@ namespace NFluent
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
             var actual = runnableAssertion.Value;
 
-            var messageText = AssessEquals(expected, !runnableAssertion.Negated, actual);
+            var messageText = AssessEquals(actual, expected, !runnableAssertion.Negated);
             if (!string.IsNullOrEmpty(messageText))
             {
                 throw new FluentAssertionException(messageText);
@@ -124,7 +124,7 @@ namespace NFluent
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
+        /// <exception cref="FluentAssertionException">The string  contains all the given strings in any order.</exception>
         public static IChainableFluentAssertion<IFluentAssertion<string>> Contains(this IFluentAssertion<string> fluentAssertion, params string[] values)
         {
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
@@ -139,9 +139,33 @@ namespace NFluent
             throw new FluentAssertionException(result);
         }
 
-        private static string AssessEquals(object expected, bool negated, string actual)
+            /// <summary>
+            /// Checks that the string does not contain any of the given expected values.
+            /// </summary>
+            /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+            /// <param name="values">The values not to be present.</param>
+            /// <returns>
+            /// A chainable assertion.
+            /// </returns>
+            /// <exception cref="FluentAssertionException">The string contains at least one of the given strings.</exception>
+            public static IChainableFluentAssertion<IFluentAssertion<string>> DoesNotContain(
+                this IFluentAssertion<string> fluentAssertion, params string[] values)
+            {
+                var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+                var result = ContainsImpl(runnableAssertion.Value, values, !runnableAssertion.Negated);
+
+                if (string.IsNullOrEmpty(result))
+                {
+                    return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+                }
+
+                throw new FluentAssertionException(result);
+            }
+
+        private static string AssessEquals(string actual, object expected, bool negated, bool ignoreCase = false)
         {
-            if (EqualityHelper.FluentEquals(actual, expected) != negated)
+            if (string.Equals(actual, (string)expected, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture) != negated)
             {
                 return null;
             }
@@ -175,8 +199,8 @@ namespace NFluent
                     else
                     {
                         if (expectedString.Length > actual.Length)
-                        {
-                            if (expectedString.StartsWith(actual))
+                        {   
+                            if (expectedString.StartsWith(actual, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
                             {
                                 mainMessage = FluentMessage.BuildMessage(
                                     "The {0} is different from {1}, it is missing the end.");
@@ -184,7 +208,7 @@ namespace NFluent
                         }
                         else
                         {
-                            if (actual.StartsWith(expectedString))
+                            if (actual.StartsWith(expectedString, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
                             {
                                 mainMessage =
                                     FluentMessage.BuildMessage(
@@ -555,6 +579,29 @@ namespace NFluent
                 .For("string")
                              .On(checkedValue)
                              .ToString();
+        }
+
+        /// <summary>
+        /// Checks that the string is equals to another one, disregarding case.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="comparand">The string to compare to.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string is not equal to the comparand.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> IsEqualIgnoringCase(
+            this IFluentAssertion<string> fluentAssertion, string comparand)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = AssessEquals(runnableAssertion.Value, comparand, runnableAssertion.Negated, true);
+            if (!string.IsNullOrEmpty(result))
+            {
+                throw new FluentAssertionException(result);
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
     }
 }

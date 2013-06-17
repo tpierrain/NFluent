@@ -36,5 +36,11 @@
 
             Check.That(variousStuffs.ToEnumeratedString()).IsEqualTo(@"93, null, ""hell yeah!""");
         }
+
+        [Test]
+        public void HowToEnumeratedStringHandlesNullEnumeration()
+        {
+            Check.That(((IEnumerable)null).ToEnumeratedString()).IsEqualTo("null");
+        }
     }
 }

@@ -92,6 +92,7 @@ namespace NFluent.Tests
             Assert.IsTrue(altDuration.Equals(test));
             Assert.IsTrue(altDuration == test);
             Assert.IsFalse(altDuration.Equals(null));
+            Assert.IsFalse(altDuration.Equals(20));
             Assert.IsTrue(altDuration.Equals((object)test));
         }
 
