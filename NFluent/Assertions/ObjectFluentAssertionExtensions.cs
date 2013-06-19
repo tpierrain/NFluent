@@ -138,5 +138,91 @@ namespace NFluent
                 },
                 string.Format("\nThe checked expression is part of the inheritance hierarchy or of the same type than the specified one.\nIndeed, checked expression type:\n\t[{0}]\nis a derived type of\n\t[{1}].", instanceType.ToStringProperlyFormated(), expectedBaseType.ToStringProperlyFormated()));
         }
+
+        /// <summary>
+        /// Checks that the actual value has an expected reference.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="expected">The expected object.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual value is not the same reference than the expected value.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<object>> IsSameReferenceThan(
+            this IFluentAssertion<object> fluentAssertion, object expected)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<object>;
+            var negated = runnableAssertion.Negated;
+            var value = runnableAssertion.Value;
+
+            string comparison;
+            var message = SameReferenceImpl(expected, value, negated, out comparison);
+            if (!string.IsNullOrEmpty(message))
+            {
+                throw new FluentAssertionException(
+                    FluentMessage.BuildMessage(message)
+                                 .For("object")
+                                 .On(value)
+                                 .And.Expected(expected)
+                                 .Comparison(comparison)
+                                 .ToString());
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+        }
+
+        private static string SameReferenceImpl(object expected, object value, bool negated, out string comparison)
+        {
+            string message = null;
+            comparison = null;
+
+            if (object.ReferenceEquals(value, expected) == negated)
+            {
+                if (negated)
+                {
+                    message = "The {0} must have be an instance distinct from {1}.";
+                    comparison = "distinct from";
+                }
+                else
+                {
+                    message = "The {0} must be the same instance than {1}.";
+                    comparison = "same instance than";
+                }
+            }
+
+            return message;
+        }
+
+        /// <summary>
+        /// Checks that the actual value is a different instance than a comparand.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="comparand">The expected value to be distinct from.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The actual value is the same instance than the comparand.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<object>> IsDistinctFrom(
+            this IFluentAssertion<object> fluentAssertion, object comparand)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<object>;
+            var negated = !runnableAssertion.Negated;
+            var value = runnableAssertion.Value;
+
+            string comparison;
+            var message = SameReferenceImpl(comparand, value, negated, out comparison);
+            if (!string.IsNullOrEmpty(message))
+            {
+                throw new FluentAssertionException(
+                    FluentMessage.BuildMessage(message)
+                                 .For("object")
+                                 .On(value)
+                                 .And.Expected(comparand)
+                                 .Comparison(comparison)
+                                 .ToString());
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<object>>(fluentAssertion);
+        }
     }
 }

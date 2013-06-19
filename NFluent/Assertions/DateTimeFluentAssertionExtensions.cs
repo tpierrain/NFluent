@@ -45,7 +45,7 @@ namespace NFluent
                     {
                         EqualityHelper.IsEqualTo(runnableAssertion.Value, expected);
                     },
-                string.Format("\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[{0}]{1}.", runnableAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(expected, false)));
+                string.Format("\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[{0}]{1}.", runnableAssertion.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(expected)));
         }
 
         /// <summary>

@@ -95,19 +95,12 @@ namespace NFluent.Helpers
         }
 
         // TODO: make internal methods visible?
-        internal static string BuildTypeDescriptionMessage(object obj, bool includeHashCode = false)
+        internal static string BuildTypeDescriptionMessage(object obj)
         {
             var expectedTypeMessage = string.Empty;
             if (obj != null)
             {
-                if (includeHashCode)
-                {
-                    expectedTypeMessage = string.Format(" of type: [{0}] with HashCode: [{1}]", obj.GetType(), obj.GetHashCode());
-                }
-                else
-                {
                     expectedTypeMessage = string.Format(" of type: [{0}]", obj.GetType());
-                }
             }
 
             return expectedTypeMessage;

@@ -24,7 +24,7 @@ namespace NFluent
     /// <typeparam name="T">
     /// Type managed by this extension.
     /// </typeparam>
-    public interface IExtendableFluentAssertion<T> : IChainableFluentAssertion<IFluentAssertion<T>>
+    public interface IExtendableFluentAssertion<out T> : IChainableFluentAssertion<IFluentAssertion<T>>
     {
         /// <summary>
         /// Gets the initial list that was used in Contains.
@@ -33,5 +33,21 @@ namespace NFluent
         /// Initial list that was used in Contains.
         /// </value>
         T OriginalComparand { get; }
+    }
+
+    /// <summary>
+    /// Provides an specific implementation for IEnumerable Fluent Assertion extension. Required to implement IEnumerable fluent API syntax.
+    /// </summary>
+    /// <typeparam name="T">Type managed by this extension.</typeparam>
+    /// <typeparam name="U">Type of the reference comparand.</typeparam>
+    public interface IExtendableFluentAssertion<out T, out U> : IChainableFluentAssertion<IFluentAssertion<T>>
+    {
+        /// <summary>
+        /// Gets the initial list that was used in Contains.
+        /// </summary>
+        /// <value>
+        /// Initial list that was used in Contains.
+        /// </value>
+        U OriginalComparand { get; }
     }
 }

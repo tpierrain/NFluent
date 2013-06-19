@@ -236,6 +236,9 @@ namespace NFluent.Tests
             const uint OtherTwenty = 20;
 
             Check.That(Twenty).Equals(OtherTwenty);
+
+            // check the 'other implementation of equals
+            Check.That(Twenty).IsPositive().And.Equals(OtherTwenty);
         }
 
         [Test]
@@ -245,15 +248,6 @@ namespace NFluent.Tests
             const uint Twenty = 20;
 
             Check.That(One).Not.IsEqualTo(Twenty);
-        }
-
-        [Test]
-        public void NotEqualsWorksToo()
-        {
-            const uint One = 1;
-            const uint Twenty = 20;
-
-            Check.That(One).Not.Equals(Twenty);
         }
 
         [Test]

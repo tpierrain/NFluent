@@ -40,7 +40,7 @@ namespace NFluent
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
             var actual = runnableAssertion.Value;
  
-            var messageText = AssessEquals(expected, runnableAssertion.Negated, actual);
+            var messageText = AssessEquals(actual, expected, runnableAssertion.Negated);
             if (!string.IsNullOrEmpty(messageText))
             {
                 throw new FluentAssertionException(messageText);
@@ -63,7 +63,7 @@ namespace NFluent
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
             var actual = runnableAssertion.Value;
 
-            var messageText = AssessEquals(expected, !runnableAssertion.Negated, actual);
+            var messageText = AssessEquals(actual, expected, !runnableAssertion.Negated);
             if (!string.IsNullOrEmpty(messageText))
             {
                 throw new FluentAssertionException(messageText);
@@ -124,12 +124,36 @@ namespace NFluent
         /// <returns>
         /// A chainable assertion.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The string does not contains all the given strings in any order.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<string>> Contains(this IFluentAssertion<string> fluentAssertion, params string[] values)
+        /// <exception cref="FluentAssertionException">The string  contains all the given strings in any order.</exception>
+        public static IExtendableFluentAssertion<string, string[]> Contains(this IFluentAssertion<string> fluentAssertion, params string[] values)
         {
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
 
             var result = ContainsImpl(runnableAssertion.Value, values, runnableAssertion.Negated);
+
+            if (string.IsNullOrEmpty(result))
+            {
+                return new ExtendableFluentAssertion<string, string[]>(fluentAssertion, values);
+            }
+
+            throw new FluentAssertionException(result);
+        }
+
+            /// <summary>
+            /// Checks that the string does not contain any of the given expected values.
+            /// </summary>
+            /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+            /// <param name="values">The values not to be present.</param>
+            /// <returns>
+            /// A chainable assertion.
+            /// </returns>
+            /// <exception cref="FluentAssertionException">The string contains at least one of the given strings.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> DoesNotContain(
+                this IFluentAssertion<string> fluentAssertion, params string[] values)
+        {    
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = ContainsImpl(runnableAssertion.Value, values, !runnableAssertion.Negated);
 
             if (string.IsNullOrEmpty(result))
             {
@@ -139,9 +163,9 @@ namespace NFluent
             throw new FluentAssertionException(result);
         }
 
-        private static string AssessEquals(object expected, bool negated, string actual)
+        private static string AssessEquals(string actual, object expected, bool negated, bool ignoreCase = false)
         {
-            if (EqualityHelper.FluentEquals(actual, expected) != negated)
+            if (string.Equals(actual, (string)expected, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture) != negated)
             {
                 return null;
             }
@@ -175,8 +199,8 @@ namespace NFluent
                     else
                     {
                         if (expectedString.Length > actual.Length)
-                        {
-                            if (expectedString.StartsWith(actual))
+                        {   
+                            if (expectedString.StartsWith(actual, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
                             {
                                 mainMessage = FluentMessage.BuildMessage(
                                     "The {0} is different from {1}, it is missing the end.");
@@ -184,7 +208,7 @@ namespace NFluent
                         }
                         else
                         {
-                            if (actual.StartsWith(expectedString))
+                            if (actual.StartsWith(expectedString, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
                             {
                                 mainMessage =
                                     FluentMessage.BuildMessage(
@@ -359,7 +383,7 @@ namespace NFluent
         /// Checks that the string matches a given regular expression.
         /// </summary>
         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
-        /// <param name="regExp">The expected prefix.</param>
+        /// <param name="regExp">The regular expression.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
@@ -370,14 +394,37 @@ namespace NFluent
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
 
             var result = MatchesImpl(runnableAssertion.Value, regExp, runnableAssertion.Negated);
-            if (string.IsNullOrEmpty(result))
+            if (!string.IsNullOrEmpty(result))
             {
-                return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+                throw new FluentAssertionException(result);
             }
 
-            throw new FluentAssertionException(result);
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
 
+        /// <summary>
+        /// Checks that the string does not match a given regular expression.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="regExp">The regular expression prefix.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string does not end with the expected prefix.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> DoesNotMatch(
+            this IFluentAssertion<string> fluentAssertion, string regExp)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = MatchesImpl(runnableAssertion.Value, regExp, !runnableAssertion.Negated);
+            if (!string.IsNullOrEmpty(result))
+            {
+                throw new FluentAssertionException(result);
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+        }
+        
         private static string MatchesImpl(string checkedValue, string regExp, bool negated)
         {
             // special case if checkedvalue is null
@@ -411,6 +458,150 @@ namespace NFluent
                              .And.Expected(regExp)
                              .Comparison("matches")
                              .ToString();
+        }
+
+        /// <summary>
+        /// Checks that the string is empty.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string is not empty.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> IsEmpty(
+            this IFluentAssertion<string> fluentAssertion)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = IsEmptyImpl(runnableAssertion.Value, false, runnableAssertion.Negated);
+            if (!string.IsNullOrEmpty(result))
+            {
+                throw new FluentAssertionException(result);
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+        }
+
+        /// <summary>
+        /// Checks that the string is empty or null.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string is neither empty or null.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> IsNullOrEmpty(this IFluentAssertion<string> fluentAssertion)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = IsEmptyImpl(runnableAssertion.Value, true, runnableAssertion.Negated);
+            if (!string.IsNullOrEmpty(result))
+            {
+                throw new FluentAssertionException(result);
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);            
+        }
+
+        /// <summary>
+        /// Checks that the string is not empty.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string is empty.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> IsNotEmpty(
+            this IFluentAssertion<string> fluentAssertion)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = IsEmptyImpl(runnableAssertion.Value, false, !runnableAssertion.Negated);
+            if (!string.IsNullOrEmpty(result))
+            {
+                throw new FluentAssertionException(result);
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+        }
+
+        /// <summary>
+        /// Checks that the string has content.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string is empty or null.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> HasContent(this IFluentAssertion<string> fluentAssertion)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = IsEmptyImpl(runnableAssertion.Value, true, !runnableAssertion.Negated);
+            if (!string.IsNullOrEmpty(result))
+            {
+                throw new FluentAssertionException(result);
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+        }
+
+        private static string IsEmptyImpl(string checkedValue, bool canBeNull, bool negated)
+        {
+            // special case if checkedvalue is null
+            if (checkedValue == null)
+            {
+                if (canBeNull != negated)
+                {
+                    return null;
+                }
+
+                return negated ? FluentMessage.BuildMessage("The {0} is null whereas it must have content.").For("string").ToString()
+                    : FluentMessage.BuildMessage("The {0} is null instead of being empty.").For("string").ToString();
+            }
+
+            if (string.IsNullOrEmpty(checkedValue) != negated)
+            {
+                // success
+                return null;
+            }
+
+            if (negated)
+            {
+                return
+                    FluentMessage.BuildMessage("The {0} is empty, whereas it must not.")
+                    .For("string")
+                                 .ToString();
+            }
+
+            return
+                FluentMessage.BuildMessage("The {0} is not empty or null.")
+                .For("string")
+                             .On(checkedValue)
+                             .ToString();
+        }
+
+        /// <summary>
+        /// Checks that the string is equals to another one, disregarding case.
+        /// </summary>
+        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="comparand">The string to compare to.</param>
+        /// <returns>
+        /// A chainable assertion.
+        /// </returns>
+        /// <exception cref="FluentAssertionException">The string is not equal to the comparand.</exception>
+        public static IChainableFluentAssertion<IFluentAssertion<string>> IsEqualIgnoringCase(
+            this IFluentAssertion<string> fluentAssertion, string comparand)
+        {
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = AssessEquals(runnableAssertion.Value, comparand, runnableAssertion.Negated, true);
+            if (!string.IsNullOrEmpty(result))
+            {
+                throw new FluentAssertionException(result);
+            }
+
+            return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
         }
     }
 }

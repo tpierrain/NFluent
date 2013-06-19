@@ -71,6 +71,7 @@
     <Compile Include="MessageBuilderTests.cs" />
     <Compile Include="NotRelatedTests.cs" />
     <Compile Include="NumbersOfDifferentTypesRelatedTests.cs" />
+    <Compile Include="ObjectRelatedTest.cs" />
     <Compile Include="PropertiesRelatedTests.cs" />
     <Compile Include="EqualRelatedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

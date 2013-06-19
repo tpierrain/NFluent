@@ -236,6 +236,9 @@ namespace NFluent.Tests
             const decimal OtherTwenty = 20M;
 
             Check.That(Twenty).Equals(OtherTwenty);
+
+            // check the 'other implementation of equals
+            Check.That(Twenty).IsPositive().And.Equals(OtherTwenty);
         }
 
         [Test]
@@ -245,15 +248,6 @@ namespace NFluent.Tests
             const decimal Twenty = 20M;
 
             Check.That(One).Not.IsEqualTo(Twenty);
-        }
-
-        [Test]
-        public void NotEqualsWorksToo()
-        {
-            const decimal One = 1M;
-            const decimal Twenty = 20M;
-
-            Check.That(One).Not.Equals(Twenty);
         }
 
         [Test]
