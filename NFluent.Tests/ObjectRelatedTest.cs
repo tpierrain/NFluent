@@ -47,6 +47,7 @@ namespace NFluent.Tests
             var test = new object();
             Check.That(test).IsDistinctFrom(test);
         }
+
         [Test]
         public void NegatedSameWorks()
         {
