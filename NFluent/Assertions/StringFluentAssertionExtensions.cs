@@ -148,20 +148,20 @@ namespace NFluent
             /// A chainable assertion.
             /// </returns>
             /// <exception cref="FluentAssertionException">The string contains at least one of the given strings.</exception>
-            public static IChainableFluentAssertion<IFluentAssertion<string>> DoesNotContain(
+        public static IChainableFluentAssertion<IFluentAssertion<string>> DoesNotContain(
                 this IFluentAssertion<string> fluentAssertion, params string[] values)
+        {    
+            var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
+
+            var result = ContainsImpl(runnableAssertion.Value, values, !runnableAssertion.Negated);
+
+            if (string.IsNullOrEmpty(result))
             {
-                var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
-
-                var result = ContainsImpl(runnableAssertion.Value, values, !runnableAssertion.Negated);
-
-                if (string.IsNullOrEmpty(result))
-                {
-                    return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
-                }
-
-                throw new FluentAssertionException(result);
+                return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
             }
+
+            throw new FluentAssertionException(result);
+        }
 
         private static string AssessEquals(string actual, object expected, bool negated, bool ignoreCase = false)
         {

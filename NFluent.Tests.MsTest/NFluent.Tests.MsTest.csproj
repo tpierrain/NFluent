@@ -56,6 +56,7 @@
     </Compile>
     <Compile Include="AutomaticMsTestExceptionDetectionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DemonstrationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NFluent\NFluent.csproj">

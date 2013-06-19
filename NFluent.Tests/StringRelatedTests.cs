@@ -218,6 +218,14 @@ namespace NFluent.Tests
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
             Check.That(alphabet).Contains("i").And.StartsWith("abcd").And.IsInstanceOf<string>().And.IsNotInstanceOf<int>().And.Not.IsNotInstanceOf<string>();
+            Check.That(alphabet).HasSize(26);
+        }
+
+        [Test]
+        public void HasSizeTest()
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(alphabet).HasSize(26);
         }
 
         #region Match

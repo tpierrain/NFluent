@@ -112,10 +112,7 @@ namespace NFluent
             var assertionRunner = this as IFluentAssertionRunner<N>;
 
             assertionRunner.ExecuteAssertion(
-                () =>
-                {
-                    EqualityHelper.IsEqualTo(this.Value, obj);
-                },
+                () => EqualityHelper.IsEqualTo(this.Value, obj),
                 EqualityHelper.BuildErrorMessage(this.Value, obj, true));
 
             return true;
