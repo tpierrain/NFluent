@@ -125,7 +125,7 @@ namespace NFluent
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The string  contains all the given strings in any order.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<string>> Contains(this IFluentAssertion<string> fluentAssertion, params string[] values)
+        public static IExtendableFluentAssertion<string, string[]> Contains(this IFluentAssertion<string> fluentAssertion, params string[] values)
         {
             var runnableAssertion = fluentAssertion as IRunnableAssertion<string>;
 
@@ -133,7 +133,7 @@ namespace NFluent
 
             if (string.IsNullOrEmpty(result))
             {
-                return new ChainableFluentAssertion<IFluentAssertion<string>>(fluentAssertion);
+                return new ExtendableFluentAssertion<string, string[]>(fluentAssertion, values);
             }
 
             throw new FluentAssertionException(result);

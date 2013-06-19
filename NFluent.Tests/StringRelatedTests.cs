@@ -83,6 +83,36 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ContainsOnceWorksWithString()
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(alphabet).Contains("lmnop").Once();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string contains \"lmnop\" at 11 and 25, where as it must contains it once.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]\nExpected content once\n\t[\"lmnop\"]")]
+        public void ContainsOnceFailsProperly()
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxylmnopz";
+            Check.That(alphabet).Contains("lmnop").Once();
+        }
+
+        [Test]
+        public void ContainsInThatOrderWorksWithString()
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(alphabet).Contains("ab", "cd").InThatOrder();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string does not contain the expected strings in the correct order.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]\nExpected content\n\t[\"cd\", \"ab\"]")]
+        public void ContainsInThatOrderFailsProperly()
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxylmnopz";
+            Check.That(alphabet).Contains("cd", "ab").InThatOrder();
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string's start is different from the expected one.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: starts with\n\t[\"ABCDEF\"]")]
         public void StartWithIsCaseSensitive()
         {
@@ -216,7 +246,7 @@ namespace NFluent.Tests
         [Test]
         public void AndOperatorCanChainMultipleAssertionsOnString()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            var alphabet = "abcdefghijklmnopqrstuvwxyz";
             Check.That(alphabet).Contains("i").And.StartsWith("abcd").And.IsInstanceOf<string>().And.IsNotInstanceOf<int>().And.Not.IsNotInstanceOf<string>();
             Check.That(alphabet).HasSize(26);
         }
@@ -224,7 +254,7 @@ namespace NFluent.Tests
         [Test]
         public void HasSizeTest()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            var alphabet = "abcdefghijklmnopqrstuvwxyz";
             Check.That(alphabet).HasSize(26);
         }
 

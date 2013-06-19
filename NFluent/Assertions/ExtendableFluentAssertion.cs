@@ -19,6 +19,7 @@
 namespace NFluent
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Provides an specific implementation for IEnumerable Fluent Assertion. Required to implement IEnumerable fluent API.
@@ -26,12 +27,13 @@ namespace NFluent
     /// <typeparam name="T">
     /// Type managed by this extension.
     /// </typeparam>
-    internal class ExtendableFluentAssertion<T> : ChainableFluentAssertion<IFluentAssertion<T>>, IExtendableFluentAssertion<T>
+    /// <typeparam name="U">Type of the reference comparand.</typeparam>
+    internal class ExtendableFluentAssertion<T, U> : ChainableFluentAssertion<IFluentAssertion<T>>, IExtendableFluentAssertion<T, U>
     {
-        private readonly T originalComparand;
+        private readonly U originalComparand;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtendableFluentAssertion{T}"/> class. 
+        /// Initializes a new instance of the <see cref="ExtendableFluentAssertion{T,U}"/> class. 
         /// </summary>
         /// <param name="previousFluentAssertion">
         /// The previous fluent assertion.
@@ -39,7 +41,7 @@ namespace NFluent
         /// <param name="originalComparand">
         /// Comparand used for the first check.
         /// </param>
-        public ExtendableFluentAssertion(IForkableFluentAssertion previousFluentAssertion, T originalComparand)
+        public ExtendableFluentAssertion(IForkableFluentAssertion previousFluentAssertion, U originalComparand)
             : base(previousFluentAssertion)
         {
             this.originalComparand = originalComparand;
@@ -54,12 +56,36 @@ namespace NFluent
         /// <value>
         /// Initial list that was used in Contains.
         /// </value>
-        public T OriginalComparand
+        public U OriginalComparand
         {
             get
             {
                 return this.originalComparand;
             }
+        }
+    }
+
+    /// <summary>
+    /// Provides an specific implementation for IEnumerable Fluent Assertion. Required to implement IEnumerable fluent API.
+    /// </summary>
+    /// <typeparam name="T">
+    /// Type managed by this extension.
+    /// </typeparam>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
+    internal class ExtendableFluentAssertion<T> : ExtendableFluentAssertion<T, T>, IExtendableFluentAssertion<T>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NFluent.ExtendableFluentAssertion{T}"/> class. 
+        /// </summary>
+        /// <param name="previousFluentAssertion">
+        /// The previous fluent assertion.
+        /// </param>
+        /// <param name="originalComparand">
+        /// Comparand used for the first check.
+        /// </param>
+        public ExtendableFluentAssertion(IForkableFluentAssertion previousFluentAssertion, T originalComparand)
+            : base(previousFluentAssertion, originalComparand)
+        {
         }
     }
 }

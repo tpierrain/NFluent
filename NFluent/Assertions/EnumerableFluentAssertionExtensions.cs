@@ -351,7 +351,7 @@ namespace NFluent
                             throw new FluentAssertionException(string.Format("\nThe actual enumerable is not empty. Contains:\n\t[{0}]", runnableAssertion.Value.ToEnumeratedString()));
                         }
                     },
-                string.Format("\nThe actual enumerable is empty, which is unexpected."));
+                FluentMessage.BuildMessage("The actual enumerable is empty, which is unexpected.").ToString());
         }
 
         #region private or internal methods
