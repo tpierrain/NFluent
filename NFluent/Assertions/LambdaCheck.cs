@@ -100,7 +100,7 @@ namespace NFluent
         /// Check that the code does not throw an exception.
         /// </summary>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
         /// The code raised an exception.
@@ -129,7 +129,7 @@ namespace NFluent
         /// The time unit of the given threshold.
         /// </param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
         /// Execution was strictly above limit.
@@ -161,7 +161,7 @@ namespace NFluent
         /// And.Expected exception type.
         /// </typeparam>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
         /// The code did not raised an exception of the specified type, or did not raised an exception at all.
@@ -193,7 +193,7 @@ namespace NFluent
         /// Checks that the code did throw an exception of any type.
         /// </summary>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
         /// The code did not raised an exception of any type.

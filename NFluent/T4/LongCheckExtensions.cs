@@ -33,7 +33,7 @@ namespace NFluent
         //// (i.e. the one dedicated to the integer values).
         //// -----------------------------------------------------
 
-        // Since this class is the model/template for the generation of all the other numbers related FluentAssertionExtensions classes, don't forget to re-generate all the other classes every time you change this one. To do that, just save the ..\T4\NumberFluentAssertionGenerator.tt file within Visual Studio 2012. This will trigger the T4 code generation process.
+        #pragma warning restore 169
 
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
@@ -41,14 +41,14 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static ICheckLink<ICheck<long>> IsEqualTo(this ICheck<long> check, object expected)
         {
             // TODO transform NumberCheck<T> into a static class with functions only?
-            var numberAssertionStrategy = new NumberCheck<long>(check);
-            return numberAssertionStrategy.IsEqualTo(expected);
+            var numberCheckStrategy = new NumberCheck<long>(check);
+            return numberCheckStrategy.IsEqualTo(expected);
         }
 
         /// <summary>
@@ -57,13 +57,13 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<long>> IsNotEqualTo(this ICheck<long> check, object expected)
         {
-            var numberAssertionStrategy = new NumberCheck<long>(check);
-            return numberAssertionStrategy.IsNotEqualTo(expected);
+            var numberCheckStrategy = new NumberCheck<long>(check);
+            return numberCheckStrategy.IsNotEqualTo(expected);
         }
 
         /// <summary>
@@ -77,8 +77,8 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
         public static ICheckLink<ICheck<long>> IsInstanceOf<T>(this ICheck<long> check)
         {
-            var numberAssertionStrategy = new NumberCheck<long>(check);
-            return numberAssertionStrategy.IsInstanceOf<T>();
+            var numberCheckStrategy = new NumberCheck<long>(check);
+            return numberCheckStrategy.IsInstanceOf<T>();
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
         public static ICheckLink<ICheck<long>> IsNotInstanceOf<T>(this ICheck<long> check)
         {
-            var numberAssertionStrategy = new NumberCheck<long>(check);
-            return numberAssertionStrategy.IsNotInstanceOf<T>();
+            var numberCheckStrategy = new NumberCheck<long>(check);
+            return numberCheckStrategy.IsNotInstanceOf<T>();
         }
 
         /// <summary>
@@ -125,13 +125,13 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not equal to zero.</exception>
         public static ICheckLink<ICheck<long>> IsZero(this ICheck<long> check)
         {
-            var numberAssertionStrategy = new NumberCheck<long>(check);
-            return numberAssertionStrategy.IsZero();
+            var numberCheckStrategy = new NumberCheck<long>(check);
+            return numberCheckStrategy.IsZero();
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace NFluent
 
         /// <summary>
         /// Checks that the actual nullable value has no value and thus, is null. 
-        /// Note: this method does not return a chainable check since the nullable is null.
+        /// Note: this method does not return A check link since the nullable is null.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <exception cref="FluentCheckException">The value is not null.</exception>
@@ -185,13 +185,13 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        ///   <returns>A chainable check.</returns>
+        ///   <returns>A check link.</returns>
         /// </returns>
         /// <exception cref="FluentCheckException">The value is equal to zero.</exception>
         public static ICheckLink<ICheck<long>> IsNotZero(this ICheck<long> check)
         {
-            var numberAssertionStrategy = new NumberCheck<long>(check);
-            return numberAssertionStrategy.IsNotZero();
+            var numberCheckStrategy = new NumberCheck<long>(check);
+            return numberCheckStrategy.IsNotZero();
         }
 
         /// <summary>
@@ -199,13 +199,13 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
         public static ICheckLink<ICheck<long>> IsPositive(this ICheck<long> check)
         {
-            var numberAssertionStrategy = new NumberCheck<long>(check);
-            return numberAssertionStrategy.IsPositive();
+            var numberCheckStrategy = new NumberCheck<long>(check);
+            return numberCheckStrategy.IsPositive();
         }
 
         /// <summary>
@@ -218,15 +218,15 @@ namespace NFluent
         /// Comparand to compare the value to.
         /// </param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
         public static ICheckLink<ICheck<long>> IsLessThan(this ICheck<long> check, long comparand)
         {
-            var numberAssertionStrategy = new NumberCheck<long>(check);
-            return numberAssertionStrategy.IsLessThan(comparand);
+            var numberCheckStrategy = new NumberCheck<long>(check);
+            return numberCheckStrategy.IsLessThan(comparand);
         }
 
         /// <summary>
@@ -239,15 +239,15 @@ namespace NFluent
         /// Comparand to compare the value to.
         /// </param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
         public static ICheckLink<ICheck<long>> IsGreaterThan(this ICheck<long> check, long comparand)
         {
-            var numberAssertionStrategy = new NumberCheck<long>(check);
-            return numberAssertionStrategy.IsGreaterThan(comparand);
+            var numberCheckStrategy = new NumberCheck<long>(check);
+            return numberCheckStrategy.IsGreaterThan(comparand);
         }
     }
 }

@@ -37,6 +37,6 @@ namespace NFluent
         /// A new chainable fluent check for struct or enum.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        ICheckLink<IStructCheck<T>> ExecuteAssertion(Action action, string negatedExceptionMessage);
+        ICheckLink<IStructCheck<T>> ExecuteCheck(Action action, string negatedExceptionMessage);
     }
 }

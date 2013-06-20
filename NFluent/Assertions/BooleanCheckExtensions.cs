@@ -33,7 +33,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static ICheckLink<ICheck<bool>> IsEqualTo(this ICheck<bool> check, object expected)
@@ -55,7 +55,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<bool>> IsNotEqualTo(this ICheck<bool> check, object expected)
@@ -76,7 +76,7 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not true.</exception>
         public static ICheckLink<ICheck<bool>> IsTrue(this ICheck<bool> check)
@@ -100,7 +100,7 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not false.</exception>
         public static ICheckLink<ICheck<bool>> IsFalse(this ICheck<bool> check)

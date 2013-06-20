@@ -122,7 +122,7 @@ namespace NFluent
         /// Checks that the actual value is equal to zero.
         /// </summary>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not equal to zero.</exception>
         public ICheckLink<ICheck<N>> IsZero()
@@ -147,7 +147,7 @@ namespace NFluent
         /// Checks that the actual value is NOT equal to zero.
         /// </summary>
         /// <returns>
-        /// <returns>A chainable check.</returns>
+        /// <returns>A check link.</returns>
         /// </returns>
         /// <exception cref="FluentCheckException">The value is equal to zero.</exception>
         public ICheckLink<ICheck<N>> IsNotZero()
@@ -174,7 +174,7 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is strictly positive.
         /// </summary>
-        /// <returns>A chainable check.</returns>
+        /// <returns>A check link.</returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
         public ICheckLink<ICheck<N>> IsPositive()
         {
@@ -199,7 +199,7 @@ namespace NFluent
         /// Comparand to compare the value to.
         /// </param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
@@ -227,7 +227,7 @@ namespace NFluent
         /// Comparand to compare the value to.
         /// </param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
@@ -253,7 +253,7 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
-        /// <returns>A chainable check.</returns>
+        /// <returns>A check link.</returns>
         /// <param name="expected">The expected value.</param>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public ICheckLink<ICheck<N>> IsEqualTo(object expected)
@@ -272,7 +272,7 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
-        /// <returns>A chainable check.</returns>
+        /// <returns>A check link.</returns>
         /// <param name="expected">The expected value.</param>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public ICheckLink<ICheck<N>> IsNotEqualTo(object expected)

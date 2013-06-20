@@ -29,7 +29,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="providedDuration">The duration to compare to.</param>
         /// <param name="unit">The unit in which the duration is expressed.</param>
-        /// <returns>A chainable check.</returns>
+        /// <returns>A check link.</returns>
         /// <exception cref="FluentCheckException">The actual value is not less than the provided duration.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, double providedDuration, TimeUnit unit)
          {
@@ -64,7 +64,7 @@ namespace NFluent
          /// </summary>
          /// <param name="check">The fluent check to be extended.</param>
          /// <param name="comparand">The value to compare to.</param>
-         /// <returns>A chainable check.</returns>
+         /// <returns>A check link.</returns>
          /// <exception cref="FluentCheckException">The actual value is not less than the provided comparand.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
@@ -103,7 +103,7 @@ namespace NFluent
          /// <param name="check">The fluent check to be extended.</param>
          /// <param name="providedDuration">The duration to compare to.</param>
          /// <param name="unit">The unit in which the duration is expressed.</param>
-         /// <returns>A chainable check.</returns>
+         /// <returns>A check link.</returns>
          /// <exception cref="FluentCheckException">The actual value is not greater than the provided comparand.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, double providedDuration, TimeUnit unit)
          {
@@ -138,7 +138,7 @@ namespace NFluent
          /// </summary>
          /// <param name="check">The fluent check to be extended.</param>
          /// <param name="comparand">The value to compare to.</param>
-         /// <returns>A chainable check.</returns>
+         /// <returns>A check link.</returns>
          /// <exception cref="FluentCheckException">The actual value is not greater than the provided comparand.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
@@ -176,7 +176,7 @@ namespace NFluent
          /// <param name="check">The fluent check to be extended.</param>
          /// <param name="duration">The duration to be compared to.</param>
          /// <param name="unit">The <see cref="TimeUnit" /> in which duration is expressed.</param>
-         /// <returns>A chainable check.</returns>
+         /// <returns>A check link.</returns>
          /// <exception cref="FluentCheckException">The actual value is not equal to the target duration.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, double duration, TimeUnit unit)
          {
@@ -212,7 +212,7 @@ namespace NFluent
          /// </summary>
          /// <param name="check">The fluent check to be extended.</param>
          /// <param name="comparand">The duration to be compared to.</param>
-         /// <returns>A chainable check.</returns>
+         /// <returns>A check link.</returns>
          /// /// <exception cref="FluentCheckException">The actual value is not equal to the target duration.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, TimeSpan comparand)
          {

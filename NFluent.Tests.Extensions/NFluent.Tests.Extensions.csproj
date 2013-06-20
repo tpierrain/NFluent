@@ -44,7 +44,7 @@
     </Compile>
     <Compile Include="Child.cs" />
     <Compile Include="Movie.cs" />
-    <Compile Include="MovieFluentAssertionExtensions.cs" />
+    <Compile Include="MovieCheckExtensions.cs" />
     <Compile Include="Nationality.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

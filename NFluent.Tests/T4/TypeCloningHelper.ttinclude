@@ -77,7 +77,7 @@ public static class TypeCloningHelper
 			string checkClassName =  properlyCasedTypeName + outputFileNameSuffix;
 		
 			// Prepares he creation of a new output file
-			templateFileManager.StartNewFile(assertionClassName + ".cs");
+			templateFileManager.StartNewFile(checkClassName + ".cs");
 		
 			// Infers the source code for this new output file
 			string sourceCode = TypeCloningHelper.GenerateTestSourceCode(goldenSourceClassFileName, originalSourceClassName, checkClassName, unitTestConfig);

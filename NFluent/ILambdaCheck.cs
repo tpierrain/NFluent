@@ -28,7 +28,7 @@ namespace NFluent
         /// <param name="threshold">The threshold.</param>
         /// <param name="timeUnit">The time unit of the given threshold.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">Execution was strictly above limit.</exception>
         ICheckLink<ILambdaCheck> LastsLessThan(double threshold, TimeUnit timeUnit);
@@ -37,7 +37,7 @@ namespace NFluent
         /// Check that the code does not throw an exception.
         /// </summary>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code raised an exception.</exception>
         ICheckLink<ILambdaCheck> DoesNotThrow();
@@ -47,7 +47,7 @@ namespace NFluent
         /// </summary>
         /// <typeparam name="T">And.Expected exception type.</typeparam>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of the specified type, or did not raised an exception at all.</exception>
         ICheckLink<ILambdaCheck> Throws<T>();
@@ -56,7 +56,7 @@ namespace NFluent
         /// Checks that the code did throw an exception of any type.
         /// </summary>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
         ICheckLink<ILambdaCheck> ThrowsAny();

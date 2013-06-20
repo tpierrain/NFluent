@@ -31,7 +31,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static ICheckLink<ICheck<IEnumerable>> IsEqualTo(this ICheck<IEnumerable> check, object expected)
@@ -55,7 +55,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<IEnumerable>> IsNotEqualTo(this ICheck<IEnumerable> check, object expected)
@@ -124,7 +124,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values.</exception>
         public static IExtendableCheckLink<IEnumerable> Contains<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
@@ -139,7 +139,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="otherEnumerable">The enumerable containing the expected values to be found.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
         public static IExtendableCheckLink<IEnumerable> Contains(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
@@ -181,7 +181,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values provided.</exception>
         public static ICheckLink<ICheck<IEnumerable>> ContainsOnly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
@@ -197,7 +197,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
         public static ICheckLink<ICheck<IEnumerable>> ContainsOnly(this ICheck<IEnumerable> check, IEnumerable expectedValues)
@@ -246,7 +246,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
         public static ICheckLink<ICheck<IEnumerable>> ContainsExactly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
@@ -263,7 +263,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="otherEnumerable">The other enumerable containing the exact expected values to be found.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
         public static ICheckLink<ICheck<IEnumerable>> ContainsExactly(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
@@ -318,7 +318,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedSize">The expected size to be found.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable has not the expected number of elements.</exception>
         public static ICheckLink<ICheck<IEnumerable>> HasSize(this ICheck<IEnumerable> check, long expectedSize)
@@ -376,7 +376,7 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
         public static ICheckLink<ICheck<IEnumerable>> IsEmpty(this ICheck<IEnumerable> check)

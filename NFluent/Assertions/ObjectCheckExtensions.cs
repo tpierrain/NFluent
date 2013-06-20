@@ -32,7 +32,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static ICheckLink<ICheck<object>> IsEqualTo(this ICheck<object> check, object expected)
@@ -54,7 +54,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<object>> IsNotEqualTo(this ICheck<object> check, object expected)
@@ -145,7 +145,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected object.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not the same reference than the expected value.</exception>
         public static ICheckLink<ICheck<object>> IsSameReferenceThan(
@@ -199,7 +199,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="comparand">The expected value to be distinct from.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is the same instance than the comparand.</exception>
         public static ICheckLink<ICheck<object>> IsDistinctFrom(

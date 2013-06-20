@@ -28,7 +28,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="otherValue">The other value.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The current value is not before the other one.</exception>
         public static ICheckLink<ICheck<IComparable>> IsBefore(this ICheck<IComparable> check, IComparable otherValue)

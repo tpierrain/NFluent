@@ -29,7 +29,7 @@ namespace NFluent
         /// <typeparam name="T">Type of the value to be tested.</typeparam>
         /// <param name="value">The value to be tested.</param>
         /// <returns>
-        /// A <see cref="ICheck{T}" /> instance to use in order to assert things on the given value.
+        /// A <see cref="ICheck{T}" /> instance to use in order to check things on the given value.
         /// </returns>
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.

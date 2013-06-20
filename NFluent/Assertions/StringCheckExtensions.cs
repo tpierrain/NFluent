@@ -32,7 +32,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static ICheckLink<ICheck<string>> IsEqualTo(this ICheck<string> check, object expected)
@@ -55,7 +55,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<string>> IsNotEqualTo(this ICheck<string> check, object expected)
@@ -122,7 +122,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="values">The expected values to be found.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string  contains all the given strings in any order.</exception>
         public static IExtendableCheckLink<string, string[]> Contains(this ICheck<string> check, params string[] values)
@@ -145,7 +145,7 @@ namespace NFluent
             /// <param name="check">The fluent check to be extended.</param>
             /// <param name="values">The values not to be present.</param>
             /// <returns>
-            /// A chainable check.
+            /// A check link.
             /// </returns>
             /// <exception cref="FluentCheckException">The string contains at least one of the given strings.</exception>
         public static ICheckLink<ICheck<string>> DoesNotContain(
@@ -272,7 +272,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedPrefix">The expected prefix.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string does not start with the expected prefix.</exception>
         public static ICheckLink<ICheck<string>> StartsWith(this ICheck<string> check, string expectedPrefix)
@@ -328,7 +328,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedEnd">The expected suffix.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
         public static ICheckLink<ICheck<string>> EndsWith(
@@ -385,7 +385,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="regExp">The regular expression.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
         public static ICheckLink<ICheck<string>> Matches(
@@ -408,7 +408,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="regExp">The regular expression prefix.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
         public static ICheckLink<ICheck<string>> DoesNotMatch(
@@ -465,7 +465,7 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string is not empty.</exception>
         public static ICheckLink<ICheck<string>> IsEmpty(
@@ -487,7 +487,7 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string is neither empty or null.</exception>
         public static ICheckLink<ICheck<string>> IsNullOrEmpty(this ICheck<string> check)
@@ -508,7 +508,7 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string is empty.</exception>
         public static ICheckLink<ICheck<string>> IsNotEmpty(
@@ -530,7 +530,7 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string is empty or null.</exception>
         public static ICheckLink<ICheck<string>> HasContent(this ICheck<string> check)
@@ -587,7 +587,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="comparand">The string to compare to.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string is not equal to the comparand.</exception>
         public static ICheckLink<ICheck<string>> IsEqualIgnoringCase(

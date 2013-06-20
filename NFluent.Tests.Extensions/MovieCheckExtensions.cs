@@ -2,7 +2,7 @@
 {
     using NFluent.Extensions;
 
-    public static class MovieFluentAssertionExtensions
+    public static class MovieCheckExtensions
     {
         public static ICheckLink<ICheck<Movie>> IsDirectedBy(this ICheck<Movie> check, string directorFullName)
         {

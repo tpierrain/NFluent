@@ -22,15 +22,15 @@ namespace NFluent
     /// <typeparam name="T">Type of the <see cref="IForkableCheck"/> to be chained.</typeparam>
     internal class CheckLink<T> : ICheckLink<T> where T : class, IForkableCheck
     {
-        private readonly T newAssertionWithSameValue;
+        private readonly T newCheckWithSameValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckLink{T}" /> class.
         /// </summary>
-        /// <param name="previousCheck">The previous fluent assert.</param>
+        /// <param name="previousCheck">The previous fluent check.</param>
         public CheckLink(IForkableCheck previousCheck)
         {
-            this.newAssertionWithSameValue = previousCheck.ForkInstance() as T;
+            this.newCheckWithSameValue = previousCheck.ForkInstance() as T;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace NFluent
         {
             get
             {
-                return this.newAssertionWithSameValue;
+                return this.newCheckWithSameValue;
             }
         }
     }

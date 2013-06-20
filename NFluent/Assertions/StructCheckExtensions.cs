@@ -28,7 +28,7 @@ namespace NFluent
         /// <param name="check">The fluent fluent check.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static ICheckLink<IStructCheck<T>> IsEqualTo<T>(this IStructCheck<T> check, T expected) where T : struct
@@ -36,7 +36,7 @@ namespace NFluent
             var checkRunner = check as IStructCheckRunner<T>;
             var runnableCheck = check as IRunnableCheck<T>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
@@ -51,7 +51,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
-        /// A chainable check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<IStructCheck<T>> IsNotEqualTo<T>(this IStructCheck<T> check, object expected) where T : struct
@@ -59,7 +59,7 @@ namespace NFluent
             var checkRunner = check as IStructCheckRunner<T>;
             var runnableCheck = check as IRunnableCheck<T>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
