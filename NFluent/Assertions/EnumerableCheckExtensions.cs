@@ -176,6 +176,7 @@ namespace NFluent
 
         /// <summary>
         /// Checks that the enumerable contains only the given values and nothing else, in any order.
+        /// Note: this check succeeded with empty value.
         /// </summary>
         /// <typeparam name="T">Type of the expected values to be found.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
@@ -193,6 +194,7 @@ namespace NFluent
 
         /// <summary>
         /// Checks that the enumerable contains only the values present in another enumerable, and nothing else, in any order.
+        /// Note: this check succeeded with empty value.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
