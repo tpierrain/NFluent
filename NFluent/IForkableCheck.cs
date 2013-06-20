@@ -18,7 +18,7 @@ namespace NFluent
 
     /// <summary>
     /// Fluent check which is able to be forked. An check fork is like an check clone where the 
-    /// 'Negated' property is always set to false. This interface is mandatory for the chainable check mechanism. 
+    /// 'Negated' property is always set to false. This interface is mandatory for the check link mechanism. 
     /// </summary>
     /// <remarks>
     ///     The .NET standard <see cref="ICloneable"/> interface is not used here since it doesn't 

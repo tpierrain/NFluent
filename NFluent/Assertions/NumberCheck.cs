@@ -76,7 +76,7 @@ namespace NFluent
         /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentCheckException"/> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
-        /// A new chainable fluent check.
+        /// A new check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
         ICheckLink<ICheck<N>> ICheckRunner<N>.ExecuteCheck(Action action, string negatedExceptionMessage)
@@ -297,7 +297,7 @@ namespace NFluent
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
         /// <returns>
-        /// A chainable fluent check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
         public ICheckLink<ICheck<N>> IsInstanceOf<T>()
@@ -318,7 +318,7 @@ namespace NFluent
         /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
         /// <returns>
-        /// A chainable fluent check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
         public ICheckLink<ICheck<N>> IsNotInstanceOf<T>()

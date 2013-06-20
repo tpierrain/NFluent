@@ -250,7 +250,7 @@ namespace NFluent
          /// <typeparam name="T">The expected Type of the instance.</typeparam>
          /// <param name="check">The fluent check to be extended.</param>
          /// <returns>
-         /// A chainable fluent check.
+         /// A check link.
          /// </returns>
          /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsInstanceOf<T>(this ICheck<TimeSpan> check)
@@ -272,7 +272,7 @@ namespace NFluent
          /// <typeparam name="T">The type not expected for this instance.</typeparam>
          /// <param name="check">The fluent check to be extended.</param>
          /// <returns>
-         /// A chainable fluent check.
+         /// A check link.
          /// </returns>
          /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsNotInstanceOf<T>(this ICheck<TimeSpan> check)

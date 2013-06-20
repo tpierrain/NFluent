@@ -72,7 +72,7 @@ namespace NFluent
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable fluent check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
         public static ICheckLink<ICheck<byte>> IsInstanceOf<T>(this ICheck<byte> check)
@@ -87,7 +87,7 @@ namespace NFluent
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable fluent check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
         public static ICheckLink<ICheck<byte?>> IsInstanceOf<T>(this ICheck<byte?> check)
@@ -111,7 +111,7 @@ namespace NFluent
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable fluent check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
         public static ICheckLink<ICheck<byte>> IsNotInstanceOf<T>(this ICheck<byte> check)
@@ -138,7 +138,7 @@ namespace NFluent
         /// Checks that the actual nullable value has a value and thus, is not null.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>A chainable fluent check.</returns>
+        /// <returns>A check link.</returns>
         /// <exception cref="FluentCheckException">The value is null.</exception>
         public static INullableOrNumberCheckLink<byte> HasAValue(this ICheck<byte?> check)
         {

@@ -29,7 +29,7 @@ namespace NFluent
         /// The chained fluent check.
         /// </param>
         /// <returns>
-        /// A chainable fluent check.
+        /// A check link.
         /// </returns>
         public static IExtendableCheckLink<string, string[]> Once(this IExtendableCheckLink<string, string[]> chainedCheckLink)
         {
@@ -63,7 +63,7 @@ namespace NFluent
         /// The chained fluent check.
         /// </param>
         /// <returns>
-        /// A chainable fluent check.
+        /// A check link.
         /// </returns>
         public static IExtendableCheckLink<string, string[]> InThatOrder(this IExtendableCheckLink<string, string[]> chainedCheckLink)
         {

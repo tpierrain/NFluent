@@ -34,7 +34,7 @@ namespace NFluent
         /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentCheckException"/> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
-        /// A new chainable fluent check for struct or enum.
+        /// A new check  link for struct or enum.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
         ICheckLink<IStructCheck<T>> ExecuteCheck(Action action, string negatedExceptionMessage);

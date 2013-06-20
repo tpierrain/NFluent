@@ -36,7 +36,7 @@ namespace NFluent
         /// The chained fluent check.
         /// </param>
         /// <returns>
-        /// A chainable fluent check.
+        /// A check link.
         /// </returns>
         public static IExtendableCheckLink<IEnumerable> Only(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
@@ -51,7 +51,7 @@ namespace NFluent
         /// The chained fluent check.
         /// </param>
         /// <returns>
-        /// A chainable fluent check.
+        /// A check link.
         /// </returns>
         public static IExtendableCheckLink<IEnumerable> Once(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
@@ -96,7 +96,7 @@ namespace NFluent
         /// The chained fluent check.
         /// </param>
         /// <returns>
-        /// A chainable fluent check.
+        /// A check link.
         /// </returns>
         public static IExtendableCheckLink<IEnumerable> InThatOrder(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {

@@ -76,7 +76,7 @@ namespace NFluent
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable fluent check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
         public static ICheckLink<ICheck<object>> IsInstanceOf<T>(this ICheck<object> check)
@@ -98,7 +98,7 @@ namespace NFluent
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable fluent check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
         public static ICheckLink<ICheck<object>> IsNotInstanceOf<T>(this ICheck<object> check)
@@ -120,7 +120,7 @@ namespace NFluent
         /// <typeparam name="T">The Type which is expected to be a base Type of the actual expression.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable fluent check.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The checked expression is not in the inheritance hierarchy of the given type.</exception>
         public static ICheckLink<ICheck<object>> InheritsFrom<T>(this ICheck<object> check)
