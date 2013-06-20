@@ -25,16 +25,16 @@ namespace NFluent
         /// <summary>
         /// Determines whether the specified value is before the other one.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="otherValue">The other value.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="NFluent.FluentAssertionException">The current value is not before the other one.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<IComparable>> IsBefore(this IFluentAssertion<IComparable> fluentAssertion, IComparable otherValue)
+        public static IChainableFluentAssertion<ICheck<IComparable>> IsBefore(this ICheck<IComparable> check, IComparable otherValue)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<IComparable>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<IComparable>;
+            var assertionRunner = check as IFluentAssertionRunner<IComparable>;
+            var runnableAssertion = check as IRunnableAssertion<IComparable>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>

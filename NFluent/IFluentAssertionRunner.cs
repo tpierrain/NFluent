@@ -34,6 +34,6 @@ namespace NFluent
         /// A new chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        IChainableFluentAssertion<IFluentAssertion<T>> ExecuteAssertion(Action action, string negatedExceptionMessage);
+        IChainableFluentAssertion<ICheck<T>> ExecuteAssertion(Action action, string negatedExceptionMessage);
     }
 }

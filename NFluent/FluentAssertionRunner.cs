@@ -41,7 +41,7 @@ namespace NFluent
         /// A new chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        public IChainableFluentAssertion<IFluentAssertion<T>> ExecuteAssertion(Action action, string negatedExceptionMessage)
+        public IChainableFluentAssertion<ICheck<T>> ExecuteAssertion(Action action, string negatedExceptionMessage)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace NFluent
                 }
 
                 // exception was expected
-                return new ChainableFluentAssertion<IFluentAssertion<T>>(this.runnableFluentAssertion);
+                return new ChainableFluentAssertion<ICheck<T>>(this.runnableFluentAssertion);
             }
 
             if (this.runnableFluentAssertion.Negated)
@@ -66,7 +66,7 @@ namespace NFluent
                 throw new FluentAssertionException(negatedExceptionMessage);
             }
 
-            return new ChainableFluentAssertion<IFluentAssertion<T>>(this.runnableFluentAssertion);
+            return new ChainableFluentAssertion<ICheck<T>>(this.runnableFluentAssertion);
         }
     }
 }

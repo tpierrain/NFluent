@@ -83,13 +83,13 @@
     <Compile Include="IChainableFluentAssertion.cs" />
     <Compile Include="IForkableFluentAssertion.cs" />
     <Compile Include="Assertions\LambdaAssertion.cs" />
-    <Compile Include="Assertions\NumberFluentAssertion.cs" />
+    <Compile Include="Assertions\NumberCheck.cs" />
     <Compile Include="FluentAssertionException.cs" />
     <Compile Include="Assertions\ComparableFluentAssertionExtensions.cs" />
     <Compile Include="Assertions\EnumerableFluentAssertionExtensions.cs" />
     <Compile Include="Assertions\ObjectFluentAssertionExtensions.cs" />
-    <Compile Include="FluentAssertion.cs" />
-    <Compile Include="IFluentAssertion.cs" />
+    <Compile Include="CheckImpl.cs" />
+    <Compile Include="ICheck.cs" />
     <Compile Include="Assertions\IntFluentAssertionExtensions.cs" />
     <Compile Include="Helpers\IsInstanceHelper.cs" />
     <Compile Include="Extensions\PropertiesExtensions.cs" />

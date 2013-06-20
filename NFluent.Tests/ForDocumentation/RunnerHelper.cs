@@ -57,8 +57,8 @@ namespace NFluent.Tests.ForDocumentation
                         paramType = paramType.GetGenericArguments()[0];
                     }
 
-                    if (paramType.Name == "IExtendableFluentAssertion`1" || paramType.Name == "IFluentAssertion`1"
-                        || paramType.GetInterface("IFluentAssertion`1") != null
+                    if (paramType.Name == "IExtendableFluentAssertion`1" || paramType.Name == "ICheck`1"
+                        || paramType.GetInterface("ICheck`1") != null
                         || paramType.Name == "IStructFluentAssertion`1")
                     {
                         var testedtype = paramType.GetGenericArguments()[0];
@@ -93,10 +93,10 @@ namespace NFluent.Tests.ForDocumentation
                 }
 
                 // this is an instance method, tested type is part of type defintion
-                Type scanning = method.DeclaringType.GetInterface("IFluentAssertion`1");
+                Type scanning = method.DeclaringType.GetInterface("ICheck`1");
                 if (scanning != null && scanning.IsGenericType)
                 {
-                    // the type implements IFluentAssertion<T>
+                    // the type implements ICheck<T>
                     result.CheckedType = scanning.IsGenericType ? scanning.GetGenericArguments()[0] : null;
 
                     // get other parameters
@@ -108,7 +108,7 @@ namespace NFluent.Tests.ForDocumentation
                 }
                 else
                 {
-                    // type does not implement IFluentAssertion<T>, we try to find a 'Value' property
+                    // type does not implement ICheck<T>, we try to find a 'Value' property
                     var prop = method.DeclaringType.GetProperty("Value", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
                     if (prop != null)
                     {

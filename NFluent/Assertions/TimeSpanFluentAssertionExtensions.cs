@@ -26,15 +26,15 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual duration is less (strictly) than a comparand.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="providedDuration">The duration to compare to.</param>
         /// <param name="unit">The unit in which the duration is expressed.</param>
         /// <returns>A chainable assertion.</returns>
         /// <exception cref="FluentAssertionException">The actual value is not less than the provided duration.</exception>
-         public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsLessThan(this IFluentAssertion<TimeSpan> fluentAssertion, double providedDuration, TimeUnit unit)
+         public static IChainableFluentAssertion<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, double providedDuration, TimeUnit unit)
          {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
+            var assertionRunner = check as IFluentAssertionRunner<TimeSpan>;
+            var runnableAssertion = check as IRunnableAssertion<TimeSpan>;
 
             var testedDuration = new Duration(runnableAssertion.Value, unit);
             var expected = new Duration(providedDuration, unit);
@@ -62,14 +62,14 @@ namespace NFluent
          /// <summary>
          /// Checks that the actual duration is less (strictly) than a comparand.
          /// </summary>
-         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+         /// <param name="check">The fluent assertion to be extended.</param>
          /// <param name="comparand">The value to compare to.</param>
          /// <returns>A chainable assertion.</returns>
          /// <exception cref="FluentAssertionException">The actual value is not less than the provided comparand.</exception>
-         public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsLessThan(this IFluentAssertion<TimeSpan> fluentAssertion, TimeSpan comparand)
+         public static IChainableFluentAssertion<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
-             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
-             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
+             var assertionRunner = check as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = check as IRunnableAssertion<TimeSpan>;
 
              var unit = TimeHelper.DiscoverUnit(comparand);
 
@@ -100,15 +100,15 @@ namespace NFluent
          /// <summary>
          /// Checks that the actual duration is greater (strictly) than a comparand.
          /// </summary>
-         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+         /// <param name="check">The fluent assertion to be extended.</param>
          /// <param name="providedDuration">The duration to compare to.</param>
          /// <param name="unit">The unit in which the duration is expressed.</param>
          /// <returns>A chainable assertion.</returns>
          /// <exception cref="FluentAssertionException">The actual value is not greater than the provided comparand.</exception>
-         public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsGreaterThan(this IFluentAssertion<TimeSpan> fluentAssertion, double providedDuration, TimeUnit unit)
+         public static IChainableFluentAssertion<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, double providedDuration, TimeUnit unit)
          {
-             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
-             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
+             var assertionRunner = check as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = check as IRunnableAssertion<TimeSpan>;
 
              var testedDuration = new Duration(runnableAssertion.Value, unit);
              var expected = new Duration(providedDuration, unit);
@@ -136,14 +136,14 @@ namespace NFluent
          /// <summary>
          /// Checks that the actual duration is greater (strictly) than a comparand.
          /// </summary>
-         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+         /// <param name="check">The fluent assertion to be extended.</param>
          /// <param name="comparand">The value to compare to.</param>
          /// <returns>A chainable assertion.</returns>
          /// <exception cref="FluentAssertionException">The actual value is not greater than the provided comparand.</exception>
-         public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsGreaterThan(this IFluentAssertion<TimeSpan> fluentAssertion, TimeSpan comparand)
+         public static IChainableFluentAssertion<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
-             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
-             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
+             var assertionRunner = check as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = check as IRunnableAssertion<TimeSpan>;
 
              TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
              var testedDuration = new Duration(runnableAssertion.Value, unit);
@@ -173,15 +173,15 @@ namespace NFluent
          /// <summary>
          /// Checks that the actual duration is equal to a target duration.
          /// </summary>
-         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+         /// <param name="check">The fluent assertion to be extended.</param>
          /// <param name="duration">The duration to be compared to.</param>
          /// <param name="unit">The <see cref="TimeUnit" /> in which duration is expressed.</param>
          /// <returns>A chainable assertion.</returns>
          /// <exception cref="FluentAssertionException">The actual value is not equal to the target duration.</exception>
-         public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsEqualTo(this IFluentAssertion<TimeSpan> fluentAssertion, double duration, TimeUnit unit)
+         public static IChainableFluentAssertion<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, double duration, TimeUnit unit)
          {
-             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
-             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
+             var assertionRunner = check as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = check as IRunnableAssertion<TimeSpan>;
 
              var testedDuration = new Duration(runnableAssertion.Value, unit);
              var expected = new Duration(duration, unit);
@@ -210,14 +210,14 @@ namespace NFluent
          /// <summary>
          /// Checks that the actual duration is equal to a target duration.
          /// </summary>
-         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+         /// <param name="check">The fluent assertion to be extended.</param>
          /// <param name="comparand">The duration to be compared to.</param>
          /// <returns>A chainable assertion.</returns>
          /// /// <exception cref="FluentAssertionException">The actual value is not equal to the target duration.</exception>
-         public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsEqualTo(this IFluentAssertion<TimeSpan> fluentAssertion, TimeSpan comparand)
+         public static IChainableFluentAssertion<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
-             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
-             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
+             var assertionRunner = check as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = check as IRunnableAssertion<TimeSpan>;
 
              TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
              var testedDuration = new Duration(runnableAssertion.Value, unit);
@@ -248,15 +248,15 @@ namespace NFluent
          /// Checks that the actual instance is an instance of the given type.
          /// </summary>
          /// <typeparam name="T">The expected Type of the instance.</typeparam>
-         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+         /// <param name="check">The fluent assertion to be extended.</param>
          /// <returns>
          /// A chainable fluent assertion.
          /// </returns>
          /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-         public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsInstanceOf<T>(this IFluentAssertion<TimeSpan> fluentAssertion)
+         public static IChainableFluentAssertion<ICheck<TimeSpan>> IsInstanceOf<T>(this ICheck<TimeSpan> check)
          {
-             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
-             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
+             var assertionRunner = check as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = check as IRunnableAssertion<TimeSpan>;
 
              return assertionRunner.ExecuteAssertion(
                  () =>
@@ -270,15 +270,15 @@ namespace NFluent
          /// Checks that the actual instance is not an instance of the given type.
          /// </summary>
          /// <typeparam name="T">The type not expected for this instance.</typeparam>
-         /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+         /// <param name="check">The fluent assertion to be extended.</param>
          /// <returns>
          /// A chainable fluent assertion.
          /// </returns>
          /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-         public static IChainableFluentAssertion<IFluentAssertion<TimeSpan>> IsNotInstanceOf<T>(this IFluentAssertion<TimeSpan> fluentAssertion)
+         public static IChainableFluentAssertion<ICheck<TimeSpan>> IsNotInstanceOf<T>(this ICheck<TimeSpan> check)
          {
-             var assertionRunner = fluentAssertion as IFluentAssertionRunner<TimeSpan>;
-             var runnableAssertion = fluentAssertion as IRunnableAssertion<TimeSpan>;
+             var assertionRunner = check as IFluentAssertionRunner<TimeSpan>;
+             var runnableAssertion = check as IRunnableAssertion<TimeSpan>;
 
              return assertionRunner.ExecuteAssertion(
                  () =>

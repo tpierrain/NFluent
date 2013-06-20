@@ -4,10 +4,10 @@
 
     public static class MovieFluentAssertionExtensions
     {
-        public static IChainableFluentAssertion<IFluentAssertion<Movie>> IsDirectedBy(this IFluentAssertion<Movie> fluentAssertion, string directorFullName)
+        public static IChainableFluentAssertion<ICheck<Movie>> IsDirectedBy(this ICheck<Movie> check, string directorFullName)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<Movie>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<Movie>;
+            var assertionRunner = check as IFluentAssertionRunner<Movie>;
+            var runnableAssertion = check as IRunnableAssertion<Movie>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -20,10 +20,10 @@
                 "Effectively...");
         }
 
-        public static IChainableFluentAssertion<IFluentAssertion<Movie>> IsAFGreatMovie(this IFluentAssertion<Movie> fluentAssertion)
+        public static IChainableFluentAssertion<ICheck<Movie>> IsAFGreatMovie(this ICheck<Movie> check)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<Movie>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<Movie>;
+            var assertionRunner = check as IFluentAssertionRunner<Movie>;
+            var runnableAssertion = check as IRunnableAssertion<Movie>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>

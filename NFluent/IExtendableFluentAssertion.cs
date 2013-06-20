@@ -24,7 +24,7 @@ namespace NFluent
     /// <typeparam name="T">
     /// Type managed by this extension.
     /// </typeparam>
-    public interface IExtendableFluentAssertion<out T> : IChainableFluentAssertion<IFluentAssertion<T>>
+    public interface IExtendableFluentAssertion<out T> : IChainableFluentAssertion<ICheck<T>>
     {
         /// <summary>
         /// Gets the initial list that was used in Contains.
@@ -40,7 +40,7 @@ namespace NFluent
     /// </summary>
     /// <typeparam name="T">Type managed by this extension.</typeparam>
     /// <typeparam name="U">Type of the reference comparand.</typeparam>
-    public interface IExtendableFluentAssertion<out T, out U> : IChainableFluentAssertion<IFluentAssertion<T>>
+    public interface IExtendableFluentAssertion<out T, out U> : IChainableFluentAssertion<ICheck<T>>
     {
         /// <summary>
         /// Gets the initial list that was used in Contains.

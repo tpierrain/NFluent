@@ -28,7 +28,7 @@ namespace NFluent
     /// Type managed by this extension.
     /// </typeparam>
     /// <typeparam name="U">Type of the reference comparand.</typeparam>
-    internal class ExtendableFluentAssertion<T, U> : ChainableFluentAssertion<IFluentAssertion<T>>, IExtendableFluentAssertion<T, U>
+    internal class ExtendableFluentAssertion<T, U> : ChainableFluentAssertion<ICheck<T>>, IExtendableFluentAssertion<T, U>
     {
         private readonly U originalComparand;
 

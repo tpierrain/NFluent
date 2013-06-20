@@ -38,31 +38,31 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<long>> IsEqualTo(this IFluentAssertion<long> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<ICheck<long>> IsEqualTo(this ICheck<long> check, object expected)
         {
             // TODO transform NumberFluentAssertion<T> into a static class with functions only?
-            var numberAssertionStrategy = new NumberFluentAssertion<long>(fluentAssertion);
+            var numberAssertionStrategy = new NumberCheck<long>(check);
             return numberAssertionStrategy.IsEqualTo(expected);
         }
 
         /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<long>> IsNotEqualTo(this IFluentAssertion<long> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<ICheck<long>> IsNotEqualTo(this ICheck<long> check, object expected)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<long>(fluentAssertion);
+            var numberAssertionStrategy = new NumberCheck<long>(check);
             return numberAssertionStrategy.IsNotEqualTo(expected);
         }
 
@@ -70,14 +70,14 @@ namespace NFluent
         /// Checks that the actual instance is an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<long>> IsInstanceOf<T>(this IFluentAssertion<long> fluentAssertion)
+        public static IChainableFluentAssertion<ICheck<long>> IsInstanceOf<T>(this ICheck<long> check)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<long>(fluentAssertion);
+            var numberAssertionStrategy = new NumberCheck<long>(check);
             return numberAssertionStrategy.IsInstanceOf<T>();
         }
 
@@ -85,15 +85,15 @@ namespace NFluent
         /// Checks that the actual instance is an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<long?>> IsInstanceOf<T>(this IFluentAssertion<long?> fluentAssertion)
+        public static IChainableFluentAssertion<ICheck<long?>> IsInstanceOf<T>(this ICheck<long?> check)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<long?>;
-            IRunnableAssertion<long?> runnableAssertion = fluentAssertion as IRunnableAssertion<long?>;
+            var assertionRunner = check as IFluentAssertionRunner<long?>;
+            IRunnableAssertion<long?> runnableAssertion = check as IRunnableAssertion<long?>;
 
             assertionRunner.ExecuteAssertion(
                 () =>
@@ -102,48 +102,48 @@ namespace NFluent
                 },
                 IsInstanceHelper.BuildErrorMessageForNullable(typeof(Nullable<long>), typeof(T), runnableAssertion.Value, true));
 
-            return new ChainableFluentAssertion<IFluentAssertion<long?>>(fluentAssertion);
+            return new ChainableFluentAssertion<ICheck<long?>>(check);
         }
 
         /// <summary>
         /// Checks that the actual instance is not an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<long>> IsNotInstanceOf<T>(this IFluentAssertion<long> fluentAssertion)
+        public static IChainableFluentAssertion<ICheck<long>> IsNotInstanceOf<T>(this ICheck<long> check)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<long>(fluentAssertion);
+            var numberAssertionStrategy = new NumberCheck<long>(check);
             return numberAssertionStrategy.IsNotInstanceOf<T>();
         }
 
         /// <summary>
         /// Checks that the actual value is equal to zero.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<long>> IsZero(this IFluentAssertion<long> fluentAssertion)
+        public static IChainableFluentAssertion<ICheck<long>> IsZero(this ICheck<long> check)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<long>(fluentAssertion);
+            var numberAssertionStrategy = new NumberCheck<long>(check);
             return numberAssertionStrategy.IsZero();
         }
 
         /// <summary>
         /// Checks that the actual nullable value has a value and thus, is not null.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <returns>A chainable fluent assertion.</returns>
         /// <exception cref="FluentAssertionException">The value is null.</exception>
-        public static IChainableNullableFluentAssertionOrNumberFluentAssertion<long> HasAValue(this IFluentAssertion<long?> fluentAssertion)
+        public static IChainableNullableFluentAssertionOrNumberFluentAssertion<long> HasAValue(this ICheck<long?> check)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<long?>;
-            IRunnableAssertion<long?> runnableAssertion = fluentAssertion as IRunnableAssertion<long?>;
+            var assertionRunner = check as IFluentAssertionRunner<long?>;
+            IRunnableAssertion<long?> runnableAssertion = check as IRunnableAssertion<long?>;
 
             assertionRunner.ExecuteAssertion(
                 () =>
@@ -155,19 +155,19 @@ namespace NFluent
                 },
                 string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", runnableAssertion.Value.ToStringProperlyFormated()));
 
-            return new ChainableNullableFluentAssertionOrNumberFluentAssertion<long>(fluentAssertion);
+            return new ChainableNullableFluentAssertionOrNumberFluentAssertion<long>(check);
         }
 
         /// <summary>
         /// Checks that the actual nullable value has no value and thus, is null. 
         /// Note: this method does not return a chainable assertion since the nullable is null.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <exception cref="FluentAssertionException">The value is not null.</exception>
-        public static void HasNoValue(this IFluentAssertion<long?> fluentAssertion)
+        public static void HasNoValue(this ICheck<long?> check)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<long?>;
-            IRunnableAssertion<long?> runnableAssertion = fluentAssertion as IRunnableAssertion<long?>;
+            var assertionRunner = check as IFluentAssertionRunner<long?>;
+            IRunnableAssertion<long?> runnableAssertion = check as IRunnableAssertion<long?>;
 
             assertionRunner.ExecuteAssertion(
                 () =>
@@ -183,35 +183,35 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is NOT equal to zero.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <returns>
         ///   <returns>A chainable assertion.</returns>
         /// </returns>
         /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<long>> IsNotZero(this IFluentAssertion<long> fluentAssertion)
+        public static IChainableFluentAssertion<ICheck<long>> IsNotZero(this ICheck<long> check)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<long>(fluentAssertion);
+            var numberAssertionStrategy = new NumberCheck<long>(check);
             return numberAssertionStrategy.IsNotZero();
         }
 
         /// <summary>
         /// Checks that the actual value is strictly positive.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<long>> IsPositive(this IFluentAssertion<long> fluentAssertion)
+        public static IChainableFluentAssertion<ICheck<long>> IsPositive(this ICheck<long> check)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<long>(fluentAssertion);
+            var numberAssertionStrategy = new NumberCheck<long>(check);
             return numberAssertionStrategy.IsPositive();
         }
 
         /// <summary>
         /// Checks that the actual value is less than an operand.
         /// </summary>
-        /// <param name="fluentAssertion">
+        /// <param name="check">
         /// The Fluent assertion to be extended.
         /// </param>
         /// <param name="comparand">
@@ -223,16 +223,16 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">
         /// The value is not less than the comparand.
         /// </exception>
-        public static IChainableFluentAssertion<IFluentAssertion<long>> IsLessThan(this IFluentAssertion<long> fluentAssertion, long comparand)
+        public static IChainableFluentAssertion<ICheck<long>> IsLessThan(this ICheck<long> check, long comparand)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<long>(fluentAssertion);
+            var numberAssertionStrategy = new NumberCheck<long>(check);
             return numberAssertionStrategy.IsLessThan(comparand);
         }
 
         /// <summary>
         /// Checks that the actual value is more than an operand.
         /// </summary>
-        /// <param name="fluentAssertion">
+        /// <param name="check">
         /// The Fluent assertion to be extended.
         /// </param>
         /// <param name="comparand">
@@ -244,9 +244,9 @@ namespace NFluent
         /// <exception cref="FluentAssertionException">
         /// The value is not less than the comparand.
         /// </exception>
-        public static IChainableFluentAssertion<IFluentAssertion<long>> IsGreaterThan(this IFluentAssertion<long> fluentAssertion, long comparand)
+        public static IChainableFluentAssertion<ICheck<long>> IsGreaterThan(this ICheck<long> check, long comparand)
         {
-            var numberAssertionStrategy = new NumberFluentAssertion<long>(fluentAssertion);
+            var numberAssertionStrategy = new NumberCheck<long>(check);
             return numberAssertionStrategy.IsGreaterThan(comparand);
         }
     }

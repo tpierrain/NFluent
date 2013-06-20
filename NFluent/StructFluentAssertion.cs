@@ -54,7 +54,7 @@ namespace NFluent
         public T Value { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="FluentAssertion{T}" /> should be negated or not.
+        /// Gets a value indicating whether this <see cref="CheckImpl{T}" /> should be negated or not.
         /// </summary>
         /// <value>
         ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.

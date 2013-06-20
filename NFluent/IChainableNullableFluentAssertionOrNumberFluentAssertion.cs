@@ -29,15 +29,15 @@ namespace NFluent
         /// The new fluent assertion instance dedicated to the nullable, which has been chained to the previous one.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        IFluentAssertion<N?> And { get; }
+        ICheck<N?> And { get; }
 
         /// <summary>
-        /// Chains a new <see cref="IFluentAssertion{N}"/> instance to the current assertion.
+        /// Chains a new <see cref="ICheck{T}"/> instance to the current assertion.
         /// </summary>
         /// <value>
         /// The new fluent assertion instance dedicated to the nullable Value, which has been chained to the previous one.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        IFluentAssertion<N> Which { get; }
+        ICheck<N> Which { get; }
     }
 }

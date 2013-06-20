@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="FluentAssertion.cs" company="">
+// // <copyright file="CheckImpl.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -23,24 +23,24 @@ namespace NFluent
     /// Provides assertion methods to be executed on a given value.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    internal class FluentAssertion<T> : IFluentAssertion<T>, IFluentAssertionRunner<T>, IRunnableAssertion<T>
+    internal class CheckImpl<T> : ICheck<T>, IFluentAssertionRunner<T>, IRunnableAssertion<T>
     {
         private readonly FluentAssertionRunner<T> fluentAssertionRunner;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FluentAssertion{T}" /> class.
+        /// Initializes a new instance of the <see cref="CheckImpl{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
-        public FluentAssertion(T value) : this(value, false)
+        public CheckImpl(T value) : this(value, false)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FluentAssertion{T}" /> class.
+        /// Initializes a new instance of the <see cref="CheckImpl{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="negated">A boolean value indicating whether the assertion should be negated or not.</param>
-        private FluentAssertion(T value, bool negated)
+        private CheckImpl(T value, bool negated)
         {
             this.Value = value;
             this.Negated = negated;
@@ -56,7 +56,7 @@ namespace NFluent
         public T Value { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="FluentAssertion{T}" /> should be negated or not.
+        /// Gets a value indicating whether this <see cref="CheckImpl{T}" /> should be negated or not.
         /// </summary>
         /// <value>
         ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
@@ -70,11 +70,11 @@ namespace NFluent
         /// The next assertion negated.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public IFluentAssertion<T> Not 
+        public ICheck<T> Not 
         { 
             get
             {
-                return new FluentAssertion<T>(this.Value, true);
+                return new CheckImpl<T>(this.Value, true);
             }
         }
 
@@ -87,7 +87,7 @@ namespace NFluent
         /// A new chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        IChainableFluentAssertion<IFluentAssertion<T>> IFluentAssertionRunner<T>.ExecuteAssertion(Action action, string negatedExceptionMessage)
+        IChainableFluentAssertion<ICheck<T>> IFluentAssertionRunner<T>.ExecuteAssertion(Action action, string negatedExceptionMessage)
         {
             return this.fluentAssertionRunner.ExecuteAssertion(action, negatedExceptionMessage);
         }
@@ -104,7 +104,7 @@ namespace NFluent
         /// </remarks>
         object IForkableFluentAssertion.ForkInstance()
         {
-            return new FluentAssertion<T>(this.Value);
+            return new CheckImpl<T>(this.Value);
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IFluentAssertion.cs" company="">
+// // <copyright file="ICheck.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN, Rui CARVALHO
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ namespace NFluent
     /// Provides assertion methods to be executed on a given value.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IFluentAssertion<out T> : IForkableFluentAssertion, INegateableFluentAssertion<IFluentAssertion<T>>
+    public interface ICheck<out T> : IForkableFluentAssertion, INegateableFluentAssertion<ICheck<T>>
     {
         /// <summary>
         /// Checks whether the specified <see cref="System.Object" /> is equal to this instance or not.

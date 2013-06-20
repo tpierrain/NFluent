@@ -30,16 +30,16 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<bool>> IsEqualTo(this IFluentAssertion<bool> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<ICheck<bool>> IsEqualTo(this ICheck<bool> check, object expected)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<bool>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<bool>;
+            var assertionRunner = check as IFluentAssertionRunner<bool>;
+            var runnableAssertion = check as IRunnableAssertion<bool>;
             
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -52,16 +52,16 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="expected">The expected.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<bool>> IsNotEqualTo(this IFluentAssertion<bool> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<ICheck<bool>> IsNotEqualTo(this ICheck<bool> check, object expected)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<bool>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<bool>;
+            var assertionRunner = check as IFluentAssertionRunner<bool>;
+            var runnableAssertion = check as IRunnableAssertion<bool>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -74,15 +74,15 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is true.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is not true.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<bool>> IsTrue(this IFluentAssertion<bool> fluentAssertion)
+        public static IChainableFluentAssertion<ICheck<bool>> IsTrue(this ICheck<bool> check)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<bool>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<bool>;
+            var assertionRunner = check as IFluentAssertionRunner<bool>;
+            var runnableAssertion = check as IRunnableAssertion<bool>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -98,15 +98,15 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is false.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is not false.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<bool>> IsFalse(this IFluentAssertion<bool> fluentAssertion)
+        public static IChainableFluentAssertion<ICheck<bool>> IsFalse(this ICheck<bool> check)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<bool>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<bool>;
+            var assertionRunner = check as IFluentAssertionRunner<bool>;
+            var runnableAssertion = check as IRunnableAssertion<bool>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -123,15 +123,15 @@ namespace NFluent
         /// Checks that the actual instance is an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<bool>> IsInstanceOf<T>(this IFluentAssertion<bool> fluentAssertion)
+        public static IChainableFluentAssertion<ICheck<bool>> IsInstanceOf<T>(this ICheck<bool> check)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<bool>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<bool>;
+            var assertionRunner = check as IFluentAssertionRunner<bool>;
+            var runnableAssertion = check as IRunnableAssertion<bool>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -145,15 +145,15 @@ namespace NFluent
         /// Checks that the actual instance is not an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<bool>> IsNotInstanceOf<T>(this IFluentAssertion<bool> fluentAssertion)
+        public static IChainableFluentAssertion<ICheck<bool>> IsNotInstanceOf<T>(this ICheck<bool> check)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<bool>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<bool>;
+            var assertionRunner = check as IFluentAssertionRunner<bool>;
+            var runnableAssertion = check as IRunnableAssertion<bool>;
             
             var expectedType = typeof(T);
 

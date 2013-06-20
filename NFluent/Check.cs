@@ -18,36 +18,36 @@ namespace NFluent
     using System.ComponentModel;
 
     /// <summary>
-    /// Provides <see cref="IFluentAssertion{T}"/> instances to be used in order to make 
+    /// Provides <see cref="ICheck{T}"/> instances to be used in order to make 
     /// check(s) on the provided value.
     /// </summary>
     public static class Check
     {
         /// <summary>
-        /// Returns a <see cref="IFluentAssertion{T}" /> instance that will provide assertion methods to be executed on a given value.
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide assertion methods to be executed on a given value.
         /// </summary>
         /// <typeparam name="T">Type of the value to be tested.</typeparam>
         /// <param name="value">The value to be tested.</param>
         /// <returns>
-        /// A <see cref="IFluentAssertion{T}" /> instance to use in order to assert things on the given value.
+        /// A <see cref="ICheck{T}" /> instance to use in order to assert things on the given value.
         /// </returns>
         /// <remarks>
-        /// Every method of the returned <see cref="IFluentAssertion{T}" /> instance will throw a <see cref="FluentAssertionException" /> when failing.
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentAssertionException" /> when failing.
         /// </remarks>
-        public static IFluentAssertion<T> That<T>(T value)
+        public static ICheck<T> That<T>(T value)
         {
-            return new FluentAssertion<T>(value);
+            return new CheckImpl<T>(value);
         }
 
         /// <summary>
-        /// Returns a <see cref="IFluentAssertion{T}" /> instance that will provide assertion methods to be executed on a given value.
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide assertion methods to be executed on a given value.
         /// </summary>
         /// <param name="value">The value to be tested.</param>
         /// <returns>
         /// A <see cref="ILambdaAssertion" /> instance to use in order to assert things on the given value.
         /// </returns>
         /// <remarks>
-        /// Every method of the returned <see cref="IFluentAssertion{T}" /> instance will throw a <see cref="FluentAssertionException" /> when failing.
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentAssertionException" /> when failing.
         /// </remarks>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static ILambdaAssertion That(Action value)

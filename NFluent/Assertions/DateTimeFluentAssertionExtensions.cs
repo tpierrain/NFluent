@@ -29,16 +29,16 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualTo(this IFluentAssertion<DateTime> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsEqualTo(this ICheck<DateTime> check, object expected)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -51,16 +51,16 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="expected">The expected.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsNotEqualTo(this IFluentAssertion<DateTime> fluentAssertion, object expected)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsNotEqualTo(this ICheck<DateTime> check, object expected)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -78,15 +78,15 @@ namespace NFluent
         /// Checks that the actual instance is an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsInstanceOf<T>(this IFluentAssertion<DateTime> fluentAssertion)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsInstanceOf<T>(this ICheck<DateTime> check)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -100,15 +100,15 @@ namespace NFluent
         /// Checks that the actual instance is not an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <returns>
         /// A chainable fluent assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsNotInstanceOf<T>(this IFluentAssertion<DateTime> fluentAssertion)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsNotInstanceOf<T>(this ICheck<DateTime> check)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             var expectedType = typeof(T);
             return assertionRunner.ExecuteAssertion(
@@ -124,16 +124,16 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual DateTime is strictly before the given one.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="other">The other DateTime.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual date time is not before the given one.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsBefore(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsBefore(this ICheck<DateTime> check, DateTime other)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -149,16 +149,16 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual DateTime is before or equals to the given one.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="other">The other DateTime.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual date time is not before or equals to the given one.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsBeforeOrEqualTo(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsBeforeOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -174,16 +174,16 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual DateTime is strictly after the given one.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="other">The other DateTime.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual date time is not after the given one.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsAfter(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsAfter(this ICheck<DateTime> check, DateTime other)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -199,16 +199,16 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual DateTime is after or equals to the given one.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="other">The other DateTime.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual date time is not after or equals to the given one.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsAfterOrEqualTo(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsAfterOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -238,7 +238,7 @@ namespace NFluent
         ///     assertThat(dateTimeA).isEqualToIgnoringMillis(dateTimeB);
         /// </code>
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="other">The other DateTime.</param>
         /// <returns>
         /// A chainable assertion.
@@ -249,10 +249,10 @@ namespace NFluent
         /// 2000-01-01T00:00:<b>01.000</b> and 2000-01-01T00:00:<b>00.999</b>.
         /// Assertion fails as second fields differ even if time difference is only 1 millis.
         /// </remarks>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualToIgnoringMillis(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsEqualToIgnoringMillis(this ICheck<DateTime> check, DateTime other)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -285,16 +285,16 @@ namespace NFluent
         ///     Check.That(dateTimeA).IsEqualToIgnoringSeconds(dateTimeB);
         /// </code>
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="other">The other DateTime.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual date time is not equal to the given one with second and millisecond fields ignored.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualToIgnoringSeconds(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsEqualToIgnoringSeconds(this ICheck<DateTime> check, DateTime other)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -327,16 +327,16 @@ namespace NFluent
         ///     Check.That(dateTimeA).IsEqualToIgnoringMinutes(dateTimeB);
         /// </code>
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="other">The other DateTime.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual date time is not equal to the given one with minute, second and millisecond fields ignored.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualToIgnoringMinutes(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsEqualToIgnoringMinutes(this ICheck<DateTime> check, DateTime other)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -369,16 +369,16 @@ namespace NFluent
         ///     CheckThat(dateTimeA).IsEqualToIgnoringHours(dateTimeB);
         /// </code>
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="other">The other DateTime.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual date time is not equal to the given one with hour, minute, second and millisecond fields ignored.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsEqualToIgnoringHours(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsEqualToIgnoringHours(this ICheck<DateTime> check, DateTime other)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -394,16 +394,16 @@ namespace NFluent
         /// <summary>
         /// Checks that actual and given DateTime have same year.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="other">The other DateTime.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual date time year is not equal to the given year.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsInSameYearAs(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsInSameYearAs(this ICheck<DateTime> check, DateTime other)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -419,16 +419,16 @@ namespace NFluent
         /// <summary>
         /// Checks that actual and given DateTime have same month, whatever the year.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="other">The other DateTime.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual date time month is not equal to the given month, whatever the year.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsInSameMonthAs(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsInSameMonthAs(this ICheck<DateTime> check, DateTime other)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
@@ -444,16 +444,16 @@ namespace NFluent
         /// <summary>
         /// Checks that actual and given DateTime have same day, whatever the year or the month.
         /// </summary>
-        /// <param name="fluentAssertion">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent assertion to be extended.</param>
         /// <param name="other">The other DateTime.</param>
         /// <returns>
         /// A chainable assertion.
         /// </returns>
         /// <exception cref="FluentAssertionException">The actual date time day is not equal to the given day, whatever the year or the month.</exception>
-        public static IChainableFluentAssertion<IFluentAssertion<DateTime>> IsInSameDayAs(this IFluentAssertion<DateTime> fluentAssertion, DateTime other)
+        public static IChainableFluentAssertion<ICheck<DateTime>> IsInSameDayAs(this ICheck<DateTime> check, DateTime other)
         {
-            var assertionRunner = fluentAssertion as IFluentAssertionRunner<DateTime>;
-            var runnableAssertion = fluentAssertion as IRunnableAssertion<DateTime>;
+            var assertionRunner = check as IFluentAssertionRunner<DateTime>;
+            var runnableAssertion = check as IRunnableAssertion<DateTime>;
 
             return assertionRunner.ExecuteAssertion(
                 () =>
