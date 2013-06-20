@@ -4,4 +4,5 @@ New features:
 --------------
 Changes:
 * New error message structure that clearly states what is wrong.
-* Now, IsOnlyMadeOf fails if the checked value is empty.
+* Renames the ContainsOnly() method to IsOnlyMadeOf()
+* Replaces IFluentAssertion by ICheck; and IChainableFluentAssertion by ICheckLink so that it improves the IntelliSense experience.
