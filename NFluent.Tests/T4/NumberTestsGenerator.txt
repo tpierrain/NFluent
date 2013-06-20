@@ -1,1 +1,52 @@
-ErrorGeneratingOutput
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Generated helper templates
+// Generated items
+// NFluent\NFluent.Tests\T4\ShortSignedNumberRelatedTests.cs
+// NFluent\NFluent.Tests\T4\LongSignedNumberRelatedTests.cs
+// NFluent\NFluent.Tests\T4\FloatSignedNumberRelatedTests.cs
+// NFluent\NFluent.Tests\T4\DoubleSignedNumberRelatedTests.cs
+// NFluent\NFluent.Tests\T4\DecimalSignedNumberRelatedTests.cs
+// NFluent\NFluent.Tests\T4\UshortRelatedTests.cs
+// NFluent\NFluent.Tests\T4\UlongRelatedTests.cs
+// NFluent\NFluent.Tests\T4\UintRelatedTests.cs
+// NFluent\NFluent.Tests\T4\ByteRelatedTests.cs
+// NFluent\NFluent.Tests\T4\ShortRelatedTests.cs
+// NFluent\NFluent.Tests\T4\LongRelatedTests.cs
+// NFluent\NFluent.Tests\T4\FloatRelatedTests.cs
+// NFluent\NFluent.Tests\T4\DoubleRelatedTests.cs
+// NFluent\NFluent.Tests\T4\DecimalRelatedTests.cs
