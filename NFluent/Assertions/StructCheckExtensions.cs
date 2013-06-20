@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="StructFluentAssertionExtensions.cs" company="">
+// // <copyright file="StructCheckExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ namespace NFluent
     /// <summary>
     /// Provides check methods to be executed on an struct instance.
     /// </summary>
-    public static class StructFluentAssertionExtensions
+    public static class StructCheckExtensions
     {
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
@@ -31,9 +31,9 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static IChainableCheck<IStructCheck<T>> IsEqualTo<T>(this IStructCheck<T> check, T expected) where T : struct
+        public static ICheckLink<IStructCheck<T>> IsEqualTo<T>(this IStructCheck<T> check, T expected) where T : struct
         {
-            var checkRunner = check as IStructFluentAssertionRunner<T>;
+            var checkRunner = check as IStructCheckRunner<T>;
             var runnableCheck = check as IRunnableCheck<T>;
 
             return checkRunner.ExecuteAssertion(
@@ -54,9 +54,9 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static IChainableCheck<IStructCheck<T>> IsNotEqualTo<T>(this IStructCheck<T> check, object expected) where T : struct
+        public static ICheckLink<IStructCheck<T>> IsNotEqualTo<T>(this IStructCheck<T> check, object expected) where T : struct
         {
-            var checkRunner = check as IStructFluentAssertionRunner<T>;
+            var checkRunner = check as IStructCheckRunner<T>;
             var runnableCheck = check as IRunnableCheck<T>;
 
             return checkRunner.ExecuteAssertion(

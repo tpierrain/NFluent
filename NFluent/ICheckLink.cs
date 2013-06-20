@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IChainableCheck.cs" company="">
+// // <copyright file="ICheckLink.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ namespace NFluent
     /// Provides a way to chain two <see cref="IForkableCheck"/> instances. 
     /// </summary>
     /// <typeparam name="T">Type of the <see cref="IForkableCheck"/> to be chained.</typeparam>
-    public interface IChainableCheck<out T> where T : IForkableCheck
+    public interface ICheckLink<out T> where T : IForkableCheck
     {
         /// <summary>
         /// Chains a new fluent check to the current one.

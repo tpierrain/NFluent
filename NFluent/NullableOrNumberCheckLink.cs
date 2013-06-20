@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ChainableNullableFluentAssertionOrNumberFluentAssertion.cs" company="">
+// // <copyright file="NullableOrNumberCheckLink.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -20,15 +20,15 @@ namespace NFluent
     /// Provides a way to chain two <see cref="IForkableCheck"/> instances or to chain.
     /// </summary>
     /// <typeparam name="N">Number type of the checked nullable.</typeparam>
-    internal class ChainableNullableFluentAssertionOrNumberFluentAssertion<N> : IChainableNullableFluentAssertionOrNumberFluentAssertion<N> where N : struct
+    internal class NullableOrNumberCheckLink<N> : INullableOrNumberCheckLink<N> where N : struct
     {
         private readonly ICheck<N?> previousCheck;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChainableNullableFluentAssertionOrNumberFluentAssertion{N}" /> class.
+        /// Initializes a new instance of the <see cref="NullableOrNumberCheckLink{N}" /> class.
         /// </summary>
         /// <param name="previousCheck">The previous fluent check.</param>
-        public ChainableNullableFluentAssertionOrNumberFluentAssertion(ICheck<N?> previousCheck)
+        public NullableOrNumberCheckLink(ICheck<N?> previousCheck)
         {
             this.previousCheck = previousCheck;
         }

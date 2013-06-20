@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExtendableCheck.cs" company="">
+// <copyright file="ExtendableCheckLink.cs" company="">
 //   Copyright 2013 Cyrille DUPUYDAUBY
 //   //   Licensed under the Apache License, Version 2.0 (the "License");
 //   //   you may not use this file except in compliance with the License.
@@ -28,12 +28,12 @@ namespace NFluent
     /// Type managed by this extension.
     /// </typeparam>
     /// <typeparam name="U">Type of the reference comparand.</typeparam>
-    internal class ExtendableCheck<T, U> : ChainableCheck<ICheck<T>>, IExtendableCheck<T, U>
+    internal class ExtendableCheckLink<T, U> : CheckLink<ICheck<T>>, IExtendableCheckLink<T, U>
     {
         private readonly U originalComparand;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtendableCheck{T,U}"/> class. 
+        /// Initializes a new instance of the <see cref="ExtendableCheckLink{T,U}"/> class. 
         /// </summary>
         /// <param name="previousCheck">
         /// The previous fluent check.
@@ -41,7 +41,7 @@ namespace NFluent
         /// <param name="originalComparand">
         /// Comparand used for the first check.
         /// </param>
-        public ExtendableCheck(IForkableCheck previousCheck, U originalComparand)
+        public ExtendableCheckLink(IForkableCheck previousCheck, U originalComparand)
             : base(previousCheck)
         {
             this.originalComparand = originalComparand;
@@ -72,10 +72,10 @@ namespace NFluent
     /// Type managed by this extension.
     /// </typeparam>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    internal class ExtendableCheck<T> : ExtendableCheck<T, T>, IExtendableCheck<T>
+    internal class ExtendableCheckLink<T> : ExtendableCheckLink<T, T>, IExtendableCheckLink<T>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtendableCheck{T}"/> class. 
+        /// Initializes a new instance of the <see cref="ExtendableCheckLink{T}"/> class. 
         /// </summary>
         /// <param name="previousCheck">
         /// The previous fluent check.
@@ -83,7 +83,7 @@ namespace NFluent
         /// <param name="originalComparand">
         /// Comparand used for the first check.
         /// </param>
-        public ExtendableCheck(IForkableCheck previousCheck, T originalComparand)
+        public ExtendableCheckLink(IForkableCheck previousCheck, T originalComparand)
             : base(previousCheck, originalComparand)
         {
         }

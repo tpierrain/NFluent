@@ -36,12 +36,12 @@
 
 // Generated helper templates
 // Generated items
-// NFluent\NFluent\T4\UshortFluentAssertionExtensions.cs
-// NFluent\NFluent\T4\UlongFluentAssertionExtensions.cs
-// NFluent\NFluent\T4\UintFluentAssertionExtensions.cs
-// NFluent\NFluent\T4\ShortFluentAssertionExtensions.cs
-// NFluent\NFluent\T4\LongFluentAssertionExtensions.cs
-// NFluent\NFluent\T4\FloatFluentAssertionExtensions.cs
-// NFluent\NFluent\T4\DoubleFluentAssertionExtensions.cs
-// NFluent\NFluent\T4\DecimalFluentAssertionExtensions.cs
-// NFluent\NFluent\T4\ByteFluentAssertionExtensions.cs
+// NFluent\NFluent\T4\UshortCheckExtensions.cs
+// NFluent\NFluent\T4\UlongCheckExtensions.cs
+// NFluent\NFluent\T4\UintCheckExtensions.cs
+// NFluent\NFluent\T4\ShortCheckExtensions.cs
+// NFluent\NFluent\T4\LongCheckExtensions.cs
+// NFluent\NFluent\T4\FloatCheckExtensions.cs
+// NFluent\NFluent\T4\DoubleCheckExtensions.cs
+// NFluent\NFluent\T4\DecimalCheckExtensions.cs
+// NFluent\NFluent\T4\ByteCheckExtensions.cs

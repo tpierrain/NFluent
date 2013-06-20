@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IChainableNullableFluentAssertionOrNumberFluentAssertion.cs" company="">
+// // <copyright file="INullableOrNumberCheckLink.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ namespace NFluent
     /// Provides a way to chain two <see cref="IForkableCheck"/> instances or to chain.
     /// </summary>
     /// <typeparam name="N">Number type of the checked nullable.</typeparam>
-    public interface IChainableNullableFluentAssertionOrNumberFluentAssertion<N> where N : struct
+    public interface INullableOrNumberCheckLink<N> where N : struct
     {
         /// <summary>
         /// Chains a new fluent check on the current one for the nullable value.

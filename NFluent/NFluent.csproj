@@ -49,79 +49,79 @@
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="Assertions\BooleanFluentAssertionExtensions.cs">
+    <Compile Include="Assertions\BooleanCheckExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Assertions\StringFluentSyntaxExtension.cs" />
     <Compile Include="Helpers\Duration.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FluentMessage.cs" />
-    <Compile Include="IExtendableCheck.cs" />
-    <Compile Include="Assertions\StructFluentAssertionExtensions.cs" />
-    <Compile Include="ChainableNullableFluentAssertionOrNumberFluentAssertion.cs" />
+    <Compile Include="IExtendableCheckLink.cs" />
+    <Compile Include="Assertions\StructCheckExtensions.cs" />
+    <Compile Include="NullableOrNumberCheckLink.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="IChainableNullableFluentAssertionOrNumberFluentAssertion.cs" />
+    <Compile Include="INullableOrNumberCheckLink.cs" />
     <Compile Include="INegated.cs" />
     <Compile Include="IRunnableCheck.cs" />
-    <Compile Include="IStructFluentAssertionRunner.cs" />
+    <Compile Include="IStructCheckRunner.cs" />
     <Compile Include="StructFluentCheck.cs" />
     <Compile Include="CheckRunner.cs" />
     <Compile Include="ICheckRunner.cs" />
     <Compile Include="INegateableCheck.cs" />
     <Compile Include="IStructCheck.cs" />
-    <Compile Include="Assertions\ExtendableCheck.cs" />
+    <Compile Include="Assertions\ExtendableCheckLink.cs" />
     <Compile Include="Assertions\EnumerableFluentSyntaxExtension.cs" />
-    <Compile Include="ILambdaAssertion.cs" />
-    <Compile Include="Assertions\TimeSpanFluentAssertionExtensions.cs" />
-    <Compile Include="ChainableCheck.cs" />
+    <Compile Include="ILambdaCheck.cs" />
+    <Compile Include="Assertions\TimeSpanCheckExtensions.cs" />
+    <Compile Include="CheckLink.cs" />
     <Compile Include="Check.cs" />
-    <Compile Include="Assertions\DateTimeFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\DateTimeCheckExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Helpers\EqualityHelper.cs" />
     <Compile Include="Extensions\ExtensionsCommonHelpers.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
-    <Compile Include="IChainableCheck.cs" />
+    <Compile Include="ICheckLink.cs" />
     <Compile Include="IForkableCheck.cs" />
-    <Compile Include="Assertions\LambdaAssertion.cs" />
+    <Compile Include="Assertions\LambdaCheck.cs" />
     <Compile Include="Assertions\NumberCheck.cs" />
     <Compile Include="FluentCheckException.cs" />
-    <Compile Include="Assertions\ComparableFluentAssertionExtensions.cs" />
-    <Compile Include="Assertions\EnumerableFluentAssertionExtensions.cs" />
-    <Compile Include="Assertions\ObjectFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\ComparableCheckExtensions.cs" />
+    <Compile Include="Assertions\EnumerableCheckExtensions.cs" />
+    <Compile Include="Assertions\ObjectCheckExtensions.cs" />
     <Compile Include="FluentCheck.cs" />
     <Compile Include="ICheck.cs" />
-    <Compile Include="Assertions\IntFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\IntCheckExtensions.cs" />
     <Compile Include="Helpers\IsInstanceHelper.cs" />
     <Compile Include="Extensions\PropertiesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Assertions\StringFluentAssertionExtensions.cs" />
+    <Compile Include="Assertions\StringCheckExtensions.cs" />
     <Compile Include="Helpers\TimeHelper.cs" />
-    <Compile Include="StructFluentAssertionRunner.cs" />
-    <Compile Include="T4\ByteFluentAssertionExtensions.cs">
+    <Compile Include="StructCheckRunner.cs" />
+    <Compile Include="T4\ByteCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="T4\DecimalFluentAssertionExtensions.cs">
+    <Compile Include="T4\DecimalCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="T4\DoubleFluentAssertionExtensions.cs">
+    <Compile Include="T4\DoubleCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="T4\FloatFluentAssertionExtensions.cs">
+    <Compile Include="T4\FloatCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="T4\LongFluentAssertionExtensions.cs">
+    <Compile Include="T4\LongCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="T4\ShortFluentAssertionExtensions.cs">
+    <Compile Include="T4\ShortCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="T4\UintFluentAssertionExtensions.cs">
+    <Compile Include="T4\UintCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="T4\UlongFluentAssertionExtensions.cs">
+    <Compile Include="T4\UlongCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="T4\UshortFluentAssertionExtensions.cs">
+    <Compile Include="T4\UshortCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
   </ItemGroup>

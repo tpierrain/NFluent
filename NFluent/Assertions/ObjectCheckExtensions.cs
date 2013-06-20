@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ObjectFluentAssertionExtensions.cs" company="">
+// // <copyright file="ObjectCheckExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ namespace NFluent
     /// <summary>
     /// Provides check methods to be executed on an object instance.
     /// </summary>
-    public static class ObjectFluentAssertionExtensions
+    public static class ObjectCheckExtensions
     {
         // TODO: add IsNull()
 
@@ -35,12 +35,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static IChainableCheck<ICheck<object>> IsEqualTo(this ICheck<object> check, object expected)
+        public static ICheckLink<ICheck<object>> IsEqualTo(this ICheck<object> check, object expected)
         {
             var checkRunner = check as ICheckRunner<object>;
             var runnableCheck = check as IRunnableCheck<object>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
@@ -57,12 +57,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static IChainableCheck<ICheck<object>> IsNotEqualTo(this ICheck<object> check, object expected)
+        public static ICheckLink<ICheck<object>> IsNotEqualTo(this ICheck<object> check, object expected)
         {
             var checkRunner = check as ICheckRunner<object>;
             var runnableCheck = check as IRunnableCheck<object>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
@@ -79,12 +79,12 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static IChainableCheck<ICheck<object>> IsInstanceOf<T>(this ICheck<object> check)
+        public static ICheckLink<ICheck<object>> IsInstanceOf<T>(this ICheck<object> check)
         {
             var checkRunner = check as ICheckRunner<object>;
             var runnableCheck = check as IRunnableCheck<object>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                 {
                     IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
@@ -101,12 +101,12 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static IChainableCheck<ICheck<object>> IsNotInstanceOf<T>(this ICheck<object> check)
+        public static ICheckLink<ICheck<object>> IsNotInstanceOf<T>(this ICheck<object> check)
         {
             var checkRunner = check as ICheckRunner<object>;
             var runnableCheck = check as IRunnableCheck<object>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                 {
                     IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, typeof(T));
@@ -123,7 +123,7 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The checked expression is not in the inheritance hierarchy of the given type.</exception>
-        public static IChainableCheck<ICheck<object>> InheritsFrom<T>(this ICheck<object> check)
+        public static ICheckLink<ICheck<object>> InheritsFrom<T>(this ICheck<object> check)
         {
             var checkRunner = check as ICheckRunner<object>;
             var runnableCheck = check as IRunnableCheck<object>;
@@ -131,7 +131,7 @@ namespace NFluent
             Type instanceType = runnableCheck.Value.GetTypeWithoutThrowingException();
             Type expectedBaseType = typeof(T);
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                 {
                     IsInstanceHelper.InheritsFrom(runnableCheck.Value, expectedBaseType);
@@ -148,7 +148,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not the same reference than the expected value.</exception>
-        public static IChainableCheck<ICheck<object>> IsSameReferenceThan(
+        public static ICheckLink<ICheck<object>> IsSameReferenceThan(
             this ICheck<object> check, object expected)
         {
             var runnableCheck = check as IRunnableCheck<object>;
@@ -168,7 +168,7 @@ namespace NFluent
                                  .ToString());
             }
 
-            return new ChainableCheck<ICheck<object>>(check);
+            return new CheckLink<ICheck<object>>(check);
         }
 
         private static string SameReferenceImpl(object expected, object value, bool negated, out string comparison)
@@ -202,7 +202,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is the same instance than the comparand.</exception>
-        public static IChainableCheck<ICheck<object>> IsDistinctFrom(
+        public static ICheckLink<ICheck<object>> IsDistinctFrom(
             this ICheck<object> check, object comparand)
         {
             var runnableCheck = check as IRunnableCheck<object>;
@@ -222,7 +222,7 @@ namespace NFluent
                                  .ToString());
             }
 
-            return new ChainableCheck<ICheck<object>>(check);
+            return new CheckLink<ICheck<object>>(check);
         }
     }
 }

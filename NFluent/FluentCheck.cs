@@ -87,9 +87,9 @@ namespace NFluent
         /// A new chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        IChainableCheck<ICheck<T>> ICheckRunner<T>.ExecuteAssertion(Action action, string negatedExceptionMessage)
+        ICheckLink<ICheck<T>> ICheckRunner<T>.ExecuteCheck(Action action, string negatedExceptionMessage)
         {
-            return this.checkRunner.ExecuteAssertion(action, negatedExceptionMessage);
+            return this.checkRunner.ExecuteCheck(action, negatedExceptionMessage);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace NFluent
         {
             var checkRunner = this as ICheckRunner<T>;
             
-            checkRunner.ExecuteAssertion(
+            checkRunner.ExecuteCheck(
                 () =>
                 {
                     EqualityHelper.IsEqualTo(this.Value, obj);

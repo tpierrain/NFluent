@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ComparableFluentAssertionExtensions.cs" company="">
+// // <copyright file="ComparableCheckExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ namespace NFluent
     /// <summary>
     /// Provides check methods to be executed on an <see cref="IComparable"/> instance.
     /// </summary>
-    public static class ComparableFluentAssertionExtensions
+    public static class ComparableCheckExtensions
     {
         /// <summary>
         /// Determines whether the specified value is before the other one.
@@ -31,12 +31,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The current value is not before the other one.</exception>
-        public static IChainableCheck<ICheck<IComparable>> IsBefore(this ICheck<IComparable> check, IComparable otherValue)
+        public static ICheckLink<ICheck<IComparable>> IsBefore(this ICheck<IComparable> check, IComparable otherValue)
         {
             var checkRunner = check as ICheckRunner<IComparable>;
             var runnableCheck = check as IRunnableCheck<IComparable>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value == null || runnableCheck.Value.CompareTo(otherValue) >= 0)

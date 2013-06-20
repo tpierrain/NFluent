@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IStructFluentAssertionRunner.cs" company="">
+// // <copyright file="IStructCheckRunner.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ namespace NFluent
     /// </para>
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IStructFluentAssertionRunner<T> where T : struct
+    public interface IStructCheckRunner<T> where T : struct
     {
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
@@ -37,6 +37,6 @@ namespace NFluent
         /// A new chainable fluent check for struct or enum.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        IChainableCheck<IStructCheck<T>> ExecuteAssertion(Action action, string negatedExceptionMessage);
+        ICheckLink<IStructCheck<T>> ExecuteAssertion(Action action, string negatedExceptionMessage);
     }
 }

@@ -41,7 +41,7 @@ namespace NFluent
         /// A new chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        public IChainableCheck<ICheck<T>> ExecuteAssertion(Action action, string negatedExceptionMessage)
+        public ICheckLink<ICheck<T>> ExecuteCheck(Action action, string negatedExceptionMessage)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace NFluent
                 }
 
                 // exception was expected
-                return new ChainableCheck<ICheck<T>>(this.runnableFluentCheck);
+                return new CheckLink<ICheck<T>>(this.runnableFluentCheck);
             }
 
             if (this.runnableFluentCheck.Negated)
@@ -66,7 +66,7 @@ namespace NFluent
                 throw new FluentCheckException(negatedExceptionMessage);
             }
 
-            return new ChainableCheck<ICheck<T>>(this.runnableFluentCheck);
+            return new CheckLink<ICheck<T>>(this.runnableFluentCheck);
         }
     }
 }

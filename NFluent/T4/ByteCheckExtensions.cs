@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="DoubleFluentAssertionExtensions.cs" company="">
+// // <copyright file="ByteCheckExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides check methods to be executed on a double value.
+    /// Provides check methods to be executed on a byte value.
     /// </summary>
-    public static class DoubleFluentAssertionExtensions
+    public static class ByteCheckExtensions
     {
         #pragma warning disable 169
 
@@ -33,7 +33,7 @@ namespace NFluent
         //// (i.e. the one dedicated to the integer values).
         //// -----------------------------------------------------
 
-        #pragma warning restore 169
+        // Since this class is the model/template for the generation of all the other numbers related FluentAssertionExtensions classes, don't forget to re-generate all the other classes every time you change this one. To do that, just save the ..\T4\NumberFluentAssertionGenerator.tt file within Visual Studio 2012. This will trigger the T4 code generation process.
 
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
@@ -44,10 +44,10 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static IChainableCheck<ICheck<double>> IsEqualTo(this ICheck<double> check, object expected)
+        public static ICheckLink<ICheck<byte>> IsEqualTo(this ICheck<byte> check, object expected)
         {
             // TODO transform NumberCheck<T> into a static class with functions only?
-            var numberAssertionStrategy = new NumberCheck<double>(check);
+            var numberAssertionStrategy = new NumberCheck<byte>(check);
             return numberAssertionStrategy.IsEqualTo(expected);
         }
 
@@ -60,9 +60,9 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static IChainableCheck<ICheck<double>> IsNotEqualTo(this ICheck<double> check, object expected)
+        public static ICheckLink<ICheck<byte>> IsNotEqualTo(this ICheck<byte> check, object expected)
         {
-            var numberAssertionStrategy = new NumberCheck<double>(check);
+            var numberAssertionStrategy = new NumberCheck<byte>(check);
             return numberAssertionStrategy.IsNotEqualTo(expected);
         }
 
@@ -75,9 +75,9 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static IChainableCheck<ICheck<double>> IsInstanceOf<T>(this ICheck<double> check)
+        public static ICheckLink<ICheck<byte>> IsInstanceOf<T>(this ICheck<byte> check)
         {
-            var numberAssertionStrategy = new NumberCheck<double>(check);
+            var numberAssertionStrategy = new NumberCheck<byte>(check);
             return numberAssertionStrategy.IsInstanceOf<T>();
         }
 
@@ -90,19 +90,19 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static IChainableCheck<ICheck<double?>> IsInstanceOf<T>(this ICheck<double?> check)
+        public static ICheckLink<ICheck<byte?>> IsInstanceOf<T>(this ICheck<byte?> check)
         {
-            var checkRunner = check as ICheckRunner<double?>;
-            IRunnableCheck<double?> runnableCheck = check as IRunnableCheck<double?>;
+            var checkRunner = check as ICheckRunner<byte?>;
+            IRunnableCheck<byte?> runnableCheck = check as IRunnableCheck<byte?>;
 
-            checkRunner.ExecuteAssertion(
+            checkRunner.ExecuteCheck(
                 () =>
                 {
-                    IsInstanceHelper.IsSameType(typeof(Nullable<double>), typeof(T), runnableCheck.Value);
+                    IsInstanceHelper.IsSameType(typeof(Nullable<byte>), typeof(T), runnableCheck.Value);
                 },
-                IsInstanceHelper.BuildErrorMessageForNullable(typeof(Nullable<double>), typeof(T), runnableCheck.Value, true));
+                IsInstanceHelper.BuildErrorMessageForNullable(typeof(Nullable<byte>), typeof(T), runnableCheck.Value, true));
 
-            return new ChainableCheck<ICheck<double?>>(check);
+            return new CheckLink<ICheck<byte?>>(check);
         }
 
         /// <summary>
@@ -114,9 +114,9 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public static IChainableCheck<ICheck<double>> IsNotInstanceOf<T>(this ICheck<double> check)
+        public static ICheckLink<ICheck<byte>> IsNotInstanceOf<T>(this ICheck<byte> check)
         {
-            var numberAssertionStrategy = new NumberCheck<double>(check);
+            var numberAssertionStrategy = new NumberCheck<byte>(check);
             return numberAssertionStrategy.IsNotInstanceOf<T>();
         }
 
@@ -128,9 +128,9 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not equal to zero.</exception>
-        public static IChainableCheck<ICheck<double>> IsZero(this ICheck<double> check)
+        public static ICheckLink<ICheck<byte>> IsZero(this ICheck<byte> check)
         {
-            var numberAssertionStrategy = new NumberCheck<double>(check);
+            var numberAssertionStrategy = new NumberCheck<byte>(check);
             return numberAssertionStrategy.IsZero();
         }
 
@@ -140,12 +140,12 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>A chainable fluent check.</returns>
         /// <exception cref="FluentCheckException">The value is null.</exception>
-        public static IChainableNullableFluentAssertionOrNumberFluentAssertion<double> HasAValue(this ICheck<double?> check)
+        public static INullableOrNumberCheckLink<byte> HasAValue(this ICheck<byte?> check)
         {
-            var checkRunner = check as ICheckRunner<double?>;
-            IRunnableCheck<double?> runnableCheck = check as IRunnableCheck<double?>;
+            var checkRunner = check as ICheckRunner<byte?>;
+            IRunnableCheck<byte?> runnableCheck = check as IRunnableCheck<byte?>;
 
-            checkRunner.ExecuteAssertion(
+            checkRunner.ExecuteCheck(
                 () =>
                 {
                     if (runnableCheck.Value == null)
@@ -155,7 +155,7 @@ namespace NFluent
                 },
                 string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", runnableCheck.Value.ToStringProperlyFormated()));
 
-            return new ChainableNullableFluentAssertionOrNumberFluentAssertion<double>(check);
+            return new NullableOrNumberCheckLink<byte>(check);
         }
 
         /// <summary>
@@ -164,12 +164,12 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <exception cref="FluentCheckException">The value is not null.</exception>
-        public static void HasNoValue(this ICheck<double?> check)
+        public static void HasNoValue(this ICheck<byte?> check)
         {
-            var checkRunner = check as ICheckRunner<double?>;
-            IRunnableCheck<double?> runnableCheck = check as IRunnableCheck<double?>;
+            var checkRunner = check as ICheckRunner<byte?>;
+            IRunnableCheck<byte?> runnableCheck = check as IRunnableCheck<byte?>;
 
-            checkRunner.ExecuteAssertion(
+            checkRunner.ExecuteCheck(
                 () =>
                 {
                     if (runnableCheck.Value != null)
@@ -188,9 +188,9 @@ namespace NFluent
         ///   <returns>A chainable check.</returns>
         /// </returns>
         /// <exception cref="FluentCheckException">The value is equal to zero.</exception>
-        public static IChainableCheck<ICheck<double>> IsNotZero(this ICheck<double> check)
+        public static ICheckLink<ICheck<byte>> IsNotZero(this ICheck<byte> check)
         {
-            var numberAssertionStrategy = new NumberCheck<double>(check);
+            var numberAssertionStrategy = new NumberCheck<byte>(check);
             return numberAssertionStrategy.IsNotZero();
         }
 
@@ -202,9 +202,9 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        public static IChainableCheck<ICheck<double>> IsPositive(this ICheck<double> check)
+        public static ICheckLink<ICheck<byte>> IsPositive(this ICheck<byte> check)
         {
-            var numberAssertionStrategy = new NumberCheck<double>(check);
+            var numberAssertionStrategy = new NumberCheck<byte>(check);
             return numberAssertionStrategy.IsPositive();
         }
 
@@ -223,9 +223,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
-        public static IChainableCheck<ICheck<double>> IsLessThan(this ICheck<double> check, double comparand)
+        public static ICheckLink<ICheck<byte>> IsLessThan(this ICheck<byte> check, byte comparand)
         {
-            var numberAssertionStrategy = new NumberCheck<double>(check);
+            var numberAssertionStrategy = new NumberCheck<byte>(check);
             return numberAssertionStrategy.IsLessThan(comparand);
         }
 
@@ -244,9 +244,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
-        public static IChainableCheck<ICheck<double>> IsGreaterThan(this ICheck<double> check, double comparand)
+        public static ICheckLink<ICheck<byte>> IsGreaterThan(this ICheck<byte> check, byte comparand)
         {
-            var numberAssertionStrategy = new NumberCheck<double>(check);
+            var numberAssertionStrategy = new NumberCheck<byte>(check);
             return numberAssertionStrategy.IsGreaterThan(comparand);
         }
     }

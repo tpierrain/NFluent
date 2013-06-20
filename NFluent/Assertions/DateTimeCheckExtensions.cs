@@ -1,5 +1,5 @@
 ﻿// // --------------------------------  ------------------------------------------------------------------------------------
-// // <copyright file="DateTimeFluentAssertionExtensions.cs" company="">
+// // <copyright file="DateTimeCheckExtensions.cs" company="">
 // //   Copyright 2013 Marc-Antoine LATOUR, Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ namespace NFluent
     /// <summary>
     /// Provides check methods to be executed on a date time instance. 
     /// </summary>
-    public static class DateTimeFluentAssertionExtensions
+    public static class DateTimeCheckExtensions
     {
         #region Equality checks
 
@@ -35,12 +35,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsEqualTo(this ICheck<DateTime> check, object expected)
+        public static ICheckLink<ICheck<DateTime>> IsEqualTo(this ICheck<DateTime> check, object expected)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
@@ -57,12 +57,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsNotEqualTo(this ICheck<DateTime> check, object expected)
+        public static ICheckLink<ICheck<DateTime>> IsNotEqualTo(this ICheck<DateTime> check, object expected)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
@@ -83,12 +83,12 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsInstanceOf<T>(this ICheck<DateTime> check)
+        public static ICheckLink<ICheck<DateTime>> IsInstanceOf<T>(this ICheck<DateTime> check)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
@@ -105,13 +105,13 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsNotInstanceOf<T>(this ICheck<DateTime> check)
+        public static ICheckLink<ICheck<DateTime>> IsNotInstanceOf<T>(this ICheck<DateTime> check)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
             var expectedType = typeof(T);
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, expectedType);
@@ -130,12 +130,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual date time is not before the given one.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsBefore(this ICheck<DateTime> check, DateTime other)
+        public static ICheckLink<ICheck<DateTime>> IsBefore(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value >= other)
@@ -155,12 +155,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual date time is not before or equals to the given one.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsBeforeOrEqualTo(this ICheck<DateTime> check, DateTime other)
+        public static ICheckLink<ICheck<DateTime>> IsBeforeOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value > other)
@@ -180,12 +180,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual date time is not after the given one.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsAfter(this ICheck<DateTime> check, DateTime other)
+        public static ICheckLink<ICheck<DateTime>> IsAfter(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value <= other)
@@ -205,12 +205,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual date time is not after or equals to the given one.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsAfterOrEqualTo(this ICheck<DateTime> check, DateTime other)
+        public static ICheckLink<ICheck<DateTime>> IsAfterOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value < other)
@@ -249,12 +249,12 @@ namespace NFluent
         /// 2000-01-01T00:00:<b>01.000</b> and 2000-01-01T00:00:<b>00.999</b>.
         /// check fails as second fields differ even if time difference is only 1 millis.
         /// </remarks>
-        public static IChainableCheck<ICheck<DateTime>> IsEqualToIgnoringMillis(this ICheck<DateTime> check, DateTime other)
+        public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringMillis(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value.Year != other.Year || runnableCheck.Value.Month != other.Month || runnableCheck.Value.Day != other.Day || runnableCheck.Value.Hour != other.Hour || runnableCheck.Value.Minute != other.Minute || runnableCheck.Value.Second != other.Second)
@@ -291,12 +291,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual date time is not equal to the given one with second and millisecond fields ignored.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsEqualToIgnoringSeconds(this ICheck<DateTime> check, DateTime other)
+        public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringSeconds(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value.Year != other.Year || runnableCheck.Value.Month != other.Month || runnableCheck.Value.Day != other.Day || runnableCheck.Value.Hour != other.Hour || runnableCheck.Value.Minute != other.Minute)
@@ -333,12 +333,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual date time is not equal to the given one with minute, second and millisecond fields ignored.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsEqualToIgnoringMinutes(this ICheck<DateTime> check, DateTime other)
+        public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringMinutes(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value.Year != other.Year || runnableCheck.Value.Month != other.Month || runnableCheck.Value.Day != other.Day || runnableCheck.Value.Hour != other.Hour)
@@ -375,12 +375,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual date time is not equal to the given one with hour, minute, second and millisecond fields ignored.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsEqualToIgnoringHours(this ICheck<DateTime> check, DateTime other)
+        public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringHours(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value.Year != other.Year || runnableCheck.Value.Month != other.Month || runnableCheck.Value.Day != other.Day)
@@ -400,12 +400,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual date time year is not equal to the given year.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsInSameYearAs(this ICheck<DateTime> check, DateTime other)
+        public static ICheckLink<ICheck<DateTime>> IsInSameYearAs(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value.Year != other.Year)
@@ -425,12 +425,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual date time month is not equal to the given month, whatever the year.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsInSameMonthAs(this ICheck<DateTime> check, DateTime other)
+        public static ICheckLink<ICheck<DateTime>> IsInSameMonthAs(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value.Month != other.Month)
@@ -450,12 +450,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual date time day is not equal to the given day, whatever the year or the month.</exception>
-        public static IChainableCheck<ICheck<DateTime>> IsInSameDayAs(this ICheck<DateTime> check, DateTime other)
+        public static ICheckLink<ICheck<DateTime>> IsInSameDayAs(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
             var runnableCheck = check as IRunnableCheck<DateTime>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value.Day != other.Day)

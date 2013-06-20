@@ -31,7 +31,7 @@
 
 	var typesToGenerateAssertionsFor = new string[] { "byte", "decimal", "double", "float", "long", "short", "uint", "ulong", "ushort" };
 	
-	string goldenSourceClassFileName = Host.ResolvePath(@"..\Assertions\IntFluentAssertionExtensions.cs");
+	string goldenSourceClassFileName = Host.ResolvePath(@"..\Assertions\IntCheckExtensions.cs");
 
 	foreach(string typeName in typesToGenerateAssertionsFor)
     {
@@ -39,9 +39,9 @@
 		// Creates a TextInfo based on the "en-US" culture in order to use the ToTitleCase() method
 		System.Globalization.TextInfo textInfo = new System.Globalization.CultureInfo("en-US", false).TextInfo;
 		string properlyCasedTypeName = textInfo.ToTitleCase(typeName);
-		string checkClassName =  properlyCasedTypeName + "FluentAssertionExtensions"; // FloatFluentAssertionExtensions
+		string checkClassName =  properlyCasedTypeName + "CheckExtensions"; // FloatCheckExtensions
 		
-		manager.StartNewFile(assertionClassName + ".cs");
+		manager.StartNewFile(checkClassName + ".cs");
 		
 		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
 		

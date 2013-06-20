@@ -34,6 +34,6 @@ namespace NFluent
         /// A new chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        IChainableCheck<ICheck<T>> ExecuteAssertion(Action action, string negatedExceptionMessage);
+        ICheckLink<ICheck<T>> ExecuteCheck(Action action, string negatedExceptionMessage);
     }
 }

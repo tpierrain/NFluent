@@ -25,39 +25,39 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides extension method on a IChainableCheck for IEnumerable types.
+    /// Provides extension method on a ICheckLink for IEnumerable types.
     /// </summary>
     public static class EnumerableFluentSyntaxExtension
     {
         /// <summary>
         /// Checks that the checked <see cref="IEnumerable"/> contains only the authorized items. Can only be used after a call to Contains.
         /// </summary>
-        /// <param name="chainedCheck">
+        /// <param name="chainedCheckLink">
         /// The chained fluent check.
         /// </param>
         /// <returns>
         /// A chainable fluent check.
         /// </returns>
-        public static IExtendableCheck<IEnumerable> Only(this IExtendableCheck<IEnumerable> chainedCheck)
+        public static IExtendableCheckLink<IEnumerable> Only(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
-            chainedCheck.And.ContainsOnly(chainedCheck.OriginalComparand);
-            return chainedCheck;
+            chainedCheckLink.And.ContainsOnly(chainedCheckLink.OriginalComparand);
+            return chainedCheckLink;
         }
 
         /// <summary>
         /// Checks that the checked <see cref="IEnumerable"/> contains the expected list of items only once.
         /// </summary>
-        /// <param name="chainedCheck">
+        /// <param name="chainedCheckLink">
         /// The chained fluent check.
         /// </param>
         /// <returns>
         /// A chainable fluent check.
         /// </returns>
-        public static IExtendableCheck<IEnumerable> Once(this IExtendableCheck<IEnumerable> chainedCheck)
+        public static IExtendableCheckLink<IEnumerable> Once(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
-            var runnableCheck = chainedCheck.And as IRunnableCheck<IEnumerable>;
+            var runnableCheck = chainedCheckLink.And as IRunnableCheck<IEnumerable>;
             var itemidx = 0;
-            var expectedList = ConvertToArrayList(chainedCheck);
+            var expectedList = ConvertToArrayList(chainedCheckLink);
             var listedItems = new ArrayList();
             Debug.Assert(runnableCheck != null, "runnableCheck != null");
             foreach (var item in runnableCheck.Value)
@@ -78,7 +78,7 @@ namespace NFluent
                                             itemidx))
                                        .For("enumerable")
                                        .On(runnableCheck.Value)
-                                       .And.Expected(chainedCheck.OriginalComparand);
+                                       .And.Expected(chainedCheckLink.OriginalComparand);
 
                     throw new FluentCheckException(message.ToString());
                 }
@@ -86,22 +86,22 @@ namespace NFluent
                 itemidx++;
             }
 
-            return chainedCheck;
+            return chainedCheckLink;
         }
 
         /// <summary>
         /// Checks that the checked <see cref="IEnumerable"/> contains items in the expected order.
         /// </summary>
-        /// <param name="chainedCheck">
+        /// <param name="chainedCheckLink">
         /// The chained fluent check.
         /// </param>
         /// <returns>
         /// A chainable fluent check.
         /// </returns>
-        public static IExtendableCheck<IEnumerable> InThatOrder(this IExtendableCheck<IEnumerable> chainedCheck)
+        public static IExtendableCheckLink<IEnumerable> InThatOrder(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
-            var runnableCheck = chainedCheck.And as IRunnableCheck<IEnumerable>;
-            var orderedList = ConvertToArrayList(chainedCheck);
+            var runnableCheck = chainedCheckLink.And as IRunnableCheck<IEnumerable>;
+            var orderedList = ConvertToArrayList(chainedCheckLink);
 
             var faillingIndex = 0;
             var scanIndex = 0;
@@ -153,7 +153,7 @@ namespace NFluent
                                                                         index > scanIndex ? "early" : "late"))
                                          .For("enumerable")
                                          .On(runnableCheck.Value)
-                                           .And.Expected(chainedCheck.OriginalComparand);
+                                           .And.Expected(chainedCheckLink.OriginalComparand);
 
                         throw new FluentCheckException(message.ToString());
                     }
@@ -167,13 +167,13 @@ namespace NFluent
                 faillingIndex++;
             }
 
-            return chainedCheck;
+            return chainedCheckLink;
         }
 
-        private static ArrayList ConvertToArrayList(IExtendableCheck<IEnumerable> chainedCheck)
+        private static ArrayList ConvertToArrayList(IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
             var orderedList = new ArrayList();
-            foreach (var item in chainedCheck.OriginalComparand)
+            foreach (var item in chainedCheckLink.OriginalComparand)
             {
                 orderedList.Add(item);
             }

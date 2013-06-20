@@ -52,12 +52,12 @@ namespace NFluent.Tests.ForDocumentation
                     }
 
                     // if it is specific to chains
-                    if (paramType.Name == "IChainableCheck`1")
+                    if (paramType.Name == "ICheckLink`1")
                     {
                         paramType = paramType.GetGenericArguments()[0];
                     }
 
-                    if (paramType.Name == "IExtendableCheck`1" || paramType.Name == "ICheck`1"
+                    if (paramType.Name == "IExtendableCheckLink`1" || paramType.Name == "ICheck`1"
                         || paramType.GetInterface("ICheck`1") != null
                         || paramType.Name == "IStructCheck`1")
                     {

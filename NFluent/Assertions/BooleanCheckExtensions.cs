@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="BooleanFluentAssertionExtensions.cs" company="">
+// // <copyright file="BooleanCheckExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ namespace NFluent
     /// <summary>
     /// Provides check methods to be executed on a boolean value.
     /// </summary>
-    public static class BooleanFluentAssertionExtensions
+    public static class BooleanCheckExtensions
     {
         // message when the value must be false
         private const string MustBeFalseMessage = "The {0} is true whereas it must be false.";
@@ -36,12 +36,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static IChainableCheck<ICheck<bool>> IsEqualTo(this ICheck<bool> check, object expected)
+        public static ICheckLink<ICheck<bool>> IsEqualTo(this ICheck<bool> check, object expected)
         {
             var checkRunner = check as ICheckRunner<bool>;
             var runnableCheck = check as IRunnableCheck<bool>;
             
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                 {
                     EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
@@ -58,12 +58,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static IChainableCheck<ICheck<bool>> IsNotEqualTo(this ICheck<bool> check, object expected)
+        public static ICheckLink<ICheck<bool>> IsNotEqualTo(this ICheck<bool> check, object expected)
         {
             var checkRunner = check as ICheckRunner<bool>;
             var runnableCheck = check as IRunnableCheck<bool>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                 {
                     EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
@@ -79,12 +79,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not true.</exception>
-        public static IChainableCheck<ICheck<bool>> IsTrue(this ICheck<bool> check)
+        public static ICheckLink<ICheck<bool>> IsTrue(this ICheck<bool> check)
         {
             var checkRunner = check as ICheckRunner<bool>;
             var runnableCheck = check as IRunnableCheck<bool>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                 {
                     if (!runnableCheck.Value)
@@ -103,12 +103,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not false.</exception>
-        public static IChainableCheck<ICheck<bool>> IsFalse(this ICheck<bool> check)
+        public static ICheckLink<ICheck<bool>> IsFalse(this ICheck<bool> check)
         {
             var checkRunner = check as ICheckRunner<bool>;
             var runnableCheck = check as IRunnableCheck<bool>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                 {
                     if (runnableCheck.Value)
@@ -128,12 +128,12 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static IChainableCheck<ICheck<bool>> IsInstanceOf<T>(this ICheck<bool> check)
+        public static ICheckLink<ICheck<bool>> IsInstanceOf<T>(this ICheck<bool> check)
         {
             var checkRunner = check as ICheckRunner<bool>;
             var runnableCheck = check as IRunnableCheck<bool>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                 {
                     IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
@@ -150,14 +150,14 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public static IChainableCheck<ICheck<bool>> IsNotInstanceOf<T>(this ICheck<bool> check)
+        public static ICheckLink<ICheck<bool>> IsNotInstanceOf<T>(this ICheck<bool> check)
         {
             var checkRunner = check as ICheckRunner<bool>;
             var runnableCheck = check as IRunnableCheck<bool>;
             
             var expectedType = typeof(T);
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, expectedType);

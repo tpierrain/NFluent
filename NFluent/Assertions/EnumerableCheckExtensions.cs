@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="EnumerableFluentAssertionExtensions.cs" company="">
+// // <copyright file="EnumerableCheckExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ namespace NFluent
     /// <summary>
     /// Provides check methods to be executed on an <see cref="IEnumerable"/> value.
     /// </summary>
-    public static class EnumerableFluentAssertionExtensions
+    public static class EnumerableCheckExtensions
     {
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
@@ -34,14 +34,14 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static IChainableCheck<ICheck<IEnumerable>> IsEqualTo(this ICheck<IEnumerable> check, object expected)
+        public static ICheckLink<ICheck<IEnumerable>> IsEqualTo(this ICheck<IEnumerable> check, object expected)
         {
             var checkRunner = check as ICheckRunner<IEnumerable>;
             var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
             var expectedEnumerable = expected as IEnumerable;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
@@ -58,14 +58,14 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static IChainableCheck<ICheck<IEnumerable>> IsNotEqualTo(this ICheck<IEnumerable> check, object expected)
+        public static ICheckLink<ICheck<IEnumerable>> IsNotEqualTo(this ICheck<IEnumerable> check, object expected)
         {
             var checkRunner = check as ICheckRunner<IEnumerable>;
             var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
             var expectedEnumerable = expected as IEnumerable;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
@@ -82,12 +82,12 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static IChainableCheck<ICheck<IEnumerable>> IsInstanceOf<T>(this ICheck<IEnumerable> check)
+        public static ICheckLink<ICheck<IEnumerable>> IsInstanceOf<T>(this ICheck<IEnumerable> check)
         {
             var checkRunner = check as ICheckRunner<IEnumerable>;
             var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                 {
                     IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
@@ -104,12 +104,12 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public static IChainableCheck<ICheck<IEnumerable>> IsNotInstanceOf<T>(this ICheck<IEnumerable> check)
+        public static ICheckLink<ICheck<IEnumerable>> IsNotInstanceOf<T>(this ICheck<IEnumerable> check)
         {
             var checkRunner = check as ICheckRunner<IEnumerable>;
             var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                 {
                     IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, typeof(T));
@@ -127,7 +127,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values.</exception>
-        public static IExtendableCheck<IEnumerable> Contains<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
+        public static IExtendableCheckLink<IEnumerable> Contains<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
         {
             IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             return check.Contains(properExpectedValues);
@@ -142,12 +142,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
-        public static IExtendableCheck<IEnumerable> Contains(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
+        public static IExtendableCheckLink<IEnumerable> Contains(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
         {
             var checkRunner = check as ICheckRunner<IEnumerable>;
             var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            checkRunner.ExecuteAssertion(
+            checkRunner.ExecuteCheck(
                 () =>
                 {
                     if (runnableCheck.Value == null && otherEnumerable == null)
@@ -171,7 +171,7 @@ namespace NFluent
                 }, 
                 FluentMessage.BuildMessage(string.Format("The {{0}} contains all the given values whereas it must not.")).For("enumerable").On(runnableCheck.Value).And.Expected(otherEnumerable).ToString());
 
-            return new ExtendableCheck<IEnumerable>(check, otherEnumerable);
+            return new ExtendableCheckLink<IEnumerable>(check, otherEnumerable);
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values provided.</exception>
-        public static IChainableCheck<ICheck<IEnumerable>> ContainsOnly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
+        public static ICheckLink<ICheck<IEnumerable>> ContainsOnly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
         {
             IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
 
@@ -200,12 +200,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
-        public static IChainableCheck<ICheck<IEnumerable>> ContainsOnly(this ICheck<IEnumerable> check, IEnumerable expectedValues)
+        public static ICheckLink<ICheck<IEnumerable>> ContainsOnly(this ICheck<IEnumerable> check, IEnumerable expectedValues)
         {
             var checkRunner = check as ICheckRunner<IEnumerable>;
             var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         // TODO: refactor this implementation?
@@ -249,7 +249,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
-        public static IChainableCheck<ICheck<IEnumerable>> ContainsExactly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
+        public static ICheckLink<ICheck<IEnumerable>> ContainsExactly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
         {
             IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             return check.ContainsExactly(properExpectedValues);
@@ -266,12 +266,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
-        public static IChainableCheck<ICheck<IEnumerable>> ContainsExactly(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
+        public static ICheckLink<ICheck<IEnumerable>> ContainsExactly(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
         {
             var checkRunner = check as ICheckRunner<IEnumerable>;
             var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () => 
                 {
                     // TODO: refactor this implementation
@@ -321,12 +321,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable has not the expected number of elements.</exception>
-        public static IChainableCheck<ICheck<IEnumerable>> HasSize(this ICheck<IEnumerable> check, long expectedSize)
+        public static ICheckLink<ICheck<IEnumerable>> HasSize(this ICheck<IEnumerable> check, long expectedSize)
         {
             var checkRunner = check as ICheckRunner<IEnumerable>;
             var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         HasSizeImpl(runnableCheck.Value, expectedSize);
@@ -379,12 +379,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
-        public static IChainableCheck<ICheck<IEnumerable>> IsEmpty(this ICheck<IEnumerable> check)
+        public static ICheckLink<ICheck<IEnumerable>> IsEmpty(this ICheck<IEnumerable> check)
         {
             var checkRunner = check as ICheckRunner<IEnumerable>;
             var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value.Cast<object>().Any())

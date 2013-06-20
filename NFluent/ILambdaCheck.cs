@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ILambdaAssertion.cs" company="">
+// // <copyright file="ILambdaCheck.cs" company="">
 // //   Copyright 2013 Cyrille DUPUYDAUBY, Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ namespace NFluent
     /// <summary>
     /// Provides lambda/action specific check.
     /// </summary>
-    public interface ILambdaAssertion : IForkableCheck
+    public interface ILambdaCheck : IForkableCheck
     {
         /// <summary>
         /// Checks that the execution time is below a specified threshold.
@@ -31,7 +31,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">Execution was strictly above limit.</exception>
-        IChainableCheck<ILambdaAssertion> LastsLessThan(double threshold, TimeUnit timeUnit);
+        ICheckLink<ILambdaCheck> LastsLessThan(double threshold, TimeUnit timeUnit);
 
         /// <summary>
         /// Check that the code does not throw an exception.
@@ -40,7 +40,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The code raised an exception.</exception>
-        IChainableCheck<ILambdaAssertion> DoesNotThrow();
+        ICheckLink<ILambdaCheck> DoesNotThrow();
 
         /// <summary>
         /// Checks that the code did throw an exception of a specified type.
@@ -50,7 +50,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of the specified type, or did not raised an exception at all.</exception>
-        IChainableCheck<ILambdaAssertion> Throws<T>();
+        ICheckLink<ILambdaCheck> Throws<T>();
 
         /// <summary>
         /// Checks that the code did throw an exception of any type.
@@ -59,6 +59,6 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
-        IChainableCheck<ILambdaAssertion> ThrowsAny();
+        ICheckLink<ILambdaCheck> ThrowsAny();
     }
 }

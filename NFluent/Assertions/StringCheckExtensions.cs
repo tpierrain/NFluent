@@ -1,5 +1,5 @@
 // // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="StringFluentAssertionExtensions.cs" company="">
+// // <copyright file="StringCheckExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ namespace NFluent
     /// <summary>
     /// Provides check methods to be executed on a string instance.
     /// </summary>
-    public static class StringFluentAssertionExtensions
+    public static class StringCheckExtensions
     {
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
@@ -35,7 +35,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static IChainableCheck<ICheck<string>> IsEqualTo(this ICheck<string> check, object expected)
+        public static ICheckLink<ICheck<string>> IsEqualTo(this ICheck<string> check, object expected)
         {
             var runnableCheck = check as IRunnableCheck<string>;
             var actual = runnableCheck.Value;
@@ -46,7 +46,7 @@ namespace NFluent
                 throw new FluentCheckException(messageText);
             }
 
-            return new ChainableCheck<ICheck<string>>(check);
+            return new CheckLink<ICheck<string>>(check);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static IChainableCheck<ICheck<string>> IsNotEqualTo(this ICheck<string> check, object expected)
+        public static ICheckLink<ICheck<string>> IsNotEqualTo(this ICheck<string> check, object expected)
         {
             var runnableCheck = check as IRunnableCheck<string>;
             var actual = runnableCheck.Value;
@@ -69,7 +69,7 @@ namespace NFluent
                 throw new FluentCheckException(messageText);
             }
 
-            return new ChainableCheck<ICheck<string>>(check);
+            return new CheckLink<ICheck<string>>(check);
         }
 
         /// <summary>
@@ -81,12 +81,12 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static IChainableCheck<ICheck<string>> IsInstanceOf<T>(this ICheck<string> check)
+        public static ICheckLink<ICheck<string>> IsInstanceOf<T>(this ICheck<string> check)
         {
             var checkRunner = check as ICheckRunner<string>;
             var runnableCheck = check as IRunnableCheck<string>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
@@ -103,12 +103,12 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public static IChainableCheck<ICheck<string>> IsNotInstanceOf<T>(this ICheck<string> check)
+        public static ICheckLink<ICheck<string>> IsNotInstanceOf<T>(this ICheck<string> check)
         {
             var checkRunner = check as ICheckRunner<string>;
             var runnableCheck = check as IRunnableCheck<string>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, typeof(T));
@@ -125,7 +125,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The string  contains all the given strings in any order.</exception>
-        public static IExtendableCheck<string, string[]> Contains(this ICheck<string> check, params string[] values)
+        public static IExtendableCheckLink<string, string[]> Contains(this ICheck<string> check, params string[] values)
         {
             var runnableCheck = check as IRunnableCheck<string>;
 
@@ -133,7 +133,7 @@ namespace NFluent
 
             if (string.IsNullOrEmpty(result))
             {
-                return new ExtendableCheck<string, string[]>(check, values);
+                return new ExtendableCheckLink<string, string[]>(check, values);
             }
 
             throw new FluentCheckException(result);
@@ -148,7 +148,7 @@ namespace NFluent
             /// A chainable check.
             /// </returns>
             /// <exception cref="FluentCheckException">The string contains at least one of the given strings.</exception>
-        public static IChainableCheck<ICheck<string>> DoesNotContain(
+        public static ICheckLink<ICheck<string>> DoesNotContain(
                 this ICheck<string> check, params string[] values)
         {    
             var runnableCheck = check as IRunnableCheck<string>;
@@ -157,7 +157,7 @@ namespace NFluent
 
             if (string.IsNullOrEmpty(result))
             {
-                return new ChainableCheck<ICheck<string>>(check);
+                return new CheckLink<ICheck<string>>(check);
             }
 
             throw new FluentCheckException(result);
@@ -275,14 +275,14 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The string does not start with the expected prefix.</exception>
-        public static IChainableCheck<ICheck<string>> StartsWith(this ICheck<string> check, string expectedPrefix)
+        public static ICheckLink<ICheck<string>> StartsWith(this ICheck<string> check, string expectedPrefix)
         {
             var runnableCheck = check as IRunnableCheck<string>;
 
             var result = StartsWithImpl(runnableCheck.Value, expectedPrefix, runnableCheck.Negated);
             if (string.IsNullOrEmpty(result))
             {
-                return new ChainableCheck<ICheck<string>>(check);
+                return new CheckLink<ICheck<string>>(check);
             }
 
             throw new FluentCheckException(result);
@@ -331,7 +331,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
-        public static IChainableCheck<ICheck<string>> EndsWith(
+        public static ICheckLink<ICheck<string>> EndsWith(
             this ICheck<string> check, string expectedEnd)
         {
             var runnableCheck = check as IRunnableCheck<string>;
@@ -339,7 +339,7 @@ namespace NFluent
             var result = EndsWithImpl(runnableCheck.Value, expectedEnd, runnableCheck.Negated);
             if (string.IsNullOrEmpty(result))
             {
-                return new ChainableCheck<ICheck<string>>(check);
+                return new CheckLink<ICheck<string>>(check);
             }
 
             throw new FluentCheckException(result);
@@ -388,7 +388,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
-        public static IChainableCheck<ICheck<string>> Matches(
+        public static ICheckLink<ICheck<string>> Matches(
             this ICheck<string> check, string regExp)
         {
             var runnableCheck = check as IRunnableCheck<string>;
@@ -399,7 +399,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new ChainableCheck<ICheck<string>>(check);
+            return new CheckLink<ICheck<string>>(check);
         }
 
         /// <summary>
@@ -411,7 +411,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
-        public static IChainableCheck<ICheck<string>> DoesNotMatch(
+        public static ICheckLink<ICheck<string>> DoesNotMatch(
             this ICheck<string> check, string regExp)
         {
             var runnableCheck = check as IRunnableCheck<string>;
@@ -422,7 +422,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new ChainableCheck<ICheck<string>>(check);
+            return new CheckLink<ICheck<string>>(check);
         }
         
         private static string MatchesImpl(string checkedValue, string regExp, bool negated)
@@ -468,7 +468,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The string is not empty.</exception>
-        public static IChainableCheck<ICheck<string>> IsEmpty(
+        public static ICheckLink<ICheck<string>> IsEmpty(
             this ICheck<string> check)
         {
             var runnableCheck = check as IRunnableCheck<string>;
@@ -479,7 +479,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new ChainableCheck<ICheck<string>>(check);
+            return new CheckLink<ICheck<string>>(check);
         }
 
         /// <summary>
@@ -490,7 +490,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The string is neither empty or null.</exception>
-        public static IChainableCheck<ICheck<string>> IsNullOrEmpty(this ICheck<string> check)
+        public static ICheckLink<ICheck<string>> IsNullOrEmpty(this ICheck<string> check)
         {
             var runnableCheck = check as IRunnableCheck<string>;
 
@@ -500,7 +500,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new ChainableCheck<ICheck<string>>(check);            
+            return new CheckLink<ICheck<string>>(check);            
         }
 
         /// <summary>
@@ -511,7 +511,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The string is empty.</exception>
-        public static IChainableCheck<ICheck<string>> IsNotEmpty(
+        public static ICheckLink<ICheck<string>> IsNotEmpty(
             this ICheck<string> check)
         {
             var runnableCheck = check as IRunnableCheck<string>;
@@ -522,7 +522,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new ChainableCheck<ICheck<string>>(check);
+            return new CheckLink<ICheck<string>>(check);
         }
 
         /// <summary>
@@ -533,7 +533,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The string is empty or null.</exception>
-        public static IChainableCheck<ICheck<string>> HasContent(this ICheck<string> check)
+        public static ICheckLink<ICheck<string>> HasContent(this ICheck<string> check)
         {
             var runnableCheck = check as IRunnableCheck<string>;
 
@@ -543,7 +543,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new ChainableCheck<ICheck<string>>(check);
+            return new CheckLink<ICheck<string>>(check);
         }
 
         private static string IsEmptyImpl(string checkedValue, bool canBeNull, bool negated)
@@ -590,7 +590,7 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The string is not equal to the comparand.</exception>
-        public static IChainableCheck<ICheck<string>> IsEqualIgnoringCase(
+        public static ICheckLink<ICheck<string>> IsEqualIgnoringCase(
             this ICheck<string> check, string comparand)
         {
             var runnableCheck = check as IRunnableCheck<string>;
@@ -601,7 +601,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new ChainableCheck<ICheck<string>>(check);
+            return new CheckLink<ICheck<string>>(check);
         }
     }
 }

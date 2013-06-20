@@ -18,24 +18,24 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides extension method on a IChainableCheck for IEnumerable types.
+    /// Provides extension method on a ICheckLink for IEnumerable types.
     /// </summary>
     public static class StringFluentSyntaxExtension
     {
         /// <summary>
         /// Checks that the checked <see cref="string"/> contains the expected list of strings only once.
         /// </summary>
-        /// <param name="chainedCheck">
+        /// <param name="chainedCheckLink">
         /// The chained fluent check.
         /// </param>
         /// <returns>
         /// A chainable fluent check.
         /// </returns>
-        public static IExtendableCheck<string, string[]> Once(this IExtendableCheck<string, string[]> chainedCheck)
+        public static IExtendableCheckLink<string, string[]> Once(this IExtendableCheckLink<string, string[]> chainedCheckLink)
         {
-            var runnableCheck = chainedCheck.And as IRunnableCheck<string>;
+            var runnableCheck = chainedCheckLink.And as IRunnableCheck<string>;
             var value = runnableCheck.Value;
-            var comparand = chainedCheck.OriginalComparand;
+            var comparand = chainedCheckLink.OriginalComparand;
             foreach (var text in comparand)
             {
                 var firstIndex = value.IndexOf(text);
@@ -53,23 +53,23 @@ namespace NFluent
                 }
             }
 
-            return chainedCheck;
+            return chainedCheckLink;
         }
 
         /// <summary>
         /// Checks that the checked <see cref="string"/> contains the expected list of strings in the correct order.
         /// </summary>
-        /// <param name="chainedCheck">
+        /// <param name="chainedCheckLink">
         /// The chained fluent check.
         /// </param>
         /// <returns>
         /// A chainable fluent check.
         /// </returns>
-        public static IExtendableCheck<string, string[]> InThatOrder(this IExtendableCheck<string, string[]> chainedCheck)
+        public static IExtendableCheckLink<string, string[]> InThatOrder(this IExtendableCheckLink<string, string[]> chainedCheckLink)
         {
-            var runnableCheck = chainedCheck.And as IRunnableCheck<string>;
+            var runnableCheck = chainedCheckLink.And as IRunnableCheck<string>;
             var value = runnableCheck.Value;
-            var comparand = chainedCheck.OriginalComparand;
+            var comparand = chainedCheckLink.OriginalComparand;
             var lastIndex = 0;
             foreach (var text in comparand)
             {
@@ -88,7 +88,7 @@ namespace NFluent
                 }
             }
 
-            return chainedCheck;
+            return chainedCheckLink;
         }
     }
 }

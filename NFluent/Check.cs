@@ -44,15 +44,15 @@ namespace NFluent
         /// </summary>
         /// <param name="value">The value to be tested.</param>
         /// <returns>
-        /// A <see cref="ILambdaAssertion" /> instance to use in order to assert things on the given value.
+        /// A <see cref="ILambdaCheck" /> instance to use in order to assert things on the given value.
         /// </returns>
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static ILambdaAssertion That(Action value)
+        public static ILambdaCheck That(Action value)
         {
-            return new LambdaAssertion(value);
+            return new LambdaCheck(value);
         }
 
         /// <summary>

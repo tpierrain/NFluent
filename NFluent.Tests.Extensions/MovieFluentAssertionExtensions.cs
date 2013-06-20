@@ -4,12 +4,12 @@
 
     public static class MovieFluentAssertionExtensions
     {
-        public static IChainableCheck<ICheck<Movie>> IsDirectedBy(this ICheck<Movie> check, string directorFullName)
+        public static ICheckLink<ICheck<Movie>> IsDirectedBy(this ICheck<Movie> check, string directorFullName)
         {
             var checkRunner = check as ICheckRunner<Movie>;
             var runnableCheck = check as IRunnableCheck<Movie>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (!runnableCheck.Value.Director.ToString().ToLower().Contains(directorFullName.ToLower()))
@@ -20,12 +20,12 @@
                 "Effectively...");
         }
 
-        public static IChainableCheck<ICheck<Movie>> IsAFGreatMovie(this ICheck<Movie> check)
+        public static ICheckLink<ICheck<Movie>> IsAFGreatMovie(this ICheck<Movie> check)
         {
             var checkRunner = check as ICheckRunner<Movie>;
             var runnableCheck = check as IRunnableCheck<Movie>;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (!runnableCheck.Value.Name.Contains("Eternal sunshine of the spotless mind"))

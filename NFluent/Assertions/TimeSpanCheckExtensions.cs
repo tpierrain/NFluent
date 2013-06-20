@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="TimeSpanFluentAssertionExtensions.cs" company="">
+// // <copyright file="TimeSpanCheckExtensions.cs" company="">
 // //   Copyright 2013 Cyrille DUPUYDAUBY, Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ namespace NFluent
     /// <summary>
     /// Provides check methods to be executed on an <see cref="TimeSpan"/> instance.
     /// </summary>
-    public static class TimeSpanFluentAssertionExtensions
+    public static class TimeSpanCheckExtensions
     {
         /// <summary>
         /// Checks that the actual duration is less (strictly) than a comparand.
@@ -31,7 +31,7 @@ namespace NFluent
         /// <param name="unit">The unit in which the duration is expressed.</param>
         /// <returns>A chainable check.</returns>
         /// <exception cref="FluentCheckException">The actual value is not less than the provided duration.</exception>
-         public static IChainableCheck<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, double providedDuration, TimeUnit unit)
+         public static ICheckLink<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, double providedDuration, TimeUnit unit)
          {
             var checkRunner = check as ICheckRunner<TimeSpan>;
             var runnableCheck = check as IRunnableCheck<TimeSpan>;
@@ -48,7 +48,7 @@ namespace NFluent
                                .On(testedDuration)
                                .And.Expected(expected).Comparison("less than");
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (testedDuration >= expected)
@@ -66,7 +66,7 @@ namespace NFluent
          /// <param name="comparand">The value to compare to.</param>
          /// <returns>A chainable check.</returns>
          /// <exception cref="FluentCheckException">The actual value is not less than the provided comparand.</exception>
-         public static IChainableCheck<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, TimeSpan comparand)
+         public static ICheckLink<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
              var checkRunner = check as ICheckRunner<TimeSpan>;
              var runnableCheck = check as IRunnableCheck<TimeSpan>;
@@ -86,7 +86,7 @@ namespace NFluent
                                 .On(testedDuration)
                                 .And.Expected(expected).Comparison("less than");
 
-             return checkRunner.ExecuteAssertion(
+             return checkRunner.ExecuteCheck(
                  () =>
                  {
                      if (testedDuration >= expected)
@@ -105,7 +105,7 @@ namespace NFluent
          /// <param name="unit">The unit in which the duration is expressed.</param>
          /// <returns>A chainable check.</returns>
          /// <exception cref="FluentCheckException">The actual value is not greater than the provided comparand.</exception>
-         public static IChainableCheck<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, double providedDuration, TimeUnit unit)
+         public static ICheckLink<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, double providedDuration, TimeUnit unit)
          {
              var checkRunner = check as ICheckRunner<TimeSpan>;
              var runnableCheck = check as IRunnableCheck<TimeSpan>;
@@ -122,7 +122,7 @@ namespace NFluent
                                 .On(testedDuration)
                                 .And.Expected(expected).Comparison("more than");
 
-             return checkRunner.ExecuteAssertion(
+             return checkRunner.ExecuteCheck(
                  () =>
                      {
                          if (testedDuration <= expected)
@@ -140,7 +140,7 @@ namespace NFluent
          /// <param name="comparand">The value to compare to.</param>
          /// <returns>A chainable check.</returns>
          /// <exception cref="FluentCheckException">The actual value is not greater than the provided comparand.</exception>
-         public static IChainableCheck<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, TimeSpan comparand)
+         public static ICheckLink<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
              var checkRunner = check as ICheckRunner<TimeSpan>;
              var runnableCheck = check as IRunnableCheck<TimeSpan>;
@@ -159,7 +159,7 @@ namespace NFluent
                                 .On(testedDuration)
                                 .And.Expected(expected).Comparison("less than or equal to");
 
-             return checkRunner.ExecuteAssertion(
+             return checkRunner.ExecuteCheck(
                  () =>
                  {
                      if (testedDuration <= expected)
@@ -178,7 +178,7 @@ namespace NFluent
          /// <param name="unit">The <see cref="TimeUnit" /> in which duration is expressed.</param>
          /// <returns>A chainable check.</returns>
          /// <exception cref="FluentCheckException">The actual value is not equal to the target duration.</exception>
-         public static IChainableCheck<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, double duration, TimeUnit unit)
+         public static ICheckLink<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, double duration, TimeUnit unit)
          {
              var checkRunner = check as ICheckRunner<TimeSpan>;
              var runnableCheck = check as IRunnableCheck<TimeSpan>;
@@ -196,7 +196,7 @@ namespace NFluent
                                 .And.Expected(expected)
                                 .Comparison("different than");
 
-             return checkRunner.ExecuteAssertion(
+             return checkRunner.ExecuteCheck(
                  () =>
                  {
                      if (testedDuration != expected)
@@ -214,7 +214,7 @@ namespace NFluent
          /// <param name="comparand">The duration to be compared to.</param>
          /// <returns>A chainable check.</returns>
          /// /// <exception cref="FluentCheckException">The actual value is not equal to the target duration.</exception>
-         public static IChainableCheck<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, TimeSpan comparand)
+         public static ICheckLink<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
              var checkRunner = check as ICheckRunner<TimeSpan>;
              var runnableCheck = check as IRunnableCheck<TimeSpan>;
@@ -233,7 +233,7 @@ namespace NFluent
                                 .And.Expected(expected)
                                 .Comparison("different than");
 
-             return checkRunner.ExecuteAssertion(
+             return checkRunner.ExecuteCheck(
                  () =>
                      {
                          if (runnableCheck.Value != comparand)
@@ -253,12 +253,12 @@ namespace NFluent
          /// A chainable fluent check.
          /// </returns>
          /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-         public static IChainableCheck<ICheck<TimeSpan>> IsInstanceOf<T>(this ICheck<TimeSpan> check)
+         public static ICheckLink<ICheck<TimeSpan>> IsInstanceOf<T>(this ICheck<TimeSpan> check)
          {
              var checkRunner = check as ICheckRunner<TimeSpan>;
              var runnableCheck = check as IRunnableCheck<TimeSpan>;
 
-             return checkRunner.ExecuteAssertion(
+             return checkRunner.ExecuteCheck(
                  () =>
                      {
                          IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
@@ -275,12 +275,12 @@ namespace NFluent
          /// A chainable fluent check.
          /// </returns>
          /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-         public static IChainableCheck<ICheck<TimeSpan>> IsNotInstanceOf<T>(this ICheck<TimeSpan> check)
+         public static ICheckLink<ICheck<TimeSpan>> IsNotInstanceOf<T>(this ICheck<TimeSpan> check)
          {
              var checkRunner = check as ICheckRunner<TimeSpan>;
              var runnableCheck = check as IRunnableCheck<TimeSpan>;
 
-             return checkRunner.ExecuteAssertion(
+             return checkRunner.ExecuteCheck(
                  () =>
                      {
                          IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, typeof(T));

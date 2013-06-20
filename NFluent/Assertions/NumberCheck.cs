@@ -79,9 +79,9 @@ namespace NFluent
         /// A new chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        IChainableCheck<ICheck<N>> ICheckRunner<N>.ExecuteAssertion(Action action, string negatedExceptionMessage)
+        ICheckLink<ICheck<N>> ICheckRunner<N>.ExecuteCheck(Action action, string negatedExceptionMessage)
         {
-            return this.checkRunner.ExecuteAssertion(action, negatedExceptionMessage);
+            return this.checkRunner.ExecuteCheck(action, negatedExceptionMessage);
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace NFluent
         {
             var checkRunner = this as ICheckRunner<N>;
 
-            checkRunner.ExecuteAssertion(
+            checkRunner.ExecuteCheck(
                 () => EqualityHelper.IsEqualTo(this.Value, obj),
                 EqualityHelper.BuildErrorMessage(this.Value, obj, true));
 
@@ -125,12 +125,12 @@ namespace NFluent
         /// A chainable check.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not equal to zero.</exception>
-        public IChainableCheck<ICheck<N>> IsZero()
+        public ICheckLink<ICheck<N>> IsZero()
         {
             var checkRunner = this.check as ICheckRunner<N>;
             IRunnableCheck<N> runnableCheck = this;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         var res = InternalIsZero(runnableCheck.Value);
@@ -150,12 +150,12 @@ namespace NFluent
         /// <returns>A chainable check.</returns>
         /// </returns>
         /// <exception cref="FluentCheckException">The value is equal to zero.</exception>
-        public IChainableCheck<ICheck<N>> IsNotZero()
+        public ICheckLink<ICheck<N>> IsNotZero()
         {
             var checkRunner = this.check as ICheckRunner<N>;
             IRunnableCheck<N> runnableCheck = this;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         bool res = InternalIsZero(runnableCheck.Value);
@@ -176,12 +176,12 @@ namespace NFluent
         /// </summary>
         /// <returns>A chainable check.</returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        public IChainableCheck<ICheck<N>> IsPositive()
+        public ICheckLink<ICheck<N>> IsPositive()
         {
             var checkRunner = this.check as ICheckRunner<N>;
             IRunnableCheck<N> runnableCheck = this;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (Convert.ToInt32(runnableCheck.Value) <= 0)
@@ -204,12 +204,12 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
-        public IChainableCheck<ICheck<N>> IsLessThan(N comparand)
+        public ICheckLink<ICheck<N>> IsLessThan(N comparand)
         {
             var checkRunner = this.check as ICheckRunner<N>;
             IRunnableCheck<N> runnableCheck = this;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                 {
                     if (runnableCheck.Value.CompareTo(comparand) >= 0)
@@ -232,12 +232,12 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
-        public IChainableCheck<ICheck<N>> IsGreaterThan(N comparand)
+        public ICheckLink<ICheck<N>> IsGreaterThan(N comparand)
         {
             var checkRunner = this.check as ICheckRunner<N>;
             IRunnableCheck<N> runnableCheck = this;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value.CompareTo(comparand) <= 0)
@@ -256,12 +256,12 @@ namespace NFluent
         /// <returns>A chainable check.</returns>
         /// <param name="expected">The expected value.</param>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public IChainableCheck<ICheck<N>> IsEqualTo(object expected)
+        public ICheckLink<ICheck<N>> IsEqualTo(object expected)
         {
             var checkRunner = this.check as ICheckRunner<N>;
             IRunnableCheck<N> runnableCheck = this;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
@@ -275,12 +275,12 @@ namespace NFluent
         /// <returns>A chainable check.</returns>
         /// <param name="expected">The expected value.</param>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public IChainableCheck<ICheck<N>> IsNotEqualTo(object expected)
+        public ICheckLink<ICheck<N>> IsNotEqualTo(object expected)
         {
             var checkRunner = this.check as ICheckRunner<N>;
             IRunnableCheck<N> runnableCheck = this;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
@@ -300,12 +300,12 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public IChainableCheck<ICheck<N>> IsInstanceOf<T>()
+        public ICheckLink<ICheck<N>> IsInstanceOf<T>()
         {
             var checkRunner = this.check as ICheckRunner<N>;
             var runnableCheck = this;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                 {
                     IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
@@ -321,12 +321,12 @@ namespace NFluent
         /// A chainable fluent check.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public IChainableCheck<ICheck<N>> IsNotInstanceOf<T>()
+        public ICheckLink<ICheck<N>> IsNotInstanceOf<T>()
         {
             var checkRunner = this.check as ICheckRunner<N>;
             var runnableCheck = this;
 
-            return checkRunner.ExecuteAssertion(
+            return checkRunner.ExecuteCheck(
                 () =>
                 {
                     IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, typeof(T));

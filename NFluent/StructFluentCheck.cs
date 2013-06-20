@@ -21,9 +21,9 @@ namespace NFluent
     /// Provides check methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public class StructFluentCheck<T> : IStructCheck<T>, IStructFluentAssertionRunner<T>, IRunnableCheck<T> where T : struct
+    public class StructFluentCheck<T> : IStructCheck<T>, IStructCheckRunner<T>, IRunnableCheck<T> where T : struct
     {
-        private StructFluentAssertionRunner<T> fluentAssertionRunner;
+        private StructCheckRunner<T> checkRunner;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StructFluentCheck{T}" /> class.
@@ -42,7 +42,7 @@ namespace NFluent
         {
             this.Value = value;
             this.Negated = negated;
-            this.fluentAssertionRunner = new StructFluentAssertionRunner<T>(this);
+            this.checkRunner = new StructCheckRunner<T>(this);
         }
 
         /// <summary>
@@ -86,9 +86,9 @@ namespace NFluent
         /// A new chainable fluent check for struct or enum.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        IChainableCheck<IStructCheck<T>> IStructFluentAssertionRunner<T>.ExecuteAssertion(Action action, string negatedExceptionMessage)
+        ICheckLink<IStructCheck<T>> IStructCheckRunner<T>.ExecuteAssertion(Action action, string negatedExceptionMessage)
         {
-            return this.fluentAssertionRunner.ExecuteAssertion(action, negatedExceptionMessage);
+            return this.checkRunner.ExecuteAssertion(action, negatedExceptionMessage);
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="StructFluentAssertionRunner.cs" company="">
+// // <copyright file="StructCheckRunner.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -23,11 +23,11 @@ namespace NFluent
     /// checks statements.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    internal class StructFluentAssertionRunner<T> : IStructFluentAssertionRunner<T> where T : struct
+    internal class StructCheckRunner<T> : IStructCheckRunner<T> where T : struct
     {
         private readonly IRunnableCheck<T> runnableFluentCheck;
 
-        public StructFluentAssertionRunner(IRunnableCheck<T> runnableFluentCheck)
+        public StructCheckRunner(IRunnableCheck<T> runnableFluentCheck)
         {
             this.runnableFluentCheck = runnableFluentCheck;
         }
@@ -41,7 +41,7 @@ namespace NFluent
         /// A new chainable fluent check for struct or enum.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        public IChainableCheck<IStructCheck<T>> ExecuteAssertion(Action action, string negatedExceptionMessage)
+        public ICheckLink<IStructCheck<T>> ExecuteAssertion(Action action, string negatedExceptionMessage)
         {
             if (this.runnableFluentCheck.Negated)
             {
@@ -67,7 +67,7 @@ namespace NFluent
                 action();
             }
 
-            return new ChainableCheck<IStructCheck<T>>(this.runnableFluentCheck);
+            return new CheckLink<IStructCheck<T>>(this.runnableFluentCheck);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="LambdaAssertion.cs" company="">
+// // <copyright file="LambdaCheck.cs" company="">
 // //   Copyright 2013 Cyrille DUPUYDAUBY
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ namespace NFluent
     /// <summary>
     /// Implements lambda/action specific check.
     /// </summary>
-    public class LambdaAssertion : ILambdaAssertion
+    public class LambdaCheck : ILambdaCheck
     {
         #region Fields
         private double durationInNs;
@@ -34,21 +34,21 @@ namespace NFluent
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LambdaAssertion"/> class.
+        /// Initializes a new instance of the <see cref="LambdaCheck"/> class.
         /// </summary>
         /// <param name="action">
         /// Action to be assessed.
         /// </param>
-        public LambdaAssertion(Action action) : this(action, false)
+        public LambdaCheck(Action action) : this(action, false)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LambdaAssertion" /> class.
+        /// Initializes a new instance of the <see cref="LambdaCheck" /> class.
         /// </summary>
         /// <param name="action">The action.</param>
         /// <param name="alreadyExecuted">A value indicating whether the action has already been executed or not.</param>
-        private LambdaAssertion(Action action, bool alreadyExecuted)
+        private LambdaCheck(Action action, bool alreadyExecuted)
         {
             this.Value = action;
 
@@ -87,7 +87,7 @@ namespace NFluent
         public object ForkInstance()
         {
             const bool AlreadyExecuted = true;
-            var newInstance = new LambdaAssertion(this.Value, AlreadyExecuted)
+            var newInstance = new LambdaCheck(this.Value, AlreadyExecuted)
                                   {
                                       durationInNs = this.durationInNs,
                                       exception = this.exception
@@ -105,7 +105,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The code raised an exception.
         /// </exception>
-        public IChainableCheck<ILambdaAssertion> DoesNotThrow()
+        public ICheckLink<ILambdaCheck> DoesNotThrow()
         {
             if (this.exception != null)
             {
@@ -116,7 +116,7 @@ namespace NFluent
                 throw new FluentCheckException(message1);
             }
 
-            return new ChainableCheck<ILambdaAssertion>(this);
+            return new CheckLink<ILambdaCheck>(this);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// Execution was strictly above limit.
         /// </exception>
-        public IChainableCheck<ILambdaAssertion> LastsLessThan(double threshold, TimeUnit timeUnit)
+        public ICheckLink<ILambdaCheck> LastsLessThan(double threshold, TimeUnit timeUnit)
         {
             var comparand = new Duration(this.durationInNs, TimeUnit.Nanoseconds).ConvertTo(timeUnit);
             var durationThreshold = new Duration(threshold, timeUnit);
@@ -151,7 +151,7 @@ namespace NFluent
                 throw new FluentCheckException(message);
             }
 
-            return new ChainableCheck<ILambdaAssertion>(this);
+            return new CheckLink<ILambdaCheck>(this);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The code did not raised an exception of the specified type, or did not raised an exception at all.
         /// </exception>
-        public IChainableCheck<ILambdaAssertion> Throws<T>()
+        public ICheckLink<ILambdaCheck> Throws<T>()
         {
             if (this.exception == null)
             {
@@ -186,7 +186,7 @@ namespace NFluent
                 throw new FluentCheckException(message);
             }
 
-            return new ChainableCheck<ILambdaAssertion>(this);
+            return new CheckLink<ILambdaCheck>(this);
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The code did not raised an exception of any type.
         /// </exception>
-        public IChainableCheck<ILambdaAssertion> ThrowsAny()
+        public ICheckLink<ILambdaCheck> ThrowsAny()
         {
             if (this.exception == null)
             {
@@ -207,7 +207,7 @@ namespace NFluent
                 throw new FluentCheckException(message);
             }
 
-            return new ChainableCheck<ILambdaAssertion>(this);
+            return new CheckLink<ILambdaCheck>(this);
         }
 
         #endregion
