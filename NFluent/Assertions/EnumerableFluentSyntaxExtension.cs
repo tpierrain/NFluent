@@ -40,7 +40,7 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<IEnumerable> Only(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
-            chainedCheckLink.And.ContainsOnly(chainedCheckLink.OriginalComparand);
+            chainedCheckLink.And.IsOnlyMadeOf(chainedCheckLink.OriginalComparand);
             return chainedCheckLink;
         }
 

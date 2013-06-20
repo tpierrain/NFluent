@@ -184,11 +184,11 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values provided.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> ContainsOnly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
+        public static ICheckLink<ICheck<IEnumerable>> IsOnlyMadeOf<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
         {
             IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
 
-            return check.ContainsOnly(properExpectedValues);
+            return check.IsOnlyMadeOf(properExpectedValues);
        }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> ContainsOnly(this ICheck<IEnumerable> check, IEnumerable expectedValues)
+        public static ICheckLink<ICheck<IEnumerable>> IsOnlyMadeOf(this ICheck<IEnumerable> check, IEnumerable expectedValues)
         {
             var checkRunner = check as ICheckRunner<IEnumerable>;
             var runnableCheck = check as IRunnableCheck<IEnumerable>;
@@ -220,12 +220,6 @@ namespace NFluent
                             throw new FluentCheckException(message);
                         }
 
-                        if (runnableCheck.Value != null && runnableCheck.Value.Count() == 0 && expectedValues.Count() != 0)
-                        {
-                            var message = FluentMessage.BuildMessage("The {0} does not contain only the given value(s).\nIt contains no value at all!").For("enumerable").On(runnableCheck.Value).And.Expected(expectedValues).ToString();
-                            throw new FluentCheckException(message);
-                        }
-
                         var unexpectedValuesFound = ExtractUnexpectedValues(runnableCheck.Value, expectedValues);
 
                         if (unexpectedValuesFound.Count > 0)
@@ -240,7 +234,7 @@ namespace NFluent
         /// <summary>
         /// Checks that the enumerable contains only the given expected values and nothing else, in order.
         /// This check should only be used with IEnumerable that have a consistent iteration order
-        /// (i.e. don't use it with <see cref="Hashtable" />, prefer <see cref="ContainsOnly{T}" /> in that case).
+        /// (i.e. don't use it with <see cref="Hashtable" />, prefer <see cref="IsOnlyMadeOf{T}" /> in that case).
         /// </summary>
         /// <typeparam name="T">Type of the elements to be found.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
@@ -258,7 +252,7 @@ namespace NFluent
         /// <summary>
         /// Checks that the enumerable contains only the values of another enumerable and nothing else, in order.
         /// This check should only be used with IEnumerable that have a consistent iteration order
-        /// (i.e. don't use it with <see cref="Hashtable" />, prefer <see cref="ContainsOnly{T}" /> in that case).
+        /// (i.e. don't use it with <see cref="Hashtable" />, prefer <see cref="IsOnlyMadeOf{T}" /> in that case).
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="otherEnumerable">The other enumerable containing the exact expected values to be found.</param>

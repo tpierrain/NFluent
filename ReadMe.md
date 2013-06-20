@@ -43,7 +43,7 @@ With NFluent, you can write simple checks like this:
     Check.That(integers).Contains(3, 5, 666);
 
 	var integers = new int[] { 1, 2, 3 };
-    Check.That(integers).ContainsOnly(3, 2, 1);
+    Check.That(integers).IsOnlyMadeOf(3, 2, 1);
 
 	var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
     Check.That(guitarHeroes).ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell");

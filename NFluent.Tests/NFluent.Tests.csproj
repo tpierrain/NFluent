@@ -54,7 +54,7 @@
     <Compile Include="ContainsChainedSyntaxTests.cs" />
     <Compile Include="ForDocumentation\CheckDescription.cs" />
     <Compile Include="ComparableRelatedTests.cs" />
-    <Compile Include="ContainsOnlyTests.cs" />
+    <Compile Include="IsOnlyMadeOfTests.cs" />
     <Compile Include="ContainsExactlyTests.cs" />
     <Compile Include="ContainsTests.cs" />
     <Compile Include="ExtensionSpikeTests.cs" />

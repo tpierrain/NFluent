@@ -26,7 +26,7 @@ namespace NFluent.Tests
         private readonly string[] tresAmigos = new[] { "un", "dos", "tres" };
 
         [Test]
-        public void ContainsOnlySucessTest()
+        public void IsOnlyMadeOfSucessTest()
         {
            Check.That(this.tresAmigos).Contains("dos", "un", "tres").Only();
         }

@@ -4,4 +4,4 @@ New features:
 --------------
 Changes:
 * New error message structure that clearly states what is wrong.
-* Now, ContainsOnly fails if the checked value is empty.
+* Now, IsOnlyMadeOf fails if the checked value is empty.

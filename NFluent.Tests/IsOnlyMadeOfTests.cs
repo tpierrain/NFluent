@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ContainsOnlyTests.cs" company="">
+// // <copyright file="IsOnlyMadeOfTests.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ namespace NFluent.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class ContainsOnlyTests
+    public class IsOnlyMadeOfTests
     {
         private CultureInfo savedCulture;
 
@@ -42,186 +42,185 @@ namespace NFluent.Tests
             Thread.CurrentThread.CurrentCulture = this.savedCulture;
         }
 
-        #region ContainsOnly with arrays
+        #region IsOnlyMadeOf with arrays
 
         [Test]
-        public void ContainsOnlyWithIntArrayWorks()
+        public void IsOnlyMadeOfWithIntArrayWorks()
         {
             var integers = new[] { 1, 2, 3 };
-            Check.That(integers).ContainsOnly(3, 2, 1);
+            Check.That(integers).IsOnlyMadeOf(3, 2, 1);
         }
 
         [Test]
-        public void ContainsOnlyWithStringArraysWorks()
+        public void IsOnlyMadeOfWithStringArraysWorks()
         {
             var tresAmigos = new[] { "un", "dos", "tres" };
-            Check.That(tresAmigos).ContainsOnly("dos", "un", "tres");
+            Check.That(tresAmigos).IsOnlyMadeOf("dos", "un", "tres");
         }
 
         [Test]
-        public void ContainsOnlyWithArraysWorksEvenWhenGivingSameExpectedValueMultipleTimes()
+        public void IsOnlyMadeOfWithArraysWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
             var integers = new[] { 1, 2, 3 };
-            Check.That(integers).ContainsOnly(3, 2, 3, 2, 2, 1);
+            Check.That(integers).IsOnlyMadeOf(3, 2, 3, 2, 2, 1);
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[666, 1974]\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected enumerable:\n\t[1, 2, 3]")]
-        public void ContainsOnlyWithArraysThrowsExceptionWithClearStatusWhenFails()
+        public void IsOnlyMadeOfWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new[] { 3, 2, 666, 1974, 1 };
-            Check.That(integers).ContainsOnly(1, 2, 3);
+            Check.That(integers).IsOnlyMadeOf(1, 2, 3);
         }
 
         #endregion
 
-        #region ContainsOnly with enumerable
+        #region IsOnlyMadeOf with enumerable
 
         [Test]
-        public void ContainsOnlyWithEnumerableWorks()
+        public void IsOnlyMadeOfWithEnumerableWorks()
         {
             var integers = new List<int> { 1, 2, 3 };
             IEnumerable expectedIntegers = new List<int> { 3, 2, 1 };
-            Check.That(integers).ContainsOnly(expectedIntegers);
+            Check.That(integers).IsOnlyMadeOf(expectedIntegers);
         }
 
         [Test]
-        public void ContainsOnlyWithGenericEnumerableWorks()
+        public void IsOnlyMadeOfWithGenericEnumerableWorks()
         {
             var integers = new List<int> { 1, 2, 3 };
             IEnumerable<int> expectedIntegers = new List<int> { 3, 2, 1 };
-            Check.That(integers).ContainsOnly(expectedIntegers);
+            Check.That(integers).IsOnlyMadeOf(expectedIntegers);
         }
 
         [Test]
-        public void ContainsOnlyWithStringEnumerableWorks()
+        public void IsOnlyMadeOfWithStringEnumerableWorks()
         {
             var tresAmigos = new List<string> { "un", "dos", "tres" };
             IEnumerable expectedValues = new List<string> { "un", "tres", "dos" };
-            Check.That(tresAmigos).ContainsOnly(expectedValues);
+            Check.That(tresAmigos).IsOnlyMadeOf(expectedValues);
         }
 
         [Test]
-        public void ContainsOnlyWithEnumerableWorksEvenWhenGivingSameExpectedValueMultipleTimes()
+        public void IsOnlyMadeOfWithEnumerableWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
             var integers = new List<int> { 1, 2, 3 };
             IEnumerable expectedValues = new List<int> { 3, 2, 3, 2, 2, 1 };
 
-            Check.That(integers).ContainsOnly(expectedValues);
+            Check.That(integers).IsOnlyMadeOf(expectedValues);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains no value at all!\nThe checked enumerable:\n\t[]\nThe expected enumerable:\n\t[\"what da heck!\"]")]
-        public void ContainsOnlyThrowsWithEmptyList()
+        public void IsOnlyMadeOfWorksWithAnEmptyList()
         {
             var emptyList = new List<int>();
 
-            Check.That(emptyList).ContainsOnly("what da heck!");
+            Check.That(emptyList).IsOnlyMadeOf("what da heck!");
         }
 
         [Test]
-        public void ContainsOnlyDoNotThrowIfBothValuesAreEmptyLists()
+        public void IsOnlyMadeOfDoNotThrowIfBothValuesAreEmptyLists()
         {
             var emptyList = new List<int>();
 
-            Check.That(emptyList).ContainsOnly(new List<int>());
+            Check.That(emptyList).IsOnlyMadeOf(new List<int>());
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is null and thus, does not contain exactly the given value(s).\nThe checked enumerable:\n\t[null]\nThe expected enumerable:\n\t[\"what da heck!\"]")]
-        public void ContainsOnlyThrowsWithNullAsCheckedValue()
+        public void IsOnlyMadeOfThrowsWithNullAsCheckedValue()
         {
             List<int> nullList = null;
 
-            Check.That(nullList).ContainsOnly("what da heck!");
+            Check.That(nullList).IsOnlyMadeOf("what da heck!");
         }
 
         [Test]
-        public void ContainsOnlyDoNotThrowIfBothValuesAreNull()
+        public void IsOnlyMadeOfDoNotThrowIfBothValuesAreNull()
         {
             List<int> nullList = null;
 
-            Check.That(nullList).ContainsOnly(null).And.IsEqualTo(null);
+            Check.That(nullList).IsOnlyMadeOf(null).And.IsEqualTo(null);
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[666, 1974]\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected enumerable:\n\t[1, 2, 3]")]
-        public void ContainsOnlyWithEnumerableThrowsExceptionWhenFailing()
+        public void IsOnlyMadeOfWithEnumerableThrowsExceptionWhenFailing()
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
             IEnumerable expectedValues = new List<int> { 1, 2, 3 };
-            Check.That(integers).ContainsOnly(expectedValues);
+            Check.That(integers).IsOnlyMadeOf(expectedValues);
         }
 
         [Test]
-        public void NotContainsOnlyWithEnumerableWorks()
+        public void NotIsOnlyMadeOfWithEnumerableWorks()
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
             IEnumerable expectedValues = new List<int> { 1, 666, 1974 };
-            Check.That(integers).Not.ContainsOnly(expectedValues);
+            Check.That(integers).Not.IsOnlyMadeOf(expectedValues);
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable contains only the given values whereas it must not.\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected enumerable:\n\t[1, 2, 3, 666, 1974]")]
-        public void NotContainsOnlyWithEnumerableThrowsExceptionWhenFailing()
+        public void NotIsOnlyMadeOfWithEnumerableThrowsExceptionWhenFailing()
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
             IEnumerable expectedValues = new List<int> { 1, 2, 3, 666, 1974 };
-            Check.That(integers).Not.ContainsOnly(expectedValues);
+            Check.That(integers).Not.IsOnlyMadeOf(expectedValues);
         }
 
         [Test]
-        public void ContainsOnlyWithGenericListWorksEvenWhenGivingSameExpectedValueMultipleTimes()
+        public void IsOnlyMadeOfWithGenericListWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
             List<int> integers = new List<int> { 1, 2, 3 };
             List<int> expectedValues = new List<int> { 3, 2, 3, 2, 2, 1 };
 
-            Check.That(integers).ContainsOnly(expectedValues);
+            Check.That(integers).IsOnlyMadeOf(expectedValues);
         }
 
         [Test]
-        public void ContainsOnlyWithArrayListWorksEvenWhenGivingSameExpectedValueMultipleTimes()
+        public void IsOnlyMadeOfWithArrayListWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
             List<int> integers = new List<int> { 1, 2, 3 };
             ArrayList expectedValues = new ArrayList { 3, 2, 3, 2, 2, 1 };
 
-            Check.That(integers).ContainsOnly(expectedValues);
+            Check.That(integers).IsOnlyMadeOf(expectedValues);
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable contains only the given values whereas it must not.\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected enumerable:\n\t[3, 2, 3, 2, 2, 1]")]
-        public void NotContainsOnlyWithArrayListThrowsWhenFailing()
+        public void NotIsOnlyMadeOfWithArrayListThrowsWhenFailing()
         {
             List<int> integers = new List<int> { 1, 2, 3 };
             ArrayList expectedValues = new ArrayList { 3, 2, 3, 2, 2, 1 };
 
-            Check.That(integers).Not.ContainsOnly(expectedValues);
+            Check.That(integers).Not.IsOnlyMadeOf(expectedValues);
         }
 
         [Test]
-        public void ContainsOnlyWithStringCollectionWorksEvenWhenGivingSameExpectedValueMultipleTimes()
+        public void IsOnlyMadeOfWithStringCollectionWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
             List<string> oneTwoThree = new List<string> { "one", "two", "three" };
             StringCollection expectedValues = new StringCollection { "three", "two", "three", "two", "two", "one" };
 
-            Check.That(oneTwoThree).ContainsOnly(expectedValues);
+            Check.That(oneTwoThree).IsOnlyMadeOf(expectedValues);
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[\"uno\", \"tres\"]\nThe checked enumerable:\n\t[1, \"uno\", \"tres\", 45,3]\nThe expected enumerable:\n\t[1, \"Tres\", 45,3]")]
-        public void ContainsOnlyWithEnumerableThrowCaseSensitiveException()
+        public void IsOnlyMadeOfWithEnumerableThrowCaseSensitiveException()
         {
             var variousObjects = new ArrayList { 1, "uno", "tres", 45.3F };
             IEnumerable expectedVariousObjectsWithBadCase = new ArrayList { 1, "Tres", 45.3F };
-            Check.That(variousObjects).ContainsOnly(expectedVariousObjectsWithBadCase);
+            Check.That(variousObjects).IsOnlyMadeOf(expectedVariousObjectsWithBadCase);
         }
 
         [Test]
-        public void ContainsOnlyWithEnumerableOfVariousObjectsTypesWorks()
+        public void IsOnlyMadeOfWithEnumerableOfVariousObjectsTypesWorks()
         {
             var variousObjects = new ArrayList { 1, "uno", "tres", 45.3F };
             IEnumerable expectedVariousObjects = new ArrayList { 1, "uno", "uno", 45.3F, "tres" };
-            Check.That(variousObjects).ContainsOnly(expectedVariousObjects);
+            Check.That(variousObjects).IsOnlyMadeOf(expectedVariousObjects);
         }
 
         #endregion
