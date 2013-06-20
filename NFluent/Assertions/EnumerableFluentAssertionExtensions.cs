@@ -149,15 +149,28 @@ namespace NFluent
 
             assertionRunner.ExecuteAssertion(
                 () =>
+                {
+                    if (runnableAssertion.Value == null && otherEnumerable == null)
                     {
-                        var notFoundValues = ExtractNotFoundValues(runnableAssertion.Value, otherEnumerable);
+                        return;
+                    }
 
-                        if (notFoundValues.Count > 0)
-                        {
-                            throw new FluentAssertionException(string.Format("\nThe actual enumerable:\n\t[{0}]\ndoes not contain the expected value(s):\n\t[{1}]", runnableAssertion.Value.ToEnumeratedString(), notFoundValues.ToEnumeratedString()));
-                        }
-                    },
-                string.Format("\nThe actual enumerable:\n\t[{0}]\ncontains all the given value(s):\n\t[{1}]\nwhich is unexpected.", runnableAssertion.Value.ToEnumeratedString(), otherEnumerable.ToEnumeratedString()));
+                    if (runnableAssertion.Value == null && otherEnumerable != null)
+                    {
+                        var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain the given expected value(s).").For("enumerable").On(runnableAssertion.Value).And.Expected(otherEnumerable).ToString();
+                        throw new FluentAssertionException(message);
+                    }
+
+                    var notFoundValues = ExtractNotFoundValues(runnableAssertion.Value, otherEnumerable);
+
+                    if (notFoundValues.Count > 0)
+                    {
+                        var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain the expected value(s):\n\t[{0}]", notFoundValues.ToEnumeratedString())).For("enumerable").On(runnableAssertion.Value).And.Expected(otherEnumerable).ToString();
+                        throw new FluentAssertionException(message);
+                    }
+                }, 
+                FluentMessage.BuildMessage(string.Format("The {{0}} contains all the given values whereas it must not.")).For("enumerable").On(runnableAssertion.Value).And.Expected(otherEnumerable).ToString());
+
             return new ExtendableFluentAssertion<IEnumerable>(fluentAssertion, otherEnumerable);
         }
 
@@ -194,14 +207,32 @@ namespace NFluent
 
             return assertionRunner.ExecuteAssertion(
                 () =>
-                {
-                    var unexpectedValuesFound = ExtractUnexpectedValues(runnableAssertion.Value, expectedValues);
-
-                    if (unexpectedValuesFound.Count > 0)
                     {
-                        var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain only the given value(s).\nIt contains also other values:\n\t[{0}]", unexpectedValuesFound.ToEnumeratedString())).For("enumerable").On(runnableAssertion.Value).And.Expected(expectedValues).ToString();
-                        throw new FluentAssertionException(message);
-                    }
+                        // TODO: refactor this implementation?
+                        if (runnableAssertion.Value == null && expectedValues == null)
+                        {
+                            return;
+                        }
+
+                        if (runnableAssertion.Value == null && expectedValues != null)
+                        {
+                            var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain exactly the given value(s).").For("enumerable").On(runnableAssertion.Value).And.Expected(expectedValues).ToString();
+                            throw new FluentAssertionException(message);
+                        }
+
+                        if (runnableAssertion.Value != null && runnableAssertion.Value.Count() == 0 && expectedValues.Count() != 0)
+                        {
+                            var message = FluentMessage.BuildMessage("The {0} does not contain only the given value(s).\nIt contains no value at all!").For("enumerable").On(runnableAssertion.Value).And.Expected(expectedValues).ToString();
+                            throw new FluentAssertionException(message);
+                        }
+
+                        var unexpectedValuesFound = ExtractUnexpectedValues(runnableAssertion.Value, expectedValues);
+
+                        if (unexpectedValuesFound.Count > 0)
+                        {
+                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain only the given value(s).\nIt contains also other values:\n\t[{0}]", unexpectedValuesFound.ToEnumeratedString())).For("enumerable").On(runnableAssertion.Value).And.Expected(expectedValues).ToString();
+                            throw new FluentAssertionException(message);
+                        }
                 }, 
                 FluentMessage.BuildMessage("The {0} contains only the given values whereas it must not.").For("enumerable").On(runnableAssertion.Value).And.Expected(expectedValues).ToString());
         }
@@ -241,34 +272,44 @@ namespace NFluent
             var runnableAssertion = fluentAssertion as IRunnableAssertion<IEnumerable>;
 
             return assertionRunner.ExecuteAssertion(
-                () => ContainsExactlyImpl(runnableAssertion, otherEnumerable),
-                BuildExceptionMessageForContainsExactly(runnableAssertion.Value, otherEnumerable));
-        }
-
-        private static void ContainsExactlyImpl(IRunnableAssertion<IEnumerable> runnableAssertion, IEnumerable otherEnumerable)
-        {
-            if (otherEnumerable == null)
-            {
-                ThrowsNotExactlyException(runnableAssertion.Value, null);
-            }
-
-            var first = runnableAssertion.Value.GetEnumerator();
-            var enumerable = otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
-            var second = enumerable.GetEnumerator();
-
-            while (first.MoveNext())
-            {
-                if (!second.MoveNext() 
-                    || !object.Equals(first.Current, second.Current))
+                () => 
                 {
-                    ThrowsNotExactlyException(runnableAssertion.Value, enumerable);
-                }
-            }
+                    // TODO: refactor this implementation
+                    if (runnableAssertion.Value == null && otherEnumerable == null)
+                    {
+                        return;
+                    }
 
-            if (second.MoveNext())
-            {
-                ThrowsNotExactlyException(runnableAssertion.Value, enumerable);
-            }
+                    if (runnableAssertion.Value == null && otherEnumerable != null)
+                    {
+                        var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain exactly the given value(s).").For("enumerable").On(runnableAssertion.Value).And.Expected(otherEnumerable).ToString();
+                        throw new FluentAssertionException(message);
+                    }
+
+                    if (otherEnumerable == null)
+                    {
+                        ThrowsNotExactlyException(runnableAssertion.Value, null);
+                    }
+
+                    var first = runnableAssertion.Value.GetEnumerator();
+                    var enumerable = otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
+                    var second = enumerable.GetEnumerator();
+
+                    while (first.MoveNext())
+                    {
+                        if (!second.MoveNext() 
+                            || !object.Equals(first.Current, second.Current))
+                        {
+                            ThrowsNotExactlyException(runnableAssertion.Value, enumerable);
+                        }
+                    }
+
+                    if (second.MoveNext())
+                    {
+                        ThrowsNotExactlyException(runnableAssertion.Value, enumerable);
+                    }
+                },
+                BuildExceptionMessageForContainsExactly(runnableAssertion.Value, otherEnumerable));
         }
 
         /// <summary>

@@ -16,6 +16,7 @@ namespace NFluent.Tests
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
 
     using NUnit.Framework;
 
@@ -87,6 +88,40 @@ namespace NFluent.Tests
         public void ContainsExactlyAlsoWorksWithEnumerableParameter()
         {
             Check.That(InstantiateDirectors().Properties("Name")).ContainsExactly(InstantiateDirectors().Properties("Name"));
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[] (0 item)\nThe expected enumerable:\n\t[\"what da heck!\"] (1 item)")]
+        public void ContainsExactlyThrowsWithEmptyList()
+        {
+            var emptyList = new List<int>();
+
+            Check.That(emptyList).ContainsExactly("what da heck!");
+        }
+
+        [Test]
+        public void ContainsExactlyDoNotThrowIfBothValuesAreEmptyLists()
+        {
+            var emptyList = new List<int>();
+
+            Check.That(emptyList).ContainsExactly(new List<int>());
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable is null and thus, does not contain exactly the given value(s).\nThe checked enumerable:\n\t[null]\nThe expected enumerable:\n\t[\"what da heck!\"]")]
+        public void ContainsExactlyThrowsWithNullAsCheckedValue()
+        {
+            List<int> nullList = null;
+
+            Check.That(nullList).ContainsExactly("what da heck!");
+        }
+
+        [Test]
+        public void ContainsExactlyDoNotThrowIfBothValuesAreNull()
+        {
+            List<int> nullList = null;
+
+            Check.That(nullList).ContainsExactly(null);
         }
 
         [Test]

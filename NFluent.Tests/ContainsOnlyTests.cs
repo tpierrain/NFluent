@@ -111,6 +111,40 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains no value at all!\nThe checked enumerable:\n\t[]\nThe expected enumerable:\n\t[\"what da heck!\"]")]
+        public void ContainsOnlyThrowsWithEmptyList()
+        {
+            var emptyList = new List<int>();
+
+            Check.That(emptyList).ContainsOnly("what da heck!");
+        }
+
+        [Test]
+        public void ContainsOnlyDoNotThrowIfBothValuesAreEmptyLists()
+        {
+            var emptyList = new List<int>();
+
+            Check.That(emptyList).ContainsOnly(new List<int>());
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable is null and thus, does not contain exactly the given value(s).\nThe checked enumerable:\n\t[null]\nThe expected enumerable:\n\t[\"what da heck!\"]")]
+        public void ContainsOnlyThrowsWithNullAsCheckedValue()
+        {
+            List<int> nullList = null;
+
+            Check.That(nullList).ContainsOnly("what da heck!");
+        }
+
+        [Test]
+        public void ContainsOnlyDoNotThrowIfBothValuesAreNull()
+        {
+            List<int> nullList = null;
+
+            Check.That(nullList).ContainsOnly(null).And.IsEqualTo(null);
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[666, 1974]\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected enumerable:\n\t[1, 2, 3]")]
         public void ContainsOnlyWithEnumerableThrowsExceptionWhenFailing()
         {

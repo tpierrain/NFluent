@@ -53,7 +53,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[1, 2, 3]\ndoes not contain the expected value(s):\n\t[666, 1974]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[666, 1974]\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected enumerable:\n\t[3, 2, 666, 1974]")]
         public void ContainsWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new[] { 1, 2, 3 };
@@ -68,7 +68,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[1, 2, 3]\ncontains all the given value(s):\n\t[3, 2, 1]\nwhich is unexpected.")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable contains all the given values whereas it must not.\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected enumerable:\n\t[3, 2, 1]")]
         public void NotContainsThrowsExceptionWhenFailingWithArrays()
         {
             var integers = new[] { 1, 2, 3 };
@@ -104,7 +104,41 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual enumerable:\n\t[1, 2, 3]\ndoes not contain the expected value(s):\n\t[666, 1974]")]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[\"what da heck!\"]\nThe checked enumerable:\n\t[]\nThe expected enumerable:\n\t[\"what da heck!\"]")]
+        public void ContainsThrowsWithEmptyList()
+        {
+            var emptyList = new List<int>();
+
+            Check.That(emptyList).Contains("what da heck!");
+        }
+
+        [Test]
+        public void ContainsDoNotThrowIfBothValuesAreEmptyLists()
+        {
+            var emptyList = new List<int>();
+
+            Check.That(emptyList).Contains(new List<int>());
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable is null and thus, does not contain the given expected value(s).\nThe checked enumerable:\n\t[null]\nThe expected enumerable:\n\t[\"what da heck!\"]")]
+        public void ContainsThrowsWithNullAsCheckedValue()
+        {
+            List<int> nullList = null;
+
+            Check.That(nullList).Contains("what da heck!");
+        }
+
+        [Test]
+        public void ContainsDoNotThrowIfBothValuesAreNull()
+        {
+            List<int> nullList = null;
+
+            Check.That(nullList).Contains(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[666, 1974]\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected enumerable:\n\t[3, 2, 666, 1974]")]
         public void ContainsWithEnumerableThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new List<int> { 1, 2, 3 };
