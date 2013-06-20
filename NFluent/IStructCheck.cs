@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IRunnableAssertion.cs" company="">
+// // <copyright file="IStructCheck.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,21 +14,11 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System.ComponentModel;
-
     /// <summary>
-    /// Fluent assertion which is runnable by a <see cref="IFluentAssertionRunner{T}" />.
+    /// Provides check methods to be executed on a given value of type struct.
     /// </summary>
-    /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IRunnableAssertion<out T> : IForkableFluentAssertion, INegated
+    /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
+    public interface IStructCheck<T> : IForkableCheck, INegateableCheck<IStructCheck<T>> where T : struct
     {
-        /// <summary>
-        /// Gets the value to be tested (provided for any extension method to be able to test it).
-        /// </summary>
-        /// <value>
-        /// The value to be tested by any fluent assertion extension method.
-        /// </value>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        T Value { get; }
     }
 }

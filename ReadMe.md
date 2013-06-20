@@ -3,16 +3,16 @@
 NFluent overview
 ==============
 
-NFluent is __an assertion library__ which aims __to fluent your .NET TDD experience__.
+NFluent is __an check library__ which aims __to fluent your .NET TDD experience__.
 
 __NFluent will make your tests__:
-+ __fluent to write__: with a __[super-duper-happy](https://github.com/NancyFx/Nancy/wiki/Introduction) auto-completion 'dot' experience__. Indeed, just type the Check.That( followed by one of your object and a dot, and your IDE will show you all the assertions available for the type of the given object to verify. No more, no less (i.e. no auto completion flooding).
++ __fluent to write__: with a __[super-duper-happy](https://github.com/NancyFx/Nancy/wiki/Introduction) auto-completion 'dot' experience__. Indeed, just type the Check.That( followed by one of your object and a dot, and your IDE will show you all the checks available for the type of the given object to verify. No more, no less (i.e. no auto completion flooding).
 + __fluent to read__: very close to plain English, making it easier for non-technical people to read test code.
-+ __fluent to troubleshoot__: every failing assertion of the NFluent library throws an Exception with a crystal-clear message status to ease your TDD experience (see examples below). Thus, no need to set a breakpoint and to debug in order to be able to figure out what went wrong. 
++ __fluent to troubleshoot__: every failing check of the NFluent library throws an Exception with a crystal-clear message status to ease your TDD experience (see examples below). Thus, no need to set a breakpoint and to debug in order to be able to figure out what went wrong. 
 + __helpful to reverse engineer legacy code__: indeed, temporarily write an on-purpose failing assert on a legacy method, so you can understand it and leverage on the "ready-to-be-copied-and-paste-for-arrays-or-collections-initialization-purpose" NFluent assert failure messages.
 + __less error-prone__: indeed, no more confusion about the order of the "expected" and "actual" values you can find in the classical .NET unit tests frameworks.
 
-NFluent is __directly inspired by the awesome Java FEST Fluent__ assertion/reflection library __(http://fest.easytesting.org/)__ which had been recently forked (by one of its most active contributor) to create the more prolific __[AssertJ](https://github.com/joel-costigliola/assertj-core)__ library.
+NFluent is __directly inspired by the awesome Java FEST Fluent__ check/reflection library __(http://fest.easytesting.org/)__ which had been recently forked (by one of its most active contributor) to create the more prolific __[AssertJ](https://github.com/joel-costigliola/assertj-core)__ library.
 
 NFluent & unit test frameworks
 -------------------------------
@@ -22,22 +22,22 @@ Your favorite unit test framework (e.g. NUnit, xUnit, ...) will still handle the
 
 Indeed, we decided to use the `Check.That()` syntax to avoid collisions and name ambiguity with the traditional `Assert` class you can find in most of your .NET unit test frameworks (therefore, no need to declare an alias in your test fixtures).
 
-In fact, __test runners and assertion libraries are two orthogonal topics and concerns__.
+In fact, __test runners and check libraries are two orthogonal topics and concerns__.
 
 
 As simple as possible
 =====================
 
-With NFluent assertion libraries:
+With Nfluent check libraries:
 
-All you've got to remember is: `Check.That`, cause every assertion is then provided via a super-duper-auto-completion-dot-experience ;-)
+All you've got to remember is: `Check.That`, cause every check is then provided via a super-duper-auto-completion-dot-experience ;-)
 ------------------------------------------------------------------------------------------------------------------------
 
 
 Usage sample
 ------------
 
-With NFluent, you can write simple assertions like this:
+With NFluent, you can write simple checks like this:
 ```c#	
     var integers = new int[] { 1, 2, 3, 4, 5, 666 };
     Check.That(integers).Contains(3, 5, 666);
@@ -65,7 +65,7 @@ With NFluent, you can write simple assertions like this:
     Check.That(motivationalSaying).IsNotInstanceOf<int>();
 
 ```
-with NFluent, you can also write assertions like this:
+with NFluent, you can also write checks like this:
 ```c#
 	 var persons = new List<Person>
                                  {
@@ -97,11 +97,11 @@ or like this:
 	Check.That(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
 	
 ``` 
-Why NFluent, and not another .NET fluent assertion framework?
+Why NFluent, and not another .NET fluent check framework?
 ----------------------------------------------------------------------------
-+ Because you think like us that writing a lambda expression within an assertion statement is not really a fluent experience (neither on a reading perspective).
++ Because you think like us that writing a lambda expression within an check statement is not really a fluent experience (neither on a reading perspective).
 + Because NFluent is completely driven by the __[super-duper-happy-path](https://github.com/NancyFx/Nancy/wiki/Introduction)__ principle to fluent your TDD experience. For instance, we consider the 'dot' autocompletion experience as crucial. Thus, it should not be polluted by things not related to the current unit testing context (which occurs with extension methods on classical .NET types - intellisense flooding).
-+ Because you think that those other assertion libraries have not chosen the proper vocabulary (`<subjectUnderTest>.Should().`... why don't they choose `Must` instead?!?). And thus, you'd rather rely on a stronger semantic for your assertions (i.e. NFluent's `Check.That`).
++ Because you think that those other check libraries have not chosen the proper vocabulary (`<subjectUnderTest>.Should().`... why don't they choose `Must` instead?!?). And thus, you'd rather rely on a stronger semantic for your checks (i.e. NFluent's `Check.That`).
 + And because you like *killing features* and extra bonus, such as the Properties() extension method for IEnumerable for instance (as showed within the usage sample above). 
 
 - - -

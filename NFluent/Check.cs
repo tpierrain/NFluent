@@ -24,7 +24,7 @@ namespace NFluent
     public static class Check
     {
         /// <summary>
-        /// Returns a <see cref="ICheck{T}" /> instance that will provide assertion methods to be executed on a given value.
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
         /// <typeparam name="T">Type of the value to be tested.</typeparam>
         /// <param name="value">The value to be tested.</param>
@@ -32,22 +32,22 @@ namespace NFluent
         /// A <see cref="ICheck{T}" /> instance to use in order to assert things on the given value.
         /// </returns>
         /// <remarks>
-        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentAssertionException" /> when failing.
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
         public static ICheck<T> That<T>(T value)
         {
-            return new CheckImpl<T>(value);
+            return new FluentCheck<T>(value);
         }
 
         /// <summary>
-        /// Returns a <see cref="ICheck{T}" /> instance that will provide assertion methods to be executed on a given value.
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
         /// <param name="value">The value to be tested.</param>
         /// <returns>
         /// A <see cref="ILambdaAssertion" /> instance to use in order to assert things on the given value.
         /// </returns>
         /// <remarks>
-        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentAssertionException" /> when failing.
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static ILambdaAssertion That(Action value)
@@ -56,19 +56,19 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Returns a <see cref="IStructFluentAssertion{T}" /> instance that will provide assertion methods to be executed on a given enum or struct value.
+        /// Returns a <see cref="IStructCheck{T}" /> instance that will provide check methods to be executed on a given enum or struct value.
         /// </summary>
         /// <typeparam name="T">Type of the enum or struct value to be tested.</typeparam>
         /// <param name="value">The value to be tested.</param>
         /// <returns>
-        /// A <see cref="IStructFluentAssertion{T}" /> instance to use in order to assert things on the given enum or struct value.
+        /// A <see cref="IStructCheck{T}" /> instance to use in order to assert things on the given enum or struct value.
         /// </returns>
         /// <remarks>
-        /// Every method of the returned <see cref="IStructFluentAssertion{T}" /> instance will throw a <see cref="FluentAssertionException" /> when failing.
+        /// Every method of the returned <see cref="IStructCheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
-        public static IStructFluentAssertion<T> ThatEnum<T>(T value) where T : struct
+        public static IStructCheck<T> ThatEnum<T>(T value) where T : struct
         {
-            return new StructFluentAssertion<T>(value);
+            return new StructFluentCheck<T>(value);
         }
     }
 }

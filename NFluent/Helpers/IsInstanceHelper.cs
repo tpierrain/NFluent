@@ -33,7 +33,7 @@ namespace NFluent.Helpers
         {
             if (instanceType != expectedType)
             {
-                throw new FluentAssertionException(BuildErrorMessageForNullable(instanceType, expectedType, value, false));
+                throw new FluentCheckException(BuildErrorMessageForNullable(instanceType, expectedType, value, false));
             }
         }
 
@@ -42,12 +42,12 @@ namespace NFluent.Helpers
         /// </summary>
         /// <param name="instance">The instance to be checked.</param>
         /// <param name="expectedType">The expected type.</param>
-        /// <exception cref="FluentAssertionException">The instance is not of the expected type.</exception>
+        /// <exception cref="FluentCheckException">The instance is not of the expected type.</exception>
         public static void IsInstanceOf(object instance, Type expectedType)
         {
             if (instance.GetType() != expectedType)
             {
-                throw new FluentAssertionException(BuildErrorMessage(instance, expectedType, false));
+                throw new FluentCheckException(BuildErrorMessage(instance, expectedType, false));
             }
         }
 
@@ -56,12 +56,12 @@ namespace NFluent.Helpers
         /// </summary>
         /// <param name="instance">The instance to be checked.</param>
         /// <param name="typeNotExpected">The type not expected.</param>
-        /// <exception cref="FluentAssertionException">The instance is of the type not expected.</exception>
+        /// <exception cref="FluentCheckException">The instance is of the type not expected.</exception>
         public static void IsNotInstanceOf(object instance, Type typeNotExpected)
         {
             if (instance.GetType() == typeNotExpected)
             {
-                throw new FluentAssertionException(BuildErrorMessage(instance, typeNotExpected, true));
+                throw new FluentCheckException(BuildErrorMessage(instance, typeNotExpected, true));
             }
         }
 
@@ -70,7 +70,7 @@ namespace NFluent.Helpers
         /// </summary>
         /// <param name="instance">The instance to be checked.</param>
         /// <param name="expectedBaseType">The Type which is expected to be a base Type of the instance.</param>
-        /// <exception cref="FluentAssertionException">The instance is not in the inheritance hierarchy of the specified type.</exception>
+        /// <exception cref="FluentCheckException">The instance is not in the inheritance hierarchy of the specified type.</exception>
         public static void InheritsFrom(object instance, Type expectedBaseType)
         {
             var instanceType = instance.GetTypeWithoutThrowingException();
@@ -86,7 +86,7 @@ namespace NFluent.Helpers
                              .Label("Indeed, the {0} {1}")
                              .And.Expected(expectedBaseType)
                              .Label("is not a derived type of");
-            throw new FluentAssertionException(message.ToString());
+            throw new FluentCheckException(message.ToString());
         }
 
         /// <summary>

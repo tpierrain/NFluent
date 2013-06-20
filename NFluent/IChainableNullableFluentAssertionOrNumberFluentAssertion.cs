@@ -17,25 +17,25 @@ namespace NFluent
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Provides a way to chain two <see cref="IForkableFluentAssertion"/> instances or to chain.
+    /// Provides a way to chain two <see cref="IForkableCheck"/> instances or to chain.
     /// </summary>
     /// <typeparam name="N">Number type of the checked nullable.</typeparam>
     public interface IChainableNullableFluentAssertionOrNumberFluentAssertion<N> where N : struct
     {
         /// <summary>
-        /// Chains a new fluent assertion on the current one for the nullable value.
+        /// Chains a new fluent check on the current one for the nullable value.
         /// </summary>
         /// <value>
-        /// The new fluent assertion instance dedicated to the nullable, which has been chained to the previous one.
+        /// The new fluent check instance dedicated to the nullable, which has been chained to the previous one.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         ICheck<N?> And { get; }
 
         /// <summary>
-        /// Chains a new <see cref="ICheck{T}"/> instance to the current assertion.
+        /// Chains a new <see cref="ICheck{T}"/> instance to the current check.
         /// </summary>
         /// <value>
-        /// The new fluent assertion instance dedicated to the nullable Value, which has been chained to the previous one.
+        /// The new fluent check instance dedicated to the nullable Value, which has been chained to the previous one.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         ICheck<N> Which { get; }

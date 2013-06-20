@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IStructFluentAssertion.cs" company="">
+// // <copyright file="INegateableCheck.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,11 +14,21 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
-    /// Provides assertion methods to be executed on a given value of type struct.
+    /// Fluent check that has the ability to be negated via a 'Not' operator.
     /// </summary>
-    /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public interface IStructFluentAssertion<T> : IForkableFluentAssertion, INegateableFluentAssertion<IStructFluentAssertion<T>> where T : struct
+    /// <typeparam name="T">Fluent check type to be negated.</typeparam>
+    public interface INegateableCheck<out T> 
     {
+        /// <summary>
+        /// Negates the next check, and the next check only.
+        /// </summary>
+        /// <value>
+        /// The next check negated.
+        /// </value>
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
+        T Not { get; }
     }
 }

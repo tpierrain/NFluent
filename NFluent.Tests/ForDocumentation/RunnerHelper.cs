@@ -52,14 +52,14 @@ namespace NFluent.Tests.ForDocumentation
                     }
 
                     // if it is specific to chains
-                    if (paramType.Name == "IChainableFluentAssertion`1")
+                    if (paramType.Name == "IChainableCheck`1")
                     {
                         paramType = paramType.GetGenericArguments()[0];
                     }
 
-                    if (paramType.Name == "IExtendableFluentAssertion`1" || paramType.Name == "ICheck`1"
+                    if (paramType.Name == "IExtendableCheck`1" || paramType.Name == "ICheck`1"
                         || paramType.GetInterface("ICheck`1") != null
-                        || paramType.Name == "IStructFluentAssertion`1")
+                        || paramType.Name == "IStructCheck`1")
                     {
                         var testedtype = paramType.GetGenericArguments()[0];
                         result.CheckedType = testedtype;
@@ -200,9 +200,9 @@ namespace NFluent.Tests.ForDocumentation
                      specificTest.GetCustomAttributes(typeof(ExpectedExceptionAttribute), false)[0]).ExpectedException;
                 if (e.InnerException != null)
                 {
-                    if (e.InnerException is FluentAssertionException)
+                    if (e.InnerException is FluentCheckException)
                     {
-                        var fluExc = e.InnerException as FluentAssertionException;
+                        var fluExc = e.InnerException as FluentCheckException;
                         var desc = GetCheckAndType(fluExc);
                         if (desc != null)
                         {
@@ -238,7 +238,7 @@ namespace NFluent.Tests.ForDocumentation
                     {
                         Log(
                             string.Format(
-                                "{0} did not generate a FLUENT ASSERTION:\n{1}",
+                                "{0} did not generate a fluent check:\n{1}",
                                 specificTest.Name,
                                 e.InnerException.Message));
                     }
@@ -297,7 +297,7 @@ namespace NFluent.Tests.ForDocumentation
             }
         }
 
-        private static CheckDescription GetCheckAndType(FluentAssertionException fluExc)
+        private static CheckDescription GetCheckAndType(FluentCheckException fluExc)
         {
             // identify failing test
             var trace = new StackTrace(fluExc);

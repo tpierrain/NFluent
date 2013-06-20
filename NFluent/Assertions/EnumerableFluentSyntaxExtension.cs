@@ -25,42 +25,42 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides extension method on a IChainableFluentAssertion for IEnumerable types.
+    /// Provides extension method on a IChainableCheck for IEnumerable types.
     /// </summary>
     public static class EnumerableFluentSyntaxExtension
     {
         /// <summary>
         /// Checks that the checked <see cref="IEnumerable"/> contains only the authorized items. Can only be used after a call to Contains.
         /// </summary>
-        /// <param name="chainedFluentAssertion">
-        /// The chained Fluent Assertion.
+        /// <param name="chainedCheck">
+        /// The chained fluent check.
         /// </param>
         /// <returns>
-        /// A chainable fluent assertion.
+        /// A chainable fluent check.
         /// </returns>
-        public static IExtendableFluentAssertion<IEnumerable> Only(this IExtendableFluentAssertion<IEnumerable> chainedFluentAssertion)
+        public static IExtendableCheck<IEnumerable> Only(this IExtendableCheck<IEnumerable> chainedCheck)
         {
-            chainedFluentAssertion.And.ContainsOnly(chainedFluentAssertion.OriginalComparand);
-            return chainedFluentAssertion;
+            chainedCheck.And.ContainsOnly(chainedCheck.OriginalComparand);
+            return chainedCheck;
         }
 
         /// <summary>
         /// Checks that the checked <see cref="IEnumerable"/> contains the expected list of items only once.
         /// </summary>
-        /// <param name="chainedFluentAssertion">
-        /// The chained fluent assertion.
+        /// <param name="chainedCheck">
+        /// The chained fluent check.
         /// </param>
         /// <returns>
-        /// A chainable fluent assertion.
+        /// A chainable fluent check.
         /// </returns>
-        public static IExtendableFluentAssertion<IEnumerable> Once(this IExtendableFluentAssertion<IEnumerable> chainedFluentAssertion)
+        public static IExtendableCheck<IEnumerable> Once(this IExtendableCheck<IEnumerable> chainedCheck)
         {
-            var runnableAssertion = chainedFluentAssertion.And as IRunnableAssertion<IEnumerable>;
+            var runnableCheck = chainedCheck.And as IRunnableCheck<IEnumerable>;
             var itemidx = 0;
-            var expectedList = ConvertToArrayList(chainedFluentAssertion);
+            var expectedList = ConvertToArrayList(chainedCheck);
             var listedItems = new ArrayList();
-            Debug.Assert(runnableAssertion != null, "runnableAssertion != null");
-            foreach (var item in runnableAssertion.Value)
+            Debug.Assert(runnableCheck != null, "runnableCheck != null");
+            foreach (var item in runnableCheck.Value)
             {
                 if (expectedList.Contains(item))
                 {
@@ -77,36 +77,36 @@ namespace NFluent
                                             item.ToStringProperlyFormated(),
                                             itemidx))
                                        .For("enumerable")
-                                       .On(runnableAssertion.Value)
-                                       .And.Expected(chainedFluentAssertion.OriginalComparand);
+                                       .On(runnableCheck.Value)
+                                       .And.Expected(chainedCheck.OriginalComparand);
 
-                    throw new FluentAssertionException(message.ToString());
+                    throw new FluentCheckException(message.ToString());
                 }
 
                 itemidx++;
             }
 
-            return chainedFluentAssertion;
+            return chainedCheck;
         }
 
         /// <summary>
         /// Checks that the checked <see cref="IEnumerable"/> contains items in the expected order.
         /// </summary>
-        /// <param name="chainedFluentAssertion">
-        /// The chained fluent assertion.
+        /// <param name="chainedCheck">
+        /// The chained fluent check.
         /// </param>
         /// <returns>
-        /// A chainable fluent assertion.
+        /// A chainable fluent check.
         /// </returns>
-        public static IExtendableFluentAssertion<IEnumerable> InThatOrder(this IExtendableFluentAssertion<IEnumerable> chainedFluentAssertion)
+        public static IExtendableCheck<IEnumerable> InThatOrder(this IExtendableCheck<IEnumerable> chainedCheck)
         {
-            var runnableAssertion = chainedFluentAssertion.And as IRunnableAssertion<IEnumerable>;
-            var orderedList = ConvertToArrayList(chainedFluentAssertion);
+            var runnableCheck = chainedCheck.And as IRunnableCheck<IEnumerable>;
+            var orderedList = ConvertToArrayList(chainedCheck);
 
             var faillingIndex = 0;
             var scanIndex = 0;
-            Debug.Assert(runnableAssertion != null, "runnableAssertion != null");
-            foreach (var item in runnableAssertion.Value)
+            Debug.Assert(runnableCheck != null, "runnableCheck != null");
+            foreach (var item in runnableCheck.Value)
             {
                 if (item != orderedList[scanIndex])
                 {
@@ -152,10 +152,10 @@ namespace NFluent
                                                                         faillingIndex,
                                                                         index > scanIndex ? "early" : "late"))
                                          .For("enumerable")
-                                         .On(runnableAssertion.Value)
-                                           .And.Expected(chainedFluentAssertion.OriginalComparand);
+                                         .On(runnableCheck.Value)
+                                           .And.Expected(chainedCheck.OriginalComparand);
 
-                        throw new FluentAssertionException(message.ToString());
+                        throw new FluentCheckException(message.ToString());
                     }
 
                     if (index >= 0)
@@ -167,13 +167,13 @@ namespace NFluent
                 faillingIndex++;
             }
 
-            return chainedFluentAssertion;
+            return chainedCheck;
         }
 
-        private static ArrayList ConvertToArrayList(IExtendableFluentAssertion<IEnumerable> chainedFluentAssertion)
+        private static ArrayList ConvertToArrayList(IExtendableCheck<IEnumerable> chainedCheck)
         {
             var orderedList = new ArrayList();
-            foreach (var item in chainedFluentAssertion.OriginalComparand)
+            foreach (var item in chainedCheck.OriginalComparand)
             {
                 orderedList.Add(item);
             }

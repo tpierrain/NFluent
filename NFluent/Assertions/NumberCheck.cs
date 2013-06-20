@@ -19,80 +19,80 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides assertion methods to be executed on a number instance.
+    /// Provides check methods to be executed on a number instance.
     /// </summary>
     /// <typeparam name="N">Type of the numerical value.</typeparam>
-    public class NumberCheck<N> : ICheck<N>, IRunnableAssertion<N>, IFluentAssertionRunner<N> where N : IComparable
+    public class NumberCheck<N> : ICheck<N>, IRunnableCheck<N>, ICheckRunner<N> where N : IComparable
     {
         private const string MustBeZeroMessage = "The {0} is different from zero.";
 
         private readonly ICheck<N> check;
-        private readonly FluentAssertionRunner<N> fluentAssertionRunner;
+        private readonly CheckRunner<N> checkRunner;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberCheck{N}" /> class.
         /// </summary>
-        /// <param name="check">The fluent assertion.</param>
+        /// <param name="check">The fluent check.</param>
         public NumberCheck(ICheck<N> check)
         {
             this.check = check;
-            this.fluentAssertionRunner = new FluentAssertionRunner<N>(this);
+            this.checkRunner = new CheckRunner<N>(this);
         }
 
         /// <summary>
         /// Gets the value to be tested (provided for any extension method to be able to test it).
         /// </summary>
         /// <value>
-        /// The value to be tested by any fluent assertion extension method.
+        /// The value to be tested by any fluent check extension method.
         /// </value>
         public N Value 
         { 
             get
             {
-                return ((IRunnableAssertion<N>)this.check).Value;
+                return ((IRunnableCheck<N>)this.check).Value;
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="CheckImpl{T}" /> should be negated or not.
+        /// Gets a value indicating whether this <see cref="FluentCheck{T}" /> should be negated or not.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
+        ///   <c>true</c> if all the methods applying to this check instance should be negated; <c>false</c> otherwise.
         /// </value>
         public bool Negated { get; private set; }
         
         /// <summary>
-        /// Negates the next assertion.
+        /// Negates the next check.
         /// </summary>
         /// <value>
-        /// The next assertion negated.
+        /// The next check negated.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         public ICheck<N> Not { get; private set; }
 
         /// <summary>
-        /// Executes the assertion provided as an happy-path lambda (vs lambda for negated version).
+        /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
-        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentAssertionException"/> otherwise.</param>
+        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentCheckException"/> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
-        /// A new chainable fluent assertion.
+        /// A new chainable fluent check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        IChainableFluentAssertion<ICheck<N>> IFluentAssertionRunner<N>.ExecuteAssertion(Action action, string negatedExceptionMessage)
+        /// <exception cref="FluentCheckException">The check fails.</exception>
+        IChainableCheck<ICheck<N>> ICheckRunner<N>.ExecuteAssertion(Action action, string negatedExceptionMessage)
         {
-            return this.fluentAssertionRunner.ExecuteAssertion(action, negatedExceptionMessage);
+            return this.checkRunner.ExecuteAssertion(action, negatedExceptionMessage);
         }
 
         /// <summary>
-        /// Creates a new instance of the same fluent assertion type, injecting the same Value property
+        /// Creates a new instance of the same fluent check type, injecting the same Value property
         /// (i.e. the system under test), but with a false Negated property in any case.
         /// </summary>
         /// <returns>
-        /// A new instance of the same fluent assertion type, with the same Value property.
+        /// A new instance of the same fluent check type, with the same Value property.
         /// </returns>
         /// <remarks>
-        /// This method is used during the chaining of multiple assertions.
+        /// This method is used during the chaining of multiple checks.
         /// </remarks>
         public object ForkInstance()
         {
@@ -104,14 +104,14 @@ namespace NFluent
         /// </summary>
         /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns>
-        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; throws a <see cref="FluentAssertionException"/> otherwise.
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; throws a <see cref="FluentCheckException"/> otherwise.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The specified <see cref="System.Object"/> is not equal to this instance.</exception>
+        /// <exception cref="FluentCheckException">The specified <see cref="System.Object"/> is not equal to this instance.</exception>
         public new bool Equals(object obj)
         {
-            var assertionRunner = this as IFluentAssertionRunner<N>;
+            var checkRunner = this as ICheckRunner<N>;
 
-            assertionRunner.ExecuteAssertion(
+            checkRunner.ExecuteAssertion(
                 () => EqualityHelper.IsEqualTo(this.Value, obj),
                 EqualityHelper.BuildErrorMessage(this.Value, obj, true));
 
@@ -122,22 +122,22 @@ namespace NFluent
         /// Checks that the actual value is equal to zero.
         /// </summary>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The value is not equal to zero.</exception>
-        public IChainableFluentAssertion<ICheck<N>> IsZero()
+        /// <exception cref="FluentCheckException">The value is not equal to zero.</exception>
+        public IChainableCheck<ICheck<N>> IsZero()
         {
-            var assertionRunner = this.check as IFluentAssertionRunner<N>;
-            IRunnableAssertion<N> runnableAssertion = this;
+            var checkRunner = this.check as ICheckRunner<N>;
+            IRunnableCheck<N> runnableCheck = this;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                     {
-                        var res = InternalIsZero(runnableAssertion.Value);
+                        var res = InternalIsZero(runnableCheck.Value);
 
                         if (!res)
                         {
-                            throw new FluentAssertionException(FluentMessage.BuildMessage(MustBeZeroMessage).On(runnableAssertion.Value).ToString());
+                            throw new FluentCheckException(FluentMessage.BuildMessage(MustBeZeroMessage).On(runnableCheck.Value).ToString());
                         }
                     },
                 FluentMessage.BuildMessage("The {0} is equal to zero whereas it must not.").ToString());
@@ -147,49 +147,49 @@ namespace NFluent
         /// Checks that the actual value is NOT equal to zero.
         /// </summary>
         /// <returns>
-        /// <returns>A chainable assertion.</returns>
+        /// <returns>A chainable check.</returns>
         /// </returns>
-        /// <exception cref="FluentAssertionException">The value is equal to zero.</exception>
-        public IChainableFluentAssertion<ICheck<N>> IsNotZero()
+        /// <exception cref="FluentCheckException">The value is equal to zero.</exception>
+        public IChainableCheck<ICheck<N>> IsNotZero()
         {
-            var assertionRunner = this.check as IFluentAssertionRunner<N>;
-            IRunnableAssertion<N> runnableAssertion = this;
+            var checkRunner = this.check as ICheckRunner<N>;
+            IRunnableCheck<N> runnableCheck = this;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                     {
-                        bool res = InternalIsZero(runnableAssertion.Value);
+                        bool res = InternalIsZero(runnableCheck.Value);
 
                         if (res)
                         {
-                            throw new FluentAssertionException(
+                            throw new FluentCheckException(
                                 FluentMessage.BuildMessage("The {0} is equal to zero, whereas it must not.")
-                                             .On(runnableAssertion.Value)
+                                             .On(runnableCheck.Value)
                                              .ToString());
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is different from zero.").On(runnableAssertion.Value).ToString());
+                FluentMessage.BuildMessage("The {0} is different from zero.").On(runnableCheck.Value).ToString());
         }
 
         /// <summary>
         /// Checks that the actual value is strictly positive.
         /// </summary>
-        /// <returns>A chainable assertion.</returns>
-        /// <exception cref="FluentAssertionException">The value is not strictly positive.</exception>
-        public IChainableFluentAssertion<ICheck<N>> IsPositive()
+        /// <returns>A chainable check.</returns>
+        /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
+        public IChainableCheck<ICheck<N>> IsPositive()
         {
-            var assertionRunner = this.check as IFluentAssertionRunner<N>;
-            IRunnableAssertion<N> runnableAssertion = this;
+            var checkRunner = this.check as ICheckRunner<N>;
+            IRunnableCheck<N> runnableCheck = this;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                     {
-                        if (Convert.ToInt32(runnableAssertion.Value) <= 0)
+                        if (Convert.ToInt32(runnableCheck.Value) <= 0)
                         {
-                            throw new FluentAssertionException(FluentMessage.BuildMessage("The {0} is not strictly positive.").On(runnableAssertion.Value).ToString());
+                            throw new FluentCheckException(FluentMessage.BuildMessage("The {0} is not strictly positive.").On(runnableCheck.Value).ToString());
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is positive, whereas it must not.").On(runnableAssertion.Value).ToString());
+                FluentMessage.BuildMessage("The {0} is positive, whereas it must not.").On(runnableCheck.Value).ToString());
         }
 
         /// <summary>
@@ -199,25 +199,25 @@ namespace NFluent
         /// Comparand to compare the value to.
         /// </param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">
+        /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
-        public IChainableFluentAssertion<ICheck<N>> IsLessThan(N comparand)
+        public IChainableCheck<ICheck<N>> IsLessThan(N comparand)
         {
-            var assertionRunner = this.check as IFluentAssertionRunner<N>;
-            IRunnableAssertion<N> runnableAssertion = this;
+            var checkRunner = this.check as ICheckRunner<N>;
+            IRunnableCheck<N> runnableCheck = this;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                 {
-                    if (runnableAssertion.Value.CompareTo(comparand) >= 0)
+                    if (runnableCheck.Value.CompareTo(comparand) >= 0)
                     {
-                        throw new FluentAssertionException(FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(runnableAssertion.Value).And.Expected(comparand).Comparison("less than").ToString());
+                        throw new FluentCheckException(FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(runnableCheck.Value).And.Expected(comparand).Comparison("less than").ToString());
                     }
                 },
-                FluentMessage.BuildMessage("The {0} is less than the threshold.").On(runnableAssertion.Value).And.Expected(comparand).Comparison("more than").ToString());
+                FluentMessage.BuildMessage("The {0} is less than the threshold.").On(runnableCheck.Value).And.Expected(comparand).Comparison("more than").ToString());
         }
 
         /// <summary>
@@ -227,25 +227,25 @@ namespace NFluent
         /// Comparand to compare the value to.
         /// </param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">
+        /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
-        public IChainableFluentAssertion<ICheck<N>> IsGreaterThan(N comparand)
+        public IChainableCheck<ICheck<N>> IsGreaterThan(N comparand)
         {
-            var assertionRunner = this.check as IFluentAssertionRunner<N>;
-            IRunnableAssertion<N> runnableAssertion = this;
+            var checkRunner = this.check as ICheckRunner<N>;
+            IRunnableCheck<N> runnableCheck = this;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                     {
-                        if (runnableAssertion.Value.CompareTo(comparand) <= 0)
+                        if (runnableCheck.Value.CompareTo(comparand) <= 0)
                         {
-                            throw new FluentAssertionException(FluentMessage.BuildMessage("The {0} is less than the threshold.").On(runnableAssertion.Value).And.Expected(comparand).Comparison("more than").ToString());
+                            throw new FluentCheckException(FluentMessage.BuildMessage("The {0} is less than the threshold.").On(runnableCheck.Value).And.Expected(comparand).Comparison("more than").ToString());
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(runnableAssertion.Value).And.Expected(comparand).Comparison("less than").ToString());
+                FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(runnableCheck.Value).And.Expected(comparand).Comparison("less than").ToString());
         }
 
         #region IEqualityFluentAssertion members
@@ -253,39 +253,39 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
-        /// <returns>A chainable assertion.</returns>
+        /// <returns>A chainable check.</returns>
         /// <param name="expected">The expected value.</param>
-        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public IChainableFluentAssertion<ICheck<N>> IsEqualTo(object expected)
+        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
+        public IChainableCheck<ICheck<N>> IsEqualTo(object expected)
         {
-            var assertionRunner = this.check as IFluentAssertionRunner<N>;
-            IRunnableAssertion<N> runnableAssertion = this;
+            var checkRunner = this.check as ICheckRunner<N>;
+            IRunnableCheck<N> runnableCheck = this;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                     {
-                        EqualityHelper.IsEqualTo(runnableAssertion.Value, expected);
+                        EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
                     },
-                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, true));
+                EqualityHelper.BuildErrorMessage(runnableCheck.Value, expected, true));
         }
 
         /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
-        /// <returns>A chainable assertion.</returns>
+        /// <returns>A chainable check.</returns>
         /// <param name="expected">The expected value.</param>
-        /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public IChainableFluentAssertion<ICheck<N>> IsNotEqualTo(object expected)
+        /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
+        public IChainableCheck<ICheck<N>> IsNotEqualTo(object expected)
         {
-            var assertionRunner = this.check as IFluentAssertionRunner<N>;
-            IRunnableAssertion<N> runnableAssertion = this;
+            var checkRunner = this.check as ICheckRunner<N>;
+            IRunnableCheck<N> runnableCheck = this;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                     {
-                        EqualityHelper.IsNotEqualTo(runnableAssertion.Value, expected);
+                        EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
                     },
-                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expected, false));
+                EqualityHelper.BuildErrorMessage(runnableCheck.Value, expected, false));
         }
 
         #endregion
@@ -297,20 +297,20 @@ namespace NFluent
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
         /// <returns>
-        /// A chainable fluent assertion.
+        /// A chainable fluent check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public IChainableFluentAssertion<ICheck<N>> IsInstanceOf<T>()
+        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
+        public IChainableCheck<ICheck<N>> IsInstanceOf<T>()
         {
-            var assertionRunner = this.check as IFluentAssertionRunner<N>;
-            var runnableAssertion = this;
+            var checkRunner = this.check as ICheckRunner<N>;
+            var runnableCheck = this;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                 {
-                    IsInstanceHelper.IsInstanceOf(runnableAssertion.Value, typeof(T));
+                    IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
                 },
-                IsInstanceHelper.BuildErrorMessage(runnableAssertion, typeof(T), true));
+                IsInstanceHelper.BuildErrorMessage(runnableCheck, typeof(T), true));
         }
 
         /// <summary>
@@ -318,20 +318,20 @@ namespace NFluent
         /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
         /// <returns>
-        /// A chainable fluent assertion.
+        /// A chainable fluent check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public IChainableFluentAssertion<ICheck<N>> IsNotInstanceOf<T>()
+        /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
+        public IChainableCheck<ICheck<N>> IsNotInstanceOf<T>()
         {
-            var assertionRunner = this.check as IFluentAssertionRunner<N>;
-            var runnableAssertion = this;
+            var checkRunner = this.check as ICheckRunner<N>;
+            var runnableCheck = this;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                 {
-                    IsInstanceHelper.IsNotInstanceOf(runnableAssertion.Value, typeof(T));
+                    IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, typeof(T));
                 },
-                IsInstanceHelper.BuildErrorMessage(runnableAssertion, typeof(T), false));
+                IsInstanceHelper.BuildErrorMessage(runnableCheck, typeof(T), false));
         }
 
         #endregion

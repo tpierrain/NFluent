@@ -18,9 +18,9 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides lambda/action specific assertion.
+    /// Provides lambda/action specific check.
     /// </summary>
-    public interface ILambdaAssertion : IForkableFluentAssertion
+    public interface ILambdaAssertion : IForkableCheck
     {
         /// <summary>
         /// Checks that the execution time is below a specified threshold.
@@ -28,37 +28,37 @@ namespace NFluent
         /// <param name="threshold">The threshold.</param>
         /// <param name="timeUnit">The time unit of the given threshold.</param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">Execution was strictly above limit.</exception>
-        IChainableFluentAssertion<ILambdaAssertion> LastsLessThan(double threshold, TimeUnit timeUnit);
+        /// <exception cref="FluentCheckException">Execution was strictly above limit.</exception>
+        IChainableCheck<ILambdaAssertion> LastsLessThan(double threshold, TimeUnit timeUnit);
 
         /// <summary>
         /// Check that the code does not throw an exception.
         /// </summary>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The code raised an exception.</exception>
-        IChainableFluentAssertion<ILambdaAssertion> DoesNotThrow();
+        /// <exception cref="FluentCheckException">The code raised an exception.</exception>
+        IChainableCheck<ILambdaAssertion> DoesNotThrow();
 
         /// <summary>
         /// Checks that the code did throw an exception of a specified type.
         /// </summary>
         /// <typeparam name="T">And.Expected exception type.</typeparam>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The code did not raised an exception of the specified type, or did not raised an exception at all.</exception>
-        IChainableFluentAssertion<ILambdaAssertion> Throws<T>();
+        /// <exception cref="FluentCheckException">The code did not raised an exception of the specified type, or did not raised an exception at all.</exception>
+        IChainableCheck<ILambdaAssertion> Throws<T>();
 
         /// <summary>
         /// Checks that the code did throw an exception of any type.
         /// </summary>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The code did not raised an exception of any type.</exception>
-        IChainableFluentAssertion<ILambdaAssertion> ThrowsAny();
+        /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
+        IChainableCheck<ILambdaAssertion> ThrowsAny();
     }
 }

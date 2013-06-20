@@ -21,7 +21,7 @@
     // </copyright>
     // --------------------------------------------------------------------------------------------------------------------
 	
-	// T4 template responsible to clone assertions extensions methods for all number types from 
+	// T4 template responsible to clone checks extensions methods for all number types from 
 	// a "golden source" one (the one for int)
 	// uses the method of: http://t4-editor.tangible-engineering.com/blog/how-to-generate-multiple-output-files-from-a-single-t4-template.html#Part1
  
@@ -39,11 +39,11 @@
 		// Creates a TextInfo based on the "en-US" culture in order to use the ToTitleCase() method
 		System.Globalization.TextInfo textInfo = new System.Globalization.CultureInfo("en-US", false).TextInfo;
 		string properlyCasedTypeName = textInfo.ToTitleCase(typeName);
-		string assertionClassName =  properlyCasedTypeName + "FluentAssertionExtensions"; // FloatFluentAssertionExtensions
+		string checkClassName =  properlyCasedTypeName + "FluentAssertionExtensions"; // FloatFluentAssertionExtensions
 		
 		manager.StartNewFile(assertionClassName + ".cs");
 		
-		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, assertionClassName, typeName);
+		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
 		
 		Write(sourceCode);
     }

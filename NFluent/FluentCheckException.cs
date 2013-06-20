@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FluentAssertionException.cs" company="">
+// <copyright file="FluentCheckException.cs" company="">
 //   Copyright 2013 Thomas PIERRAIN
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -17,26 +17,26 @@ namespace NFluent
     using System;
 
     /// <summary>
-    /// Thrown when an assertion failed.
+    /// Thrown when an check failed.
     /// </summary>
     [Serializable]
-    public class FluentAssertionException : Exception
+    public class FluentCheckException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FluentAssertionException" /> class.
+        /// Initializes a new instance of the <see cref="FluentCheckException" /> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public FluentAssertionException(string message)
+        public FluentCheckException(string message)
             : base(message)
         {
         }
 
         ///// <summary>
-        ///// Initializes a new instance of the <see cref="FluentAssertionException" /> class.
+        ///// Initializes a new instance of the <see cref="FluentCheckException" /> class.
         ///// </summary>
         ///// <param name="info">The info.</param>
         ///// <param name="context">The context.</param>
-        // protected FluentAssertionException(SerializationInfo info, StreamingContext context)
+        // protected FluentCheckException(SerializationInfo info, StreamingContext context)
         //    : base(info, context)
         // {
         // }

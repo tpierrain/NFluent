@@ -44,7 +44,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nis before the given one:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nis before the given one:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified].")]
         public void NotIsBeforeMayThrowException()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -54,7 +54,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nis before or equals to the given one:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nis before or equals to the given one:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified].")]
         public void NotIsBeforeOrEqualToMayThrowException()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -64,7 +64,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nis not before the given one:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nis not before the given one:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified].")]
         public void IsBeforeThrowsExceptionWhenNotBefore()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -74,7 +74,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nis not before or equals to the given one:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nis not before or equals to the given one:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified].")]
         public void IsBeforeOrEqualThrowsExceptionWhenNotBeforeOrEqual()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -104,7 +104,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nis after the given one:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nis after the given one:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified].")]
         public void NotIsAfterMayThrowExceptions()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -114,7 +114,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nis after or equals to the given one:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nis after or equals to the given one:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified].")]
         public void NotIsAfterOrEqualToMayThrowExceptions()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -124,7 +124,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nis not after the given one:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nis not after the given one:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified].")]
         public void IsAfterThrowsExceptionWhenNotAfter()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -134,7 +134,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nis not after or equals to the given one:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nis not after or equals to the given one:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified].")]
         public void IsAfterOrEqualThrowsExceptionWhenNotAfterOrEqual()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -158,7 +158,7 @@ namespace NFluent.Tests
         }
          
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nThe expected value:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nThe expected value:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]")]
         public void IsEqualToThrowsExceptionWhenNotEqual()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -168,7 +168,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]\nThe expected value:\n\t[\"Batman\"] of type: [System.String]")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]\nThe expected value:\n\t[\"Batman\"] of type: [System.String]")]
         public void IsEqualToThrowsExceptionWhenTypeDiffer()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -177,7 +177,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]")]
         public void IsNotEqualToThrowsExceptionWhenEqual()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -187,7 +187,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]\nThe expected type:\n\t[System.String]")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]\nThe expected type:\n\t[System.String]")]
         public void IsInstanceOfThrowsExceptionWhenNotInstanceOf()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -196,7 +196,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is an instance of System.DateTime whereas it must not.\nThe checked value:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]\nThe expected type: different from\n\t[System.DateTime]")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of System.DateTime whereas it must not.\nThe checked value:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]\nThe expected type: different from\n\t[System.DateTime]")]
         public void IsNotInstanceOfThrowsExceptionWhenInstanceOf()
         {
             var actual = new DateTime(2013, 1, 1);
@@ -205,7 +205,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-02T00:00:00.0000000, Kind = Unspecified]\nignoring hours.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-02T00:00:00.0000000, Kind = Unspecified]\nignoring hours.")]
         public void IsEqualToIgnoringHoursThrowsExceptionWhenDayDiffer()
         {
             var actual = new DateTime(2013, 1, 1);
@@ -214,7 +214,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-02-01T00:00:00.0000000, Kind = Unspecified]\nignoring hours.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-02-01T00:00:00.0000000, Kind = Unspecified]\nignoring hours.")]
         public void IsEqualToIgnoringHoursThrowsExceptionWhenMonthDiffer()
         {
             var actual = new DateTime(2013, 1, 1);
@@ -223,7 +223,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2014-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring hours.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2014-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring hours.")]
         public void IsEqualToIgnoringHoursThrowsExceptionWhenYearDiffer()
         {
             var actual = new DateTime(2013, 1, 1);
@@ -232,7 +232,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-02T01:01:00.0000000, Kind = Unspecified]\nignoring minutes.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-02T01:01:00.0000000, Kind = Unspecified]\nignoring minutes.")]
         public void IsEqualToIgnoringMinutesThrowsExceptionWhenDayDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -241,7 +241,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-02-01T01:01:00.0000000, Kind = Unspecified]\nignoring minutes.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-02-01T01:01:00.0000000, Kind = Unspecified]\nignoring minutes.")]
         public void IsEqualToIgnoringMinutesThrowsExceptionWhenMonthDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -250,7 +250,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2014-01-01T01:01:00.0000000, Kind = Unspecified]\nignoring minutes.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2014-01-01T01:01:00.0000000, Kind = Unspecified]\nignoring minutes.")]
         public void IsEqualToIgnoringMinutesThrowsExceptionWhenYearDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -259,7 +259,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-01T02:01:00.0000000, Kind = Unspecified]\nignoring minutes.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-01T02:01:00.0000000, Kind = Unspecified]\nignoring minutes.")]
         public void IsEqualToIgnoringMinutesThrowsExceptionWhenHourDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -268,7 +268,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-01T01:02:01.0000000, Kind = Unspecified]\nignoring seconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-01T01:02:01.0000000, Kind = Unspecified]\nignoring seconds.")]
         public void IsEqualToIgnoringSecondsThrowsExceptionWhenMinutesDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -277,7 +277,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-01T02:01:01.0000000, Kind = Unspecified]\nignoring seconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-01T02:01:01.0000000, Kind = Unspecified]\nignoring seconds.")]
         public void IsEqualToIgnoringSecondsThrowsExceptionWhenHoursDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -286,7 +286,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-02T01:01:01.0000000, Kind = Unspecified]\nignoring seconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-02T01:01:01.0000000, Kind = Unspecified]\nignoring seconds.")]
         public void IsEqualToIgnoringSecondsThrowsExceptionWhenDayDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -295,7 +295,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-02-01T01:01:01.0000000, Kind = Unspecified]\nignoring seconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-02-01T01:01:01.0000000, Kind = Unspecified]\nignoring seconds.")]
         public void IsEqualToIgnoringSecondsThrowsExceptionWhenMonthDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -304,7 +304,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2014-01-01T01:01:01.0000000, Kind = Unspecified]\nignoring seconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2014-01-01T01:01:01.0000000, Kind = Unspecified]\nignoring seconds.")]
         public void IsEqualToIgnoringSecondsThrowsExceptionWhenYearDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -313,7 +313,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-01T01:01:05.0000000, Kind = Unspecified]\nignoring milliseconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-01T01:01:05.0000000, Kind = Unspecified]\nignoring milliseconds.")]
         public void IsEqualToIgnoringMillisThrowsExceptionWhenSecondsDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -322,7 +322,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-01T01:05:01.0000000, Kind = Unspecified]\nignoring milliseconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-01T01:05:01.0000000, Kind = Unspecified]\nignoring milliseconds.")]
         public void IsEqualToIgnoringMillisThrowsExceptionWhenMinutesDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -331,7 +331,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-01T05:01:01.0000000, Kind = Unspecified]\nignoring milliseconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-01T05:01:01.0000000, Kind = Unspecified]\nignoring milliseconds.")]
         public void IsEqualToIgnoringMillisThrowsExceptionWhenHoursDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -340,7 +340,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-05T01:01:01.0000000, Kind = Unspecified]\nignoring milliseconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-01-05T01:01:01.0000000, Kind = Unspecified]\nignoring milliseconds.")]
         public void IsEqualToIgnoringMillisThrowsExceptionWhenDaysDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -349,7 +349,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-02-01T01:01:01.0000000, Kind = Unspecified]\nignoring milliseconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2013-02-01T01:01:01.0000000, Kind = Unspecified]\nignoring milliseconds.")]
         public void IsEqualToIgnoringMillisThrowsExceptionWhenMonthsDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -358,7 +358,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2014-01-01T01:01:01.0000000, Kind = Unspecified]\nignoring milliseconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]\nis not equal to the given date time:\n\t[2014-01-01T01:01:01.0000000, Kind = Unspecified]\nignoring milliseconds.")]
         public void IsEqualToIgnoringMillisThrowsExceptionWhenYearsDiffer()
         {
             var actual = new DateTime(2013, 1, 1, 1, 1, 0);
@@ -367,7 +367,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe year of the actual date time:\n\t[2013]\nis not equal to the year of the given date time:\n\t[2014].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe year of the actual date time:\n\t[2013]\nis not equal to the year of the given date time:\n\t[2014].")]
         public void IsInSameYearAsThrowsExceptionWhenYearDiffer()
         {
             var actual = new DateTime(2013, 1, 1);
@@ -376,7 +376,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe year of the actual date time:\n\t[2013]\nis equal to the year of the given date time:\n\t[2013].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe year of the actual date time:\n\t[2013]\nis equal to the year of the given date time:\n\t[2013].")]
         public void NegatedIsInSameYearAsThrowsException()
         {
             var actual = new DateTime(2013, 1, 1);
@@ -399,7 +399,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe month of the actual date time:\n\t[12]\nis not equal to the month of the given date time:\n\t[2].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe month of the actual date time:\n\t[12]\nis not equal to the month of the given date time:\n\t[2].")]
         public void IsInSameMonthAsThrowsExceptionWhenMonthDiffer()
         {
             var actual = new DateTime(2013, 12, 1);
@@ -408,7 +408,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe month of the actual date time:\n\t[12]\nis equal to the month of the given date time:\n\t[12].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe month of the actual date time:\n\t[12]\nis equal to the month of the given date time:\n\t[12].")]
         public void NotIsInSameMonthAsThrowsExceptionWhenMonthDiffer()
         {
             var actual = new DateTime(2013, 12, 1);
@@ -435,7 +435,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe day of the actual date time:\n\t[1]\nis not equal to the day of the given date time:\n\t[2].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe day of the actual date time:\n\t[1]\nis not equal to the day of the given date time:\n\t[2].")]
         public void IsInSameDayAsThrowsExceptionWhenDayDiffer()
         {
             var newYears = new DateTime(2013, 1, 1);
@@ -444,7 +444,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe day of the actual date time:\n\t[1]\nis equal to the day of the given date time:\n\t[1].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe day of the actual date time:\n\t[1]\nis equal to the day of the given date time:\n\t[1].")]
         public void NotIsInSameDayAsThrowsExceptionWhenDayDiffer()
         {
             var newYears = new DateTime(2013, 1, 1);
@@ -490,7 +490,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis equal to the given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring milliseconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis equal to the given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring milliseconds.")]
         public void NotIsEqualToIgnoringMillisMayThrowException()
         {
             var newYears = new DateTime(2013, 1, 1);
@@ -499,7 +499,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis equal to the given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring seconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis equal to the given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring seconds.")]
         public void NotIsEqualToIgnoringSecondsMayThrowException()
         {
             var newYears = new DateTime(2013, 1, 1);
@@ -508,7 +508,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis equal to the given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring minutes.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis equal to the given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring minutes.")]
         public void NotIsEqualToIgnoringMinutesMayThrowException()
         {
             var newYears = new DateTime(2013, 1, 1);
@@ -517,7 +517,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentAssertionException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis equal to the given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring hours.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis equal to the given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring hours.")]
         public void NotIsEqualToIgnoringHoursMayThrowException()
         {
             var newYears = new DateTime(2013, 1, 1);

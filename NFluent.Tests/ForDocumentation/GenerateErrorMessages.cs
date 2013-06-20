@@ -116,7 +116,7 @@ namespace NFluent.Tests.ForDocumentation
                     assembly.GetTypes()
                             .Where(
                                 type =>
-                                ((type.GetInterface("IForkableFluentAssertion") != null
+                                ((type.GetInterface("IForkableCheck") != null
                                   && (type.Attributes & TypeAttributes.Abstract) == 0)
                                  || type.GetCustomAttributes(typeof(ExtensionAttribute), false).Length > 0)
                                 && ((type.Attributes & TypeAttributes.Public) == TypeAttributes.Public)))
@@ -183,7 +183,7 @@ namespace NFluent.Tests.ForDocumentation
                                     {
                                         var attrib = attributes[0] as ExpectedExceptionAttribute;
                                         return attrib == null
-                                               || attrib.ExpectedException == typeof(FluentAssertionException);
+                                               || attrib.ExpectedException == typeof(FluentCheckException);
                                     }
 
                                     return false;

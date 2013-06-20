@@ -64,7 +64,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to zero, whereas it must not.\nThe checked value:\n\t[0]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to zero, whereas it must not.\nThe checked value:\n\t[0]")]
         public void IsNotZeroThrowsExceptionWhenFails()
         {
             const ushort Zero = 0;
@@ -85,7 +85,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to zero whereas it must not.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to zero whereas it must not.")]
         public void NotIsZeroThrowsExceptionWhenFailing()
         {
             const ushort Zero = 0;
@@ -106,7 +106,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from zero.\nThe checked value:\n\t[2]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from zero.\nThe checked value:\n\t[2]")]
         public void NotIsNotZeroThrowsExceptionWhenFailing()
         {
             const ushort Two = 2;
@@ -126,7 +126,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[0]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[0]")]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
             const ushort Zero = 0;
@@ -134,7 +134,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
         public void NotIsPositiveThrowsExceptionWhenFailing()
         {
             const ushort Two = 2;
@@ -165,7 +165,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
         public void NotIsLessThanThrowsExceptionWhenFailing()
         {
             const ushort One = 1;
@@ -188,7 +188,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
         public void IsGreaterThanThrowsExceptionWhenFailing()
         {
             const ushort One = 1;
@@ -198,7 +198,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is greater than the threshold.\nThe checked value:\n\t[20]\nThe expected value: less than\n\t[1]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is greater than the threshold.\nThe checked value:\n\t[20]\nThe expected value: less than\n\t[1]")]
         public void NotIsGreaterThanThrowsExceptionWhenFailing()
         {
             const ushort One = 1;
@@ -251,7 +251,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.UInt16]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.UInt16]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             const ushort Twenty = 20;
@@ -260,7 +260,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.UInt16]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.UInt16]")]
         public void NotEqualsThrowsExceptionWhenFailing()
         {
             const ushort Twenty = 20;
@@ -278,7 +278,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.UInt16]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.UInt16]")]
         public void IsNotEqualToThrowsExceptionWhenFailing()
         {
             const ushort Twenty = 20;
@@ -287,7 +287,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[1]\nThe expected value:\n\t[20]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[1]\nThe expected value:\n\t[20]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             const ushort One = 1;
@@ -311,7 +311,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value has no value, which is unexpected.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value has no value, which is unexpected.")]
         public void HasValueThrowsExceptionWhenFailing()
         {
             ushort? noValue = null;
@@ -328,7 +328,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nhas a value, which is unexpected.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nhas a value, which is unexpected.")]
         public void NotHasValueThrowsExceptionWhenFailing()
         {
             ushort? one = 1;
@@ -345,7 +345,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable has no value to be checked.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable has no value to be checked.")]
         public void TryingToChainANullableWithoutAValueIsPossibleButThrowsAnException()
         {
             ushort? noValue = null;
@@ -366,7 +366,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nhas a value, which is unexpected.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nhas a value, which is unexpected.")]
         public void HasNoValueThrowsExceptionWhenFailing()
         {
             ushort? one = 1;
@@ -383,7 +383,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked nullable value has no value, which is unexpected.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value has no value, which is unexpected.")]
         public void NotHasNoValueThrowsExceptionWhenFailing()
         {
             ushort? noValue = null;
@@ -412,7 +412,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is an instance of System.Nullable`1[System.UInt16] whereas it must not.\nThe checked value:\n\t[1] of type: [System.Nullable`1[System.UInt16]]\nThe expected type: different from\n\t[System.Nullable`1[System.UInt16]]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of System.Nullable`1[System.UInt16] whereas it must not.\nThe checked value:\n\t[1] of type: [System.Nullable`1[System.UInt16]]\nThe expected type: different from\n\t[System.Nullable`1[System.UInt16]]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
             ushort? one = 1;
@@ -421,7 +421,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is an instance of System.Nullable`1[System.UInt16] whereas it must not.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.UInt16]]\nThe expected type: different from\n\t[System.Nullable`1[System.UInt16]]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of System.Nullable`1[System.UInt16] whereas it must not.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.UInt16]]\nThe expected type: different from\n\t[System.Nullable`1[System.UInt16]]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             ushort? noValue = null;
@@ -430,7 +430,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is not an instance of System.String.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.UInt16]]\nThe expected type:\n\t[System.String]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of System.String.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.UInt16]]\nThe expected type:\n\t[System.String]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
             ushort? one = null;

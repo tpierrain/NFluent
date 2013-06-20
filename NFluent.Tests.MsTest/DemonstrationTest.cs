@@ -13,7 +13,7 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FluentAssertionException))]
+        [ExpectedException(typeof(FluentCheckException))]
         public void FailingTest()
         {
             Check.That("test").IsEqualTo("tt");

@@ -1,5 +1,5 @@
 New features:
-* Now, the Equals() method of the IFluentAssertion&lt;T&gt; instances is a real fluent assertions.
+* Now, the Equals() method of the IFluentAssertion&lt;T&gt; instances is a real fluent checks.
 * New extensible syntax for Check.That(IEnumerable xxx).Contains(...) that permits to add suffixes narrowing the conditions (e.g.: Check.That(IEnumerable xxx).Contains(...).InThatOrder()). Possible suffixes are (Only, Once or InThatOrder)
 --------------
 Changes:

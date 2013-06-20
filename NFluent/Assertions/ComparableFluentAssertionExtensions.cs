@@ -18,38 +18,38 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides assertion methods to be executed on an <see cref="IComparable"/> instance.
+    /// Provides check methods to be executed on an <see cref="IComparable"/> instance.
     /// </summary>
     public static class ComparableFluentAssertionExtensions
     {
         /// <summary>
         /// Determines whether the specified value is before the other one.
         /// </summary>
-        /// <param name="check">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent check to be extended.</param>
         /// <param name="otherValue">The other value.</param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="NFluent.FluentAssertionException">The current value is not before the other one.</exception>
-        public static IChainableFluentAssertion<ICheck<IComparable>> IsBefore(this ICheck<IComparable> check, IComparable otherValue)
+        /// <exception cref="FluentCheckException">The current value is not before the other one.</exception>
+        public static IChainableCheck<ICheck<IComparable>> IsBefore(this ICheck<IComparable> check, IComparable otherValue)
         {
-            var assertionRunner = check as IFluentAssertionRunner<IComparable>;
-            var runnableAssertion = check as IRunnableAssertion<IComparable>;
+            var checkRunner = check as ICheckRunner<IComparable>;
+            var runnableCheck = check as IRunnableCheck<IComparable>;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                     {
-                        if (runnableAssertion.Value == null || runnableAssertion.Value.CompareTo(otherValue) >= 0)
+                        if (runnableCheck.Value == null || runnableCheck.Value.CompareTo(otherValue) >= 0)
                         {
-                            throw new FluentAssertionException(
+                            throw new FluentCheckException(
                                 FluentMessage.BuildMessage("The {0} is after the reference value whereas it must not.")
-                                             .On(runnableAssertion.Value)
+                                             .On(runnableCheck.Value)
                                              .And.Expected(otherValue)
                                              .Comparison("before")
                                              .ToString());
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is before the reference value whereas it must not.").On(runnableAssertion.Value).And.Expected(otherValue).Comparison("after").ToString());
+                FluentMessage.BuildMessage("The {0} is before the reference value whereas it must not.").On(runnableCheck.Value).And.Expected(otherValue).Comparison("after").ToString());
         }
     }
 }

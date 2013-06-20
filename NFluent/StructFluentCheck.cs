@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="StructFluentAssertion.cs" company="">
+// // <copyright file="StructFluentCheck.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -18,27 +18,27 @@ namespace NFluent
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Provides assertion methods to be executed on a given struct value.
+    /// Provides check methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public class StructFluentAssertion<T> : IStructFluentAssertion<T>, IStructFluentAssertionRunner<T>, IRunnableAssertion<T> where T : struct
+    public class StructFluentCheck<T> : IStructCheck<T>, IStructFluentAssertionRunner<T>, IRunnableCheck<T> where T : struct
     {
         private StructFluentAssertionRunner<T> fluentAssertionRunner;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StructFluentAssertion{T}" /> class.
+        /// Initializes a new instance of the <see cref="StructFluentCheck{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
-        public StructFluentAssertion(T value) : this(value, false)
+        public StructFluentCheck(T value) : this(value, false)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StructFluentAssertion{T}" /> class.
+        /// Initializes a new instance of the <see cref="StructFluentCheck{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <param name="negated">A boolean value indicating whether the assertion should be negated or not.</param>
-        private StructFluentAssertion(T value, bool negated)
+        /// <param name="negated">A boolean value indicating whether the check should be negated or not.</param>
+        private StructFluentCheck(T value, bool negated)
         {
             this.Value = value;
             this.Negated = negated;
@@ -49,61 +49,61 @@ namespace NFluent
         /// Gets the value to be tested (provided for any extension method to be able to test it).
         /// </summary>
         /// <value>
-        /// The value to be tested by any fluent assertion extension method.
+        /// The value to be tested by any fluent check extension method.
         /// </value>
         public T Value { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="CheckImpl{T}" /> should be negated or not.
+        /// Gets a value indicating whether this <see cref="FluentCheck{T}" /> should be negated or not.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
+        ///   <c>true</c> if all the methods applying to this check instance should be negated; <c>false</c> otherwise.
         /// </value>
         public bool Negated { get; private set; }
 
         /// <summary>
-        /// Negates the next assertion.
+        /// Negates the next check.
         /// </summary>
         /// <value>
-        /// The next assertion negated.
+        /// The next check negated.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public IStructFluentAssertion<T> Not
+        public IStructCheck<T> Not
         {
             get
             {
                 bool negated = true;
-                return new StructFluentAssertion<T>(this.Value, negated);
+                return new StructFluentCheck<T>(this.Value, negated);
             }
         }
 
         /// <summary>
-        /// Executes the assertion provided as an happy-path lambda (vs lambda for negated version).
+        /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
-        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentAssertionException"/> otherwise.</param>
+        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentCheckException"/> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
-        /// A new chainable fluent assertion for struct or enum.
+        /// A new chainable fluent check for struct or enum.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        IChainableFluentAssertion<IStructFluentAssertion<T>> IStructFluentAssertionRunner<T>.ExecuteAssertion(Action action, string negatedExceptionMessage)
+        /// <exception cref="FluentCheckException">The check fails.</exception>
+        IChainableCheck<IStructCheck<T>> IStructFluentAssertionRunner<T>.ExecuteAssertion(Action action, string negatedExceptionMessage)
         {
             return this.fluentAssertionRunner.ExecuteAssertion(action, negatedExceptionMessage);
         }
 
         /// <summary>
-        /// Creates a new instance of the same fluent assertion type, injecting the same Value property
+        /// Creates a new instance of the same fluent check type, injecting the same Value property
         /// (i.e. the system under test), but with a false Negated property in any case.
         /// </summary>
         /// <returns>
-        /// A new instance of the same fluent assertion type, with the same Value property.
+        /// A new instance of the same fluent check type, with the same Value property.
         /// </returns>
         /// <remarks>
-        /// This method is used during the chaining of multiple assertions.
+        /// This method is used during the chaining of multiple checks.
         /// </remarks>
-        object IForkableFluentAssertion.ForkInstance()
+        object IForkableCheck.ForkInstance()
         {
-            return new StructFluentAssertion<T>(this.Value);
+            return new StructFluentCheck<T>(this.Value);
         }
     }
 }

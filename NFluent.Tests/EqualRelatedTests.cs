@@ -70,7 +70,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[42] of type: [System.Int32]\nThe expected value:\n\t[42] of type: [System.Int64]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[42] of type: [System.Int32]\nThe expected value:\n\t[42] of type: [System.Int64]")]
         public void IsEqualToThrowsWhenSameNumberOfDifferentTypes()
         {
             const int IntValue = 42;
@@ -80,7 +80,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[Gandhi] of type: [NFluent.Tests.Person]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[Gandhi] of type: [NFluent.Tests.Person]")]
         public void NotIsEqualToWithObjectThrowsExceptionWhenFailing()
         {
             var heroe = new Person { Name = "Gandhi" };
@@ -117,7 +117,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException))]
+        [ExpectedException(typeof(FluentCheckException))]
         public void IsEqualToThrowsExceptionWhenFailingWithIntArray()
         {
             var array = new[] { 45, 43, 54, 666 };
@@ -127,7 +127,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Son of a test\"]\nThe expected string:\n\t[\"no way\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Son of a test\"]\nThe expected string:\n\t[\"no way\"]")]
         public void IsEqualToThrowsExceptionWhenFailingWithString()
         {
             var first = "Son of a test";
@@ -135,7 +135,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[\"Son of a test\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[\"Son of a test\"]")]
         public void NotIsEqualToThrowsExceptionWhenFailingWithString()
         {
             var first = "Son of a test";
@@ -143,7 +143,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[Gandhi]\nThe expected value:\n\t[PolPot]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[Gandhi]\nThe expected value:\n\t[PolPot]")]
         public void IsEqualToThrowsExceptionWhenFailingWithObject()
         {
             var heroe = new Person { Name = "Gandhi" };
@@ -153,7 +153,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Son of a test\"]\nThe expected string:\n\t[null]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Son of a test\"]\nThe expected string:\n\t[null]")]
         public void IsEqualToThrowsProperExceptionEvenWithNullAsExpected()
         {
             var first = "Son of a test";
@@ -161,7 +161,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[null]\nThe expected string:\n\t[\"Kamoulox !\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[null]\nThe expected string:\n\t[\"Kamoulox !\"]")]
         public void IsEqualToThrowsProperExceptionEvenWithNullAsValue()
         {
             string first = null;
@@ -169,7 +169,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[John] of type: [NFluent.Tests.Child]\nThe expected value:\n\t[John] of type: [NFluent.Tests.Person]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[John] of type: [NFluent.Tests.Child]\nThe expected value:\n\t[John] of type: [NFluent.Tests.Person]")]
         public void WeCanSeeTheDifferenceBewteenTwoDifferentObjectsThatHaveTheSameToString()
         {
             Person dad = new Person { Name = "John" };
@@ -178,7 +178,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), MatchType = MessageMatch.Regex, ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\\t\\[John\\] with HashCode: \\[.*\\]\nThe expected value:\n\\t\\[John\\] with HashCode: \\[.*\\]")]
+        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Regex, ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\\t\\[John\\] with HashCode: \\[.*\\]\nThe expected value:\n\\t\\[John\\] with HashCode: \\[.*\\]")]
         public void WeCanAlsoSeeTheDifferenceBetweenTwoDifferentInstancesOfTheSameTypeWhichHaveSameToString()
         {
             // e.g.: "\nExpecting:\n\t[John] of type: [NFluent.Tests.Person] with HashCode: [45523402]\n but was\n\t[John] of type: [NFluent.Tests.Person] with HashCode: [35287174]."
@@ -260,7 +260,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[\"Son of a test\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[\"Son of a test\"]")]
         public void IsNotEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";
@@ -269,7 +269,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Son of a test\"]\nThe expected string:\n\t[\"what?\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Son of a test\"]\nThe expected string:\n\t[\"what?\"]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             var first = "Son of a test";
@@ -299,7 +299,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[\"What is the question?\"] of type: [System.String]\nThe expected value:\n\t[42] of type: [System.Int32]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[\"What is the question?\"] of type: [System.String]\nThe expected value:\n\t[42] of type: [System.Int32]")]
         public void EqualsThrowsExceptionWhenFailing()
         {
             string question = "What is the question?";

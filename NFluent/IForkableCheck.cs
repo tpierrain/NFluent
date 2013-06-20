@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IForkableFluentAssertion.cs" company="">
+// // <copyright file="IForkableCheck.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -17,21 +17,21 @@ namespace NFluent
     using System;
 
     /// <summary>
-    /// Fluent assertion which is able to be forked. An assertion fork is like an assertion clone where the 
-    /// 'Negated' property is always set to false. This interface is mandatory for the chainable assertion mechanism. 
+    /// Fluent check which is able to be forked. An check fork is like an check clone where the 
+    /// 'Negated' property is always set to false. This interface is mandatory for the chainable check mechanism. 
     /// </summary>
     /// <remarks>
     ///     The .NET standard <see cref="ICloneable"/> interface is not used here since it doesn't 
     ///     support and include the 'Negated' property value reset.
     /// </remarks>
-    public interface IForkableFluentAssertion
+    public interface IForkableCheck
     {
         /// <summary>
-        /// Creates a new instance of the same fluent assertion type, injecting the same Value property 
+        /// Creates a new instance of the same fluent check type, injecting the same Value property 
         /// (i.e. the system under test), but with a false Negated property in any case.
         /// </summary>
-        /// <remarks>This method is used during the chaining of multiple assertions.</remarks>
-        /// <returns>A new instance of the same fluent assertion type, with the same Value property.</returns>
+        /// <remarks>This method is used during the chaining of multiple checks.</remarks>
+        /// <returns>A new instance of the same fluent check type, with the same Value property.</returns>
         object ForkInstance();
     }
 }

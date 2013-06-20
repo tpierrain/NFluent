@@ -20,11 +20,11 @@ namespace NFluent.Helpers
     internal static class EqualityHelper
     {
         /// <summary>
-        /// Checks that a given instance is considered to be equal to another expected instance. Throws <see cref="FluentAssertionException"/> otherwise.
+        /// Checks that a given instance is considered to be equal to another expected instance. Throws <see cref="FluentCheckException"/> otherwise.
         /// </summary>
         /// <param name="instance">The considered instance.</param>
         /// <param name="expected">The expected instance.</param>
-        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
+        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static void IsEqualTo(object instance, object expected)
         {
             if (FluentEquals(instance, expected))
@@ -35,7 +35,7 @@ namespace NFluent.Helpers
             // Should throw
             var errorMessage = BuildErrorMessage(instance, expected, false);
 
-            throw new FluentAssertionException(errorMessage);
+            throw new FluentCheckException(errorMessage);
         }
 
         public static bool FluentEquals(object instance, object expected)
@@ -81,16 +81,16 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
-        /// Checks that a given instance is not considered to be equal to another expected instance. Throws <see cref="FluentAssertionException"/> otherwise.
+        /// Checks that a given instance is not considered to be equal to another expected instance. Throws <see cref="FluentCheckException"/> otherwise.
         /// </summary>
         /// <param name="instance">The considered instance.</param>
         /// <param name="expected">The expected instance.</param>
-        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
+        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static void IsNotEqualTo(object instance, object expected)
         {
             if (object.Equals(instance, expected))
             {
-                throw new FluentAssertionException(BuildErrorMessage(instance, expected, true));
+                throw new FluentCheckException(BuildErrorMessage(instance, expected, true));
             }
         }
 

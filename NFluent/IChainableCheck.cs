@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ChainableFluentAssertion.cs" company="">
+// // <copyright file="IChainableCheck.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -17,35 +17,18 @@ namespace NFluent
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Provides a way to chain two <see cref="IForkableFluentAssertion"/> instances. 
+    /// Provides a way to chain two <see cref="IForkableCheck"/> instances. 
     /// </summary>
-    /// <typeparam name="T">Type of the <see cref="IForkableFluentAssertion"/> to be chained.</typeparam>
-    internal class ChainableFluentAssertion<T> : IChainableFluentAssertion<T> where T : class, IForkableFluentAssertion
+    /// <typeparam name="T">Type of the <see cref="IForkableCheck"/> to be chained.</typeparam>
+    public interface IChainableCheck<out T> where T : IForkableCheck
     {
-        private readonly T newAssertionWithSameValue;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChainableFluentAssertion{T}" /> class.
-        /// </summary>
-        /// <param name="previousFluentAssertion">The previous fluent assert.</param>
-        public ChainableFluentAssertion(IForkableFluentAssertion previousFluentAssertion)
-        {
-            this.newAssertionWithSameValue = previousFluentAssertion.ForkInstance() as T;
-        }
-
-        /// <summary>
-        /// Links a new fluent assertion to the current one.
+        /// Chains a new fluent check to the current one.
         /// </summary>
         /// <value>
-        /// The new fluent assertion instance which has been linked to the previous one.
+        /// The new fluent check instance which has been chained to the previous one.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public T And
-        {
-            get
-            {
-                return this.newAssertionWithSameValue;
-            }
-        }
+        T And { get; }
     }
 }

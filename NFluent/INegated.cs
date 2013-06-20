@@ -15,16 +15,16 @@
 namespace NFluent
 {
     /// <summary>
-    /// Indicates whether the fluent assertion is negated or not.
+    /// Indicates whether the fluent check is negated or not.
     /// </summary>
     public interface INegated
     {
         /// <summary>
-        /// Gets a value indicating whether this <see cref="CheckImpl{T}" /> should be negated or not.
-        /// This property is useful when you implement assertion methods. 
+        /// Gets a value indicating whether this <see cref="FluentCheck{T}" /> should be negated or not.
+        /// This property is useful when you implement check methods. 
         /// </summary>
         /// <value>
-        ///   <c>true</c> if all the methods applying to this assertion instance should be negated; <c>false</c> otherwise.
+        ///   <c>true</c> if all the methods applying to this check instance should be negated; <c>false</c> otherwise.
         /// </value>
         bool Negated { get; }
     }

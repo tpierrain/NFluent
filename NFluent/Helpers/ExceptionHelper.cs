@@ -39,7 +39,7 @@ namespace NFluent.Helpers
                     // we need to identiy required exception types
                     var defaultSignature = new[] { typeof(string) };
                     var result = new ExceptionConstructor();
-                    var defaultConstructor = typeof(FluentAssertionException).GetConstructor(defaultSignature);
+                    var defaultConstructor = typeof(FluentCheckException).GetConstructor(defaultSignature);
                     var testingFrameworkFound = false;
 
                     // assert we have a default constructor
@@ -163,7 +163,7 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
-        /// Builds an exception with the given message. Automatically detect the exception type to use depending on the used assertion framework.
+        /// Builds an exception with the given message. Automatically detect the exception type to use depending on the used check framework.
         /// </summary>
         /// <param name="theMessage">The message to build the exception with.</param>
         /// <returns>An exception instance of the appropriate type with the given message.</returns>

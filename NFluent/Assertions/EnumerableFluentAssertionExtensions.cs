@@ -21,113 +21,113 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides assertion methods to be executed on an <see cref="IEnumerable"/> value.
+    /// Provides check methods to be executed on an <see cref="IEnumerable"/> value.
     /// </summary>
     public static class EnumerableFluentAssertionExtensions
     {
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
-        /// <param name="check">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The actual value is not equal to the expected value.</exception>
-        public static IChainableFluentAssertion<ICheck<IEnumerable>> IsEqualTo(this ICheck<IEnumerable> check, object expected)
+        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
+        public static IChainableCheck<ICheck<IEnumerable>> IsEqualTo(this ICheck<IEnumerable> check, object expected)
         {
-            var assertionRunner = check as IFluentAssertionRunner<IEnumerable>;
-            var runnableAssertion = check as IRunnableAssertion<IEnumerable>;
+            var checkRunner = check as ICheckRunner<IEnumerable>;
+            var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
             var expectedEnumerable = expected as IEnumerable;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                     {
-                        EqualityHelper.IsEqualTo(runnableAssertion.Value, expected);
+                        EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
                     },
-                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expectedEnumerable, true));
+                EqualityHelper.BuildErrorMessage(runnableCheck.Value, expectedEnumerable, true));
         }
 
         /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
-        /// <param name="check">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The actual value is equal to the expected value.</exception>
-        public static IChainableFluentAssertion<ICheck<IEnumerable>> IsNotEqualTo(this ICheck<IEnumerable> check, object expected)
+        /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
+        public static IChainableCheck<ICheck<IEnumerable>> IsNotEqualTo(this ICheck<IEnumerable> check, object expected)
         {
-            var assertionRunner = check as IFluentAssertionRunner<IEnumerable>;
-            var runnableAssertion = check as IRunnableAssertion<IEnumerable>;
+            var checkRunner = check as ICheckRunner<IEnumerable>;
+            var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
             var expectedEnumerable = expected as IEnumerable;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                     {
-                        EqualityHelper.IsNotEqualTo(runnableAssertion.Value, expected);
+                        EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
                     },
-                EqualityHelper.BuildErrorMessage(runnableAssertion.Value, expectedEnumerable, false));
+                EqualityHelper.BuildErrorMessage(runnableCheck.Value, expectedEnumerable, false));
         }
 
         /// <summary>
         /// Checks that the actual instance is an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable fluent assertion.
+        /// A chainable fluent check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The actual instance is not of the provided type.</exception>
-        public static IChainableFluentAssertion<ICheck<IEnumerable>> IsInstanceOf<T>(this ICheck<IEnumerable> check)
+        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
+        public static IChainableCheck<ICheck<IEnumerable>> IsInstanceOf<T>(this ICheck<IEnumerable> check)
         {
-            var assertionRunner = check as IFluentAssertionRunner<IEnumerable>;
-            var runnableAssertion = check as IRunnableAssertion<IEnumerable>;
+            var checkRunner = check as ICheckRunner<IEnumerable>;
+            var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                 {
-                    IsInstanceHelper.IsInstanceOf(runnableAssertion.Value, typeof(T));
+                    IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
                 },
-                IsInstanceHelper.BuildErrorMessage(runnableAssertion.Value, typeof(T), true));
+                IsInstanceHelper.BuildErrorMessage(runnableCheck.Value, typeof(T), true));
         }
 
         /// <summary>
         /// Checks that the actual instance is not an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <param name="check">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable fluent assertion.
+        /// A chainable fluent check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The actual instance is of the provided type.</exception>
-        public static IChainableFluentAssertion<ICheck<IEnumerable>> IsNotInstanceOf<T>(this ICheck<IEnumerable> check)
+        /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
+        public static IChainableCheck<ICheck<IEnumerable>> IsNotInstanceOf<T>(this ICheck<IEnumerable> check)
         {
-            var assertionRunner = check as IFluentAssertionRunner<IEnumerable>;
-            var runnableAssertion = check as IRunnableAssertion<IEnumerable>;
+            var checkRunner = check as ICheckRunner<IEnumerable>;
+            var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                 {
-                    IsInstanceHelper.IsNotInstanceOf(runnableAssertion.Value, typeof(T));
+                    IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, typeof(T));
                 },
-                IsInstanceHelper.BuildErrorMessage(runnableAssertion.Value, typeof(T), false));
+                IsInstanceHelper.BuildErrorMessage(runnableCheck.Value, typeof(T), false));
         }
 
         /// <summary>
         /// Checks that the enumerable contains all the given expected values, in any order.
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the enumerable.</typeparam>
-        /// <param name="check">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The enumerable does not contain all the expected values.</exception>
-        public static IExtendableFluentAssertion<IEnumerable> Contains<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
+        /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values.</exception>
+        public static IExtendableCheck<IEnumerable> Contains<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
         {
             IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             return check.Contains(properExpectedValues);
@@ -136,55 +136,55 @@ namespace NFluent
         /// <summary>
         /// Checks that the enumerable contains all the values present in another enumerable, in any order.
         /// </summary>
-        /// <param name="check">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent check to be extended.</param>
         /// <param name="otherEnumerable">The enumerable containing the expected values to be found.</param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
-        public static IExtendableFluentAssertion<IEnumerable> Contains(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
+        /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
+        public static IExtendableCheck<IEnumerable> Contains(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
         {
-            var assertionRunner = check as IFluentAssertionRunner<IEnumerable>;
-            var runnableAssertion = check as IRunnableAssertion<IEnumerable>;
+            var checkRunner = check as ICheckRunner<IEnumerable>;
+            var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            assertionRunner.ExecuteAssertion(
+            checkRunner.ExecuteAssertion(
                 () =>
                 {
-                    if (runnableAssertion.Value == null && otherEnumerable == null)
+                    if (runnableCheck.Value == null && otherEnumerable == null)
                     {
                         return;
                     }
 
-                    if (runnableAssertion.Value == null && otherEnumerable != null)
+                    if (runnableCheck.Value == null && otherEnumerable != null)
                     {
-                        var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain the given expected value(s).").For("enumerable").On(runnableAssertion.Value).And.Expected(otherEnumerable).ToString();
-                        throw new FluentAssertionException(message);
+                        var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain the given expected value(s).").For("enumerable").On(runnableCheck.Value).And.Expected(otherEnumerable).ToString();
+                        throw new FluentCheckException(message);
                     }
 
-                    var notFoundValues = ExtractNotFoundValues(runnableAssertion.Value, otherEnumerable);
+                    var notFoundValues = ExtractNotFoundValues(runnableCheck.Value, otherEnumerable);
 
                     if (notFoundValues.Count > 0)
                     {
-                        var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain the expected value(s):\n\t[{0}]", notFoundValues.ToEnumeratedString())).For("enumerable").On(runnableAssertion.Value).And.Expected(otherEnumerable).ToString();
-                        throw new FluentAssertionException(message);
+                        var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain the expected value(s):\n\t[{0}]", notFoundValues.ToEnumeratedString())).For("enumerable").On(runnableCheck.Value).And.Expected(otherEnumerable).ToString();
+                        throw new FluentCheckException(message);
                     }
                 }, 
-                FluentMessage.BuildMessage(string.Format("The {{0}} contains all the given values whereas it must not.")).For("enumerable").On(runnableAssertion.Value).And.Expected(otherEnumerable).ToString());
+                FluentMessage.BuildMessage(string.Format("The {{0}} contains all the given values whereas it must not.")).For("enumerable").On(runnableCheck.Value).And.Expected(otherEnumerable).ToString());
 
-            return new ExtendableFluentAssertion<IEnumerable>(check, otherEnumerable);
+            return new ExtendableCheck<IEnumerable>(check, otherEnumerable);
         }
 
         /// <summary>
         /// Checks that the enumerable contains only the given values and nothing else, in any order.
         /// </summary>
         /// <typeparam name="T">Type of the expected values to be found.</typeparam>
-        /// <param name="check">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The enumerable does not contain only the expected values provided.</exception>
-        public static IChainableFluentAssertion<ICheck<IEnumerable>> ContainsOnly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
+        /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values provided.</exception>
+        public static IChainableCheck<ICheck<IEnumerable>> ContainsOnly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
         {
             IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
 
@@ -194,62 +194,62 @@ namespace NFluent
         /// <summary>
         /// Checks that the enumerable contains only the values present in another enumerable, and nothing else, in any order.
         /// </summary>
-        /// <param name="check">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
-        public static IChainableFluentAssertion<ICheck<IEnumerable>> ContainsOnly(this ICheck<IEnumerable> check, IEnumerable expectedValues)
+        /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
+        public static IChainableCheck<ICheck<IEnumerable>> ContainsOnly(this ICheck<IEnumerable> check, IEnumerable expectedValues)
         {
-            var assertionRunner = check as IFluentAssertionRunner<IEnumerable>;
-            var runnableAssertion = check as IRunnableAssertion<IEnumerable>;
+            var checkRunner = check as ICheckRunner<IEnumerable>;
+            var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                     {
                         // TODO: refactor this implementation?
-                        if (runnableAssertion.Value == null && expectedValues == null)
+                        if (runnableCheck.Value == null && expectedValues == null)
                         {
                             return;
                         }
 
-                        if (runnableAssertion.Value == null && expectedValues != null)
+                        if (runnableCheck.Value == null && expectedValues != null)
                         {
-                            var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain exactly the given value(s).").For("enumerable").On(runnableAssertion.Value).And.Expected(expectedValues).ToString();
-                            throw new FluentAssertionException(message);
+                            var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain exactly the given value(s).").For("enumerable").On(runnableCheck.Value).And.Expected(expectedValues).ToString();
+                            throw new FluentCheckException(message);
                         }
 
-                        if (runnableAssertion.Value != null && runnableAssertion.Value.Count() == 0 && expectedValues.Count() != 0)
+                        if (runnableCheck.Value != null && runnableCheck.Value.Count() == 0 && expectedValues.Count() != 0)
                         {
-                            var message = FluentMessage.BuildMessage("The {0} does not contain only the given value(s).\nIt contains no value at all!").For("enumerable").On(runnableAssertion.Value).And.Expected(expectedValues).ToString();
-                            throw new FluentAssertionException(message);
+                            var message = FluentMessage.BuildMessage("The {0} does not contain only the given value(s).\nIt contains no value at all!").For("enumerable").On(runnableCheck.Value).And.Expected(expectedValues).ToString();
+                            throw new FluentCheckException(message);
                         }
 
-                        var unexpectedValuesFound = ExtractUnexpectedValues(runnableAssertion.Value, expectedValues);
+                        var unexpectedValuesFound = ExtractUnexpectedValues(runnableCheck.Value, expectedValues);
 
                         if (unexpectedValuesFound.Count > 0)
                         {
-                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain only the given value(s).\nIt contains also other values:\n\t[{0}]", unexpectedValuesFound.ToEnumeratedString())).For("enumerable").On(runnableAssertion.Value).And.Expected(expectedValues).ToString();
-                            throw new FluentAssertionException(message);
+                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain only the given value(s).\nIt contains also other values:\n\t[{0}]", unexpectedValuesFound.ToEnumeratedString())).For("enumerable").On(runnableCheck.Value).And.Expected(expectedValues).ToString();
+                            throw new FluentCheckException(message);
                         }
                 }, 
-                FluentMessage.BuildMessage("The {0} contains only the given values whereas it must not.").For("enumerable").On(runnableAssertion.Value).And.Expected(expectedValues).ToString());
+                FluentMessage.BuildMessage("The {0} contains only the given values whereas it must not.").For("enumerable").On(runnableCheck.Value).And.Expected(expectedValues).ToString());
         }
 
         /// <summary>
         /// Checks that the enumerable contains only the given expected values and nothing else, in order.
-        /// This assertion should only be used with IEnumerable that have a consistent iteration order
+        /// This check should only be used with IEnumerable that have a consistent iteration order
         /// (i.e. don't use it with <see cref="Hashtable" />, prefer <see cref="ContainsOnly{T}" /> in that case).
         /// </summary>
         /// <typeparam name="T">Type of the elements to be found.</typeparam>
-        /// <param name="check">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
-        public static IChainableFluentAssertion<ICheck<IEnumerable>> ContainsExactly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
+        /// <exception cref="FluentCheckException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
+        public static IChainableCheck<ICheck<IEnumerable>> ContainsExactly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
         {
             IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             return check.ContainsExactly(properExpectedValues);
@@ -257,41 +257,41 @@ namespace NFluent
 
         /// <summary>
         /// Checks that the enumerable contains only the values of another enumerable and nothing else, in order.
-        /// This assertion should only be used with IEnumerable that have a consistent iteration order
+        /// This check should only be used with IEnumerable that have a consistent iteration order
         /// (i.e. don't use it with <see cref="Hashtable" />, prefer <see cref="ContainsOnly{T}" /> in that case).
         /// </summary>
-        /// <param name="check">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent check to be extended.</param>
         /// <param name="otherEnumerable">The other enumerable containing the exact expected values to be found.</param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
-        public static IChainableFluentAssertion<ICheck<IEnumerable>> ContainsExactly(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
+        /// <exception cref="FluentCheckException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
+        public static IChainableCheck<ICheck<IEnumerable>> ContainsExactly(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
         {
-            var assertionRunner = check as IFluentAssertionRunner<IEnumerable>;
-            var runnableAssertion = check as IRunnableAssertion<IEnumerable>;
+            var checkRunner = check as ICheckRunner<IEnumerable>;
+            var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () => 
                 {
                     // TODO: refactor this implementation
-                    if (runnableAssertion.Value == null && otherEnumerable == null)
+                    if (runnableCheck.Value == null && otherEnumerable == null)
                     {
                         return;
                     }
 
-                    if (runnableAssertion.Value == null && otherEnumerable != null)
+                    if (runnableCheck.Value == null && otherEnumerable != null)
                     {
-                        var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain exactly the given value(s).").For("enumerable").On(runnableAssertion.Value).And.Expected(otherEnumerable).ToString();
-                        throw new FluentAssertionException(message);
+                        var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain exactly the given value(s).").For("enumerable").On(runnableCheck.Value).And.Expected(otherEnumerable).ToString();
+                        throw new FluentCheckException(message);
                     }
 
                     if (otherEnumerable == null)
                     {
-                        ThrowsNotExactlyException(runnableAssertion.Value, null);
+                        ThrowsNotExactlyException(runnableCheck.Value, null);
                     }
 
-                    var first = runnableAssertion.Value.GetEnumerator();
+                    var first = runnableCheck.Value.GetEnumerator();
                     var enumerable = otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
                     var second = enumerable.GetEnumerator();
 
@@ -300,38 +300,38 @@ namespace NFluent
                         if (!second.MoveNext() 
                             || !object.Equals(first.Current, second.Current))
                         {
-                            ThrowsNotExactlyException(runnableAssertion.Value, enumerable);
+                            ThrowsNotExactlyException(runnableCheck.Value, enumerable);
                         }
                     }
 
                     if (second.MoveNext())
                     {
-                        ThrowsNotExactlyException(runnableAssertion.Value, enumerable);
+                        ThrowsNotExactlyException(runnableCheck.Value, enumerable);
                     }
                 },
-                BuildExceptionMessageForContainsExactly(runnableAssertion.Value, otherEnumerable));
+                BuildExceptionMessageForContainsExactly(runnableCheck.Value, otherEnumerable));
         }
 
         /// <summary>
         /// Checks that the enumerable has the proper number of elements.
         /// </summary>
-        /// <param name="check">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedSize">The expected size to be found.</param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The enumerable has not the expected number of elements.</exception>
-        public static IChainableFluentAssertion<ICheck<IEnumerable>> HasSize(this ICheck<IEnumerable> check, long expectedSize)
+        /// <exception cref="FluentCheckException">The enumerable has not the expected number of elements.</exception>
+        public static IChainableCheck<ICheck<IEnumerable>> HasSize(this ICheck<IEnumerable> check, long expectedSize)
         {
-            var assertionRunner = check as IFluentAssertionRunner<IEnumerable>;
-            var runnableAssertion = check as IRunnableAssertion<IEnumerable>;
+            var checkRunner = check as ICheckRunner<IEnumerable>;
+            var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                     {
-                        HasSizeImpl(runnableAssertion.Value, expectedSize);
+                        HasSizeImpl(runnableCheck.Value, expectedSize);
                     },
-                BuildHasSizeExceptionMessage(runnableAssertion.Value));
+                BuildHasSizeExceptionMessage(runnableCheck.Value));
         }
 
         private static void HasSizeImpl(IEnumerable checkedEnumerable, long expectedSize)
@@ -344,7 +344,7 @@ namespace NFluent
 
                 var elements = checkedEnumerable.ToEnumeratedString();
 
-                throw new FluentAssertionException(string.Format("\nThe actual enumerable has {0} instead of {1}.\nActual content is:\n\t[{2}].", foundElementsNumberDescription, expectedSize, elements));
+                throw new FluentCheckException(string.Format("\nThe actual enumerable has {0} instead of {1}.\nActual content is:\n\t[{2}].", foundElementsNumberDescription, expectedSize, elements));
             }
         }
 
@@ -374,22 +374,22 @@ namespace NFluent
         /// <summary>
         /// Checks that the enumerable is empty.
         /// </summary>
-        /// <param name="check">The fluent assertion to be extended.</param>
+        /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The enumerable is not empty.</exception>
-        public static IChainableFluentAssertion<ICheck<IEnumerable>> IsEmpty(this ICheck<IEnumerable> check)
+        /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
+        public static IChainableCheck<ICheck<IEnumerable>> IsEmpty(this ICheck<IEnumerable> check)
         {
-            var assertionRunner = check as IFluentAssertionRunner<IEnumerable>;
-            var runnableAssertion = check as IRunnableAssertion<IEnumerable>;
+            var checkRunner = check as ICheckRunner<IEnumerable>;
+            var runnableCheck = check as IRunnableCheck<IEnumerable>;
 
-            return assertionRunner.ExecuteAssertion(
+            return checkRunner.ExecuteAssertion(
                 () =>
                     {
-                        if (runnableAssertion.Value.Cast<object>().Any())
+                        if (runnableCheck.Value.Cast<object>().Any())
                         {
-                            throw new FluentAssertionException(string.Format("\nThe actual enumerable is not empty. Contains:\n\t[{0}]", runnableAssertion.Value.ToEnumeratedString()));
+                            throw new FluentCheckException(string.Format("\nThe actual enumerable is not empty. Contains:\n\t[{0}]", runnableCheck.Value.ToEnumeratedString()));
                         }
                     },
                 FluentMessage.BuildMessage("The actual enumerable is empty, which is unexpected.").ToString());
@@ -483,7 +483,7 @@ namespace NFluent
                                         .WithEnumerableCount(enumerable.Count())
                                         .ToString();
 
-            throw new FluentAssertionException(message);
+            throw new FluentCheckException(message);
         }
 
         private static IEnumerable ExtractEnumerableValueFromPossibleOneValueArray<T>(T[] expectedValues)

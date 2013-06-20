@@ -15,19 +15,19 @@
 namespace NFluent
 {
     /// <summary>
-    /// Provides assertion methods to be executed on a given value.
+    /// Provides check methods to be executed on a given value.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface ICheck<out T> : IForkableFluentAssertion, INegateableFluentAssertion<ICheck<T>>
+    public interface ICheck<out T> : IForkableCheck, INegateableCheck<ICheck<T>>
     {
         /// <summary>
         /// Checks whether the specified <see cref="System.Object" /> is equal to this instance or not.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns>
-        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; throws a <see cref="FluentAssertionException"/> otherwise.
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; throws a <see cref="FluentCheckException"/> otherwise.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The specified <see cref="System.Object"/> is not equal to this instance.</exception>
+        /// <exception cref="FluentCheckException">The specified <see cref="System.Object"/> is not equal to this instance.</exception>
         bool Equals(object obj);
     }
 }

@@ -32,7 +32,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [Ignore("Expose IComparable extension methods to 'number' values so that autocompletion works on number values with those comparable assertions.")]
+        [Ignore("Expose IComparable extension methods to 'number' values so that autocompletion works on number values with those comparable checks.")]
         public void IsBeforeWorksWithoutBeingForcedToCastItAsIComparable()
         {
             const int First = 1;
@@ -45,7 +45,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is after the reference value whereas it must not.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[1.0]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is after the reference value whereas it must not.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[1.0]")]
         public void IsBeforeThrowsExceptionWhenFailing()
         {
             Version v1 = new Version(1, 0);
@@ -55,7 +55,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is after the reference value whereas it must not.\nThe checked value:\n\t[null]\nThe expected value: before\n\t[1.0]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is after the reference value whereas it must not.\nThe checked value:\n\t[null]\nThe expected value: before\n\t[1.0]")]
         public void IsBeforeDoesNotThrowNullReferenceExceptionWithNullAsInput()
         {
             Version v1 = new Version(1, 0);
@@ -65,7 +65,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is after the reference value whereas it must not.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[null]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is after the reference value whereas it must not.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[null]")]
         public void IsBeforeDoesNotThrowNullReferenceExceptionWithNullAsAfterValue()
         {
             Version v1 = null;
@@ -84,7 +84,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is before the reference value whereas it must not.\nThe checked value:\n\t[1.0]\nThe expected value: after\n\t[2.0]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is before the reference value whereas it must not.\nThe checked value:\n\t[1.0]\nThe expected value: after\n\t[2.0]")]
         public void IsBeforeWithNotOperatorCanThrowException()
         {
             Version v1 = new Version(1, 0);

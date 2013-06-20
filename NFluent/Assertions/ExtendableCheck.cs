@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExtendableFluentAssertion.cs" company="">
+// <copyright file="ExtendableCheck.cs" company="">
 //   Copyright 2013 Cyrille DUPUYDAUBY
 //   //   Licensed under the Apache License, Version 2.0 (the "License");
 //   //   you may not use this file except in compliance with the License.
@@ -22,27 +22,27 @@ namespace NFluent
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Provides an specific implementation for IEnumerable Fluent Assertion. Required to implement IEnumerable fluent API.
+    /// Provides an specific implementation for IEnumerable fluent check. Required to implement IEnumerable fluent API.
     /// </summary>
     /// <typeparam name="T">
     /// Type managed by this extension.
     /// </typeparam>
     /// <typeparam name="U">Type of the reference comparand.</typeparam>
-    internal class ExtendableFluentAssertion<T, U> : ChainableFluentAssertion<ICheck<T>>, IExtendableFluentAssertion<T, U>
+    internal class ExtendableCheck<T, U> : ChainableCheck<ICheck<T>>, IExtendableCheck<T, U>
     {
         private readonly U originalComparand;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtendableFluentAssertion{T,U}"/> class. 
+        /// Initializes a new instance of the <see cref="ExtendableCheck{T,U}"/> class. 
         /// </summary>
-        /// <param name="previousFluentAssertion">
-        /// The previous fluent assertion.
+        /// <param name="previousCheck">
+        /// The previous fluent check.
         /// </param>
         /// <param name="originalComparand">
         /// Comparand used for the first check.
         /// </param>
-        public ExtendableFluentAssertion(IForkableFluentAssertion previousFluentAssertion, U originalComparand)
-            : base(previousFluentAssertion)
+        public ExtendableCheck(IForkableCheck previousCheck, U originalComparand)
+            : base(previousCheck)
         {
             this.originalComparand = originalComparand;
         }
@@ -66,25 +66,25 @@ namespace NFluent
     }
 
     /// <summary>
-    /// Provides an specific implementation for IEnumerable Fluent Assertion. Required to implement IEnumerable fluent API.
+    /// Provides an specific implementation for IEnumerable fluent check. Required to implement IEnumerable fluent API.
     /// </summary>
     /// <typeparam name="T">
     /// Type managed by this extension.
     /// </typeparam>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    internal class ExtendableFluentAssertion<T> : ExtendableFluentAssertion<T, T>, IExtendableFluentAssertion<T>
+    internal class ExtendableCheck<T> : ExtendableCheck<T, T>, IExtendableCheck<T>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NFluent.ExtendableFluentAssertion{T}"/> class. 
+        /// Initializes a new instance of the <see cref="ExtendableCheck{T}"/> class. 
         /// </summary>
-        /// <param name="previousFluentAssertion">
-        /// The previous fluent assertion.
+        /// <param name="previousCheck">
+        /// The previous fluent check.
         /// </param>
         /// <param name="originalComparand">
         /// Comparand used for the first check.
         /// </param>
-        public ExtendableFluentAssertion(IForkableFluentAssertion previousFluentAssertion, T originalComparand)
-            : base(previousFluentAssertion, originalComparand)
+        public ExtendableCheck(IForkableCheck previousCheck, T originalComparand)
+            : base(previousCheck, originalComparand)
         {
         }
     }

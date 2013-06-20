@@ -18,24 +18,24 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides extension method on a IChainableFluentAssertion for IEnumerable types.
+    /// Provides extension method on a IChainableCheck for IEnumerable types.
     /// </summary>
     public static class StringFluentSyntaxExtension
     {
         /// <summary>
         /// Checks that the checked <see cref="string"/> contains the expected list of strings only once.
         /// </summary>
-        /// <param name="chainedFluentAssertion">
-        /// The chained fluent assertion.
+        /// <param name="chainedCheck">
+        /// The chained fluent check.
         /// </param>
         /// <returns>
-        /// A chainable fluent assertion.
+        /// A chainable fluent check.
         /// </returns>
-        public static IExtendableFluentAssertion<string, string[]> Once(this IExtendableFluentAssertion<string, string[]> chainedFluentAssertion)
+        public static IExtendableCheck<string, string[]> Once(this IExtendableCheck<string, string[]> chainedCheck)
         {
-            var runnableAssertion = chainedFluentAssertion.And as IRunnableAssertion<string>;
-            var value = runnableAssertion.Value;
-            var comparand = chainedFluentAssertion.OriginalComparand;
+            var runnableCheck = chainedCheck.And as IRunnableCheck<string>;
+            var value = runnableCheck.Value;
+            var comparand = chainedCheck.OriginalComparand;
             foreach (var text in comparand)
             {
                 var firstIndex = value.IndexOf(text);
@@ -49,27 +49,27 @@ namespace NFluent
                                      .On(value)
                                      .And.Expected(comparand)
                                      .Label("Expected content once");
-                    throw new FluentAssertionException(message.ToString());
+                    throw new FluentCheckException(message.ToString());
                 }
             }
 
-            return chainedFluentAssertion;
+            return chainedCheck;
         }
 
         /// <summary>
         /// Checks that the checked <see cref="string"/> contains the expected list of strings in the correct order.
         /// </summary>
-        /// <param name="chainedFluentAssertion">
-        /// The chained fluent assertion.
+        /// <param name="chainedCheck">
+        /// The chained fluent check.
         /// </param>
         /// <returns>
-        /// A chainable fluent assertion.
+        /// A chainable fluent check.
         /// </returns>
-        public static IExtendableFluentAssertion<string, string[]> InThatOrder(this IExtendableFluentAssertion<string, string[]> chainedFluentAssertion)
+        public static IExtendableCheck<string, string[]> InThatOrder(this IExtendableCheck<string, string[]> chainedCheck)
         {
-            var runnableAssertion = chainedFluentAssertion.And as IRunnableAssertion<string>;
-            var value = runnableAssertion.Value;
-            var comparand = chainedFluentAssertion.OriginalComparand;
+            var runnableCheck = chainedCheck.And as IRunnableCheck<string>;
+            var value = runnableCheck.Value;
+            var comparand = chainedCheck.OriginalComparand;
             var lastIndex = 0;
             foreach (var text in comparand)
             {
@@ -84,11 +84,11 @@ namespace NFluent
                                      .On(value)
                                      .And.Expected(comparand)
                                      .Label("Expected content");
-                    throw new FluentAssertionException(message.ToString());
+                    throw new FluentCheckException(message.ToString());
                 }
             }
 
-            return chainedFluentAssertion;
+            return chainedCheck;
         }
     }
 }

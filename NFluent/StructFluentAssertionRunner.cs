@@ -17,33 +17,33 @@ namespace NFluent
     using System;
 
     /// <summary>
-    /// Provides a mean to execute a fluent assertion, taking care of whether it should be negated or not, etc.
-    /// This interface is designed for developers that need to add new assertion (extension) methods.
+    /// Provides a mean to execute a fluent check, taking care of whether it should be negated or not, etc.
+    /// This interface is designed for developers that need to add new check (extension) methods.
     /// Thus, it should not be exposed via Intellisense to developers that are using NFluent to write 
-    /// assertions statements.
+    /// checks statements.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
     internal class StructFluentAssertionRunner<T> : IStructFluentAssertionRunner<T> where T : struct
     {
-        private readonly IRunnableAssertion<T> runnableFluentAssertion;
+        private readonly IRunnableCheck<T> runnableFluentCheck;
 
-        public StructFluentAssertionRunner(IRunnableAssertion<T> runnableFluentAssertion)
+        public StructFluentAssertionRunner(IRunnableCheck<T> runnableFluentCheck)
         {
-            this.runnableFluentAssertion = runnableFluentAssertion;
+            this.runnableFluentCheck = runnableFluentCheck;
         }
 
         /// <summary>
-        /// Executes the assertion provided as an happy-path lambda (vs lambda for negated version).
+        /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
-        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentAssertionException"/> otherwise.</param>
+        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentCheckException"/> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
-        /// A new chainable fluent assertion for struct or enum.
+        /// A new chainable fluent check for struct or enum.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        public IChainableFluentAssertion<IStructFluentAssertion<T>> ExecuteAssertion(Action action, string negatedExceptionMessage)
+        /// <exception cref="FluentCheckException">The check fails.</exception>
+        public IChainableCheck<IStructCheck<T>> ExecuteAssertion(Action action, string negatedExceptionMessage)
         {
-            if (this.runnableFluentAssertion.Negated)
+            if (this.runnableFluentCheck.Negated)
             {
                 // The exact opposite ;-)
                 bool mustThrow = false;
@@ -52,22 +52,22 @@ namespace NFluent
                     action();
                     mustThrow = true;
                 }
-                catch (FluentAssertionException)
+                catch (FluentCheckException)
                 {
                 }
 
                 if (mustThrow)
                 {
-                    throw new FluentAssertionException(negatedExceptionMessage);
+                    throw new FluentCheckException(negatedExceptionMessage);
                 }
             }
             else
             {
-                // May throw FluentAssertionException
+                // May throw FluentCheckException
                 action();
             }
 
-            return new ChainableFluentAssertion<IStructFluentAssertion<T>>(this.runnableFluentAssertion);
+            return new ChainableCheck<IStructCheck<T>>(this.runnableFluentCheck);
         }
     }
 }

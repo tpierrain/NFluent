@@ -17,26 +17,26 @@ namespace NFluent
     using System;
 
     /// <summary>
-    ///     Provides a mean to execute a fluent assertion on a struct or an enum value, taking care of 
+    ///     Provides a mean to execute a fluent check on a struct or an enum value, taking care of 
     ///     whether it should be negated or not, etc.
     /// <para>
-    ///     This interface is designed for developers that need to add new assertion (extension) methods.
+    ///     This interface is designed for developers that need to add new check (extension) methods.
     ///     Thus, it should not be exposed via Intellisense to developers that are using NFluent to write 
-    ///     assertions statements.
+    ///     checks statements.
     /// </para>
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
     public interface IStructFluentAssertionRunner<T> where T : struct
     {
         /// <summary>
-        /// Executes the assertion provided as an happy-path lambda (vs lambda for negated version).
+        /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
-        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentAssertionException"/> otherwise.</param>
+        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentCheckException"/> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
         /// <returns>
-        /// A new chainable fluent assertion for struct or enum.
+        /// A new chainable fluent check for struct or enum.
         /// </returns>
-        /// <exception cref="FluentAssertionException">The assertion fails.</exception>
-        IChainableFluentAssertion<IStructFluentAssertion<T>> ExecuteAssertion(Action action, string negatedExceptionMessage);
+        /// <exception cref="FluentCheckException">The check fails.</exception>
+        IChainableCheck<IStructCheck<T>> ExecuteAssertion(Action action, string negatedExceptionMessage);
     }
 }

@@ -17,7 +17,7 @@ namespace NFluent
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Provides a way to chain two <see cref="IForkableFluentAssertion"/> instances or to chain.
+    /// Provides a way to chain two <see cref="IForkableCheck"/> instances or to chain.
     /// </summary>
     /// <typeparam name="N">Number type of the checked nullable.</typeparam>
     internal class ChainableNullableFluentAssertionOrNumberFluentAssertion<N> : IChainableNullableFluentAssertionOrNumberFluentAssertion<N> where N : struct
@@ -27,7 +27,7 @@ namespace NFluent
         /// <summary>
         /// Initializes a new instance of the <see cref="ChainableNullableFluentAssertionOrNumberFluentAssertion{N}" /> class.
         /// </summary>
-        /// <param name="previousCheck">The previous fluent assertion.</param>
+        /// <param name="previousCheck">The previous fluent check.</param>
         public ChainableNullableFluentAssertionOrNumberFluentAssertion(ICheck<N?> previousCheck)
         {
             this.previousCheck = previousCheck;
@@ -37,10 +37,10 @@ namespace NFluent
         private N? Value { get; set; }
 
         /// <summary>
-        /// Chains a new fluent assertion on the current one for the nullable value.
+        /// Chains a new fluent check on the current one for the nullable value.
         /// </summary>
         /// <value>
-        /// The new fluent assertion instance dedicated to the nullable, which has been chained to the previous one.
+        /// The new fluent check instance dedicated to the nullable, which has been chained to the previous one.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         public ICheck<N?> And
@@ -52,24 +52,24 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Chains a new <see cref="ICheck{N}"/> instance to the current assertion.
+        /// Chains a new <see cref="ICheck{N}"/> instance to the current check.
         /// </summary>
         /// <value>
-        /// The new fluent assertion instance dedicated to the nullable Value, which has been chained to the previous one.
+        /// The new fluent check instance dedicated to the nullable Value, which has been chained to the previous one.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         public ICheck<N> Which
         {
             get
             {
-                IRunnableAssertion<N?> runnableAssertion = this.previousCheck as IRunnableAssertion<N?>;
+                IRunnableCheck<N?> runnableCheck = this.previousCheck as IRunnableCheck<N?>;
 
-                if (!runnableAssertion.Value.HasValue)
+                if (!runnableCheck.Value.HasValue)
                 {
-                    throw new FluentAssertionException("\nThe checked nullable has no value to be checked.");
+                    throw new FluentCheckException("\nThe checked nullable has no value to be checked.");
                 }
 
-                return new CheckImpl<N>(runnableAssertion.Value.Value);            
+                return new FluentCheck<N>(runnableCheck.Value.Value);            
             }
         }
     }

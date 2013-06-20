@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IExtendableFluentAssertion.cs" company="">
+// <copyright file="IExtendableCheck.cs" company="">
 //   Copyright 2013 Cyrille DUPUYDAUBY
 //   //   //   Licensed under the Apache License, Version 2.0 (the "License");
 //   //   //   you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@
 namespace NFluent
 {
     /// <summary>
-    /// Provides an specific implementation for IEnumerable Fluent Assertion extension. Required to implement IEnumerable fluent API syntax.
+    /// Provides an specific implementation for IEnumerable fluent check extension. Required to implement IEnumerable fluent API syntax.
     /// </summary>
     /// <typeparam name="T">
     /// Type managed by this extension.
     /// </typeparam>
-    public interface IExtendableFluentAssertion<out T> : IChainableFluentAssertion<ICheck<T>>
+    public interface IExtendableCheck<out T> : IChainableCheck<ICheck<T>>
     {
         /// <summary>
         /// Gets the initial list that was used in Contains.
@@ -36,11 +36,11 @@ namespace NFluent
     }
 
     /// <summary>
-    /// Provides an specific implementation for IEnumerable Fluent Assertion extension. Required to implement IEnumerable fluent API syntax.
+    /// Provides an specific implementation for IEnumerable fluent check extension. Required to implement IEnumerable fluent API syntax.
     /// </summary>
     /// <typeparam name="T">Type managed by this extension.</typeparam>
     /// <typeparam name="U">Type of the reference comparand.</typeparam>
-    public interface IExtendableFluentAssertion<out T, out U> : IChainableFluentAssertion<ICheck<T>>
+    public interface IExtendableCheck<out T, out U> : IChainableCheck<ICheck<T>>
     {
         /// <summary>
         /// Gets the initial list that was used in Contains.

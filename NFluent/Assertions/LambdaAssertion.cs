@@ -20,7 +20,7 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Implements lambda/action specific assertion.
+    /// Implements lambda/action specific check.
     /// </summary>
     public class LambdaAssertion : ILambdaAssertion
     {
@@ -66,7 +66,7 @@ namespace NFluent
         /// Gets or sets the value to be tested (provided for any extension method to be able to test it).
         /// </summary>
         /// <value>
-        /// The value to be tested by any fluent assertion extension method.
+        /// The value to be tested by any fluent check extension method.
         /// </value>
         private Action Value { get; set; }
 
@@ -75,14 +75,14 @@ namespace NFluent
         #region Public Methods and Operators
 
         /// <summary>
-        /// Creates a new instance of the same fluent assertion type, injecting the same Value property
+        /// Creates a new instance of the same fluent check type, injecting the same Value property
         /// (i.e. the system under test), but with a false Negated property in any case.
         /// </summary>
         /// <returns>
-        /// A new instance of the same fluent assertion type, with the same Value property.
+        /// A new instance of the same fluent check type, with the same Value property.
         /// </returns>
         /// <remarks>
-        /// This method is used during the chaining of multiple assertions.
+        /// This method is used during the chaining of multiple checks.
         /// </remarks>
         public object ForkInstance()
         {
@@ -100,12 +100,12 @@ namespace NFluent
         /// Check that the code does not throw an exception.
         /// </summary>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">
+        /// <exception cref="FluentCheckException">
         /// The code raised an exception.
         /// </exception>
-        public IChainableFluentAssertion<ILambdaAssertion> DoesNotThrow()
+        public IChainableCheck<ILambdaAssertion> DoesNotThrow()
         {
             if (this.exception != null)
             {
@@ -113,10 +113,10 @@ namespace NFluent
                     FluentMessage.BuildMessage("The {0} raised an exception, whereas it must not.")
                                    .For("code")
                                    .On(this.exception).Label("The raised exception:").ToString();
-                throw new FluentAssertionException(message1);
+                throw new FluentCheckException(message1);
             }
 
-            return new ChainableFluentAssertion<ILambdaAssertion>(this);
+            return new ChainableCheck<ILambdaAssertion>(this);
         }
 
         /// <summary>
@@ -129,12 +129,12 @@ namespace NFluent
         /// The time unit of the given threshold.
         /// </param>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">
+        /// <exception cref="FluentCheckException">
         /// Execution was strictly above limit.
         /// </exception>
-        public IChainableFluentAssertion<ILambdaAssertion> LastsLessThan(double threshold, TimeUnit timeUnit)
+        public IChainableCheck<ILambdaAssertion> LastsLessThan(double threshold, TimeUnit timeUnit)
         {
             var comparand = new Duration(this.durationInNs, TimeUnit.Nanoseconds).ConvertTo(timeUnit);
             var durationThreshold = new Duration(threshold, timeUnit);
@@ -148,10 +148,10 @@ namespace NFluent
                                    .Comparison("less than")
                                    .ToString();
 
-                throw new FluentAssertionException(message);
+                throw new FluentCheckException(message);
             }
 
-            return new ChainableFluentAssertion<ILambdaAssertion>(this);
+            return new ChainableCheck<ILambdaAssertion>(this);
         }
 
         /// <summary>
@@ -161,19 +161,19 @@ namespace NFluent
         /// And.Expected exception type.
         /// </typeparam>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">
+        /// <exception cref="FluentCheckException">
         /// The code did not raised an exception of the specified type, or did not raised an exception at all.
         /// </exception>
-        public IChainableFluentAssertion<ILambdaAssertion> Throws<T>()
+        public IChainableCheck<ILambdaAssertion> Throws<T>()
         {
             if (this.exception == null)
             {
                 var message =
                     FluentMessage.BuildMessage(
                         "The {0} did not raise an exception, whereas it must.").For("code").Expected(typeof(T)).Label("Expected exception type is:").ToString();
-                throw new FluentAssertionException(message);
+                throw new FluentCheckException(message);
             }
 
             if (!(this.exception is T))
@@ -183,31 +183,31 @@ namespace NFluent
                                    .For("code").On(this.exception).Label("Raised Exception").And.Expected(typeof(T)).Label("Expected exception type is:")
                                    .ToString();
 
-                throw new FluentAssertionException(message);
+                throw new FluentCheckException(message);
             }
 
-            return new ChainableFluentAssertion<ILambdaAssertion>(this);
+            return new ChainableCheck<ILambdaAssertion>(this);
         }
 
         /// <summary>
         /// Checks that the code did throw an exception of any type.
         /// </summary>
         /// <returns>
-        /// A chainable assertion.
+        /// A chainable check.
         /// </returns>
-        /// <exception cref="FluentAssertionException">
+        /// <exception cref="FluentCheckException">
         /// The code did not raised an exception of any type.
         /// </exception>
-        public IChainableFluentAssertion<ILambdaAssertion> ThrowsAny()
+        public IChainableCheck<ILambdaAssertion> ThrowsAny()
         {
             if (this.exception == null)
             {
                 var message =
                     FluentMessage.BuildMessage("The {0} did not raise an exception, whereas it must.").For("code").ToString();
-                throw new FluentAssertionException(message);
+                throw new FluentCheckException(message);
             }
 
-            return new ChainableFluentAssertion<ILambdaAssertion>(this);
+            return new ChainableCheck<ILambdaAssertion>(this);
         }
 
         #endregion

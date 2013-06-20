@@ -38,14 +38,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is null.\nThe expected substrin(s):\n\t[\"fails\", \"anyway\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is null.\nThe expected substrin(s):\n\t[\"fails\", \"anyway\"]")]
         public void ContainsFailsProperlyOnNullString()
         {
             Check.That((string)null).Contains("fails", "anyway");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string does not contains the expected value(s): \"C\", \"A\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected substring(s):\n\t[\"C\", \"a\", \"A\", \"z\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string does not contains the expected value(s): \"C\", \"A\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected substring(s):\n\t[\"C\", \"a\", \"A\", \"z\"]")]
         public void ContainsIsCaseSensitive()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -53,7 +53,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string does not contains the expected value(s): \"0\", \"4\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected substring(s):\n\t[\"c\", \"0\", \"4\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string does not contains the expected value(s): \"0\", \"4\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected substring(s):\n\t[\"c\", \"0\", \"4\"]")]
         public void ContainsThrowsExceptionWhenFails()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -75,7 +75,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string contains unauthorized value(s): \"c\", \"z\", \"u\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe unauthorized substring(s):\n\t[\"c\", \"z\", \"u\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string contains unauthorized value(s): \"c\", \"z\", \"u\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe unauthorized substring(s):\n\t[\"c\", \"z\", \"u\"]")]
         public void DoesNotContainsFailsWhenAppropriate()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -90,7 +90,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string contains \"lmnop\" at 11 and 25, where as it must contains it once.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]\nExpected content once\n\t[\"lmnop\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string contains \"lmnop\" at 11 and 25, where as it must contains it once.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]\nExpected content once\n\t[\"lmnop\"]")]
         public void ContainsOnceFailsProperly()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxylmnopz";
@@ -105,7 +105,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string does not contain the expected strings in the correct order.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]\nExpected content\n\t[\"cd\", \"ab\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string does not contain the expected strings in the correct order.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]\nExpected content\n\t[\"cd\", \"ab\"]")]
         public void ContainsInThatOrderFailsProperly()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxylmnopz";
@@ -113,7 +113,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string's start is different from the expected one.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: starts with\n\t[\"ABCDEF\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string's start is different from the expected one.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: starts with\n\t[\"ABCDEF\"]")]
         public void StartWithIsCaseSensitive()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -121,7 +121,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is null.\nThe expected value: starts with\n\t[\"fails\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is null.\nThe expected value: starts with\n\t[\"fails\"]")]
         public void StartsWithFailsProperlyOnNullString()
         {
             Check.That((string)null).StartsWith("fails");
@@ -142,7 +142,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string starts with expected one, whereas it must not.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: does not start with\n\t[\"abcdef\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string starts with expected one, whereas it must not.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: does not start with\n\t[\"abcdef\"]")]
         public void NegatedStartWithThrowsException()
         {
             var alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -157,7 +157,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string's end is different from the expected one.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: ends with\n\t[\"UWXYZ\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string's end is different from the expected one.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: ends with\n\t[\"UWXYZ\"]")]
         public void EndsWithIsCaseSensitive()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -165,7 +165,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is null.\nThe expected value: ends with\n\t[\"fails\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is null.\nThe expected value: ends with\n\t[\"fails\"]")]
         public void EndsWithFailsProperlyOnNullString()
         {
             Check.That((string)null).EndsWith("fails");
@@ -187,7 +187,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string ends with expected one, whereas it must not.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: does not end with\n\t[\"vwxyz\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string ends with expected one, whereas it must not.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: does not end with\n\t[\"vwxyz\"]")]
         public void EndsWithIsNegatableFails()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -202,7 +202,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length.\nThe checked string:\n\t[\"toto\"]\nThe expected string:\n\t[\"tutu\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length.\nThe checked string:\n\t[\"toto\"]\nThe expected string:\n\t[\"tutu\"]")]
         public void EqualFailsWithSameLength()
         {
             var check = "toto";
@@ -210,7 +210,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is different from the expected one but only in case.\nThe checked string:\n\t[\"toto\"]\nThe expected string:\n\t[\"TOTO\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but only in case.\nThe checked string:\n\t[\"toto\"]\nThe expected string:\n\t[\"TOTO\"]")]
         public void EqualFailsWithDiffCase()
         {
             var check = "toto";
@@ -218,7 +218,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"toto\"]\nThe expected string:\n\t[\"tititutu\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"toto\"]\nThe expected string:\n\t[\"tititutu\"]")]
         public void EqualFailsInGeneral()
         {
             var check = "toto";
@@ -226,7 +226,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is different from expected one, it is missing the end.\nThe checked string:\n\t[\"titi\"]\nThe expected string:\n\t[\"tititutu\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one, it is missing the end.\nThe checked string:\n\t[\"titi\"]\nThe expected string:\n\t[\"tititutu\"]")]
         public void EqualFailshWhenShorter()
         {
             var check = "titi";
@@ -234,7 +234,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is different from expected one, it contains extra text at the end.\nThe checked string:\n\t[\"tititutu\"]\nThe expected string:\n\t[\"titi\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one, it contains extra text at the end.\nThe checked string:\n\t[\"tititutu\"]\nThe expected string:\n\t[\"titi\"]")]
         public void EqualFailshWhenStartSame()
         {
             var check = "tititutu";
@@ -266,14 +266,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string does not match the expected one.\nThe checked string:\n\t[\"AC 12\"]\nThe expected string: matches\n\t[\"[0-9]. [a-z]*\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string does not match the expected one.\nThe checked string:\n\t[\"AC 12\"]\nThe expected string: matches\n\t[\"[0-9]. [a-z]*\"]")]
         public void StringMatchesFails()
         {
             Check.That("AC 12").Matches("[0-9]. [a-z]*");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is null.\nThe expected value: matches\n\t[\"[0-9]. [a-z]*\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is null.\nThe expected value: matches\n\t[\"[0-9]. [a-z]*\"]")]
         public void StringMatchesFailsProperlyForNull()
         {
             Check.That((string)null).Matches("[0-9]. [a-z]*");
@@ -287,7 +287,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string matches expected one, whereas it must not.\nThe checked string:\n\t[\"12 ac\"]\nThe expected string: does not match\n\t[\"[0-9]*. [a-z]*\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string matches expected one, whereas it must not.\nThe checked string:\n\t[\"12 ac\"]\nThe expected string: does not match\n\t[\"[0-9]*. [a-z]*\"]")]
         public void NotStringMatchesFails()
         {
             Check.That("12 ac").Not.Matches("[0-9]*. [a-z]*");
@@ -303,14 +303,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string matches expected one, whereas it must not.\nThe checked string:\n\t[\"12 AC\"]\nThe expected string: does not match\n\t[\"[0-9]. [a-z]*\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string matches expected one, whereas it must not.\nThe checked string:\n\t[\"12 AC\"]\nThe expected string: does not match\n\t[\"[0-9]. [a-z]*\"]")]
         public void StringDoesNotMatchFails()
         {
             Check.That("12 AC").DoesNotMatch("[0-9]. [a-z]*");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked value is null.\nThe expected value: matches\n\t[\"[0-9]. [a-z]*\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is null.\nThe expected value: matches\n\t[\"[0-9]. [a-z]*\"]")]
         public void StringDoesNotMatchProperlyForNull()
         {
             Check.That((string)null).Matches("[0-9]. [a-z]*");
@@ -324,7 +324,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string matches expected one, whereas it must not.\nThe checked string:\n\t[\"12 ac\"]\nThe expected string: does not match\n\t[\"[0-9]*. [a-z]*\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string matches expected one, whereas it must not.\nThe checked string:\n\t[\"12 ac\"]\nThe expected string: does not match\n\t[\"[0-9]*. [a-z]*\"]")]
         public void NotStringDoesNotMatchFails()
         {
             Check.That("12 ac").Not.Matches("[0-9]*. [a-z]*");
@@ -340,35 +340,35 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is not empty or null.\nThe checked string:\n\t[\"test\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is not empty or null.\nThe checked string:\n\t[\"test\"]")]
         public void IsEmptyFailsIfNotEmpty()
         {
             Check.That("test").IsEmpty();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is null instead of being empty.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is null instead of being empty.")]
         public void IsEmptyFailsIfNnull()
         {
             Check.That((string)null).IsEmpty();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is not empty or null.\nThe checked string:\n\t[\"test\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is not empty or null.\nThe checked string:\n\t[\"test\"]")]
         public void NegatedIsNotEmptyFailsIfNotEmpty()
         {
             Check.That("test").Not.IsNotEmpty();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is empty, whereas it must not.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is empty, whereas it must not.")]
         public void IsNotEmptyFailsIfEmpty()
         {
             Check.That(string.Empty).IsNotEmpty();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is null instead of being empty.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is null instead of being empty.")]
         public void NegatedIsNotEmptyFailsIfNull()
         {
             Check.That((string)null).Not.IsNotEmpty();
@@ -382,7 +382,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is not empty or null.\nThe checked string:\n\t[\"test\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is not empty or null.\nThe checked string:\n\t[\"test\"]")]
         public void IsNullEmptyFailsIfNotEmpty()
         {
             Check.That("test").IsNullOrEmpty();
@@ -395,14 +395,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is empty, whereas it must not.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is empty, whereas it must not.")]
         public void HasContentFailsIfEmpty()
         {
             Check.That(string.Empty).HasContent();
         }
         
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is null whereas it must have content.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is null whereas it must have content.")]
         public void HasContentFailsIfNull()
         {
             Check.That((string)null).HasContent();
@@ -416,14 +416,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"test\"]\nThe expected string:\n\t[\"TOAST\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"test\"]\nThe expected string:\n\t[\"TOAST\"]")]
         public void CompareNoCaseFails()
         {
             Check.That("test").IsEqualIgnoringCase("TOAST");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentAssertionException), ExpectedMessage = "\nThe checked string is different from expected one, it contains extra text at the end.\nThe checked string:\n\t[\"test\"]\nThe expected string:\n\t[\"Te\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one, it contains extra text at the end.\nThe checked string:\n\t[\"test\"]\nThe expected string:\n\t[\"Te\"]")]
         public void CompareNoCaseFailsWithStartOnly()
         {
             Check.That("test").IsEqualIgnoringCase("Te");
