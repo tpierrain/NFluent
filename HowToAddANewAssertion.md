@@ -20,14 +20,14 @@ To create a new check method, write a test for it (TDD ;-), and then follow the 
 as the one used for the StartsWith() check (applying on string) presented below:
 
 ```c#
-		public static IChainableFluentAssertion<ICheck<string>> StartsWith(this ICheck<string> fluentAssertion, string expectedPrefix)
+		public static ILinkableFluentAssertion<ICheck<string>> StartsWith(this ICheck<string> fluentAssertion, string expectedPrefix)
         {
 			// Every check method starts by some cast operations in order to retrieve the check runner
 			// and the runnable check (both are implemented by the concrete type FluentAssertion<T>)
             var checkRunner = fluentAssertion as ICheckRunner<string>;
             var runnableCheck = fluentAssertion as IrunnableCheck<string>;
 
-			// Then, we make the runner's ExecuteAssertion() method returning the chainable result
+			// Then, we make the runner's ExecuteAssertion() method returning the linkable result
 			// This method needs 2 arguments:
 			//	 1- a lambda that checks what's necessary, and throws a FluentAssertionException in case of failure
 			//   2- a string containing the exception message that should be thrown by the check runner

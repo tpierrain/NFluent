@@ -386,7 +386,7 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsInstanceOf (which is chainable)
+        #region IsInstanceOf (which is linkable)
 
         [Test]
         public void IsInstanceOfWorksWithNullable()
@@ -397,7 +397,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsInstanceOfWithNullableIsChainable()
+        public void IsInstanceOfWithNullableIsLinkable()
         {
             int? one = 1;
 
