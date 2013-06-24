@@ -62,6 +62,11 @@ namespace NFluent.Tests.ForDocumentation
                         || paramType.Name == "IStructCheck`1")
                     {
                         var testedtype = paramType.GetGenericArguments()[0];
+                        if (testedtype.IsGenericParameter)
+                        {
+                            testedtype = testedtype.BaseType;
+                        }
+
                         result.CheckedType = testedtype;
 
                         // get other parameters
@@ -98,6 +103,11 @@ namespace NFluent.Tests.ForDocumentation
                 {
                     // the type implements ICheck<T>
                     result.CheckedType = scanning.IsGenericType ? scanning.GetGenericArguments()[0] : null;
+
+                    if (result != null && result.CheckedType.IsGenericType)
+                    {
+                        result.CheckedType = result.CheckedType.BaseType;
+                    }
 
                     // get other parameters
                     result.CheckParameters = new List<Type>();

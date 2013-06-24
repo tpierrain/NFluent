@@ -155,7 +155,7 @@ namespace NFluent.Helpers
                         }
                     }
 
-                    return constructors = result;
+                    constructors = result;
                 }
 
                 return constructors;

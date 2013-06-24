@@ -32,7 +32,7 @@ namespace NFluent.Tests.ForDocumentation
         [Explicit("Use to debug detection when failing.")]
         public void SpecificTest()
         {
-            RunnerHelper.RunAction(new EnumOrStructRelatedTests().IsEqualToThrowsExceptionWhenFailingWithEnum);
+            RunnerHelper.RunAction(new IntRelatedTests().NotEqualsThrowsExceptionWhenFailing);
         }
 
         // Run this test to get all error messages
@@ -66,7 +66,7 @@ namespace NFluent.Tests.ForDocumentation
             {
                 foreach (var check in typeChecks.Checks)
                 {
-                    foreach (var checkDescription in check.Checks)
+                    foreach (var checkDescription in check.CheckSignatures)
                     {
                         string error;
                         if (!CheckMessage(checkDescription.ErrorSampleMessage, out error))
