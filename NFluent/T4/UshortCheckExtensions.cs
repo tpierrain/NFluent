@@ -20,7 +20,7 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides check methods to be executed on a ushort value.
+    /// Provides check methods to be executed on an <see cref="ushort"/> value.
     /// </summary>
     public static class UshortCheckExtensions
     {

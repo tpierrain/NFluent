@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="FloatCheckExtensions.cs" company="">
+// // <copyright file="SbyteCheckExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides check methods to be executed on an <see cref="float"/> value.
+    /// Provides check methods to be executed on an <see cref="sbyte"/> value.
     /// </summary>
-    public static class FloatCheckExtensions
+    public static class SbyteCheckExtensions
     {
         #pragma warning disable 169
 
@@ -44,10 +44,10 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static ICheckLink<ICheck<float>> IsEqualTo(this ICheck<float> check, object expected)
+        public static ICheckLink<ICheck<sbyte>> IsEqualTo(this ICheck<sbyte> check, object expected)
         {
             // TODO transform NumberCheck<T> into a static class with functions only?
-            var numberCheckStrategy = new NumberCheck<float>(check);
+            var numberCheckStrategy = new NumberCheck<sbyte>(check);
             return numberCheckStrategy.IsEqualTo(expected);
         }
 
@@ -60,9 +60,9 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static ICheckLink<ICheck<float>> IsNotEqualTo(this ICheck<float> check, object expected)
+        public static ICheckLink<ICheck<sbyte>> IsNotEqualTo(this ICheck<sbyte> check, object expected)
         {
-            var numberCheckStrategy = new NumberCheck<float>(check);
+            var numberCheckStrategy = new NumberCheck<sbyte>(check);
             return numberCheckStrategy.IsNotEqualTo(expected);
         }
 
@@ -75,9 +75,9 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<float>> IsInstanceOf<T>(this ICheck<float> check)
+        public static ICheckLink<ICheck<sbyte>> IsInstanceOf<T>(this ICheck<sbyte> check)
         {
-            var numberCheckStrategy = new NumberCheck<float>(check);
+            var numberCheckStrategy = new NumberCheck<sbyte>(check);
             return numberCheckStrategy.IsInstanceOf<T>();
         }
 
@@ -90,19 +90,19 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<float?>> IsInstanceOf<T>(this ICheck<float?> check)
+        public static ICheckLink<ICheck<sbyte?>> IsInstanceOf<T>(this ICheck<sbyte?> check)
         {
-            var checkRunner = check as ICheckRunner<float?>;
-            IRunnableCheck<float?> runnableCheck = check as IRunnableCheck<float?>;
+            var checkRunner = check as ICheckRunner<sbyte?>;
+            IRunnableCheck<sbyte?> runnableCheck = check as IRunnableCheck<sbyte?>;
 
             checkRunner.ExecuteCheck(
                 () =>
                 {
-                    IsInstanceHelper.IsSameType(typeof(Nullable<float>), typeof(T), runnableCheck.Value);
+                    IsInstanceHelper.IsSameType(typeof(Nullable<sbyte>), typeof(T), runnableCheck.Value);
                 },
-                IsInstanceHelper.BuildErrorMessageForNullable(typeof(Nullable<float>), typeof(T), runnableCheck.Value, true));
+                IsInstanceHelper.BuildErrorMessageForNullable(typeof(Nullable<sbyte>), typeof(T), runnableCheck.Value, true));
 
-            return new CheckLink<ICheck<float?>>(check);
+            return new CheckLink<ICheck<sbyte?>>(check);
         }
 
         /// <summary>
@@ -114,9 +114,9 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public static ICheckLink<ICheck<float>> IsNotInstanceOf<T>(this ICheck<float> check)
+        public static ICheckLink<ICheck<sbyte>> IsNotInstanceOf<T>(this ICheck<sbyte> check)
         {
-            var numberCheckStrategy = new NumberCheck<float>(check);
+            var numberCheckStrategy = new NumberCheck<sbyte>(check);
             return numberCheckStrategy.IsNotInstanceOf<T>();
         }
 
@@ -128,9 +128,9 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not equal to zero.</exception>
-        public static ICheckLink<ICheck<float>> IsZero(this ICheck<float> check)
+        public static ICheckLink<ICheck<sbyte>> IsZero(this ICheck<sbyte> check)
         {
-            var numberCheckStrategy = new NumberCheck<float>(check);
+            var numberCheckStrategy = new NumberCheck<sbyte>(check);
             return numberCheckStrategy.IsZero();
         }
 
@@ -140,10 +140,10 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>A check link.</returns>
         /// <exception cref="FluentCheckException">The value is null.</exception>
-        public static INullableOrNumberCheckLink<float> HasAValue(this ICheck<float?> check)
+        public static INullableOrNumberCheckLink<sbyte> HasAValue(this ICheck<sbyte?> check)
         {
-            var checkRunner = check as ICheckRunner<float?>;
-            IRunnableCheck<float?> runnableCheck = check as IRunnableCheck<float?>;
+            var checkRunner = check as ICheckRunner<sbyte?>;
+            IRunnableCheck<sbyte?> runnableCheck = check as IRunnableCheck<sbyte?>;
 
             checkRunner.ExecuteCheck(
                 () =>
@@ -155,7 +155,7 @@ namespace NFluent
                 },
                 string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", runnableCheck.Value.ToStringProperlyFormated()));
 
-            return new NullableOrNumberCheckLink<float>(check);
+            return new NullableOrNumberCheckLink<sbyte>(check);
         }
 
         /// <summary>
@@ -164,10 +164,10 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <exception cref="FluentCheckException">The value is not null.</exception>
-        public static void HasNoValue(this ICheck<float?> check)
+        public static void HasNoValue(this ICheck<sbyte?> check)
         {
-            var checkRunner = check as ICheckRunner<float?>;
-            IRunnableCheck<float?> runnableCheck = check as IRunnableCheck<float?>;
+            var checkRunner = check as ICheckRunner<sbyte?>;
+            IRunnableCheck<sbyte?> runnableCheck = check as IRunnableCheck<sbyte?>;
 
             checkRunner.ExecuteCheck(
                 () =>
@@ -188,9 +188,9 @@ namespace NFluent
         ///   <returns>A check link.</returns>
         /// </returns>
         /// <exception cref="FluentCheckException">The value is equal to zero.</exception>
-        public static ICheckLink<ICheck<float>> IsNotZero(this ICheck<float> check)
+        public static ICheckLink<ICheck<sbyte>> IsNotZero(this ICheck<sbyte> check)
         {
-            var numberCheckStrategy = new NumberCheck<float>(check);
+            var numberCheckStrategy = new NumberCheck<sbyte>(check);
             return numberCheckStrategy.IsNotZero();
         }
 
@@ -202,9 +202,9 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        public static ICheckLink<ICheck<float>> IsPositive(this ICheck<float> check)
+        public static ICheckLink<ICheck<sbyte>> IsPositive(this ICheck<sbyte> check)
         {
-            var numberCheckStrategy = new NumberCheck<float>(check);
+            var numberCheckStrategy = new NumberCheck<sbyte>(check);
             return numberCheckStrategy.IsPositive();
         }
 
@@ -223,9 +223,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
-        public static ICheckLink<ICheck<float>> IsLessThan(this ICheck<float> check, float comparand)
+        public static ICheckLink<ICheck<sbyte>> IsLessThan(this ICheck<sbyte> check, sbyte comparand)
         {
-            var numberCheckStrategy = new NumberCheck<float>(check);
+            var numberCheckStrategy = new NumberCheck<sbyte>(check);
             return numberCheckStrategy.IsLessThan(comparand);
         }
 
@@ -244,9 +244,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
-        public static ICheckLink<ICheck<float>> IsGreaterThan(this ICheck<float> check, float comparand)
+        public static ICheckLink<ICheck<sbyte>> IsGreaterThan(this ICheck<sbyte> check, sbyte comparand)
         {
-            var numberCheckStrategy = new NumberCheck<float>(check);
+            var numberCheckStrategy = new NumberCheck<sbyte>(check);
             return numberCheckStrategy.IsGreaterThan(comparand);
         }
     }

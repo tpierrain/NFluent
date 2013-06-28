@@ -32,16 +32,17 @@
 	var typesToWriteTestsFor = new List<UnitTestsConfigurationForType>()
 		{
 			// sygned types
-			new UnitTestsConfigurationForType() { TypeName = "decimal", DetailedTypeName = "System.Decimal", ValueForZero = "0M", ValueForOne = "1M", ValueForTwo = "2M", ValueForTwenty = "20M", ValueForMinusFifty = "-50M" },
-			new UnitTestsConfigurationForType() { TypeName = "double", DetailedTypeName = "System.Double", ValueForZero = "0D", ValueForOne = "1D", ValueForTwo = "2D", ValueForTwenty = "20D", ValueForMinusFifty = "-50D" },
-			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "System.Single", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F", ValueForMinusFifty = "-50F" },
-			new UnitTestsConfigurationForType() { TypeName = "long", DetailedTypeName = "System.Int64", ValueForZero = "0L", ValueForOne = "1L", ValueForTwo = "2L", ValueForTwenty = "20L", ValueForMinusFifty = "-50L" },
-			new UnitTestsConfigurationForType() { TypeName = "short", DetailedTypeName = "System.Int16", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
+			new UnitTestsConfigurationForType() { TypeName = "decimal", DetailedTypeName = "decimal", ValueForZero = "0M", ValueForOne = "1M", ValueForTwo = "2M", ValueForTwenty = "20M", ValueForMinusFifty = "-50M" },
+			new UnitTestsConfigurationForType() { TypeName = "double", DetailedTypeName = "double", ValueForZero = "0D", ValueForOne = "1D", ValueForTwo = "2D", ValueForTwenty = "20D", ValueForMinusFifty = "-50D" },
+			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "float", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F", ValueForMinusFifty = "-50F" },
+			new UnitTestsConfigurationForType() { TypeName = "long", DetailedTypeName = "long", ValueForZero = "0L", ValueForOne = "1L", ValueForTwo = "2L", ValueForTwenty = "20L", ValueForMinusFifty = "-50L" },
+			new UnitTestsConfigurationForType() { TypeName = "short", DetailedTypeName = "short", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
+			new UnitTestsConfigurationForType() { TypeName = "sbyte", DetailedTypeName = "sbyte", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
 			// unsigned types
-			new UnitTestsConfigurationForType() { TypeName = "byte", DetailedTypeName = "System.Byte", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" },
-			new UnitTestsConfigurationForType() { TypeName = "uint", DetailedTypeName = "System.UInt32", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" },
-			new UnitTestsConfigurationForType() { TypeName = "ulong", DetailedTypeName = "System.UInt64", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" },
-			new UnitTestsConfigurationForType() { TypeName = "ushort", DetailedTypeName = "System.UInt16", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" }
+			new UnitTestsConfigurationForType() { TypeName = "byte", DetailedTypeName = "byte", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" },
+			new UnitTestsConfigurationForType() { TypeName = "uint", DetailedTypeName = "uint", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" },
+			new UnitTestsConfigurationForType() { TypeName = "ulong", DetailedTypeName = "ulong", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" },
+			new UnitTestsConfigurationForType() { TypeName = "ushort", DetailedTypeName = "ushort", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" }
 		};
 
 	// ...RelatedTests ----------------------------------------------------
@@ -52,11 +53,12 @@
 	var signedTypesToWriteTestsFor = new List<UnitTestsConfigurationForType>()
 		{
 			// sygned types
-			new UnitTestsConfigurationForType() { TypeName = "decimal", DetailedTypeName = "System.Decimal", ValueForZero = "0M", ValueForOne = "1M", ValueForTwo = "2M", ValueForTwenty = "20M", ValueForMinusFifty = "-50M" },
-			new UnitTestsConfigurationForType() { TypeName = "double", DetailedTypeName = "System.Double", ValueForZero = "0D", ValueForOne = "1D", ValueForTwo = "2D", ValueForTwenty = "20D", ValueForMinusFifty = "-50D" },
-			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "System.Single", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F", ValueForMinusFifty = "-50F" },
-			new UnitTestsConfigurationForType() { TypeName = "long", DetailedTypeName = "System.Int64", ValueForZero = "0L", ValueForOne = "1L", ValueForTwo = "2L", ValueForTwenty = "20L", ValueForMinusFifty = "-50L" },
-			new UnitTestsConfigurationForType() { TypeName = "short", DetailedTypeName = "System.Int16", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
+			new UnitTestsConfigurationForType() { TypeName = "decimal", DetailedTypeName = "decimal", ValueForZero = "0M", ValueForOne = "1M", ValueForTwo = "2M", ValueForTwenty = "20M", ValueForMinusFifty = "-50M" },
+			new UnitTestsConfigurationForType() { TypeName = "double", DetailedTypeName = "double", ValueForZero = "0D", ValueForOne = "1D", ValueForTwo = "2D", ValueForTwenty = "20D", ValueForMinusFifty = "-50D" },
+			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "float", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F", ValueForMinusFifty = "-50F" },
+			new UnitTestsConfigurationForType() { TypeName = "long", DetailedTypeName = "long", ValueForZero = "0L", ValueForOne = "1L", ValueForTwo = "2L", ValueForTwenty = "20L", ValueForMinusFifty = "-50L" },
+			new UnitTestsConfigurationForType() { TypeName = "short", DetailedTypeName = "short", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
+			new UnitTestsConfigurationForType() { TypeName = "sbyte", DetailedTypeName = "sbyte", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
 		};
 	goldenSourceClassFileName = Host.ResolvePath(@"..\IntSignedNumberRelatedTests.cs");
 	TypeCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntSignedNumberRelatedTests", "SignedNumberRelatedTests", signedTypesToWriteTestsFor, manager, this);

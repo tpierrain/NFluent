@@ -16,13 +16,17 @@ namespace NFluent.Tests.ForDocumentation
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
     using System.Text;
     using System.Xml.Serialization;
+    using NFluent.Extensions;
 
     [Serializable]
     public class CheckDescription
     {
+        private string entryPoint;
         #region Public Properties
 
         [XmlIgnore]
@@ -54,7 +58,7 @@ namespace NFluent.Tests.ForDocumentation
                         }
                     }
 
-                    return string.Format("Check.That({0} sut).{1}({2})", this.CheckedType.Name, this.Check.Name, parameters);
+                    return string.Format("Check.{3}({0} sut).{1}({2})", this.CheckedType.ToStringProperlyFormated(), this.Check.Name, parameters, this.entryPoint);
                 }
 
                 return string.Empty;
@@ -78,5 +82,123 @@ namespace NFluent.Tests.ForDocumentation
 
         public string ErrorSampleMessage { get; set; }
         #endregion
+
+        public static CheckDescription AnalyzeSignature(MethodBase method)
+        {
+            var result = new CheckDescription { Check = method };
+
+            if (method.IsStatic)
+            {
+                // check if this is an extension method
+                if (method.GetCustomAttributes(typeof(ExtensionAttribute), false).Length > 0)
+                {
+                    var parameters = method.GetParameters();
+                    var param = parameters[0];
+                    var paramType = param.ParameterType;
+                    if (!paramType.IsGenericType)
+                    {
+                        // this is not an check implementation
+                        return null;
+                    }
+
+                    // if it is specific to chains
+                    if (paramType.Name == "ICheckLink`1")
+                    {
+                        paramType = paramType.GetGenericArguments()[0];
+                    }
+
+                    if (paramType.Name == "IExtendableCheckLink`1" || paramType.Name == "ICheck`1"
+                        || paramType.GetInterface("ICheck`1") != null
+                        || paramType.Name == "IStructCheck`1")
+                    {
+                        if (paramType.Name == "IStructCheck`1")
+                        {
+                            result.entryPoint = "ThatEnum";
+                        }
+                        else
+                        {
+                            result.entryPoint = "That";
+                        }
+
+                        var testedtype = paramType.GetGenericArguments()[0];
+                        if (testedtype.IsGenericParameter)
+                        {
+                            testedtype = testedtype.BaseType;
+                        }
+
+                        result.CheckedType = testedtype;
+
+                        // get other parameters
+                        result.CheckParameters = new List<Type>(parameters.Length - 1);
+                        for (var i = 1; i < parameters.Length; i++)
+                        {
+                            result.CheckParameters.Add(parameters[i].ParameterType);
+                        }
+                    }
+                    else
+                    {
+                        // this is not an check implementation
+                        return null;
+                    }
+
+                    // identify type subjected to test
+                }
+                else
+                {
+                    // unexpected case: check is a static method which is not an extension method
+                    return null;
+                }
+            }
+            else
+            {
+                if (method.DeclaringType == null)
+                {
+                    return null;
+                }
+
+                // this is an instance method, tested type is part of type defintion
+                Type scanning = method.DeclaringType.GetInterface("ICheck`1");
+                if (scanning != null && scanning.IsGenericType)
+                {
+                    // the type implements ICheck<T>
+                    result.CheckedType = scanning.IsGenericType ? scanning.GetGenericArguments()[0] : null;
+
+                    if (result != null && result.CheckedType.IsGenericType)
+                    {
+                        result.CheckedType = result.CheckedType.BaseType;
+                    }
+
+                    // get other parameters
+                    result.CheckParameters = new List<Type>();
+                    foreach (var t in method.GetParameters())
+                    {
+                        result.CheckParameters.Add(t.ParameterType);
+                    }
+                }
+                else
+                {
+                    // type does not implement ICheck<T>, we try to find a 'Value' property
+                    var prop = method.DeclaringType.GetProperty("Value", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                    if (prop != null)
+                    {
+                        result.CheckedType = prop.PropertyType;
+
+                        // get other parameters
+                        result.CheckParameters = new List<Type>();
+                        foreach (var t in method.GetParameters())
+                        {
+                            result.CheckParameters.Add(t.ParameterType);
+                        }
+                    }
+                    else
+                    {
+                        // not a check method
+                        Debug.WriteLine(string.Format("Type {0} needs to implement a Value property (method {1})", method.DeclaringType.Name, method.Name));
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 }

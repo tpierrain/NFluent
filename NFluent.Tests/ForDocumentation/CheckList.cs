@@ -40,7 +40,7 @@ namespace NFluent.Tests.ForDocumentation
         /// <summary>
         /// Gets or sets a list of checks with varying signatures
         /// </summary>
-        public List<CheckDescription> Checks
+        public List<CheckDescription> CheckSignatures
         {
             get
             {

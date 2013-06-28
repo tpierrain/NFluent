@@ -51,13 +51,15 @@ namespace NFluent.Tests.ForDocumentation
 
         public void AddEntry(CheckDescription desc)
         {
-            foreach (TypeChecks typeCheckse in this.runDescription)
+            foreach (var typeCheckse in this.runDescription)
             {
-                if (typeCheckse.CheckedType == desc.CheckedType)
+                if (typeCheckse.CheckedType != desc.CheckedType)
                 {
-                    typeCheckse.AddCheck(desc);
-                    return;
+                    continue;
                 }
+
+                typeCheckse.AddCheck(desc);
+                return;
             }
 
             var addedType = new TypeChecks(desc.CheckedType);

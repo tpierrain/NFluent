@@ -22,6 +22,8 @@ namespace NFluent.Tests.ForDocumentation
     using System.Collections.Generic;
     using System.Xml.Serialization;
 
+    using NFluent.Extensions;
+
     public class TypeChecks
     {
         #region Fields
@@ -52,7 +54,7 @@ namespace NFluent.Tests.ForDocumentation
         {
             get
             {
-                return this.CheckedType.Name;
+                return this.CheckedType.ToStringProperlyFormated();
             }
 
 // ReSharper disable ValueParameterNotUsed
@@ -90,7 +92,7 @@ namespace NFluent.Tests.ForDocumentation
 
         public void AddCheck(CheckDescription description)
         {
-            foreach (CheckList checkList in this.checks)
+            foreach (var checkList in this.checks)
             {
                 if (checkList.CheckName == description.CheckName)
                 {

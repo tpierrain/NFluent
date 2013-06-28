@@ -16,7 +16,9 @@
 namespace NFluent.Tests
 {
     using System;
+    using System.Collections.Generic;
 
+    using NFluent.Extensions;
     using NFluent.Helpers;
 
     using NUnit.Framework;
@@ -64,7 +66,15 @@ namespace NFluent.Tests
 
             block.WithHashCode().WithType();
 
-            Assert.AreEqual("The  value:\n\t[4] of type: [System.Int32] with HashCode: [4]", block.GetMessage());
+            Assert.AreEqual("The  value:\n\t[4] of type: [int] with HashCode: [4]", block.GetMessage());
+        }
+
+        [Test]
+        public void ToStringProperlyFormatedCoverageTests()
+        {
+            Assert.AreEqual("char", typeof(char).ToStringProperlyFormated());
+            Assert.AreEqual("void", typeof(void).ToStringProperlyFormated());
+            Assert.AreEqual("Dictionary<string, string>", typeof(Dictionary<string, string>).ToStringProperlyFormated());
         }
     }
 }

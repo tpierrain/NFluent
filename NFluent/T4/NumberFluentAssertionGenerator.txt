@@ -44,4 +44,5 @@
 // NFluent\NFluent\T4\FloatCheckExtensions.cs
 // NFluent\NFluent\T4\DoubleCheckExtensions.cs
 // NFluent\NFluent\T4\DecimalCheckExtensions.cs
+// NFluent\NFluent\T4\SbyteCheckExtensions.cs
 // NFluent\NFluent\T4\ByteCheckExtensions.cs

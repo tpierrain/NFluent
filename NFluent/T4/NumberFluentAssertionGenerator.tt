@@ -29,7 +29,7 @@
 	EnvDTE.DTE dte = (EnvDTE.DTE)hostServiceProvider.GetService(typeof(EnvDTE.DTE));
 	var manager = TemplateFileManager.Create(this);
 
-	var typesToGenerateAssertionsFor = new string[] { "byte", "decimal", "double", "float", "long", "short", "uint", "ulong", "ushort" };
+	var typesToGenerateAssertionsFor = new string[] { "byte", "sbyte", "decimal", "double", "float", "long", "short", "uint", "ulong", "ushort" };
 	
 	string goldenSourceClassFileName = Host.ResolvePath(@"..\Assertions\IntCheckExtensions.cs");
 

@@ -251,7 +251,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Single]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [float]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             const float Twenty = 20F;
@@ -260,7 +260,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Single]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [float]")]
         public void NotEqualsThrowsExceptionWhenFailing()
         {
             const float Twenty = 20F;
@@ -278,7 +278,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Single]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [float]")]
         public void IsNotEqualToThrowsExceptionWhenFailing()
         {
             const float Twenty = 20F;
@@ -412,7 +412,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of System.Nullable`1[System.Single] whereas it must not.\nThe checked value:\n\t[1] of type: [System.Nullable`1[System.Single]]\nThe expected type: different from\n\t[System.Nullable`1[System.Single]]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of float? whereas it must not.\nThe checked value:\n\t[1] of type: [float?]\nThe expected type: different from\n\t[float?]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
             float? one = 1F;
@@ -421,7 +421,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of System.Nullable`1[System.Single] whereas it must not.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Single]]\nThe expected type: different from\n\t[System.Nullable`1[System.Single]]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of float? whereas it must not.\nThe checked value:\n\t[null] of type: [float?]\nThe expected type: different from\n\t[float?]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             float? noValue = null;
@@ -430,7 +430,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of System.String.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Single]]\nThe expected type:\n\t[System.String]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of string.\nThe checked value:\n\t[null] of type: [float?]\nThe expected type:\n\t[string]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
             float? one = null;

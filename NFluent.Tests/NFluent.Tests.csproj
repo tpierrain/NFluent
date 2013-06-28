@@ -104,6 +104,12 @@
     <Compile Include="T4\LongSignedNumberRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
+    <Compile Include="T4\SbyteRelatedTests.cs">
+      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T4\SbyteSignedNumberRelatedTests.cs">
+      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
+    </Compile>
     <Compile Include="T4\ShortRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>

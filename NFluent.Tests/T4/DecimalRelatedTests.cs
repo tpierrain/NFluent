@@ -251,7 +251,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Decimal]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [decimal]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             const decimal Twenty = 20M;
@@ -260,7 +260,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Decimal]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [decimal]")]
         public void NotEqualsThrowsExceptionWhenFailing()
         {
             const decimal Twenty = 20M;
@@ -278,7 +278,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.Decimal]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [decimal]")]
         public void IsNotEqualToThrowsExceptionWhenFailing()
         {
             const decimal Twenty = 20M;
@@ -412,7 +412,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of System.Nullable`1[System.Decimal] whereas it must not.\nThe checked value:\n\t[1] of type: [System.Nullable`1[System.Decimal]]\nThe expected type: different from\n\t[System.Nullable`1[System.Decimal]]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[1] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
             decimal? one = 1M;
@@ -421,7 +421,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of System.Nullable`1[System.Decimal] whereas it must not.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Decimal]]\nThe expected type: different from\n\t[System.Nullable`1[System.Decimal]]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[null] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             decimal? noValue = null;
@@ -430,7 +430,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of System.String.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.Decimal]]\nThe expected type:\n\t[System.String]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of string.\nThe checked value:\n\t[null] of type: [decimal?]\nThe expected type:\n\t[string]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
             decimal? one = null;

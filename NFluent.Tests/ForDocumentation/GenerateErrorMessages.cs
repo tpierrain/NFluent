@@ -32,7 +32,7 @@ namespace NFluent.Tests.ForDocumentation
         [Explicit("Use to debug detection when failing.")]
         public void SpecificTest()
         {
-            RunnerHelper.RunAction(new EnumOrStructRelatedTests().IsEqualToThrowsExceptionWhenFailingWithEnum);
+            RunnerHelper.RunAction(new IntRelatedTests().NotEqualsThrowsExceptionWhenFailing);
         }
 
         // Run this test to get all error messages
@@ -66,7 +66,7 @@ namespace NFluent.Tests.ForDocumentation
             {
                 foreach (var check in typeChecks.Checks)
                 {
-                    foreach (var checkDescription in check.Checks)
+                    foreach (var checkDescription in check.CheckSignatures)
                     {
                         string error;
                         if (!CheckMessage(checkDescription.ErrorSampleMessage, out error))
@@ -138,7 +138,7 @@ namespace NFluent.Tests.ForDocumentation
                             // run all tests
                             foreach (var checkMethod in publicMethods)
                             {
-                                var desc = RunnerHelper.AnalyzeSignature(checkMethod);
+                                var desc = CheckDescription.AnalyzeSignature(checkMethod);
 
                                 if (desc != null)
                                 {
@@ -155,9 +155,31 @@ namespace NFluent.Tests.ForDocumentation
                 }
             }
 
+            // xml save
             const string Name = "FluentChecks.xml";
             report.Save(Name);
+
+            const string Name2 = "FluentChecks.csv";
+
+            // csv file
+            using (var writer = new StreamWriter(Name2, false))
+            {
+                foreach (var typeChecks in report.RunDescription)
+                {
+                    foreach (var checkList in typeChecks.Checks)
+                    {
+                        foreach (var signature in checkList.CheckSignatures)
+                        {
+                            var message = string.Format(
+                                "{0};{1};{2}", typeChecks.CheckedType, checkList.CheckName, signature.Signature);
+                            writer.WriteLine(message);
+                        }
+                    }
+                }
+            }
+
             Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(Name)));
+            Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(Name2)));
         }
 
         // run a set of test

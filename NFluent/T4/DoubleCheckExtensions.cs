@@ -20,7 +20,7 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides check methods to be executed on a double value.
+    /// Provides check methods to be executed on an <see cref="double"/> value.
     /// </summary>
     public static class DoubleCheckExtensions
     {
