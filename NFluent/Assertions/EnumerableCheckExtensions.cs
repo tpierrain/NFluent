@@ -284,7 +284,7 @@ namespace NFluent
 
                     if (otherEnumerable == null)
                     {
-                        ThrowsNotExactlyException(runnableCheck.Value, null);
+                        throw new FluentCheckException(BuildNotExactlyExceptionMessage(runnableCheck.Value, null));
                     }
 
                     var first = runnableCheck.Value.GetEnumerator();
@@ -296,13 +296,13 @@ namespace NFluent
                         if (!second.MoveNext() 
                             || !object.Equals(first.Current, second.Current))
                         {
-                            ThrowsNotExactlyException(runnableCheck.Value, enumerable);
+                            throw new FluentCheckException(BuildNotExactlyExceptionMessage(runnableCheck.Value, enumerable));
                         }
                     }
 
                     if (second.MoveNext())
                     {
-                        ThrowsNotExactlyException(runnableCheck.Value, enumerable);
+                        throw new FluentCheckException(BuildNotExactlyExceptionMessage(runnableCheck.Value, enumerable));
                     }
                 },
                 BuildExceptionMessageForContainsExactly(runnableCheck.Value, otherEnumerable));
@@ -469,17 +469,16 @@ namespace NFluent
                                     .ToString();
         }
 
-        private static void ThrowsNotExactlyException(IEnumerable checkedValue, IList<object> enumerable)
+        private static string BuildNotExactlyExceptionMessage(IEnumerable checkedValue, IList<object> enumerable)
         {
             var message = FluentMessage.BuildMessage("The {0} does not contain exactly the expected value(s).")
                                         .For("enumerable")
                                         .On(checkedValue)
                                         .WithEnumerableCount(checkedValue.Count())
                                         .And.Expected(enumerable)
-                                        .WithEnumerableCount(enumerable.Count())
-                                        .ToString();
+                                        .WithEnumerableCount(enumerable.Count());
 
-            throw new FluentCheckException(message);
+            return message.ToString();
         }
 
         private static IEnumerable ExtractEnumerableValueFromPossibleOneValueArray<T>(T[] expectedValues)

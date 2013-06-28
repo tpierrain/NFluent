@@ -402,6 +402,7 @@ namespace NFluent.Tests
             int? one = 1;
 
             Check.That(one).IsInstanceOf<int?>().And.HasAValue().Which.IsEqualTo((int)1);
+            Check.That(one).HasAValue().And.IsInstanceOf<int?>();
         }
 
         [Test]
