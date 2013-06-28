@@ -20,7 +20,7 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides check methods to be executed on a ulong value.
+    /// Provides check methods to be executed on an <see cref="ulong"/> value.
     /// </summary>
     public static class UlongCheckExtensions
     {

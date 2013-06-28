@@ -20,7 +20,7 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides check methods to be executed on an integer value.
+    /// Provides check methods to be executed on an <see cref="int"/> value.
     /// </summary>
     public static class IntCheckExtensions
     {

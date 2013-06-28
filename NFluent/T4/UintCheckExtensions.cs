@@ -20,7 +20,7 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides check methods to be executed on a uint value.
+    /// Provides check methods to be executed on an <see cref="uint"/> value.
     /// </summary>
     public static class UintCheckExtensions
     {

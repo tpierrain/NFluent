@@ -20,7 +20,7 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides check methods to be executed on a sbyte value.
+    /// Provides check methods to be executed on an <see cref="sbyte"/> value.
     /// </summary>
     public static class SbyteCheckExtensions
     {

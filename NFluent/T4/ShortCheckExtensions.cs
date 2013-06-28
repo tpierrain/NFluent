@@ -20,7 +20,7 @@ namespace NFluent
     using NFluent.Helpers;
 
     /// <summary>
-    /// Provides check methods to be executed on a short value.
+    /// Provides check methods to be executed on an <see cref="short"/> value.
     /// </summary>
     public static class ShortCheckExtensions
     {
