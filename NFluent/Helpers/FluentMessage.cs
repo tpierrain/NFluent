@@ -303,7 +303,7 @@ namespace NFluent.Helpers
 
                 if (this.includeType && this.type != null)
                 {
-                    builder.AppendFormat(" of type: [{0}]", this.type);
+                    builder.AppendFormat(" of type: [{0}]", this.type.ToStringProperlyFormated());
                 }
 
                 if (this.includeHash && this.test != null)

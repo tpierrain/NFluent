@@ -23,7 +23,9 @@ namespace NFluent.Tests
     public class IsInstanceOfTests
     {
         private const string StringObj = "for unit testing";
+        private const char CharObj = 'a';
         private const byte ByteObj = 1;
+        private const sbyte SByteObj = 2;
         private const int IntObj = 23;
         private const long LongObj = long.MaxValue;
         private const double DoubleObj = 23d;
@@ -68,6 +70,7 @@ namespace NFluent.Tests
             Check.That(UIntObj).IsInstanceOf<uint>();
             Check.That(ULongObj).IsInstanceOf<ulong>();
             Check.That(FloatObj).IsInstanceOf<float>();
+            Check.That(SByteObj).IsInstanceOf<sbyte>();
 
             // POCO
             Check.That(this.person).IsInstanceOf<Person>();
@@ -107,6 +110,7 @@ namespace NFluent.Tests
             Check.That(UIntObj).Not.IsInstanceOf<string>();
             Check.That(ULongObj).Not.IsInstanceOf<string>();
             Check.That(FloatObj).Not.IsInstanceOf<string>();
+            Check.That(SByteObj).Not.IsInstanceOf<string>();
 
             // POCO
             Check.That(this.person).Not.IsInstanceOf<string>();
@@ -131,7 +135,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[01:00:00] of type: [System.TimeSpan]\nThe expected type:\n\t[System.String]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[01:00:00] of type: [System.TimeSpan]\nThe expected type:\n\t[string]")]
         public void IsInstanceOfThrowsExceptionWhenFailingWithTimeSpan()
         {
             TimeSpan oneHour = TimeSpan.FromMinutes(60);
@@ -139,14 +143,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[23] of type: [System.Int32]\nThe expected type:\n\t[NFluent.Tests.Person]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[23] of type: [int]\nThe expected type:\n\t[NFluent.Tests.Person]")]
         public void IsInstanceOfThrowsExceptionWithProperFormatWhenFailsWithInt()
         {
             Check.That(IntObj).IsInstanceOf<Person>();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[\"for unit testing\"] of type: [System.String]\nThe expected type:\n\t[NFluent.Tests.Person]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[\"for unit testing\"] of type: [string]\nThe expected type:\n\t[NFluent.Tests.Person]")]
         public void IsInstanceOfThrowsExceptionWithProperFormatWhenFailsWithString()
         {
             Check.That(StringObj).IsInstanceOf<Person>();
@@ -180,6 +184,7 @@ namespace NFluent.Tests
             Check.That(UIntObj).IsNotInstanceOf<string>();
             Check.That(ULongObj).IsNotInstanceOf<string>();
             Check.That(FloatObj).IsNotInstanceOf<string>();
+            Check.That(SByteObj).IsNotInstanceOf<string>();
 
             // POCO
             Check.That(this.person).IsNotInstanceOf<string>();
@@ -219,6 +224,7 @@ namespace NFluent.Tests
             Check.That(UIntObj).Not.IsNotInstanceOf<uint>();
             Check.That(ULongObj).Not.IsNotInstanceOf<ulong>();
             Check.That(FloatObj).Not.IsNotInstanceOf<float>();
+            Check.That(SByteObj).Not.IsNotInstanceOf<sbyte>();
 
             // POCO
             Check.That(this.person).Not.IsNotInstanceOf<Person>();
@@ -235,7 +241,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of System.Int32 whereas it must not.\nThe checked value:\n\t[23] of type: [System.Int32]\nThe expected type: different from\n\t[System.Int32]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of int whereas it must not.\nThe checked value:\n\t[23] of type: [int]\nThe expected type: different from\n\t[int]")]
         public void IsNotInstanceOfThrowsExceptionWithProperFormatWhenFailsWithInt()
         {
             const int IntObject = 23;
@@ -243,7 +249,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of System.String whereas it must not.\nThe checked value:\n\t[\"If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).\"] of type: [System.String]\nThe expected type: different from\n\t[System.String]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of string whereas it must not.\nThe checked value:\n\t[\"If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).\"] of type: [string]\nThe expected type: different from\n\t[string]")]
         public void IsNotInstanceOfThrowsExceptionWithProperFormatWhenFailsWithString()
         {
             const string Statement = "If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).";
@@ -251,14 +257,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of System.Int32[] whereas it must not.\nThe checked value:\n\t[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] of type: [System.Int32[]]\nThe expected type: different from\n\t[System.Int32[]]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of int[] whereas it must not.\nThe checked value:\n\t[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] of type: [int[]]\nThe expected type: different from\n\t[int[]]")]
         public void NotIsInstanceOfThrowsExceptionWhenFailingWithIntArray()
         {
             Check.That(this.emptyIntegerArray).Not.IsInstanceOf<int[]>();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] of type: [System.Int32[]]\nThe expected type:\n\t[System.Int32]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] of type: [int[]]\nThe expected type:\n\t[int]")]
         public void NotIsNotInstanceOfThrowsExceptionWhenFailingWithIntArray()
         {
             Check.That(this.emptyIntegerArray).Not.IsNotInstanceOf<int>();
@@ -301,7 +307,7 @@ namespace NFluent.Tests
         public void InheritsFromThrowsExceptionWhenFailing()
         {
             var father = new Person { Name = "Odysseus" };
-            Check.That(father).InheritsFrom<Child>();
+            Check.That(father).InheritsFrom<NFluent.Tests.Child>();
         }
 
         [Test]

@@ -17,6 +17,7 @@ namespace NFluent.Extensions
     using System;
     using System.Collections;
     using System.Globalization;
+    using System.Text;
 
     /// <summary>
     /// Common helper methods for the NFluent extension methods.
@@ -51,6 +52,12 @@ namespace NFluent.Extensions
                 return ienum.ToEnumeratedString();
             }
 
+            var type = theObject as Type;
+            if (type != null)
+            {
+                return TypeToStringProperlyFormated(type);
+            }
+
             var exc = theObject as Exception;
             if (exc != null)
             {
@@ -58,6 +65,126 @@ namespace NFluent.Extensions
             }
 
             return theObject == null ? "null" : theObject.ToString();
+        }
+
+        private static string TypeToStringProperlyFormated(Type type)
+        {
+            if (type.IsArray)
+            {
+                return type.GetElementType().ToStringProperlyFormated() + "[]";
+            }
+
+            if (type == typeof(string))
+            {
+                return "string";
+            }
+
+            if (type == typeof(byte))
+            {
+                return "byte";
+            }
+
+            if (type == typeof(char))
+            {
+                return "char";
+            }
+
+            if (type == typeof(short))
+            {
+                return "short";
+            }
+
+            if (type == typeof(ushort))
+            {
+                return "ushort";
+            }
+
+            if (type == typeof(int))
+            {
+                return "int";
+            }
+
+            if (type == typeof(uint))
+            {
+                return "uint";
+            }
+
+            if (type == typeof(long))
+            {
+                return "long";
+            }
+
+            if (type == typeof(ulong))
+            {
+                return "ulong";
+            }
+
+            if (type == typeof(sbyte))
+            {
+                return "sbyte";
+            }
+
+            if (type == typeof(bool))
+            {
+                return "bool";
+            }
+
+            if (type == typeof(float))
+            {
+                return "float";
+            }
+
+            if (type == typeof(double))
+            {
+                return "double";
+            }
+
+            if (type == typeof(decimal))
+            {
+                return "decimal";
+            }
+
+            if (type == typeof(object))
+            {
+                return "object";
+            }
+
+            if (type == typeof(void))
+            {
+                return "void";
+            }
+
+            var arguments = type.GetGenericArguments();
+            if (arguments.Length > 0)
+            {
+                // this is a generic type
+                var builder = new StringBuilder();
+                var typeRoot = type.Name.Substring(0, type.Name.IndexOf('`'));
+                if (typeRoot == "Nullable")
+                {
+                    // specific case for Nullable
+                    return arguments[0].ToStringProperlyFormated() + '?';
+                }
+
+                builder.Append(typeRoot);
+                builder.Append('<');
+                bool first = true;
+                foreach (var genType in arguments)
+                {
+                    if (!first)
+                    {
+                        builder.Append(", ");
+                    }
+
+                    first = false;
+                    builder.Append(genType.ToStringProperlyFormated());
+                }
+
+                builder.Append('>');
+                return builder.ToString();
+            }
+
+            return type.ToString();
         }
 
         /// <summary>

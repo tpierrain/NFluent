@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ShortRelatedTests.cs" company="">
+// // <copyright file="SbyteRelatedTests.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ namespace NFluent.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class ShortRelatedTests
+    public class SbyteRelatedTests
     {
         #pragma warning disable 169
 
@@ -58,7 +58,7 @@ namespace NFluent.Tests
         [Test]
         public void IsNotZeroWorks()
         {
-            const short Two = 2;
+            const sbyte Two = 2;
 
             Check.That(Two).IsNotZero();
         }
@@ -67,7 +67,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to zero, whereas it must not.\nThe checked value:\n\t[0]")]
         public void IsNotZeroThrowsExceptionWhenFails()
         {
-            const short Zero = 0;
+            const sbyte Zero = 0;
 
             Check.That(Zero).IsNotZero();
         }
@@ -79,7 +79,7 @@ namespace NFluent.Tests
         [Test]
         public void NotIsZeroWorks()
         {
-            const short Two = 2;
+            const sbyte Two = 2;
 
             Check.That(Two).Not.IsZero();
         }
@@ -88,7 +88,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to zero whereas it must not.")]
         public void NotIsZeroThrowsExceptionWhenFailing()
         {
-            const short Zero = 0;
+            const sbyte Zero = 0;
 
             Check.That(Zero).Not.IsZero();
         }
@@ -100,7 +100,7 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNotZeroWorks()
         {
-            const short Zero = 0;
+            const sbyte Zero = 0;
 
             Check.That(Zero).Not.IsNotZero();
         }
@@ -109,7 +109,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from zero.\nThe checked value:\n\t[2]")]
         public void NotIsNotZeroThrowsExceptionWhenFailing()
         {
-            const short Two = 2;
+            const sbyte Two = 2;
             Check.That(Two).Not.IsNotZero();
         }
 
@@ -120,7 +120,7 @@ namespace NFluent.Tests
         [Test]
         public void IsPositiveWorks()
         {
-            const short Two = 2;
+            const sbyte Two = 2;
 
             Check.That(Two).IsPositive();
         }
@@ -129,7 +129,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[0]")]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
-            const short Zero = 0;
+            const sbyte Zero = 0;
             Check.That(Zero).IsPositive();
         }
 
@@ -137,7 +137,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
         public void NotIsPositiveThrowsExceptionWhenFailing()
         {
-            const short Two = 2;
+            const sbyte Two = 2;
 
             Check.That(Two).Not.IsPositive();
         }
@@ -149,8 +149,8 @@ namespace NFluent.Tests
         [Test]
         public void IsLessThanWorks()
         {
-            const short One = 1;
-            const short Twenty = 20;
+            const sbyte One = 1;
+            const sbyte Twenty = 20;
 
             Check.That(One).IsLessThan(Twenty);
         }
@@ -158,8 +158,8 @@ namespace NFluent.Tests
         [Test]
         public void NotIsLessThanWorks()
         {
-            const short One = 1;
-            const short Twenty = 20;
+            const sbyte One = 1;
+            const sbyte Twenty = 20;
 
             Check.That(Twenty).Not.IsLessThan(One);
         }
@@ -168,8 +168,8 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
         public void NotIsLessThanThrowsExceptionWhenFailing()
         {
-            const short One = 1;
-            const short Twenty = 20;
+            const sbyte One = 1;
+            const sbyte Twenty = 20;
 
             Check.That(One).Not.IsLessThan(Twenty);
         }
@@ -181,8 +181,8 @@ namespace NFluent.Tests
         [Test]
         public void IsGreaterThanWorks()
         {
-            const short One = 1;
-            const short Twenty = 20;
+            const sbyte One = 1;
+            const sbyte Twenty = 20;
 
             Check.That(Twenty).IsGreaterThan(One);
         }
@@ -191,8 +191,8 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
         public void IsGreaterThanThrowsExceptionWhenFailing()
         {
-            const short One = 1;
-            const short Twenty = 20;
+            const sbyte One = 1;
+            const sbyte Twenty = 20;
 
             Check.That(One).IsGreaterThan(Twenty);
         }
@@ -201,8 +201,8 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is greater than the threshold.\nThe checked value:\n\t[20]\nThe expected value: less than\n\t[1]")]
         public void NotIsGreaterThanThrowsExceptionWhenFailing()
         {
-            const short One = 1;
-            const short Twenty = 20;
+            const sbyte One = 1;
+            const sbyte Twenty = 20;
 
             Check.That(Twenty).Not.IsGreaterThan(One);
         }
@@ -212,7 +212,7 @@ namespace NFluent.Tests
         [Test]
         public void AndOperatorCanChainMultipleAssertionOnNumber()
         {
-            const short Twenty = 20;
+            const sbyte Twenty = 20;
 
             Check.That(Twenty).IsNotZero().And.IsPositive();
             Check.That(Twenty).IsPositive().And.IsNotZero();
@@ -223,8 +223,8 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualToWorksWithOtherSameValue()
         {
-            const short Twenty = 20;
-            const short OtherTwenty = 20;
+            const sbyte Twenty = 20;
+            const sbyte OtherTwenty = 20;
 
             Check.That(Twenty).IsEqualTo(OtherTwenty);
         }
@@ -232,8 +232,8 @@ namespace NFluent.Tests
         [Test]
         public void EqualsWorksToo()
         {
-            const short Twenty = 20;
-            const short OtherTwenty = 20;
+            const sbyte Twenty = 20;
+            const sbyte OtherTwenty = 20;
 
             Check.That(Twenty).Equals(OtherTwenty);
 
@@ -244,26 +244,26 @@ namespace NFluent.Tests
         [Test]
         public void NotIsEqualToWorks()
         {
-            const short One = 1;
-            const short Twenty = 20;
+            const sbyte One = 1;
+            const sbyte Twenty = 20;
 
             Check.That(One).Not.IsEqualTo(Twenty);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [short]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [sbyte]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
-            const short Twenty = 20;
+            const sbyte Twenty = 20;
 
             Check.That(Twenty).Not.IsEqualTo(Twenty);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [short]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [sbyte]")]
         public void NotEqualsThrowsExceptionWhenFailing()
         {
-            const short Twenty = 20;
+            const sbyte Twenty = 20;
 
             Check.That(Twenty).Not.Equals(Twenty);
         }
@@ -271,17 +271,17 @@ namespace NFluent.Tests
         [Test]
         public void IsNotEqualToWorks()
         {
-            const short One = 1;
-            const short Twenty = 20;
+            const sbyte One = 1;
+            const sbyte Twenty = 20;
 
             Check.That(One).IsNotEqualTo(Twenty);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [short]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [sbyte]")]
         public void IsNotEqualToThrowsExceptionWhenFailing()
         {
-            const short Twenty = 20;
+            const sbyte Twenty = 20;
 
             Check.That(Twenty).IsNotEqualTo(Twenty);
         }
@@ -290,8 +290,8 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[1]\nThe expected value:\n\t[20]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
-            const short One = 1;
-            const short Twenty = 20;
+            const sbyte One = 1;
+            const sbyte Twenty = 20;
 
             Check.That(One).Not.IsNotEqualTo(Twenty);
         }
@@ -305,7 +305,7 @@ namespace NFluent.Tests
         [Test]
         public void HasValueWorks()
         {
-            short? one = 1;
+            sbyte? one = 1;
 
             Check.That(one).HasAValue();
         }
@@ -314,7 +314,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value has no value, which is unexpected.")]
         public void HasValueThrowsExceptionWhenFailing()
         {
-            short? noValue = null;
+            sbyte? noValue = null;
 
             Check.That(noValue).HasAValue();
         }
@@ -322,7 +322,7 @@ namespace NFluent.Tests
         [Test]
         public void NotHasValueWorks()
         {
-            short? noValue = null;
+            sbyte? noValue = null;
 
             Check.That(noValue).Not.HasAValue();
         }
@@ -331,7 +331,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nhas a value, which is unexpected.")]
         public void NotHasValueThrowsExceptionWhenFailing()
         {
-            short? one = 1;
+            sbyte? one = 1;
 
             Check.That(one).Not.HasAValue();
         }
@@ -339,16 +339,16 @@ namespace NFluent.Tests
         [Test]
         public void HasValueSupportsToBeChainedWithTheWhichOperator()
         {
-            short? one = 1;
+            sbyte? one = 1;
 
-            Check.That(one).HasAValue().Which.IsPositive().And.IsEqualTo((short)1);
+            Check.That(one).HasAValue().Which.IsPositive().And.IsEqualTo((sbyte)1);
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable has no value to be checked.")]
         public void TryingToChainANullableWithoutAValueIsPossibleButThrowsAnException()
         {
-            short? noValue = null;
+            sbyte? noValue = null;
 
             Check.That(noValue).Not.HasAValue().Which.IsPositive();
         }
@@ -360,7 +360,7 @@ namespace NFluent.Tests
         [Test]
         public void HasNoValueWorks()
         {
-            short? noValue = null;
+            sbyte? noValue = null;
 
             Check.That(noValue).HasNoValue();
         }
@@ -369,7 +369,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nhas a value, which is unexpected.")]
         public void HasNoValueThrowsExceptionWhenFailing()
         {
-            short? one = 1;
+            sbyte? one = 1;
 
             Check.That(one).HasNoValue();
         }
@@ -377,7 +377,7 @@ namespace NFluent.Tests
         [Test]
         public void NotHasNoValueWorks()
         {
-            short? one = 1;
+            sbyte? one = 1;
 
             Check.That(one).Not.HasNoValue();
         }
@@ -386,7 +386,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value has no value, which is unexpected.")]
         public void NotHasNoValueThrowsExceptionWhenFailing()
         {
-            short? noValue = null;
+            sbyte? noValue = null;
 
             Check.That(noValue).Not.HasNoValue();
         }
@@ -398,42 +398,42 @@ namespace NFluent.Tests
         [Test]
         public void IsInstanceOfWorksWithNullable()
         {
-            short? one = 1;
+            sbyte? one = 1;
 
-            Check.That(one).IsInstanceOf<short?>().And.HasAValue().Which.IsEqualTo((short)1);
+            Check.That(one).IsInstanceOf<sbyte?>().And.HasAValue().Which.IsEqualTo((sbyte)1);
         }
 
         [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
-            short? one = 1;
+            sbyte? one = 1;
 
-            Check.That(one).IsInstanceOf<short?>().And.HasAValue().Which.IsEqualTo((short)1);
+            Check.That(one).IsInstanceOf<sbyte?>().And.HasAValue().Which.IsEqualTo((sbyte)1);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of short? whereas it must not.\nThe checked value:\n\t[1] of type: [short?]\nThe expected type: different from\n\t[short?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of sbyte? whereas it must not.\nThe checked value:\n\t[1] of type: [sbyte?]\nThe expected type: different from\n\t[sbyte?]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
-            short? one = 1;
+            sbyte? one = 1;
 
-            Check.That(one).Not.IsInstanceOf<short?>();
+            Check.That(one).Not.IsInstanceOf<sbyte?>();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of short? whereas it must not.\nThe checked value:\n\t[null] of type: [short?]\nThe expected type: different from\n\t[short?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of sbyte? whereas it must not.\nThe checked value:\n\t[null] of type: [sbyte?]\nThe expected type: different from\n\t[sbyte?]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
-            short? noValue = null;
+            sbyte? noValue = null;
 
-            Check.That(noValue).Not.IsInstanceOf<short?>();
+            Check.That(noValue).Not.IsInstanceOf<sbyte?>();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of string.\nThe checked value:\n\t[null] of type: [short?]\nThe expected type:\n\t[string]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of string.\nThe checked value:\n\t[null] of type: [sbyte?]\nThe expected type:\n\t[string]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
-            short? one = null;
+            sbyte? one = null;
 
             Check.That(one).IsInstanceOf<string>();
         }

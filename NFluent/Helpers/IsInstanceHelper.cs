@@ -105,7 +105,7 @@ namespace NFluent.Helpers
             FluentMessage.MessageBlock message;
             if (isSameType)
             {
-                message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of {0} whereas it must not.", typeOperand))
+                message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of {0} whereas it must not.", typeOperand.ToStringProperlyFormated()))
                                        .On(value)
                                        .WithType()
                                        .And.Expected(typeOperand)
@@ -128,7 +128,7 @@ namespace NFluent.Helpers
             FluentMessage.MessageBlock message;
             if (isSameType)
             {
-                message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of {0} whereas it must not.", expectedType))
+                message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of {0} whereas it must not.", expectedType.ToStringProperlyFormated()))
                     .On(value)
                     .WithType(instanceType)
                     .And.Expected(expectedType)
@@ -136,7 +136,7 @@ namespace NFluent.Helpers
             }
             else
             {
-                message = FluentMessage.BuildMessage(string.Format("The {{0}} is not an instance of {0}.", expectedType))
+                message = FluentMessage.BuildMessage(string.Format("The {{0}} is not an instance of {0}.", expectedType.ToStringProperlyFormated()))
                     .On(value)
                     .WithType(instanceType)
                     .And.Expected(expectedType)

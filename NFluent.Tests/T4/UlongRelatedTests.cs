@@ -251,7 +251,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.UInt64]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [ulong]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             const ulong Twenty = 20;
@@ -260,7 +260,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.UInt64]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [ulong]")]
         public void NotEqualsThrowsExceptionWhenFailing()
         {
             const ulong Twenty = 20;
@@ -278,7 +278,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [System.UInt64]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [ulong]")]
         public void IsNotEqualToThrowsExceptionWhenFailing()
         {
             const ulong Twenty = 20;
@@ -412,7 +412,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of System.Nullable`1[System.UInt64] whereas it must not.\nThe checked value:\n\t[1] of type: [System.Nullable`1[System.UInt64]]\nThe expected type: different from\n\t[System.Nullable`1[System.UInt64]]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ulong? whereas it must not.\nThe checked value:\n\t[1] of type: [ulong?]\nThe expected type: different from\n\t[ulong?]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
             ulong? one = 1;
@@ -421,7 +421,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of System.Nullable`1[System.UInt64] whereas it must not.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.UInt64]]\nThe expected type: different from\n\t[System.Nullable`1[System.UInt64]]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ulong? whereas it must not.\nThe checked value:\n\t[null] of type: [ulong?]\nThe expected type: different from\n\t[ulong?]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             ulong? noValue = null;
@@ -430,7 +430,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of System.String.\nThe checked value:\n\t[null] of type: [System.Nullable`1[System.UInt64]]\nThe expected type:\n\t[System.String]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of string.\nThe checked value:\n\t[null] of type: [ulong?]\nThe expected type:\n\t[string]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
             ulong? one = null;

@@ -112,6 +112,9 @@
     <Compile Include="T4\LongCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
+    <Compile Include="T4\SbyteCheckExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
     <Compile Include="T4\ShortCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>

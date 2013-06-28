@@ -138,7 +138,7 @@ namespace NFluent.Tests.ForDocumentation
                             // run all tests
                             foreach (var checkMethod in publicMethods)
                             {
-                                var desc = RunnerHelper.AnalyzeSignature(checkMethod);
+                                var desc = CheckDescription.AnalyzeSignature(checkMethod);
 
                                 if (desc != null)
                                 {
@@ -155,9 +155,31 @@ namespace NFluent.Tests.ForDocumentation
                 }
             }
 
+            // xml save
             const string Name = "FluentChecks.xml";
             report.Save(Name);
+
+            const string Name2 = "FluentChecks.csv";
+
+            // csv file
+            using (var writer = new StreamWriter(Name2, false))
+            {
+                foreach (var typeChecks in report.RunDescription)
+                {
+                    foreach (var checkList in typeChecks.Checks)
+                    {
+                        foreach (var signature in checkList.CheckSignatures)
+                        {
+                            var message = string.Format(
+                                "{0};{1};{2}", typeChecks.CheckedType, checkList.CheckName, signature.Signature);
+                            writer.WriteLine(message);
+                        }
+                    }
+                }
+            }
+
             Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(Name)));
+            Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(Name2)));
         }
 
         // run a set of test
