@@ -68,6 +68,7 @@ namespace NFluent.Tests
         {
             var x = new DummyClass();
             Check.That(x).HasFieldsNotEqualToThose(new DummyClass(1, 2)); 
+
             // check with missing fields
             Check.That(new DummyHeritance()).HasFieldsNotEqualToThose(new DummyClass());
         }
