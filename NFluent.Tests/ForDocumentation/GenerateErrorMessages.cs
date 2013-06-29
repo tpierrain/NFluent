@@ -91,7 +91,7 @@ namespace NFluent.Tests.ForDocumentation
                 return false;
             }
 
-            if (!lines[0].ToLowerInvariant().Contains("checked"))
+            if (!lines[1].ToLowerInvariant().Contains("checked"))
             {
                 // failing
                 error = "message first line must contain 'checked'.";
