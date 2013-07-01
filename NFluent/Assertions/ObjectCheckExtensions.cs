@@ -15,6 +15,7 @@
 namespace NFluent
 {
     using System;
+    using System.Reflection;
 
     using NFluent.Extensions;
     using NFluent.Helpers;
@@ -223,6 +224,127 @@ namespace NFluent
             }
 
             return new CheckLink<ICheck<object>>(check);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is equal to another expected value.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
+        /// <remarks>The comparison is done field by field.</remarks>
+        public static ICheckLink<ICheck<object>> HasFieldsEqualToThose(this ICheck<object> check, object expected)
+        {
+            var runnableCheck = check as IRunnableCheck<object>;
+            var negated = runnableCheck.Negated;
+            var value = runnableCheck.Value;
+
+            var message = CheckFieldEquality(expected, value, negated);
+
+            if (message != null)
+            {
+                throw new FluentCheckException(message);
+            }
+
+            return new CheckLink<ICheck<object>>(check);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is equal to another expected value.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
+        /// <remarks>The comparison is done field by field.</remarks>
+        public static ICheckLink<ICheck<object>> HasFieldsNotEqualToThose(this ICheck<object> check, object expected)
+        {
+            var runnableCheck = check as IRunnableCheck<object>;
+            var negated = !runnableCheck.Negated;
+            var value = runnableCheck.Value;
+
+            var message = CheckFieldEquality(expected, value, negated);
+
+            if (message != null)
+            {
+                throw new FluentCheckException(message);
+            }
+
+            return new CheckLink<ICheck<object>>(check);
+        }
+
+        private static string CheckFieldEquality(object expected, object value, bool negated)
+        {
+            string message = null;
+
+            foreach (var fieldInfo in
+                value.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+            {
+                var otherField = FindField(expected.GetType(), fieldInfo.Name);
+                if (otherField == null)
+                {
+                    if (!negated)
+                    {
+                        message =
+                            FluentMessage.BuildMessage(
+                                string.Format("The {{0}} has a field that is absent from the {{1}}: {0}.", fieldInfo.Name))
+                                         .On(value)
+                                         .And.Expected(expected)
+                                         .ToString();
+                    }
+
+                    break;
+                }
+
+                // compare value
+                if (fieldInfo.GetValue(value).Equals(otherField.GetValue(expected)) == negated)
+                {
+                    if (!negated)
+                    {
+                        message =
+                            FluentMessage.BuildMessage(
+                                string.Format("The {{0}}'s field {0} does not have the expected value.", fieldInfo.Name))
+                                         .On(value)
+                                         .And.Expected(expected)
+                                         .ToString();
+                    }
+                    else
+                    {
+                        message =
+                            FluentMessage.BuildMessage(string.Format("The {{0}}'s field {0} has the same value in the comparand, whereas it must not.", fieldInfo.Name))
+                                         .On(value)
+                                         .And.Expected(expected)
+                                         .Comparison("different from")
+                                         .ToString();
+                    }
+
+                    break;
+                }
+            }
+
+            return message;
+        }
+
+        private static FieldInfo FindField(Type type, string name)
+        {
+            var result = type
+                                 .GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            if (result != null)
+            {
+                return result;
+            }
+            
+            if (type.BaseType == null)
+            {
+                return null;
+            }
+
+            return FindField(type.BaseType, name);
         }
     }
 }

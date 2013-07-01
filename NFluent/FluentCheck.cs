@@ -16,7 +16,6 @@ namespace NFluent
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-
     using NFluent.Helpers;
 
     /// <summary>
@@ -31,7 +30,7 @@ namespace NFluent
         /// Initializes a new instance of the <see cref="FluentCheck{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
-        public FluentCheck(T value) : this(value, false)
+        public FluentCheck(T value) : this(value, !CheckContext.DefaulNegated)
         {
         }
 
@@ -74,7 +73,7 @@ namespace NFluent
         { 
             get
             {
-                return new FluentCheck<T>(this.Value, true);
+                return new FluentCheck<T>(this.Value, CheckContext.DefaulNegated);
             }
         }
 
@@ -120,10 +119,7 @@ namespace NFluent
             var checkRunner = this as ICheckRunner<T>;
             
             checkRunner.ExecuteCheck(
-                () =>
-                {
-                    EqualityHelper.IsEqualTo(this.Value, obj);
-                },
+                () => EqualityHelper.IsEqualTo(this.Value, obj),
                 EqualityHelper.BuildErrorMessage(this.Value, obj, true));
             
             return true;

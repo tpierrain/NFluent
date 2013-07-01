@@ -52,7 +52,9 @@
     <Compile Include="Assertions\BooleanCheckExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Assertions\DictionaryCheckExtension.cs" />
     <Compile Include="Assertions\StringFluentSyntaxExtension.cs" />
+    <Compile Include="CheckContext.cs" />
     <Compile Include="Helpers\Duration.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FluentMessage.cs" />
@@ -129,6 +131,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="T4\NumberFluentAssertionGenerator.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastOutputs>.\NumberFluentAssertionExtensionsScript.cs</LastOutputs>
@@ -136,7 +139,6 @@
       <LastGenOutput>NumberFluentAssertionGenerator.txt</LastGenOutput>
     </None>
     <None Include="T4\TemplateFileManagerV2.1.ttinclude" />
-    <None Include="packages.config" />
     <None Include="Settings.StyleCop" />
     <None Include="T4\TypeCloningHelper.ttinclude" />
   </ItemGroup>
