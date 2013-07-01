@@ -25,6 +25,7 @@ namespace NFluent.Tests
         private const string Blabla = ".*?";
         private const string LineFeed = "\\n";
         private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
+        private static readonly List<int> EmptyEnumerable = new List<int>();
 
         #region HasSize
 
@@ -122,6 +123,42 @@ namespace NFluent.Tests
             var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
             
             Check.That(persons).IsEmpty();
+        }
+
+        [Test]
+        public void IsEmptyOrNullWorks()
+        {
+            Check.That(EmptyEnumerable).IsEmptyOrNull();
+            Check.That((IEnumerable)null).IsEmptyOrNull();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked IEnumerable contains items, whereas it must be empty or null.\nThe checked IEnumerable:\n\t[null, null, Thomas]")]
+        public void IsEmptyOrNullFailsAppropriately()
+        {
+            var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
+            Check.That(persons).IsEmptyOrNull();
+        }
+
+        [Test]
+        public void NotIsEmptyOrNullWorks()
+        {
+            var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
+            Check.That(persons).Not.IsEmptyOrNull();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked IEnumerable is empty, where as it must contain at least one item.")]
+        public void NotIsEmptyOrNullFailsIfEmpty()
+        {
+            Check.That(EmptyEnumerable).Not.IsEmptyOrNull();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked IEnumerable is null, where as it must contain at least one item.")]
+        public void NotIsEmptyOrNullFailsIfNull()
+        {
+            Check.That((IEnumerable)null).Not.IsEmptyOrNull();
         }
 
         [Test]

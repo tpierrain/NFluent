@@ -391,6 +391,59 @@ namespace NFluent
                 FluentMessage.BuildMessage("The actual enumerable is empty, which is unexpected.").ToString());
         }
 
+        /// <summary>
+        /// Checks that the enumerable is null or empty.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
+        public static ICheckLink<ICheck<IEnumerable>> IsEmptyOrNull(this ICheck<IEnumerable> check)
+        {
+            var runnableCheck = check as IRunnableCheck<IEnumerable>;
+            var value = runnableCheck.Value;
+            var negated = runnableCheck.Negated;
+
+            string message = null;
+
+            if (value != null && value.Count() > 0)
+            {
+                if (!negated)
+                {
+                    message =
+                        FluentMessage.BuildMessage("The {0} contains items, whereas it must be empty or null.")
+                                     .For("IEnumerable")
+                                     .On(value)
+                                     .ToString();
+                }
+            }
+            else if (negated)
+            {
+                if (value == null)
+                {
+                    message = 
+                        FluentMessage.BuildMessage("The {0} is null, where as it must contain at least one item.")
+                                     .For("IEnumerable")
+                                     .ToString();
+                }
+                else
+                {
+                    message =
+                        FluentMessage.BuildMessage("The {0} is empty, where as it must contain at least one item.")
+                                     .For("IEnumerable")
+                                     .ToString();
+                }
+            }
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                throw new FluentCheckException(message);
+            }
+
+            return new CheckLink<ICheck<IEnumerable>>(check);
+        }
+
         #region private or internal methods
 
         /// <summary>

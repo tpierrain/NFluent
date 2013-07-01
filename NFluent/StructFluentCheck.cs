@@ -23,7 +23,7 @@ namespace NFluent
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
     public class StructFluentCheck<T> : IStructCheck<T>, IStructCheckRunner<T>, IRunnableCheck<T> where T : struct
     {
-        private StructCheckRunner<T> checkRunner;
+        private readonly StructCheckRunner<T> checkRunner;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StructFluentCheck{T}" /> class.

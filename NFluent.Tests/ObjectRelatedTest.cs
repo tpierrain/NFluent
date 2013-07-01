@@ -55,5 +55,66 @@ namespace NFluent.Tests
             Check.That(test).Not.IsDistinctFrom(test);
             Check.That(new object()).Not.IsSameReferenceThan(new object());           
         }
+
+        [Test]
+        public void IsEqualComparingFields()
+        {
+            var x = new DummyClass();
+            Check.That(x).HasFieldsEqualToThose(new DummyClass());
+        }
+
+        [Test]
+        public void HasDifferentFieldsWorks()
+        {
+            var x = new DummyClass();
+            Check.That(x).HasFieldsNotEqualToThose(new DummyClass(1, 2)); 
+
+            // check with missing fields
+            Check.That(new DummyHeritance()).HasFieldsNotEqualToThose(new DummyClass());
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field x does not have the expected value.\nThe checked value:\n\t[NFluent.Tests.ObjectRelatedTest+DummyClass]\nThe expected value:\n\t[NFluent.Tests.ObjectRelatedTest+DummyClass]")]
+        public void IsEqualFailsIfFieldsDifferent()
+        {
+            var x = new DummyClass();
+            Check.That(x).HasFieldsEqualToThose(new DummyClass(1, 2));
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field x has the same value in the comparand, whereas it must not.\nThe checked value:\n\t[NFluent.Tests.ObjectRelatedTest+DummyClass]\nThe expected value: different from\n\t[NFluent.Tests.ObjectRelatedTest+DummyClass]")]
+        public void HasFieldsNotEqualToThoseFailsIfSame()
+        {
+            Check.That(new DummyClass()).HasFieldsNotEqualToThose(new DummyClass());
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value has a field that is absent from the expected one: z.\nThe checked value:\n\t[NFluent.Tests.ObjectRelatedTest+DummyHeritance]\nThe expected value:\n\t[NFluent.Tests.ObjectRelatedTest+DummyClass]")]
+        public void IsEqualfailsWithMissingFields()
+        {
+            var x = new DummyHeritance();
+            Check.That(x).HasFieldsEqualToThose(new DummyClass());
+        }
+
+        private class DummyClass
+        {
+            private int x = 2;
+            private int y = 3;
+
+            public DummyClass()
+            {
+            }
+
+            public DummyClass(int x, int y)
+            {
+                this.x = x;
+                this.y = y;
+            }
+        }
+
+        private class DummyHeritance : DummyClass
+        {
+            private int z = 2;
+        }
     }
 }

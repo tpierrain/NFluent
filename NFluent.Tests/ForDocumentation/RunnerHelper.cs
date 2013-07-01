@@ -23,7 +23,6 @@ namespace NFluent.Tests.ForDocumentation
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
     using NUnit.Framework;
     
     /// <summary>
@@ -36,45 +35,47 @@ namespace NFluent.Tests.ForDocumentation
         public static void RunThoseTests(IEnumerable<MethodInfo> tests, Type type, FullRunDescription report, bool log)
         {
             var specificTests = tests as IList<MethodInfo> ?? tests.ToList();
-            if (specificTests.Count > 0)
+            if (specificTests.Count <= 0)
             {
-                Log(string.Format("TestFixture :{0}", type.FullName));
+                return;
+            }
 
-                // creates an instance
-                var test = type.InvokeMember(
-                    string.Empty,
-                    BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance,
-                    null,
-                    null,
-                    new object[] { });
+            Log(string.Format("TestFixture :{0}", type.FullName));
 
-                // run TestFixtureSetup
-                RunAllMethodsWithASpecificAttribute(type, typeof(TestFixtureSetUpAttribute), test);
+            // creates an instance
+            var test = type.InvokeMember(
+                string.Empty,
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance,
+                null,
+                null,
+                new object[] { });
 
-                try
+            // run TestFixtureSetup
+            RunAllMethodsWithASpecificAttribute(type, typeof(TestFixtureSetUpAttribute), test);
+
+            try
+            {
+                // run all tests
+                foreach (var specificTest in specificTests.Where(
+                    specificTest => specificTest.GetCustomAttributes(typeof(ExplicitAttribute), false).Length == 0 
+                                    && specificTest.GetCustomAttributes(typeof(IgnoreAttribute), false).Length == 0))
                 {
-                    // run all tests
-                    foreach (var specificTest in specificTests.Where(
-                        specificTest => specificTest.GetCustomAttributes(typeof(ExplicitAttribute), false).Length == 0 
-                        && specificTest.GetCustomAttributes(typeof(IgnoreAttribute), false).Length == 0))
-                    {
-                        RunAllMethodsWithASpecificAttribute(type, typeof(SetUpAttribute), test);
+                    RunAllMethodsWithASpecificAttribute(type, typeof(SetUpAttribute), test);
 
-                        try
-                        {
-                            // we have to caputre eceptions
-                            RunMethod(specificTest, test, report, log);
-                        }
-                        finally
-                        {
-                            RunAllMethodsWithASpecificAttribute(type, typeof(TearDownAttribute), test);
-                        }
+                    try
+                    {
+                        // we have to caputre eceptions
+                        RunMethod(specificTest, test, report, log);
+                    }
+                    finally
+                    {
+                        RunAllMethodsWithASpecificAttribute(type, typeof(TearDownAttribute), test);
                     }
                 }
-                finally
-                {
-                    RunAllMethodsWithASpecificAttribute(type, typeof(TestFixtureTearDownAttribute), test);
-                }
+            }
+            finally
+            {
+                RunAllMethodsWithASpecificAttribute(type, typeof(TestFixtureTearDownAttribute), test);
             }
         }
 
@@ -93,6 +94,11 @@ namespace NFluent.Tests.ForDocumentation
             {
                 if (specificTest.GetCustomAttributes(typeof(ExpectedExceptionAttribute), false).Length == 0)
                 {
+                    if (CheckContext.DefaulNegated == false)
+                    {
+                        return;
+                    }
+
                     throw;
                 }
 
@@ -125,6 +131,11 @@ namespace NFluent.Tests.ForDocumentation
                             if (report != null)
                             {
                                 report.AddEntry(desc);
+                            }
+
+                            if (CheckContext.DefaulNegated == false)
+                            {
+                                throw new ApplicationException(string.Format("(Forced) Negated test '{0}' should have succeeded, but it failed.", specificTest.Name), fluExc);
                             }
                         }
                         else

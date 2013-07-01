@@ -14,11 +14,28 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using NFluent.Tests.ForDocumentation;
+
     using NUnit.Framework;
 
     [TestFixture]
     public class NotRelatedTests
     {
+        [Test]
+        public void CheckContextWorks()
+        {
+            Assert.IsTrue(CheckContext.DefaulNegated);
+            CheckContext.DefaulNegated = false;
+            try
+            {
+               Assert.IsFalse(CheckContext.DefaulNegated);
+            }
+            finally
+            {
+                CheckContext.DefaulNegated = true;
+            }
+        }
+
         [Test]
         public void NotIsWorking()
         {
@@ -43,6 +60,26 @@ namespace NFluent.Tests
         public void ThrowsProperExceptionWhenCombineNotAndAndOperatorsInTheSameCheckStatement()
         {
             Check.That("Batman and Robin").Not.Contains("Joker").And.StartsWith("Bat").And.Not.Contains("Robin");
+        }
+
+        [Test]
+        [Explicit("Experimental: to check if negation works")]
+        public void ForceNegationOnAllTest()
+        {
+            if (!CheckContext.DefaulNegated)
+            {
+                return;
+            }
+
+            CheckContext.DefaulNegated = false;
+            try
+            {
+                RunnerHelper.RunAllTests(false);
+            }
+            finally
+            {
+                CheckContext.DefaulNegated = true;
+            }
         }
     }
 }
