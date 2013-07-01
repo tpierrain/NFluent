@@ -22,6 +22,8 @@ namespace NFluent.Tests.ForDocumentation
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
+    using NFluent.Extensions;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -171,7 +173,7 @@ namespace NFluent.Tests.ForDocumentation
                         foreach (var signature in checkList.CheckSignatures)
                         {
                             var message = string.Format(
-                                "{0};{1};{2}", typeChecks.CheckedType, checkList.CheckName, signature.Signature);
+                                "{0};{1};{2}", typeChecks.CheckedType.ToStringProperlyFormated(), checkList.CheckName, signature.Signature);
                             writer.WriteLine(message);
                         }
                     }

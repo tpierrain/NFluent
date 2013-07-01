@@ -64,6 +64,7 @@ namespace NFluent.Tests.ForDocumentation
             }
         }
 
+        [XmlIgnore]
         public Type CheckedType
         {
             get

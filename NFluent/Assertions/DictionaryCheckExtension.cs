@@ -15,6 +15,7 @@
 namespace NFluent
 {
     using System.Collections;
+    using System.Linq;
 
     using NFluent.Helpers;
 
@@ -49,11 +50,11 @@ namespace NFluent
                 if (negated)
                 {
                     message =
-                        FluentMessage.BuildMessage("The {0} does contain the key, whereas it must not.")
+                        FluentMessage.BuildMessage("The {0} does contain the given key, whereas it must not.")
                                      .For("Dictionary")
                                      .On(checkedDico)
                                      .And.Expected(key)
-                                     .Label("Expected key:").ToString();
+                                     .Label("Given key:").ToString();
                 }
                 else
                 {
@@ -72,6 +73,67 @@ namespace NFluent
              }
 
             return new CheckLink<ICheck<IDictionary>>(check);
+         }
+
+         /// <summary>
+         /// Checks that the actual <see cref="IDictionary"/> contains the expected value.
+         /// </summary>
+         /// <typeparam name="K">
+         /// The type of the key element.
+         /// </typeparam>
+         /// <param name="check">
+         /// The fluent check to be extended.
+         /// </param>
+         /// <param name="value">
+         /// The expected value.
+         /// </param>
+         /// <returns>
+         /// A check link.
+         /// </returns>
+         public static ICheckLink<ICheck<IDictionary>> ContainsValue<K>(this ICheck<IDictionary> check, K value)
+         {
+             var checkItem = check as IRunnableCheck<IDictionary>;
+             var checkedDico = checkItem.Value;
+             var negated = checkItem.Negated;
+             string message = null;
+             var found = false;
+             foreach (var item in checkedDico.Values)
+             {
+                 if (item.Equals(value))
+                 {
+                     found = true;
+                     break;
+                 }
+             }
+
+             if (found == negated)
+             {
+                if (negated)
+                {
+                    message =
+                        FluentMessage.BuildMessage("The {0} does contain the given value, whereas it must not.")
+                                    .For("Dictionary")
+                                    .On(checkedDico)
+                                    .And.Expected(value)
+                                    .Label("Expected value:").ToString();
+                }
+                else
+                {
+                    message =
+                        FluentMessage.BuildMessage("The {0} does not contain the expected value.")
+                                    .For("Dictionary")
+                                    .On(checkedDico)
+                                    .And.Expected(value)
+                                    .Label("given value:").ToString();
+                }
+             }
+
+             if (message != null)
+             {
+                 throw new FluentCheckException(message);
+             }
+
+             return new CheckLink<ICheck<IDictionary>>(check);
          }
     }
 }

@@ -37,6 +37,16 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void InheritedChecks()
+        {
+            Check.That(SimpleDico).Equals(SimpleDico);
+
+            Check.That(SimpleDico).HasSize(1);
+
+            Check.That(SimpleDico).IsInstanceOf<Dictionary<string, string>>();
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked Dictionary does not contain the expected key.\nThe checked Dictionary:\n\t[[demo, value]]\nExpected key:\n\t[\"value\"]")]
         public void ContainsKeyFailsProperly()
         {
@@ -50,10 +60,36 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked Dictionary does contain the key, whereas it must not.\nThe checked Dictionary:\n\t[[demo, value]]\nExpected key:\n\t[\"demo\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked Dictionary does contain the given key, whereas it must not.\nThe checked Dictionary:\n\t[[demo, value]]\nGiven key:\n\t[\"demo\"]")]
         public void NotContainsKeyFailsProperly()
         {
             Check.That(SimpleDico).Not.ContainsKey("demo");
+        }
+
+        [Test]
+        public void ContainsValueWorks()
+        {
+            Check.That(SimpleDico).ContainsValue("value");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked Dictionary does not contain the expected value.\nThe checked Dictionary:\n\t[[demo, value]]\ngiven value:\n\t[\"demo\"]")]
+        public void ContainsValueFailsProperly()
+        {
+            Check.That(SimpleDico).ContainsValue("demo");
+        }
+
+        [Test]
+        public void NotContainsValueWorksProperly()
+        {
+            Check.That(SimpleDico).Not.ContainsValue("demo");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked Dictionary does contain the given value, whereas it must not.\nThe checked Dictionary:\n\t[[demo, value]]\nExpected value:\n\t[\"value\"]")]
+        public void NotContainsValueFailsProperly()
+        {
+            Check.That(SimpleDico).Not.ContainsValue("value");
         }
     }
 }

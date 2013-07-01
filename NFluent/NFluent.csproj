@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Assertions\DictionaryCheckExtension.cs" />
     <Compile Include="Assertions\StringFluentSyntaxExtension.cs" />
+    <Compile Include="CheckContext.cs" />
     <Compile Include="Helpers\Duration.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FluentMessage.cs" />
