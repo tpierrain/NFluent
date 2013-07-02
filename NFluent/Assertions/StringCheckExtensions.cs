@@ -234,7 +234,7 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return negated ? null : FluentMessage.BuildMessage("The {0} is null.").Expected(values).Label("The {0} substrin(s):").ToString();
+                return negated ? null : FluentMessage.BuildMessage("The {0} is null.").For("string").Expected(values).Label("The {0} substring(s):").ToString();
             }
 
             var items = values.Where(item => checkedValue.Contains(item) == negated).ToList();
@@ -293,7 +293,7 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return negated ? null : FluentMessage.BuildMessage("The {0} is null.").Expected(starts).Comparison("starts with").ToString();
+                return negated ? null : FluentMessage.BuildMessage("The {0} is null.").For("string").Expected(starts).Comparison("starts with").ToString();
             }
             
             if (checkedValue.StartsWith(starts) != negated)
@@ -306,11 +306,11 @@ namespace NFluent
             {
                 return
                     FluentMessage.BuildMessage("The {0} starts with {1}, whereas it must not.")
-                    .For("string")
-                                 .On(checkedValue)
-                                 .And.Expected(starts)
-                                 .Comparison("does not start with")
-                                 .ToString();
+                                    .For("string")
+                                    .On(checkedValue)
+                                    .And.Expected(starts)
+                                    .Comparison("does not start with")
+                                    .ToString();
             }
   
             return
@@ -350,7 +350,7 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return negated ? null : FluentMessage.BuildMessage("The {0} is null.").Expected(ends).Comparison("ends with").ToString();
+                return negated ? null : FluentMessage.BuildMessage("The {0} is null.").For("string").Expected(ends).Comparison("ends with").ToString();
             }
 
             if (checkedValue.EndsWith(ends) != negated)
@@ -430,7 +430,7 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return negated ? null : FluentMessage.BuildMessage("The {0} is null.").Expected(regExp).Comparison("matches").ToString();
+                return negated ? null : FluentMessage.BuildMessage("The {0} is null.").For("string").Expected(regExp).Comparison("matches").ToString();
             }
 
             Regex exp = new Regex(regExp);
