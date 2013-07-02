@@ -349,7 +349,6 @@ namespace NFluent
             var foundElementsNumberDescription = BuildElementNumberLiteral(itemsCount);
 
             return FluentMessage.BuildMessage(string.Format("The {{0}} has {0} which is unexpected.", foundElementsNumberDescription)).For("enumerable").On(checkedEnumerable).ToString();
-            //return string.Format("\nThe actual enumerable has {0} which is unexpected.\nActual content is:\n\t[{1}].", foundElementsNumberDescription, checkedEnumerable.ToEnumeratedString());
         }
 
         private static string BuildElementNumberLiteral(long itemsCount)
