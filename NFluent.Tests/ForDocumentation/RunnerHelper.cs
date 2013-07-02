@@ -135,7 +135,8 @@ namespace NFluent.Tests.ForDocumentation
 
                             if (CheckContext.DefaulNegated == false)
                             {
-                                throw new ApplicationException(string.Format("(Forced) Negated test '{0}' should have succeeded, but it failed.", specificTest.Name), fluExc);
+                                Log(string.Format("(Forced) Negated test '{0}' should have succeeded, but it failed.", specificTest.Name));
+                                //throw new ApplicationException(string.Format("(Forced) Negated test '{0}' should have succeeded, but it failed.", specificTest.Name), fluExc);
                             }
                         }
                         else

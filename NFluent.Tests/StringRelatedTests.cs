@@ -48,16 +48,16 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string does not contains the expected value(s): \"C\", \"A\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected substring(s):\n\t[\"C\", \"a\", \"A\", \"z\"]")]
         public void ContainsIsCaseSensitive()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Contains("C", "a", "A", "z");
+            const string Alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(Alphabet).Contains("C", "a", "A", "z");
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string does not contains the expected value(s): \"0\", \"4\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected substring(s):\n\t[\"c\", \"0\", \"4\"]")]
         public void ContainsThrowsExceptionWhenFails()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Contains("c", "0", "4");
+            const string Alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Check.That(Alphabet).Contains("c", "0", "4");
         }
 
         [Test]
