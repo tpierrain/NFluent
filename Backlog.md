@@ -7,9 +7,11 @@ Now available on github: https://github.com/tpierrain/NFluent/issues?state=open
 
 Temporary backlog
 -------
-1. Make the FluentMessage able to write "The given value(s)" instead of "the expected enumerable". 
+1. Review the format of the DateTime checks to apply the same pattern?
+1. Replaces all the 'The checked value' by 'The checked string' for tests with strings within EqualRelatedTests.cs and StringRelatedTests.cs files.
+
+1. Make some FluentMessage able to write "The given value(s)" instead of "the expected enumerable"?
 1. Make the NumberCheck not implementing the ICheck anymore.
-1. Continue to migrate to the new error message formats (next: ?).
 1. Add some check method to the comparable types (e.g. IsAfter()).
 1. Expose IComparable extension methods to 'number' values so that autocompletion works on number values with those comparable checks.
 
