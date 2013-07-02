@@ -7,7 +7,6 @@ Now available on github: https://github.com/tpierrain/NFluent/issues?state=open
 
 Temporary backlog
 -------
-1. (Thomas) Replace all the 'The actual enumerable' by 'The checked enumerable'
 1. (Thomas) Replace all the 'The actual date time' by 'The checked date time' + other kind of the date time.
 
 1. Make some FluentMessage able to write "The given value(s)" instead of "the expected enumerable"?
