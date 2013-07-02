@@ -129,7 +129,7 @@ namespace NFluent
         {
             var runnableCheck = check as IRunnableCheck<string>;
 
-            var result = ContainsImpl(runnableCheck.Value, values, runnableCheck.Negated);
+            var result = ContainsImpl(runnableCheck.Value, values, runnableCheck.Negated, false);
 
             if (string.IsNullOrEmpty(result))
             {
@@ -153,7 +153,7 @@ namespace NFluent
         {    
             var runnableCheck = check as IRunnableCheck<string>;
 
-            var result = ContainsImpl(runnableCheck.Value, values, !runnableCheck.Negated);
+            var result = ContainsImpl(runnableCheck.Value, values, runnableCheck.Negated, true);
 
             if (string.IsNullOrEmpty(result))
             {
@@ -229,7 +229,7 @@ namespace NFluent
             return messageText;
         }
 
-        private static string ContainsImpl(string checkedValue, IEnumerable<string> values, bool negated)
+        private static string ContainsImpl(string checkedValue, IEnumerable<string> values, bool negated, bool notContains)
         {
             // special case if checkedvalue is null
             if (checkedValue == null)
@@ -237,14 +237,19 @@ namespace NFluent
                 return negated ? null : FluentMessage.BuildMessage("The {0} is null.").Expected(values).Label("The {0} substrin(s):").ToString();
             }
 
-            var items = values.Where(item => checkedValue.Contains(item) == negated).ToList();
+            var items = values.Where(item => checkedValue.Contains(item) == notContains).ToList();
 
-            if (items.Count == 0)
+            if (negated == (items.Count > 0))
             {
                 return null;
             }
 
-            if (negated)
+            if (!notContains && negated)
+            {
+                items = values.ToList();
+            }
+
+            if (negated != notContains)
             {
                 return 
                     FluentMessage.BuildMessage(
