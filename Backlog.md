@@ -7,7 +7,6 @@ Now available on github: https://github.com/tpierrain/NFluent/issues?state=open
 
 Temporary backlog
 -------
-1. (Thomas) Replace all the 'The checked value' by 'The checked string' for tests with strings within EqualRelatedTests.cs and StringRelatedTests.cs files.
 1. (Thomas) Replace all the 'The actual enumerable' by 'The checked enumerable'
 1. (Thomas) Replace all the 'The actual date time' by 'The checked date time' + other kind of the date time.
 

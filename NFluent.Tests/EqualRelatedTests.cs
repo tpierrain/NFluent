@@ -135,7 +135,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[\"Son of a test\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is equal to the expected one whereas it must not.\nThe expected string: different from\n\t[\"Son of a test\"]")]
         public void NotIsEqualToThrowsExceptionWhenFailingWithString()
         {
             var first = "Son of a test";
@@ -260,7 +260,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[\"Son of a test\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is equal to the expected one whereas it must not.\nThe expected string: different from\n\t[\"Son of a test\"]")]
         public void IsNotEqualToThrowsExceptionWithClearStatusWhenFails()
         {
             var first = "Son of a test";

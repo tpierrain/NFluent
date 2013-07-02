@@ -175,9 +175,10 @@ namespace NFluent
             {
                 messageText =
                     FluentMessage.BuildMessage("The {0} is equal to the {1} whereas it must not.")
-                                 .Expected(expected)
-                                 .Comparison("different from")
-                                 .ToString();
+                                    .For("string")
+                                    .Expected(expected)
+                                    .Comparison("different from")
+                                    .ToString();
             }
             else
             {
