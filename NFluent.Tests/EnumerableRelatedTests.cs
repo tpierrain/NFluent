@@ -70,7 +70,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe actual enumerable has 1 element instead of 5.\nActual content is:\n\t[666].")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable has 1 element instead of 5.\nThe checked enumerable:\n\t[666]")]
         public void HasSizeThrowsExceptionWhenFailingWithOneElementFound()
         {
             var enumerable = new List<int> { 666 };
@@ -87,7 +87,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe actual enumerable has 1 element which is unexpected.\nActual content is:\n\t[666].")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable has 1 element which is unexpected.\nThe checked enumerable:\n\t[666]")]
         public void NotHasSizeThrowsExceptionWhenFailing()
         {
             var enumerable = new List<int> { 666 };
@@ -96,7 +96,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe actual enumerable has 4 elements instead of 1.\nActual content is:\n\t[45, 43, 54, 666].")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable has 4 elements instead of 1.\nThe checked enumerable:\n\t[45, 43, 54, 666]")]
         public void HasSizeThrowsExceptionWithClearStatusWhenFailsWithOneExpectedElement()
         {
             var enumerable = new List<int> { 45, 43, 54, 666 };
@@ -117,7 +117,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe actual enumerable is not empty. Contains:\n\t[null, null, Thomas]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is not empty.\nThe checked enumerable:\n\t[null, null, Thomas]")]
         public void IsEmptyThrowsExceptionWhenNotEmpty()
         {
             var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
@@ -170,7 +170,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe actual enumerable is empty, which is unexpected.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is empty, which is unexpected.")]
         public void NotIsEmptyThrowsExceptionWhenFailing()
         {
             var persons = new List<Person>();
