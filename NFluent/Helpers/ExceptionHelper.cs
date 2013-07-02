@@ -30,6 +30,7 @@ namespace NFluent.Helpers
     {
         private static ExceptionConstructor constructors;
 
+        // TODO creates methods in order to shorten this static property implementation
         private static ExceptionConstructor Constructors
         {
             get
