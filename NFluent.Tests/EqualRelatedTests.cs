@@ -273,7 +273,6 @@ namespace NFluent.Tests
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             var first = "Son of a test";
-            var otherReferenceToSameObject = first;
             Check.That(first).Not.IsNotEqualTo("what?");
         }
 
