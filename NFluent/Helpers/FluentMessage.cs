@@ -33,12 +33,16 @@ namespace NFluent.Helpers
         private const string TestedAdjective = "checked";
 
         private const string ExpectedAdjective = "expected";
+        
+        private const string GivenAdjective = "given";
 
         private readonly string message;
 
         private MessageBlock expectedBlock = null;
 
         private MessageBlock checkedBlock = null;
+
+        private MessageBlock givenValueBlock = null;
 
         private string entity;
 
@@ -55,10 +59,10 @@ namespace NFluent.Helpers
         public FluentMessage(string message)
         {
             this.message = message;
-            this.Entity = null;
+            this.EntityDescription = null;
         }
 
-        private string Entity
+        private string EntityDescription
         {
             get
             {
@@ -86,6 +90,20 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
+        /// Gets the given value label.
+        /// </summary>
+        /// <value>
+        /// The given value label.
+        /// </value>
+        protected string GivenLabel
+        {
+            get
+            {
+                return string.Format("{0} {1}", GivenAdjective, this.EntityDescription);
+            }
+        }
+
+        /// <summary>
         /// Gets the tested value label.
         /// </summary>
         /// <value>
@@ -97,7 +115,7 @@ namespace NFluent.Helpers
             {
                 if (this.checkedBlock == null)
                 {
-                    return string.Format("{0} {1}", TestedAdjective, this.Entity);
+                    return string.Format("{0} {1}", TestedAdjective, this.EntityDescription);
                 }
 
                 return this.checkedBlock.GetBlockLabel();
@@ -123,12 +141,25 @@ namespace NFluent.Helpers
         public override string ToString()
         {
             var builder = new StringBuilder("\n");
-            builder.AppendFormat(this.message, this.TestedLabel, this.ExpectedLabel);
+            var givenOrExpectedLabel = this.ExpectedLabel;
+            if (this.givenValueBlock != null)
+            {
+                // we defined a given block which should then replace the classical expected one.
+                givenOrExpectedLabel = this.GivenLabel;
+            }
+
+            builder.AppendFormat(this.message, this.TestedLabel, givenOrExpectedLabel);
 
             if (this.checkedBlock != null)
             {
                 builder.Append("\n");
                 builder.Append(this.checkedBlock.GetMessage());
+            }
+
+            if (this.givenValueBlock != null)
+            {
+                builder.Append("\n");
+                builder.Append(this.givenValueBlock.GetMessage());
             }
 
             if (this.expectedBlock != null)
@@ -143,11 +174,11 @@ namespace NFluent.Helpers
         /// <summary>
         /// Specifies the attribute to use to describe entities.
         /// </summary>
-        /// <param name="newEntity">The newEntity.</param>
+        /// <param name="newEntityDescription">The new description for the Entity.</param>
         /// <returns>The same fluent message.</returns>
-        public FluentMessage For(string newEntity)
+        public FluentMessage For(string newEntityDescription)
         {
-            this.Entity = newEntity;
+            this.EntityDescription = newEntityDescription;
             return this;
         }
 
@@ -171,6 +202,18 @@ namespace NFluent.Helpers
         {
             this.expectedBlock = new MessageBlock(this, expected, ExpectedAdjective);
             return this.expectedBlock;
+        }
+
+        /// <summary>
+        /// Adds a message block to describe the given value (usually used as an 
+        /// alternative to the Expected block).
+        /// </summary>
+        /// <param name="givenValue">The given value.</param>
+        /// <returns>The created MessageBlock.</returns>
+        public MessageBlock GivenValue(object givenValue)
+        {
+            this.givenValueBlock = new MessageBlock(this, givenValue, GivenAdjective);
+            return this.givenValueBlock;
         }
 
         /// <summary>

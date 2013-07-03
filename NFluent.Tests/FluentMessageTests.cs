@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="MessageBuilderTests.cs" company="">
-// //   Copyright 2013 Cyrille DUPUYDAUBY
+// // <copyright file="FluentMessageTests.cs" company="">
+// //   Copyright 2013 Cyrille DUPUYDAUBY, Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -24,7 +24,7 @@ namespace NFluent.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessageBuilderTests
+    public class FluentMessageTests
     {
         [Test]
         public void BasicTest()
@@ -75,6 +75,14 @@ namespace NFluent.Tests
             Assert.AreEqual("char", typeof(char).ToStringProperlyFormated());
             Assert.AreEqual("void", typeof(void).ToStringProperlyFormated());
             Assert.AreEqual("Dictionary<string, string>", typeof(Dictionary<string, string>).ToStringProperlyFormated());
+        }
+
+        [Test]
+        public void HowGivenValueWorks()
+        {
+            var message = FluentMessage.BuildMessage("The {0} is before the {1} whereas it must not.").For("date time").On("portna").And.GivenValue("ouaq").ToString();
+
+            Assert.AreEqual("\nThe checked date time is before the given date time whereas it must not.\nThe checked date time:\n\t[\"portna\"]\nThe given date time:\n\t[\"ouaq\"]", message);
         }
     }
 }

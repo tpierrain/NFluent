@@ -69,7 +69,7 @@
     <Compile Include="ForDocumentation\TypeChecks.cs" />
     <Compile Include="IsInstanceOfTests.cs" />
     <Compile Include="LambdaRelatedTests.cs" />
-    <Compile Include="MessageBuilderTests.cs" />
+    <Compile Include="FluentMessageTests.cs" />
     <Compile Include="NotRelatedTests.cs" />
     <Compile Include="NumbersOfDifferentTypesRelatedTests.cs" />
     <Compile Include="ObjectRelatedTest.cs" />

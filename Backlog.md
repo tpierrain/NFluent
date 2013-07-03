@@ -7,7 +7,8 @@ Now available on github: https://github.com/tpierrain/NFluent/issues?state=open
 
 Temporary backlog
 -------
-1. (Thomas) Replace all the 'The actual date time' by 'The checked date time' + other kind of the date time.
+1. (Thomas) Finish to replace all the 'The actual date time' by 'The checked date time' + other kind of the date time.
+1. (Thomas) review/refactor the FluentMessage implementation with more unit test?
 
 1. Make some FluentMessage able to write "The given value(s)" instead of "the expected enumerable"?
 1. Add some check methods to the comparable types (e.g. IsAfter()).
