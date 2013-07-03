@@ -54,7 +54,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nis before or equals to the given one:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is before or equals to the given date time whereas it must not.\nThe checked date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]")]
         public void NotIsBeforeOrEqualToMayThrowException()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -64,7 +64,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nis not before the given one:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is not before the given date time.\nThe checked date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]")]
         public void IsBeforeThrowsExceptionWhenNotBefore()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -74,7 +74,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nis not before or equals to the given one:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is not before or equals to the given date time.\nThe checked date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]")]
         public void IsBeforeOrEqualThrowsExceptionWhenNotBeforeOrEqual()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -104,7 +104,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nis after the given one:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is after the given date time whereas it must not.\nThe checked date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]")]
         public void NotIsAfterMayThrowExceptions()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -114,7 +114,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nis after or equals to the given one:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is after or equals to the given date time whereas it must not.\nThe checked date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]")]
         public void NotIsAfterOrEqualToMayThrowExceptions()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
