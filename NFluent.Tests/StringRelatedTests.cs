@@ -38,7 +38,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is null.\nThe expected substrin(s):\n\t[\"fails\", \"anyway\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is null.\nThe expected substring(s):\n\t[\"fails\", \"anyway\"]")]
         public void ContainsFailsProperlyOnNullString()
         {
             Check.That((string)null).Contains("fails", "anyway");

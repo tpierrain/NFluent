@@ -59,8 +59,10 @@ namespace NFluent.Tests.ForDocumentation
                         {
                             firstDone = true;
                         }
+
                         builder.Append(genericArgument.Name);
                     }
+
                     builder.Append('>');
                     methodName = builder.ToString();
                 }
@@ -77,7 +79,7 @@ namespace NFluent.Tests.ForDocumentation
                     // build parameter list
                     if (checkParameters.Count > 0)
                     {
-                        parameters.Append( checkParameters[0].TypeToStringProperlyFormated(true));
+                        parameters.Append(checkParameters[0].TypeToStringProperlyFormated(true));
                         for (var i = 1; i < checkParameters.Count; i++)
                         {
                             parameters.Append(", ");
@@ -85,7 +87,6 @@ namespace NFluent.Tests.ForDocumentation
                         }
                     }
 
- 
                     return string.Format("Check.{3}({0} sut).{1}({2})", this.CheckedType.TypeToStringProperlyFormated(true), methodName, parameters, this.entryPoint);
                 }
 
