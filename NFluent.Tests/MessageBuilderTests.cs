@@ -75,6 +75,8 @@ namespace NFluent.Tests
             Assert.AreEqual("char", typeof(char).ToStringProperlyFormated());
             Assert.AreEqual("void", typeof(void).ToStringProperlyFormated());
             Assert.AreEqual("System.Collections.Generic.Dictionary<string, string>", typeof(Dictionary<string, string>).ToStringProperlyFormated());
+            Assert.AreEqual("Dictionary<string, string>", typeof(Dictionary<string, string>).TypeToStringProperlyFormated(true));
+            Assert.AreEqual("int?", typeof(int?).TypeToStringProperlyFormated(true));
         }
     }
 }
