@@ -338,9 +338,8 @@ namespace NFluent
             {
                 var foundElementsNumberDescription = BuildElementNumberLiteral(itemsCount);
 
-                var elements = checkedEnumerable.ToEnumeratedString();
-
-                throw new FluentCheckException(string.Format("\nThe actual enumerable has {0} instead of {1}.\nActual content is:\n\t[{2}].", foundElementsNumberDescription, expectedSize, elements));
+                var errorMessage = FluentMessage.BuildMessage(string.Format("The {{0}} has {0} instead of {1}.", foundElementsNumberDescription, expectedSize)).For("enumerable").On(checkedEnumerable).ToString();
+                throw new FluentCheckException(errorMessage);
             }
         }
 
@@ -349,7 +348,7 @@ namespace NFluent
             long itemsCount = checkedEnumerable.Cast<object>().LongCount();
             var foundElementsNumberDescription = BuildElementNumberLiteral(itemsCount);
 
-            return string.Format("\nThe actual enumerable has {0} which is unexpected.\nActual content is:\n\t[{1}].", foundElementsNumberDescription, checkedEnumerable.ToEnumeratedString());
+            return FluentMessage.BuildMessage(string.Format("The {{0}} has {0} which is unexpected.", foundElementsNumberDescription)).For("enumerable").On(checkedEnumerable).ToString();
         }
 
         private static string BuildElementNumberLiteral(long itemsCount)
@@ -385,10 +384,11 @@ namespace NFluent
                     {
                         if (runnableCheck.Value.Cast<object>().Any())
                         {
-                            throw new FluentCheckException(string.Format("\nThe actual enumerable is not empty. Contains:\n\t[{0}]", runnableCheck.Value.ToEnumeratedString()));
+                            var errorMessage = FluentMessage.BuildMessage("The {0} is not empty.").For("enumerable").On(runnableCheck.Value).ToString();
+                            throw new FluentCheckException(errorMessage);
                         }
                     },
-                FluentMessage.BuildMessage("The actual enumerable is empty, which is unexpected.").ToString());
+                FluentMessage.BuildMessage("The checked enumerable is empty, which is unexpected.").ToString());
         }
 
         /// <summary>

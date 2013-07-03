@@ -83,7 +83,7 @@ namespace NFluent
                                      .For("string")
                                      .On(value)
                                      .And.Expected(comparand)
-                                     .Label("Expected content");
+                                     .Label("Expected content: ");
                     throw new FluentCheckException(message.ToString());
                 }
             }

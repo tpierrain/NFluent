@@ -38,7 +38,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is null.\nThe expected substring(s):\n\t[\"fails\", \"anyway\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is null.\nThe expected substring(s):\n\t[\"fails\", \"anyway\"]")]
         public void ContainsFailsProperlyOnNullString()
         {
             Check.That((string)null).Contains("fails", "anyway");
@@ -106,7 +106,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string does not contain the expected strings in the correct order.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]\nExpected content\n\t[\"cd\", \"ab\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string does not contain the expected strings in the correct order.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]\nExpected content: \n\t[\"cd\", \"ab\"]")]
         public void ContainsInThatOrderFailsProperly()
         {
             string alphabet = "abcdefghijklmnopqrstuvwxylmnopz";
@@ -122,7 +122,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is null.\nThe expected value: starts with\n\t[\"fails\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is null.\nThe expected string: starts with\n\t[\"fails\"]")]
         public void StartsWithFailsProperlyOnNullString()
         {
             Check.That((string)null).StartsWith("fails");
@@ -166,7 +166,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is null.\nThe expected value: ends with\n\t[\"fails\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is null.\nThe expected string: ends with\n\t[\"fails\"]")]
         public void EndsWithFailsProperlyOnNullString()
         {
             Check.That((string)null).EndsWith("fails");
@@ -274,7 +274,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is null.\nThe expected value: matches\n\t[\"[0-9]. [a-z]*\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is null.\nThe expected string: matches\n\t[\"[0-9]. [a-z]*\"]")]
         public void StringMatchesFailsProperlyForNull()
         {
             Check.That((string)null).Matches("[0-9]. [a-z]*");
@@ -311,7 +311,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is null.\nThe expected value: matches\n\t[\"[0-9]. [a-z]*\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is null.\nThe expected string: matches\n\t[\"[0-9]. [a-z]*\"]")]
         public void StringDoesNotMatchProperlyForNull()
         {
             Check.That((string)null).Matches("[0-9]. [a-z]*");

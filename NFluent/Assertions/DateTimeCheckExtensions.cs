@@ -143,7 +143,7 @@ namespace NFluent
                             throw new FluentCheckException(string.Format("\nThe actual date time:\n\t[{0}]\nis not before the given one:\n\t[{1}].", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
                         }
                     },
-                string.Format("\nThe actual date time:\n\t[{0}]\nis before the given one:\n\t[{1}].", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                FluentMessage.BuildMessage("The {0} is before the given date time whereas it must not.").For("date time").On(runnableCheck.Value).And.GivenValue(other).ToString());
         }
 
         /// <summary>

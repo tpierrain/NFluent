@@ -56,10 +56,10 @@ namespace NFluent.Helpers
             if (isEqual)
             {
                 message = FluentMessage.BuildMessage("The {0} is equal to the {1} whereas it must not.")
-                    .Expected(expected)
-                    .Comparison("different from")
-                    .WithType()
-                    .ToString();                
+                                        .Expected(expected)
+                                        .Comparison("different from")
+                                        .WithType()
+                                        .ToString();                
             }
             else
             {

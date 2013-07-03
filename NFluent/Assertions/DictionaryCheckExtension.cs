@@ -15,8 +15,6 @@
 namespace NFluent
 {
     using System.Collections;
-    using System.Linq;
-
     using NFluent.Helpers;
 
     /// <summary>
@@ -51,7 +49,7 @@ namespace NFluent
                 {
                     message =
                         FluentMessage.BuildMessage("The {0} does contain the given key, whereas it must not.")
-                                     .For("Dictionary")
+                                     .For("dictionary")
                                      .On(checkedDico)
                                      .And.Expected(key)
                                      .Label("Given key:").ToString();
@@ -60,7 +58,7 @@ namespace NFluent
                 {
                     message =
                         FluentMessage.BuildMessage("The {0} does not contain the expected key.")
-                                     .For("Dictionary")
+                                     .For("dictionary")
                                      .On(checkedDico)
                                      .And.Expected(key)
                                      .Label("Expected key:").ToString();   
@@ -112,7 +110,7 @@ namespace NFluent
                 {
                     message =
                         FluentMessage.BuildMessage("The {0} does contain the given value, whereas it must not.")
-                                    .For("Dictionary")
+                                    .For("dictionary")
                                     .On(checkedDico)
                                     .And.Expected(value)
                                     .Label("Expected value:").ToString();
@@ -121,7 +119,7 @@ namespace NFluent
                 {
                     message =
                         FluentMessage.BuildMessage("The {0} does not contain the expected value.")
-                                    .For("Dictionary")
+                                    .For("dictionary")
                                     .On(checkedDico)
                                     .And.Expected(value)
                                     .Label("given value:").ToString();

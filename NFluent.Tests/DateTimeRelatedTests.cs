@@ -44,7 +44,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nis before the given one:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified].")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is before the given date time whereas it must not.\nThe checked date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]")]
         public void NotIsBeforeMayThrowException()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
