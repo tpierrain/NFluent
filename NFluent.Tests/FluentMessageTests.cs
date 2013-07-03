@@ -80,7 +80,7 @@ namespace NFluent.Tests
         [Test]
         public void HowGivenValueWorks()
         {
-            var message = FluentMessage.BuildMessage("The {0} is before the {1} whereas it must not.").For("date time").On("portna").And.GivenValue("ouaq").ToString();
+            var message = FluentMessage.BuildMessage("The {0} is before the {1} whereas it must not.").For("date time").On("portna").And.WithGivenValue("ouaq").ToString();
 
             Assert.AreEqual("\nThe checked date time is before the given date time whereas it must not.\nThe checked date time:\n\t[\"portna\"]\nThe given date time:\n\t[\"ouaq\"]", message);
         }

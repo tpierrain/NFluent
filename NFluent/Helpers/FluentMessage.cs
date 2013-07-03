@@ -210,7 +210,7 @@ namespace NFluent.Helpers
         /// </summary>
         /// <param name="givenValue">The given value.</param>
         /// <returns>The created MessageBlock.</returns>
-        public MessageBlock GivenValue(object givenValue)
+        public MessageBlock WithGivenValue(object givenValue)
         {
             this.givenValueBlock = new MessageBlock(this, givenValue, GivenAdjective);
             return this.givenValueBlock;

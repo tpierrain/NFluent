@@ -140,11 +140,11 @@ namespace NFluent
                     {
                         if (runnableCheck.Value >= other)
                         {
-                            var message = FluentMessage.BuildMessage("The {0} is not before the {1}.").For("date time").On(runnableCheck.Value).And.GivenValue(other).ToString();
+                            var message = FluentMessage.BuildMessage("The {0} is not before the {1}.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is before the given date time whereas it must not.").For("date time").On(runnableCheck.Value).And.GivenValue(other).ToString());
+                FluentMessage.BuildMessage("The {0} is before the given date time whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -165,10 +165,10 @@ namespace NFluent
                 {
                     if (runnableCheck.Value > other)
                     {
-                        var message = FluentMessage.BuildMessage("The {0} is not before or equals to the {1}.").For("date time").On(runnableCheck.Value).And.GivenValue(other).ToString();
+                        var message = FluentMessage.BuildMessage("The {0} is not before or equals to the {1}.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
                         throw new FluentCheckException(message);
                     }
-                }, FluentMessage.BuildMessage("The {0} is before or equals to the {1} whereas it must not.").For("date time").On(runnableCheck.Value).And.GivenValue(other).ToString());
+                }, FluentMessage.BuildMessage("The {0} is before or equals to the {1} whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
             //"\nThe actual date time:\n\t[{0}]\nis before or equals to the given one:\n\t[{1}].", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
             //string.Format("\nThe actual date time:\n\t[{0}]\nis before or equals to the given one:\n\t[{1}].", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
         }
@@ -192,10 +192,11 @@ namespace NFluent
                     {
                         if (runnableCheck.Value <= other)
                         {
-                            throw new FluentCheckException(string.Format("\nThe actual date time:\n\t[{0}]\nis not after the given one:\n\t[{1}].", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                            var message = FluentMessage.BuildMessage("The {0} is not after the {1}.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
+                            throw new FluentCheckException(message);
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is after the {1} whereas it must not.").For("date time").On(runnableCheck.Value).And.GivenValue(other).ToString());
+                FluentMessage.BuildMessage("The {0} is after the {1} whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -217,10 +218,11 @@ namespace NFluent
                     {
                         if (runnableCheck.Value < other)
                         {
-                            throw new FluentCheckException(string.Format("\nThe actual date time:\n\t[{0}]\nis not after or equals to the given one:\n\t[{1}].", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                            var message = FluentMessage.BuildMessage("The {0} is not after or equals to the {1}.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
+                            throw new FluentCheckException(message);
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is after or equals to the {1} whereas it must not.").For("date time").On(runnableCheck.Value).And.GivenValue(other).ToString());
+                FluentMessage.BuildMessage("The {0} is after or equals to the {1} whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         // TODO : replace the FEST assert assertThat samples by NFluent checks
@@ -345,7 +347,8 @@ namespace NFluent
                     {
                         if (runnableCheck.Value.Year != other.Year || runnableCheck.Value.Month != other.Month || runnableCheck.Value.Day != other.Day || runnableCheck.Value.Hour != other.Hour)
                         {
-                            throw new FluentCheckException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring minutes.", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                            var message = FluentMessage.BuildMessage("The {0} is not equal to the {1} (ignoring minutes).").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
+                            throw new FluentCheckException(message);
                         }
                     },
                 string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring minutes.", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
@@ -387,7 +390,8 @@ namespace NFluent
                     {
                         if (runnableCheck.Value.Year != other.Year || runnableCheck.Value.Month != other.Month || runnableCheck.Value.Day != other.Day)
                         {
-                            throw new FluentCheckException(string.Format("\nThe actual date time:\n\t[{0}]\nis not equal to the given date time:\n\t[{1}]\nignoring hours.", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                            var message = FluentMessage.BuildMessage("The {0} is not equal to the {1} (ignoring hours).").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
+                            throw new FluentCheckException(message);
                         }
                     },
                 string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring hours.", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
