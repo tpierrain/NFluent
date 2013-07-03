@@ -67,7 +67,19 @@ namespace NFluent.Extensions
             return theObject == null ? "null" : theObject.ToString();
         }
 
-        private static string TypeToStringProperlyFormated(Type type)
+        /// <summary>
+        /// Returns a string with the type name, as seen in source code.
+        /// </summary>
+        /// <param name="type">
+        /// The type to get the name of.
+        /// </param>
+        /// <param name="shortName">
+        /// If set to <c>true</c> return the name without namespaces.
+        /// </param>
+        /// <returns>
+        /// A string containing the type name.
+        /// </returns>
+        public static string TypeToStringProperlyFormated(this Type type, bool shortName = false)
         {
             if (type.IsArray)
             {
@@ -155,15 +167,17 @@ namespace NFluent.Extensions
             }
 
             var arguments = type.GetGenericArguments();
+            var name = shortName ? type.Name : type.ToString();
+
             if (arguments.Length > 0)
             {
                 // this is a generic type
                 var builder = new StringBuilder();
-                var typeRoot = type.Name.Substring(0, type.Name.IndexOf('`'));
-                if (typeRoot == "Nullable")
+                var typeRoot = name.Substring(0, name.IndexOf('`'));
+                if (typeRoot == "Nullable" || typeRoot == "System.Nullable")
                 {
                     // specific case for Nullable
-                    return arguments[0].ToStringProperlyFormated() + '?';
+                    return TypeToStringProperlyFormated(arguments[0], shortName) + '?';
                 }
 
                 builder.Append(typeRoot);
@@ -177,14 +191,14 @@ namespace NFluent.Extensions
                     }
 
                     first = false;
-                    builder.Append(genType.ToStringProperlyFormated());
+                    builder.Append(TypeToStringProperlyFormated(genType, shortName));
                 }
 
                 builder.Append('>');
                 return builder.ToString();
             }
 
-            return type.ToString();
+            return name;
         }
 
         /// <summary>

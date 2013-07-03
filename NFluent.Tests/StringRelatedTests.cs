@@ -72,6 +72,7 @@ namespace NFluent.Tests
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
             Check.That(alphabet).DoesNotContain("one", "two", "three");
+            Check.That((string)null).DoesNotContain("fails", "anyway");
         }
 
         [Test]

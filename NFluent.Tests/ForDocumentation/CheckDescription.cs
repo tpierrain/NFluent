@@ -42,6 +42,33 @@ namespace NFluent.Tests.ForDocumentation
         {
             get
             {
+                string methodName;
+                if (this.Check.IsGenericMethod)
+                {
+                    var generic = ((MethodInfo)this.Check).GetGenericMethodDefinition();
+                    StringBuilder builder = new StringBuilder(generic.Name);
+                    builder.Append('<');
+                    bool firstDone = false;
+                    foreach (var genericArgument in generic.GetGenericArguments())
+                    {
+                        if (firstDone)
+                        {
+                            builder.Append(", ");
+                        }
+                        else
+                        {
+                            firstDone = true;
+                        }
+                        builder.Append(genericArgument.Name);
+                    }
+                    builder.Append('>');
+                    methodName = builder.ToString();
+                }
+                else
+                {
+                    methodName = this.Check.Name;
+                }
+
                 var checkParameters = this.CheckParameters;
                 if (checkParameters != null)
                 {
@@ -50,15 +77,16 @@ namespace NFluent.Tests.ForDocumentation
                     // build parameter list
                     if (checkParameters.Count > 0)
                     {
-                        parameters.Append(checkParameters[0].Name);
+                        parameters.Append( checkParameters[0].TypeToStringProperlyFormated(true));
                         for (var i = 1; i < checkParameters.Count; i++)
                         {
                             parameters.Append(", ");
-                            parameters.Append(checkParameters[i].Name);
+                            parameters.Append(checkParameters[i].TypeToStringProperlyFormated(true));
                         }
                     }
 
-                    return string.Format("Check.{3}({0} sut).{1}({2})", this.CheckedType.ToStringProperlyFormated(), this.Check.Name, parameters, this.entryPoint);
+ 
+                    return string.Format("Check.{3}({0} sut).{1}({2})", this.CheckedType.TypeToStringProperlyFormated(true), methodName, parameters, this.entryPoint);
                 }
 
                 return string.Empty;
@@ -151,6 +179,7 @@ namespace NFluent.Tests.ForDocumentation
             }
             else
             {
+                result.entryPoint = "That";
                 if (method.DeclaringType == null)
                 {
                     return null;
