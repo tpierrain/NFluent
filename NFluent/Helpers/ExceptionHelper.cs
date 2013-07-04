@@ -30,7 +30,6 @@ namespace NFluent.Helpers
     {
         private static ExceptionConstructor constructors;
 
-        // TODO creates methods in order to shorten this static property implementation
         private static ExceptionConstructor Constructors
         {
             get
@@ -38,122 +37,31 @@ namespace NFluent.Helpers
                 if (constructors == null)
                 {
                     // we need to identiy required exception types
-                    var defaultSignature = new[] { typeof(string) };
+                    var defaultConstructor = typeof(FluentCheckException).GetConstructor(new[] { typeof(string) });
                     var result = new ExceptionConstructor();
-                    var defaultConstructor = typeof(FluentCheckException).GetConstructor(defaultSignature);
-                    var testingFrameworkFound = false;
-
-                    // assert we have a default constructor
-                    Debug.Assert(defaultConstructor != null, "NFluent exception must provide a constructor accepting a single string as parameter!");
-
-                    // by default, we will expose NFluent own exception
                     result.FailedException = defaultConstructor;
                     result.IgnoreException = defaultConstructor;
                     result.InconclusiveException = defaultConstructor;
-
-                    var foundExceptions = 0;
+    
+                    // assert we have a default constructor
+                    Debug.Assert(defaultConstructor != null, "NFluent exception must provide a constructor accepting a single string as parameter!");
 
                     // look for NUnit
-                    foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(ass => ass.FullName.ToLowerInvariant().Contains("nunit")))
-                    {
-                        foreach (var type in assembly.GetExportedTypes())
-                        {
-                            if (type.Namespace.StartsWith("NUnit."))
-                            {
-                                switch (type.Name)
-                                {
-                                    case "AssertionException":
-                                        var info = type.GetConstructor(defaultSignature);
-                                        if (info != null)
-                                        {
-                                            result.FailedException = info;
-                                        }
+                    var resultScan = ExceptionScanner("nunit", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException");
 
-                                        testingFrameworkFound = true;
-                                        foundExceptions++;
-                                        break;
-                                    case "IgnoreException":
-                                        info = type.GetConstructor(defaultSignature);
-                                        if (info != null)
-                                        {
-                                            result.IgnoreException = info;
-                                        }
-
-                                        testingFrameworkFound = true;
-                                        foundExceptions++;
-                                        break;
-                                    case "InconclusiveException":
-                                        info = type.GetConstructor(defaultSignature);
-                                        if (info != null)
-                                        {
-                                            result.InconclusiveException = info;
-                                        }
-
-                                        testingFrameworkFound = true;
-                                        foundExceptions++;
-                                        break;
-                                }
-                            }
-
-                            // stop search if we found everything
-                            if (foundExceptions == 3)
-                            {
-                                break;
-                            }
-                        }
-
-                        if (foundExceptions == 3)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (!testingFrameworkFound)
+                    if (resultScan == null)
                     {
                         // look for MSTest
-                        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(ass => ass.FullName.ToLowerInvariant().Contains("visualstudio")))
-                        {
-                            foreach (var type in assembly.GetExportedTypes())
-                            {
-                                if (type.Namespace.StartsWith("Microsoft.VisualStudio.TestTools"))
-                                {
-                                    ConstructorInfo info;
-                                    switch (type.Name)
-                                    {
-                                        case "AssertFailedException":
-                                            info = type.GetConstructor(defaultSignature);
-                                            if (info != null)
-                                            {
-                                                result.FailedException = info;
-                                            }
-
-                                            testingFrameworkFound = true;
-                                            foundExceptions++;
-                                            break;
-                                        case "AssertInconclusiveException":
-                                            info = type.GetConstructor(defaultSignature);
-                                            if (info != null)
-                                            {
-                                                result.InconclusiveException = info;
-                                            }
-
-                                            testingFrameworkFound = true;
-                                            foundExceptions++;
-                                            break;
-                                    }
-                                }
-
-                                if (foundExceptions == 2)
-                                {
-                                    break;
-                                }
-                            }
-
-                            if (foundExceptions == 2)
-                            {
-                                break;
-                            }
-                        }
+                        resultScan = ExceptionScanner(
+                            "visualstudio",
+                            "Microsoft.VisualStudio.TestTools",
+                            "AssertFailedException",
+                            null,
+                            "AssertInconclusiveException");
+                    }
+                    if (resultScan != null)
+                    {
+                        result = resultScan;
                     }
 
                     constructors = result;
@@ -161,6 +69,68 @@ namespace NFluent.Helpers
 
                 return constructors;
             }
+        }
+
+        private static ExceptionConstructor ExceptionScanner(string assemblyMarker, string nameSpace, string assertionExceptionName, string ignoreExceptionName, string inconclusiveExceptionName)
+        {
+            int foundExceptions = 0;
+            var result = new ExceptionConstructor();
+            var defaultSignature = new[] { typeof(string) };
+            foreach (
+                var assembly in
+                    AppDomain.CurrentDomain.GetAssemblies()
+                             .Where(ass => ass.FullName.ToLowerInvariant().Contains(assemblyMarker)))
+            {
+                foreach (var type in assembly.GetExportedTypes())
+                {
+                    if (type.Namespace.StartsWith(nameSpace))
+                    {
+                        if (type.Name == assertionExceptionName)
+                        {
+                            var info = type.GetConstructor(defaultSignature);
+                            if (info != null)
+                            {
+                                result.FailedException = info;
+                            }
+
+                            foundExceptions++;
+                        }
+                        else if (type.Name == ignoreExceptionName)
+                        {
+                            var info = type.GetConstructor(defaultSignature);
+                            if (info != null)
+                            {
+                                result.IgnoreException = info;
+                            }
+
+                            foundExceptions++;
+                        }
+                        else if (type.Name == inconclusiveExceptionName)
+                        {
+                            var info = type.GetConstructor(defaultSignature);
+                            if (info != null)
+                            {
+                                // if we do not expect a ignore exception, we remap inconclusive
+                                result.InconclusiveException = info;
+                                foundExceptions++;
+                                if (string.IsNullOrEmpty(ignoreExceptionName))
+                                {
+                                    result.IgnoreException = info;
+                                    foundExceptions++;
+                                }
+                            }
+                        }
+                    }
+
+                    // stop search if we found everything
+                    if (foundExceptions == 3)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

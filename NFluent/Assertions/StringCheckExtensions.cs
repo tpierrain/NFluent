@@ -235,8 +235,7 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return (negated || notContains) ? null : FluentMessage.BuildMessage("The {0} is null.").Expected(values).Label("The {0} substring(s):").ToString();
-                return negated ? null : FluentMessage.BuildMessage("The {0} is null.").For("string").Expected(values).Label("The {0} substring(s):").ToString();
+                return (negated || notContains) ? null : FluentMessage.BuildMessage("The {0} is null.").For("string").Expected(values).Label("The {0} substring(s):").ToString();
             }
 
             var items = values.Where(item => checkedValue.Contains(item) == notContains).ToList();
