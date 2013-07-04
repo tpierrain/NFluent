@@ -29,7 +29,7 @@ namespace NFluent
         /// Initializes a new instance of the <see cref="StructFluentCheck{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
-        public StructFluentCheck(T value) : this(value, false)
+        public StructFluentCheck(T value) : this(value, !CheckContext.DefaulNegated)
         {
         }
 
@@ -72,7 +72,7 @@ namespace NFluent
         {
             get
             {
-                bool negated = true;
+                bool negated = CheckContext.DefaulNegated;
                 return new StructFluentCheck<T>(this.Value, negated);
             }
         }
