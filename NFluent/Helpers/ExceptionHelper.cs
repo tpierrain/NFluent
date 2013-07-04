@@ -59,6 +59,7 @@ namespace NFluent.Helpers
                             null,
                             "AssertInconclusiveException");
                     }
+
                     if (resultScan != null)
                     {
                         result = resultScan;
