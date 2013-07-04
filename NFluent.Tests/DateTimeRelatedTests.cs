@@ -366,7 +366,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe year of the actual date time:\n\t[2013]\nis not equal to the year of the given date time:\n\t[2014].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time does not have the same year as the given date time.\nYear of the checked date time:\n\t[2013]\nYear of the given date time:\n\t[2014]\nThe checked date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2014-01-01T00:00:00.0000000, Kind = Unspecified]")]
         public void IsInSameYearAsThrowsExceptionWhenYearDiffer()
         {
             var actual = new DateTime(2013, 1, 1);
@@ -375,7 +375,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe year of the actual date time:\n\t[2013]\nis equal to the year of the given date time:\n\t[2013].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time has the same year as the given date time whereas it must not.\nYear of the checked date time:\n\t[2013]\nYear of the given date time:\n\t[2013]\nThe checked date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]")]
         public void NegatedIsInSameYearAsThrowsException()
         {
             var actual = new DateTime(2013, 1, 1);
