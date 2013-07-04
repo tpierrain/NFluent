@@ -54,7 +54,7 @@ namespace NFluent.Tests.ForDocumentation
         {
             get
             {
-                return this.CheckedType.ToStringProperlyFormated();
+                return this.CheckedType.TypeToStringProperlyFormated(true);
             }
 
 // ReSharper disable ValueParameterNotUsed
@@ -102,8 +102,7 @@ namespace NFluent.Tests.ForDocumentation
                 }
             }
 
-            var toAdd = new CheckList();
-            toAdd.CheckName = description.CheckName;
+            var toAdd = new CheckList { CheckName = description.CheckName };
             toAdd.AddCheck(description);
             this.checks.Add(toAdd);
         }
