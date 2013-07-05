@@ -434,7 +434,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe day of the actual date time:\n\t[1]\nis not equal to the day of the given date time:\n\t[2].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time does not have the same day as the given date time.\nDay of the checked date time:\n\t[1]\nDay of the given date time:\n\t[2]\nThe checked date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2014-02-02T00:00:00.0000000, Kind = Unspecified]")]
         public void IsInSameDayAsThrowsExceptionWhenDayDiffer()
         {
             var newYears = new DateTime(2013, 1, 1);
@@ -443,7 +443,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe day of the actual date time:\n\t[1]\nis equal to the day of the given date time:\n\t[1].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time has the same day as the given date time whereas it must not.\nDay of the checked date time:\n\t[1]\nDay of the given date time:\n\t[1]\nThe checked date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[1905-02-01T00:00:00.0000000, Kind = Unspecified]")]
         public void NotIsInSameDayAsThrowsExceptionWhenDayDiffer()
         {
             var newYears = new DateTime(2013, 1, 1);

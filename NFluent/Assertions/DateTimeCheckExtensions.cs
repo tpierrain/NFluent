@@ -470,10 +470,11 @@ namespace NFluent
                     {
                         if (runnableCheck.Value.Day != other.Day)
                         {
-                            throw new FluentCheckException(string.Format("\nThe day of the actual date time:\n\t[{0}]\nis not equal to the day of the given date time:\n\t[{1}].", runnableCheck.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated()));
+                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not have the same day as the {{1}}.\nDay of the checked date time:\n\t[{0}]\nDay of the given date time:\n\t[{1}]", runnableCheck.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated())).For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
+                            throw new FluentCheckException(message);
                         }
                     },
-                string.Format("\nThe day of the actual date time:\n\t[{0}]\nis equal to the day of the given date time:\n\t[{1}].", runnableCheck.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated()));
+                FluentMessage.BuildMessage(string.Format("The {{0}} has the same day as the {{1}} whereas it must not.\nDay of the checked date time:\n\t[{0}]\nDay of the given date time:\n\t[{1}]", runnableCheck.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated())).For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
     }
 }
