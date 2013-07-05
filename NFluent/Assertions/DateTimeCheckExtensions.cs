@@ -444,10 +444,11 @@ namespace NFluent
                     {
                         if (runnableCheck.Value.Month != other.Month)
                         {
-                            throw new FluentCheckException(string.Format("\nThe month of the actual date time:\n\t[{0}]\nis not equal to the month of the given date time:\n\t[{1}].", runnableCheck.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated()));
+                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not have the same month as the {{1}}.\nMonth of the checked date time:\n\t[{0}]\nMonth of the given date time:\n\t[{1}]", runnableCheck.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated())).For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
+                            throw new FluentCheckException(message);
                         }
                     },
-                string.Format("\nThe month of the actual date time:\n\t[{0}]\nis equal to the month of the given date time:\n\t[{1}].", runnableCheck.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated()));
+                FluentMessage.BuildMessage(string.Format("The {{0}} has the same month as the {{1}} whereas it must not.\nMonth of the checked date time:\n\t[{0}]\nMonth of the given date time:\n\t[{1}]", runnableCheck.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated())).For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>

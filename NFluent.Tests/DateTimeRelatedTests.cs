@@ -398,7 +398,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe month of the actual date time:\n\t[12]\nis not equal to the month of the given date time:\n\t[2].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time does not have the same month as the given date time.\nMonth of the checked date time:\n\t[12]\nMonth of the given date time:\n\t[2]\nThe checked date time:\n\t[2013-12-01T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2014-02-01T00:00:00.0000000, Kind = Unspecified]")]
         public void IsInSameMonthAsThrowsExceptionWhenMonthDiffer()
         {
             var actual = new DateTime(2013, 12, 1);
@@ -407,7 +407,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe month of the actual date time:\n\t[12]\nis equal to the month of the given date time:\n\t[12].")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time has the same month as the given date time whereas it must not.\nMonth of the checked date time:\n\t[12]\nMonth of the given date time:\n\t[12]\nThe checked date time:\n\t[2013-12-01T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2014-12-01T00:00:00.0000000, Kind = Unspecified]")]
         public void NotIsInSameMonthAsThrowsExceptionWhenMonthDiffer()
         {
             var actual = new DateTime(2013, 12, 1);
