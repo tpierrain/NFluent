@@ -7,12 +7,10 @@ Now available on github: https://github.com/tpierrain/NFluent/issues?state=open
 
 Temporary backlog
 -------
-1. (Thomas) Finish to replace all the 'The actual date time' by 'The checked date time' + other kind of the date time.
-1. (Thomas) review/refactor the FluentMessage implementation with more unit test?
-
-1. Make some FluentMessage able to write "The given value(s)" instead of "the expected enumerable"?
 1. Add some check methods to the comparable types (e.g. IsAfter()).
 1. Expose IComparable extension methods to 'number' values so that autocompletion works on number values with those comparable checks.
+1. Adds more unit tests to the FluentMessage so that it will act as a documentation.
+1. Review all the FluentMessage and use the "given value(s)" instead of "expected enumerable"? when appropriate.
 
 Done item
 -------.
