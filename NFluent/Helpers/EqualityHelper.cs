@@ -93,17 +93,5 @@ namespace NFluent.Helpers
                 throw new FluentCheckException(BuildErrorMessage(instance, expected, true));
             }
         }
-
-        // TODO: make internal methods visible?
-        internal static string BuildTypeDescriptionMessage(object obj)
-        {
-            var expectedTypeMessage = string.Empty;
-            if (obj != null)
-            {
-                    expectedTypeMessage = string.Format(" of type: [{0}]", obj.GetType());
-            }
-
-            return expectedTypeMessage;
-        }
     }
 }
