@@ -399,7 +399,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> IsEmptyOrNull(this ICheck<IEnumerable> check)
+        public static ICheckLink<ICheck<IEnumerable>> IsNullOrEmpty(this ICheck<IEnumerable> check)
         {
             var runnableCheck = check as IRunnableCheck<IEnumerable>;
             var value = runnableCheck.Value;
@@ -412,7 +412,7 @@ namespace NFluent
                 if (!negated)
                 {
                     message =
-                        FluentMessage.BuildMessage("The {0} contains items, whereas it must be empty or null.")
+                        FluentMessage.BuildMessage("The {0} contains items, whereas it must be null or empty.")
                                      .For("IEnumerable")
                                      .On(value)
                                      .ToString();
