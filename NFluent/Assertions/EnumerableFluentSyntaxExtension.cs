@@ -145,11 +145,11 @@ namespace NFluent
                         // check failed. Now we have to refine the issue type.
                         // we assume that Contains was executed (imposed by chaining syntax)
                         // the item violating the order is the previous one!
-                        var message =
-                            FluentMessage.BuildMessage(string.Format(
-                                                                        "The {{0}} does not follow to the expected order. Item [{0}] appears too {2} in the list, at index '{1}'.",
-                                                                        item.ToStringProperlyFormated(),
-                                                                        faillingIndex,
+                        var message = FluentMessage.BuildMessage(
+                            string.Format(
+                                "The {{0}} does not follow to the expected order. Item [{0}] appears too {2} in the list, at index '{1}'.",
+                                item.ToStringProperlyFormated(),
+                                faillingIndex,
                                                                         index > scanIndex ? "early" : "late"))
                                          .For("enumerable")
                                          .On(runnableCheck.Value)

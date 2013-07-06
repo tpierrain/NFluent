@@ -117,6 +117,16 @@ namespace NFluent.Tests
 #pragma warning disable 169 // field used via reflexion here
             private int z = 2;
 #pragma warning restore 169
+
+            public DummyHeritance()
+            {
+            }
+
+            public DummyHeritance(int x, int y, int z)
+                : base(x, y)
+            {
+                this.z = z;
+            }
         }
     }
 }
