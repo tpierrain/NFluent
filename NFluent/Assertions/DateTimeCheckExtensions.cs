@@ -45,7 +45,7 @@ namespace NFluent
                     {
                         EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
                     },
-                string.Format("\nThe actual value is unexpectedly equal to the given one, i.e.:\n\t[{0}]{1}.", runnableCheck.Value.ToStringProperlyFormated(), EqualityHelper.BuildTypeDescriptionMessage(expected)));
+                    EqualityHelper.BuildErrorMessage(runnableCheck.Value, expected, true));
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace NFluent
                     {
                         IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, expectedType);
                     },
-                string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", runnableCheck.Value.ToStringProperlyFormated(), expectedType, runnableCheck.Value.GetType()));
+                IsInstanceHelper.BuildErrorMessage(runnableCheck.Value, typeof(T), false));
         }
 
         #endregion
@@ -129,7 +129,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The actual date time is not before the given one.</exception>
+        /// <exception cref="FluentCheckException">The checked date time is not before the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsBefore(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
@@ -155,7 +155,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The actual date time is not before or equals to the given one.</exception>
+        /// <exception cref="FluentCheckException">The checked date time is not before or equals to the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsBeforeOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
@@ -181,7 +181,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The actual date time is not after the given one.</exception>
+        /// <exception cref="FluentCheckException">The checked date time is not after the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsAfter(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
@@ -207,7 +207,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The actual date time is not after or equals to the given one.</exception>
+        /// <exception cref="FluentCheckException">The checked date time is not after or equals to the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsAfterOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
@@ -225,8 +225,6 @@ namespace NFluent
                 FluentMessage.BuildMessage("The {0} is after or equals to the {1} whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
-        // TODO : replace the FEST assert assertThat samples by NFluent checks
-
         /// <summary>
         /// Checks that actual and given DateTime have same year, month, day, hour, minute and second fields,
         /// (millisecond fields are ignored in comparison).
@@ -235,11 +233,11 @@ namespace NFluent
         ///     // successfull checks
         ///     DateTime dateTime1 = new DateTime(2000, 1, 1, 0, 0, 1, 0);
         ///     DateTime dateTime2 = new DateTime(2000, 1, 1, 0, 0, 1, 456);
-        ///     assertThat(dateTime1).isEqualToIgnoringMillis(dateTime2);
+        ///     Check.That(dateTime1).IsEqualToIgnoringMillis(dateTime2);
         ///     // failing checks (even if time difference is only 1ms)
         ///     DateTime dateTimeA = new DateTime(2000, 1, 1, 0, 0, 1, 0);
         ///     DateTime dateTimeB = new DateTime(2000, 1, 1, 0, 0, 0, 999);
-        ///     assertThat(dateTimeA).isEqualToIgnoringMillis(dateTimeB);
+        ///     Check.That(dateTimeA).IsEqualToIgnoringMillis(dateTimeB);
         /// </code>
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
@@ -247,7 +245,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The actual date time is not equal to the given one with the milliseconds ignored.</exception>
+        /// <exception cref="FluentCheckException">The checked date time is not equal to the given one with the milliseconds ignored.</exception>
         /// <remarks>
         /// Check can fail with dateTimes in same chronological millisecond time window, e.g :
         /// 2000-01-01T00:00:<b>01.000</b> and 2000-01-01T00:00:<b>00.999</b>.
@@ -267,7 +265,7 @@ namespace NFluent
                             throw new FluentCheckException(message);
                         }
                     },
-                string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring milliseconds.", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                FluentMessage.BuildMessage("The {0} is equal to the {1} (ignoring milliseconds) whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -295,7 +293,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The actual date time is not equal to the given one with second and millisecond fields ignored.</exception>
+        /// <exception cref="FluentCheckException">The checked date time is not equal to the given one with second and millisecond fields ignored.</exception>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringSeconds(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
@@ -310,7 +308,7 @@ namespace NFluent
                             throw new FluentCheckException(message);
                         }
                     },
-                string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring seconds.", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                FluentMessage.BuildMessage("The {0} is equal to the {1} (ignoring seconds) whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -338,7 +336,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The actual date time is not equal to the given one with minute, second and millisecond fields ignored.</exception>
+        /// <exception cref="FluentCheckException">The checked date time is not equal to the given one with minute, second and millisecond fields ignored.</exception>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringMinutes(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
@@ -353,7 +351,7 @@ namespace NFluent
                             throw new FluentCheckException(message);
                         }
                     },
-                string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring minutes.", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                FluentMessage.BuildMessage("The {0} is equal to the {1} (ignoring minutes) whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -381,7 +379,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The actual date time is not equal to the given one with hour, minute, second and millisecond fields ignored.</exception>
+        /// <exception cref="FluentCheckException">The checked date time is not equal to the given one with hour, minute, second and millisecond fields ignored.</exception>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringHours(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
@@ -396,7 +394,7 @@ namespace NFluent
                             throw new FluentCheckException(message);
                         }
                     },
-                string.Format("\nThe actual date time:\n\t[{0}]\nis equal to the given date time:\n\t[{1}]\nignoring hours.", runnableCheck.Value.ToStringProperlyFormated(), other.ToStringProperlyFormated()));
+                FluentMessage.BuildMessage("The {0} is equal to the {1} (ignoring hours) whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -407,7 +405,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The actual date time year is not equal to the given year.</exception>
+        /// <exception cref="FluentCheckException">The checked date time year is not equal to the given year.</exception>
         public static ICheckLink<ICheck<DateTime>> IsInSameYearAs(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
@@ -433,7 +431,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The actual date time month is not equal to the given month, whatever the year.</exception>
+        /// <exception cref="FluentCheckException">The checked date time month is not equal to the given month, whatever the year.</exception>
         public static ICheckLink<ICheck<DateTime>> IsInSameMonthAs(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;
@@ -459,7 +457,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The actual date time day is not equal to the given day, whatever the year or the month.</exception>
+        /// <exception cref="FluentCheckException">The checked date time day is not equal to the given day, whatever the year or the month.</exception>
         public static ICheckLink<ICheck<DateTime>> IsInSameDayAs(this ICheck<DateTime> check, DateTime other)
         {
             var checkRunner = check as ICheckRunner<DateTime>;

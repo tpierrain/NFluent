@@ -177,6 +177,15 @@ namespace NFluent.Tests
 
         [Test]
         [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]")]
+        public void NotIsEqualToThrowsExceptionWhenAreEqual()
+        {
+            var christmas2013 = new DateTime(2013, 12, 25);
+
+            Check.That(christmas2013).Not.IsEqualTo(christmas2013);
+        }
+
+        [Test]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]")]
         public void IsNotEqualToThrowsExceptionWhenEqual()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -201,6 +210,15 @@ namespace NFluent.Tests
             var actual = new DateTime(2013, 1, 1);
 
             Check.That(actual).IsNotInstanceOf<DateTime>();
+        }
+
+        [Test]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]\nThe expected type:\n\t[string]")]
+        public void NotIsNotInstanceOfThrowsExceptionWhenIsNotAnInstanceOf()
+        {
+            var actual = new DateTime(2013, 1, 1);
+
+            Check.That(actual).Not.IsNotInstanceOf<string>();
         }
 
         [Test]
@@ -452,6 +470,14 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void TestForDocumentationPurpose()
+        {
+            DateTime dateTimeA = new DateTime(2000, 1, 1, 0, 0, 1, 0);
+            DateTime dateTimeB = new DateTime(2000, 1, 1, 0, 0, 0, 999);
+            Check.That(dateTimeA).IsEqualToIgnoringMillis(dateTimeB);
+        }
+
+        [Test]
         public void IsEqualToWorks()
         {
             var newYears = new DateTime(2013, 1, 1);
@@ -489,7 +515,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis equal to the given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring milliseconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is equal to the given date time (ignoring milliseconds) whereas it must not.\nThe checked date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]")]
         public void NotIsEqualToIgnoringMillisMayThrowException()
         {
             var newYears = new DateTime(2013, 1, 1);
@@ -498,7 +524,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis equal to the given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring seconds.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is equal to the given date time (ignoring seconds) whereas it must not.\nThe checked date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]")]
         public void NotIsEqualToIgnoringSecondsMayThrowException()
         {
             var newYears = new DateTime(2013, 1, 1);
@@ -507,7 +533,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis equal to the given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring minutes.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is equal to the given date time (ignoring minutes) whereas it must not.\nThe checked date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]")]
         public void NotIsEqualToIgnoringMinutesMayThrowException()
         {
             var newYears = new DateTime(2013, 1, 1);
@@ -516,7 +542,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe actual date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nis equal to the given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nignoring hours.")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is equal to the given date time (ignoring hours) whereas it must not.\nThe checked date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]")]
         public void NotIsEqualToIgnoringHoursMayThrowException()
         {
             var newYears = new DateTime(2013, 1, 1);
