@@ -470,14 +470,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void TestForDocumentationPurpose()
-        {
-            DateTime dateTimeA = new DateTime(2000, 1, 1, 0, 0, 1, 0);
-            DateTime dateTimeB = new DateTime(2000, 1, 1, 0, 0, 0, 999);
-            Check.That(dateTimeA).IsEqualToIgnoringMillis(dateTimeB);
-        }
-
-        [Test]
         public void IsEqualToWorks()
         {
             var newYears = new DateTime(2013, 1, 1);
