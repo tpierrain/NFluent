@@ -1,8 +1,11 @@
 New features:
-* Now, the Equals() method of the ICheck&lt;T&gt; instances is a real fluent check method.
+* Now, the Equals() method of the ICheck&lt;T&gt; instances is a real fluent check method (instead of the default object.Equals() one).
 * New extensible syntax for Check.That(IEnumerable xxx).Contains(...) that permits to add suffixes narrowing the conditions (e.g.: Check.That(IEnumerable xxx).Contains(...).InThatOrder()). Possible suffixes are (Only, Once or InThatOrder)
+* Adds check methods for IDictionary
+* Adds more check methods to the IEnumerable (e.g. IsNullOrEmpty)
+
 --------------
 Changes:
 * New error message structure that clearly states what is wrong.
-* Renames the ContainsOnly() method to IsOnlyMadeOf()
+* Renames the ContainsOnly() method to IsOnlyMadeOf().
 * Replaces IFluentAssertion by ICheck; and IChainableFluentAssertion by ICheckLink so that it improves the IntelliSense experience.
