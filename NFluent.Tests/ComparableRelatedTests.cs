@@ -34,19 +34,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [Ignore("Expose IComparable extension methods to 'number' values so that autocompletion works on number values with those comparable checks.")]
-        public void IsBeforeWorksWithoutBeingForcedToCastItAsIComparable()
-        {
-            const int First = 1;
-            const int Second = 2;
-
-            Check.That(First as IComparable).IsBefore(Second);
-
-            // TODO: make the next line build
-            // Check.That(First).IsBefore(Second);
-        }
-
-        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not before the reference value.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[1.0]")]
         public void IsBeforeThrowsExceptionWhenFailing()
         {
@@ -138,6 +125,5 @@ namespace NFluent.Tests
         }
 
         #endregion
-
     }
 }

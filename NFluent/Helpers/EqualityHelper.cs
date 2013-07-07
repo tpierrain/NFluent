@@ -38,7 +38,7 @@ namespace NFluent.Helpers
             throw new FluentCheckException(errorMessage);
         }
 
-        public static bool FluentEquals(object instance, object expected)
+        private static bool FluentEquals(object instance, object expected)
         {
             return object.Equals(instance, expected);
         }

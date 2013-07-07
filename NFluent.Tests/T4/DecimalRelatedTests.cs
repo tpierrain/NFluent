@@ -144,6 +144,94 @@ namespace NFluent.Tests
 
         #endregion
 
+        #region IComparable checks
+
+        [Test]
+        public void IsBeforeWorks()
+        {
+            const decimal Two = 2M;
+            const decimal Twenty = 20M;
+
+            Check.That(Two).IsBefore(Twenty);
+        }
+
+        [Test]
+        public void NotIsBeforeWorks()
+        {
+            const decimal Two = 2M;
+            const decimal Twenty = 20M;
+
+            Check.That(Twenty).Not.IsBefore(Two);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not before the reference value.\nThe checked value:\n\t[20]\nThe expected value: before\n\t[2]")]
+        public void IsBeforeThrowsExceptionWhenFailing()
+        {
+            const decimal Two = 2M;
+            const decimal Twenty = 20M;
+
+            Check.That(Twenty).IsBefore(Two);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not before the reference value.\nThe checked value:\n\t[2]\nThe expected value: before\n\t[2]")]
+        public void IsBeforeThrowsExceptionWhenGivingTheSameValue()
+        {
+            const decimal Two = 2M;
+
+            Check.That(Two).IsBefore(Two);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is before the reference value whereas it must not.\nThe checked value:\n\t[2]\nThe expected value: after\n\t[20]")]
+        public void NotIsBeforeThrowsExceptionWhenFailing()
+        {
+            const decimal Two = 2M;
+            const decimal Twenty = 20M;
+
+            Check.That(Two).Not.IsBefore(Twenty);
+        }
+
+        [Test]
+        public void IsAfterWorks()
+        {
+            const decimal Two = 2M;
+            const decimal Twenty = 20M;
+
+            Check.That(Twenty).IsAfter(Two);
+        }
+
+        [Test]
+        public void NotIsAfterWorks()
+        {
+            const decimal Two = 2M;
+            const decimal Twenty = 20M;
+
+            Check.That(Two).Not.IsAfter(Twenty);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not after the reference value.\nThe checked value:\n\t[2]\nThe expected value: after\n\t[2]")]
+        public void IsAfterThrowsExceptionWhenFailing()
+        {
+            const decimal Two = 2M;
+
+            Check.That(Two).IsAfter(Two);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is after the reference value whereas it must not.\nThe checked value:\n\t[20]\nThe expected value: before\n\t[2]")]
+        public void NotIsAfterThrowsExceptionWhenFailing()
+        {
+            const decimal Two = 2M;
+            const decimal Twenty = 20M;
+
+            Check.That(Twenty).Not.IsAfter(Two);
+        }
+
+        #endregion
+
         #region IsLessThan & Co
 
         [Test]
@@ -409,6 +497,7 @@ namespace NFluent.Tests
             decimal? one = 1M;
 
             Check.That(one).IsInstanceOf<decimal?>().And.HasAValue().Which.IsEqualTo((decimal)1);
+            Check.That(one).HasAValue().And.IsInstanceOf<decimal?>();
         }
 
         [Test]
