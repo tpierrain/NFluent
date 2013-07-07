@@ -1,5 +1,7 @@
 New features:
-* 
+* Add the IsAfter() check to the IComparable instances
+* Adds comparison checks to all the numeric types
+
 --------------
 Changes:
 * 
