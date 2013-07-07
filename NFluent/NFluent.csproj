@@ -59,6 +59,7 @@
     <Compile Include="Helpers\Duration.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FluentMessage.cs" />
+    <Compile Include="Helpers\TimeUnit.cs" />
     <Compile Include="IExtendableCheckLink.cs" />
     <Compile Include="Assertions\StructCheckExtensions.cs" />
     <Compile Include="NullableOrNumberCheckLink.cs" />
