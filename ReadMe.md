@@ -42,26 +42,26 @@ With NFluent, you can write simple checks like this:
     var integers = new int[] { 1, 2, 3, 4, 5, 666 };
     Check.That(integers).Contains(3, 5, 666);
 
-	var integers = new int[] { 1, 2, 3 };
+    integers = new int[] { 1, 2, 3 };
     Check.That(integers).IsOnlyMadeOf(3, 2, 1);
 
-	var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
+    var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
     Check.That(guitarHeroes).ContainsExactly("Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell");
 
-	var camus = new Person() { Name = "Camus" };
+    var camus = new Person() { Name = "Camus" };
     var sartre = new Person() { Name = "Sartre" };
     Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<Person>();
 
-	var heroes = "Batman and Robin";
-    Check.That(Heroes).Not.Contains("Joker").And.StartsWith("Bat").And.Contains("Robin");
+    var heroes = "Batman and Robin";
+    Check.That(heroes).Not.Contains("Joker").And.StartsWith("Bat").And.Contains("Robin");
 
-	int? one = 1;
-	Check.That(one).HasAValue().Which.IsPositive().And.IsEqualTo(1);
+    int? one = 1;
+    Check.That(one).HasAValue().Which.IsPositive().And.IsEqualTo(1);
 
-	const Nationality FrenchNationality = Nationality.French;
+    const Nationality FrenchNationality = Nationality.French;
     Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.Korean);
 
-	string motivationalSaying = "Failure is mother of success.";
+    string motivationalSaying = "Failure is mother of success.";
     Check.That(motivationalSaying).IsNotInstanceOf<int>();
 
 ```

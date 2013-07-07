@@ -126,39 +126,39 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsEmptyOrNullWorks()
+        public void IsNullOrEmptyWorks()
         {
-            Check.That(EmptyEnumerable).IsEmptyOrNull();
-            Check.That((IEnumerable)null).IsEmptyOrNull();
+            Check.That(EmptyEnumerable).IsNullOrEmpty();
+            Check.That((IEnumerable)null).IsNullOrEmpty();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked IEnumerable contains items, whereas it must be empty or null.\nThe checked IEnumerable:\n\t[null, null, Thomas]")]
-        public void IsEmptyOrNullFailsAppropriately()
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked IEnumerable contains items, whereas it must be null or empty.\nThe checked IEnumerable:\n\t[null, null, Thomas]")]
+        public void IsNullOrEmptyFailsAppropriately()
         {
             var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
-            Check.That(persons).IsEmptyOrNull();
+            Check.That(persons).IsNullOrEmpty();
         }
 
         [Test]
-        public void NotIsEmptyOrNullWorks()
+        public void NotIsNullOrEmptyWorks()
         {
             var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
-            Check.That(persons).Not.IsEmptyOrNull();
+            Check.That(persons).Not.IsNullOrEmpty();
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked IEnumerable is empty, where as it must contain at least one item.")]
-        public void NotIsEmptyOrNullFailsIfEmpty()
+        public void NotIsNullOrEmptyFailsIfEmpty()
         {
-            Check.That(EmptyEnumerable).Not.IsEmptyOrNull();
+            Check.That(EmptyEnumerable).Not.IsNullOrEmpty();
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked IEnumerable is null, where as it must contain at least one item.")]
-        public void NotIsEmptyOrNullFailsIfNull()
+        public void NotIsNullOrEmptyFailsIfNull()
         {
-            Check.That((IEnumerable)null).Not.IsEmptyOrNull();
+            Check.That((IEnumerable)null).Not.IsNullOrEmpty();
         }
 
         [Test]

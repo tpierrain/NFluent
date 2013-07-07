@@ -12,57 +12,9 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent.Helpers
+namespace NFluent
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
-
-    /// <summary>
-    /// Enumerate the available time unit.
-    /// </summary>
-    public enum TimeUnit : long
-    {
-        /// <summary>
-        /// The nanoseconds.
-        /// </summary>
-        Nanoseconds,
-
-        /// <summary>
-        /// The Microseconds.
-        /// </summary>
-        Microseconds,
-
-        /// <summary>
-        /// The Milliseconds.
-        /// </summary>
-        Milliseconds,
-
-        /// <summary>
-        /// The seconds.
-        /// </summary>
-        Seconds,
-
-        /// <summary>
-        /// The minutes.
-        /// </summary>
-        Minutes,
-
-        /// <summary>
-        /// The hours.
-        /// </summary>
-        Hours,
-
-        /// <summary>
-        /// The days.
-        /// </summary>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1632:DocumentationTextMustMeetMinimumCharacterLength", Justification = "Reviewed. Suppression is OK here.")]
-        Days,
-
-        /// <summary>
-        /// The weeks.
-        /// </summary>
-        Weeks
-    }
 
     /// <summary>
     /// Static class hosting various time helper.

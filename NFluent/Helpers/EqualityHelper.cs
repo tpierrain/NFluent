@@ -38,7 +38,7 @@ namespace NFluent.Helpers
             throw new FluentCheckException(errorMessage);
         }
 
-        public static bool FluentEquals(object instance, object expected)
+        private static bool FluentEquals(object instance, object expected)
         {
             return object.Equals(instance, expected);
         }
@@ -92,18 +92,6 @@ namespace NFluent.Helpers
             {
                 throw new FluentCheckException(BuildErrorMessage(instance, expected, true));
             }
-        }
-
-        // TODO: make internal methods visible?
-        internal static string BuildTypeDescriptionMessage(object obj)
-        {
-            var expectedTypeMessage = string.Empty;
-            if (obj != null)
-            {
-                    expectedTypeMessage = string.Format(" of type: [{0}]", obj.GetType());
-            }
-
-            return expectedTypeMessage;
         }
     }
 }

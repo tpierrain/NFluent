@@ -137,6 +137,94 @@ namespace NFluent.Tests
 
         #endregion
 
+        #region IComparable checks
+
+        [Test]
+        public void IsBeforeWorks()
+        {
+            const int Two = 2;
+            const int Twenty = 20;
+
+            Check.That(Two).IsBefore(Twenty);
+        }
+
+        [Test]
+        public void NotIsBeforeWorks()
+        {
+            const int Two = 2;
+            const int Twenty = 20;
+
+            Check.That(Twenty).Not.IsBefore(Two);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not before the reference value.\nThe checked value:\n\t[20]\nThe expected value: before\n\t[2]")]
+        public void IsBeforeThrowsExceptionWhenFailing()
+        {
+            const int Two = 2;
+            const int Twenty = 20;
+
+            Check.That(Twenty).IsBefore(Two);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not before the reference value.\nThe checked value:\n\t[2]\nThe expected value: before\n\t[2]")]
+        public void IsBeforeThrowsExceptionWhenGivingTheSameValue()
+        {
+            const int Two = 2;
+
+            Check.That(Two).IsBefore(Two);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is before the reference value whereas it must not.\nThe checked value:\n\t[2]\nThe expected value: after\n\t[20]")]
+        public void NotIsBeforeThrowsExceptionWhenFailing()
+        {
+            const int Two = 2;
+            const int Twenty = 20;
+
+            Check.That(Two).Not.IsBefore(Twenty);
+        }
+
+        [Test]
+        public void IsAfterWorks()
+        {
+            const int Two = 2;
+            const int Twenty = 20;
+
+            Check.That(Twenty).IsAfter(Two);
+        }
+
+        [Test]
+        public void NotIsAfterWorks()
+        {
+            const int Two = 2;
+            const int Twenty = 20;
+
+            Check.That(Two).Not.IsAfter(Twenty);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not after the reference value.\nThe checked value:\n\t[2]\nThe expected value: after\n\t[2]")]
+        public void IsAfterThrowsExceptionWhenFailing()
+        {
+            const int Two = 2;
+
+            Check.That(Two).IsAfter(Two);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is after the reference value whereas it must not.\nThe checked value:\n\t[20]\nThe expected value: before\n\t[2]")]
+        public void NotIsAfterThrowsExceptionWhenFailing()
+        {
+            const int Two = 2;
+            const int Twenty = 20;
+
+            Check.That(Twenty).Not.IsAfter(Two);
+        }
+
+        #endregion
+
         #region IsLessThan & Co
 
         [Test]

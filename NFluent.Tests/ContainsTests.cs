@@ -53,7 +53,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[666, 1974]\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected enumerable:\n\t[3, 2, 666, 1974]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[666, 1974]\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected value(s):\n\t[3, 2, 666, 1974]")]
         public void ContainsWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new[] { 1, 2, 3 };
@@ -68,7 +68,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable contains all the given values whereas it must not.\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected enumerable:\n\t[3, 2, 1]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable contains all the given values whereas it must not.\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected value(s):\n\t[3, 2, 1]")]
         public void NotContainsThrowsExceptionWhenFailingWithArrays()
         {
             var integers = new[] { 1, 2, 3 };
@@ -104,7 +104,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[\"what da heck!\"]\nThe checked enumerable:\n\t[]\nThe expected enumerable:\n\t[\"what da heck!\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[\"what da heck!\"]\nThe checked enumerable:\n\t[]\nThe expected value(s):\n\t[\"what da heck!\"]")]
         public void ContainsThrowsWithEmptyList()
         {
             var emptyList = new List<int>();
@@ -121,7 +121,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is null and thus, does not contain the given expected value(s).\nThe checked enumerable:\n\t[null]\nThe expected enumerable:\n\t[\"what da heck!\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is null and thus, does not contain the given expected value(s).\nThe checked enumerable:\n\t[null]\nThe expected value(s):\n\t[\"what da heck!\"]")]
         public void ContainsThrowsWithNullAsCheckedValue()
         {
             List<int> nullList = null;
@@ -138,7 +138,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[666, 1974]\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected enumerable:\n\t[3, 2, 666, 1974]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[666, 1974]\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected value(s):\n\t[3, 2, 666, 1974]")]
         public void ContainsWithEnumerableThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new List<int> { 1, 2, 3 };

@@ -23,6 +23,8 @@ namespace NFluent.Helpers
 
     using NFluent.Extensions;
 
+    // TODO: probably worth to refactor the implementation of this class
+
     /// <summary>
     /// Help to build a properly formatted fluent error message.
     /// </summary>
@@ -43,6 +45,8 @@ namespace NFluent.Helpers
         private MessageBlock checkedBlock = null;
 
         private MessageBlock givenValueBlock = null;
+
+        private MessageBlock expectedValuesBlock = null;
 
         private string entity;
 
@@ -86,6 +90,20 @@ namespace NFluent.Helpers
             get
             {
                 return string.Format("{0} {1}", ExpectedAdjective, "one");
+            }
+        }
+
+        /// <summary>
+        /// Gets the expected values label.
+        /// </summary>
+        /// <value>
+        /// The expected values label.
+        /// </value>
+        public string ExpectedValuesLabel
+        {
+            get
+            {
+                return "expected value(s)";
             }
         }
 
@@ -142,10 +160,17 @@ namespace NFluent.Helpers
         {
             var builder = new StringBuilder("\n");
             var givenOrExpectedLabel = this.ExpectedLabel;
+            
             if (this.givenValueBlock != null)
             {
                 // we defined a given block which should then replace the classical expected one.
                 givenOrExpectedLabel = this.GivenLabel;
+            }
+
+            if (this.expectedValuesBlock != null)
+            {
+                // we defined an expected values block which should then replace the classical expected one.
+                givenOrExpectedLabel = this.ExpectedValuesLabel;
             }
 
             builder.AppendFormat(this.message, this.TestedLabel, givenOrExpectedLabel);
@@ -160,6 +185,12 @@ namespace NFluent.Helpers
             {
                 builder.Append("\n");
                 builder.Append(this.givenValueBlock.GetMessage());
+            }
+
+            if (this.expectedValuesBlock != null)
+            {
+                builder.Append("\n");
+                builder.Append(this.expectedValuesBlock.GetMessage());
             }
 
             if (this.expectedBlock != null)
@@ -202,6 +233,18 @@ namespace NFluent.Helpers
         {
             this.expectedBlock = new MessageBlock(this, expected, ExpectedAdjective);
             return this.expectedBlock;
+        }
+
+        /// <summary>
+        /// Adds a message block to describe the expected values.
+        /// </summary>
+        /// <param name="expectedValues">The expected values.</param>
+        /// <returns>The created MessageBlock.</returns>
+        public MessageBlock ExpectedValues(object expectedValues)
+        {
+            this.expectedValuesBlock = new MessageBlock(this, expectedValues, ExpectedAdjective);
+            this.expectedValuesBlock.Label("The expected value(s):");
+            return this.expectedValuesBlock;
         }
 
         /// <summary>
