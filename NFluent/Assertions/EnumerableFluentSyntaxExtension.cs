@@ -78,7 +78,7 @@ namespace NFluent
                                             itemidx))
                                        .For("enumerable")
                                        .On(runnableCheck.Value)
-                                       .And.Expected(chainedCheckLink.OriginalComparand);
+                                       .And.ExpectedValues(chainedCheckLink.OriginalComparand);
 
                     throw new FluentCheckException(message.ToString());
                 }
@@ -153,7 +153,7 @@ namespace NFluent
                                                                         index > scanIndex ? "early" : "late"))
                                          .For("enumerable")
                                          .On(runnableCheck.Value)
-                                           .And.Expected(chainedCheckLink.OriginalComparand);
+                                         .And.ExpectedValues(chainedCheckLink.OriginalComparand);
 
                         throw new FluentCheckException(message.ToString());
                     }

@@ -82,9 +82,29 @@ namespace NFluent.Tests
         [Test]
         public void HowGivenValueWorks()
         {
-            var message = FluentMessage.BuildMessage("The {0} is before the {1} whereas it must not.").For("date time").On("portna").And.WithGivenValue("ouaq").ToString();
+            var message = FluentMessage.BuildMessage("The {0} is before the {1} whereas it must not.")
+                                            .For("date time")
+                                            .On("portna")
+                                            .And.WithGivenValue("ouaq").ToString();
 
             Assert.AreEqual("\nThe checked date time is before the given date time whereas it must not.\nThe checked date time:\n\t[\"portna\"]\nThe given date time:\n\t[\"ouaq\"]", message);
+        }
+
+        [Test]
+        public void HowExpectedValuesWorks()
+        {
+            var heroes = new[] { "Luke", "Yoda", "Chewie" };
+            var givenValues = new[] { "Luke", "Yoda", "Chewie", "Vador" };
+            
+            var message = FluentMessage.BuildMessage("The {0} does not contain exactly the {1}.")
+                                            .For("enumerable")
+                                            .On(heroes)
+                                            .WithEnumerableCount(heroes.Count())
+                                            .And.ExpectedValues(givenValues)
+                                            .WithEnumerableCount(givenValues.Count())
+                                            .ToString();
+
+            Assert.AreEqual("\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)\nThe expected value(s):\n\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vador\"] (4 items)", message);
         }
     }
 }
