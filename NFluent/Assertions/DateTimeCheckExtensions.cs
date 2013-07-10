@@ -24,54 +24,6 @@ namespace NFluent
     /// </summary>
     public static class DateTimeCheckExtensions
     {
-        #region Equality checks
-
-        /// <summary>
-        /// Checks that the actual value is equal to another expected value.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected value.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static ICheckLink<ICheck<DateTime>> IsEqualTo(this ICheck<DateTime> check, object expected)
-        {
-            var checkRunner = check as ICheckRunner<DateTime>;
-            var runnableCheck = check as IRunnableCheck<DateTime>;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
-                    },
-                    EqualityHelper.BuildErrorMessage(runnableCheck.Value, expected, true));
-        }
-
-        /// <summary>
-        /// Checks that the actual value is not equal to another expected value.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static ICheckLink<ICheck<DateTime>> IsNotEqualTo(this ICheck<DateTime> check, object expected)
-        {
-            var checkRunner = check as ICheckRunner<DateTime>;
-            var runnableCheck = check as IRunnableCheck<DateTime>;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
-                    },
-                EqualityHelper.BuildErrorMessage(runnableCheck.Value, expected, false));
-        }
-
-        #endregion
-
         #region IsInstance checks
 
         /// <summary>

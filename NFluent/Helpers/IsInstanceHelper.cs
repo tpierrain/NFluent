@@ -45,7 +45,7 @@ namespace NFluent.Helpers
         /// <exception cref="FluentCheckException">The instance is not of the expected type.</exception>
         public static void IsInstanceOf(object instance, Type expectedType)
         {
-            if (instance.GetType() != expectedType)
+            if (instance.GetTypeWithoutThrowingException() != expectedType)
             {
                 throw new FluentCheckException(BuildErrorMessage(instance, expectedType, false));
             }
@@ -59,7 +59,7 @@ namespace NFluent.Helpers
         /// <exception cref="FluentCheckException">The instance is of the type not expected.</exception>
         public static void IsNotInstanceOf(object instance, Type typeNotExpected)
         {
-            if (instance.GetType() == typeNotExpected)
+            if (instance.GetTypeWithoutThrowingException() == typeNotExpected)
             {
                 throw new FluentCheckException(BuildErrorMessage(instance, typeNotExpected, true));
             }

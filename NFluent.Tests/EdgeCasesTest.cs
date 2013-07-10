@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="EdgeCases.cs" company="">
+// // <copyright file="EdgeCasesTest.cs" company="">
 // //   Copyright 2013 Cyrille DUPUYDAUBY
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -27,14 +27,11 @@ namespace NFluent.Tests
         {
             // syntax ok
             Check.That(DateTime.Now).IsInstanceOf<DateTime>().And.IsEqualToIgnoringHours(DateTime.Now);
-        }
 
-        [Test]
-        public void NullableStructType()
-        {
-            // non explicitely supported nullable types are not supported
-            DateTime? test = null;
-  
+            // fails with nullrefexception
+            Check.That((Person)new Person()).IsInstanceOf<Person>();
+
+            Check.That((int?)null).IsInstanceOf<int?>();
         }
     }
 }

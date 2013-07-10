@@ -30,6 +30,7 @@ namespace NFluent.Tests
         {
             const Nationality FrenchNationality = Nationality.French;
             Check.ThatEnum(FrenchNationality).IsEqualTo(Nationality.French);
+            Check.That(FrenchNationality).IsEqualTo(Nationality.French);
         }
 
         [Test]

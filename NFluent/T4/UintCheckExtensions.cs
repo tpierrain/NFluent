@@ -34,38 +34,7 @@ namespace NFluent
         //// -----------------------------------------------------
 
         #pragma warning restore 169
-
-        /// <summary>
-        /// Checks that the actual value is equal to another expected value.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected value.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static ICheckLink<ICheck<uint>> IsEqualTo(this ICheck<uint> check, object expected)
-        {
-            // TODO transform NumberCheck<T> into a static class with functions only?
-            var numberCheckStrategy = new NumberCheck<uint>(check);
-            return numberCheckStrategy.IsEqualTo(expected);
-        }
-
-        /// <summary>
-        /// Checks that the actual value is not equal to another expected value.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected value.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static ICheckLink<ICheck<uint>> IsNotEqualTo(this ICheck<uint> check, object expected)
-        {
-            var numberCheckStrategy = new NumberCheck<uint>(check);
-            return numberCheckStrategy.IsNotEqualTo(expected);
-        }
-
+        
         /// <summary>
         /// Checks that the actual instance is an instance of the given type.
         /// </summary>

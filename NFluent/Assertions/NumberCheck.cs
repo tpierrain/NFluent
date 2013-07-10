@@ -155,42 +155,6 @@ namespace NFluent
                 FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(this.runnableCheck.Value).And.Expected(comparand).Comparison("less than").ToString());
         }
 
-        #region IEqualityFluentAssertion members
-
-        /// <summary>
-        /// Checks that the actual value is equal to another expected value.
-        /// </summary>
-        /// <returns>A check link.</returns>
-        /// <param name="expected">The expected value.</param>
-        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public ICheckLink<ICheck<N>> IsEqualTo(object expected)
-        {
-            return this.checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        EqualityHelper.IsEqualTo(this.runnableCheck.Value, expected);
-                    },
-                EqualityHelper.BuildErrorMessage(this.runnableCheck.Value, expected, true));
-        }
-
-        /// <summary>
-        /// Checks that the actual value is not equal to another expected value.
-        /// </summary>
-        /// <returns>A check link.</returns>
-        /// <param name="expected">The expected value.</param>
-        /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public ICheckLink<ICheck<N>> IsNotEqualTo(object expected)
-        {
-            return this.checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        EqualityHelper.IsNotEqualTo(this.runnableCheck.Value, expected);
-                    },
-                EqualityHelper.BuildErrorMessage(this.runnableCheck.Value, expected, false));
-        }
-
-        #endregion
-
         #region IInstanceTypeFluentAssertion members
 
         /// <summary>

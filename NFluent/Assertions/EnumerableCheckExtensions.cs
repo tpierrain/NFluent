@@ -26,54 +26,6 @@ namespace NFluent
     public static class EnumerableCheckExtensions
     {
         /// <summary>
-        /// Checks that the actual value is equal to another expected value.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected value.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> IsEqualTo(this ICheck<IEnumerable> check, object expected)
-        {
-            var checkRunner = check as ICheckRunner<IEnumerable>;
-            var runnableCheck = check as IRunnableCheck<IEnumerable>;
-
-            var expectedEnumerable = expected as IEnumerable;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
-                    },
-                EqualityHelper.BuildErrorMessage(runnableCheck.Value, expectedEnumerable, true));
-        }
-
-        /// <summary>
-        /// Checks that the actual value is not equal to another expected value.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected value.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> IsNotEqualTo(this ICheck<IEnumerable> check, object expected)
-        {
-            var checkRunner = check as ICheckRunner<IEnumerable>;
-            var runnableCheck = check as IRunnableCheck<IEnumerable>;
-
-            var expectedEnumerable = expected as IEnumerable;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
-                    },
-                EqualityHelper.BuildErrorMessage(runnableCheck.Value, expectedEnumerable, false));
-        }
-
-        /// <summary>
         /// Checks that the actual instance is an instance of the given type.
         /// </summary>
         /// <typeparam name="T">The expected Type of the instance.</typeparam>
