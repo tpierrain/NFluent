@@ -43,6 +43,7 @@
       <Link>Version.cs</Link>
     </Compile>
     <Compile Include="Child.cs" />
+    <Compile Include="ExtensionsForMarketingPurpose.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieCheckExtensions.cs" />
     <Compile Include="Nationality.cs" />

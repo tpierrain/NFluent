@@ -1,4 +1,5 @@
 ![NFluent](https://github.com/tpierrain/nfluent/blob/master/NFluentBanner.png?raw=true)
+![Motto](https://github.com/tpierrain/nfluent/blob/master/Images/AssertIsDead.png?raw=true)
 
 NFluent overview
 ==============

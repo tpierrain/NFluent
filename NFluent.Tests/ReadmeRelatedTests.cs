@@ -16,6 +16,7 @@ namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading;
 
     using NUnit.Framework;
@@ -26,6 +27,23 @@ namespace NFluent.Tests
     [TestFixture]
     public class ReadmeRelatedTests
     {
+        #region dummy fields for the NFluentMotto method to compile
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
+        private static readonly TddForMarketing TDD = new TddForMarketing();
+        private static readonly NFluentForMarketing NFluent = new NFluentForMarketing();
+
+        #endregion
+
+        /// <summary>
+        /// Methods to screenshot and copy and paste the NFluent motto.
+        /// </summary>
+        public void NFluentMotto()
+        {
+            // Assert is dead!                                         
+            Check.That(TDD).With(NFluent).IsAnInstanceOf<Awsomeness>();
+        }
+        
         [Test]
         public void CodeSnippetForReadmeMarkdownFile()
         {
