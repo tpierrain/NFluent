@@ -36,60 +36,6 @@ namespace NFluent
         #pragma warning restore 169
         
         /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<short>> IsInstanceOf<T>(this ICheck<short> check)
-        {
-            var numberCheckStrategy = new NumberCheck<short>(check);
-            return numberCheckStrategy.IsInstanceOf<T>();
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<short?>> IsInstanceOf<T>(this ICheck<short?> check)
-        {
-            var checkRunner = check as ICheckRunner<short?>;
-            IRunnableCheck<short?> runnableCheck = check as IRunnableCheck<short?>;
-
-            checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsSameType(typeof(Nullable<short>), typeof(T), runnableCheck.Value);
-                },
-                IsInstanceHelper.BuildErrorMessageForNullable(typeof(Nullable<short>), typeof(T), runnableCheck.Value, true));
-
-            return new CheckLink<ICheck<short?>>(check);
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public static ICheckLink<ICheck<short>> IsNotInstanceOf<T>(this ICheck<short> check)
-        {
-            var numberCheckStrategy = new NumberCheck<short>(check);
-            return numberCheckStrategy.IsNotInstanceOf<T>();
-        }
-
-        /// <summary>
         /// Determines whether the specified value is before the other one.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>

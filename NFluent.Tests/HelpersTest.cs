@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="EdgeCasesTest.cs" company="">
+// // <copyright file="HelpersTest.cs" company="">
 // //   Copyright 2013 Cyrille DUPUYDAUBY
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -15,30 +15,18 @@
 
 namespace NFluent.Tests
 {
-    using System;
+    using NFluent.Extensions;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class EdgeCasesTest
+    public class HelpersTest
     {
         [Test]
-        public void IsInstanceOfCanBeLinked()
+        public void TestIsNullable()
         {
-            // syntax ok
-            Check.That(DateTime.Now).IsInstanceOf<DateTime>().And.IsEqualToIgnoringHours(DateTime.Now);
-
-            // fails with nullrefexception
-            Check.That(new Person()).IsInstanceOf<Person>();
-
-            Check.That((int?)null).IsInstanceOf<int?>();
-        }
-
-        [Test]
-        public void IsATest()
-        {
-            ////Check.That(new object()).IsA<object>();
-            ////Check.That(new object()).IsA<int>(); // fails
+            Check.That(typeof(int?).IsNullable()).IsTrue();
+            Check.That(typeof(int).IsNullable()).IsFalse();
         }
     }
 }

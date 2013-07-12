@@ -27,7 +27,7 @@ namespace NFluent
 
         // private readonly N value;
         private readonly CheckRunner<N> checkRunner;
-        private IRunnableCheck<N> runnableCheck;
+        private readonly IRunnableCheck<N> runnableCheck;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberCheck{N}" /> class.
@@ -154,46 +154,6 @@ namespace NFluent
                     },
                 FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(this.runnableCheck.Value).And.Expected(comparand).Comparison("less than").ToString());
         }
-
-        #region IInstanceTypeFluentAssertion members
-
-        /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public ICheckLink<ICheck<N>> IsInstanceOf<T>()
-        {
-            return this.checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsInstanceOf(this.runnableCheck.Value, typeof(T));
-                },
-                IsInstanceHelper.BuildErrorMessage(this.runnableCheck, typeof(T), true));
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public ICheckLink<ICheck<N>> IsNotInstanceOf<T>()
-        {
-            return this.checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsNotInstanceOf(this.runnableCheck.Value, typeof(T));
-                },
-                IsInstanceHelper.BuildErrorMessage(this.runnableCheck, typeof(T), false));
-        }
-
-        #endregion
 
         /// <summary>
         /// Checks whether a given value is equal to zero.

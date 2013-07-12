@@ -492,6 +492,22 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            ulong? one = 1;
+
+            Check.That(one).IsNotInstanceOf<ulong>().And.HasAValue().Which.IsEqualTo((ulong)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ulong? whereas it must not.\nThe checked value:\n\t[1] of type: [ulong?]\nThe expected type: different from\n\t[ulong?]")]
+        public void IsNotInstanceOfFailsProperlyWithNullable()
+        {
+            ulong? one = 1;
+
+            Check.That(one).IsNotInstanceOf<ulong?>();
+        }
+        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             ulong? one = 1;

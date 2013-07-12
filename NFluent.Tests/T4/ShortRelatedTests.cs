@@ -492,6 +492,22 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            short? one = 1;
+
+            Check.That(one).IsNotInstanceOf<short>().And.HasAValue().Which.IsEqualTo((short)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of short? whereas it must not.\nThe checked value:\n\t[1] of type: [short?]\nThe expected type: different from\n\t[short?]")]
+        public void IsNotInstanceOfFailsProperlyWithNullable()
+        {
+            short? one = 1;
+
+            Check.That(one).IsNotInstanceOf<short?>();
+        }
+        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             short? one = 1;

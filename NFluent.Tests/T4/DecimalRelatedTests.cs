@@ -492,6 +492,22 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            decimal? one = 1M;
+
+            Check.That(one).IsNotInstanceOf<decimal>().And.HasAValue().Which.IsEqualTo((decimal)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[1] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
+        public void IsNotInstanceOfFailsProperlyWithNullable()
+        {
+            decimal? one = 1M;
+
+            Check.That(one).IsNotInstanceOf<decimal?>();
+        }
+        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             decimal? one = 1M;

@@ -29,60 +29,6 @@ namespace NFluent
         // Since this class is the model/template for the generation of all the other numbers related CheckExtensions classes, don't forget to re-generate all the other classes every time you change this one. To do that, just save the ..\T4\NumberFluentAssertionGenerator.tt file within Visual Studio 2012. This will trigger the T4 code generation process.
         
         /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<int>> IsInstanceOf<T>(this ICheck<int> check)
-        {
-            var numberCheckStrategy = new NumberCheck<int>(check);
-            return numberCheckStrategy.IsInstanceOf<T>();
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<int?>> IsInstanceOf<T>(this ICheck<int?> check)
-        {
-            var checkRunner = check as ICheckRunner<int?>;
-            IRunnableCheck<int?> runnableCheck = check as IRunnableCheck<int?>;
-
-            checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsSameType(typeof(Nullable<int>), typeof(T), runnableCheck.Value);
-                },
-                IsInstanceHelper.BuildErrorMessageForNullable(typeof(Nullable<int>), typeof(T), runnableCheck.Value, true));
-
-            return new CheckLink<ICheck<int?>>(check);
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public static ICheckLink<ICheck<int>> IsNotInstanceOf<T>(this ICheck<int> check)
-        {
-            var numberCheckStrategy = new NumberCheck<int>(check);
-            return numberCheckStrategy.IsNotInstanceOf<T>();
-        }
-
-        /// <summary>
         /// Determines whether the specified value is before the other one.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>

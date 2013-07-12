@@ -116,7 +116,6 @@ namespace NFluent.Tests
         {
             private int z = 2;
 
-
             public DummyHeritance()
             {
             }

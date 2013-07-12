@@ -492,6 +492,22 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            byte? one = 1;
+
+            Check.That(one).IsNotInstanceOf<byte>().And.HasAValue().Which.IsEqualTo((byte)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of byte? whereas it must not.\nThe checked value:\n\t[1] of type: [byte?]\nThe expected type: different from\n\t[byte?]")]
+        public void IsNotInstanceOfFailsProperlyWithNullable()
+        {
+            byte? one = 1;
+
+            Check.That(one).IsNotInstanceOf<byte?>();
+        }
+        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             byte? one = 1;

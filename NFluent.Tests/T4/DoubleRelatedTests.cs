@@ -492,6 +492,22 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            double? one = 1D;
+
+            Check.That(one).IsNotInstanceOf<double>().And.HasAValue().Which.IsEqualTo((double)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of double? whereas it must not.\nThe checked value:\n\t[1] of type: [double?]\nThe expected type: different from\n\t[double?]")]
+        public void IsNotInstanceOfFailsProperlyWithNullable()
+        {
+            double? one = 1D;
+
+            Check.That(one).IsNotInstanceOf<double?>();
+        }
+        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             double? one = 1D;

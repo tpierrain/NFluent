@@ -24,55 +24,6 @@ namespace NFluent
     /// </summary>
     public static class DateTimeCheckExtensions
     {
-        #region IsInstance checks
-
-        /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<DateTime>> IsInstanceOf<T>(this ICheck<DateTime> check)
-        {
-            var checkRunner = check as ICheckRunner<DateTime>;
-            var runnableCheck = check as IRunnableCheck<DateTime>;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
-                    },
-                    IsInstanceHelper.BuildErrorMessage(runnableCheck, typeof(T), true));
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public static ICheckLink<ICheck<DateTime>> IsNotInstanceOf<T>(this ICheck<DateTime> check)
-        {
-            var checkRunner = check as ICheckRunner<DateTime>;
-            var runnableCheck = check as IRunnableCheck<DateTime>;
-
-            var expectedType = typeof(T);
-            return checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, expectedType);
-                    },
-                IsInstanceHelper.BuildErrorMessage(runnableCheck.Value, typeof(T), false));
-        }
-
-        #endregion
-
         /// <summary>
         /// Checks that the actual DateTime is strictly before the given one.
         /// </summary>

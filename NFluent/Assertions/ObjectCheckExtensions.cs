@@ -84,50 +84,6 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<object>> IsInstanceOf<T>(this ICheck<object> check)
-        {
-            var checkRunner = check as ICheckRunner<object>;
-            var runnableCheck = check as IRunnableCheck<object>;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
-                },
-                IsInstanceHelper.BuildErrorMessage(runnableCheck, typeof(T), true));
-        }
-        
-        /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<object>> IsNotInstanceOf<T>(this ICheck<object> check)
-        {
-            var checkRunner = check as ICheckRunner<object>;
-            var runnableCheck = check as IRunnableCheck<object>;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, typeof(T));
-                },
-                string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", runnableCheck.Value.ToStringProperlyFormated(), typeof(T), runnableCheck.Value.GetType()));
-        }
-
-        /// <summary>
         /// Checks that the actual expression is in the inheritance hierarchy of the given type or of the same type.
         /// </summary>
         /// <typeparam name="T">The Type which is expected to be a base Type of the actual expression.</typeparam>

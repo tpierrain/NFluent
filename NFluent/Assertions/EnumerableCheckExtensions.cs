@@ -26,50 +26,6 @@ namespace NFluent
     public static class EnumerableCheckExtensions
     {
         /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> IsInstanceOf<T>(this ICheck<IEnumerable> check)
-        {
-            var checkRunner = check as ICheckRunner<IEnumerable>;
-            var runnableCheck = check as IRunnableCheck<IEnumerable>;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
-                },
-                IsInstanceHelper.BuildErrorMessage(runnableCheck.Value, typeof(T), true));
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> IsNotInstanceOf<T>(this ICheck<IEnumerable> check)
-        {
-            var checkRunner = check as ICheckRunner<IEnumerable>;
-            var runnableCheck = check as IRunnableCheck<IEnumerable>;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, typeof(T));
-                },
-                IsInstanceHelper.BuildErrorMessage(runnableCheck.Value, typeof(T), false));
-        }
-
-        /// <summary>
         /// Checks that the enumerable contains all the given expected values, in any order.
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the enumerable.</typeparam>
