@@ -507,6 +507,7 @@ namespace NFluent.Tests
 
             Check.That(one).IsNotInstanceOf<ulong?>();
         }
+
         [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {

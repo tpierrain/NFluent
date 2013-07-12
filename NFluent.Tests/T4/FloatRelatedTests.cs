@@ -507,6 +507,7 @@ namespace NFluent.Tests
 
             Check.That(one).IsNotInstanceOf<float?>();
         }
+
         [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {

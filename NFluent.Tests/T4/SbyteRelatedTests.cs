@@ -507,6 +507,7 @@ namespace NFluent.Tests
 
             Check.That(one).IsNotInstanceOf<sbyte?>();
         }
+
         [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {

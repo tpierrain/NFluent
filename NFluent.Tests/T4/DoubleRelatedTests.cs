@@ -507,6 +507,7 @@ namespace NFluent.Tests
 
             Check.That(one).IsNotInstanceOf<double?>();
         }
+
         [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {

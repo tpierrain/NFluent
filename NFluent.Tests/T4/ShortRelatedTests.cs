@@ -507,6 +507,7 @@ namespace NFluent.Tests
 
             Check.That(one).IsNotInstanceOf<short?>();
         }
+
         [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
