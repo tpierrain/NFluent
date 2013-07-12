@@ -527,7 +527,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of byte? whereas it must not.\nThe checked value:\n\t[null] of type: [byte?]\nThe expected type: different from\n\t[byte?]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             byte? noValue = null;

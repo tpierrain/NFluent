@@ -527,7 +527,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[null] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             ushort? noValue = null;

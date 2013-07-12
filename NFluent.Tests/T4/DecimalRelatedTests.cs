@@ -527,7 +527,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[null] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             decimal? noValue = null;

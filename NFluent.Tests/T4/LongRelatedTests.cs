@@ -527,7 +527,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of long? whereas it must not.\nThe checked value:\n\t[null] of type: [long?]\nThe expected type: different from\n\t[long?]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             long? noValue = null;

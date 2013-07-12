@@ -527,7 +527,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ulong? whereas it must not.\nThe checked value:\n\t[null] of type: [ulong?]\nThe expected type: different from\n\t[ulong?]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             ulong? noValue = null;

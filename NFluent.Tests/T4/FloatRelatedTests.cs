@@ -527,7 +527,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of float? whereas it must not.\nThe checked value:\n\t[null] of type: [float?]\nThe expected type: different from\n\t[float?]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             float? noValue = null;
