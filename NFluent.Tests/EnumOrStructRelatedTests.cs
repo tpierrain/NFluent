@@ -85,5 +85,35 @@ namespace NFluent.Tests
             var inLove = new Mood { Description = "In love", IsPositive = true };
             Check.ThatEnum(inLove).IsEqualTo(inLove);
         }
+
+        [Test]
+        public void IsInstanceOfWorks()
+        {
+            const Nationality FrenchNationality = Nationality.French;
+            Check.ThatEnum(FrenchNationality).IsInstanceOf<Nationality>();
+        }
+
+        [Test]
+        public void IsNotInstanceOfWorks()
+        {
+            const Nationality FrenchNationality = Nationality.French;
+            Check.ThatEnum(FrenchNationality).IsNotInstanceOf<int>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[French] of type: [NFluent.Tests.Nationality]\nThe expected type:\n\t[int]")]
+        public void IsInstanceOfFailsPropery()
+        {
+            const Nationality FrenchNationality = Nationality.French;
+            Check.ThatEnum(FrenchNationality).IsInstanceOf<int>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of NFluent.Tests.Nationality whereas it must not.\nThe checked value:\n\t[French] of type: [NFluent.Tests.Nationality]\nThe expected type: different from\n\t[NFluent.Tests.Nationality]")]
+        public void IsNotInstanceOfFailsProperly()
+        {
+            const Nationality FrenchNationality = Nationality.French;
+            Check.ThatEnum(FrenchNationality).IsNotInstanceOf<Nationality>();
+        }
     }
 }
