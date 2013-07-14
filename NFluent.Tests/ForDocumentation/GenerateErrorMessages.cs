@@ -137,9 +137,15 @@ namespace NFluent.Tests.ForDocumentation
                         var publicMethods = tests as IList<MethodInfo> ?? tests.ToList();
                         if (publicMethods.Count > 0)
                         {
-                            // run all tests
+                            // scan all methods
                             foreach (var checkMethod in publicMethods)
                             {
+                                if (checkMethod.Name == "ForkInstance")
+                                {
+                                    // skip forkinstance
+                                    continue;
+                                }
+
                                 var desc = CheckDescription.AnalyzeSignature(checkMethod);
 
                                 if (desc != null)
@@ -173,7 +179,7 @@ namespace NFluent.Tests.ForDocumentation
                         foreach (var signature in checkList.CheckSignatures)
                         {
                             var message = string.Format(
-                                "{0};{1};{2}", typeChecks.CheckedType.ToStringProperlyFormated(), checkList.CheckName, signature.Signature);
+                                "{0};{1};{2}", typeChecks.CheckedType.TypeToStringProperlyFormated(true), checkList.CheckName, signature.Signature);
                             writer.WriteLine(message);
                         }
                     }

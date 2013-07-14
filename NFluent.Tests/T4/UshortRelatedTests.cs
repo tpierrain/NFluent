@@ -492,6 +492,23 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            ushort? one = 1;
+
+            Check.That(one).IsNotInstanceOf<ushort>().And.HasAValue().Which.IsEqualTo((ushort)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[1] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
+        public void IsNotInstanceOfFailsProperlyWithNullable()
+        {
+            ushort? one = 1;
+
+            Check.That(one).IsNotInstanceOf<ushort?>();
+        }
+
+        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             ushort? one = 1;
@@ -510,7 +527,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[null] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             ushort? noValue = null;

@@ -492,6 +492,23 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            uint? one = 1;
+
+            Check.That(one).IsNotInstanceOf<uint>().And.HasAValue().Which.IsEqualTo((uint)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of uint? whereas it must not.\nThe checked value:\n\t[1] of type: [uint?]\nThe expected type: different from\n\t[uint?]")]
+        public void IsNotInstanceOfFailsProperlyWithNullable()
+        {
+            uint? one = 1;
+
+            Check.That(one).IsNotInstanceOf<uint?>();
+        }
+
+        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             uint? one = 1;
@@ -510,7 +527,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of uint? whereas it must not.\nThe checked value:\n\t[null] of type: [uint?]\nThe expected type: different from\n\t[uint?]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             uint? noValue = null;

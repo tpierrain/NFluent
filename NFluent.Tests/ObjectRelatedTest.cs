@@ -116,9 +116,14 @@ namespace NFluent.Tests
         {
             private int z = 2;
 
-            public int GetDummyZ()
+            public DummyHeritance()
             {
-                return this.z;
+            }
+
+            public DummyHeritance(int x, int y, int z)
+                : base(x, y)
+            {
+                this.z = z;
             }
         }
     }

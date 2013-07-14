@@ -29,5 +29,23 @@ namespace NFluent
         /// </returns>
         /// <exception cref="FluentCheckException">The specified <see cref="System.Object"/> is not equal to this instance.</exception>
         bool Equals(object obj);
+
+        /// <summary>
+        /// Checks whether if the checked value is of the given type.
+        /// </summary>
+        /// <typeparam name="U">The type to check the checked value against.</typeparam>
+        /// <returns>A chainable check.</returns>
+        ICheckLink<ICheck<T>> IsInstanceOf<U>();
+
+        /// <summary>
+        /// Checks whether if the checked value is different from the given type.
+        /// </summary>
+        /// <typeparam name="U">
+        /// The type to check the checked value against.
+        /// </typeparam>
+        /// <returns>
+        /// A chainable check.
+        /// </returns>
+        ICheckLink<ICheck<T>> IsNotInstanceOf<U>();
     }
 }

@@ -30,16 +30,25 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected value.</param>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
+        /// <param name="check">
+        /// The fluent check to be extended.
+        /// </param>
+        /// <param name="expected">
+        /// The expected value.
+        /// </param>
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static ICheckLink<ICheck<object>> IsEqualTo(this ICheck<object> check, object expected)
+        /// <exception cref="FluentCheckException">
+        /// The actual value is not equal to the expected value.
+        /// </exception>
+        public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, object expected)
         {
-            var checkRunner = check as ICheckRunner<object>;
-            var runnableCheck = check as IRunnableCheck<object>;
+            var checkRunner = check as ICheckRunner<T>;
+            var runnableCheck = check as IRunnableCheck<T>;
 
             return checkRunner.ExecuteCheck(
                 () =>
@@ -52,16 +61,19 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static ICheckLink<ICheck<object>> IsNotEqualTo(this ICheck<object> check, object expected)
+        public static ICheckLink<ICheck<T>> IsNotEqualTo<T>(this ICheck<T> check, object expected)
         {
-            var checkRunner = check as ICheckRunner<object>;
-            var runnableCheck = check as IRunnableCheck<object>;
+            var checkRunner = check as ICheckRunner<T>;
+            var runnableCheck = check as IRunnableCheck<T>;
 
             return checkRunner.ExecuteCheck(
                 () =>
@@ -69,50 +81,6 @@ namespace NFluent
                         EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
                     },
                 EqualityHelper.BuildErrorMessage(runnableCheck.Value, expected, false));
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<object>> IsInstanceOf<T>(this ICheck<object> check)
-        {
-            var checkRunner = check as ICheckRunner<object>;
-            var runnableCheck = check as IRunnableCheck<object>;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
-                },
-                IsInstanceHelper.BuildErrorMessage(runnableCheck, typeof(T), true));
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<object>> IsNotInstanceOf<T>(this ICheck<object> check)
-        {
-            var checkRunner = check as ICheckRunner<object>;
-            var runnableCheck = check as IRunnableCheck<object>;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, typeof(T));
-                },
-                string.Format("\nThe actual value:\n\t[{0}]\nis not an instance of:\n\t[{1}]\nbut an instance of:\n\t[{2}]\ninstead.", runnableCheck.Value.ToStringProperlyFormated(), typeof(T), runnableCheck.Value.GetType()));
         }
 
         /// <summary>

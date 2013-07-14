@@ -73,50 +73,6 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<string>> IsInstanceOf<T>(this ICheck<string> check)
-        {
-            var checkRunner = check as ICheckRunner<string>;
-            var runnableCheck = check as IRunnableCheck<string>;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
-                    },
-                IsInstanceHelper.BuildErrorMessage(runnableCheck, typeof(T), true));
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public static ICheckLink<ICheck<string>> IsNotInstanceOf<T>(this ICheck<string> check)
-        {
-            var checkRunner = check as ICheckRunner<string>;
-            var runnableCheck = check as IRunnableCheck<string>;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, typeof(T));
-                    },
-                IsInstanceHelper.BuildErrorMessage(runnableCheck, typeof(T), false));
-        }
-
-        /// <summary>
         /// Checks that the string contains the given expected values, in any order.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
