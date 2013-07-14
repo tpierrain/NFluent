@@ -36,7 +36,7 @@ namespace NFluent.Tests
         private const ulong ULongObj = 2;
         private const float FloatObj = 3.14F;
         private const bool BoolObj = true;
-        private readonly Person person = new Person() { Name = "Charles BAUDELAIRE" };
+        private readonly Person person = new Person { Name = "Charles BAUDELAIRE" };
         private readonly DateTime dateTimeObj = new DateTime();
         private readonly TimeSpan timeSpanObj = new TimeSpan();
         private readonly int[] integerArray = new int[10];
@@ -71,6 +71,7 @@ namespace NFluent.Tests
             Check.That(ULongObj).IsInstanceOf<ulong>();
             Check.That(FloatObj).IsInstanceOf<float>();
             Check.That(SByteObj).IsInstanceOf<sbyte>();
+            Check.That(CharObj).IsInstanceOf<char>();
 
             // POCO
             Check.That(this.person).IsInstanceOf<Person>();
