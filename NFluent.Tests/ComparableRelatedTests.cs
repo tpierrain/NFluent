@@ -124,6 +124,16 @@ namespace NFluent.Tests
             Check.That(v2).Not.IsAfter(v1);
         }
 
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not after the reference value.\nThe checked value:\n\t[null]\nThe expected value: after\n\t[1.0]")]
+        public void IsAfterDoesNotThrowNullReferenceExceptionWithNullAsInput()
+        {
+            Version v1 = new Version(1, 0);
+            Version v2 = null;
+
+            Check.That(v2).IsAfter(v1);
+        }
+
         #endregion
     }
 }

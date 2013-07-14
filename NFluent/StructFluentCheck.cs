@@ -17,6 +17,9 @@ namespace NFluent
     using System;
     using System.Diagnostics.CodeAnalysis;
 
+    using NFluent.Extensions;
+    using NFluent.Helpers;
+
     /// <summary>
     /// Provides check methods to be executed on a given struct value.
     /// </summary>
@@ -104,6 +107,38 @@ namespace NFluent
         object IForkableCheck.ForkInstance()
         {
             return new StructFluentCheck<T>(this.Value);
+        }
+
+        /// <summary>
+        /// Checks whether if the checked value is of the given type.
+        /// </summary>
+        /// <typeparam name="U">The type to check the checked value against.</typeparam>
+        /// <returns>A chainable check.</returns>
+        public ICheckLink<IStructCheck<T>> IsInstanceOf<U>() where U : struct
+        {
+            ((IStructCheckRunner<T>)this).ExecuteCheck(
+                () => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)),
+                IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
+
+            return new CheckLink<IStructCheck<T>>(this);
+        }
+
+        /// <summary>
+        /// Checks whether if the checked value is different from the given type.
+        /// </summary>
+        /// <typeparam name="U">
+        /// The type to check the checked value against.
+        /// </typeparam>
+        /// <returns>
+        /// A chainable check.
+        /// </returns>
+        public ICheckLink<IStructCheck<T>> IsNotInstanceOf<U>() where U : struct
+        {
+            ((IStructCheckRunner<T>)this).ExecuteCheck(
+                () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)),
+                IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
+
+            return new CheckLink<IStructCheck<T>>(this);
         }
     }
 }

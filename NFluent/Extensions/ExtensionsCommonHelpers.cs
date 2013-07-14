@@ -222,5 +222,24 @@ namespace NFluent.Extensions
             // Ensure that boolean values are not localized 
             return theBoolean.ToString(CultureInfo.InvariantCulture);
         }
+
+        /// <summary>
+        /// Determines whether the specified type is nullable.
+        /// </summary>
+        /// <param name="type">
+        /// The type to be evaluated.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified type is nullable; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsNullable(this Type type)
+        {
+            if (!type.IsGenericType)
+            {
+                return false;
+            }
+
+            return type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
     }
 }

@@ -492,6 +492,23 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            sbyte? one = 1;
+
+            Check.That(one).IsNotInstanceOf<sbyte>().And.HasAValue().Which.IsEqualTo((sbyte)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of sbyte? whereas it must not.\nThe checked value:\n\t[1] of type: [sbyte?]\nThe expected type: different from\n\t[sbyte?]")]
+        public void IsNotInstanceOfFailsProperlyWithNullable()
+        {
+            sbyte? one = 1;
+
+            Check.That(one).IsNotInstanceOf<sbyte?>();
+        }
+
+        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             sbyte? one = 1;
@@ -510,7 +527,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of sbyte? whereas it must not.\nThe checked value:\n\t[null] of type: [sbyte?]\nThe expected type: different from\n\t[sbyte?]")]
         public void NotIsInstanceOfWorksWithNullableWithoutValue()
         {
             sbyte? noValue = null;
