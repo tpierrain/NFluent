@@ -12,57 +12,9 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent.Helpers
+namespace NFluent
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
-
-    /// <summary>
-    /// Enumerate the available time unit.
-    /// </summary>
-    public enum TimeUnit : long
-    {
-        /// <summary>
-        /// The nanoseconds.
-        /// </summary>
-        Nanoseconds,
-
-        /// <summary>
-        /// The Microseconds.
-        /// </summary>
-        Microseconds,
-
-        /// <summary>
-        /// The Milliseconds.
-        /// </summary>
-        Milliseconds,
-
-        /// <summary>
-        /// The seconds.
-        /// </summary>
-        Seconds,
-
-        /// <summary>
-        /// The minutes.
-        /// </summary>
-        Minutes,
-
-        /// <summary>
-        /// The hours.
-        /// </summary>
-        Hours,
-
-        /// <summary>
-        /// The days.
-        /// </summary>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1632:DocumentationTextMustMeetMinimumCharacterLength", Justification = "Reviewed. Suppression is OK here.")]
-        Days,
-
-        /// <summary>
-        /// The weeks.
-        /// </summary>
-        Weeks
-    }
 
     /// <summary>
     /// Static class hosting various time helper.
@@ -99,6 +51,26 @@ namespace NFluent.Helpers
         public static double GetInNanoSeconds(double value, TimeUnit unit)
         {
             return value * GetConversionFactor(unit);
+        }
+
+        /// <summary>
+        /// Converts a duration in nanoseconds to the desired <see cref="TimeUnit"/>.
+        /// </summary>
+        /// <param name="duration">
+        /// The duration in nanoseconds.
+        /// </param>
+        /// <param name="timeUnit">
+        /// The time unit desired.
+        /// </param>
+        /// <returns>
+        /// The duration expressed in the desired unit.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Raised if time unit is not recognized.
+        /// </exception>
+        public static double GetFromNanoSeconds(double duration, TimeUnit timeUnit)
+        {
+            return duration / GetConversionFactor(timeUnit);
         }
 
         /// <summary>
@@ -189,7 +161,7 @@ namespace NFluent.Helpers
             return TimeUnit.Nanoseconds;
         }
 
-        private static long GetConversionFactor(TimeUnit unit)
+        internal static long GetConversionFactor(TimeUnit unit)
         {
             long value = 1;
             if (unit == TimeUnit.Nanoseconds)

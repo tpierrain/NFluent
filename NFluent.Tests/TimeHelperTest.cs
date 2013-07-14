@@ -46,10 +46,11 @@ namespace NFluent.Tests
         public void CheckConversion()
         {
             Assert.AreEqual(500.0, TimeHelper.Convert(TimeSpan.FromMilliseconds(500), TimeUnit.Milliseconds));
+            Assert.AreEqual(500, TimeHelper.GetFromNanoSeconds(500000000, TimeUnit.Milliseconds));
         }
 
-        [ExpectedException(typeof(InvalidOperationException))]
         [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void CheckInvalidUnits()
         {
             Assert.AreNotEqual(0, TimeHelper.GetInNanoSeconds(10, (TimeUnit)100));
@@ -67,6 +68,43 @@ namespace NFluent.Tests
             Assert.AreEqual(TimeUnit.Hours, TimeHelper.DiscoverUnit(TimeSpan.FromHours(10)));
             Assert.AreEqual(TimeUnit.Days, TimeHelper.DiscoverUnit(TimeSpan.FromDays(2)));
             Assert.AreEqual(TimeUnit.Weeks, TimeHelper.DiscoverUnit(TimeSpan.FromDays(30)));
+        }
+
+        [Test]
+        public void TestDurationClass()
+        {
+            var test = new Duration(200, TimeUnit.Minutes);
+
+            Assert.AreEqual(200, test.RawDuration);
+
+            Assert.AreEqual(TimeUnit.Minutes, test.Unit);
+
+            Assert.AreEqual("200 Minutes", test.ToString());
+
+            Assert.IsTrue(test > new Duration(100, TimeUnit.Seconds));
+            Assert.IsTrue(test < new Duration(100, TimeUnit.Hours));
+
+            var altDuration = new Duration(200, TimeUnit.Minutes);
+
+            // test objects override
+            Assert.AreEqual(altDuration.GetHashCode(), test.GetHashCode());
+            Assert.AreEqual(altDuration, test);
+            Assert.IsTrue(altDuration.Equals(test));
+            Assert.IsTrue(altDuration == test);
+            Assert.IsFalse(altDuration.Equals(null));
+            Assert.IsFalse(altDuration.Equals(20));
+            Assert.IsTrue(altDuration.Equals((object)test));
+        }
+
+        [Test]
+        public void TestDurationConversion()
+        {
+            var test = new Duration(2, TimeUnit.Milliseconds);
+            var converted = test.ConvertTo(TimeUnit.Microseconds);
+
+            Assert.AreEqual(2000, converted.RawDuration);
+
+            Assert.AreEqual(TimeUnit.Microseconds, converted.Unit);
         }
     }
 }

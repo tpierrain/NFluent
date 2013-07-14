@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE.txt = LICENSE.txt
 		NFluent.nuspec = NFluent.nuspec
 		ReadMe.md = ReadMe.md
+		ReleaseNoteContentToBeInsertedWithinNuspecFile.txt = ReleaseNoteContentToBeInsertedWithinNuspecFile.txt
 		Settings.StyleCop = Settings.StyleCop
 		UseCases.md = UseCases.md
 	EndProjectSection
@@ -38,6 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{00C82A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.Extensions", "NFluent.Tests.Extensions\NFluent.Tests.Extensions.csproj", "{AC520FDB-8125-46F3-85F3-D4962C53C136}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.MsTest", "NFluent.Tests.MsTest\NFluent.Tests.MsTest.csproj", "{83DA2FA6-76B3-4804-9E27-0F532A5FA8EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +59,10 @@ Global
 		{AC520FDB-8125-46F3-85F3-D4962C53C136}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC520FDB-8125-46F3-85F3-D4962C53C136}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC520FDB-8125-46F3-85F3-D4962C53C136}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83DA2FA6-76B3-4804-9E27-0F532A5FA8EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83DA2FA6-76B3-4804-9E27-0F532A5FA8EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83DA2FA6-76B3-4804-9E27-0F532A5FA8EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83DA2FA6-76B3-4804-9E27-0F532A5FA8EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

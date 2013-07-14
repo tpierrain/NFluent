@@ -1,0 +1,68 @@
+<#@ template language="C#" hostspecific="true" debug="True" #>
+<#@ output extension="txt" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ assembly name="EnvDTE" #>
+<#@ import namespace="EnvDTE" #>
+<#@ include file="TemplateFileManagerV2.1.ttinclude" #>
+<#@ include file="TypeCloningHelper.ttinclude" #>
+<#
+    // --------------------------------------------------------------------------------------------------------------------
+    // <copyright file="NumberTestsGenerator.tt" company="">
+    //   Copyright 2013 Thomas PIERRAIN
+    //   Licensed under the Apache License, Version 2.0 (the "License");
+    //   you may not use this file except in compliance with the License.
+    //   You may obtain a copy of the License at
+    //       http://www.apache.org/licenses/LICENSE-2.0
+    //   Unless required by applicable law or agreed to in writing, software
+    //   distributed under the License is distributed on an "AS IS" BASIS,
+    //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    //   See the License for the specific language governing permissions and
+    //   limitations under the License.
+    // </copyright>
+    // --------------------------------------------------------------------------------------------------------------------
+	
+	// T4 template responsible to clone checks extensions methods for all number types from 
+	// a "golden source" one (the one for int)
+	// uses the method of: http://t4-editor.tangible-engineering.com/blog/how-to-generate-multiple-output-files-from-a-single-t4-template.html#Part1
+ 
+	IServiceProvider hostServiceProvider = (IServiceProvider)Host;
+	EnvDTE.DTE dte = (EnvDTE.DTE)hostServiceProvider.GetService(typeof(EnvDTE.DTE));
+	var manager = TemplateFileManager.Create(this);
+
+	var typesToWriteTestsFor = new List<UnitTestsConfigurationForType>()
+		{
+			// sygned types
+			new UnitTestsConfigurationForType() { TypeName = "decimal", DetailedTypeName = "decimal", ValueForZero = "0M", ValueForOne = "1M", ValueForTwo = "2M", ValueForTwenty = "20M", ValueForMinusFifty = "-50M" },
+			new UnitTestsConfigurationForType() { TypeName = "double", DetailedTypeName = "double", ValueForZero = "0D", ValueForOne = "1D", ValueForTwo = "2D", ValueForTwenty = "20D", ValueForMinusFifty = "-50D" },
+			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "float", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F", ValueForMinusFifty = "-50F" },
+			new UnitTestsConfigurationForType() { TypeName = "long", DetailedTypeName = "long", ValueForZero = "0L", ValueForOne = "1L", ValueForTwo = "2L", ValueForTwenty = "20L", ValueForMinusFifty = "-50L" },
+			new UnitTestsConfigurationForType() { TypeName = "short", DetailedTypeName = "short", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
+			new UnitTestsConfigurationForType() { TypeName = "sbyte", DetailedTypeName = "sbyte", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
+			// unsigned types
+			new UnitTestsConfigurationForType() { TypeName = "byte", DetailedTypeName = "byte", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" },
+			new UnitTestsConfigurationForType() { TypeName = "uint", DetailedTypeName = "uint", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" },
+			new UnitTestsConfigurationForType() { TypeName = "ulong", DetailedTypeName = "ulong", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" },
+			new UnitTestsConfigurationForType() { TypeName = "ushort", DetailedTypeName = "ushort", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" }
+		};
+
+	// ...RelatedTests ----------------------------------------------------
+	string goldenSourceClassFileName = Host.ResolvePath(@"..\IntRelatedTests.cs");
+	TypeCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntRelatedTests", "RelatedTests", typesToWriteTestsFor, manager, this);
+	
+	// Signed...RelatedTests ----------------------------------------------------
+	var signedTypesToWriteTestsFor = new List<UnitTestsConfigurationForType>()
+		{
+			// sygned types
+			new UnitTestsConfigurationForType() { TypeName = "decimal", DetailedTypeName = "decimal", ValueForZero = "0M", ValueForOne = "1M", ValueForTwo = "2M", ValueForTwenty = "20M", ValueForMinusFifty = "-50M" },
+			new UnitTestsConfigurationForType() { TypeName = "double", DetailedTypeName = "double", ValueForZero = "0D", ValueForOne = "1D", ValueForTwo = "2D", ValueForTwenty = "20D", ValueForMinusFifty = "-50D" },
+			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "float", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F", ValueForMinusFifty = "-50F" },
+			new UnitTestsConfigurationForType() { TypeName = "long", DetailedTypeName = "long", ValueForZero = "0L", ValueForOne = "1L", ValueForTwo = "2L", ValueForTwenty = "20L", ValueForMinusFifty = "-50L" },
+			new UnitTestsConfigurationForType() { TypeName = "short", DetailedTypeName = "short", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
+			new UnitTestsConfigurationForType() { TypeName = "sbyte", DetailedTypeName = "sbyte", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
+		};
+	goldenSourceClassFileName = Host.ResolvePath(@"..\IntSignedNumberRelatedTests.cs");
+	TypeCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntSignedNumberRelatedTests", "SignedNumberRelatedTests", signedTypesToWriteTestsFor, manager, this);
+	
+	// Write output code into multiple files
+	manager.Process();
+ #>

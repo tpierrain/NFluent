@@ -1,0 +1,48 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Generated helper templates
+// Generated items
+// NFluent\NFluent\T4\UshortCheckExtensions.cs
+// NFluent\NFluent\T4\UlongCheckExtensions.cs
+// NFluent\NFluent\T4\UintCheckExtensions.cs
+// NFluent\NFluent\T4\ShortCheckExtensions.cs
+// NFluent\NFluent\T4\LongCheckExtensions.cs
+// NFluent\NFluent\T4\FloatCheckExtensions.cs
+// NFluent\NFluent\T4\DoubleCheckExtensions.cs
+// NFluent\NFluent\T4\DecimalCheckExtensions.cs
+// NFluent\NFluent\T4\SbyteCheckExtensions.cs
+// NFluent\NFluent\T4\ByteCheckExtensions.cs

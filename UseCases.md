@@ -4,14 +4,14 @@ NFluent use cases
 1. Provide a fluent writing experience for unit tests
 -----------------------------------------------------
 As a Developer,  
-I want to be able to rely on the autocompletion when I write test assertions  
-So that I can write them in a fluent manner, and without any hesitation about the kind of assertion that is possible and available regarding my current System Under Test (SUT).  
+I want to be able to rely on the autocompletion when I write test checks  
+So that I can write them in a fluent manner, and without any hesitation about the kind of check that is possible and available regarding my current System Under Test (SUT).  
   
 
 2. Provide a fluent reading experience for unit tests
 -----------------------------------------------------
 As a Developer,  
-I want to be able to read assertions close as much as possible to plain English,  
+I want to be able to read checks close as much as possible to plain English,  
 So that my unit tests are easier to understand for me and the other people (even for non-technical ones).  
 
 
@@ -37,7 +37,7 @@ So that all my unit tests error message are reliable when my tests are failing.
 ---------------------------------------------------------
 As a Developer,  
 I want to be able to temporarily write an on-purpose failing test assert on a legacy code method,  
-So that I can understand its return within a clear assertion error message. Assertion error message also well formated so that I can easily instanciate arrays and collections type initializers. 
+So that I can understand its return within a clear check error message. check error message also well formated so that I can easily instanciate arrays and collections type initializers. 
 
 
  

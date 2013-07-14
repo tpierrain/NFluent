@@ -1,4 +1,4 @@
-﻿<!--<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   
   <PropertyGroup>
@@ -7,7 +7,7 @@
 
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.targets"/>
 
-  --><!-- Version Number --><!--
+   Version Number 
   <PropertyGroup Condition=" '$(BUILD_NUMBER)' == '' ">
     <Version>1.0.0.0</Version>
     <FileVersion>1.0.0.0</FileVersion>
@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(BUILD_NUMBER)' != '' ">
-    --><!-- Build Server Number --><!--
+     Build Server Number 
     <Version>1.0.0.0</Version>
     <FileVersion>$(BUILD_NUMBER)</FileVersion>
     <InformationalVersion>$(BUILD_NUMBER)</InformationalVersion>
@@ -48,7 +48,7 @@
                   AssemblyInformationalVersion="$(InformationalVersion)" />
   </Target>
 
-  --><!-- Projects to Build --><!--
+   Projects to Build 
   <ItemGroup>
     <ProjectFiles Include="$(MSBuildProjectDirectory)\**\*.sln">
       <Properties>Configuration=$(BuildConfiguration)</Properties>
@@ -63,4 +63,4 @@
     <CallTarget Targets="Compile" />
   </Target>
 
-</Project>-->
+</Project>

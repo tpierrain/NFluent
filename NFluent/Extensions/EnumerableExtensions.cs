@@ -35,8 +35,31 @@ namespace NFluent
         /// </returns>
         public static string ToEnumeratedString(this IEnumerable enumerable)
         {
-            long itemsCount = 0;
+            long itemsCount;
             return ToEnumeratedString(enumerable, out itemsCount);
+        }
+
+        /// <summary>
+        /// Returns the number of items present within the specified enumerable (returns 0 if the enumerable is null).
+        /// </summary>
+        /// <param name="enumerable">The enumerable.</param>
+        /// <returns>The number of items present within the specified enumerable (returns 0 if the enumerable is null).</returns>
+        public static long Count(this IEnumerable enumerable)
+        {
+            if (enumerable == null)
+            {
+                return 0;
+            }
+            else
+            {
+                long itemsCount = 0;
+                foreach (var item in enumerable)
+                {
+                    itemsCount++;
+                }
+
+                return itemsCount;
+            }
         }
 
         /// <summary>
@@ -65,14 +88,7 @@ namespace NFluent
                     sb.Append(separator);
                 }
 
-                if (obj == null)
-                {
-                    sb.Append("null");
-                }
-                else
-                {
-                    sb.Append(obj.ToStringProperlyFormated());
-                }
+                sb.Append(obj == null ? "null" : obj.ToStringProperlyFormated());
 
                 firstTime = false;
                 itemsCount++;

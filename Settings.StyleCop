@@ -1,8 +1,17 @@
 <StyleCopSettings Version="105">
   <GlobalSettings>
     <CollectionProperty Name="RecognizedWords">
+      <Value>enum</Value>
       <Value>gzip</Value>
+      <Value>Intellisense</Value>
+      <Value>IntelliSense</Value>
+      <Value>nullable</Value>
+      <Value>struct</Value>
       <Value>sut</Value>
+      <Value>uint</Value>
+      <Value>ulong</Value>
+      <Value>ushort</Value>
+      <Value>vs</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Analyzers>
@@ -19,6 +28,16 @@
           </RuleSettings>
         </Rule>
         <Rule Name="FileHeaderMustHaveValidCompanyText">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+      </Rules>
+      <AnalyzerSettings />
+    </Analyzer>
+    <Analyzer AnalyzerId="StyleCop.CSharp.OrderingRules">
+      <Rules>
+        <Rule Name="ElementsMustBeOrderedByAccess">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>

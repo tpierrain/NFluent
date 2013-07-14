@@ -1,0 +1,53 @@
+<#@ template language="C#" hostspecific="true" debug="True" #>
+<#@ output extension="txt" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ assembly name="EnvDTE" #>
+<#@ import namespace="EnvDTE" #>
+<#@ include file="..\T4\TemplateFileManagerV2.1.ttinclude" #>
+<#@ include file="..\T4\TypeCloningHelper.ttinclude" #>
+<#
+    // --------------------------------------------------------------------------------------------------------------------
+    // <copyright file="NumberFluentAssertionGenerator.tt" company="">
+    //   Copyright 2013 Thomas PIERRAIN
+    //   Licensed under the Apache License, Version 2.0 (the "License");
+    //   you may not use this file except in compliance with the License.
+    //   You may obtain a copy of the License at
+    //       http://www.apache.org/licenses/LICENSE-2.0
+    //   Unless required by applicable law or agreed to in writing, software
+    //   distributed under the License is distributed on an "AS IS" BASIS,
+    //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    //   See the License for the specific language governing permissions and
+    //   limitations under the License.
+    // </copyright>
+    // --------------------------------------------------------------------------------------------------------------------
+	
+	// T4 template responsible to clone checks extensions methods for all number types from 
+	// a "golden source" one (the one for int)
+	// uses the method of: http://t4-editor.tangible-engineering.com/blog/how-to-generate-multiple-output-files-from-a-single-t4-template.html#Part1
+ 
+	IServiceProvider hostServiceProvider = (IServiceProvider)Host;
+	EnvDTE.DTE dte = (EnvDTE.DTE)hostServiceProvider.GetService(typeof(EnvDTE.DTE));
+	var manager = TemplateFileManager.Create(this);
+
+	var typesToGenerateAssertionsFor = new string[] { "byte", "sbyte", "decimal", "double", "float", "long", "short", "uint", "ulong", "ushort" };
+	
+	string goldenSourceClassFileName = Host.ResolvePath(@"..\Assertions\IntCheckExtensions.cs");
+
+	foreach(string typeName in typesToGenerateAssertionsFor)
+    {
+		// Creates new output file
+		// Creates a TextInfo based on the "en-US" culture in order to use the ToTitleCase() method
+		System.Globalization.TextInfo textInfo = new System.Globalization.CultureInfo("en-US", false).TextInfo;
+		string properlyCasedTypeName = textInfo.ToTitleCase(typeName);
+		string checkClassName =  properlyCasedTypeName + "CheckExtensions"; // FloatCheckExtensions
+		
+		manager.StartNewFile(checkClassName + ".cs");
+		
+		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
+		
+		Write(sourceCode);
+    }
+	
+	// Write output code into multiple files
+	manager.Process();
+ #>
