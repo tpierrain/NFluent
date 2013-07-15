@@ -492,23 +492,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfWorksWithNullable()
-        {
-            decimal? one = 1M;
-
-            Check.That(one).IsNotInstanceOf<decimal>().And.HasAValue().Which.IsEqualTo((decimal)1);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[1] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
-        public void IsNotInstanceOfFailsProperlyWithNullable()
-        {
-            decimal? one = 1M;
-
-            Check.That(one).IsNotInstanceOf<decimal?>();
-        }
-
-        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             decimal? one = 1M;
@@ -527,7 +510,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void NotIsInstanceOfWorksWithNullableWithoutValue()
+        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        {
+            decimal? noValue = null;
+
+            Check.That(noValue).IsInstanceOf<decimal?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[null] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
+        public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             decimal? noValue = null;
 
@@ -541,6 +533,36 @@ namespace NFluent.Tests
             decimal? one = null;
 
             Check.That(one).IsInstanceOf<string>();
+        }
+
+        #endregion
+
+        #region IsNotInstance
+
+        [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            decimal? one = 1M;
+
+            Check.That(one).IsNotInstanceOf<decimal>().And.HasAValue().Which.IsEqualTo((decimal)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[1] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
+        public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
+        {
+            decimal? one = 1M;
+
+            Check.That(one).IsNotInstanceOf<decimal?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[null] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
+        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        {
+            decimal? noValue = null;
+
+            Check.That(noValue).IsNotInstanceOf<decimal?>();
         }
 
         #endregion

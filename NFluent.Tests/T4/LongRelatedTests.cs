@@ -492,23 +492,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfWorksWithNullable()
-        {
-            long? one = 1L;
-
-            Check.That(one).IsNotInstanceOf<long>().And.HasAValue().Which.IsEqualTo((long)1);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of long? whereas it must not.\nThe checked value:\n\t[1] of type: [long?]\nThe expected type: different from\n\t[long?]")]
-        public void IsNotInstanceOfFailsProperlyWithNullable()
-        {
-            long? one = 1L;
-
-            Check.That(one).IsNotInstanceOf<long?>();
-        }
-
-        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             long? one = 1L;
@@ -527,7 +510,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void NotIsInstanceOfWorksWithNullableWithoutValue()
+        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        {
+            long? noValue = null;
+
+            Check.That(noValue).IsInstanceOf<long?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of long? whereas it must not.\nThe checked value:\n\t[null] of type: [long?]\nThe expected type: different from\n\t[long?]")]
+        public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             long? noValue = null;
 
@@ -541,6 +533,36 @@ namespace NFluent.Tests
             long? one = null;
 
             Check.That(one).IsInstanceOf<string>();
+        }
+
+        #endregion
+
+        #region IsNotInstance
+
+        [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            long? one = 1L;
+
+            Check.That(one).IsNotInstanceOf<long>().And.HasAValue().Which.IsEqualTo((long)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of long? whereas it must not.\nThe checked value:\n\t[1] of type: [long?]\nThe expected type: different from\n\t[long?]")]
+        public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
+        {
+            long? one = 1L;
+
+            Check.That(one).IsNotInstanceOf<long?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of long? whereas it must not.\nThe checked value:\n\t[null] of type: [long?]\nThe expected type: different from\n\t[long?]")]
+        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        {
+            long? noValue = null;
+
+            Check.That(noValue).IsNotInstanceOf<long?>();
         }
 
         #endregion

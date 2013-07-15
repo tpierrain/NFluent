@@ -485,23 +485,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfWorksWithNullable()
-        {
-            int? one = 1;
-
-            Check.That(one).IsNotInstanceOf<int>().And.HasAValue().Which.IsEqualTo((int)1);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of int? whereas it must not.\nThe checked value:\n\t[1] of type: [int?]\nThe expected type: different from\n\t[int?]")]
-        public void IsNotInstanceOfFailsProperlyWithNullable()
-        {
-            int? one = 1;
-
-            Check.That(one).IsNotInstanceOf<int?>();
-        }
-
-        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             int? one = 1;
@@ -520,7 +503,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void NotIsInstanceOfWorksWithNullableWithoutValue()
+        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        {
+            int? noValue = null;
+
+            Check.That(noValue).IsInstanceOf<int?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of int? whereas it must not.\nThe checked value:\n\t[null] of type: [int?]\nThe expected type: different from\n\t[int?]")]
+        public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             int? noValue = null;
 
@@ -534,6 +526,36 @@ namespace NFluent.Tests
             int? one = null;
 
             Check.That(one).IsInstanceOf<string>();
+        }
+
+        #endregion
+
+        #region IsNotInstance
+
+        [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            int? one = 1;
+
+            Check.That(one).IsNotInstanceOf<int>().And.HasAValue().Which.IsEqualTo((int)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of int? whereas it must not.\nThe checked value:\n\t[1] of type: [int?]\nThe expected type: different from\n\t[int?]")]
+        public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
+        {
+            int? one = 1;
+
+            Check.That(one).IsNotInstanceOf<int?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of int? whereas it must not.\nThe checked value:\n\t[null] of type: [int?]\nThe expected type: different from\n\t[int?]")]
+        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        {
+            int? noValue = null;
+
+            Check.That(noValue).IsNotInstanceOf<int?>();
         }
 
         #endregion

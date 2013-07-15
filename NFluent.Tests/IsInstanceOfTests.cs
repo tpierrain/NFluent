@@ -88,6 +88,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[null]\nThe expected type:\n\t[object]")]
+        public void IsInstanceOfThrowsIfValueIsNull()
+        {
+            object nullValue = null;
+            Check.That(nullValue).IsInstanceOf<object>();
+        }
+
+        [Test]
+        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        {
+            int? nullValue = null;
+            Check.That(nullValue).IsInstanceOf<int?>();
+        }
+
+        [Test]
         public void NotOperatorWorksOnIsInstanceOfMethods()
         {
             // string
@@ -199,6 +214,21 @@ namespace NFluent.Tests
 
             // Version
             Check.That(this.firstVersion).IsNotInstanceOf<string>();
+        }
+
+        [Test]
+        public void IsNotInstanceOfWorksIfValueIsNull()
+        {
+            object nullValue = null;
+            Check.That(nullValue).IsNotInstanceOf<object>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of int? whereas it must not.\nThe checked value:\n\t[null] of type: [int?]\nThe expected type: different from\n\t[int?]")]
+        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        {
+            int? nullValue = null;
+            Check.That(nullValue).IsNotInstanceOf<int?>();
         }
 
         [Test]

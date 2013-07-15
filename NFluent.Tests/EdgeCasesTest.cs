@@ -30,8 +30,6 @@ namespace NFluent.Tests
 
             // fails with nullrefexception
             Check.That(new Person()).IsInstanceOf<Person>();
-
-            Check.That((int?)null).IsInstanceOf<int?>();
         }
 
         [Test]

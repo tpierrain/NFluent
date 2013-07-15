@@ -492,23 +492,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfWorksWithNullable()
-        {
-            ushort? one = 1;
-
-            Check.That(one).IsNotInstanceOf<ushort>().And.HasAValue().Which.IsEqualTo((ushort)1);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[1] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
-        public void IsNotInstanceOfFailsProperlyWithNullable()
-        {
-            ushort? one = 1;
-
-            Check.That(one).IsNotInstanceOf<ushort?>();
-        }
-
-        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             ushort? one = 1;
@@ -527,7 +510,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void NotIsInstanceOfWorksWithNullableWithoutValue()
+        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        {
+            ushort? noValue = null;
+
+            Check.That(noValue).IsInstanceOf<ushort?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[null] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
+        public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             ushort? noValue = null;
 
@@ -541,6 +533,36 @@ namespace NFluent.Tests
             ushort? one = null;
 
             Check.That(one).IsInstanceOf<string>();
+        }
+
+        #endregion
+
+        #region IsNotInstance
+
+        [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            ushort? one = 1;
+
+            Check.That(one).IsNotInstanceOf<ushort>().And.HasAValue().Which.IsEqualTo((ushort)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[1] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
+        public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
+        {
+            ushort? one = 1;
+
+            Check.That(one).IsNotInstanceOf<ushort?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[null] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
+        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        {
+            ushort? noValue = null;
+
+            Check.That(noValue).IsNotInstanceOf<ushort?>();
         }
 
         #endregion

@@ -492,23 +492,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfWorksWithNullable()
-        {
-            ulong? one = 1;
-
-            Check.That(one).IsNotInstanceOf<ulong>().And.HasAValue().Which.IsEqualTo((ulong)1);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ulong? whereas it must not.\nThe checked value:\n\t[1] of type: [ulong?]\nThe expected type: different from\n\t[ulong?]")]
-        public void IsNotInstanceOfFailsProperlyWithNullable()
-        {
-            ulong? one = 1;
-
-            Check.That(one).IsNotInstanceOf<ulong?>();
-        }
-
-        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             ulong? one = 1;
@@ -527,7 +510,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void NotIsInstanceOfWorksWithNullableWithoutValue()
+        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        {
+            ulong? noValue = null;
+
+            Check.That(noValue).IsInstanceOf<ulong?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ulong? whereas it must not.\nThe checked value:\n\t[null] of type: [ulong?]\nThe expected type: different from\n\t[ulong?]")]
+        public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             ulong? noValue = null;
 
@@ -541,6 +533,36 @@ namespace NFluent.Tests
             ulong? one = null;
 
             Check.That(one).IsInstanceOf<string>();
+        }
+
+        #endregion
+
+        #region IsNotInstance
+
+        [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            ulong? one = 1;
+
+            Check.That(one).IsNotInstanceOf<ulong>().And.HasAValue().Which.IsEqualTo((ulong)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ulong? whereas it must not.\nThe checked value:\n\t[1] of type: [ulong?]\nThe expected type: different from\n\t[ulong?]")]
+        public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
+        {
+            ulong? one = 1;
+
+            Check.That(one).IsNotInstanceOf<ulong?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ulong? whereas it must not.\nThe checked value:\n\t[null] of type: [ulong?]\nThe expected type: different from\n\t[ulong?]")]
+        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        {
+            ulong? noValue = null;
+
+            Check.That(noValue).IsNotInstanceOf<ulong?>();
         }
 
         #endregion

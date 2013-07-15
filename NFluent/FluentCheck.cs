@@ -132,38 +132,34 @@ namespace NFluent
         /// <summary>
         /// Checks whether if the checked value is of the given type.
         /// </summary>
-        /// <typeparam name="U">
-        /// The type to check the checked value against.
-        /// </typeparam>
-        /// <returns>
-        /// A chainable check.
-        /// </returns>
+        /// <typeparam name="U">The given type to check the checked value against.</typeparam>
+        /// <returns>A chainable check.</returns>
+        /// <exception cref="FluentCheckException">The specified value is null (and not of the same nullable type) or not of the given type.</exception>
         public ICheckLink<ICheck<T>> IsInstanceOf<U>()
         {
             if (typeof(T).IsNullable())
             {
                 ((ICheckRunner<T>)this).ExecuteCheck(
-                    () => IsInstanceHelper.IsSameType(typeof(T), typeof(U), this.Value), 
+                    () => 
+                    {
+                        IsInstanceHelper.IsSameType(typeof(T), typeof(U), this.Value);
+                    }, 
                     IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(U), this.Value, true));
+
                 return new CheckLink<ICheck<T>>(this);
             }
             else
             {
-                return ((ICheckRunner<T>)this).ExecuteCheck(
-                    () => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), 
-                    IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
+                return ((ICheckRunner<T>)this).ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
             }
         }
 
         /// <summary>
         /// Checks whether if the checked value is different from the given type.
         /// </summary>
-        /// <typeparam name="U">
-        /// The type to check the checked value against.
-        /// </typeparam>
-        /// <returns>
-        /// A chainable check.
-        /// </returns>
+        /// <typeparam name="U">The given type to check the checked value against.</typeparam>
+        /// <returns>A chainable check.</returns>
+        /// <exception cref="FluentCheckException">The specified value is of the given type.</exception>
         public ICheckLink<ICheck<T>> IsNotInstanceOf<U>()
         {
             if (typeof(T).IsNullable())
@@ -173,9 +169,7 @@ namespace NFluent
                         {
                             if (typeof(T) == typeof(U))
                             {
-                                throw new FluentCheckException(
-                                    IsInstanceHelper.BuildErrorMessageForNullable(
-                                        typeof(T), typeof(U), this.Value, true));
+                                throw new FluentCheckException(IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(U), this.Value, true));
                             }
                         },
                     IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(U), this.Value, false));
@@ -184,8 +178,7 @@ namespace NFluent
             else
             {
                 return ((ICheckRunner<T>)this).ExecuteCheck(
-                    () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)),
-                    IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
+                    () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
             }
         }
 

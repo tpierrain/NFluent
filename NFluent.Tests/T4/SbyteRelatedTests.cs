@@ -492,23 +492,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfWorksWithNullable()
-        {
-            sbyte? one = 1;
-
-            Check.That(one).IsNotInstanceOf<sbyte>().And.HasAValue().Which.IsEqualTo((sbyte)1);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of sbyte? whereas it must not.\nThe checked value:\n\t[1] of type: [sbyte?]\nThe expected type: different from\n\t[sbyte?]")]
-        public void IsNotInstanceOfFailsProperlyWithNullable()
-        {
-            sbyte? one = 1;
-
-            Check.That(one).IsNotInstanceOf<sbyte?>();
-        }
-
-        [Test]
         public void IsInstanceOfWithNullableIsLinkable()
         {
             sbyte? one = 1;
@@ -527,7 +510,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void NotIsInstanceOfWorksWithNullableWithoutValue()
+        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        {
+            sbyte? noValue = null;
+
+            Check.That(noValue).IsInstanceOf<sbyte?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of sbyte? whereas it must not.\nThe checked value:\n\t[null] of type: [sbyte?]\nThe expected type: different from\n\t[sbyte?]")]
+        public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             sbyte? noValue = null;
 
@@ -541,6 +533,36 @@ namespace NFluent.Tests
             sbyte? one = null;
 
             Check.That(one).IsInstanceOf<string>();
+        }
+
+        #endregion
+
+        #region IsNotInstance
+
+        [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            sbyte? one = 1;
+
+            Check.That(one).IsNotInstanceOf<sbyte>().And.HasAValue().Which.IsEqualTo((sbyte)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of sbyte? whereas it must not.\nThe checked value:\n\t[1] of type: [sbyte?]\nThe expected type: different from\n\t[sbyte?]")]
+        public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
+        {
+            sbyte? one = 1;
+
+            Check.That(one).IsNotInstanceOf<sbyte?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of sbyte? whereas it must not.\nThe checked value:\n\t[null] of type: [sbyte?]\nThe expected type: different from\n\t[sbyte?]")]
+        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        {
+            sbyte? noValue = null;
+
+            Check.That(noValue).IsNotInstanceOf<sbyte?>();
         }
 
         #endregion
