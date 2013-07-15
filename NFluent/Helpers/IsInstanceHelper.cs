@@ -31,15 +31,10 @@ namespace NFluent.Helpers
         /// <param name="value">The value of the instance to be checked (may be a nullable instance).</param>
         public static void IsSameType(Type instanceType, Type expectedType, object value)
         {
-            if (instanceType != expectedType || (value == null && !IsNullableType(instanceType)))
+            if (instanceType != expectedType || (value == null && !instanceType.IsNullable()))
             {
                 throw new FluentCheckException(BuildErrorMessageForNullable(instanceType, expectedType, value, false));
             }
-        }
-
-        private static bool IsNullableType(Type type)
-        {
-            return Nullable.GetUnderlyingType(type) != null;
         }
 
         /// <summary>

@@ -27,6 +27,7 @@ namespace NFluent.Tests
         {
             Check.That(typeof(int?).IsNullable()).IsTrue();
             Check.That(typeof(int).IsNullable()).IsFalse();
+            Check.That(typeof(object).IsNullable()).IsFalse();
         }
     }
 }
