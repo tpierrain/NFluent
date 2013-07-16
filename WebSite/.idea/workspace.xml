@@ -4,7 +4,7 @@
     <list default="true" id="e9e7984a-ac8a-4e95-b432-63efc277ab53" name="Default" comment="" />
     <ignored path="NFluentSite.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/index.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1373956640857" ignored="false" />
+    <file path="/index.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1373956998042" ignored="false" />
     <file path="/bootstrap.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1373737411426" ignored="false" />
     <file path="/docs.css" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1373803944799" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,7 +29,7 @@
       <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="144" column="128" selection-start="6941" selection-end="6941" vertical-scroll-proportion="0.17777778">
+            <state line="162" column="86" selection-start="8281" selection-end="8281" vertical-scroll-proportion="0.5777778">
               <folding />
             </state>
           </provider>
@@ -397,7 +397,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="144" column="128" selection-start="6941" selection-end="6941" vertical-scroll-proportion="0.17777778">
+        <state line="162" column="86" selection-start="8281" selection-end="8281" vertical-scroll-proportion="0.5777778">
           <folding />
         </state>
       </provider>
