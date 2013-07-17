@@ -35,8 +35,7 @@ namespace NFluent.Tests
         [Test]
         public void IsATest()
         {
-            ////Check.That(new object()).IsA<object>();
-            ////Check.That(new object()).IsA<int>(); // fails
+            Check.That(4);
         }
     }
 }
