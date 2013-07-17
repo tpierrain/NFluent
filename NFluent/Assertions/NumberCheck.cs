@@ -106,6 +106,24 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value is strictly negative.
+        /// </summary>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
+        public ICheckLink<ICheck<N>> IsNegative()
+        {
+            return this.checkRunner.ExecuteCheck(
+                () =>
+                {
+                    if (Convert.ToInt32(this.runnableCheck.Value) >= 0)
+                    {
+                        throw new FluentCheckException(FluentMessage.BuildMessage("The {0} is not strictly negative.").On(this.runnableCheck.Value).ToString());
+                    }
+                },
+                FluentMessage.BuildMessage("The {0} is negative, whereas it must not.").On(this.runnableCheck.Value).ToString());
+        }
+
+        /// <summary>
         /// Checks that the actual value is less than a comparand.
         /// </summary>
         /// <param name="comparand">
