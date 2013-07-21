@@ -52,7 +52,7 @@
 	// Signed...RelatedTests ----------------------------------------------------
 	var signedTypesToWriteTestsFor = new List<UnitTestsConfigurationForType>()
 		{
-			// sygned types
+			// signed types
 			new UnitTestsConfigurationForType() { TypeName = "decimal", DetailedTypeName = "decimal", ValueForZero = "0M", ValueForOne = "1M", ValueForTwo = "2M", ValueForTwenty = "20M", ValueForMinusFifty = "-50M" },
 			new UnitTestsConfigurationForType() { TypeName = "double", DetailedTypeName = "double", ValueForZero = "0D", ValueForOne = "1D", ValueForTwo = "2D", ValueForTwenty = "20D", ValueForMinusFifty = "-50D" },
 			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "float", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F", ValueForMinusFifty = "-50F" },

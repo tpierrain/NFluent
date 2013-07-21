@@ -115,35 +115,6 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsPositive
-
-        [Test]
-        public void IsPositiveWorks()
-        {
-            const sbyte Two = 2;
-
-            Check.That(Two).IsPositive();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[0]")]
-        public void IsPositiveThrowsExceptionWhenEqualToZero()
-        {
-            const sbyte Zero = 0;
-            Check.That(Zero).IsPositive();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
-        public void NotIsPositiveThrowsExceptionWhenFailing()
-        {
-            const sbyte Two = 2;
-
-            Check.That(Two).Not.IsPositive();
-        }
-
-        #endregion
-
         #region IComparable checks
 
         [Test]
@@ -301,9 +272,10 @@ namespace NFluent.Tests
         public void AndOperatorCanChainMultipleAssertionOnNumber()
         {
             const sbyte Twenty = 20;
+            const sbyte Zero = 0;
 
-            Check.That(Twenty).IsNotZero().And.IsPositive();
-            Check.That(Twenty).IsPositive().And.IsNotZero();
+            Check.That(Twenty).IsNotZero().And.IsAfter(Zero);
+            Check.That(Twenty).IsAfter(Zero).And.IsNotZero();
         }
 
         #region Equals / IsEqualTo / IsNotEqualTo
@@ -322,11 +294,12 @@ namespace NFluent.Tests
         {
             const sbyte Twenty = 20;
             const sbyte OtherTwenty = 20;
+            const sbyte Zero = 0;
 
             Check.That(Twenty).Equals(OtherTwenty);
 
             // check the 'other implementation of equals
-            Check.That(Twenty).IsPositive().And.Equals(OtherTwenty);
+            Check.That(Twenty).IsAfter(Zero).And.Equals(OtherTwenty);
         }
 
         [Test]
@@ -428,8 +401,9 @@ namespace NFluent.Tests
         public void HasValueSupportsToBeChainedWithTheWhichOperator()
         {
             sbyte? one = 1;
+            const sbyte Zero = 0;
 
-            Check.That(one).HasAValue().Which.IsPositive().And.IsEqualTo((sbyte)1);
+            Check.That(one).HasAValue().Which.IsAfter(Zero).And.IsEqualTo((sbyte)1);
         }
 
         [Test]
@@ -437,8 +411,9 @@ namespace NFluent.Tests
         public void TryingToChainANullableWithoutAValueIsPossibleButThrowsAnException()
         {
             sbyte? noValue = null;
+            const sbyte Zero = 0;
 
-            Check.That(noValue).Not.HasAValue().Which.IsPositive();
+            Check.That(noValue).Not.HasAValue().Which.IsAfter(Zero);
         }
 
         #endregion

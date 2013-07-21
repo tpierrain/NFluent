@@ -36,6 +36,12 @@
 
 // Generated helper templates
 // Generated items
+// NFluent\NFluent\T4\ShortSignedCheckExtensions.cs
+// NFluent\NFluent\T4\LongSignedCheckExtensions.cs
+// NFluent\NFluent\T4\FloatSignedCheckExtensions.cs
+// NFluent\NFluent\T4\DoubleSignedCheckExtensions.cs
+// NFluent\NFluent\T4\DecimalSignedCheckExtensions.cs
+// NFluent\NFluent\T4\SbyteSignedCheckExtensions.cs
 // NFluent\NFluent\T4\UshortCheckExtensions.cs
 // NFluent\NFluent\T4\UlongCheckExtensions.cs
 // NFluent\NFluent\T4\UintCheckExtensions.cs
