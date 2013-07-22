@@ -4,4 +4,4 @@ New features:
 
 --------------
 Changes:
-* 
+* Hides the ForkInstance() method from the IntelliSense

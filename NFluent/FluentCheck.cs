@@ -26,7 +26,7 @@ namespace NFluent
     /// <typeparam name="T">
     /// Type of the value to assert on.
     /// </typeparam>
-    internal class FluentCheck<T> : ICheck<T>, ICheckRunner<T>, IRunnableCheck<T>
+    internal class FluentCheck<T> : ICheck<T>, ICheckRunner<T>, IRunnableCheck<T>, IForkableCheck
     {
         #region Fields
 

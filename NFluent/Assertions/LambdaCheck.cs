@@ -22,7 +22,7 @@ namespace NFluent
     /// <summary>
     /// Implements lambda/action specific check.
     /// </summary>
-    public class LambdaCheck : ILambdaCheck
+    public class LambdaCheck : ILambdaCheck, IForkableCheck
     {
         #region Fields
         private double durationInNs;
