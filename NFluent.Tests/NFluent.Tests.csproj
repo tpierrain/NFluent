@@ -47,6 +47,7 @@
     </Compile>
     <Compile Include="AndRelatedTests.cs" />
     <Compile Include="AutomaticNUnitExceptionDetectionTest.cs" />
+    <Compile Include="CharTests.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DictionaryChecksTests.cs" />
     <Compile Include="EdgeCasesTest.cs" />
