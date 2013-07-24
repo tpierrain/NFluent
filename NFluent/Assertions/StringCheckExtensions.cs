@@ -293,8 +293,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
-        public static ICheckLink<ICheck<string>> EndsWith(
-            this ICheck<string> check, string expectedEnd)
+        public static ICheckLink<ICheck<string>> EndsWith(this ICheck<string> check, string expectedEnd)
         {
             var runnableCheck = check as IRunnableCheck<string>;
 

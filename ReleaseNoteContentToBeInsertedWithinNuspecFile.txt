@@ -1,4 +1,5 @@
 New features:
+* Add the support of char
 * Add the IsAfter() check to the IComparable instances
 * Adds comparison checks to all the numeric types
 

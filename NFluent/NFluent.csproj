@@ -52,6 +52,7 @@
     <Compile Include="Assertions\BooleanCheckExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Assertions\CharCheckExtensions.cs" />
     <Compile Include="Assertions\IntSignedCheckExtensions.cs" />
     <Compile Include="Helpers\ComparableHelper.cs" />
     <Compile Include="Assertions\DictionaryCheckExtension.cs" />
