@@ -177,7 +177,7 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsSameLetter
+        #region IsSameLetterAs
 
         [Test]
         public void IsSameLetterWorksAlsoWhenCaseAreDifferent()
@@ -185,9 +185,9 @@ namespace NFluent.Tests
             const char LowerCasedZ = 'z';
             const char UpperCasedZ = 'Z';
             
-            Check.That(UpperCasedZ).IsSameLetter(LowerCasedZ);
-            Check.That(UpperCasedZ).IsSameLetter(UpperCasedZ);
-            Check.That(LowerCasedZ).IsSameLetter(LowerCasedZ);
+            Check.That(UpperCasedZ).IsSameLetterAs(LowerCasedZ);
+            Check.That(UpperCasedZ).IsSameLetterAs(UpperCasedZ);
+            Check.That(LowerCasedZ).IsSameLetterAs(LowerCasedZ);
         }
 
         [Test]
@@ -196,7 +196,7 @@ namespace NFluent.Tests
             const char FirstLetter = 'a';
             const char LatestLetter = 'z';
 
-            Check.That(FirstLetter).Not.IsSameLetter(LatestLetter);
+            Check.That(FirstLetter).Not.IsSameLetterAs(LatestLetter);
         }
 
         [Test]
@@ -204,7 +204,7 @@ namespace NFluent.Tests
         public void IsSameLetterThrowsWithDifferentLetters()
         {
             const char LowerCasedA = 'a';
-            Check.That(LowerCasedA).IsSameLetter('z');
+            Check.That(LowerCasedA).IsSameLetterAs('z');
         }
 
         [Test]
@@ -212,7 +212,7 @@ namespace NFluent.Tests
         public void IsSameLetterThrowsWithNonLetterChar()
         {
             const char NonLetterChar = '/';
-            Check.That(NonLetterChar).IsSameLetter('/');
+            Check.That(NonLetterChar).IsSameLetterAs('/');
         }
 
         [Test]
@@ -220,7 +220,7 @@ namespace NFluent.Tests
         public void NotIsSameLetterThrows()
         {
             const char LowerCasedA = 'a';
-            Check.That(LowerCasedA).Not.IsSameLetter('A');
+            Check.That(LowerCasedA).Not.IsSameLetterAs('A');
         }
 
         #endregion

@@ -53,7 +53,7 @@ namespace NFluent
         /// <param name="otherChar">The other char that.</param>
         /// <exception cref="FluentCheckException">The checked <see cref="char"/> is not the same letter as the expected one, whatever the case.</exception>
         /// <returns>A check link.</returns>
-        public static ICheckLink<ICheck<char>> IsSameLetter(this ICheck<char> check, char otherChar)
+        public static ICheckLink<ICheck<char>> IsSameLetterAs(this ICheck<char> check, char otherChar)
         {
             var checkRunner = check as ICheckRunner<char>;
             var runnableCheck = check as IRunnableCheck<char>;
@@ -103,6 +103,8 @@ namespace NFluent
                     FluentMessage.BuildMessage("The {0} is the same letter as the given one but with different case, whereas it must not.").For("char").On(runnableCheck.Value).And.WithGivenValue(otherChar).ToString());
         }
 
+        #region helper methods
+
         private static bool IsALetter(char checkedChar)
         {
             return char.IsLetter(checkedChar);
@@ -117,5 +119,7 @@ namespace NFluent
         {
             return (!char.IsLower(checkedChar) || !char.IsUpper(otherChar)) && (!char.IsUpper(checkedChar) || !char.IsLower(otherChar));
         }
+
+        #endregion
     }
 }
