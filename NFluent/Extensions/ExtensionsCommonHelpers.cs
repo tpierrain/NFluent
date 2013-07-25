@@ -31,6 +31,11 @@ namespace NFluent.Extensions
         /// <returns>A string that represents the current object. If the object is already a string, this method will surround it with brackets.</returns>
         public static string ToStringProperlyFormated(this object theObject)
         {
+            if (theObject is char)
+            {
+                return string.Format("'{0}'", theObject);
+            }
+
             if (theObject is string)
             {
                 return string.Format(@"""{0}""", theObject);
