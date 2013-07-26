@@ -71,6 +71,30 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the checked <see cref="char"/> is a punctuation mark.
+        /// </summary>
+        /// <param name="check">The chained fluent check.</param>
+        /// <exception cref="FluentCheckException">The checked <see cref="char"/> is not a punctuation mark.</exception>
+        /// <returns>A check link.</returns>
+        public static ICheckLink<ICheck<char>> IsAPunctuationMark(this ICheck<char> check)
+        {
+            var checkRunner = check as ICheckRunner<char>;
+            var runnableCheck = check as IRunnableCheck<char>;
+
+            return checkRunner.ExecuteCheck(
+                () =>
+                {
+                    char checkedChar = runnableCheck.Value;
+                    if (!char.IsPunctuation(checkedChar))
+                    {
+                        var errorMessage = FluentMessage.BuildMessage("The {0} is not a punctuation mark.").For("char").On(checkedChar).ToString();
+                        throw new FluentCheckException(errorMessage);
+                    }
+                },
+                FluentMessage.BuildMessage("The {0} is a punctuation mark whereas it must not.").For("char").On(runnableCheck.Value).ToString());
+        }
+
+        /// <summary>
         /// Checks that the checked <see cref="char"/> and the given one are the same letter, whatever the case.
         /// </summary>
         /// <param name="check">The chained fluent check.</param>

@@ -304,5 +304,45 @@ namespace NFluent.Tests
         }
 
         #endregion
+
+        #region IsAPunctuationMark
+
+        [Test]
+        public void IsPunctuationWorks()
+        {
+            char punctuation = '-';
+            Check.That(punctuation).IsAPunctuationMark();
+
+            punctuation = '/';
+            Check.That(punctuation).IsAPunctuationMark();
+        }
+
+        [Test]
+        public void NotIsPunctuationWorks()
+        {
+            const char DigitChar = '2';
+            Check.That(DigitChar).Not.IsAPunctuationMark();
+
+            const char Letter = 'Z';
+            Check.That(Letter).Not.IsAPunctuationMark();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is not a punctuation mark.\nThe checked char:\n\t['2']")]
+        public void IsPunctuationThrows()
+        {
+            const char DigitChar = '2';
+            Check.That(DigitChar).IsAPunctuationMark();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is a punctuation mark whereas it must not.\nThe checked char:\n\t['-']")]
+        public void NotIsPunctuationThrows()
+        {
+            char punctuation = '-';
+            Check.That(punctuation).Not.IsAPunctuationMark();
+        }
+
+        #endregion
     }
 }
