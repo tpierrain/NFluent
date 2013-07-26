@@ -47,6 +47,30 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the checked <see cref="char"/> is a decimal digit.
+        /// </summary>
+        /// <param name="check">The chained fluent check.</param>
+        /// <exception cref="FluentCheckException">The checked <see cref="char"/> is not a decimal digit.</exception>
+        /// <returns>A check link.</returns>
+        public static ICheckLink<ICheck<char>> IsADigit(this ICheck<char> check)
+        {
+            var checkRunner = check as ICheckRunner<char>;
+            var runnableCheck = check as IRunnableCheck<char>;
+
+            return checkRunner.ExecuteCheck(
+                () =>
+                {
+                    char checkedChar = runnableCheck.Value;
+                    if (!char.IsDigit(checkedChar))
+                    {
+                        var errorMessage = FluentMessage.BuildMessage("The {0} is not a decimal digit.").For("char").On(checkedChar).ToString();
+                        throw new FluentCheckException(errorMessage);
+                    }
+                },
+                FluentMessage.BuildMessage("The {0} is a decimal digit whereas it must not.").For("char").On(runnableCheck.Value).ToString());
+        }
+
+        /// <summary>
         /// Checks that the checked <see cref="char"/> and the given one are the same letter, whatever the case.
         /// </summary>
         /// <param name="check">The chained fluent check.</param>

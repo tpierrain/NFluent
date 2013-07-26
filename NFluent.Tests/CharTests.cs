@@ -264,5 +264,45 @@ namespace NFluent.Tests
         }
 
         #endregion
+
+        #region IsADigit
+
+        [Test]
+        public void IsADigitWorks()
+        {
+            const char DigitChar = '2';
+            Check.That(DigitChar).IsADigit();
+        }
+
+        [Test]
+        public void NotIsADigitWorks()
+        {
+            const char Letter = 'a';
+            Check.That(Letter).Not.IsADigit();
+
+            const char Punctuation = '-';
+            Check.That(Punctuation).Not.IsADigit();
+
+            const char Space = ' ';
+            Check.That(Space).Not.IsADigit();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is not a decimal digit.\nThe checked char:\n\t['Z']")]
+        public void IsADigitThrows()
+        {
+            const char Letter = 'Z';
+            Check.That(Letter).IsADigit();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is a decimal digit whereas it must not.\nThe checked char:\n\t['2']")]
+        public void NotIsADigitThrows()
+        {
+            const char DigitChar = '2';
+            Check.That(DigitChar).Not.IsADigit();
+        }
+
+        #endregion
     }
 }
