@@ -96,6 +96,14 @@ namespace NFluent.Tests
             Check.That(x).HasFieldsEqualToThose(new DummyClass());
         }
 
+        [Test]
+        public void HasFieldsEqualWorksForAutoProperty()
+        {
+            var x = new DummyWithAutoProperty();
+
+            Check.That(x).HasFieldsEqualToThose(new DummyWithAutoProperty())
+        }
+
         private class DummyClass
         {
             private int x = 2;
@@ -125,6 +133,11 @@ namespace NFluent.Tests
             {
                 this.z = z;
             }
+        }
+
+        private class DummyWithAutoProperty
+        {
+            public object Application { get; set; }
         }
     }
 }
