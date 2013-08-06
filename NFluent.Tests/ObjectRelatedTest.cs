@@ -74,7 +74,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field x does not have the expected value.\nThe checked value:\n\t[NFluent.Tests.ObjectRelatedTest+DummyClass]\nThe expected value:\n\t[NFluent.Tests.ObjectRelatedTest+DummyClass]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x' does not have the expected value.\nThe checked value:\n\t[2]\nThe expected value:\n\t[1]")]
         public void IsEqualFailsIfFieldsDifferent()
         {
             var x = new DummyClass();
@@ -82,14 +82,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field x has the same value in the comparand, whereas it must not.\nThe checked value:\n\t[NFluent.Tests.ObjectRelatedTest+DummyClass]\nThe expected value: different from\n\t[NFluent.Tests.ObjectRelatedTest+DummyClass]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x' has the same value in the comparand, whereas it must not.\nThe checked value:\n\t[2]\nThe expected value: different from\n\t[2]")]
         public void HasFieldsNotEqualToThoseFailsIfSame()
         {
             Check.That(new DummyClass()).HasFieldsNotEqualToThose(new DummyClass());
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value has a field that is absent from the expected one: z.\nThe checked value:\n\t[NFluent.Tests.ObjectRelatedTest+DummyHeritance]\nThe expected value:\n\t[NFluent.Tests.ObjectRelatedTest+DummyClass]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'z' is absent from the expected one.\nThe checked value:\n\t[NFluent.Tests.ObjectRelatedTest+DummyHeritance]\nThe expected value:\n\t[NFluent.Tests.ObjectRelatedTest+DummyClass]")]
         public void IsEqualfailsWithMissingFields()
         {
             var x = new DummyHeritance();
@@ -100,8 +100,34 @@ namespace NFluent.Tests
         public void HasFieldsEqualWorksForAutoProperty()
         {
             var x = new DummyWithAutoProperty();
+            Check.That(x).HasFieldsEqualToThose(new DummyWithAutoProperty());
+        }
 
-            Check.That(x).HasFieldsEqualToThose(new DummyWithAutoProperty())
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's autoproperty 'Application' (field '<Application>k__BackingField') has the same value in the comparand, whereas it must not.\nThe checked value:\n\t[null]\nThe expected value: different from\n\t[null]")]
+        public void HasFieldsEqualFailsForAutoPropertyWhenNEgated()
+        {
+            var x = new DummyWithAutoProperty();
+            Check.That(x).HasFieldsNotEqualToThose(new DummyWithAutoProperty());
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's autoproperty 'Application' (field '<Application>k__BackingField') does not have the expected value.\nThe checked value:\n\t[\"check\"]\nThe expected value:\n\t[null]")]
+        public void HasFieldsFailsProperlyForAutoProperty()
+        {
+            var x = new DummyWithAutoProperty();
+            x.Application = "check";
+            Check.That(x).HasFieldsEqualToThose(new DummyWithAutoProperty());
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's autoproperty 'Application' (field '<Application>k__BackingField') does not have the expected value.\nThe checked value:\n\t[null]\nThe expected value:\n\t[\"check\"]")]
+        public void HasFieldsFailsProperlyForAutoPropertyForNull()
+        {
+            var x = new DummyWithAutoProperty();
+            var y = new DummyWithAutoProperty();
+            x.Application = "check";
+            Check.That(y).HasFieldsEqualToThose(x);
         }
 
         private class DummyClass

@@ -16,6 +16,7 @@ namespace NFluent
 {
     using System;
     using System.Reflection;
+    using System.Text.RegularExpressions;
 
     using NFluent.Extensions;
     using NFluent.Helpers;
@@ -253,6 +254,23 @@ namespace NFluent
             foreach (var fieldInfo in
                 value.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
             {
+                // check for auto properties
+                var fieldName = fieldInfo.Name;
+                var autoPropertyMask = new Regex("^<(.*)>k_");
+                var result = autoPropertyMask.Match(fieldName);
+                if (result.Length > 0 && result.Groups.Count == 2)
+                {
+                    string propertyName = fieldName.Substring(
+                        result.Groups[1].Index, result.Groups[1].Length);
+
+                    fieldName = string.Format(
+                        "autoproperty '{0}' (field '{1}')", propertyName, fieldName);
+                }
+                else
+                {
+                    fieldName = string.Format("field '{0}'", fieldName);
+                }
+                
                 var otherField = FindField(expected.GetType(), fieldInfo.Name);
                 if (otherField == null)
                 {
@@ -260,7 +278,7 @@ namespace NFluent
                     {
                         message =
                             FluentMessage.BuildMessage(
-                                string.Format("The {{0}} has a field that is absent from the {{1}}: {0}.", fieldInfo.Name))
+                                string.Format("The {{0}}'s {0} is absent from the {{1}}.", fieldName))
                                          .On(value)
                                          .And.Expected(expected)
                                          .ToString();
@@ -270,23 +288,49 @@ namespace NFluent
                 }
 
                 // compare value
-                if (fieldInfo.GetValue(value).Equals(otherField.GetValue(expected)) == negated)
+                var actualFieldValue = fieldInfo.GetValue(value);
+                var expectedFieldValue = otherField.GetValue(expected);
+                if (actualFieldValue == null)
+                {
+                    if ((expectedFieldValue == null) == negated)
+                    {
+                        if (!negated)
+                        {
+                            message =
+                                FluentMessage.BuildMessage(
+                                    string.Format("The {{0}}'s {0} does not have the expected value.", fieldName))
+                                             .On(null)
+                                             .And.Expected(expectedFieldValue)
+                                             .ToString();
+                        }
+                        else
+                        {
+                            message =
+                                FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldName))
+                                             .On(null)
+                                             .And.Expected(expectedFieldValue)
+                                             .Comparison("different from")
+                                             .ToString();
+                        }
+                    }
+                }
+                else if (actualFieldValue.Equals(expectedFieldValue) == negated)
                 {
                     if (!negated)
                     {
                         message =
                             FluentMessage.BuildMessage(
-                                string.Format("The {{0}}'s field {0} does not have the expected value.", fieldInfo.Name))
-                                         .On(value)
-                                         .And.Expected(expected)
+                                string.Format("The {{0}}'s {0} does not have the expected value.", fieldName))
+                                         .On(actualFieldValue)
+                                         .And.Expected(expectedFieldValue)
                                          .ToString();
                     }
                     else
                     {
                         message =
-                            FluentMessage.BuildMessage(string.Format("The {{0}}'s field {0} has the same value in the comparand, whereas it must not.", fieldInfo.Name))
-                                         .On(value)
-                                         .And.Expected(expected)
+                            FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldName))
+                                         .On(actualFieldValue)
+                                         .And.Expected(expectedFieldValue)
                                          .Comparison("different from")
                                          .ToString();
                     }
