@@ -106,5 +106,31 @@ namespace NFluent.Tests
 
             Assert.AreEqual("\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)\nThe expected value(s):\n\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vador\"] (4 items)", message);
         }
+
+        [Test]
+        public void WorksWithChar()
+        {
+            const char LowerCasedA = 'a';
+
+            var message = FluentMessage.BuildMessage("The {0} is properly displayed.")
+                                            .For("char")
+                                            .On(LowerCasedA)
+                                            .ToString();
+
+            Assert.AreEqual("\nThe checked char is properly displayed.\nThe checked char:\n\t['a']", message);
+        }
+
+        [Test]
+        public void WorksWithPunctuationChar()
+        {
+            const char SlashChar = '/';
+
+            var message = FluentMessage.BuildMessage("The {0} is properly displayed.")
+                                            .For("char")
+                                            .On(SlashChar)
+                                            .ToString();
+
+            Assert.AreEqual("\nThe checked char is properly displayed.\nThe checked char:\n\t['/']", message);
+        }
     }
 }

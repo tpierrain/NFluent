@@ -47,7 +47,8 @@ namespace NFluent
         {
             get
             {
-                return this.previousCheck.ForkInstance() as ICheck<N?>;
+                IForkableCheck forkableCheck = this.previousCheck as IForkableCheck;
+                return forkableCheck.ForkInstance() as ICheck<N?>;
             }
         }
 

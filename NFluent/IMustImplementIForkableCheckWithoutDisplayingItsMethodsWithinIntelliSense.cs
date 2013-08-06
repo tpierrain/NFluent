@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ICheckLink.cs" company="">
+// // <copyright file="IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,21 +14,11 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System.Diagnostics.CodeAnalysis;
-
     /// <summary>
-    /// Provides a way to chain two <see cref="IForkableCheck"/> instances. 
+    /// Marker interface indicating that the implementations should implement the <see cref="IForkableCheck"/> interface.
+    /// This is a 'trick' so that the <see cref="IForkableCheck"/> methods don't appeared in the user Intellisense.
     /// </summary>
-    /// <typeparam name="T">Type of the <see cref="IForkableCheck"/> to be chained.</typeparam>
-    public interface ICheckLink<out T> where T : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    public interface IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
-        /// <summary>
-        /// Chains a new fluent check to the current one.
-        /// </summary>
-        /// <value>
-        /// The new fluent check instance which has been chained to the previous one.
-        /// </value>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        T And { get; }
     }
 }

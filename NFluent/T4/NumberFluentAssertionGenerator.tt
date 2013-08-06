@@ -47,6 +47,26 @@
 		
 		Write(sourceCode);
     }
+
+	// ----------------------------------------------
+	// Methods for signed type only
+	var signedTypesToGenerateAssertionsFor = new string[] { "sbyte", "decimal", "double", "float", "long", "short" };
+	goldenSourceClassFileName = Host.ResolvePath(@"..\Assertions\IntSignedCheckExtensions.cs");
+	
+	foreach(string typeName in signedTypesToGenerateAssertionsFor)
+    {
+		// Creates new output file
+		// Creates a TextInfo based on the "en-US" culture in order to use the ToTitleCase() method
+		System.Globalization.TextInfo textInfo = new System.Globalization.CultureInfo("en-US", false).TextInfo;
+		string properlyCasedTypeName = textInfo.ToTitleCase(typeName);
+		string checkClassName =  properlyCasedTypeName + "SignedCheckExtensions"; // FloatCheckExtensions
+		
+		manager.StartNewFile(checkClassName + ".cs");
+		
+		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
+		
+		Write(sourceCode);
+    }
 	
 	// Write output code into multiple files
 	manager.Process();

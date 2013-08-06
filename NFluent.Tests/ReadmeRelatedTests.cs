@@ -71,6 +71,8 @@ namespace NFluent.Tests
 
             string motivationalSaying = "Failure is mother of success.";
             Check.That(motivationalSaying).IsNotInstanceOf<int>();
+
+            Check.That('A').IsSameLetterAs('a');
         }
 
         [Test]

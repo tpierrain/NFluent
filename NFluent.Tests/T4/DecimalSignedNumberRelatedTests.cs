@@ -52,11 +52,28 @@ namespace NFluent.Tests
         #region IsPositive
 
         [Test]
+        public void IsPositiveWorks()
+        {
+            const decimal Two = 2M;
+
+            Check.That(Two).IsPositive();
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[0]")]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
             const decimal Zero = 0M;
             Check.That(Zero).IsPositive();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
+        public void NotIsPositiveThrowsExceptionWhenFailing()
+        {
+            const decimal Two = 2M;
+
+            Check.That(Two).Not.IsPositive();
         }
 
         [Test]
@@ -76,16 +93,8 @@ namespace NFluent.Tests
             Check.That(MinusFifty).Not.IsPositive();
         }
 
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
-        public void NotIsPositiveThrowsExceptionWhenFailing()
-        {
-            const decimal Two = 2M;
-
-            Check.That(Two).Not.IsPositive();
-        }
-
         #endregion
+
         #region IsNegative
 
         [Test]

@@ -149,34 +149,6 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual value is strictly positive.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        public static ICheckLink<ICheck<int>> IsPositive(this ICheck<int> check)
-        {
-            var numberCheckStrategy = new NumberCheck<int>(check);
-            return numberCheckStrategy.IsPositive();
-        }
-
-        /// <summary>
-        /// Checks that the actual value is strictly negative.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        public static ICheckLink<ICheck<int>> IsNegative(this ICheck<int> check)
-        {
-            var numberCheckStrategy = new NumberCheck<int>(check);
-            return numberCheckStrategy.IsNegative();
-        }
-
-        /// <summary>
         /// Checks that the actual value is less than an operand.
         /// </summary>
         /// <param name="check">

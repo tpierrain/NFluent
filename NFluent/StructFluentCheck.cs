@@ -23,7 +23,7 @@ namespace NFluent
     /// Provides check methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public class StructFluentCheck<T> : IStructCheck<T>, IStructCheckRunner<T>, IRunnableCheck<T> where T : struct
+    public class StructFluentCheck<T> : IForkableCheck, IStructCheck<T>, IStructCheckRunner<T>, IRunnableCheck<T> where T : struct
     {
         private readonly StructCheckRunner<T> checkRunner;
 

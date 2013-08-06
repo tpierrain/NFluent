@@ -41,8 +41,7 @@ namespace NFluent
         /// <param name="originalComparand">
         /// Comparand used for the first check.
         /// </param>
-        public ExtendableCheckLink(IForkableCheck previousCheck, U originalComparand)
-            : base(previousCheck)
+        public ExtendableCheckLink(IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense previousCheck, U originalComparand) : base(previousCheck)
         {
             this.originalComparand = originalComparand;
         }
@@ -83,8 +82,7 @@ namespace NFluent
         /// <param name="originalComparand">
         /// Comparand used for the first check.
         /// </param>
-        public ExtendableCheckLink(IForkableCheck previousCheck, T originalComparand)
-            : base(previousCheck, originalComparand)
+        public ExtendableCheckLink(IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense previousCheck, T originalComparand) : base(previousCheck, originalComparand)
         {
         }
     }
