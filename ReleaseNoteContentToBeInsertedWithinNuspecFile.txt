@@ -1,13 +1,10 @@
 New feature(s):
-* Add the support of char
-* Add the IsAfter() check to the IComparable instances
-* Adds comparison checks to all the numeric types
-
+* 
 --------------
 Change(s):
-* Hides the ForkInstance() method from the IntelliSense
+* 
 
 --------------
 Bug Fixe(s):
-* Fixes a bad behaviour of the HasFieldsEqualThose() check against auto property null backing fields.
+* 
 
