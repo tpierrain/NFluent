@@ -60,6 +60,29 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value is equal to another expected value.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
+        /// <param name="check">
+        /// The fluent check to be extended.
+        /// </param>
+        /// <param name="expected">
+        /// The expected value.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The actual value is not equal to the expected value.
+        /// </exception>
+        public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, T expected)
+        {
+            return IsEqualTo(check, (object)expected);
+        }
+
+        /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
         /// <typeparam name="T">
@@ -82,6 +105,23 @@ namespace NFluent
                         EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
                     },
                 EqualityHelper.BuildErrorMessage(runnableCheck.Value, expected, false));
+        }
+
+        /// <summary>
+        /// Checks that the actual value is not equal to another expected value.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
+        public static ICheckLink<ICheck<T>> IsNotEqualTo<T>(this ICheck<T> check, T expected)
+        {
+            return IsNotEqualTo(check, (object)expected);
         }
 
         /// <summary>

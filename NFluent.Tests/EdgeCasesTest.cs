@@ -37,5 +37,13 @@ namespace NFluent.Tests
         {
             Check.That(4);
         }
+
+        [Test]
+        public void NumberTypeChanges()
+        {
+            var test = 4L;
+
+            Check.That(test).IsEqualTo(4);
+        }
     }
 }
