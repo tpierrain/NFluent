@@ -150,6 +150,58 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual expression is null.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">Is the value is not null.</exception>
+        public static ICheckLink<ICheck<object>> IsNull(this ICheck<object> check)
+        {
+            var runnableCheck = check as IRunnableCheck<object>;
+            var negated = runnableCheck.Negated;
+            var value = runnableCheck.Value;
+
+            var message = IsNullImpl(value, negated);
+            if (!string.IsNullOrEmpty(message))
+            {
+                throw new FluentCheckException(FluentMessage.BuildMessage(message).For("object").On(value).ToString());
+            }
+
+            return new CheckLink<ICheck<object>>(check);
+        }
+
+        /// <summary>
+        /// Checks that the actual expression is not null.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">Is the value is null.</exception>
+        public static ICheckLink<ICheck<object>> IsNotNull(this ICheck<object> check)
+        {
+            var runnableCheck = check as IRunnableCheck<object>;
+            var negated = runnableCheck.Negated;
+            var value = runnableCheck.Value;
+
+            var message = IsNullImpl(value, !negated);
+            if (!string.IsNullOrEmpty(message))
+            {
+                throw new FluentCheckException(FluentMessage.BuildMessage(message).For("object").On(value).ToString());
+            }
+
+            return new CheckLink<ICheck<object>>(check);
+        }
+
+        private static string IsNullImpl(object value, bool negated)
+        {
+            if (!negated)
+            {
+                return value == null ? null : "The {0} must be null.";
+            }
+
+            return value == null ? "The {0} must not be null." : null;
+        }
+
+        /// <summary>
         /// Checks that the actual value has an expected reference.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>

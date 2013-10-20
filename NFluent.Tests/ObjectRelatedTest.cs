@@ -41,6 +41,32 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsNullWork()
+        {
+            Check.That((object)null).IsNull();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked object must be null.\nThe checked object:\n\t[System.Object]")]
+        public void IsNullFailsProperly()
+        {
+            Check.That(new object()).IsNull();
+        }
+
+        [Test]
+        public void IsNotNullWork()
+        {
+            Check.That(new object()).IsNotNull();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked object must not be null.\nThe checked object:\n\t[null]")]
+        public void IsNotNullFailsProperly()
+        {
+            Check.That((object)null).IsNotNull();
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked object must have be an instance distinct from expected one.\nThe checked object:\n\t[System.Object]\nThe expected object: distinct from\n\t[System.Object]")]
         public void IsDistinctFailsProperly()
         {

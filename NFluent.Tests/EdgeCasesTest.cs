@@ -41,9 +41,9 @@ namespace NFluent.Tests
         [Test]
         public void NumberTypeChanges()
         {
-            var test = 4L;
+            const long Test = 4L;
 
-            Check.That(test).IsEqualTo(4);
+            Check.That(Test).IsEqualTo(4);
         }
     }
 }
