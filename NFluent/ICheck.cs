@@ -18,7 +18,7 @@ namespace NFluent
     /// Provides check methods to be executed on a given value.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface ICheck<out T> : IForkableCheck, INegateableCheck<ICheck<T>>
+    public interface ICheck<out T> : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense, INegateableCheck<ICheck<T>>
     {
         /// <summary>
         /// Checks whether the specified <see cref="System.Object" /> is equal to this instance or not.
@@ -29,5 +29,21 @@ namespace NFluent
         /// </returns>
         /// <exception cref="FluentCheckException">The specified <see cref="System.Object"/> is not equal to this instance.</exception>
         bool Equals(object obj);
+
+        /// <summary>
+        /// Checks whether if the checked value is of the given type.
+        /// </summary>
+        /// <typeparam name="U">The given type to check the checked value against.</typeparam>
+        /// <returns>A chainable check.</returns>
+        /// <exception cref="FluentCheckException">The specified value is null (and not of the same nullable type) or not of the given type.</exception>
+        ICheckLink<ICheck<T>> IsInstanceOf<U>();
+
+        /// <summary>
+        /// Checks whether if the checked value is different from the given type.
+        /// </summary>
+        /// <typeparam name="U">The given type to check the checked value against.</typeparam>
+        /// <returns>A chainable check.</returns>
+        /// <exception cref="FluentCheckException">The specified value is of the given type.</exception>
+        ICheckLink<ICheck<T>> IsNotInstanceOf<U>();
     }
 }

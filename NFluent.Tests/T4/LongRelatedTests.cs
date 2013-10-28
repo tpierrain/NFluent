@@ -115,35 +115,6 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsPositive
-
-        [Test]
-        public void IsPositiveWorks()
-        {
-            const long Two = 2L;
-
-            Check.That(Two).IsPositive();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[0]")]
-        public void IsPositiveThrowsExceptionWhenEqualToZero()
-        {
-            const long Zero = 0L;
-            Check.That(Zero).IsPositive();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
-        public void NotIsPositiveThrowsExceptionWhenFailing()
-        {
-            const long Two = 2L;
-
-            Check.That(Two).Not.IsPositive();
-        }
-
-        #endregion
-
         #region IComparable checks
 
         [Test]
@@ -301,9 +272,10 @@ namespace NFluent.Tests
         public void AndOperatorCanChainMultipleAssertionOnNumber()
         {
             const long Twenty = 20L;
+            const long Zero = 0L;
 
-            Check.That(Twenty).IsNotZero().And.IsPositive();
-            Check.That(Twenty).IsPositive().And.IsNotZero();
+            Check.That(Twenty).IsNotZero().And.IsAfter(Zero);
+            Check.That(Twenty).IsAfter(Zero).And.IsNotZero();
         }
 
         #region Equals / IsEqualTo / IsNotEqualTo
@@ -322,11 +294,12 @@ namespace NFluent.Tests
         {
             const long Twenty = 20L;
             const long OtherTwenty = 20L;
+            const long Zero = 0L;
 
             Check.That(Twenty).Equals(OtherTwenty);
 
             // check the 'other implementation of equals
-            Check.That(Twenty).IsPositive().And.Equals(OtherTwenty);
+            Check.That(Twenty).IsAfter(Zero).And.Equals(OtherTwenty);
         }
 
         [Test]
@@ -428,8 +401,9 @@ namespace NFluent.Tests
         public void HasValueSupportsToBeChainedWithTheWhichOperator()
         {
             long? one = 1L;
+            const long Zero = 0L;
 
-            Check.That(one).HasAValue().Which.IsPositive().And.IsEqualTo((long)1);
+            Check.That(one).HasAValue().Which.IsAfter(Zero).And.IsEqualTo((long)1);
         }
 
         [Test]
@@ -437,8 +411,9 @@ namespace NFluent.Tests
         public void TryingToChainANullableWithoutAValueIsPossibleButThrowsAnException()
         {
             long? noValue = null;
+            const long Zero = 0L;
 
-            Check.That(noValue).Not.HasAValue().Which.IsPositive();
+            Check.That(noValue).Not.HasAValue().Which.IsAfter(Zero);
         }
 
         #endregion
@@ -510,8 +485,16 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        {
+            long? noValue = null;
+
+            Check.That(noValue).IsInstanceOf<long?>();
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of long? whereas it must not.\nThe checked value:\n\t[null] of type: [long?]\nThe expected type: different from\n\t[long?]")]
-        public void NotIsInstanceOfWorksWithNullableWithoutValue()
+        public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             long? noValue = null;
 
@@ -525,6 +508,36 @@ namespace NFluent.Tests
             long? one = null;
 
             Check.That(one).IsInstanceOf<string>();
+        }
+
+        #endregion
+
+        #region IsNotInstance
+
+        [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            long? one = 1L;
+
+            Check.That(one).IsNotInstanceOf<long>().And.HasAValue().Which.IsEqualTo((long)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of long? whereas it must not.\nThe checked value:\n\t[1] of type: [long?]\nThe expected type: different from\n\t[long?]")]
+        public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
+        {
+            long? one = 1L;
+
+            Check.That(one).IsNotInstanceOf<long?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of long? whereas it must not.\nThe checked value:\n\t[null] of type: [long?]\nThe expected type: different from\n\t[long?]")]
+        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        {
+            long? noValue = null;
+
+            Check.That(noValue).IsNotInstanceOf<long?>();
         }
 
         #endregion

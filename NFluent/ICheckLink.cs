@@ -20,7 +20,7 @@ namespace NFluent
     /// Provides a way to chain two <see cref="IForkableCheck"/> instances. 
     /// </summary>
     /// <typeparam name="T">Type of the <see cref="IForkableCheck"/> to be chained.</typeparam>
-    public interface ICheckLink<out T> where T : IForkableCheck
+    public interface ICheckLink<out T> where T : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         /// <summary>
         /// Chains a new fluent check to the current one.

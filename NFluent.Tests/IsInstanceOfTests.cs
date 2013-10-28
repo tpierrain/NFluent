@@ -36,7 +36,7 @@ namespace NFluent.Tests
         private const ulong ULongObj = 2;
         private const float FloatObj = 3.14F;
         private const bool BoolObj = true;
-        private readonly Person person = new Person() { Name = "Charles BAUDELAIRE" };
+        private readonly Person person = new Person { Name = "Charles BAUDELAIRE" };
         private readonly DateTime dateTimeObj = new DateTime();
         private readonly TimeSpan timeSpanObj = new TimeSpan();
         private readonly int[] integerArray = new int[10];
@@ -71,6 +71,7 @@ namespace NFluent.Tests
             Check.That(ULongObj).IsInstanceOf<ulong>();
             Check.That(FloatObj).IsInstanceOf<float>();
             Check.That(SByteObj).IsInstanceOf<sbyte>();
+            Check.That(CharObj).IsInstanceOf<char>();
 
             // POCO
             Check.That(this.person).IsInstanceOf<Person>();
@@ -84,6 +85,21 @@ namespace NFluent.Tests
 
             // Version
             Check.That(this.firstVersion).IsInstanceOf<Version>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[null]\nThe expected type:\n\t[object]")]
+        public void IsInstanceOfThrowsIfValueIsNull()
+        {
+            object nullValue = null;
+            Check.That(nullValue).IsInstanceOf<object>();
+        }
+
+        [Test]
+        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        {
+            int? nullValue = null;
+            Check.That(nullValue).IsInstanceOf<int?>();
         }
 
         [Test]
@@ -198,6 +214,21 @@ namespace NFluent.Tests
 
             // Version
             Check.That(this.firstVersion).IsNotInstanceOf<string>();
+        }
+
+        [Test]
+        public void IsNotInstanceOfWorksIfValueIsNull()
+        {
+            object nullValue = null;
+            Check.That(nullValue).IsNotInstanceOf<object>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of int? whereas it must not.\nThe checked value:\n\t[null] of type: [int?]\nThe expected type: different from\n\t[int?]")]
+        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        {
+            int? nullValue = null;
+            Check.That(nullValue).IsNotInstanceOf<int?>();
         }
 
         [Test]

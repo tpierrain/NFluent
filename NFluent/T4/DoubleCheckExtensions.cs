@@ -34,92 +34,7 @@ namespace NFluent
         //// -----------------------------------------------------
 
         #pragma warning restore 169
-
-        /// <summary>
-        /// Checks that the actual value is equal to another expected value.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected value.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static ICheckLink<ICheck<double>> IsEqualTo(this ICheck<double> check, object expected)
-        {
-            // TODO transform NumberCheck<T> into a static class with functions only?
-            var numberCheckStrategy = new NumberCheck<double>(check);
-            return numberCheckStrategy.IsEqualTo(expected);
-        }
-
-        /// <summary>
-        /// Checks that the actual value is not equal to another expected value.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected value.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static ICheckLink<ICheck<double>> IsNotEqualTo(this ICheck<double> check, object expected)
-        {
-            var numberCheckStrategy = new NumberCheck<double>(check);
-            return numberCheckStrategy.IsNotEqualTo(expected);
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<double>> IsInstanceOf<T>(this ICheck<double> check)
-        {
-            var numberCheckStrategy = new NumberCheck<double>(check);
-            return numberCheckStrategy.IsInstanceOf<T>();
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<double?>> IsInstanceOf<T>(this ICheck<double?> check)
-        {
-            var checkRunner = check as ICheckRunner<double?>;
-            IRunnableCheck<double?> runnableCheck = check as IRunnableCheck<double?>;
-
-            checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsSameType(typeof(Nullable<double>), typeof(T), runnableCheck.Value);
-                },
-                IsInstanceHelper.BuildErrorMessageForNullable(typeof(Nullable<double>), typeof(T), runnableCheck.Value, true));
-
-            return new CheckLink<ICheck<double?>>(check);
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public static ICheckLink<ICheck<double>> IsNotInstanceOf<T>(this ICheck<double> check)
-        {
-            var numberCheckStrategy = new NumberCheck<double>(check);
-            return numberCheckStrategy.IsNotInstanceOf<T>();
-        }
-
+        
         /// <summary>
         /// Determines whether the specified value is before the other one.
         /// </summary>
@@ -238,20 +153,6 @@ namespace NFluent
         {
             var numberCheckStrategy = new NumberCheck<double>(check);
             return numberCheckStrategy.IsNotZero();
-        }
-
-        /// <summary>
-        /// Checks that the actual value is strictly positive.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        public static ICheckLink<ICheck<double>> IsPositive(this ICheck<double> check)
-        {
-            var numberCheckStrategy = new NumberCheck<double>(check);
-            return numberCheckStrategy.IsPositive();
         }
 
         /// <summary>

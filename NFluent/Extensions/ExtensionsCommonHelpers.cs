@@ -31,6 +31,11 @@ namespace NFluent.Extensions
         /// <returns>A string that represents the current object. If the object is already a string, this method will surround it with brackets.</returns>
         public static string ToStringProperlyFormated(this object theObject)
         {
+            if (theObject is char)
+            {
+                return string.Format("'{0}'", theObject);
+            }
+
             if (theObject is string)
             {
                 return string.Format(@"""{0}""", theObject);
@@ -221,6 +226,26 @@ namespace NFluent.Extensions
         {
             // Ensure that boolean values are not localized 
             return theBoolean.ToString(CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Determines whether the specified type is nullable.
+        /// </summary>
+        /// <param name="type">
+        /// The type to be evaluated.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified type is nullable; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsNullable(this Type type)
+        {
+            // return Nullable.GetUnderlyingType(type) != null;
+            if (!type.IsGenericType)
+            {
+                return false;
+            }
+
+            return type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
     }
 }

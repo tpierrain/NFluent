@@ -115,35 +115,6 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsPositive
-
-        [Test]
-        public void IsPositiveWorks()
-        {
-            const ushort Two = 2;
-
-            Check.That(Two).IsPositive();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[0]")]
-        public void IsPositiveThrowsExceptionWhenEqualToZero()
-        {
-            const ushort Zero = 0;
-            Check.That(Zero).IsPositive();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
-        public void NotIsPositiveThrowsExceptionWhenFailing()
-        {
-            const ushort Two = 2;
-
-            Check.That(Two).Not.IsPositive();
-        }
-
-        #endregion
-
         #region IComparable checks
 
         [Test]
@@ -301,9 +272,10 @@ namespace NFluent.Tests
         public void AndOperatorCanChainMultipleAssertionOnNumber()
         {
             const ushort Twenty = 20;
+            const ushort Zero = 0;
 
-            Check.That(Twenty).IsNotZero().And.IsPositive();
-            Check.That(Twenty).IsPositive().And.IsNotZero();
+            Check.That(Twenty).IsNotZero().And.IsAfter(Zero);
+            Check.That(Twenty).IsAfter(Zero).And.IsNotZero();
         }
 
         #region Equals / IsEqualTo / IsNotEqualTo
@@ -322,11 +294,12 @@ namespace NFluent.Tests
         {
             const ushort Twenty = 20;
             const ushort OtherTwenty = 20;
+            const ushort Zero = 0;
 
             Check.That(Twenty).Equals(OtherTwenty);
 
             // check the 'other implementation of equals
-            Check.That(Twenty).IsPositive().And.Equals(OtherTwenty);
+            Check.That(Twenty).IsAfter(Zero).And.Equals(OtherTwenty);
         }
 
         [Test]
@@ -428,8 +401,9 @@ namespace NFluent.Tests
         public void HasValueSupportsToBeChainedWithTheWhichOperator()
         {
             ushort? one = 1;
+            const ushort Zero = 0;
 
-            Check.That(one).HasAValue().Which.IsPositive().And.IsEqualTo((ushort)1);
+            Check.That(one).HasAValue().Which.IsAfter(Zero).And.IsEqualTo((ushort)1);
         }
 
         [Test]
@@ -437,8 +411,9 @@ namespace NFluent.Tests
         public void TryingToChainANullableWithoutAValueIsPossibleButThrowsAnException()
         {
             ushort? noValue = null;
+            const ushort Zero = 0;
 
-            Check.That(noValue).Not.HasAValue().Which.IsPositive();
+            Check.That(noValue).Not.HasAValue().Which.IsAfter(Zero);
         }
 
         #endregion
@@ -510,8 +485,16 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        {
+            ushort? noValue = null;
+
+            Check.That(noValue).IsInstanceOf<ushort?>();
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[null] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
-        public void NotIsInstanceOfWorksWithNullableWithoutValue()
+        public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             ushort? noValue = null;
 
@@ -525,6 +508,36 @@ namespace NFluent.Tests
             ushort? one = null;
 
             Check.That(one).IsInstanceOf<string>();
+        }
+
+        #endregion
+
+        #region IsNotInstance
+
+        [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            ushort? one = 1;
+
+            Check.That(one).IsNotInstanceOf<ushort>().And.HasAValue().Which.IsEqualTo((ushort)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[1] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
+        public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
+        {
+            ushort? one = 1;
+
+            Check.That(one).IsNotInstanceOf<ushort?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[null] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
+        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        {
+            ushort? noValue = null;
+
+            Check.That(noValue).IsNotInstanceOf<ushort?>();
         }
 
         #endregion

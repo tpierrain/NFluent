@@ -27,7 +27,7 @@ namespace NFluent
 
         // private readonly N value;
         private readonly CheckRunner<N> checkRunner;
-        private IRunnableCheck<N> runnableCheck;
+        private readonly IRunnableCheck<N> runnableCheck;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberCheck{N}" /> class.
@@ -106,6 +106,24 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value is strictly negative.
+        /// </summary>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
+        public ICheckLink<ICheck<N>> IsNegative()
+        {
+            return this.checkRunner.ExecuteCheck(
+                () =>
+                {
+                    if (Convert.ToInt32(this.runnableCheck.Value) >= 0)
+                    {
+                        throw new FluentCheckException(FluentMessage.BuildMessage("The {0} is not strictly negative.").On(this.runnableCheck.Value).ToString());
+                    }
+                },
+                FluentMessage.BuildMessage("The {0} is negative, whereas it must not.").On(this.runnableCheck.Value).ToString());
+        }
+
+        /// <summary>
         /// Checks that the actual value is less than a comparand.
         /// </summary>
         /// <param name="comparand">
@@ -154,82 +172,6 @@ namespace NFluent
                     },
                 FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(this.runnableCheck.Value).And.Expected(comparand).Comparison("less than").ToString());
         }
-
-        #region IEqualityFluentAssertion members
-
-        /// <summary>
-        /// Checks that the actual value is equal to another expected value.
-        /// </summary>
-        /// <returns>A check link.</returns>
-        /// <param name="expected">The expected value.</param>
-        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public ICheckLink<ICheck<N>> IsEqualTo(object expected)
-        {
-            return this.checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        EqualityHelper.IsEqualTo(this.runnableCheck.Value, expected);
-                    },
-                EqualityHelper.BuildErrorMessage(this.runnableCheck.Value, expected, true));
-        }
-
-        /// <summary>
-        /// Checks that the actual value is not equal to another expected value.
-        /// </summary>
-        /// <returns>A check link.</returns>
-        /// <param name="expected">The expected value.</param>
-        /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public ICheckLink<ICheck<N>> IsNotEqualTo(object expected)
-        {
-            return this.checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        EqualityHelper.IsNotEqualTo(this.runnableCheck.Value, expected);
-                    },
-                EqualityHelper.BuildErrorMessage(this.runnableCheck.Value, expected, false));
-        }
-
-        #endregion
-
-        #region IInstanceTypeFluentAssertion members
-
-        /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public ICheckLink<ICheck<N>> IsInstanceOf<T>()
-        {
-            return this.checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsInstanceOf(this.runnableCheck.Value, typeof(T));
-                },
-                IsInstanceHelper.BuildErrorMessage(this.runnableCheck, typeof(T), true));
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public ICheckLink<ICheck<N>> IsNotInstanceOf<T>()
-        {
-            return this.checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsNotInstanceOf(this.runnableCheck.Value, typeof(T));
-                },
-                IsInstanceHelper.BuildErrorMessage(this.runnableCheck, typeof(T), false));
-        }
-
-        #endregion
 
         /// <summary>
         /// Checks whether a given value is equal to zero.

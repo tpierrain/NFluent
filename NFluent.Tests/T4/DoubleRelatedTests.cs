@@ -115,35 +115,6 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsPositive
-
-        [Test]
-        public void IsPositiveWorks()
-        {
-            const double Two = 2D;
-
-            Check.That(Two).IsPositive();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[0]")]
-        public void IsPositiveThrowsExceptionWhenEqualToZero()
-        {
-            const double Zero = 0D;
-            Check.That(Zero).IsPositive();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
-        public void NotIsPositiveThrowsExceptionWhenFailing()
-        {
-            const double Two = 2D;
-
-            Check.That(Two).Not.IsPositive();
-        }
-
-        #endregion
-
         #region IComparable checks
 
         [Test]
@@ -301,9 +272,10 @@ namespace NFluent.Tests
         public void AndOperatorCanChainMultipleAssertionOnNumber()
         {
             const double Twenty = 20D;
+            const double Zero = 0D;
 
-            Check.That(Twenty).IsNotZero().And.IsPositive();
-            Check.That(Twenty).IsPositive().And.IsNotZero();
+            Check.That(Twenty).IsNotZero().And.IsAfter(Zero);
+            Check.That(Twenty).IsAfter(Zero).And.IsNotZero();
         }
 
         #region Equals / IsEqualTo / IsNotEqualTo
@@ -322,11 +294,12 @@ namespace NFluent.Tests
         {
             const double Twenty = 20D;
             const double OtherTwenty = 20D;
+            const double Zero = 0D;
 
             Check.That(Twenty).Equals(OtherTwenty);
 
             // check the 'other implementation of equals
-            Check.That(Twenty).IsPositive().And.Equals(OtherTwenty);
+            Check.That(Twenty).IsAfter(Zero).And.Equals(OtherTwenty);
         }
 
         [Test]
@@ -428,8 +401,9 @@ namespace NFluent.Tests
         public void HasValueSupportsToBeChainedWithTheWhichOperator()
         {
             double? one = 1D;
+            const double Zero = 0D;
 
-            Check.That(one).HasAValue().Which.IsPositive().And.IsEqualTo((double)1);
+            Check.That(one).HasAValue().Which.IsAfter(Zero).And.IsEqualTo((double)1);
         }
 
         [Test]
@@ -437,8 +411,9 @@ namespace NFluent.Tests
         public void TryingToChainANullableWithoutAValueIsPossibleButThrowsAnException()
         {
             double? noValue = null;
+            const double Zero = 0D;
 
-            Check.That(noValue).Not.HasAValue().Which.IsPositive();
+            Check.That(noValue).Not.HasAValue().Which.IsAfter(Zero);
         }
 
         #endregion
@@ -510,8 +485,16 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        {
+            double? noValue = null;
+
+            Check.That(noValue).IsInstanceOf<double?>();
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of double? whereas it must not.\nThe checked value:\n\t[null] of type: [double?]\nThe expected type: different from\n\t[double?]")]
-        public void NotIsInstanceOfWorksWithNullableWithoutValue()
+        public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             double? noValue = null;
 
@@ -525,6 +508,36 @@ namespace NFluent.Tests
             double? one = null;
 
             Check.That(one).IsInstanceOf<string>();
+        }
+
+        #endregion
+
+        #region IsNotInstance
+
+        [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            double? one = 1D;
+
+            Check.That(one).IsNotInstanceOf<double>().And.HasAValue().Which.IsEqualTo((double)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of double? whereas it must not.\nThe checked value:\n\t[1] of type: [double?]\nThe expected type: different from\n\t[double?]")]
+        public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
+        {
+            double? one = 1D;
+
+            Check.That(one).IsNotInstanceOf<double?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of double? whereas it must not.\nThe checked value:\n\t[null] of type: [double?]\nThe expected type: different from\n\t[double?]")]
+        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        {
+            double? noValue = null;
+
+            Check.That(noValue).IsNotInstanceOf<double?>();
         }
 
         #endregion

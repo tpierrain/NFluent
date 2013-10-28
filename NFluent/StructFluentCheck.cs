@@ -16,12 +16,14 @@ namespace NFluent
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    
+    using NFluent.Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public class StructFluentCheck<T> : IStructCheck<T>, IStructCheckRunner<T>, IRunnableCheck<T> where T : struct
+    public class StructFluentCheck<T> : IForkableCheck, IStructCheck<T>, IStructCheckRunner<T>, IRunnableCheck<T> where T : struct
     {
         private readonly StructCheckRunner<T> checkRunner;
 
@@ -104,6 +106,36 @@ namespace NFluent
         object IForkableCheck.ForkInstance()
         {
             return new StructFluentCheck<T>(this.Value);
+        }
+
+        /// <summary>
+        /// Checks whether if the checked value is of the given type.
+        /// </summary>
+        /// <typeparam name="U">The given type to check the checked value against.</typeparam>
+        /// <returns>A chainable check.</returns>
+        /// <exception cref="FluentCheckException">The specified value is not of the given type.</exception>
+        public ICheckLink<IStructCheck<T>> IsInstanceOf<U>() where U : struct
+        {
+            ((IStructCheckRunner<T>)this).ExecuteCheck(
+                () => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)),
+                IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
+
+            return new CheckLink<IStructCheck<T>>(this);
+        }
+
+        /// <summary>
+        /// Checks whether if the checked value is different from the given type.
+        /// </summary>
+        /// <typeparam name="U">The given type to check the checked value against.</typeparam>
+        /// <returns>A chainable check.</returns>
+        /// <exception cref="FluentCheckException">The specified value is of the given type.</exception>
+        public ICheckLink<IStructCheck<T>> IsNotInstanceOf<U>() where U : struct
+        {
+            ((IStructCheckRunner<T>)this).ExecuteCheck(
+                () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)),
+                IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
+
+            return new CheckLink<IStructCheck<T>>(this);
         }
     }
 }

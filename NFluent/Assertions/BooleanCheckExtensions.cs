@@ -118,51 +118,5 @@ namespace NFluent
                 },
                 FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(runnableCheck.Value).ToString());
         }
-
-        /// <summary>
-        /// Checks that the actual instance is an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is not of the provided type.</exception>
-        public static ICheckLink<ICheck<bool>> IsInstanceOf<T>(this ICheck<bool> check)
-        {
-            var checkRunner = check as ICheckRunner<bool>;
-            var runnableCheck = check as IRunnableCheck<bool>;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                {
-                    IsInstanceHelper.IsInstanceOf(runnableCheck.Value, typeof(T));
-                },
-                IsInstanceHelper.BuildErrorMessage(runnableCheck, typeof(T), true));
-        }
-
-        /// <summary>
-        /// Checks that the actual instance is not an instance of the given type.
-        /// </summary>
-        /// <typeparam name="T">The type not expected for this instance.</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual instance is of the provided type.</exception>
-        public static ICheckLink<ICheck<bool>> IsNotInstanceOf<T>(this ICheck<bool> check)
-        {
-            var checkRunner = check as ICheckRunner<bool>;
-            var runnableCheck = check as IRunnableCheck<bool>;
-            
-            var expectedType = typeof(T);
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        IsInstanceHelper.IsNotInstanceOf(runnableCheck.Value, expectedType);
-                    },
-                IsInstanceHelper.BuildErrorMessage(runnableCheck.Value, typeof(T), true));
-        }
     }
 }

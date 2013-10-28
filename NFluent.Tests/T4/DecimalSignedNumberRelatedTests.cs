@@ -52,11 +52,28 @@ namespace NFluent.Tests
         #region IsPositive
 
         [Test]
+        public void IsPositiveWorks()
+        {
+            const decimal Two = 2M;
+
+            Check.That(Two).IsPositive();
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[0]")]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
             const decimal Zero = 0M;
             Check.That(Zero).IsPositive();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
+        public void NotIsPositiveThrowsExceptionWhenFailing()
+        {
+            const decimal Two = 2M;
+
+            Check.That(Two).Not.IsPositive();
         }
 
         [Test]
@@ -76,13 +93,33 @@ namespace NFluent.Tests
             Check.That(MinusFifty).Not.IsPositive();
         }
 
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
-        public void NotIsPositiveThrowsExceptionWhenFailing()
-        {
-            const decimal Two = 2M;
+        #endregion
 
-            Check.That(Two).Not.IsPositive();
+        #region IsNegative
+
+        [Test]
+        public void IsNegativeWorks()
+        {
+            const decimal Two = -2;
+
+            Check.That(Two).IsNegative();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly negative.\nThe checked value:\n\t[0]")]
+        public void IsNegativeThrowsExceptionWhenEqualToZero()
+        {
+            const decimal Zero = 0M;
+            Check.That(Zero).IsNegative();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is negative, whereas it must not.\nThe checked value:\n\t[-2]")]
+        public void NotIsNegativeThrowsExceptionWhenFailing()
+        {
+            const decimal Two = -2;
+
+            Check.That(Two).Not.IsNegative();
         }
 
         #endregion

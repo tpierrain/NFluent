@@ -115,35 +115,6 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsPositive
-
-        [Test]
-        public void IsPositiveWorks()
-        {
-            const decimal Two = 2M;
-
-            Check.That(Two).IsPositive();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[0]")]
-        public void IsPositiveThrowsExceptionWhenEqualToZero()
-        {
-            const decimal Zero = 0M;
-            Check.That(Zero).IsPositive();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
-        public void NotIsPositiveThrowsExceptionWhenFailing()
-        {
-            const decimal Two = 2M;
-
-            Check.That(Two).Not.IsPositive();
-        }
-
-        #endregion
-
         #region IComparable checks
 
         [Test]
@@ -301,9 +272,10 @@ namespace NFluent.Tests
         public void AndOperatorCanChainMultipleAssertionOnNumber()
         {
             const decimal Twenty = 20M;
+            const decimal Zero = 0M;
 
-            Check.That(Twenty).IsNotZero().And.IsPositive();
-            Check.That(Twenty).IsPositive().And.IsNotZero();
+            Check.That(Twenty).IsNotZero().And.IsAfter(Zero);
+            Check.That(Twenty).IsAfter(Zero).And.IsNotZero();
         }
 
         #region Equals / IsEqualTo / IsNotEqualTo
@@ -322,11 +294,12 @@ namespace NFluent.Tests
         {
             const decimal Twenty = 20M;
             const decimal OtherTwenty = 20M;
+            const decimal Zero = 0M;
 
             Check.That(Twenty).Equals(OtherTwenty);
 
             // check the 'other implementation of equals
-            Check.That(Twenty).IsPositive().And.Equals(OtherTwenty);
+            Check.That(Twenty).IsAfter(Zero).And.Equals(OtherTwenty);
         }
 
         [Test]
@@ -428,8 +401,9 @@ namespace NFluent.Tests
         public void HasValueSupportsToBeChainedWithTheWhichOperator()
         {
             decimal? one = 1M;
+            const decimal Zero = 0M;
 
-            Check.That(one).HasAValue().Which.IsPositive().And.IsEqualTo((decimal)1);
+            Check.That(one).HasAValue().Which.IsAfter(Zero).And.IsEqualTo((decimal)1);
         }
 
         [Test]
@@ -437,8 +411,9 @@ namespace NFluent.Tests
         public void TryingToChainANullableWithoutAValueIsPossibleButThrowsAnException()
         {
             decimal? noValue = null;
+            const decimal Zero = 0M;
 
-            Check.That(noValue).Not.HasAValue().Which.IsPositive();
+            Check.That(noValue).Not.HasAValue().Which.IsAfter(Zero);
         }
 
         #endregion
@@ -510,8 +485,16 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        {
+            decimal? noValue = null;
+
+            Check.That(noValue).IsInstanceOf<decimal?>();
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[null] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
-        public void NotIsInstanceOfWorksWithNullableWithoutValue()
+        public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             decimal? noValue = null;
 
@@ -525,6 +508,36 @@ namespace NFluent.Tests
             decimal? one = null;
 
             Check.That(one).IsInstanceOf<string>();
+        }
+
+        #endregion
+
+        #region IsNotInstance
+
+        [Test]
+        public void IsNotInstanceOfWorksWithNullable()
+        {
+            decimal? one = 1M;
+
+            Check.That(one).IsNotInstanceOf<decimal>().And.HasAValue().Which.IsEqualTo((decimal)1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[1] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
+        public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
+        {
+            decimal? one = 1M;
+
+            Check.That(one).IsNotInstanceOf<decimal?>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[null] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
+        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        {
+            decimal? noValue = null;
+
+            Check.That(noValue).IsNotInstanceOf<decimal?>();
         }
 
         #endregion

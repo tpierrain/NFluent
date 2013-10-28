@@ -52,6 +52,8 @@
     <Compile Include="Assertions\BooleanCheckExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Assertions\CharCheckExtensions.cs" />
+    <Compile Include="Assertions\IntSignedCheckExtensions.cs" />
     <Compile Include="Helpers\ComparableHelper.cs" />
     <Compile Include="Assertions\DictionaryCheckExtension.cs" />
     <Compile Include="Assertions\StringFluentSyntaxExtension.cs" />
@@ -59,7 +61,26 @@
     <Compile Include="Helpers\Duration.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FluentMessage.cs" />
-    <Compile Include="Helpers\TimeUnit.cs" />
+    <Compile Include="IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense.cs" />
+    <Compile Include="T4\DecimalSignedCheckExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T4\DoubleSignedCheckExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T4\FloatSignedCheckExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T4\LongSignedCheckExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T4\SbyteSignedCheckExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T4\ShortSignedCheckExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TimeUnit.cs" />
     <Compile Include="IExtendableCheckLink.cs" />
     <Compile Include="Assertions\StructCheckExtensions.cs" />
     <Compile Include="NullableOrNumberCheckLink.cs" />

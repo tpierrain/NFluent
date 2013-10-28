@@ -20,7 +20,7 @@ namespace NFluent
     /// <summary>
     /// Provides lambda/action specific check.
     /// </summary>
-    public interface ILambdaCheck : IForkableCheck
+    public interface ILambdaCheck : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         /// <summary>
         /// Checks that the execution time is below a specified threshold.

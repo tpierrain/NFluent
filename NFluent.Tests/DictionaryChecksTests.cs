@@ -44,6 +44,10 @@ namespace NFluent.Tests
             Check.That(SimpleDico).HasSize(1);
 
             Check.That(SimpleDico).IsInstanceOf<Dictionary<string, string>>();
+
+            Check.That(SimpleDico).IsNotEqualTo(4);
+
+            Check.That(SimpleDico).IsSameReferenceThan(SimpleDico);
         }
 
         [Test]
