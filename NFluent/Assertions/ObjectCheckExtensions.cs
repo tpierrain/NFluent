@@ -60,6 +60,29 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value is equal to another expected value.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
+        /// <param name="check">
+        /// The fluent check to be extended.
+        /// </param>
+        /// <param name="expected">
+        /// The expected value.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The actual value is not equal to the expected value.
+        /// </exception>
+        public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, T expected)
+        {
+            return IsEqualTo(check, (object)expected);
+        }
+
+        /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
         /// <typeparam name="T">
@@ -85,6 +108,23 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value is not equal to another expected value.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
+        public static ICheckLink<ICheck<T>> IsNotEqualTo<T>(this ICheck<T> check, T expected)
+        {
+            return IsNotEqualTo(check, (object)expected);
+        }
+
+        /// <summary>
         /// Checks that the actual expression is in the inheritance hierarchy of the given type or of the same type.
         /// </summary>
         /// <typeparam name="T">The Type which is expected to be a base Type of the actual expression.</typeparam>
@@ -107,6 +147,58 @@ namespace NFluent
                     IsInstanceHelper.InheritsFrom(runnableCheck.Value, expectedBaseType);
                 },
                 string.Format("\nThe checked expression is part of the inheritance hierarchy or of the same type than the specified one.\nIndeed, checked expression type:\n\t[{0}]\nis a derived type of\n\t[{1}].", instanceType.ToStringProperlyFormated(), expectedBaseType.ToStringProperlyFormated()));
+        }
+
+        /// <summary>
+        /// Checks that the actual expression is null.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">Is the value is not null.</exception>
+        public static ICheckLink<ICheck<object>> IsNull(this ICheck<object> check)
+        {
+            var runnableCheck = check as IRunnableCheck<object>;
+            var negated = runnableCheck.Negated;
+            var value = runnableCheck.Value;
+
+            var message = IsNullImpl(value, negated);
+            if (!string.IsNullOrEmpty(message))
+            {
+                throw new FluentCheckException(FluentMessage.BuildMessage(message).For("object").On(value).ToString());
+            }
+
+            return new CheckLink<ICheck<object>>(check);
+        }
+
+        /// <summary>
+        /// Checks that the actual expression is not null.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">Is the value is null.</exception>
+        public static ICheckLink<ICheck<object>> IsNotNull(this ICheck<object> check)
+        {
+            var runnableCheck = check as IRunnableCheck<object>;
+            var negated = runnableCheck.Negated;
+            var value = runnableCheck.Value;
+
+            var message = IsNullImpl(value, !negated);
+            if (!string.IsNullOrEmpty(message))
+            {
+                throw new FluentCheckException(FluentMessage.BuildMessage(message).For("object").On(value).ToString());
+            }
+
+            return new CheckLink<ICheck<object>>(check);
+        }
+
+        private static string IsNullImpl(object value, bool negated)
+        {
+            if (!negated)
+            {
+                return value == null ? null : "The {0} must be null.";
+            }
+
+            return value == null ? "The {0} must not be null." : null;
         }
 
         /// <summary>

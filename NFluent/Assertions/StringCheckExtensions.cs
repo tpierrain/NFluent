@@ -50,6 +50,20 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value is equal to another expected value.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
+        public static ICheckLink<ICheck<string>> IsEqualTo(this ICheck<string> check, string expected)
+        {
+            return IsEqualTo(check, (object)expected);
+        }
+
+        /// <summary>
         /// Checks that the actual value is not equal to another expected value.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
@@ -70,6 +84,20 @@ namespace NFluent
             }
 
             return new CheckLink<ICheck<string>>(check);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is not equal to another expected value.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
+        public static ICheckLink<ICheck<string>> IsNotEqualTo(this ICheck<string> check, string expected)
+        {
+            return IsNotEqualTo(check, (object)expected);
         }
 
         /// <summary>

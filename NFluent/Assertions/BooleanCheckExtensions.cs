@@ -28,50 +28,6 @@ namespace NFluent
         private const string MustBeTrueMessage = "The {0} is false whereas it must be true.";
 
         /// <summary>
-        /// Checks that the actual value is equal to another expected value.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected value.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static ICheckLink<ICheck<bool>> IsEqualTo(this ICheck<bool> check, object expected)
-        {
-            var checkRunner = check as ICheckRunner<bool>;
-            var runnableCheck = check as IRunnableCheck<bool>;
-            
-            return checkRunner.ExecuteCheck(
-                () =>
-                {
-                    EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
-                },
-                EqualityHelper.BuildErrorMessage(runnableCheck.Value, expected, true));
-        }
-
-        /// <summary>
-        /// Checks that the actual value is not equal to another expected value.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
-        public static ICheckLink<ICheck<bool>> IsNotEqualTo(this ICheck<bool> check, object expected)
-        {
-            var checkRunner = check as ICheckRunner<bool>;
-            var runnableCheck = check as IRunnableCheck<bool>;
-
-            return checkRunner.ExecuteCheck(
-                () =>
-                {
-                    EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
-                },
-                EqualityHelper.BuildErrorMessage(runnableCheck.Value, expected, false));
-        }
-
-        /// <summary>
         /// Checks that the actual value is true.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
