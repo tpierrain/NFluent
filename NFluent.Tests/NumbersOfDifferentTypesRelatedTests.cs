@@ -42,6 +42,57 @@ namespace NFluent.Tests
         #region IsEqualTo / IsNotEqualTo
 
         [Test]
+        public void IntValueIsNotEqualToTheSameByteValue()
+        {
+            byte byteValue = 2;
+            Check.That(byteValue).IsNotEqualTo(2);
+        }
+
+        [Test]
+        public void ByteValueIsEqualToTheSameIntValue()
+        {
+            byte byteValue = 2;
+            Check.That(2).IsEqualTo(byteValue);
+        }
+
+        [Test]
+        public void IntValueIsEqualToTheSameLongValue()
+        {
+            Check.That(2L).IsEqualTo(2);
+        }
+
+        [Test]
+        public void IntValueIsEqualToTheSameDoubleValue()
+        {
+            Check.That(2.0D).IsEqualTo(2);
+        }
+
+        [Test]
+        public void LongValueIsEqualToTheSameDoubleValue()
+        {
+            Check.That(2.0D).IsEqualTo(2L);
+        }
+
+        [Test]
+        public void IntValueIsEqualToTheSameFloatValue()
+        {
+            Check.That(2.0F).IsEqualTo(2);
+        }
+
+        [Test]
+        public void LongValueIsNotEqualToTheSameIntValue()
+        {
+            Check.That(2).IsNotEqualTo(2L);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[42] of type: [int]\nThe expected value:\n\t[42] of type: [long]")]
+        public void LongValueIsNotEqualToTheSameIntValueAndThrows()
+        {
+            Check.That(42).IsEqualTo(42L);
+        }
+
+        [Test]
         public void NotIsEqualToWorksWithDifferentTypes()
         {
             const int IntValue = 42;
@@ -50,16 +101,6 @@ namespace NFluent.Tests
             Check.That(IntValue).Not.IsEqualTo(LongValue);
         }
 
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[42] of type: [int]\nThe expected value:\n\t[42] of type: [long]")]
-        public void IsEqualToThrowsWhenSameNumberOfDifferentTypes()
-        {
-            const int IntValue = 42;
-            const long LongValue = 42L;
-
-            Check.That(IntValue).IsEqualTo(LongValue);
-        }
-        
         #endregion
     }
 }
