@@ -38,7 +38,7 @@ namespace NFluent.Tests
         [Test]
         public void NoExceptionRaised()
         {
-            Check.That(() => new object()).DoesNotThrow();
+            Check.That((Action) (() => new object())).DoesNotThrow();
         }
 
         [Test]
@@ -75,5 +75,182 @@ namespace NFluent.Tests
         {
             Check.That(() => { new object(); }).Throws<Exception>();
         }
+
+        [Test]
+        public void DidNotRaiseWhenUsedWithValidParameterlessFuncVariable()
+        {
+            Func<bool> sut = () => true;
+            Check.That(sut).DoesNotThrow();
+        }
+
+        [Test]
+        public void CanRaiseWhenUsedWithParameterlessFuncVariable()
+        {
+            Func<bool> sut = () => { throw new Exception(); };
+
+            Check.That(sut).ThrowsAny();
+        }
+
+        [Test]
+        public void DidNotRaiseWhenUsedWithValidAnonymousFuncExpression()
+        {
+            Check.That(() => 1).DoesNotThrow();
+        }
+
+        [Test]
+        public void DidNotRaiseWhenUsedWithValidDelegateExpression()
+        {
+            Check.That(delegate { var obj = new object(); }).DoesNotThrow();
+        }
+
+        [Test]
+        public void DidNotRaiseWhenUsedWithAValidParameterlessVoidMethod()
+        {
+            var sut = new AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas();
+            Check.That(sut.AVoidParameterLessMethodThatShouldNotCrash).DoesNotThrow();
+        }
+
+        [Test]
+        public void DidNotRaiseWhenUsedWithAValidParameterlessMethodReturningObject()
+        {
+            var obj = new AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas();
+            Func<object> sut = obj.AScalarParameterLessMethodThatShouldNotCrash;
+            Check.That(sut).DoesNotThrow();
+        }
+
+
+        [Test]
+        public void CanRaiseWhenUsedWithAnonymousActionExpression()
+        {
+            Check.That(() => { throw new Exception(); }).ThrowsAny();
+        }
+
+        [Test]
+        public void DidNotThrowWithNewObjectHavingACorrectCtor()
+        {
+            Check.That(()=>new Object()).DoesNotThrow();
+        }
+        
+        [Test]
+        public void CanRaiseWithNewObjectHavingAFailingCtor()
+        {
+            Check.That(()=>new AnObjectThatCanCrashOnCtor(0)).Throws<DivideByZeroException>();
+        }
+
+        
+
+        [Test]
+        public void CanRaiseWithFailingPropertyGetter()
+        {
+            var sut = new AnObjectThatCanCrashWithPropertyGet(0);
+            Check.That(()=>sut.BeastBreaker).Throws<DivideByZeroException>();
+        }
+
+
+
+        [Test]
+        public void CanCheckForAMessageOnExceptionRaised()
+        {
+            Check.That(() => { throw new LambdaExceptionForTest(123, "my error message"); })
+                .Throws<LambdaExceptionForTest>()
+                .WithMessage("Err #123 : my error message")
+                .And.WithProperty("ExceptionNumber", 123);
+        }
+
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe message is not the expected one\nThe given value:\n\t[\"a buggy message\"]\nThe expected value(s):\n\t[\"Err #321 : my error message\"]")]
+        public void DidNotRaiseTheExpectedMessage()
+        {
+            Check.That(() => { throw new LambdaExceptionForTest(321, "my error message"); })
+                .Throws<LambdaExceptionForTest>()
+                .WithMessage("a buggy message");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe property [inexistingProperty] does not exist on exception of type LambdaExceptionForTest")]
+        public void DidNotHaveExpectedPropertyName()
+        {
+            Check.That(() => { throw new LambdaExceptionForTest(321, "my error message"); })
+                .Throws<LambdaExceptionForTest>()
+                .WithProperty("inexistingProperty", 123);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe property [ExceptionNumber] do not have the expected value\nThe given value:\n\t[321]\nThe expected value:\n\t[123]")]
+        public void DidNotHaveExpectedPropertyValue()
+        {
+            Check.That(() => { throw new LambdaExceptionForTest(321, "my error message"); })
+                .Throws<LambdaExceptionForTest>()
+                .WithProperty("ExceptionNumber", 123);
+        }
+
+
+        #region Lambda related Test Data
+
+        public class LambdaExceptionForTest : Exception
+        {
+            public int ExceptionNumber { get; private set; }
+            public LambdaExceptionForTest(int exeptionNumber, string message) : base(formatMessage(exeptionNumber,message))
+            {
+                ExceptionNumber = exeptionNumber;
+            }
+
+            private static string formatMessage(int exceptionNumber, string message)
+            {
+                return string.Format("Err #{0} : {1}", exceptionNumber, message);
+            }
+        }
+        private class AnObjectThatCanCrashOnCtor
+        {
+            public AnObjectThatCanCrashOnCtor(int i)
+            {
+                var j = 1/i;
+            }
+        }
+
+        private class AnObjectThatCanCrashWithPropertyGet
+        {
+            private int devilMathValue;
+            public AnObjectThatCanCrashWithPropertyGet(int i)
+            {
+                devilMathValue = i;
+            }
+
+            public int BeastBreaker
+            {
+                get
+                {
+                    return 666/devilMathValue;
+                }
+            }
+
+        }
+
+        private class AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas
+        {
+
+            public void AVoidParameterLessMethodThatCrashes()
+            {
+                throw new LambdaExceptionForTest(666, "test");
+            }
+
+            public void AVoidParameterLessMethodThatShouldNotCrash()
+            {
+                new object();
+            }
+
+            public void AScalarParameterLessMethodThatCrashes()
+            {
+                throw new LambdaExceptionForTest(666, "test");
+            }
+
+            public object AScalarParameterLessMethodThatShouldNotCrash()
+            {
+                return new object();
+            }
+        }
+        #endregion
+
     }
 }
