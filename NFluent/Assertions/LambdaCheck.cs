@@ -39,7 +39,8 @@ namespace NFluent
         /// <param name="action">
         /// Action to be assessed.
         /// </param>
-        public LambdaCheck(Action action) : this(action, false)
+        public LambdaCheck(Delegate action)
+            : this(action, false)
         {
         }
 
@@ -48,7 +49,7 @@ namespace NFluent
         /// </summary>
         /// <param name="action">The action.</param>
         /// <param name="alreadyExecuted">A value indicating whether the action has already been executed or not.</param>
-        private LambdaCheck(Action action, bool alreadyExecuted)
+        private LambdaCheck(Delegate action, bool alreadyExecuted)
         {
             this.Value = action;
 
@@ -68,7 +69,7 @@ namespace NFluent
         /// <value>
         /// The value to be tested by any fluent check extension method.
         /// </value>
-        private Action Value { get; set; }
+        private Delegate Value { get; set; }
 
         #endregion
 
@@ -88,10 +89,10 @@ namespace NFluent
         {
             const bool AlreadyExecuted = true;
             var newInstance = new LambdaCheck(this.Value, AlreadyExecuted)
-                                  {
-                                      durationInNs = this.durationInNs,
-                                      exception = this.exception
-                                  };
+            {
+                durationInNs = this.durationInNs,
+                exception = this.exception
+            };
 
             return newInstance;
         }
@@ -166,7 +167,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The code did not raised an exception of the specified type, or did not raised an exception at all.
         /// </exception>
-        public ICheckLink<ILambdaCheck> Throws<T>()
+        public ILambdaExceptionCheck<ILambdaCheck> Throws<T>()
         {
             if (this.exception == null)
             {
@@ -186,7 +187,7 @@ namespace NFluent
                 throw new FluentCheckException(message);
             }
 
-            return new CheckLink<ILambdaCheck>(this);
+            return new LambdaExceptionCheck(this, this.exception);
         }
 
         /// <summary>
@@ -198,7 +199,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The code did not raised an exception of any type.
         /// </exception>
-        public ICheckLink<ILambdaCheck> ThrowsAny()
+        public ILambdaExceptionCheck<ILambdaCheck> ThrowsAny()
         {
             if (this.exception == null)
             {
@@ -207,24 +208,23 @@ namespace NFluent
                 throw new FluentCheckException(message);
             }
 
-            return new CheckLink<ILambdaCheck>(this);
+            return new LambdaExceptionCheck(this, this.exception);
         }
-
         #endregion
 
         #region Methods
- 
+
         private void Execute()
         {
             var watch = new Stopwatch();
             try
             {
                 watch.Start();
-                this.Value();
+                this.Value.DynamicInvoke();
             }
             catch (Exception e)
             {
-                this.exception = e;
+                this.exception = e.InnerException;
             }
             finally
             {
@@ -234,7 +234,7 @@ namespace NFluent
             // ReSharper disable PossibleLossOfFraction
             this.durationInNs = watch.ElapsedTicks * 1000000000 / Stopwatch.Frequency;
         }
-        
+
         #endregion
     }
 }
