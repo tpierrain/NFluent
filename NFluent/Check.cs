@@ -56,6 +56,23 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
+        /// </summary>
+        /// <typeparam name="T">Type of the value returned by the <see cref="System.Func{TResult}"/> to be checked.</typeparam>
+        /// <param name="value">The value to be tested.</param>
+        /// <returns>
+        /// A <see cref="ILambdaCheck" /> instance to use in order to assert things on the given value.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
+        /// </remarks>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static ILambdaCheck That<T>(Func<T> value)
+        {
+            return new LambdaCheck(value);
+        }
+
+        /// <summary>
         /// Returns a <see cref="IStructCheck{T}" /> instance that will provide check methods to be executed on a given enum or struct value.
         /// </summary>
         /// <typeparam name="T">Type of the enum or struct value to be tested.</typeparam>

@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using System;
     using System.Threading;
 
     using NUnit.Framework;
@@ -35,5 +36,216 @@ namespace NFluent.Tests
         {
             Check.That(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
         }
+
+        [Test]
+        public void NoExceptionRaised()
+        {
+            Check.That((Action)(() => new object())).DoesNotThrow();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.")]
+        public void UnexpectedExceptionRaised()
+        {
+            Check.That(() => { throw new ApplicationException(); }).DoesNotThrow();
+        }
+
+        [Test]
+        public void ExpectedExceptionRaised()
+        {
+            Check.That(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
+            Check.That(() => { throw new ApplicationException(); }).ThrowsAny();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe checked code raised an exception of a different type than expected.")]
+        public void DidNotRaiseExpected()
+        {
+            Check.That(() => { throw new Exception(); }).Throws<ApplicationException>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code did not raise an exception, whereas it must.")]
+        public void DidNotRaiseAny()
+        {
+            Check.That(() => { new object(); }).ThrowsAny();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code did not raise an exception, whereas it must.\nExpected exception type is:\n\t[System.Exception]")]
+        public void DidNotRaiseAnyTypedCheck()
+        {
+            Check.That(() => { new object(); }).Throws<Exception>();
+        }
+
+        [Test]
+        public void DidNotRaiseWhenUsedWithValidParameterlessFuncVariable()
+        {
+            Func<bool> sut = () => true;
+            Check.That(sut).DoesNotThrow();
+        }
+
+        [Test]
+        public void CanRaiseWhenUsedWithParameterlessFuncVariable()
+        {
+            Func<bool> sut = () => { throw new Exception(); };
+
+            Check.That(sut).ThrowsAny();
+        }
+
+        [Test]
+        public void DidNotRaiseWhenUsedWithValidAnonymousFuncExpression()
+        {
+            Check.That(() => 1).DoesNotThrow();
+        }
+
+        [Test]
+        public void DidNotRaiseWhenUsedWithValidDelegateExpression()
+        {
+            Check.That(delegate { var obj = new object(); }).DoesNotThrow();
+        }
+
+        [Test]
+        public void DidNotRaiseWhenUsedWithAValidParameterlessVoidMethod()
+        {
+            var sut = new AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas();
+            Check.That(sut.AVoidParameterLessMethodThatShouldNotCrash).DoesNotThrow();
+        }
+
+        [Test]
+        public void DidNotRaiseWhenUsedWithAValidParameterlessMethodReturningObject()
+        {
+            var obj = new AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas();
+            Func<object> sut = obj.AScalarParameterLessMethodThatShouldNotCrash;
+            Check.That(sut).DoesNotThrow();
+        }
+
+        [Test]
+        public void CanRaiseWhenUsedWithAnonymousActionExpression()
+        {
+            Check.That(() => { throw new Exception(); }).ThrowsAny();
+        }
+
+        [Test]
+        public void DidNotThrowWithNewObjectHavingACorrectCtor()
+        {
+            Check.That(() => new object()).DoesNotThrow();
+        }
+        
+        [Test]
+        public void CanRaiseWithNewObjectHavingAFailingCtor()
+        {
+            Check.That(() => new AnObjectThatCanCrashOnCtor(0)).Throws<DivideByZeroException>();
+        }
+
+        [Test]
+        public void CanRaiseWithFailingPropertyGetter()
+        {
+            var sut = new AnObjectThatCanCrashWithPropertyGet(0);
+            Check.That(() => sut.BeastBreaker).Throws<DivideByZeroException>();
+        }
+
+        [Test]
+        public void CanCheckForAMessageOnExceptionRaised()
+        {
+            Check.That(() => { throw new LambdaExceptionForTest(123, "my error message"); })
+                .Throws<LambdaExceptionForTest>()
+                .WithMessage("Err #123 : my error message")
+                .And.WithProperty("ExceptionNumber", 123);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe message of the checked exception is not as expected.\nThe given exception message:\n\t[\"a buggy message\"]\nThe expected value(s):\n\t[\"Err #321 : my error message\"]")]
+        public void DidNotRaiseTheExpectedMessage()
+        {
+            Check.That(() => { throw new LambdaExceptionForTest(321, "my error message"); })
+                .Throws<LambdaExceptionForTest>()
+                .WithMessage("a buggy message");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThere is no property [inexistingProperty] on exception type [LambdaExceptionForTest].")]
+        public void DidNotHaveExpectedPropertyName()
+        {
+            Check.That(() => { throw new LambdaExceptionForTest(321, "my error message"); })
+                .Throws<LambdaExceptionForTest>()
+                .WithProperty("inexistingProperty", 123);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe property [ExceptionNumber] of the checked exception do not have the expected value.\nThe given exception:\n\t[321]\nThe expected exception:\n\t[123]")]
+        public void DidNotHaveExpectedPropertyValue()
+        {
+            Check.That(() => { throw new LambdaExceptionForTest(321, "my error message"); })
+                .Throws<LambdaExceptionForTest>()
+                .WithProperty("ExceptionNumber", 123);
+        }
+
+        #region Lambda related Test Data
+
+        public class LambdaExceptionForTest : Exception
+        {
+            public LambdaExceptionForTest(int exeptionNumber, string message) : base(FormatMessage(exeptionNumber, message))
+            {
+                this.ExceptionNumber = exeptionNumber;
+            }
+
+            public int ExceptionNumber { get; private set; }
+
+            private static string FormatMessage(int exceptionNumber, string message)
+            {
+                return string.Format("Err #{0} : {1}", exceptionNumber, message);
+            }
+        }
+
+        private class AnObjectThatCanCrashOnCtor
+        {
+            public AnObjectThatCanCrashOnCtor(int i)
+            {
+                var j = 1 / i;
+            }
+        }
+
+        private class AnObjectThatCanCrashWithPropertyGet
+        {
+            private int devilMathValue;
+
+            public AnObjectThatCanCrashWithPropertyGet(int i)
+            {
+                this.devilMathValue = i;
+            }
+
+            public int BeastBreaker
+            {
+                get
+                {
+                    return 666 / this.devilMathValue;
+                }
+            }
+        }
+
+        private class AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas
+        {
+            public void AVoidParameterLessMethodThatCrashes()
+            {
+                throw new LambdaExceptionForTest(666, "test");
+            }
+
+            public void AVoidParameterLessMethodThatShouldNotCrash()
+            {
+                new object();
+            }
+
+            public void AScalarParameterLessMethodThatCrashes()
+            {
+                throw new LambdaExceptionForTest(666, "test");
+            }
+
+            public object AScalarParameterLessMethodThatShouldNotCrash()
+            {
+                return new object();
+            }
+        }
+        #endregion
     }
 }
