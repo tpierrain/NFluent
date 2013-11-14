@@ -11,16 +11,12 @@
 //   // //   See the License for the specific language governing permissions and
 //   // //   limitations under the License.
 // </copyright>
-// <summary>
-//   
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NFluent.Helpers
+namespace NFluent.Extensibility
 {
     using System;
     using System.Text;
-
     using NFluent.Extensions;
 
     // TODO: probably worth to refactor the implementation of this class
@@ -28,7 +24,7 @@ namespace NFluent.Helpers
     /// <summary>
     /// Help to build a properly formatted fluent error message.
     /// </summary>
-    internal class FluentMessage
+    public class FluentMessage
     {
         private const string DefaultEntity = "value";
 

@@ -21,6 +21,7 @@ namespace NFluent
     using System.Collections;
     using System.Diagnostics;
 
+    using NFluent.Extensibility;
     using NFluent.Extensions;
     using NFluent.Helpers;
 

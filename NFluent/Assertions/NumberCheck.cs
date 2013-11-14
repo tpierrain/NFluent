@@ -15,6 +15,8 @@
 namespace NFluent
 {
     using System;
+
+    using NFluent.Extensibility;
     using NFluent.Helpers;
 
     /// <summary>

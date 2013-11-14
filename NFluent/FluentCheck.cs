@@ -17,6 +17,7 @@ namespace NFluent
     using System;
     using System.Diagnostics.CodeAnalysis;
 
+    using NFluent.Extensibility;
     using NFluent.Extensions;
     using NFluent.Helpers;
 

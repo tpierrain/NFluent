@@ -18,6 +18,7 @@ namespace NFluent.Tests
     using System;
     using System.Collections.Generic;
 
+    using NFluent.Extensibility;
     using NFluent.Extensions;
     using NFluent.Helpers;
 

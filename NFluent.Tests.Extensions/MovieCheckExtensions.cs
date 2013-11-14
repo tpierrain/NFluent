@@ -1,5 +1,6 @@
 ﻿namespace NFluent.Tests.Extensions
 {
+    using NFluent.Extensibility;
     using NFluent.Extensions;
 
     public static class MovieCheckExtensions

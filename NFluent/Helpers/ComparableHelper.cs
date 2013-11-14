@@ -16,6 +16,8 @@ namespace NFluent.Helpers
 {
     using System;
 
+    using NFluent.Extensibility;
+
     /// <summary>
     /// Helper class related to IComparable methods (used like a traits).
     /// </summary>

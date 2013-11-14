@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using NFluent.Extensibility;
     using NFluent.Extensions;
     using NFluent.Helpers;
 

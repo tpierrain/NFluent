@@ -18,6 +18,7 @@ namespace NFluent
     using System.Reflection;
     using System.Text.RegularExpressions;
 
+    using NFluent.Extensibility;
     using NFluent.Extensions;
     using NFluent.Helpers;
 

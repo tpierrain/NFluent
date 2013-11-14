@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="CheckRunner.cs" company="">
+// // <copyright file="ICheckRunner.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -10,12 +10,11 @@
 // //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // //   See the License for the specific language governing permissions and
 // //   limitations under the License.
-// // </copyright>  
+// // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent
+namespace NFluent.Extensibility
 {
     using System;
-    using System.ComponentModel;
 
     /// <summary>
     /// Provides a mean to execute a fluent check, taking care of whether it should be negated or not, etc.
@@ -24,30 +23,8 @@ namespace NFluent
     /// checks statements.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    internal class CheckRunner<T> : ICheckRunner<T>
+    public interface ICheckRunner<out T>
     {
-        private readonly IRunnableCheck<T> runnableFluentCheck;
-
-        public CheckRunner(IRunnableCheck<T> runnableFluentCheck)
-        {
-            this.runnableFluentCheck = runnableFluentCheck;
-        }
-
-        /// <summary>
-        /// Gets the value to be tested (provided for any extension method to be able to test it).
-        /// </summary>
-        /// <value>
-        /// The value to be tested by any fluent check extension method.
-        /// </value>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public T Value 
-        { 
-            get
-            {
-                return this.runnableFluentCheck.Value;
-            }
-        }
-
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
@@ -57,32 +34,6 @@ namespace NFluent
         /// A new check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        public ICheckLink<ICheck<T>> ExecuteCheck(Action action, string negatedExceptionMessage)
-        {
-            try
-            {
-                // execute test
-                action();
-            }
-            catch (FluentCheckException)
-            {
-                // exception raised, and this was not expected
-                if (!this.runnableFluentCheck.Negated)
-                { 
-                    throw;
-                }
-
-                // exception was expected
-                return new CheckLink<ICheck<T>>(this.runnableFluentCheck);
-            }
-
-            if (this.runnableFluentCheck.Negated)
-            {
-                // the expected exception did not occur
-                throw new FluentCheckException(negatedExceptionMessage);
-            }
-
-            return new CheckLink<ICheck<T>>(this.runnableFluentCheck);
-        }
+        ICheckLink<ICheck<T>> ExecuteCheck(Action action, string negatedExceptionMessage);
     }
 }

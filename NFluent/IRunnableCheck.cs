@@ -16,6 +16,8 @@ namespace NFluent
 {
     using System.ComponentModel;
 
+    using NFluent.Extensibility;
+
     /// <summary>
     /// Fluent check which is runnable by a <see cref="ICheckRunner{T}" />.
     /// </summary>

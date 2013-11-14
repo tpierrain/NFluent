@@ -19,6 +19,7 @@ namespace NFluent
     using System.Linq;
     using System.Text.RegularExpressions;
 
+    using NFluent.Extensibility;
     using NFluent.Helpers;
 
     /// <summary>

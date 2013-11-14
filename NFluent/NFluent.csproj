@@ -53,6 +53,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Assertions\CharCheckExtensions.cs" />
+    <Compile Include="Extensibility\ExtensibilityHelper.cs" />
     <Compile Include="Assertions\IntSignedCheckExtensions.cs" />
     <Compile Include="Helpers\ComparableHelper.cs" />
     <Compile Include="Assertions\DictionaryCheckExtension.cs" />
@@ -60,7 +61,7 @@
     <Compile Include="CheckContext.cs" />
     <Compile Include="Helpers\Duration.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
-    <Compile Include="Helpers\FluentMessage.cs" />
+    <Compile Include="Extensibility\FluentMessage.cs" />
     <Compile Include="IHasParentCheck.cs" />
     <Compile Include="ILambdaExceptionCheck.cs" />
     <Compile Include="IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense.cs" />
@@ -93,8 +94,8 @@
     <Compile Include="IRunnableCheck.cs" />
     <Compile Include="IStructCheckRunner.cs" />
     <Compile Include="StructFluentCheck.cs" />
-    <Compile Include="CheckRunner.cs" />
-    <Compile Include="ICheckRunner.cs" />
+    <Compile Include="Extensibility\CheckRunner.cs" />
+    <Compile Include="Extensibility\ICheckRunner.cs" />
     <Compile Include="INegateableCheck.cs" />
     <Compile Include="IStructCheck.cs" />
     <Compile Include="Assertions\ExtendableCheckLink.cs" />

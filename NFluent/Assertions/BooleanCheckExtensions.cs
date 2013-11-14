@@ -14,7 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using NFluent.Helpers;
+    using NFluent.Extensibility;
 
     /// <summary>
     /// Provides check methods to be executed on a boolean value.
@@ -37,20 +37,21 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not true.</exception>
         public static ICheckLink<ICheck<bool>> IsTrue(this ICheck<bool> check)
         {
-            var checkRunner = check as ICheckRunner<bool>;
+            var value = ExtensibilityHelper<bool>.ExtractValue(check);
+            var runner = ExtensibilityHelper<bool>.ExtractRunner(check);
             
-            return checkRunner.ExecuteCheck(
+            return runner.ExecuteCheck(
                 () =>
                 {
-                    if (!checkRunner.Value)
+                    if (!value)
                     {
-                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(checkRunner.Value).ToString());
+                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(value).ToString());
                     }
                 },
-                FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(checkRunner.Value).ToString());
+                FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(value).ToString());
         }
 
-        /// <summary>@
+        /// <summary>
         /// Checks that the actual value is false.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
@@ -60,17 +61,18 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not false.</exception>
         public static ICheckLink<ICheck<bool>> IsFalse(this ICheck<bool> check)
         {
-            var checkRunner = check as ICheckRunner<bool>;
-
-            return checkRunner.ExecuteCheck(
+            var value = ExtensibilityHelper<bool>.ExtractValue(check);
+            var runner = ExtensibilityHelper<bool>.ExtractRunner(check);
+            
+            return runner.ExecuteCheck(
                 () =>
                 {
-                    if (checkRunner.Value)
+                    if (value)
                     {
-                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(checkRunner.Value).ToString());
+                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(value).ToString());
                     }
                 },
-                FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(checkRunner.Value).ToString());
+                FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(value).ToString());
         }
     }
 }
