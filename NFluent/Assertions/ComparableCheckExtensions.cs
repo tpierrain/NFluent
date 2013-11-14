@@ -35,16 +35,15 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not before the other one.</exception>
         public static ICheckLink<ICheck<IComparable>> IsBefore(this ICheck<IComparable> check, IComparable givenValue)
         {
-            var checkRunner = check as ICheckRunner<IComparable>;
-            var runnableCheck = check as IRunnableCheck<IComparable>;
-            IComparable checkedValue = runnableCheck.Value;
+            var value = ExtensibilityHelper<IComparable>.ExtractValue(check);
+            var runner = ExtensibilityHelper<IComparable>.ExtractRunner(check);
 
-            return checkRunner.ExecuteCheck(
+            return runner.ExecuteCheck(
                 () =>
                     {
-                        ComparableHelper.IsBefore(checkedValue, givenValue);
+                        ComparableHelper.IsBefore(value, givenValue);
                     },
-                FluentMessage.BuildMessage("The {0} is before the reference value whereas it must not.").On(checkedValue).And.Expected(givenValue).Comparison("after").ToString());
+                FluentMessage.BuildMessage("The {0} is before the reference value whereas it must not.").On(value).And.Expected(givenValue).Comparison("after").ToString());
         }
 
         /// <summary>
@@ -58,16 +57,15 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not after the other one.</exception>
         public static ICheckLink<ICheck<IComparable>> IsAfter(this ICheck<IComparable> check, IComparable givenValue)
         {
-            var checkRunner = check as ICheckRunner<IComparable>;
-            var runnableCheck = check as IRunnableCheck<IComparable>;
-            IComparable checkedValue = runnableCheck.Value;
+            var value = ExtensibilityHelper<IComparable>.ExtractValue(check);
+            var runner = ExtensibilityHelper<IComparable>.ExtractRunner(check);
 
-            return checkRunner.ExecuteCheck(
+            return runner.ExecuteCheck(
                 () =>
                 {
-                    ComparableHelper.IsAfter(checkedValue, givenValue);
+                    ComparableHelper.IsAfter(value, givenValue);
                 },
-                FluentMessage.BuildMessage("The {0} is after the reference value whereas it must not.").On(checkedValue).And.Expected(givenValue).Comparison("before").ToString());
+                FluentMessage.BuildMessage("The {0} is after the reference value whereas it must not.").On(value).And.Expected(givenValue).Comparison("before").ToString());
         }
     }
 }
