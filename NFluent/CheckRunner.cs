@@ -15,6 +15,7 @@
 namespace NFluent
 {
     using System;
+    using System.ComponentModel;
 
     /// <summary>
     /// Provides a mean to execute a fluent check, taking care of whether it should be negated or not, etc.
@@ -30,6 +31,21 @@ namespace NFluent
         public CheckRunner(IRunnableCheck<T> runnableFluentCheck)
         {
             this.runnableFluentCheck = runnableFluentCheck;
+        }
+
+        /// <summary>
+        /// Gets the value to be tested (provided for any extension method to be able to test it).
+        /// </summary>
+        /// <value>
+        /// The value to be tested by any fluent check extension method.
+        /// </value>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public T Value 
+        { 
+            get
+            {
+                return this.runnableFluentCheck.Value;
+            }
         }
 
         /// <summary>

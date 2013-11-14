@@ -45,8 +45,7 @@ namespace NFluent
         /// <param name="value">
         /// The value.
         /// </param>
-        public FluentCheck(T value)
-            : this(value, !CheckContext.DefaulNegated)
+        public FluentCheck(T value) : this(value, !CheckContext.DefaulNegated)
         {
         }
 
@@ -84,9 +83,7 @@ namespace NFluent
         /// <value>
         /// The next check negated.
         /// </value>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", 
-            Justification =
-                "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         public ICheck<T> Not
         {
             get
@@ -123,8 +120,7 @@ namespace NFluent
         {
             var checkRunner = this as ICheckRunner<T>;
 
-            checkRunner.ExecuteCheck(
-                () => EqualityHelper.IsEqualTo(this.Value, obj), EqualityHelper.BuildErrorMessage(this.Value, obj, true));
+            checkRunner.ExecuteCheck(() => EqualityHelper.IsEqualTo(this.Value, obj), EqualityHelper.BuildErrorMessage(this.Value, obj, true));
 
             return true;
         }

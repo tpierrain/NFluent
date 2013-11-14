@@ -15,6 +15,7 @@
 namespace NFluent
 {
     using System;
+    using System.ComponentModel;
 
     /// <summary>
     /// Provides a mean to execute a fluent check, taking care of whether it should be negated or not, etc.
@@ -25,6 +26,15 @@ namespace NFluent
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
     public interface ICheckRunner<out T>
     {
+        /// <summary>
+        /// Gets the value to be checked (provided for any extension method to be able to test it).
+        /// </summary>
+        /// <value>
+        /// The value to be tested by any fluent check extension method.
+        /// </value>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        T Value { get; }
+
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>

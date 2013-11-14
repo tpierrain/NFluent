@@ -38,20 +38,19 @@ namespace NFluent
         public static ICheckLink<ICheck<bool>> IsTrue(this ICheck<bool> check)
         {
             var checkRunner = check as ICheckRunner<bool>;
-            var runnableCheck = check as IRunnableCheck<bool>;
-
+            
             return checkRunner.ExecuteCheck(
                 () =>
                 {
-                    if (!runnableCheck.Value)
+                    if (!checkRunner.Value)
                     {
-                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(runnableCheck.Value).ToString());
+                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(checkRunner.Value).ToString());
                     }
                 },
-                FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(runnableCheck.Value).ToString());
+                FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(checkRunner.Value).ToString());
         }
 
-        /// <summary>
+        /// <summary>@
         /// Checks that the actual value is false.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
@@ -62,17 +61,16 @@ namespace NFluent
         public static ICheckLink<ICheck<bool>> IsFalse(this ICheck<bool> check)
         {
             var checkRunner = check as ICheckRunner<bool>;
-            var runnableCheck = check as IRunnableCheck<bool>;
 
             return checkRunner.ExecuteCheck(
                 () =>
                 {
-                    if (runnableCheck.Value)
+                    if (checkRunner.Value)
                     {
-                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(runnableCheck.Value).ToString());
+                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(checkRunner.Value).ToString());
                     }
                 },
-                FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(runnableCheck.Value).ToString());
+                FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(checkRunner.Value).ToString());
         }
     }
 }
