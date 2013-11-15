@@ -28,6 +28,7 @@ namespace NFluent.Extensibility
         /// <returns>The value that needed to be checked.</returns>
         public static T ExtractValue(ICheck<T> check)
         {
+            // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
             return (check as IRunnableCheck<T>).Value;
         }
 
@@ -39,6 +40,7 @@ namespace NFluent.Extensibility
         /// <returns>The runner to be used to check things on the value contained in the fluent check.</returns>
         public static ICheckRunner<T> ExtractRunner(ICheck<T> check)
         {
+            // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
             return check as ICheckRunner<T>;
         }
     }
