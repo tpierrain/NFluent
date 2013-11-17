@@ -1,4 +1,5 @@
 New feature(s):
+* Introduces a mechanism for anyone to easily extend NFluent with his own checks (see. ExtensibilityHelper<T>)
 * Adds IsNull() and IsNotNull() checks.
 * Enhances the Lambda check experience by supporting checks on Func, allowing writing of some usual tests without braces, and giving the possibility to check message and properties of Exceptions
 --------------
