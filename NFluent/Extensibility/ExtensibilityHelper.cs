@@ -15,21 +15,21 @@
 namespace NFluent.Extensibility
 {
     /// <summary>
-    /// Helper that allow to extract the runnable check from any fluent check instance.
+    /// Helper that allow to extract the runnable check from any given fluent check instance.
     /// </summary>
     /// <typeparam name="T">Type of the value to be checked.</typeparam>
     public class ExtensibilityHelper<T>
     {
         /// <summary>
-        /// Extracts the runner to be used in order to check things on the 
-        /// value contained in the given fluent check.
+        /// Extracts the runner to be used in order to check things on the value contained in 
+        /// the given fluent check.
         /// </summary>
         /// <param name="check">The fluent check instance to work on.</param>
-        /// <returns>The runner to be used to check things on the value contained in the fluent check.</returns>
-        public static ICheckRunner<T> ExtractRunnableCheck(ICheck<T> check)
+        /// <returns>The runnable check to be used to check things on the value contained in the fluent check.</returns>
+        public static IRunnableCheck<T> ExtractRunnableCheck(ICheck<T> check)
         {
             // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
-            return (check as IRunnableCheck<T>).Runner;
+            return (check as ICheckForExtensibility<T>).Runner;
         }
     }
 }

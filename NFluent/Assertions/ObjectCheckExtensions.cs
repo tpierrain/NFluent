@@ -176,7 +176,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">Is the value is null.</exception>
         public static ICheckLink<ICheck<object>> IsNotNull(this ICheck<object> check)
         {
-            var runnableCheck = check as IRunnableCheck<object>;
+            var runnableCheck = check as ICheckForExtensibility<object>;
             var negated = runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -211,7 +211,7 @@ namespace NFluent
         public static ICheckLink<ICheck<object>> IsSameReferenceThan(
             this ICheck<object> check, object expected)
         {
-            var runnableCheck = check as IRunnableCheck<object>;
+            var runnableCheck = check as ICheckForExtensibility<object>;
             var negated = runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -265,7 +265,7 @@ namespace NFluent
         public static ICheckLink<ICheck<object>> IsDistinctFrom(
             this ICheck<object> check, object comparand)
         {
-            var runnableCheck = check as IRunnableCheck<object>;
+            var runnableCheck = check as ICheckForExtensibility<object>;
             var negated = !runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -297,7 +297,7 @@ namespace NFluent
         /// <remarks>The comparison is done field by field.</remarks>
         public static ICheckLink<ICheck<object>> HasFieldsEqualToThose(this ICheck<object> check, object expected)
         {
-            var runnableCheck = check as IRunnableCheck<object>;
+            var runnableCheck = check as ICheckForExtensibility<object>;
             var negated = runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -323,7 +323,7 @@ namespace NFluent
         /// <remarks>The comparison is done field by field.</remarks>
         public static ICheckLink<ICheck<object>> HasFieldsNotEqualToThose(this ICheck<object> check, object expected)
         {
-            var runnableCheck = check as IRunnableCheck<object>;
+            var runnableCheck = check as ICheckForExtensibility<object>;
             var negated = !runnableCheck.Negated;
             var value = runnableCheck.Value;
 

@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IRunnableCheck.cs" company="">
+// // <copyright file="IStructCheckForExtensibility.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,13 +14,11 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using NFluent.Extensibility;
-
     /// <summary>
-    /// Fluent check which is runnable by a <see cref="ICheckRunner{T}" />.
+    /// Fluent check for struct (value type) which exposes more information for extensibility purpose.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IRunnableCheck<out T> : IWithValue<T>, IExposingRunner<T>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    public interface IStructCheckForExtensibility<out T> : IWithValue<T>, IExposingStructRunner<T>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense where T : struct
     {
     }
 }

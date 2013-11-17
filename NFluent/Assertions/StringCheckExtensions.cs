@@ -38,7 +38,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static ICheckLink<ICheck<string>> IsEqualTo(this ICheck<string> check, object expected)
         {
-            var runnableCheck = check as IRunnableCheck<string>;
+            var runnableCheck = check as ICheckForExtensibility<string>;
             var actual = runnableCheck.Value;
  
             var messageText = AssessEquals(actual, expected, runnableCheck.Negated);
@@ -75,7 +75,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<string>> IsNotEqualTo(this ICheck<string> check, object expected)
         {
-            var runnableCheck = check as IRunnableCheck<string>;
+            var runnableCheck = check as ICheckForExtensibility<string>;
             var actual = runnableCheck.Value;
 
             var messageText = AssessEquals(actual, expected, !runnableCheck.Negated);
@@ -112,7 +112,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string  contains all the given strings in any order.</exception>
         public static IExtendableCheckLink<string, string[]> Contains(this ICheck<string> check, params string[] values)
         {
-            var runnableCheck = check as IRunnableCheck<string>;
+            var runnableCheck = check as ICheckForExtensibility<string>;
 
             var result = ContainsImpl(runnableCheck.Value, values, runnableCheck.Negated, false);
 
@@ -136,7 +136,7 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> DoesNotContain(
                 this ICheck<string> check, params string[] values)
         {    
-            var runnableCheck = check as IRunnableCheck<string>;
+            var runnableCheck = check as ICheckForExtensibility<string>;
 
             var result = ContainsImpl(runnableCheck.Value, values, runnableCheck.Negated, true);
 
@@ -268,7 +268,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string does not start with the expected prefix.</exception>
         public static ICheckLink<ICheck<string>> StartsWith(this ICheck<string> check, string expectedPrefix)
         {
-            var runnableCheck = check as IRunnableCheck<string>;
+            var runnableCheck = check as ICheckForExtensibility<string>;
 
             var result = StartsWithImpl(runnableCheck.Value, expectedPrefix, runnableCheck.Negated);
             if (string.IsNullOrEmpty(result))
@@ -324,7 +324,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
         public static ICheckLink<ICheck<string>> EndsWith(this ICheck<string> check, string expectedEnd)
         {
-            var runnableCheck = check as IRunnableCheck<string>;
+            var runnableCheck = check as ICheckForExtensibility<string>;
 
             var result = EndsWithImpl(runnableCheck.Value, expectedEnd, runnableCheck.Negated);
             if (string.IsNullOrEmpty(result))
@@ -381,7 +381,7 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> Matches(
             this ICheck<string> check, string regExp)
         {
-            var runnableCheck = check as IRunnableCheck<string>;
+            var runnableCheck = check as ICheckForExtensibility<string>;
 
             var result = MatchesImpl(runnableCheck.Value, regExp, runnableCheck.Negated);
             if (!string.IsNullOrEmpty(result))
@@ -404,7 +404,7 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> DoesNotMatch(
             this ICheck<string> check, string regExp)
         {
-            var runnableCheck = check as IRunnableCheck<string>;
+            var runnableCheck = check as ICheckForExtensibility<string>;
 
             var result = MatchesImpl(runnableCheck.Value, regExp, !runnableCheck.Negated);
             if (!string.IsNullOrEmpty(result))
@@ -461,7 +461,7 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsEmpty(
             this ICheck<string> check)
         {
-            var runnableCheck = check as IRunnableCheck<string>;
+            var runnableCheck = check as ICheckForExtensibility<string>;
 
             var result = IsEmptyImpl(runnableCheck.Value, false, runnableCheck.Negated);
             if (!string.IsNullOrEmpty(result))
@@ -482,7 +482,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string is neither empty or null.</exception>
         public static ICheckLink<ICheck<string>> IsNullOrEmpty(this ICheck<string> check)
         {
-            var runnableCheck = check as IRunnableCheck<string>;
+            var runnableCheck = check as ICheckForExtensibility<string>;
 
             var result = IsEmptyImpl(runnableCheck.Value, true, runnableCheck.Negated);
             if (!string.IsNullOrEmpty(result))
@@ -504,7 +504,7 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsNotEmpty(
             this ICheck<string> check)
         {
-            var runnableCheck = check as IRunnableCheck<string>;
+            var runnableCheck = check as ICheckForExtensibility<string>;
 
             var result = IsEmptyImpl(runnableCheck.Value, false, !runnableCheck.Negated);
             if (!string.IsNullOrEmpty(result))
@@ -525,7 +525,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string is empty or null.</exception>
         public static ICheckLink<ICheck<string>> HasContent(this ICheck<string> check)
         {
-            var runnableCheck = check as IRunnableCheck<string>;
+            var runnableCheck = check as ICheckForExtensibility<string>;
 
             var result = IsEmptyImpl(runnableCheck.Value, true, !runnableCheck.Negated);
             if (!string.IsNullOrEmpty(result))
@@ -583,7 +583,7 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsEqualIgnoringCase(
             this ICheck<string> check, string comparand)
         {
-            var runnableCheck = check as IRunnableCheck<string>;
+            var runnableCheck = check as ICheckForExtensibility<string>;
 
             var result = AssessEquals(runnableCheck.Value, comparand, runnableCheck.Negated, true);
             if (!string.IsNullOrEmpty(result))

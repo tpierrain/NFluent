@@ -34,7 +34,7 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<string, string[]> Once(this IExtendableCheckLink<string, string[]> chainedCheckLink)
         {
-            var runnableCheck = chainedCheckLink.And as IRunnableCheck<string>;
+            var runnableCheck = chainedCheckLink.And as ICheckForExtensibility<string>;
             var value = runnableCheck.Value;
             var comparand = chainedCheckLink.OriginalComparand;
             foreach (var text in comparand)
@@ -68,7 +68,7 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<string, string[]> InThatOrder(this IExtendableCheckLink<string, string[]> chainedCheckLink)
         {
-            var runnableCheck = chainedCheckLink.And as IRunnableCheck<string>;
+            var runnableCheck = chainedCheckLink.And as ICheckForExtensibility<string>;
             var value = runnableCheck.Value;
             var comparand = chainedCheckLink.OriginalComparand;
             var lastIndex = 0;

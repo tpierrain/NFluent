@@ -28,6 +28,6 @@ namespace NFluent
         /// <value>
         /// The runner to use for checking something on a given type.
         /// </value>
-        ICheckRunner<T> Runner { get; } 
+        IRunnableCheck<T> Runner { get; } 
     }
 }

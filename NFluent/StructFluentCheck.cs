@@ -15,15 +15,13 @@
 namespace NFluent
 {
     using System.Diagnostics.CodeAnalysis;
-
-    using NFluent.Extensibility;
     using NFluent.Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public class StructFluentCheck<T> : IForkableCheck, IStructCheck<T>, IRunnableStructCheck<T> where T : struct
+    public class StructFluentCheck<T> : IForkableCheck, IStructCheck<T>, IStructCheckForExtensibility<T> where T : struct
     {
         private readonly StructCheckRunner<T> checkRunner;
 

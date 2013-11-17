@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ICheckRunner.cs" company="">
+// // <copyright file="IRunnableCheck.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@ namespace NFluent.Extensibility
     using System;
 
     /// <summary>
-    /// Provides a mean to execute a fluent check, taking care of whether it should be negated or not, etc.
+    /// Provides a mean to execute some checks on a value, taking care of whether it should be negated or not, etc.
     /// This interface is designed for developers that need to add new check (extension) methods.
     /// Thus, it should not be exposed via Intellisense to developers that are using NFluent to write 
     /// checks statements.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface ICheckRunner<out T> : IWithValue<T>, INegated
+    public interface IRunnableCheck<out T> : IWithValue<T>, INegated
     {
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).

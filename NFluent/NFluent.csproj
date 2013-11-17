@@ -68,7 +68,7 @@
     <Compile Include="ILambdaExceptionCheck.cs" />
     <Compile Include="IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense.cs" />
     <Compile Include="Assertions\LambdaExceptionCheck.cs" />
-    <Compile Include="IRunnableStructCheck.cs" />
+    <Compile Include="IStructCheckForExtensibility.cs" />
     <Compile Include="IWithValue.cs" />
     <Compile Include="T4\DecimalSignedCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
@@ -95,11 +95,11 @@
     <Compile Include="Constants.cs" />
     <Compile Include="INullableOrNumberCheckLink.cs" />
     <Compile Include="INegated.cs" />
-    <Compile Include="IRunnableCheck.cs" />
+    <Compile Include="ICheckForExtensibility.cs" />
     <Compile Include="IStructCheckRunner.cs" />
     <Compile Include="StructFluentCheck.cs" />
-    <Compile Include="Extensibility\CheckRunner.cs" />
-    <Compile Include="Extensibility\ICheckRunner.cs" />
+    <Compile Include="Extensibility\RunnableCheck.cs" />
+    <Compile Include="Extensibility\IRunnableCheck.cs" />
     <Compile Include="INegateableCheck.cs" />
     <Compile Include="IStructCheck.cs" />
     <Compile Include="Assertions\ExtendableCheckLink.cs" />

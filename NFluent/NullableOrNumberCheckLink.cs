@@ -63,14 +63,14 @@ namespace NFluent
         {
             get
             {
-                IRunnableCheck<N?> runnableCheck = this.previousCheck as IRunnableCheck<N?>;
+                ICheckForExtensibility<N?> checkForExtensibility = this.previousCheck as ICheckForExtensibility<N?>;
 
-                if (!runnableCheck.Value.HasValue)
+                if (!checkForExtensibility.Value.HasValue)
                 {
                     throw new FluentCheckException("\nThe checked nullable has no value to be checked.");
                 }
 
-                return new FluentCheck<N>(runnableCheck.Value.Value);            
+                return new FluentCheck<N>(checkForExtensibility.Value.Value);            
             }
         }
     }

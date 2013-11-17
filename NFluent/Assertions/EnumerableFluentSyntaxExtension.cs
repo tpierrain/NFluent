@@ -56,7 +56,7 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<IEnumerable> Once(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
-            var runnableCheck = chainedCheckLink.And as IRunnableCheck<IEnumerable>;
+            var runnableCheck = chainedCheckLink.And as ICheckForExtensibility<IEnumerable>;
             var itemidx = 0;
             var expectedList = ConvertToArrayList(chainedCheckLink);
             var listedItems = new ArrayList();
@@ -101,7 +101,7 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<IEnumerable> InThatOrder(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
-            var runnableCheck = chainedCheckLink.And as IRunnableCheck<IEnumerable>;
+            var runnableCheck = chainedCheckLink.And as ICheckForExtensibility<IEnumerable>;
             var orderedList = ConvertToArrayList(chainedCheckLink);
 
             var faillingIndex = 0;

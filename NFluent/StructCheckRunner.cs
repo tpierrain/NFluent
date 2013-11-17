@@ -16,8 +16,6 @@ namespace NFluent
 {
     using System;
 
-    using NFluent.Extensibility;
-
     /// <summary>
     /// Provides a mean to execute a fluent check, taking care of whether it should be negated or not, etc.
     /// This interface is designed for developers that need to add new check (extension) methods.
@@ -27,11 +25,11 @@ namespace NFluent
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
     internal class StructCheckRunner<T> : IStructCheckRunner<T> where T : struct
     {
-        private readonly IRunnableStructCheck<T> runnableFluentCheck;
+        private readonly IStructCheckForExtensibility<T> fluentStructCheckForExtensibility;
 
-        public StructCheckRunner(IRunnableStructCheck<T> runnableFluentCheck)
+        public StructCheckRunner(IStructCheckForExtensibility<T> fluentStructCheckForExtensibility)
         {
-            this.runnableFluentCheck = runnableFluentCheck;
+            this.fluentStructCheckForExtensibility = fluentStructCheckForExtensibility;
         }
 
         /// <summary>
@@ -45,7 +43,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The check fails.</exception>
         public ICheckLink<IStructCheck<T>> ExecuteCheck(Action action, string negatedExceptionMessage)
         {
-            if (this.runnableFluentCheck.Negated)
+            if (this.fluentStructCheckForExtensibility.Negated)
             {
                 // The exact opposite ;-)
                 bool mustThrow = false;
@@ -69,7 +67,7 @@ namespace NFluent
                 action();
             }
 
-            return new CheckLink<IStructCheck<T>>(this.runnableFluentCheck);
+            return new CheckLink<IStructCheck<T>>(this.fluentStructCheckForExtensibility);
         }
     }
 }

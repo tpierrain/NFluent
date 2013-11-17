@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="CheckRunner.cs" company="">
+// // <copyright file="RunnableCheck.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -17,23 +17,23 @@ namespace NFluent.Extensibility
     using System;
 
     /// <summary>
-    /// Provides a mean to execute a fluent check, taking care of whether it should be negated or not, etc.
+    /// Provides a mean to execute some checks on a value, taking care of whether it should be negated or not, etc.
     /// This interface is designed for developers that need to add new check (extension) methods.
     /// Thus, it should not be exposed via Intellisense to developers that are using NFluent to write 
     /// checks statements.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    internal class CheckRunner<T> : ICheckRunner<T>
+    internal class RunnableCheck<T> : IRunnableCheck<T>
     {
-        private readonly IRunnableCheck<T> runnableFluentCheck;
+        private readonly ICheckForExtensibility<T> fluentCheckForExtensibility;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CheckRunner{T}" /> class.
+        /// Initializes a new instance of the <see cref="RunnableCheck{T}" /> class.
         /// </summary>
-        /// <param name="runnableFluentCheck">The runnable fluent check.</param>
-        public CheckRunner(IRunnableCheck<T> runnableFluentCheck)
+        /// <param name="fluentCheckForExtensibility">The runnable fluent check.</param>
+        public RunnableCheck(ICheckForExtensibility<T> fluentCheckForExtensibility)
         {
-            this.runnableFluentCheck = runnableFluentCheck;
+            this.fluentCheckForExtensibility = fluentCheckForExtensibility;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace NFluent.Extensibility
         {
             get
             {
-                return this.runnableFluentCheck.Value;
+                return this.fluentCheckForExtensibility.Value;
             }
         }
 
@@ -61,7 +61,7 @@ namespace NFluent.Extensibility
         {
             get
             {
-                return this.runnableFluentCheck.Negated;
+                return this.fluentCheckForExtensibility.Negated;
             }
         }
 
@@ -84,22 +84,22 @@ namespace NFluent.Extensibility
             catch (FluentCheckException)
             {
                 // exception raised, and this was not expected
-                if (!this.runnableFluentCheck.Negated)
+                if (!this.fluentCheckForExtensibility.Negated)
                 { 
                     throw;
                 }
 
                 // exception was expected
-                return new CheckLink<ICheck<T>>(this.runnableFluentCheck);
+                return new CheckLink<ICheck<T>>(this.fluentCheckForExtensibility);
             }
 
-            if (this.runnableFluentCheck.Negated)
+            if (this.fluentCheckForExtensibility.Negated)
             {
                 // the expected exception did not occur
                 throw new FluentCheckException(negatedExceptionMessage);
             }
 
-            return new CheckLink<ICheck<T>>(this.runnableFluentCheck);
+            return new CheckLink<ICheck<T>>(this.fluentCheckForExtensibility);
         }
     }
 }
