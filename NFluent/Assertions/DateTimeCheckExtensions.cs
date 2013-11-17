@@ -36,19 +36,18 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not before the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsBefore(this ICheck<DateTime> check, DateTime other)
         {
-            var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
-                        if (value >= other)
+                        if (runnableCheck.Value >= other)
                         {
-                            var message = FluentMessage.BuildMessage("The {0} is not before the {1}.").For("date time").On(value).And.WithGivenValue(other).ToString();
+                            var message = FluentMessage.BuildMessage("The {0} is not before the {1}.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is before the given date time whereas it must not.").For("date time").On(value).And.WithGivenValue(other).ToString());
+                FluentMessage.BuildMessage("The {0} is before the given date time whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -62,19 +61,18 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not before or equals to the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsBeforeOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
-            var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                 {
-                    if (value > other)
+                    if (runnableCheck.Value > other)
                     {
-                        var message = FluentMessage.BuildMessage("The {0} is not before or equals to the {1}.").For("date time").On(value).And.WithGivenValue(other).ToString();
+                        var message = FluentMessage.BuildMessage("The {0} is not before or equals to the {1}.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
                         throw new FluentCheckException(message);
                     }
-                }, 
-                FluentMessage.BuildMessage("The {0} is before or equals to the {1} whereas it must not.").For("date time").On(value).And.WithGivenValue(other).ToString());
+                },
+                FluentMessage.BuildMessage("The {0} is before or equals to the {1} whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -88,19 +86,18 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not after the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsAfter(this ICheck<DateTime> check, DateTime other)
         {
-            var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
-                        if (value <= other)
+                        if (runnableCheck.Value <= other)
                         {
-                            var message = FluentMessage.BuildMessage("The {0} is not after the {1}.").For("date time").On(value).And.WithGivenValue(other).ToString();
+                            var message = FluentMessage.BuildMessage("The {0} is not after the {1}.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is after the {1} whereas it must not.").For("date time").On(value).And.WithGivenValue(other).ToString());
+                FluentMessage.BuildMessage("The {0} is after the {1} whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -114,19 +111,18 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not after or equals to the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsAfterOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
-            var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
-                        if (value < other)
+                        if (runnableCheck.Value < other)
                         {
-                            var message = FluentMessage.BuildMessage("The {0} is not after or equals to the {1}.").For("date time").On(value).And.WithGivenValue(other).ToString();
+                            var message = FluentMessage.BuildMessage("The {0} is not after or equals to the {1}.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is after or equals to the {1} whereas it must not.").For("date time").On(value).And.WithGivenValue(other).ToString());
+                FluentMessage.BuildMessage("The {0} is after or equals to the {1} whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -157,19 +153,18 @@ namespace NFluent
         /// </remarks>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringMillis(this ICheck<DateTime> check, DateTime other)
         {
-            var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
-                        if (value.Year != other.Year || value.Month != other.Month || value.Day != other.Day || value.Hour != other.Hour || value.Minute != other.Minute || value.Second != other.Second)
+                        if (runnableCheck.Value.Year != other.Year || runnableCheck.Value.Month != other.Month || runnableCheck.Value.Day != other.Day || runnableCheck.Value.Hour != other.Hour || runnableCheck.Value.Minute != other.Minute || runnableCheck.Value.Second != other.Second)
                         {
-                            var message = FluentMessage.BuildMessage("The {0} is not equal to the {1} (ignoring milliseconds).").For("date time").On(value).And.WithGivenValue(other).ToString();
+                            var message = FluentMessage.BuildMessage("The {0} is not equal to the {1} (ignoring milliseconds).").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is equal to the {1} (ignoring milliseconds) whereas it must not.").For("date time").On(value).And.WithGivenValue(other).ToString());
+                FluentMessage.BuildMessage("The {0} is equal to the {1} (ignoring milliseconds) whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -200,19 +195,18 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not equal to the given one with second and millisecond fields ignored.</exception>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringSeconds(this ICheck<DateTime> check, DateTime other)
         {
-            var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
-                        if (value.Year != other.Year || value.Month != other.Month || value.Day != other.Day || value.Hour != other.Hour || value.Minute != other.Minute)
+                        if (runnableCheck.Value.Year != other.Year || runnableCheck.Value.Month != other.Month || runnableCheck.Value.Day != other.Day || runnableCheck.Value.Hour != other.Hour || runnableCheck.Value.Minute != other.Minute)
                         {
-                            var message = FluentMessage.BuildMessage("The {0} is not equal to the {1} (ignoring seconds).").For("date time").On(value).And.WithGivenValue(other).ToString();
+                            var message = FluentMessage.BuildMessage("The {0} is not equal to the {1} (ignoring seconds).").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is equal to the {1} (ignoring seconds) whereas it must not.").For("date time").On(value).And.WithGivenValue(other).ToString());
+                FluentMessage.BuildMessage("The {0} is equal to the {1} (ignoring seconds) whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -243,19 +237,18 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not equal to the given one with minute, second and millisecond fields ignored.</exception>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringMinutes(this ICheck<DateTime> check, DateTime other)
         {
-            var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
-                        if (value.Year != other.Year || value.Month != other.Month || value.Day != other.Day || value.Hour != other.Hour)
+                        if (runnableCheck.Value.Year != other.Year || runnableCheck.Value.Month != other.Month || runnableCheck.Value.Day != other.Day || runnableCheck.Value.Hour != other.Hour)
                         {
-                            var message = FluentMessage.BuildMessage("The {0} is not equal to the {1} (ignoring minutes).").For("date time").On(value).And.WithGivenValue(other).ToString();
+                            var message = FluentMessage.BuildMessage("The {0} is not equal to the {1} (ignoring minutes).").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is equal to the {1} (ignoring minutes) whereas it must not.").For("date time").On(value).And.WithGivenValue(other).ToString());
+                FluentMessage.BuildMessage("The {0} is equal to the {1} (ignoring minutes) whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -286,19 +279,18 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not equal to the given one with hour, minute, second and millisecond fields ignored.</exception>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringHours(this ICheck<DateTime> check, DateTime other)
         {
-            var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
-                        if (value.Year != other.Year || value.Month != other.Month || value.Day != other.Day)
+                        if (runnableCheck.Value.Year != other.Year || runnableCheck.Value.Month != other.Month || runnableCheck.Value.Day != other.Day)
                         {
-                            var message = FluentMessage.BuildMessage("The {0} is not equal to the {1} (ignoring hours).").For("date time").On(value).And.WithGivenValue(other).ToString();
+                            var message = FluentMessage.BuildMessage("The {0} is not equal to the {1} (ignoring hours).").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is equal to the {1} (ignoring hours) whereas it must not.").For("date time").On(value).And.WithGivenValue(other).ToString());
+                FluentMessage.BuildMessage("The {0} is equal to the {1} (ignoring hours) whereas it must not.").For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -312,19 +304,18 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time year is not equal to the given year.</exception>
         public static ICheckLink<ICheck<DateTime>> IsInSameYearAs(this ICheck<DateTime> check, DateTime other)
         {
-            var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
-                        if (value.Year != other.Year)
+                        if (runnableCheck.Value.Year != other.Year)
                         {
-                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not have the same year as the {{1}}.\nYear of the checked date time:\n\t[{0}]\nYear of the given date time:\n\t[{1}]", value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated())).For("date time").On(value).And.WithGivenValue(other).ToString();
+                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not have the same year as the {{1}}.\nYear of the checked date time:\n\t[{0}]\nYear of the given date time:\n\t[{1}]", runnableCheck.Value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated())).For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                FluentMessage.BuildMessage(string.Format("The {{0}} has the same year as the {{1}} whereas it must not.\nYear of the checked date time:\n\t[{0}]\nYear of the given date time:\n\t[{1}]", value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated())).For("date time").On(value).And.WithGivenValue(other).ToString());
+                FluentMessage.BuildMessage(string.Format("The {{0}} has the same year as the {{1}} whereas it must not.\nYear of the checked date time:\n\t[{0}]\nYear of the given date time:\n\t[{1}]", runnableCheck.Value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated())).For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -338,19 +329,18 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time month is not equal to the given month, whatever the year.</exception>
         public static ICheckLink<ICheck<DateTime>> IsInSameMonthAs(this ICheck<DateTime> check, DateTime other)
         {
-            var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
-                        if (value.Month != other.Month)
+                        if (runnableCheck.Value.Month != other.Month)
                         {
-                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not have the same month as the {{1}}.\nMonth of the checked date time:\n\t[{0}]\nMonth of the given date time:\n\t[{1}]", value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated())).For("date time").On(value).And.WithGivenValue(other).ToString();
+                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not have the same month as the {{1}}.\nMonth of the checked date time:\n\t[{0}]\nMonth of the given date time:\n\t[{1}]", runnableCheck.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated())).For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                FluentMessage.BuildMessage(string.Format("The {{0}} has the same month as the {{1}} whereas it must not.\nMonth of the checked date time:\n\t[{0}]\nMonth of the given date time:\n\t[{1}]", value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated())).For("date time").On(value).And.WithGivenValue(other).ToString());
+                FluentMessage.BuildMessage(string.Format("The {{0}} has the same month as the {{1}} whereas it must not.\nMonth of the checked date time:\n\t[{0}]\nMonth of the given date time:\n\t[{1}]", runnableCheck.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated())).For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -364,19 +354,18 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time day is not equal to the given day, whatever the year or the month.</exception>
         public static ICheckLink<ICheck<DateTime>> IsInSameDayAs(this ICheck<DateTime> check, DateTime other)
         {
-            var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
-                        if (value.Day != other.Day)
+                        if (runnableCheck.Value.Day != other.Day)
                         {
-                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not have the same day as the {{1}}.\nDay of the checked date time:\n\t[{0}]\nDay of the given date time:\n\t[{1}]", value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated())).For("date time").On(value).And.WithGivenValue(other).ToString();
+                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not have the same day as the {{1}}.\nDay of the checked date time:\n\t[{0}]\nDay of the given date time:\n\t[{1}]", runnableCheck.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated())).For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                FluentMessage.BuildMessage(string.Format("The {{0}} has the same day as the {{1}} whereas it must not.\nDay of the checked date time:\n\t[{0}]\nDay of the given date time:\n\t[{1}]", value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated())).For("date time").On(value).And.WithGivenValue(other).ToString());
+                FluentMessage.BuildMessage(string.Format("The {{0}} has the same day as the {{1}} whereas it must not.\nDay of the checked date time:\n\t[{0}]\nDay of the given date time:\n\t[{1}]", runnableCheck.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated())).For("date time").On(runnableCheck.Value).And.WithGivenValue(other).ToString());
         }
     }
 }

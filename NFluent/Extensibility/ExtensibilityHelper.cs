@@ -22,17 +22,6 @@ namespace NFluent.Extensibility
     public class ExtensibilityHelper<T>
     {
         /// <summary>
-        /// Extracts the value to be checked by the runner.
-        /// </summary>
-        /// <param name="check">The fluent check instance to work on.</param>
-        /// <returns>The value that needed to be checked.</returns>
-        public static T ExtractValue(ICheck<T> check)
-        {
-            // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
-            return (check as IRunnableCheck<T>).Value;
-        }
-
-        /// <summary>
         /// Extracts the runner to be used in order to check things on the 
         /// value contained in the given fluent check.
         /// </summary>

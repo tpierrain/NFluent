@@ -40,19 +40,18 @@ namespace NFluent
         /// </returns>
         public static ICheckLink<ICheck<IDictionary>> ContainsKey<K>(this ICheck<IDictionary> check, K key)
         {
-            var value = ExtensibilityHelper<IDictionary>.ExtractValue(check);
-            var runner = ExtensibilityHelper<IDictionary>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<IDictionary>.ExtractRunnableCheck(check);
 
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                 {
-                    if (!value.Contains(key))
+                    if (!runnableCheck.Value.Contains(key))
                     {
-                        var message = FluentMessage.BuildMessage("The {0} does not contain the expected key.").For("dictionary").On(value).And.Expected(key).Label("Expected key:").ToString();
+                        var message = FluentMessage.BuildMessage("The {0} does not contain the expected key.").For("dictionary").On(runnableCheck.Value).And.Expected(key).Label("Expected key:").ToString();
                         throw new FluentCheckException(message);
                     }
-                }, 
-                FluentMessage.BuildMessage("The {0} does contain the given key, whereas it must not.").For("dictionary").On(value).And.Expected(key).Label("Given key:").ToString());
+                },
+                FluentMessage.BuildMessage("The {0} does contain the given key, whereas it must not.").For("dictionary").On(runnableCheck.Value).And.Expected(key).Label("Given key:").ToString());
         }
 
         /// <summary>
@@ -72,14 +71,13 @@ namespace NFluent
         /// </returns>
         public static ICheckLink<ICheck<IDictionary>> ContainsValue<K>(this ICheck<IDictionary> check, K expectedValue)
         {
-            var value = ExtensibilityHelper<IDictionary>.ExtractValue(check);
-            var runner = ExtensibilityHelper<IDictionary>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<IDictionary>.ExtractRunnableCheck(check);
 
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                 {
                     var found = false;
-                    foreach (var item in value.Values)
+                    foreach (var item in runnableCheck.Value.Values)
                     {
                         if (item.Equals(expectedValue))
                         {
@@ -90,11 +88,11 @@ namespace NFluent
 
                     if (!found)
                     {
-                        var message = FluentMessage.BuildMessage("The {0} does not contain the expected value.").For("dictionary").On(value).And.Expected(expectedValue).Label("given value:").ToString();
+                        var message = FluentMessage.BuildMessage("The {0} does not contain the expected value.").For("dictionary").On(runnableCheck.Value).And.Expected(expectedValue).Label("given value:").ToString();
                         throw new FluentCheckException(message);
                     }
-                }, 
-                FluentMessage.BuildMessage("The {0} does contain the given value, whereas it must not.").For("dictionary").On(value).And.Expected(expectedValue).Label("Expected value:").ToString());
+                },
+                FluentMessage.BuildMessage("The {0} does contain the given value, whereas it must not.").For("dictionary").On(runnableCheck.Value).And.Expected(expectedValue).Label("Expected value:").ToString());
         }
     }
 }
