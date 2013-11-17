@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using NFluent.Extensibility;
     using NFluent.Helpers;
 
     /// <summary>
@@ -33,14 +34,14 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static ICheckLink<IStructCheck<T>> IsEqualTo<T>(this IStructCheck<T> check, T expected) where T : struct
         {
-            var runnableCheck = check as IStructCheckForExtensibility<T>;
+            var runnableStructCheck = ExtensibilityHelper<T>.ExtractRunnableStructCheck(check);
 
-            return runnableCheck.Runner.ExecuteCheck(
+            return runnableStructCheck.ExecuteCheck(
                 () =>
-                    {
-                        EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
-                    },
-                EqualityHelper.BuildErrorMessage(runnableCheck.Value, expected, true));
+                {
+                    EqualityHelper.IsEqualTo(runnableStructCheck.Value, expected);
+                },
+                EqualityHelper.BuildErrorMessage(runnableStructCheck.Value, expected, true));
         }
 
         /// <summary>
@@ -55,14 +56,14 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<IStructCheck<T>> IsNotEqualTo<T>(this IStructCheck<T> check, object expected) where T : struct
         {
-            var runnableCheck = check as IStructCheckForExtensibility<T>;
+            var runnableStructCheck = ExtensibilityHelper<T>.ExtractRunnableStructCheck(check);
 
-            return runnableCheck.Runner.ExecuteCheck(
+            return runnableStructCheck.ExecuteCheck(
                 () =>
                     {
-                        EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
+                        EqualityHelper.IsNotEqualTo(runnableStructCheck.Value, expected);
                     },
-                EqualityHelper.BuildErrorMessage(runnableCheck.Value, expected, false));
+                EqualityHelper.BuildErrorMessage(runnableStructCheck.Value, expected, false));
         }
     }
 }

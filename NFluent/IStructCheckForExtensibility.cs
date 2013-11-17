@@ -18,7 +18,7 @@ namespace NFluent
     /// Fluent check for struct (value type) which exposes more information for extensibility purpose.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IStructCheckForExtensibility<out T> : IWithValue<T>, IExposingStructRunner<T>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense where T : struct
+    public interface IStructCheckForExtensibility<out T> : IWithValue<T>, IExposingRunnableStructCheck<T>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense where T : struct
     {
     }
 }

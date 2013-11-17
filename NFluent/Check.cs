@@ -85,7 +85,7 @@ namespace NFluent
         /// </remarks>
         public static IStructCheck<T> ThatEnum<T>(T value) where T : struct
         {
-            return new StructFluentCheck<T>(value);
+            return new FluentStructCheck<T>(value);
         }
     }
 }

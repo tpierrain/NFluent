@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="StructFluentCheck.cs" company="">
+// // <copyright file="FluentStructCheck.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -23,24 +23,24 @@ namespace NFluent
     /// Provides check methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public class StructFluentCheck<T> : IForkableCheck, IStructCheck<T>, IStructCheckForExtensibility<T> where T : struct
+    public class FluentStructCheck<T> : IForkableCheck, IStructCheck<T>, IStructCheckForExtensibility<T> where T : struct
     {
         private readonly RunnableStructCheck<T> runnableStructCheck;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StructFluentCheck{T}" /> class.
+        /// Initializes a new instance of the <see cref="FluentStructCheck{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
-        public StructFluentCheck(T value) : this(value, !CheckContext.DefaulNegated)
+        public FluentStructCheck(T value) : this(value, !CheckContext.DefaulNegated)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StructFluentCheck{T}" /> class.
+        /// Initializes a new instance of the <see cref="FluentStructCheck{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="negated">A boolean value indicating whether the check should be negated or not.</param>
-        private StructFluentCheck(T value, bool negated)
+        private FluentStructCheck(T value, bool negated)
         {
             this.Value = value;
             this.Negated = negated;
@@ -75,7 +75,7 @@ namespace NFluent
             get
             {
                 bool negated = CheckContext.DefaulNegated;
-                return new StructFluentCheck<T>(this.Value, negated);
+                return new FluentStructCheck<T>(this.Value, negated);
             }
         }
 
@@ -85,7 +85,7 @@ namespace NFluent
         /// <value>
         /// The runner to use for checking something on a given type.
         /// </value>
-        public IRunnableStructCheck<T> Runner
+        public IRunnableStructCheck<T> RunnableStructCheck
         {
             get
             {
@@ -105,7 +105,7 @@ namespace NFluent
         /// </remarks>
         object IForkableCheck.ForkInstance()
         {
-            return new StructFluentCheck<T>(this.Value);
+            return new FluentStructCheck<T>(this.Value);
         }
 
         /// <summary>
@@ -116,7 +116,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The specified value is not of the given type.</exception>
         public ICheckLink<IStructCheck<T>> IsInstanceOf<U>() where U : struct
         {
-            this.runnableStructCheck.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
+            this.runnableStructCheck.ExecuteCheck(
+                () => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), 
+                IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
 
             return new CheckLink<IStructCheck<T>>(this);
         }

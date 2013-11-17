@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IExposingStructRunner.cs" company="">
+// // <copyright file="IExposingRunnableStructCheck.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -17,17 +17,17 @@ namespace NFluent
     using NFluent.Extensibility;
 
     /// <summary>
-    /// Exposes a runner for checking something on a given type. 
+    /// Exposes a runnable check for this given struct type. 
     /// </summary>
     /// <typeparam name="T">The type of the data to be checked.</typeparam>
-    public interface IExposingStructRunner<out T> where T : struct
+    public interface IExposingRunnableStructCheck<out T> where T : struct
     {
         /// <summary>
-        /// Gets the runner to use for checking something on a given type.
+        /// Gets the runnable check to use for checking something on a struct of a given type.
         /// </summary>
         /// <value>
-        /// The runner to use for checking something on a given type.
+        /// The runnable check to use for checking something on a struct of a given type.
         /// </value>
-        IRunnableStructCheck<T> Runner { get; }
+        IRunnableStructCheck<T> RunnableStructCheck { get; }
     }
 }

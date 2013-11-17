@@ -62,8 +62,8 @@
     <Compile Include="Helpers\Duration.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Extensibility\FluentMessage.cs" />
-    <Compile Include="IExposingRunner.cs" />
-    <Compile Include="IExposingStructRunner.cs" />
+    <Compile Include="IExposingRunnableCheck.cs" />
+    <Compile Include="IExposingRunnableStructCheck.cs" />
     <Compile Include="IHasParentCheck.cs" />
     <Compile Include="ILambdaExceptionCheck.cs" />
     <Compile Include="IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense.cs" />
@@ -97,7 +97,7 @@
     <Compile Include="INegated.cs" />
     <Compile Include="ICheckForExtensibility.cs" />
     <Compile Include="Extensibility\IRunnableStructCheck.cs" />
-    <Compile Include="StructFluentCheck.cs" />
+    <Compile Include="FluentStructCheck.cs" />
     <Compile Include="Extensibility\RunnableCheck.cs" />
     <Compile Include="Extensibility\IRunnableCheck.cs" />
     <Compile Include="INegateableCheck.cs" />

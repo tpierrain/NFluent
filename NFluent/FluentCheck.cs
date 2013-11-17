@@ -106,7 +106,7 @@ namespace NFluent
         /// <value>
         /// The runner to use for checking something on a given type.
         /// </value>
-        public IRunnableCheck<T> Runner
+        public IRunnableCheck<T> RunnableCheck
         {
             get
             {

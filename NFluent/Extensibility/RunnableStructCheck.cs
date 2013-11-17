@@ -33,6 +33,35 @@ namespace NFluent.Extensibility
         }
 
         /// <summary>
+        /// Gets the value to be tested (provided for any extension method to be able to test it).
+        /// </summary>
+        /// <value>
+        /// The value to be tested by any fluent check extension method.
+        /// </value>
+        public T Value
+        {
+            get
+            {
+                return this.fluentStructCheckForExtensibility.Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this check should be negated or not.
+        /// This property is useful when you implement check methods.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if all the methods applying to this check instance should be negated; <c>false</c> otherwise.
+        /// </value>
+        public bool Negated
+        {
+            get
+            {
+                return this.fluentStructCheckForExtensibility.Negated;
+            }
+        }
+
+        /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
         /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentCheckException"/> otherwise.</param>

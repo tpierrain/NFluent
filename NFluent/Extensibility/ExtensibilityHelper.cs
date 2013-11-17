@@ -18,10 +18,10 @@ namespace NFluent.Extensibility
     /// Helper that allow to extract the runnable check from any given fluent check instance.
     /// </summary>
     /// <typeparam name="T">Type of the value to be checked.</typeparam>
-    public class ExtensibilityHelper<T>
+    public static class ExtensibilityHelper<T>
     {
         /// <summary>
-        /// Extracts the runner to be used in order to check things on the value contained in 
+        /// Extracts the runner to be used in order to check things on the value contained within 
         /// the given fluent check.
         /// </summary>
         /// <param name="check">The fluent check instance to work on.</param>
@@ -29,7 +29,22 @@ namespace NFluent.Extensibility
         public static IRunnableCheck<T> ExtractRunnableCheck(ICheck<T> check)
         {
             // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
-            return (check as ICheckForExtensibility<T>).Runner;
+            return (check as ICheckForExtensibility<T>).RunnableCheck;
+        }
+
+        /// <summary>
+        /// Extracts the runner to be used in order to check things on the struct instance contained within
+        /// the given fluent check.
+        /// </summary>
+        /// <typeparam name="S">The type of the struct to be checked.</typeparam>
+        /// <param name="check">The fluent check instance to work on.</param>
+        /// <returns>
+        /// The runnable check to be used to check things on the value contained in the fluent check.
+        /// </returns>
+        public static IRunnableStructCheck<S> ExtractRunnableStructCheck<S>(IStructCheck<S> check) where S : struct
+        {
+            // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
+            return (check as IStructCheckForExtensibility<S>).RunnableStructCheck;
         }
     }
 }
