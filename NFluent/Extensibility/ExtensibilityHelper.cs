@@ -38,10 +38,10 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="check">The fluent check instance to work on.</param>
         /// <returns>The runner to be used to check things on the value contained in the fluent check.</returns>
-        public static ICheckRunner<T> ExtractRunner(ICheck<T> check)
+        public static ICheckRunner<T> ExtractRunnableCheck(ICheck<T> check)
         {
             // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
-            return check as ICheckRunner<T>;
+            return (check as IRunnableCheck<T>).Runner;
         }
     }
 }

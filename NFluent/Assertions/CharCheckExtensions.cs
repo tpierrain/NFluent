@@ -30,7 +30,7 @@ namespace NFluent
         public static ICheckLink<ICheck<char>> IsALetter(this ICheck<char> check)
         {
             var value = ExtensibilityHelper<char>.ExtractValue(check);
-            var runner = ExtensibilityHelper<char>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
             
             return runner.ExecuteCheck(
                 () =>
@@ -54,7 +54,7 @@ namespace NFluent
         public static ICheckLink<ICheck<char>> IsADigit(this ICheck<char> check)
         {
             var value = ExtensibilityHelper<char>.ExtractValue(check);
-            var runner = ExtensibilityHelper<char>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -77,7 +77,7 @@ namespace NFluent
         public static ICheckLink<ICheck<char>> IsAPunctuationMark(this ICheck<char> check)
         {
             var value = ExtensibilityHelper<char>.ExtractValue(check);
-            var runner = ExtensibilityHelper<char>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -101,7 +101,7 @@ namespace NFluent
         public static ICheckLink<ICheck<char>> IsSameLetterAs(this ICheck<char> check, char otherChar)
         {
             var value = ExtensibilityHelper<char>.ExtractValue(check);
-            var runner = ExtensibilityHelper<char>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -131,7 +131,7 @@ namespace NFluent
         public static ICheckLink<ICheck<char>> IsSameLetterButWithDifferentCaseAs(this ICheck<char> check, char otherChar)
         {
             var value = ExtensibilityHelper<char>.ExtractValue(check);
-            var runner = ExtensibilityHelper<char>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
             
             return runner.ExecuteCheck(
                 () =>

@@ -27,9 +27,42 @@ namespace NFluent.Extensibility
     {
         private readonly IRunnableCheck<T> runnableFluentCheck;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CheckRunner{T}" /> class.
+        /// </summary>
+        /// <param name="runnableFluentCheck">The runnable fluent check.</param>
         public CheckRunner(IRunnableCheck<T> runnableFluentCheck)
         {
             this.runnableFluentCheck = runnableFluentCheck;
+        }
+
+        /// <summary>
+        /// Gets the value to be tested (provided for any extension method to be able to test it).
+        /// </summary>
+        /// <value>
+        /// The value to be tested by any fluent check extension method.
+        /// </value>
+        public T Value
+        {
+            get
+            {
+                return this.runnableFluentCheck.Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="FluentCheck{T}" /> should be negated or not.
+        /// This property is useful when you implement check methods.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if all the methods applying to this check instance should be negated; <c>false</c> otherwise.
+        /// </value>
+        public bool Negated
+        {
+            get
+            {
+                return this.runnableFluentCheck.Negated;
+            }
         }
 
         /// <summary>

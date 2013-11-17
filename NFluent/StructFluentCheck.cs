@@ -14,16 +14,16 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
-    
+
+    using NFluent.Extensibility;
     using NFluent.Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public class StructFluentCheck<T> : IForkableCheck, IStructCheck<T>, IStructCheckRunner<T>, IRunnableCheck<T> where T : struct
+    public class StructFluentCheck<T> : IForkableCheck, IStructCheck<T>, IRunnableStructCheck<T> where T : struct
     {
         private readonly StructCheckRunner<T> checkRunner;
 
@@ -80,17 +80,17 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
+        /// Gets the runner to use for checking something on a given type.
         /// </summary>
-        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentCheckException"/> otherwise.</param>
-        /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
-        /// <returns>
-        /// A new check  link for struct or enum.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The check fails.</exception>
-        ICheckLink<IStructCheck<T>> IStructCheckRunner<T>.ExecuteCheck(Action action, string negatedExceptionMessage)
+        /// <value>
+        /// The runner to use for checking something on a given type.
+        /// </value>
+        public IStructCheckRunner<T> Runner
         {
-            return this.checkRunner.ExecuteCheck(action, negatedExceptionMessage);
+            get
+            {
+                return this.checkRunner;
+            }
         }
 
         /// <summary>
@@ -116,9 +116,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The specified value is not of the given type.</exception>
         public ICheckLink<IStructCheck<T>> IsInstanceOf<U>() where U : struct
         {
-            ((IStructCheckRunner<T>)this).ExecuteCheck(
-                () => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)),
-                IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
+            this.checkRunner.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
 
             return new CheckLink<IStructCheck<T>>(this);
         }
@@ -131,7 +129,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The specified value is of the given type.</exception>
         public ICheckLink<IStructCheck<T>> IsNotInstanceOf<U>() where U : struct
         {
-            ((IStructCheckRunner<T>)this).ExecuteCheck(
+            this.checkRunner.ExecuteCheck(
                 () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)),
                 IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
 

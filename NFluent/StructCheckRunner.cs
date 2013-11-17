@@ -16,6 +16,8 @@ namespace NFluent
 {
     using System;
 
+    using NFluent.Extensibility;
+
     /// <summary>
     /// Provides a mean to execute a fluent check, taking care of whether it should be negated or not, etc.
     /// This interface is designed for developers that need to add new check (extension) methods.
@@ -25,9 +27,9 @@ namespace NFluent
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
     internal class StructCheckRunner<T> : IStructCheckRunner<T> where T : struct
     {
-        private readonly IRunnableCheck<T> runnableFluentCheck;
+        private readonly IRunnableStructCheck<T> runnableFluentCheck;
 
-        public StructCheckRunner(IRunnableCheck<T> runnableFluentCheck)
+        public StructCheckRunner(IRunnableStructCheck<T> runnableFluentCheck)
         {
             this.runnableFluentCheck = runnableFluentCheck;
         }

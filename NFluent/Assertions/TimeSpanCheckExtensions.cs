@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
 // // <copyright file="TimeSpanCheckExtensions.cs" company="">
-// //   Copyright 2013 Cyrille DUPUYDAUBY, Thomas PIERRAIN
+// //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -34,30 +34,27 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not less than the provided duration.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, double providedDuration, TimeUnit unit)
          {
-            var checkRunner = check as ICheckRunner<TimeSpan>;
-            var runnableCheck = check as IRunnableCheck<TimeSpan>;
+             var runnableCheck = ExtensibilityHelper<TimeSpan>.ExtractRunnableCheck(check);
 
-            var testedDuration = new Duration(runnableCheck.Value, unit);
-            var expected = new Duration(providedDuration, unit);
-            var notMessage =
-                FluentMessage.BuildMessage("The {0} is not more than the limit.")
-                               .On(testedDuration)
-                               .And.Expected(expected)
-                               .Comparison("more than or equal to");
-            var message =
-                FluentMessage.BuildMessage("The {0} is more than the limit.")
-                               .On(testedDuration)
-                               .And.Expected(expected).Comparison("less than");
+             var testedDuration = new Duration(runnableCheck.Value, unit);
+             var expected = new Duration(providedDuration, unit);
+             var notMessage = FluentMessage.BuildMessage("The {0} is not more than the limit.")
+                                            .On(testedDuration)
+                                            .And.Expected(expected)
+                                            .Comparison("more than or equal to");
+             var message = FluentMessage.BuildMessage("The {0} is more than the limit.")
+                                        .On(testedDuration)
+                                        .And.Expected(expected).Comparison("less than");
 
-            return checkRunner.ExecuteCheck(
-                () =>
-                    {
-                        if (testedDuration >= expected)
+             return runnableCheck.ExecuteCheck(
+                    () =>
                         {
-                            throw new FluentCheckException(message.ToString());
-                        }
-                    },
-                notMessage.ToString());
+                            if (testedDuration >= expected)
+                            {
+                                throw new FluentCheckException(message.ToString());
+                            }
+                        }, 
+                    notMessage.ToString());
          }
 
          /// <summary>
@@ -69,8 +66,7 @@ namespace NFluent
          /// <exception cref="FluentCheckException">The actual value is not less than the provided comparand.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
-             var checkRunner = check as ICheckRunner<TimeSpan>;
-             var runnableCheck = check as IRunnableCheck<TimeSpan>;
+             var runnableCheck = ExtensibilityHelper<TimeSpan>.ExtractRunnableCheck(check);
 
              var unit = TimeHelper.DiscoverUnit(comparand);
 
@@ -87,14 +83,14 @@ namespace NFluent
                                 .On(testedDuration)
                                 .And.Expected(expected).Comparison("less than");
 
-             return checkRunner.ExecuteCheck(
+             return runnableCheck.ExecuteCheck(
                  () =>
                  {
                      if (testedDuration >= expected)
                      {
                          throw new FluentCheckException(message.ToString());
                      }
-                 },
+                 }, 
                  notMessage.ToString());
          }
 
@@ -108,8 +104,7 @@ namespace NFluent
          /// <exception cref="FluentCheckException">The actual value is not greater than the provided comparand.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, double providedDuration, TimeUnit unit)
          {
-             var checkRunner = check as ICheckRunner<TimeSpan>;
-             var runnableCheck = check as IRunnableCheck<TimeSpan>;
+             var runnableCheck = ExtensibilityHelper<TimeSpan>.ExtractRunnableCheck(check);
 
              var testedDuration = new Duration(runnableCheck.Value, unit);
              var expected = new Duration(providedDuration, unit);
@@ -123,14 +118,14 @@ namespace NFluent
                                 .On(testedDuration)
                                 .And.Expected(expected).Comparison("more than");
 
-             return checkRunner.ExecuteCheck(
+             return runnableCheck.ExecuteCheck(
                  () =>
                      {
                          if (testedDuration <= expected)
                          {
                              throw new FluentCheckException(message.ToString());
                          }
-                     },
+                     }, 
                  notMessage.ToString());
          }
 
@@ -143,9 +138,8 @@ namespace NFluent
          /// <exception cref="FluentCheckException">The actual value is not greater than the provided comparand.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
-             var checkRunner = check as ICheckRunner<TimeSpan>;
-             var runnableCheck = check as IRunnableCheck<TimeSpan>;
-
+             var runnableCheck = ExtensibilityHelper<TimeSpan>.ExtractRunnableCheck(check);
+             
              TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
              var testedDuration = new Duration(runnableCheck.Value, unit);
              var expected = new Duration(comparand, unit);
@@ -160,14 +154,14 @@ namespace NFluent
                                 .On(testedDuration)
                                 .And.Expected(expected).Comparison("less than or equal to");
 
-             return checkRunner.ExecuteCheck(
+             return runnableCheck.ExecuteCheck(
                  () =>
                  {
                      if (testedDuration <= expected)
                      {
                          throw new FluentCheckException(message.ToString());
                      }
-                 },
+                 }, 
                  notMessage.ToString());
          }
 
@@ -181,8 +175,7 @@ namespace NFluent
          /// <exception cref="FluentCheckException">The actual value is not equal to the target duration.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, double duration, TimeUnit unit)
          {
-             var checkRunner = check as ICheckRunner<TimeSpan>;
-             var runnableCheck = check as IRunnableCheck<TimeSpan>;
+             var runnableCheck = ExtensibilityHelper<TimeSpan>.ExtractRunnableCheck(check);
 
              var testedDuration = new Duration(runnableCheck.Value, unit);
              var expected = new Duration(duration, unit);
@@ -197,14 +190,14 @@ namespace NFluent
                                 .And.Expected(expected)
                                 .Comparison("different than");
 
-             return checkRunner.ExecuteCheck(
+             return runnableCheck.ExecuteCheck(
                  () =>
                  {
                      if (testedDuration != expected)
                      {
                          throw new FluentCheckException(message.ToString());
                      }
-                 },
+                 }, 
                  notMessage.ToString());
          }
 
@@ -217,8 +210,7 @@ namespace NFluent
          /// /// <exception cref="FluentCheckException">The actual value is not equal to the target duration.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
-             var checkRunner = check as ICheckRunner<TimeSpan>;
-             var runnableCheck = check as IRunnableCheck<TimeSpan>;
+             var runnableCheck = ExtensibilityHelper<TimeSpan>.ExtractRunnableCheck(check);
 
              TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
              var testedDuration = new Duration(runnableCheck.Value, unit);
@@ -234,14 +226,14 @@ namespace NFluent
                                 .And.Expected(expected)
                                 .Comparison("different than");
 
-             return checkRunner.ExecuteCheck(
+             return runnableCheck.ExecuteCheck(
                  () =>
                      {
                          if (runnableCheck.Value != comparand)
                          {
                              throw new FluentCheckException(message.ToString());
                          }
-                     },
+                     }, 
                  notMessage.ToString());
          }
     }

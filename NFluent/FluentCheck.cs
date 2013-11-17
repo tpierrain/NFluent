@@ -27,7 +27,7 @@ namespace NFluent
     /// <typeparam name="T">
     /// Type of the value to assert on.
     /// </typeparam>
-    internal class FluentCheck<T> : ICheck<T>, ICheckRunner<T>, IRunnableCheck<T>, IForkableCheck
+    internal class FluentCheck<T> : IForkableCheck, ICheck<T>, IRunnableCheck<T>
     {
         #region Fields
 
@@ -101,6 +101,20 @@ namespace NFluent
         /// </value>
         public T Value { get; private set; }
 
+        /// <summary>
+        /// Gets the runner to use for checking something on a given type.
+        /// </summary>
+        /// <value>
+        /// The runner to use for checking something on a given type.
+        /// </value>
+        public ICheckRunner<T> Runner
+        {
+            get
+            {
+                return this.checkRunner;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
@@ -119,9 +133,7 @@ namespace NFluent
         /// </exception>
         public new bool Equals(object obj)
         {
-            var checkRunner = this as ICheckRunner<T>;
-
-            checkRunner.ExecuteCheck(() => EqualityHelper.IsEqualTo(this.Value, obj), EqualityHelper.BuildErrorMessage(this.Value, obj, true));
+            this.checkRunner.ExecuteCheck(() => EqualityHelper.IsEqualTo(this.Value, obj), EqualityHelper.BuildErrorMessage(this.Value, obj, true));
 
             return true;
         }
@@ -136,7 +148,7 @@ namespace NFluent
         {
             if (typeof(T).IsNullable())
             {
-                ((ICheckRunner<T>)this).ExecuteCheck(
+                this.checkRunner.ExecuteCheck(
                     () => 
                     {
                         IsInstanceHelper.IsSameType(typeof(T), typeof(U), this.Value);
@@ -147,7 +159,7 @@ namespace NFluent
             }
             else
             {
-                return ((ICheckRunner<T>)this).ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
+                return this.checkRunner.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
             }
         }
 
@@ -161,7 +173,7 @@ namespace NFluent
         {
             if (typeof(T).IsNullable())
             {
-                ((ICheckRunner<T>)this).ExecuteCheck(
+                this.checkRunner.ExecuteCheck(
                     () =>
                         {
                             if (typeof(T) == typeof(U))
@@ -174,7 +186,7 @@ namespace NFluent
             }
             else
             {
-                return ((ICheckRunner<T>)this).ExecuteCheck(
+                return this.checkRunner.ExecuteCheck(
                     () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
             }
         }
@@ -196,26 +208,6 @@ namespace NFluent
         object IForkableCheck.ForkInstance()
         {
             return new FluentCheck<T>(this.Value);
-        }
-
-        /// <summary>
-        /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
-        /// </summary>
-        /// <param name="action">
-        /// The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentCheckException"/> otherwise.
-        /// </param>
-        /// <param name="negatedExceptionMessage">
-        /// The message for the negated exception.
-        /// </param>
-        /// <returns>
-        /// A new check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">
-        /// The check fails.
-        /// </exception>
-        ICheckLink<ICheck<T>> ICheckRunner<T>.ExecuteCheck(Action action, string negatedExceptionMessage)
-        {
-            return this.checkRunner.ExecuteCheck(action, negatedExceptionMessage);
         }
 
         #endregion

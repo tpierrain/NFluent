@@ -36,7 +36,7 @@ namespace NFluent
         public static ICheckLink<ICheck<IComparable>> IsBefore(this ICheck<IComparable> check, IComparable givenValue)
         {
             var value = ExtensibilityHelper<IComparable>.ExtractValue(check);
-            var runner = ExtensibilityHelper<IComparable>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<IComparable>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -58,7 +58,7 @@ namespace NFluent
         public static ICheckLink<ICheck<IComparable>> IsAfter(this ICheck<IComparable> check, IComparable givenValue)
         {
             var value = ExtensibilityHelper<IComparable>.ExtractValue(check);
-            var runner = ExtensibilityHelper<IComparable>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<IComparable>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>

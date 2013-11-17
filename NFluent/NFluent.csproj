@@ -62,10 +62,14 @@
     <Compile Include="Helpers\Duration.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Extensibility\FluentMessage.cs" />
+    <Compile Include="IExposingRunner.cs" />
+    <Compile Include="IExposingStructRunner.cs" />
     <Compile Include="IHasParentCheck.cs" />
     <Compile Include="ILambdaExceptionCheck.cs" />
     <Compile Include="IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense.cs" />
     <Compile Include="Assertions\LambdaExceptionCheck.cs" />
+    <Compile Include="IRunnableStructCheck.cs" />
+    <Compile Include="IWithValue.cs" />
     <Compile Include="T4\DecimalSignedCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>

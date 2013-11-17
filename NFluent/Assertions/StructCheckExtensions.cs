@@ -33,10 +33,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static ICheckLink<IStructCheck<T>> IsEqualTo<T>(this IStructCheck<T> check, T expected) where T : struct
         {
-            var checkRunner = check as IStructCheckRunner<T>;
-            var runnableCheck = check as IRunnableCheck<T>;
+            var runnableCheck = check as IRunnableStructCheck<T>;
 
-            return checkRunner.ExecuteCheck(
+            return runnableCheck.Runner.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
@@ -56,10 +55,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<IStructCheck<T>> IsNotEqualTo<T>(this IStructCheck<T> check, object expected) where T : struct
         {
-            var checkRunner = check as IStructCheckRunner<T>;
-            var runnableCheck = check as IRunnableCheck<T>;
+            var runnableCheck = check as IRunnableStructCheck<T>;
 
-            return checkRunner.ExecuteCheck(
+            return runnableCheck.Runner.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);

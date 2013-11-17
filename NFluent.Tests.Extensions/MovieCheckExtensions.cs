@@ -7,10 +7,9 @@
     {
         public static ICheckLink<ICheck<Movie>> IsDirectedBy(this ICheck<Movie> check, string directorFullName)
         {
-            var checkRunner = check as ICheckRunner<Movie>;
-            var runnableCheck = check as IRunnableCheck<Movie>;
+            var runnableCheck = ExtensibilityHelper<Movie>.ExtractRunnableCheck(check);
 
-            return checkRunner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
                         if (!runnableCheck.Value.Director.ToString().ToLower().Contains(directorFullName.ToLower()))
@@ -23,10 +22,9 @@
 
         public static ICheckLink<ICheck<Movie>> IsAFGreatMovie(this ICheck<Movie> check)
         {
-            var checkRunner = check as ICheckRunner<Movie>;
-            var runnableCheck = check as IRunnableCheck<Movie>;
+            var runnableCheck = ExtensibilityHelper<Movie>.ExtractRunnableCheck(check);
 
-            return checkRunner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
                         if (!runnableCheck.Value.Name.Contains("Eternal sunshine of the spotless mind"))

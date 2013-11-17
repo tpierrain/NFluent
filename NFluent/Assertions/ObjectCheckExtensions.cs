@@ -49,10 +49,9 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, object expected)
         {
-            var checkRunner = check as ICheckRunner<T>;
-            var runnableCheck = check as IRunnableCheck<T>;
+            var runnableCheck = ExtensibilityHelper<T>.ExtractRunnableCheck(check);
 
-            return checkRunner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsEqualTo(runnableCheck.Value, expected);
@@ -97,10 +96,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<T>> IsNotEqualTo<T>(this ICheck<T> check, object expected)
         {
-            var checkRunner = check as ICheckRunner<T>;
-            var runnableCheck = check as IRunnableCheck<T>;
+            var runnableCheck = ExtensibilityHelper<T>.ExtractRunnableCheck(check);
 
-            return checkRunner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
                         EqualityHelper.IsNotEqualTo(runnableCheck.Value, expected);
@@ -136,13 +134,12 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked expression is not in the inheritance hierarchy of the given type.</exception>
         public static ICheckLink<ICheck<object>> InheritsFrom<T>(this ICheck<object> check)
         {
-            var checkRunner = check as ICheckRunner<object>;
-            var runnableCheck = check as IRunnableCheck<object>;
+            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
 
             Type instanceType = runnableCheck.Value.GetTypeWithoutThrowingException();
             Type expectedBaseType = typeof(T);
 
-            return checkRunner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                 {
                     IsInstanceHelper.InheritsFrom(runnableCheck.Value, expectedBaseType);
@@ -158,7 +155,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">Is the value is not null.</exception>
         public static ICheckLink<ICheck<object>> IsNull(this ICheck<object> check)
         {
-            var runnableCheck = check as IRunnableCheck<object>;
+            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
             var negated = runnableCheck.Negated;
             var value = runnableCheck.Value;
 

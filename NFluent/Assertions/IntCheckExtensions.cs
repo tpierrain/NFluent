@@ -40,11 +40,10 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not before the other one.</exception>
         public static ICheckLink<ICheck<int>> IsBefore(this ICheck<int> check, int givenValue)
         {
-            var checkRunner = check as ICheckRunner<int>;
-            var runnableCheck = check as IRunnableCheck<int>;
+            var runnableCheck = ExtensibilityHelper<int>.ExtractRunnableCheck(check);
             IComparable checkedValue = runnableCheck.Value as IComparable;
 
-            return checkRunner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                 {
                     ComparableHelper.IsBefore(checkedValue, givenValue);
@@ -63,11 +62,10 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not after the other one.</exception>
         public static ICheckLink<ICheck<int>> IsAfter(this ICheck<int> check, IComparable givenValue)
         {
-            var checkRunner = check as ICheckRunner<int>;
-            var runnableCheck = check as IRunnableCheck<int>;
+            var runnableCheck = ExtensibilityHelper<int>.ExtractRunnableCheck(check);
             IComparable checkedValue = runnableCheck.Value as IComparable;
 
-            return checkRunner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                 {
                     ComparableHelper.IsAfter(checkedValue, givenValue);
@@ -97,10 +95,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is null.</exception>
         public static INullableOrNumberCheckLink<int> HasAValue(this ICheck<int?> check)
         {
-            var checkRunner = check as ICheckRunner<int?>;
-            IRunnableCheck<int?> runnableCheck = check as IRunnableCheck<int?>;
-
-            checkRunner.ExecuteCheck(
+            var runnableCheck = ExtensibilityHelper<int?>.ExtractRunnableCheck(check);
+            
+            runnableCheck.ExecuteCheck(
                 () =>
                 {
                     if (runnableCheck.Value == null)
@@ -121,10 +118,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is not null.</exception>
         public static void HasNoValue(this ICheck<int?> check)
         {
-            var checkRunner = check as ICheckRunner<int?>;
-            IRunnableCheck<int?> runnableCheck = check as IRunnableCheck<int?>;
+            var runnableCheck = ExtensibilityHelper<int?>.ExtractRunnableCheck(check);
 
-            checkRunner.ExecuteCheck(
+            runnableCheck.ExecuteCheck(
                 () =>
                 {
                     if (runnableCheck.Value != null)

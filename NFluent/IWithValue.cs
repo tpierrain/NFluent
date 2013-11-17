@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IRunnableCheck.cs" company="">
+// // <copyright file="IWithValue.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -14,13 +14,23 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using NFluent.Extensibility;
+    using System.ComponentModel;
 
     /// <summary>
-    /// Fluent check which is runnable by a <see cref="ICheckRunner{T}" />.
+    /// Exposes a value.
     /// </summary>
-    /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IRunnableCheck<out T> : IWithValue<T>, IExposingRunner<T>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    /// <typeparam name="T">
+    /// Type of the exposed value.
+    /// </typeparam>
+    public interface IWithValue<out T>
     {
+        /// <summary>
+        /// Gets the value to be tested (provided for any extension method to be able to test it).
+        /// </summary>
+        /// <value>
+        /// The value to be tested by any fluent check extension method.
+        /// </value>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        T Value { get; }
     }
 }

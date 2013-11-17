@@ -26,7 +26,7 @@ namespace NFluent
     /// </para>
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IStructCheckRunner<T> where T : struct
+    public interface IStructCheckRunner<out T> where T : struct
     {
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).

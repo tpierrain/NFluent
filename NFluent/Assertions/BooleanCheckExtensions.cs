@@ -37,18 +37,17 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not true.</exception>
         public static ICheckLink<ICheck<bool>> IsTrue(this ICheck<bool> check)
         {
-            var value = ExtensibilityHelper<bool>.ExtractValue(check);
-            var runner = ExtensibilityHelper<bool>.ExtractRunner(check);
+            var runnableCheck = ExtensibilityHelper<bool>.ExtractRunnableCheck(check);
             
-            return runner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                 {
-                    if (!value)
+                    if (!runnableCheck.Value)
                     {
-                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(value).ToString());
+                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(runnableCheck.Value).ToString());
                     }
                 },
-                FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(value).ToString());
+                FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(runnableCheck.Value).ToString());
         }
 
         /// <summary>
@@ -61,18 +60,17 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not false.</exception>
         public static ICheckLink<ICheck<bool>> IsFalse(this ICheck<bool> check)
         {
-            var value = ExtensibilityHelper<bool>.ExtractValue(check);
-            var runner = ExtensibilityHelper<bool>.ExtractRunner(check);
-            
-            return runner.ExecuteCheck(
+            var runnableCheck = ExtensibilityHelper<bool>.ExtractRunnableCheck(check);
+
+            return runnableCheck.ExecuteCheck(
                 () =>
                 {
-                    if (value)
+                    if (runnableCheck.Value)
                     {
-                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(value).ToString());
+                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(runnableCheck.Value).ToString());
                     }
                 },
-                FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(value).ToString());
+                FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(runnableCheck.Value).ToString());
         }
     }
 }

@@ -23,7 +23,7 @@ namespace NFluent.Extensibility
     /// checks statements.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface ICheckRunner<out T>
+    public interface ICheckRunner<out T> : IWithValue<T>, INegated
     {
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).

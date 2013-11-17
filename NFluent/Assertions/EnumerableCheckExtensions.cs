@@ -19,7 +19,6 @@ namespace NFluent
     using System.Linq;
 
     using NFluent.Extensibility;
-    using NFluent.Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="IEnumerable"/> value.
@@ -53,10 +52,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
         public static IExtendableCheckLink<IEnumerable> Contains(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
         {
-            var checkRunner = check as ICheckRunner<IEnumerable>;
-            var runnableCheck = check as IRunnableCheck<IEnumerable>;
+            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
 
-            checkRunner.ExecuteCheck(
+            runnableCheck.ExecuteCheck(
                 () =>
                 {
                     if (runnableCheck.Value == null && otherEnumerable == null)
@@ -113,10 +111,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
         public static ICheckLink<ICheck<IEnumerable>> IsOnlyMadeOf(this ICheck<IEnumerable> check, IEnumerable expectedValues)
         {
-            var checkRunner = check as ICheckRunner<IEnumerable>;
-            var runnableCheck = check as IRunnableCheck<IEnumerable>;
-
-            return checkRunner.ExecuteCheck(
+            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
                         // TODO: refactor this implementation?
@@ -157,6 +154,7 @@ namespace NFluent
         public static ICheckLink<ICheck<IEnumerable>> ContainsExactly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
         {
             IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
+            
             return check.ContainsExactly(properExpectedValues);
         }
 
@@ -173,10 +171,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
         public static ICheckLink<ICheck<IEnumerable>> ContainsExactly(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
         {
-            var checkRunner = check as ICheckRunner<IEnumerable>;
-            var runnableCheck = check as IRunnableCheck<IEnumerable>;
-
-            return checkRunner.ExecuteCheck(
+            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            
+            return runnableCheck.ExecuteCheck(
                 () => 
                 {
                     // TODO: refactor this implementation
@@ -228,10 +225,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable has not the expected number of elements.</exception>
         public static ICheckLink<ICheck<IEnumerable>> HasSize(this ICheck<IEnumerable> check, long expectedSize)
         {
-            var checkRunner = check as ICheckRunner<IEnumerable>;
-            var runnableCheck = check as IRunnableCheck<IEnumerable>;
+            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
 
-            return checkRunner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
                         HasSizeImpl(runnableCheck.Value, expectedSize);
@@ -285,10 +281,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
         public static ICheckLink<ICheck<IEnumerable>> IsEmpty(this ICheck<IEnumerable> check)
         {
-            var checkRunner = check as ICheckRunner<IEnumerable>;
-            var runnableCheck = check as IRunnableCheck<IEnumerable>;
+            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
 
-            return checkRunner.ExecuteCheck(
+            return runnableCheck.ExecuteCheck(
                 () =>
                     {
                         if (runnableCheck.Value.Cast<object>().Any())
@@ -310,38 +305,33 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
         public static ICheckLink<ICheck<IEnumerable>> IsNullOrEmpty(this ICheck<IEnumerable> check)
         {
-            var runnableCheck = check as IRunnableCheck<IEnumerable>;
-            var value = runnableCheck.Value;
-            var negated = runnableCheck.Negated;
-
+            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            
             string message = null;
 
-            if (value != null && value.Count() > 0)
+            if (runnableCheck.Value != null && runnableCheck.Value.Count() > 0)
             {
-                if (!negated)
+                if (!runnableCheck.Negated)
                 {
-                    message =
-                        FluentMessage.BuildMessage("The {0} contains items, whereas it must be null or empty.")
-                                     .For("IEnumerable")
-                                     .On(value)
-                                     .ToString();
+                    message = FluentMessage.BuildMessage("The {0} contains items, whereas it must be null or empty.")
+                                             .For("IEnumerable")
+                                             .On(runnableCheck.Value)
+                                             .ToString();
                 }
             }
-            else if (negated)
+            else if (runnableCheck.Negated)
             {
-                if (value == null)
+                if (runnableCheck.Value == null)
                 {
-                    message = 
-                        FluentMessage.BuildMessage("The {0} is null, where as it must contain at least one item.")
-                                     .For("IEnumerable")
-                                     .ToString();
+                    message = FluentMessage.BuildMessage("The {0} is null, where as it must contain at least one item.")
+                                             .For("IEnumerable")
+                                             .ToString();
                 }
                 else
                 {
-                    message =
-                        FluentMessage.BuildMessage("The {0} is empty, where as it must contain at least one item.")
-                                     .For("IEnumerable")
-                                     .ToString();
+                    message = FluentMessage.BuildMessage("The {0} is empty, where as it must contain at least one item.")
+                                             .For("IEnumerable")
+                                             .ToString();
                 }
             }
 

@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IRunnableCheck.cs" company="">
+// // <copyright file="IExposingRunner.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -17,10 +17,17 @@ namespace NFluent
     using NFluent.Extensibility;
 
     /// <summary>
-    /// Fluent check which is runnable by a <see cref="ICheckRunner{T}" />.
+    /// Exposes a runner for checking something on a given type. 
     /// </summary>
-    /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IRunnableCheck<out T> : IWithValue<T>, IExposingRunner<T>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    /// <typeparam name="T">The type of the data to be checked.</typeparam>
+    public interface IExposingRunner<out T>
     {
+        /// <summary>
+        /// Gets the runner to use for checking something on a given type.
+        /// </summary>
+        /// <value>
+        /// The runner to use for checking something on a given type.
+        /// </value>
+        ICheckRunner<T> Runner { get; } 
     }
 }

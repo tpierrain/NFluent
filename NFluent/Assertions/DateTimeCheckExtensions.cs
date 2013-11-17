@@ -37,7 +37,7 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsBefore(this ICheck<DateTime> check, DateTime other)
         {
             var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -63,7 +63,7 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsBeforeOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
             var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -89,7 +89,7 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsAfter(this ICheck<DateTime> check, DateTime other)
         {
             var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -115,7 +115,7 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsAfterOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
             var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -158,7 +158,7 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringMillis(this ICheck<DateTime> check, DateTime other)
         {
             var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -201,7 +201,7 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringSeconds(this ICheck<DateTime> check, DateTime other)
         {
             var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -244,7 +244,7 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringMinutes(this ICheck<DateTime> check, DateTime other)
         {
             var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -287,7 +287,7 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringHours(this ICheck<DateTime> check, DateTime other)
         {
             var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -313,7 +313,7 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsInSameYearAs(this ICheck<DateTime> check, DateTime other)
         {
             var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -339,7 +339,7 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsInSameMonthAs(this ICheck<DateTime> check, DateTime other)
         {
             var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
@@ -365,7 +365,7 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsInSameDayAs(this ICheck<DateTime> check, DateTime other)
         {
             var value = ExtensibilityHelper<DateTime>.ExtractValue(check);
-            var runner = ExtensibilityHelper<DateTime>.ExtractRunner(check);
+            var runner = ExtensibilityHelper<DateTime>.ExtractRunnableCheck(check);
 
             return runner.ExecuteCheck(
                 () =>
