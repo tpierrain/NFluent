@@ -28,10 +28,15 @@ namespace NFluent.Extensibility
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
-        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified). This lambda should simply return if everything is ok, or throws a <see cref="FluentCheckException"/> otherwise.</param>
-        /// <param name="negatedExceptionMessage">The message for the negated exception.</param>
+        /// <param name="action">
+        ///     The happy-path action (vs. the one for negated version which has not to be specified). 
+        ///     This lambda should simply return if everything is ok, or throws a 
+        ///     <see cref="FluentCheckException"/> otherwise.</param>
+        /// <param name="negatedExceptionMessage">
+        ///     The message for the exception to be thrown when the check fails, in the case we were running the negated version.
+        /// </param>
         /// <returns>
-        /// A new check link.
+        ///     A new check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
         ICheckLink<ICheck<T>> ExecuteCheck(Action action, string negatedExceptionMessage);
