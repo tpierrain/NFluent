@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using NFluent.Extensibility;
+
     /// <summary>
     /// Exposes a runner for checking something on a given type. 
     /// </summary>
@@ -26,6 +28,6 @@ namespace NFluent
         /// <value>
         /// The runner to use for checking something on a given type.
         /// </value>
-        IStructCheckRunner<T> Runner { get; }
+        IRunnableStructCheck<T> Runner { get; }
     }
 }

@@ -96,7 +96,7 @@
     <Compile Include="INullableOrNumberCheckLink.cs" />
     <Compile Include="INegated.cs" />
     <Compile Include="ICheckForExtensibility.cs" />
-    <Compile Include="IStructCheckRunner.cs" />
+    <Compile Include="Extensibility\IRunnableStructCheck.cs" />
     <Compile Include="StructFluentCheck.cs" />
     <Compile Include="Extensibility\RunnableCheck.cs" />
     <Compile Include="Extensibility\IRunnableCheck.cs" />
@@ -129,7 +129,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Assertions\StringCheckExtensions.cs" />
     <Compile Include="Helpers\TimeHelper.cs" />
-    <Compile Include="StructCheckRunner.cs" />
+    <Compile Include="Extensibility\RunnableStructCheck.cs" />
     <Compile Include="T4\ByteCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>

@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IStructCheckRunner.cs" company="">
+// // <copyright file="IRunnableStructCheck.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent
+namespace NFluent.Extensibility
 {
     using System;
 
@@ -26,7 +26,7 @@ namespace NFluent
     /// </para>
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IStructCheckRunner<out T> where T : struct
+    public interface IRunnableStructCheck<out T> where T : struct
     {
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).

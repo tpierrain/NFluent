@@ -15,6 +15,8 @@
 namespace NFluent
 {
     using System.Diagnostics.CodeAnalysis;
+
+    using NFluent.Extensibility;
     using NFluent.Helpers;
 
     /// <summary>
@@ -23,7 +25,7 @@ namespace NFluent
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
     public class StructFluentCheck<T> : IForkableCheck, IStructCheck<T>, IStructCheckForExtensibility<T> where T : struct
     {
-        private readonly StructCheckRunner<T> checkRunner;
+        private readonly RunnableStructCheck<T> runnableStructCheck;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StructFluentCheck{T}" /> class.
@@ -42,7 +44,7 @@ namespace NFluent
         {
             this.Value = value;
             this.Negated = negated;
-            this.checkRunner = new StructCheckRunner<T>(this);
+            this.runnableStructCheck = new RunnableStructCheck<T>(this);
         }
 
         /// <summary>
@@ -83,11 +85,11 @@ namespace NFluent
         /// <value>
         /// The runner to use for checking something on a given type.
         /// </value>
-        public IStructCheckRunner<T> Runner
+        public IRunnableStructCheck<T> Runner
         {
             get
             {
-                return this.checkRunner;
+                return this.runnableStructCheck;
             }
         }
 
@@ -114,7 +116,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The specified value is not of the given type.</exception>
         public ICheckLink<IStructCheck<T>> IsInstanceOf<U>() where U : struct
         {
-            this.checkRunner.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
+            this.runnableStructCheck.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
 
             return new CheckLink<IStructCheck<T>>(this);
         }
@@ -127,7 +129,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The specified value is of the given type.</exception>
         public ICheckLink<IStructCheck<T>> IsNotInstanceOf<U>() where U : struct
         {
-            this.checkRunner.ExecuteCheck(
+            this.runnableStructCheck.ExecuteCheck(
                 () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)),
                 IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
 

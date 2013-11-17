@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="StructCheckRunner.cs" company="">
+// // <copyright file="RunnableStructCheck.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent
+namespace NFluent.Extensibility
 {
     using System;
 
@@ -23,11 +23,11 @@ namespace NFluent
     /// checks statements.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    internal class StructCheckRunner<T> : IStructCheckRunner<T> where T : struct
+    internal class RunnableStructCheck<T> : IRunnableStructCheck<T> where T : struct
     {
         private readonly IStructCheckForExtensibility<T> fluentStructCheckForExtensibility;
 
-        public StructCheckRunner(IStructCheckForExtensibility<T> fluentStructCheckForExtensibility)
+        public RunnableStructCheck(IStructCheckForExtensibility<T> fluentStructCheckForExtensibility)
         {
             this.fluentStructCheckForExtensibility = fluentStructCheckForExtensibility;
         }
