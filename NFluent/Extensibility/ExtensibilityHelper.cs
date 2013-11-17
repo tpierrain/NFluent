@@ -15,8 +15,7 @@
 namespace NFluent.Extensibility
 {
     /// <summary>
-    /// Helper that allow to extract both the value to be checked and the runner to do so from 
-    /// any fluent check instance.
+    /// Helper that allow to extract the runnable check from any fluent check instance.
     /// </summary>
     /// <typeparam name="T">Type of the value to be checked.</typeparam>
     public class ExtensibilityHelper<T>
