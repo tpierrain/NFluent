@@ -176,7 +176,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">Is the value is null.</exception>
         public static ICheckLink<ICheck<object>> IsNotNull(this ICheck<object> check)
         {
-            var runnableCheck = check as ICheckForExtensibility<object>;
+            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
             var negated = runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -211,7 +211,7 @@ namespace NFluent
         public static ICheckLink<ICheck<object>> IsSameReferenceThan(
             this ICheck<object> check, object expected)
         {
-            var runnableCheck = check as ICheckForExtensibility<object>;
+            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
             var negated = runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -265,7 +265,7 @@ namespace NFluent
         public static ICheckLink<ICheck<object>> IsDistinctFrom(
             this ICheck<object> check, object comparand)
         {
-            var runnableCheck = check as ICheckForExtensibility<object>;
+            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
             var negated = !runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -297,7 +297,7 @@ namespace NFluent
         /// <remarks>The comparison is done field by field.</remarks>
         public static ICheckLink<ICheck<object>> HasFieldsEqualToThose(this ICheck<object> check, object expected)
         {
-            var runnableCheck = check as ICheckForExtensibility<object>;
+            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
             var negated = runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -323,7 +323,7 @@ namespace NFluent
         /// <remarks>The comparison is done field by field.</remarks>
         public static ICheckLink<ICheck<object>> HasFieldsNotEqualToThose(this ICheck<object> check, object expected)
         {
-            var runnableCheck = check as ICheckForExtensibility<object>;
+            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
             var negated = !runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -339,10 +339,10 @@ namespace NFluent
 
         private static string CheckFieldEquality(object expected, object value, bool negated)
         {
+            // REFACTOR: this method which has too much lines
             string message = null;
 
-            foreach (var fieldInfo in
-                value.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+            foreach (var fieldInfo in value.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
             {
                 // check for auto properties
                 var fieldName = fieldInfo.Name;
@@ -366,12 +366,10 @@ namespace NFluent
                 {
                     if (!negated)
                     {
-                        message =
-                            FluentMessage.BuildMessage(
-                                string.Format("The {{0}}'s {0} is absent from the {{1}}.", fieldName))
-                                         .On(value)
-                                         .And.Expected(expected)
-                                         .ToString();
+                        message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} is absent from the {{1}}.", fieldName))
+                                                .On(value)
+                                                .And.Expected(expected)
+                                                .ToString();
                     }
 
                     break;
@@ -386,21 +384,18 @@ namespace NFluent
                     {
                         if (!negated)
                         {
-                            message =
-                                FluentMessage.BuildMessage(
-                                    string.Format("The {{0}}'s {0} does not have the expected value.", fieldName))
-                                             .On(null)
-                                             .And.Expected(expectedFieldValue)
-                                             .ToString();
+                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldName))
+                                                     .On(null)
+                                                     .And.Expected(expectedFieldValue)
+                                                     .ToString();
                         }
                         else
                         {
-                            message =
-                                FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldName))
-                                             .On(null)
-                                             .And.Expected(expectedFieldValue)
-                                             .Comparison("different from")
-                                             .ToString();
+                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldName))
+                                                     .On(null)
+                                                     .And.Expected(expectedFieldValue)
+                                                     .Comparison("different from")
+                                                     .ToString();
                         }
                     }
                 }
@@ -408,21 +403,18 @@ namespace NFluent
                 {
                     if (!negated)
                     {
-                        message =
-                            FluentMessage.BuildMessage(
-                                string.Format("The {{0}}'s {0} does not have the expected value.", fieldName))
-                                         .On(actualFieldValue)
-                                         .And.Expected(expectedFieldValue)
-                                         .ToString();
+                        message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldName))
+                                                 .On(actualFieldValue)
+                                                 .And.Expected(expectedFieldValue)
+                                                 .ToString();
                     }
                     else
                     {
-                        message =
-                            FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldName))
-                                         .On(actualFieldValue)
-                                         .And.Expected(expectedFieldValue)
-                                         .Comparison("different from")
-                                         .ToString();
+                        message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldName))
+                                                 .On(actualFieldValue)
+                                                 .And.Expected(expectedFieldValue)
+                                                 .Comparison("different from")
+                                                 .ToString();
                     }
 
                     break;
@@ -434,8 +426,7 @@ namespace NFluent
 
         private static FieldInfo FindField(Type type, string name)
         {
-            var result = type
-                                 .GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            var result = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
             if (result != null)
             {
                 return result;
