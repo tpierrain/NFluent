@@ -27,6 +27,8 @@ namespace NFluent
     /// </summary>
     public static class ObjectCheckExtensions
     {
+        private const string AutoPropertyPattern = "^<(.*)>k_";
+
         // TODO: add IsNull()
 
         /// <summary>
@@ -337,30 +339,33 @@ namespace NFluent
             return new CheckLink<ICheck<object>>(check);
         }
 
-        private static string CheckFieldEquality(object expected, object value, bool negated)
+        private static string CheckFieldEquality(object expected, object value, bool negated, string prefix = "")
         {
             // REFACTOR: this method which has too much lines
             string message = null;
-
             foreach (var fieldInfo in value.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
             {
                 // check for auto properties
-                var fieldName = fieldInfo.Name;
-                var autoPropertyMask = new Regex("^<(.*)>k_");
-                var result = autoPropertyMask.Match(fieldName);
+                string fieldLabel;
+                var fieldname = fieldInfo.Name;
+                var autoPropertyMask = new Regex(AutoPropertyPattern);
+                var result = autoPropertyMask.Match(fieldname);
                 if (result.Length > 0 && result.Groups.Count == 2)
                 {
-                    string propertyName = fieldName.Substring(
-                        result.Groups[1].Index, result.Groups[1].Length);
+                    fieldname = string.Format(
+                        "{0}{1}",
+                        prefix,
+                        fieldname.Substring(result.Groups[1].Index, result.Groups[1].Length));
 
-                    fieldName = string.Format(
-                        "autoproperty '{0}' (field '{1}')", propertyName, fieldName);
+                    fieldLabel = string.Format(
+                        "autoproperty '{0}' (field '{1}')", fieldname, fieldInfo.Name);
                 }
                 else
                 {
-                    fieldName = string.Format("field '{0}'", fieldName);
+                    fieldname = string.Format("{0}{1}", prefix, fieldname);
+                    fieldLabel = string.Format("field '{0}'", fieldname);
                 }
-                
+
                 var otherField = FindField(expected.GetType(), fieldInfo.Name);
                 if (otherField == null)
                 {
@@ -375,9 +380,16 @@ namespace NFluent
                     break;
                 }
 
+                // determines how comparison will be made
+                if (!otherField.DeclaringType.ImplementsEquals())
+                {
+                    // we recurse
+                }
+
                 // compare value
                 var actualFieldValue = fieldInfo.GetValue(value);
                 var expectedFieldValue = otherField.GetValue(expected);
+
                 if (actualFieldValue == null)
                 {
                     if ((expectedFieldValue == null) == negated)
@@ -399,22 +411,25 @@ namespace NFluent
                         }
                     }
                 }
-                else if (actualFieldValue.Equals(expectedFieldValue) == negated)
+                else
                 {
-                    if (!negated)
+                    if (actualFieldValue.Equals(expectedFieldValue) == negated)
                     {
+                        if (!negated)
+                        {
                         message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldName))
                                                  .On(actualFieldValue)
                                                  .And.Expected(expectedFieldValue)
                                                  .ToString();
-                    }
-                    else
-                    {
+                        }
+                        else
+                        {
                         message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldName))
                                                  .On(actualFieldValue)
                                                  .And.Expected(expectedFieldValue)
                                                  .Comparison("different from")
                                                  .ToString();
+                        }
                     }
 
                     break;
