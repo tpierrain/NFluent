@@ -31,10 +31,30 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void TestImplementEquamls()
+        public void TestImplementEquals()
         {
             Check.That(typeof(object).ImplementsEquals()).IsTrue();
             Check.That(typeof(HelpersTest).ImplementsEquals()).IsFalse();
+            Check.That(typeof(MyDummyClass).ImplementsEquals()).IsTrue();
+        }
+
+        private class MyDummyClass 
+        {
+            public override bool Equals(object other)
+            {
+                return true;
+            }
+
+            /// <summary>
+            /// Serves as a hash function for a particular type. 
+            /// </summary>
+            /// <returns>
+            /// A hash code for the current <see cref="T:System.Object"/>.
+            /// </returns>
+            public override int GetHashCode()
+            {
+                return base.GetHashCode();
+            }
         }
     }
 }

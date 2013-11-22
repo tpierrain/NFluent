@@ -156,6 +156,23 @@ namespace NFluent.Tests
             Check.That(y).HasFieldsEqualToThose(x);
         }
 
+        [Test]
+        public void HasFieldEqualToThoseRecurse()
+        {
+            var x = new { x = new DummyClass(), text = "toto" };
+            var y = new { x = new DummyClass(), text = "toto" };
+            Check.That(x).HasFieldsEqualToThose(y);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x.y' does not have the expected value.\nThe checked value:\n\t[3]\nThe expected value:\n\t[4]")]
+        public void HasFieldEqualToThoseFailsProperlyRecurse()
+        {
+            var x = new { x = new DummyClass(), text = "toto" };
+            var y = new { x = new DummyClass(2, 4), text = "toto" };
+            Check.That(x).HasFieldsEqualToThose(y);
+        }
+
         private class DummyClass
         {
             private int x = 2;

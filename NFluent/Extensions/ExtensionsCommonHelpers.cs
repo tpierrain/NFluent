@@ -252,19 +252,22 @@ namespace NFluent.Extensions
         /// <summary>
         /// Determines whether the specified type implements Equals.
         /// </summary>
-        /// <param name="type">The type.</param>
+        /// <param name="type">The type to be analyzed.</param>
         /// <returns><c>true</c> is the specified type implements Equals.</returns>
         public static bool ImplementsEquals(this Type type)
         {
+            MethodInfo info;
             try
             {
-                var info = type.GetMethod("Equals");
-                return info != null && info.DeclaringType == type;
+                info = type.GetMethod("Equals");
             }
             catch (AmbiguousMatchException)
             {
                 return true;
             }
+
+            return info != null 
+                && info.DeclaringType == type;
         }
     }
 }
