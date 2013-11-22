@@ -17,6 +17,7 @@ namespace NFluent.Extensions
     using System;
     using System.Collections;
     using System.Globalization;
+    using System.Reflection;
     using System.Text;
 
     /// <summary>
@@ -246,6 +247,24 @@ namespace NFluent.Extensions
             }
 
             return type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+
+        /// <summary>
+        /// Determines whether the specified type implements Equals.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns><c>true</c> is the specified type implements Equals.</returns>
+        public static bool ImplementsEquals(this Type type)
+        {
+            try
+            {
+                var info = type.GetMethod("Equals");
+                return info != null && info.DeclaringType == type;
+            }
+            catch (AmbiguousMatchException)
+            {
+                return true;
+            }
         }
     }
 }

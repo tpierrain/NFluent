@@ -29,5 +29,12 @@ namespace NFluent.Tests
             Check.That(typeof(int).IsNullable()).IsFalse();
             Check.That(typeof(object).IsNullable()).IsFalse();
         }
+
+        [Test]
+        public void TestImplementEquamls()
+        {
+            Check.That(typeof(object).ImplementsEquals()).IsTrue();
+            Check.That(typeof(HelpersTest).ImplementsEquals()).IsFalse();
+        }
     }
 }
