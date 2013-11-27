@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\NFluent.Tests\bin\Debug\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,12 +45,14 @@
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="ChainableExtensionTests.cs" />
     <Compile Include="Child.cs" />
     <Compile Include="ExtensionsForMarketingPurpose.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieCheckExtensions.cs" />
     <Compile Include="Nationality.cs" />
     <Compile Include="Person.cs" />
+    <Compile Include="PersonExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SupaStructure.cs" />
   </ItemGroup>

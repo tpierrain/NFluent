@@ -26,6 +26,14 @@ namespace NFluent.Extensibility
     public interface IRunnableCheck<out T> : IWithValue<T>, INegated
     {
         /// <summary>
+        /// Gets the link for next check (linked with the And operator).
+        /// </summary>
+        /// <value>
+        /// The link for next check.
+        /// </value>
+        ICheckLink<ICheck<T>> LinkForNextCheck { get; }
+ 
+        /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
         /// <param name="action">

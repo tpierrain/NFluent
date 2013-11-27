@@ -37,6 +37,20 @@ namespace NFluent.Extensibility
         }
 
         /// <summary>
+        /// Gets the link for next check (linked with the And operator).
+        /// </summary>
+        /// <value>
+        /// The link for next check.
+        /// </value>
+        public ICheckLink<ICheck<T>> LinkForNextCheck
+        {
+            get
+            {
+                return new CheckLink<ICheck<T>>(this.fluentCheckForExtensibility);
+            }
+        }
+
+        /// <summary>
         /// Gets the value to be tested (provided for any extension method to be able to test it).
         /// </summary>
         /// <value>
@@ -104,7 +118,7 @@ namespace NFluent.Extensibility
                 throw new FluentCheckException(negatedExceptionMessage);
             }
 
-            return new CheckLink<ICheck<T>>(this.fluentCheckForExtensibility);
+            return this.LinkForNextCheck;
         }
     }
 }
