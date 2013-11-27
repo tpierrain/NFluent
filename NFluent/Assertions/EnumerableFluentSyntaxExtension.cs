@@ -56,12 +56,12 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<IEnumerable> Once(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
-            var runnableCheck = chainedCheckLink.And as ICheckForExtensibility<IEnumerable>;
+            var checker = chainedCheckLink.And as ICheckForExtensibility<IEnumerable>;
             var itemidx = 0;
             var expectedList = ConvertToArrayList(chainedCheckLink);
             var listedItems = new ArrayList();
-            Debug.Assert(runnableCheck != null, "runnableCheck != null");
-            foreach (var item in runnableCheck.Value)
+            Debug.Assert(checker != null, "checker != null");
+            foreach (var item in checker.Value)
             {
                 if (expectedList.Contains(item))
                 {
@@ -78,7 +78,7 @@ namespace NFluent
                                             item.ToStringProperlyFormated(),
                                             itemidx))
                                        .For("enumerable")
-                                       .On(runnableCheck.Value)
+                                       .On(checker.Value)
                                        .And.ExpectedValues(chainedCheckLink.OriginalComparand);
 
                     throw new FluentCheckException(message.ToString());
@@ -101,13 +101,13 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<IEnumerable> InThatOrder(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
-            var runnableCheck = chainedCheckLink.And as ICheckForExtensibility<IEnumerable>;
+            var checker = chainedCheckLink.And as ICheckForExtensibility<IEnumerable>;
             var orderedList = ConvertToArrayList(chainedCheckLink);
 
             var faillingIndex = 0;
             var scanIndex = 0;
-            Debug.Assert(runnableCheck != null, "runnableCheck != null");
-            foreach (var item in runnableCheck.Value)
+            Debug.Assert(checker != null, "checker != null");
+            foreach (var item in checker.Value)
             {
                 if (item != orderedList[scanIndex])
                 {
@@ -153,7 +153,7 @@ namespace NFluent
                                 faillingIndex,
                                                                         index > scanIndex ? "early" : "late"))
                                          .For("enumerable")
-                                         .On(runnableCheck.Value)
+                                         .On(checker.Value)
                                          .And.ExpectedValues(chainedCheckLink.OriginalComparand);
 
                         throw new FluentCheckException(message.ToString());

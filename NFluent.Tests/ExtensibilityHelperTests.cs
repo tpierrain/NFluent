@@ -22,12 +22,12 @@ namespace NFluent.Tests
     public class ExtensibilityHelperTests
     {
         [Test]
-        public void ExtractRunnableCheckWorks()
+        public void ExtractcheckerWorks()
         {
-            var runnableCheck = ExtensibilityHelper<string>.ExtractChecker(new FluentCheck<string>("kamoulox"));
-            Check.That(runnableCheck).IsNotNull();
-            Check.That(runnableCheck.Negated).IsFalse();
-            Check.That(runnableCheck.Value).IsEqualTo("kamoulox");
+            var checker = ExtensibilityHelper<string>.ExtractChecker(new FluentCheck<string>("kamoulox"));
+            Check.That(checker).IsNotNull();
+            Check.That(checker.Negated).IsFalse();
+            Check.That(checker.Value).IsEqualTo("kamoulox");
         }
 
         [Test]

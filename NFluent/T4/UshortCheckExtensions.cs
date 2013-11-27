@@ -47,10 +47,10 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not before the other one.</exception>
         public static ICheckLink<ICheck<ushort>> IsBefore(this ICheck<ushort> check, ushort givenValue)
         {
-            var runnableCheck = ExtensibilityHelper<ushort>.ExtractChecker(check);
-            IComparable checkedValue = runnableCheck.Value as IComparable;
+            var checker = ExtensibilityHelper<ushort>.ExtractChecker(check);
+            IComparable checkedValue = checker.Value as IComparable;
 
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                 {
                     ComparableHelper.IsBefore(checkedValue, givenValue);
@@ -69,10 +69,10 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not after the other one.</exception>
         public static ICheckLink<ICheck<ushort>> IsAfter(this ICheck<ushort> check, IComparable givenValue)
         {
-            var runnableCheck = ExtensibilityHelper<ushort>.ExtractChecker(check);
-            IComparable checkedValue = runnableCheck.Value as IComparable;
+            var checker = ExtensibilityHelper<ushort>.ExtractChecker(check);
+            IComparable checkedValue = checker.Value as IComparable;
 
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                 {
                     ComparableHelper.IsAfter(checkedValue, givenValue);
@@ -102,17 +102,17 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is null.</exception>
         public static INullableOrNumberCheckLink<ushort> HasAValue(this ICheck<ushort?> check)
         {
-            var runnableCheck = ExtensibilityHelper<ushort?>.ExtractChecker(check);
+            var checker = ExtensibilityHelper<ushort?>.ExtractChecker(check);
             
-            runnableCheck.ExecuteCheck(
+            checker.ExecuteCheck(
                 () =>
                 {
-                    if (runnableCheck.Value == null)
+                    if (checker.Value == null)
                     {
                         throw new FluentCheckException(string.Format("\nThe checked nullable value has no value, which is unexpected."));
                     }
                 },
-                string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", runnableCheck.Value.ToStringProperlyFormated()));
+                string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", checker.Value.ToStringProperlyFormated()));
 
             return new NullableOrNumberCheckLink<ushort>(check);
         }
@@ -125,14 +125,14 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is not null.</exception>
         public static void HasNoValue(this ICheck<ushort?> check)
         {
-            var runnableCheck = ExtensibilityHelper<ushort?>.ExtractChecker(check);
+            var checker = ExtensibilityHelper<ushort?>.ExtractChecker(check);
 
-            runnableCheck.ExecuteCheck(
+            checker.ExecuteCheck(
                 () =>
                 {
-                    if (runnableCheck.Value != null)
+                    if (checker.Value != null)
                     {
-                        throw new FluentCheckException(string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", runnableCheck.Value));
+                        throw new FluentCheckException(string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", checker.Value));
                     }
                 },
                 "\nThe checked nullable value has no value, which is unexpected.");

@@ -40,18 +40,18 @@ namespace NFluent
         /// </returns>
         public static ICheckLink<ICheck<IDictionary>> ContainsKey<K>(this ICheck<IDictionary> check, K key)
         {
-            var runnableCheck = ExtensibilityHelper<IDictionary>.ExtractChecker(check);
+            var checker = ExtensibilityHelper<IDictionary>.ExtractChecker(check);
 
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                 {
-                    if (!runnableCheck.Value.Contains(key))
+                    if (!checker.Value.Contains(key))
                     {
-                        var message = FluentMessage.BuildMessage("The {0} does not contain the expected key.").For("dictionary").On(runnableCheck.Value).And.Expected(key).Label("Expected key:").ToString();
+                        var message = FluentMessage.BuildMessage("The {0} does not contain the expected key.").For("dictionary").On(checker.Value).And.Expected(key).Label("Expected key:").ToString();
                         throw new FluentCheckException(message);
                     }
                 },
-                FluentMessage.BuildMessage("The {0} does contain the given key, whereas it must not.").For("dictionary").On(runnableCheck.Value).And.Expected(key).Label("Given key:").ToString());
+                FluentMessage.BuildMessage("The {0} does contain the given key, whereas it must not.").For("dictionary").On(checker.Value).And.Expected(key).Label("Given key:").ToString());
         }
 
         /// <summary>
@@ -71,13 +71,13 @@ namespace NFluent
         /// </returns>
         public static ICheckLink<ICheck<IDictionary>> ContainsValue<K>(this ICheck<IDictionary> check, K expectedValue)
         {
-            var runnableCheck = ExtensibilityHelper<IDictionary>.ExtractChecker(check);
+            var checker = ExtensibilityHelper<IDictionary>.ExtractChecker(check);
 
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                 {
                     var found = false;
-                    foreach (var item in runnableCheck.Value.Values)
+                    foreach (var item in checker.Value.Values)
                     {
                         if (item.Equals(expectedValue))
                         {
@@ -88,11 +88,11 @@ namespace NFluent
 
                     if (!found)
                     {
-                        var message = FluentMessage.BuildMessage("The {0} does not contain the expected value.").For("dictionary").On(runnableCheck.Value).And.Expected(expectedValue).Label("given value:").ToString();
+                        var message = FluentMessage.BuildMessage("The {0} does not contain the expected value.").For("dictionary").On(checker.Value).And.Expected(expectedValue).Label("given value:").ToString();
                         throw new FluentCheckException(message);
                     }
                 },
-                FluentMessage.BuildMessage("The {0} does contain the given value, whereas it must not.").For("dictionary").On(runnableCheck.Value).And.Expected(expectedValue).Label("Expected value:").ToString());
+                FluentMessage.BuildMessage("The {0} does contain the given value, whereas it must not.").For("dictionary").On(checker.Value).And.Expected(expectedValue).Label("Expected value:").ToString());
         }
     }
 }
