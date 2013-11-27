@@ -25,7 +25,7 @@ namespace NFluent
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
     public class FluentStructCheck<T> : IForkableCheck, IStructCheck<T>, IStructCheckForExtensibility<T> where T : struct
     {
-        private readonly RunnableStructCheck<T> runnableStructCheck;
+        private readonly StructChecker<T> structChecker;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FluentStructCheck{T}" /> class.
@@ -44,7 +44,7 @@ namespace NFluent
         {
             this.Value = value;
             this.Negated = negated;
-            this.runnableStructCheck = new RunnableStructCheck<T>(this);
+            this.structChecker = new StructChecker<T>(this);
         }
 
         /// <summary>
@@ -85,11 +85,11 @@ namespace NFluent
         /// <value>
         /// The runner to use for checking something on a given type.
         /// </value>
-        public IRunnableStructCheck<T> RunnableStructCheck
+        public IStructChecker<T> StructChecker
         {
             get
             {
-                return this.runnableStructCheck;
+                return this.structChecker;
             }
         }
 
@@ -116,7 +116,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The specified value is not of the given type.</exception>
         public ICheckLink<IStructCheck<T>> IsInstanceOf<U>() where U : struct
         {
-            this.runnableStructCheck.ExecuteCheck(
+            this.structChecker.ExecuteCheck(
                 () => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), 
                 IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
 
@@ -131,7 +131,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The specified value is of the given type.</exception>
         public ICheckLink<IStructCheck<T>> IsNotInstanceOf<U>() where U : struct
         {
-            this.runnableStructCheck.ExecuteCheck(
+            this.structChecker.ExecuteCheck(
                 () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)),
                 IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
 

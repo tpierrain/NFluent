@@ -40,7 +40,7 @@ namespace NFluent
         /// </returns>
         public static ICheckLink<ICheck<IDictionary>> ContainsKey<K>(this ICheck<IDictionary> check, K key)
         {
-            var runnableCheck = ExtensibilityHelper<IDictionary>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<IDictionary>.ExtractChecker(check);
 
             return runnableCheck.ExecuteCheck(
                 () =>
@@ -71,7 +71,7 @@ namespace NFluent
         /// </returns>
         public static ICheckLink<ICheck<IDictionary>> ContainsValue<K>(this ICheck<IDictionary> check, K expectedValue)
         {
-            var runnableCheck = ExtensibilityHelper<IDictionary>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<IDictionary>.ExtractChecker(check);
 
             return runnableCheck.ExecuteCheck(
                 () =>

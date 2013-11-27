@@ -49,7 +49,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, object expected)
         {
-            var runnableCheck = ExtensibilityHelper<T>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<T>.ExtractChecker(check);
 
             return runnableCheck.ExecuteCheck(
                 () =>
@@ -96,7 +96,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<T>> IsNotEqualTo<T>(this ICheck<T> check, object expected)
         {
-            var runnableCheck = ExtensibilityHelper<T>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<T>.ExtractChecker(check);
 
             return runnableCheck.ExecuteCheck(
                 () =>
@@ -134,7 +134,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked expression is not in the inheritance hierarchy of the given type.</exception>
         public static ICheckLink<ICheck<object>> InheritsFrom<T>(this ICheck<object> check)
         {
-            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<object>.ExtractChecker(check);
 
             Type instanceType = runnableCheck.Value.GetTypeWithoutThrowingException();
             Type expectedBaseType = typeof(T);
@@ -155,7 +155,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">Is the value is not null.</exception>
         public static ICheckLink<ICheck<object>> IsNull(this ICheck<object> check)
         {
-            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<object>.ExtractChecker(check);
             var negated = runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -176,7 +176,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">Is the value is null.</exception>
         public static ICheckLink<ICheck<object>> IsNotNull(this ICheck<object> check)
         {
-            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<object>.ExtractChecker(check);
             var negated = runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -211,7 +211,7 @@ namespace NFluent
         public static ICheckLink<ICheck<object>> IsSameReferenceThan(
             this ICheck<object> check, object expected)
         {
-            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<object>.ExtractChecker(check);
             var negated = runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -265,7 +265,7 @@ namespace NFluent
         public static ICheckLink<ICheck<object>> IsDistinctFrom(
             this ICheck<object> check, object comparand)
         {
-            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<object>.ExtractChecker(check);
             var negated = !runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -297,7 +297,7 @@ namespace NFluent
         /// <remarks>The comparison is done field by field.</remarks>
         public static ICheckLink<ICheck<object>> HasFieldsEqualToThose(this ICheck<object> check, object expected)
         {
-            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<object>.ExtractChecker(check);
             var negated = runnableCheck.Negated;
             var value = runnableCheck.Value;
 
@@ -323,7 +323,7 @@ namespace NFluent
         /// <remarks>The comparison is done field by field.</remarks>
         public static ICheckLink<ICheck<object>> HasFieldsNotEqualToThose(this ICheck<object> check, object expected)
         {
-            var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<object>.ExtractChecker(check);
             var negated = !runnableCheck.Negated;
             var value = runnableCheck.Value;
 

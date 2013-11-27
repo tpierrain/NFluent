@@ -62,7 +62,7 @@
     <Compile Include="Helpers\Duration.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Extensibility\FluentMessage.cs" />
-    <Compile Include="IExposingRunnableCheck.cs" />
+    <Compile Include="IExposingChecker.cs" />
     <Compile Include="IExposingRunnableStructCheck.cs" />
     <Compile Include="IHasParentCheck.cs" />
     <Compile Include="ILambdaExceptionCheck.cs" />
@@ -96,10 +96,10 @@
     <Compile Include="INullableOrNumberCheckLink.cs" />
     <Compile Include="INegated.cs" />
     <Compile Include="ICheckForExtensibility.cs" />
-    <Compile Include="Extensibility\IRunnableStructCheck.cs" />
+    <Compile Include="Extensibility\IStructChecker.cs" />
     <Compile Include="FluentStructCheck.cs" />
-    <Compile Include="Extensibility\RunnableCheck.cs" />
-    <Compile Include="Extensibility\IRunnableCheck.cs" />
+    <Compile Include="Extensibility\Checker.cs" />
+    <Compile Include="Extensibility\IChecker.cs" />
     <Compile Include="INegateableCheck.cs" />
     <Compile Include="IStructCheck.cs" />
     <Compile Include="Assertions\ExtendableCheckLink.cs" />
@@ -129,7 +129,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Assertions\StringCheckExtensions.cs" />
     <Compile Include="Helpers\TimeHelper.cs" />
-    <Compile Include="Extensibility\RunnableStructCheck.cs" />
+    <Compile Include="Extensibility\StructChecker.cs" />
     <Compile Include="T4\ByteCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>

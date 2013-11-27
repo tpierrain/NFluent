@@ -7,7 +7,7 @@
     {
         public static ICheckLink<ICheck<Movie>> IsDirectedBy(this ICheck<Movie> check, string directorFullName)
         {
-            var runnableCheck = ExtensibilityHelper<Movie>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<Movie>.ExtractChecker(check);
 
             return runnableCheck.ExecuteCheck(
                 () =>
@@ -22,7 +22,7 @@
 
         public static ICheckLink<ICheck<Movie>> IsAFGreatMovie(this ICheck<Movie> check)
         {
-            var runnableCheck = ExtensibilityHelper<Movie>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<Movie>.ExtractChecker(check);
 
             return runnableCheck.ExecuteCheck(
                 () =>

@@ -52,7 +52,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
         public static IExtendableCheckLink<IEnumerable> Contains(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
         {
-            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractChecker(check);
 
             runnableCheck.ExecuteCheck(
                 () =>
@@ -111,7 +111,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
         public static ICheckLink<ICheck<IEnumerable>> IsOnlyMadeOf(this ICheck<IEnumerable> check, IEnumerable expectedValues)
         {
-            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractChecker(check);
             
             return runnableCheck.ExecuteCheck(
                 () =>
@@ -171,7 +171,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
         public static ICheckLink<ICheck<IEnumerable>> ContainsExactly(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
         {
-            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractChecker(check);
             
             return runnableCheck.ExecuteCheck(
                 () => 
@@ -225,7 +225,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable has not the expected number of elements.</exception>
         public static ICheckLink<ICheck<IEnumerable>> HasSize(this ICheck<IEnumerable> check, long expectedSize)
         {
-            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractChecker(check);
 
             return runnableCheck.ExecuteCheck(
                 () =>
@@ -281,7 +281,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
         public static ICheckLink<ICheck<IEnumerable>> IsEmpty(this ICheck<IEnumerable> check)
         {
-            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractChecker(check);
 
             return runnableCheck.ExecuteCheck(
                 () =>
@@ -305,7 +305,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
         public static ICheckLink<ICheck<IEnumerable>> IsNullOrEmpty(this ICheck<IEnumerable> check)
         {
-            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractChecker(check);
             
             string message = null;
 

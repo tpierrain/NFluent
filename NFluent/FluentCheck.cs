@@ -33,7 +33,7 @@ namespace NFluent
         /// <summary>
         /// The check runner.
         /// </summary>
-        private readonly RunnableCheck<T> runnableCheck;
+        private readonly Checker<T> checker;
 
         #endregion
 
@@ -62,7 +62,7 @@ namespace NFluent
         {
             this.Value = value;
             this.Negated = negated;
-            this.runnableCheck = new RunnableCheck<T>(this);
+            this.checker = new Checker<T>(this);
         }
 
         #endregion
@@ -106,11 +106,11 @@ namespace NFluent
         /// <value>
         /// The runner to use for checking something on a given type.
         /// </value>
-        public IRunnableCheck<T> RunnableCheck
+        public IChecker<T> Checker
         {
             get
             {
-                return this.runnableCheck;
+                return this.checker;
             }
         }
 
@@ -132,7 +132,7 @@ namespace NFluent
         /// </exception>
         public new bool Equals(object obj)
         {
-            this.runnableCheck.ExecuteCheck(() => EqualityHelper.IsEqualTo(this.Value, obj), EqualityHelper.BuildErrorMessage(this.Value, obj, true));
+            this.checker.ExecuteCheck(() => EqualityHelper.IsEqualTo(this.Value, obj), EqualityHelper.BuildErrorMessage(this.Value, obj, true));
 
             return true;
         }
@@ -147,7 +147,7 @@ namespace NFluent
         {
             if (typeof(T).IsNullable())
             {
-                this.runnableCheck.ExecuteCheck(
+                this.checker.ExecuteCheck(
                     () => 
                     {
                         IsInstanceHelper.IsSameType(typeof(T), typeof(U), this.Value);
@@ -158,7 +158,7 @@ namespace NFluent
             }
             else
             {
-                return this.runnableCheck.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
+                return this.checker.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
             }
         }
 
@@ -172,7 +172,7 @@ namespace NFluent
         {
             if (typeof(T).IsNullable())
             {
-                this.runnableCheck.ExecuteCheck(
+                this.checker.ExecuteCheck(
                     () =>
                         {
                             if (typeof(T) == typeof(U))
@@ -185,7 +185,7 @@ namespace NFluent
             }
             else
             {
-                return this.runnableCheck.ExecuteCheck(
+                return this.checker.ExecuteCheck(
                     () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
             }
         }

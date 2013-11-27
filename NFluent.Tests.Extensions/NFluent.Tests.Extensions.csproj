@@ -45,12 +45,13 @@
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="ChainableExtensionTests.cs" />
+    <Compile Include="LinkableExtensionsTests.cs" />
     <Compile Include="Child.cs" />
     <Compile Include="ExtensionsForMarketingPurpose.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieCheckExtensions.cs" />
     <Compile Include="Nationality.cs" />
+    <Compile Include="NationalityExtensions.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PersonExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

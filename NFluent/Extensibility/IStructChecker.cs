@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IRunnableStructCheck.cs" company="">
+// // <copyright file="IStructChecker.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ namespace NFluent.Extensibility
     using System;
 
     /// <summary>
-    ///     Provides a mean to execute a fluent check on a struct or an enum value, taking care of 
+    ///     Provides a mean to execute some checks on a struct or an enum value, taking care of 
     ///     whether it should be negated or not, etc.
     /// <para>
     ///     This interface is designed for developers that need to add new check (extension) methods.
@@ -26,8 +26,16 @@ namespace NFluent.Extensibility
     /// </para>
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IRunnableStructCheck<out T> : IWithValue<T>, INegated where T : struct
+    public interface IStructChecker<out T> : IWithValue<T>, INegated where T : struct
     {
+        /// <summary>
+        /// Gets the check link to return for the next check to be executed (linked with the And operator).
+        /// </summary>
+        /// <value>
+        /// The check link to return for next check (linked with the And operator) to be executed.
+        /// </value>
+        ICheckLink<IStructCheck<T>> ReturnValueForLinkage { get; }
+
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>

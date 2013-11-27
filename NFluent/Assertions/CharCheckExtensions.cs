@@ -29,7 +29,7 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsALetter(this ICheck<char> check)
         {
-            var runnableCheck = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<char>.ExtractChecker(check);
 
             return runnableCheck.ExecuteCheck(
                 () =>
@@ -52,7 +52,7 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsADigit(this ICheck<char> check)
         {
-            var runnableCheck = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<char>.ExtractChecker(check);
 
             return runnableCheck.ExecuteCheck(
                 () =>
@@ -74,7 +74,7 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsAPunctuationMark(this ICheck<char> check)
         {
-            var runnableCheck = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<char>.ExtractChecker(check);
 
             return runnableCheck.ExecuteCheck(
                 () =>
@@ -97,7 +97,7 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsSameLetterAs(this ICheck<char> check, char otherChar)
         {
-            var runnableCheck = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<char>.ExtractChecker(check);
 
             return runnableCheck.ExecuteCheck(
                 () =>
@@ -126,7 +126,7 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsSameLetterButWithDifferentCaseAs(this ICheck<char> check, char otherChar)
         {
-            var runnableCheck = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<char>.ExtractChecker(check);
             
             return runnableCheck.ExecuteCheck(
                 () =>

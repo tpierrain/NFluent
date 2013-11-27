@@ -47,7 +47,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not before the other one.</exception>
         public static ICheckLink<ICheck<byte>> IsBefore(this ICheck<byte> check, byte givenValue)
         {
-            var runnableCheck = ExtensibilityHelper<byte>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<byte>.ExtractChecker(check);
             IComparable checkedValue = runnableCheck.Value as IComparable;
 
             return runnableCheck.ExecuteCheck(
@@ -69,7 +69,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not after the other one.</exception>
         public static ICheckLink<ICheck<byte>> IsAfter(this ICheck<byte> check, IComparable givenValue)
         {
-            var runnableCheck = ExtensibilityHelper<byte>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<byte>.ExtractChecker(check);
             IComparable checkedValue = runnableCheck.Value as IComparable;
 
             return runnableCheck.ExecuteCheck(
@@ -102,7 +102,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is null.</exception>
         public static INullableOrNumberCheckLink<byte> HasAValue(this ICheck<byte?> check)
         {
-            var runnableCheck = ExtensibilityHelper<byte?>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<byte?>.ExtractChecker(check);
             
             runnableCheck.ExecuteCheck(
                 () =>
@@ -125,7 +125,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is not null.</exception>
         public static void HasNoValue(this ICheck<byte?> check)
         {
-            var runnableCheck = ExtensibilityHelper<byte?>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<byte?>.ExtractChecker(check);
 
             runnableCheck.ExecuteCheck(
                 () =>

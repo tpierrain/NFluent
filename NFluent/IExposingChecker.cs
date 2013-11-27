@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ChainableExtensionTests.cs" company="">
+// // <copyright file="IExposingChecker.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -12,20 +12,22 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent.Tests.Extensions
+namespace NFluent
 {
-    using NUnit.Framework;
+    using NFluent.Extensibility;
 
-    [TestFixture]
-    public class ChainableExtensionTests
+    /// <summary>
+    /// Exposes an executable check for this given type. 
+    /// </summary>
+    /// <typeparam name="T">The type of the data to be checked.</typeparam>
+    public interface IExposingChecker<out T>
     {
-        [Test]
-        public void CanChainMethods()
-        {
-            var bazunga = new Person();
-            Check.That(bazunga).IsPortna().And.IsNawouak();
-
-            Check.That(bazunga).IsNawouak().And.IsPortna();
-        }
+        /// <summary>
+        /// Gets the runnable check to use for checking something on a value of a given type.
+        /// </summary>
+        /// <value>
+        /// The runnable check to use for checking something on a given type.
+        /// </value>
+        IChecker<T> Checker { get; } 
     }
 }

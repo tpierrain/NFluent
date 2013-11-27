@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IRunnableCheck.cs" company="">
+// // <copyright file="IChecker.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -23,15 +23,15 @@ namespace NFluent.Extensibility
     /// checks statements.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IRunnableCheck<out T> : IWithValue<T>, INegated
+    public interface IChecker<out T> : IWithValue<T>, INegated
     {
         /// <summary>
-        /// Gets the link for next check (linked with the And operator).
+        /// Gets the check link to return for the next check to be executed (linked with the And operator).
         /// </summary>
         /// <value>
-        /// The link for next check.
+        /// The check link to return for next check (linked with the And operator) to be executed.
         /// </value>
-        ICheckLink<ICheck<T>> LinkForNextCheck { get; }
+        ICheckLink<ICheck<T>> ReturnValueForLinkage { get; }
  
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).

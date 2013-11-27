@@ -23,16 +23,16 @@ namespace NFluent.Tests.Extensions
     {
         public static ICheckLink<ICheck<Person>> IsPortna(this ICheck<Person> check)
         {
-            var runnableCheck = ExtensibilityHelper<Person>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<Person>.ExtractChecker(check);
 
-            return runnableCheck.LinkForNextCheck;
+            return checker.ReturnValueForLinkage;
         }
 
         public static ICheckLink<ICheck<Person>> IsNawouak(this ICheck<Person> check)
         {
-            var runnableCheck = ExtensibilityHelper<Person>.ExtractRunnableCheck(check);
-
-            return runnableCheck.LinkForNextCheck;
+            var checker = ExtensibilityHelper<Person>.ExtractChecker(check);
+            
+            return checker.ReturnValueForLinkage;
         }
     }
 }

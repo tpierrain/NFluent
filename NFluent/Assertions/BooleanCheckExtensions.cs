@@ -37,17 +37,17 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not true.</exception>
         public static ICheckLink<ICheck<bool>> IsTrue(this ICheck<bool> check)
         {
-            var runnableCheck = ExtensibilityHelper<bool>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<bool>.ExtractChecker(check);
             
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                 {
-                    if (!runnableCheck.Value)
+                    if (!checker.Value)
                     {
-                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(runnableCheck.Value).ToString());
+                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(checker.Value).ToString());
                     }
                 },
-                FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(runnableCheck.Value).ToString());
+                FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(checker.Value).ToString());
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not false.</exception>
         public static ICheckLink<ICheck<bool>> IsFalse(this ICheck<bool> check)
         {
-            var runnableCheck = ExtensibilityHelper<bool>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<bool>.ExtractChecker(check);
 
             return runnableCheck.ExecuteCheck(
                 () =>

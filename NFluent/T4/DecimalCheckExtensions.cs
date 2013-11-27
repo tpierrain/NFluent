@@ -47,7 +47,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not before the other one.</exception>
         public static ICheckLink<ICheck<decimal>> IsBefore(this ICheck<decimal> check, decimal givenValue)
         {
-            var runnableCheck = ExtensibilityHelper<decimal>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<decimal>.ExtractChecker(check);
             IComparable checkedValue = runnableCheck.Value as IComparable;
 
             return runnableCheck.ExecuteCheck(
@@ -69,7 +69,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not after the other one.</exception>
         public static ICheckLink<ICheck<decimal>> IsAfter(this ICheck<decimal> check, IComparable givenValue)
         {
-            var runnableCheck = ExtensibilityHelper<decimal>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<decimal>.ExtractChecker(check);
             IComparable checkedValue = runnableCheck.Value as IComparable;
 
             return runnableCheck.ExecuteCheck(
@@ -102,7 +102,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is null.</exception>
         public static INullableOrNumberCheckLink<decimal> HasAValue(this ICheck<decimal?> check)
         {
-            var runnableCheck = ExtensibilityHelper<decimal?>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<decimal?>.ExtractChecker(check);
             
             runnableCheck.ExecuteCheck(
                 () =>
@@ -125,7 +125,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is not null.</exception>
         public static void HasNoValue(this ICheck<decimal?> check)
         {
-            var runnableCheck = ExtensibilityHelper<decimal?>.ExtractRunnableCheck(check);
+            var runnableCheck = ExtensibilityHelper<decimal?>.ExtractChecker(check);
 
             runnableCheck.ExecuteCheck(
                 () =>
