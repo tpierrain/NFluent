@@ -1,10 +1,8 @@
 New feature(s):
 * Introduces a mechanism for anyone to easily extend NFluent with his own checks (see. ExtensibilityHelper)
-* Adds IsNull() and IsNotNull() checks.
-* Enhances the Lambda check experience by supporting checks on Func, allowing writing of some usual tests without braces, and giving the possibility to check message and properties of Exceptions
+* Adds recursion to the HasFieldsEqualToThose() check on object
 --------------
 Change(s):
-* Now, Check.That(4L).IsEqualTo(4) passes instead of throwing that types are differents.
 
 --------------
 Bug Fixe(s):
