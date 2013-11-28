@@ -208,8 +208,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not the same reference than the expected value.</exception>
-        public static ICheckLink<ICheck<object>> IsSameReferenceThan(
-            this ICheck<object> check, object expected)
+        public static ICheckLink<ICheck<object>> IsSameReferenceThan(this ICheck<object> check, object expected)
         {
             var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
             var negated = runnableCheck.Negated;
@@ -219,13 +218,12 @@ namespace NFluent
             var message = SameReferenceImpl(expected, value, negated, out comparison);
             if (!string.IsNullOrEmpty(message))
             {
-                throw new FluentCheckException(
-                    FluentMessage.BuildMessage(message)
-                                 .For("object")
-                                 .On(value)
-                                 .And.Expected(expected)
-                                 .Comparison(comparison)
-                                 .ToString());
+                throw new FluentCheckException(FluentMessage.BuildMessage(message)
+                                                             .For("object")
+                                                             .On(value)
+                                                             .And.Expected(expected)
+                                                             .Comparison(comparison)
+                                                             .ToString());
             }
 
             return new CheckLink<ICheck<object>>(check);
@@ -262,8 +260,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is the same instance than the comparand.</exception>
-        public static ICheckLink<ICheck<object>> IsDistinctFrom(
-            this ICheck<object> check, object comparand)
+        public static ICheckLink<ICheck<object>> IsDistinctFrom(this ICheck<object> check, object comparand)
         {
             var runnableCheck = ExtensibilityHelper<object>.ExtractRunnableCheck(check);
             var negated = !runnableCheck.Negated;
@@ -273,13 +270,12 @@ namespace NFluent
             var message = SameReferenceImpl(comparand, value, negated, out comparison);
             if (!string.IsNullOrEmpty(message))
             {
-                throw new FluentCheckException(
-                    FluentMessage.BuildMessage(message)
-                                 .For("object")
-                                 .On(value)
-                                 .And.Expected(comparand)
-                                 .Comparison(comparison)
-                                 .ToString());
+                throw new FluentCheckException(FluentMessage.BuildMessage(message)
+                                                             .For("object")
+                                                             .On(value)
+                                                             .And.Expected(comparand)
+                                                             .Comparison(comparison)
+                                                             .ToString());
             }
 
             return new CheckLink<ICheck<object>>(check);
