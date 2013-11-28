@@ -44,7 +44,7 @@ namespace NFluent.Extensibility
         ///     The message for the exception to be thrown when the check fails, in the case we were running the negated version.
         /// </param>
         /// <returns>
-        ///     A new check link.
+        ///     The <see cref="ReturnValueForLinkage"/>.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
         ICheckLink<ICheck<T>> ExecuteCheck(Action action, string negatedExceptionMessage);
