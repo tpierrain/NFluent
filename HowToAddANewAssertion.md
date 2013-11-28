@@ -52,11 +52,12 @@ as the one used for the StartsWith() check (applying on string) presented below:
 
 General recommendations
 =======================
-
 + __names__ of the check methods __should be chosen carefully__ and smartly embrace the intellisense autocompletion mechanism (i.e. the 'dot' experience).
 + you should __avoid using lambda expressions as check methods arguments__ (cause writing a lambda expression within an check statement is not really a fluent experience, neither on a reading perspective)
 + every __assertion method should return A check link, and should throw a FluentAssertionException when failing__ (to make your favorite unit test framwork fail __with a clear status message__.
 + the message of all the FluentAssertionException you throw should be clear as crystal, but also compliant with the ready-to-be-copied-and-paste-for-arrays-or-collections-initialization-purpose objective of NFluent  
 
-
+Other resources
+===============
++ Rui has published a great article about the NFluent extensibility model. Available __[here on CodeDistillers](http://www.codedistillers.com/rui/2013/11/26/nfluent-extensions/)__
 

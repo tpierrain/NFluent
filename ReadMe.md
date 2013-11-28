@@ -102,7 +102,8 @@ Why NFluent, and not another .NET fluent check framework?
 + Because you think like us that writing a lambda expression within an check statement is not really a fluent experience (neither on a reading perspective).
 + Because NFluent is completely driven by the __[super-duper-happy-path](https://github.com/NancyFx/Nancy/wiki/Introduction)__ principle to fluent your TDD experience. For instance, we consider the 'dot' autocompletion experience as crucial. Thus, it should not be polluted by things not related to the current unit testing context (which occurs with extension methods on classical .NET types - intellisense flooding).
 + Because you think that those other check libraries have not chosen the proper vocabulary (`<subjectUnderTest>.Should().`... why don't they choose `Must` instead?!?). And thus, you'd rather rely on a stronger semantic for your checks (i.e. NFluent's `Check.That`).
-+ And because you like *killing features* and extra bonus, such as the Properties() extension method for IEnumerable for instance (as showed within the usage sample above). 
++ Because you like *killing features* and extra bonus, such as the Properties() extension method for IEnumerable for instance (as showed within the usage sample above). 
++ And because it's awesome pal. Try it, you will see!
 
 - - -
 
@@ -142,6 +143,11 @@ New feature to be added?
 + If you want to join the project and contribute: __[check this out before](./CONTRIBUTING.md)__ before, but be our guest. 
 + If you don't want to contribute on the library, but you need a feature not yet implemented, don't hesitate to request it on the __[NFluent-Discuss google group](https://groups.google.com/forum/#!forum/nfluent-discuss)__.
 __In any cases: you are welcome!__
+
+Other resources
+---------------
++ Rui has published a great article about the NFluent extensibility model. Available __[here on CodeDistillers](http://www.codedistillers.com/rui/2013/11/26/nfluent-extensions/)__
+
 
 Many thanks
 ------
