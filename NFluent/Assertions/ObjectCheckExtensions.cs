@@ -27,6 +27,15 @@ namespace NFluent
     /// </summary>
     public static class ObjectCheckExtensions
     {
+        private static readonly Regex AutoPropertyMask;
+        private static readonly Regex AnonymousTypeFieldMask;
+
+        static ObjectCheckExtensions()
+        {
+            AutoPropertyMask = new Regex("^<(.*)>k_");
+            AnonymousTypeFieldMask = new Regex("^<(.*)>i_");
+        }
+
         // TODO: add IsNull()
 
         /// <summary>
@@ -236,7 +245,7 @@ namespace NFluent
             string message = null;
             comparison = null;
 
-            if (object.ReferenceEquals(value, expected) == negated)
+            if (ReferenceEquals(value, expected) == negated)
             {
                 if (negated)
                 {
@@ -337,36 +346,22 @@ namespace NFluent
             return new CheckLink<ICheck<object>>(check);
         }
 
-        private static string CheckFieldEquality(object expected, object value, bool negated)
+        private static string CheckFieldEquality(object expected, object value, bool negated, string prefix = "")
         {
             // REFACTOR: this method which has too much lines
             string message = null;
-
             foreach (var fieldInfo in value.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
             {
                 // check for auto properties
-                var fieldName = fieldInfo.Name;
-                var autoPropertyMask = new Regex("^<(.*)>k_");
-                var result = autoPropertyMask.Match(fieldName);
-                if (result.Length > 0 && result.Groups.Count == 2)
-                {
-                    string propertyName = fieldName.Substring(
-                        result.Groups[1].Index, result.Groups[1].Length);
-
-                    fieldName = string.Format(
-                        "autoproperty '{0}' (field '{1}')", propertyName, fieldName);
-                }
-                else
-                {
-                    fieldName = string.Format("field '{0}'", fieldName);
-                }
-                
+                string fieldLabel;
+                var fieldname = BuildFieldDescription(prefix, fieldInfo, out fieldLabel);
                 var otherField = FindField(expected.GetType(), fieldInfo.Name);
                 if (otherField == null)
                 {
+                    // fields does not exist
                     if (!negated)
                     {
-                        message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} is absent from the {{1}}.", fieldName))
+                        message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} is absent from the {{1}}.", fieldLabel))
                                                 .On(value)
                                                 .And.Expected(expected)
                                                 .ToString();
@@ -378,50 +373,102 @@ namespace NFluent
                 // compare value
                 var actualFieldValue = fieldInfo.GetValue(value);
                 var expectedFieldValue = otherField.GetValue(expected);
-                if (actualFieldValue == null)
+
+                if (expectedFieldValue == null)
                 {
-                    if ((expectedFieldValue == null) == negated)
+                    if ((actualFieldValue == null) == negated)
                     {
                         if (!negated)
                         {
-                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldName))
-                                                     .On(null)
-                                                     .And.Expected(expectedFieldValue)
+                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldLabel))
+                                                     .On(actualFieldValue)
+                                                     .And.Expected(null)
                                                      .ToString();
                         }
                         else
                         {
-                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldName))
+                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldLabel))
                                                      .On(null)
-                                                     .And.Expected(expectedFieldValue)
+                                                     .And.Expected(null)
                                                      .Comparison("different from")
                                                      .ToString();
                         }
                     }
                 }
-                else if (actualFieldValue.Equals(expectedFieldValue) == negated)
+                else
                 {
-                    if (!negated)
+                    // determines how comparison will be made
+                    if (!otherField.FieldType.ImplementsEquals())
                     {
-                        message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldName))
+                        // we recurse
+                        message = CheckFieldEquality(
+                            expectedFieldValue,
+                            actualFieldValue,
+                            negated,
+                            string.Format("{0}.", fieldname));
+                        if (!string.IsNullOrEmpty(message))
+                        {
+                            break;
+                        }
+                    }
+                    else if (expectedFieldValue.Equals(actualFieldValue) == negated)
+                    {
+                        if (!negated)
+                        {
+                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldLabel))
                                                  .On(actualFieldValue)
                                                  .And.Expected(expectedFieldValue)
                                                  .ToString();
-                    }
-                    else
-                    {
-                        message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldName))
+                        }
+                        else
+                        {
+                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldLabel))
                                                  .On(actualFieldValue)
                                                  .And.Expected(expectedFieldValue)
                                                  .Comparison("different from")
                                                  .ToString();
-                    }
+                        }
 
-                    break;
+                        break;
+                    }
                 }
             }
 
             return message;
+        }
+
+        private static string BuildFieldDescription(
+            string prefix, FieldInfo fieldInfo, out string fieldLabel)
+        {
+            var fieldname = fieldInfo.Name;
+            var result = AutoPropertyMask.Match(fieldname);
+            if (result.Length > 0 && result.Groups.Count == 2)
+            {
+                fieldname = string.Format(
+                    "{0}{1}", prefix, fieldname.Substring(result.Groups[1].Index, result.Groups[1].Length));
+
+                fieldLabel = string.Format("autoproperty '{0}' (field '{1}')", fieldname, fieldInfo.Name);
+            }
+            else
+            {
+                result = AnonymousTypeFieldMask.Match(fieldname);
+                if (result.Length > 0 && result.Groups.Count == 2)
+                {
+                    fieldname = string.Format(
+                        "{0}{1}",
+                        prefix,
+                        fieldname.Substring(result.Groups[1].Index, result.Groups[1].Length));
+
+                    fieldLabel = string.Format("field '{0}'", fieldname);
+                }
+                else
+                {
+                    fieldname = string.Format("{0}{1}", prefix, fieldname);
+                    fieldLabel = string.Format("field '{0}'", fieldname);
+                }
+            }
+
+            return fieldname;
         }
 
         private static FieldInfo FindField(Type type, string name)
