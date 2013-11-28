@@ -18,7 +18,6 @@ namespace NFluent
 
     using NFluent.Extensibility;
     using NFluent.Extensions;
-    using NFluent.Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on a date time instance. 
