@@ -27,6 +27,8 @@ namespace NFluent.Extensibility
     {
         /// <summary>
         /// Gets the check link to return for the next check to be executed (linked with the And operator).
+        /// This property is only useful for those that doesn't want to implement their check methods with the 
+        /// <see cref="ExecuteCheck"/> method.
         /// </summary>
         /// <value>
         /// The check link to return for next check (linked with the And operator) to be executed.
