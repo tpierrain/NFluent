@@ -52,31 +52,31 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
         public static IExtendableCheckLink<IEnumerable> Contains(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
         {
-            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<IEnumerable>.ExtractChecker(check);
 
-            runnableCheck.ExecuteCheck(
+            checker.ExecuteCheck(
                 () =>
                 {
-                    if (runnableCheck.Value == null && otherEnumerable == null)
+                    if (checker.Value == null && otherEnumerable == null)
                     {
                         return;
                     }
 
-                    if (runnableCheck.Value == null && otherEnumerable != null)
+                    if (checker.Value == null && otherEnumerable != null)
                     {
-                        var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain the given expected value(s).").For("enumerable").On(runnableCheck.Value).And.ExpectedValues(otherEnumerable).ToString();
+                        var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain the given expected value(s).").For("enumerable").On(checker.Value).And.ExpectedValues(otherEnumerable).ToString();
                         throw new FluentCheckException(message);
                     }
 
-                    var notFoundValues = ExtractNotFoundValues(runnableCheck.Value, otherEnumerable);
+                    var notFoundValues = ExtractNotFoundValues(checker.Value, otherEnumerable);
 
                     if (notFoundValues.Count > 0)
                     {
-                        var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain the expected value(s):\n\t[{0}]", notFoundValues.ToEnumeratedString())).For("enumerable").On(runnableCheck.Value).And.ExpectedValues(otherEnumerable).ToString();
+                        var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain the expected value(s):\n\t[{0}]", notFoundValues.ToEnumeratedString())).For("enumerable").On(checker.Value).And.ExpectedValues(otherEnumerable).ToString();
                         throw new FluentCheckException(message);
                     }
                 },
-                FluentMessage.BuildMessage(string.Format("The {{0}} contains all the given values whereas it must not.")).For("enumerable").On(runnableCheck.Value).And.ExpectedValues(otherEnumerable).ToString());
+                FluentMessage.BuildMessage(string.Format("The {{0}} contains all the given values whereas it must not.")).For("enumerable").On(checker.Value).And.ExpectedValues(otherEnumerable).ToString());
 
             return new ExtendableCheckLink<IEnumerable>(check, otherEnumerable);
         }
@@ -111,32 +111,32 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
         public static ICheckLink<ICheck<IEnumerable>> IsOnlyMadeOf(this ICheck<IEnumerable> check, IEnumerable expectedValues)
         {
-            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<IEnumerable>.ExtractChecker(check);
             
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                     {
                         // TODO: refactor this implementation?
-                        if (runnableCheck.Value == null && expectedValues == null)
+                        if (checker.Value == null && expectedValues == null)
                         {
                             return;
                         }
 
-                        if (runnableCheck.Value == null && expectedValues != null)
+                        if (checker.Value == null && expectedValues != null)
                         {
-                            var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain exactly the given value(s).").For("enumerable").On(runnableCheck.Value).And.ExpectedValues(expectedValues).ToString();
+                            var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain exactly the given value(s).").For("enumerable").On(checker.Value).And.ExpectedValues(expectedValues).ToString();
                             throw new FluentCheckException(message);
                         }
 
-                        var unexpectedValuesFound = ExtractUnexpectedValues(runnableCheck.Value, expectedValues);
+                        var unexpectedValuesFound = ExtractUnexpectedValues(checker.Value, expectedValues);
 
                         if (unexpectedValuesFound.Count > 0)
                         {
-                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain only the given value(s).\nIt contains also other values:\n\t[{0}]", unexpectedValuesFound.ToEnumeratedString())).For("enumerable").On(runnableCheck.Value).And.ExpectedValues(expectedValues).ToString();
+                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain only the given value(s).\nIt contains also other values:\n\t[{0}]", unexpectedValuesFound.ToEnumeratedString())).For("enumerable").On(checker.Value).And.ExpectedValues(expectedValues).ToString();
                             throw new FluentCheckException(message);
                         }
                 },
-                FluentMessage.BuildMessage("The {0} contains only the given values whereas it must not.").For("enumerable").On(runnableCheck.Value).And.ExpectedValues(expectedValues).ToString());
+                FluentMessage.BuildMessage("The {0} contains only the given values whereas it must not.").For("enumerable").On(checker.Value).And.ExpectedValues(expectedValues).ToString());
         }
 
         /// <summary>
@@ -171,29 +171,29 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
         public static ICheckLink<ICheck<IEnumerable>> ContainsExactly(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
         {
-            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<IEnumerable>.ExtractChecker(check);
             
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () => 
                 {
                     // TODO: refactor this implementation
-                    if (runnableCheck.Value == null && otherEnumerable == null)
+                    if (checker.Value == null && otherEnumerable == null)
                     {
                         return;
                     }
 
-                    if (runnableCheck.Value == null && otherEnumerable != null)
+                    if (checker.Value == null && otherEnumerable != null)
                     {
-                        var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain exactly the {1}.").For("enumerable").On(runnableCheck.Value).And.ExpectedValues(otherEnumerable).ToString();
+                        var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain exactly the {1}.").For("enumerable").On(checker.Value).And.ExpectedValues(otherEnumerable).ToString();
                         throw new FluentCheckException(message);
                     }
 
                     if (otherEnumerable == null)
                     {
-                        throw new FluentCheckException(BuildNotExactlyExceptionMessage(runnableCheck.Value, null));
+                        throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker.Value, null));
                     }
 
-                    var first = runnableCheck.Value.GetEnumerator();
+                    var first = checker.Value.GetEnumerator();
                     var enumerable = otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
                     var second = enumerable.GetEnumerator();
 
@@ -202,16 +202,16 @@ namespace NFluent
                         if (!second.MoveNext() 
                             || !object.Equals(first.Current, second.Current))
                         {
-                            throw new FluentCheckException(BuildNotExactlyExceptionMessage(runnableCheck.Value, enumerable));
+                            throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker.Value, enumerable));
                         }
                     }
 
                     if (second.MoveNext())
                     {
-                        throw new FluentCheckException(BuildNotExactlyExceptionMessage(runnableCheck.Value, enumerable));
+                        throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker.Value, enumerable));
                     }
                 },
-                BuildExceptionMessageForContainsExactly(runnableCheck.Value, otherEnumerable));
+                BuildExceptionMessageForContainsExactly(checker.Value, otherEnumerable));
         }
 
         /// <summary>
@@ -225,14 +225,14 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable has not the expected number of elements.</exception>
         public static ICheckLink<ICheck<IEnumerable>> HasSize(this ICheck<IEnumerable> check, long expectedSize)
         {
-            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<IEnumerable>.ExtractChecker(check);
 
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                     {
-                        HasSizeImpl(runnableCheck.Value, expectedSize);
+                        HasSizeImpl(checker.Value, expectedSize);
                     },
-                BuildHasSizeExceptionMessage(runnableCheck.Value));
+                BuildHasSizeExceptionMessage(checker.Value));
         }
 
         private static void HasSizeImpl(IEnumerable checkedEnumerable, long expectedSize)
@@ -281,14 +281,14 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
         public static ICheckLink<ICheck<IEnumerable>> IsEmpty(this ICheck<IEnumerable> check)
         {
-            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<IEnumerable>.ExtractChecker(check);
 
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                     {
-                        if (runnableCheck.Value.Cast<object>().Any())
+                        if (checker.Value.Cast<object>().Any())
                         {
-                            var errorMessage = FluentMessage.BuildMessage("The {0} is not empty.").For("enumerable").On(runnableCheck.Value).ToString();
+                            var errorMessage = FluentMessage.BuildMessage("The {0} is not empty.").For("enumerable").On(checker.Value).ToString();
                             throw new FluentCheckException(errorMessage);
                         }
                     },
@@ -305,23 +305,23 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
         public static ICheckLink<ICheck<IEnumerable>> IsNullOrEmpty(this ICheck<IEnumerable> check)
         {
-            var runnableCheck = ExtensibilityHelper<IEnumerable>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<IEnumerable>.ExtractChecker(check);
             
             string message = null;
 
-            if (runnableCheck.Value != null && runnableCheck.Value.Count() > 0)
+            if (checker.Value != null && checker.Value.Count() > 0)
             {
-                if (!runnableCheck.Negated)
+                if (!checker.Negated)
                 {
                     message = FluentMessage.BuildMessage("The {0} contains items, whereas it must be null or empty.")
                                              .For("IEnumerable")
-                                             .On(runnableCheck.Value)
+                                             .On(checker.Value)
                                              .ToString();
                 }
             }
-            else if (runnableCheck.Negated)
+            else if (checker.Negated)
             {
-                if (runnableCheck.Value == null)
+                if (checker.Value == null)
                 {
                     message = FluentMessage.BuildMessage("The {0} is null, where as it must contain at least one item.")
                                              .For("IEnumerable")

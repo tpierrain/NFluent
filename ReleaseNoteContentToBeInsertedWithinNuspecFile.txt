@@ -1,8 +1,8 @@
 New feature(s):
-* Introduces a mechanism for anyone to easily extend NFluent with his own checks (see. ExtensibilityHelper)
 * Adds recursion to the HasFieldsEqualToThose() check on object
 --------------
 Change(s):
+* You can now easily link your own checks by using the And operator thanks to the IChecker.ReturnValueForLinkage property.
 
 --------------
 Bug Fixe(s):

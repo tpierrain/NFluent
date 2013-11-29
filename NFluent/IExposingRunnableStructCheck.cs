@@ -28,6 +28,6 @@ namespace NFluent
         /// <value>
         /// The runnable check to use for checking something on a struct of a given type.
         /// </value>
-        IRunnableStructCheck<T> RunnableStructCheck { get; }
+        IStructChecker<T> StructChecker { get; }
     }
 }

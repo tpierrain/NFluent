@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ICheckForExtensibility.cs" company="">
+// // <copyright file="LinkableExtensionsTests.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -12,13 +12,28 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent
+namespace NFluent.Tests.Extensions
 {
-    /// <summary>
-    /// Fluent check which exposes more information for extensibility purpose.
-    /// </summary>
-    /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface ICheckForExtensibility<out T> : IWithValue<T>, IExposingChecker<T>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    using NUnit.Framework;
+
+    [TestFixture]
+    public class LinkableExtensionsTests
     {
+        [Test]
+        public void CanChainMyChecks()
+        {
+            var bazunga = new Person();
+            Check.That(bazunga).IsPortna().And.IsNawouak();
+
+            Check.That(bazunga).IsNawouak().And.IsPortna();
+        }
+
+        [Test]
+        public void CanChainMyStructChecks()
+        {
+            const Nationality FrenchNationality = Nationality.French;
+
+            Check.ThatEnum(FrenchNationality).IsEuropean().And.IsOccidental();
+        }
     }
 }

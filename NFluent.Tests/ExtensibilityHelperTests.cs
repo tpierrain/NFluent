@@ -22,18 +22,18 @@ namespace NFluent.Tests
     public class ExtensibilityHelperTests
     {
         [Test]
-        public void ExtractRunnableCheckWorks()
+        public void ExtractcheckerWorks()
         {
-            var runnableCheck = ExtensibilityHelper<string>.ExtractRunnableCheck(new FluentCheck<string>("kamoulox"));
-            Check.That(runnableCheck).IsNotNull();
-            Check.That(runnableCheck.Negated).IsFalse();
-            Check.That(runnableCheck.Value).IsEqualTo("kamoulox");
+            var checker = ExtensibilityHelper<string>.ExtractChecker(new FluentCheck<string>("kamoulox"));
+            Check.That(checker).IsNotNull();
+            Check.That(checker.Negated).IsFalse();
+            Check.That(checker.Value).IsEqualTo("kamoulox");
         }
 
         [Test]
         public void ExtractRunnableStructCheckWorks()
         {
-            var runnableStructCheck = ExtensibilityHelper<Nationality>.ExtractRunnableStructCheck(new FluentStructCheck<Nationality>(Nationality.Chinese));
+            var runnableStructCheck = ExtensibilityHelper<Nationality>.ExtractStructChecker(new FluentStructCheck<Nationality>(Nationality.Chinese));
             Check.ThatEnum(runnableStructCheck.Value).IsEqualTo(Nationality.Chinese);
             Check.That(runnableStructCheck.Negated).IsFalse();
         }

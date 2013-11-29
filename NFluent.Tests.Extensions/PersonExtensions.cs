@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ICheckForExtensibility.cs" company="">
+// // <copyright file="PersonExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -12,13 +12,27 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent
+namespace NFluent.Tests.Extensions
 {
+    using NFluent.Extensibility;
+
     /// <summary>
-    /// Fluent check which exposes more information for extensibility purpose.
+    /// Extensions methods to check <see cref="Person"/> type.
     /// </summary>
-    /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface ICheckForExtensibility<out T> : IWithValue<T>, IExposingChecker<T>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    public static class PersonExtensions
     {
+        public static ICheckLink<ICheck<Person>> IsPortna(this ICheck<Person> check)
+        {
+            var checker = ExtensibilityHelper<Person>.ExtractChecker(check);
+
+            return checker.ReturnValueForLinkage;
+        }
+
+        public static ICheckLink<ICheck<Person>> IsNawouak(this ICheck<Person> check)
+        {
+            var checker = ExtensibilityHelper<Person>.ExtractChecker(check);
+            
+            return checker.ReturnValueForLinkage;
+        }
     }
 }

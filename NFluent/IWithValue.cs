@@ -14,8 +14,6 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System.ComponentModel;
-
     /// <summary>
     /// Exposes a value.
     /// </summary>
@@ -30,7 +28,6 @@ namespace NFluent
         /// <value>
         /// The value to be tested by any fluent check extension method.
         /// </value>
-        [EditorBrowsable(EditorBrowsableState.Never)]
         T Value { get; }
     }
 }

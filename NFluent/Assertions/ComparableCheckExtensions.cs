@@ -35,14 +35,14 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not before the other one.</exception>
         public static ICheckLink<ICheck<IComparable>> IsBefore(this ICheck<IComparable> check, IComparable givenValue)
         {
-            var runnableCheck = ExtensibilityHelper<IComparable>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<IComparable>.ExtractChecker(check);
 
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                     {
-                        ComparableHelper.IsBefore(runnableCheck.Value, givenValue);
+                        ComparableHelper.IsBefore(checker.Value, givenValue);
                     },
-                FluentMessage.BuildMessage("The {0} is before the reference value whereas it must not.").On(runnableCheck.Value).And.Expected(givenValue).Comparison("after").ToString());
+                FluentMessage.BuildMessage("The {0} is before the reference value whereas it must not.").On(checker.Value).And.Expected(givenValue).Comparison("after").ToString());
         }
 
         /// <summary>
@@ -56,14 +56,14 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not after the other one.</exception>
         public static ICheckLink<ICheck<IComparable>> IsAfter(this ICheck<IComparable> check, IComparable givenValue)
         {
-            var runnableCheck = ExtensibilityHelper<IComparable>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<IComparable>.ExtractChecker(check);
 
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                 {
-                    ComparableHelper.IsAfter(runnableCheck.Value, givenValue);
+                    ComparableHelper.IsAfter(checker.Value, givenValue);
                 },
-                FluentMessage.BuildMessage("The {0} is after the reference value whereas it must not.").On(runnableCheck.Value).And.Expected(givenValue).Comparison("before").ToString());
+                FluentMessage.BuildMessage("The {0} is after the reference value whereas it must not.").On(checker.Value).And.Expected(givenValue).Comparison("before").ToString());
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IExposingRunnableCheck.cs" company="">
+// // <copyright file="IExposingChecker.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@ namespace NFluent
     using NFluent.Extensibility;
 
     /// <summary>
-    /// Exposes a runnable check for this given type. 
+    /// Exposes an executable check for this given type. 
     /// </summary>
     /// <typeparam name="T">The type of the data to be checked.</typeparam>
-    public interface IExposingRunnableCheck<out T>
+    public interface IExposingChecker<out T>
     {
         /// <summary>
         /// Gets the runnable check to use for checking something on a value of a given type.
@@ -28,6 +28,6 @@ namespace NFluent
         /// <value>
         /// The runnable check to use for checking something on a given type.
         /// </value>
-        IRunnableCheck<T> RunnableCheck { get; } 
+        IChecker<T> Checker { get; } 
     }
 }

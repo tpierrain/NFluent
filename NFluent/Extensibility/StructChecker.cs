@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="RunnableCheck.cs" company="">
+// // <copyright file="StructChecker.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -10,30 +10,40 @@
 // //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // //   See the License for the specific language governing permissions and
 // //   limitations under the License.
-// // </copyright>  
+// // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Extensibility
 {
     using System;
 
     /// <summary>
-    /// Provides a mean to execute some checks on a value, taking care of whether it should be negated or not, etc.
+    /// Provides a mean to execute a fluent check, taking care of whether it should be negated or not, etc.
     /// This interface is designed for developers that need to add new check (extension) methods.
     /// Thus, it should not be exposed via Intellisense to developers that are using NFluent to write 
     /// checks statements.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    internal class RunnableCheck<T> : IRunnableCheck<T>
+    internal class StructChecker<T> : IStructChecker<T> where T : struct
     {
-        private readonly ICheckForExtensibility<T> fluentCheckForExtensibility;
+        private readonly IStructCheckForExtensibility<T> fluentStructCheckForExtensibility;
+
+        public StructChecker(IStructCheckForExtensibility<T> fluentStructCheckForExtensibility)
+        {
+            this.fluentStructCheckForExtensibility = fluentStructCheckForExtensibility;
+        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RunnableCheck{T}" /> class.
+        /// Gets the check link to return for the next check to be executed (linked with the And operator).
         /// </summary>
-        /// <param name="fluentCheckForExtensibility">The runnable fluent check.</param>
-        public RunnableCheck(ICheckForExtensibility<T> fluentCheckForExtensibility)
+        /// <value>
+        /// The check link to return for next check (linked with the And operator) to be executed.
+        /// </value>
+        public ICheckLink<IStructCheck<T>> ReturnValueForLinkage
         {
-            this.fluentCheckForExtensibility = fluentCheckForExtensibility;
+            get
+            {
+                return new CheckLink<IStructCheck<T>>(this.fluentStructCheckForExtensibility);
+            }
         }
 
         /// <summary>
@@ -46,12 +56,12 @@ namespace NFluent.Extensibility
         {
             get
             {
-                return this.fluentCheckForExtensibility.Value;
+                return this.fluentStructCheckForExtensibility.Value;
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="FluentCheck{T}" /> should be negated or not.
+        /// Gets a value indicating whether this check should be negated or not.
         /// This property is useful when you implement check methods.
         /// </summary>
         /// <value>
@@ -61,7 +71,7 @@ namespace NFluent.Extensibility
         {
             get
             {
-                return this.fluentCheckForExtensibility.Negated;
+                return this.fluentStructCheckForExtensibility.Negated;
             }
         }
 
@@ -79,32 +89,33 @@ namespace NFluent.Extensibility
         ///     A new check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        public ICheckLink<ICheck<T>> ExecuteCheck(Action action, string negatedExceptionMessage)
+        public ICheckLink<IStructCheck<T>> ExecuteCheck(Action action, string negatedExceptionMessage)
         {
-            try
+            if (this.fluentStructCheckForExtensibility.Negated)
             {
-                // execute test
-                action();
-            }
-            catch (FluentCheckException)
-            {
-                // exception raised, and this was not expected
-                if (!this.fluentCheckForExtensibility.Negated)
-                { 
-                    throw;
+                // The exact opposite ;-)
+                bool mustThrow = false;
+                try
+                {
+                    action();
+                    mustThrow = true;
+                }
+                catch (FluentCheckException)
+                {
                 }
 
-                // exception was expected
-                return new CheckLink<ICheck<T>>(this.fluentCheckForExtensibility);
+                if (mustThrow)
+                {
+                    throw new FluentCheckException(negatedExceptionMessage);
+                }
             }
-
-            if (this.fluentCheckForExtensibility.Negated)
+            else
             {
-                // the expected exception did not occur
-                throw new FluentCheckException(negatedExceptionMessage);
+                // May throw FluentCheckException
+                action();
             }
 
-            return new CheckLink<ICheck<T>>(this.fluentCheckForExtensibility);
+            return this.ReturnValueForLinkage;
         }
     }
 }

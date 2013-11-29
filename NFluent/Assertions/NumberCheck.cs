@@ -28,7 +28,7 @@ namespace NFluent
         private const string MustBeZeroMessage = "The {0} is different from zero.";
 
         // private readonly N value;
-        private readonly RunnableCheck<N> runnableCheck;
+        private readonly Checker<N> checker;
         private readonly ICheckForExtensibility<N> checkForExtensibility;
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace NFluent
         public NumberCheck(ICheck<N> check)
         {
             // this.value = ((ICheckForExtensibility<N>)check).Value;
-            this.runnableCheck = new RunnableCheck<N>(check as ICheckForExtensibility<N>);
+            this.checker = new Checker<N>(check as ICheckForExtensibility<N>);
             this.checkForExtensibility = check as ICheckForExtensibility<N>;
         }
 
@@ -51,7 +51,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is not equal to zero.</exception>
         public ICheckLink<ICheck<N>> IsZero()
         {
-            return this.runnableCheck.ExecuteCheck(
+            return this.checker.ExecuteCheck(
                 () =>
                     {
                         var res = InternalIsZero(this.checkForExtensibility.Value);
@@ -73,7 +73,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is equal to zero.</exception>
         public ICheckLink<ICheck<N>> IsNotZero()
         {
-            return this.runnableCheck.ExecuteCheck(
+            return this.checker.ExecuteCheck(
                 () =>
                     {
                         bool res = InternalIsZero(this.checkForExtensibility.Value);
@@ -96,7 +96,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
         public ICheckLink<ICheck<N>> IsPositive()
         {
-            return this.runnableCheck.ExecuteCheck(
+            return this.checker.ExecuteCheck(
                 () =>
                     {
                         if (Convert.ToInt32(this.checkForExtensibility.Value) <= 0)
@@ -114,7 +114,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
         public ICheckLink<ICheck<N>> IsNegative()
         {
-            return this.runnableCheck.ExecuteCheck(
+            return this.checker.ExecuteCheck(
                 () =>
                 {
                     if (Convert.ToInt32(this.checkForExtensibility.Value) >= 0)
@@ -139,7 +139,7 @@ namespace NFluent
         /// </exception>
         public ICheckLink<ICheck<N>> IsLessThan(N comparand)
         {
-            return this.runnableCheck.ExecuteCheck(
+            return this.checker.ExecuteCheck(
                 () =>
                 {
                     if (this.checkForExtensibility.Value.CompareTo(comparand) >= 0)
@@ -164,7 +164,7 @@ namespace NFluent
         /// </exception>
         public ICheckLink<ICheck<N>> IsGreaterThan(N comparand)
         {
-            return this.runnableCheck.ExecuteCheck(
+            return this.checker.ExecuteCheck(
                 () =>
                     {
                         if (this.checkForExtensibility.Value.CompareTo(comparand) <= 0)

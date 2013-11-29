@@ -29,19 +29,30 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsALetter(this ICheck<char> check)
         {
-            var runnableCheck = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
+            // Every check method starts by extracting a checker instance from the check thanks to
+            // the ExtensibilityHelper static class.
+            var checker = ExtensibilityHelper<char>.ExtractChecker(check);
 
-            return runnableCheck.ExecuteCheck(
+            // Then, we let the checker's ExecuteCheck() method return the ICheckLink<ICheck<T>> result (with T as string here).
+            // This method needs 2 arguments:
+            //   1- a lambda that checks what's necessary, and throws a FluentAssertionException in case of failure
+            //      The exception message is usually fluently build with the FluentMessage.BuildMessage() static method.
+            //
+            //   2- a string containing the message for the exception to be thrown by the checker when 
+            //      the check fails, in the case we were running the negated version.
+            //
+            // e.g.:
+            return checker.ExecuteCheck(
                 () =>
                 {
-                    if (!IsALetter(runnableCheck.Value))
+                    if (!IsALetter(checker.Value))
                     {
-                        var errorMessage = FluentMessage.BuildMessage("The {0} is not a letter.").For("char").On(runnableCheck.Value).ToString();
+                        var errorMessage = FluentMessage.BuildMessage("The {0} is not a letter.").For("char").On(checker.Value).ToString();
                         
                         throw new FluentCheckException(errorMessage);
                     }
                 },
-                FluentMessage.BuildMessage("The {0} is a letter whereas it must not.").For("char").On(runnableCheck.Value).ToString());
+                FluentMessage.BuildMessage("The {0} is a letter whereas it must not.").For("char").On(checker.Value).ToString());
         }
 
         /// <summary>
@@ -52,18 +63,18 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsADigit(this ICheck<char> check)
         {
-            var runnableCheck = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<char>.ExtractChecker(check);
 
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                 {
-                    if (!char.IsDigit(runnableCheck.Value))
+                    if (!char.IsDigit(checker.Value))
                     {
-                        var errorMessage = FluentMessage.BuildMessage("The {0} is not a decimal digit.").For("char").On(runnableCheck.Value).ToString();
+                        var errorMessage = FluentMessage.BuildMessage("The {0} is not a decimal digit.").For("char").On(checker.Value).ToString();
                         throw new FluentCheckException(errorMessage);
                     }
                 },
-                FluentMessage.BuildMessage("The {0} is a decimal digit whereas it must not.").For("char").On(runnableCheck.Value).ToString());
+                FluentMessage.BuildMessage("The {0} is a decimal digit whereas it must not.").For("char").On(checker.Value).ToString());
         }
 
         /// <summary>
@@ -74,18 +85,18 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsAPunctuationMark(this ICheck<char> check)
         {
-            var runnableCheck = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<char>.ExtractChecker(check);
 
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                 {
-                    if (!char.IsPunctuation(runnableCheck.Value))
+                    if (!char.IsPunctuation(checker.Value))
                     {
-                        var errorMessage = FluentMessage.BuildMessage("The {0} is not a punctuation mark.").For("char").On(runnableCheck.Value).ToString();
+                        var errorMessage = FluentMessage.BuildMessage("The {0} is not a punctuation mark.").For("char").On(checker.Value).ToString();
                         throw new FluentCheckException(errorMessage);
                     }
                 },
-                FluentMessage.BuildMessage("The {0} is a punctuation mark whereas it must not.").For("char").On(runnableCheck.Value).ToString());
+                FluentMessage.BuildMessage("The {0} is a punctuation mark whereas it must not.").For("char").On(checker.Value).ToString());
         }
 
         /// <summary>
@@ -97,24 +108,24 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsSameLetterAs(this ICheck<char> check, char otherChar)
         {
-            var runnableCheck = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<char>.ExtractChecker(check);
 
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                 {
-                    if (!IsALetter(runnableCheck.Value))
+                    if (!IsALetter(checker.Value))
                     {
-                        var errorMessage = FluentMessage.BuildMessage("The {0} is not the same letter as the given one (whatever the case).\nThe checked char is not even a letter!").For("char").On(runnableCheck.Value).And.WithGivenValue(otherChar).ToString();
+                        var errorMessage = FluentMessage.BuildMessage("The {0} is not the same letter as the given one (whatever the case).\nThe checked char is not even a letter!").For("char").On(checker.Value).And.WithGivenValue(otherChar).ToString();
                         throw new FluentCheckException(errorMessage);
                     }
 
-                    if (!IsSameCharCaseInsensitive(runnableCheck.Value, otherChar))
+                    if (!IsSameCharCaseInsensitive(checker.Value, otherChar))
                     {
-                        var errorMessage = FluentMessage.BuildMessage("The {0} is not the same letter as the given one (whatever the case).").For("char").On(runnableCheck.Value).And.WithGivenValue(otherChar).ToString();
+                        var errorMessage = FluentMessage.BuildMessage("The {0} is not the same letter as the given one (whatever the case).").For("char").On(checker.Value).And.WithGivenValue(otherChar).ToString();
                         throw new FluentCheckException(errorMessage);
                     }
                 },
-                FluentMessage.BuildMessage("The {0} is the same letter as the given one (whatever the case), whereas it must not.").For("char").On(runnableCheck.Value).And.WithGivenValue(otherChar).ToString());
+                FluentMessage.BuildMessage("The {0} is the same letter as the given one (whatever the case), whereas it must not.").For("char").On(checker.Value).And.WithGivenValue(otherChar).ToString());
         }
 
         /// <summary>
@@ -126,18 +137,18 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsSameLetterButWithDifferentCaseAs(this ICheck<char> check, char otherChar)
         {
-            var runnableCheck = ExtensibilityHelper<char>.ExtractRunnableCheck(check);
+            var checker = ExtensibilityHelper<char>.ExtractChecker(check);
             
-            return runnableCheck.ExecuteCheck(
+            return checker.ExecuteCheck(
                 () =>
                     {
-                        if (!IsALetter(runnableCheck.Value) || !IsSameCharCaseInsensitive(runnableCheck.Value, otherChar) || HaveSameCase(runnableCheck.Value, otherChar))
+                        if (!IsALetter(checker.Value) || !IsSameCharCaseInsensitive(checker.Value, otherChar) || HaveSameCase(checker.Value, otherChar))
                         {
-                            var errorMessage = FluentMessage.BuildMessage("The {0} is not the same letter but with different case as the given one.").For("char").On(runnableCheck.Value).And.WithGivenValue(otherChar).ToString();
+                            var errorMessage = FluentMessage.BuildMessage("The {0} is not the same letter but with different case as the given one.").For("char").On(checker.Value).And.WithGivenValue(otherChar).ToString();
                             throw new FluentCheckException(errorMessage);
                         }
                     },
-                    FluentMessage.BuildMessage("The {0} is the same letter as the given one but with different case, whereas it must not.").For("char").On(runnableCheck.Value).And.WithGivenValue(otherChar).ToString());
+                    FluentMessage.BuildMessage("The {0} is the same letter as the given one but with different case, whereas it must not.").For("char").On(checker.Value).And.WithGivenValue(otherChar).ToString());
         }
 
         #region helper methods
