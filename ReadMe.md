@@ -5,6 +5,10 @@ NFluent overview
 
 NFluent is __an check library__ which aims __to fluent your .NET TDD experience__.
 
+__Official site: [http://www.n-fluent.net/](http://www.n-fluent.net/)__
+
+- - - 
+
 __NFluent will make your tests__:
 + __fluent to write__: with a __[super-duper-happy](https://github.com/NancyFx/Nancy/wiki/Introduction) auto-completion 'dot' experience__. Indeed, just type the Check.That( followed by one of your object and a dot, and your IDE will show you all the checks available for the type of the given object to verify. No more, no less (i.e. no auto completion flooding).
 + __fluent to read__: very close to plain English, making it easier for non-technical people to read test code.
