@@ -55,7 +55,7 @@
                     <li class="active">
                         <a href="./index.html">Home</a>
                     </li>
-                    <li class="">
+                    <!--<li class="">
                         <a href="./Getting-started.html">Get started</a>
                     </li>
                     <li class="">
@@ -69,7 +69,7 @@
                     </li>
                     <li class="">
                         <a href="./HowToExtendNFluent.html">Extend NFluent</a>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
         </div>
@@ -89,13 +89,13 @@
                 <a href="https://github.com/tpierrain/NFluent" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Jumbotron links', 'GitHub project']);">GitHub project</a>
             </li>
             <li>
-                <a href="./getting-started.html#examples" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Jumbotron links', 'Examples']);">Examples</a>
+                <a href="https://github.com/tpierrain/NFluent/blob/master/ReadMe.md#usage-sample" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Jumbotron links', 'Examples']);">Examples</a>
             </li>
             <li>
                 <a href="https://github.com/tpierrain/NFluent/issues?state=open" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Jumbotron links', 'Issues']);">Issues</a>
             </li>
             <li>
-                Version 1.0.0
+                Version 0.11.0
             </li>
         </ul>
     </div>
@@ -215,7 +215,34 @@
     <div class="span12">
         <br>
         <h2>We aim to release the most fluent .NET assertion lib ever ;-)</h2>
-        <p>Indeed, there were other attempts made previously, but even the most serious alternative did not suit our needs</p>
+        <p>There were other attempts made previously by other open source projects, but even the most serious alternative did not suit our needs. Indeed:</p>
+        <ul>
+            <li>we think that writing a lambda expression within an check statement is not really a fluent experience (neither on a reading perspective).</li>
+            <li>we think that those other check libraries have not chosen the proper vocabulary (<subjectUnderTest>.Should().... why don't they choose Must instead?!?). And thus, you'd rather rely on a stronger semantic for your checks (i.e. NFluent's <code>Check.That</code>).</li>
+        </ul>
+        <br>
+        Is the next statement fluent to write for you?!?<br>
+        <code>new[] { 1, 2, 3 }.Should().Contain(item => item > 3, "at least {0} item should be larger than 3", 1);</code>
+        <br>
+        <br>
+        and with the next statement below, are you happy to type <code>new[] {...}</code> as method argument?!?
+        <br>
+        <code>
+            ints.Should().Have.SameSequenceAs(new[] { 1, 2, 3 });
+        </code>
+        <br>
+        <br>
+        <p><h3>NFluent is different</h3>
+            <ul>
+                <li>NFluent is completely driven by the <b>super-duper-happy-path</b> principle (coming from Nancy) to fluent your TDD experience: <b>We really consider the 'dot' auto completion experience as crucial.</b> It means that you should not be polluted by things not related to the current unit testing context (as it is the case with the other 'fluent' libraries and their extension methods applied on classical .NET types, and their intellisense flooding).</li>
+                <li>NFluent provides some extra candies, such as <b>the awesome Properties() extension method for IEnumerable</b> for instance (as showed within the <a href="https://github.com/tpierrain/NFluent/blob/master/ReadMe.md#usage-sample" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Jumbotron links', 'Examples']);">code samples</a>).</li>
+            </ul>
+        </p>
+        <p>
+            <h3>Because fluentness is our grail</h3> It's an obsession for us, and everything we do (API, error messages, ...) is completely driven by this research.
+            <br>
+            <b>NFluent is really awesome pal. Try it, you will see!</b>
+        </p>
         <br>
         <p><a class="btn btn-warning" href="#trulyAwesomeOrigin">&lt; Back</a></p>
         <hr/>
