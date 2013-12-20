@@ -215,17 +215,20 @@
     <div class="span12">
         <br>
         <h2>We aim to release the most fluent .NET assertion lib ever ;-)</h2>
-        <p>There were other attempts made previously by other open source projects, but even the most serious alternative did not suit our needs. Indeed:</p>
-        <ul>
-            <li>we think that writing a lambda expression within an check statement is not really a fluent experience (neither on a reading perspective).</li>
-            <li>we think that those other check libraries have not chosen the proper vocabulary (<subjectUnderTest>.Should().... why don't they choose Must instead?!?). And thus, you'd rather rely on a stronger semantic for your checks (i.e. NFluent's <code>Check.That</code>).</li>
-        </ul>
+        <p>There were attempts made previously by other open source projects, but even the most serious alternative did not suit our needs.</p>
+        <p>
+            Indeed:
+            <ul>
+                <li>we think that writing a lambda expression within an check statement is not really a fluent experience (neither on a reading perspective).</li>
+                <li>we think that those other check libraries have not chosen the proper vocabulary (<subjectUnderTest>.Should().... why don't they choose Must instead?!?). And thus, you'd rather rely on a stronger semantic for your checks (i.e. NFluent's <code>Check.That</code>).</li>
+            </ul>
+        </p>
         <br>
         Is the next statement fluent to write for you?!?<br>
         <code>new[] { 1, 2, 3 }.Should().Contain(item => item > 3, "at least {0} item should be larger than 3", 1);</code>
         <br>
         <br>
-        and with the next statement below, are you happy to type <code>new[] {...}</code> as method argument?!?
+        Are you happy to type <code>new[] {...}</code> as a method argument like this?!?
         <br>
         <code>
             ints.Should().Have.SameSequenceAs(new[] { 1, 2, 3 });
