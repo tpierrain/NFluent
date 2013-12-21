@@ -4,7 +4,7 @@
     <list default="true" id="e9e7984a-ac8a-4e95-b432-63efc277ab53" name="Default" comment="" />
     <ignored path="NFluentSite.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/index.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1387526514761" ignored="false" />
+    <file path="/index.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1387610802440" ignored="false" />
     <file path="/bootstrap.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1373737411426" ignored="false" />
     <file path="/docs.css" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1373803944799" ignored="false" />
     <file path="/Getting-started.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1374042903124" ignored="false" />
@@ -30,7 +30,7 @@
       <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="230" column="88" selection-start="11212" selection-end="11212" vertical-scroll-proportion="0.62116563">
+            <state line="221" column="0" selection-start="10312" selection-end="10312" vertical-scroll-proportion="0.5291411">
               <folding />
             </state>
           </provider>
@@ -185,6 +185,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NFluentSite" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WebSite" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="img" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -424,7 +438,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="230" column="88" selection-start="11212" selection-end="11212" vertical-scroll-proportion="0.62116563">
+        <state line="221" column="0" selection-start="10312" selection-end="10312" vertical-scroll-proportion="0.5291411">
           <folding />
         </state>
       </provider>
