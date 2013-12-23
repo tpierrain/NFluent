@@ -95,7 +95,10 @@
                 <a href="https://github.com/tpierrain/NFluent/issues?state=open" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Jumbotron links', 'Issues']);">Issues</a>
             </li>
             <li>
-                Version 0.11.0
+                <a href="#wallOfFame" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Jumbotron links', 'WallOfFame']);">Wall of fame</a>
+            </li>
+            <li>
+                v 0.11.0
             </li>
         </ul>
     </div>
@@ -177,7 +180,13 @@
         <br>
         <h2>NFluent speeds up and eases the way you write your assertions</h2>
         <p>(that we call '<em>checks</em>' BTW, to avoid conflicts with all your favorite test runners)</p>
-        <p><b>Check.That() is all you've got to remember! before you get carried away by the <em><a href="https://github.com/NancyFx/Nancy/wiki/Introduction#the-super-duper-happy-path" target="nancy">super-duper-happy-dot experience</a></em> of NFluent</b></p>
+        <p><b><code>Check.That()</code> is all you've got to remember! before you get carried away by the <em><a href="https://github.com/NancyFx/Nancy/wiki/Introduction#the-super-duper-happy-path" target="nancy">super-duper-happy-dot experience</a></em> of NFluent</b></p>
+        <br>
+        <p>
+        <h3>NFluent is also extensible to your specific needs</h3>
+        <br>
+        You want to create your DSL for testing your own business objects? Can't be easier. <b><a href="https://github.com/tpierrain/NFluent/blob/master/HowToAddANewAssertion.md" target="whiteRabbit">Follow the white rabbit here</a></b>, or read <b><a href="http://www.codedistillers.com/rui/2013/11/26/nfluent-extensions/" target="codeDistiller">the nice article published by Rui on CodeDistillers' blog</a></b>.
+        </p>
         <br>
         <p><a class="btn btn-warning" href="#speedUpOrigin">&lt; Back</a></p>
         <hr/>
@@ -258,7 +267,7 @@
         <p><h3>NFluent is different</h3>
             <ul>
                 <li>NFluent is completely driven by the <b>super-duper-happy-path</b> principle (coming from Nancy) to fluent your TDD experience: <b>We really consider the 'dot' auto completion experience as crucial.</b> It means that you should not be polluted by things not related to the current unit testing context (as it is the case with the other 'fluent' libraries and their extension methods applied on classical .NET types, and their intellisense flooding).</li>
-                <li>NFluent provides some extra candies, such as <b>the awesome Properties() extension method for IEnumerable</b> for instance (as showed within the <a href="https://github.com/tpierrain/NFluent/blob/master/ReadMe.md#usage-sample" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Jumbotron links', 'Examples']);">code samples</a>).</li>
+                <li>NFluent provides some extra candies, such as <b>the awesome Properties() extension method for IEnumerable</b> for instance (as showed within the <b><a href="https://github.com/tpierrain/NFluent/blob/master/ReadMe.md#usage-sample" target="codeSample">code samples</a></b>).</li>
             </ul>
         </p>
         <p>
@@ -280,6 +289,46 @@
         <p>Indeed, <b>NFluent is simply an awesome assertion library, and ... <i>she's</i> not exclusive ;-)</b></p>
         <br>
         <p><a class="btn btn-warning" href="#keepYourFavoriteRunnerOrigin">&lt; Back</a></p>
+    </div>
+    <a name="wallOfFame"></a>
+    <div class="span12">
+        <br>
+        <p>
+        <br>
+        <h2>Wall of fame</h2>
+        Many thanks:
+        <ul>
+            <li>To the contributors dream team: <b><a href="http://dupdob.wordpress.com/" target="cyrille">Cyrille DUPUYDAUBY</a></b>, <b><a href="http://www.codedistillers.com/" target="rui">Rui CARVALHO</a></b> & <b><a href="https://github.com/malat" target="marco">Marc-Antoine LATOUR</a></b> (which helped me a lot at the very beginning)</li>
+            <li>To <b><a href="http://www.codedistillers.com/" target="rui">Rui CARVALHO</a></b>, for the nice NFluent logo he has designed.</li>
+            <li>To the mates that gave me ideas and feedbacks to make this lib as fluent as possible: <b><a href="https://github.com/joel-costigliola" target="joel">Joel COSTIGLIOLA</a></b> (former active contributor of Java FEST Assert, which now works on his <b><a href="https://github.com/joel-costigliola/assertj-core/wiki" target="asertJ">AssertJ</a></b> fork), <b><a href="http://www.linkedin.com/in/blabaere" target="benLoncleSoul">Benoit LABAERE</a></b> ...</li>
+            <li>To <b><a href="http://stackoverflow.com/users/292555/omer-raviv" target="omer">Omer RAVIV</a></b>, which supports the NFluent project by offering us some free licenses for the nice <b><a href="http://www.oz-code.com/" target="ozcode">OzCode</a></b> debugging extension for Visual Studio.</li>
+            <li>To <b><a href="http://www.jetbrains.com/" target="jetbrains">Jetbrains</a></b>, which still creates some of the coolest tools for developers (whatever the language), and which supports our NFluent project by providing us some space within their <b><a href="http://teamcity.codebetter.com/login.html" target="codeBetter">teamcity code better instance</a></b> (note: you can enter as guest).</li>
+       </ul>
+        <br>
+        <!--<div style="background: #00578e url('http://www.jetbrains.com/img/banners/Codebetter300x250.png') no-repeat 0 50%; margin:0;padding:0;text-decoration:none;text-indent:0;letter-spacing:-0.001em; width:300px; height:250px">
+            <a href="http://www.jetbrains.com/youtrack" title="YouTrack by JetBrains" style="margin: 52px 0 0 58px;padding: 0; float: left;font-size: 14px; background-image:none;border:0;color: #acc4f9; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">keyboard-centric bug tracker</a>
+            <a href="http://www.jetbrains.com/teamcity" title="TeamCity by JetBrains" style="margin:0 0 0 58px;padding:122px 0 0 0;font-size:14px; background-image:none;border:0;display:block; color: #acc4f9; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">continuous integration server</a>
+        </div>-->
+        <table align="center" border="0">
+            <tr>
+                <td align="center">
+                    <div style="background: #00578e url('http://www.jetbrains.com/img/banners/Codebetter.png') no-repeat 0 50%; margin:0;padding:0;text-decoration:none;text-indent:0;letter-spacing:-0.001em; width:728px; height:90px">
+                        <a href="http://www.jetbrains.com/youtrack" title="YouTrack by JetBrains" style="margin: 60px 0 0 190px;padding: 0; float: left;font-size: 14px; background-image:none;border:0;color: #acc4f9; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">keyboard-centric bug tracker</a>
+                        <a href="http://www.jetbrains.com/teamcity" title="TeamCity by JetBrains" style="margin:0 0 0 400px;padding:60px 0 2px 0;font-size:14px; background-image:none;border:0;display:block; color: #acc4f9; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">continuous integration server</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <ul>
+            <li>And to <b><a href="https://github.com/dgageot" target="david">David GAGEOT</a></b>, the famous french java craftsman which first showed me the <em>powa</em> of fluentness in unit testing during an awesome <b><a href="http://www.brownbaglunch.fr/" target="sandwiches">Brown Bag Lunch</a></b> session.</li>
+        </ul>
+        <br>
+        <em>Thomas PIERRAIN, creator of NFluent</em>
+        </p>
+        <br>
+        <p><a class="btn btn-warning" href="">&lt; Back to the top</a></p>
+        <hr/>
     </div>
 </div>
 <!-- Footer
