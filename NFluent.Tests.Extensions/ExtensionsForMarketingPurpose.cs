@@ -64,7 +64,7 @@ namespace NFluent.Tests
     /// Fake class only for marketing and documentation purpose.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class Awsomeness
+    public class Awesomeness
     {
     }
 

@@ -41,7 +41,7 @@ namespace NFluent.Tests
         public void NFluentMotto()
         {
             // Assert is dead!                                         
-            Check.That(TDD).With(NFluent).IsAnInstanceOf<Awsomeness>();
+            Check.That(TDD).With(NFluent).IsAnInstanceOf<Awesomeness>();
         }
         
         [Test]
