@@ -59,9 +59,9 @@
     <Compile Include="DemonstrationTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NFluent\NFluent.csproj">
+    <ProjectReference Include="..\NFluent\NFluent.35.csproj">
       <Project>{3A474510-F384-41CE-9270-539B1E51DA7E}</Project>
-      <Name>NFluent</Name>
+      <Name>NFluent.35</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

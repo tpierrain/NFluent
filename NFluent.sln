@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		UseCases.md = UseCases.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent", "NFluent\NFluent.csproj", "{3A474510-F384-41CE-9270-539B1E51DA7E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35", "NFluent\NFluent.35.csproj", "{3A474510-F384-41CE-9270-539B1E51DA7E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests", "NFluent.Tests\NFluent.Tests.csproj", "{6B88C45A-D45E-40FB-8635-D0E0EF0454E9}"
 EndProject
