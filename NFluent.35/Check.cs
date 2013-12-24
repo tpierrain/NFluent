@@ -87,12 +87,5 @@ namespace NFluent
         {
             return new FluentStructCheck<T>(value);
         }
-
-#if NET40
-        public static dynamic That(dynamic value)
-        {
-            return value;
-        }
-#endif
     }
 }

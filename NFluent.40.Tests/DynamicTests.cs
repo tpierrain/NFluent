@@ -24,7 +24,7 @@ namespace NFluent.Tests
         public void CanCheckThatOnADynamic()
         {
             dynamic car = "car";
-            Check.That(car.Portnaouaq(42)).HasNoSeatAvailable();
+            Check.That(car.FuelLevel).IsEmpty();
         }
     }
 }
