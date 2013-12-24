@@ -101,6 +101,20 @@ namespace NFluent.Tests
             Check.That(IntValue).Not.IsEqualTo(LongValue);
         }
 
+        [Test]
+        public void IsAfterWorks()
+        {
+            long value = 42;
+            Check.That(value).IsNotZero().And.IsAfter(40);
+        }
+
+        [Test]
+        public void IsBeforeWorks()
+        {
+            long value = 42;
+            Check.That(value).IsNotZero().And.IsBefore(100);
+        }
+
         #endregion
     }
 }

@@ -67,7 +67,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The current value is not after the other one.</exception>
-        public static ICheckLink<ICheck<long>> IsAfter(this ICheck<long> check, IComparable givenValue)
+        public static ICheckLink<ICheck<long>> IsAfter(this ICheck<long> check, long givenValue)
         {
             var checker = ExtensibilityHelper<long>.ExtractChecker(check);
             IComparable checkedValue = checker.Value as IComparable;
