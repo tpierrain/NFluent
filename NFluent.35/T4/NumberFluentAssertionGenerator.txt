@@ -34,3 +34,21 @@
 
 
 
+// Generated helper templates
+// Generated items
+// NFluent\NFluent.35\T4\ShortSignedCheckExtensions.cs
+// NFluent\NFluent.35\T4\LongSignedCheckExtensions.cs
+// NFluent\NFluent.35\T4\FloatSignedCheckExtensions.cs
+// NFluent\NFluent.35\T4\DoubleSignedCheckExtensions.cs
+// NFluent\NFluent.35\T4\DecimalSignedCheckExtensions.cs
+// NFluent\NFluent.35\T4\SbyteSignedCheckExtensions.cs
+// NFluent\NFluent.35\T4\UshortCheckExtensions.cs
+// NFluent\NFluent.35\T4\UlongCheckExtensions.cs
+// NFluent\NFluent.35\T4\UintCheckExtensions.cs
+// NFluent\NFluent.35\T4\ShortCheckExtensions.cs
+// NFluent\NFluent.35\T4\LongCheckExtensions.cs
+// NFluent\NFluent.35\T4\FloatCheckExtensions.cs
+// NFluent\NFluent.35\T4\DoubleCheckExtensions.cs
+// NFluent\NFluent.35\T4\DecimalCheckExtensions.cs
+// NFluent\NFluent.35\T4\SbyteCheckExtensions.cs
+// NFluent\NFluent.35\T4\ByteCheckExtensions.cs

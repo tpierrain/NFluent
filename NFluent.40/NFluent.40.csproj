@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NFluent</RootNamespace>
+    <AssemblyName>NFluent</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\NFluent.35\Assertions\BooleanCheckExtensions.cs">
+      <Link>Assertions\BooleanCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\CharCheckExtensions.cs">
+      <Link>Assertions\CharCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\ComparableCheckExtensions.cs">
+      <Link>Assertions\ComparableCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\DateTimeCheckExtensions.cs">
+      <Link>Assertions\DateTimeCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\DictionaryCheckExtensions.cs">
+      <Link>Assertions\DictionaryCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\EnumerableCheckExtensions.cs">
+      <Link>Assertions\EnumerableCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\EnumerableFluentSyntaxExtension.cs">
+      <Link>Assertions\EnumerableFluentSyntaxExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\ExtendableCheckLink.cs">
+      <Link>Assertions\ExtendableCheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\IntCheckExtensions.cs">
+      <Link>Assertions\IntCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\IntSignedCheckExtensions.cs">
+      <Link>Assertions\IntSignedCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\LambdaCheck.cs">
+      <Link>Assertions\LambdaCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\LambdaExceptionCheck.cs">
+      <Link>Assertions\LambdaExceptionCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\NumberCheck.cs">
+      <Link>Assertions\NumberCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\ObjectCheckExtensions.cs">
+      <Link>Assertions\ObjectCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\StringCheckExtensions.cs">
+      <Link>Assertions\StringCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\StringFluentSyntaxExtension.cs">
+      <Link>Assertions\StringFluentSyntaxExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\StructCheckExtensions.cs">
+      <Link>Assertions\StructCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\TimeSpanCheckExtensions.cs">
+      <Link>Assertions\TimeSpanCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Check.cs">
+      <Link>Check.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\CheckContext.cs">
+      <Link>CheckContext.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\CheckLink.cs">
+      <Link>CheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Constants.cs">
+      <Link>Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensibility\Checker.cs">
+      <Link>Extensibility\Checker.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensibility\ExtensibilityHelper.cs">
+      <Link>Extensibility\ExtensibilityHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensibility\FluentMessage.cs">
+      <Link>Extensibility\FluentMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensibility\IChecker.cs">
+      <Link>Extensibility\IChecker.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensibility\IStructChecker.cs">
+      <Link>Extensibility\IStructChecker.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensibility\StructChecker.cs">
+      <Link>Extensibility\StructChecker.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensions\EnumerableExtensions.cs">
+      <Link>Extensions\EnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensions\ExtensionsCommonHelpers.cs">
+      <Link>Extensions\ExtensionsCommonHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensions\ObjectExtensions.cs">
+      <Link>Extensions\ObjectExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensions\PropertiesExtensions.cs">
+      <Link>Extensions\PropertiesExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensions\StringExtensions.cs">
+      <Link>Extensions\StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\FluentCheck.cs">
+      <Link>FluentCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\FluentCheckException.cs">
+      <Link>FluentCheckException.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\FluentStructCheck.cs">
+      <Link>FluentStructCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Helpers\ComparableHelper.cs">
+      <Link>Helpers\ComparableHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Helpers\Duration.cs">
+      <Link>Helpers\Duration.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Helpers\EqualityHelper.cs">
+      <Link>Helpers\EqualityHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Helpers\ExceptionHelper.cs">
+      <Link>Helpers\ExceptionHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Helpers\IsInstanceHelper.cs">
+      <Link>Helpers\IsInstanceHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Helpers\TimeHelper.cs">
+      <Link>Helpers\TimeHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\ICheck.cs">
+      <Link>ICheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\ICheckForExtensibility.cs">
+      <Link>ICheckForExtensibility.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\ICheckLink.cs">
+      <Link>ICheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\IExposingChecker.cs">
+      <Link>IExposingChecker.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\IExposingRunnableStructCheck.cs">
+      <Link>IExposingRunnableStructCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\IExtendableCheckLink.cs">
+      <Link>IExtendableCheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\IForkableCheck.cs">
+      <Link>IForkableCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\IHasParentCheck.cs">
+      <Link>IHasParentCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\ILambdaCheck.cs">
+      <Link>ILambdaCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\ILambdaExceptionCheck.cs">
+      <Link>ILambdaExceptionCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense.cs">
+      <Link>IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\INegateableCheck.cs">
+      <Link>INegateableCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\INegated.cs">
+      <Link>INegated.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\INullableOrNumberCheckLink.cs">
+      <Link>INullableOrNumberCheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\IStructCheck.cs">
+      <Link>IStructCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\IStructCheckForExtensibility.cs">
+      <Link>IStructCheckForExtensibility.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\IWithValue.cs">
+      <Link>IWithValue.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\NullableOrNumberCheckLink.cs">
+      <Link>NullableOrNumberCheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\ByteCheckExtensions.cs">
+      <Link>T4\ByteCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\DecimalCheckExtensions.cs">
+      <Link>T4\DecimalCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\DecimalSignedCheckExtensions.cs">
+      <Link>T4\DecimalSignedCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\DoubleCheckExtensions.cs">
+      <Link>T4\DoubleCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\DoubleSignedCheckExtensions.cs">
+      <Link>T4\DoubleSignedCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\FloatCheckExtensions.cs">
+      <Link>T4\FloatCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\FloatSignedCheckExtensions.cs">
+      <Link>T4\FloatSignedCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\LongCheckExtensions.cs">
+      <Link>T4\LongCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\LongSignedCheckExtensions.cs">
+      <Link>T4\LongSignedCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\SbyteCheckExtensions.cs">
+      <Link>T4\SbyteCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\SbyteSignedCheckExtensions.cs">
+      <Link>T4\SbyteSignedCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\ShortCheckExtensions.cs">
+      <Link>T4\ShortCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\ShortSignedCheckExtensions.cs">
+      <Link>T4\ShortSignedCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\UintCheckExtensions.cs">
+      <Link>T4\UintCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\UlongCheckExtensions.cs">
+      <Link>T4\UlongCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\UshortCheckExtensions.cs">
+      <Link>T4\UshortCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\TimeUnit.cs">
+      <Link>TimeUnit.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\NFluent.35\packages.config">
+      <Link>packages.config</Link>
+    </None>
+    <None Include="..\NFluent.35\Settings.StyleCop">
+      <Link>Settings.StyleCop</Link>
+    </None>
+    <None Include="..\NFluent.35\T4\NumberFluentAssertionGenerator.tt">
+      <Link>T4\NumberFluentAssertionGenerator.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NumberFluentAssertionGenerator.txt</LastGenOutput>
+    </None>
+    <None Include="..\NFluent.35\T4\TemplateFileManagerV2.1.ttinclude">
+      <Link>T4\TemplateFileManagerV2.1.ttinclude</Link>
+    </None>
+    <None Include="..\NFluent.35\T4\TypeCloningHelper.ttinclude">
+      <Link>T4\TypeCloningHelper.ttinclude</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\NFluent.35\T4\NumberFluentAssertionGenerator.txt">
+      <Link>T4\NumberFluentAssertionGenerator.txt</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
