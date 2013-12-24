@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35", "NFluent.35\NF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40", "NFluent.40\NFluent.40.csproj", "{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40.Tests", "NFluent.40.Tests\NFluent.40.Tests.csproj", "{BDAA4D22-45A1-470E-A142-70E1F194EE3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDAA4D22-45A1-470E-A142-70E1F194EE3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDAA4D22-45A1-470E-A142-70E1F194EE3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDAA4D22-45A1-470E-A142-70E1F194EE3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDAA4D22-45A1-470E-A142-70E1F194EE3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
