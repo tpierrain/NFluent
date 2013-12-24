@@ -6,5 +6,8 @@ Change(s):
 
 --------------
 Bug Fixe(s):
+* Fixes a bug in the IsAfter() check that was throwing an exception when the givenValue type (considered as a IComparable instead of a number ;-(  was not the same as the checked value.
+
+
 
 
