@@ -40,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
     <Compile Include="..\NFluent.35\Assertions\BooleanCheckExtensions.cs">
       <Link>Assertions\BooleanCheckExtensions.cs</Link>
     </Compile>
@@ -135,9 +139,6 @@
     </Compile>
     <Compile Include="..\NFluent.35\Extensions\PropertiesExtensions.cs">
       <Link>Extensions\PropertiesExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.35\Extensions\StringExtensions.cs">
-      <Link>Extensions\StringExtensions.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\FluentCheck.cs">
       <Link>FluentCheck.cs</Link>
@@ -290,6 +291,9 @@
     <Compile Include="..\NFluent.35\TimeUnit.cs">
       <Link>TimeUnit.cs</Link>
     </Compile>
+    <Compile Include="..\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\NFluent.35\packages.config">
@@ -311,9 +315,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="..\NFluent.35\T4\NumberFluentAssertionGenerator.txt">
       <Link>T4\NumberFluentAssertionGenerator.txt</Link>
       <AutoGen>True</AutoGen>
@@ -321,8 +322,12 @@
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Content>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
