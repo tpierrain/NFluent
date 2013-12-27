@@ -188,7 +188,8 @@ namespace NFluent.Tests
 
         private static IEnumerable<Person> InstantiateDirectors()
         {
-            return new List<Person> {
+            return new List<Person> 
+                        {
                            new Person { Name = "Michel Gondry", Nationality = Nationality.French }, 
                            new Person { Name = "Joon-ho Bong", Nationality = Nationality.Korean }, 
                            new Person { Name = "Darren Aronofsky", Nationality = Nationality.American }
@@ -197,7 +198,8 @@ namespace NFluent.Tests
 
         private static IEnumerable<Person> InstantiateWriters()
         {
-            return new List<Person> {
+            return new List<Person> 
+                        {
                            new Person { Name = "Steve Tesich", Nationality = Nationality.Serbian }, 
                            new Person { Name = "Albert Camus", Nationality = Nationality.French }, 
                            new Person { Name = "Eiji Yoshikawa", Nationality = Nationality.Japanese }, 
