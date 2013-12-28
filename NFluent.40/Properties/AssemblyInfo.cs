@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NFluent for .NET 3.5")]
+[assembly: AssemblyTitle("NFluent for .NET 4.0")]
 [assembly: AssemblyDescription("NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Thomas PIERRAIN (thomas@pierrain.net), Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR and Co")]
@@ -37,4 +37,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("2959f969-9a70-4126-bbb2-ee2a03420e4f")]
 
 // Friend assemblies
-[assembly: InternalsVisibleTo("NFluent.Web"), InternalsVisibleTo("NFluent.Tests")]
+[assembly: InternalsVisibleTo("NFluent.Web"), InternalsVisibleTo("NFluent.40.Tests")]
