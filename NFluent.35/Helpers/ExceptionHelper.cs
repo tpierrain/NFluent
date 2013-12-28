@@ -52,12 +52,7 @@ namespace NFluent.Helpers
                     if (resultScan == null)
                     {
                         // look for MSTest
-                        resultScan = ExceptionScanner(
-                            "visualstudio",
-                            "Microsoft.VisualStudio.TestTools",
-                            "AssertFailedException",
-                            null,
-                            "AssertInconclusiveException");
+                        resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException");
                     }
 
                     if (resultScan != null)

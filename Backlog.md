@@ -7,7 +7,6 @@ Now available on github: https://github.com/tpierrain/NFluent/issues?state=open
 
 Temporary backlog
 -------
-1. Find why there is still 8 uncovered lines within the Helpers/ExceptionHelper.cs file with the NFluent.40.Tests (within NCrunch)
 1. Find a solution to disable NCrunch for double testing, but enabling this double testing on the SF
 
 1. Replaces the "The expected value(s)" by "the expected <what is in stake here>" (e.g. LambdaCheckException)
