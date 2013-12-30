@@ -4,7 +4,7 @@
     <list default="true" id="e9e7984a-ac8a-4e95-b432-63efc277ab53" name="Default" comment="" />
     <ignored path="NFluentSite.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/index.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1388402620423" ignored="false" />
+    <file path="/index.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1388411167976" ignored="false" />
     <file path="/bootstrap.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1373737411426" ignored="false" />
     <file path="/docs.css" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1373803944799" ignored="false" />
     <file path="/Getting-started.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1374042903124" ignored="false" />
@@ -30,12 +30,21 @@
       <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="265" column="125" selection-start="12896" selection-end="12896" vertical-scroll-proportion="0.44852942">
+            <state line="313" column="312" selection-start="17198" selection-end="17198" vertical-scroll-proportion="0.33246073">
               <folding>
                 <element signature="n#style#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#div#7;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#div#7;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#1;n#div#0;n#td#0;n#tr#0;n#table#0;n#div#7;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="csharp.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/css/csharp.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="6" column="30" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -76,19 +85,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="prettify.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/css/prettify.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="6" selection-start="757" selection-end="759" vertical-scroll-proportion="-11.923077">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="bootstrap.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/bootstrap.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="976" column="2" selection-start="13436" selection-end="13436" vertical-scroll-proportion="-7.5">
+            <state line="986" column="2" selection-start="13609" selection-end="13609" vertical-scroll-proportion="-13.269231">
               <folding />
             </state>
           </provider>
@@ -138,6 +138,7 @@
         <option value="$PROJECT_DIR$/Getting-started.html" />
         <option value="/Volumes/Disque dur/Téléchargements/Mud (2012)/Mud.2012.720p.BluRay.x264.YIFY.srt" />
         <option value="$PROJECT_DIR$/css/bootstrap.css" />
+        <option value="$PROJECT_DIR$/css/csharp.css" />
         <option value="$PROJECT_DIR$/index.html" />
       </list>
     </option>
@@ -373,13 +374,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/css/prettify.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="14" selection-start="264" selection-end="264" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/img/glyphicons-halflings.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -465,14 +459,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/css/bootstrap.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="976" column="2" selection-start="13436" selection-end="13436" vertical-scroll-proportion="-7.5">
+        <state line="986" column="2" selection-start="13609" selection-end="13609" vertical-scroll-proportion="-13.269231">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/csharp.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="30" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="265" column="125" selection-start="12896" selection-end="12896" vertical-scroll-proportion="0.44852942">
+        <state line="313" column="312" selection-start="17198" selection-end="17198" vertical-scroll-proportion="0.33246073">
           <folding>
             <element signature="n#style#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#div#7;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#div#7;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
