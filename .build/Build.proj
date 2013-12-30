@@ -26,17 +26,15 @@
   </PropertyGroup>
     
   <Target Name="RunAll" DependsOnTargets="Build; BuildDocs; RunTests; Package" />
+  
   <Target Name="CI" DependsOnTargets="Build; BuildDocs" />
 
   <!-- 1- Do the BUILD -->
   <Target Name="NugetRestore">
       
-    <Message Importance="high" Text="============ BinariesPath: '$(BinariesPath)'"/>
-      
     <Message Importance="high" Text="============ NugetRestore"/>     
     <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(NuGetToolsPath)\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
   </Target>
-  
   
   <Target Name="Build" DependsOnTargets="NugetRestore">
       <Message Importance="high" Text="
@@ -64,9 +62,7 @@ GENERATING DOCS for:
   </Target>
 
   
-    <!-- 3- Run the TESTS -->
-
-  
+  <!-- 3- Run the TESTS -->
   <ItemGroup>
     <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-3.5" />
     <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).40.Tests.dll&quot; /framework:net-4.0" />
@@ -84,21 +80,20 @@ RUN ALL UNIT TESTS
     <Exec Command="&quot;$(TestRunnerPath)&quot; %(TestProjectsWithArguments.Identity)" LogStandardErrorAsError="true" />
   </Target>
 
-  <!-- 4- Then Package -->
-  <!--<Target Name="Package" DependsOnTargets="RunTests">-->
-  <Target Name="Package">
+  <!-- 4- Then PACKAGE -->
+  <Target Name="Package" DependsOnTargets="RunTests">
 
-    <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
+      <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
       
       <!-- NFluent (3.5) first -->
       <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /Y /D" />
       <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /Y /D" />
 	  
-	  <!-- NFluent (4.0) then -->
+	    <!-- NFluent (4.0) then -->
       <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /Y /D" />
       <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /Y /D" />
       
-    <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
+      <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
       <GetAssemblyIdentity AssemblyFiles="$(BinariesPath)\35\$(SolutionName).dll">
         <Output TaskParameter="Assemblies" ItemName="AsmInfo" />
       </GetAssemblyIdentity>
@@ -145,9 +140,9 @@ CREATING NUGET PACKAGE IN:
     - $(PackagesPath)
 ---------------------------------------------------------------
             "  />
-        <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
-        <Exec Command="&quot;$(NuGetExePath)&quot; pack &quot;$(NuspecFilePath)&quot; -o &quot;$(PackagesPath)&quot;"
-          LogStandardErrorAsError="true" />
+      <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
+      <Exec Command="&quot;$(NuGetExePath)&quot; pack &quot;$(NuspecFilePath)&quot; -o &quot;$(PackagesPath)&quot;"
+        LogStandardErrorAsError="true" />
   </Target>
 
 </Project>
