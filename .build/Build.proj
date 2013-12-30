@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="RunAll" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  
+  <!-- note from Thomas PIERRAIN: I really hate MsBuild and its amazingly unintuitive syntax. Unbelievable... -->
   <PropertyGroup>
     <ProjectRoot>$(MSBuildProjectDirectory)\..</ProjectRoot>
     <MSBuildCommunityTasksPath>$(ProjectRoot)\.build</MSBuildCommunityTasksPath>
@@ -11,7 +11,7 @@
   <PropertyGroup>
       <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
       <ProjectRoot>$(MSBuildProjectDirectory)\..</ProjectRoot>
-      <ProjectName>NFluent</ProjectName>
+      <SolutionName>NFluent</SolutionName>
       <ToolsPath>$(ProjectRoot)\tools\</ToolsPath>
       <ArtifactsPath>$(ProjectRoot)\Artifacts</ArtifactsPath>
       <BinariesPath>$(ArtifactsPath)\Binaries</BinariesPath>
@@ -22,7 +22,7 @@
       <DocuExePath>$(ToolsPath)docu\docu.exe</DocuExePath>
       <ZipExe>$(ToolsPath)7za\7za.exe</ZipExe>
       <TestRunnerPath>$(ProjectRoot)\packages\NUnit.Runners.2.6.2\tools\nunit-console.exe</TestRunnerPath>
-      <!--<TestAssembly>$(ProjectRoot)\$(ProjectName).40.Tests\bin\$(Configuration)\$(ProjectName).40.Tests.dll</TestAssembly>-->
+      <!--<TestAssembly>$(ProjectRoot)\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).40.Tests.dll</TestAssembly>-->
   </PropertyGroup>
     
   <Target Name="RunAll" DependsOnTargets="Build; BuildDocs; RunTests; Package" />
@@ -44,7 +44,7 @@
 BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
 ---------------------------------------------------------------
       "  />
-      <MSBuild Projects="$(ProjectRoot)\$(ProjectName).sln" 
+      <MSBuild Projects="$(ProjectRoot)\$(SolutionName).sln" 
                 Targets="Build" 
                 Properties="Configuration=$(Configuration)" />
   </Target>
@@ -55,21 +55,21 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
       <Message Importance="high" Text="
 ---------------------------------------------------------------
 GENERATING DOCS for:
-  - $(BinariesPath)\$(ProjectName).dll
+  - $(BinariesPath)\$(SolutionName).dll
 ---------------------------------------------------------------
           "  />
       <MakeDir Directories="$(DocPath)" Condition="!Exists('$(DocPath)')" />
-      <Exec Command="$(DocuExePath) $(BinariesPath)\$(ProjectName).dll --output=$(DocPath)" />
-      <Exec Command="&quot;$(ZipExe)&quot; a -tzip &quot;$(PackagesPath)\$(ProjectName).docs.zip&quot; &quot;$(DocPath)&quot;" />
+      <Exec Command="$(DocuExePath) $(BinariesPath)\$(SolutionName).dll --output=$(DocPath)" />
+      <Exec Command="&quot;$(ZipExe)&quot; a -tzip &quot;$(PackagesPath)\$(SolutionName).docs.zip&quot; &quot;$(DocPath)&quot;" />
   </Target>
 
   
     <!-- 3- Run the TESTS -->
 
-  <!-- note from Thomas PIERRAIN: I really hate MsBuild and its amazingly unintuitive syntax ... -->
+  
   <ItemGroup>
-    <TestProjectsWithArguments Include="&quot;$(ProjectRoot)\$(ProjectName).Tests\bin\$(Configuration)\$(ProjectName).Tests.dll&quot; /framework:net-3.5" />
-    <TestProjectsWithArguments Include="&quot;$(ProjectRoot)\$(ProjectName).40.Tests\bin\$(Configuration)\$(ProjectName).40.Tests.dll&quot; /framework:net-4.0" />
+    <TestProjectsWithArguments Include="&quot;$(ProjectRoot)\$(SolutionName).Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-3.5" />
+    <TestProjectsWithArguments Include="&quot;$(ProjectRoot)\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).40.Tests.dll&quot; /framework:net-4.0" />
   </ItemGroup>
 
   <Target Name="RunTests" DependsOnTargets="Build">
@@ -91,20 +91,20 @@ RUN ALL UNIT TESTS
     <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
       
       <!-- NFluent (3.5) first -->
-      <Message Importance="high" Text="xcopy $(ProjectRoot)\$(ProjectName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /Y /D" />
-      <Exec Command="xcopy $(ProjectRoot)\$(ProjectName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /Y /D" />
+      <Message Importance="high" Text="xcopy $(ProjectRoot)\$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /Y /D" />
+      <Exec Command="xcopy $(ProjectRoot)\$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /Y /D" />
 	  
 	  <!-- NFluent (4.0) then -->
-      <Message Importance="high" Text="xcopy $(ProjectRoot)\$(ProjectName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /Y /D" />
-      <Exec Command="xcopy $(ProjectRoot)\$(ProjectName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /Y /D" />
+      <Message Importance="high" Text="xcopy $(ProjectRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /Y /D" />
+      <Exec Command="xcopy $(ProjectRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /Y /D" />
       
     <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
-      <GetAssemblyIdentity AssemblyFiles="$(BinariesPath)\35\$(ProjectName).dll">
+      <GetAssemblyIdentity AssemblyFiles="$(BinariesPath)\35\$(SolutionName).dll">
         <Output TaskParameter="Assemblies" ItemName="AsmInfo" />
       </GetAssemblyIdentity>
 
       <PropertyGroup>
-        <NuspecFilePath>$(ProjectRoot)\$(ProjectName).nuspec</NuspecFilePath>
+        <NuspecFilePath>$(ProjectRoot)\$(SolutionName).nuspec</NuspecFilePath>
         <PackageVersion>%(AsmInfo.Version)</PackageVersion>
       </PropertyGroup>
 
