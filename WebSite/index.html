@@ -230,8 +230,10 @@ Check.That(persons.Properties(<span class="str">"Nationality"</span>)).ContainsE
 <span class="rem">// CollectionAssert.AreEquivalent(persons.Properties("Age"), new[] { 38, 10, 7, 7 });</span>
 
 <span class="rem">// it's maybe even more fluent than the java versions</span>
+
 <span class="rem">// FEST fluent assert v 2.x:</span>
 <span class="rem">// assertThat(extractProperty("name" , String.class).from(inn.getItems())).containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");</span>
+
 <span class="rem">// FEST fluent assert v 1.x:</span>
 <span class="rem">// assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");</span>
         </pre>
@@ -311,7 +313,7 @@ Check.That(() =&gt; Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
             Indeed:
             <ul>
                 <li>we think that writing a lambda expression within an check statement is not really a fluent experience (neither on a reading perspective).</li>
-                <li>we think that those other check libraries have not chosen the proper vocabulary (<subjectUnderTest>.Should().... why don't they choose Must instead?!?). And thus, you'd rather rely on a stronger semantic for your checks (i.e. NFluent's <b><code class="csharpcode">Check.That</code></b>).</li>
+                <li>we think that those other check libraries have not chosen the proper vocabulary (<code class="csharpcode">.Should()</code>.... why don't they choose Must instead?!?). And thus, you'd rather rely on a stronger semantic for your checks (i.e. NFluent's <b><code class="csharpcode">Check.That</code></b>).</li>
             </ul>
         </p>
         <br>

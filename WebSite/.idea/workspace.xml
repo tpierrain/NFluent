@@ -4,7 +4,7 @@
     <list default="true" id="e9e7984a-ac8a-4e95-b432-63efc277ab53" name="Default" comment="" />
     <ignored path="NFluentSite.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/index.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1388411167976" ignored="false" />
+    <file path="/index.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1388411577084" ignored="false" />
     <file path="/bootstrap.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1373737411426" ignored="false" />
     <file path="/docs.css" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1373803944799" ignored="false" />
     <file path="/Getting-started.html" changelist="e9e7984a-ac8a-4e95-b432-63efc277ab53" time="1374042903124" ignored="false" />
@@ -30,7 +30,7 @@
       <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="313" column="312" selection-start="17198" selection-end="17198" vertical-scroll-proportion="0.33246073">
+            <state line="236" column="0" selection-start="12807" selection-end="12807" vertical-scroll-proportion="0.4895288">
               <folding>
                 <element signature="n#style#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#div#7;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#div#7;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -473,7 +473,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="313" column="312" selection-start="17198" selection-end="17198" vertical-scroll-proportion="0.33246073">
+        <state line="236" column="0" selection-start="12807" selection-end="12807" vertical-scroll-proportion="0.4895288">
           <folding>
             <element signature="n#style#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#div#7;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#div#7;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
