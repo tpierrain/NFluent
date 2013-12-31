@@ -22,7 +22,6 @@
       <DocuExePath>$(ToolsPath)docu\docu.exe</DocuExePath>
       <ZipExe>$(ToolsPath)7za\7za.exe</ZipExe>
       <TestRunnerPath>$(SolutionRoot)\packages\NUnit.Runners.2.6.2\tools\nunit-console.exe</TestRunnerPath>
-      <!--<TestAssembly>$(SolutionRoot)\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).40.Tests.dll</TestAssembly>-->
   </PropertyGroup>
     
   <Target Name="RunAll" DependsOnTargets="Build; BuildDocs; RunTests; Package" />
