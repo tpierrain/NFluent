@@ -79,12 +79,12 @@ namespace NFluent.Tests
         public void PlayingWithProperties()
         {
             var persons = new List<Person>
-                                 {
-                                     new Person { Name = "Thomas", Age = 38 },
-                                     new Person { Name = "Achille", Age = 10, Nationality = Nationality.French },
-                                     new Person { Name = "Anton", Age = 7, Nationality = Nationality.French },
-                                     new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
-                                 };
+                            {
+                                new Person { Name = "Thomas", Age = 38 },
+                                new Person { Name = "Achille", Age = 10, Nationality = Nationality.French },
+                                new Person { Name = "Anton", Age = 7, Nationality = Nationality.French },
+                                new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
+                            };
 
             Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
             Check.That(persons.Properties("Age")).ContainsExactly(38, 10, 7, 7);
@@ -94,8 +94,10 @@ namespace NFluent.Tests
             // CollectionAssert.AreEquivalent(persons.Properties("Age"), new[] { 38, 10, 7, 7 });
 
             // it's maybe even more fluent than the java versions
+
             // FEST fluent assert v 2.x:
             // assertThat(extractProperty("name" , String.class).from(inn.getItems())).containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
+            
             // FEST fluent assert v 1.x:
             // assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
         }
