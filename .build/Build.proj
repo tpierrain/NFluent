@@ -63,7 +63,7 @@ GENERATING DOCS for:
   
   <!-- 3- Run the TESTS -->
   <ItemGroup>
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-3.5" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).35.Tests.dll&quot; /framework:net-3.5" />
     <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).40.Tests.dll&quot; /framework:net-4.0" />
   </ItemGroup>
 

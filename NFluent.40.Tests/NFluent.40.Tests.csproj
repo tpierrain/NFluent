@@ -44,191 +44,191 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\NFluent.Tests\AndRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\AndRelatedTests.cs">
       <Link>AndRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\AutomaticNUnitExceptionDetectionTest.cs">
+    <Compile Include="..\NFluent.35.Tests\AutomaticNUnitExceptionDetectionTest.cs">
       <Link>AutomaticNUnitExceptionDetectionTest.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\BooleanRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\BooleanRelatedTests.cs">
       <Link>BooleanRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\CharTests.cs">
+    <Compile Include="..\NFluent.35.Tests\CharTests.cs">
       <Link>CharTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ComparableRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\ComparableRelatedTests.cs">
       <Link>ComparableRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\Constants.cs">
+    <Compile Include="..\NFluent.35.Tests\Constants.cs">
       <Link>Constants.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ContainsChainedSyntaxTests.cs">
+    <Compile Include="..\NFluent.35.Tests\ContainsChainedSyntaxTests.cs">
       <Link>ContainsChainedSyntaxTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ContainsExactlyTests.cs">
+    <Compile Include="..\NFluent.35.Tests\ContainsExactlyTests.cs">
       <Link>ContainsExactlyTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ContainsTests.cs">
+    <Compile Include="..\NFluent.35.Tests\ContainsTests.cs">
       <Link>ContainsTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\DateTimeRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\DateTimeRelatedTests.cs">
       <Link>DateTimeRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\DictionaryChecksTests.cs">
+    <Compile Include="..\NFluent.35.Tests\DictionaryChecksTests.cs">
       <Link>DictionaryChecksTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\EdgeCasesTest.cs">
+    <Compile Include="..\NFluent.35.Tests\EdgeCasesTest.cs">
       <Link>EdgeCasesTest.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\EnumerableRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\EnumerableRelatedTests.cs">
       <Link>EnumerableRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\EnumOrStructRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\EnumOrStructRelatedTests.cs">
       <Link>EnumOrStructRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\EqualRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\EqualRelatedTests.cs">
       <Link>EqualRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ExceptionTests.cs">
+    <Compile Include="..\NFluent.35.Tests\ExceptionTests.cs">
       <Link>ExceptionTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ExtensibilityHelperTests.cs">
+    <Compile Include="..\NFluent.35.Tests\ExtensibilityHelperTests.cs">
       <Link>ExtensibilityHelperTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ExtensionSpikeTests.cs">
+    <Compile Include="..\NFluent.35.Tests\ExtensionSpikeTests.cs">
       <Link>ExtensionSpikeTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\FluentMessageTests.cs">
+    <Compile Include="..\NFluent.35.Tests\FluentMessageTests.cs">
       <Link>FluentMessageTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ForDocumentation\CheckDescription.cs">
+    <Compile Include="..\NFluent.35.Tests\ForDocumentation\CheckDescription.cs">
       <Link>ForDocumentation\CheckDescription.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ForDocumentation\CheckList.cs">
+    <Compile Include="..\NFluent.35.Tests\ForDocumentation\CheckList.cs">
       <Link>ForDocumentation\CheckList.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ForDocumentation\FullRunDescription.cs">
+    <Compile Include="..\NFluent.35.Tests\ForDocumentation\FullRunDescription.cs">
       <Link>ForDocumentation\FullRunDescription.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ForDocumentation\GenerateErrorMessages.cs">
+    <Compile Include="..\NFluent.35.Tests\ForDocumentation\GenerateErrorMessages.cs">
       <Link>ForDocumentation\GenerateErrorMessages.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ForDocumentation\LocaleChecks.cs">
+    <Compile Include="..\NFluent.35.Tests\ForDocumentation\LocaleChecks.cs">
       <Link>ForDocumentation\LocaleChecks.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ForDocumentation\RunnerHelper.cs">
+    <Compile Include="..\NFluent.35.Tests\ForDocumentation\RunnerHelper.cs">
       <Link>ForDocumentation\RunnerHelper.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ForDocumentation\TypeChecks.cs">
+    <Compile Include="..\NFluent.35.Tests\ForDocumentation\TypeChecks.cs">
       <Link>ForDocumentation\TypeChecks.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\HelpersTest.cs">
+    <Compile Include="..\NFluent.35.Tests\HelpersTest.cs">
       <Link>HelpersTest.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\IntRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\IntRelatedTests.cs">
       <Link>IntRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\IntSignedNumberRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\IntSignedNumberRelatedTests.cs">
       <Link>IntSignedNumberRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\IsInstanceOfTests.cs">
+    <Compile Include="..\NFluent.35.Tests\IsInstanceOfTests.cs">
       <Link>IsInstanceOfTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\IsOnlyMadeOfTests.cs">
+    <Compile Include="..\NFluent.35.Tests\IsOnlyMadeOfTests.cs">
       <Link>IsOnlyMadeOfTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\LambdaRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\LambdaRelatedTests.cs">
       <Link>LambdaRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\NotRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\NotRelatedTests.cs">
       <Link>NotRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\NumbersOfDifferentTypesRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\NumbersOfDifferentTypesRelatedTests.cs">
       <Link>NumbersOfDifferentTypesRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ObjectRelatedTest.cs">
+    <Compile Include="..\NFluent.35.Tests\ObjectRelatedTest.cs">
       <Link>ObjectRelatedTest.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\PropertiesRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\PropertiesRelatedTests.cs">
       <Link>PropertiesRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ReadmeRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\ReadmeRelatedTests.cs">
       <Link>ReadmeRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\StringRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\StringRelatedTests.cs">
       <Link>StringRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\ByteRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\ByteRelatedTests.cs">
       <Link>T4\ByteRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\DecimalRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\DecimalRelatedTests.cs">
       <Link>T4\DecimalRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\DecimalSignedNumberRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\DecimalSignedNumberRelatedTests.cs">
       <Link>T4\DecimalSignedNumberRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\DoubleRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\DoubleRelatedTests.cs">
       <Link>T4\DoubleRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\DoubleSignedNumberRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\DoubleSignedNumberRelatedTests.cs">
       <Link>T4\DoubleSignedNumberRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\FloatRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\FloatRelatedTests.cs">
       <Link>T4\FloatRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\FloatSignedNumberRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\FloatSignedNumberRelatedTests.cs">
       <Link>T4\FloatSignedNumberRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\LongRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\LongRelatedTests.cs">
       <Link>T4\LongRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\LongSignedNumberRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\LongSignedNumberRelatedTests.cs">
       <Link>T4\LongSignedNumberRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\SbyteRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\SbyteRelatedTests.cs">
       <Link>T4\SbyteRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\SbyteSignedNumberRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\SbyteSignedNumberRelatedTests.cs">
       <Link>T4\SbyteSignedNumberRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\ShortRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\ShortRelatedTests.cs">
       <Link>T4\ShortRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\ShortSignedNumberRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\ShortSignedNumberRelatedTests.cs">
       <Link>T4\ShortSignedNumberRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\UintRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\UintRelatedTests.cs">
       <Link>T4\UintRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\UlongRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\UlongRelatedTests.cs">
       <Link>T4\UlongRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\T4\UshortRelatedTests.cs">
+    <Compile Include="..\NFluent.35.Tests\T4\UshortRelatedTests.cs">
       <Link>T4\UshortRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\NFluent.Tests\TimeHelperTest.cs">
+    <Compile Include="..\NFluent.35.Tests\TimeHelperTest.cs">
       <Link>TimeHelperTest.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\TimeSpanTests.cs">
+    <Compile Include="..\NFluent.35.Tests\TimeSpanTests.cs">
       <Link>TimeSpanTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests\ToEnumeratedStringTests.cs">
+    <Compile Include="..\NFluent.35.Tests\ToEnumeratedStringTests.cs">
       <Link>ToEnumeratedStringTests.cs</Link>
     </Compile>
     <Compile Include="..\Version.cs">
@@ -238,18 +238,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\NFluent.Tests\Settings.StyleCop">
+    <None Include="..\NFluent.35.Tests\Settings.StyleCop">
       <Link>Settings.StyleCop</Link>
     </None>
-    <None Include="..\NFluent.Tests\T4\NumberTestsGenerator.tt">
+    <None Include="..\NFluent.35.Tests\T4\NumberTestsGenerator.tt">
       <Link>T4\NumberTestsGenerator.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>NumberTestsGenerator.txt</LastGenOutput>
     </None>
-    <None Include="..\NFluent.Tests\T4\TemplateFileManagerV2.1.ttinclude">
+    <None Include="..\NFluent.35.Tests\T4\TemplateFileManagerV2.1.ttinclude">
       <Link>T4\TemplateFileManagerV2.1.ttinclude</Link>
     </None>
-    <None Include="..\NFluent.Tests\T4\TypeCloningHelper.ttinclude">
+    <None Include="..\NFluent.35.Tests\T4\TypeCloningHelper.ttinclude">
       <Link>T4\TypeCloningHelper.ttinclude</Link>
     </None>
     <None Include="packages.config" />
@@ -268,7 +268,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\NFluent.Tests\T4\NumberTestsGenerator.txt">
+    <Content Include="..\NFluent.35.Tests\T4\NumberTestsGenerator.txt">
       <Link>T4\NumberTestsGenerator.txt</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -279,7 +279,7 @@
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="6b88c45a-d45e-40fb-8635-d0e0ef0454e9" />
+      <UserProperties ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
