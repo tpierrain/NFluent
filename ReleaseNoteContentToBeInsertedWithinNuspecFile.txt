@@ -1,14 +1,13 @@
 New feature(s):
-* NFluent is now also shipped with its .NET 4.0 version (to support dynamic for extensibility)
-* Adds recursion to the HasFieldsEqualToThose() check on object
+* 
 
 --------------
 Change(s):
-* You can now easily link your own checks by using the And operator thanks to the IChecker.ReturnValueForLinkage property (if you don't want to rely on the ExtensibilityHelper class).
+* 
 
 --------------
 Bug Fixe(s):
-* IsAfter() check was throwing an exception when the givenValue type (considered as a IComparable instead of a number ;-(  was not the same as the checked value.
+* 
 
 
 
