@@ -12,6 +12,7 @@
     <link href="./css/bootstrap-responsive.css" rel="stylesheet">
     <link href="./css/docs.css" rel="stylesheet">
     <link href="./css/prettify.css" rel="stylesheet">
+    <link href="./css/csharp.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -180,8 +181,71 @@
         <br>
         <h2>NFluent speeds up and eases the way you write your assertions</h2>
         <p>(that we call '<em>checks</em>' BTW, to avoid conflicts with all your favorite test runners)</p>
-        <p><b><code>Check.That()</code> is all you've got to remember! before you get carried away by the <em><a href="https://github.com/NancyFx/Nancy/wiki/Introduction#the-super-duper-happy-path" target="nancy">super-duper-happy-dot experience</a></em> of NFluent</b></p>
+        <p><b><code class="csharpcode">Check.That()</code> is all you've got to remember! before you get carried away by the <em><a href="https://github.com/NancyFx/Nancy/wiki/Introduction#the-super-duper-happy-path" target="nancy">super-duper-happy-dot experience</a></em> of NFluent</b></p>
         <br>
+        With NFluent, you can write simple checks like this:
+        <!-- code formatted by http://manoli.net/csharpformat/ -->
+        <pre class="csharpcode">
+<span class="kwrd">var</span> integers = <span class="kwrd">new</span> <span class="kwrd">int</span>[] { 1, 2, 3, 4, 5, 666 };
+Check.That(integers).Contains(3, 5, 666);
+
+integers = <span class="kwrd">new</span> <span class="kwrd">int</span>[] { 1, 2, 3 };
+Check.That(integers).IsOnlyMadeOf(3, 2, 1);
+
+<span class="kwrd">var</span> guitarHeroes = <span class="kwrd">new</span>[] { <span class="str">"Hendrix"</span>, <span class="str">"Paco de Lucia"</span>, <span class="str">"Django Reinhardt"</span>, <span class="str">"Baden Powell"</span> };
+Check.That(guitarHeroes).ContainsExactly(<span class="str">"Hendrix"</span>, <span class="str">"Paco de Lucia"</span>, <span class="str">"Django Reinhardt"</span>, <span class="str">"Baden Powell"</span>);
+
+<span class="kwrd">var</span> camus = <span class="kwrd">new</span> Person() { Name = <span class="str">"Camus"</span> };
+<span class="kwrd">var</span> sartre = <span class="kwrd">new</span> Person() { Name = <span class="str">"Sartre"</span> };
+Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf&lt;Person&gt;();
+
+<span class="kwrd">var</span> heroes = <span class="str">"Batman and Robin"</span>;
+Check.That(heroes).Not.Contains(<span class="str">"Joker"</span>).And.StartsWith(<span class="str">"Bat"</span>).And.Contains(<span class="str">"Robin"</span>);
+
+<span class="kwrd">int</span>? one = 1;
+Check.That(one).HasAValue().Which.IsPositive().And.IsEqualTo(1);
+
+<span class="kwrd">const</span> Nationality FrenchNationality = Nationality.French;
+Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.Korean);
+
+<span class="kwrd">string</span> motivationalSaying = <span class="str">"Failure is mother of success."</span>;
+Check.That(motivationalSaying).IsNotInstanceOf&lt;<span class="kwrd">int</span>&gt;();
+        </pre>
+        With NFluent, you can also write checks like this:
+        <!-- code formatted by http://manoli.net/csharpformat/ -->
+        <pre class="csharpcode">
+<span class="kwrd">var</span> persons = <span class="kwrd">new</span> List&lt;Person&gt;
+                     {
+                         <span class="kwrd">new</span> Person { Name = <span class="str">"Thomas"</span>, Age = 38 },
+                         <span class="kwrd">new</span> Person { Name = <span class="str">"Achille"</span>, Age = 10, Nationality = Nationality.French },
+                         <span class="kwrd">new</span> Person { Name = <span class="str">"Anton"</span>, Age = 7, Nationality = Nationality.French },
+                         <span class="kwrd">new</span> Person { Name = <span class="str">"Arjun"</span>, Age = 7, Nationality = Nationality.Indian }
+                     };
+
+Check.That(persons.Properties(<span class="str">"Name"</span>)).ContainsExactly(<span class="str">"Thomas"</span>, <span class="str">"Achille"</span>, <span class="str">"Anton"</span>, <span class="str">"Arjun"</span>);
+Check.That(persons.Properties(<span class="str">"Age"</span>)).ContainsExactly(38, 10, 7, 7);
+Check.That(persons.Properties(<span class="str">"Nationality"</span>)).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+
+<span class="rem">// more fluent than the following classical NUnit way, isn't it? </span>
+<span class="rem">// CollectionAssert.AreEquivalent(persons.Properties("Age"), new[] { 38, 10, 7, 7 });</span>
+
+<span class="rem">// it's maybe even more fluent than the java versions</span>
+
+<span class="rem">// FEST fluent assert v 2.x:</span>
+<span class="rem">// assertThat(extractProperty("name" , String.class).from(inn.getItems())).containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");</span>
+
+<span class="rem">// FEST fluent assert v 1.x:</span>
+<span class="rem">// assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");</span>
+        </pre>
+        Or like this:
+        <!-- code formatted by http://manoli.net/csharpformat/ -->
+        <pre class="csharpcode">
+<span class="rem">// Works also with lambda for exception checking</span>
+Check.That(() =&gt; { <span class="kwrd">throw</span> <span class="kwrd">new</span> InvalidOperationException(); }).Throws&lt;InvalidOperationException&gt;();
+
+<span class="rem">// or execution duration checking</span>
+Check.That(() =&gt; Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+        </pre>
         <p>
         <h3>NFluent is also extensible to your specific needs</h3>
         <br>
@@ -249,20 +313,34 @@
             Indeed:
             <ul>
                 <li>we think that writing a lambda expression within an check statement is not really a fluent experience (neither on a reading perspective).</li>
-                <li>we think that those other check libraries have not chosen the proper vocabulary (<subjectUnderTest>.Should().... why don't they choose Must instead?!?). And thus, you'd rather rely on a stronger semantic for your checks (i.e. NFluent's <code>Check.That</code>).</li>
+                <li>we think that those other check libraries have not chosen the proper vocabulary (<code class="csharpcode">.Should()</code>.... why don't they choose Must instead?!?). And thus, you'd rather rely on a stronger semantic for your checks (i.e. NFluent's <b><code class="csharpcode">Check.That</code></b>).</li>
             </ul>
         </p>
         <br>
         Is the next statement fluent to write for you?!?<br>
-        <code>new[] { 1, 2, 3 }.Should().Contain(item => item > 3, "at least {0} item should be larger than 3", 1);</code>
+        <!-- code formatted by http://manoli.net/csharpformat/ -->
+        <pre class="csharpcode">
+<span class="kwrd">var</span> myArray = <span class="kwrd">new</span>[] { 1, 2, 3 };
+
+myArray.Should().Contain(item =&gt; item &gt; 3, <span class="str">"at least {0} item should be larger than 3"</span>, 1);</pre>
+        <br>
+        We don't think so, and we prefer the NFluent version:
+        <!-- code formatted by http://manoli.net/csharpformat/ -->
+<b><pre class="csharpcode">
+Check.That(myArray).IsGreaterThan(3);</pre></b>
         <br>
         <br>
-        Are you happy to type <code>new[] {...}</code> as a method argument like this?!?
+        Other example: are you happy to type <code class="csharpcode">new[] {...}</code> as a method argument like does another famous "fluent" library?
         <br>
-        <code>
-            ints.Should().Have.SameSequenceAs(new[] { 1, 2, 3 });
-        </code>
         <br>
+        <!-- code formatted by http://manoli.net/csharpformat/ -->
+<pre class="csharpcode">
+myArray.Should().Have.SameSequenceAs(<span class="kwrd">new</span>[] { 1, 2, 3 });</pre>
+        <br>
+        or like us, you prefer to type:
+        <!-- code formatted by http://manoli.net/csharpformat/ -->
+<b><pre class="csharpcode">
+Check.That(myArray).ContainsExactly(1,2,3);</pre></b>
         <br>
         <p><h3>NFluent is different</h3>
             <ul>
@@ -302,6 +380,7 @@
             <li>To <b><a href="http://www.codedistillers.com/" target="rui">Rui CARVALHO</a></b>, for the nice NFluent logo he has designed.</li>
             <li>To the mates that gave me ideas and feedbacks to make this lib as fluent as possible: <b><a href="https://github.com/joel-costigliola" target="joel">Joel COSTIGLIOLA</a></b> (former active contributor of Java FEST Assert, which now works on his <b><a href="https://github.com/joel-costigliola/assertj-core/wiki" target="asertJ">AssertJ</a></b> fork), <b><a href="http://www.linkedin.com/in/blabaere" target="benLoncleSoul">Benoit LABAERE</a></b> ...</li>
             <li>To <b><a href="http://stackoverflow.com/users/292555/omer-raviv" target="omer">Omer RAVIV</a></b>, which supports the NFluent project by offering us some free licenses for the nice <b><a href="http://www.oz-code.com/" target="ozcode">OzCode</a></b> debugging extension for Visual Studio.</li>
+            <li>To the awesome and truly addictive <b><a href="http://www.ncrunch.net/" target="ncrunch">NCrunch</a></b>, that really helps me in my day-to-day TDD.</li>
             <li>To <b><a href="http://www.jetbrains.com/" target="jetbrains">Jetbrains</a></b>, which still creates some of the coolest tools for developers (whatever the language), and which supports our NFluent project by providing us some space within their <b><a href="http://teamcity.codebetter.com/login.html" target="codeBetter">teamcity code better instance</a></b> (note: you can enter as guest).</li>
        </ul>
         <br>
@@ -325,6 +404,18 @@
         </ul>
         <br>
         <em><b><a href="http://tpierrain.blogspot.fr" target="useCaseDriven">Thomas PIERRAIN</a></b>, creator of NFluent</em>
+        </p>
+        <br>
+        <p><a class="btn btn-warning" href="">&lt; Back to the top</a></p>
+        <hr/>
+    </div>
+    <div class="span12">
+        <br>
+        <p>
+            <br>
+        <h2>Wanna go to the next level with us?</h2>
+        You should follow what's gonna be delivered soon by the NFluent team... Cause based on <b><a href="http://www.codedistillers.com/rui/2013/12/23/dynamic-tdd/" target="rui">Rui's reflexions</a></b>, we decided to develop a NFluent plugin (whether a Visual Studio or R#).
+        <h3>This plugin should definitely revolutionize the way we TDD!</h3>
         </p>
         <br>
         <p><a class="btn btn-warning" href="">&lt; Back to the top</a></p>
