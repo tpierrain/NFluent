@@ -130,6 +130,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void HasFieldsEqualWorksAgainstAnonymousClass()
+        {
+            var x = new DummyClass();
+            Check.That(x).HasFieldsEqualToThose(new { x = 2, y = 3 });
+        }
+
+        [Test]
+        public void HasFieldsEqualWorksAgainstAnonymousClassAndAutoProperties()
+        {
+            var x = new DummyWithAutoProperty { Application = "toto" };
+
+            Check.That(x).HasFieldsEqualToThose(new { Application = "toto" });
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's autoproperty 'Application' (field '<Application>k__BackingField') has the same value in the comparand, whereas it must not.\nThe checked value:\n\t[null]\nThe expected value: different from\n\t[null]")]
         public void HasFieldsEqualFailsForAutoPropertyWhenNEgated()
         {
@@ -206,7 +221,7 @@ namespace NFluent.Tests
 
         private class DummyWithAutoProperty
         {
-            public object Application { get; set; }
+            public string Application { get; set; }
         }
     }
 }
