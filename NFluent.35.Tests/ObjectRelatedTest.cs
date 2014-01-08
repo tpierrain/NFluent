@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
 // // <copyright file="ObjectRelatedTest.cs" company="">
-// //   Copyright 2013 Cyrille DUPUYDAUBY
+// //   Copyright 2013 Cyrille DUPUYDAUBY, Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -86,17 +86,17 @@ namespace NFluent.Tests
         public void IsEqualComparingFields()
         {
             var x = new DummyClass();
-            Check.That(x).HasFieldsEqualToThose(new DummyClass());
+            Check.That(x).HasFieldsWithSameValues(new DummyClass());
         }
 
         [Test]
         public void HasDifferentFieldsWorks()
         {
             var x = new DummyClass();
-            Check.That(x).HasFieldsNotEqualToThose(new DummyClass(1, 2)); 
+            Check.That(x).HasNotFieldsWithSameValues(new DummyClass(1, 2)); 
 
             // check with missing fields
-            Check.That(new DummyHeritance()).HasFieldsNotEqualToThose(new DummyClass());
+            Check.That(new DummyHeritance()).HasNotFieldsWithSameValues(new DummyClass());
         }
 
         [Test]
@@ -104,14 +104,14 @@ namespace NFluent.Tests
         public void IsEqualFailsIfFieldsDifferent()
         {
             var x = new DummyClass();
-            Check.That(x).HasFieldsEqualToThose(new DummyClass(1, 2));
+            Check.That(x).HasFieldsWithSameValues(new DummyClass(1, 2));
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x' has the same value in the comparand, whereas it must not.\nThe checked value:\n\t[2]\nThe expected value: different from\n\t[2]")]
-        public void HasFieldsNotEqualToThoseFailsIfSame()
+        public void HasNotFieldsWithSameValuesFailsIfSame()
         {
-            Check.That(new DummyClass()).HasFieldsNotEqualToThose(new DummyClass());
+            Check.That(new DummyClass()).HasNotFieldsWithSameValues(new DummyClass());
         }
 
         [Test]
@@ -119,21 +119,21 @@ namespace NFluent.Tests
         public void IsEqualfailsWithMissingFields()
         {
             var x = new DummyHeritance();
-            Check.That(x).HasFieldsEqualToThose(new DummyClass());
+            Check.That(x).HasFieldsWithSameValues(new DummyClass());
         }
 
         [Test]
         public void HasFieldsEqualWorksForAutoProperty()
         {
             var x = new DummyWithAutoProperty();
-            Check.That(x).HasFieldsEqualToThose(new DummyWithAutoProperty());
+            Check.That(x).HasFieldsWithSameValues(new DummyWithAutoProperty());
         }
 
         [Test]
         public void HasFieldsEqualWorksAgainstAnonymousClass()
         {
             var x = new DummyClass();
-            Check.That(x).HasFieldsEqualToThose(new { x = 2, y = 3 });
+            Check.That(x).HasFieldsWithSameValues(new { x = 2, y = 3 });
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace NFluent.Tests
         {
             var x = new DummyWithAutoProperty { Application = "toto" };
 
-            Check.That(x).HasFieldsEqualToThose(new { Application = "toto" });
+            Check.That(x).HasFieldsWithSameValues(new { Application = "toto" });
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace NFluent.Tests
         public void HasFieldsEqualFailsForAutoPropertyWhenNEgated()
         {
             var x = new DummyWithAutoProperty();
-            Check.That(x).HasFieldsNotEqualToThose(new DummyWithAutoProperty());
+            Check.That(x).HasNotFieldsWithSameValues(new DummyWithAutoProperty());
         }
 
         [Test]
@@ -158,7 +158,7 @@ namespace NFluent.Tests
         {
             var x = new DummyWithAutoProperty();
             x.Application = "check";
-            Check.That(x).HasFieldsEqualToThose(new DummyWithAutoProperty());
+            Check.That(x).HasFieldsWithSameValues(new DummyWithAutoProperty());
         }
 
         [Test]
@@ -168,24 +168,24 @@ namespace NFluent.Tests
             var x = new DummyWithAutoProperty();
             var y = new DummyWithAutoProperty();
             x.Application = "check";
-            Check.That(y).HasFieldsEqualToThose(x);
+            Check.That(y).HasFieldsWithSameValues(x);
         }
 
         [Test]
-        public void HasFieldEqualToThoseRecurse()
+        public void HasFieldsWithSameValuesRecurse()
         {
             var x = new { x = new DummyClass(), text = "toto" };
             var y = new { x = new DummyClass(), text = "toto" };
-            Check.That(x).HasFieldsEqualToThose(y);
+            Check.That(x).HasFieldsWithSameValues(y);
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x.y' does not have the expected value.\nThe checked value:\n\t[3]\nThe expected value:\n\t[4]")]
-        public void HasFieldEqualToThoseFailsProperlyRecurse()
+        public void HasFieldsWithSameValuesFailsProperlyRecurse()
         {
             var x = new { x = new DummyClass(), text = "toto" };
             var y = new { x = new DummyClass(2, 4), text = "toto" };
-            Check.That(x).HasFieldsEqualToThose(y);
+            Check.That(x).HasFieldsWithSameValues(y);
         }
 
         private class DummyClass
