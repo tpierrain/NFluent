@@ -1,9 +1,11 @@
 New feature(s):
 * 
 
+
 --------------
 Change(s):
-* 
+* Renames the HasFieldsEqualToThose() check to HasFieldsWithSameValues() which now support anonymous classes as expected parameter.
+* Renames the HasFieldsNotEqualToThose() check to HasNotFieldsWithSameValues().
 
 --------------
 Bug Fixe(s):
