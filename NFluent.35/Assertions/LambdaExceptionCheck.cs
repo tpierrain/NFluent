@@ -17,28 +17,26 @@ namespace NFluent
     using System;
 
     using NFluent.Extensibility;
-    using NFluent.Helpers;
 
     /// <summary>
     /// Implements specific exception check after lambda checks.
     /// </summary>
-    public class LambdaExceptionCheck : ILambdaExceptionCheck<ILambdaCheck>, IForkableCheck
+    /// <typeparam name="T">Code checker type. <see cref="LambdaCheck"/>/>.
+    /// </typeparam>
+    public class LambdaExceptionCheck<T> : ILambdaExceptionCheck<T>, IForkableCheck
     {
         /// <summary>
         /// Set with the parent class that fluently called this one.
         /// </summary>
-        private readonly ILambdaCheck parent;
         private readonly Exception exception;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LambdaExceptionCheck"/> class.
+        /// Initializes a new instance of the <see cref="LambdaExceptionCheck{T}"/> class.
         /// This check can only be fluently called after a lambda check.
         /// </summary>
-        /// <param name="parent">The parent.</param>
         /// <param name="exception">The exception.</param>
-        public LambdaExceptionCheck(ILambdaCheck parent, Exception exception)
+        public LambdaExceptionCheck(Exception exception)
         {
-            this.parent = parent;
             this.exception = exception;
         }
 
@@ -50,7 +48,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
-        public ICheckLink<ILambdaExceptionCheck<ILambdaCheck>> WithMessage(string exceptionMessage)
+        public ICheckLink<ILambdaExceptionCheck<T>> WithMessage(string exceptionMessage)
         {
             if (this.exception.Message != exceptionMessage)
             {
@@ -63,7 +61,7 @@ namespace NFluent
                 throw new FluentCheckException(message);
             }
 
-            return new CheckLink<ILambdaExceptionCheck<ILambdaCheck>>(this);
+            return new CheckLink<ILambdaExceptionCheck<T>>(this);
         }
 
         /// <summary>
@@ -75,7 +73,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
-        public ICheckLink<ILambdaExceptionCheck<ILambdaCheck>> WithProperty(string propertyName, object propertyValue)
+        public ICheckLink<ILambdaExceptionCheck<T>> WithProperty(string propertyName, object propertyValue)
         {
             var type = this.exception.GetType();
             var property = type.GetProperty(propertyName);
@@ -97,7 +95,7 @@ namespace NFluent
                 throw new FluentCheckException(message);
             }
 
-            return new CheckLink<ILambdaExceptionCheck<ILambdaCheck>>(this);
+            return new CheckLink<ILambdaExceptionCheck<T>>(this);
         }
 
         /// <summary>
@@ -112,7 +110,7 @@ namespace NFluent
         /// </remarks>
         public object ForkInstance()
         {
-            return new LambdaExceptionCheck(this.parent, this.exception);
+            return new LambdaExceptionCheck<T>(this.exception);
         }
     }
 }

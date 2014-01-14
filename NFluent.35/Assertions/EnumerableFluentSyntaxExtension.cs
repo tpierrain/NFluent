@@ -23,7 +23,6 @@ namespace NFluent
 
     using NFluent.Extensibility;
     using NFluent.Extensions;
-    using NFluent.Helpers;
 
     /// <summary>
     /// Provides extension method on a ICheckLink for IEnumerable types.

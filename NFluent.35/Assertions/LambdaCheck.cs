@@ -27,51 +27,35 @@ namespace NFluent
     public class LambdaCheck : ILambdaCheck, IForkableCheck
     {
         #region Fields
-        private double durationInNs;
 
-        private Exception exception;
+        private readonly RunTrace runTrace;
 
         #endregion
 
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LambdaCheck"/> class.
-        /// </summary>
-        /// <param name="action">
-        /// Action to be assessed.
-        /// </param>
-        public LambdaCheck(Delegate action)
-            : this(action, false)
-        {
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="LambdaCheck" /> class.
         /// </summary>
         /// <param name="action">The action.</param>
-        /// <param name="alreadyExecuted">A value indicating whether the action has already been executed or not.</param>
-        private LambdaCheck(Delegate action, bool alreadyExecuted)
+        public LambdaCheck(Delegate action)
         {
-            this.Value = action;
-
-            if (!alreadyExecuted)
-            {
-                this.Execute();
-            }
+            this.runTrace = CodeCheckExtensions.GetTrace(() => action.DynamicInvoke());
         }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
-        /// Gets or sets the value to be tested (provided for any extension method to be able to test it).
+        /// Initializes a new instance of the <see cref="LambdaCheck"/> class.
         /// </summary>
-        /// <value>
-        /// The value to be tested by any fluent check extension method.
-        /// </value>
-        private Delegate Value { get; set; }
+        /// <param name="runTrace">Trace of the initial run.
+        /// </param>
+        private LambdaCheck(RunTrace runTrace)
+        {
+            this.runTrace = runTrace;
+        }
 
         #endregion
 
@@ -89,14 +73,7 @@ namespace NFluent
         /// </remarks>
         public object ForkInstance()
         {
-            const bool AlreadyExecuted = true;
-            var newInstance = new LambdaCheck(this.Value, AlreadyExecuted)
-            {
-                durationInNs = this.durationInNs,
-                exception = this.exception
-            };
-
-            return newInstance;
+            return new LambdaCheck(this.runTrace);
         }
 
         /// <summary>
@@ -110,15 +87,7 @@ namespace NFluent
         /// </exception>
         public ICheckLink<ILambdaCheck> DoesNotThrow()
         {
-            if (this.exception != null)
-            {
-                var message1 =
-                    FluentMessage.BuildMessage("The {0} raised an exception, whereas it must not.")
-                                   .For("code")
-                                   .On(this.exception).Label("The raised exception:").ToString();
-                throw new FluentCheckException(message1);
-            }
-
+            Check.That(this.runTrace).DoesNotThrow();
             return new CheckLink<ILambdaCheck>(this);
         }
 
@@ -139,21 +108,7 @@ namespace NFluent
         /// </exception>
         public ICheckLink<ILambdaCheck> LastsLessThan(double threshold, TimeUnit timeUnit)
         {
-            var comparand = new Duration(this.durationInNs, TimeUnit.Nanoseconds).ConvertTo(timeUnit);
-            var durationThreshold = new Duration(threshold, timeUnit);
-            if (comparand > durationThreshold)
-            {
-                var message =
-                    FluentMessage.BuildMessage("The checked code took too much time to execute.")
-                                   .For("excecution time")
-                                   .On(comparand)
-                                   .And.Expected(durationThreshold)
-                                   .Comparison("less than")
-                                   .ToString();
-
-                throw new FluentCheckException(message);
-            }
-
+            Check.That(this.runTrace).LastsLessThan(threshold, timeUnit);
             return new CheckLink<ILambdaCheck>(this);
         }
 
@@ -171,24 +126,8 @@ namespace NFluent
         /// </exception>
         public ILambdaExceptionCheck<ILambdaCheck> Throws<T>()
         {
-            if (this.exception == null)
-            {
-                var message = FluentMessage.BuildMessage("The {0} did not raise an exception, whereas it must.")
-                                            .For("code")
-                                            .Expected(typeof(T)).Label("Expected exception type is:").ToString();
-                throw new FluentCheckException(message);
-            }
-
-            if (!(this.exception is T))
-            {
-                var message = FluentMessage.BuildMessage("The {0} raised an exception of a different type than expected.")
-                                            .For("code").On(this.exception).Label("Raised Exception").And.Expected(typeof(T)).Label("Expected exception type is:")
-                                            .ToString();
-
-                throw new FluentCheckException(message);
-            }
-
-            return new LambdaExceptionCheck(this, this.exception);
+            Check.That(this.runTrace).Throws<T>();
+            return new LambdaExceptionCheck<ILambdaCheck>(this.runTrace.RaisedException);
         }
 
         /// <summary>
@@ -202,40 +141,9 @@ namespace NFluent
         /// </exception>
         public ILambdaExceptionCheck<ILambdaCheck> ThrowsAny()
         {
-            if (this.exception == null)
-            {
-                var message =
-                    FluentMessage.BuildMessage("The {0} did not raise an exception, whereas it must.").For("code").ToString();
-                throw new FluentCheckException(message);
-            }
-
-            return new LambdaExceptionCheck(this, this.exception);
+            Check.That(this.runTrace).ThrowsAny();
+            return new LambdaExceptionCheck<ILambdaCheck>(this.runTrace.RaisedException);
         }
-        #endregion
-
-        #region Methods
-
-        private void Execute()
-        {
-            var watch = new Stopwatch();
-            try
-            {
-                watch.Start();
-                this.Value.DynamicInvoke();
-            }
-            catch (Exception e)
-            {
-                this.exception = e.InnerException;
-            }
-            finally
-            {
-                watch.Stop();
-            }
-
-            // ReSharper disable PossibleLossOfFraction
-            this.durationInNs = watch.ElapsedTicks * 1000000000 / Stopwatch.Frequency;
-        }
-
         #endregion
     }
 }

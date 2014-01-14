@@ -50,6 +50,7 @@ namespace NFluent
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use ThatCode instead.")]
         public static ILambdaCheck That(Action value)
         {
             return new LambdaCheck(value);
@@ -58,15 +59,47 @@ namespace NFluent
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
+        /// <param name="value">The code to be tested.</param>
+        /// <returns>
+        /// A <see cref="ICheck{RunTrace}" /> instance to use in order to assert things on the given value.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
+        /// </remarks>
+        public static ICheck<RunTrace> ThatCode(Action value)
+        {
+            return new FluentCheck<RunTrace>(CodeCheckExtensions.GetTrace(value));
+        }
+
+        /// <summary>
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
+        /// </summary>
+        /// <typeparam name="U">Result type of the function.</typeparam>
+        /// <param name="value">The code to be tested.</param>
+        /// <returns>
+        /// A <see cref="ICheck{RunTrace}" /> instance to use in order to assert things on the given value.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
+        /// </remarks>
+        public static ICheck<RunTraceResult<U>> ThatCode<U>(Func<U> value)
+        {
+            return new FluentCheck<RunTraceResult<U>>(CodeCheckExtensions.GetTrace(value));
+        }
+
+        /// <summary>
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
+        /// </summary>
         /// <typeparam name="T">Type of the value returned by the <see cref="System.Func{TResult}"/> to be checked.</typeparam>
         /// <param name="value">The value to be tested.</param>
         /// <returns>
-        /// A <see cref="ILambdaCheck" /> instance to use in order to assert things on the given value.
+        /// A <see cref="LambdaCheck" /> instance to use in order to assert things on the given value.
         /// </returns>
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use ThatCode instead.")]
         public static ILambdaCheck That<T>(Func<T> value)
         {
             return new LambdaCheck(value);

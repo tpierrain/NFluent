@@ -148,18 +148,13 @@ namespace NFluent
             if (typeof(T).IsNullable())
             {
                 this.checker.ExecuteCheck(
-                    () => 
-                    {
-                        IsInstanceHelper.IsSameType(typeof(T), typeof(U), this.Value);
-                    }, 
+                    () => IsInstanceHelper.IsSameType(typeof(T), typeof(U), this.Value), 
                     IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(U), this.Value, true));
 
                 return new CheckLink<ICheck<T>>(this);
             }
-            else
-            {
-                return this.checker.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
-            }
+
+            return this.checker.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
         }
 
         /// <summary>
@@ -183,11 +178,9 @@ namespace NFluent
                     IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(U), this.Value, false));
                 return new CheckLink<ICheck<T>>(this);
             }
-            else
-            {
-                return this.checker.ExecuteCheck(
-                    () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
-            }
+
+            return this.checker.ExecuteCheck(
+                () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
         }
 
         #endregion

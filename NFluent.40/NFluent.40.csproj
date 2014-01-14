@@ -54,6 +54,9 @@
     <Compile Include="..\NFluent.35\Assertions\CharCheckExtensions.cs">
       <Link>Assertions\CharCheckExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35\Assertions\CodeCheckExtensions.cs">
+      <Link>Assertions\CodeCheckExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35\Assertions\ComparableCheckExtensions.cs">
       <Link>Assertions\ComparableCheckExtensions.cs</Link>
     </Compile>
@@ -224,6 +227,12 @@
     </Compile>
     <Compile Include="..\NFluent.35\NullableOrNumberCheckLink.cs">
       <Link>NullableOrNumberCheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\RunTrace.cs">
+      <Link>RunTrace.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\RunTraceResult.cs">
+      <Link>RunTraceResult.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\T4\ByteCheckExtensions.cs">
       <Link>T4\ByteCheckExtensions.cs</Link>

@@ -54,6 +54,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Assertions\CharCheckExtensions.cs" />
+    <Compile Include="Assertions\CodeCheckExtensions.cs" />
     <Compile Include="Extensibility\ExtensibilityHelper.cs" />
     <Compile Include="Assertions\IntSignedCheckExtensions.cs" />
     <Compile Include="Helpers\ComparableHelper.cs" />
@@ -71,6 +72,8 @@
     <Compile Include="Assertions\LambdaExceptionCheck.cs" />
     <Compile Include="IStructCheckForExtensibility.cs" />
     <Compile Include="IWithValue.cs" />
+    <Compile Include="RunTrace.cs" />
+    <Compile Include="RunTraceResult.cs" />
     <Compile Include="T4\DecimalSignedCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
