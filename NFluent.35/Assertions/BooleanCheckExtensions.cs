@@ -37,7 +37,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not true.</exception>
         public static ICheckLink<ICheck<bool>> IsTrue(this ICheck<bool> check)
         {
-            var checker = ExtensibilityHelper<bool>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
             
             return checker.ExecuteCheck(
                 () =>
@@ -61,7 +61,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not false.</exception>
         public static ICheckLink<ICheck<bool>> IsFalse(this ICheck<bool> check)
         {
-            var checker = ExtensibilityHelper<bool>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>

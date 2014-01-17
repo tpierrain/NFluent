@@ -26,14 +26,14 @@ namespace NFluent
     /// <typeparam name="T">
     /// Type of the value to assert on.
     /// </typeparam>
-    internal class FluentCheck<T> : IForkableCheck, ICheck<T>, ICheckForExtensibility<T>
+    internal class FluentCheck<T> : IForkableCheck, ICheck<T>, ICheckForExtensibility<T, ICheck<T>>
     {
         #region Fields
 
         /// <summary>
         /// The check runner.
         /// </summary>
-        private readonly Checker<T> checker;
+        private readonly Checker<T, ICheck<T>> checker;
 
         #endregion
 
@@ -62,7 +62,7 @@ namespace NFluent
         {
             this.Value = value;
             this.Negated = negated;
-            this.checker = new Checker<T>(this);
+            this.checker = new Checker<T, ICheck<T>>(this);
         }
 
         #endregion
@@ -106,7 +106,7 @@ namespace NFluent
         /// <value>
         /// The runner to use for checking something on a given type.
         /// </value>
-        public IChecker<T> Checker
+        public IChecker<T, ICheck<T>> Checker
         {
             get
             {

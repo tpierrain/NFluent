@@ -19,8 +19,12 @@ namespace NFluent
     /// <summary>
     /// Exposes an executable check for this given type. 
     /// </summary>
-    /// <typeparam name="T">The type of the data to be checked.</typeparam>
-    public interface IExposingChecker<out T>
+    /// <typeparam name="T">
+    /// The type of the data to be checked.
+    /// </typeparam>
+    /// <typeparam name="C">Interface for the check.
+    /// </typeparam>
+    public interface IExposingChecker<out T, out C> where C : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         /// <summary>
         /// Gets the runnable check to use for checking something on a value of a given type.
@@ -28,6 +32,6 @@ namespace NFluent
         /// <value>
         /// The runnable check to use for checking something on a given type.
         /// </value>
-        IChecker<T> Checker { get; } 
+        IChecker<T, C> Checker { get; } 
     }
 }

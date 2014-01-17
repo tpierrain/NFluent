@@ -37,5 +37,13 @@ namespace NFluent
         /// The raised exception.
         /// </value>
         public Exception RaisedException { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total processor time.
+        /// </summary>
+        /// <value>
+        /// The total processor time.
+        /// </value>
+        public TimeSpan TotalProcessorTime { get; set; }
     }
 }

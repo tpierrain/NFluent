@@ -23,15 +23,20 @@ namespace NFluent.Extensibility
     /// checks statements.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    internal class Checker<T> : IChecker<T>
+    /// <typeparam name="C">Check interface.</typeparam>
+    internal class Checker<T, C> : IChecker<T, C> where C : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
-        private readonly ICheckForExtensibility<T> fluentCheckForExtensibility;
+        #region fields
+
+        private readonly ICheckForExtensibility<T, C> fluentCheckForExtensibility;
+
+        #endregion
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Checker{T}" /> class.
+        /// Initializes a new instance of the <see cref="Checker{T, C}" /> class.
         /// </summary>
         /// <param name="fluentCheckForExtensibility">The runnable fluent check.</param>
-        public Checker(ICheckForExtensibility<T> fluentCheckForExtensibility)
+        public Checker(ICheckForExtensibility<T, C> fluentCheckForExtensibility)
         {
             this.fluentCheckForExtensibility = fluentCheckForExtensibility;
         }
@@ -42,11 +47,11 @@ namespace NFluent.Extensibility
         /// <value>
         /// The check link to return for next check (linked with the And operator) to be executed.
         /// </value>
-        public ICheckLink<ICheck<T>> ReturnValueForLinkage
+        public ICheckLink<C> ReturnValueForLinkage
         {
             get
             {
-                return new CheckLink<ICheck<T>>(this.fluentCheckForExtensibility);
+                return new CheckLink<C>(this.fluentCheckForExtensibility);
             }
         }
 
@@ -93,7 +98,7 @@ namespace NFluent.Extensibility
         ///     A new check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        public ICheckLink<ICheck<T>> ExecuteCheck(Action action, string negatedExceptionMessage)
+        public ICheckLink<C> ExecuteCheck(Action action, string negatedExceptionMessage)
         {
             try
             {
@@ -109,7 +114,7 @@ namespace NFluent.Extensibility
                 }
 
                 // exception was expected
-                return new CheckLink<ICheck<T>>(this.fluentCheckForExtensibility);
+                return new CheckLink<C>(this.fluentCheckForExtensibility);
             }
 
             if (this.fluentCheckForExtensibility.Negated)

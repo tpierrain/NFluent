@@ -16,6 +16,8 @@ namespace NFluent
 {
     using System.Diagnostics.CodeAnalysis;
 
+    using NFluent.Extensibility;
+
     /// <summary>
     /// Provides a way to chain two <see cref="IForkableCheck"/> instances or to chain.
     /// </summary>
@@ -63,7 +65,7 @@ namespace NFluent
         {
             get
             {
-                ICheckForExtensibility<N?> checkForExtensibility = this.previousCheck as ICheckForExtensibility<N?>;
+                var checkForExtensibility = ExtensibilityHelper.ExtractChecker(this.previousCheck);
 
                 if (!checkForExtensibility.Value.HasValue)
                 {

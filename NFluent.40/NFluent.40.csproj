@@ -129,12 +129,6 @@
     <Compile Include="..\NFluent.35\Extensibility\IChecker.cs">
       <Link>Extensibility\IChecker.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.35\Extensibility\IStructChecker.cs">
-      <Link>Extensibility\IStructChecker.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.35\Extensibility\StructChecker.cs">
-      <Link>Extensibility\StructChecker.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.35\Extensions\EnumerableExtensions.cs">
       <Link>Extensions\EnumerableExtensions.cs</Link>
     </Compile>
@@ -152,6 +146,9 @@
     </Compile>
     <Compile Include="..\NFluent.35\FluentCheckException.cs">
       <Link>FluentCheckException.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\FluentCodeCheck.cs">
+      <Link>FluentCodeCheck.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\FluentStructCheck.cs">
       <Link>FluentStructCheck.cs</Link>
@@ -183,11 +180,11 @@
     <Compile Include="..\NFluent.35\ICheckLink.cs">
       <Link>ICheckLink.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35\ICodeCheck.cs">
+      <Link>ICodeCheck.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35\IExposingChecker.cs">
       <Link>IExposingChecker.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.35\IExposingRunnableStructCheck.cs">
-      <Link>IExposingRunnableStructCheck.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\IExtendableCheckLink.cs">
       <Link>IExtendableCheckLink.cs</Link>
@@ -218,9 +215,6 @@
     </Compile>
     <Compile Include="..\NFluent.35\IStructCheck.cs">
       <Link>IStructCheck.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.35\IStructCheckForExtensibility.cs">
-      <Link>IStructCheckForExtensibility.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\IWithValue.cs">
       <Link>IWithValue.cs</Link>
@@ -336,7 +330,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -24,7 +24,7 @@ namespace NFluent.Tests
         [Test]
         public void ExtractcheckerWorks()
         {
-            var checker = ExtensibilityHelper<string>.ExtractChecker(new FluentCheck<string>("kamoulox"));
+            var checker = ExtensibilityHelper.ExtractChecker(new FluentCheck<string>("kamoulox"));
             Check.That(checker).IsNotNull();
             Check.That(checker.Negated).IsFalse();
             Check.That(checker.Value).IsEqualTo("kamoulox");
@@ -33,7 +33,7 @@ namespace NFluent.Tests
         [Test]
         public void ExtractRunnableStructCheckWorks()
         {
-            var runnableStructCheck = ExtensibilityHelper<Nationality>.ExtractStructChecker(new FluentStructCheck<Nationality>(Nationality.Chinese));
+            var runnableStructCheck = ExtensibilityHelper.ExtractStructChecker(new FluentStructCheck<Nationality>(Nationality.Chinese));
             Check.ThatEnum(runnableStructCheck.Value).IsEqualTo(Nationality.Chinese);
             Check.That(runnableStructCheck.Negated).IsFalse();
         }

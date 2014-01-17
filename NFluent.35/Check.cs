@@ -66,9 +66,9 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
-        public static ICheck<RunTrace> ThatCode(Action value)
+        public static ICodeCheck<RunTrace> ThatCode(Action value)
         {
-            return new FluentCheck<RunTrace>(CodeCheckExtensions.GetTrace(value));
+            return new FluentCodeCheck<RunTrace>(CodeCheckExtensions.GetTrace(value));
         }
 
         /// <summary>
@@ -82,9 +82,9 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
-        public static ICheck<RunTraceResult<U>> ThatCode<U>(Func<U> value)
+        public static ICodeCheck<RunTraceResult<U>> ThatCode<U>(Func<U> value)
         {
-            return new FluentCheck<RunTraceResult<U>>(CodeCheckExtensions.GetTrace(value));
+            return new FluentCodeCheck<RunTraceResult<U>>(CodeCheckExtensions.GetTrace(value));
         }
 
         /// <summary>

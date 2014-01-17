@@ -22,8 +22,12 @@ namespace NFluent.Extensibility
     /// Thus, it should not be exposed via Intellisense to developers that are using NFluent to write 
     /// checks statements.
     /// </summary>
-    /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IChecker<out T> : IWithValue<T>, INegated
+    /// <typeparam name="T">
+    /// Type of the value to assert on.
+    /// </typeparam>
+    /// <typeparam name="C">Interface for the check.
+    /// </typeparam>
+    public interface IChecker<out T, out C> : IWithValue<T>, INegated where C : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         /// <summary>
         /// Gets the check link to return for the next check to be executed (linked with the And operator).
@@ -33,7 +37,7 @@ namespace NFluent.Extensibility
         /// <value>
         /// The check link to return for next check (linked with the And operator) to be executed.
         /// </value>
-        ICheckLink<ICheck<T>> ReturnValueForLinkage { get; }
+        ICheckLink<C> ReturnValueForLinkage { get; }
  
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
@@ -49,6 +53,6 @@ namespace NFluent.Extensibility
         ///     The <see cref="ReturnValueForLinkage"/>.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        ICheckLink<ICheck<T>> ExecuteCheck(Action action, string negatedExceptionMessage);
+        ICheckLink<C> ExecuteCheck(Action action, string negatedExceptionMessage);
     }
 }

@@ -38,11 +38,31 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ConsumedTest()
+        {
+            Check.ThatCode(
+                () =>
+                    {
+                        var dummy = 0;
+                        for (var i = 0; i < 1000; i++)
+                        {
+                            dummy++;
+                        }
+                    });
+        }
+
+        [Test]
         public void NoExceptionRaised()
         {
             Check.That((Action)(() => new object())).DoesNotThrow();
         }
 
+        [Test]
+        public void NotWords()
+        {
+            Check.ThatCode((Action)(() => new object())).Not.ThrowsAny();
+        }
+        
         [Test]
         [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.")]
         public void UnexpectedExceptionRaised()

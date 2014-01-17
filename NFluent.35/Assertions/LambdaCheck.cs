@@ -87,7 +87,8 @@ namespace NFluent
         /// </exception>
         public ICheckLink<ILambdaCheck> DoesNotThrow()
         {
-            Check.That(this.runTrace).DoesNotThrow();
+            var check = new FluentCodeCheck<RunTrace>(this.runTrace);
+            check.DoesNotThrow();
             return new CheckLink<ILambdaCheck>(this);
         }
 
@@ -108,7 +109,8 @@ namespace NFluent
         /// </exception>
         public ICheckLink<ILambdaCheck> LastsLessThan(double threshold, TimeUnit timeUnit)
         {
-            Check.That(this.runTrace).LastsLessThan(threshold, timeUnit);
+            var check = new FluentCodeCheck<RunTrace>(this.runTrace);
+            check.LastsLessThan(threshold, timeUnit);
             return new CheckLink<ILambdaCheck>(this);
         }
 
@@ -126,7 +128,8 @@ namespace NFluent
         /// </exception>
         public ILambdaExceptionCheck<ILambdaCheck> Throws<T>()
         {
-            Check.That(this.runTrace).Throws<T>();
+            var check = new FluentCodeCheck<RunTrace>(this.runTrace);
+            check.Throws<T>();
             return new LambdaExceptionCheck<ILambdaCheck>(this.runTrace.RaisedException);
         }
 
@@ -141,7 +144,8 @@ namespace NFluent
         /// </exception>
         public ILambdaExceptionCheck<ILambdaCheck> ThrowsAny()
         {
-            Check.That(this.runTrace).ThrowsAny();
+            var check = new FluentCodeCheck<RunTrace>(this.runTrace);
+            check.ThrowsAny();
             return new LambdaExceptionCheck<ILambdaCheck>(this.runTrace.RaisedException);
         }
         #endregion

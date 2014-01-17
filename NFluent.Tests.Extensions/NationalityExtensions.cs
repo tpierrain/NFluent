@@ -23,7 +23,7 @@ namespace NFluent.Tests.Extensions
     {
         public static ICheckLink<IStructCheck<Nationality>> IsEuropean(this IStructCheck<Nationality> check)
         {
-            var structChecker = ExtensibilityHelper<Nationality>.ExtractStructChecker(check);
+            var structChecker = ExtensibilityHelper.ExtractStructChecker(check);
 
             return structChecker.ExecuteCheck(
                 () =>
@@ -39,7 +39,7 @@ namespace NFluent.Tests.Extensions
 
         public static ICheckLink<IStructCheck<Nationality>> IsOccidental(this IStructCheck<Nationality> check)
         {
-            var structChecker = ExtensibilityHelper<Nationality>.ExtractStructChecker(check);
+            var structChecker = ExtensibilityHelper.ExtractStructChecker(check);
 
             return structChecker.ReturnValueForLinkage;
         }
