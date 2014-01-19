@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
     /// <summary>
     /// Used as a marker for code related checks.
     /// </summary>

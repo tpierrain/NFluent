@@ -40,7 +40,17 @@ namespace NFluent
         /// <param name="action">The action.</param>
         public LambdaCheck(Delegate action)
         {
-            this.runTrace = CodeCheckExtensions.GetTrace(() => action.DynamicInvoke());
+            this.runTrace = CodeCheckExtensions.GetTrace(() =>
+                {
+                    try
+                    {
+                        action.DynamicInvoke();
+                    }
+                    catch (Exception e)
+                    {
+                        throw e.InnerException;
+                    }
+                });
         }
 
         #endregion

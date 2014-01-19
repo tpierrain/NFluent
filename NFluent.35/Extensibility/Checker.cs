@@ -23,23 +23,29 @@ namespace NFluent.Extensibility
     /// checks statements.
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    /// <typeparam name="C">Check interface.</typeparam>
-    internal class Checker<T, C> : IChecker<T, C> where C : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    /// <typeparam name="TC">Check interface.</typeparam>
+    internal class Checker<T, TC> : IChecker<T, TC> where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         #region fields
 
-        private readonly ICheckForExtensibility<T, C> fluentCheckForExtensibility;
+        private readonly ICheckForExtensibility<T, TC> fluentCheckForExtensibility;
 
         #endregion
 
+        #region constructor
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="Checker{T, C}" /> class.
+        /// Initializes a new instance of the <see cref="Checker{T,TC}" /> class.
         /// </summary>
         /// <param name="fluentCheckForExtensibility">The runnable fluent check.</param>
-        public Checker(ICheckForExtensibility<T, C> fluentCheckForExtensibility)
+        public Checker(ICheckForExtensibility<T, TC> fluentCheckForExtensibility)
         {
             this.fluentCheckForExtensibility = fluentCheckForExtensibility;
         }
+
+        #endregion
+
+        #region methods
 
         /// <summary>
         /// Gets the check link to return for the next check to be executed (linked with the And operator).
@@ -47,11 +53,11 @@ namespace NFluent.Extensibility
         /// <value>
         /// The check link to return for next check (linked with the And operator) to be executed.
         /// </value>
-        public ICheckLink<C> ReturnValueForLinkage
+        public ICheckLink<TC> ReturnValueForLinkage
         {
             get
             {
-                return new CheckLink<C>(this.fluentCheckForExtensibility);
+                return new CheckLink<TC>(this.fluentCheckForExtensibility);
             }
         }
 
@@ -84,6 +90,10 @@ namespace NFluent.Extensibility
             }
         }
 
+        #endregion
+
+        #region methods
+
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
@@ -98,7 +108,7 @@ namespace NFluent.Extensibility
         ///     A new check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        public ICheckLink<C> ExecuteCheck(Action action, string negatedExceptionMessage)
+        public ICheckLink<TC> ExecuteCheck(Action action, string negatedExceptionMessage)
         {
             try
             {
@@ -109,12 +119,12 @@ namespace NFluent.Extensibility
             {
                 // exception raised, and this was not expected
                 if (!this.fluentCheckForExtensibility.Negated)
-                { 
+                {
                     throw;
                 }
 
                 // exception was expected
-                return new CheckLink<C>(this.fluentCheckForExtensibility);
+                return new CheckLink<TC>(this.fluentCheckForExtensibility);
             }
 
             if (this.fluentCheckForExtensibility.Negated)
@@ -125,5 +135,7 @@ namespace NFluent.Extensibility
 
             return this.ReturnValueForLinkage;
         }
+
+        #endregion
     }
 }

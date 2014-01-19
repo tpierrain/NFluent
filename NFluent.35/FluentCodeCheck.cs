@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
 
     using NFluent.Extensibility;
@@ -88,7 +89,7 @@ namespace NFluent
         /// </value>
         public bool Negated { get; private set; }
 
-        /// <summary>
+         /// <summary>
         /// Creates a new instance of the same fluent check type, injecting the same Value property 
         /// (i.e. the system under test), but with a false Negated property in any case.
         /// </summary>

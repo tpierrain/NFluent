@@ -28,7 +28,7 @@ namespace NFluent
         /// <value>
         /// The execution time.
         /// </value>
-        public Stopwatch ExecutionTime { get; set; }
+        public TimeSpan ExecutionTime { get; set; }
 
         /// <summary>
         /// Gets or sets the raised exception.

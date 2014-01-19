@@ -28,6 +28,9 @@ namespace NFluent.Tests
         public void DurationTest()
         {
             Check.ThatCode(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+
+            // obsolete signature, kept for coverage
+            Check.That(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
         }
 
         [Test]
@@ -43,12 +46,22 @@ namespace NFluent.Tests
             Check.ThatCode(
                 () =>
                     {
-                        var dummy = 0;
-                        for (var i = 0; i < 1000; i++)
-                        {
-                            dummy++;
-                        }
-                    });
+                        Thread.Sleep(100);
+                    }).ConsumesLessThan(20, TimeUnit.Milliseconds);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code consumed too much CPU time.\nThe checked cpu time:")]
+        public void ConsumedTestFailsProperly()
+        {
+            Check.ThatCode(
+                () =>
+                {
+                    for (int i = 0; i < 10000000; i++)
+                    {
+                        var x = i * 2;
+                    }
+                }).ConsumesLessThan(20, TimeUnit.Milliseconds);
         }
 
         [Test]
@@ -89,6 +102,9 @@ namespace NFluent.Tests
         public void DidNotRaiseAny()
         {
             Check.ThatCode(() => { new object(); }).ThrowsAny();
+
+            // obsolete signature, kept for coverage
+            Check.That(() => { new object(); }).ThrowsAny();
         }
 
         [Test]
@@ -163,6 +179,9 @@ namespace NFluent.Tests
         {
             var sut = new AnObjectThatCanCrashWithPropertyGet(0);
             Check.ThatCode(() => sut.BeastBreaker).Throws<DivideByZeroException>();
+
+            // obsolete for coverage
+            Check.That(() => sut.BeastBreaker).Throws<DivideByZeroException>();
         }
 
         [Test]
@@ -172,6 +191,12 @@ namespace NFluent.Tests
                 .Throws<LambdaExceptionForTest>()
                 .WithMessage("Err #123 : my error message")
                 .And.WithProperty("ExceptionNumber", 123);
+
+            // obsolete for coverage
+            Check.That(() => { throw new LambdaExceptionForTest(123, "my error message"); })
+            .Throws<LambdaExceptionForTest>()
+            .WithMessage("Err #123 : my error message")
+            .And.WithProperty("ExceptionNumber", 123);
         }
 
         [Test]

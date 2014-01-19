@@ -43,9 +43,14 @@ namespace NFluent
         internal static RunTrace GetTrace(Action action)
         {
             var result = new RunTrace();
-            var watch = new Stopwatch();
+            CaptureTrace(action, result);
+            return result;
+        }
 
-            // var cpu = Process.GetCurrentProcess().TotalProcessorTime;
+        private static void CaptureTrace(Action action, RunTrace result)
+        {
+            var watch = new Stopwatch();
+            var cpu = Process.GetCurrentProcess().TotalProcessorTime;
             try
             {
                 watch.Start();
@@ -58,45 +63,27 @@ namespace NFluent
             finally
             {
                 watch.Stop();
+                result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
             }
 
             // ReSharper disable PossibleLossOfFraction
-            result.ExecutionTime = watch;
-            return result;
+            result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
         }
 
         /// <summary>
         /// Execute the function to capture the run.
         /// </summary>
-        /// <typeparam name="U">Result type of the function.</typeparam>
+        /// <typeparam name="TU">Result type of the function.</typeparam>
         /// <param name="function">
         /// <see cref="Action"/> to be analyzed.
         /// </param>
         /// <returns>
         /// Return <see cref="RunTrace"/> describing the execution.
         /// </returns>
-        internal static RunTraceResult<U> GetTrace<U>(Func<U> function)
+        internal static RunTraceResult<TU> GetTrace<TU>(Func<TU> function)
         {
-            var result = new RunTraceResult<U>();
-            var watch = new Stopwatch();
-            var cpu = Process.GetCurrentProcess().TotalProcessorTime;
-            try
-            {
-                watch.Start();
-                result.Result = function();
-            }
-            catch (Exception e)
-            {
-                result.RaisedException = e;
-            }
-            finally
-            {
-                watch.Stop();
-                result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
-            }
-
-            // ReSharper disable PossibleLossOfFraction
-            result.ExecutionTime = watch;
+            var result = new RunTraceResult<TU>();
+            CaptureTrace(() => result.Result = function(), result);
             return result;
         }
 
@@ -121,13 +108,9 @@ namespace NFluent
         public static ICheckLink<ICodeCheck<T>> LastsLessThan<T>(
             this ICodeCheck<T> check, double threshold, TimeUnit timeUnit) where T : RunTrace
         {
-            const int Billion = 1000000000;
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
-            var comparand =
-                new Duration(
-                    checker.Value.ExecutionTime.ElapsedTicks * Billion / Stopwatch.Frequency, 
-                    TimeUnit.Nanoseconds).ConvertTo(timeUnit);
-            var durationThreshold = new Duration(threshold, timeUnit);
+            var comparand = new Duration(checker.Value.ExecutionTime, timeUnit);
+            var durationThreshold = new Duration(threshold, timeUnit);  
 
             checker.ExecuteCheck(
                 () =>
@@ -147,6 +130,53 @@ namespace NFluent
                         }
                     },
                 FluentMessage.BuildMessage("The checked code took too little time to execute.").For("execution time").On(comparand).And.Expected(durationThreshold).Comparison("more than").ToString());
+
+            return new CheckLink<ICodeCheck<T>>(check);
+        }
+
+        /// <summary>
+        /// Checks that the CPU time is below a specified threshold.
+        /// </summary>
+        /// <typeparam name="T">Type of the checked type.</typeparam>
+        /// <param name="check">The fluent check to be extended.
+        /// </param>
+        /// <param name="threshold">
+        /// The threshold.
+        /// </param>
+        /// <param name="timeUnit">
+        /// The time unit of the given threshold.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// Execution was strictly above limit.
+        /// </exception>
+        public static ICheckLink<ICodeCheck<T>> ConsumesLessThan<T>(
+            this ICodeCheck<T> check, double threshold, TimeUnit timeUnit) where T : RunTrace
+        {
+            var checker = ExtensibilityHelper.ExtractCodeChecker(check);
+            var comparand = new Duration(checker.Value.TotalProcessorTime, timeUnit);
+            var durationThreshold = new Duration(threshold, timeUnit);
+
+            checker.ExecuteCheck(
+                () =>
+                {
+                    if (comparand > durationThreshold)
+                    {
+                        var message =
+                            FluentMessage.BuildMessage(
+                                "The checked code consumed too much CPU time.")
+                                         .For("cpu time")
+                                         .On(comparand)
+                                         .And.Expected(durationThreshold)
+                                         .Comparison("less than")
+                                         .ToString();
+
+                        throw new FluentCheckException(message);
+                    }
+                },
+                FluentMessage.BuildMessage("The checked code took too little cpu time to execute.").For("cpu time").On(comparand).And.Expected(durationThreshold).Comparison("more than").ToString());
 
             return new CheckLink<ICodeCheck<T>>(check);
         }
