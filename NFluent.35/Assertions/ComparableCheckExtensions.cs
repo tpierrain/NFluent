@@ -35,7 +35,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not before the other one.</exception>
         public static ICheckLink<ICheck<IComparable>> IsBefore(this ICheck<IComparable> check, IComparable givenValue)
         {
-            var checker = ExtensibilityHelper<IComparable>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -56,7 +56,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not after the other one.</exception>
         public static ICheckLink<ICheck<IComparable>> IsAfter(this ICheck<IComparable> check, IComparable givenValue)
         {
-            var checker = ExtensibilityHelper<IComparable>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>

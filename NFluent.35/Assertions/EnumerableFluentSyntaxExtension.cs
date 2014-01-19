@@ -23,7 +23,6 @@ namespace NFluent
 
     using NFluent.Extensibility;
     using NFluent.Extensions;
-    using NFluent.Helpers;
 
     /// <summary>
     /// Provides extension method on a ICheckLink for IEnumerable types.
@@ -56,7 +55,7 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<IEnumerable> Once(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
-            var checker = chainedCheckLink.And as ICheckForExtensibility<IEnumerable>;
+            var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
             var itemidx = 0;
             var expectedList = ConvertToArrayList(chainedCheckLink);
             var listedItems = new ArrayList();
@@ -101,7 +100,7 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<IEnumerable> InThatOrder(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
-            var checker = chainedCheckLink.And as ICheckForExtensibility<IEnumerable>;
+            var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
             var orderedList = ConvertToArrayList(chainedCheckLink);
 
             var faillingIndex = 0;

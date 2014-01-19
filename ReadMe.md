@@ -95,10 +95,10 @@ with NFluent, you can also write checks like this:
 or like this:
 ```c#
 	// Works also with lambda for exception checking
-	Check.That(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
+	Check.ThatCode(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
 
 	// or execution duration checking
-	Check.That(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+	Check.ThatCode(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
 	
 ``` 
 Why NFluent, and not another .NET fluent check framework?

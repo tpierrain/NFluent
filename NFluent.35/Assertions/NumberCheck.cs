@@ -28,8 +28,8 @@ namespace NFluent
         private const string MustBeZeroMessage = "The {0} is different from zero.";
 
         // private readonly N value;
-        private readonly Checker<N> checker;
-        private readonly ICheckForExtensibility<N> checkForExtensibility;
+        private readonly Checker<N, ICheck<N>> checker;
+        private readonly ICheckForExtensibility<N, ICheck<N>> checkForExtensibility;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberCheck{N}" /> class.
@@ -38,8 +38,8 @@ namespace NFluent
         public NumberCheck(ICheck<N> check)
         {
             // this.value = ((ICheckForExtensibility<N>)check).Value;
-            this.checker = new Checker<N>(check as ICheckForExtensibility<N>);
-            this.checkForExtensibility = check as ICheckForExtensibility<N>;
+            this.checker = new Checker<N, ICheck<N>>(check as ICheckForExtensibility<N, ICheck<N>>);
+            this.checkForExtensibility = check as ICheckForExtensibility<N, ICheck<N>>;
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IExposingChecker.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
+// // <copyright file="RunTrace.cs" company="">
+// //   Copyright 2014 Cyrille DUPUYDAUBY
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -14,24 +14,36 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using NFluent.Extensibility;
+    using System;
+    using System.Diagnostics;
 
     /// <summary>
-    /// Exposes an executable check for this given type. 
+    /// This class stores trace information for a code evaluation.
     /// </summary>
-    /// <typeparam name="T">
-    /// The type of the data to be checked.
-    /// </typeparam>
-    /// <typeparam name="C">Interface for the check.
-    /// </typeparam>
-    public interface IExposingChecker<out T, out C> where C : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    public class RunTrace
     {
         /// <summary>
-        /// Gets the runnable check to use for checking something on a value of a given type.
+        /// Gets or sets the execution time of the checked code.
         /// </summary>
         /// <value>
-        /// The runnable check to use for checking something on a given type.
+        /// The execution time.
         /// </value>
-        IChecker<T, C> Checker { get; } 
+        public TimeSpan ExecutionTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the raised exception.
+        /// </summary>
+        /// <value>
+        /// The raised exception.
+        /// </value>
+        public Exception RaisedException { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total processor time.
+        /// </summary>
+        /// <value>
+        /// The total processor time.
+        /// </value>
+        public TimeSpan TotalProcessorTime { get; set; }
     }
 }

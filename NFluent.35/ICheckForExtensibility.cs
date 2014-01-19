@@ -17,8 +17,13 @@ namespace NFluent
     /// <summary>
     /// Fluent check which exposes more information for extensibility purpose.
     /// </summary>
-    /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface ICheckForExtensibility<out T> : IWithValue<T>, IExposingChecker<T>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    /// <typeparam name="T">
+    /// Type of the value to assert on.
+    /// </typeparam>
+    /// <typeparam name="C">Interface for the type.
+    /// </typeparam>
+    public interface ICheckForExtensibility<out T, out C> : IWithValue<T>, IExposingChecker<T, C>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+        where C : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
     }
 }

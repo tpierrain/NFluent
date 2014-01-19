@@ -106,10 +106,10 @@ namespace NFluent.Tests
         public void PlayingWithLambda()
         {
             // Works also with lambda for exception checking
-            Check.That(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
+            Check.ThatCode(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
 
             // or execution duration checking
-            Check.That(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+            Check.ThatCode(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IStructCheckForExtensibility.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
+// // <copyright file="ICodeCheck.cs" company="">
+// //   Copyright 2014 Cyrille DUPUYDAUBY
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -14,11 +14,13 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
     /// <summary>
-    /// Fluent check for struct (value type) which exposes more information for extensibility purpose.
+    /// Used as a marker for code related checks.
     /// </summary>
-    /// <typeparam name="T">Type of the value to assert on.</typeparam>
-    public interface IStructCheckForExtensibility<out T> : IWithValue<T>, IExposingRunnableStructCheck<T>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense where T : struct
+    /// <typeparam name="T">Code description type. Must inherit from RunTrace.  </typeparam>
+    public interface ICodeCheck<out T> : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense, INegateableCheck<ICodeCheck<T>> where T : RunTrace
     {
     }
 }
