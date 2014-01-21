@@ -20,7 +20,6 @@ namespace NFluent
     using System.Text.RegularExpressions;
 
     using NFluent.Extensibility;
-    using NFluent.Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on a string instance.

@@ -1,9 +1,10 @@
 New feature(s):
-* 
+* Check.ThatCode(...): New entry point for checks on code (Action and Func<T>). It supersedes the equivalent Check.That signature.
 
 --------------
 Change(s):
-* 
+* Check.That(Func<T>) and Check.That(Action) are now obsolete.
+* Simplification of extensibility
 
 --------------
 Bug Fixe(s):
