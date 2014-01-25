@@ -15,8 +15,6 @@
 
 namespace NFluent
 {
-    using NFluent.Helpers;
-
     /// <summary>
     /// Provides lambda/action specific check.
     /// </summary>

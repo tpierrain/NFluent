@@ -27,6 +27,9 @@ namespace NFluent.Tests
         [Test]
         public void DurationTest()
         {
+            Check.ThatCode(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+
+            // obsolete signature, kept for coverage
             Check.That(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
         }
 
@@ -34,7 +37,31 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code took too much time to execute.\n")]
         public void FailDurationTest()
         {
-            Check.That(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
+            Check.ThatCode(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
+        }
+
+        [Test]
+        public void ConsumedTest()
+        {
+            Check.ThatCode(
+                () =>
+                    {
+                        Thread.Sleep(100);
+                    }).ConsumesLessThan(20, TimeUnit.Milliseconds);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code consumed too much CPU time.\nThe checked cpu time:")]
+        public void ConsumedTestFailsProperly()
+        {
+            Check.ThatCode(
+                () =>
+                {
+                    for (int i = 0; i < 10000000; i++)
+                    {
+                        var x = i * 2;
+                    }
+                }).ConsumesLessThan(20, TimeUnit.Milliseconds);
         }
 
         [Test]
@@ -44,30 +71,39 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void NotWords()
+        {
+            Check.ThatCode((Action)(() => new object())).Not.ThrowsAny();
+        }
+        
+        [Test]
         [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.")]
         public void UnexpectedExceptionRaised()
         {
-            Check.That(() => { throw new ApplicationException(); }).DoesNotThrow();
+            Check.ThatCode(() => { throw new ApplicationException(); }).DoesNotThrow();
         }
 
         [Test]
         public void ExpectedExceptionRaised()
         {
-            Check.That(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
-            Check.That(() => { throw new ApplicationException(); }).ThrowsAny();
+            Check.ThatCode(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
+            Check.ThatCode(() => { throw new ApplicationException(); }).ThrowsAny();
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe checked code raised an exception of a different type than expected.")]
         public void DidNotRaiseExpected()
         {
-            Check.That(() => { throw new Exception(); }).Throws<ApplicationException>();
+            Check.ThatCode(() => { throw new Exception(); }).Throws<ApplicationException>();
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code did not raise an exception, whereas it must.")]
         public void DidNotRaiseAny()
         {
+            Check.ThatCode(() => { new object(); }).ThrowsAny();
+
+            // obsolete signature, kept for coverage
             Check.That(() => { new object(); }).ThrowsAny();
         }
 
@@ -75,7 +111,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code did not raise an exception, whereas it must.\nExpected exception type is:\n\t[System.Exception]")]
         public void DidNotRaiseAnyTypedCheck()
         {
-            Check.That(() => { new object(); }).Throws<Exception>();
+            Check.ThatCode(() => { new object(); }).Throws<Exception>();
         }
 
         [Test]
@@ -96,7 +132,7 @@ namespace NFluent.Tests
         [Test]
         public void DidNotRaiseWhenUsedWithValidAnonymousFuncExpression()
         {
-            Check.That(() => 1).DoesNotThrow();
+            Check.ThatCode(() => 1).DoesNotThrow();
         }
 
         [Test]
@@ -123,42 +159,51 @@ namespace NFluent.Tests
         [Test]
         public void CanRaiseWhenUsedWithAnonymousActionExpression()
         {
-            Check.That(() => { throw new Exception(); }).ThrowsAny();
+            Check.ThatCode(() => { throw new Exception(); }).ThrowsAny();
         }
 
         [Test]
         public void DidNotThrowWithNewObjectHavingACorrectCtor()
         {
-            Check.That(() => new object()).DoesNotThrow();
+            Check.ThatCode(() => new object()).DoesNotThrow();
         }
         
         [Test]
         public void CanRaiseWithNewObjectHavingAFailingCtor()
         {
-            Check.That(() => new AnObjectThatCanCrashOnCtor(0)).Throws<DivideByZeroException>();
+            Check.ThatCode(() => new AnObjectThatCanCrashOnCtor(0)).Throws<DivideByZeroException>();
         }
 
         [Test]
         public void CanRaiseWithFailingPropertyGetter()
         {
             var sut = new AnObjectThatCanCrashWithPropertyGet(0);
+            Check.ThatCode(() => sut.BeastBreaker).Throws<DivideByZeroException>();
+
+            // obsolete for coverage
             Check.That(() => sut.BeastBreaker).Throws<DivideByZeroException>();
         }
 
         [Test]
         public void CanCheckForAMessageOnExceptionRaised()
         {
-            Check.That(() => { throw new LambdaExceptionForTest(123, "my error message"); })
+            Check.ThatCode(() => { throw new LambdaExceptionForTest(123, "my error message"); })
                 .Throws<LambdaExceptionForTest>()
                 .WithMessage("Err #123 : my error message")
                 .And.WithProperty("ExceptionNumber", 123);
+
+            // obsolete for coverage
+            Check.That(() => { throw new LambdaExceptionForTest(123, "my error message"); })
+            .Throws<LambdaExceptionForTest>()
+            .WithMessage("Err #123 : my error message")
+            .And.WithProperty("ExceptionNumber", 123);
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe message of the checked exception is not as expected.\nThe given exception message:\n\t[\"a buggy message\"]\nThe expected value(s):\n\t[\"Err #321 : my error message\"]")]
         public void DidNotRaiseTheExpectedMessage()
         {
-            Check.That(() => { throw new LambdaExceptionForTest(321, "my error message"); })
+            Check.ThatCode(() => { throw new LambdaExceptionForTest(321, "my error message"); })
                 .Throws<LambdaExceptionForTest>()
                 .WithMessage("a buggy message");
         }
@@ -167,7 +212,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThere is no property [inexistingProperty] on exception type [LambdaExceptionForTest].")]
         public void DidNotHaveExpectedPropertyName()
         {
-            Check.That(() => { throw new LambdaExceptionForTest(321, "my error message"); })
+            Check.ThatCode(() => { throw new LambdaExceptionForTest(321, "my error message"); })
                 .Throws<LambdaExceptionForTest>()
                 .WithProperty("inexistingProperty", 123);
         }
@@ -176,11 +221,16 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe property [ExceptionNumber] of the checked exception do not have the expected value.\nThe given exception:\n\t[321]\nThe expected exception:\n\t[123]")]
         public void DidNotHaveExpectedPropertyValue()
         {
-            Check.That(() => { throw new LambdaExceptionForTest(321, "my error message"); })
+            Check.ThatCode(() => { throw new LambdaExceptionForTest(321, "my error message"); })
                 .Throws<LambdaExceptionForTest>()
                 .WithProperty("ExceptionNumber", 123);
         }
 
+        [Test]
+        public void CheckReturnValue()
+        {
+            Check.ThatCode(() => 4).DoesNotThrow().And.WhichResult().IsEqualTo(4);
+        }
         #region Lambda related Test Data
 
         public class LambdaExceptionForTest : Exception

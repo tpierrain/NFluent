@@ -23,9 +23,9 @@ namespace NFluent
     /// Provides check methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public class FluentStructCheck<T> : IForkableCheck, IStructCheck<T>, IStructCheckForExtensibility<T> where T : struct
+    public class FluentStructCheck<T> : IForkableCheck, IStructCheck<T>, ICheckForExtensibility<T, IStructCheck<T>> where T : struct
     {
-        private readonly StructChecker<T> structChecker;
+        private readonly Checker<T, IStructCheck<T>> structChecker;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FluentStructCheck{T}" /> class.
@@ -44,7 +44,7 @@ namespace NFluent
         {
             this.Value = value;
             this.Negated = negated;
-            this.structChecker = new StructChecker<T>(this);
+            this.structChecker = new Checker<T, IStructCheck<T>>(this);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace NFluent
         /// <value>
         /// The runner to use for checking something on a given type.
         /// </value>
-        public IStructChecker<T> StructChecker
+        public IChecker<T, IStructCheck<T>> Checker
         {
             get
             {

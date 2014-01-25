@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IExposingRunnableStructCheck.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
+// // <copyright file="RunTraceResult.cs" company="">
+// //   Copyright 2013 Cyrille DUPUYDAUBY
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -14,20 +14,18 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using NFluent.Extensibility;
-
     /// <summary>
-    /// Exposes a runnable check for this given struct type. 
+    /// This code stores trace information for a code evaluation and its returned value.
     /// </summary>
-    /// <typeparam name="T">The type of the data to be checked.</typeparam>
-    public interface IExposingRunnableStructCheck<out T> where T : struct
+    /// <typeparam name="T">Code return type.</typeparam>
+    public class RunTraceResult<T> : RunTrace
     {
         /// <summary>
-        /// Gets the runnable check to use for checking something on a struct of a given type.
+        /// Gets or sets the result of the evaluated code.
         /// </summary>
         /// <value>
-        /// The runnable check to use for checking something on a struct of a given type.
+        /// The result.
         /// </value>
-        IStructChecker<T> StructChecker { get; }
+        public T Result { get; set; }
     }
 }

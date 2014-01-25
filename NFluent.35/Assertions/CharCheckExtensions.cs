@@ -31,7 +31,7 @@ namespace NFluent
         {
             // Every check method starts by extracting a checker instance from the check thanks to
             // the ExtensibilityHelper static class.
-            var checker = ExtensibilityHelper<char>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             // Then, we let the checker's ExecuteCheck() method return the ICheckLink<ICheck<T>> result (with T as string here).
             // This method needs 2 arguments:
@@ -63,7 +63,7 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsADigit(this ICheck<char> check)
         {
-            var checker = ExtensibilityHelper<char>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -85,7 +85,7 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsAPunctuationMark(this ICheck<char> check)
         {
-            var checker = ExtensibilityHelper<char>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -108,7 +108,7 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsSameLetterAs(this ICheck<char> check, char otherChar)
         {
-            var checker = ExtensibilityHelper<char>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -137,7 +137,7 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<char>> IsSameLetterButWithDifferentCaseAs(this ICheck<char> check, char otherChar)
         {
-            var checker = ExtensibilityHelper<char>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
             
             return checker.ExecuteCheck(
                 () =>
