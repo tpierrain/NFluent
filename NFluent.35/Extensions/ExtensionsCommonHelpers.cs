@@ -25,6 +25,8 @@ namespace NFluent.Extensions
     /// </summary>
     public static class ExtensionsCommonHelpers
     {
+        private const string NullText = "null";
+
         /// <summary>
         /// Returns a string that represents the current object. If the object is already a string, this method will surround it with brackets.
         /// </summary>
@@ -32,14 +34,20 @@ namespace NFluent.Extensions
         /// <returns>A string that represents the current object. If the object is already a string, this method will surround it with brackets.</returns>
         public static string ToStringProperlyFormated(this object theObject)
         {
+            if (theObject == null)
+            {
+                return NullText;
+            }
+            
             if (theObject is char)
             {
                 return string.Format("'{0}'", theObject);
             }
 
-            if (theObject is string)
+            var s = theObject as string;
+            if (s != null)
             {
-                return string.Format(@"""{0}""", theObject);
+                return string.Format(@"""{0}""", TruncateLongString(s));
             }
             
             if (theObject is DateTime)
@@ -70,7 +78,24 @@ namespace NFluent.Extensions
                 return string.Format("{{{0}}}: '{1}'", exc.GetType().FullName, exc.Message);
             }
 
-            return theObject == null ? "null" : theObject.ToString();
+            var result = theObject.ToString();
+
+            if (result == null)
+            {
+                return NullText;
+            }
+
+            return TruncateLongString(result);
+        }
+
+        private static string TruncateLongString(string result)
+        {
+            if (result.Length > 197)
+            {
+                result = result.Substring(0, 150) + "...<truncated>..."
+                         + result.Substring(result.Length - 40);
+            }
+            return result;
         }
 
         /// <summary>

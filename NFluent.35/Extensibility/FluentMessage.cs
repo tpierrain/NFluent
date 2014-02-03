@@ -294,6 +294,10 @@ namespace NFluent.Extensibility
         /// </summary>
         public class MessageBlock
         {
+            #region fields
+
+            private const int MaxStringLength = 200;
+
             private readonly FluentMessage message;
 
             private readonly object test;
@@ -311,6 +315,8 @@ namespace NFluent.Extensibility
             private Type type;
 
             private long? enumerableCount;
+
+            #endregion
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MessageBlock"/> class.
@@ -369,7 +375,8 @@ namespace NFluent.Extensibility
                 }
                 else
                 {
-                    builder.AppendFormat("\t[{0}]", this.test.ToStringProperlyFormated());
+                    var stringProperlyFormated = this.test.ToStringProperlyFormated();
+                    builder.AppendFormat("\t[{0}]", stringProperlyFormated);
                 }
 
                 if (this.enumerableCount.HasValue)

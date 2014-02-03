@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using System.IO;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -431,5 +433,14 @@ namespace NFluent.Tests
         }
 
         #endregion
+
+        [Test]
+        public void LongString()
+        {
+            string checkString = File.ReadAllText("CheckedFile.xml");
+            string expectedString = File.ReadAllText("ExpectedFile.xml");
+
+            Check.That(checkString).IsEqualTo(expectedString);
+        }
     }
 }
