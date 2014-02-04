@@ -24,7 +24,7 @@ as the one used for the StartsWith() check (applying on string) presented below:
         {
             // Every check method starts by extracting a checker instance from the check thanks to
             // the ExtensibilityHelper static class.
-            var checker = ExtensibilityHelper<char>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             // Then, we let the checker's ExecuteCheck() method return the ICheckLink<ICheck<T>> result (with T as string here).
             // This method needs 2 arguments:
