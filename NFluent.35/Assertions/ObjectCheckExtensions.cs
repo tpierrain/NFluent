@@ -15,6 +15,7 @@
 namespace NFluent
 {
     using System;
+    using System.ComponentModel;
     using System.Reflection;
     using System.Text.RegularExpressions;
 
@@ -338,6 +339,23 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value has fields equals to the expected value ones.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value doesn't have all fields equal to the expected value ones.</exception>
+        /// <remarks>The comparison is done field by field.</remarks>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use HasFieldsWithSameValues instead.")]
+        public static ICheckLink<ICheck<object>> HasFieldsEqualToThose(this ICheck<object> check, object expected)
+        {
+            return HasFieldsWithSameValues(check, expected);
+        }
+
+        /// <summary>
         /// Checks that the actual value doesn't have all fields equal to the expected value ones.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
@@ -361,6 +379,23 @@ namespace NFluent
             }
 
             return new CheckLink<ICheck<object>>(check);
+        }
+
+        /// <summary>
+        /// Checks that the actual value doesn't have all fields equal to the expected value ones.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value has all fields equal to the expected value ones.</exception>
+        /// <remarks>The comparison is done field by field.</remarks>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use HasNotFieldsWithSameValues instead.")]
+        public static ICheckLink<ICheck<object>> HasFieldsNotEqualToThose(this ICheck<object> check, object expected)
+        {
+            return HasNotFieldsWithSameValues(check, expected);
         }
 
         private static string CheckFieldEquality(object expected, object value, bool negated, string prefix = "")
