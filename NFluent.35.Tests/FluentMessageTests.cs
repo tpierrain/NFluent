@@ -95,7 +95,7 @@ namespace NFluent.Tests
         public void HowExpectedValuesWorks()
         {
             var heroes = new[] { "Luke", "Yoda", "Chewie" };
-            var givenValues = new[] { "Luke", "Yoda", "Chewie", "Vador" };
+            var givenValues = new[] { "Luke", "Yoda", "Chewie", "Vader" };
             
             var message = FluentMessage.BuildMessage("The {0} does not contain exactly the {1}.")
                                             .For("enumerable")
@@ -105,7 +105,7 @@ namespace NFluent.Tests
                                             .WithEnumerableCount(givenValues.Count())
                                             .ToString();
 
-            Assert.AreEqual("\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)\nThe expected value(s):\n\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vador\"] (4 items)", message);
+            Assert.AreEqual("\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)\nThe expected value(s):\n\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"] (4 items)", message);
         }
 
         [Test]
