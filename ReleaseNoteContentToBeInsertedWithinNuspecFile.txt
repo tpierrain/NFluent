@@ -5,9 +5,9 @@ New feature(s):
 --------------
 Change(s):
 * Check.That(Func<T>) and Check.That(Action) are now obsolete.
+* The HasFieldsEqualToThose() check is now obsolete and should be replaced by HasFieldsWithSameValues() which now support anonymous classes as expected parameter.
+* The HasFieldsNotEqualToThose() check is now obsolete and should be replaced by HasNotFieldsWithSameValues()
 * Simplification of extensibility
-* Renames the HasFieldsEqualToThose() check to HasFieldsWithSameValues() which now support anonymous classes as expected parameter.
-* Renames the HasFieldsNotEqualToThose() check to HasNotFieldsWithSameValues().
 
 --------------
 Bug Fixe(s):
