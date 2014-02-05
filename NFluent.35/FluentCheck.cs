@@ -26,14 +26,14 @@ namespace NFluent
     /// <typeparam name="T">
     /// Type of the value to assert on.
     /// </typeparam>
-    internal class FluentCheck<T> : IForkableCheck, ICheck<T>, ICheckForExtensibility<T>
+    internal class FluentCheck<T> : IForkableCheck, ICheck<T>, ICheckForExtensibility<T, ICheck<T>>
     {
         #region Fields
 
         /// <summary>
         /// The check runner.
         /// </summary>
-        private readonly Checker<T> checker;
+        private readonly Checker<T, ICheck<T>> checker;
 
         #endregion
 
@@ -62,7 +62,7 @@ namespace NFluent
         {
             this.Value = value;
             this.Negated = negated;
-            this.checker = new Checker<T>(this);
+            this.checker = new Checker<T, ICheck<T>>(this);
         }
 
         #endregion
@@ -106,7 +106,7 @@ namespace NFluent
         /// <value>
         /// The runner to use for checking something on a given type.
         /// </value>
-        public IChecker<T> Checker
+        public IChecker<T, ICheck<T>> Checker
         {
             get
             {
@@ -148,18 +148,13 @@ namespace NFluent
             if (typeof(T).IsNullable())
             {
                 this.checker.ExecuteCheck(
-                    () => 
-                    {
-                        IsInstanceHelper.IsSameType(typeof(T), typeof(U), this.Value);
-                    }, 
+                    () => IsInstanceHelper.IsSameType(typeof(T), typeof(U), this.Value), 
                     IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(U), this.Value, true));
 
                 return new CheckLink<ICheck<T>>(this);
             }
-            else
-            {
-                return this.checker.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
-            }
+
+            return this.checker.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
         }
 
         /// <summary>
@@ -183,11 +178,9 @@ namespace NFluent
                     IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(U), this.Value, false));
                 return new CheckLink<ICheck<T>>(this);
             }
-            else
-            {
-                return this.checker.ExecuteCheck(
-                    () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
-            }
+
+            return this.checker.ExecuteCheck(
+                () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
         }
 
         #endregion

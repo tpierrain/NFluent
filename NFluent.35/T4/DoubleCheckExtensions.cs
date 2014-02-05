@@ -47,7 +47,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not before the other one.</exception>
         public static ICheckLink<ICheck<double>> IsBefore(this ICheck<double> check, double givenValue)
         {
-            var checker = ExtensibilityHelper<double>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
             IComparable checkedValue = checker.Value as IComparable;
 
             return checker.ExecuteCheck(
@@ -69,7 +69,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is not after the other one.</exception>
         public static ICheckLink<ICheck<double>> IsAfter(this ICheck<double> check, double givenValue)
         {
-            var checker = ExtensibilityHelper<double>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
             IComparable checkedValue = checker.Value as IComparable;
 
             return checker.ExecuteCheck(
@@ -102,7 +102,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is null.</exception>
         public static INullableOrNumberCheckLink<double> HasAValue(this ICheck<double?> check)
         {
-            var checker = ExtensibilityHelper<double?>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
             
             checker.ExecuteCheck(
                 () =>
@@ -125,7 +125,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is not null.</exception>
         public static void HasNoValue(this ICheck<double?> check)
         {
-            var checker = ExtensibilityHelper<double?>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             checker.ExecuteCheck(
                 () =>

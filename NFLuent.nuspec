@@ -2,9 +2,9 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>NFluent</id>
-    <title>Smooth your .NET TDD experience with NFluent!</title>
+    <title>NFluent, smooth your .NET TDD experience!</title>
     <version>1.0.0.0</version>
-    <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Marc-Antoine LATOUR, Rui CARVALHO</authors>
+    <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR</authors>
     <owners>Thomas PIERRAIN</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://www.n-fluent.net</projectUrl>

@@ -25,9 +25,13 @@ namespace NFluent.Helpers
     /// </summary>
     internal struct Duration
     {
+        #region fields
+
         private readonly double rawDuration;
 
         private readonly TimeUnit timeUnit;
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Duration"/> struct. 

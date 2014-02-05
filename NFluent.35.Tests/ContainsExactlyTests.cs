@@ -40,11 +40,11 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)\nThe expected value(s):\n\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vador\"] (4 items)")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)\nThe expected value(s):\n\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"] (4 items)")]
         public void ContainsExactlyThrowsExceptionWhenMoreItemsAreIndicated()
         {
             var heroes = new[] { "Luke", "Yoda", "Chewie" };
-            Check.That(heroes).ContainsExactly("Luke", "Yoda", "Chewie", "Vador");
+            Check.That(heroes).ContainsExactly("Luke", "Yoda", "Chewie", "Vader");
         }
 
         [Test]

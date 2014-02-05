@@ -26,12 +26,14 @@ namespace NFluent.Extensibility
     /// </summary>
     public class FluentMessage
     {
+        #region fields
+
         private const string DefaultEntity = "value";
 
         private const string TestedAdjective = "checked";
 
         private const string ExpectedAdjective = "expected";
-        
+
         private const string GivenAdjective = "given";
 
         private readonly string message;
@@ -45,6 +47,10 @@ namespace NFluent.Extensibility
         private MessageBlock expectedValuesBlock = null;
 
         private string entity;
+
+        #endregion
+
+        #region constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FluentMessage"/> class.
@@ -61,6 +67,10 @@ namespace NFluent.Extensibility
             this.message = message;
             this.EntityDescription = null;
         }
+
+        #endregion
+
+        #region properties
 
         private string EntityDescription
         {
@@ -136,6 +146,10 @@ namespace NFluent.Extensibility
             }
         }
 
+        #endregion
+
+        #region methods
+
         /// <summary>
         /// Builds the message.
         /// </summary>
@@ -156,7 +170,7 @@ namespace NFluent.Extensibility
         {
             var builder = new StringBuilder("\n");
             var givenOrExpectedLabel = this.ExpectedLabel;
-            
+
             if (this.givenValueBlock != null)
             {
                 // we defined a given block which should then replace the classical expected one.
@@ -267,29 +281,12 @@ namespace NFluent.Extensibility
                 return this.entity;
             }
 
- /*
-  *         if (value != null)
-            {
-                // TODO review which type to examine for auto label
-               
-                if (value is string)
-                {
-                    return "string";
-                }
-                if (value is IEnumerable)
-                {
-                    return "enumerable";
-                }
-                if (value is Delegate)
-                {
-                    return "code";
-                }
-            }
-  */
             return DefaultEntity;
         }
 
-        /// <summary>
+        #endregion
+
+       /// <summary>
         /// Class describing a message block.
         /// </summary>
         public class MessageBlock
@@ -318,6 +315,8 @@ namespace NFluent.Extensibility
 
             #endregion
 
+            #region constructor
+
             /// <summary>
             /// Initializes a new instance of the <see cref="MessageBlock"/> class.
             /// </summary>
@@ -336,6 +335,8 @@ namespace NFluent.Extensibility
                 this.type = test.GetTypeWithoutThrowingException();
                 this.attribute = attribute;
             }
+
+            #endregion
 
             /// <summary>
             /// Gets the Message.
@@ -371,7 +372,7 @@ namespace NFluent.Extensibility
 
                 if (this.test == null)
                 {
-                    builder.AppendFormat("\t[null]");
+                    builder.Append("\t[null]");
                 }
                 else
                 {
@@ -497,11 +498,11 @@ namespace NFluent.Extensibility
             /// <summary>
             /// Adds a description of the number of items (only relevant if the object is an enumerable).
             /// </summary>
-            /// <param name="enumerableCount">The number of items of the enumerable instance.</param>
+            /// <param name="itemsCount">The number of items of the enumerable instance.</param>
             /// <returns>The description of the number of items (only relevant if the object is an enumerable).</returns>
-            public MessageBlock WithEnumerableCount(long enumerableCount)
+            public MessageBlock WithEnumerableCount(long itemsCount)
             {
-                this.enumerableCount = enumerableCount;
+                this.enumerableCount = itemsCount;
                 return this;
             }
         }

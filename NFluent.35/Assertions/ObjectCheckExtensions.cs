@@ -15,6 +15,7 @@
 namespace NFluent
 {
     using System;
+    using System.ComponentModel;
     using System.Reflection;
     using System.Text.RegularExpressions;
 
@@ -79,7 +80,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, object expected)
         {
-            var checker = ExtensibilityHelper<T>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -126,7 +127,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<T>> IsNotEqualTo<T>(this ICheck<T> check, object expected)
         {
-            var checker = ExtensibilityHelper<T>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -164,7 +165,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked expression is not in the inheritance hierarchy of the given kind.</exception>
         public static ICheckLink<ICheck<object>> InheritsFrom<T>(this ICheck<object> check)
         {
-            var checker = ExtensibilityHelper<object>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             Type instanceType = checker.Value.GetTypeWithoutThrowingException();
             Type expectedBaseType = typeof(T);
@@ -185,7 +186,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">Is the value is not null.</exception>
         public static ICheckLink<ICheck<object>> IsNull(this ICheck<object> check)
         {
-            var checker = ExtensibilityHelper<object>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = checker.Negated;
             var value = checker.Value;
 
@@ -206,7 +207,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">Is the value is null.</exception>
         public static ICheckLink<ICheck<object>> IsNotNull(this ICheck<object> check)
         {
-            var checker = ExtensibilityHelper<object>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = checker.Negated;
             var value = checker.Value;
 
@@ -240,7 +241,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not the same reference than the expected value.</exception>
         public static ICheckLink<ICheck<object>> IsSameReferenceThan(this ICheck<object> check, object expected)
         {
-            var checker = ExtensibilityHelper<object>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = checker.Negated;
             var value = checker.Value;
 
@@ -292,7 +293,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is the same instance than the comparand.</exception>
         public static ICheckLink<ICheck<object>> IsDistinctFrom(this ICheck<object> check, object comparand)
         {
-            var checker = ExtensibilityHelper<object>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = !checker.Negated;
             var value = checker.Value;
 
@@ -323,8 +324,51 @@ namespace NFluent
         /// <remarks>The comparison is done field by field.</remarks>
         public static ICheckLink<ICheck<object>> HasFieldsWithSameValues(this ICheck<object> check, object expected)
         {
-            var checker = ExtensibilityHelper<object>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = checker.Negated;
+            var value = checker.Value;
+
+            var message = CheckFieldEquality(expected, value, negated);
+
+            if (message != null)
+            {
+                throw new FluentCheckException(message);
+            }
+
+            return new CheckLink<ICheck<object>>(check);
+        }
+
+        /// <summary>
+        /// Checks that the actual value has fields equals to the expected value ones.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value doesn't have all fields equal to the expected value ones.</exception>
+        /// <remarks>The comparison is done field by field.</remarks>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use HasFieldsWithSameValues instead.")]
+        public static ICheckLink<ICheck<object>> HasFieldsEqualToThose(this ICheck<object> check, object expected)
+        {
+            return HasFieldsWithSameValues(check, expected);
+        }
+
+        /// <summary>
+        /// Checks that the actual value doesn't have all fields equal to the expected value ones.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value has all fields equal to the expected value ones.</exception>
+        /// <remarks>The comparison is done field by field.</remarks>
+        public static ICheckLink<ICheck<object>> HasNotFieldsWithSameValues(this ICheck<object> check, object expected)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            var negated = !checker.Negated;
             var value = checker.Value;
 
             var message = CheckFieldEquality(expected, value, negated);
@@ -347,20 +391,11 @@ namespace NFluent
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value has all fields equal to the expected value ones.</exception>
         /// <remarks>The comparison is done field by field.</remarks>
-        public static ICheckLink<ICheck<object>> HasNotFieldsWithSameValues(this ICheck<object> check, object expected)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use HasNotFieldsWithSameValues instead.")]
+        public static ICheckLink<ICheck<object>> HasFieldsNotEqualToThose(this ICheck<object> check, object expected)
         {
-            var checker = ExtensibilityHelper<object>.ExtractChecker(check);
-            var negated = !checker.Negated;
-            var value = checker.Value;
-
-            var message = CheckFieldEquality(expected, value, negated);
-
-            if (message != null)
-            {
-                throw new FluentCheckException(message);
-            }
-
-            return new CheckLink<ICheck<object>>(check);
+            return HasNotFieldsWithSameValues(check, expected);
         }
 
         private static string CheckFieldEquality(object expected, object value, bool negated, string prefix = "")

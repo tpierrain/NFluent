@@ -35,7 +35,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not before the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsBefore(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper<DateTime>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -60,7 +60,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not before or equals to the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsBeforeOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper<DateTime>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -85,7 +85,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not after the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsAfter(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper<DateTime>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -110,7 +110,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not after or equals to the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsAfterOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper<DateTime>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -152,7 +152,7 @@ namespace NFluent
         /// </remarks>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringMillis(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper<DateTime>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -194,7 +194,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not equal to the given one with second and millisecond fields ignored.</exception>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringSeconds(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper<DateTime>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -236,7 +236,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not equal to the given one with minute, second and millisecond fields ignored.</exception>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringMinutes(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper<DateTime>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -278,7 +278,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not equal to the given one with hour, minute, second and millisecond fields ignored.</exception>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringHours(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper<DateTime>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -303,7 +303,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time year is not equal to the given year.</exception>
         public static ICheckLink<ICheck<DateTime>> IsInSameYearAs(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper<DateTime>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -328,7 +328,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time month is not equal to the given month, whatever the year.</exception>
         public static ICheckLink<ICheck<DateTime>> IsInSameMonthAs(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper<DateTime>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
@@ -353,7 +353,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time day is not equal to the given day, whatever the year or the month.</exception>
         public static ICheckLink<ICheck<DateTime>> IsInSameDayAs(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper<DateTime>.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>

@@ -17,34 +17,48 @@ namespace NFluent.Extensibility
     /// <summary>
     /// Helper that allow to extract the checker to be used for and from any given fluent check instance.
     /// </summary>
-    /// <typeparam name="T">Type of the value to be checked.</typeparam>
-    public static class ExtensibilityHelper<T>
+    public static class ExtensibilityHelper
     {
         /// <summary>
-        /// Extracts the checker to be used in order to check things on the value contained within 
+        /// Extracts the checker to be used in order to check things on the value contained within
         /// the given fluent check.
         /// </summary>
+        /// <typeparam name="T">The type of checked value.</typeparam>
         /// <param name="check">The fluent check instance to work on.</param>
-        /// <returns>The checker to be used to check things on the value contained in the fluent check.</returns>
-        public static IChecker<T> ExtractChecker(ICheck<T> check)
+        /// <returns>
+        /// The checker to be used to check things on the value contained in the fluent check.
+        /// </returns>
+        public static IChecker<T, ICheck<T>> ExtractChecker<T>(ICheck<T> check)
         {
             // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
-            return (check as ICheckForExtensibility<T>).Checker;
+            return (check as ICheckForExtensibility<T, ICheck<T>>).Checker;
+        }
+
+        /// <summary>
+        /// Extracts the code checker.
+        /// </summary>
+        /// <typeparam name="TU">The type of checked value.</typeparam>
+        /// <param name="check">The check.</param>
+        /// <returns>The checker to be used to check things on the value contained in the fluent check.</returns>
+        public static IChecker<TU, ICodeCheck<TU>> ExtractCodeChecker<TU>(ICodeCheck<TU> check) where TU : RunTrace
+        {
+            // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
+            return (check as ICheckForExtensibility<TU, ICodeCheck<TU>>).Checker;
         }
 
         /// <summary>
         /// Extracts the checker to be used in order to check things on the struct instance contained within
         /// the given fluent check.
         /// </summary>
-        /// <typeparam name="S">The type of the struct to be checked.</typeparam>
+        /// <typeparam name="TS">The type of the struct to be checked.</typeparam>
         /// <param name="check">The fluent check instance to work on.</param>
         /// <returns>
         /// The checker to be used to check things on the value contained in the fluent check.
         /// </returns>
-        public static IStructChecker<S> ExtractStructChecker<S>(IStructCheck<S> check) where S : struct
+        public static IChecker<TS, IStructCheck<TS>> ExtractStructChecker<TS>(IStructCheck<TS> check) where TS : struct
         {
             // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
-            return (check as IStructCheckForExtensibility<S>).StructChecker;
+            return (check as ICheckForExtensibility<TS, IStructCheck<TS>>).Checker;
         }
     }
 }

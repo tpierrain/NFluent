@@ -90,13 +90,23 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void HasDifferentFieldsWorks()
+        public void HasNotFieldsWithSameValuesWorks()
         {
             var x = new DummyClass();
             Check.That(x).HasNotFieldsWithSameValues(new DummyClass(1, 2)); 
 
             // check with missing fields
             Check.That(new DummyHeritance()).HasNotFieldsWithSameValues(new DummyClass());
+        }
+
+        [Test]
+        public void HasFieldsNotEqualToThoseIsObsoleteButWorks()
+        {
+            var x = new DummyClass();
+            Check.That(x).HasFieldsNotEqualToThose(new DummyClass(1, 2));
+
+            // check with missing fields
+            Check.That(new DummyHeritance()).HasFieldsNotEqualToThose(new DummyClass());
         }
 
         [Test]
@@ -134,6 +144,13 @@ namespace NFluent.Tests
         {
             var x = new DummyClass();
             Check.That(x).HasFieldsWithSameValues(new { x = 2, y = 3 });
+        }
+
+        [Test]
+        public void HasFieldsEqualToThoseIsObsoleteButWorksAgainstAnonymousClass()
+        {
+            var x = new DummyClass();
+            Check.That(x).HasFieldsEqualToThose(new { x = 2, y = 3 });
         }
 
         [Test]
