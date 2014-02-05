@@ -1,6 +1,6 @@
 New feature(s):
 * Check.ThatCode(...): New entry point for checks on code (Action and Func<T>). It supersedes the equivalent Check.That signature.
-
+*
 
 --------------
 Change(s):
@@ -8,11 +8,8 @@ Change(s):
 * Simplification of extensibility
 * Renames the HasFieldsEqualToThose() check to HasFieldsWithSameValues() which now support anonymous classes as expected parameter.
 * Renames the HasFieldsNotEqualToThose() check to HasNotFieldsWithSameValues().
+*
 
 --------------
 Bug Fixe(s):
-* 
-
-
-
-
+*

@@ -47,7 +47,7 @@ namespace NFluent.Tests
                 () =>
                     {
                         Thread.Sleep(100);
-                    }).ConsumesLessThan(20, TimeUnit.Milliseconds);
+                    }).ConsumesLessThan(30, TimeUnit.Milliseconds);
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace NFluent.Tests
             Check.ThatCode(
                 () =>
                 {
-                    for (int i = 0; i < 10000000; i++)
+                    for (int i = 0; i < 1000000000; i++)
                     {
                         var x = i * 2;
                     }
