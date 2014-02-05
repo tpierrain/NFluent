@@ -95,6 +95,7 @@ namespace NFluent.Extensions
                 result = result.Substring(0, 150) + "...<truncated>..."
                          + result.Substring(result.Length - 40);
             }
+
             return result;
         }
 
