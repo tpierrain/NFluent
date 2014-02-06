@@ -29,10 +29,10 @@ namespace NFluent.Tests
         [Test]
         public void DurationTest()
         {
-            Check.ThatCode(() => Thread.Sleep(30)).LastsLessThan(EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed, TimeUnit.Milliseconds);
+            Check.ThatCode(() => Thread.Sleep(3)).LastsLessThan(EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed, TimeUnit.Milliseconds);
 
             // obsolete signature, kept for coverage
-            Check.That(() => Thread.Sleep(30)).LastsLessThan(EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed, TimeUnit.Milliseconds);
+            Check.That(() => Thread.Sleep(3)).LastsLessThan(EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed, TimeUnit.Milliseconds);
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace NFluent.Tests
             Check.ThatCode(
                 () =>
                 {
-                    for (int i = 0; i < 100000; i++)
+                    for (int i = 0; i < 10000000; i++)
                     {
                         var x = i * 2;
                     }
