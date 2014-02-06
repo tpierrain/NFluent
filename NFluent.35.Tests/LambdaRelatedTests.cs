@@ -23,7 +23,6 @@ namespace NFluent.Tests
         private readonly ExceptionTests exceptionTests = new ExceptionTests();
 
         [Test]
-                        }
         public void NoExceptionRaised()
         {
             Check.ThatCode((Action)(() => new object())).DoesNotThrow();
