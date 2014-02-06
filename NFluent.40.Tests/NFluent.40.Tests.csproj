@@ -31,6 +31,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
@@ -136,6 +142,9 @@
     </Compile>
     <Compile Include="..\NFluent.35.Tests\IsOnlyMadeOfTests.cs">
       <Link>IsOnlyMadeOfTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35.Tests\LambdaDurationTests.cs">
+      <Link>LambdaDurationTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35.Tests\LambdaRelatedTests.cs">
       <Link>LambdaRelatedTests.cs</Link>
@@ -252,6 +261,7 @@
     <None Include="..\NFluent.35.Tests\T4\TypeCloningHelper.ttinclude">
       <Link>T4\TypeCloningHelper.ttinclude</Link>
     </None>
+    <None Include="NFluent.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

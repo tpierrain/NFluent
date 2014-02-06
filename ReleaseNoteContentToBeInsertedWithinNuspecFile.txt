@@ -7,11 +7,8 @@ Change(s):
 * The HasFieldsEqualToThose() check is now obsolete and should be replaced by HasFieldsWithSameValues() which now support anonymous classes as expected parameter.
 * The HasFieldsNotEqualToThose() check is now obsolete and should be replaced by HasNotFieldsWithSameValues()
 * Simplification of extensibility
+*
 
 --------------
 Bug Fixe(s):
-* 
-
-
-
-
+*

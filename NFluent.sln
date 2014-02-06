@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		HowToAddANewAssertion.md = HowToAddANewAssertion.md
 		LICENSE.txt = LICENSE.txt
 		NFluent.nuspec = NFluent.nuspec
+		NFluent.snk = NFluent.snk
 		ReadMe.md = ReadMe.md
 		ReleaseNoteContentToBeInsertedWithinNuspecFile.txt = ReleaseNoteContentToBeInsertedWithinNuspecFile.txt
 		Settings.StyleCop = Settings.StyleCop

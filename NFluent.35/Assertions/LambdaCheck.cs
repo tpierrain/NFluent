@@ -16,10 +16,6 @@
 namespace NFluent
 {
     using System;
-    using System.Diagnostics;
-
-    using NFluent.Extensibility;
-    using NFluent.Helpers;
 
     /// <summary>
     /// Implements lambda/action specific check.
