@@ -80,6 +80,7 @@
     <Compile Include="ForDocumentation\RunnerHelper.cs" />
     <Compile Include="ForDocumentation\TypeChecks.cs" />
     <Compile Include="IsInstanceOfTests.cs" />
+    <Compile Include="LambdaDurationTests.cs" />
     <Compile Include="LambdaRelatedTests.cs" />
     <Compile Include="FluentMessageTests.cs" />
     <Compile Include="NotRelatedTests.cs" />
