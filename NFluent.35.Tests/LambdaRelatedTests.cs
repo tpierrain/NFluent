@@ -23,7 +23,6 @@ namespace NFluent.Tests
         private readonly ExceptionTests exceptionTests = new ExceptionTests();
 
         [Test]
-                        }
         public void NoExceptionRaised()
         {
             Check.ThatCode((Action)(() => new object())).DoesNotThrow();
@@ -47,6 +46,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
             Check.ThatCode(() => { throw new ApplicationException(); }).ThrowsAny();
+            Check.That(() => { throw new ApplicationException(); }).ThrowsAny();
         }
 
         [Test]
@@ -61,7 +61,12 @@ namespace NFluent.Tests
         public void DidNotRaiseAny()
         {
             Check.ThatCode(() => { new object(); }).ThrowsAny();
+        }
 
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code did not raise an exception, whereas it must.")]
+        public void DidNotRaiseAnyOldSyntax()
+        {
             // obsolete signature, kept for coverage
             Check.That(() => { new object(); }).ThrowsAny();
         }
