@@ -27,6 +27,8 @@ namespace NFluent.Tests
     [TestFixture]
     public class ReadmeRelatedTests
     {
+        private const int EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed = 6000 * 2;
+
         #region dummy fields for the NFluentMotto method to compile
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
@@ -109,7 +111,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
 
             // or execution duration checking
-            Check.ThatCode(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+            Check.ThatCode(() => Thread.Sleep(30)).LastsLessThan(EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed, TimeUnit.Milliseconds);
         }
     }
 }

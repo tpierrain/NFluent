@@ -22,15 +22,17 @@ namespace NFluent.Tests
     [TestFixture]
     public class LambdaRelatedTests
     {
+        private const int EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed = 6000 * 2;
+
         private readonly ExceptionTests exceptionTests = new ExceptionTests();
 
         [Test]
         public void DurationTest()
         {
-            Check.ThatCode(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+            Check.ThatCode(() => Thread.Sleep(30)).LastsLessThan(EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed, TimeUnit.Milliseconds);
 
             // obsolete signature, kept for coverage
-            Check.That(() => Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+            Check.That(() => Thread.Sleep(30)).LastsLessThan(EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed, TimeUnit.Milliseconds);
         }
 
         [Test]
@@ -57,11 +59,11 @@ namespace NFluent.Tests
             Check.ThatCode(
                 () =>
                 {
-                    for (int i = 0; i < 1000000000; i++)
+                    for (int i = 0; i < 100000; i++)
                     {
                         var x = i * 2;
                     }
-                }).ConsumesLessThan(20, TimeUnit.Milliseconds);
+                }).ConsumesLessThan(2, TimeUnit.Microseconds);
         }
 
         [Test]
