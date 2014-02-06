@@ -69,7 +69,7 @@ namespace NFluent.Tests
         [Test]
         public void NoExceptionRaised()
         {
-            Check.That((Action)(() => new object())).DoesNotThrow();
+            Check.ThatCode((Action)(() => new object())).DoesNotThrow();
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace NFluent.Tests
         {
             Func<bool> sut = () => { throw new Exception(); };
 
-            Check.That(sut).ThrowsAny();
+            Check.ThatCode(sut).ThrowsAny();
         }
 
         [Test]
@@ -140,14 +140,14 @@ namespace NFluent.Tests
         [Test]
         public void DidNotRaiseWhenUsedWithValidDelegateExpression()
         {
-            Check.That(delegate { var obj = new object(); }).DoesNotThrow();
+            Check.ThatCode(delegate { var obj = new object(); }).DoesNotThrow();
         }
 
         [Test]
         public void DidNotRaiseWhenUsedWithAValidParameterlessVoidMethod()
         {
             var sut = new AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas();
-            Check.That(sut.AVoidParameterLessMethodThatShouldNotCrash).DoesNotThrow();
+            Check.ThatCode(sut.AVoidParameterLessMethodThatShouldNotCrash).DoesNotThrow();
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace NFluent.Tests
         {
             var obj = new AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas();
             Func<object> sut = obj.AScalarParameterLessMethodThatShouldNotCrash;
-            Check.That(sut).DoesNotThrow();
+            Check.ThatCode(sut).DoesNotThrow();
         }
 
         [Test]
@@ -233,6 +233,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => 4).DoesNotThrow().And.WhichResult().IsEqualTo(4);
         }
+
         #region Lambda related Test Data
 
         public class LambdaExceptionForTest : Exception
