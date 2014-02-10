@@ -39,7 +39,7 @@ namespace NFluent
         {
             var checker = check as ICheckForExtensibility<string, ICheck<string>>;
             var actual = checker.Value;
- 
+
             var messageText = AssessEquals(actual, expected, checker.Negated);
             if (!string.IsNullOrEmpty(messageText))
             {
@@ -123,15 +123,15 @@ namespace NFluent
             throw new FluentCheckException(result);
         }
 
-            /// <summary>
-            /// Checks that the string does not contain any of the given expected values.
-            /// </summary>
-            /// <param name="check">The fluent check to be extended.</param>
-            /// <param name="values">The values not to be present.</param>
-            /// <returns>
-            /// A check link.
-            /// </returns>
-            /// <exception cref="FluentCheckException">The string contains at least one of the given strings.</exception>
+        /// <summary>
+        /// Checks that the string does not contain any of the given expected values.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="values">The values not to be present.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The string contains at least one of the given strings.</exception>
         public static ICheckLink<ICheck<string>> DoesNotContain(
                 this ICheck<string> check, params string[] values)
         {
@@ -157,8 +157,7 @@ namespace NFluent
             string messageText;
             if (negated)
             {
-                messageText =
-                    FluentMessage.BuildMessage("The {0} is equal to the {1} whereas it must not.")
+                messageText = FluentMessage.BuildMessage("The {0} is equal to the {1} whereas it must not.")
                                     .For("string")
                                     .Expected(expected)
                                     .Comparison("different from")
@@ -167,51 +166,77 @@ namespace NFluent
             else
             {
                 // we try to refine the difference
-                // should have been different
                 var expectedString = expected as string;
-                FluentMessage mainMessage = null;
+                var message = "The {0} is different from {1}.";
+
                 if (expectedString != null && actual != null)
                 {
+                    var firstDiff = 0;
+                    var blockStart = 0;
+                    var blockLen = 0;
+
+                    var minLength = Math.Min(actual.Length, expectedString.Length);
+
+                    for (; firstDiff < minLength; firstDiff++)
+                    {
+                        if (actual[firstDiff] != expectedString[firstDiff])
+                        {
+                            blockStart = Math.Max(0, firstDiff - 10);
+                            blockLen = Math.Min(minLength - blockStart, 20);
+                            break;
+                        }
+                    }
+
                     if (expectedString.Length == actual.Length)
                     {
                         // same length
-                        mainMessage =
-                            FluentMessage.BuildMessage(
-                                string.Compare(actual, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0
-                                    ? "The {0} is different from the {1} but only in case."
-                                    : "The {0} is different from the {1} but has same length.");
+                        message = string.Compare(actual, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0 ? "The {0} is different from the {1} but only in case." : "The {0} is different from the {1} but has same length.";
+                        var prefix = blockStart == 0 ? string.Empty : "...";
+                        var suffix = (blockStart + blockLen) == minLength ? string.Empty : "...";
+                        message += string.Format(
+                                                    " At {0}, expected '{3}{1}{4}' was '{3}{2}{4}'",
+                                                    firstDiff,
+                                                    expectedString.Substring(blockStart, blockLen),
+                                                    actual.Substring(blockStart, blockLen),
+                                                    prefix,
+                                                    suffix);
                     }
                     else
                     {
                         if (expectedString.Length > actual.Length)
-                        {   
+                        {
                             if (expectedString.StartsWith(actual, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
                             {
-                                mainMessage = FluentMessage.BuildMessage(
-                                    "The {0} is different from {1}, it is missing the end.");
+                                message = "The {0} is different from {1}, it is missing the end.";
                             }
                         }
                         else
                         {
                             if (actual.StartsWith(expectedString, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
                             {
-                                mainMessage =
-                                    FluentMessage.BuildMessage(
-                                        "The {0} is different from {1}, it contains extra text at the end.");
+                                message = "The {0} is different from {1}, it contains extra text at the end.";
                             }
                         }
                     }
                 }
 
-                if (mainMessage == null)
-                {
-                    mainMessage = FluentMessage.BuildMessage("The {0} is different from {1}.");
-                }
+                // replaces tab per <<tab>>
+                actual = EscapeTab(actual);
+                expectedString = EscapeTab(expectedString);
 
-                messageText = mainMessage.For("string").On(actual).And.Expected(expected).ToString();
+                messageText = FluentMessage.BuildMessage(message).For("string").On(actual).And.Expected(expectedString).ToString();
             }
 
             return messageText;
+        }
+
+        private static string EscapeTab(string str)
+        {
+            if (str != null)
+            {
+                str = str.Replace("\t", "<<tab>>");
+            }
+            return str;
         }
 
         private static string ContainsImpl(string checkedValue, IEnumerable<string> values, bool negated, bool notContains)
@@ -236,7 +261,7 @@ namespace NFluent
 
             if (negated != notContains)
             {
-                return 
+                return
                     FluentMessage.BuildMessage(
                         "The {0} contains unauthorized value(s): " + items.ToEnumeratedString())
                                  .For("string")
@@ -246,7 +271,7 @@ namespace NFluent
                                  .ToString();
             }
 
-            return 
+            return
                 FluentMessage.BuildMessage(
                     "The {0} does not contains the expected value(s): " + items.ToEnumeratedString())
                              .For("string")
@@ -285,7 +310,7 @@ namespace NFluent
             {
                 return negated ? null : FluentMessage.BuildMessage("The {0} is null.").For("string").Expected(starts).Comparison("starts with").ToString();
             }
-            
+
             if (checkedValue.StartsWith(starts) != negated)
             {
                 // success
@@ -302,7 +327,7 @@ namespace NFluent
                                     .Comparison("does not start with")
                                     .ToString();
             }
-  
+
             return
                 FluentMessage.BuildMessage("The {0}'s start is different from the {1}.")
                 .For("string")
@@ -413,7 +438,7 @@ namespace NFluent
 
             return new CheckLink<ICheck<string>>(check);
         }
-        
+
         private static string MatchesImpl(string checkedValue, string regExp, bool negated)
         {
             // special case if checkedvalue is null
@@ -489,7 +514,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new CheckLink<ICheck<string>>(check);            
+            return new CheckLink<ICheck<string>>(check);
         }
 
         /// <summary>

@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using System.Diagnostics;
     using System.Threading;
     using NUnit.Framework;
 
@@ -58,12 +59,17 @@ namespace NFluent.Tests
         {
             Check.ThatCode(
                 () =>
-                {
-                    for (int i = 0; i < 100000000; i++)
                     {
-                        var x = i * 2;
-                    }
-                }).ConsumesLessThan(1, TimeUnit.Microseconds);
+                        var timer = new Stopwatch();
+                        timer.Start();
+                        while (timer.ElapsedMilliseconds < 40)
+                        {
+                            for (var i = 0; i < 1000000; i++)
+                            {
+                                var x = i * 2;
+                            }
+                        }
+                }).ConsumesLessThan(20, TimeUnit.Milliseconds);
         }
     }
 }
