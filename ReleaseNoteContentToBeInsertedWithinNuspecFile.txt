@@ -3,12 +3,12 @@ New feature(s):
 
 --------------
 Change(s):
-* NFluent package is now signed
+* Improves error messages for string comparisons (e.g. visually indicates the presence of tab char with <<tab>>, properly handles long strings, ...)
 * Check.That(Func&lt;T&gt;) and Check.That(Action) are now obsolete.
 * The HasFieldsEqualToThose() check is now obsolete and should be replaced by HasFieldsWithSameValues() which now support anonymous classes as expected parameter.
 * The HasFieldsNotEqualToThose() check is now obsolete and should be replaced by HasNotFieldsWithSameValues()
 * Simplification of extensibility
-*
+* NFluent package is now signed
 
 --------------
 Bug Fixe(s):
