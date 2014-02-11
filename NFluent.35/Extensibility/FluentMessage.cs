@@ -293,6 +293,8 @@ namespace NFluent.Extensibility
         {
             #region fields
 
+            private const int MaxStringLength = 200;
+
             private readonly FluentMessage message;
 
             private readonly object test;
@@ -374,7 +376,8 @@ namespace NFluent.Extensibility
                 }
                 else
                 {
-                    builder.AppendFormat("\t[{0}]", this.test.ToStringProperlyFormated());
+                    var stringProperlyFormated = this.test.ToStringProperlyFormated();
+                    builder.AppendFormat("\t[{0}]", stringProperlyFormated);
                 }
 
                 if (this.enumerableCount.HasValue)

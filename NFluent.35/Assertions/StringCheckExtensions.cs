@@ -167,19 +167,42 @@ namespace NFluent
             else
             {
                 // we try to refine the difference
-                // should have been different
                 var expectedString = expected as string;
-                FluentMessage mainMessage = null;
+
+                var message = "The {0} is different from {1}.";
+ 
                 if (expectedString != null && actual != null)
                 {
+                    var firstDiff = 0;
+                    var blockStart = 0;
+                    var blockLen = 0;
+
+                    var minLength = Math.Min(actual.Length, expectedString.Length);
+                    
+                    for (; firstDiff < minLength; firstDiff++)
+                    {
+                        if (actual[firstDiff] != expectedString[firstDiff])
+                        {
+                            blockStart = Math.Max(0, firstDiff - 10);
+                            blockLen = Math.Min(minLength - blockStart, 20);
+                            break;
+                        }
+                    }
+
                     if (expectedString.Length == actual.Length)
                     {
                         // same length
-                        mainMessage =
-                            FluentMessage.BuildMessage(
-                                string.Compare(actual, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0
-                                    ? "The {0} is different from the {1} but only in case."
-                                    : "The {0} is different from the {1} but has same length.");
+                        message = string.Compare(
+                            actual, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0 ? "The {0} is different from the {1} but only in case." : "The {0} is different from the {1} but has same length.";
+                        var prefix = blockStart == 0 ? string.Empty : "...";
+                        var suffix = (blockStart + blockLen) == minLength ? string.Empty : "...";
+                        message += string.Format(
+                            " At {0}, expected '{3}{1}{4}' was '{3}{2}{4}'",
+                            firstDiff,
+                            expectedString.Substring(blockStart, blockLen),
+                            actual.Substring(blockStart, blockLen),
+                            prefix,
+                            suffix);
                     }
                     else
                     {
@@ -187,28 +210,20 @@ namespace NFluent
                         {   
                             if (expectedString.StartsWith(actual, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
                             {
-                                mainMessage = FluentMessage.BuildMessage(
-                                    "The {0} is different from {1}, it is missing the end.");
+                                message = "The {0} is different from {1}, it is missing the end.";
                             }
                         }
                         else
                         {
                             if (actual.StartsWith(expectedString, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
                             {
-                                mainMessage =
-                                    FluentMessage.BuildMessage(
-                                        "The {0} is different from {1}, it contains extra text at the end.");
+                                message = "The {0} is different from {1}, it contains extra text at the end.";
                             }
                         }
                     }
                 }
 
-                if (mainMessage == null)
-                {
-                    mainMessage = FluentMessage.BuildMessage("The {0} is different from {1}.");
-                }
-
-                messageText = mainMessage.For("string").On(actual).And.Expected(expected).ToString();
+                messageText = FluentMessage.BuildMessage(message).For("string").On(actual).And.Expected(expected).ToString();
             }
 
             return messageText;
