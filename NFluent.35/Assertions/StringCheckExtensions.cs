@@ -1,6 +1,6 @@
 // // --------------------------------------------------------------------------------------------------------------------
 // // <copyright file="StringCheckExtensions.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
+// //   Copyright 2013 Thomas PIERRAIN, Cyrille DUPUYDAUBY
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -168,7 +168,10 @@ namespace NFluent
                 // we try to refine the difference
                 var expectedString = expected as string;
                 var message = "The {0} is different from {1}.";
+                bool isCrlfDifferent = false;
+                int firstDiffPos = 0;
 
+                // TODO: refactor
                 if (expectedString != null && actual != null)
                 {
                     var firstDiff = 0;
@@ -181,6 +184,12 @@ namespace NFluent
                     {
                         if (actual[firstDiff] != expectedString[firstDiff])
                         {
+                            firstDiffPos = firstDiff;
+                            if ((actual[firstDiff].Equals('\n') && expectedString[firstDiff].Equals('\r')) || (actual[firstDiff].Equals('\r') && expectedString[firstDiff].Equals('\n')))
+                            {
+                                isCrlfDifferent = true;
+                            }
+
                             blockStart = Math.Max(0, firstDiff - 10);
                             blockLen = Math.Min(minLength - blockStart, 20);
                             break;
@@ -220,9 +229,14 @@ namespace NFluent
                     }
                 }
 
-                // replaces tab per <<tab>>
-                actual = EscapeTab(actual);
-                expectedString = EscapeTab(expectedString);
+                if (isCrlfDifferent)
+                {
+                    actual = HighlightFirstCrlfOrLfIfAny(actual, firstDiffPos);
+                    expectedString = HighlightFirstCrlfOrLfIfAny(expectedString, firstDiffPos);
+                }
+
+                actual = HighlightTabsIfAny(actual);
+                expectedString = HighlightTabsIfAny(expectedString);
 
                 messageText = FluentMessage.BuildMessage(message).For("string").On(actual).And.Expected(expectedString).ToString();
             }
@@ -230,13 +244,44 @@ namespace NFluent
             return messageText;
         }
 
-        private static string EscapeTab(string str)
+        /// <summary>
+        /// Inserts &lt;&lt;CRLF&gt;&gt; before the first CRLF.
+        /// </summary>
+        /// <param name="str">The string.</param>
+        /// <param name="firstDiffPos">The first difference position.</param>
+        /// <returns></returns>
+        private static string HighlightFirstCrlfOrLfIfAny(string str, int firstDiffPos)
         {
             if (str != null)
             {
-                str = str.Replace("\t", "<<tab>>");
+                if (str.Substring(firstDiffPos).StartsWith("\r\n"))
+                {
+                    return str.Insert(firstDiffPos, "<<CRLF>>");
+                }
+                else if (str.Substring(firstDiffPos).StartsWith("\n"))
+                {
+                    return str.Insert(firstDiffPos, "<<LF>>");
+                }
             }
+
             return str;
+        }
+
+        /// <summary>
+        /// Replace every tab char by "&lt;&lt;tab&gt;&gt;".
+        /// </summary>
+        /// <param name="str">The original string.</param>
+        /// <returns>The original string with every \t replaced with "&lt;&lt;tab&gt;&gt;".</returns>
+        private static string HighlightTabsIfAny(string str)
+        {
+            if (str != null)
+            {
+                return str.Replace("\t", "<<tab>>");
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private static string ContainsImpl(string checkedValue, IEnumerable<string> values, bool negated, bool notContains)

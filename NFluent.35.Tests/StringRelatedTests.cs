@@ -426,58 +426,21 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 4758, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</ARTIST...<truncated>...    <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]\nThe expected string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</ARTIST...<truncated>...    <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n	[\"Hello<<CRLF>>\r\nHow are you?\"]\nThe expected string:\n	[\"Hello<<LF>>\nHow are you?\"]")]
+        public void IsEqualToHelpsToDistinguishLineFeedAndCarriageReturnLineFeed()
+        {
+            string withCRLF = "Hello\r\nHow are you?";
+            string withLF = "Hello\nHow are you?";
+
+            Check.That(withCRLF).IsEqualTo(withLF);
+        }
+
+        [Test]
+        //[ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]\nThe expected string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]")]
         public void LongStringErrorMessageIsProperlyTruncated()
         {
             string checkString = File.ReadAllText("CheckedFile.xml");
             string expectedString = File.ReadAllText("ExpectedFile.xml");
-
-            Check.That(checkString).IsEqualTo(expectedString);
-        }
-
-        [Test]
-        public void TestTemp()
-        {
-            string expectedString = @"The checked string is different from the expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'
-The checked string:
-	[""<?xml version=""1.0"" encoding=""utf-8"" ?>
-<!--  Edited by XMLSpy  -->
-<CATALOG>
-  <CD>
-    <TITLE>Empire Burlesque</TITLE>
-    <ARTIST>Bob Dylan</ARTIST...<truncated>...    <YEAR>1987</YEAR>
-  </CD>
-</CATALOG>""]
-The expected string:
-	[""<?xml version=""1.0"" encoding=""utf-8"" ?>
-<!--  Edited by XMLSpy  -->
-<CATALOG>
-  <CD>
-    <TITLE>Empire Burlesque</TITLE>
-    <ARTIST>Bob Dylan</ARTIST...<truncated>...    <YEAR>1987</YEAR>
-  </CD>
-</CATALOG>""]
-";
-
-            string checkString = @"The checked string is different from the expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'
-The checked string:
-	[""<?xml version=""1.0"" encoding=""utf-8"" ?>
-<!--  Edited by XMLSpy  -->
-<CATALOG>
-  <CD>
-    <TITLE>Empire Burlesque</TITLE>
-    <ARTIST>Bob Dylan</A...<truncated>...  <YEAR>1987</YEAR>
-  </CD>
-</CATALOG>""]
-The expected string:
-	[""<?xml version=""1.0"" encoding=""utf-8"" ?>
-<!--  Edited by XMLSpy  -->
-<CATALOG>
-  <CD>
-    <TITLE>Empire Burlesque</TITLE>
-    <ARTIST>Bob Dylan</A...<truncated>...  <YEAR>1987</YEAR>
-  </CD>
-</CATALOG>""]";
 
             Check.That(checkString).IsEqualTo(expectedString);
         }
