@@ -92,7 +92,7 @@ namespace NFluent.Extensions
         {
             if (result.Length > 197)
             {
-                result = result.Substring(0, 150) + "...<truncated>..."
+                result = result.Substring(0, 150) + "...<<truncated>>..."
                          + result.Substring(result.Length - 40);
             }
 
