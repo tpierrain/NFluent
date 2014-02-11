@@ -3,6 +3,7 @@ New feature(s):
 
 --------------
 Change(s):
+* NFluent package is now signed
 * Check.That(Func&lt;T&gt;) and Check.That(Action) are now obsolete.
 * The HasFieldsEqualToThose() check is now obsolete and should be replaced by HasFieldsWithSameValues() which now support anonymous classes as expected parameter.
 * The HasFieldsNotEqualToThose() check is now obsolete and should be replaced by HasNotFieldsWithSameValues()

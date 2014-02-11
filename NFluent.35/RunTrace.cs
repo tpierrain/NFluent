@@ -15,7 +15,6 @@
 namespace NFluent
 {
     using System;
-    using System.Diagnostics;
 
     /// <summary>
     /// This class stores trace information for a code evaluation.

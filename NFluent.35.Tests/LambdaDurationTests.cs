@@ -21,12 +21,12 @@ namespace NFluent.Tests
     [TestFixture]
     public class LambdaDurationTests
     {
-        private const int EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed = 6000 * 2;
+        private const int EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed = 15 * 1000;
 
         [Test]
         public void DurationTest()
         {
-            Check.ThatCode(() => Thread.Sleep(3)).LastsLessThan(EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed, TimeUnit.Milliseconds);
+            Check.ThatCode(() => Thread.Sleep(1)).LastsLessThan(EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed, TimeUnit.Milliseconds);
         }
 
         [Test]
