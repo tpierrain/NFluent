@@ -14,25 +14,27 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using System.IO;
+
     using NUnit.Framework;
 
     [TestFixture]
     public class StringRelatedTests
     {
+        private const string Alphabet = "abcdefghijklmnopqrstuvwxyz";
+
         #region Public Methods and Operators
 
         [Test]
         public void ContainsWorksWithString()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Contains("lmnop");
+            Check.That(Alphabet).Contains("lmnop");
         }
 
         [Test]
         public void ContainsWithStringIsNegatable()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Not.Contains("1234");
+            Check.That(Alphabet).Not.Contains("1234");
 
             Check.That((string)null).Not.Contains("test");
         }
@@ -48,7 +50,6 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string does not contains the expected value(s): \"C\", \"A\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected substring(s):\n\t[\"C\", \"a\", \"A\", \"z\"]")]
         public void ContainsIsCaseSensitive()
         {
-            const string Alphabet = "abcdefghijklmnopqrstuvwxyz";
             Check.That(Alphabet).Contains("C", "a", "A", "z");
         }
 
@@ -56,22 +57,19 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string does not contains the expected value(s): \"0\", \"4\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected substring(s):\n\t[\"c\", \"0\", \"4\"]")]
         public void ContainsThrowsExceptionWhenFails()
         {
-            const string Alphabet = "abcdefghijklmnopqrstuvwxyz";
             Check.That(Alphabet).Contains("c", "0", "4");
         }
 
         [Test]
         public void ContainsWorks()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Contains("c", "z", "u");
+            Check.That(Alphabet).Contains("c", "z", "u");
         }
 
         [Test]
         public void DoesNotContainsWorks()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).DoesNotContain("one", "two", "three");
+            Check.That(Alphabet).DoesNotContain("one", "two", "three");
             Check.That((string)null).DoesNotContain("fails", "anyway");
         }
 
@@ -79,46 +77,40 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string contains unauthorized value(s): \"c\", \"z\", \"u\"\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe unauthorized substring(s):\n\t[\"c\", \"z\", \"u\"]")]
         public void DoesNotContainsFailsWhenAppropriate()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).DoesNotContain("c", "z", "u");
+            Check.That(Alphabet).DoesNotContain("c", "z", "u");
         }
 
         [Test]
         public void ContainsOnceWorksWithString()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Contains("lmnop").Once();
+            Check.That(Alphabet).Contains("lmnop").Once();
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string contains \"lmnop\" at 11 and 25, where as it must contains it once.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]\nExpected content once\n\t[\"lmnop\"]")]
         public void ContainsOnceFailsProperly()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxylmnopz";
-            Check.That(alphabet).Contains("lmnop").Once();
+            Check.That("abcdefghijklmnopqrstuvwxylmnopz").Contains("lmnop").Once();
         }
 
         [Test]
         public void ContainsInThatOrderWorksWithString()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Contains("ab", "cd").InThatOrder();
+            Check.That(Alphabet).Contains("ab", "cd").InThatOrder();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string does not contain the expected strings in the correct order.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]\nExpected content: \n\t[\"cd\", \"ab\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string does not contain the expected strings in the correct order.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nExpected content: \n\t[\"cd\", \"ab\"]")]
         public void ContainsInThatOrderFailsProperly()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxylmnopz";
-            Check.That(alphabet).Contains("cd", "ab").InThatOrder();
+            Check.That(Alphabet).Contains("cd", "ab").InThatOrder();
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string's start is different from the expected one.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: starts with\n\t[\"ABCDEF\"]")]
         public void StartWithIsCaseSensitive()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).StartsWith("ABCDEF");
+            Check.That(Alphabet).StartsWith("ABCDEF");
         }
 
         [Test]
@@ -131,23 +123,20 @@ namespace NFluent.Tests
         [Test]
         public void StartWithWorks()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).StartsWith("abcdef");
+            Check.That(Alphabet).StartsWith("abcdef");
         }
 
         [Test]
         public void StartWithIsNegatable()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Not.StartsWith("hehehe");
+            Check.That(Alphabet).Not.StartsWith("hehehe");
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string starts with expected one, whereas it must not.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: does not start with\n\t[\"abcdef\"]")]
         public void NegatedStartWithThrowsException()
         {
-            var alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Not.StartsWith("abcdef");
+            Check.That(Alphabet).Not.StartsWith("abcdef");
         }
 
         [Test]
@@ -161,8 +150,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string's end is different from the expected one.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: ends with\n\t[\"UWXYZ\"]")]
         public void EndsWithIsCaseSensitive()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).EndsWith("UWXYZ");
+            Check.That(Alphabet).EndsWith("UWXYZ");
         }
 
         [Test]
@@ -175,15 +163,13 @@ namespace NFluent.Tests
         [Test]
         public void EndsWithWorks()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).EndsWith("uvwxyz");
+            Check.That(Alphabet).EndsWith("uvwxyz");
         }
 
         [Test]
         public void EndsWithIsNegatable()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Not.EndsWith("hehehe");
+            Check.That(Alphabet).Not.EndsWith("hehehe");
             Check.That((string)null).Not.EndsWith("test");
         }
 
@@ -191,8 +177,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string ends with expected one, whereas it must not.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxyz\"]\nThe expected string: does not end with\n\t[\"vwxyz\"]")]
         public void EndsWithIsNegatableFails()
         {
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Not.EndsWith("vwxyz");
+            Check.That(Alphabet).Not.EndsWith("vwxyz");
         }
 
         [Test]
@@ -203,7 +188,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length.\nThe checked string:\n\t[\"toto\"]\nThe expected string:\n\t[\"tutu\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 1, expected 'tutu' was 'toto'\nThe checked string:\n\t[\"toto\"]\nThe expected string:\n\t[\"tutu\"]")]
         public void EqualFailsWithSameLength()
         {
             var check = "toto";
@@ -211,7 +196,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but only in case.\nThe checked string:\n\t[\"toto\"]\nThe expected string:\n\t[\"TOTO\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but only in case. At 0, expected 'TOTO' was 'toto'\nThe checked string:\n\t[\"toto\"]\nThe expected string:\n\t[\"TOTO\"]")]
         public void EqualFailsWithDiffCase()
         {
             var check = "toto";
@@ -247,16 +232,14 @@ namespace NFluent.Tests
         [Test]
         public void AndOperatorCanChainMultipleAssertionsOnString()
         {
-            var alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).Contains("i").And.StartsWith("abcd").And.IsInstanceOf<string>().And.IsNotInstanceOf<int>().And.Not.IsNotInstanceOf<string>();
-            Check.That(alphabet).HasSize(26);
+            Check.That(Alphabet).Contains("i").And.StartsWith("abcd").And.IsInstanceOf<string>().And.IsNotInstanceOf<int>().And.Not.IsNotInstanceOf<string>();
+            Check.That(Alphabet).HasSize(26);
         }
 
         [Test]
         public void HasSizeTest()
         {
-            var alphabet = "abcdefghijklmnopqrstuvwxyz";
-            Check.That(alphabet).HasSize(26);
+            Check.That(Alphabet).HasSize(26);
         }
 
         #region Match
@@ -431,5 +414,15 @@ namespace NFluent.Tests
         }
 
         #endregion
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 4758, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</ARTIST...<truncated>...    <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]\nThe expected string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</ARTIST...<truncated>...    <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]")]
+        public void LongStringErrorMessageIsProperlyTruncated()
+        {
+            string checkString = File.ReadAllText("CheckedFile.xml");
+            string expectedString = File.ReadAllText("ExpectedFile.xml");
+
+            Check.That(checkString).IsEqualTo(expectedString);
+        }
     }
 }
