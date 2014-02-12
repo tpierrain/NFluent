@@ -436,7 +436,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n\r<!--  Edited by XMLSpy  -->\n\r<CATALOG>\n\r  <CD>\n\r    <TITLE>Empire Burlesque</TITLE>\n\r    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\n\r  </CD>\n\r</CATALOG>\"]\nThe expected string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n\r<!--  Edited by XMLSpy  -->\n\r<CATALOG>\n\r  <CD>\n\r    <TITLE>Empire Burlesque</TITLE>\n\r    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\n\r  </CD>\n\r</CATALOG>\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]\nThe expected string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]")]
         public void LongStringErrorMessageIsProperlyTruncated()
         {
             string checkString = File.ReadAllText("CheckedFile.xml");
