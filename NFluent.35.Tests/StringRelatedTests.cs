@@ -417,7 +417,7 @@ namespace NFluent.Tests
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Hello<<tab>>How are you?\"]\nThe expected string:\n\t[\"Hello    How are you?\"]")]
-        public void IsEqualToHelpsToDistinguishWhiteSpacesAndTabs()
+        public void IsEqualToErrorMessageHighlightsWhiteSpacesAndTabsDifference()
         {
             string withWSp = "Hello    How are you?";
             string withTab = "Hello\tHow are you?";
@@ -426,8 +426,18 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Hello<<tab>>How are you?<<tab>>kiddo\"]\nThe expected string:\n\t[\"Hello    How are you?    kiddo\"]")]
+        public void IsEqualToErrorMessageHighlightsAllWhiteSpacesAndTabsDifferences()
+        {
+            string withWSp = "Hello    How are you?    kiddo";
+            string withTab = "Hello\tHow are you?\tkiddo";
+
+            Check.That(withTab).IsEqualTo(withWSp);
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n	[\"Hello<<CRLF>>\r\nHow are you?\"]\nThe expected string:\n	[\"Hello<<LF>>\nHow are you?\"]")]
-        public void IsEqualToHelpsToDistinguishLineFeedAndCarriageReturnLineFeed()
+        public void IsEqualToErrorMessageHighlightsLineFeedAndCarriageReturnLineFeed()
         {
             string withCRLF = "Hello\r\nHow are you?";
             string withLF = "Hello\nHow are you?";
@@ -437,7 +447,7 @@ namespace NFluent.Tests
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n	[\"Hello<<CRLF>>\r\nHow are you?\r\nAre you kidding?\"]\nThe expected string:\n	[\"Hello<<LF>>\nHow are you?\nAre you kidding?\"]")]
-        public void IsEqualToHelpsToDistinguishLineFeedAndCarriageReturnLineFeedOnlyForTheFirstOnes()
+        public void IsEqualToErrorMessageHighlightsOnlyTheFirstLineFeedAndCarriageReturnLineFeedDifference()
         {
             string withCRLF = "Hello\r\nHow are you?\r\nAre you kidding?";
             string withLF = "Hello\nHow are you?\nAre you kidding?";

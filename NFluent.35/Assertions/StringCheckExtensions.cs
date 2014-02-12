@@ -168,10 +168,11 @@ namespace NFluent
                 // we try to refine the difference
                 var expectedString = expected as string;
                 var message = "The {0} is different from {1}.";
-                bool isCrlfDifferent = false;
+                bool isCRLFAndLFDifference = false;
+                bool isTabAndWhiteSpaceDifference = false;
                 int firstDiffPos = 0;
 
-                // TODO: refactor
+                // TODO: refactor to reduce method lines
                 if (expectedString != null && actual != null)
                 {
                     var firstDiff = 0;
@@ -185,11 +186,9 @@ namespace NFluent
                         if (actual[firstDiff] != expectedString[firstDiff])
                         {
                             firstDiffPos = firstDiff;
-                            if ((actual[firstDiff].Equals('\n') && expectedString[firstDiff].Equals('\r')) || (actual[firstDiff].Equals('\r') && expectedString[firstDiff].Equals('\n')))
-                            {
-                                isCrlfDifferent = true;
-                            }
-
+                            isCRLFAndLFDifference = IsACRLFDifference(firstDiff, expectedString, actual);
+                            isTabAndWhiteSpaceDifference = IsATabAndWhiteSpaceDifference(firstDiff, expectedString, actual);
+                        
                             blockStart = Math.Max(0, firstDiff - 10);
                             blockLen = Math.Min(minLength - blockStart, 20);
                             break;
@@ -229,19 +228,32 @@ namespace NFluent
                     }
                 }
 
-                if (isCrlfDifferent)
+                if (isCRLFAndLFDifference)
                 {
                     actual = HighlightFirstCrlfOrLfIfAny(actual, firstDiffPos);
                     expectedString = HighlightFirstCrlfOrLfIfAny(expectedString, firstDiffPos);
                 }
 
-                actual = HighlightTabsIfAny(actual);
-                expectedString = HighlightTabsIfAny(expectedString);
+                if (isTabAndWhiteSpaceDifference)
+                {
+                    actual = HighlightTabsIfAny(actual);
+                    expectedString = HighlightTabsIfAny(expectedString);    
+                }
 
                 messageText = FluentMessage.BuildMessage(message).For("string").On(actual).And.Expected(expectedString).ToString();
             }
 
             return messageText;
+        }
+
+        private static bool IsATabAndWhiteSpaceDifference(int firstDiff, string expected, string actual)
+        {
+            return (actual[firstDiff].Equals(' ') && expected[firstDiff].Equals('\t')) || (actual[firstDiff].Equals('\t') && expected[firstDiff].Equals(' '));
+        }
+
+        private static bool IsACRLFDifference(int firstDiff, string expected, string actual)
+        {
+            return (actual[firstDiff].Equals('\n') && expected[firstDiff].Equals('\r')) || (actual[firstDiff].Equals('\r') && expected[firstDiff].Equals('\n'));
         }
 
         /// <summary>
