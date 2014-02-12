@@ -436,6 +436,16 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n	[\"Hello<<CRLF>>\r\nHow are you?\r\nAre you kidding?\"]\nThe expected string:\n	[\"Hello<<LF>>\nHow are you?\nAre you kidding?\"]")]
+        public void IsEqualToHelpsToDistinguishLineFeedAndCarriageReturnLineFeedOnlyForTheFirstOnes()
+        {
+            string withCRLF = "Hello\r\nHow are you?\r\nAre you kidding?";
+            string withLF = "Hello\nHow are you?\nAre you kidding?";
+
+            Check.That(withCRLF).IsEqualTo(withLF);
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]\nThe expected string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]")]
         public void LongStringErrorMessageIsProperlyTruncated()
         {
