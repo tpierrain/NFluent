@@ -245,11 +245,11 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Inserts &lt;&lt;CRLF&gt;&gt; before the first CRLF.
+        /// Inserts &lt;&lt;CRLF&gt;&gt; before the first CRLF or &lt;&lt;LF&gt;&gt; before the first LF.
         /// </summary>
         /// <param name="str">The string.</param>
         /// <param name="firstDiffPos">The first difference position.</param>
-        /// <returns></returns>
+        /// <returns>The same string but with &lt;&lt;CRLF&gt;&gt; inserted before the first CRLF or &lt;&lt;LF&gt;&gt; inserted before the first LF.</returns>
         private static string HighlightFirstCrlfOrLfIfAny(string str, int firstDiffPos)
         {
             if (str != null)
