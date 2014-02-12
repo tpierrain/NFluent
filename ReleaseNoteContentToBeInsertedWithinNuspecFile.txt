@@ -3,7 +3,7 @@ New feature(s):
 
 --------------
 Change(s):
-* Improves error messages for string comparisons (e.g. visually indicates the presence of tab char with <<tab>>, or distinguish <<CFLF>> and <<LF>>, properly handles long strings, ...)
+* Improves error messages for string comparisons (e.g. visually indicates the presence of tab char with &lt;&lt;tab&gt;&gt;, or distinguish &lt;&lt;CFLF&gt;&gt; and &lt;&lt;LF&gt;&gt;, properly handles long strings, ...)
 * Check.That(Func&lt;T&gt;) and Check.That(Action) are now obsolete.
 * The HasFieldsEqualToThose() check is now obsolete and should be replaced by HasFieldsWithSameValues() which now support anonymous classes as expected parameter.
 * The HasFieldsNotEqualToThose() check is now obsolete and should be replaced by HasNotFieldsWithSameValues()
