@@ -168,7 +168,7 @@ namespace NFluent
                 // we try to refine the difference
                 var expectedString = expected as string;
                 var message = "The {0} is different from {1}.";
-                bool isCRLFAndLFDifference = false;
+                bool isCrlfAndLfDifference = false;
                 bool isTabAndWhiteSpaceDifference = false;
                 int firstDiffPos = 0;
 
@@ -186,7 +186,7 @@ namespace NFluent
                         if (actual[firstDiff] != expectedString[firstDiff])
                         {
                             firstDiffPos = firstDiff;
-                            isCRLFAndLFDifference = IsACRLFDifference(firstDiff, expectedString, actual);
+                            isCrlfAndLfDifference = IsACRLFDifference(firstDiff, expectedString, actual);
                             isTabAndWhiteSpaceDifference = IsATabAndWhiteSpaceDifference(firstDiff, expectedString, actual);
                         
                             blockStart = Math.Max(0, firstDiff - 10);
@@ -198,7 +198,14 @@ namespace NFluent
                     if (expectedString.Length == actual.Length)
                     {
                         // same length
-                        message = string.Compare(actual, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0 ? "The {0} is different from the {1} but only in case." : "The {0} is different from the {1} but has same length.";
+                        if (string.Compare(actual, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0)
+                        {
+                            message = "The {0} is different from the {1} but only in case.";
+                        }
+                        else
+                        {
+                            message = "The {0} is different from the {1} but has same length.";
+                        }
                         var prefix = blockStart == 0 ? string.Empty : "...";
                         var suffix = (blockStart + blockLen) == minLength ? string.Empty : "...";
                         message += string.Format(
@@ -228,7 +235,7 @@ namespace NFluent
                     }
                 }
 
-                if (isCRLFAndLFDifference)
+                if (isCrlfAndLfDifference)
                 {
                     actual = HighlightFirstCrlfOrLfIfAny(actual, firstDiffPos);
                     expectedString = HighlightFirstCrlfOrLfIfAny(expectedString, firstDiffPos);
