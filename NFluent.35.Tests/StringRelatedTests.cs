@@ -457,27 +457,15 @@ namespace NFluent.Tests
         }
 
         [Test]
-        //[ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]\nThe expected string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]\nThe expected string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]")]
         public void LongStringErrorMessageIsProperlyTruncated()
         {
             string checkString = File.ReadAllText("CheckedFile.xml", Encoding.UTF8);
-            //string expectedString = File.ReadAllText("ExpectedFile.xml", Encoding.UTF8);
+            string expectedString = File.ReadAllText("ExpectedFile.xml", Encoding.UTF8);
 
-            string checkString2;
-            using (StreamReader streamReader = new StreamReader("CheckedFile.xml", Encoding.UTF8))
-            {
-                checkString2 = streamReader.ReadToEnd();
-            }
+            //Check.That(checkString).HasSize(5101);
 
-            Check.That(checkString.Length).IsEqualTo(checkString2.Length);
-            
-            Check.That(checkString).HasSize(5101);
-            
-            //Check.That(checkString2).HasSize(5101);
-
-            //Check.That(expectedString).HasSize(5101);
-
-            //Check.That(checkString).IsEqualTo(expectedString);
+            Check.That(checkString).IsEqualTo(expectedString);
         }
     }
 }
