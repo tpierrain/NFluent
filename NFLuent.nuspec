@@ -23,7 +23,7 @@
 * Fixes a bug in the IsAfter() check that was throwing an exception when the givenValue type (considered as a IComparable instead of a number ;-(  was not the same as the checked value.</releaseNotes>
     <copyright>Copyright 2013  Thomas PIERRAIN</copyright>
     <language>en-US</language>
-    <tags>tdd bdd test fluent check checks easy</tags>
+    <tags>tdd bdd test fluent check checks easy nunit xunit mbunit mstestsucks</tags>
   </metadata>
   <files>
     <file src="Artifacts\Binaries\35\NFluent.dll" target="lib\net35\NFluent.dll" />
