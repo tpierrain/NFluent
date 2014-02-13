@@ -6,7 +6,7 @@
     <ARTIST>Bob Dylan</ARTIST>
     <COUNTRY>USA</COUNTRY>
     <COMPANY>Columbia</COMPANY>
-    <PRICE>10.99</PRICE>
+    <PRICE>10.90</PRICE>
     <YEAR>1985</YEAR>
   </CD>
   <CD>
@@ -203,7 +203,7 @@
   </CD>
   <CD>
     <TITLE>Unchain my heart</TITLE>
-    <ARTIST>Joe Cooker</ARTIST>
+    <ARTIST>Joe Cocker</ARTIST>
     <COUNTRY>USA</COUNTRY>
     <COMPANY>EMI</COMPANY>
     <PRICE>8.20</PRICE>
