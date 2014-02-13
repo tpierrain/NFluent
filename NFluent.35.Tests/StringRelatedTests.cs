@@ -461,9 +461,7 @@ namespace NFluent.Tests
         public void LongStringErrorMessageIsProperlyTruncated()
         {
             string checkString = File.ReadAllText("CheckedFile.xml", Encoding.UTF8);
-            string expectedString = File.ReadAllText("ExpectedFile.xml", Encoding.UTF8);
-
-            File.WriteAllText(@"C:\Dev\afterChecked.xml", checkString);
+            //string expectedString = File.ReadAllText("ExpectedFile.xml", Encoding.UTF8);
 
             string checkString2;
             using (StreamReader streamReader = new StreamReader("CheckedFile.xml", Encoding.UTF8))
