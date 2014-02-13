@@ -463,8 +463,21 @@ namespace NFluent.Tests
             string checkString = File.ReadAllText("CheckedFile.xml", Encoding.UTF8);
             string expectedString = File.ReadAllText("ExpectedFile.xml", Encoding.UTF8);
 
+            File.WriteAllText(@"C:\Dev\afterChecked.xml", checkString);
+
+            string checkString2;
+            using (StreamReader streamReader = new StreamReader("CheckedFile.xml", Encoding.UTF8))
+            {
+                checkString2 = streamReader.ReadToEnd();
+            }
+
+            Check.That(checkString.Length).IsEqualTo(checkString2.Length);
+            
             Check.That(checkString).HasSize(5101);
-            Check.That(expectedString).HasSize(5101);
+            
+            //Check.That(checkString2).HasSize(5101);
+
+            //Check.That(expectedString).HasSize(5101);
 
             //Check.That(checkString).IsEqualTo(expectedString);
         }
