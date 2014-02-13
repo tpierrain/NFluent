@@ -15,6 +15,8 @@
 
 namespace NFluent.Tests
 {
+    using NFluent.Tests.Extensions;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -41,9 +43,57 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNullWork()
+        public void IsNullWorks()
         {
             Check.That((object)null).IsNull();
+        }
+
+        [Test]
+        public void IsNullWorksWithNullable()
+        {
+            Check.That((int?)null).IsNull();
+        }
+
+        [Test]
+        public void IsNotNullWorksWithNullable()
+        {
+            Mood? goodMood = new Mood();
+            Check.That(goodMood).IsNotNull();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value is null whereas it must not.")]
+        public void IsNotNullThrowsExceptionWithNullNullable()
+        {
+            Check.That((Mood?)null).IsNotNull();
+        }
+
+        [Test]
+        public void NotIsNullWorksWithNullable()
+        {
+            Mood? goodMood = new Mood();
+            Check.That(goodMood).Not.IsNull();
+        }
+
+        [Test]
+        public void NotIsNotNullWorksWithNullable()
+        {
+            Check.That((Mood?)null).Not.IsNotNull();
+        }
+        
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value must be null.\nThe checked value:\n\t[NFluent.Tests.Extensions.Mood]")]
+        public void NotIsNotNullThrowsWithNonNullNullable()
+        {
+            Mood? goodMood = new Mood();
+            Check.That(goodMood).Not.IsNotNull();
+        }
+        
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value is null whereas it must not.")]
+        public void NotIsNullThrowsExceptionWithNullNullable()
+        {
+            Check.That((Mood?)null).Not.IsNull();
         }
 
         [Test]

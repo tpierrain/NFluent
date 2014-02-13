@@ -1,4 +1,5 @@
 New feature(s):
+* Now supports IsNull() and IsNotNull() checks for nullables (thanks to Mendel Monteiro Beckerman for that).
 * Check.ThatCode(...): New entry point for checks on code (Action and Func&lt;T&gt;). It supersedes the equivalent Check.That signature.
 
 --------------
@@ -8,7 +9,7 @@ Change(s):
 * The HasFieldsEqualToThose() check is now obsolete and should be replaced by HasFieldsWithSameValues() which now support anonymous classes as expected parameter.
 * The HasFieldsNotEqualToThose() check is now obsolete and should be replaced by HasNotFieldsWithSameValues()
 * Simplification of extensibility
-* NFluent package is now signed
+* We are so proud of this 1.1 version of NFuent; we decided to sign it.
 
 --------------
 Bug Fixe(s):
