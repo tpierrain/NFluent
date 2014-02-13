@@ -205,7 +205,7 @@ namespace NFluent
                         else
                         {
                             message = "The {0} is different from the {1} but has same length.";
-                        }
+                        }   
 
                         var prefix = blockStart == 0 ? string.Empty : "...";
                         var suffix = (blockStart + blockLen) == minLength ? string.Empty : "...";
