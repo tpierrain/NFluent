@@ -15,6 +15,7 @@
 namespace NFluent.Tests
 {
     using System.IO;
+    using System.Text;
 
     using NUnit.Framework;
 
@@ -276,7 +277,7 @@ namespace NFluent.Tests
         {
             Check.That("12 ac").Not.Matches("[0-9]*. [a-z]*");
         }
- 
+
         #endregion
 
         #region Match
@@ -313,7 +314,7 @@ namespace NFluent.Tests
         {
             Check.That("12 ac").Not.Matches("[0-9]*. [a-z]*");
         }
-        
+
         [Test]
         public void IsEmptyWorks()
         {
@@ -384,7 +385,7 @@ namespace NFluent.Tests
         {
             Check.That(string.Empty).HasContent();
         }
-        
+
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is null whereas it must have content.")]
         public void HasContentFailsIfNull()
@@ -416,11 +417,51 @@ namespace NFluent.Tests
         #endregion
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 4758, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</ARTIST...<truncated>...    <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]\nThe expected string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</ARTIST...<truncated>...    <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Hello<<tab>>How are you?\"]\nThe expected string:\n\t[\"Hello    How are you?\"]")]
+        public void IsEqualToErrorMessageHighlightsWhiteSpacesAndTabsDifference()
+        {
+            string withWSp = "Hello    How are you?";
+            string withTab = "Hello\tHow are you?";
+
+            Check.That(withTab).IsEqualTo(withWSp);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Hello<<tab>>How are you?<<tab>>kiddo\"]\nThe expected string:\n\t[\"Hello    How are you?    kiddo\"]")]
+        public void IsEqualToErrorMessageHighlightsAllWhiteSpacesAndTabsDifferences()
+        {
+            string withWSp = "Hello    How are you?    kiddo";
+            string withTab = "Hello\tHow are you?\tkiddo";
+
+            Check.That(withTab).IsEqualTo(withWSp);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n	[\"Hello<<CRLF>>\r\nHow are you?\"]\nThe expected string:\n	[\"Hello<<LF>>\nHow are you?\"]")]
+        public void IsEqualToErrorMessageHighlightsLineFeedAndCarriageReturnLineFeed()
+        {
+            string withCRLF = "Hello\r\nHow are you?";
+            string withLF = "Hello\nHow are you?";
+
+            Check.That(withCRLF).IsEqualTo(withLF);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n	[\"Hello<<CRLF>>\r\nHow are you?\r\nAre you kidding?\"]\nThe expected string:\n	[\"Hello<<LF>>\nHow are you?\nAre you kidding?\"]")]
+        public void IsEqualToErrorMessageHighlightsOnlyTheFirstLineFeedAndCarriageReturnLineFeedDifference()
+        {
+            string withCRLF = "Hello\r\nHow are you?\r\nAre you kidding?";
+            string withLF = "Hello\nHow are you?\nAre you kidding?";
+
+            Check.That(withCRLF).IsEqualTo(withLF);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 4758, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n	[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</ARTIST...<<truncated>>...    <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]\nThe expected string:\n	[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</ARTIST...<<truncated>>...    <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]")]
         public void LongStringErrorMessageIsProperlyTruncated()
         {
-            string checkString = File.ReadAllText("CheckedFile.xml");
-            string expectedString = File.ReadAllText("ExpectedFile.xml");
+            string checkString = File.ReadAllText("CheckedFile.xml", Encoding.UTF8);
+            string expectedString = File.ReadAllText("ExpectedFile.xml", Encoding.UTF8);
 
             Check.That(checkString).IsEqualTo(expectedString);
         }

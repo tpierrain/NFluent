@@ -278,24 +278,26 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\NFluent.35.Tests\CheckedFile.xml">
+      <Link>CheckedFile.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\NFluent.35.Tests\ExpectedFile.xml">
+      <Link>ExpectedFile.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\NFluent.35.Tests\T4\NumberTestsGenerator.txt">
       <Link>T4\NumberTestsGenerator.txt</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Content>
-    <Content Include="CheckedFile.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ExpectedFile.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" />
+      <UserProperties ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

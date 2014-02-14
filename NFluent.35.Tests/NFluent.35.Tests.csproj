@@ -170,12 +170,10 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\NFluent.40.Tests\CheckedFile.xml">
-      <Link>CheckedFile.xml</Link>
+    <Content Include="CheckedFile.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\NFluent.40.Tests\ExpectedFile.xml">
-      <Link>ExpectedFile.xml</Link>
+    <Content Include="ExpectedFile.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="T4\NumberTestsGenerator.txt">

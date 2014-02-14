@@ -183,7 +183,7 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>A check link.</returns>
-        /// <exception cref="FluentCheckException">Is the value is not null.</exception>
+        /// <exception cref="FluentCheckException">The checked value is not null.</exception>
         public static ICheckLink<ICheck<object>> IsNull(this ICheck<object> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
@@ -197,6 +197,48 @@ namespace NFluent
             }
 
             return new CheckLink<ICheck<object>>(check);
+        }
+
+        /// <summary>
+        /// Checks that the actual Nullable value is null.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">The checked value is not null.</exception>
+        public static ICheckLink<ICheck<T?>> IsNull<T>(this ICheck<T?> check) where T : struct
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            return checker.ExecuteCheck(
+                () =>
+                {
+                    if (checker.Value != null)
+                    {
+                        var message = FluentMessage.BuildMessage("The checked nullable value must be null.").On(checker.Value).ToString();
+                        throw new FluentCheckException(message);
+                    }
+                }
+                , FluentMessage.BuildMessage("The checked nullable value is null whereas it must not.").ToString());
+        }
+
+        /// <summary>
+        /// Checks that the actual Nullable value is not null.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">The checked value is null.</exception>
+        public static ICheckLink<ICheck<T?>> IsNotNull<T>(this ICheck<T?> check) where T : struct
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            return checker.ExecuteCheck(
+                () =>
+                {
+                    if (checker.Value == null)
+                    {
+                        var message = FluentMessage.BuildMessage("The checked nullable value is null whereas it must not.").ToString();
+                        throw new FluentCheckException(message);
+                    }
+                }
+                , FluentMessage.BuildMessage("The checked nullable value must be null.").On(checker.Value).ToString());
         }
 
         /// <summary>
