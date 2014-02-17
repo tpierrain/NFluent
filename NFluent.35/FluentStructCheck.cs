@@ -23,7 +23,7 @@ namespace NFluent
     /// Provides check methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public class FluentStructCheck<T> : IForkableCheck, IStructCheck<T>, ICheckForExtensibility<T, IStructCheck<T>> where T : struct
+    public sealed class FluentStructCheck<T> : IForkableCheck, IStructCheck<T>, ICheckForExtensibility<T, IStructCheck<T>> where T : struct
     {
         private readonly Checker<T, IStructCheck<T>> structChecker;
 

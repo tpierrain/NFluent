@@ -427,13 +427,13 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Hello<<tab>>How are you?<<tab>>kiddo\"]\nThe expected string:\n\t[\"Hello    How are you?    kiddo\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Hello    How are you?    kiddo\"]\nThe expected string:\n\t[\"Hello<<tab>>How are you?<<tab>>kiddo\"]")]
         public void IsEqualToErrorMessageHighlightsAllWhiteSpacesAndTabsDifferences()
         {
             string withWSp = "Hello    How are you?    kiddo";
             string withTab = "Hello\tHow are you?\tkiddo";
 
-            Check.That(withTab).IsEqualTo(withWSp);
+            Check.That(withWSp).IsEqualTo(withTab);
         }
 
         [Test]
@@ -447,13 +447,13 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n	[\"Hello<<CRLF>>\r\nHow are you?\r\nAre you kidding?\"]\nThe expected string:\n	[\"Hello<<LF>>\nHow are you?\nAre you kidding?\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n	[\"Hello<<LF>>\nHow are you?\nAre you kidding?\"]\nThe expected string:\n	[\"Hello<<CRLF>>\r\nHow are you?\r\nAre you kidding?\"]")]
         public void IsEqualToErrorMessageHighlightsOnlyTheFirstLineFeedAndCarriageReturnLineFeedDifference()
         {
             string withCRLF = "Hello\r\nHow are you?\r\nAre you kidding?";
             string withLF = "Hello\nHow are you?\nAre you kidding?";
 
-            Check.That(withCRLF).IsEqualTo(withLF);
+            Check.That(withLF).IsEqualTo(withCRLF);
         }
 
         [Test]

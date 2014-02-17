@@ -34,7 +34,7 @@ namespace NFluent.Tests.ForDocumentation
         [Explicit("Use to debug detection when failing.")]
         public void SpecificTest()
         {
-            RunnerHelper.RunAction(new IntRelatedTests().NotEqualsThrowsExceptionWhenFailing);
+            RunnerHelper.RunAction(new LambdaRelatedTests().DidNotRaiseAny);
         }
 
         // Run this test to get all error messages
@@ -140,18 +140,32 @@ namespace NFluent.Tests.ForDocumentation
                             // scan all methods
                             foreach (var checkMethod in publicMethods)
                             {
-                                if (checkMethod.Name == "ForkInstance")
+                                try
                                 {
-                                    // skip forkinstance
-                                    continue;
+                                    if (checkMethod.Name == "ForkInstance")
+                                    {
+                                        // skip forkinstance
+                                        continue;
+                                    }
+
+                                    var desc = CheckDescription.AnalyzeSignature(checkMethod);
+
+                                    if (desc != null)
+                                    {
+                                        if (desc.CheckedType == null)
+                                        {
+                                            RunnerHelper.Log(string.Format("Failed to identify checked type on test {0}", checkMethod.Name));
+                                        }
+                                        else
+                                        {
+                                            RunnerHelper.Log(string.Format("Method :{0}.{1}({2})", type.Name, checkMethod.Name, desc.CheckedType.Name));
+                                            report.AddEntry(desc);
+                                        }
+                                    }
                                 }
-
-                                var desc = CheckDescription.AnalyzeSignature(checkMethod);
-
-                                if (desc != null)
+                                catch (Exception e)
                                 {
-                                    RunnerHelper.Log(string.Format("Method :{0}.{1}({2})", type.Name, checkMethod.Name, desc.CheckedType.Name));
-                                    report.AddEntry(desc);
+                                    RunnerHelper.Log(string.Format("Exception while assessing test {2} on type:{0}\n{1}", type.FullName, e, checkMethod.Name));
                                 }
                             }
                         }
