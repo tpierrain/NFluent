@@ -272,16 +272,13 @@ namespace NFluent
         /// <returns>The same string but with &lt;&lt;CRLF&gt;&gt; inserted before the first CRLF or &lt;&lt;LF&gt;&gt; inserted before the first LF.</returns>
         private static string HighlightFirstCrlfOrLfIfAny(string str, int firstDiffPos)
         {
-            if (str != null)
+            if (str.Substring(firstDiffPos).StartsWith("\r\n"))
             {
-                if (str.Substring(firstDiffPos).StartsWith("\r\n"))
-                {
-                    return str.Insert(firstDiffPos, "<<CRLF>>");
-                }
-                else if (str.Substring(firstDiffPos).StartsWith("\n"))
-                {
-                    return str.Insert(firstDiffPos, "<<LF>>");
-                }
+                str = str.Insert(firstDiffPos, "<<CRLF>>");
+            }
+            else if (str.Substring(firstDiffPos).StartsWith("\n"))
+            {
+                str = str.Insert(firstDiffPos, "<<LF>>");
             }
 
             return str;
@@ -294,14 +291,7 @@ namespace NFluent
         /// <returns>The original string with every \t replaced with "&lt;&lt;tab&gt;&gt;".</returns>
         private static string HighlightTabsIfAny(string str)
         {
-            if (str != null)
-            {
-                return str.Replace("\t", "<<tab>>");
-            }
-            else
-            {
-                return null;
-            }
+            return str.Replace("\t", "<<tab>>");
         }
 
         private static string ContainsImpl(string checkedValue, IEnumerable<string> values, bool negated, bool notContains)

@@ -19,42 +19,53 @@ namespace NFluent
     using NFluent.Extensibility;
 
     /// <summary>
-    /// Implements specific exception check after lambda checks.
+    /// Implements specific Value check after lambda checks.
     /// </summary>
     /// <typeparam name="T">Code checker type. <see cref="LambdaCheck"/>/>.
     /// </typeparam>
     public class LambdaExceptionCheck<T> : ILambdaExceptionCheck<T>, IForkableCheck
     {
-        /// <summary>
-        /// Set with the parent class that fluently called this one.
-        /// </summary>
-        private readonly Exception exception;
+        #region constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LambdaExceptionCheck{T}"/> class.
         /// This check can only be fluently called after a lambda check.
         /// </summary>
-        /// <param name="exception">The exception.</param>
-        public LambdaExceptionCheck(Exception exception)
+        /// <param name="value">The Value.</param>
+        public LambdaExceptionCheck(Exception value)
         {
-            this.exception = exception;
+            this.Value = value;
         }
 
+        #endregion
+
+        #region fields
+
         /// <summary>
-        /// Checks that the message of the considered exception is correctly written.
+        /// Gets or sets with the parent class that fluently called this one.
         /// </summary>
-        /// <param name="exceptionMessage">The expected exception message.</param>
+        /// <value>
+        /// The value.
+        /// </value>
+        private Exception Value { get; set; }
+
+        #endregion
+
+        /// <summary>
+        /// Checks that the message of the considered Value is correctly written.
+        /// </summary>
+        /// <param name="exceptionMessage">The expected Value message.</param>
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
+        /// <Value cref="FluentCheckException">The code did not raised an Value of any type.</Value>
         public ICheckLink<ILambdaExceptionCheck<T>> WithMessage(string exceptionMessage)
         {
-            if (this.exception.Message != exceptionMessage)
+            if (this.Value.Message != exceptionMessage)
             {
                 var message = FluentMessage.BuildMessage("The message of the checked exception is not as expected.")
                                             .For("exception message")
-                                            .ExpectedValues(this.exception.Message)
+                                            .ExpectedValues(this.Value.Message)
                                             .And.WithGivenValue(exceptionMessage)
                                             .ToString();
                         
@@ -65,17 +76,17 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that a specific property of the considered exception has an expected value.
+        /// Checks that a specific property of the considered Value has an expected value.
         /// </summary>
-        /// <param name="propertyName">The name of the property to check on the considered exception.</param>
-        /// <param name="propertyValue">The expected value for the property to check on the considered exception.</param>
+        /// <param name="propertyName">The name of the property to check on the considered Value.</param>
+        /// <param name="propertyValue">The expected value for the property to check on the considered Value.</param>
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
+        /// <Value cref="FluentCheckException">The code did not raised an Value of any type.</Value>
         public ICheckLink<ILambdaExceptionCheck<T>> WithProperty(string propertyName, object propertyValue)
         {
-            var type = this.exception.GetType();
+            var type = this.Value.GetType();
             var property = type.GetProperty(propertyName);
             if (property == null)
             {
@@ -83,7 +94,7 @@ namespace NFluent
                 throw new FluentCheckException(message);
             }
             
-            var value = property.GetValue(this.exception, null);
+            var value = property.GetValue(this.Value, null);
             if (!value.Equals(propertyValue))
             {
                 var message = FluentMessage
@@ -110,7 +121,7 @@ namespace NFluent
         /// </remarks>
         public object ForkInstance()
         {
-            return new LambdaExceptionCheck<T>(this.exception);
+            return new LambdaExceptionCheck<T>(this.Value);
         }
     }
 }

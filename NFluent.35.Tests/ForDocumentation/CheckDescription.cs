@@ -26,7 +26,12 @@ namespace NFluent.Tests.ForDocumentation
     [Serializable]
     public class CheckDescription
     {
+        #region field
+
         private string entryPoint;
+
+        #endregion
+
         #region Public Properties
 
         [XmlIgnore]
@@ -136,18 +141,14 @@ namespace NFluent.Tests.ForDocumentation
                         paramType = paramType.GetGenericArguments()[0];
                     }
 
-                    if (paramType.Name == "IExtendableCheckLink`1" || paramType.Name == "ICheck`1"
+                    if (paramType.Name == "IExtendableCheckLink`1"
+                        || paramType.Name == "IExtendableCheckLink`2"
+                        || paramType.Name == "ICheck`1"
                         || paramType.GetInterface("ICheck`1") != null
-                        || paramType.Name == "IStructCheck`1")
+                        || paramType.Name == "IStructCheck`1"
+                        || paramType.Name == "ICodeCheck`1")
                     {
-                        if (paramType.Name == "IStructCheck`1")
-                        {
-                            result.entryPoint = "ThatEnum";
-                        }
-                        else
-                        {
-                            result.entryPoint = "That";
-                        }
+                        result.entryPoint = paramType.Name == "IStructCheck`1" ? "ThatEnum" : "That";
 
                         var testedtype = paramType.GetGenericArguments()[0];
                         if (testedtype.IsGenericParameter)
