@@ -57,7 +57,7 @@ namespace NFluent
             checker.ExecuteCheck(
                 () =>
                 {
-                    if (checker.Value == null && otherEnumerable == null)
+                    if (otherEnumerable == null)
                     {
                         return;
                     }
