@@ -240,6 +240,9 @@
     <Compile Include="..\NFluent.35.Tests\ToEnumeratedStringTests.cs">
       <Link>ToEnumeratedStringTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35.Tests\UserReportedIssuesTests.cs">
+      <Link>UserReportedIssuesTests.cs</Link>
+    </Compile>
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>

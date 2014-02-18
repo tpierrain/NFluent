@@ -146,6 +146,7 @@
     <Compile Include="UserReportedIssuesTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UserReportedIssuesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NFluent.snk" />
