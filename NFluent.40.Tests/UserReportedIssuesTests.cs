@@ -20,11 +20,41 @@ namespace NFluent.Tests
     [TestFixture]
     public class UserReportedIssuesTests
     {
+        public interface IModelBName
+        {
+            string Title { get; set; }
+        }
+
         [Test]
         public void NullRefExcOnEnumerables()
         {
             var values = new[] { "Yoda", null };
             Check.That(values).Contains(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(NFluent.FluentCheckException))]
+        public void NullRefonHasFieldsWithSameValueWithInterfaces()
+        {
+            var modelA = new ModelA { Name = "Yoda" };
+            var modelB = new ModelB { Name = new ModelBName { Title = "Frank" } };
+
+            Check.That(modelA).HasFieldsWithSameValues(modelB);
+        }
+
+        public class ModelA
+        {
+            public string Name { get; set; }
+        }
+
+        public class ModelB
+        {
+            public IModelBName Name { get; set; }
+        }
+
+        public class ModelBName : IModelBName
+        {
+            public string Title { get; set; }
         }
     }
 }

@@ -291,6 +291,11 @@ namespace NFluent.Extensions
             {
                 return true;
             }
+            
+            if (info == null)
+            {
+                return false;
+            }
 
             // info cannot be null has ALL .Net types inherits Equals from System.Object
             return info.DeclaringType == type;
