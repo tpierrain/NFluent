@@ -30,11 +30,13 @@ namespace NFluent
     {
         private static readonly Regex AutoPropertyMask;
         private static readonly Regex AnonymousTypeFieldMask;
+        private static readonly Regex MonoAnonymousTypeFieldMask;
 
         static ObjectCheckExtensions()
         {
             AutoPropertyMask = new Regex("^<(.*)>k_");
             AnonymousTypeFieldMask = new Regex("^<(.*)>i_");
+            MonoAnonymousTypeFieldMask = new Regex("^<(.*)>\\z");
         }
 
         /// <summary>
@@ -84,9 +86,9 @@ namespace NFluent
 
             return checker.ExecuteCheck(
                 () =>
-                    {
-                        EqualityHelper.IsEqualTo(checker.Value, expected);
-                    }, 
+                {
+                    EqualityHelper.IsEqualTo(checker.Value, expected);
+                },
                 EqualityHelper.BuildErrorMessage(checker.Value, expected, true));
         }
 
@@ -131,9 +133,9 @@ namespace NFluent
 
             return checker.ExecuteCheck(
                 () =>
-                    {
-                        EqualityHelper.IsNotEqualTo(checker.Value, expected);
-                    }, 
+                {
+                    EqualityHelper.IsNotEqualTo(checker.Value, expected);
+                },
                 EqualityHelper.BuildErrorMessage(checker.Value, expected, false));
         }
 
@@ -174,7 +176,7 @@ namespace NFluent
                 () =>
                 {
                     IsInstanceHelper.InheritsFrom(checker.Value, expectedBaseType);
-                }, 
+                },
                 string.Format("\nThe checked expression is part of the inheritance hierarchy or of the same type than the specified one.\nIndeed, checked expression type:\n\t[{0}]\nis a derived type of\n\t[{1}].", instanceType.ToStringProperlyFormated(), expectedBaseType.ToStringProperlyFormated()));
         }
 
@@ -502,9 +504,9 @@ namespace NFluent
                     {
                         // we recurse
                         message = CheckFieldEquality(
-                            expectedFieldValue, 
-                            actualFieldValue, 
-                            negated, 
+                            expectedFieldValue,
+                            actualFieldValue,
+                            negated,
                             string.Format("{0}.", fieldname));
                         if (!string.IsNullOrEmpty(message))
                         {
@@ -537,30 +539,43 @@ namespace NFluent
             return message;
         }
 
+        // assess if the name matches the given regexp and return the extracted if relevant.
+        private static bool EvaluateCriteria(Regex expression, string name, out string actualFieldName)
+        {
+            var regTest = expression.Match(name);
+            if (regTest == null || regTest.Groups.Count != 2)
+            {
+                actualFieldName = string.Empty;
+                return false;
+            }
+
+            actualFieldName = name.Substring(regTest.Groups[1].Index, regTest.Groups[1].Length);
+            return true;
+        }
+
         private static string ExtractFieldNameAsInSourceCode(string name, out FieldKind kind)
         {
             string result;
-            var regTest = AutoPropertyMask.Match(name);
-            if (regTest.Length > 0 && regTest.Groups.Count == 2)
+            if (EvaluateCriteria(AutoPropertyMask, name, out result))
             {
-                result = name.Substring(regTest.Groups[1].Index, regTest.Groups[1].Length);
                 kind = FieldKind.AutoProperty;
-            }
-            else
-            {
-                regTest = AnonymousTypeFieldMask.Match(name);
-                if (regTest.Length > 0 && regTest.Groups.Count == 2)
-                {
-                    result = name.Substring(regTest.Groups[1].Index, regTest.Groups[1].Length);
-                    kind = FieldKind.AnonymousClass;
-                }
-                else
-                {
-                    result = name;
-                    kind = FieldKind.Normal;
-                }
+                return result;
             }
 
+            if (EvaluateCriteria(AnonymousTypeFieldMask, name, out result))
+            {
+                kind = FieldKind.AnonymousClass;
+                return result;
+            }
+
+            if (EvaluateCriteria(MonoAnonymousTypeFieldMask, name, out result))
+            {
+                kind = FieldKind.AnonymousClass;
+                return result;
+            }
+
+            result = name;
+            kind = FieldKind.Normal;
             return result;
         }
 
@@ -573,10 +588,10 @@ namespace NFluent
             switch (actualFieldKind)
             {
                 case FieldKind.AnonymousClass:
-                        fieldLabel = string.Format("field '{0}'", fieldname);
+                    fieldLabel = string.Format("field '{0}'", fieldname);
                     break;
                 case FieldKind.AutoProperty:
-                        fieldLabel = string.Format("autoproperty '{0}' (field '{1}')", fieldname, fieldInfo.Name);
+                    fieldLabel = string.Format("autoproperty '{0}' (field '{1}')", fieldname, fieldInfo.Name);
                     break;
                 default:
                     fieldLabel = string.Format("field '{0}'", fieldname);
@@ -595,7 +610,7 @@ namespace NFluent
             {
                 return result;
             }
-            
+
             if (type.BaseType == null)
             {
                 return null;
