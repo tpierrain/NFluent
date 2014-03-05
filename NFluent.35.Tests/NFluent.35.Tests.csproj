@@ -143,9 +143,6 @@
     <Compile Include="TimeHelperTest.cs" />
     <Compile Include="TimeSpanTests.cs" />
     <Compile Include="ToEnumeratedStringTests.cs" />
-    <Compile Include="UserReportedIssuesTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="UserReportedIssuesTests.cs" />
   </ItemGroup>
   <ItemGroup>
