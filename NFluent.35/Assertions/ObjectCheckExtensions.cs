@@ -60,8 +60,6 @@ namespace NFluent
             AnonymousClass
         }
 
-        // TODO: add IsNull()
-
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
