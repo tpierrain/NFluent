@@ -13,6 +13,8 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -267,11 +269,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NFluent.40\NFluent.40.csproj">
-      <Project>{1e2d9d56-d0a4-4d2e-8f2b-f211000e1667}</Project>
+      <Project>{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}</Project>
       <Name>NFluent.40</Name>
     </ProjectReference>
     <ProjectReference Include="..\NFluent.Tests.Extensions.40\NFluent.Tests.Extensions.40.csproj">
-      <Project>{1baa72cb-3a46-4711-9a5b-f96cf20d465e}</Project>
+      <Project>{1BAA72CB-3A46-4711-9A5B-F96CF20D465E}</Project>
       <Name>NFluent.Tests.Extensions.40</Name>
     </ProjectReference>
   </ItemGroup>

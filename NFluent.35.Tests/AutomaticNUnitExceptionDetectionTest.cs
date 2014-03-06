@@ -27,7 +27,7 @@ namespace NFluent.Tests
         public void NUnitDetection()
         {
             var ex = ExceptionHelper.BuildException("the message");
-            Assert.IsInstanceOf<AssertionException>(ex);
+			Check.That (ex).IsInstanceOf<AssertionException> ();
         }
     }
 }

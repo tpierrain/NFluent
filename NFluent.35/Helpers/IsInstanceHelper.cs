@@ -104,22 +104,31 @@ namespace NFluent.Helpers
         public static string BuildErrorMessage(object value, Type typeOperand, bool isSameType)
         {
             FluentMessage.MessageBlock message;
-            if (isSameType)
-            {
-                message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of {0} whereas it must not.", typeOperand.ToStringProperlyFormated()))
-                                       .On(value)
-                                       .WithType()
-                                       .And.Expected(typeOperand)
-                                       .Label("The {0} type: different from");
-            }
-            else
-            {
-                message = FluentMessage.BuildMessage("The {0} is not an instance of the expected type.")
-                                       .On(value)
-                                       .WithType()
-                                       .And.Expected(typeOperand)
-                                       .Label("The {0} type:");
-            }
+			if (isSameType)
+			{
+				message = FluentMessage.BuildMessage (string.Format ("The {{0}} is an instance of {0} whereas it must not.", typeOperand.ToStringProperlyFormated ()))
+                                       .On (value)
+                                       .WithType ()
+                                       .And.Expected (typeOperand)
+                                       .Label ("The {0} type: different from");
+			}
+			else if (value.GetType ().FullName == typeOperand.FullName)
+			{
+				// cannot discriminate from type name
+				message = FluentMessage.BuildMessage ("The {0} .")
+                                       .On (value)
+									    .WithType (true, true)
+                                       .And.Expected (typeOperand)
+                                       .Label ("The {0} type:");
+			}
+			else
+			{
+				message = FluentMessage.BuildMessage ("The {0} is not an instance of the expected type.")
+					.On (value)
+					.WithType ()
+					.And.Expected (typeOperand)
+					.Label ("The {0} type:");
+			}
         
             return message.ToString();
         }

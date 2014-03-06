@@ -309,6 +309,8 @@ namespace NFluent.Extensibility
 
             private bool includeType;
 
+			bool fullTypeName;
+
             private Type type;
 
             private long? enumerableCount;
@@ -393,7 +395,7 @@ namespace NFluent.Extensibility
 
                 if (this.includeType && this.type != null)
                 {
-                    builder.AppendFormat(" of type: [{0}]", this.type.ToStringProperlyFormated());
+					builder.AppendFormat(" of type: [{0}]", this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormated());
                 }
 
                 if (this.includeHash && this.test != null)
@@ -436,11 +438,15 @@ namespace NFluent.Extensibility
             /// <param name="active">
             /// True to include the type. This is the default value.
             /// </param>
+			/// <param name="full">
+			/// True to display the full type name (with assembly).
+			/// </param>
             /// <returns>
             /// Returns this instance for chained calls.
             /// </returns>
-            public MessageBlock WithType(bool active = true)
+			public MessageBlock WithType(bool active = true, bool full = false)
             {
+				this.fullTypeName = full;
                 this.includeType = active;
                 return this;
             }
