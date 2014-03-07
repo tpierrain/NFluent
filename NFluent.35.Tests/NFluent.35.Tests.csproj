@@ -143,6 +143,7 @@
     <Compile Include="TimeHelperTest.cs" />
     <Compile Include="TimeSpanTests.cs" />
     <Compile Include="ToEnumeratedStringTests.cs" />
+    <Compile Include="UserReportedIssuesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NFluent.snk" />
