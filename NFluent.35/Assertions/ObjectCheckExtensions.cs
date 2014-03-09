@@ -541,7 +541,7 @@ namespace NFluent
         private static bool EvaluateCriteria(Regex expression, string name, out string actualFieldName)
         {
             var regTest = expression.Match(name);
-            if (regTest != null && regTest.Groups.Count == 2)
+            if (regTest.Groups.Count == 2)
             {
                 actualFieldName = name.Substring(regTest.Groups[1].Index, regTest.Groups[1].Length);
                 return true;

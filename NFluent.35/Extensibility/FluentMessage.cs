@@ -38,13 +38,13 @@ namespace NFluent.Extensibility
 
         private readonly string message;
 
-        private MessageBlock expectedBlock = null;
+        private MessageBlock expectedBlock;
 
-        private MessageBlock checkedBlock = null;
+        private MessageBlock checkedBlock;
 
-        private MessageBlock givenValueBlock = null;
+        private MessageBlock givenValueBlock;
 
-        private MessageBlock expectedValuesBlock = null;
+        private MessageBlock expectedValuesBlock;
 
         private string entity;
 
@@ -246,6 +246,17 @@ namespace NFluent.Extensibility
         }
 
         /// <summary>
+        /// Adds a message block to describe the expected type.
+        /// </summary>
+        /// <param name="expectedType">The expected type.</param>
+        /// <returns>The created MessageBlock.</returns>
+        public MessageBlock ExpectedType(Type expectedType)
+        {
+            this.expectedBlock = new MessageBlock(this, expectedType, ExpectedAdjective);
+            return this.expectedBlock;
+        }
+
+        /// <summary>
         /// Adds a message block to describe the expected values.
         /// </summary>
         /// <param name="expectedValues">The expected values.</param>
@@ -293,8 +304,6 @@ namespace NFluent.Extensibility
         {
             #region fields
 
-            private const int MaxStringLength = 200;
-
             private readonly FluentMessage message;
 
             private readonly object test;
@@ -309,11 +318,13 @@ namespace NFluent.Extensibility
 
             private bool includeType;
 
-			bool fullTypeName;
+            private bool fullTypeName;
 
             private Type type;
 
             private long? enumerableCount;
+
+            private bool anyInstance;
 
             #endregion
 
@@ -325,7 +336,19 @@ namespace NFluent.Extensibility
             /// <param name="message">The message.</param>
             /// <param name="test">The tested object.</param>
             /// <param name="attribute">The block attribute.</param>
-            public MessageBlock(FluentMessage message, object test, string attribute)
+            public MessageBlock(FluentMessage message, object test, string attribute) : this(message, test.GetTypeWithoutThrowingException(), attribute)
+            {
+                this.test = test;
+                this.anyInstance = false;
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MessageBlock"/> class.
+            /// </summary>
+            /// <param name="message">The message.</param>
+            /// <param name="type">The type.</param>
+            /// <param name="attribute">The attribute.</param>
+            public MessageBlock(FluentMessage message, Type type, string attribute)
             {
                 if (message == null)
                 {
@@ -333,184 +356,224 @@ namespace NFluent.Extensibility
                 }
 
                 this.message = message;
-                this.test = test;
-                this.type = test.GetTypeWithoutThrowingException();
+                this.test = null;
+                this.type = type;
+                this.anyInstance = true;
                 this.attribute = attribute;
             }
-
             #endregion
 
-            /// <summary>
-            /// Gets the Message.
-            /// </summary>
-            /// <value>
-            /// The <see cref="FluentMessage"/> holding that block.
-            /// </value>
-            public FluentMessage And
-            {
-                get
-                {
-                    return this.message;
-                }
-            }
+            #region properties
 
-            /// <summary>
-            /// Gets the message as a string.
-            /// </summary>
-            /// <returns>A string with the properly formatted message.</returns>
-            public string GetMessage()
-            {
-                var builder = new StringBuilder();
-                if (string.IsNullOrEmpty(this.comparisonLabel))
-                {
-                    builder.AppendFormat(this.customMessage ?? "The {0} {1}:", this.attribute, this.message.GetEntityFromType(this.test));
-                }
-                else
-                {
-                    builder.AppendFormat(this.customMessage ?? "The {0} {1}: {2}", this.attribute, this.message.GetEntityFromType(this.test), this.comparisonLabel);
-                }
+           /// <summary>
+           /// Gets the Message.
+           /// </summary>
+           /// <value>
+           /// The <see cref="FluentMessage"/> holding that block.
+           /// </value>
+           public FluentMessage And
+           {
+               get
+               {
+                   return this.message;
+               }
+           }
 
-                builder.Append("\n");
 
-                if (this.test == null)
-                {
-                    builder.Append("\t[null]");
-                }
-                else
-                {
-                    var stringProperlyFormated = this.test.ToStringProperlyFormated();
-                    builder.AppendFormat("\t[{0}]", stringProperlyFormated);
-                }
+           #endregion
 
-                if (this.enumerableCount.HasValue)
-                {
-                    var description = "items";
-                    if (this.enumerableCount <= 1)
-                    {
-                        description = "item";
-                    }
+            #region methods
 
-                    builder.AppendFormat(" ({0} {1})", this.enumerableCount, description);
-                }
+           /// <summary>
+           /// Gets the message as a string.
+           /// </summary>
+           /// <returns>A string with the properly formatted message.</returns>
+           public string GetMessage()
+           {
+               var builder = new StringBuilder();
+               builder.Append(this.FullLabel());
+               builder.Append("\n");
 
-                if (this.includeType && this.type != null)
-                {
-					builder.AppendFormat(" of type: [{0}]", this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormated());
-                }
+               builder.Append(this.Description());
 
-                if (this.includeHash && this.test != null)
-                {
-                    builder.AppendFormat(" with HashCode: [{0}]", this.test.GetHashCode());
-                }
-                
-                return builder.ToString();
-            }
+               if (this.includeType && this.type != null)
+               {
+                   builder.AppendFormat(
+                       " of type: [{0}]",
+                       this.fullTypeName
+                           ? this.type.AssemblyQualifiedName
+                           : this.type.ToStringProperlyFormated());
+               }
 
-            /// <summary>
-            /// Returns a <see cref="System.String" /> that represents this instance.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="System.String" /> that represents this instance.
-            /// </returns>
-            public override string ToString()
-            {
-                return this.message.ToString();                    
-            }
+               if (this.includeHash && this.test != null)
+               {
+                   builder.AppendFormat(" with HashCode: [{0}]", this.test.GetHashCode());
+               }
 
-            /// <summary>
-            /// Requests that the Hash value is included in the description block.
-            /// </summary>
-            /// <param name="active">
-            /// True to include the type. This is the default value.
-            /// </param>
-            /// <returns>
-            /// Returns this instance for chained calls.
-            /// </returns>
-            public MessageBlock WithHashCode(bool active = true)
-            {
-                this.includeHash = active;
-                return this;
-            }
+               return builder.ToString();
+           }
 
-            /// <summary>
-            /// Requests that the type is included in the description block.
-            /// </summary>
-            /// <param name="active">
-            /// True to include the type. This is the default value.
-            /// </param>
-			/// <param name="full">
-			/// True to display the full type name (with assembly).
-			/// </param>
-            /// <returns>
-            /// Returns this instance for chained calls.
-            /// </returns>
-			public MessageBlock WithType(bool active = true, bool full = false)
-            {
-				this.fullTypeName = full;
-                this.includeType = active;
-                return this;
-            }
+           private string Description()
+           {
+               var description = new StringBuilder();
+               if (this.anyInstance)
+               {
+                   description.Append("any instance");
+               }
+               else if (this.test == null)
+               {
+                   description.Append("\t[null]");
+               }
+               else
+               {
+                   description.AppendFormat("\t[{0}]", this.test.ToStringProperlyFormated());
+               }
 
-            /// <summary>
-            /// Requests that a specific type is included in the description block.
-            /// </summary>
-            /// <param name="forcedType">Type to include in the description.</param>
-            /// <remarks>Default type is the type of the object instance given in constructor.</remarks>
-            /// <returns>
-            /// Returns this instance for chained calls.
-            /// </returns>
-            public MessageBlock WithType(Type forcedType)
-            {
-                this.type = forcedType;
-                this.includeType = true;
-                return this;
-            }
+               if (this.enumerableCount.HasValue)
+               {
+                   if (this.enumerableCount <= 1)
+                   {
+                       description.AppendFormat(" ({0} {1})", this.enumerableCount, "item");
+                   }
+                   else
+                   {
+                       description.AppendFormat(" ({0} {1})", this.enumerableCount, "items");
+                   }
+               }
 
-            /// <summary>
-            /// Adds a specific comparison message (e.g 'equal to').
-            /// </summary>
-            /// <param name="comparison">
-            /// The comparison suffix.
-            /// </param>
-            /// <returns>
-            /// The <see cref="MessageBlock"/> for fluent API.
-            /// </returns>
-            public MessageBlock Comparison(string comparison)
-            {
-                this.comparisonLabel = comparison;
-                return this;
-            }
+               return description.ToString();
+           }
 
-            /// <summary>
-            /// Specifies a specific attribute for the message.
-            /// </summary>
-            /// <param name="newLabel">The new attribute.</param>
-            /// <returns>This <see cref="MessageBlock"/>.</returns>
-            public MessageBlock Label(string newLabel)
-            {
-                this.customMessage = newLabel;
-                return this;
-            }
+           private string FullLabel()
+           {
+               string fullLabel;
+               if (string.IsNullOrEmpty(this.comparisonLabel))
+               {
+                   fullLabel = string.Format(
+                       this.customMessage ?? "The {0} {1}:",
+                       this.attribute,
+                       this.message.GetEntityFromType(this.test));
+               }
+               else
+               {
+                   fullLabel = string.Format(
+                       this.customMessage ?? "The {0} {1}: {2}",
+                       this.attribute,
+                       this.message.GetEntityFromType(this.test),
+                       this.comparisonLabel);
+               }
 
-            /// <summary>
-            /// Gets the block label.
-            /// </summary>
-            /// <returns>The block Label.</returns>
-            public string GetBlockLabel()
-            {
-                return string.Format("{0} {1}", this.attribute, this.message.GetEntityFromType(this.test));
-            }
+               return fullLabel;
+           }
 
-            /// <summary>
-            /// Adds a description of the number of items (only relevant if the object is an enumerable).
-            /// </summary>
-            /// <param name="itemsCount">The number of items of the enumerable instance.</param>
-            /// <returns>The description of the number of items (only relevant if the object is an enumerable).</returns>
-            public MessageBlock WithEnumerableCount(long itemsCount)
-            {
-                this.enumerableCount = itemsCount;
-                return this;
-            }
+           /// <summary>
+           /// Returns a <see cref="System.String" /> that represents this instance.
+           /// </summary>
+           /// <returns>
+           /// A <see cref="System.String" /> that represents this instance.
+           /// </returns>
+           public override string ToString()
+           {
+               return this.message.ToString();
+           }
+
+           /// <summary>
+           /// Requests that the Hash value is included in the description block.
+           /// </summary>
+           /// <param name="active">
+           /// True to include the type. This is the default value.
+           /// </param>
+           /// <returns>
+           /// Returns this instance for chained calls.
+           /// </returns>
+           public MessageBlock WithHashCode(bool active = true)
+           {
+               this.includeHash = active;
+               return this;
+           }
+
+           /// <summary>
+           /// Requests that the type is included in the description block.
+           /// </summary>
+           /// <param name="active">
+           /// True to include the type. This is the default value.
+           /// </param>
+           /// <param name="full">
+           /// True to display the full type name (with assembly).
+           /// </param>
+           /// <returns>
+           /// Returns this instance for chained calls.
+           /// </returns>
+           public MessageBlock WithType(bool active = true, bool full = false)
+           {
+               this.fullTypeName = full;
+               this.includeType = active;
+               return this;
+           }
+
+           /// <summary>
+           /// Requests that a specific type is included in the description block.
+           /// </summary>
+           /// <param name="forcedType">Type to include in the description.</param>
+           /// <remarks>Default type is the type of the object instance given in constructor.</remarks>
+           /// <returns>
+           /// Returns this instance for chained calls.
+           /// </returns>
+           public MessageBlock WithType(Type forcedType)
+           {
+               this.type = forcedType;
+               this.includeType = true;
+               return this;
+           }
+
+           /// <summary>
+           /// Adds a specific comparison message (e.g 'equal to').
+           /// </summary>
+           /// <param name="comparison">
+           /// The comparison suffix.
+           /// </param>
+           /// <returns>
+           /// The <see cref="MessageBlock"/> for fluent API.
+           /// </returns>
+           public MessageBlock Comparison(string comparison)
+           {
+               this.comparisonLabel = comparison;
+               return this;
+           }
+
+           /// <summary>
+           /// Specifies a specific attribute for the message.
+           /// </summary>
+           /// <param name="newLabel">The new attribute.</param>
+           /// <returns>This <see cref="MessageBlock"/>.</returns>
+           public MessageBlock Label(string newLabel)
+           {
+               this.customMessage = newLabel;
+               return this;
+           }
+
+           /// <summary>
+           /// Gets the block label.
+           /// </summary>
+           /// <returns>The block Label.</returns>
+           public string GetBlockLabel()
+           {
+               return string.Format(
+                   "{0} {1}", this.attribute, this.message.GetEntityFromType(this.test));
+           }
+
+           /// <summary>
+           /// Adds a description of the number of items (only relevant if the object is an enumerable).
+           /// </summary>
+           /// <param name="itemsCount">The number of items of the enumerable instance.</param>
+           /// <returns>The description of the number of items (only relevant if the object is an enumerable).</returns>
+           public MessageBlock WithEnumerableCount(long itemsCount)
+           {
+               this.enumerableCount = itemsCount;
+               return this;
+           }
+
+           #endregion
         }
     }
 }

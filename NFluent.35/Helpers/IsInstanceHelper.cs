@@ -112,13 +112,13 @@ namespace NFluent.Helpers
                                        .And.Expected(typeOperand)
                                        .Label("The {0} type: different from");
             }
-            else if (value.GetType().FullName == typeOperand.FullName)
+            else if (value != null && value.GetType().FullName == typeOperand.FullName)
             {
                 // cannot discriminate from type name
                 message = FluentMessage.BuildMessage("The {0} .")
                                        .On(value)
                                         .WithType(true, true)
-                                       .And.Expected(typeOperand)
+                                       .And.ExpectedType(typeOperand)
                                        .Label("The {0} type:");
             }
             else

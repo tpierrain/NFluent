@@ -20,7 +20,6 @@ namespace NFluent.Tests
 
     using NFluent.Extensibility;
     using NFluent.Extensions;
-    using NFluent.Helpers;
 
     using NUnit.Framework;
 
