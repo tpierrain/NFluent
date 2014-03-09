@@ -88,9 +88,9 @@ namespace NFluent.Tests
                                 new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                             };
 
-            Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
-            Check.That(persons.Properties("Age")).ContainsExactly(38, 10, 7, 7);
-            Check.That(persons.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+            Check.That(persons.Extracting("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+            Check.That(persons.Extracting("Age")).ContainsExactly(38, 10, 7, 7);
+            Check.That(persons.Extracting("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
 
             // more fluent than the following classical NUnit way, isn't it? 
             // CollectionAssert.AreEquivalent(persons.Properties("Age"), new[] { 38, 10, 7, 7 });

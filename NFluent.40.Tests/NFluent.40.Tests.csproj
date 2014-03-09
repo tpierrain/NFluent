@@ -104,6 +104,9 @@
     <Compile Include="..\NFluent.35.Tests\ExtensionSpikeTests.cs">
       <Link>ExtensionSpikeTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35.Tests\ExtractingRelatedTests.cs">
+      <Link>ExtractingRelatedTests.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35.Tests\FluentMessageTests.cs">
       <Link>FluentMessageTests.cs</Link>
     </Compile>
@@ -157,9 +160,6 @@
     </Compile>
     <Compile Include="..\NFluent.35.Tests\ObjectRelatedTest.cs">
       <Link>ObjectRelatedTest.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.35.Tests\PropertiesRelatedTests.cs">
-      <Link>PropertiesRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35.Tests\ReadmeRelatedTests.cs">
       <Link>ReadmeRelatedTests.cs</Link>
@@ -300,7 +300,7 @@
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

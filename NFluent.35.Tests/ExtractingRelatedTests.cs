@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="PropertiesRelatedTests.cs" company="">
+// // <copyright file="ExtractingRelatedTests.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -20,12 +20,12 @@ namespace NFluent.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class PropertiesRelatedTests
+    public class ExtractingRelatedTests
     {
-        #region Properties extension method with IEnumerable
+        #region Extracting extension method with IEnumerable
 
         [Test]
-        public void PropertiesWorksWithEnumerable()
+        public void ExtractingWorksWithEnumerable()
         {
             var persons = new List<Person>
                                  {
@@ -35,12 +35,12 @@ namespace NFluent.Tests
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
 
-            Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
-            Check.That(persons.Properties("Age")).ContainsExactly(38, 10, 7, 7);
-            Check.That(persons.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+            Check.That(persons.Extracting("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+            Check.That(persons.Extracting("Age")).ContainsExactly(38, 10, 7, 7);
+            Check.That(persons.Extracting("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
 
             // more fluent than the following classical NUnit way, isn't it? 
-            // CollectionAssert.AreEquivalent(enumerable.Properties("Age"), new[] { 38, 10, 7, 7 });
+            // CollectionAssert.AreEquivalent(enumerable.Extracting("Age"), new[] { 38, 10, 7, 7 });
 
             // it's maybe even more fluent than the java versions
             // FEST fluent assert v 2.x:
@@ -51,7 +51,7 @@ namespace NFluent.Tests
 
         [Test]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void PropertiesThrowInvalidOperationExceptionIfPropertyDoesNotExist()
+        public void ExtractingThrowInvalidOperationExceptionIfPropertyDoesNotExist()
         {
             var musicians = new List<Person>
                                  {
@@ -59,14 +59,14 @@ namespace NFluent.Tests
                                      new Person { Name = "GZA", Nationality = Nationality.American }
                                  };
 
-            // Forced to enumerate the result so that the Properties extension method is executed (IEnumerable's lazy evaluation)
-            foreach (var propertyValue in musicians.Properties("Portnaouaq"))
+            // Forced to enumerate the result so that the Extracting extension method is executed (IEnumerable's lazy evaluation)
+            foreach (var propertyValue in musicians.Extracting("Portnaouaq"))
             {
             }
         }
 
         [Test]
-        public void PropertiesWorksEvenWithPrivateProperty()
+        public void ExtractingWorksEvenWithPrivateProperty()
         {
             var persons = new List<Person>
                                  {
@@ -74,12 +74,28 @@ namespace NFluent.Tests
                                      new Person { Name = "Borat" }
                                  };
 
-            Check.That(persons.Properties("PrivateHesitation")).ContainsExactly("Kamoulox !", "Kamoulox !");
+            Check.That(persons.Extracting("PrivateHesitation")).ContainsExactly("Kamoulox !", "Kamoulox !");
         }
 
         #endregion
 
-        #region Properties extension method with Array
+        #region Extracting extension method with Array
+
+        [Test]
+        public void ExtractingWorksWithArray()
+        {
+            Person[] persons = new[]
+                                 {
+                                     new Person { Name = "Thomas", Age = 38 }, 
+                                     new Person { Name = "Achille", Age = 10, Nationality = Nationality.French }, 
+                                     new Person { Name = "Anton", Age = 7, Nationality = Nationality.French }, 
+                                     new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
+                                 };
+
+            Check.That(persons.Extracting("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+            Check.That(persons.Extracting("Age")).ContainsExactly(38, 10, 7, 7);
+            Check.That(persons.Extracting("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+        }
 
         [Test]
         public void PropertiesWorksWithArray()
@@ -93,8 +109,6 @@ namespace NFluent.Tests
                                  };
 
             Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
-            Check.That(persons.Properties("Age")).ContainsExactly(38, 10, 7, 7);
-            Check.That(persons.Properties("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
         }
 
         #endregion
