@@ -2,7 +2,7 @@ New feature(s):
 * 
 --------------
 Change(s):
-* 
+* InheritsFrom does not return a linkable check anymore (but void).
 --------------
 Bug Fixe(s):
-*
+* IsNull and IsNotNull are now able to conserve the checked typed (instead of converting into a object).
