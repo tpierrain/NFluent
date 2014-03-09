@@ -80,13 +80,13 @@ namespace NFluent.Helpers
                 return;
             }
 
-            var message =
-                FluentMessage.BuildMessage("The {0} does not have the expected inheritance.")
+            var message = FluentMessage.BuildMessage("The {0} does not have the expected inheritance.")
                              .For("expression type")
                              .On(instanceType)
                              .Label("Indeed, the {0} {1}")
                              .And.Expected(expectedBaseType)
                              .Label("is not a derived type of");
+            
             throw new FluentCheckException(message.ToString());
         }
 

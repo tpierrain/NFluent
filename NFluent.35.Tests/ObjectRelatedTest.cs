@@ -55,6 +55,13 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsNullDoesNotLoseOriginalTypeForOtherCheck()
+        {
+            var values = new[] { 0, 1, 2 };
+            Check.That(values).Not.IsNull().And.HasSize(3);
+        }
+
+        [Test]
         public void IsNotNullWorksWithNullable()
         {
             Mood? goodMood = new Mood();
@@ -66,6 +73,13 @@ namespace NFluent.Tests
         public void IsNotNullThrowsExceptionWithNullNullable()
         {
             Check.That((Mood?)null).IsNotNull();
+        }
+
+        [Test]
+        public void IsNotNullDoesNotLoseOriginalTypeForOtherCheck()
+        {
+            var values = new[] { 0, 1, 2 };
+            Check.That(values).IsNotNull().And.HasSize(3);
         }
 
         [Test]

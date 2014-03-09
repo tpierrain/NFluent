@@ -136,6 +136,42 @@ namespace NFluent.Extensibility
             return this.ReturnValueForLinkage;
         }
 
+        /// <summary>
+        /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
+        /// </summary>
+        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified).
+        /// This lambda should simply return if everything is ok, or throws a
+        /// <see cref="FluentCheckException" /> otherwise.</param>
+        /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
+        /// <exception cref="FluentCheckException">The check fails.</exception>
+        public void ExecuteNotLinkableCheck(Action action, string negatedExceptionMessage)
+        {
+            try
+            {
+                // execute test
+                action();
+            }
+            catch (FluentCheckException)
+            {
+                // exception raised, and this was not expected
+                if (!this.fluentCheckForExtensibility.Negated)
+                {
+                    throw;
+                }
+
+                // exception was expected
+                return;
+            }
+
+            if (this.fluentCheckForExtensibility.Negated)
+            {
+                // the expected exception did not occur
+                throw new FluentCheckException(negatedExceptionMessage);
+            }
+
+            return;
+        }
+
         #endregion
     }
 }

@@ -159,18 +159,15 @@ namespace NFluent
         /// </summary>
         /// <typeparam name="T">The Type which is expected to be a base Type of the actual expression.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
         /// <exception cref="FluentCheckException">The checked expression is not in the inheritance hierarchy of the given kind.</exception>
-        public static ICheckLink<ICheck<object>> InheritsFrom<T>(this ICheck<object> check)
+        public static void InheritsFrom<T>(this ICheck<object> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             Type instanceType = checker.Value.GetTypeWithoutThrowingException();
             Type expectedBaseType = typeof(T);
 
-            return checker.ExecuteCheck(
+            checker.ExecuteNotLinkableCheck(
                 () =>
                 {
                     IsInstanceHelper.InheritsFrom(checker.Value, expectedBaseType);
@@ -181,10 +178,15 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual expression is null.
         /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
         /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>A check link.</returns>
+        /// <returns>
+        /// A check link.
+        /// </returns>
         /// <exception cref="FluentCheckException">The checked value is not null.</exception>
-        public static ICheckLink<ICheck<object>> IsNull(this ICheck<object> check)
+        public static ICheckLink<ICheck<T>> IsNull<T>(this ICheck<T> check) where T : class
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = checker.Negated;
@@ -196,13 +198,15 @@ namespace NFluent
                 throw new FluentCheckException(FluentMessage.BuildMessage(message).For("object").On(value).ToString());
             }
 
-            return new CheckLink<ICheck<object>>(check);
+            return new CheckLink<ICheck<T>>(check);
         }
 
         /// <summary>
         /// Checks that the actual Nullable value is null.
         /// </summary>
-        /// <typeparam name="T">Type for the check.</typeparam>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
         /// A check link.
@@ -226,7 +230,9 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual Nullable value is not null.
         /// </summary>
-        /// <typeparam name="T">The checked type.</typeparam>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
         /// A check link.
@@ -250,12 +256,17 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual expression is not null.
         /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
         /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>A check link.</returns>
+        /// <returns>
+        /// A check link.
+        /// </returns>
         /// <exception cref="FluentCheckException">Is the value is null.</exception>
-        public static ICheckLink<ICheck<object>> IsNotNull(this ICheck<object> check)
+        public static ICheckLink<ICheck<T>> IsNotNull<T>(this ICheck<T> check) where T : class
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker<T>(check);
             var negated = checker.Negated;
             var value = checker.Value;
 
@@ -265,7 +276,7 @@ namespace NFluent
                 throw new FluentCheckException(FluentMessage.BuildMessage(message).For("object").On(value).ToString());
             }
 
-            return new CheckLink<ICheck<object>>(check);
+            return new CheckLink<ICheck<T>>(check);
         }
 
         private static string IsNullImpl(object value, bool negated)
@@ -566,6 +577,7 @@ namespace NFluent
                 return result;
             }
 
+            // TODO: add a conditional compilation here for Mono/Xamarin 
             if (EvaluateCriteria(MonoAnonymousTypeFieldMask, name, out result))
             {
                 kind = FieldKind.AnonymousClass;
