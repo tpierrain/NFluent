@@ -119,6 +119,7 @@ namespace NFluent.Helpers
                                        .On(value)
                                         .WithType(true, true)
                                        .And.ExpectedType(typeOperand)
+										.WithType (true, true)
                                        .Label("The {0} type:");
             }
             else

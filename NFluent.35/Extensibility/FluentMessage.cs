@@ -418,7 +418,7 @@ namespace NFluent.Extensibility
                var description = new StringBuilder();
                if (this.anyInstance)
                {
-                   description.Append("any instance");
+					description.Append("an instance");
                }
                else if (this.test == null)
                {
