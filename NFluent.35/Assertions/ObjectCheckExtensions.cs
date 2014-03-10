@@ -292,13 +292,16 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value has an expected reference.
         /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected object.</param>
         /// <returns>
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not the same reference than the expected value.</exception>
-        public static ICheckLink<ICheck<object>> IsSameReferenceThan(this ICheck<object> check, object expected)
+        public static ICheckLink<ICheck<T>> IsSameReferenceThan<T>(this ICheck<T> check, object expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = checker.Negated;
@@ -316,7 +319,7 @@ namespace NFluent
                                                              .ToString());
             }
 
-            return new CheckLink<ICheck<object>>(check);
+            return new CheckLink<ICheck<T>>(check);
         }
 
         private static string SameReferenceImpl(object expected, object value, bool negated, out string comparison)
@@ -344,13 +347,16 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value is a different instance than a comparand.
         /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="comparand">The expected value to be distinct from.</param>
         /// <returns>
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is the same instance than the comparand.</exception>
-        public static ICheckLink<ICheck<object>> IsDistinctFrom(this ICheck<object> check, object comparand)
+        public static ICheckLink<ICheck<T>> IsDistinctFrom<T>(this ICheck<T> check, object comparand)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = !checker.Negated;
@@ -368,20 +374,25 @@ namespace NFluent
                                                              .ToString());
             }
 
-            return new CheckLink<ICheck<object>>(check);
+            return new CheckLink<ICheck<T>>(check);
         }
 
         /// <summary>
         /// Checks that the actual value has fields equals to the expected value ones.
         /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value doesn't have all fields equal to the expected value ones.</exception>
-        /// <remarks>The comparison is done field by field.</remarks>
-        public static ICheckLink<ICheck<object>> HasFieldsWithSameValues(this ICheck<object> check, object expected)
+        /// <remarks>
+        /// The comparison is done field by field.
+        /// </remarks>
+        public static ICheckLink<ICheck<T>> HasFieldsWithSameValues<T>(this ICheck<T> check, object expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = checker.Negated;
@@ -394,7 +405,7 @@ namespace NFluent
                 throw new FluentCheckException(message);
             }
 
-            return new CheckLink<ICheck<object>>(check);
+            return new CheckLink<ICheck<T>>(check);
         }
 
         /// <summary>
@@ -417,14 +428,19 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual value doesn't have all fields equal to the expected value ones.
         /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <returns>
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value has all fields equal to the expected value ones.</exception>
-        /// <remarks>The comparison is done field by field.</remarks>
-        public static ICheckLink<ICheck<object>> HasNotFieldsWithSameValues(this ICheck<object> check, object expected)
+        /// <remarks>
+        /// The comparison is done field by field.
+        /// </remarks>
+        public static ICheckLink<ICheck<T>> HasNotFieldsWithSameValues<T>(this ICheck<T> check, object expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = !checker.Negated;
@@ -437,7 +453,7 @@ namespace NFluent
                 throw new FluentCheckException(message);
             }
 
-            return new CheckLink<ICheck<object>>(check);
+            return new CheckLink<ICheck<T>>(check);
         }
 
         /// <summary>

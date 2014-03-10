@@ -23,10 +23,17 @@ namespace NFluent.Tests
     public class ObjectRelatedTest
     {
         [Test]
-        public void IsSameObjecWorks()
+        public void IsSameReferenceThanWorks()
         {
             var test = new object();
             Check.That(test).IsSameReferenceThan(test);
+        }
+
+        [Test]
+        public void IsSameReferenceThanDoesNotLoseOriginalTypeForOtherCheck()
+        {
+            var numbers = new int[] { 1, 4, 42 };
+            Check.That(numbers).IsSameReferenceThan(numbers).And.Contains(42);
         }
 
         [Test]
@@ -40,6 +47,14 @@ namespace NFluent.Tests
         public void IsDistinctWorks()
         {
             Check.That(new object()).IsDistinctFrom(new object());
+        }
+        
+        [Test]
+        public void IsDistinctFromDoesNotLoseOriginalTypeForOtherCheck()
+        {
+            var numbers = new int[] { 1, 4, 42 };
+            var otherNumbers = new int[] { 7, 8, 9 };
+            Check.That(numbers).IsDistinctFrom(otherNumbers).And.Contains(42);
         }
 
         [Test]
@@ -164,6 +179,13 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void HasNotFieldsWithSameValuesDoesNotLoseOriginalTypeForOtherCheck()
+        {
+            var numbers = new int[] { 1, 2, 3 };
+            Check.That(numbers).HasNotFieldsWithSameValues(new { Length = 99 }).And.Contains(2);
+        }
+
+        [Test]
         public void HasFieldsNotEqualToThoseIsObsoleteButWorks()
         {
             var x = new DummyClass();
@@ -197,17 +219,24 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void HasFieldsEqualWorksForAutoProperty()
+        public void HasFieldsWithSameValuesWorksForAutoProperty()
         {
             var x = new DummyWithAutoProperty();
             Check.That(x).HasFieldsWithSameValues(new DummyWithAutoProperty());
         }
 
         [Test]
-        public void HasFieldsEqualWorksAgainstAnonymousClass()
+        public void HasFieldsWithSameValuesWorksAgainstAnonymousClass()
         {
             var x = new DummyClass();
             Check.That(x).HasFieldsWithSameValues(new { x = 2, y = 3 });
+        }
+
+        [Test]
+        public void HasFieldsWithSameValuesDoesNotLoseOriginalTypeForOtherCheck()
+        {
+            var numbers = new int[] { 1, 2, 3 };
+            Check.That(numbers).HasFieldsWithSameValues(new { Length = 3 }).And.Contains(2);
         }
 
         [Test]
