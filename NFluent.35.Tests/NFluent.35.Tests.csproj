@@ -144,6 +144,7 @@
     <Compile Include="TimeSpanTests.cs" />
     <Compile Include="ToEnumeratedStringTests.cs" />
     <Compile Include="UserReportedIssuesTests.cs" />
+    <Compile Include="XamarinSpecificTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NFluent.snk" />
