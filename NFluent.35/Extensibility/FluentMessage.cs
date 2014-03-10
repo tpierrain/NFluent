@@ -346,8 +346,8 @@ namespace NFluent.Extensibility
             /// Initializes a new instance of the <see cref="MessageBlock"/> class.
             /// </summary>
             /// <param name="message">The message.</param>
-            /// <param name="type">The type.</param>
-            /// <param name="attribute">The attribute.</param>
+            /// <param name="type">The tested type.</param>
+            /// <param name="attribute">The block attribute.</param>
             public MessageBlock(FluentMessage message, Type type, string attribute)
             {
                 if (message == null)
@@ -379,7 +379,6 @@ namespace NFluent.Extensibility
                }
            }
 
-
            #endregion
 
             #region methods
@@ -398,11 +397,8 @@ namespace NFluent.Extensibility
 
                if (this.includeType && this.type != null)
                {
-                   builder.AppendFormat(
-                       " of type: [{0}]",
-                       this.fullTypeName
-                           ? this.type.AssemblyQualifiedName
-                           : this.type.ToStringProperlyFormated());
+                   var temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormated();
+                   builder.AppendFormat(" of type: [{0}]", temp);
                }
 
                if (this.includeHash && this.test != null)
@@ -418,7 +414,7 @@ namespace NFluent.Extensibility
                var description = new StringBuilder();
                if (this.anyInstance)
                {
-					description.Append("an instance");
+                   description.Append("\tan instance");
                }
                else if (this.test == null)
                {

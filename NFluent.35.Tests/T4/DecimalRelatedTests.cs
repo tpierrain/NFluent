@@ -476,7 +476,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[1] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [decimal?] whereas it must not.\nThe checked value:\n\t[1] of type: [decimal?]\nThe expected value: different from\n\tan instance of type: [decimal?]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
             decimal? one = 1M;
@@ -493,7 +493,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[null] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [decimal?] whereas it must not.\nThe checked value:\n\t[null] of type: [decimal?]\nThe expected value: different from\n\tan instance of type: [decimal?]")]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             decimal? noValue = null;
@@ -502,7 +502,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of string.\nThe checked value:\n\t[null] of type: [decimal?]\nThe expected type:\n\t[string]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of [string].\nThe checked value:\n\t[null] of type: [decimal?]\nThe expected value:\n\tan instance of type: [string]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
             decimal? one = null;
@@ -523,7 +523,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[1] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [decimal?] whereas it must not.\nThe checked value:\n\t[1] of type: [decimal?]\nThe expected value: different from\n\tan instance of type: [decimal?]")]
         public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
         {
             decimal? one = 1M;
@@ -532,7 +532,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of decimal? whereas it must not.\nThe checked value:\n\t[null] of type: [decimal?]\nThe expected type: different from\n\t[decimal?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [decimal?] whereas it must not.\nThe checked value:\n\t[null] of type: [decimal?]\nThe expected value: different from\n\tan instance of type: [decimal?]")]
         public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             decimal? noValue = null;

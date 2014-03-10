@@ -476,7 +476,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[1] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [ushort?] whereas it must not.\nThe checked value:\n\t[1] of type: [ushort?]\nThe expected value: different from\n\tan instance of type: [ushort?]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
             ushort? one = 1;
@@ -493,7 +493,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[null] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [ushort?] whereas it must not.\nThe checked value:\n\t[null] of type: [ushort?]\nThe expected value: different from\n\tan instance of type: [ushort?]")]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             ushort? noValue = null;
@@ -502,7 +502,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of string.\nThe checked value:\n\t[null] of type: [ushort?]\nThe expected type:\n\t[string]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of [string].\nThe checked value:\n\t[null] of type: [ushort?]\nThe expected value:\n\tan instance of type: [string]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
             ushort? one = null;
@@ -523,7 +523,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[1] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [ushort?] whereas it must not.\nThe checked value:\n\t[1] of type: [ushort?]\nThe expected value: different from\n\tan instance of type: [ushort?]")]
         public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
         {
             ushort? one = 1;
@@ -532,7 +532,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of ushort? whereas it must not.\nThe checked value:\n\t[null] of type: [ushort?]\nThe expected type: different from\n\t[ushort?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [ushort?] whereas it must not.\nThe checked value:\n\t[null] of type: [ushort?]\nThe expected value: different from\n\tan instance of type: [ushort?]")]
         public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             ushort? noValue = null;
