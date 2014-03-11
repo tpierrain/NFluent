@@ -27,7 +27,9 @@ namespace NFluent.Tests
         public void NUnitDetection()
         {
             var ex = ExceptionHelper.BuildException("the message");
-            Check.That(ex).IsInstanceOf<AssertionException>();
+			// test is relaxed due to issue on Xamarin
+			Check.That (ex.GetType ().FullName).IsEqualTo ("NUnit.Framework.AssertionException");
+			//Check.That(ex).IsInstanceOf<AssertionException>();
         }
     }
 }

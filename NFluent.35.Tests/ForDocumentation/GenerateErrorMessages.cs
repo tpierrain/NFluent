@@ -113,68 +113,81 @@ namespace NFluent.Tests.ForDocumentation
             // scan all assemblies
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                // get all test fixtures
-                foreach (var type in
-                    assembly.GetTypes()
-                            .Where(
-                                type =>
-                                ((type.GetInterface("IForkableCheck") != null
-                                  && (type.Attributes & TypeAttributes.Abstract) == 0)
-                                 || type.GetCustomAttributes(typeof(ExtensionAttribute), false).Length > 0)
-                                && ((type.Attributes & TypeAttributes.Public) == TypeAttributes.Public)))
-                {
-                    try
-                    {
-                        // enumerate public methods
-                        IEnumerable<MethodInfo> tests =
-                            type.GetMethods(
-                                BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static
-                                | BindingFlags.DeclaredOnly)
-                                .Where(
-                                    method =>
-                                    method.MemberType == MemberTypes.Method
-                                    && ((method.Attributes & MethodAttributes.SpecialName) == 0));
-                        var publicMethods = tests as IList<MethodInfo> ?? tests.ToList();
-                        if (publicMethods.Count > 0)
-                        {
-                            // scan all methods
-                            foreach (var checkMethod in publicMethods)
-                            {
-                                try
-                                {
-                                    if (checkMethod.Name == "ForkInstance")
-                                    {
-                                        // skip forkinstance
-                                        continue;
-                                    }
+				if (assembly.GetName().Name == "MonoDevelop.NUnit")
+				{
+					// skip MonoDevelop.NUnit assembly because GetTypes fails
+					continue;
+				}
+				try
+				{
+	                // get all test fixtures
+	                foreach (var type in
+	                    assembly.GetTypes()
+	                            .Where(
+	                                type =>
+	                                ((type.GetInterface("IForkableCheck") != null
+	                                  && (type.Attributes & TypeAttributes.Abstract) == 0)
+	                                 || type.GetCustomAttributes(typeof(ExtensionAttribute), false).Length > 0)
+	                                && ((type.Attributes & TypeAttributes.Public) == TypeAttributes.Public)))
+	                {
+	                    try
+	                    {
+	                        // enumerate public methods
+	                        IEnumerable<MethodInfo> tests =
+	                            type.GetMethods(
+	                                BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static
+	                                | BindingFlags.DeclaredOnly)
+	                                .Where(
+	                                    method =>
+	                                    method.MemberType == MemberTypes.Method
+	                                    && ((method.Attributes & MethodAttributes.SpecialName) == 0));
+	                        var publicMethods = tests as IList<MethodInfo> ?? tests.ToList();
+	                        if (publicMethods.Count > 0)
+	                        {
+	                            // scan all methods
+	                            foreach (var checkMethod in publicMethods)
+	                            {
+	                                try
+	                                {
+	                                    if (checkMethod.Name == "ForkInstance")
+	                                    {
+	                                        // skip forkinstance
+	                                        continue;
+	                                    }
 
-                                    var desc = CheckDescription.AnalyzeSignature(checkMethod);
+	                                    var desc = CheckDescription.AnalyzeSignature(checkMethod);
 
-                                    if (desc != null)
-                                    {
-                                        if (desc.CheckedType == null)
-                                        {
-                                            RunnerHelper.Log(string.Format("Failed to identify checked type on test {0}", checkMethod.Name));
-                                        }
-                                        else
-                                        {
-                                            RunnerHelper.Log(string.Format("Method :{0}.{1}({2})", type.Name, checkMethod.Name, desc.CheckedType.Name));
-                                            report.AddEntry(desc);
-                                        }
-                                    }
-                                }
-                                catch (Exception e)
-                                {
-                                    RunnerHelper.Log(string.Format("Exception while assessing test {2} on type:{0}\n{1}", type.FullName, e, checkMethod.Name));
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        RunnerHelper.Log(string.Format("Exception while working on type:{0}\n{1}", type.FullName, e));
-                    }
-                }
+	                                    if (desc != null)
+	                                    {
+	                                        if (desc.CheckedType == null)
+	                                        {
+	                                            RunnerHelper.Log(string.Format("Failed to identify checked type on test {0}", checkMethod.Name));
+	                                        }
+	                                        else
+	                                        {
+	                                            RunnerHelper.Log(string.Format("Method :{0}.{1}({2})", type.Name, checkMethod.Name, desc.CheckedType.Name));
+	                                            report.AddEntry(desc);
+	                                        }
+	                                    }
+	                                }
+	                                catch (Exception e)
+	                                {
+	                                    RunnerHelper.Log(string.Format("Exception while assessing test {2} on type:{0}\n{1}", type.FullName, e, checkMethod.Name));
+	                                }
+	                            }
+	                        }
+	                    }
+	                    catch (Exception e)
+	                    {
+	                        RunnerHelper.Log(string.Format("Exception while working on type:{0}\n{1}", type.FullName, e));
+	                    }
+	                }
+				}
+				catch (Exception e)
+				{
+					RunnerHelper.Log(string.Format("Exception while working on assembly:{0}\n{1}", assembly.FullName, e));
+					throw new ApplicationException (string.Format ("Exception while working on assembly:{0}\n{1}", assembly.FullName, e));
+				}
             }
 
             // xml save
