@@ -106,6 +106,9 @@
     <Compile Include="..\NFluent.35.Tests\ExtensionSpikeTests.cs">
       <Link>ExtensionSpikeTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35.Tests\ExtractingRelatedTests.cs">
+      <Link>ExtractingRelatedTests.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35.Tests\FluentMessageTests.cs">
       <Link>FluentMessageTests.cs</Link>
     </Compile>
@@ -159,9 +162,6 @@
     </Compile>
     <Compile Include="..\NFluent.35.Tests\ObjectRelatedTest.cs">
       <Link>ObjectRelatedTest.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.35.Tests\PropertiesRelatedTests.cs">
-      <Link>PropertiesRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35.Tests\ReadmeRelatedTests.cs">
       <Link>ReadmeRelatedTests.cs</Link>

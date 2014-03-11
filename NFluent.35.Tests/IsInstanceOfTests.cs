@@ -338,7 +338,7 @@ namespace NFluent.Tests
         public void InheritsFromThrowsExceptionWhenFailing()
         {
             var father = new Person { Name = "Odysseus" };
-            Check.That(father).InheritsFrom<NFluent.Tests.Child>();
+            Check.That(father).InheritsFrom<Child>();
         }
 
         [Test]

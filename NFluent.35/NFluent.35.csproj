@@ -136,7 +136,7 @@
     <Compile Include="ICheck.cs" />
     <Compile Include="Assertions\IntCheckExtensions.cs" />
     <Compile Include="Helpers\IsInstanceHelper.cs" />
-    <Compile Include="Extensions\PropertiesExtensions.cs" />
+    <Compile Include="Extensions\ExtractingExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Assertions\StringCheckExtensions.cs" />
     <Compile Include="Helpers\TimeHelper.cs" />
