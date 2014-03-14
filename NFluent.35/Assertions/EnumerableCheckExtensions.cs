@@ -62,7 +62,7 @@ namespace NFluent
                         return;
                     }
 
-                    if (checker.Value == null && otherEnumerable != null)
+                    if (checker.Value == null)
                     {
                         var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain the given expected value(s).").For("enumerable").On(checker.Value).And.ExpectedValues(otherEnumerable).ToString();
                         throw new FluentCheckException(message);
@@ -200,7 +200,7 @@ namespace NFluent
                     while (first.MoveNext())
                     {
                         if (!second.MoveNext() 
-                            || !object.Equals(first.Current, second.Current))
+                            || !Equals(first.Current, second.Current))
                         {
                             throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker.Value, enumerable));
                         }
@@ -366,7 +366,7 @@ namespace NFluent
             {
                 foreach (var expectedValue in expectedValues)
                 {
-                    if (object.Equals(element, expectedValue))
+                    if (Equals(element, expectedValue))
                     {
                         notFoundValues.RemoveAll(one => one.Equals(expectedValue));
                         break;
@@ -442,7 +442,7 @@ namespace NFluent
             }
             else
             {
-                properExpectedValues = expectedValues as IEnumerable;
+                properExpectedValues = expectedValues;
             }
 
             return properExpectedValues;

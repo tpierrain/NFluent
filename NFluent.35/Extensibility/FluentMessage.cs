@@ -324,7 +324,7 @@ namespace NFluent.Extensibility
 
             private long? enumerableCount;
 
-            private bool anyInstance;
+            private readonly bool anyInstance;
 
             #endregion
 
