@@ -243,6 +243,36 @@ namespace NFluent.Tests
             Check.That(Alphabet).HasSize(26);
         }
 
+        #region IsOneOfThese
+
+        [Test]
+        public void IsOneOfTheseWorks()
+        {
+            Check.That("The Black Keys").IsOneOfThese("Metronomy", "Sigur Ros", "The Black Keys", "Get Well Soon");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not one of the possible elements.\nThe checked value:\n\t[\"The Black Keys\"]\nThe possible elements:\n\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]")]
+        public void IsOneOfTheseWorksThrowsExceptionWhenFailing()
+        {
+            Check.That("The Black Keys").IsOneOfThese("Paco de Lucia", "Jimi Hendrix", "Baden Powell");
+        }
+
+        [Test]
+        public void NotIsOneOfTheseWorks()
+        {
+            Check.That("The Black Keys").Not.IsOneOfThese("Paco de Lucia", "Jimi Hendrix", "Baden Powell");
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is one of the possible elements whereas it must not.\nThe checked value:\n\t[\"The Black Keys\"]\nThe possible elements:\n\t[\"Metronomy\", \"Sigur Ros\", \"The Black Keys\", \"Get Well Soon\"]")]
+        public void NotIsOneOfTheseThrowsExceptionWhenFailing()
+        {
+            Check.That("The Black Keys").Not.IsOneOfThese("Metronomy", "Sigur Ros", "The Black Keys", "Get Well Soon");
+        }
+
+        #endregion
+
         #region Match
         [Test]
         public void StringMatchesWorks()

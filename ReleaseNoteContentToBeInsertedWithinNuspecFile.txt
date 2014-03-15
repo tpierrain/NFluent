@@ -1,11 +1,13 @@
 New feature(s):
-* 
+* Adds IsOneOfThese() check for string.
 --------------
 Change(s):
 * Renames the Properties extension method on IEnumerable to Extracting. Properties is still there, but marked as obsolete.
+* Improves error messages for IsInstanceOf checks.
+* IsNull, IsNotNull, IsSameReferenceThan, IsDistinctFrom, HasFieldsWithSameValues and HasNotFieldsWithSameValues are now able to conserve the checked typed (instead of loosing it by converting it into a object).
 * InheritsFrom does not return a linkable check anymore (but void).
 --------------
 Bug Fixe(s):
 * Fixes a null ref exception for Contains on null
 * Fixes a null ref exception for HasFieldsWithSameValues
-* IsNull, IsNotNull, IsSameReferenceThan, IsDistinctFrom, HasFieldsWithSameValues and HasNotFieldsWithSameValues are now able to conserve the checked typed (instead of loosing it by converting it into a object).
+
