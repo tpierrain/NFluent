@@ -1,5 +1,5 @@
 New feature(s):
-* 
+* Adds IsOneOfThese() check for string.
 --------------
 Change(s):
 * Renames the Properties extension method on IEnumerable to Extracting. Properties is still there, but marked as obsolete.

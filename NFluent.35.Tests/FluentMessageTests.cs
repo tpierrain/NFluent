@@ -109,6 +109,20 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void WeCanConfigureTheExpectedLabel()
+        {
+            var possibleElements = new string[] { "Paco de Lucia", "Jimi Hendrix", "Baden Powell" };
+            var checkedValue = "The Black Keys";
+
+            var errorMessage = FluentMessage.BuildMessage("The {0} is not one of the possible elements.")
+                                            .On(checkedValue)
+                                            .And.Expected(possibleElements).Label("The possible elements:")
+                                            .ToString();
+
+            Assert.AreEqual("\nThe checked value is not one of the possible elements.\nThe checked value:\n\t[\"The Black Keys\"]\nThe possible elements:\n\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
+        }
+
+        [Test]
         public void WorksWithChar()
         {
             const char LowerCasedA = 'a';
