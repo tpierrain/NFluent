@@ -106,19 +106,30 @@ namespace NFluent.Helpers
             FluentMessage.MessageBlock message;
             if (isSameType)
             {
-                message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of {0} whereas it must not.", typeOperand.ToStringProperlyFormated()))
+                message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of [{0}] whereas it must not.", typeOperand.ToStringProperlyFormated()))
                                        .On(value)
                                        .WithType()
-                                       .And.Expected(typeOperand)
-                                       .Label("The {0} type: different from");
+                                       .And.ExpectedType(typeOperand)
+                                       .WithType()
+                                       .Comparison("different from");
+            }
+            else if (value != null && value.GetType().FullName == typeOperand.FullName)
+            {
+                // cannot discriminate from type name
+                message = FluentMessage.BuildMessage("The {0} .")
+                                       .On(value)
+                                        .WithType(true, true)
+                                       .And.ExpectedType(typeOperand)
+                                        .WithType(true, true);
             }
             else
             {
-                message = FluentMessage.BuildMessage("The {0} is not an instance of the expected type.")
-                                       .On(value)
-                                       .WithType()
-                                       .And.Expected(typeOperand)
-                                       .Label("The {0} type:");
+                message =
+                    FluentMessage.BuildMessage("The {0} is not an instance of the expected type.")
+                                 .On(value)
+                                 .WithType()
+                                 .And.ExpectedType(typeOperand)
+                                 .WithType();
             }
         
             return message.ToString();
@@ -129,19 +140,18 @@ namespace NFluent.Helpers
             FluentMessage.MessageBlock message;
             if (isSameType)
             {
-                message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of {0} whereas it must not.", expectedType.ToStringProperlyFormated()))
+                message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of [{0}] whereas it must not.", expectedType.ToStringProperlyFormated()))
                     .On(value)
                     .WithType(instanceType)
-                    .And.Expected(expectedType)
-                    .Label("The {0} type: different from");
+                    .And.ExpectedType(expectedType)
+                    .Comparison("different from").WithType();
             }
             else
             {
-                message = FluentMessage.BuildMessage(string.Format("The {{0}} is not an instance of {0}.", expectedType.ToStringProperlyFormated()))
+                message = FluentMessage.BuildMessage(string.Format("The {{0}} is not an instance of [{0}].", expectedType.ToStringProperlyFormated()))
                     .On(value)
                     .WithType(instanceType)
-                    .And.Expected(expectedType)
-                    .Label("The {0} type:");
+                    .And.ExpectedType(expectedType).WithType();
             }
 
             return message.ToString();

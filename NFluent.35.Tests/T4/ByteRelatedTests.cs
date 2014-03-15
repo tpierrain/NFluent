@@ -476,7 +476,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of byte? whereas it must not.\nThe checked value:\n\t[1] of type: [byte?]\nThe expected type: different from\n\t[byte?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [byte?] whereas it must not.\nThe checked value:\n\t[1] of type: [byte?]\nThe expected value: different from\n\tan instance of type: [byte?]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
             byte? one = 1;
@@ -493,7 +493,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of byte? whereas it must not.\nThe checked value:\n\t[null] of type: [byte?]\nThe expected type: different from\n\t[byte?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [byte?] whereas it must not.\nThe checked value:\n\t[null] of type: [byte?]\nThe expected value: different from\n\tan instance of type: [byte?]")]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             byte? noValue = null;
@@ -502,7 +502,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of string.\nThe checked value:\n\t[null] of type: [byte?]\nThe expected type:\n\t[string]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of [string].\nThe checked value:\n\t[null] of type: [byte?]\nThe expected value:\n\tan instance of type: [string]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
             byte? one = null;
@@ -523,7 +523,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of byte? whereas it must not.\nThe checked value:\n\t[1] of type: [byte?]\nThe expected type: different from\n\t[byte?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [byte?] whereas it must not.\nThe checked value:\n\t[1] of type: [byte?]\nThe expected value: different from\n\tan instance of type: [byte?]")]
         public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
         {
             byte? one = 1;
@@ -532,7 +532,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of byte? whereas it must not.\nThe checked value:\n\t[null] of type: [byte?]\nThe expected type: different from\n\t[byte?]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [byte?] whereas it must not.\nThe checked value:\n\t[null] of type: [byte?]\nThe expected value: different from\n\tan instance of type: [byte?]")]
         public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             byte? noValue = null;

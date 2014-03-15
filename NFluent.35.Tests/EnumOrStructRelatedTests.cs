@@ -101,7 +101,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[French] of type: [NFluent.Tests.Nationality]\nThe expected type:\n\t[int]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[French] of type: [NFluent.Tests.Nationality]\nThe expected value:\n\tan instance of type: [int]")]
         public void IsInstanceOfFailsPropery()
         {
             const Nationality FrenchNationality = Nationality.French;
@@ -109,7 +109,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of NFluent.Tests.Nationality whereas it must not.\nThe checked value:\n\t[French] of type: [NFluent.Tests.Nationality]\nThe expected type: different from\n\t[NFluent.Tests.Nationality]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [NFluent.Tests.Nationality] whereas it must not.\nThe checked value:\n\t[French] of type: [NFluent.Tests.Nationality]\nThe expected value: different from\n\tan instance of type: [NFluent.Tests.Nationality]")]
         public void IsNotInstanceOfFailsProperly()
         {
             const Nationality FrenchNationality = Nationality.French;

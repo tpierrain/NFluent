@@ -43,7 +43,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of char whereas it must not.\nThe checked value:\n\t['a'] of type: [char]\nThe expected type: different from\n\t[char]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [char] whereas it must not.\nThe checked value:\n\t['a'] of type: [char]\nThe expected value: different from\n\tan instance of type: [char]")]
         public void NotIsInstanceOfThrows()
         {
             const char FirstLetterLowerCase = 'a';
@@ -51,7 +51,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of char whereas it must not.\nThe checked value:\n\t['a'] of type: [char]\nThe expected type: different from\n\t[char]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [char] whereas it must not.\nThe checked value:\n\t['a'] of type: [char]\nThe expected value: different from\n\tan instance of type: [char]")]
         public void IsNotInstanceOfThrows()
         {
             const char FirstLetterLowerCase = 'a';
