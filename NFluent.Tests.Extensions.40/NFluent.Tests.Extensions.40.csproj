@@ -13,6 +13,8 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,10 +40,10 @@
     <AssemblyOriginatorKeyFile>..\NFluent.Tests.Extensions\NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System.Core" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\NFluent.Tests.Extensions\Child.cs">
@@ -86,10 +88,11 @@
     <None Include="..\NFluent.Tests.Extensions\Settings.StyleCop">
       <Link>Settings.StyleCop</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NFluent.40\NFluent.40.csproj">
-      <Project>{1e2d9d56-d0a4-4d2e-8f2b-f211000e1667}</Project>
+      <Project>{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}</Project>
       <Name>NFluent.40</Name>
     </ProjectReference>
   </ItemGroup>
