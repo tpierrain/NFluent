@@ -142,7 +142,7 @@ namespace NFluent
         /// <summary>
         /// Checks that the enumerable contains only the given expected values and nothing else, in order.
         /// This check should only be used with IEnumerable that have a consistent iteration order
-        /// (i.e. don't use it with <see cref="Hashtable" />, prefer <see cref="IsOnlyMadeOf{T}" /> in that case).
+        /// (i.e. don't use it with Hashtable, prefer <see cref="IsOnlyMadeOf{T}" /> in that case).
         /// </summary>
         /// <typeparam name="T">Type of the elements to be found.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
@@ -161,7 +161,7 @@ namespace NFluent
         /// <summary>
         /// Checks that the enumerable contains only the values of another enumerable and nothing else, in order.
         /// This check should only be used with IEnumerable that have a consistent iteration order
-        /// (i.e. don't use it with <see cref="Hashtable" />, prefer <see cref="IsOnlyMadeOf{T}" /> in that case).
+        /// (i.e. don't use it with Hashtable, prefer <see cref="IsOnlyMadeOf{T}" /> in that case).
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="otherEnumerable">The other enumerable containing the exact expected values to be found.</param>
