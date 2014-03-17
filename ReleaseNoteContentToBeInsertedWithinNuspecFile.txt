@@ -1,6 +1,6 @@
 New feature(s):
 * Adds IsOneOfThese() check for string.
-* Provides a Portable Class Library version for NFluent (portable-net4+sl5+wp8+win8+MonoMac+MonoTouch+MonoAndroid)
+* NFluent is now also available as a Portable Class Library (Profile: portable-net4+sl5+wp8+win8+MonoMac+MonoTouch+MonoAndroid)
 --------------
 Change(s):
 * Renames the Properties extension method on IEnumerable to Extracting. Properties is still there, but marked as obsolete.
