@@ -36,6 +36,8 @@ namespace NFluent.Extensibility
 
         private const string GivenAdjective = "given";
 
+        private const string EndOfLine = "\n";
+
         private readonly string message;
 
         private MessageBlock expectedBlock;
@@ -91,7 +93,7 @@ namespace NFluent.Extensibility
         /// <value>
         /// The expected label.
         /// </value>
-        public string ExpectedLabel
+        private string ExpectedLabel
         {
             get
             {
@@ -105,7 +107,7 @@ namespace NFluent.Extensibility
         /// <value>
         /// The expected values label.
         /// </value>
-        public string ExpectedValuesLabel
+        private string ExpectedValuesLabel
         {
             get
             {
@@ -119,7 +121,7 @@ namespace NFluent.Extensibility
         /// <value>
         /// The given value label.
         /// </value>
-        protected string GivenLabel
+        private string GivenLabel
         {
             get
             {
@@ -133,7 +135,7 @@ namespace NFluent.Extensibility
         /// <value>
         /// The tested label.
         /// </value>
-        public string TestedLabel
+        private string TestedLabel
         {
             get
             {
@@ -168,7 +170,7 @@ namespace NFluent.Extensibility
         /// </returns>
         public override string ToString()
         {
-            var builder = new StringBuilder("\n");
+            var builder = new StringBuilder(EndOfLine);
             var givenOrExpectedLabel = this.ExpectedLabel;
 
             if (this.givenValueBlock != null)
@@ -187,25 +189,25 @@ namespace NFluent.Extensibility
 
             if (this.checkedBlock != null)
             {
-                builder.Append("\n");
+                builder.Append(EndOfLine);
                 builder.Append(this.checkedBlock.GetMessage());
             }
 
             if (this.givenValueBlock != null)
             {
-                builder.Append("\n");
+                builder.Append(EndOfLine);
                 builder.Append(this.givenValueBlock.GetMessage());
             }
 
             if (this.expectedValuesBlock != null)
             {
-                builder.Append("\n");
+                builder.Append(EndOfLine);
                 builder.Append(this.expectedValuesBlock.GetMessage());
             }
 
             if (this.expectedBlock != null)
             {
-                builder.Append("\n");
+                builder.Append(EndOfLine);
                 builder.Append(this.expectedBlock.GetMessage());
             }
 
@@ -310,6 +312,8 @@ namespace NFluent.Extensibility
 
             private readonly string attribute;
 
+            private readonly bool anyInstance;
+
             private string customMessage;
 
             private string comparisonLabel;
@@ -323,8 +327,6 @@ namespace NFluent.Extensibility
             private Type type;
 
             private long? enumerableCount;
-
-            private readonly bool anyInstance;
 
             #endregion
 
@@ -391,7 +393,7 @@ namespace NFluent.Extensibility
            {
                var builder = new StringBuilder();
                builder.Append(this.FullLabel());
-               builder.Append("\n");
+               builder.Append(EndOfLine);
 
                builder.Append(this.Description());
 
@@ -427,14 +429,10 @@ namespace NFluent.Extensibility
 
                if (this.enumerableCount.HasValue)
                {
-                   if (this.enumerableCount <= 1)
-                   {
-                       description.AppendFormat(" ({0} {1})", this.enumerableCount, "item");
-                   }
-                   else
-                   {
-                       description.AppendFormat(" ({0} {1})", this.enumerableCount, "items");
-                   }
+                   description.AppendFormat(
+                       " ({0} {1})",
+                       this.enumerableCount,
+                       this.enumerableCount <= 1 ? "item" : "items");
                }
 
                return description.ToString();

@@ -24,7 +24,7 @@ namespace NFluent
     /// </typeparam>
     /// <typeparam name="TC">Interface for the check.
     /// </typeparam>
-    public interface IExposingChecker<out T, out TC> where TC : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    public interface IExposingChecker<out T, out TC> where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         /// <summary>
         /// Gets the runnable check to use for checking something on a value of a given type.

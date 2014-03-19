@@ -41,7 +41,7 @@ namespace NFluent
         public static ICheckLink<ICheck<int>> IsBefore(this ICheck<int> check, int givenValue)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            IComparable checkedValue = checker.Value as IComparable;
+            var checkedValue = checker.Value as IComparable;
 
             return checker.ExecuteCheck(
                 () =>

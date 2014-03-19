@@ -366,7 +366,7 @@ namespace NFluent
             {
                 foreach (var expectedValue in expectedValues)
                 {
-                    if (Equals(element, expectedValue))
+                    if (object.Equals(element, expectedValue))
                     {
                         notFoundValues.RemoveAll(one => one.Equals(expectedValue));
                         break;

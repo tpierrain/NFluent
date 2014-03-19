@@ -95,6 +95,18 @@ namespace NFluent.Extensibility
         #region methods
 
         /// <summary>
+        /// Builds an error message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>A <see cref="FluentMessage"/> instance.</returns>
+        public FluentMessage BuildMessage(string message)
+        {
+            var result = FluentMessage.BuildMessage(message);
+            result.On(this.Value);
+            return result;
+        }
+
+        /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
         /// <param name="action">
@@ -168,8 +180,6 @@ namespace NFluent.Extensibility
                 // the expected exception did not occur
                 throw new FluentCheckException(negatedExceptionMessage);
             }
-
-            return;
         }
 
         #endregion

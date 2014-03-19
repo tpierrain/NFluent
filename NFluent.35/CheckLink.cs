@@ -22,7 +22,11 @@ namespace NFluent
     /// <typeparam name="T">Type of the <see cref="IForkableCheck"/> to be chained.</typeparam>
     internal class CheckLink<T> : ICheckLink<T> where T : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
+        #region fields
+
         private readonly T newCheckWithSameValue;
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckLink{T}" /> class.
@@ -30,7 +34,7 @@ namespace NFluent
         /// <param name="previousCheck">The previous fluent check.</param>
         public CheckLink(IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense previousCheck)
         {
-            IForkableCheck forkableCheck = previousCheck as IForkableCheck;
+            var forkableCheck = previousCheck as IForkableCheck;
             this.newCheckWithSameValue = forkableCheck.ForkInstance() as T;
         }
 

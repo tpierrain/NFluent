@@ -25,9 +25,9 @@ namespace NFluent.Extensibility
     /// <typeparam name="T">
     /// Type of the value to assert on.
     /// </typeparam>
-    /// <typeparam name="C">Interface for the check.
+    /// <typeparam name="TC">Interface for the check.
     /// </typeparam>
-    public interface IChecker<out T, out C> : IWithValue<T>, INegated where C : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    public interface IChecker<out T, out TC> : IWithValue<T>, INegated where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         /// <summary>
         /// Gets the check link to return for the next check to be executed (linked with the And operator).
@@ -37,7 +37,7 @@ namespace NFluent.Extensibility
         /// <value>
         /// The check link to return for next check (linked with the And operator) to be executed.
         /// </value>
-        ICheckLink<C> ReturnValueForLinkage { get; }
+        ICheckLink<TC> ReturnValueForLinkage { get; }
  
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
@@ -53,7 +53,7 @@ namespace NFluent.Extensibility
         ///     The <see cref="ReturnValueForLinkage"/>.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        ICheckLink<C> ExecuteCheck(Action action, string negatedExceptionMessage);
+        ICheckLink<TC> ExecuteCheck(Action action, string negatedExceptionMessage);
 
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version) and returns a not linkable check.
@@ -64,5 +64,12 @@ namespace NFluent.Extensibility
         /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
         /// <exception cref="FluentCheckException">The check fails.</exception>
         void ExecuteNotLinkableCheck(Action action, string negatedExceptionMessage);
+
+        /// <summary>
+        /// Builds an error message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>A <see cref="FluentMessage"/> instance.</returns>
+        FluentMessage BuildMessage(string message);
     }
 }
