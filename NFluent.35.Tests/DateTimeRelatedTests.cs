@@ -15,6 +15,7 @@
 namespace NFluent.Tests
 {
     using System;
+    using System.Globalization;
 
     using NUnit.Framework;
 
@@ -574,6 +575,7 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [SetCulture("fr-FR")] // sets a culture which is not UTC (usually the case in Azure)
         public void CanProperlyCompareUtcAndLocalDateTime()
         {
             var now = DateTime.Now;
