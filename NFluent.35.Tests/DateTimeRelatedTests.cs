@@ -578,27 +578,13 @@ namespace NFluent.Tests
         [Test]
         public void CanProperlyCompareUtcAndLocalDateTime()
         {
-            var originalCulture = Thread.CurrentThread.CurrentCulture;
+            var frenchDateTime = DateTime.Parse("16/02/2008 12:15:12", new CultureInfo("fr-FR"));
+            var utcVersionDateTime = frenchDateTime.ToUniversalTime();
 
-            try
-            {
-                // Ensures the current culture is not UTC
-                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("fr-FR");
-                Check.That(Thread.CurrentThread.CurrentCulture.Name).IsEqualTo("fr-FR");
+            Check.That(frenchDateTime).IsNotEqualTo(utcVersionDateTime);
+            Check.That(utcVersionDateTime).IsNotEqualTo(frenchDateTime);
 
-                var now = DateTime.Now;
-                var nowUtc = now.ToUniversalTime();
-
-                Check.That(now).IsNotEqualTo(nowUtc);
-                Check.That(nowUtc).IsNotEqualTo(now);
-
-                Check.That(DateTime.Today).IsEqualTo(DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc));
-            }
-            finally
-            {
-                // restores the original culture
-                Thread.CurrentThread.CurrentCulture = originalCulture;
-            }
+            Check.That(DateTime.Today).IsEqualTo(DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc));
         }
     }
 }
