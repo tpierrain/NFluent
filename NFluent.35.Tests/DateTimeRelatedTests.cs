@@ -16,6 +16,7 @@ namespace NFluent.Tests
 {
     using System;
     using System.Globalization;
+    using System.Threading;
 
     using NUnit.Framework;
 
@@ -575,16 +576,28 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [SetCulture("fr-FR")] // sets a culture which is not UTC (usually the case in Azure)
         public void CanProperlyCompareUtcAndLocalDateTime()
         {
-            var now = DateTime.Now;
-            var nowUtc = now.ToUniversalTime();
+            var originalCulture = Thread.CurrentThread.CurrentCulture;
 
-            Check.That(now).IsNotEqualTo(nowUtc);
-            Check.That(nowUtc).IsNotEqualTo(now);
+            try
+            {
+                // Ensures the current culture is not UTC
+                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("fr-FR");
+                
+                var now = DateTime.Now;
+                var nowUtc = now.ToUniversalTime();
 
-            Check.That(DateTime.Today).IsEqualTo(DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc));
+                Check.That(now).IsNotEqualTo(nowUtc);
+                Check.That(nowUtc).IsNotEqualTo(now);
+
+                Check.That(DateTime.Today).IsEqualTo(DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc));
+            }
+            finally
+            {
+                // restores the original culture
+                Thread.CurrentThread.CurrentCulture = originalCulture;
+            }
         }
     }
 }
