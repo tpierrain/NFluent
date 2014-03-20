@@ -584,7 +584,8 @@ namespace NFluent.Tests
             {
                 // Ensures the current culture is not UTC
                 Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("fr-FR");
-                
+                Check.That(Thread.CurrentThread.CurrentCulture.Name).IsEqualTo("fr-FR");
+
                 var now = DateTime.Now;
                 var nowUtc = now.ToUniversalTime();
 
