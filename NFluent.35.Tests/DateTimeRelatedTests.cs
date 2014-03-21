@@ -578,12 +578,13 @@ namespace NFluent.Tests
         [Test]
         public void CanProperlyCompareUtcAndLocalDateTime()
         {
-            var frenchDateTime = DateTime.Parse("16/02/2008 12:15:12", new CultureInfo("fr-FR"));
-            var utcVersionDateTime = frenchDateTime.ToUniversalTime();
+            var now = DateTime.Now;
+            var tokyoDateTime = TimeZoneInfo.ConvertTime(now, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
+            var utcVersionDateTime = TimeZoneInfo.ConvertTime(now, TimeZoneInfo.Utc);
 
-            Check.That(frenchDateTime).IsNotEqualTo(utcVersionDateTime);
-            Check.That(utcVersionDateTime).IsNotEqualTo(frenchDateTime);
-
+            Check.That(tokyoDateTime).IsNotEqualTo(utcVersionDateTime);
+            Check.That(utcVersionDateTime).IsNotEqualTo(tokyoDateTime);
+            
             Check.That(DateTime.Today).IsEqualTo(DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc));
         }
     }
