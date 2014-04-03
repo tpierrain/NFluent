@@ -67,6 +67,7 @@ namespace NFluent
                     {
                         throw new FluentCheckException(checker.BuildMessage("The {0} is null so not after the reference value.").Expected(givenValue).Comparison("after").ToString());
                     }
+
                     if (checker.Value.CompareTo(givenValue) <= 0)
                     {
                         throw new FluentCheckException(checker.BuildMessage("The {0} is not after the reference value.").Expected(givenValue).Comparison("after").ToString());

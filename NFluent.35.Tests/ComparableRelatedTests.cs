@@ -44,7 +44,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        //[ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not before the reference value.\nThe checked value:\n\t[null]\nThe expected value: before\n\t[1.0]")]
         public void IsBeforeDoesNotThrowNullReferenceExceptionWithNullAsInput()
         {
             Version v1 = new Version(1, 0);

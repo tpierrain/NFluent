@@ -17,29 +17,28 @@ namespace NFluent
     using System;
 
     using NFluent.Extensibility;
-    using NFluent.Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on a number instance.
     /// </summary>
-    /// <typeparam name="N">Type of the numerical value.</typeparam>
-    public class NumberCheck<N> where N : IComparable
+    /// <typeparam name="TN">Type of the numerical value.</typeparam>
+    public class NumberCheck<TN> where TN : IComparable
     {
         private const string MustBeZeroMessage = "The {0} is different from zero.";
 
         // private readonly N value;
-        private readonly Checker<N, ICheck<N>> checker;
-        private readonly ICheckForExtensibility<N, ICheck<N>> checkForExtensibility;
+        private readonly Checker<TN, ICheck<TN>> checker;
+        private readonly ICheckForExtensibility<TN, ICheck<TN>> checkForExtensibility;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NumberCheck{N}" /> class.
+        /// Initializes a new instance of the <see cref="NumberCheck{TN}" /> class.
         /// </summary>
         /// <param name="check">The fluent check.</param>
-        public NumberCheck(ICheck<N> check)
+        public NumberCheck(ICheck<TN> check)
         {
             // this.value = ((ICheckForExtensibility<N>)check).Value;
-            this.checker = new Checker<N, ICheck<N>>(check as ICheckForExtensibility<N, ICheck<N>>);
-            this.checkForExtensibility = check as ICheckForExtensibility<N, ICheck<N>>;
+            this.checker = new Checker<TN, ICheck<TN>>(check as ICheckForExtensibility<TN, ICheck<TN>>);
+            this.checkForExtensibility = check as ICheckForExtensibility<TN, ICheck<TN>>;
         }
 
         /// <summary>
@@ -49,7 +48,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not equal to zero.</exception>
-        public ICheckLink<ICheck<N>> IsZero()
+        public ICheckLink<ICheck<TN>> IsZero()
         {
             return this.checker.ExecuteCheck(
                 () =>
@@ -58,7 +57,7 @@ namespace NFluent
 
                         if (!res)
                         {
-                            throw new FluentCheckException(FluentMessage.BuildMessage(MustBeZeroMessage).On(this.checkForExtensibility.Value).ToString());
+                            throw new FluentCheckException(checker.BuildMessage(MustBeZeroMessage).ToString());
                         }
                     },
                 FluentMessage.BuildMessage("The {0} is equal to zero whereas it must not.").ToString());
@@ -71,7 +70,7 @@ namespace NFluent
         /// <returns>A check link.</returns>
         /// </returns>
         /// <exception cref="FluentCheckException">The value is equal to zero.</exception>
-        public ICheckLink<ICheck<N>> IsNotZero()
+        public ICheckLink<ICheck<TN>> IsNotZero()
         {
             return this.checker.ExecuteCheck(
                 () =>
@@ -80,10 +79,7 @@ namespace NFluent
 
                         if (res)
                         {
-                            throw new FluentCheckException(
-                                FluentMessage.BuildMessage("The {0} is equal to zero, whereas it must not.")
-                                             .On(this.checkForExtensibility.Value)
-                                             .ToString());
+                            throw new FluentCheckException(checker.BuildMessage("The {0} is equal to zero, whereas it must not.").ToString());
                         }
                     },
                 FluentMessage.BuildMessage("The {0} is different from zero.").On(this.checkForExtensibility.Value).ToString());
@@ -94,17 +90,18 @@ namespace NFluent
         /// </summary>
         /// <returns>A check link.</returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        public ICheckLink<ICheck<N>> IsPositive()
+        public ICheckLink<ICheck<TN>> IsPositive()
         {
             return this.checker.ExecuteCheck(
                 () =>
                     {
-                        if (Convert.ToInt32(this.checkForExtensibility.Value) <= 0)
+                        if (Convert.ToDouble(this.checkForExtensibility.Value) <= 0)
                         {
-                            throw new FluentCheckException(FluentMessage.BuildMessage("The {0} is not strictly positive.").On(this.checkForExtensibility.Value).ToString());
+                            throw new FluentCheckException(
+                                checker.BuildMessage("The {0} is not strictly positive.").ToString());
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is positive, whereas it must not.").On(this.checkForExtensibility.Value).ToString());
+                this.checker.BuildMessage("The {0} is positive, whereas it must not.").ToString());
         }
 
         /// <summary>
@@ -112,17 +109,17 @@ namespace NFluent
         /// </summary>
         /// <returns>A check link.</returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        public ICheckLink<ICheck<N>> IsNegative()
+        public ICheckLink<ICheck<TN>> IsNegative()
         {
             return this.checker.ExecuteCheck(
                 () =>
                 {
-                    if (Convert.ToInt32(this.checkForExtensibility.Value) >= 0)
+                    if (Convert.ToDouble(this.checkForExtensibility.Value) >= 0)
                     {
-                        throw new FluentCheckException(FluentMessage.BuildMessage("The {0} is not strictly negative.").On(this.checkForExtensibility.Value).ToString());
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is not strictly negative.").ToString());
                     }
                 },
-                FluentMessage.BuildMessage("The {0} is negative, whereas it must not.").On(this.checkForExtensibility.Value).ToString());
+                this.checker.BuildMessage("The {0} is negative, whereas it must not.").ToString());
         }
 
         /// <summary>
@@ -137,17 +134,17 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
-        public ICheckLink<ICheck<N>> IsLessThan(N comparand)
+        public ICheckLink<ICheck<TN>> IsLessThan(TN comparand)
         {
             return this.checker.ExecuteCheck(
                 () =>
                 {
                     if (this.checkForExtensibility.Value.CompareTo(comparand) >= 0)
                     {
-                        throw new FluentCheckException(FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(this.checkForExtensibility.Value).And.Expected(comparand).Comparison("less than").ToString());
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is greater than the threshold.").Expected(comparand).Comparison("less than").ToString());
                     }
                 },
-                FluentMessage.BuildMessage("The {0} is less than the threshold.").On(this.checkForExtensibility.Value).And.Expected(comparand).Comparison("more than").ToString());
+                this.checker.BuildMessage("The {0} is less than the threshold.").Expected(comparand).Comparison("more than").ToString());
         }
 
         /// <summary>
@@ -162,17 +159,17 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
-        public ICheckLink<ICheck<N>> IsGreaterThan(N comparand)
+        public ICheckLink<ICheck<TN>> IsGreaterThan(TN comparand)
         {
             return this.checker.ExecuteCheck(
                 () =>
                     {
                         if (this.checkForExtensibility.Value.CompareTo(comparand) <= 0)
                         {
-                            throw new FluentCheckException(FluentMessage.BuildMessage("The {0} is less than the threshold.").On(this.checkForExtensibility.Value).And.Expected(comparand).Comparison("more than").ToString());
+                            throw new FluentCheckException(checker.BuildMessage("The {0} is less than the threshold.").Expected(comparand).Comparison("more than").ToString());
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is greater than the threshold.").On(this.checkForExtensibility.Value).And.Expected(comparand).Comparison("less than").ToString());
+                this.checker.BuildMessage("The {0} is greater than the threshold.").Expected(comparand).Comparison("less than").ToString());
         }
 
         /// <summary>
@@ -182,7 +179,7 @@ namespace NFluent
         /// <returns>
         ///   <c>true</c> if the specified value is equal to zero; false otherwise.
         /// </returns>
-        private static bool InternalIsZero(N value)
+        private static bool InternalIsZero(TN value)
         {
             return Convert.ToInt64(value) == 0;
         }

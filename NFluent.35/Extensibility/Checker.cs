@@ -95,7 +95,7 @@ namespace NFluent.Extensibility
         #region methods
 
         /// <summary>
-        /// Builds an error message.
+        /// Builds an error message in.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>A <see cref="FluentMessage"/> instance.</returns>
@@ -103,6 +103,17 @@ namespace NFluent.Extensibility
         {
             var result = FluentMessage.BuildMessage(message);
             result.On(this.Value);
+            return result;
+        }
+
+        /// <summary>
+        /// Builds an error message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>A <see cref="FluentMessage"/> instance.</returns>
+        public FluentMessage BuildShortMessage(string message)
+        {
+            var result = FluentMessage.BuildMessage(message);
             return result;
         }
 

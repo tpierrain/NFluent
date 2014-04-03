@@ -14,11 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System;
-
     using NFluent.Extensibility;
     using NFluent.Extensions;
-    using NFluent.Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="ulong"/> value.
@@ -48,14 +45,16 @@ namespace NFluent
         public static ICheckLink<ICheck<ulong>> IsBefore(this ICheck<ulong> check, ulong givenValue)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            IComparable checkedValue = checker.Value as IComparable;
 
             return checker.ExecuteCheck(
                 () =>
-                {
-                    ComparableHelper.IsBefore(checkedValue, givenValue);
-                },
-                FluentMessage.BuildMessage("The {0} is before the reference value whereas it must not.").On(checkedValue).And.Expected(givenValue).Comparison("after").ToString());
+                    {
+                        if (checker.Value.CompareTo(givenValue) >= 0)
+                        {
+                            throw new FluentCheckException(checker.BuildMessage("The {0} is not before the reference value.").Expected(givenValue).Comparison("before").ToString());
+                        }
+                    },
+                checker.BuildMessage("The {0} is before the reference value whereas it must not.").Expected(givenValue).Comparison("after").ToString());
         }
 
         /// <summary>
@@ -70,14 +69,16 @@ namespace NFluent
         public static ICheckLink<ICheck<ulong>> IsAfter(this ICheck<ulong> check, ulong givenValue)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            IComparable checkedValue = checker.Value as IComparable;
 
             return checker.ExecuteCheck(
                 () =>
                 {
-                    ComparableHelper.IsAfter(checkedValue, givenValue);
+                    if (checker.Value.CompareTo(givenValue) <= 0)
+                    {
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is not after the reference value.").Expected(givenValue).Comparison("after").ToString());
+                    }
                 },
-                FluentMessage.BuildMessage("The {0} is after the reference value whereas it must not.").On(checkedValue).And.Expected(givenValue).Comparison("before").ToString());
+                checker.BuildMessage("The {0} is after the reference value whereas it must not.").Expected(givenValue).Comparison("before").ToString());
         }
 
         /// <summary>
@@ -103,16 +104,18 @@ namespace NFluent
         public static INullableOrNumberCheckLink<ulong> HasAValue(this ICheck<ulong?> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            
+
             checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value == null)
                     {
-                        throw new FluentCheckException(string.Format("\nThe checked nullable value has no value, which is unexpected."));
-                    }
-                },
-                string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", checker.Value.ToStringProperlyFormated()));
+                        if (checker.Value == null)
+                        {
+                            throw new FluentCheckException(
+                                checker.BuildShortMessage(
+                                    "The {0} has no value, which is unexpected.").For("nullable").ToString());
+                        }
+                    },
+                checker.BuildMessage("The {0} has a value, which is unexpected.").For("nullable").ToString());
 
             return new NullableOrNumberCheckLink<ulong>(check);
         }
@@ -129,13 +132,15 @@ namespace NFluent
 
             checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value != null)
                     {
-                        throw new FluentCheckException(string.Format("\nThe checked nullable value:\n\t[{0}]\nhas a value, which is unexpected.", checker.Value));
-                    }
-                },
-                "\nThe checked nullable value has no value, which is unexpected.");
+                        if (checker.Value != null)
+                        {
+                            throw new FluentCheckException(
+                                checker.BuildMessage("The {0} has a value, whereas it must not.")
+                                       .ToString());
+                        }
+                    },
+                checker.BuildShortMessage("The {0} has no value, which is unexpected.").For("nullable").ToString());
         }
         
         /// <summary>

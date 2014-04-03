@@ -71,5 +71,12 @@ namespace NFluent.Extensibility
         /// <param name="message">The message.</param>
         /// <returns>A <see cref="FluentMessage"/> instance.</returns>
         FluentMessage BuildMessage(string message);
+
+        /// <summary>
+        /// Builds an error message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>A <see cref="FluentMessage"/> instance.</returns>
+        FluentMessage BuildShortMessage(string message);
     }
 }
