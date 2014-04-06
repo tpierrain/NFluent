@@ -124,13 +124,12 @@ namespace NFluent
                         }
                     }
 
-                    var errorMessage = FluentMessage.BuildMessage("The {0} is not one of the possible elements.")
-                                            .On(checker.Value)
-                                            .And.Expected(possibleElements).Label("The possible elements:")
+                    var errorMessage = checker.BuildMessage("The {0} is not one of the possible elements.")
+                                            .Expected(possibleElements).Label("The possible elements:")
                                             .ToString();
                     throw new FluentCheckException(errorMessage);
                 },
-                FluentMessage.BuildMessage("The {0} is one of the possible elements whereas it must not.").On(checker.Value).And.Expected(possibleElements).Label("The possible elements:").ToString());
+                checker.BuildMessage("The {0} is one of the possible elements whereas it must not.").Expected(possibleElements).Label("The possible elements:").ToString());
         }
 
         /// <summary>

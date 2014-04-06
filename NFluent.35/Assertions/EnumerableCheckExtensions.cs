@@ -25,6 +25,8 @@ namespace NFluent
     /// </summary>
     public static class EnumerableCheckExtensions
     {
+        internal const string LabelForEnumerable = "enumerable";
+
         /// <summary>
         /// Checks that the enumerable contains all the given expected values, in any order.
         /// </summary>
@@ -64,7 +66,7 @@ namespace NFluent
 
                     if (checker.Value == null)
                     {
-                        var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain the given expected value(s).").For("enumerable").On(checker.Value).And.ExpectedValues(otherEnumerable).ToString();
+                        var message = checker.BuildMessage("The {0} is null and thus, does not contain the given expected value(s).").For(LabelForEnumerable).ExpectedValues(otherEnumerable).ToString();
                         throw new FluentCheckException(message);
                     }
 
@@ -72,11 +74,11 @@ namespace NFluent
 
                     if (notFoundValues.Count > 0)
                     {
-                        var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain the expected value(s):\n\t[{0}]", notFoundValues.ToEnumeratedString())).For("enumerable").On(checker.Value).And.ExpectedValues(otherEnumerable).ToString();
+                        var message = checker.BuildMessage(string.Format("The {{0}} does not contain the expected value(s):\n\t[{0}]", notFoundValues.ToEnumeratedString())).For(LabelForEnumerable).ExpectedValues(otherEnumerable).ToString();
                         throw new FluentCheckException(message);
                     }
                 },
-                FluentMessage.BuildMessage(string.Format("The {{0}} contains all the given values whereas it must not.")).For("enumerable").On(checker.Value).And.ExpectedValues(otherEnumerable).ToString());
+                checker.BuildMessage("The {0} contains all the given values whereas it must not.").For(LabelForEnumerable).ExpectedValues(otherEnumerable).ToString());
 
             return new ExtendableCheckLink<IEnumerable>(check, otherEnumerable);
         }
@@ -124,7 +126,7 @@ namespace NFluent
 
                         if (checker.Value == null && expectedValues != null)
                         {
-                            var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain exactly the given value(s).").For("enumerable").On(checker.Value).And.ExpectedValues(expectedValues).ToString();
+                            var message = checker.BuildMessage("The {0} is null and thus, does not contain exactly the given value(s).").For(LabelForEnumerable).ExpectedValues(expectedValues).ToString();
                             throw new FluentCheckException(message);
                         }
 
@@ -132,11 +134,11 @@ namespace NFluent
 
                         if (unexpectedValuesFound.Count > 0)
                         {
-                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain only the given value(s).\nIt contains also other values:\n\t[{0}]", unexpectedValuesFound.ToEnumeratedString())).For("enumerable").On(checker.Value).And.ExpectedValues(expectedValues).ToString();
+                            var message = checker.BuildMessage(string.Format("The {{0}} does not contain only the given value(s).\nIt contains also other values:\n\t[{0}]", unexpectedValuesFound.ToEnumeratedString())).For(LabelForEnumerable).ExpectedValues(expectedValues).ToString();
                             throw new FluentCheckException(message);
                         }
                 },
-                FluentMessage.BuildMessage("The {0} contains only the given values whereas it must not.").For("enumerable").On(checker.Value).And.ExpectedValues(expectedValues).ToString());
+                checker.BuildMessage("The {0} contains only the given values whereas it must not.").For(LabelForEnumerable).ExpectedValues(expectedValues).ToString());
         }
 
         /// <summary>
@@ -184,7 +186,7 @@ namespace NFluent
 
                     if (checker.Value == null && otherEnumerable != null)
                     {
-                        var message = FluentMessage.BuildMessage("The {0} is null and thus, does not contain exactly the {1}.").For("enumerable").On(checker.Value).And.ExpectedValues(otherEnumerable).ToString();
+                        var message = checker.BuildMessage("The {0} is null and thus, does not contain exactly the {1}.").For(LabelForEnumerable).ExpectedValues(otherEnumerable).ToString();
                         throw new FluentCheckException(message);
                     }
 
@@ -243,7 +245,7 @@ namespace NFluent
             {
                 var foundElementsNumberDescription = BuildElementNumberLiteral(itemsCount);
 
-                var errorMessage = FluentMessage.BuildMessage(string.Format("The {{0}} has {0} instead of {1}.", foundElementsNumberDescription, expectedSize)).For("enumerable").On(checkedEnumerable).ToString();
+                var errorMessage = FluentMessage.BuildMessage(string.Format("The {{0}} has {0} instead of {1}.", foundElementsNumberDescription, expectedSize)).For(LabelForEnumerable).On(checkedEnumerable).ToString();
                 throw new FluentCheckException(errorMessage);
             }
         }
@@ -253,7 +255,7 @@ namespace NFluent
             long itemsCount = checkedEnumerable.Cast<object>().LongCount();
             var foundElementsNumberDescription = BuildElementNumberLiteral(itemsCount);
 
-            return FluentMessage.BuildMessage(string.Format("The {{0}} has {0} which is unexpected.", foundElementsNumberDescription)).For("enumerable").On(checkedEnumerable).ToString();
+            return FluentMessage.BuildMessage(string.Format("The {{0}} has {0} which is unexpected.", foundElementsNumberDescription)).For(LabelForEnumerable).On(checkedEnumerable).ToString();
         }
 
         private static string BuildElementNumberLiteral(long itemsCount)
@@ -288,11 +290,11 @@ namespace NFluent
                     {
                         if (checker.Value.Cast<object>().Any())
                         {
-                            var errorMessage = FluentMessage.BuildMessage("The {0} is not empty.").For("enumerable").On(checker.Value).ToString();
+                            var errorMessage = checker.BuildMessage("The {0} is not empty.").For(LabelForEnumerable).ToString();
                             throw new FluentCheckException(errorMessage);
                         }
                     },
-                FluentMessage.BuildMessage("The checked enumerable is empty, which is unexpected.").ToString());
+                checker.BuildShortMessage("The checked enumerable is empty, which is unexpected.").ToString());
         }
 
         /// <summary>
@@ -313,9 +315,8 @@ namespace NFluent
             {
                 if (!checker.Negated)
                 {
-                    message = FluentMessage.BuildMessage("The {0} contains items, whereas it must be null or empty.")
-                                             .For("IEnumerable")
-                                             .On(checker.Value)
+                    message = checker.BuildMessage("The {0} contains items, whereas it must be null or empty.")
+                                             .For(LabelForEnumerable)
                                              .ToString();
                 }
             }
@@ -324,13 +325,13 @@ namespace NFluent
                 if (checker.Value == null)
                 {
                     message = FluentMessage.BuildMessage("The {0} is null, where as it must contain at least one item.")
-                                             .For("IEnumerable")
+                                             .For(LabelForEnumerable)
                                              .ToString();
                 }
                 else
                 {
                     message = FluentMessage.BuildMessage("The {0} is empty, where as it must contain at least one item.")
-                                             .For("IEnumerable")
+                                             .For(LabelForEnumerable)
                                              .ToString();
                 }
             }
@@ -415,7 +416,7 @@ namespace NFluent
         private static string BuildExceptionMessageForContainsExactly(IEnumerable checkedValue, IEnumerable enumerable)
         {
             return FluentMessage.BuildMessage("The {0} contains exactly the given values whereas it must not.")
-                                    .For("enumerable")
+                                    .For(LabelForEnumerable)
                                     .On(checkedValue)
                                     .WithEnumerableCount(checkedValue.Count())
                                     .ToString();
@@ -424,7 +425,7 @@ namespace NFluent
         private static string BuildNotExactlyExceptionMessage(IEnumerable checkedValue, IList<object> enumerable)
         {
             var message = FluentMessage.BuildMessage("The {0} does not contain exactly the expected value(s).")
-                                        .For("enumerable")
+                                        .For(LabelForEnumerable)
                                         .On(checkedValue)
                                         .WithEnumerableCount(checkedValue.Count())
                                         .And.ExpectedValues(enumerable)

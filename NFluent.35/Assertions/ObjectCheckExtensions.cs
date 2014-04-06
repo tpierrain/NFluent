@@ -220,11 +220,11 @@ namespace NFluent
                 {
                     if (checker.Value != null)
                     {
-                        var message = FluentMessage.BuildMessage("The checked nullable value must be null.").On(checker.Value).ToString();
+                        var message = checker.BuildMessage("The checked nullable value must be null.").ToString();
                         throw new FluentCheckException(message);
                     }
                 },
-                FluentMessage.BuildMessage("The checked nullable value is null whereas it must not.").ToString());
+                checker.BuildShortMessage("The checked nullable value is null whereas it must not.").ToString());
         }
 
         /// <summary>
@@ -246,11 +246,11 @@ namespace NFluent
                 {
                     if (checker.Value == null)
                     {
-                        var message = FluentMessage.BuildMessage("The checked nullable value is null whereas it must not.").ToString();
+                        var message = checker.BuildShortMessage("The checked nullable value is null whereas it must not.").ToString();
                         throw new FluentCheckException(message);
                     }
                 },
-                FluentMessage.BuildMessage("The checked nullable value must be null.").On(checker.Value).ToString());
+                checker.BuildMessage("The checked nullable value must be null.").ToString());
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">Is the value is null.</exception>
         public static ICheckLink<ICheck<T>> IsNotNull<T>(this ICheck<T> check) where T : class
         {
-            var checker = ExtensibilityHelper.ExtractChecker<T>(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = checker.Negated;
             var value = checker.Value;
 
@@ -311,10 +311,9 @@ namespace NFluent
             var message = SameReferenceImpl(expected, value, negated, out comparison);
             if (!string.IsNullOrEmpty(message))
             {
-                throw new FluentCheckException(FluentMessage.BuildMessage(message)
+                throw new FluentCheckException(checker.BuildMessage(message)
                                                              .For("object")
-                                                             .On(value)
-                                                             .And.Expected(expected)
+                                                             .Expected(expected)
                                                              .Comparison(comparison)
                                                              .ToString());
             }
@@ -366,10 +365,9 @@ namespace NFluent
             var message = SameReferenceImpl(comparand, value, negated, out comparison);
             if (!string.IsNullOrEmpty(message))
             {
-                throw new FluentCheckException(FluentMessage.BuildMessage(message)
+                throw new FluentCheckException(checker.BuildMessage(message)
                                                              .For("object")
-                                                             .On(value)
-                                                             .And.Expected(comparand)
+                                                             .Expected(comparand)
                                                              .Comparison(comparison)
                                                              .ToString());
             }

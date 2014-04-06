@@ -60,7 +60,7 @@ namespace NFluent
                             throw new FluentCheckException(checker.BuildMessage(MustBeZeroMessage).ToString());
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is equal to zero whereas it must not.").ToString());
+                this.checker.BuildShortMessage("The {0} is equal to zero whereas it must not.").ToString());
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace NFluent
                             throw new FluentCheckException(checker.BuildMessage("The {0} is equal to zero, whereas it must not.").ToString());
                         }
                     },
-                FluentMessage.BuildMessage("The {0} is different from zero.").On(this.checkForExtensibility.Value).ToString());
+                this.checker.BuildMessage("The {0} is different from zero.").ToString());
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace NFluent
                         if (Convert.ToDouble(this.checkForExtensibility.Value) <= 0)
                         {
                             throw new FluentCheckException(
-                                checker.BuildMessage("The {0} is not strictly positive.").ToString());
+                                this.checker.BuildMessage("The {0} is not strictly positive.").ToString());
                         }
                     },
                 this.checker.BuildMessage("The {0} is positive, whereas it must not.").ToString());
