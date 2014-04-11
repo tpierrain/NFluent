@@ -5,6 +5,11 @@ First of all, thank you for wanting to contribute to NFluent!
 There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things.
 
 
+Reporting an Issue
+------------------
+Reported issues are assessed rapidly and fix in a timely manner if identified as important. Note that feedback on error messages are welcomed.
+When reporting an issue in Git, please fill all present fields. Quality of our response depends on your effort!
+
 Making Changes
 --------------
 
