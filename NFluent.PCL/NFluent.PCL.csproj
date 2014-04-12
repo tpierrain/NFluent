@@ -169,9 +169,6 @@
     <Compile Include="..\NFluent.35\FluentStructCheck.cs">
       <Link>FluentStructCheck.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.35\Helpers\ComparableHelper.cs">
-      <Link>Helpers\ComparableHelper.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.35\Helpers\Duration.cs">
       <Link>Helpers\Duration.cs</Link>
     </Compile>
@@ -330,7 +327,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" />
+      <UserProperties ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

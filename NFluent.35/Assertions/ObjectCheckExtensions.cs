@@ -15,8 +15,10 @@
 namespace NFluent
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Reflection;
+    using System.Text;
     using System.Text.RegularExpressions;
 
     using NFluent.Extensibility;
@@ -28,9 +30,15 @@ namespace NFluent
     /// </summary>
     public static class ObjectCheckExtensions
     {
+        #region fields
+
         private static readonly Regex AutoPropertyMask;
+
         private static readonly Regex AnonymousTypeFieldMask;
+
         private static readonly Regex MonoAnonymousTypeFieldMask;
+
+        #endregion
 
         static ObjectCheckExtensions()
         {
@@ -83,10 +91,7 @@ namespace NFluent
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
-                () =>
-                {
-                    EqualityHelper.IsEqualTo(checker.Value, expected);
-                },
+                () => EqualityHelper.IsEqualTo(checker.Value, expected),
                 EqualityHelper.BuildErrorMessage(checker.Value, expected, true));
         }
 
@@ -130,10 +135,7 @@ namespace NFluent
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
-                () =>
-                {
-                    EqualityHelper.IsNotEqualTo(checker.Value, expected);
-                },
+                () => EqualityHelper.IsNotEqualTo(checker.Value, expected),
                 EqualityHelper.BuildErrorMessage(checker.Value, expected, false));
         }
 
@@ -168,10 +170,7 @@ namespace NFluent
             Type expectedBaseType = typeof(T);
 
             checker.ExecuteNotLinkableCheck(
-                () =>
-                {
-                    IsInstanceHelper.InheritsFrom(checker.Value, expectedBaseType);
-                },
+                () => IsInstanceHelper.InheritsFrom(checker, expectedBaseType),
                 string.Format("\nThe checked expression is part of the inheritance hierarchy or of the same type than the specified one.\nIndeed, checked expression type:\n\t[{0}]\nis a derived type of\n\t[{1}].", instanceType.ToStringProperlyFormated(), expectedBaseType.ToStringProperlyFormated()));
         }
 
@@ -195,7 +194,7 @@ namespace NFluent
             var message = IsNullImpl(value, negated);
             if (!string.IsNullOrEmpty(message))
             {
-                throw new FluentCheckException(FluentMessage.BuildMessage(message).For("object").On(value).ToString());
+                throw new FluentCheckException(checker.BuildMessage(message).For("object").ToString());
             }
 
             return new CheckLink<ICheck<T>>(check);
@@ -473,8 +472,11 @@ namespace NFluent
 
         private static string CheckFieldEquality(object expected, object value, bool negated, string prefix = "")
         {
+            var invalidFields = new StringBuilder();
+
             // REFACTOR: this method which has too much lines
             string message = null;
+            
             foreach (var fieldInfo in value.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
             {
                 // check for auto properties
@@ -490,9 +492,10 @@ namespace NFluent
                                                 .On(value)
                                                 .And.Expected(expected)
                                                 .ToString();
-                    }
 
-                    break;
+                        invalidFields.AppendLine(message);
+                    }
+                    continue;
                 }
 
                 // compare value
@@ -509,6 +512,7 @@ namespace NFluent
                                                      .On(actualFieldValue)
                                                      .And.Expected(null)
                                                      .ToString();
+                            invalidFields.AppendLine(message);
                         }
                         else
                         {
@@ -517,6 +521,7 @@ namespace NFluent
                                                      .And.Expected(null)
                                                      .Comparison("different from")
                                                      .ToString();
+                            invalidFields.AppendLine(message);
                         }
                     }
                 }
@@ -533,7 +538,7 @@ namespace NFluent
                             string.Format("{0}.", fieldname));
                         if (!string.IsNullOrEmpty(message))
                         {
-                            break;
+                            invalidFields.AppendLine(message);
                         }
                     }
                     else if (expectedFieldValue.Equals(actualFieldValue) == negated)
@@ -553,10 +558,11 @@ namespace NFluent
                                                  .Comparison("different from")
                                                  .ToString();
                         }
+                        invalidFields.AppendLine(message);
 
-                        break;
                     }
                 }
+                message = invalidFields.ToString();
             }
 
             return message;
