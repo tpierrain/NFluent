@@ -38,7 +38,7 @@ namespace NFluent
         {
             return new FluentCheck<T>(value);
         }
-
+#if !(PORTABLE)
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
@@ -104,7 +104,7 @@ namespace NFluent
         {
             return new LambdaCheck(value);
         }
-
+#endif
         /// <summary>
         /// Returns a <see cref="IStructCheck{T}" /> instance that will provide check methods to be executed on a given enum or struct value.
         /// </summary>

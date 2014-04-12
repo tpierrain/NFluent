@@ -15,7 +15,7 @@
 //   
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+#if !(PORTABLE)
 namespace NFluent.Helpers
 {
     using System;
@@ -73,7 +73,7 @@ namespace NFluent.Helpers
             var result = new ExceptionConstructor();
             var defaultSignature = new[] { typeof(string) };
             foreach (
-                var assembly in
+                var assembly in 
                     AppDomain.CurrentDomain.GetAssemblies()
                              .Where(ass => ass.FullName.ToLowerInvariant().Contains(assemblyMarker)))
             {
@@ -152,3 +152,4 @@ namespace NFluent.Helpers
         }
     }
 }
+#endif

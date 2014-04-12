@@ -21,7 +21,7 @@ namespace NFluent
     /// <summary>
     /// Implements specific Value check after lambda checks.
     /// </summary>
-    /// <typeparam name="T">Code checker type. <see cref="LambdaCheck"/>/>.
+    /// <typeparam name="T">Code checker type./>.
     /// </typeparam>
     public class LambdaExceptionCheck<T> : ILambdaExceptionCheck<T>, IForkableCheck
     {

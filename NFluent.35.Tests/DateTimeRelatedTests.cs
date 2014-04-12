@@ -15,6 +15,8 @@
 namespace NFluent.Tests
 {
     using System;
+    using System.Globalization;
+    using System.Threading;
 
     using NUnit.Framework;
 
@@ -577,11 +579,12 @@ namespace NFluent.Tests
         public void CanProperlyCompareUtcAndLocalDateTime()
         {
             var now = DateTime.Now;
-            var nowUtc = now.ToUniversalTime();
+            var tokyoDateTime = TimeZoneInfo.ConvertTime(now, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
+            var utcVersionDateTime = TimeZoneInfo.ConvertTime(now, TimeZoneInfo.Utc);
 
-            Check.That(now).IsNotEqualTo(nowUtc);
-            Check.That(nowUtc).IsNotEqualTo(now);
-
+            Check.That(tokyoDateTime).IsNotEqualTo(utcVersionDateTime);
+            Check.That(utcVersionDateTime).IsNotEqualTo(tokyoDateTime);
+            
             Check.That(DateTime.Today).IsEqualTo(DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc));
         }
     }

@@ -69,7 +69,7 @@ namespace NFluent.Tests
                                 var x = i * 2;
                             }
                         }
-                }).ConsumesLessThan(20, TimeUnit.Milliseconds);
+                }).ConsumesLessThan(10, TimeUnit.Milliseconds);
         }
     }
 }

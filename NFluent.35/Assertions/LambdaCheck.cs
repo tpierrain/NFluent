@@ -12,7 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-
+#if !(PORTABLE)
 namespace NFluent
 {
     using System;
@@ -157,3 +157,4 @@ namespace NFluent
         #endregion
     }
 }
+#endif
