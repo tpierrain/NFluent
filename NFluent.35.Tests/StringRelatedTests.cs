@@ -265,6 +265,20 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsOneOfTheseWorksWithNull()
+        {
+            string nullString = null;
+            Check.That(nullString).IsOneOfThese(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not one of the possible elements.\nThe checked value:\n\t[\"whatever\"]\nThe possible elements:\n\t[null]")]
+        public void IsOneOfTheseThrowsProperExceptionWithNullAsExpectedValues()
+        {
+            Check.That("whatever").IsOneOfThese(null);
+        }
+
+        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is one of the possible elements whereas it must not.\nThe checked value:\n\t[\"The Black Keys\"]\nThe possible elements:\n\t[\"Metronomy\", \"Sigur Ros\", \"The Black Keys\", \"Get Well Soon\"]")]
         public void NotIsOneOfTheseThrowsExceptionWhenFailing()
         {
