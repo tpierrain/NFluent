@@ -63,6 +63,7 @@
     </Compile>
     <Compile Include="Assertions\CharCheckExtensions.cs" />
     <Compile Include="Assertions\CodeCheckExtensions.cs" />
+    <Compile Include="Assertions\EventWaitHandleCheckExtensions.cs" />
     <Compile Include="FluentCodeCheck.cs" />
     <Compile Include="Extensibility\ExtensibilityHelper.cs" />
     <Compile Include="Assertions\IntSignedCheckExtensions.cs" />
