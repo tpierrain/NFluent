@@ -97,6 +97,9 @@
     <Compile Include="..\NFluent.35.Tests\EqualRelatedTests.cs">
       <Link>EqualRelatedTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35.Tests\EventWaitHandleTests.cs">
+      <Link>EventWaitHandleTests.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35.Tests\ExceptionTests.cs">
       <Link>ExceptionTests.cs</Link>
     </Compile>

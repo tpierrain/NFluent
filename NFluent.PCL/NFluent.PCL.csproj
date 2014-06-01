@@ -2,25 +2,26 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}</ProjectGuid>
+    <ProjectGuid>{4797A166-0410-451E-8DAB-DA7113D77062}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NFluent</RootNamespace>
     <AssemblyName>NFluent</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile47</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PORTABLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\NFluent.XML</DocumentationFile>
@@ -30,11 +31,11 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;PORTABLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Release\NFluent.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -43,18 +44,25 @@
     <AssemblyOriginatorKeyFile>..\NFluent.35\NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="..\NFluent.35\NFluent.snk">
+      <Link>NFluent.snk</Link>
+    </None>
+    <None Include="..\NFluent.35\Settings.StyleCop">
+      <Link>Settings.StyleCop</Link>
+    </None>
+    <None Include="..\NFluent.35\T4\NumberFluentAssertionGenerator.tt">
+      <Link>T4\NumberFluentAssertionGenerator.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NumberFluentAssertionGenerator.txt</LastGenOutput>
+    </None>
+    <None Include="..\NFluent.35\T4\TemplateFileManagerV2.1.ttinclude">
+      <Link>T4\TemplateFileManagerV2.1.ttinclude</Link>
+    </None>
+    <None Include="..\NFluent.35\T4\TypeCloningHelper.ttinclude">
+      <Link>T4\TypeCloningHelper.ttinclude</Link>
+    </None>
   </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Compile Include="..\NFluent.35\Assertions\BooleanCheckExtensions.cs">
       <Link>Assertions\BooleanCheckExtensions.cs</Link>
@@ -312,26 +320,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\NFluent.35\NFluent.snk">
-      <Link>NFluent.snk</Link>
-    </None>
-    <None Include="..\NFluent.35\packages.config">
-      <Link>packages.config</Link>
-    </None>
-    <None Include="..\NFluent.35\Settings.StyleCop">
-      <Link>Settings.StyleCop</Link>
-    </None>
-    <None Include="..\NFluent.35\T4\NumberFluentAssertionGenerator.tt">
-      <Link>T4\NumberFluentAssertionGenerator.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>NumberFluentAssertionGenerator.txt</LastGenOutput>
-    </None>
-    <None Include="..\NFluent.35\T4\TemplateFileManagerV2.1.ttinclude">
-      <Link>T4\TemplateFileManagerV2.1.ttinclude</Link>
-    </None>
-    <None Include="..\NFluent.35\T4\TypeCloningHelper.ttinclude">
-      <Link>T4\TypeCloningHelper.ttinclude</Link>
-    </None>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\NFluent.35\T4\NumberFluentAssertionGenerator.txt">
@@ -341,12 +330,13 @@
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Content>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" />
+      <UserProperties ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -252,7 +252,11 @@ namespace NFluent.Extensions
         public static string ToStringProperlyFormated(this bool theBoolean)
         {
             // Ensure that boolean values are not localized 
+#if !(PORTABLE)
             return theBoolean.ToString(CultureInfo.InvariantCulture);
+#else
+            return theBoolean.ToString();
+#endif
         }
 
         /// <summary>

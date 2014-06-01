@@ -58,6 +58,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="DictionaryChecksTests.cs" />
     <Compile Include="EdgeCasesTest.cs" />
+    <Compile Include="EventWaitHandleTests.cs" />
     <Compile Include="ExceptionTests.cs" />
     <Compile Include="ExtensibilityHelperTests.cs" />
     <Compile Include="HelpersTest.cs" />

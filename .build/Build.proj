@@ -91,7 +91,11 @@ RUN ALL UNIT TESTS
 	    <!-- NFluent (4.0) then -->
       <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /Y /D" />
       <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /Y /D" />
-      
+    
+    <!-- NFluent (PCL) then -->
+      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /Y /D" />
+      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /Y /D" />
+    
       <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
       <GetAssemblyIdentity AssemblyFiles="$(BinariesPath)\35\$(SolutionName).dll">
         <Output TaskParameter="Assemblies" ItemName="AsmInfo" />

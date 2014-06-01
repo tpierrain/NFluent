@@ -19,7 +19,9 @@ namespace NFluent
     /// <summary>
     /// Thrown when an check failed.
     /// </summary>
+#if !(PORTABLE)
     [Serializable]
+#endif
     public class FluentCheckException : Exception
     {
         /// <summary>

@@ -142,7 +142,7 @@ namespace NFluent
         /// <summary>
         /// Checks that the enumerable contains only the given expected values and nothing else, in order.
         /// This check should only be used with IEnumerable that have a consistent iteration order
-        /// (i.e. don't use it with <see cref="Hashtable" />, prefer <see cref="IsOnlyMadeOf{T}" /> in that case).
+        /// (i.e. don't use it with Hashtable, prefer <see cref="IsOnlyMadeOf{T}" /> in that case).
         /// </summary>
         /// <typeparam name="T">Type of the elements to be found.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
@@ -161,7 +161,7 @@ namespace NFluent
         /// <summary>
         /// Checks that the enumerable contains only the values of another enumerable and nothing else, in order.
         /// This check should only be used with IEnumerable that have a consistent iteration order
-        /// (i.e. don't use it with <see cref="Hashtable" />, prefer <see cref="IsOnlyMadeOf{T}" /> in that case).
+        /// (i.e. don't use it with Hashtable, prefer <see cref="IsOnlyMadeOf{T}" /> in that case).
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="otherEnumerable">The other enumerable containing the exact expected values to be found.</param>
@@ -400,12 +400,19 @@ namespace NFluent
 
             return unexpectedValuesFound;
         }
-
+#if !(PORTABLE)
         private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
         {
             // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
             return expectedValues != null && (expectedValues.LongLength == 1) && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
         }
+#else
+        private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
+        {
+            // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
+            return expectedValues != null && (expectedValues.Length == 1) && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
+        }
+#endif
 
         private static bool IsAnEnumerableButNotAnEnumerableOfChars<T>(T element)
         {

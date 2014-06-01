@@ -101,6 +101,57 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value is one of these possible elements.
+        /// </summary>
+        /// <param name="check">The check.</param>
+        /// <param name="possibleElements">The possible elements.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value is NOT one of the elements.</exception>
+        public static ICheckLink<ICheck<string>> IsOneOfThese(this ICheck<string> check, params string[] possibleElements)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+
+            return checker.ExecuteCheck(
+                () =>
+                {
+                    string errorMessage;
+                    if (possibleElements == null)
+                    {
+                        // the rare case where possible elements is null
+                        if (checker.Value == null)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            errorMessage = FluentMessage.BuildMessage("The {0} is not one of the possible elements.")
+                                            .On(checker.Value)
+                                            .And.Expected(possibleElements).Label("The possible elements:")
+                                            .ToString();
+                            throw new FluentCheckException(errorMessage);
+                        }
+                    }
+
+                    foreach (var possibleElement in possibleElements)
+                    {
+                        if (string.Equals(possibleElement, checker.Value))
+                        {
+                            return;
+                        }
+                    }
+
+                    errorMessage = FluentMessage.BuildMessage("The {0} is not one of the possible elements.")
+                                            .On(checker.Value)
+                                            .And.Expected(possibleElements).Label("The possible elements:")
+                                            .ToString();
+                    throw new FluentCheckException(errorMessage);
+                },
+                FluentMessage.BuildMessage("The {0} is one of the possible elements whereas it must not.").On(checker.Value).And.Expected(possibleElements).Label("The possible elements:").ToString());
+        }
+
+        /// <summary>
         /// Checks that the string contains the given expected values, in any order.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
@@ -132,8 +183,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string contains at least one of the given strings.</exception>
-        public static ICheckLink<ICheck<string>> DoesNotContain(
-                this ICheck<string> check, params string[] values)
+        public static ICheckLink<ICheck<string>> DoesNotContain(this ICheck<string> check, params string[] values)
         {
             var checker = check as ICheckForExtensibility<string, ICheck<string>>;
 
