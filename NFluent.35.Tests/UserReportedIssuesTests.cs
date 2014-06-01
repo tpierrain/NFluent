@@ -42,6 +42,16 @@ namespace NFluent.Tests
             Check.That(modelA).HasFieldsWithSameValues(modelB);
         }
 
+        [Test]
+        // 30/05/14 Invalid exception on strings with curly braces
+        [ExpectedException(typeof(NFluent.FluentCheckException))]
+        public void SpuriousExceptionOnError()
+        {
+            var toTest = new System.Collections.ArrayList { "MaChaine{94}" };
+            string result = "MaChaine{964}";
+            Check.That(toTest).Contains(result);
+        }
+
         public class ModelA
         {
             public string Name { get; set; }
