@@ -12,3 +12,4 @@ Change(s):
 Bug Fixe(s):
 * Fixes a null ref exception for Contains on null
 * Fixes a null ref exception for HasFieldsWithSameValues
+* Fixes Invalid exceptions on strings with curly braces
