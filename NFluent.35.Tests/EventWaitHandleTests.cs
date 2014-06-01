@@ -20,95 +20,94 @@ namespace NFluent.Tests
     [TestFixture]
     public class EventWaitHandleTests
     {
-        #region IsSetBefore
+        #region IsSetWithin
 
         [Test]
-        public void IsSetBeforeWorksForAutoResetEvent()
+        public void IsSetWithinWorksForAutoResetEvent()
         {
             using (var myEvent = new AutoResetEvent(false))
             {
                 SetTheEventFromAnotherThreadAfterADelay(myEvent, 300);
 
-                Check.That(myEvent).IsSetBefore(1000);
+                Check.That(myEvent).IsSetWithin(1000);
             }
         }
 
         [Test]
         [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked event has not been set before the given timeout.\nThe given timeout (in msec):\n\t[10]")]
-        public void IsSetBeforeThrowsExceptionWhenFailingForAutoResetEvent()
+        public void IsSetWithinThrowsExceptionWhenFailingForAutoResetEvent()
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                Check.That(myEvent).IsSetBefore(10);
+                Check.That(myEvent).IsSetWithin(10);
             }
         }
 
         [Test]
-        public void NotIsSetBeforeWorksForAutoResetEvent()
+        public void NotIsSetWithinWorksForAutoResetEvent()
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                Check.That(myEvent).Not.IsSetBefore(20);
+                Check.That(myEvent).Not.IsSetWithin(20);
             }
         }
 
         [Test]
         [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked event has been set before the given timeout whereas it must not.\nThe given timeout (in msec):\n\t[30]")]
-        public void NotIsSetBeforeThrowsExceptionForAutoResetEvent()
+        public void NotIsSetWithinThrowsExceptionForAutoResetEvent()
         {
             using (var myEvent = new AutoResetEvent(false))
             {
                 SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
-                Check.That(myEvent).Not.IsSetBefore(30);
+                Check.That(myEvent).Not.IsSetWithin(30);
             }
         }
 
         #endregion
 
-        #region IsNotSetBefore
+        #region IsNotSetWithin
 
         [Test]
-        public void IsNotSetBeforeWorksForAutoResetEvent()
+        public void IsNotSetWithinWorksForAutoResetEvent()
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                Check.That(myEvent).IsNotSetBefore(1000);
+                Check.That(myEvent).IsNotSetWithin(1000);
             }
         }
 
         [Test]
         [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked event has been set before the given timeout.\nThe given timeout (in msec):\n\t[100]")]
-        public void IsNotSetBeforeThrowsExceptionWhenFailingForAutoResetEvent()
+        public void IsNotSetWithinThrowsExceptionWhenFailingForAutoResetEvent()
         {
             using (var myEvent = new AutoResetEvent(false))
             {
                 SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
-                Check.That(myEvent).IsNotSetBefore(100);
+                Check.That(myEvent).IsNotSetWithin(100);
             }
         }
 
         [Test]
-        public void NotIsNotSetBeforeWorksForAutoResetEvent()
+        public void NotIsNotSetWithinWorksForAutoResetEvent()
         {
             using (var myEvent = new AutoResetEvent(false))
             {
                 SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
-                Check.That(myEvent).Not.IsNotSetBefore(20);
+                Check.That(myEvent).Not.IsNotSetWithin(20);
             }
         }
 
         [Test]
         [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked event has not been set before the given timeout whereas it must.\nThe given timeout (in msec):\n\t[10]")]
-        public void NotIsNotSetBeforeThrowsExceptionForAutoResetEvent()
+        public void NotIsNotSetWithinThrowsExceptionForAutoResetEvent()
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                Check.That(myEvent).Not.IsNotSetBefore(10);
+                Check.That(myEvent).Not.IsNotSetWithin(10);
             }
         }
 
         #endregion
-
 
         #region helpers
 
