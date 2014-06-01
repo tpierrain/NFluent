@@ -579,7 +579,16 @@ namespace NFluent.Tests
         public void CanProperlyCompareUtcAndLocalDateTime()
         {
             var now = DateTime.Now;
-            var tokyoDateTime = TimeZoneInfo.ConvertTime(now, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
+            DateTime tokyoDateTime = now;
+			try
+			{
+            	tokyoDateTime = TimeZoneInfo.ConvertTime(now, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
+			}
+			catch(TimeZoneNotFoundException ex) {
+                // this test works on Windows only
+                // we assume we are not on Windows if the timezone is not found
+				Assert.Ignore("Test depends on Windows");
+			}
             var utcVersionDateTime = TimeZoneInfo.ConvertTime(now, TimeZoneInfo.Utc);
 
             Check.That(tokyoDateTime).IsNotEqualTo(utcVersionDateTime);

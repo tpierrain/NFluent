@@ -19,6 +19,7 @@ namespace NFluent
     using System.Linq;
 
     using NFluent.Extensibility;
+    using NFluent.Extensions;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="IEnumerable"/> value.
@@ -72,11 +73,11 @@ namespace NFluent
 
                     if (notFoundValues.Count > 0)
                     {
-                        var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain the expected value(s):\n\t[{0}]", notFoundValues.ToEnumeratedString())).For("enumerable").On(checker.Value).And.ExpectedValues(otherEnumerable).ToString();
+                    var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain the expected value(s):\n\t[{0}]", notFoundValues.ToEnumeratedString().DoubleCurlyBraces())).For("enumerable").On(checker.Value).And.ExpectedValues(otherEnumerable).ToString();
                         throw new FluentCheckException(message);
                     }
                 },
-                FluentMessage.BuildMessage(string.Format("The {{0}} contains all the given values whereas it must not.")).For("enumerable").On(checker.Value).And.ExpectedValues(otherEnumerable).ToString());
+                FluentMessage.BuildMessage("The {0} contains all the given values whereas it must not.").For("enumerable").On(checker.Value).And.ExpectedValues(otherEnumerable).ToString());
 
             return new ExtendableCheckLink<IEnumerable>(check, otherEnumerable);
         }
@@ -132,7 +133,7 @@ namespace NFluent
 
                         if (unexpectedValuesFound.Count > 0)
                         {
-                            var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain only the given value(s).\nIt contains also other values:\n\t[{0}]", unexpectedValuesFound.ToEnumeratedString())).For("enumerable").On(checker.Value).And.ExpectedValues(expectedValues).ToString();
+                    var message = FluentMessage.BuildMessage(string.Format("The {{0}} does not contain only the given value(s).\nIt contains also other values:\n\t[{0}]", unexpectedValuesFound.ToEnumeratedString().DoubleCurlyBraces())).For("enumerable").On(checker.Value).And.ExpectedValues(expectedValues).ToString();
                             throw new FluentCheckException(message);
                         }
                 },
@@ -243,7 +244,7 @@ namespace NFluent
             {
                 var foundElementsNumberDescription = BuildElementNumberLiteral(itemsCount);
 
-                var errorMessage = FluentMessage.BuildMessage(string.Format("The {{0}} has {0} instead of {1}.", foundElementsNumberDescription, expectedSize)).For("enumerable").On(checkedEnumerable).ToString();
+                var errorMessage = FluentMessage.BuildMessage(string.Format("The {{0}} has {0} instead of {1}.", foundElementsNumberDescription.DoubleCurlyBraces(), expectedSize)).For("enumerable").On(checkedEnumerable).ToString();
                 throw new FluentCheckException(errorMessage);
             }
         }
@@ -253,7 +254,7 @@ namespace NFluent
             long itemsCount = checkedEnumerable.Cast<object>().LongCount();
             var foundElementsNumberDescription = BuildElementNumberLiteral(itemsCount);
 
-            return FluentMessage.BuildMessage(string.Format("The {{0}} has {0} which is unexpected.", foundElementsNumberDescription)).For("enumerable").On(checkedEnumerable).ToString();
+            return FluentMessage.BuildMessage(string.Format("The {{0}} has {0} which is unexpected.", foundElementsNumberDescription.DoubleCurlyBraces())).For("enumerable").On(checkedEnumerable).ToString();
         }
 
         private static string BuildElementNumberLiteral(long itemsCount)
