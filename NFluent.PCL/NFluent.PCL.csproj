@@ -88,6 +88,9 @@
     <Compile Include="..\NFluent.35\Assertions\EnumerableFluentSyntaxExtension.cs">
       <Link>Assertions\EnumerableFluentSyntaxExtension.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35\Assertions\EventWaitHandleCheckExtensions.cs">
+      <Link>Assertions\EventWaitHandleCheckExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35\Assertions\ExtendableCheckLink.cs">
       <Link>Assertions\ExtendableCheckLink.cs</Link>
     </Compile>

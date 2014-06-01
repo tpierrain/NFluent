@@ -74,7 +74,7 @@ namespace NFluent
                         checker.BuildMessage(
                             string.Format(
                                             "The {{0}} has extra occurences of the expected items. Item [{0}] at position {1} is redundant.",
-                                            item.ToStringProperlyFormated(),
+                                item.ToStringProperlyFormated().DoubleCurlyBraces(),
                                             itemidx))
                                        .For(EnumerableCheckExtensions.LabelForEnumerable)
                                        .ExpectedValues(chainedCheckLink.OriginalComparand);
@@ -147,7 +147,7 @@ namespace NFluent
                         var message = checker.BuildMessage(
                             string.Format(
                                 "The {{0}} does not follow to the expected order. Item [{0}] appears too {2} in the list, at index '{1}'.",
-                                item.ToStringProperlyFormated(),
+                                item.ToStringProperlyFormated().DoubleCurlyBraces(),
                                 faillingIndex,
                                 index > scanIndex ? "early" : "late"))
                                          .For(EnumerableCheckExtensions.LabelForEnumerable)

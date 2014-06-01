@@ -299,5 +299,15 @@ namespace NFluent.Extensions
             // info cannot be null has ALL .Net types inherits Equals from System.Object
             return info.DeclaringType == type;
         }
+
+        /// <summary>
+        /// Doubles the curly braces in the string.
+        /// </summary>
+        /// <returns>The string having curly braces doubled</returns>
+        /// <param name="value">string to correct.</param>
+        public static string DoubleCurlyBraces(this string value)
+        {
+            return value.Replace("{","{{").Replace("}","}}");
+        }
     }
 }

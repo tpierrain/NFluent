@@ -116,6 +116,24 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                 {
+                    string errorMessage;
+                    if (possibleElements == null)
+                    {
+                        // the rare case where possible elements is null
+                        if (checker.Value == null)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            errorMessage = FluentMessage.BuildMessage("The {0} is not one of the possible elements.")
+                                            .On(checker.Value)
+                                            .And.Expected(possibleElements).Label("The possible elements:")
+                                            .ToString();
+                            throw new FluentCheckException(errorMessage);
+                        }
+                    }
+
                     foreach (var possibleElement in possibleElements)
                     {
                         if (string.Equals(possibleElement, checker.Value))

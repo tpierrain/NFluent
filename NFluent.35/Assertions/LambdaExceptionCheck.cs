@@ -17,6 +17,7 @@ namespace NFluent
     using System;
 
     using NFluent.Extensibility;
+    using NFluent.Extensions;
 
     /// <summary>
     /// Implements specific Value check after lambda checks.
@@ -98,7 +99,7 @@ namespace NFluent
             if (!value.Equals(propertyValue))
             {
                 var message = FluentMessage
-                    .BuildMessage(string.Format("The property [{0}] of the {{0}} do not have the expected value.", propertyName))
+                    .BuildMessage(string.Format("The property [{0}] of the {{0}} do not have the expected value.", propertyName.DoubleCurlyBraces()))
                     .For("exception")
                     .Expected(propertyValue)
                     .And.WithGivenValue(value).ToString();

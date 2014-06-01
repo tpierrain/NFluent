@@ -44,7 +44,7 @@ namespace NFluent
                 {
                     // failed 
                     var message =
-                        FluentMessage.BuildMessage(string.Format("The {{0}} contains {0} at {1} and {2}, where as it must contains it once.", text.ToStringProperlyFormated(), firstIndex, lastIndexOf))
+                        FluentMessage.BuildMessage(string.Format("The {{0}} contains {0} at {1} and {2}, where as it must contains it once.", text.ToStringProperlyFormated().DoubleCurlyBraces(), firstIndex, lastIndexOf))
                                      .For("string")
                                      .On(value)
                                      .And.Expected(comparand)
