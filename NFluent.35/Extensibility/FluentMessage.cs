@@ -310,6 +310,8 @@ namespace NFluent.Extensibility
 
             private readonly string attribute;
 
+            private readonly bool anyInstance;
+
             private string customMessage;
 
             private string comparisonLabel;
@@ -323,8 +325,6 @@ namespace NFluent.Extensibility
             private Type type;
 
             private long? enumerableCount;
-
-            private readonly bool anyInstance;
 
             #endregion
 
