@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
 // // <copyright file="DateTimeRelatedTests.cs" company="">
-// //   Copyright 2013 Marc-Antoine LATOUR, Thomas PIERRAIN, Cyrille DUPUYDAUBY
+// //   Copyright 2014 Marc-Antoine LATOUR, Thomas PIERRAIN, Cyrille DUPUYDAUBY
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -15,8 +15,6 @@
 namespace NFluent.Tests
 {
     using System;
-    using System.Globalization;
-    using System.Threading;
 
     using NUnit.Framework;
 
@@ -580,15 +578,17 @@ namespace NFluent.Tests
         {
             var now = DateTime.Now;
             DateTime tokyoDateTime = now;
-			try
-			{
-            	tokyoDateTime = TimeZoneInfo.ConvertTime(now, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
-			}
-			catch(TimeZoneNotFoundException ex) {
+            try
+            {
+                tokyoDateTime = TimeZoneInfo.ConvertTime(now, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
+            }
+            catch (TimeZoneNotFoundException ex)
+            {
                 // this test works on Windows only
                 // we assume we are not on Windows if the timezone is not found
-				Assert.Ignore("Test depends on Windows");
-			}
+                Assert.Ignore("Test depends on Windows");
+            }
+
             var utcVersionDateTime = TimeZoneInfo.ConvertTime(now, TimeZoneInfo.Utc);
 
             Check.That(tokyoDateTime).IsNotEqualTo(utcVersionDateTime);

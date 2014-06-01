@@ -42,8 +42,8 @@ namespace NFluent.Tests
             Check.That(modelA).HasFieldsWithSameValues(modelB);
         }
 
-        [Test]
         // 30/05/14 Invalid exception on strings with curly braces
+        [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[\"MaChaine{964}\"]\nThe checked enumerable:\n\t[\"MaChaine{94}\"]\nThe expected value(s):\n\t[\"MaChaine{964}\"]")]
         public void SpuriousExceptionOnError()
         {
