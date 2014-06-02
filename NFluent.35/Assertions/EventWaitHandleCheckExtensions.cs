@@ -23,7 +23,7 @@ namespace NFluent
     public static class EventWaitHandleCheckExtensions
     {
         /// <summary>
-        /// Checks that the event is set before a given timeout in millisecond.
+        /// Checks that the event is set within a given timeout in millisecond.
         /// </summary>
         /// <param name="check">
         /// The fluent check to be extended.
@@ -35,7 +35,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The event was not set before the given timeout in millisecond.
         /// </exception>
-        public static ICheckLink<ICheck<EventWaitHandle>> IsSetBefore(this ICheck<EventWaitHandle> check, int timeOutInMsec)
+        public static ICheckLink<ICheck<EventWaitHandle>> IsSetWithin(this ICheck<EventWaitHandle> check, int timeOutInMsec)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             
@@ -52,7 +52,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the event is not set before a given timeout in millisecond.
+        /// Checks that the event is not set within a given timeout in millisecond.
         /// </summary>
         /// <param name="check">
         /// The fluent check to be extended.
@@ -64,7 +64,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The event was set before the given timeout in millisecond.
         /// </exception>
-        public static ICheckLink<ICheck<EventWaitHandle>> IsNotSetBefore(this ICheck<EventWaitHandle> check, int timeOutInMsec)
+        public static ICheckLink<ICheck<EventWaitHandle>> IsNotSetWithin(this ICheck<EventWaitHandle> check, int timeOutInMsec)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 

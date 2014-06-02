@@ -1,5 +1,5 @@
 New feature(s):
-* Adds IsSetBefore check for EventWaitHandle types (ex. Manual or AutoResetEvent)
+* Adds IsSetWithin check for EventWaitHandle types (ex. Manual or AutoResetEvent)
 * Adds IsOneOfThese() check for string.
 * NFluent is now also available as a Portable Class Library (Profile: portable-net4+sl5+wp8+win8+MonoMac+MonoTouch+MonoAndroid)
 --------------
@@ -14,3 +14,4 @@ Bug Fixe(s):
 * Fixes a null ref exception for Contains on null
 * Fixes a null ref exception for HasFieldsWithSameValues
 * Fixes an issue with null on Check.That(...).IsBefore(...)
+* Fixes Invalid exceptions on strings with curly braces
