@@ -14,8 +14,10 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
     using System.Threading;
     using NFluent.Extensibility;
+    using NFluent.Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on a <see cref="EventWaitHandle"/> instance.
@@ -25,20 +27,18 @@ namespace NFluent
         /// <summary>
         /// Checks that the event is set within a given timeout in millisecond.
         /// </summary>
-        /// <param name="check">
-        /// The fluent check to be extended.
-        /// </param>
-        /// <param name="timeOutInMsec">The maximum amount of milliseconds before the event should be set.</param>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="timeOut">The maximum amount of time before the event should be set (time unit being specified with the timeUnit parameter).</param>
+        /// <param name="timeUnit">The time unit of the given timeOut.</param>
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">
-        /// The event was not set before the given timeout in millisecond.
-        /// </exception>
-        public static ICheckLink<ICheck<EventWaitHandle>> IsSetWithin(this ICheck<EventWaitHandle> check, int timeOutInMsec)
+        /// <exception cref="FluentCheckException">The event was not set before the given timeout in millisecond.</exception>
+        public static ICheckLink<ICheck<EventWaitHandle>> IsSetWithin(this ICheck<EventWaitHandle> check, int timeOut, TimeUnit timeUnit)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            
+            var timeOutInMsec = GetTimeOutExpressedInMsec(timeOut, timeUnit);
+
             return checker.ExecuteCheck(
                 () =>
                 {
@@ -51,22 +51,28 @@ namespace NFluent
                 FluentMessage.BuildMessage(string.Format("The checked event has been set before the given timeout whereas it must not.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString());
         }
 
+        private static int GetTimeOutExpressedInMsec(int timeOut, TimeUnit timeUnit)
+        {
+            var duration = new Duration(timeOut, timeUnit);
+            var rawDurationInMsec = duration.ConvertTo(TimeUnit.Milliseconds).RawDuration;
+            var timeOutInMsec = Convert.ToInt32(rawDurationInMsec);
+            return timeOutInMsec;
+        }
+
         /// <summary>
         /// Checks that the event is not set within a given timeout in millisecond.
         /// </summary>
-        /// <param name="check">
-        /// The fluent check to be extended.
-        /// </param>
-        /// <param name="timeOutInMsec">The maximum amount of milliseconds before the event should not be set.</param>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="timeOut">The maximum amount of time before the event should not be set (time unit being specified with the timeUnit parameter).</param>
+        /// <param name="timeUnit">The time unit of the given timeOut.</param>
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">
-        /// The event was set before the given timeout in millisecond.
-        /// </exception>
-        public static ICheckLink<ICheck<EventWaitHandle>> IsNotSetWithin(this ICheck<EventWaitHandle> check, int timeOutInMsec)
+        /// <exception cref="FluentCheckException">The event was set before the given timeout in millisecond.</exception>
+        public static ICheckLink<ICheck<EventWaitHandle>> IsNotSetWithin(this ICheck<EventWaitHandle> check, int timeOut, TimeUnit timeUnit)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
+            var timeOutInMsec = GetTimeOutExpressedInMsec(timeOut, timeUnit);
 
             return checker.ExecuteCheck(
                 () =>
