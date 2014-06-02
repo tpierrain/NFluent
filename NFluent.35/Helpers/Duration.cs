@@ -61,10 +61,10 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
-        /// Gets the duration quantity.
+        /// Gets the duration quantity expressed in the proper <see cref="TimeUnit"/>.
         /// </summary>
         /// <value>
-        /// The duration quantity.
+        /// The duration quantity expressed in the proper <see cref="TimeUnit"/>.
         /// </value>
         public double RawDuration
         {
@@ -86,6 +86,19 @@ namespace NFluent.Helpers
             {
                 return this.timeUnit;
             }
+        }
+
+        /// <summary>
+        /// Converts a given duration to a number of milliseconds.
+        /// </summary>
+        /// <param name="duration">The duration value.</param>
+        /// <param name="durationTimeUnit">The time unit of the duration.</param>
+        /// <returns>The number of milliseconds corresponding to that duration.</returns>
+        public static int ConvertToMilliseconds(double duration, TimeUnit durationTimeUnit)
+        {
+            var durationInst = new Duration(duration, durationTimeUnit);
+            var rawDurationInMsec = durationInst.ConvertTo(TimeUnit.Milliseconds).RawDuration;
+            return Convert.ToInt32(rawDurationInMsec);
         }
 
         /// <summary>

@@ -25,7 +25,7 @@ namespace NFluent
     public static class EventWaitHandleCheckExtensions
     {
         /// <summary>
-        /// Checks that the event is set within a given timeout in millisecond.
+        /// Checks that the event is set within a given timeout.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="timeOut">The maximum amount of time before the event should be set (time unit being specified with the timeUnit parameter).</param>
@@ -33,11 +33,11 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The event was not set before the given timeout in millisecond.</exception>
-        public static ICheckLink<ICheck<EventWaitHandle>> IsSetWithin(this ICheck<EventWaitHandle> check, int timeOut, TimeUnit timeUnit)
+        /// <exception cref="FluentCheckException">The event was not set before the given timeout.</exception>
+        public static ICheckLink<ICheck<EventWaitHandle>> IsSetWithin(this ICheck<EventWaitHandle> check, double timeOut, TimeUnit timeUnit)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var timeOutInMsec = GetTimeOutExpressedInMsec(timeOut, timeUnit);
+            var timeOutInMsec = Duration.ConvertToMilliseconds(timeOut, timeUnit);
 
             return checker.ExecuteCheck(
                 () =>
@@ -51,16 +51,8 @@ namespace NFluent
                 FluentMessage.BuildMessage(string.Format("The checked event has been set before the given timeout whereas it must not.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString());
         }
 
-        private static int GetTimeOutExpressedInMsec(int timeOut, TimeUnit timeUnit)
-        {
-            var duration = new Duration(timeOut, timeUnit);
-            var rawDurationInMsec = duration.ConvertTo(TimeUnit.Milliseconds).RawDuration;
-            var timeOutInMsec = Convert.ToInt32(rawDurationInMsec);
-            return timeOutInMsec;
-        }
-
         /// <summary>
-        /// Checks that the event is not set within a given timeout in millisecond.
+        /// Checks that the event is not set within a given timeout.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="timeOut">The maximum amount of time before the event should not be set (time unit being specified with the timeUnit parameter).</param>
@@ -68,11 +60,11 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The event was set before the given timeout in millisecond.</exception>
-        public static ICheckLink<ICheck<EventWaitHandle>> IsNotSetWithin(this ICheck<EventWaitHandle> check, int timeOut, TimeUnit timeUnit)
+        /// <exception cref="FluentCheckException">The event was set before the given timeout.</exception>
+        public static ICheckLink<ICheck<EventWaitHandle>> IsNotSetWithin(this ICheck<EventWaitHandle> check, double timeOut, TimeUnit timeUnit)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var timeOutInMsec = GetTimeOutExpressedInMsec(timeOut, timeUnit);
+            var timeOutInMsec = Duration.ConvertToMilliseconds(timeOut, timeUnit);
 
             return checker.ExecuteCheck(
                 () =>
