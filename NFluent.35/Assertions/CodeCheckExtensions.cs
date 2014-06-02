@@ -26,6 +26,8 @@ namespace NFluent
     /// </summary>
     public static class CodeCheckExtensions
     {
+        #region fields
+
         private const string LabelForExecTime = "execution time";
 
         private const string LabelForCpuTime = "cpu time";
@@ -35,6 +37,8 @@ namespace NFluent
         private const string LabelForMoreThan = "more than";
 
         private const string LabelForCode = "code";
+
+        #endregion
 
         #region Methods
 
@@ -243,8 +247,8 @@ namespace NFluent
                                 checker.BuildShortMessage(
                                     "The {0} did not raise an exception, whereas it must.")
                                              .For(LabelForCode)
-                                             .Expected(typeof(T))
-                                             .Label("Expected exception type is:")
+                                             .ExpectedType(typeof(T)).WithType()
+                                             .Label("The {0} exception:")
                                              .ToString();
                             throw new FluentCheckException(message);
                         }
@@ -257,8 +261,8 @@ namespace NFluent
                                              .For(LabelForCode)
                                              .On(checker.Value.RaisedException)
                                              .Label("Raised Exception")
-                                             .And.Expected(typeof(T))
-                                             .Label("Expected exception type is:")
+                                             .And.ExpectedType(typeof(T)).WithType()
+                                             .Label("The {0} exception:")
                                              .ToString();
 
                             throw new FluentCheckException(message);

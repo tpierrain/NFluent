@@ -473,6 +473,7 @@ namespace NFluent
         private static string CheckFieldEquality(object expected, object value, bool negated, string prefix = "")
         {
             var invalidFields = new StringBuilder();
+            var sutFields = new StringBuilder();
 
             // REFACTOR: this method which has too much lines
             string message = null;
@@ -483,6 +484,7 @@ namespace NFluent
                 string fieldLabel;
                 var fieldname = BuildFieldDescription(prefix, fieldInfo, out fieldLabel);
                 var otherField = FindField(expected.GetType(), fieldInfo.Name);
+
                 if (otherField == null)
                 {
                     // fields does not exist
@@ -492,10 +494,9 @@ namespace NFluent
                                                 .On(value)
                                                 .And.Expected(expected)
                                                 .ToString();
-
-                        invalidFields.AppendLine(message);
                     }
-                    continue;
+
+                    break;
                 }
 
                 // compare value
@@ -512,7 +513,6 @@ namespace NFluent
                                                      .On(actualFieldValue)
                                                      .And.Expected(null)
                                                      .ToString();
-                            invalidFields.AppendLine(message);
                         }
                         else
                         {
@@ -521,8 +521,9 @@ namespace NFluent
                                                      .And.Expected(null)
                                                      .Comparison("different from")
                                                      .ToString();
-                            invalidFields.AppendLine(message);
                         }
+
+                        break;
                     }
                 }
                 else
@@ -558,11 +559,11 @@ namespace NFluent
                                                  .Comparison("different from")
                                                  .ToString();
                         }
-                        invalidFields.AppendLine(message);
 
+                        invalidFields.AppendLine(message);
+                        break;
                     }
                 }
-                message = invalidFields.ToString();
             }
 
             return message;

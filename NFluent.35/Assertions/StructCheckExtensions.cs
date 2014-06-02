@@ -37,10 +37,7 @@ namespace NFluent
             var runnableStructCheck = ExtensibilityHelper.ExtractStructChecker(check);
 
             return runnableStructCheck.ExecuteCheck(
-                () =>
-                {
-                    EqualityHelper.IsEqualTo(runnableStructCheck.Value, expected);
-                },
+                () => EqualityHelper.IsEqualTo(runnableStructCheck.Value, expected),
                 EqualityHelper.BuildErrorMessage(runnableStructCheck.Value, expected, true));
         }
 
@@ -59,10 +56,7 @@ namespace NFluent
             var runnableStructCheck = ExtensibilityHelper.ExtractStructChecker(check);
 
             return runnableStructCheck.ExecuteCheck(
-                () =>
-                    {
-                        EqualityHelper.IsNotEqualTo(runnableStructCheck.Value, expected);
-                    },
+                () => EqualityHelper.IsNotEqualTo(runnableStructCheck.Value, expected),
                 EqualityHelper.BuildErrorMessage(runnableStructCheck.Value, expected, false));
         }
     }

@@ -47,8 +47,7 @@ namespace NFluent
                         FluentMessage.BuildMessage(string.Format("The {{0}} contains {0} at {1} and {2}, where as it must contains it once.", text.ToStringProperlyFormated().DoubleCurlyBraces(), firstIndex, lastIndexOf))
                                      .For("string")
                                      .On(value)
-                                     .And.Expected(comparand)
-                                     .Label("Expected content once");
+                                     .And.Expected(comparand).Comparison("one");
                     throw new FluentCheckException(message.ToString());
                 }
             }

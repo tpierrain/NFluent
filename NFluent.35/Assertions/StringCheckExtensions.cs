@@ -126,7 +126,7 @@ namespace NFluent
                         }
                         else
                         {
-                            errorMessage = FluentMessage.BuildMessage("The {0} is not one of the possible elements.")
+                            errorMessage = checker.BuildMessage("The {0} is not one of the possible elements.")
                                             .On(checker.Value)
                                             .And.Expected(possibleElements).Label("The possible elements:")
                                             .ToString();
@@ -142,7 +142,7 @@ namespace NFluent
                         }
                     }
 
-                    var errorMessage = checker.BuildMessage("The {0} is not one of the possible elements.")
+                    errorMessage = checker.BuildMessage("The {0} is not one of the possible elements.")
                                             .Expected(possibleElements).Label("The possible elements:")
                                             .ToString();
                     throw new FluentCheckException(errorMessage);
