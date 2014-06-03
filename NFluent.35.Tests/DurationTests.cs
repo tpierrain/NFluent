@@ -50,5 +50,38 @@ namespace NFluent.Tests
             maxValue++;
             Duration.ConvertToMilliseconds(maxValue, TimeUnit.Milliseconds);
         }
+
+        [Test]
+        public void TestDurationClass()
+        {
+            var firstDuration = new Duration(200, TimeUnit.Minutes);
+            
+            Check.That(firstDuration.RawDuration).IsEqualTo(200);
+            Check.That(firstDuration.Unit).IsEqualTo(TimeUnit.Minutes);
+            Check.That(firstDuration.ToString()).IsEqualTo("200 Minutes");
+            Check.That(firstDuration > new Duration(100, TimeUnit.Seconds)).IsTrue();
+            Check.That(firstDuration < new Duration(100, TimeUnit.Hours)).IsTrue();
+
+            var anotherDurationWithSameValue = new Duration(200, TimeUnit.Minutes);
+
+            // test objects override
+            Check.That(firstDuration.GetHashCode()).IsEqualTo(anotherDurationWithSameValue.GetHashCode());
+            Check.That(firstDuration).IsEqualTo(anotherDurationWithSameValue);
+            Check.That(anotherDurationWithSameValue.Equals(firstDuration)).IsTrue();
+            Check.That(anotherDurationWithSameValue == firstDuration).IsTrue();
+            Check.That(anotherDurationWithSameValue.Equals(null)).IsFalse();
+            Check.That(anotherDurationWithSameValue.Equals(20)).IsFalse();
+            Check.That(anotherDurationWithSameValue.Equals((object)firstDuration)).IsTrue();
+        }
+
+        [Test]
+        public void TestDurationConversion()
+        {
+            var test = new Duration(2, TimeUnit.Milliseconds);
+            var converted = test.ConvertTo(TimeUnit.Microseconds);
+
+            Check.That(converted.RawDuration).IsEqualTo(2000);
+            Check.That(converted.Unit).IsEqualTo(TimeUnit.Microseconds);
+        }
     }
 }
