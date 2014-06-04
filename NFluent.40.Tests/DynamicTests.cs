@@ -26,5 +26,21 @@ namespace NFluent.Tests
             dynamic car = "car";
             Check.That(car.FuelLevel).IsEmpty();
         }
+
+        [Test]
+        public void DynamicPropertiesAreCheckableWithoutThrowing()
+        {
+            var cmd = new Command();
+            cmd.Subject = "test";
+            string val = cmd.Subject;
+
+            Check.That(val).IsEqualTo("test");
+            Check.That<object>(cmd.Subject).IsNotNull();
+        }
+
+        public class Command
+        {
+            public dynamic Subject { get; set; }
+        }
     }
 }
