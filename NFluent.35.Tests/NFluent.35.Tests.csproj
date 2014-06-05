@@ -55,6 +55,7 @@
     <Compile Include="CharTests.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DictionaryChecksTests.cs" />
+    <Compile Include="DurationTests.cs" />
     <Compile Include="EdgeCasesTest.cs" />
     <Compile Include="EventWaitHandleTests.cs" />
     <Compile Include="ExceptionTests.cs" />

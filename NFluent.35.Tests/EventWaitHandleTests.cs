@@ -29,7 +29,7 @@ namespace NFluent.Tests
             {
                 SetTheEventFromAnotherThreadAfterADelay(myEvent, 300);
 
-                Check.That(myEvent).IsSetWithin(1000);
+                Check.That(myEvent).IsSetWithin(1, TimeUnit.Seconds);
             }
         }
 
@@ -39,7 +39,7 @@ namespace NFluent.Tests
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                Check.That(myEvent).IsSetWithin(10);
+                Check.That(myEvent).IsSetWithin(10, TimeUnit.Milliseconds);
             }
         }
 
@@ -48,7 +48,7 @@ namespace NFluent.Tests
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                Check.That(myEvent).Not.IsSetWithin(20);
+                Check.That(myEvent).Not.IsSetWithin(20, TimeUnit.Milliseconds);
             }
         }
 
@@ -59,7 +59,7 @@ namespace NFluent.Tests
             using (var myEvent = new AutoResetEvent(false))
             {
                 SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
-                Check.That(myEvent).Not.IsSetWithin(30);
+                Check.That(myEvent).Not.IsSetWithin(30, TimeUnit.Milliseconds);
             }
         }
 
@@ -72,7 +72,7 @@ namespace NFluent.Tests
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                Check.That(myEvent).IsNotSetWithin(1000);
+                Check.That(myEvent).IsNotSetWithin(1, TimeUnit.Seconds);
             }
         }
 
@@ -83,7 +83,7 @@ namespace NFluent.Tests
             using (var myEvent = new AutoResetEvent(false))
             {
                 SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
-                Check.That(myEvent).IsNotSetWithin(100);
+                Check.That(myEvent).IsNotSetWithin(100, TimeUnit.Milliseconds);
             }
         }
 
@@ -93,7 +93,7 @@ namespace NFluent.Tests
             using (var myEvent = new AutoResetEvent(false))
             {
                 SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
-                Check.That(myEvent).Not.IsNotSetWithin(20);
+                Check.That(myEvent).Not.IsNotSetWithin(20, TimeUnit.Milliseconds);
             }
         }
 
@@ -103,7 +103,7 @@ namespace NFluent.Tests
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                Check.That(myEvent).Not.IsNotSetWithin(10);
+                Check.That(myEvent).Not.IsNotSetWithin(10, TimeUnit.Milliseconds);
             }
         }
 

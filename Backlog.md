@@ -7,7 +7,7 @@ Now available on github: https://github.com/tpierrain/NFluent/issues?state=open
 
 Temporary backlog
 -------
-1. Implement Mendel proposal with nullable.
+1. Review the implementation of the Duration class (makes it a monoid)
 1. Add IsSameSizeAs() check (IEnumerable->string)
 1. Refactor the AssessEqual method (StringCheckExtensions)
 
