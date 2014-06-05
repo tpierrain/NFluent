@@ -36,8 +36,8 @@ namespace NFluent.Tests
 
             Check.That(val).IsEqualTo("test");
 
-            // Next check throws:  Microsoft.CSharp.RuntimeBinder.RuntimeBinderException : 'NFluent.FluentCheck<object>' does not contain a definition for 'IsNotNull'
-            Check.That<object>(cmd.Subject).IsNotNull();
+            // Next check throws:  Microsoft.CSharp.RuntimeBinder.RuntimeBinderException : 'NFluent.FluentCheck<string>' does not contain a definition for 'IsNotNull'
+            Check.That(cmd.Subject).IsNotNull();
         }
 
         public class Command
