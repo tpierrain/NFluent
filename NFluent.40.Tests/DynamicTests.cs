@@ -14,13 +14,17 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using Microsoft.CSharp.RuntimeBinder;
+
     using NUnit.Framework;
 
     [TestFixture]
     public class DynamicTests
     {
+        // Dynamics are not compliant with .NET extension method which is the way we introduce checks within NFluent
+
         [Test]
-        [ExpectedException]
+        [ExpectedException(typeof(RuntimeBinderException), ExpectedMessage = "'string' does not contain a definition for 'FuelLevel'")]
         public void CanCheckThatOnADynamic()
         {
             dynamic car = "car";
@@ -28,15 +32,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [ExpectedException(typeof(RuntimeBinderException), ExpectedMessage = "'NFluent.LambdaCheck' does not contain a definition for 'IsNotNull'")]
+        public void DynamicSutIsConsideredAsALambda()
+        {
+            var cmd = new Command();
+            
+            Check.That(cmd.Subject).IsNotNull();
+        }
+
+        [Test]
+        [ExpectedException(typeof(RuntimeBinderException), ExpectedMessage = "'NFluent.FluentCheck<string>' does not contain a definition for 'IsNotNull'")]
         public void DynamicPropertiesAreCheckableWithoutThrowing()
         {
             var cmd = new Command();
             cmd.Subject = "test";
-            string val = cmd.Subject;
 
-            Check.That(val).IsEqualTo("test");
-
-            // Next check throws:  Microsoft.CSharp.RuntimeBinder.RuntimeBinderException : 'NFluent.FluentCheck<string>' does not contain a definition for 'IsNotNull'
             Check.That(cmd.Subject).IsNotNull();
         }
 
