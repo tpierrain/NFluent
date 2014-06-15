@@ -33,17 +33,17 @@ namespace NFluent.Tests
         [Test]
         public void IsNaNWorks()
         {
-            const double Zero = 0D;
-            const double NotANumber = Zero / Zero;
+            const float Zero = 0F;
+            const float NotANumber = Zero / Zero;
 
             Check.That(NotANumber).IsNaN();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked double value is a number whereas it must not.\nThe checked double value:\n\t[20]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked float value is a number whereas it must not.\nThe checked float value:\n\t[20]")]
         public void IsNaNThrowsWhenTheValueIsANumber()
         {
-            const double Twenty = 20D;
+            const float Twenty = 20F;
 
             Check.That(Twenty).IsNaN();
         }
@@ -51,17 +51,17 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNaNWorks()
         {
-            const double Twenty = 20D;
+            const float Twenty = 20F;
 
             Check.That(Twenty).Not.IsNaN();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked double value is not a number (NaN) whereas it must.\nThe checked double value:\n\t[NaN]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked float value is not a number (NaN) whereas it must.\nThe checked float value:\n\t[NaN]")]
         public void NotIsNaNThrowsAnExceptionWhenFailing()
         {
-            const double Zero = 0D;
-            const double NotANumber = Zero / Zero;
+            const float Zero = 0F;
+            const float NotANumber = Zero / Zero;
 
             Check.That(NotANumber).Not.IsNaN();
         }
