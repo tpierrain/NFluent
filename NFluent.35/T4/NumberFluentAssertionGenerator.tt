@@ -67,6 +67,26 @@
 		
 		Write(sourceCode);
     }
+
+	// ----------------------------------------------
+	// Methods for Floating Point binary related types only
+	var floatingPointBinaryTypesToGenerateAssertionsFor = new string[] { "float" };
+	goldenSourceClassFileName = Host.ResolvePath(@"..\Assertions\DoubleSpecificCheckExtensions.cs");
+	
+	foreach(string typeName in floatingPointBinaryTypesToGenerateAssertionsFor)
+    {
+		// Creates new output file
+		// Creates a TextInfo based on the "en-US" culture in order to use the ToTitleCase() method
+		System.Globalization.TextInfo textInfo = new System.Globalization.CultureInfo("en-US", false).TextInfo;
+		string properlyCasedTypeName = textInfo.ToTitleCase(typeName);
+		string checkClassName =  properlyCasedTypeName + "SpecificCheckExtensions";
+		
+		manager.StartNewFile(checkClassName + ".cs");
+		
+		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
+		
+		Write(sourceCode);
+    }
 	
 	// Write output code into multiple files
 	manager.Process();

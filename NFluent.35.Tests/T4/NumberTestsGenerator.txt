@@ -1,41 +1,7 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Generated helper templates
 // Generated items
+// NFluent\NFluent.35.Tests\T4\FloatFloatingPointBinaryRelatedTests.cs
 // NFluent\NFluent.35.Tests\T4\SbyteSignedNumberRelatedTests.cs
 // NFluent\NFluent.35.Tests\T4\ShortSignedNumberRelatedTests.cs
 // NFluent\NFluent.35.Tests\T4\LongSignedNumberRelatedTests.cs

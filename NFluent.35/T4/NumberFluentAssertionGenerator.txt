@@ -1,6 +1,7 @@
 
 // Generated helper templates
 // Generated items
+// NFluent\NFluent.35\T4\FloatSpecificCheckExtensions.cs
 // NFluent\NFluent.35\T4\ShortSignedCheckExtensions.cs
 // NFluent\NFluent.35\T4\LongSignedCheckExtensions.cs
 // NFluent\NFluent.35\T4\FloatSignedCheckExtensions.cs
