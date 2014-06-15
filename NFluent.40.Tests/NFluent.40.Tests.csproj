@@ -83,6 +83,9 @@
     <Compile Include="..\NFluent.35.Tests\DictionaryChecksTests.cs">
       <Link>DictionaryChecksTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35.Tests\DoubleFloatingPointBinaryRelatedTests.cs">
+      <Link>DoubleFloatingPointBinaryRelatedTests.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35.Tests\DurationTests.cs">
       <Link>DurationTests.cs</Link>
     </Compile>
@@ -191,6 +194,10 @@
     </Compile>
     <Compile Include="..\NFluent.35.Tests\T4\DoubleSignedNumberRelatedTests.cs">
       <Link>T4\DoubleSignedNumberRelatedTests.cs</Link>
+      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35.Tests\T4\FloatFloatingPointBinaryRelatedTests.cs">
+      <Link>T4\FloatFloatingPointBinaryRelatedTests.cs</Link>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="..\NFluent.35.Tests\T4\FloatRelatedTests.cs">
