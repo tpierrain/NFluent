@@ -44,6 +44,7 @@ public static class TypeCloningHelper
 				line = line.Replace("(double)", "(" + targetTypeName + ")");
 				line = line.Replace("<double?>", "<" + targetTypeName + "?>");
 				line = line.Replace("double ", targetTypeName + " ");
+				line = line.Replace("double.", targetTypeName + ".");
 				line = line.Replace("an <see cref=\"double\"/> value", "an <see cref=\"" + targetTypeName + "\"/> value");
 				line = line.Replace(@"// Since this class is the model/template for the generation of all the other numbers related CheckExtensions classes, don't forget to re-generate all the other classes every time you change this one. To do that, just save the ..\T4\NumberFluentAssertionGenerator.tt file within Visual Studio 2012. This will trigger the T4 code generation process.", @"#pragma warning restore 169");
 				sb.AppendLine(line);

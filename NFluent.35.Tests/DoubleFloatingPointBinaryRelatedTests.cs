@@ -60,5 +60,47 @@ namespace NFluent.Tests
         }
 
         #endregion
+
+        #region IsFinite
+
+        [Test]
+        public void IsFiniteWorks()
+        {
+            const double Twenty = 20D;
+
+            Check.That(Twenty).IsFinite();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked double value is an infinite number whereas it must not.\nThe checked double value:\n\t[Infinity]")]
+        public void IsFiniteThrowsWithInfinity()
+        {
+            const double Zero = 0D;
+            const double Twenty = 20D;
+            const double InfiniteNumber = Twenty / Zero;
+
+            Check.That(InfiniteNumber).IsFinite();
+        }
+
+        [Test]
+        public void NotIsFiniteWorks()
+        {
+            const double Zero = 0D;
+            const double Twenty = 20D;
+            const double InfiniteNumber = Twenty / Zero;
+
+            Check.That(InfiniteNumber).Not.IsFinite();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked double value is a finite number whereas it must not.\nThe checked double value:\n\t[20]")]
+        public void NotIsFiniteThrowsWithFiniteNumber()
+        {
+            const double Twenty = 20D;
+
+            Check.That(Twenty).Not.IsFinite();
+        }
+
+        #endregion
     }
 }
