@@ -46,5 +46,29 @@ namespace NFluent
                 },
                 FluentMessage.BuildMessage("The {0} is not a number (NaN) whereas it must.").For("double value").On(checker.Value).ToString());
         }
+
+        /// <summary>
+        /// Determines whether the specified number evaluates to a value that is finite (i.e. not infinity).
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The specified number evaluates to a value that is infinite (i.e. equals to infinity).</exception>
+        public static ICheckLink<ICheck<double>> IsFinite(this ICheck<double> check)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+
+            return checker.ExecuteCheck(
+                () =>
+                {
+                    if (double.IsInfinity(checker.Value))
+                    {
+                        var errorMessage = FluentMessage.BuildMessage("The {0} is an infinite number whereas it must not.").For("double value").On(checker.Value).ToString();
+                        throw new FluentCheckException(errorMessage);
+                    }
+                },
+                FluentMessage.BuildMessage("The {0} is a finite number whereas it must not.").For("double value").On(checker.Value).ToString());
+        }
     }
 }
