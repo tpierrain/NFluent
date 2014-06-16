@@ -1,7 +1,7 @@
 New feature(s):
 * Adds IsSetWithin check for EventWaitHandle types (ex. Manual or AutoResetEvent)
 * Adds IsOneOfThese() check for string.
-* NFluent is now also available as a Portable Class Library (Profile: portable-net4+sl5+wp8+win8+MonoMac+MonoTouch+MonoAndroid)
+* NFluent is now also available as a Portable Class Library (Profile: portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1)
 * Adds IsNaN() check for double and float.
 * Adds IsFinite() check for double and float.
 --------------
