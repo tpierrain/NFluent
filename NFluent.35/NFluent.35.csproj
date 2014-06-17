@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="Assertions\CharCheckExtensions.cs" />
     <Compile Include="Assertions\CodeCheckExtensions.cs" />
+    <Compile Include="Assertions\DoubleSpecificCheckExtensions.cs" />
     <Compile Include="Assertions\EventWaitHandleCheckExtensions.cs" />
     <Compile Include="FluentCodeCheck.cs" />
     <Compile Include="Extensibility\ExtensibilityHelper.cs" />
@@ -87,6 +88,9 @@
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="T4\FloatSignedCheckExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T4\FloatSpecificCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="T4\LongSignedCheckExtensions.cs">

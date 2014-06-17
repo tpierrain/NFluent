@@ -72,6 +72,9 @@
     <Compile Include="..\NFluent.35\Assertions\DictionaryCheckExtensions.cs">
       <Link>Assertions\DictionaryCheckExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35\Assertions\DoubleSpecificCheckExtensions.cs">
+      <Link>Assertions\DoubleSpecificCheckExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35\Assertions\EnumerableCheckExtensions.cs">
       <Link>Assertions\EnumerableCheckExtensions.cs</Link>
     </Compile>
@@ -260,6 +263,10 @@
     </Compile>
     <Compile Include="..\NFluent.35\T4\FloatSignedCheckExtensions.cs">
       <Link>T4\FloatSignedCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\FloatSpecificCheckExtensions.cs">
+      <Link>T4\FloatSpecificCheckExtensions.cs</Link>
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="..\NFluent.35\T4\LongCheckExtensions.cs">

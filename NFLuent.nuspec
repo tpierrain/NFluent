@@ -33,7 +33,7 @@
     <file src="Artifacts\Binaries\40\NFluent.dll" target="lib\net40\NFluent.dll" />
     <file src="Artifacts\Binaries\40\NFluent.xml" target="lib\net40\NFluent.xml" />
     <!-- PCL -->
-    <file src="Artifacts\Binaries\PCL\NFluent.dll" target="lib\portable-net45+sl5+win8+MonoMac+MonoTouch+MonoAndroid\NFluent.dll" />
-    <file src="Artifacts\Binaries\PCL\NFluent.xml" target="lib\portable-net45+sl5+win8+MonoMac+MonoTouch+MonoAndroid\NFluent.xml" />
+    <file src="Artifacts\Binaries\PCL\NFluent.dll" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\NFluent.dll" />
+    <file src="Artifacts\Binaries\PCL\NFluent.xml" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\NFluent.xml" />
   </files>
 </package>
