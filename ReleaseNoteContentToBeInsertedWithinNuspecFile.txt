@@ -1,5 +1,5 @@
 New feature(s):
-* Now, supports .NET Tasks and Async methods (thus, targets .NET 4.5 and 3.5 instead of 4.0 and 3.5)
+* Now, supports .NET Tasks and Async methods with Check.ThatAsyncCode() (thus, NFluent targets .NET 4.5 and 3.5 instead of 4.0 and 3.5)
 --------------
 Change(s):
 * 
