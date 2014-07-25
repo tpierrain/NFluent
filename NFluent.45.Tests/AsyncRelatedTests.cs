@@ -23,14 +23,14 @@ namespace NFluent.Tests
     [TestFixture]
     public class AsyncRelatedTests
     {
-        //[Test]
-        //public void LateExceptionFromAsynchronousCodeIsNotCatchedWithTheClassicalThatCodeCheck()
-        //{
-        //    Check.ThatCode(this.DoSomethingBadAsync).Not.Throws<InvalidOperationException>();
-        //}
+        [Test]
+        public void CheckThatCodeOnFinishedAsyncMethodReturnsAggregateExceptionInsteadOfTheOriginalExceptionType()
+        {
+            Check.ThatCode(this.DoSomethingBadAsync().Wait).Throws<AggregateException>();
+        }
 
         [Test]
-        public void LateExceptionFromAsynchronousCodeIsNotCatchedWithTheThatAsyncCodeCheck()
+        public void CheckThatAsyncCodeOnAsyncMethodReturnsTheOriginalExceptionType()
         {
             Check.ThatAsyncCode(this.DoSomethingBadAsync()).Throws<InvalidOperationException>();
         }
@@ -40,7 +40,7 @@ namespace NFluent.Tests
             await Task.Run(() =>
             {
                 // This operation takes a while
-                Thread.Sleep(300);
+                Thread.Sleep(100);
                 throw new InvalidOperationException("What?!?");
             });
         }
