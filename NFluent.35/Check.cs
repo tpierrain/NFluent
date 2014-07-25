@@ -17,7 +17,7 @@ namespace NFluent
     using System;
     using System.ComponentModel;
 
-#if (dotNet45)
+#if (DOTNET_45)
     using System.Threading.Tasks;
 #endif
 
@@ -43,7 +43,7 @@ namespace NFluent
             return new FluentCheck<T>(value);
         }
 
-#if (dotNet45)
+#if (DOTNET_45)
 
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given async code (returning Task).

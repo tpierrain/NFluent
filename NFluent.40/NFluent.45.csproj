@@ -29,7 +29,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;dotNet45</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -37,6 +37,11 @@
     <Prefer32Bit>false</Prefer32Bit>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+  <!-- Workaround for NCrunch issue (http://forum.ncrunch.net/yaf_postst935_Issue-when-using-conditional-compilation-symbols-in-linked-file.aspx) -->
+  <PropertyGroup Condition="'$(TargetFrameworkVersion)' == 'v4.5'">
+    <DefineConstants>$(DefineConstants);DOTNET_45</DefineConstants>
+  </PropertyGroup>
+  <!-- End of workaround for NCrunch issue (http://forum.ncrunch.net/yaf_postst935_Issue-when-using-conditional-compilation-symbols-in-linked-file.aspx) -->
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
