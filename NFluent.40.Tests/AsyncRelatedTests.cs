@@ -1,7 +1,7 @@
 ﻿
 namespace NFluent.Tests
 {
-    using System.Security;
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -12,25 +12,28 @@ namespace NFluent.Tests
     {
         private const int ASecondInMsec = 1000;
 
+        //[Test]
+        //public void LateExceptionFromAsynchronousCodeIsNotCatchedWithTheClassicalThatCodeCheck()
+        //{
+        //    Check.ThatCode(this.DoSomethingBadAsync).Not.Throws<InvalidOperationException>();
+        //}
+#if dotNet45
+
         [Test]
-        [Ignore("Failing test which forces failure of other tests")]
-        public void ExceptionFromAsynchronousCodeIsWellDetected()
+        public void LateExceptionFromAsynchronousCodeIsNotCatchedWithTheThatAsyncCodeCheck()
         {
-            Check.ThatCode(this.DoSomethingAsync).Throws<SecurityException>();
+            Check.ThatAsyncCode(this.DoSomethingBadAsync()).Throws<InvalidOperationException>();
         }
 
-        private async void DoSomethingAsync()
-        {
-            await this.ThrowSecurityExceptionAfterASecond();
-        }
+#endif
 
-        private Task ThrowSecurityExceptionAfterASecond()
+        private async Task DoSomethingBadAsync()
         {
-            return Task.Run(() =>
+            await Task.Run(() =>
             {
                 // This operation takes a while
                 Thread.Sleep(ASecondInMsec);
-                throw new SecurityException("What?!?");
+                //throw new InvalidOperationException("What?!?");
             });
         }
     }

@@ -17,6 +17,10 @@ namespace NFluent
     using System;
     using System.ComponentModel;
 
+#if (dotNet45)
+    using System.Threading.Tasks;
+#endif
+
     /// <summary>
     /// Provides <see cref="ICheck{T}"/> instances to be used in order to make 
     /// check(s) on the provided value.
@@ -38,6 +42,25 @@ namespace NFluent
         {
             return new FluentCheck<T>(value);
         }
+
+#if (dotNet45)
+
+        /// <summary>
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given async code (returning Task).
+        /// </summary>
+        /// <param name="asyncTask">The async code to be tested.</param>
+        /// <returns>
+        /// A <see cref="ICheck{RunTrace}" /> instance to use in order to assert things on the given value.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
+        /// </remarks>
+        public static ICodeCheck<RunTrace> ThatAsyncCode(Task asyncTask)
+        {
+            return null;
+        }
+#endif
+
 #if !(PORTABLE)
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
