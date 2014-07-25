@@ -23,6 +23,8 @@ namespace NFluent.Helpers
     using System.Linq;
     using System.Reflection;
 
+    //ncrunch: no coverage start
+
     /// <summary>
     /// Offer factory services to get adequate exception type depending on testing framework.
     /// </summary>
@@ -48,7 +50,7 @@ namespace NFluent.Helpers
 
                     // look for NUnit
                     var resultScan = ExceptionScanner("nunit", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException");
-
+                    
                     if (resultScan == null)
                     {
                         // look for MSTest
@@ -151,5 +153,7 @@ namespace NFluent.Helpers
             public ConstructorInfo IgnoreException { get; set; }
         }
     }
+
+    //ncrunch: no coverage end
 }
 #endif

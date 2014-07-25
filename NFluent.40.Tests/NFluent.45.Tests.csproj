@@ -8,8 +8,8 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NFluent.Tests</RootNamespace>
-    <AssemblyName>NFluent.40.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AssemblyName>NFluent.45.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -262,6 +264,7 @@
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="AsyncRelatedTests.cs" />
     <Compile Include="DynamicTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -284,13 +287,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NFluent.40\NFluent.40.csproj">
+    <ProjectReference Include="..\NFluent.40\NFluent.45.csproj">
       <Project>{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}</Project>
-      <Name>NFluent.40</Name>
+      <Name>NFluent.45</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NFluent.Tests.Extensions.40\NFluent.Tests.Extensions.40.csproj">
+    <ProjectReference Include="..\NFluent.Tests.Extensions.40\NFluent.Tests.Extensions.45.csproj">
       <Project>{1BAA72CB-3A46-4711-9A5B-F96CF20D465E}</Project>
-      <Name>NFluent.Tests.Extensions.40</Name>
+      <Name>NFluent.Tests.Extensions.45</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
