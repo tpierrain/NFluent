@@ -17,7 +17,7 @@ namespace NFluent
 {
     using System;
     using System.Diagnostics;
-
+    using System.Threading;
 #if DOTNET_45
     using System.Threading.Tasks;
 #endif
@@ -86,12 +86,9 @@ namespace NFluent
             try
             {
                 watch.Start();
+
+                // starts and waits the completion of the awaitable method
                 awaitableMethod().Wait();
-            }
-            catch (ObjectDisposedException odex)
-            {
-                // TODO: wrap something?
-                result.RaisedException = odex;
             }
             catch (AggregateException agex)
             {
@@ -102,6 +99,8 @@ namespace NFluent
                 watch.Stop();
                 result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
             }
+
+            // AFAIK, ObjectDisposedException should never happen here
 
             // ReSharper disable PossibleLossOfFraction
             result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
@@ -131,13 +130,10 @@ namespace NFluent
             try
             {
                 watch.Start();
+
+                // starts and waits the completion of the awaitable method
                 awaitableFunction().Wait();
                 result.Result = awaitableFunction().Result;
-            }
-            catch (ObjectDisposedException odex)
-            {
-                // TODO: wrap something?
-                result.RaisedException = odex;
             }
             catch (AggregateException agex)
             {
@@ -148,6 +144,8 @@ namespace NFluent
                 watch.Stop();
                 result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
             }
+
+            // AFAIK, ObjectDisposedException should never happen here
 
             // ReSharper disable PossibleLossOfFraction
             result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);

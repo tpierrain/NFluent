@@ -29,49 +29,13 @@ namespace NFluent.Tests
         #region async methods
 
         [Test]
-        public void CheckThatCodeOnFinishedAsyncMethodReturnsAggregateExceptionInsteadOfTheOriginalExceptionType()
+        public void ShouldNotUseCheckThatCodeForAsyncMethods()
         {
-            // bad way for async methods
+            // Bad way for async methods since it does not catch the proper exception, but 
+            // the TPL AggregateException wrapper instead
             Check.ThatCode(this.DoSomethingBadAsync().Wait).Throws<AggregateException>();
         }
-
-        [Test]
-        public void CheckThatAsyncCodeOnAsyncMethodReturnsTheOriginalExceptionType()
-        {
-            // proper way for async methods
-            Check.ThatAsyncCode(this.DoSomethingBadAsync).Throws<SecurityException>();
-        }
-
-        [Test]
-        public void CheckThatAsyncCodeReturnsAtTheEndOfTheAsyncMethod()
-        {
-            Check.That(this.sideEffectAchieved).IsFalse();
-
-            Check.ThatAsyncCode(this.SideEffectAsync).DoesNotThrow();
-
-            Check.That(this.sideEffectAchieved).IsTrue();
-        }
-
-        #endregion
-
-        #region async functions
-
-        [Test]
-        public void CheckThatAsyncCodeOnAsyncFunctionReturnsTheOriginalExceptionType()
-        {
-            // proper way for async function
-            Check.ThatAsyncCode((AwaitableFunction<int>)this.DoSomethingBadBeforeTheAnswerAsync).Throws<SecurityException>();
-        }
-
-        [Test]
-        public void CheckThatAsyncCodeWorksForFunctions()
-        {
-            // proper way for async function
-            Check.ThatAsyncCode((AwaitableFunction<int>)this.ThinkAndReturnTheAnswerAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
-        }
-
-        #endregion
-
+       
         private async Task DoSomethingBadAsync()
         {
             await Task.Run(() =>
@@ -82,27 +46,47 @@ namespace NFluent.Tests
             });
         }
 
+        [Test]
+        public void CheckThatAsyncCodeOnAsyncMethodReturnsTheOriginalExceptionType()
+        {
+            // proper way for async methods
+            Check.ThatAsyncCode(this.DoSomethingBadAsync).Throws<SecurityException>();
+        }
+
+        [Test]
+        public void CheckThatAsyncCodeReturnsWhenTheAsyncMethodHasCompleted()
+        {
+            Check.That(this.sideEffectAchieved).IsFalse();
+
+            Check.ThatAsyncCode(this.SideEffectAsync).DoesNotThrow();
+
+            Check.That(this.sideEffectAchieved).IsTrue();
+        }
+
         private async Task SideEffectAsync()
         {
-            await Task.Run(() =>
-            {
-                // This operation takes a while
-                Thread.Sleep(500);
-                this.sideEffectAchieved = true;
-            });
+            await Task.Run(() => Thread.Sleep(500));
+
+            this.sideEffectAchieved = true;
         }
 
-        private async Task<int> ThinkAndReturnTheAnswerAsync()
+        #endregion
+
+        #region async functions
+
+        /* 
+            Note: type inference is ugly here with functions (Task<TResult>), forcing us some static cast
+            Question: Is there a better way? is it a real use case/need for NFluent?
+         */
+
+        [Test]
+        public void CheckThatAsyncCodeOnAsyncFunctionReturnsTheOriginalExceptionType()
         {
-            await Task.Run(() =>
-            {
-                Thread.Sleep(100);
-            });
-
-            return 42;
+            // proper way for async function
+            Check.ThatAsyncCode((AwaitableFunction<int>)this.DoSomethingBadAfterAWhileAndBeforeAnsweringAsync).Throws<SecurityException>();
         }
 
-        private async Task<int> DoSomethingBadBeforeTheAnswerAsync()
+        private async Task<int> DoSomethingBadAfterAWhileAndBeforeAnsweringAsync()
         {
             await Task.Run(() =>
             {
@@ -112,5 +96,21 @@ namespace NFluent.Tests
 
             return 42;
         }
+
+        [Test]
+        public void CheckThatAsyncCodeWorksForFunctions()
+        {
+            // proper way for async function
+            Check.ThatAsyncCode((AwaitableFunction<int>)this.ReturnTheAnswerAfterAWhileAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
+        }
+        
+        private async Task<int> ReturnTheAnswerAfterAWhileAsync()
+        {
+            await Task.Run(() => Thread.Sleep(100));
+
+            return 42;
+        }
+
+        #endregion
     }
 }

@@ -17,24 +17,6 @@ namespace NFluent
     using System;
     using System.ComponentModel;
 
-#if (DOTNET_45)
-    using System.Threading.Tasks;
-
-    /// <summary>
-    /// Async method delegate.
-    /// </summary>
-    /// <returns>A Task.</returns>
-    public delegate Task AwaitableMethod();
-
-    /// <summary>
-    /// Awaitable async method returning a value delegate.
-    /// </summary>
-    /// <typeparam name="TResult">The type of the result.</typeparam>
-    /// <returns>A Task returning a value.</returns>
-    public delegate Task<TResult> AwaitableFunction<TResult>();
-    
-#endif
-
     /// <summary>
     /// Provides <see cref="ICheck{T}"/> instances to be used in order to make 
     /// check(s) on the provided value.
@@ -75,14 +57,19 @@ namespace NFluent
         }
 
         /// <summary>
-        /// TODO....
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given async function (returning Task{TResult}).
         /// </summary>
-        /// <typeparam name="U"></typeparam>
-        /// <param name="awaitableFunction">The awaitable method.</param>
-        /// <returns></returns>
-        public static ICodeCheck<RunTraceResult<U>> ThatAsyncCode<U>(AwaitableFunction<U> awaitableFunction)
+        /// <typeparam name="TResult">The type of the result for this asynchronous function.</typeparam>
+        /// <param name="awaitableFunction">The asynchronous function to be tested.</param>
+        /// <returns>
+        /// A <see cref="ICheck{RunTrace}" /> instance to use in order to assert things on the given value.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
+        /// </remarks>
+        public static ICodeCheck<RunTraceResult<TResult>> ThatAsyncCode<TResult>(AwaitableFunction<TResult> awaitableFunction)
         {
-            return new FluentCodeCheck<RunTraceResult<U>>(CodeCheckExtensions.GetTrace(awaitableFunction));
+            return new FluentCodeCheck<RunTraceResult<TResult>>(CodeCheckExtensions.GetTrace(awaitableFunction));
         }
 
 #endif

@@ -23,7 +23,7 @@ namespace NFluent.Helpers
     using System.Linq;
     using System.Reflection;
 
-    //ncrunch: no coverage start
+    // ncrunch: no coverage start
 
     /// <summary>
     /// Offer factory services to get adequate exception type depending on testing framework.
@@ -154,6 +154,6 @@ namespace NFluent.Helpers
         }
     }
 
-    //ncrunch: no coverage end
+    // ncrunch: no coverage end
 }
 #endif
