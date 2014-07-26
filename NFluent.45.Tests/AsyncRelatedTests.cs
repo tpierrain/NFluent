@@ -40,14 +40,14 @@ namespace NFluent.Tests
         [Test]
         public void CheckThatAsyncCodeOnAsyncFunctionReturnsTheOriginalExceptionType()
         {
-            // proper way for async methods
+            // proper way for async function
             Check.ThatAsyncCode((AwaitableFunction<int>)this.DoSomethingBadBeforeTheAnswerAsync).Throws<InvalidOperationException>();
         }
 
         [Test]
         public void CheckThatAsyncCodeWorksForFunctions()
         {
-            // proper way for async methods
+            // proper way for async function
             Check.ThatAsyncCode((AwaitableFunction<int>)this.ThinkAndReturnTheAnswerAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
         }
 
