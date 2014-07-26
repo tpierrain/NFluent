@@ -86,7 +86,7 @@ namespace NFluent
             try
             {
                 watch.Start();
-                awaitableMethod().Start();
+                //awaitableMethod().Start();
                 awaitableMethod().Wait();
             }
             catch (Exception e)

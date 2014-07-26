@@ -15,6 +15,7 @@
 namespace NFluent.Tests
 {
     using System;
+    using System.Security;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -23,6 +24,10 @@ namespace NFluent.Tests
     [TestFixture]
     public class AsyncRelatedTests
     {
+        private bool sideEffectAchieved;
+
+        #region async methods
+
         [Test]
         public void CheckThatCodeOnFinishedAsyncMethodReturnsAggregateExceptionInsteadOfTheOriginalExceptionType()
         {
@@ -34,14 +39,28 @@ namespace NFluent.Tests
         public void CheckThatAsyncCodeOnAsyncMethodReturnsTheOriginalExceptionType()
         {
             // proper way for async methods
-            Check.ThatAsyncCode(this.DoSomethingBadAsync).Throws<InvalidOperationException>();
+            Check.ThatAsyncCode(this.DoSomethingBadAsync).Throws<SecurityException>();
         }
+
+        [Test]
+        public void CheckThatAsyncCodeReturnsAtTheEndOfTheAsyncMethod()
+        {
+            Check.That(this.sideEffectAchieved).IsFalse();
+
+            Check.ThatAsyncCode(this.SideEffectAsync).DoesNotThrow();
+
+            Check.That(this.sideEffectAchieved).IsTrue();
+        }
+
+        #endregion
+
+        #region async functions
 
         [Test]
         public void CheckThatAsyncCodeOnAsyncFunctionReturnsTheOriginalExceptionType()
         {
             // proper way for async function
-            Check.ThatAsyncCode((AwaitableFunction<int>)this.DoSomethingBadBeforeTheAnswerAsync).Throws<InvalidOperationException>();
+            Check.ThatAsyncCode((AwaitableFunction<int>)this.DoSomethingBadBeforeTheAnswerAsync).Throws<SecurityException>();
         }
 
         [Test]
@@ -51,13 +70,25 @@ namespace NFluent.Tests
             Check.ThatAsyncCode((AwaitableFunction<int>)this.ThinkAndReturnTheAnswerAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
         }
 
+        #endregion
+
         private async Task DoSomethingBadAsync()
         {
             await Task.Run(() =>
             {
                 // This operation takes a while
                 Thread.Sleep(100);
-                throw new InvalidOperationException("What da heck?!?");
+                throw new SecurityException("Drop your weapon!!!");
+            });
+        }
+
+        private async Task SideEffectAsync()
+        {
+            await Task.Run(() =>
+            {
+                // This operation takes a while
+                Thread.Sleep(100);
+                this.sideEffectAchieved = true;
             });
         }
 
@@ -76,7 +107,7 @@ namespace NFluent.Tests
             await Task.Run(() =>
             {
                 Thread.Sleep(100);
-                throw new InvalidOperationException("Too bad mate!");
+                throw new SecurityException("Too bad mate: you've been busted!");
             });
 
             return 42;
