@@ -72,14 +72,14 @@ namespace NFluent
         }
 
 #if DOTNET_45
-        internal static RunTrace GetAsyncTrace<T>(Func<T> awaitableMethod) where T : Task
+        internal static RunTrace GetAsyncTrace(Func<Task> awaitableMethod)
         {
             var result = new RunTrace();
             CaptureAsyncTrace(awaitableMethod, result);
             return result;
         }
 
-        private static void CaptureAsyncTrace<T>(Func<T> awaitableMethod, RunTrace result) where T: Task
+        private static void CaptureAsyncTrace(Func<Task> awaitableMethod, RunTrace result)
         {
             var watch = new Stopwatch();
             var cpu = Process.GetCurrentProcess().TotalProcessorTime;
