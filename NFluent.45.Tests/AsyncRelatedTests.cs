@@ -91,7 +91,7 @@ namespace NFluent.Tests
             await Task.Run(() =>
             {
                 Thread.Sleep(100);
-                throw new SecurityException("Too bad mate: you've been busted!");
+                throw new SecurityException("Too bad mate: you've been busted before having the answer!");
             });
 
             return 42;
