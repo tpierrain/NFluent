@@ -26,13 +26,29 @@ namespace NFluent.Tests
         [Test]
         public void CheckThatCodeOnFinishedAsyncMethodReturnsAggregateExceptionInsteadOfTheOriginalExceptionType()
         {
+            // bad way for async methods
             Check.ThatCode(this.DoSomethingBadAsync().Wait).Throws<AggregateException>();
         }
 
         [Test]
         public void CheckThatAsyncCodeOnAsyncMethodReturnsTheOriginalExceptionType()
         {
-            Check.ThatAsyncCode(this.DoSomethingBadAsync()).Throws<InvalidOperationException>();
+            // proper way for async methods
+            Check.ThatAsyncCode(this.DoSomethingBadAsync).Throws<InvalidOperationException>();
+        }
+
+        [Test]
+        public void CheckThatAsyncCodeOnAsyncFunctionReturnsTheOriginalExceptionType()
+        {
+            // proper way for async methods
+            Check.ThatAsyncCode((AwaitableFunction<int>)this.DoSomethingBadBeforeTheAnswerAsync).Throws<InvalidOperationException>();
+        }
+
+        [Test]
+        public void CheckThatAsyncCodeWorksForFunctions()
+        {
+            // proper way for async methods
+            Check.ThatAsyncCode((AwaitableFunction<int>)this.ThinkAndReturnTheAnswerAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
         }
 
         private async Task DoSomethingBadAsync()
@@ -41,8 +57,29 @@ namespace NFluent.Tests
             {
                 // This operation takes a while
                 Thread.Sleep(100);
-                throw new InvalidOperationException("What?!?");
+                throw new InvalidOperationException("What da heck?!?");
             });
+        }
+
+        private async Task<int> ThinkAndReturnTheAnswerAsync()
+        {
+            await Task.Run(() =>
+            {
+                Thread.Sleep(100);
+            });
+
+            return 42;
+        }
+
+        private async Task<int> DoSomethingBadBeforeTheAnswerAsync()
+        {
+            await Task.Run(() =>
+            {
+                Thread.Sleep(100);
+                throw new InvalidOperationException("Too bad mate!");
+            });
+
+            return 42;
         }
     }
 }

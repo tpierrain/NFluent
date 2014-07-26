@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
 // // <copyright file="CodeCheckExtensions.cs" company="">
-// //   Copyright 2013 Cyrille DUPUYDAUBY
+// //   Copyright 2013 Cyrille DUPUYDAUBY, Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -17,6 +17,10 @@ namespace NFluent
 {
     using System;
     using System.Diagnostics;
+
+#if DOTNET_45
+    using System.Threading.Tasks;
+#endif
 
     using NFluent.Extensibility;
     using NFluent.Helpers;
@@ -66,6 +70,81 @@ namespace NFluent
             // ReSharper disable PossibleLossOfFraction
             result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
         }
+
+#if DOTNET_45
+        internal static RunTrace GetTrace(AwaitableMethod awaitableMethod)
+        {
+            var result = new RunTrace();
+            CaptureTrace(awaitableMethod, result);
+            return result;
+        }
+
+        private static void CaptureTrace(AwaitableMethod awaitableMethod, RunTrace result)
+        {
+            var watch = new Stopwatch();
+            var cpu = Process.GetCurrentProcess().TotalProcessorTime;
+            try
+            {
+                watch.Start();
+                awaitableMethod().Start();
+                awaitableMethod().Wait();
+            }
+            catch (Exception e)
+            {
+                result.RaisedException = e;
+            }
+            finally
+            {
+                watch.Stop();
+                result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
+            }
+
+            // ReSharper disable PossibleLossOfFraction
+            result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
+        }
+
+        /// <summary>
+        /// Execute the function to capture the run.
+        /// </summary>
+        /// <typeparam name="TResult">Result type of the awaitable function.</typeparam>
+        /// <param name="awaitableFunction">
+        /// <see cref="Action"/> to be analyzed.
+        /// </param>
+        /// <returns>
+        /// Return <see cref="RunTrace"/> describing the execution.
+        /// </returns>
+        internal static RunTraceResult<TResult> GetTrace<TResult>(AwaitableFunction<TResult> awaitableFunction)
+        {
+            var result = new RunTraceResult<TResult>();
+            CaptureTrace(awaitableFunction, result);
+            return result;
+        }
+
+        private static void CaptureTrace<TResult>(AwaitableFunction<TResult> awaitableFunction, RunTraceResult<TResult> result)
+        {
+            var watch = new Stopwatch();
+            var cpu = Process.GetCurrentProcess().TotalProcessorTime;
+            try
+            {
+                watch.Start();
+                awaitableFunction().Start();
+                awaitableFunction().Wait();
+                result.Result = awaitableFunction().Result;
+            }
+            catch (Exception e)
+            {
+                result.RaisedException = e;
+            }
+            finally
+            {
+                watch.Stop();
+                result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
+            }
+
+            // ReSharper disable PossibleLossOfFraction
+            result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
+        }
+#endif
 
         /// <summary>
         /// Execute the function to capture the run.
