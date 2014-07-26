@@ -20,7 +20,6 @@ namespace NFluent.Tests
     using System.Threading.Tasks;
 
     using NUnit.Framework;
-    using NUnit.Framework.Constraints;
 
     [TestFixture]
     public class AsyncRelatedTests

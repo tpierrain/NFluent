@@ -18,7 +18,7 @@ namespace NFluent
     using System;
     using System.Diagnostics;
     using System.Threading;
-#if DOTNET_45
+#if DOTNET_40
     using System.Threading.Tasks;
 #endif
 
@@ -71,7 +71,7 @@ namespace NFluent
             result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
         }
 
-#if DOTNET_45
+#if DOTNET_40
         internal static RunTrace GetAsyncTrace(Func<Task> awaitableMethod)
         {
             var result = new RunTrace();
