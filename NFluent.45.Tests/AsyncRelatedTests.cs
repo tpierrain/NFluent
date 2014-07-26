@@ -87,7 +87,7 @@ namespace NFluent.Tests
             await Task.Run(() =>
             {
                 // This operation takes a while
-                Thread.Sleep(100);
+                Thread.Sleep(500);
                 this.sideEffectAchieved = true;
             });
         }

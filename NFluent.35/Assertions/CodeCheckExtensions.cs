@@ -86,12 +86,16 @@ namespace NFluent
             try
             {
                 watch.Start();
-                //awaitableMethod().Start();
                 awaitableMethod().Wait();
             }
-            catch (Exception e)
+            catch (ObjectDisposedException odex)
             {
-                result.RaisedException = e;
+                // TODO: wrap something?
+                result.RaisedException = odex;
+            }
+            catch (AggregateException agex)
+            {
+                result.RaisedException = agex.InnerException;
             }
             finally
             {
@@ -127,13 +131,17 @@ namespace NFluent
             try
             {
                 watch.Start();
-                awaitableFunction().Start();
                 awaitableFunction().Wait();
                 result.Result = awaitableFunction().Result;
             }
-            catch (Exception e)
+            catch (ObjectDisposedException odex)
             {
-                result.RaisedException = e;
+                // TODO: wrap something?
+                result.RaisedException = odex;
+            }
+            catch (AggregateException agex)
+            {
+                result.RaisedException = agex.InnerException;
             }
             finally
             {
