@@ -20,6 +20,7 @@ namespace NFluent.Tests
     using System.Threading.Tasks;
 
     using NUnit.Framework;
+    using NUnit.Framework.Constraints;
 
     [TestFixture]
     public class AsyncRelatedTests
@@ -68,6 +69,15 @@ namespace NFluent.Tests
             await Task.Run(() => Thread.Sleep(500));
 
             this.sideEffectAchieved = true;
+        }
+
+        [Test]
+        public void CheckThatAsyncCodeWorksAlsoWithAsyncLambda()
+        {
+            Check.ThatAsyncCode(async () => {
+                                                await Task.Run(() => Thread.Sleep(500));
+                                                throw new SecurityException("Freeze motha...");
+                                            }).Throws<SecurityException>();
         }
 
         #endregion
