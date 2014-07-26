@@ -73,17 +73,12 @@ namespace NFluent.Tests
         #endregion
 
         #region async functions
-
-        /* 
-            Note: type inference is ugly here with functions (Task<TResult>), forcing us some static cast
-            Question: Is there a better way? is it a real use case/need for NFluent?
-         */
-
+        
         [Test]
         public void CheckThatAsyncCodeOnAsyncFunctionReturnsTheOriginalExceptionType()
         {
             // proper way for async function
-            Check.ThatAsyncCode((AwaitableFunction<int>)this.DoSomethingBadAfterAWhileAndBeforeAnsweringAsync).Throws<SecurityException>();
+            Check.ThatAsyncCode(this.DoSomethingBadAfterAWhileAndBeforeAnsweringAsync).Throws<SecurityException>();
         }
 
         private async Task<int> DoSomethingBadAfterAWhileAndBeforeAnsweringAsync()
@@ -101,7 +96,7 @@ namespace NFluent.Tests
         public void CheckThatAsyncCodeWorksForFunctions()
         {
             // proper way for async function
-            Check.ThatAsyncCode((AwaitableFunction<int>)this.ReturnTheAnswerAfterAWhileAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
+            Check.ThatAsyncCode(this.ReturnTheAnswerAfterAWhileAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
         }
         
         private async Task<int> ReturnTheAnswerAfterAWhileAsync()

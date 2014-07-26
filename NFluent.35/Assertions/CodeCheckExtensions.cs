@@ -72,14 +72,14 @@ namespace NFluent
         }
 
 #if DOTNET_45
-        internal static RunTrace GetTrace(AwaitableMethod awaitableMethod)
+        internal static RunTrace GetAsyncTrace<T>(Func<T> awaitableMethod) where T : Task
         {
             var result = new RunTrace();
-            CaptureTrace(awaitableMethod, result);
+            CaptureAsyncTrace(awaitableMethod, result);
             return result;
         }
 
-        private static void CaptureTrace(AwaitableMethod awaitableMethod, RunTrace result)
+        private static void CaptureAsyncTrace<T>(Func<T> awaitableMethod, RunTrace result) where T: Task
         {
             var watch = new Stopwatch();
             var cpu = Process.GetCurrentProcess().TotalProcessorTime;
@@ -116,14 +116,14 @@ namespace NFluent
         /// <returns>
         /// Return <see cref="RunTrace"/> describing the execution.
         /// </returns>
-        internal static RunTraceResult<TResult> GetTrace<TResult>(AwaitableFunction<TResult> awaitableFunction)
+        internal static RunTraceResult<TResult> GetAsyncTrace<TResult>(Func<Task<TResult>> awaitableFunction)
         {
             var result = new RunTraceResult<TResult>();
-            CaptureTrace(awaitableFunction, result);
+            CaptureAsyncTrace(awaitableFunction, result);
             return result;
         }
 
-        private static void CaptureTrace<TResult>(AwaitableFunction<TResult> awaitableFunction, RunTraceResult<TResult> result)
+        private static void CaptureAsyncTrace<TResult>(Func<Task<TResult>> awaitableFunction, RunTraceResult<TResult> result)
         {
             var watch = new Stopwatch();
             var cpu = Process.GetCurrentProcess().TotalProcessorTime;

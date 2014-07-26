@@ -17,6 +17,10 @@ namespace NFluent
     using System;
     using System.ComponentModel;
 
+#if (DOTNET_45)
+    using System.Threading.Tasks;
+#endif
+
     /// <summary>
     /// Provides <see cref="ICheck{T}"/> instances to be used in order to make 
     /// check(s) on the provided value.
@@ -51,9 +55,9 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
-        public static ICodeCheck<RunTrace> ThatAsyncCode(AwaitableMethod awaitableMethod)
+        public static ICodeCheck<RunTrace> ThatAsyncCode<T>(Func<T> awaitableMethod) where T : Task
         {
-            return new FluentCodeCheck<RunTrace>(CodeCheckExtensions.GetTrace(awaitableMethod));
+            return new FluentCodeCheck<RunTrace>(CodeCheckExtensions.GetAsyncTrace(awaitableMethod));
         }
 
         /// <summary>
@@ -67,9 +71,9 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
-        public static ICodeCheck<RunTraceResult<TResult>> ThatAsyncCode<TResult>(AwaitableFunction<TResult> awaitableFunction)
+        public static ICodeCheck<RunTraceResult<TResult>> ThatAsyncCode<TResult>(Func<Task<TResult>> awaitableFunction)
         {
-            return new FluentCodeCheck<RunTraceResult<TResult>>(CodeCheckExtensions.GetTrace(awaitableFunction));
+            return new FluentCodeCheck<RunTraceResult<TResult>>(CodeCheckExtensions.GetAsyncTrace(awaitableFunction));
         }
 
 #endif
