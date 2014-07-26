@@ -1,5 +1,5 @@
 New feature(s):
-* Now, supports .NET Tasks and Async methods with a new Check.ThatAsyncCode() statement.
+* Now, supports .NET Tasks and Async methods/lambdas/functions thanks to a new Check.ThatAsyncCode()  statement.
 
 --------------
 Change(s):

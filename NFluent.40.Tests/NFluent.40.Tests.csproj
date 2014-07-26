@@ -294,11 +294,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NFluent.45\NFluent.40.csproj">
+    <ProjectReference Include="..\NFluent.40\NFluent.40.csproj">
       <Project>{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}</Project>
       <Name>NFluent.40</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NFluent.Tests.Extensions.45\NFluent.Tests.Extensions.40.csproj">
+    <ProjectReference Include="..\NFluent.Tests.Extensions.40\NFluent.Tests.Extensions.40.csproj">
       <Project>{1baa72cb-3a46-4711-9a5b-f96cf20d465e}</Project>
       <Name>NFluent.Tests.Extensions.40</Name>
     </ProjectReference>
@@ -326,7 +326,7 @@
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
