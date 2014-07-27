@@ -207,7 +207,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[\"uno\", \"tres\"]\nThe checked enumerable:\n\t[1, \"uno\", \"tres\", 45,3]\nThe expected value(s):\n\t[1, \"Tres\", 45,3]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[\"uno\", \"tres\"]\nThe checked enumerable:\n\t[1, \"uno\", \"tres\", 45.3]\nThe expected value(s):\n\t[1, \"Tres\", 45.3]")]
         public void IsOnlyMadeOfWithEnumerableThrowCaseSensitiveException()
         {
             var variousObjects = new ArrayList { 1, "uno", "tres", 45.3F };

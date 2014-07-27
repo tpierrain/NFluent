@@ -94,6 +94,10 @@ namespace NFluent
             {
                 result.RaisedException = agex.InnerException;
             }
+            catch (Exception ex)
+            {
+                result.RaisedException = ex;
+            }
             finally
             {
                 watch.Stop();
