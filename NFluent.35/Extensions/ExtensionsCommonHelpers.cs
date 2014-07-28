@@ -62,7 +62,7 @@ namespace NFluent.Extensions
 
             if (theObject is double)
             {
-                return ToStringProperlyFormated((double) theObject);
+                return ToStringProperlyFormated((double)theObject);
             }
 
             if (theObject is float)
@@ -98,7 +98,6 @@ namespace NFluent.Extensions
             return TruncateLongString(result);
         }
 
-    
         private static string TruncateLongString(string result)
         {
             if (result.Length > 197)
@@ -299,6 +298,7 @@ namespace NFluent.Extensions
             return value.ToString();
 #endif
         }
+
         /// <summary>
         /// Determines whether the specified type is nullable.
         /// </summary>

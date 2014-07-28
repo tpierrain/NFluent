@@ -57,7 +57,6 @@ namespace NFluent.Tests
             Check.That(this.sideEffectAchieved).IsTrue();
         }
 
- 
         [Test]
         public void CheckThatAsyncCodeWorksAlsoWithAsyncLambda()
         {
@@ -67,11 +66,13 @@ namespace NFluent.Tests
                                                 throw new SecurityException("Freeze motha...");
                                             }).Throws<SecurityException>();
         }
+
         [Test]
         public void CheckThatAsyncCodeWorksAlsoWithSyncLambda()
         {
-            Check.ThatAsyncCode( () => {
-                                                 Task.Run(() => Thread.Sleep(500));
+            Check.ThatAsyncCode(() =>
+            {
+                Task.Run(() => Thread.Sleep(10));
                 throw new SecurityException("Freeze motha...");
             }).Throws<SecurityException>();
         }

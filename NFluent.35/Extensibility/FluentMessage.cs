@@ -427,7 +427,9 @@ namespace NFluent.Extensibility
 
                if (this.enumerableCount.HasValue)
                {
-                   description.AppendFormat(" ({0} {1})", this.enumerableCount,
+                   description.AppendFormat(
+                       " ({0} {1})",
+                       this.enumerableCount,
                        this.enumerableCount <= 1 ? "item" : "items");
                }
 
