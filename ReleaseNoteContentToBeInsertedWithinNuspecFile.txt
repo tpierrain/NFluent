@@ -3,7 +3,7 @@ New feature(s):
 
 --------------
 Change(s):
-* 
+* Error messages with double and float are now displayed with InvariantCulture.
 --------------
 Bug Fixe(s):
-* Now error messages with double and float are displayed with InvariantCulture.
+* 
