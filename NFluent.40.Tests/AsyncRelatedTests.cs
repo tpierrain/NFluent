@@ -32,6 +32,14 @@ namespace NFluent.Tests
         #endregion
 
         #region Public Methods and Operators
+        
+        [Test]
+        public void ShouldNotUseCheckThatCodeForAsyncMethods()
+        {
+            // Bad way for async methods since it does not catch the proper exception, but 
+            // the TPL AggregateException wrapper instead
+            Check.ThatCode(this.DoSomethingBadAsync().Wait).Throws<AggregateException>();
+        }
 
         [Test]
         public void CheckThatAsyncCodeOnAsyncFunctionReturnsTheOriginalExceptionType()
@@ -82,14 +90,6 @@ namespace NFluent.Tests
         {
             // proper way for async function
             Check.ThatAsyncCode(this.ReturnTheAnswerAfterAWhileAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
-        }
-
-        [Test]
-        public void ShouldNotUseCheckThatCodeForAsyncMethods()
-        {
-            // Bad way for async methods since it does not catch the proper exception, but 
-            // the TPL AggregateException wrapper instead
-            Check.ThatCode(this.DoSomethingBadAsync().Wait).Throws<AggregateException>();
         }
 
         #endregion
