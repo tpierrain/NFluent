@@ -64,7 +64,7 @@ GENERATING DOCS for:
   <!-- 3- Run the TESTS -->
   <ItemGroup>
     <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).35.Tests.dll&quot; /framework:net-3.5" />
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).45.Tests\bin\$(Configuration)\$(SolutionName).45.Tests.dll&quot; /framework:net-4.5" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).40.Tests.dll&quot; /framework:net-4.0" />
   </ItemGroup>
 
   <Target Name="RunTests" DependsOnTargets="Build">
@@ -88,9 +88,9 @@ RUN ALL UNIT TESTS
       <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /Y /D" />
       <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /Y /D" />
 	  
-	    <!-- NFluent (4.5) then -->
-      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).45\bin\$(Configuration)\*.* $(BinariesPath)\45\ /Y /D" />
-      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).45\bin\$(Configuration)\*.* $(BinariesPath)\45\ /Y /D" />
+	    <!-- NFluent (4.0) then -->
+      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /Y /D" />
+      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /Y /D" />
     
     <!-- NFluent (PCL) then -->
       <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /Y /D" />

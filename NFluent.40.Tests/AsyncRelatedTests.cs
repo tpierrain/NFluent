@@ -12,6 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
 namespace NFluent.Tests
 {
     using System;
@@ -20,31 +21,23 @@ namespace NFluent.Tests
     using System.Threading.Tasks;
 
     using NUnit.Framework;
-    using NUnit.Framework.Constraints;
 
     [TestFixture]
     public class AsyncRelatedTests
     {
+        #region Fields
+
         private bool sideEffectAchieved;
 
-        #region async methods
+        #endregion
+
+        #region Public Methods and Operators
 
         [Test]
-        public void ShouldNotUseCheckThatCodeForAsyncMethods()
+        public void CheckThatAsyncCodeOnAsyncFunctionReturnsTheOriginalExceptionType()
         {
-            // Bad way for async methods since it does not catch the proper exception, but 
-            // the TPL AggregateException wrapper instead
-            Check.ThatCode(this.DoSomethingBadAsync().Wait).Throws<AggregateException>();
-        }
-       
-        private async Task DoSomethingBadAsync()
-        {
-            await Task.Run(() =>
-            {
-                // This operation takes a while
-                Thread.Sleep(100);
-                throw new SecurityException("Drop your weapon!!!");
-            });
+            // proper way for async function
+            Check.ThatAsyncCode(this.DoSomethingBadAfterAWhileAndBeforeAnsweringAsync).Throws<SecurityException>();
         }
 
         [Test]
@@ -64,18 +57,12 @@ namespace NFluent.Tests
             Check.That(this.sideEffectAchieved).IsTrue();
         }
 
-        private async Task SideEffectAsync()
-        {
-            await Task.Run(() => Thread.Sleep(500));
-
-            this.sideEffectAchieved = true;
-        }
-
  
         [Test]
         public void CheckThatAsyncCodeWorksAlsoWithAsyncLambda()
         {
-            Check.ThatAsyncCode( async () => {
+            Check.ThatAsyncCode(async () =>
+            {
                                                  await Task.Run(() => Thread.Sleep(500));
                                                 throw new SecurityException("Freeze motha...");
                                             }).Throws<SecurityException>();
@@ -85,20 +72,28 @@ namespace NFluent.Tests
         {
             Check.ThatAsyncCode( () => {
                                                  Task.Run(() => Thread.Sleep(500));
-                                                throw new SecurityException("Freeze motha...");
-                                            }).Throws<SecurityException>();
+                throw new SecurityException("Freeze motha...");
+            }).Throws<SecurityException>();
+        }
+
+        [Test]
+        public void CheckThatAsyncCodeWorksForFunctions()
+        {
+            // proper way for async function
+            Check.ThatAsyncCode(this.ReturnTheAnswerAfterAWhileAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
+        }
+
+        [Test]
+        public void ShouldNotUseCheckThatCodeForAsyncMethods()
+        {
+            // Bad way for async methods since it does not catch the proper exception, but 
+            // the TPL AggregateException wrapper instead
+            Check.ThatCode(this.DoSomethingBadAsync().Wait).Throws<AggregateException>();
         }
 
         #endregion
 
-        #region async functions
-        
-        [Test]
-        public void CheckThatAsyncCodeOnAsyncFunctionReturnsTheOriginalExceptionType()
-        {
-            // proper way for async function
-            Check.ThatAsyncCode(this.DoSomethingBadAfterAWhileAndBeforeAnsweringAsync).Throws<SecurityException>();
-        }
+        #region Methods
 
         private async Task<int> DoSomethingBadAfterAWhileAndBeforeAnsweringAsync()
         {
@@ -111,18 +106,28 @@ namespace NFluent.Tests
             return 42;
         }
 
-        [Test]
-        public void CheckThatAsyncCodeWorksForFunctions()
+        private async Task DoSomethingBadAsync()
         {
-            // proper way for async function
-            Check.ThatAsyncCode(this.ReturnTheAnswerAfterAWhileAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
+            await Task.Run(() =>
+            {
+                // This operation takes a while
+                Thread.Sleep(100);
+                throw new SecurityException("Drop your weapon!!!");
+            });
         }
-        
+
         private async Task<int> ReturnTheAnswerAfterAWhileAsync()
         {
             await Task.Run(() => Thread.Sleep(100));
 
             return 42;
+        }
+
+        private async Task SideEffectAsync()
+        {
+            await Task.Run(() => Thread.Sleep(500));
+
+            this.sideEffectAchieved = true;
         }
 
         #endregion

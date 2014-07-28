@@ -30,8 +30,8 @@
     <file src="Artifacts\Binaries\35\NFluent.dll" target="lib\net35\NFluent.dll" />
     <file src="Artifacts\Binaries\35\NFluent.xml" target="lib\net35\NFluent.xml" />
     <!-- .NET 4.5 (for dynamic support) -->
-    <file src="Artifacts\Binaries\45\NFluent.dll" target="lib\net45\NFluent.dll" />
-    <file src="Artifacts\Binaries\45\NFluent.xml" target="lib\net45\NFluent.xml" />
+    <file src="Artifacts\Binaries\40\NFluent.dll" target="lib\net40\NFluent.dll" />
+    <file src="Artifacts\Binaries\40\NFluent.xml" target="lib\net40\NFluent.xml" />
     <!-- PCL -->
     <file src="Artifacts\Binaries\PCL\NFluent.dll" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\NFluent.dll" />
     <file src="Artifacts\Binaries\PCL\NFluent.xml" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\NFluent.xml" />

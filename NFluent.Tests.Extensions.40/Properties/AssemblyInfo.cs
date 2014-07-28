@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NFluent.45.Tests")]
+[assembly: AssemblyTitle("NFluent.Tests.Extensions.40")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NFluent.45.Tests")]
+[assembly: AssemblyProduct("NFluent.Tests.Extensions.40")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,4 +19,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e8e3d36c-7aed-441b-bf6e-75fb4eaeacb6")]
+[assembly: Guid("c31ca120-a458-4bff-950d-30b39bd8206d")]

@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NFluent.Tests</RootNamespace>
-    <AssemblyName>NFluent.45.Tests</AssemblyName>
+    <AssemblyName>NFluent.40.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -19,10 +19,11 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DOTNET_40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -293,13 +294,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NFluent.45\NFluent.45.csproj">
+    <ProjectReference Include="..\NFluent.40\NFluent.40.csproj">
       <Project>{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}</Project>
-      <Name>NFluent.45</Name>
+      <Name>NFluent.40</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NFluent.Tests.Extensions.45\NFluent.Tests.Extensions.45.csproj">
+    <ProjectReference Include="..\NFluent.Tests.Extensions.40\NFluent.Tests.Extensions.40.csproj">
       <Project>{1baa72cb-3a46-4711-9a5b-f96cf20d465e}</Project>
-      <Name>NFluent.Tests.Extensions.45</Name>
+      <Name>NFluent.Tests.Extensions.40</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

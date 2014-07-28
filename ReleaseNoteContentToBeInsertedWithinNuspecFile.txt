@@ -1,10 +1,9 @@
 New feature(s):
-* Now, supports .NET Tasks and Async methods with a new Check.ThatAsyncCode() statement (thus, NFluent now  targets .NET 4.5 and 3.5 instead of 4.0 and 3.5)
+* Now, supports .NET Tasks and Async methods/lambdas/functions thanks to a new Check.ThatAsyncCode()  statement.
 
 --------------
 Change(s):
-*  There is no version for .NET 4.0 anymore. NFluent is now shipped for .NET 4.5, .NET 3.5 and Portable Class Library (Profile: portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1).
-
+* 
 --------------
 Bug Fixe(s):
 * 
