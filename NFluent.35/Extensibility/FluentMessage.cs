@@ -427,14 +427,10 @@ namespace NFluent.Extensibility
 
                if (this.enumerableCount.HasValue)
                {
-                   if (this.enumerableCount <= 1)
-                   {
-                       description.AppendFormat(" ({0} {1})", this.enumerableCount, "item");
-                   }
-                   else
-                   {
-                       description.AppendFormat(" ({0} {1})", this.enumerableCount, "items");
-                   }
+                   description.AppendFormat(
+                       " ({0} {1})",
+                       this.enumerableCount,
+                       this.enumerableCount <= 1 ? "item" : "items");
                }
 
                return description.ToString();

@@ -60,6 +60,16 @@ namespace NFluent.Extensions
                 return ToStringProperlyFormated((bool)theObject);
             }
 
+            if (theObject is double)
+            {
+                return ToStringProperlyFormated((double)theObject);
+            }
+
+            if (theObject is float)
+            {
+                return ToStringProperlyFormated((float)theObject);
+            }
+
             var ienum = theObject as IEnumerable;
             if (ienum != null)
             {
@@ -256,6 +266,36 @@ namespace NFluent.Extensions
             return theBoolean.ToString(CultureInfo.InvariantCulture);
 #else
             return theBoolean.ToString();
+#endif
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current double.         
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>A string that represents the current object with current culture ignore.</returns>
+        public static string ToStringProperlyFormated(this double value)
+        {
+            // Ensure that boolean values are not localized 
+#if !(PORTABLE)
+            return value.ToString(CultureInfo.InvariantCulture);
+#else
+            return value.ToString();
+#endif
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current float.         
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>A string that represents the current object with current culture ignore.</returns>
+        public static string ToStringProperlyFormated(this float value)
+        {
+            // Ensure that boolean values are not localized 
+#if !(PORTABLE)
+            return value.ToString(CultureInfo.InvariantCulture);
+#else
+            return value.ToString();
 #endif
         }
 

@@ -62,7 +62,17 @@ namespace NFluent.Tests
         {
             Check.ThatAsyncCode(async () =>
             {
-                await Task.Run(() => Thread.Sleep(500));
+                                                 await Task.Run(() => Thread.Sleep(500));
+                                                throw new SecurityException("Freeze motha...");
+                                            }).Throws<SecurityException>();
+        }
+
+        [Test]
+        public void CheckThatAsyncCodeWorksAlsoWithSyncLambda()
+        {
+            Check.ThatAsyncCode(() =>
+            {
+                Task.Run(() => Thread.Sleep(10));
                 throw new SecurityException("Freeze motha...");
             }).Throws<SecurityException>();
         }
