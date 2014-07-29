@@ -1,9 +1,8 @@
 New feature(s):
-* Now, supports .NET Tasks and Async methods/lambdas/functions thanks to a new Check.ThatAsyncCode() statement.
-
+* 
 --------------
 Change(s):
-* Error messages with double and float are now displayed with InvariantCulture.
+* 
 --------------
 Bug Fixe(s):
 * 
