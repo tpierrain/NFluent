@@ -21,7 +21,7 @@ namespace NFluent
     /// 'Negated' property is always set to false. This interface is mandatory for the check link mechanism. 
     /// </summary>
     /// <remarks>
-    ///     The .NET standard <see cref="ICloneable"/> interface is not used here since it doesn't 
+    ///     The .NET standard ICloneable interface is not used here since it doesn't 
     ///     support and include the 'Negated' property value reset.
     /// </remarks>
     public interface IForkableCheck

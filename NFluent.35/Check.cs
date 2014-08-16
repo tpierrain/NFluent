@@ -17,6 +17,10 @@ namespace NFluent
     using System;
     using System.ComponentModel;
 
+#if (DOTNET_40)
+    using System.Threading.Tasks;
+#endif
+
     /// <summary>
     /// Provides <see cref="ICheck{T}"/> instances to be used in order to make 
     /// check(s) on the provided value.
@@ -39,6 +43,42 @@ namespace NFluent
             return new FluentCheck<T>(value);
         }
 
+#if (DOTNET_40)
+
+        /// <summary>
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given async code (returning Task).
+        /// </summary>
+        /// <param name="awaitableMethod">The async code to be tested.</param>
+        /// <returns>
+        /// A <see cref="ICheck{RunTrace}" /> instance to use in order to assert things on the given value.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
+        /// </remarks>
+        public static ICodeCheck<RunTrace> ThatAsyncCode(Func<Task> awaitableMethod)
+        {
+            return new FluentCodeCheck<RunTrace>(CodeCheckExtensions.GetAsyncTrace(awaitableMethod));
+        }
+
+        /// <summary>
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given async function (returning Task{TResult}).
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result for this asynchronous function.</typeparam>
+        /// <param name="awaitableFunction">The asynchronous function to be tested.</param>
+        /// <returns>
+        /// A <see cref="ICheck{RunTrace}" /> instance to use in order to assert things on the given value.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
+        /// </remarks>
+        public static ICodeCheck<RunTraceResult<TResult>> ThatAsyncCode<TResult>(Func<Task<TResult>> awaitableFunction)
+        {
+            return new FluentCodeCheck<RunTraceResult<TResult>>(CodeCheckExtensions.GetAsyncTrace(awaitableFunction));
+        }
+
+#endif
+
+#if !(PORTABLE)
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
@@ -104,7 +144,7 @@ namespace NFluent
         {
             return new LambdaCheck(value);
         }
-
+#endif
         /// <summary>
         /// Returns a <see cref="IStructCheck{T}" /> instance that will provide check methods to be executed on a given enum or struct value.
         /// </summary>

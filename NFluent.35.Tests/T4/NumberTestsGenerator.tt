@@ -31,7 +31,7 @@
 
 	var typesToWriteTestsFor = new List<UnitTestsConfigurationForType>()
 		{
-			// sygned types
+			// signed types
 			new UnitTestsConfigurationForType() { TypeName = "decimal", DetailedTypeName = "decimal", ValueForZero = "0M", ValueForOne = "1M", ValueForTwo = "2M", ValueForTwenty = "20M", ValueForMinusFifty = "-50M" },
 			new UnitTestsConfigurationForType() { TypeName = "double", DetailedTypeName = "double", ValueForZero = "0D", ValueForOne = "1D", ValueForTwo = "2D", ValueForTwenty = "20D", ValueForMinusFifty = "-50D" },
 			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "float", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F", ValueForMinusFifty = "-50F" },
@@ -45,11 +45,12 @@
 			new UnitTestsConfigurationForType() { TypeName = "ushort", DetailedTypeName = "ushort", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20" }
 		};
 
-	// ...RelatedTests ----------------------------------------------------
+// ...RelatedTests ----------------------------------------------------
 	string goldenSourceClassFileName = Host.ResolvePath(@"..\IntRelatedTests.cs");
 	TypeCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntRelatedTests", "RelatedTests", typesToWriteTestsFor, manager, this);
 	
-	// Signed...RelatedTests ----------------------------------------------------
+
+// Signed...RelatedTests ----------------------------------------------------
 	var signedTypesToWriteTestsFor = new List<UnitTestsConfigurationForType>()
 		{
 			// signed types
@@ -63,6 +64,18 @@
 	goldenSourceClassFileName = Host.ResolvePath(@"..\IntSignedNumberRelatedTests.cs");
 	TypeCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntSignedNumberRelatedTests", "SignedNumberRelatedTests", signedTypesToWriteTestsFor, manager, this);
 	
+
+
+// FloatingPointBinary...RelatedTests ----------------------------------------------------
+	var floatingPointBinaryTypesToWriteTestsFor = new List<UnitTestsConfigurationForType>()
+		{
+			// signed types
+			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "float", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F", ValueForMinusFifty = "-50F" }
+		};
+	goldenSourceClassFileName = Host.ResolvePath(@"..\DoubleFloatingPointBinaryRelatedTests.cs");
+	TypeCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "DoubleFloatingPointBinaryRelatedTests", "FloatingPointBinaryRelatedTests", floatingPointBinaryTypesToWriteTestsFor, manager, this);
+	
+
 	// Write output code into multiple files
 	manager.Process();
  #>

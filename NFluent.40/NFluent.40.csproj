@@ -12,30 +12,37 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET40;DOTNET_40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\NFluent.XML</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;DOTNET_40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Release\NFluent.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+  <!-- Workaround for NCrunch issue (http://forum.ncrunch.net/yaf_postst935_Issue-when-using-conditional-compilation-symbols-in-linked-file.aspx) -->
+  <PropertyGroup Condition="'$(TargetFrameworkVersion)' == 'v4.5'">
+    <DefineConstants>$(DefineConstants);DOTNET_45</DefineConstants>
+  </PropertyGroup>
+  <!-- End of workaround for NCrunch issue (http://forum.ncrunch.net/yaf_postst935_Issue-when-using-conditional-compilation-symbols-in-linked-file.aspx) -->
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -45,10 +52,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -74,11 +77,17 @@
     <Compile Include="..\NFluent.35\Assertions\DictionaryCheckExtensions.cs">
       <Link>Assertions\DictionaryCheckExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35\Assertions\DoubleSpecificCheckExtensions.cs">
+      <Link>Assertions\DoubleSpecificCheckExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35\Assertions\EnumerableCheckExtensions.cs">
       <Link>Assertions\EnumerableCheckExtensions.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\Assertions\EnumerableFluentSyntaxExtension.cs">
       <Link>Assertions\EnumerableFluentSyntaxExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Assertions\EventWaitHandleCheckExtensions.cs">
+      <Link>Assertions\EventWaitHandleCheckExtensions.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\Assertions\ExtendableCheckLink.cs">
       <Link>Assertions\ExtendableCheckLink.cs</Link>
@@ -262,6 +271,10 @@
     </Compile>
     <Compile Include="..\NFluent.35\T4\FloatSignedCheckExtensions.cs">
       <Link>T4\FloatSignedCheckExtensions.cs</Link>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\NFluent.35\T4\FloatSpecificCheckExtensions.cs">
+      <Link>T4\FloatSpecificCheckExtensions.cs</Link>
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="..\NFluent.35\T4\LongCheckExtensions.cs">

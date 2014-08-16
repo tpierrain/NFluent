@@ -14,8 +14,6 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,7 +55,10 @@
     <Compile Include="CharTests.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DictionaryChecksTests.cs" />
+    <Compile Include="DoubleFloatingPointBinaryRelatedTests.cs" />
+    <Compile Include="DurationTests.cs" />
     <Compile Include="EdgeCasesTest.cs" />
+    <Compile Include="EventWaitHandleTests.cs" />
     <Compile Include="ExceptionTests.cs" />
     <Compile Include="ExtensibilityHelperTests.cs" />
     <Compile Include="HelpersTest.cs" />
@@ -105,6 +106,9 @@
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="T4\DoubleSignedNumberRelatedTests.cs">
+      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T4\FloatFloatingPointBinaryRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="T4\FloatRelatedTests.cs">

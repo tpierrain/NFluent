@@ -33,13 +33,23 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(NFluent.FluentCheckException))]
+        [ExpectedException(typeof(FluentCheckException))]
         public void NullRefonHasFieldsWithSameValueWithInterfaces()
         {
             var modelA = new ModelA { Name = "Yoda" };
             var modelB = new ModelB { Name = new ModelBName { Title = "Frank" } };
 
             Check.That(modelA).HasFieldsWithSameValues(modelB);
+        }
+
+        // 30/05/14 Invalid exception on strings with curly braces
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[\"MaChaine{964}\"]\nThe checked enumerable:\n\t[\"MaChaine{94}\"]\nThe expected value(s):\n\t[\"MaChaine{964}\"]")]
+        public void SpuriousExceptionOnError()
+        {
+            var toTest = new System.Collections.ArrayList { "MaChaine{94}" };
+            string result = "MaChaine{964}";
+            Check.That(toTest).Contains(result);
         }
 
         public class ModelA

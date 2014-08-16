@@ -15,13 +15,15 @@
 //   
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+#if !(PORTABLE)
 namespace NFluent.Helpers
 {
     using System;
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
+
+    // ncrunch: no coverage start
 
     /// <summary>
     /// Offer factory services to get adequate exception type depending on testing framework.
@@ -48,7 +50,7 @@ namespace NFluent.Helpers
 
                     // look for NUnit
                     var resultScan = ExceptionScanner("nunit", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException");
-
+                    
                     if (resultScan == null)
                     {
                         // look for MSTest
@@ -73,7 +75,7 @@ namespace NFluent.Helpers
             var result = new ExceptionConstructor();
             var defaultSignature = new[] { typeof(string) };
             foreach (
-                var assembly in
+                var assembly in 
                     AppDomain.CurrentDomain.GetAssemblies()
                              .Where(ass => ass.FullName.ToLowerInvariant().Contains(assemblyMarker)))
             {
@@ -151,4 +153,7 @@ namespace NFluent.Helpers
             public ConstructorInfo IgnoreException { get; set; }
         }
     }
+
+    // ncrunch: no coverage end
 }
+#endif

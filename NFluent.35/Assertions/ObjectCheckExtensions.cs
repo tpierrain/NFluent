@@ -488,7 +488,7 @@ namespace NFluent
                     // fields does not exist
                     if (!negated)
                     {
-                        message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} is absent from the {{1}}.", fieldLabel))
+                        message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} is absent from the {{1}}.", fieldLabel.DoubleCurlyBraces()))
                                                 .On(value)
                                                 .And.Expected(expected)
                                                 .ToString();
@@ -507,14 +507,14 @@ namespace NFluent
                     {
                         if (!negated)
                         {
-                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldLabel))
+                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldLabel.DoubleCurlyBraces()))
                                                      .On(actualFieldValue)
                                                      .And.Expected(null)
                                                      .ToString();
                         }
                         else
                         {
-                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldLabel))
+                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldLabel.DoubleCurlyBraces()))
                                                      .On(null)
                                                      .And.Expected(null)
                                                      .Comparison("different from")
@@ -542,14 +542,14 @@ namespace NFluent
                     {
                         if (!negated)
                         {
-                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldLabel))
+                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldLabel.DoubleCurlyBraces()))
                                                  .On(actualFieldValue)
                                                  .And.Expected(expectedFieldValue)
                                                  .ToString();
                         }
                         else
                         {
-                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldLabel))
+                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldLabel.DoubleCurlyBraces()))
                                                  .On(actualFieldValue)
                                                  .And.Expected(expectedFieldValue)
                                                  .Comparison("different from")

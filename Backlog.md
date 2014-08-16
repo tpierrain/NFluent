@@ -7,7 +7,7 @@ Now available on github: https://github.com/tpierrain/NFluent/issues?state=open
 
 Temporary backlog
 -------
-1. Implement Mendel proposal with nullable.
+1. Review the implementation of the Duration class (makes it a monoid)
 1. Add IsSameSizeAs() check (IEnumerable->string)
 1. Refactor the AssessEqual method (StringCheckExtensions)
 
@@ -18,3 +18,14 @@ Temporary backlog
 1. Refactors the T4 script (extract method) for the NFluent project.
 1. Adds more unit tests to the FluentMessage so that it will act as a documentation.
 1. Process all the //TODO instruction comments.
+
+
+- - - 
+
+Notes:
+------
+About NCrunch integration issues:
+ - http://forum.ncrunch.net/yaf_postst935_Issue-when-using-conditional-compilation-symbols-in-linked-file.aspx
+
+About Async/await:
+ - http://stackoverflow.com/questions/2796928/making-an-extension-method-asynchronous

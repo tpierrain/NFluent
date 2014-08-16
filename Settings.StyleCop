@@ -1,6 +1,8 @@
 <StyleCopSettings Version="105">
   <GlobalSettings>
     <CollectionProperty Name="RecognizedWords">
+      <Value>Cloneable</Value>
+      <Value>Hashtable</Value>
       <Value>enum</Value>
       <Value>gzip</Value>
       <Value>Intellisense</Value>

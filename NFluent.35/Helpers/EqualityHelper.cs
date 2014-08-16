@@ -42,7 +42,7 @@ namespace NFluent.Helpers
 
         private static bool FluentEquals(object instance, object expected)
         {
-            return Equals(instance, expected);
+            return object.Equals(instance, expected);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace NFluent.Helpers
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static void IsNotEqualTo(object instance, object expected)
         {
-            if (Equals(instance, expected))
+            if (object.Equals(instance, expected))
             {
                 throw new FluentCheckException(BuildErrorMessage(instance, expected, true));
             }

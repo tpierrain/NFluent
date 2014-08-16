@@ -17,11 +17,12 @@ namespace NFluent
     using System;
 
     using NFluent.Extensibility;
+    using NFluent.Extensions;
 
     /// <summary>
     /// Implements specific Value check after lambda checks.
     /// </summary>
-    /// <typeparam name="T">Code checker type. <see cref="LambdaCheck"/>/>.
+    /// <typeparam name="T">Code checker type./>.
     /// </typeparam>
     public class LambdaExceptionCheck<T> : ILambdaExceptionCheck<T>, IForkableCheck
     {
@@ -65,8 +66,8 @@ namespace NFluent
             {
                 var message = FluentMessage.BuildMessage("The message of the checked exception is not as expected.")
                                             .For("exception message")
-                                            .ExpectedValues(this.Value.Message)
-                                            .And.WithGivenValue(exceptionMessage)
+                                            .ExpectedValues(exceptionMessage)
+                                            .And.WithGivenValue(this.Value.Message)
                                             .ToString();
                         
                 throw new FluentCheckException(message);
@@ -98,7 +99,7 @@ namespace NFluent
             if (!value.Equals(propertyValue))
             {
                 var message = FluentMessage
-                    .BuildMessage(string.Format("The property [{0}] of the {{0}} do not have the expected value.", propertyName))
+                    .BuildMessage(string.Format("The property [{0}] of the {{0}} do not have the expected value.", propertyName.DoubleCurlyBraces()))
                     .For("exception")
                     .Expected(propertyValue)
                     .And.WithGivenValue(value).ToString();

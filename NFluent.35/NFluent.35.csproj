@@ -15,8 +15,6 @@
     </TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,7 +50,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Version.cs">
@@ -63,6 +60,8 @@
     </Compile>
     <Compile Include="Assertions\CharCheckExtensions.cs" />
     <Compile Include="Assertions\CodeCheckExtensions.cs" />
+    <Compile Include="Assertions\DoubleSpecificCheckExtensions.cs" />
+    <Compile Include="Assertions\EventWaitHandleCheckExtensions.cs" />
     <Compile Include="FluentCodeCheck.cs" />
     <Compile Include="Extensibility\ExtensibilityHelper.cs" />
     <Compile Include="Assertions\IntSignedCheckExtensions.cs" />
@@ -89,6 +88,9 @@
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="T4\FloatSignedCheckExtensions.cs">
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T4\FloatSpecificCheckExtensions.cs">
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="T4\LongSignedCheckExtensions.cs">

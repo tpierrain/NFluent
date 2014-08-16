@@ -5,6 +5,11 @@ First of all, thank you for wanting to contribute to NFluent!
 There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things.
 
 
+Reporting an Issue
+------------------
+Reported issues are assessed rapidly and fix in a timely manner if identified as important. Note that feedback on error messages are welcomed.
+When reporting an issue in Git, please fill all present fields. Quality of our response depends on your effort!
+
 Making Changes
 --------------
 
@@ -40,6 +45,8 @@ Sending a Pull Request
 ----------------------
 
 First of all, check that your code is in line with the __[NFluent Definition of Done (DoD) for Development](./DevDoD.md)__.
+
+For NCrunch users, please refers to the __[NCrunch configuration tips for NFluent contributors](./ForNCrunchUsers.md)__.
 
 Then, while working on your feature you may well create several branches, which is fine, but before you send a pull request you should ensure that you have rebased back to a single "Feature branch" - we care about your commits, and we care about your feature branch; but we don't care about how many or which branches you created while you were working on it :-)
 

@@ -146,5 +146,13 @@ namespace NFluent.Tests
 
             Assert.AreEqual("\nThe checked char is properly displayed.\nThe checked char:\n\t['/']", message);
         }
+
+        [Test]
+        public void DoubleCurlyBracesWorks()
+        {
+            var parameter = "string{45}";
+
+            Assert.AreEqual("string{{45}}", parameter.DoubleCurlyBraces());
+        }
     }
 }

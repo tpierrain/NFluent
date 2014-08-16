@@ -15,10 +15,10 @@
 //   Implements fluent chaine syntax for IEnumerables.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace NFluent
 {
     using System.Collections;
+    using System.Collections.Generic;
     using System.Diagnostics;
 
     using NFluent.Extensibility;
@@ -57,8 +57,8 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
             var itemidx = 0;
-            var expectedList = ConvertToArrayList(chainedCheckLink);
-            var listedItems = new ArrayList();
+            var expectedList = ConvertToList(chainedCheckLink);
+            var listedItems = new List<object>();
             Debug.Assert(checker != null, "checker != null");
             foreach (var item in checker.Value)
             {
@@ -74,7 +74,7 @@ namespace NFluent
                         FluentMessage.BuildMessage(
                             string.Format(
                                             "The {{0}} has extra occurences of the expected items. Item [{0}] at position {1} is redundant.",
-                                            item.ToStringProperlyFormated(),
+                                item.ToStringProperlyFormated().DoubleCurlyBraces(),
                                             itemidx))
                                        .For("enumerable")
                                        .On(checker.Value)
@@ -101,7 +101,7 @@ namespace NFluent
         public static IExtendableCheckLink<IEnumerable> InThatOrder(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
             var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
-            var orderedList = ConvertToArrayList(chainedCheckLink);
+            var orderedList = ConvertToList(chainedCheckLink);
 
             var faillingIndex = 0;
             var scanIndex = 0;
@@ -148,9 +148,9 @@ namespace NFluent
                         var message = FluentMessage.BuildMessage(
                             string.Format(
                                 "The {{0}} does not follow to the expected order. Item [{0}] appears too {2} in the list, at index '{1}'.",
-                                item.ToStringProperlyFormated(),
+                                item.ToStringProperlyFormated().DoubleCurlyBraces(),
                                 faillingIndex,
-                                                                        index > scanIndex ? "early" : "late"))
+                                index > scanIndex ? "early" : "late"))
                                          .For("enumerable")
                                          .On(checker.Value)
                                          .And.ExpectedValues(chainedCheckLink.OriginalComparand);
@@ -170,9 +170,9 @@ namespace NFluent
             return chainedCheckLink;
         }
 
-        private static ArrayList ConvertToArrayList(IExtendableCheckLink<IEnumerable> chainedCheckLink)
+        private static List<object> ConvertToList(IExtendableCheckLink<IEnumerable> chainedCheckLink)
         {
-            var orderedList = new ArrayList();
+            var orderedList = new List<object>();
             foreach (var item in chainedCheckLink.OriginalComparand)
             {
                 orderedList.Add(item);
