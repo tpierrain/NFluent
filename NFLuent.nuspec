@@ -21,7 +21,7 @@
 --------------
 Bug Fixe(s):
 * Fixes a bug in the IsAfter() check that was throwing an exception when the givenValue type (considered as a IComparable instead of a number ;-(  was not the same as the checked value.</releaseNotes>
-    <copyright>Copyright 2013  Thomas PIERRAIN</copyright>
+    <copyright>Copyright 2014  Thomas PIERRAIN</copyright>
     <language>en-US</language>
     <tags>tdd bdd test fluent check checks easy nunit xunit mbunit mstestsucks</tags>
   </metadata>
@@ -29,7 +29,7 @@
     <!-- .NET 3.5 -->
     <file src="Artifacts\Binaries\35\NFluent.dll" target="lib\net35\NFluent.dll" />
     <file src="Artifacts\Binaries\35\NFluent.xml" target="lib\net35\NFluent.xml" />
-    <!-- .NET 4.5 (for dynamic support) -->
+    <!-- .NET 4.0 (for dynamics and tasks support) -->
     <file src="Artifacts\Binaries\40\NFluent.dll" target="lib\net40\NFluent.dll" />
     <file src="Artifacts\Binaries\40\NFluent.xml" target="lib\net40\NFluent.xml" />
     <!-- PCL -->
