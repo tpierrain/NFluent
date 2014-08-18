@@ -46,6 +46,8 @@ Sending a Pull Request
 
 First of all, check that your code is in line with the __[NFluent Definition of Done (DoD) for Development](./DevDoD.md)__.
 
+For NCrunch users, please refers to the __[NCrunch configuration tips for NFluent contributors](./ForNCrunchUsers.md)__.
+
 Then, while working on your feature you may well create several branches, which is fine, but before you send a pull request you should ensure that you have rebased back to a single "Feature branch" - we care about your commits, and we care about your feature branch; but we don't care about how many or which branches you created while you were working on it :-)
 
 When you're ready to go you should confirm that you are up to date and rebased with upstream/master (see "Handling Updates from Upstream/Master" above), and then:

@@ -15,7 +15,6 @@
 namespace NFluent.Tests
 {
     using NFluent.Tests.Extensions;
-
     using NUnit.Framework;
 
     [TestFixture]

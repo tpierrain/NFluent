@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NFluent.Tests</RootNamespace>
     <AssemblyName>NFluent.40.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -19,9 +19,11 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DOTNET_40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +32,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+  <!-- Workaround for NCrunch issue (http://forum.ncrunch.net/yaf_postst935_Issue-when-using-conditional-compilation-symbols-in-linked-file.aspx) -->
+  <PropertyGroup Condition="'$(TargetFrameworkVersion)' == 'v4.5'">
+    <DefineConstants>$(DefineConstants);DOTNET_45</DefineConstants>
+  </PropertyGroup>
+  <!-- End of workaround for NCrunch issue (http://forum.ncrunch.net/yaf_postst935_Issue-when-using-conditional-compilation-symbols-in-linked-file.aspx) -->
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -262,6 +271,7 @@
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="AsyncRelatedTests.cs" />
     <Compile Include="DynamicTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -289,12 +299,13 @@
       <Name>NFluent.40</Name>
     </ProjectReference>
     <ProjectReference Include="..\NFluent.Tests.Extensions.40\NFluent.Tests.Extensions.40.csproj">
-      <Project>{1BAA72CB-3A46-4711-9A5B-F96CF20D465E}</Project>
+      <Project>{1baa72cb-3a46-4711-9a5b-f96cf20d465e}</Project>
       <Name>NFluent.Tests.Extensions.40</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\NFluent.35.Tests\CheckedFile.xml">
