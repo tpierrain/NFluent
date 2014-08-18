@@ -1,10 +1,11 @@
 New feature(s):
-* 
+* Now, supports .NET Tasks and Async methods/lambdas/functions thanks to a new Check.ThatAsyncCode()  statement.
 --------------
 Change(s):
-* 
+* Error messages with double and float are now displayed with InvariantCulture.
 * Improves error message for IsAfter on null value.
+* 
 --------------
 Bug Fixe(s):
-* 
+* There was an inversion between expected and actual error message for the .WithMessage checks on execption. This is fixed.
 * Fixes an issue with null on Check.That(...).IsBefore(...)
