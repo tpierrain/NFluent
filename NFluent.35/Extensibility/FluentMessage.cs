@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿// -----0---------------------------------------------------------------------------------------------------------------
 // <copyright file="FluentMessage.cs" company="">
 //   Copyright 2013 Cyrille DUPUYDAUBY, Thomas PIERRAIN
 //   // //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,7 +64,7 @@ namespace NFluent.Extensibility
         /// You can use {x} as place holders for standard wordings:
         /// - {0}. 
         /// </remarks>
-        public FluentMessage(string message)
+        private FluentMessage(string message)
         {
             this.message = message;
             this.EntityDescription = null;
@@ -157,6 +157,7 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>A fluent message builder.</returns>
+    //    [Obsolete]
         public static FluentMessage BuildMessage(string message)
         {
             return new FluentMessage(message);
@@ -299,7 +300,7 @@ namespace NFluent.Extensibility
 
         #endregion
 
-       /// <summary>
+        /// <summary>
         /// Class describing a message block.
         /// </summary>
         public class MessageBlock

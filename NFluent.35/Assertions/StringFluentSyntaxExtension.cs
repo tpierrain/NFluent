@@ -33,7 +33,7 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<string, string[]> Once(this IExtendableCheckLink<string, string[]> chainedCheckLink)
         {
-            var checker = chainedCheckLink.And as ICheckForExtensibility<string, ICheck<string>>;
+            var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
             var value = checker.Value;
             var comparand = chainedCheckLink.OriginalComparand;
             foreach (var text in comparand)
@@ -44,7 +44,7 @@ namespace NFluent
                 {
                     // failed 
                     var message =
-                        FluentMessage.BuildMessage(string.Format("The {{0}} contains {0} at {1} and {2}, where as it must contains it once.", text.ToStringProperlyFormated().DoubleCurlyBraces(), firstIndex, lastIndexOf))
+                        checker.BuildMessage(string.Format("The {{0}} contains {0} at {1} and {2}, where as it must contains it once.", text.ToStringProperlyFormated().DoubleCurlyBraces(), firstIndex, lastIndexOf))
                                      .For("string")
                                      .On(value)
                                      .And.Expected(comparand).Comparison("one");
@@ -66,7 +66,7 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<string, string[]> InThatOrder(this IExtendableCheckLink<string, string[]> chainedCheckLink)
         {
-            var checker = chainedCheckLink.And as ICheckForExtensibility<string, ICheck<string>>;
+            var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
             var value = checker.Value;
             var comparand = chainedCheckLink.OriginalComparand;
             var lastIndex = 0;
@@ -77,7 +77,7 @@ namespace NFluent
                 {
                     // failed 
                     var message =
-                        FluentMessage.BuildMessage(
+                        checker.BuildMessage(
                             "The {0} does not contain the expected strings in the correct order.")
                                      .For("string")
                                      .On(value)

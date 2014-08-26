@@ -24,18 +24,29 @@ namespace NFluent.Helpers
         /// <summary>
         /// Checks that a given instance is considered to be equal to another expected instance. Throws <see cref="FluentCheckException"/> otherwise.
         /// </summary>
-        /// <param name="instance">The considered instance.</param>
-        /// <param name="expected">The expected instance.</param>
-        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static void IsEqualTo(object instance, object expected)
+        /// <typeparam name="T">Checked type.
+        /// </typeparam>
+        /// <typeparam name="TU">Checker type.
+        /// </typeparam>
+        /// <param name="checker">
+        /// The checker.
+        /// </param>
+        /// <param name="expected">
+        /// The expected instance.
+        /// </param>
+        /// <exception cref="FluentCheckException">
+        /// The actual value is not equal to the expected value.
+        /// </exception>
+        public static void IsEqualTo<T, TU>(IChecker<T, TU> checker, object expected) where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
+            var instance = checker.Value;
             if (FluentEquals(instance, expected))
             {
                 return;
             }
 
             // Should throw
-            var errorMessage = BuildErrorMessage(instance, expected, false);
+            var errorMessage = BuildErrorMessage(checker, expected, false);
 
             throw new FluentCheckException(errorMessage);
         }
@@ -48,16 +59,28 @@ namespace NFluent.Helpers
         /// <summary>
         /// Builds the error message related to the Equality verification. This should be called only if the test failed (no matter it is negated or not).
         /// </summary>
-        /// <param name="instance">The checked instance.</param>
-        /// <param name="expected">The other operand.</param>
-        /// <param name="isEqual">A value indicating whether the two values are equal or not. <c>true</c> if they are equal; <c>false</c> otherwise.</param>
-        /// <returns>The error message related to the Equality verification.</returns>
-        public static string BuildErrorMessage(object instance, object expected, bool isEqual)
+        /// <typeparam name="T">Checked type.
+        /// </typeparam>
+        /// <typeparam name="TU">Checker type.</typeparam>
+        /// <param name="checker">
+        /// The checker.
+        /// </param>
+        /// <param name="expected">
+        /// The other operand.
+        /// </param>
+        /// <param name="isEqual">
+        /// A value indicating whether the two values are equal or not. <c>true</c> if they are equal; <c>false</c> otherwise.
+        /// </param>
+        /// <returns>
+        /// The error message related to the Equality verification.
+        /// </returns>
+        public static string BuildErrorMessage<T, TU>(IChecker<T, TU> checker, object expected, bool isEqual) where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
+            var instance = checker.Value;
             string message;
             if (isEqual)
             {
-                message = FluentMessage.BuildMessage("The {0} is equal to the {1} whereas it must not.")
+                message = checker.BuildMessage("The {0} is equal to the {1} whereas it must not.")
                                         .Expected(expected)
                                         .Comparison("different from")
                                         .WithType()
@@ -70,7 +93,7 @@ namespace NFluent.Helpers
 
                 // shall we display the hash too
                 var withHash = instance != null && expected != null && instance.GetType() == expected.GetType() && instance.ToString() == expected.ToString();
-                message = FluentMessage.BuildMessage("The {0} is different from the {1}.")
+                message = checker.BuildMessage("The {0} is different from the {1}.")
                     .On(instance)
                     .WithType(withType)
                     .WithHashCode(withHash)
@@ -85,14 +108,18 @@ namespace NFluent.Helpers
         /// <summary>
         /// Checks that a given instance is not considered to be equal to another expected instance. Throws <see cref="FluentCheckException"/> otherwise.
         /// </summary>
-        /// <param name="instance">The considered instance.</param>
+        /// <typeparam name="T">Checked type.
+        /// </typeparam>
+        /// <typeparam name="TU">Checker type.
+        /// </typeparam>
+        /// <param name="checker">The checker.</param>
         /// <param name="expected">The expected instance.</param>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static void IsNotEqualTo(object instance, object expected)
+        public static void IsNotEqualTo<T, TU>(IChecker<T, TU> checker, object expected) where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
-            if (object.Equals(instance, expected))
+            if (FluentEquals(checker.Value, expected))
             {
-                throw new FluentCheckException(BuildErrorMessage(instance, expected, true));
+                throw new FluentCheckException(BuildErrorMessage(checker, expected, true));
             }
         }
     }

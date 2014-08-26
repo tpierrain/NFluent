@@ -40,21 +40,25 @@ namespace NFluent.Helpers
                 {
                     // we need to identiy required exception types
                     var defaultConstructor = typeof(FluentCheckException).GetConstructor(new[] { typeof(string) });
-                    var result = new ExceptionConstructor();
-                    result.FailedException = defaultConstructor;
-                    result.IgnoreException = defaultConstructor;
-                    result.InconclusiveException = defaultConstructor;
-    
+                    var result = new ExceptionConstructor
+                                     {
+                                         FailedException = defaultConstructor,
+                                         IgnoreException = defaultConstructor,
+                                         InconclusiveException = defaultConstructor
+                                     };
+
                     // assert we have a default constructor
                     Debug.Assert(defaultConstructor != null, "NFluent exception must provide a constructor accepting a single string as parameter!");
 
-                    // look for NUnit
-                    var resultScan = ExceptionScanner("nunit", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException");
-                    
+                    ExceptionConstructor resultScan;
+
+                    // look for MSTest
+                    resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException");
+
                     if (resultScan == null)
                     {
-                        // look for MSTest
-                        resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException");
+                        // look for NUnit
+                        resultScan = ExceptionScanner("nunit", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException");
                     }
 
                     if (resultScan != null)

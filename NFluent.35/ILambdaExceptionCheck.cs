@@ -18,7 +18,8 @@ namespace NFluent
     /// Provides check methods to be executed on the exception raised by a given lambda/action.
     /// </summary>
     /// <typeparam name="TParent">The type of the parent.</typeparam>
-    public interface ILambdaExceptionCheck<TParent> : IHasParentCheck<TParent>, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    public interface ILambdaExceptionCheck<TParent> : IHasParentCheck<TParent>,
+        IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         /// <summary>
         /// Checks that the message of the considered exception is correctly written.

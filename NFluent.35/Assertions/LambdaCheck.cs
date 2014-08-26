@@ -132,7 +132,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The code did not raised an exception of the specified type, or did not raised an exception at all.
         /// </exception>
-        public ILambdaExceptionCheck<ILambdaCheck> Throws<T>()
+        public ILambdaExceptionCheck<ILambdaCheck> Throws<T>() where T : Exception
         {
             var check = new FluentCodeCheck<RunTrace>(this.runTrace);
             check.Throws<T>();

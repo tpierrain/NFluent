@@ -4,7 +4,7 @@ New feature(s):
 Change(s):
 * Error messages with double and float are now displayed with InvariantCulture.
 * Improves error message for IsAfter on null value.
-* 
+* Check.ThatCode(...).Throws<T>() now requires T to be an exception. This restriction ensures only Exceptions are proposed in autocompletion.
 --------------
 Bug Fixe(s):
 * There was an inversion between expected and actual error message for the .WithMessage checks on execption. This is fixed.
