@@ -157,7 +157,6 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>A fluent message builder.</returns>
-    //    [Obsolete]
         public static FluentMessage BuildMessage(string message)
         {
             return new FluentMessage(message);

@@ -80,7 +80,7 @@ namespace NFluent.Helpers
             string message;
             if (isEqual)
             {
-                message = checker.BuildMessage("The {0} is equal to the {1} whereas it must not.")
+                message = checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.")
                                         .Expected(expected)
                                         .Comparison("different from")
                                         .WithType()

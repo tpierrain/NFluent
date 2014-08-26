@@ -324,13 +324,13 @@ namespace NFluent
             {
                 if (checker.Value == null)
                 {
-                    message = checker.BuildMessage("The {0} is null, where as it must contain at least one item.")
+                    message = checker.BuildShortMessage("The {0} is null, where as it must contain at least one item.")
                                              .For(LabelForEnumerable)
                                              .ToString();
                 }
                 else
                 {
-                    message = checker.BuildMessage("The {0} is empty, where as it must contain at least one item.")
+                    message = checker.BuildShortMessage("The {0} is empty, where as it must contain at least one item.")
                                              .For(LabelForEnumerable)
                                              .ToString();
                 }

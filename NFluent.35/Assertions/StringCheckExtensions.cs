@@ -201,7 +201,7 @@ namespace NFluent
             string messageText;
             if (negated)
             {
-                messageText = checker.BuildMessage("The {0} is equal to the {1} whereas it must not.")
+                messageText = checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.")
                                     .For("string")
                                     .Expected(expected)
                                     .Comparison("different from")
@@ -293,7 +293,7 @@ namespace NFluent
                     expectedString = HighlightTabsIfAny(expectedString);    
                 }
 
-                messageText = checker.BuildMessage(message).For("string").Expected(expectedString).ToString();
+                messageText = checker.BuildMessage(message).For("string").On(value).And.Expected(expectedString).ToString();
             }
 
             return messageText;
@@ -346,7 +346,7 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return (negated || notContains) ? null : checker.BuildMessage("The {0} is null.").For("string").Expected(values).Label("The {0} substring(s):").ToString();
+                return (negated || notContains) ? null : checker.BuildShortMessage("The {0} is null.").For("string").Expected(values).Label("The {0} substring(s):").ToString();
             }
 
             var items = values.Where(item => checkedValue.Contains(item) == notContains).ToList();
@@ -410,7 +410,7 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return negated ? null : checker.BuildMessage("The {0} is null.").For("string").Expected(starts).Comparison("starts with").ToString();
+                return negated ? null : checker.BuildShortMessage("The {0} is null.").For("string").Expected(starts).Comparison("starts with").ToString();
             }
 
             if (checkedValue.StartsWith(starts) != negated)
@@ -465,7 +465,7 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return negated ? null : checker.BuildMessage("The {0} is null.").For("string").Expected(ends).Comparison("ends with").ToString();
+                return negated ? null : checker.BuildShortMessage("The {0} is null.").For("string").Expected(ends).Comparison("ends with").ToString();
             }
 
             if (checkedValue.EndsWith(ends) != negated)
@@ -544,7 +544,7 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return negated ? null : checker.BuildMessage("The {0} is null.").For("string").Expected(regExp).Comparison("matches").ToString();
+                return negated ? null : checker.BuildShortMessage("The {0} is null.").For("string").Expected(regExp).Comparison("matches").ToString();
             }
 
             var exp = new Regex(regExp);
@@ -670,8 +670,8 @@ namespace NFluent
                     return null;
                 }
 
-                return negated ? checker.BuildMessage("The {0} is null whereas it must have content.").For("string").ToString()
-                    : checker.BuildMessage("The {0} is null instead of being empty.").For("string").ToString();
+                return negated ? checker.BuildShortMessage("The {0} is null whereas it must have content.").For("string").ToString()
+                    : checker.BuildShortMessage("The {0} is null instead of being empty.").For("string").ToString();
             }
 
             if (string.IsNullOrEmpty(checkedValue) != negated)
@@ -683,7 +683,7 @@ namespace NFluent
             if (negated)
             {
                 return
-                    checker.BuildMessage("The {0} is empty, whereas it must not.")
+                    checker.BuildShortMessage("The {0} is empty, whereas it must not.")
                     .For("string")
                                  .ToString();
             }
