@@ -39,6 +39,20 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
+        /// Checks that a type is not the expected one.
+        /// </summary>
+        /// <param name="instanceType">The type of the instance to be checked.</param>
+        /// <param name="expectedType">The expected type for the instance to be checked.</param>
+        /// <param name="value">The value of the instance to be checked (may be a nullable instance).</param>
+        public static void IsDifferentType(Type instanceType, Type expectedType, object value)
+        {
+            if (instanceType == expectedType)
+            {
+                throw new FluentCheckException(BuildErrorMessageForNullable(instanceType, expectedType, value, true));
+            }
+        }
+
+        /// <summary>
         /// Checks that an instance is of the given expected type.
         /// </summary>
         /// <param name="instance">The instance to be checked.</param>

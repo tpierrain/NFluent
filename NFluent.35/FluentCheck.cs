@@ -147,11 +147,9 @@ namespace NFluent
         {
             if (typeof(T).IsNullable())
             {
-                this.checker.ExecuteCheck(
+                return this.checker.ExecuteCheck(
                     () => IsInstanceHelper.IsSameType(typeof(T), typeof(TU), this.Value), 
                     IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(TU), this.Value, true));
-
-                return new CheckLink<ICheck<T>>(this);
             }
 
             return this.checker.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(TU)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(TU), true));
@@ -167,16 +165,9 @@ namespace NFluent
         {
             if (typeof(T).IsNullable())
             {
-                this.checker.ExecuteCheck(
-                    () =>
-                        {
-                            if (typeof(T) == typeof(TU))
-                            {
-                                throw new FluentCheckException(IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(TU), this.Value, true));
-                            }
-                        },
+                return this.checker.ExecuteCheck(
+                    () => IsInstanceHelper.IsDifferentType(typeof(T), typeof(TU), this.Value),
                     IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(TU), this.Value, false));
-                return new CheckLink<ICheck<T>>(this);
             }
 
             return this.checker.ExecuteCheck(

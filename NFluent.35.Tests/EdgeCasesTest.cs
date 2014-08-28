@@ -16,6 +16,7 @@
 namespace NFluent.Tests
 {
     using System;
+    using System.Runtime.Remoting;
 
     using NUnit.Framework;
 

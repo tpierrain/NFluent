@@ -53,7 +53,7 @@ namespace NFluent
             return this.checker.ExecuteCheck(
                 () =>
                     {
-                        var res = InternalIsZero(this.checkForExtensibility.Value);
+                        var res = InternalIsZero(this.checker.Value);
 
                         if (!res)
                         {
@@ -75,7 +75,7 @@ namespace NFluent
             return this.checker.ExecuteCheck(
                 () =>
                     {
-                        bool res = InternalIsZero(this.checkForExtensibility.Value);
+                        bool res = InternalIsZero(this.checker.Value);
 
                         if (res)
                         {
@@ -95,7 +95,7 @@ namespace NFluent
             return this.checker.ExecuteCheck(
                 () =>
                     {
-                        if (Convert.ToDouble(this.checkForExtensibility.Value) <= 0)
+                        if (Convert.ToDouble(this.checker.Value) <= 0)
                         {
                             throw new FluentCheckException(
                                 this.checker.BuildMessage("The {0} is not strictly positive.").ToString());
@@ -114,7 +114,7 @@ namespace NFluent
             return this.checker.ExecuteCheck(
                 () =>
                 {
-                    if (Convert.ToDouble(this.checkForExtensibility.Value) >= 0)
+                    if (Convert.ToDouble(this.checker.Value) >= 0)
                     {
                         throw new FluentCheckException(checker.BuildMessage("The {0} is not strictly negative.").ToString());
                     }
@@ -139,7 +139,7 @@ namespace NFluent
             return this.checker.ExecuteCheck(
                 () =>
                 {
-                    if (this.checkForExtensibility.Value.CompareTo(comparand) >= 0)
+                    if (this.checker.Value.CompareTo(comparand) >= 0)
                     {
                         throw new FluentCheckException(checker.BuildMessage("The {0} is greater than the threshold.").Expected(comparand).Comparison("less than").ToString());
                     }
@@ -164,7 +164,7 @@ namespace NFluent
             return this.checker.ExecuteCheck(
                 () =>
                     {
-                        if (this.checkForExtensibility.Value.CompareTo(comparand) <= 0)
+                        if (this.checker.Value.CompareTo(comparand) <= 0)
                         {
                             throw new FluentCheckException(checker.BuildMessage("The {0} is less than the threshold.").Expected(comparand).Comparison("more than").ToString());
                         }

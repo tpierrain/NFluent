@@ -133,29 +133,7 @@ namespace NFluent.Extensibility
         /// <exception cref="FluentCheckException">The check fails.</exception>
         public ICheckLink<TC> ExecuteCheck(Action action, string negatedExceptionMessage)
         {
-            try
-            {
-                // execute test
-                action();
-            }
-            catch (FluentCheckException)
-            {
-                // exception raised, and this was not expected
-                if (!this.fluentCheckForExtensibility.Negated)
-                {
-                    throw;
-                }
-
-                // exception was expected
-                return new CheckLink<TC>(this.fluentCheckForExtensibility);
-            }
-
-            if (this.fluentCheckForExtensibility.Negated)
-            {
-                // the expected exception did not occur
-                throw new FluentCheckException(negatedExceptionMessage);
-            }
-
+            this.ExecuteNotLinkableCheck(action, negatedExceptionMessage);
             return this.ReturnValueForLinkage;
         }
 

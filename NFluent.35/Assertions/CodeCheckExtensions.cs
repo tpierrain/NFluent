@@ -345,7 +345,7 @@ namespace NFluent
                         if (!(checker.Value.RaisedException is T))
                         {
                             var message =
-                                checker.BuildMessage(
+                                checker.BuildShortMessage(
                                     "The {0} raised an exception of a different type than expected.")
                                              .For(LabelForCode)
                                              .On(checker.Value.RaisedException)
