@@ -48,20 +48,6 @@ namespace NFluent.Extensibility
         #region methods
 
         /// <summary>
-        /// Gets the check link to return for the next check to be executed (linked with the And operator).
-        /// </summary>
-        /// <value>
-        /// The check link to return for next check (linked with the And operator) to be executed.
-        /// </value>
-        public ICheckLink<TC> ReturnValueForLinkage
-        {
-            get
-            {
-                return new CheckLink<TC>(this.fluentCheckForExtensibility);
-            }
-        }
-
-        /// <summary>
         /// Gets the value to be tested (provided for any extension method to be able to test it).
         /// </summary>
         /// <value>
@@ -95,6 +81,17 @@ namespace NFluent.Extensibility
         #region methods
 
         /// <summary>
+        /// Gets the check link to return for the next check to be executed (linked with the And operator).
+        /// </summary>
+        /// <returns>
+        ///     The check link to return for next check (linked with the And operator) to be executed.
+        /// </returns>
+        public ICheckLink<TC> BuildChainingObject()
+        {
+            return new ICheckLink<TC>(this.fluentCheckForExtensibility);
+        }
+
+        /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>
         /// <param name="action">
@@ -110,30 +107,8 @@ namespace NFluent.Extensibility
         /// <exception cref="FluentCheckException">The check fails.</exception>
         public ICheckLink<TC> ExecuteCheck(Action action, string negatedExceptionMessage)
         {
-            try
-            {
-                // execute test
-                action();
-            }
-            catch (FluentCheckException)
-            {
-                // exception raised, and this was not expected
-                if (!this.fluentCheckForExtensibility.Negated)
-                {
-                    throw;
-                }
-
-                // exception was expected
-                return new CheckLink<TC>(this.fluentCheckForExtensibility);
-            }
-
-            if (this.fluentCheckForExtensibility.Negated)
-            {
-                // the expected exception did not occur
-                throw new FluentCheckException(negatedExceptionMessage);
-            }
-
-            return this.ReturnValueForLinkage;
+            this.ExecuteNotChainableCheck(action, negatedExceptionMessage);
+            return this.BuildChainingObject();
         }
 
         /// <summary>
@@ -144,7 +119,7 @@ namespace NFluent.Extensibility
         /// <see cref="FluentCheckException" /> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        public void ExecuteNotLinkableCheck(Action action, string negatedExceptionMessage)
+        public void ExecuteNotChainableCheck(Action action, string negatedExceptionMessage)
         {
             try
             {
@@ -168,8 +143,6 @@ namespace NFluent.Extensibility
                 // the expected exception did not occur
                 throw new FluentCheckException(negatedExceptionMessage);
             }
-
-            return;
         }
 
         #endregion

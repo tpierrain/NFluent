@@ -41,7 +41,7 @@ namespace NFluent.Tests.Extensions
         {
             var structChecker = ExtensibilityHelper.ExtractStructChecker(check);
 
-            return structChecker.ReturnValueForLinkage;
+            return structChecker.BuildChainingObject();
         }
     }
 }

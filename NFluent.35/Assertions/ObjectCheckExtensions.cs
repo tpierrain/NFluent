@@ -167,7 +167,7 @@ namespace NFluent
             Type instanceType = checker.Value.GetTypeWithoutThrowingException();
             Type expectedBaseType = typeof(T);
 
-            checker.ExecuteNotLinkableCheck(
+            checker.ExecuteNotChainableCheck(
                 () =>
                 {
                     IsInstanceHelper.InheritsFrom(checker.Value, expectedBaseType);

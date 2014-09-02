@@ -25,14 +25,14 @@ namespace NFluent.Tests.Extensions
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
-            return checker.ReturnValueForLinkage;
+            return checker.BuildChainingObject();
         }
 
         public static ICheckLink<ICheck<Person>> IsNawouak(this ICheck<Person> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             
-            return checker.ReturnValueForLinkage;
+            return checker.BuildChainingObject();
         }
     }
 }
