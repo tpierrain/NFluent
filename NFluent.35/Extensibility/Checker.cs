@@ -88,7 +88,7 @@ namespace NFluent.Extensibility
         /// </returns>
         public ICheckLink<TC> BuildChainingObject()
         {
-            return new ICheckLink<TC>(this.fluentCheckForExtensibility);
+            return new CheckLink<TC>(this.fluentCheckForExtensibility);
         }
 
         /// <summary>

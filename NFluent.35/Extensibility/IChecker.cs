@@ -27,7 +27,7 @@ namespace NFluent.Extensibility
     /// </typeparam>
     /// <typeparam name="TC">Interface for the check.
     /// </typeparam>
-    public interface IChecker<out T, TC> : IWithValue<T>, INegated where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    public interface IChecker<out T, out TC> : IWithValue<T>, INegated where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         /// <summary>
         /// Gets the check link to return for the next check to be executed (linked with the And operator).

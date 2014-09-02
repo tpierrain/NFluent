@@ -20,10 +20,10 @@ namespace NFluent
     /// <typeparam name="T">
     /// Type of the value to assert on.
     /// </typeparam>
-    /// <typeparam name="C">Interface for the type.
+    /// <typeparam name="TC">Interface for the type.
     /// </typeparam>
-    public interface ICheckForExtensibility<out T, out C> : IWithValue<T>, IExposingChecker<T, C>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
-        where C : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    public interface ICheckForExtensibility<out T, out TC> : IWithValue<T>, IExposingChecker<T, TC>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+        where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
     }
 }
