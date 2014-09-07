@@ -199,7 +199,8 @@ namespace NFluent
         /// </remarks>
         object IForkableCheck.ForkInstance()
         {
-            return new FluentCheck<T>(this.Value);
+            this.Negated = !CheckContext.DefaulNegated;
+            return this; 
         }
 
         #endregion

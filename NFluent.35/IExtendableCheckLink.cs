@@ -35,8 +35,8 @@ namespace NFluent
     /// Provides an specific implementation for IEnumerable fluent check extension. Required to implement IEnumerable fluent API syntax.
     /// </summary>
     /// <typeparam name="T">Type managed by this extension.</typeparam>
-    /// <typeparam name="U">Type of the reference comparand.</typeparam>
-    public interface IExtendableCheckLink<out T, out U> : ICheckLink<ICheck<T>>
+    /// <typeparam name="TU">Type of the reference comparand.</typeparam>
+    public interface IExtendableCheckLink<out T, out TU> : ICheckLink<ICheck<T>>
     {
         /// <summary>
         /// Gets the initial list that was used in Contains.
@@ -44,6 +44,6 @@ namespace NFluent
         /// <value>
         /// Initial list that was used in Contains.
         /// </value>
-        U OriginalComparand { get; }
+        TU OriginalComparand { get; }
     }
 }

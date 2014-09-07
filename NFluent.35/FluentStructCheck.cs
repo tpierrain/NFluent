@@ -105,7 +105,8 @@ namespace NFluent
         /// </remarks>
         object IForkableCheck.ForkInstance()
         {
-            return new FluentStructCheck<T>(this.Value);
+            this.Negated = !CheckContext.DefaulNegated;
+            return this;
         }
 
         /// <summary>
@@ -116,11 +117,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The specified value is not of the given type.</exception>
         public ICheckLink<IStructCheck<T>> IsInstanceOf<U>() where U : struct
         {
-            this.structChecker.ExecuteCheck(
+            return this.structChecker.ExecuteCheck(
                 () => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), 
                 IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
-
-            return new CheckLink<IStructCheck<T>>(this);
         }
 
         /// <summary>
@@ -131,11 +130,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The specified value is of the given type.</exception>
         public ICheckLink<IStructCheck<T>> IsNotInstanceOf<U>() where U : struct
         {
-            this.structChecker.ExecuteCheck(
+            return this.structChecker.ExecuteCheck(
                 () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)),
                 IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
-
-            return new CheckLink<IStructCheck<T>>(this);
         }
     }
 }

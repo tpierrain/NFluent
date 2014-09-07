@@ -95,8 +95,9 @@ namespace NFluent
         /// <remarks>This method is used during the chaining of multiple checks.</remarks>
         /// <returns>A new instance of the same fluent check type, with the same Value property.</returns>
         public object ForkInstance()
-        {
-            return new FluentCodeCheck<T>(this.Value);
+         {
+             this.Negated = !CheckContext.DefaulNegated;
+             return this;
         }
     }
 }

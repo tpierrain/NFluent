@@ -30,7 +30,7 @@ namespace NFluent
         /// <param name="previousCheck">The previous fluent check.</param>
         public CheckLink(IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense previousCheck)
         {
-            IForkableCheck forkableCheck = previousCheck as IForkableCheck;
+            var forkableCheck = previousCheck as IForkableCheck;
             this.newCheckWithSameValue = forkableCheck.ForkInstance() as T;
         }
 
