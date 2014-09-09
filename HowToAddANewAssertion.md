@@ -59,5 +59,5 @@ General recommendations
 
 Other resources
 ===============
-+ __[Rui](https://github.com/rhwy)__ has published a great article about the NFluent extensibility model. Available __[here on CodeDistillers](http://www.codedistillers.com/rui/2013/11/26/nfluent-extensions/)__
++ __[Rui](https://github.com/rhwy)__ has published a great article about the NFluent extensibility model. Available __[here on CodeDistillers](http://codedistillerswp.azurewebsites.net/?p=187)__
 
