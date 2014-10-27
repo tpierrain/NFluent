@@ -15,6 +15,9 @@
 
 namespace NFluent.Tests
 {
+    using System;
+    using System.Collections.Generic;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -42,16 +45,58 @@ namespace NFluent.Tests
             Check.That(modelA).HasFieldsWithSameValues(modelB);
         }
 
+        // Issue #111
+        [Test]
+        public void IllogicSyntaxWithAndForList()
+        {
+            var test = new List<string>();
+            Check.That(test).IsNotNull().And.HasSize(0);
+        }
+
         // 30/05/14 Invalid exception on strings with curly braces
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[\"MaChaine{964}\"]\nThe checked enumerable:\n\t[\"MaChaine{94}\"]\nThe expected value(s):\n\t[\"MaChaine{964}\"]")]
         public void SpuriousExceptionOnError()
         {
             var toTest = new System.Collections.ArrayList { "MaChaine{94}" };
-            string result = "MaChaine{964}";
-            Check.That(toTest).Contains(result);
+            const string Result = "MaChaine{964}";
+            Check.That(toTest).Contains(Result);
         }
 
+        [TestFixture]
+        public class Test
+        {
+            [Test]
+            [ExpectedException(typeof(FluentCheckException))]
+            public void FailingTestForDemo()
+            {
+                var args = new OrderExecutedEventArgs(100M, 150, Way.Sell);
+
+                Check.That(args).HasFieldsWithSameValues(new { Price = 100, Quantity = 150, Way = Way.Sell });
+            }
+        }
+
+        public class OrderExecutedEventArgs : EventArgs
+        {
+            public decimal Price { get; private set; }
+
+            public int Quantity { get; private set; }
+
+            public Way Way { get; private set; }
+
+            public OrderExecutedEventArgs(decimal price, int quantity, Way way)
+            {
+                this.Price = price;
+                this.Quantity = quantity;
+                this.Way = way;
+            }
+        }
+
+        public enum Way
+        {
+            Sell,
+            Buy
+        }
         public class ModelA
         {
             public string Name { get; set; }

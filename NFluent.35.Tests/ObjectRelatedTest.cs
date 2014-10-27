@@ -32,7 +32,7 @@ namespace NFluent.Tests
         [Test]
         public void IsSameReferenceThanDoesNotLoseOriginalTypeForOtherCheck()
         {
-            var numbers = new int[] { 1, 4, 42 };
+            var numbers = new[] { 1, 4, 42 };
             Check.That(numbers).IsSameReferenceThan(numbers).And.Contains(42);
         }
 
@@ -52,8 +52,8 @@ namespace NFluent.Tests
         [Test]
         public void IsDistinctFromDoesNotLoseOriginalTypeForOtherCheck()
         {
-            var numbers = new int[] { 1, 4, 42 };
-            var otherNumbers = new int[] { 7, 8, 9 };
+            var numbers = new[] { 1, 4, 42 };
+            var otherNumbers = new[] { 7, 8, 9 };
             Check.That(numbers).IsDistinctFrom(otherNumbers).And.Contains(42);
         }
 
@@ -181,7 +181,7 @@ namespace NFluent.Tests
         [Test]
         public void HasNotFieldsWithSameValuesDoesNotLoseOriginalTypeForOtherCheck()
         {
-            var numbers = new int[] { 1, 2, 3 };
+            var numbers = new[] { 1, 2, 3 };
             Check.That(numbers).HasNotFieldsWithSameValues(new { Length = 99 }).And.Contains(2);
         }
 
@@ -233,9 +233,16 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void HasFieldsWithSameValueWorksWithSubSet()
+        {
+            var x = new DummyClass();
+            Check.That(x).HasFieldsWithSameValues(new { x = 2, y = 3, z = 4});
+        }
+
+        [Test]
         public void HasFieldsWithSameValuesDoesNotLoseOriginalTypeForOtherCheck()
         {
-            var numbers = new int[] { 1, 2, 3 };
+            var numbers = new[] { 1, 2, 3 };
             Check.That(numbers).HasFieldsWithSameValues(new { Length = 3 }).And.Contains(2);
         }
 
@@ -266,13 +273,12 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's autoproperty 'Application' (field '<Application>k__BackingField') does not have the expected value.\nThe checked value:\n\t[\"check\"]\nThe expected value:\n\t[null]")]
         public void HasFieldsFailsProperlyForAutoProperty()
         {
-            var x = new DummyWithAutoProperty();
-            x.Application = "check";
+            var x = new DummyWithAutoProperty { Application = "check" };
             Check.That(x).HasFieldsWithSameValues(new DummyWithAutoProperty());
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's autoproperty 'Application' (field '<Application>k__BackingField') does not have the expected value.\nThe checked value:\n\t[null]\nThe expected value:\n\t[\"check\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's autoproperty 'Application' (field '<Application>k__BackingField') does not have the expected value.\nThe checked value:\n\t[null]\nThe expected value:\n\t[\"check\"] of type: [string]")]
         public void HasFieldsFailsProperlyForAutoPropertyForNull()
         {
             var x = new DummyWithAutoProperty();
@@ -300,7 +306,9 @@ namespace NFluent.Tests
 
         private class DummyClass
         {
+            // ReSharper disable once NotAccessedField.Local
             private int x = 2;
+            // ReSharper disable once NotAccessedField.Local
             private int y = 3;
 
             public DummyClass()
@@ -316,21 +324,15 @@ namespace NFluent.Tests
 
         private class DummyHeritance : DummyClass
         {
+            // ReSharper disable once NotAccessedField.Local
+#pragma warning disable 169
             private int z = 2;
-
-            public DummyHeritance()
-            {
-            }
-
-            public DummyHeritance(int x, int y, int z)
-                : base(x, y)
-            {
-                this.z = z;
-            }
+#pragma warning restore 169
         }
 
         private class DummyWithAutoProperty
         {
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public string Application { get; set; }
         }
     }

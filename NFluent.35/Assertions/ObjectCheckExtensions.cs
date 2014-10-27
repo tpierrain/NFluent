@@ -149,27 +149,6 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks whether if the checked value is of the given type.
-        /// </summary>
-        /// <typeparam name="U">The given type to check the checked value against.</typeparam>
-        /// <typeparam name="T">The given type to check the checked value against.</typeparam>
-        /// <returns>A chainable check.</returns>
-        /// <exception cref="FluentCheckException">The specified value is null (and not of the same nullable type) or not of the given type.</exception>
-        public static ICheckLink<ICheck<T>> IsInstanceOf<U, T>(this ICheck<T> check)
-        {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var value = checker.Value;
-            if (typeof(T).IsNullable())
-            {
-                return checker.ExecuteCheck(
-                    () => IsInstanceHelper.IsSameType(typeof(T), typeof(U), value),
-                    IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(U), value, true));
-            }
-
-            return checker.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(value, typeof(U)), IsInstanceHelper.BuildErrorMessage(value, typeof(U), true));
-        }
-
-        /// <summary>
         /// Checks that the actual expression is in the inheritance hierarchy of the given kind or of the same kind.
         /// </summary>
         /// <typeparam name="T">The Type which is expected to be a base Type of the actual expression.</typeparam>
@@ -515,23 +494,25 @@ namespace NFluent
 
                 if (expectedFieldValue == null)
                 {
-                    if ((actualFieldValue == null) == negated)
+                    if ((actualFieldValue == null) != negated)
                     {
-                        if (!negated)
-                        {
-                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldLabel.DoubleCurlyBraces()))
-                                                     .On(actualFieldValue)
-                                                     .And.Expected(null)
-                                                     .ToString();
-                        }
-                        else
-                        {
-                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldLabel.DoubleCurlyBraces()))
-                                                     .On(null)
-                                                     .And.Expected(null)
-                                                     .Comparison("different from")
-                                                     .ToString();
-                        }
+                        continue;
+                    }
+
+                    if (!negated)
+                    {
+                        message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldLabel.DoubleCurlyBraces()))
+                            .On(actualFieldValue)
+                            .And.Expected(null)
+                            .ToString();
+                    }
+                    else
+                    {
+                        message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldLabel.DoubleCurlyBraces()))
+                            .On(null)
+                            .And.Expected(null)
+                            .Comparison("different from")
+                            .ToString();
                     }
                 }
                 else
@@ -554,18 +535,21 @@ namespace NFluent
                     {
                         if (!negated)
                         {
-                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldLabel.DoubleCurlyBraces()))
-                                                 .On(actualFieldValue)
-                                                 .And.Expected(expectedFieldValue)
-                                                 .ToString();
+                            var msg =
+                                FluentMessage.BuildMessage(
+                                    string.Format(
+                                        "The {{0}}'s {0} does not have the expected value.",
+                                        fieldLabel.DoubleCurlyBraces()));
+                            EqualityHelper.FillEqualityErrorMessage(msg, actualFieldValue, expectedFieldValue);
+                            message = msg.ToString();
                         }
                         else
                         {
                             message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldLabel.DoubleCurlyBraces()))
-                                                 .On(actualFieldValue)
-                                                 .And.Expected(expectedFieldValue)
-                                                 .Comparison("different from")
-                                                 .ToString();
+                                                     .On(actualFieldValue)
+                                                     .And.Expected(expectedFieldValue)
+                                                     .Comparison("different from")
+                                                     .ToString();
                         }
 
                         break;

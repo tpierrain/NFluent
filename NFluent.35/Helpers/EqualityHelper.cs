@@ -65,21 +65,31 @@ namespace NFluent.Helpers
             }
             else
             {
-                // shall we display the type as well?
-                var withType = (instance != null && expected != null && instance.GetType() != expected.GetType()) || (instance == null) || (expected == null);
+                var msg = FluentMessage.BuildMessage("The {0} is different from the {1}.");
+ 
+                FillEqualityErrorMessage(msg, instance, expected);
 
-                // shall we display the hash too
-                var withHash = instance != null && expected != null && instance.GetType() == expected.GetType() && instance.ToString() == expected.ToString();
-                message = FluentMessage.BuildMessage("The {0} is different from the {1}.")
-                    .On(instance)
-                    .WithType(withType)
-                    .WithHashCode(withHash)
-                    .And.Expected(expected)
-                    .WithType(withType)
-                    .WithHashCode(withHash).ToString();                
+                message = msg.ToString();
             }
 
             return message;
+        }
+
+        public static FluentMessage.MessageBlock FillEqualityErrorMessage(FluentMessage msg, object instance, object expected)
+        {
+            // shall we display the type as well?
+            var withType = (instance != null && expected != null && instance.GetType() != expected.GetType())
+                           || (instance == null) || (expected == null);
+
+            // shall we display the hash too
+            var withHash = instance != null && expected != null && instance.GetType() == expected.GetType()
+                           && instance.ToString() == expected.ToString();
+            return msg.On(instance)
+                .WithType(withType)
+                .WithHashCode(withHash)
+                .And.Expected(expected)
+                .WithType(withType)
+                .WithHashCode(withHash);
         }
 
         /// <summary>

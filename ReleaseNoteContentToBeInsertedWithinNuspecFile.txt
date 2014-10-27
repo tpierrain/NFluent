@@ -4,7 +4,7 @@ New feature(s):
 --------------
 Change(s):
 * Error messages with double and float are now displayed with InvariantCulture.
-* 
+* Improved error messages for HasFieldWithSameValue to deal when ToString gives the same text for actual and expected
 * 
 --------------
 Bug Fixe(s):
