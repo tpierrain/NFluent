@@ -40,22 +40,19 @@ namespace NFluent.Helpers
                 {
                     // we need to identiy required exception types
                     var defaultConstructor = typeof(FluentCheckException).GetConstructor(new[] { typeof(string) });
-                    var result = new ExceptionConstructor();
-                    result.FailedException = defaultConstructor;
-                    result.IgnoreException = defaultConstructor;
-                    result.InconclusiveException = defaultConstructor;
-    
+                    var result = new ExceptionConstructor
+                                     {
+                                         FailedException = defaultConstructor,
+                                         IgnoreException = defaultConstructor,
+                                         InconclusiveException = defaultConstructor
+                                     };
+
                     // assert we have a default constructor
                     Debug.Assert(defaultConstructor != null, "NFluent exception must provide a constructor accepting a single string as parameter!");
 
                     // look for NUnit
-                    var resultScan = ExceptionScanner("nunit", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException");
-                    
-                    if (resultScan == null)
-                    {
-                        // look for MSTest
-                        resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException");
-                    }
+                    var resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException")
+                                     ?? ExceptionScanner("nunit", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException");
 
                     if (resultScan != null)
                     {
@@ -71,7 +68,7 @@ namespace NFluent.Helpers
 
         private static ExceptionConstructor ExceptionScanner(string assemblyMarker, string nameSpace, string assertionExceptionName, string ignoreExceptionName, string inconclusiveExceptionName)
         {
-            int foundExceptions = 0;
+            var foundExceptions = 0;
             var result = new ExceptionConstructor();
             var defaultSignature = new[] { typeof(string) };
             foreach (
@@ -79,8 +76,14 @@ namespace NFluent.Helpers
                     AppDomain.CurrentDomain.GetAssemblies()
                              .Where(ass => ass.FullName.ToLowerInvariant().Contains(assemblyMarker)))
             {
-                foreach (var type in assembly.GetExportedTypes())
+                for (var index   = 0; index < assembly.GetExportedTypes().Length; index++)
                 {
+                    var type = assembly.GetExportedTypes()[index];
+                    if (type.Namespace == null)
+                    {
+                        continue;
+                    }
+
                     if (type.Namespace.StartsWith(nameSpace))
                     {
                         if (type.Name == assertionExceptionName)

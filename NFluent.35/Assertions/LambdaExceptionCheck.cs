@@ -66,8 +66,8 @@ namespace NFluent
             {
                 var message = FluentMessage.BuildMessage("The message of the checked exception is not as expected.")
                                             .For("exception message")
-                                            .ExpectedValues(exceptionMessage)
-                                            .And.WithGivenValue(this.Value.Message)
+                                            .Expected(exceptionMessage)
+                                            .And.On(this.Value.Message)
                                             .ToString();
                         
                 throw new FluentCheckException(message);

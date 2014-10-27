@@ -257,7 +257,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">Is the value is null.</exception>
         public static ICheckLink<ICheck<T>> IsNotNull<T>(this ICheck<T> check) where T : class
         {
-            var checker = ExtensibilityHelper.ExtractChecker<T>(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = checker.Negated;
             var value = checker.Value;
 

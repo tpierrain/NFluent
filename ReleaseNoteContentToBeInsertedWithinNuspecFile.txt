@@ -5,7 +5,8 @@ New feature(s):
 Change(s):
 * Error messages with double and float are now displayed with InvariantCulture.
 * Improved error messages for HasFieldWithSameValue to deal when ToString gives the same text for actual and expected
-* 
+* Slightly changed error messages for exceptions to improve consistency
+
 --------------
 Bug Fixe(s):
 * There was an inversion between expected and actual error message for the .WithMessage checks on execption. This is fixed.
