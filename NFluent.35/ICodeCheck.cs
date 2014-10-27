@@ -18,7 +18,8 @@ namespace NFluent
     /// Used as a marker for code related checks.
     /// </summary>
     /// <typeparam name="T">Code description type. Must inherit from RunTrace.</typeparam>
-    public interface ICodeCheck<out T> : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense, INegateableCheck<ICodeCheck<T>> where T : RunTrace
+    public interface ICodeCheck<out T> : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense,
+        INegateableCheck<ICodeCheck<T>> where T : RunTrace
     {
     }
 }

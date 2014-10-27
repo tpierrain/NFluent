@@ -21,11 +21,19 @@ namespace NFluent
     /// </summary>
     public static class BooleanCheckExtensions
     {
+        #region fields
+
         // message when the value must be false
         private const string MustBeFalseMessage = "The {0} is true whereas it must be false.";
 
         // message when the value must be true
         private const string MustBeTrueMessage = "The {0} is false whereas it must be true.";
+
+        private const string EntityDescription = "boolean";
+
+        #endregion
+
+        #region methods
 
         /// <summary>
         /// Checks that the actual value is true.
@@ -38,17 +46,18 @@ namespace NFluent
         public static ICheckLink<ICheck<bool>> IsTrue(this ICheck<bool> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            
+
             return checker.ExecuteCheck(
                 () =>
-                {
-                    if (!checker.Value)
                     {
-                        var message = FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(checker.Value).ToString();
-                        throw new FluentCheckException(message);
-                    }
-                },
-                FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(checker.Value).ToString());
+                        if (!checker.Value)
+                        {
+                            var message =
+                                checker.BuildMessage(MustBeTrueMessage).For(EntityDescription).ToString();
+                            throw new FluentCheckException(message);
+                        }
+                    },
+                checker.BuildMessage(MustBeFalseMessage).For(EntityDescription).ToString());
         }
 
         /// <summary>
@@ -65,13 +74,16 @@ namespace NFluent
 
             return checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value)
                     {
-                        throw new FluentCheckException(FluentMessage.BuildMessage(MustBeFalseMessage).For("boolean").On(checker.Value).ToString());
-                    }
-                },
-                FluentMessage.BuildMessage(MustBeTrueMessage).For("boolean").On(checker.Value).ToString());
+                        if (checker.Value)
+                        {
+                            throw new FluentCheckException(
+                                checker.BuildMessage(MustBeFalseMessage).For(EntityDescription).ToString());
+                        }
+                    },
+                checker.BuildMessage(MustBeTrueMessage).For(EntityDescription).ToString());
         }
     }
+
+    #endregion
 }

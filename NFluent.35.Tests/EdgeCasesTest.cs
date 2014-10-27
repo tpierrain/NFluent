@@ -16,6 +16,7 @@
 namespace NFluent.Tests
 {
     using System;
+    using System.Runtime.Remoting;
 
     using NUnit.Framework;
 
@@ -35,7 +36,7 @@ namespace NFluent.Tests
         [Test]
         public void IsATest()
         {
-            Check.That(4);
+            Check.That(4).IsInstanceOf<int>();
         }
 
         [Test]
@@ -44,6 +45,15 @@ namespace NFluent.Tests
             const long Test = 4L;
 
             Check.That(Test).IsEqualTo(4);
+        }
+
+        [Test]
+        public void CheckNumbersWithDecimalParts()
+        {
+            Check.That(-.0002).IsNegative();
+            Check.That(.0002).IsPositive();
+
+            Check.That(.02).IsGreaterThan(.01);
         }
     }
 }

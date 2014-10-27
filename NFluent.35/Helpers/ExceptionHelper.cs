@@ -50,9 +50,21 @@ namespace NFluent.Helpers
                     // assert we have a default constructor
                     Debug.Assert(defaultConstructor != null, "NFluent exception must provide a constructor accepting a single string as parameter!");
 
-                    // look for NUnit
-                    var resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException")
-                                     ?? ExceptionScanner("nunit", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException");
+                    ExceptionConstructor resultScan;
+
+                    // look for MSTest
+                    resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException");
+
+                    if (resultScan == null)
+                    {
+                        // look for NUnit
+                        resultScan = ExceptionScanner(
+                            "nunit",
+                            "NUnit.",
+                            "AssertionException",
+                            "IgnoreException",
+                            "InconclusiveException");
+                    }
 
                     if (resultScan != null)
                     {

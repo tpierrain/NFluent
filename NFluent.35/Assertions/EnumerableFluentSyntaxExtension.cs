@@ -71,14 +71,13 @@ namespace NFluent
                 {
                     // failure, we found one extra occurence of one item
                     var message =
-                        FluentMessage.BuildMessage(
+                        checker.BuildMessage(
                             string.Format(
                                             "The {{0}} has extra occurences of the expected items. Item [{0}] at position {1} is redundant.",
                                 item.ToStringProperlyFormated().DoubleCurlyBraces(),
                                             itemidx))
-                                       .For("enumerable")
-                                       .On(checker.Value)
-                                       .And.ExpectedValues(chainedCheckLink.OriginalComparand);
+                                       .For(EnumerableCheckExtensions.LabelForEnumerable)
+                                       .ExpectedValues(chainedCheckLink.OriginalComparand);
 
                     throw new FluentCheckException(message.ToString());
                 }
@@ -145,15 +144,14 @@ namespace NFluent
                         // check failed. Now we have to refine the issue type.
                         // we assume that Contains was executed (imposed by chaining syntax)
                         // the item violating the order is the previous one!
-                        var message = FluentMessage.BuildMessage(
+                        var message = checker.BuildMessage(
                             string.Format(
                                 "The {{0}} does not follow to the expected order. Item [{0}] appears too {2} in the list, at index '{1}'.",
                                 item.ToStringProperlyFormated().DoubleCurlyBraces(),
                                 faillingIndex,
                                 index > scanIndex ? "early" : "late"))
-                                         .For("enumerable")
-                                         .On(checker.Value)
-                                         .And.ExpectedValues(chainedCheckLink.OriginalComparand);
+                                         .For(EnumerableCheckExtensions.LabelForEnumerable)
+                                         .ExpectedValues(chainedCheckLink.OriginalComparand);
 
                         throw new FluentCheckException(message.ToString());
                     }

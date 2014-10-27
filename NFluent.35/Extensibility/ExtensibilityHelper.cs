@@ -31,7 +31,8 @@ namespace NFluent.Extensibility
         public static IChecker<T, ICheck<T>> ExtractChecker<T>(ICheck<T> check)
         {
             // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
-            return (check as ICheckForExtensibility<T, ICheck<T>>).Checker;
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            return ((ICheckForExtensibility<T, ICheck<T>>)check).Checker;
         }
 
         /// <summary>
@@ -43,7 +44,8 @@ namespace NFluent.Extensibility
         public static IChecker<TU, ICodeCheck<TU>> ExtractCodeChecker<TU>(ICodeCheck<TU> check) where TU : RunTrace
         {
             // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
-            return (check as ICheckForExtensibility<TU, ICodeCheck<TU>>).Checker;
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            return ((ICheckForExtensibility<TU, ICodeCheck<TU>>)check).Checker;
         }
 
         /// <summary>
@@ -58,7 +60,8 @@ namespace NFluent.Extensibility
         public static IChecker<TS, IStructCheck<TS>> ExtractStructChecker<TS>(IStructCheck<TS> check) where TS : struct
         {
             // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
-            return (check as ICheckForExtensibility<TS, IStructCheck<TS>>).Checker;
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            return ((ICheckForExtensibility<TS, IStructCheck<TS>>)check).Checker;
         }
     }
 }

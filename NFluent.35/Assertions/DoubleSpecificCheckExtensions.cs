@@ -40,11 +40,11 @@ namespace NFluent
                 {
                     if (!double.IsNaN(checker.Value))
                     {
-                        var errorMessage = FluentMessage.BuildMessage("The {0} is a number whereas it must not.").For("double value").On(checker.Value).ToString();
+                        var errorMessage = checker.BuildMessage("The {0} is a number whereas it must not.").For("double value").On(checker.Value).ToString();
                         throw new FluentCheckException(errorMessage);
                     }
                 },
-                FluentMessage.BuildMessage("The {0} is not a number (NaN) whereas it must.").For("double value").On(checker.Value).ToString());
+                checker.BuildMessage("The {0} is not a number (NaN) whereas it must.").For("double value").On(checker.Value).ToString());
         }
 
         /// <summary>
@@ -64,11 +64,11 @@ namespace NFluent
                 {
                     if (double.IsInfinity(checker.Value))
                     {
-                        var errorMessage = FluentMessage.BuildMessage("The {0} is an infinite number whereas it must not.").For("double value").On(checker.Value).ToString();
+                        var errorMessage = checker.BuildMessage("The {0} is an infinite number whereas it must not.").For("double value").On(checker.Value).ToString();
                         throw new FluentCheckException(errorMessage);
                     }
                 },
-                FluentMessage.BuildMessage("The {0} is a finite number whereas it must not.").For("double value").On(checker.Value).ToString());
+                checker.BuildMessage("The {0} is a finite number whereas it must not.").For("double value").On(checker.Value).ToString());
         }
     }
 }

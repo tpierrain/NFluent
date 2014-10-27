@@ -114,7 +114,7 @@ namespace NFluent
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
-        /// <typeparam name="U">Result type of the function.</typeparam>
+        /// <typeparam name="TU">Result type of the function.</typeparam>
         /// <param name="value">The code to be tested.</param>
         /// <returns>
         /// A <see cref="ICheck{RunTrace}" /> instance to use in order to assert things on the given value.
@@ -122,9 +122,9 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
-        public static ICodeCheck<RunTraceResult<U>> ThatCode<U>(Func<U> value)
+        public static ICodeCheck<RunTraceResult<TU>> ThatCode<TU>(Func<TU> value)
         {
-            return new FluentCodeCheck<RunTraceResult<U>>(CodeCheckExtensions.GetTrace(value));
+            return new FluentCodeCheck<RunTraceResult<TU>>(CodeCheckExtensions.GetTrace(value));
         }
 
         /// <summary>

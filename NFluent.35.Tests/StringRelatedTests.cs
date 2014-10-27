@@ -88,7 +88,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string contains \"lmnop\" at 11 and 25, where as it must contains it once.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]\nExpected content once\n\t[\"lmnop\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string contains \"lmnop\" at 11 and 25, where as it must contains it once.\nThe checked string:\n\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]\nThe expected string: one\n\t[\"lmnop\"]")]
         public void ContainsOnceFailsProperly()
         {
             Check.That("abcdefghijklmnopqrstuvwxylmnopz").Contains("lmnop").Once();

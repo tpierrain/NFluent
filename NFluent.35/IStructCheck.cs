@@ -18,7 +18,8 @@ namespace NFluent
     /// Provides check methods to be executed on a given value of type struct.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    public interface IStructCheck<out T> : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense, INegateableCheck<IStructCheck<T>> where T : struct
+    public interface IStructCheck<out T> : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense,
+        INegateableCheck<IStructCheck<T>> where T : struct
     {
         /// <summary>
         /// Checks whether the specified <see cref="System.Object" /> is equal to this instance or not.

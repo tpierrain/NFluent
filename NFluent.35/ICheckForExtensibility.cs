@@ -22,7 +22,11 @@ namespace NFluent
     /// </typeparam>
     /// <typeparam name="TC">Interface for the type.
     /// </typeparam>
-    public interface ICheckForExtensibility<out T, out TC> : IWithValue<T>, IExposingChecker<T, TC>, INegated, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    public interface ICheckForExtensibility<out T, out TC> : 
+        IWithValue<T>, 
+        IExposingChecker<T, TC>, 
+        INegated, 
+        IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
     }

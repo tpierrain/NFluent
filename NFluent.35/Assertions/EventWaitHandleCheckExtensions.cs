@@ -44,11 +44,11 @@ namespace NFluent
                 {
                     if (!checker.Value.WaitOne(timeOutInMsec))
                     {
-                        var errorMessage = FluentMessage.BuildMessage(string.Format("The checked event has not been set before the given timeout.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString();
+                        var errorMessage = checker.BuildShortMessage(string.Format("The checked event has not been set before the given timeout.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString();
                         throw new FluentCheckException(errorMessage);
                     }
                 },
-                FluentMessage.BuildMessage(string.Format("The checked event has been set before the given timeout whereas it must not.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString());
+                checker.BuildShortMessage(string.Format("The checked event has been set before the given timeout whereas it must not.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString());
         }
 
         /// <summary>
@@ -71,11 +71,11 @@ namespace NFluent
                 {
                     if (checker.Value.WaitOne(timeOutInMsec))
                     {
-                        var errorMessage = FluentMessage.BuildMessage(string.Format("The checked event has been set before the given timeout.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString();
+                        var errorMessage = checker.BuildShortMessage(string.Format("The checked event has been set before the given timeout.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString();
                         throw new FluentCheckException(errorMessage);
                     }
                 },
-                FluentMessage.BuildMessage(string.Format("The checked event has not been set before the given timeout whereas it must.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString());
+                checker.BuildShortMessage(string.Format("The checked event has not been set before the given timeout whereas it must.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString());
         }
     }
 }

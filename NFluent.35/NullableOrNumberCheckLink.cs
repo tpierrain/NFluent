@@ -21,22 +21,22 @@ namespace NFluent
     /// <summary>
     /// Provides a way to chain two <see cref="IForkableCheck"/> instances or to chain.
     /// </summary>
-    /// <typeparam name="N">Number type of the checked nullable.</typeparam>
-    internal class NullableOrNumberCheckLink<N> : INullableOrNumberCheckLink<N> where N : struct
+    /// <typeparam name="TN">Number type of the checked nullable.</typeparam>
+    internal class NullableOrNumberCheckLink<TN> : INullableOrNumberCheckLink<TN> where TN : struct
     {
-        private readonly ICheck<N?> previousCheck;
+        private readonly ICheck<TN?> previousCheck;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NullableOrNumberCheckLink{N}" /> class.
+        /// Initializes a new instance of the <see cref="NullableOrNumberCheckLink{TN}" /> class.
         /// </summary>
         /// <param name="previousCheck">The previous fluent check.</param>
-        public NullableOrNumberCheckLink(ICheck<N?> previousCheck)
+        public NullableOrNumberCheckLink(ICheck<TN?> previousCheck)
         {
             this.previousCheck = previousCheck;
         }
 
         // used only for check discovery by helpers
-        private N? Value { get; set; }
+        private TN? Value { get; set; }
 
         /// <summary>
         /// Chains a new fluent check on the current one for the nullable value.
@@ -45,12 +45,12 @@ namespace NFluent
         /// The new fluent check instance dedicated to the nullable, which has been chained to the previous one.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public ICheck<N?> And
+        public ICheck<TN?> And
         {
             get
             {
-                IForkableCheck forkableCheck = this.previousCheck as IForkableCheck;
-                return forkableCheck.ForkInstance() as ICheck<N?>;
+                var forkableCheck = this.previousCheck as IForkableCheck;
+                return forkableCheck.ForkInstance() as ICheck<TN?>;
             }
         }
 
@@ -61,7 +61,7 @@ namespace NFluent
         /// The new fluent check instance dedicated to the nullable Value, which has been chained to the previous one.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public ICheck<N> Which
+        public ICheck<TN> Which
         {
             get
             {
@@ -69,10 +69,10 @@ namespace NFluent
 
                 if (!checkForExtensibility.Value.HasValue)
                 {
-                    throw new FluentCheckException("\nThe checked nullable has no value to be checked.");
+                    throw new FluentCheckException(checkForExtensibility.BuildShortMessage("The checked nullable has no value to be checked.").ToString());
                 }
 
-                return new FluentCheck<N>(checkForExtensibility.Value.Value);            
+                return new FluentCheck<TN>(checkForExtensibility.Value.Value);            
             }
         }
     }

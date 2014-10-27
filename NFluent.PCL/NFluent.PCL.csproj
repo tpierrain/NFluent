@@ -175,9 +175,6 @@
     <Compile Include="..\NFluent.35\FluentStructCheck.cs">
       <Link>FluentStructCheck.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.35\Helpers\ComparableHelper.cs">
-      <Link>Helpers\ComparableHelper.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.35\Helpers\Duration.cs">
       <Link>Helpers\Duration.cs</Link>
     </Compile>

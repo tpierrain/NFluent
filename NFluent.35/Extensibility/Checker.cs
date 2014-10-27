@@ -81,7 +81,32 @@ namespace NFluent.Extensibility
         #region methods
 
         /// <summary>
+        /// Builds an error message in.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>A <see cref="FluentMessage"/> instance.</returns>
+        public FluentMessage BuildMessage(string message)
+        {
+            var result = FluentMessage.BuildMessage(message);
+            result.On(this.Value);
+            return result;
+        }
+
+        /// <summary>
+        /// Builds an error message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>A <see cref="FluentMessage"/> instance.</returns>
+        public FluentMessage BuildShortMessage(string message)
+        {
+            var result = FluentMessage.BuildMessage(message);
+            return result;
+        }
+
+        /// <summary>
         /// Gets the check link to return for the next check to be executed (linked with the And operator).
+        /// This property is only useful for those that doesn't want to implement their check methods with the 
+        /// <see cref="IChecker{T,TC}.ExecuteCheck"/> method.
         /// </summary>
         /// <returns>
         ///     The check link to return for next check (linked with the And operator) to be executed.

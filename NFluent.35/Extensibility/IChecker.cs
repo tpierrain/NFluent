@@ -64,5 +64,19 @@ namespace NFluent.Extensibility
         /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
         /// <exception cref="FluentCheckException">The check fails.</exception>
         void ExecuteNotChainableCheck(Action action, string negatedExceptionMessage);
+
+        /// <summary>
+        /// Builds an error message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>A <see cref="FluentMessage"/> instance.</returns>
+        FluentMessage BuildMessage(string message);
+
+        /// <summary>
+        /// Builds an error message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>A <see cref="FluentMessage"/> instance.</returns>
+        FluentMessage BuildShortMessage(string message);
     }
 }

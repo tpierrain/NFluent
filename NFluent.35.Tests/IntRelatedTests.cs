@@ -365,7 +365,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value has no value, which is unexpected.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable has no value, which is unexpected.")]
         public void HasValueThrowsExceptionWhenFailing()
         {
             int? noValue = null;
@@ -382,7 +382,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nhas a value, which is unexpected.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable has a value, which is unexpected.\nThe checked nullable:\n\t[1]")]
         public void NotHasValueThrowsExceptionWhenFailing()
         {
             int? one = 1;
@@ -422,7 +422,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value:\n\t[1]\nhas a value, which is unexpected.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value has a value, whereas it must not.\nThe checked value:\n\t[1]")]
         public void HasNoValueThrowsExceptionWhenFailing()
         {
             int? one = 1;
@@ -439,7 +439,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value has no value, which is unexpected.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable has no value, which is unexpected.")]
         public void NotHasNoValueThrowsExceptionWhenFailing()
         {
             int? noValue = null;

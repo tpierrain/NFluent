@@ -65,7 +65,6 @@
     <Compile Include="FluentCodeCheck.cs" />
     <Compile Include="Extensibility\ExtensibilityHelper.cs" />
     <Compile Include="Assertions\IntSignedCheckExtensions.cs" />
-    <Compile Include="Helpers\ComparableHelper.cs" />
     <Compile Include="Assertions\DictionaryCheckExtensions.cs" />
     <Compile Include="Assertions\StringFluentSyntaxExtension.cs" />
     <Compile Include="CheckContext.cs" />

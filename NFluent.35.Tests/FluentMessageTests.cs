@@ -58,9 +58,9 @@ namespace NFluent.Tests
         [Test]
         public void BlockTest()
         {
-            var message = new FluentMessage("test");
-            var x = 4;
-            var block = new FluentMessage.MessageBlock(message, x, string.Empty);
+            var message = FluentMessage.BuildMessage("test");
+            const int X = 4;
+            var block = new FluentMessage.MessageBlock(message, X, string.Empty);
 
             Assert.AreEqual("The  value:\n\t[4]", block.GetMessage());
 

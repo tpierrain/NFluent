@@ -132,7 +132,7 @@ namespace NFluent
         /// </exception>
         public new bool Equals(object obj)
         {
-            this.checker.ExecuteCheck(() => EqualityHelper.IsEqualTo(this.Value, obj), EqualityHelper.BuildErrorMessage(this.Value, obj, true));
+            this.checker.ExecuteCheck(() => EqualityHelper.IsEqualTo(this.checker, obj), EqualityHelper.BuildErrorMessage(this.checker, obj, true));
 
             return true;
         }
@@ -140,47 +140,38 @@ namespace NFluent
         /// <summary>
         /// Checks whether if the checked value is of the given type.
         /// </summary>
-        /// <typeparam name="U">The given type to check the checked value against.</typeparam>
+        /// <typeparam name="TU">The given type to check the checked value against.</typeparam>
         /// <returns>A chainable check.</returns>
         /// <exception cref="FluentCheckException">The specified value is null (and not of the same nullable type) or not of the given type.</exception>
-        public ICheckLink<ICheck<T>> IsInstanceOf<U>()
+        public ICheckLink<ICheck<T>> IsInstanceOf<TU>()
         {
             if (typeof(T).IsNullable())
             {
-                this.checker.ExecuteCheck(
-                    () => IsInstanceHelper.IsSameType(typeof(T), typeof(U), this.Value), 
-                    IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(U), this.Value, true));
-
-                return new CheckLink<ICheck<T>>(this);
+                return this.checker.ExecuteCheck(
+                    () => IsInstanceHelper.IsSameType(typeof(T), typeof(TU), this.Value), 
+                    IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(TU), this.Value, true));
             }
 
-            return this.checker.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
+            return this.checker.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(TU)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(TU), true));
         }
 
         /// <summary>
         /// Checks whether if the checked value is different from the given type.
         /// </summary>
-        /// <typeparam name="U">The given type to check the checked value against.</typeparam>
+        /// <typeparam name="TU">The given type to check the checked value against.</typeparam>
         /// <returns>A chainable check.</returns>
         /// <exception cref="FluentCheckException">The specified value is of the given type.</exception>
-        public ICheckLink<ICheck<T>> IsNotInstanceOf<U>()
+        public ICheckLink<ICheck<T>> IsNotInstanceOf<TU>()
         {
             if (typeof(T).IsNullable())
             {
-                this.checker.ExecuteCheck(
-                    () =>
-                        {
-                            if (typeof(T) == typeof(U))
-                            {
-                                throw new FluentCheckException(IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(U), this.Value, true));
-                            }
-                        },
-                    IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(U), this.Value, false));
-                return new CheckLink<ICheck<T>>(this);
+                return this.checker.ExecuteCheck(
+                    () => IsInstanceHelper.IsDifferentType(typeof(T), typeof(TU), this.Value),
+                    IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(TU), this.Value, false));
             }
 
             return this.checker.ExecuteCheck(
-                () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
+                () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(TU)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(TU), false));
         }
 
         #endregion

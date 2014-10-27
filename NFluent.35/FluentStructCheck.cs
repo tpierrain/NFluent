@@ -112,27 +112,27 @@ namespace NFluent
         /// <summary>
         /// Checks whether if the checked value is of the given type.
         /// </summary>
-        /// <typeparam name="U">The given type to check the checked value against.</typeparam>
+        /// <typeparam name="TU">The given type to check the checked value against.</typeparam>
         /// <returns>A chainable check.</returns>
         /// <exception cref="FluentCheckException">The specified value is not of the given type.</exception>
-        public ICheckLink<IStructCheck<T>> IsInstanceOf<U>() where U : struct
+        public ICheckLink<IStructCheck<T>> IsInstanceOf<TU>() where TU : struct
         {
             return this.structChecker.ExecuteCheck(
-                () => IsInstanceHelper.IsInstanceOf(this.Value, typeof(U)), 
-                IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), true));
+                () => IsInstanceHelper.IsInstanceOf(this.Value, typeof(TU)), 
+                IsInstanceHelper.BuildErrorMessage(this.Value, typeof(TU), true));
         }
 
         /// <summary>
         /// Checks whether if the checked value is different from the given type.
         /// </summary>
-        /// <typeparam name="U">The given type to check the checked value against.</typeparam>
+        /// <typeparam name="TU">The given type to check the checked value against.</typeparam>
         /// <returns>A chainable check.</returns>
         /// <exception cref="FluentCheckException">The specified value is of the given type.</exception>
-        public ICheckLink<IStructCheck<T>> IsNotInstanceOf<U>() where U : struct
+        public ICheckLink<IStructCheck<T>> IsNotInstanceOf<TU>() where TU : struct
         {
             return this.structChecker.ExecuteCheck(
-                () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(U)),
-                IsInstanceHelper.BuildErrorMessage(this.Value, typeof(U), false));
+                () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(TU)),
+                IsInstanceHelper.BuildErrorMessage(this.Value, typeof(TU), false));
         }
     }
 }

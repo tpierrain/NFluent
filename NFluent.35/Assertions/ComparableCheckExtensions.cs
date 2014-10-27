@@ -17,7 +17,6 @@ namespace NFluent
     using System;
 
     using NFluent.Extensibility;
-    using NFluent.Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="IComparable"/> instance.
@@ -40,16 +39,19 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                     {
-                        ComparableHelper.IsBefore(checker.Value, givenValue);
+                        if (checker.Value != null && checker.Value.CompareTo(givenValue) >= 0)
+                        {
+                            throw new FluentCheckException(checker.BuildMessage("The {0} is not before the reference value.").Expected(givenValue).Comparison("before").ToString());
+                        }
                     },
-                FluentMessage.BuildMessage("The {0} is before the reference value whereas it must not.").On(checker.Value).And.Expected(givenValue).Comparison("after").ToString());
+                checker.BuildMessage("The {0} is before the reference value whereas it must not.").Expected(givenValue).Comparison("after").ToString());
         }
 
         /// <summary>
         /// Determines whether the specified value is after the other one.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="givenValue">The other value.</param>
+        /// <param name="givenValue">The other value.</param> a
         /// <returns>
         /// A check link.
         /// </returns>
@@ -61,9 +63,17 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                 {
-                    ComparableHelper.IsAfter(checker.Value, givenValue);
+                    if (checker.Value == null)
+                    {
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is null so not after the reference value.").Expected(givenValue).Comparison("after").ToString());
+                    }
+
+                    if (checker.Value.CompareTo(givenValue) <= 0)
+                    {
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is not after the reference value.").Expected(givenValue).Comparison("after").ToString());
+                    }
                 },
-                FluentMessage.BuildMessage("The {0} is after the reference value whereas it must not.").On(checker.Value).And.Expected(givenValue).Comparison("before").ToString());
+                checker.BuildMessage("The {0} is after the reference value whereas it must not.").Expected(givenValue).Comparison("before").ToString());
         }
     }
 }

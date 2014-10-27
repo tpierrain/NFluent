@@ -133,7 +133,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked IEnumerable contains items, whereas it must be null or empty.\nThe checked IEnumerable:\n\t[null, null, Thomas]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable contains items, whereas it must be null or empty.\nThe checked enumerable:\n\t[null, null, Thomas]")]
         public void IsNullOrEmptyFailsAppropriately()
         {
             var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
@@ -148,14 +148,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked IEnumerable is empty, where as it must contain at least one item.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is empty, where as it must contain at least one item.")]
         public void NotIsNullOrEmptyFailsIfEmpty()
         {
             Check.That(EmptyEnumerable).Not.IsNullOrEmpty();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked IEnumerable is null, where as it must contain at least one item.")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is null, where as it must contain at least one item.")]
         public void NotIsNullOrEmptyFailsIfNull()
         {
             Check.That((IEnumerable)null).Not.IsNullOrEmpty();
