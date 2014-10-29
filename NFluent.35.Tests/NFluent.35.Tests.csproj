@@ -86,6 +86,7 @@
     <Compile Include="FluentMessageTests.cs" />
     <Compile Include="NotRelatedTests.cs" />
     <Compile Include="NumbersOfDifferentTypesRelatedTests.cs" />
+    <Compile Include="ObjectFIeldsRelatedTest.cs" />
     <Compile Include="ObjectRelatedTest.cs" />
     <Compile Include="ExtractingRelatedTests.cs" />
     <Compile Include="EqualRelatedTests.cs" />

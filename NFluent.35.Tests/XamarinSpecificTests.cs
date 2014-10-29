@@ -23,11 +23,11 @@ namespace NFluent.Tests
         [Test]
         public void MonoNamingConventionTests()
         {
-            ObjectCheckExtensions.FieldKind result;
-            var name = ObjectCheckExtensions.ExtractFieldNameAsInSourceCode("<autofield>", out result);
+            ObjectFieldsCheckExtensions.FieldKind result;
+            var name = ObjectFieldsCheckExtensions.ExtractFieldNameAsInSourceCode("<autofield>", out result);
             Check.That(name).IsEqualTo("autofield");
 
-            Check.That(result).IsEqualTo(ObjectCheckExtensions.FieldKind.AnonymousClass);
+            Check.That(result).IsEqualTo(ObjectFieldsCheckExtensions.FieldKind.AnonymousClass);
         }
     }
 }
