@@ -42,7 +42,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x' does not have the expected value.\nThe checked value:\n\t[2]\nThe expected value:\n\t[1]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x' does not have the expected value.\nThe checked value:\n\t[2]\nThe expected value:\n\t[1] of type: [int]")]
         public void IsEqualFailsIfFieldsDifferent()
         {
             var x = new DummyClass();
@@ -143,7 +143,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x.y' does not have the expected value.\nThe checked value:\n\t[3]\nThe expected value:\n\t[4]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x.y' does not have the expected value.\nThe checked value:\n\t[3]\nThe expected value:\n\t[4] of type: [int]")]
         public void HasFieldsWithSameValuesFailsProperlyRecurse()
         {
             var x = new { x = new DummyClass(), text = "toto" };
