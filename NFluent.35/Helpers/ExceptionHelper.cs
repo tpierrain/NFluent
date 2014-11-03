@@ -88,14 +88,9 @@ namespace NFluent.Helpers
                     AppDomain.CurrentDomain.GetAssemblies()
                              .Where(ass => ass.FullName.ToLowerInvariant().Contains(assemblyMarker)))
             {
-                for (var index   = 0; index < assembly.GetExportedTypes().Length; index++)
+                var exportedTypes = assembly.GetExportedTypes();
+                foreach (var type in exportedTypes)
                 {
-                    var type = assembly.GetExportedTypes()[index];
-                    if (type.Namespace == null)
-                    {
-                        continue;
-                    }
-
                     if (type.Namespace.StartsWith(nameSpace))
                     {
                         if (type.Name == assertionExceptionName)
