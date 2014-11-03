@@ -12,3 +12,4 @@ Change(s):
 Bug Fixe(s):
 * There was an inversion between expected and actual error message for the .WithMessage checks on execption. This is fixed.
 * Fixes an issue with null on Check.That(...).IsBefore(...)
+* Equality related messages no longer display type information when the expected value is null

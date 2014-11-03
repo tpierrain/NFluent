@@ -189,7 +189,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[45, 43, 54, 666] of type: [System.Collections.Generic.List<int>]\nThe expected value:\n\t[null]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[45, 43, 54, 666]\nThe expected value:\n\t[null]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             IEnumerable enumerable = new List<int> { 45, 43, 54, 666 };

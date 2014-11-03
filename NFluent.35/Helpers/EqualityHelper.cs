@@ -76,43 +76,36 @@ namespace NFluent.Helpers
         /// </returns>
         public static string BuildErrorMessage<T, TU>(IChecker<T, TU> checker, object expected, bool isEqual) where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
-            var instance = checker.Value;
-            string message;
-            if (isEqual)
-            {
-                message = checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.")
-                                        .Expected(expected)
-                                        .Comparison("different from")
-                                        .WithType()
-                                        .ToString();                
-            }
-            else
-            {
-                var msg = FluentMessage.BuildMessage("The {0} is different from the {1}.");
- 
-                FillEqualityErrorMessage(msg, instance, expected);
+            var msg = isEqual ? checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.") : checker.BuildShortMessage("The {0} is different from the {1}.");
 
-                message = msg.ToString();
-            }
+            FillEqualityErrorMessage(msg, checker.Value, expected, isEqual);
 
-            return message;
+            return msg.ToString();
         }
 
-        public static FluentMessage.MessageBlock FillEqualityErrorMessage(FluentMessage msg, object instance, object expected)
+        public static void FillEqualityErrorMessage(FluentMessage msg, object instance, object expected, bool negated)
         {
+            if (negated)
+            {
+                msg.Expected(expected).Comparison("different from").WithType();
+                return;
+            }
+
             // shall we display the type as well?
             var withType = (instance != null && expected != null && instance.GetType() != expected.GetType())
-                           || (instance == null) || (expected == null);
+                           || (instance == null);
 
             // shall we display the hash too
             var withHash = instance != null && expected != null && instance.GetType() == expected.GetType()
                            && instance.ToString() == expected.ToString();
-            return msg.On(instance)
+
+            msg.On(instance)
                 .WithType(withType)
                 .WithHashCode(withHash)
                 .And.Expected(expected)
                 .WithType(withType)
                 .WithHashCode(withHash);
+            return;
         }
 
         /// <summary>

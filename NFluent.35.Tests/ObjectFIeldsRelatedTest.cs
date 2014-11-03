@@ -42,7 +42,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x' does not have the expected value.\nThe checked value:\n\t[2]\nThe expected value:\n\t[1] of type: [int]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x' does not have the expected value.\nThe checked value:\n\t[2]\nThe expected value:\n\t[1]")]
         public void IsEqualFailsIfFieldsDifferent()
         {
             var x = new DummyClass();
@@ -50,14 +50,14 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x' has the same value in the comparand, whereas it must not.\nThe checked value:\n\t[2]\nThe expected value: different from\n\t[2]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x' has the same value in the comparand, whereas it must not.\nThe expected value: different from\n\t[2] of type: [int]")]
         public void HasNotFieldsWithSameValuesFailsIfSame()
         {
             Check.That(new DummyClass()).HasNotFieldsWithSameValues(new DummyClass());
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'z' is absent from the expected one.\nThe checked value:\n\t[NFluent.Tests.ObjectFieldsRelatedTest+DummyClass]\nThe expected value:\n\t[NFluent.Tests.ObjectFieldsRelatedTest+DummyHeritance]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'z' is absent from the expected one.\nThe expected value:\n\t[null]")]
         public void IsEqualfailsWithMissingFields()
         {
             var x = new DummyClass();
@@ -109,8 +109,8 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's autoproperty 'Application' (field '<Application>k__BackingField') has the same value in the comparand, whereas it must not.\nThe checked value:\n\t[null]\nThe expected value: different from\n\t[null]")]
-        public void HasFieldsEqualFailsForAutoPropertyWhenNEgated()
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's autoproperty 'Application' (field '<Application>k__BackingField') has the same value in the comparand, whereas it must not.\nThe expected value: different from\n\t[null]")]
+        public void HasFieldsEqualFailsForAutoPropertyWhenNegated()
         {
             var x = new DummyWithAutoProperty();
             Check.That(x).HasNotFieldsWithSameValues(new DummyWithAutoProperty());
@@ -143,7 +143,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x.y' does not have the expected value.\nThe checked value:\n\t[3]\nThe expected value:\n\t[4] of type: [int]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x.y' does not have the expected value.\nThe checked value:\n\t[3]\nThe expected value:\n\t[4]")]
         public void HasFieldsWithSameValuesFailsProperlyRecurse()
         {
             var x = new { x = new DummyClass(), text = "toto" };

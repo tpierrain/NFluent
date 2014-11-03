@@ -27,6 +27,7 @@ namespace NFluent
 
     using NFluent.Extensibility;
     using NFluent.Extensions;
+    using NFluent.Helpers;
 
     /// <summary>
     ///     Provides check methods to be executed on an object instance.
@@ -289,45 +290,10 @@ namespace NFluent
 
             foreach (var fieldMatch in analysis)
             {
-                if (!fieldMatch.ExpectedFieldFound)
+                var result = fieldMatch.BuildMessage(checker, negated);
+                if (result != null)
                 {
-                    if (!negated)
-                    {
-                        return
-                            checker.BuildMessage(
-                                string.Format(
-                                    "The {{0}}'s {0} is absent from the {{1}}.",
-                                    fieldMatch.Expected.FieldLabel.DoubleCurlyBraces()))
-                                .On(value)
-                                .And.Expected(expected)
-                                .ToString();
-                    }
-                }
-                else if (!fieldMatch.DoValuesMatches)
-                {
-                    if (!negated)
-                    {
-                        return
-                            checker.BuildMessage(
-                                string.Format(
-                                    "The {{0}}'s {0} does not have the expected value.",
-                                    fieldMatch.Expected.FieldLabel.DoubleCurlyBraces()))
-                                .On(fieldMatch.Actual.Value)
-                                .And.Expected(fieldMatch.Expected.Value).WithType()
-                                .ToString();
-                    }
-                }
-                else if (negated)
-                {
-                    return
-                        checker.BuildMessage(
-                            string.Format(
-                                "The {{0}}'s {0} has the same value in the comparand, whereas it must not.",
-                                fieldMatch.Expected.FieldLabel.DoubleCurlyBraces()))
-                            .On(fieldMatch.Actual.Value)
-                            .And.Expected(fieldMatch.Expected.Value)
-                            .Comparison("different from")
-                            .ToString();
+                    return result.ToString();
                 }
             }
 
@@ -388,7 +354,7 @@ namespace NFluent
 
         #endregion
 
-        internal class ExtendedFieldInfo
+        private class ExtendedFieldInfo
         {
             #region Fields
 
@@ -490,7 +456,7 @@ namespace NFluent
             #endregion
         }
 
-        internal class FieldMatch
+        private class FieldMatch
         {
             #region Fields
 
@@ -555,6 +521,47 @@ namespace NFluent
                 {
                     return this.actual != null;
                 }
+            }
+
+            public FluentMessage BuildMessage<T>(IChecker<T, ICheck<T>> checker, bool negated)
+            {
+                FluentMessage result = null;
+                if (!this.ExpectedFieldFound)
+                {
+                    if (negated)
+                    {
+                        return null;
+                    }
+
+                    result = checker.BuildShortMessage(
+                        string.Format(
+                            "The {{0}}'s {0} is absent from the {{1}}.",
+                            this.Expected.FieldLabel.DoubleCurlyBraces()));
+                    result.Expected(this.expected.Value);
+                }
+                else if (this.DoValuesMatches == negated)
+                {
+                    if (negated)
+                    {
+                        result =
+                            checker.BuildShortMessage(
+                                string.Format(
+                                    "The {{0}}'s {0} has the same value in the comparand, whereas it must not.",
+                                    this.Expected.FieldLabel.DoubleCurlyBraces()));
+                        EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, true);
+                    }
+                    else
+                    {
+                        result =
+                            checker.BuildShortMessage(
+                                string.Format(
+                                    "The {{0}}'s {0} does not have the expected value.",
+                                    this.Expected.FieldLabel.DoubleCurlyBraces()));
+                        EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, false);
+                    }
+                }
+
+                return result;
             }
 
             #endregion
