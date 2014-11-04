@@ -63,11 +63,12 @@ namespace NFluent.Tests
             Check.That(toTest).Contains(Result);
         }
 
+        // #issue 115,
         [TestFixture]
         public class Test
         {
             [Test]
-            [ExpectedException(typeof(FluentCheckException))]
+            [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'Price' does not have the expected value.\nThe checked value:\n\t[100] of type: [decimal]\nThe expected value:\n\t[100] of type: [int]")]
             public void FailingTestForDemo()
             {
                 var args = new OrderExecutedEventArgs(100M, 150, Way.Sell);
