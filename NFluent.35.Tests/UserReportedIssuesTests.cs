@@ -34,7 +34,7 @@ namespace NFluent.Tests
 
         [Test]
         [ExpectedException(typeof(FluentCheckException))]
-        public void NullRefonHasFieldsWithSameValueWithInterfaces()
+        public void NullRefOnHasFieldsWithSameValueWithInterfaces()
         {
             var modelA = new ModelA { Name = "Yoda" };
             var modelB = new ModelB { Name = new ModelBName { Title = "Frank" } };
