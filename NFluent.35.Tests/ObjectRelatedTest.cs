@@ -298,6 +298,104 @@ namespace NFluent.Tests
             Check.That(x).HasFieldsWithSameValues(y);
         }
 
+        public class HasPublicFieldsWithSameValues
+        {
+            class AutoProps
+            {
+                public int Same;
+                private int _different;
+
+                public AutoProps(int different)
+                {
+                    _different = different;
+                }
+
+                public int PropDifferent { get; set; }
+                public string Prop2 { get; set; }
+            }
+
+            class ExplicitProps
+            {
+                public int Same;
+                private int _different;
+                private int _propDifferent;
+
+                public ExplicitProps(int different)
+                {
+                    _different = different;
+                }
+
+                public int PropDifferent { get { return _propDifferent; } set { _propDifferent = value; } }
+                public string Prop2 { get; set; }
+            }
+
+            [Test]
+            public void ComparesPublicFields()
+            {
+                Check.That(new DummyWithPublicField {Application = "Foo"}).HasPublicFieldsWithSameValues(new DummyWithPublicField{Application = "Foo"});
+            }
+
+            [Test]
+            public void IgnoresPrivateFields()
+            {
+                const int commonValue = 3;
+                var autoProps = new AutoProps(42) {PropDifferent = 42, Prop2 = "Foo1", Same = commonValue};
+                var explicitProps = new ExplicitProps(43) {PropDifferent = 43, Prop2 = "Foo2", Same = commonValue};
+
+                Check.That(autoProps).HasPublicFieldsWithSameValues(explicitProps);
+                Check.That(explicitProps).HasPublicFieldsWithSameValues(autoProps);
+            }
+        }
+
+        public class HasPropertiesWithSameValues
+        {
+            [Test]
+            public void Basic()
+            {
+                Check.That(new DummyWithNormalProperty {Application = "Foo"})
+                     .HasPropertiesWithSameValues(new DummyWithNormalProperty {Application = "Foo"});
+            }
+
+            [Test]
+            public void WorksForAutoProperty()
+            {
+                var x = new DummyWithAutoProperty();
+                Check.That(x).HasPropertiesWithSameValues(new DummyWithAutoProperty());
+            }
+
+            [Test]
+            public void WorksAgainstAnonymousClass()
+            {
+                var x = new DummyClass();
+                Check.That(x).HasPropertiesWithSameValues(new { x = 2, y = 3 });
+            }
+
+            [Test]
+            public void DoesNotLoseOriginalTypeForOtherCheck()
+            {
+                var dummyWithAutoProperty = new DummyWithAutoProperty{Application = "Foo"};
+                Check.That(dummyWithAutoProperty).HasPropertiesWithSameValues(dummyWithAutoProperty).And.IsSameReferenceThan(dummyWithAutoProperty);
+            }
+
+            [Test]
+            public void Recurse()
+            {
+                var x = new { x = new DummyClass(), text = "toto" };
+                var y = new { x = new DummyClass(), text = "toto" };
+                Check.That(x).HasPropertiesWithSameValues(y);
+            }
+
+            [Test]
+            [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'x.y' does not have the expected value.\nThe checked value:\n\t[3]\nThe expected value:\n\t[4]")]
+            public void FailsProperlyRecurse()
+            {
+                var x = new { x = new DummyClass(), text = "toto" };
+                var y = new { x = new DummyClass(2, 4), text = "toto" };
+                Check.That(x).HasPropertiesWithSameValues(y);
+            }
+
+        }
+
         private class DummyClass
         {
             private int x = 2;
@@ -329,9 +427,20 @@ namespace NFluent.Tests
             }
         }
 
+        class DummyWithPublicField
+        {
+            public string Application;
+        }
+
         private class DummyWithAutoProperty
         {
             public string Application { get; set; }
+        }
+
+        private class DummyWithNormalProperty
+        {
+            private string _application;
+            public string Application { get { return _application; } set { _application = value; } }
         }
     }
 }

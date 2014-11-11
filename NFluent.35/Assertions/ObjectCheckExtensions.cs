@@ -409,6 +409,68 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value has public fields equals to the expected value ones.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value doesn't have all public fields equal to the expected value ones.</exception>
+        /// <remarks>
+        /// The comparison is done field by field.
+        /// </remarks>
+        public static ICheckLink<ICheck<T>> HasPublicFieldsWithSameValues<T>(this ICheck<T> check, object expected)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            var negated = checker.Negated;
+            var value = checker.Value;
+
+            var message = CheckFieldEquality(expected, value, negated, bindingFlags: BindingFlags.Instance | BindingFlags.Public);
+
+            if (message != null)
+            {
+                throw new FluentCheckException(message);
+            }
+
+            return new CheckLink<ICheck<T>>(check);
+        }
+
+        /// <summary>
+        /// Checks that the actual value has properties equal to the expected value ones.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value doesn't have all properties equal to the expected value ones.</exception>
+        /// <remarks>
+        /// The comparison is done property by property.
+        /// </remarks>
+        public static ICheckLink<ICheck<T>> HasPropertiesWithSameValues<T>(this ICheck<T> check, object expected)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            var negated = checker.Negated;
+            var value = checker.Value;
+
+            var message = CheckPropertyEquality(expected, value, negated);
+
+            if (message != null)
+            {
+                throw new FluentCheckException(message);
+            }
+
+            return new CheckLink<ICheck<T>>(check);
+        }
+
+        /// <summary>
         /// Checks that the actual value has fields equals to the expected value ones.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
@@ -473,27 +535,19 @@ namespace NFluent
             return HasNotFieldsWithSameValues(check, expected);
         }
 
-        private static string CheckFieldEquality(object expected, object value, bool negated, string prefix = "")
+        private static string CheckFieldEquality(object expected, object value, bool negated, string prefix = "", BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
         {
             // REFACTOR: this method which has too much lines
             string message = null;
-            foreach (var fieldInfo in value.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+            foreach (var fieldInfo in value.GetType().GetFields(bindingFlags))
             {
                 // check for auto properties
                 string fieldLabel;
                 var fieldname = BuildFieldDescription(prefix, fieldInfo, out fieldLabel);
-                var otherField = FindField(expected.GetType(), fieldInfo.Name);
+                var otherField = FindField(expected.GetType(), fieldInfo.Name, bindingFlags);
                 if (otherField == null)
                 {
-                    // fields does not exist
-                    if (!negated)
-                    {
-                        message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} is absent from the {{1}}.", fieldLabel.DoubleCurlyBraces()))
-                                                .On(value)
-                                                .And.Expected(expected)
-                                                .ToString();
-                    }
-
+                    message = NegateFieldDoesNotExistMessage(expected, value, negated, message, fieldLabel);
                     break;
                 }
 
@@ -505,62 +559,138 @@ namespace NFluent
                 {
                     if ((actualFieldValue == null) == negated)
                     {
-                        if (!negated)
-                        {
-                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldLabel.DoubleCurlyBraces()))
-                                                     .On(actualFieldValue)
-                                                     .And.Expected(null)
-                                                     .ToString();
-                        }
-                        else
-                        {
-                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldLabel.DoubleCurlyBraces()))
-                                                     .On(null)
-                                                     .And.Expected(null)
-                                                     .Comparison("different from")
-                                                     .ToString();
-                        }
+                        message = GetValueDoesNotMatchNullMessage(negated, message, fieldLabel, actualFieldValue);
                     }
                 }
                 else
                 {
                     // determines how comparison will be made
-                    if (!otherField.FieldType.ImplementsEquals())
+                    var fieldType = otherField.FieldType;
+                    if (CompareValues(fieldLabel, fieldname, fieldType, negated, actualFieldValue, expectedFieldValue, ref message))
                     {
-                        // we recurse
-                        message = CheckFieldEquality(
-                            expectedFieldValue,
-                            actualFieldValue,
-                            negated,
-                            string.Format("{0}.", fieldname));
-                        if (!string.IsNullOrEmpty(message))
-                        {
-                            break;
-                        }
-                    }
-                    else if (expectedFieldValue.Equals(actualFieldValue) == negated)
-                    {
-                        if (!negated)
-                        {
-                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldLabel.DoubleCurlyBraces()))
-                                                 .On(actualFieldValue)
-                                                 .And.Expected(expectedFieldValue)
-                                                 .ToString();
-                        }
-                        else
-                        {
-                            message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.", fieldLabel.DoubleCurlyBraces()))
-                                                 .On(actualFieldValue)
-                                                 .And.Expected(expectedFieldValue)
-                                                 .Comparison("different from")
-                                                 .ToString();
-                        }
-
                         break;
                     }
                 }
             }
 
+            return message;
+        }
+
+        private static string CheckPropertyEquality(object expected, object value, bool negated)
+        {
+            // REFACTOR: this method which has too much lines
+            string message = null;
+            foreach (var propertyInfo in value.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                // check for auto properties
+                string fieldLabel;
+                var fieldname = BuildPropertyDescription(propertyInfo, out fieldLabel);
+                var otherProperty = FindProperty(expected.GetType(), propertyInfo.Name);
+                if (otherProperty == null)
+                {
+                    message = NegateFieldDoesNotExistMessage(expected, value, negated, message, fieldLabel);
+                    break;
+                }
+
+                // compare value
+                var actualFieldValue = propertyInfo.GetValue(value, null);
+                var expectedFieldValue = otherProperty.GetValue(expected, null);
+
+                if (expectedFieldValue == null)
+                {
+                    if ((actualFieldValue == null) == negated)
+                    {
+                        message = GetValueDoesNotMatchNullMessage(negated, message, fieldLabel, actualFieldValue);
+                    }
+                }
+                else
+                {
+                    // determines how comparison will be made
+                    var fieldType = otherProperty.PropertyType;
+                    if (CompareValues(fieldLabel, fieldname, fieldType, negated, actualFieldValue, expectedFieldValue, ref message))
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return message;
+        }
+
+        private static bool CompareValues(string fieldLabel, string fieldname, Type fieldType, bool negated, object actualFieldValue, object expectedFieldValue, ref string message)
+        {
+            if (!fieldType.ImplementsEquals())
+            {
+                // we recurse
+                message = CheckFieldEquality(expectedFieldValue, actualFieldValue, negated, string.Format("{0}.", fieldname));
+                if (!string.IsNullOrEmpty(message))
+                {
+                    return true;
+                }
+            }
+            else if (expectedFieldValue.Equals(actualFieldValue) == negated)
+            {
+                message = GetValueDoesNotMatchMessage(negated, message, fieldLabel, actualFieldValue, expectedFieldValue);
+
+                return true;
+            }
+            return false;
+        }
+
+        private static string GetValueDoesNotMatchMessage(bool negated, string message, string fieldLabel, object actualFieldValue, object expectedFieldValue)
+        {
+            if (!negated)
+            {
+                message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldLabel.DoubleCurlyBraces()))
+                                       .On(actualFieldValue)
+                                       .And.Expected(expectedFieldValue)
+                                       .ToString();
+            }
+            else
+            {
+                message =
+                    FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.",
+                                                             fieldLabel.DoubleCurlyBraces()))
+                                 .On(actualFieldValue)
+                                 .And.Expected(expectedFieldValue)
+                                 .Comparison("different from")
+                                 .ToString();
+            }
+            return message;
+        }
+
+        private static string GetValueDoesNotMatchNullMessage(bool negated, string message, string fieldLabel, object actualFieldValue)
+        {
+            if (!negated)
+            {
+                message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} does not have the expected value.", fieldLabel.DoubleCurlyBraces()))
+                                       .On(actualFieldValue)
+                                       .And.Expected(null)
+                                       .ToString();
+            }
+            else
+            {
+                message =
+                    FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} has the same value in the comparand, whereas it must not.",
+                                                             fieldLabel.DoubleCurlyBraces()))
+                                 .On(null)
+                                 .And.Expected(null)
+                                 .Comparison("different from")
+                                 .ToString();
+            }
+            return message;
+        }
+
+        private static string NegateFieldDoesNotExistMessage(object expected, object value, bool negated, string message, string fieldLabel)
+        {
+            // fields does not exist
+            if (!negated)
+            {
+                message = FluentMessage.BuildMessage(string.Format("The {{0}}'s {0} is absent from the {{1}}.", fieldLabel.DoubleCurlyBraces()))
+                                       .On(value)
+                                       .And.Expected(expected)
+                                       .ToString();
+            }
             return message;
         }
 
@@ -627,10 +757,15 @@ namespace NFluent
             return fieldname;
         }
 
-        private static FieldInfo FindField(Type type, string name)
+        private static string BuildPropertyDescription(PropertyInfo fieldInfo, out string fieldLabel)
         {
-            const BindingFlags BindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
-            var result = type.GetField(name, BindingFlags);
+            fieldLabel = string.Format("property '{0}'", fieldInfo.Name);
+            return fieldInfo.Name;
+        }
+
+        private static FieldInfo FindField(Type type, string name, BindingFlags bindingFlags)
+        {
+            var result = type.GetField(name, bindingFlags);
 
             if (result != null)
             {
@@ -645,7 +780,7 @@ namespace NFluent
             // compensate any autogenerated name
             FieldKind fieldKind;
             var actualName = ExtractFieldNameAsInSourceCode(name, out fieldKind);
-            foreach (var field in type.GetFields(BindingFlags))
+            foreach (var field in type.GetFields(bindingFlags))
             {
                 var fieldName = ExtractFieldNameAsInSourceCode(field.Name, out fieldKind);
                 if (fieldName == actualName)
@@ -654,7 +789,14 @@ namespace NFluent
                 }
             }
 
-            return FindField(type.BaseType, name);
+            return FindField(type.BaseType, name, bindingFlags);
+        }
+
+        private static PropertyInfo FindProperty(Type type, string name)
+        {
+            const BindingFlags BindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy;
+            var result = type.GetProperty(name, BindingFlags);
+            return result;
         }
     }
 }
