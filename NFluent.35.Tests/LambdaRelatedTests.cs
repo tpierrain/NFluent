@@ -35,7 +35,7 @@ namespace NFluent.Tests
         }
         
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.ApplicationException}: 'Erreur de l'application.']")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.ApplicationException}: 'Error in the application.']")]
         public void UnexpectedExceptionRaised()
         {
             Check.ThatCode(() => { throw new ApplicationException(); }).DoesNotThrow();
@@ -50,7 +50,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code raised an exception of a different type than expected.\nRaised Exception\n\t[{System.Exception}: 'Une exception de type 'System.Exception' a été levée.']\nThe expected exception:\n\tan instance of type: [System.ApplicationException]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code raised an exception of a different type than expected.\nRaised Exception\n\t[{System.Exception}: 'Exception of type 'System.Exception' was thrown.']\nThe expected exception:\n\tan instance of type: [System.ApplicationException]")]
         public void DidNotRaiseExpected()
         {
             Check.ThatCode(() => { throw new Exception(); }).Throws<ApplicationException>();
