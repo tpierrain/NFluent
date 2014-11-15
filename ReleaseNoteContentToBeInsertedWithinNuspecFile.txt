@@ -1,15 +1,11 @@
 New feature(s):
-* Now, supports .NET Tasks and Async methods/lambdas/functions thanks to a new Check.ThatAsyncCode() statement.
+
 --------------
 Change(s):
-* Error messages with double and float are now displayed with InvariantCulture.
-* Improves error message for IsAfter on null value.
+* Improve error messages (consistency and relevance)
 * Check.ThatCode(...).Throws<T>() now requires T to be an exception. This restriction ensures only Exceptions are proposed in autocompletion.
-* Improved error messages for HasFieldWithSameValue to deal when ToString gives the same text for actual and expected
-* Slightly changed error messages for exceptions to improve consistency
 
 --------------
 Bug Fixe(s):
-* There was an inversion between expected and actual error message for the .WithMessage checks on execption. This is fixed.
-* Fixes an issue with null on Check.That(...).IsBefore(...)
-* Equality related messages no longer display type information when the expected value is null
+* Fix the inversion between expected and actual error message for the .WithMessage checks on execption.
+* Fix the issue with null value on Check.That(...).IsBefore(...)
