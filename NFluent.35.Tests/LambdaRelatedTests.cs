@@ -15,6 +15,8 @@
 namespace NFluent.Tests
 {
     using System;
+    using System.Runtime.Serialization;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -198,14 +200,31 @@ namespace NFluent.Tests
 
         #region Lambda related Test Data
 
-        public class LambdaExceptionForTest : Exception
+        [Serializable]
+        private class LambdaExceptionForTest : Exception
         {
+            public int ExceptionNumber { get; private set; }
+            
             public LambdaExceptionForTest(int exeptionNumber, string message) : base(FormatMessage(exeptionNumber, message))
             {
                 this.ExceptionNumber = exeptionNumber;
             }
 
-            public int ExceptionNumber { get; private set; }
+            #region Serializable stuff
+
+            protected LambdaExceptionForTest(SerializationInfo info, StreamingContext context)
+                : base(info, context)
+            {
+                this.ExceptionNumber = info.GetInt32("ExceptionNumber");
+            }
+
+            public override void GetObjectData(SerializationInfo info, StreamingContext context)
+            {
+                base.GetObjectData(info, context);
+                info.AddValue("ExceptionNumber", this.ExceptionNumber);
+            }
+
+            #endregion
 
             private static string FormatMessage(int exceptionNumber, string message)
             {
