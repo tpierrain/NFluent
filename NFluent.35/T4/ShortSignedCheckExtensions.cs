@@ -73,7 +73,7 @@ namespace NFluent
         public static ICheckLink<ICheck<short>> IsNegative(this ICheck<short> check)
         {
             var numberCheckStrategy = new NumberCheck<short>(check);
-            return numberCheckStrategy.IsNegative();
+            return numberCheckStrategy.IsLessThanZero();
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace NFluent
         public static ICheckLink<ICheck<short>> IsLessThanZero(this ICheck<short> check)
         {
             var numberCheckStrategy = new NumberCheck<short>(check);
-            return numberCheckStrategy.IsNegative();
+            return numberCheckStrategy.IsLessThanZero();
         }
     }
 }

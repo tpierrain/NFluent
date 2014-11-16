@@ -109,17 +109,17 @@ namespace NFluent
         /// </summary>
         /// <returns>A check link.</returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        public ICheckLink<ICheck<TN>> IsNegative()
+        public ICheckLink<ICheck<TN>> IsLessThanZero()
         {
             return this.checker.ExecuteCheck(
                 () =>
                 {
                     if (Convert.ToDouble(this.checker.Value) >= 0)
                     {
-                        throw new FluentCheckException(checker.BuildMessage("The {0} is not strictly negative.").ToString());
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is not less than zero.").ToString());
                     }
                 },
-                this.checker.BuildMessage("The {0} is negative, whereas it must not.").ToString());
+                this.checker.BuildMessage("The {0} is less than zero, whereas it must not.").ToString());
         }
 
         /// <summary>
