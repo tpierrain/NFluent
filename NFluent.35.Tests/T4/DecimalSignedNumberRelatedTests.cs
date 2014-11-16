@@ -49,7 +49,7 @@ namespace NFluent.Tests
             Thread.CurrentThread.CurrentCulture = this.savedCulture;
         }
 
-        #region IsGreaterThanZero (obsolete)
+        #region IsPositive (obsolete)
 
         [Test]
         public void IsPositiveWorks()
@@ -146,9 +146,9 @@ namespace NFluent.Tests
         [Test]
         public void IsNegativeWorks()
         {
-            const decimal Two = -2;
+            const decimal MinusFifty = -50M;
 
-            Check.That(Two).IsNegative();
+            Check.That(MinusFifty).IsNegative();
         }
 
         [Test]
@@ -160,10 +160,27 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is negative, whereas it must not.\nThe checked value:\n\t[-2]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is negative, whereas it must not.\nThe checked value:\n\t[-50]")]
         public void NotIsNegativeThrowsExceptionWhenFailing()
         {
-            const decimal Two = -2;
+            const decimal MinusFifty = -50M;
+
+            Check.That(MinusFifty).Not.IsNegative();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly negative.\nThe checked value:\n\t[2]")]
+        public void IsNegativeThrowsExceptionWhenValueIsPositive()
+        {
+            const decimal Two = 2M;
+
+            Check.That(Two).IsNegative();
+        }
+
+        [Test]
+        public void NotIsNegativeWorks()
+        {
+            const decimal Two = 2M;
 
             Check.That(Two).Not.IsNegative();
         }
@@ -175,9 +192,9 @@ namespace NFluent.Tests
         [Test]
         public void IsLessThanZeroWorks()
         {
-            const decimal Two = -2;
+            const decimal MinusFifty = -50M;
 
-            Check.That(Two).IsLessThanZero();
+            Check.That(MinusFifty).IsLessThanZero();
         }
 
         [Test]
@@ -189,10 +206,27 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is negative, whereas it must not.\nThe checked value:\n\t[-2]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is negative, whereas it must not.\nThe checked value:\n\t[-50]")]
         public void NotIsLessThanZeroThrowsExceptionWhenFailing()
         {
-            const decimal Two = -2;
+            const decimal MinusFifty = -50M;
+
+            Check.That(MinusFifty).Not.IsLessThanZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly negative.\nThe checked value:\n\t[2]")]
+        public void IsLessThanZeroThrowsExceptionWhenValueIsPositive()
+        {
+            const decimal Two = 2M;
+
+            Check.That(Two).IsLessThanZero();
+        }
+
+        [Test]
+        public void NotIsLessThanZeroWorks()
+        {
+            const decimal Two = 2M;
 
             Check.That(Two).Not.IsLessThanZero();
         }
