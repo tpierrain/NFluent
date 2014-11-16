@@ -8,5 +8,5 @@ Change(s):
 
 --------------
 Bug Fixe(s):
-* Fix the inversion between expected and actual error message for the .WithMessage checks on execption.
+* Fix the inversion between expected and actual error message for the .WithMessage checks on exception.
 * Fix the issue with null value on Check.That(...).IsBefore(...)
