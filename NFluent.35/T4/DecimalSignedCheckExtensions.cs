@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
     /// <summary>
     /// Provides check methods to be executed on an <see cref="decimal"/> value that is considered as a signed number.
     /// </summary>
@@ -38,10 +40,25 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
+        [Obsolete("Use IsGreaterThanZero instead.")]
         public static ICheckLink<ICheck<decimal>> IsPositive(this ICheck<decimal> check)
         {
             var numberCheckStrategy = new NumberCheck<decimal>(check);
-            return numberCheckStrategy.IsPositive();
+            return numberCheckStrategy.IsGreaterThanZero();
+        }
+
+        /// <summary>
+        /// Checks that the actual value is greater than zero.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The value is not greater than zero.</exception>
+        public static ICheckLink<ICheck<decimal>> IsGreaterThanZero(this ICheck<decimal> check)
+        {
+            var numberCheckStrategy = new NumberCheck<decimal>(check);
+            return numberCheckStrategy.IsGreaterThanZero();
         }
 
         /// <summary>
@@ -52,7 +69,22 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
+        [Obsolete("Use IsLessThanZero instead.")]
         public static ICheckLink<ICheck<decimal>> IsNegative(this ICheck<decimal> check)
+        {
+            var numberCheckStrategy = new NumberCheck<decimal>(check);
+            return numberCheckStrategy.IsNegative();
+        }
+
+        /// <summary>
+        /// Checks that the actual value is less than zero.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The value is not less than zero.</exception>
+        public static ICheckLink<ICheck<decimal>> IsLessThanZero(this ICheck<decimal> check)
         {
             var numberCheckStrategy = new NumberCheck<decimal>(check);
             return numberCheckStrategy.IsNegative();

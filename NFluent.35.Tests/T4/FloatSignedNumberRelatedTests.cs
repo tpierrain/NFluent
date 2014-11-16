@@ -49,7 +49,7 @@ namespace NFluent.Tests
             Thread.CurrentThread.CurrentCulture = this.savedCulture;
         }
 
-        #region IsPositive
+        #region IsGreaterThanZero (obsolete)
 
         [Test]
         public void IsPositiveWorks()
@@ -60,7 +60,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[0]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not greater than zero.\nThe checked value:\n\t[0]")]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
             const float Zero = 0F;
@@ -68,7 +68,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is greater than zero, whereas it must not.\nThe checked value:\n\t[2]")]
         public void NotIsPositiveThrowsExceptionWhenFailing()
         {
             const float Two = 2F;
@@ -77,7 +77,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[-50]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not greater than zero.\nThe checked value:\n\t[-50]")]
         public void IsPositiveThrowsExceptionWhenValueIsNegative()
         {
             const float MinusFifty = -50F;
@@ -95,7 +95,53 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsNegative
+        #region IsGreaterThanZero
+
+        [Test]
+        public void IsGreaterThanZeroWorks()
+        {
+            const float Two = 2F;
+
+            Check.That(Two).IsGreaterThanZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not greater than zero.\nThe checked value:\n\t[0]")]
+        public void IsGreaterThanZeroThrowsExceptionWhenEqualToZero()
+        {
+            const float Zero = 0F;
+            Check.That(Zero).IsGreaterThanZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is greater than zero, whereas it must not.\nThe checked value:\n\t[2]")]
+        public void NotIsGreaterThanZeroThrowsExceptionWhenFailing()
+        {
+            const float Two = 2F;
+
+            Check.That(Two).Not.IsGreaterThanZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not greater than zero.\nThe checked value:\n\t[-50]")]
+        public void IsGreaterThanZeroThrowsExceptionWhenValueIsNegative()
+        {
+            const float MinusFifty = -50F;
+
+            Check.That(MinusFifty).IsGreaterThanZero();
+        }
+
+        [Test]
+        public void NotIsGreaterThanZeroWorks()
+        {
+            const float MinusFifty = -50F;
+
+            Check.That(MinusFifty).Not.IsGreaterThanZero();
+        }
+
+        #endregion
+
+        #region IsNegative (obsolete)
 
         [Test]
         public void IsNegativeWorks()
@@ -120,6 +166,35 @@ namespace NFluent.Tests
             const float Two = -2;
 
             Check.That(Two).Not.IsNegative();
+        }
+
+        #endregion
+
+        #region IsLessThanZero
+
+        [Test]
+        public void IsLessThanZeroWorks()
+        {
+            const float Two = -2;
+
+            Check.That(Two).IsLessThanZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly negative.\nThe checked value:\n\t[0]")]
+        public void IsLessThanZeroThrowsExceptionWhenEqualToZero()
+        {
+            const float Zero = 0F;
+            Check.That(Zero).IsLessThanZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is negative, whereas it must not.\nThe checked value:\n\t[-2]")]
+        public void NotIsLessThanZeroThrowsExceptionWhenFailing()
+        {
+            const float Two = -2;
+
+            Check.That(Two).Not.IsLessThanZero();
         }
 
         #endregion

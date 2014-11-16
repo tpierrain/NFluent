@@ -15,7 +15,6 @@
 namespace NFluent
 {
     using NFluent.Extensibility;
-    using NFluent.Extensions;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="ulong"/> value.
