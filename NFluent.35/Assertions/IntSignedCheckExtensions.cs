@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
     /// <summary>
     /// Provides check methods to be executed on an <see cref="int"/> value that is considered as a signed number.
     /// </summary>
@@ -31,7 +33,22 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
+        [Obsolete("Use IsGreaterThanZero instead.")]
         public static ICheckLink<ICheck<int>> IsPositive(this ICheck<int> check)
+        {
+            var numberCheckStrategy = new NumberCheck<int>(check);
+            return numberCheckStrategy.IsPositive();
+        }
+
+        /// <summary>
+        /// Checks that the actual value is greater than zero.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The value is not greater than zero.</exception>
+        public static ICheckLink<ICheck<int>> IsGreaterThanZero(this ICheck<int> check)
         {
             var numberCheckStrategy = new NumberCheck<int>(check);
             return numberCheckStrategy.IsPositive();

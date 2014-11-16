@@ -42,7 +42,7 @@ namespace NFluent.Tests
             Thread.CurrentThread.CurrentCulture = this.savedCulture;
         }
 
-        #region IsPositive
+        #region IsPositive (obsolete)
 
         [Test]
         public void IsPositiveWorks()
@@ -84,6 +84,52 @@ namespace NFluent.Tests
             const int MinusFifty = -50;
 
             Check.That(MinusFifty).Not.IsPositive();
+        }
+
+        #endregion
+
+        #region IsGreaterThanZero
+
+        [Test]
+        public void IsGreaterThanZeroWorks()
+        {
+            const int Two = 2;
+
+            Check.That(Two).IsGreaterThanZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[0]")]
+        public void IsGreaterThanZeroThrowsExceptionWhenEqualToZero()
+        {
+            const int Zero = 0;
+            Check.That(Zero).IsGreaterThanZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive, whereas it must not.\nThe checked value:\n\t[2]")]
+        public void NotIsGreaterThanZeroThrowsExceptionWhenFailing()
+        {
+            const int Two = 2;
+
+            Check.That(Two).Not.IsGreaterThanZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive.\nThe checked value:\n\t[-50]")]
+        public void IsGreaterThanZeroThrowsExceptionWhenValueIsNegative()
+        {
+            const int MinusFifty = -50;
+
+            Check.That(MinusFifty).IsGreaterThanZero();
+        }
+
+        [Test]
+        public void NotIsGreaterThanZeroWorks()
+        {
+            const int MinusFifty = -50;
+
+            Check.That(MinusFifty).Not.IsGreaterThanZero();
         }
 
         #endregion
