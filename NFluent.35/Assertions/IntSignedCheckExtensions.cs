@@ -62,7 +62,22 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
+        [Obsolete("Use IsLessThanZero instead.")]
         public static ICheckLink<ICheck<int>> IsNegative(this ICheck<int> check)
+        {
+            var numberCheckStrategy = new NumberCheck<int>(check);
+            return numberCheckStrategy.IsNegative();
+        }
+
+        /// <summary>
+        /// Checks that the actual value is less than zero.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The value is not less than zero.</exception>
+        public static ICheckLink<ICheck<int>> IsLessThanZero(this ICheck<int> check)
         {
             var numberCheckStrategy = new NumberCheck<int>(check);
             return numberCheckStrategy.IsNegative();

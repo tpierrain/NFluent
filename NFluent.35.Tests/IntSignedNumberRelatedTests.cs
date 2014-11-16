@@ -134,7 +134,7 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsNegative
+        #region IsNegative (obsolete)
 
         [Test]
         public void IsNegativeWorks()
@@ -159,6 +159,35 @@ namespace NFluent.Tests
             const int Two = -2;
 
             Check.That(Two).Not.IsNegative();
+        }
+
+        #endregion
+
+        #region IsLessThanZero
+
+        [Test]
+        public void IsLessThanZeroWorks()
+        {
+            const int Two = -2;
+
+            Check.That(Two).IsLessThanZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly negative.\nThe checked value:\n\t[0]")]
+        public void IsLessThanZeroThrowsExceptionWhenEqualToZero()
+        {
+            const int Zero = 0;
+            Check.That(Zero).IsLessThanZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is negative, whereas it must not.\nThe checked value:\n\t[-2]")]
+        public void NotIsLessThanZeroThrowsExceptionWhenFailing()
+        {
+            const int Two = -2;
+
+            Check.That(Two).Not.IsLessThanZero();
         }
 
         #endregion
