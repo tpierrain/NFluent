@@ -30,6 +30,8 @@ namespace NFluent.Extensibility
 
         private readonly ICheckForExtensibility<T, TC> fluentCheckForExtensibility;
 
+        private string sutLabel;
+
         #endregion
 
         #region constructor
@@ -87,7 +89,7 @@ namespace NFluent.Extensibility
         /// <returns>A <see cref="FluentMessage"/> instance.</returns>
         public FluentMessage BuildMessage(string message)
         {
-            var result = FluentMessage.BuildMessage(message);
+            var result = BuildShortMessage(message);
             result.On(this.Value);
             return result;
         }
@@ -100,7 +102,20 @@ namespace NFluent.Extensibility
         public FluentMessage BuildShortMessage(string message)
         {
             var result = FluentMessage.BuildMessage(message);
+            if (this.sutLabel != null)
+            {
+                result.SetSutLabel(this.sutLabel);
+            }
             return result;
+        }
+
+        /// <summary>
+        /// Sets an optional label for the SUT to be used instead of the default one for message generation.
+        /// </summary>
+        /// <param name="sutLabel">The label for the SUT.</param>
+        public void SetSutLabel(string sutLabel)
+        {
+            this.sutLabel = sutLabel;
         }
 
         /// <summary>
