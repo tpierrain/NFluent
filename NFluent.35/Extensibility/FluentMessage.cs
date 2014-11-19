@@ -569,5 +569,15 @@ namespace NFluent.Extensibility
 
            #endregion
         }
+
+        /// <summary>
+        /// Sets the sut label.
+        /// </summary>
+        /// <param name="sutLabel">The sut label.</param>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public void SetSutLabel(string sutLabel)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
