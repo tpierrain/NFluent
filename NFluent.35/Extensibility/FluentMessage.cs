@@ -28,7 +28,7 @@ namespace NFluent.Extensibility
     {
         #region fields
 
-        private const string DefaultEntity = "value";
+        internal const string DefaultEntity = "value";
 
         private const string TestedAdjective = "checked";
 
@@ -36,7 +36,7 @@ namespace NFluent.Extensibility
 
         private const string GivenAdjective = "given";
 
-        private const string EndOfLine = "\n";
+        internal const string EndOfLine = "\n";
 
         private readonly string message;
 
@@ -341,6 +341,7 @@ namespace NFluent.Extensibility
                 {
                     throw new ArgumentNullException("message");
                 }
+
                 this.value = new InstanceBlock(type);
                 this.message = message;
                 this.test = null;
@@ -377,16 +378,9 @@ namespace NFluent.Extensibility
                var builder = new StringBuilder();
                builder.Append(this.FullLabel());
                builder.Append(EndOfLine);
-
-               builder.Append(this.GetValueDesc());
-
+               builder.Append(this.value.GetMessage());
                return builder.ToString();
            }
-
-            private string GetValueDesc()
-            {
-                return this.value.GetMessage();
-            }
 
            private string FullLabel()
            {
@@ -408,6 +402,31 @@ namespace NFluent.Extensibility
                }
 
                return fullLabel;
+           }
+
+           /// <summary>
+           /// Gets the block label.
+           /// </summary>
+           /// <returns>The block Label.</returns>
+           public string GetBlockLabel()
+           {
+               return string.Format(
+                   "{0} {1}", this.attribute, this.message.GetEntityFromType(this.test));
+           }
+
+           /// <summary>
+           /// Adds a specific comparison message (e.g 'equal to').
+           /// </summary>
+           /// <param name="comparison">
+           /// The comparison suffix.
+           /// </param>
+           /// <returns>
+           /// The <see cref="MessageBlock"/> for fluent API.
+           /// </returns>
+           public MessageBlock Comparison(string comparison)
+           {
+               this.comparisonLabel = comparison;
+               return this;
            }
 
            /// <summary>
@@ -469,21 +488,6 @@ namespace NFluent.Extensibility
            }
 
            /// <summary>
-           /// Adds a specific comparison message (e.g 'equal to').
-           /// </summary>
-           /// <param name="comparison">
-           /// The comparison suffix.
-           /// </param>
-           /// <returns>
-           /// The <see cref="MessageBlock"/> for fluent API.
-           /// </returns>
-           public MessageBlock Comparison(string comparison)
-           {
-               this.comparisonLabel = comparison;
-               return this;
-           }
-
-           /// <summary>
            /// Specifies a specific attribute for the message.
            /// </summary>
            /// <param name="newLabel">The new attribute.</param>
@@ -492,16 +496,6 @@ namespace NFluent.Extensibility
            {
                this.customMessage = newLabel;
                return this;
-           }
-
-           /// <summary>
-           /// Gets the block label.
-           /// </summary>
-           /// <returns>The block Label.</returns>
-           public string GetBlockLabel()
-           {
-               return string.Format(
-                   "{0} {1}", this.attribute, this.message.GetEntityFromType(this.test));
            }
 
            /// <summary>
@@ -516,294 +510,6 @@ namespace NFluent.Extensibility
            }
 
            #endregion
-        }
-
-        /// <summary>
-        /// Class describing a value block.
-        /// </summary>
-        private class ValueBlock : IValueBlock
-        {
-            #region fields
-
-            private readonly object test;
-
-            private bool includeHash;
-
-            private bool includeType;
-
-            private bool fullTypeName;
-
-            private Type type;
-
-            private long? enumerableCount;
-
-            #endregion
-
-            #region constructor
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="ValueBlock"/> class.
-            /// </summary>
-            /// <param name="test">The tested object.</param>
-            public ValueBlock(object test)
-            {
-                this.test = test;
-                this.type = test.GetTypeWithoutThrowingException();
-            }
-
-            #endregion
-
-            #region methods
-
-            /// <summary>
-            /// Gets the message as a string.
-            /// </summary>
-            /// <returns>A string with the properly formatted message.</returns>
-            public string GetMessage()
-            {
-                var builder = new StringBuilder(); 
-                builder.Append(this.Description());
-
-                if (this.includeType && this.type != null)
-                {
-                    var temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormated();
-                    builder.AppendFormat(" of type: [{0}]", temp);
-                }
-
-                if (this.includeHash && this.test != null)
-                {
-                    builder.AppendFormat(" with HashCode: [{0}]", this.test.GetHashCode());
-                }
-                return builder.ToString();
-            }
-
-            private string Description()
-            {
-                var description = new StringBuilder();
-                if (this.test == null)
-                {
-                    description.Append("\t[null]");
-                }
-                else
-                {
-                    description.AppendFormat("\t[{0}]", this.test.ToStringProperlyFormated());
-                }
-
-                if (this.enumerableCount.HasValue)
-                {
-                    description.AppendFormat(
-                        " ({0} {1})",
-                        this.enumerableCount,
-                        this.enumerableCount <= 1 ? "item" : "items");
-                }
-
-                return description.ToString();
-            }
-
-            /// <summary>
-            /// Requests that the Hash value is included in the description block.
-            /// </summary>
-            /// <param name="active">
-            /// True to include the type. This is the default value.
-            /// </param>
-            public void WithHashCode(bool active = true)
-            {
-                this.includeHash = active;
-            }
-
-            /// <summary>
-            /// Requests that the type is included in the description block.
-            /// </summary>
-            /// <param name="active">
-            /// True to include the type. This is the default value.
-            /// </param>
-            /// <param name="full">
-            /// True to display the full type name (with assembly).
-            /// </param>
-            public void WithType(bool active = true, bool full = false)
-            {
-                this.fullTypeName = full;
-                this.includeType = active;
-            }
-
-            /// <summary>
-            /// Requests that a specific type is included in the description block.
-            /// </summary>
-            /// <param name="forcedType">Type to include in the description.</param>
-            /// <remarks>Default type is the type of the object instance given in constructor.</remarks>
-            public void WithType(Type forcedType)
-            {
-                this.type = forcedType;
-                this.includeType = true;
-            }
-
-            /// <summary>
-            /// Adds a description of the number of items (only relevant if the object is an enumerable).
-            /// </summary>
-            /// <param name="itemsCount">The number of items of the enumerable instance.</param>
-            public void WithEnumerableCount(long itemsCount)
-            {
-                this.enumerableCount = itemsCount;
-            }
-
-            #endregion
-        }
-
-        /// <summary>
-        /// Interface for a value description class.
-        /// </summary>
-        private interface IValueBlock
-        {
-            /// <summary>
-            /// Gets the message as a string.
-            /// </summary>
-            /// <returns>A string with the properly formatted message.</returns>
-            string GetMessage();
-
-            /// <summary>
-            /// Requests that the Hash value is included in the description block.
-            /// </summary>
-            /// <param name="active">
-            /// True to include the type. This is the default value.
-            /// </param>
-            void WithHashCode(bool active = true);
-
-            /// <summary>
-            /// Requests that the type is included in the description block.
-            /// </summary>
-            /// <param name="active">
-            /// True to include the type. This is the default value.
-            /// </param>
-            /// <param name="full">
-            /// True to display the full type name (with assembly).
-            /// </param>
-            void WithType(bool active = true, bool full = false);
-
-            /// <summary>
-            /// Requests that a specific type is included in the description block.
-            /// </summary>
-            /// <param name="forcedType">Type to include in the description.</param>
-            /// <remarks>Default type is the type of the object instance given in constructor.</remarks>
-            void WithType(Type forcedType);
-
-            /// <summary>
-            /// Adds a description of the number of items (only relevant if the object is an enumerable).
-            /// </summary>
-            /// <param name="itemsCount">The number of items of the enumerable instance.</param>
-            void WithEnumerableCount(long itemsCount);
-        }
-
-        /// <summary>
-        /// Class describing block for any instance of a given type.
-        /// </summary>
-        private class InstanceBlock : IValueBlock
-        {
-            #region fields
-
-            private bool includeType;
-
-            private bool fullTypeName;
-
-            private Type type;
-
-            #endregion
-
-            #region constructor
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="InstanceBlock"/> class.
-            /// </summary>
-            /// <param name="type">The tested type.</param>
-            public InstanceBlock(Type type)
-            {
-                this.type = type;
-            }
-
-            #endregion
-
-            #region methods
-
-            /// <summary>
-            /// Gets the message as a string.
-            /// </summary>
-            /// <returns>A string with the properly formatted message.</returns>
-            public string GetMessage()
-            {
-                var builder = new StringBuilder(); 
-                builder.Append(this.Description());
-
-                if (this.includeType && this.type != null)
-                {
-                    var temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormated();
-                    builder.AppendFormat(" of type: [{0}]", temp);
-                }
-
-                return builder.ToString();
-            }
-
-            private string Description()
-            {
-                var description = new StringBuilder();
-                description.Append("\tan instance");
-                return description.ToString();
-            }
-
-            /// <summary>
-            /// Requests that the Hash value is included in the description block.
-            /// </summary>
-            /// <param name="active">
-            /// True to include the type. This is the default value.
-            /// </param>
-            /// <returns>
-            /// Returns this instance for chained calls.
-            /// </returns>
-            public void WithHashCode(bool active = true)
-            {
-                throw new NotSupportedException();
-            }
-
-            /// <summary>
-            /// Requests that the type is included in the description block.
-            /// </summary>
-            /// <param name="active">
-            /// True to include the type. This is the default value.
-            /// </param>
-            /// <param name="full">
-            /// True to display the full type name (with assembly).
-            /// </param>
-            /// <returns>
-            /// Returns this instance for chained calls.
-            /// </returns>
-            public void WithType(bool active = true, bool full = false)
-            {
-                this.fullTypeName = full;
-                this.includeType = active;
-            }
-
-            /// <summary>
-            /// Requests that a specific type is included in the description block.
-            /// </summary>
-            /// <param name="forcedType">Type to include in the description.</param>
-            /// <remarks>Default type is the type of the object instance given in constructor.</remarks>
-            /// <returns>
-            /// Returns this instance for chained calls.
-            /// </returns>
-            public void WithType(Type forcedType)
-            {
-                this.type = forcedType;
-                this.includeType = true;
-            }
-
-            /// <summary>
-            /// Adds a description of the number of items (only relevant if the object is an enumerable).
-            /// </summary>
-            /// <param name="itemsCount">The number of items of the enumerable instance.</param>
-            public void WithEnumerableCount(long itemsCount)
-            {
-                throw new NotSupportedException();
-            }
-
-            #endregion
         }
     }
 }
