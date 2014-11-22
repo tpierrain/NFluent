@@ -42,7 +42,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void BlockFailTest()
         {
-            var block = new FluentMessage.MessageBlock(null, null, string.Empty);
+            var block = new MessageBlock(null, null, string.Empty);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace NFluent.Tests
         {
             var message = FluentMessage.BuildMessage("test");
             const int X = 4;
-            var block = new FluentMessage.MessageBlock(message, X, string.Empty);
+            var block = new MessageBlock(message, X, string.Empty);
 
             Assert.AreEqual("The  value:\n\t[4]", block.GetMessage());
 

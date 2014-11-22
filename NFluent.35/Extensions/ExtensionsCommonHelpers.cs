@@ -36,7 +36,7 @@ namespace NFluent.Extensions
         {
             if (theObject == null)
             {
-                return "null";
+                return NullText;
             }
 
             if (theObject is char)

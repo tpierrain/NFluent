@@ -117,7 +117,7 @@ namespace NFluent.Helpers
         /// </returns>
         public static string BuildErrorMessage(object value, Type typeOperand, bool isSameType)
         {
-            FluentMessage.MessageBlock message;
+            MessageBlock message;
             if (isSameType)
             {
                 message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of [{0}] whereas it must not.", typeOperand.ToStringProperlyFormated()))
@@ -151,12 +151,12 @@ namespace NFluent.Helpers
 
         public static string BuildErrorMessageForNullable(Type instanceType, Type expectedType, object value, bool isSameType)
         {
-            FluentMessage.MessageBlock message;
+            MessageBlock message;
             if (isSameType)
             {
                 message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of [{0}] whereas it must not.", expectedType.ToStringProperlyFormated()))
                     .On(value)
-                    .WithType(instanceType)
+                    .OfType(instanceType)
                     .And.ExpectedType(expectedType)
                     .Comparison("different from").WithType();
             }
@@ -164,7 +164,7 @@ namespace NFluent.Helpers
             {
                 message = FluentMessage.BuildMessage(string.Format("The {{0}} is not an instance of [{0}].", expectedType.ToStringProperlyFormated()))
                     .On(value)
-                    .WithType(instanceType)
+                    .OfType(instanceType)
                     .And.ExpectedType(expectedType).WithType();
             }
 

@@ -1,8 +1,8 @@
 ﻿#region File header
 
 // // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IValueBlock.cs" company="">
-// //   Copyright 2014 Thomas PIERRAIN
+// // <copyright file="IValueDescription.cs" company="">
+// //   Copyright 2014 Cyrille Dupuydauby, Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -23,7 +23,7 @@ namespace NFluent.Extensibility
     /// <summary>
     /// Interface for a value description class.
     /// </summary>
-    internal interface IValueBlock
+    internal interface IValueDescription
     {
         #region Public Methods and Operators
 

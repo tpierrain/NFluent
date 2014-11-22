@@ -2,7 +2,7 @@
 
 // // --------------------------------------------------------------------------------------------------------------------
 // // <copyright file="InstanceBlock.cs" company="">
-// //   Copyright 2014 Thomas PIERRAIN
+// //   Copyright 2014 Cyrille Dupuydauby,Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -26,7 +26,7 @@ namespace NFluent.Extensibility
     /// <summary>
     /// Class describing block for any instance of a given type.
     /// </summary>
-    internal class InstanceBlock : IValueBlock
+    internal class InstanceBlock : IValueDescription
     {
         #region Fields
 
