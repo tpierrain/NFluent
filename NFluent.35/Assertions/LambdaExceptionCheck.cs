@@ -12,6 +12,9 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq.Expressions;
+
 namespace NFluent
 {
     using System;
@@ -108,6 +111,36 @@ namespace NFluent
             }
 
             return new CheckLink<ILambdaExceptionCheck<T>>(this);
+        }
+
+        /// <summary>
+        /// Checks that a specific property of the considered exception has an expected value.
+        /// </summary>
+        /// <param name="propertyExpression">The Expression to retrieve the property Name</param>
+        /// <param name="propertyValue">The expected value for the property to check on the considered exception.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <typeparam name="TException">The type of the Exception to use in the propertyExpression</typeparam>
+        /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
+        public ICheckLink<ILambdaExceptionCheck<T>> WithProperty<TException>(Expression<Func<TException, object>> propertyExpression, object propertyValue)
+            where TException : Exception
+        {
+            var unaryExpression = propertyExpression.Body as UnaryExpression;
+            MemberExpression memberExpression;
+
+            if (unaryExpression != null)
+            {
+                memberExpression = unaryExpression.Operand as MemberExpression;
+            }
+            else
+            {
+                memberExpression = propertyExpression.Body as MemberExpression;
+            }
+
+            string name = memberExpression.Member.Name;
+
+            return WithProperty(name, propertyValue);
         }
 
         /// <summary>

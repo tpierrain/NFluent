@@ -193,6 +193,23 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void CanCheckForPropertyWithExpression()
+        {
+            Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); })
+                .Throws<LambdaRelatedTests.LambdaExceptionForTest>()
+                .WithProperty<LambdaRelatedTests.LambdaExceptionForTest>(ex => ex.ExceptionNumber, 321);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe property [ExceptionNumber] of the checked exception do not have the expected value.\nThe given exception:\n\t[321]\nThe expected exception:\n\t[123]")]
+        public void DidNotHaveExpectedPropertyValueWithExpression()
+        {
+            Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); })
+                .Throws<LambdaRelatedTests.LambdaExceptionForTest>()
+                .WithProperty<LambdaRelatedTests.LambdaExceptionForTest>(ex => ex.ExceptionNumber, 123);
+        }
+
+        [Test]
         public void CheckReturnValue()
         {
             Check.ThatCode(() => 4).DoesNotThrow().And.WhichResult().IsEqualTo(4);
