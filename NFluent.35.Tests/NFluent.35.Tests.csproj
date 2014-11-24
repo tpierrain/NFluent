@@ -51,6 +51,7 @@
       <Link>Version.cs</Link>
     </Compile>
     <Compile Include="AndRelatedTests.cs" />
+    <Compile Include="AsOperatorTests.cs" />
     <Compile Include="AutomaticNUnitExceptionDetectionTest.cs" />
     <Compile Include="CharTests.cs" />
     <Compile Include="Constants.cs" />
