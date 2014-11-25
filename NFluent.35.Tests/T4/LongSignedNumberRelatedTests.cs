@@ -152,7 +152,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not less than zero.\nThe checked value:\n\t[0]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly negative.\nThe checked value:\n\t[0]")]
         public void IsNegativeThrowsExceptionWhenEqualToZero()
         {
             const long Zero = 0L;
@@ -160,7 +160,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is less than zero, whereas it must not.\nThe checked value:\n\t[-50]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is strictly negative, whereas it must not.\nThe checked value:\n\t[-50]")]
         public void NotIsNegativeThrowsExceptionWhenFailing()
         {
             const long MinusFifty = -50L;
@@ -169,7 +169,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not less than zero.\nThe checked value:\n\t[2]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly negative.\nThe checked value:\n\t[2]")]
         public void IsNegativeThrowsExceptionWhenValueIsPositive()
         {
             const long Two = 2L;
@@ -187,48 +187,48 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsLessThanZero
+        #region IsStrictlyNegative
 
         [Test]
-        public void IsLessThanZeroWorks()
+        public void IsStrictyNegativeWorks()
         {
             const long MinusFifty = -50L;
 
-            Check.That(MinusFifty).IsLessThanZero();
+            Check.That(MinusFifty).IsStrictlyNegative();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not less than zero.\nThe checked value:\n\t[0]")]
-        public void IsLessThanZeroThrowsExceptionWhenEqualToZero()
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly negative.\nThe checked value:\n\t[0]")]
+        public void IsStrictyNegativeThrowsExceptionWhenEqualToZero()
         {
             const long Zero = 0L;
-            Check.That(Zero).IsLessThanZero();
+            Check.That(Zero).IsStrictlyNegative();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is less than zero, whereas it must not.\nThe checked value:\n\t[-50]")]
-        public void NotIsLessThanZeroThrowsExceptionWhenFailing()
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is strictly negative, whereas it must not.\nThe checked value:\n\t[-50]")]
+        public void NotIsStrictyNegativeThrowsExceptionWhenFailing()
         {
             const long MinusFifty = -50L;
 
-            Check.That(MinusFifty).Not.IsLessThanZero();
+            Check.That(MinusFifty).Not.IsStrictlyNegative();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not less than zero.\nThe checked value:\n\t[2]")]
-        public void IsLessThanZeroThrowsExceptionWhenValueIsPositive()
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly negative.\nThe checked value:\n\t[2]")]
+        public void IsStrictyNegativeThrowsExceptionWhenValueIsPositive()
         {
             const long Two = 2L;
 
-            Check.That(Two).IsLessThanZero();
+            Check.That(Two).IsStrictlyNegative();
         }
 
         [Test]
-        public void NotIsLessThanZeroWorks()
+        public void NotIsStrictyNegativeWorks()
         {
             const long Two = 2L;
 
-            Check.That(Two).Not.IsLessThanZero();
+            Check.That(Two).Not.IsStrictlyNegative();
         }
 
         #endregion
