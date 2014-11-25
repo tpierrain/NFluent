@@ -40,11 +40,11 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        [Obsolete("Use IsGreaterThanZero instead.")]
+        [Obsolete("Use IsStrictlyPositive instead.")]
         public static ICheckLink<ICheck<double>> IsPositive(this ICheck<double> check)
         {
             var numberCheckStrategy = new NumberCheck<double>(check);
-            return numberCheckStrategy.IsGreaterThanZero();
+            return numberCheckStrategy.IsStrictlyPositive();
         }
 
         /// <summary>
@@ -55,10 +55,10 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not greater than zero.</exception>
-        public static ICheckLink<ICheck<double>> IsGreaterThanZero(this ICheck<double> check)
+        public static ICheckLink<ICheck<double>> IsStrictlyPositive(this ICheck<double> check)
         {
             var numberCheckStrategy = new NumberCheck<double>(check);
-            return numberCheckStrategy.IsGreaterThanZero();
+            return numberCheckStrategy.IsStrictlyPositive();
         }
 
         /// <summary>
