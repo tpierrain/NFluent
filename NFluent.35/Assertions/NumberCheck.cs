@@ -86,11 +86,11 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual value is greater than zero (i.e. strictly positive).
+        /// Checks that the actual value is strictly positive (i.e. greater than zero).
         /// </summary>
         /// <returns>A check link.</returns>
-        /// <exception cref="FluentCheckException">The value is not greater than zero (i.e. strictly positive).</exception>
-        public ICheckLink<ICheck<TN>> IsGreaterThanZero()
+        /// <exception cref="FluentCheckException">The value is not strictly positive (i.e. greater than zero).</exception>
+        public ICheckLink<ICheck<TN>> IsStrictlyPositive()
         {
             return this.checker.ExecuteCheck(
                 () =>
@@ -98,10 +98,10 @@ namespace NFluent
                         if (Convert.ToDouble(this.checker.Value) <= 0)
                         {
                             throw new FluentCheckException(
-                                this.checker.BuildMessage("The {0} is not greater than zero.").ToString());
+                                this.checker.BuildMessage("The {0} is not strictly positive (i.e. greater than zero).").ToString());
                         }
                     },
-                this.checker.BuildMessage("The {0} is greater than zero, whereas it must not.").ToString());
+                this.checker.BuildMessage("The {0} is strictly positive (i.e. greater than zero), whereas it must not.").ToString());
         }
 
         /// <summary>

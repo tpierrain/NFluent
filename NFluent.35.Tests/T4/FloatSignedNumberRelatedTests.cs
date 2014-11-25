@@ -60,7 +60,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not greater than zero.\nThe checked value:\n\t[0]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive (i.e. greater than zero).\nThe checked value:\n\t[0]")]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
             const float Zero = 0F;
@@ -68,7 +68,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is greater than zero, whereas it must not.\nThe checked value:\n\t[2]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is strictly positive (i.e. greater than zero), whereas it must not.\nThe checked value:\n\t[2]")]
         public void NotIsPositiveThrowsExceptionWhenFailing()
         {
             const float Two = 2F;
@@ -77,7 +77,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not greater than zero.\nThe checked value:\n\t[-50]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive (i.e. greater than zero).\nThe checked value:\n\t[-50]")]
         public void IsPositiveThrowsExceptionWhenValueIsNegative()
         {
             const float MinusFifty = -50F;
@@ -95,48 +95,48 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsGreaterThanZero
+        #region IsStrictlyPositive
 
         [Test]
-        public void IsGreaterThanZeroWorks()
+        public void IsStrictlyPositiveWorks()
         {
             const float Two = 2F;
 
-            Check.That(Two).IsGreaterThanZero();
+            Check.That(Two).IsStrictlyPositive();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not greater than zero.\nThe checked value:\n\t[0]")]
-        public void IsGreaterThanZeroThrowsExceptionWhenEqualToZero()
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive (i.e. greater than zero).\nThe checked value:\n\t[0]")]
+        public void IsStrictlyPositiveThrowsExceptionWhenEqualToZero()
         {
             const float Zero = 0F;
-            Check.That(Zero).IsGreaterThanZero();
+            Check.That(Zero).IsStrictlyPositive();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is greater than zero, whereas it must not.\nThe checked value:\n\t[2]")]
-        public void NotIsGreaterThanZeroThrowsExceptionWhenFailing()
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is strictly positive (i.e. greater than zero), whereas it must not.\nThe checked value:\n\t[2]")]
+        public void NotIsStrictlyPositiveThrowsExceptionWhenFailing()
         {
             const float Two = 2F;
 
-            Check.That(Two).Not.IsGreaterThanZero();
+            Check.That(Two).Not.IsStrictlyPositive();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not greater than zero.\nThe checked value:\n\t[-50]")]
-        public void IsGreaterThanZeroThrowsExceptionWhenValueIsNegative()
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly positive (i.e. greater than zero).\nThe checked value:\n\t[-50]")]
+        public void IsStrictlyPositiveThrowsExceptionWhenValueIsNegative()
         {
             const float MinusFifty = -50F;
 
-            Check.That(MinusFifty).IsGreaterThanZero();
+            Check.That(MinusFifty).IsStrictlyPositive();
         }
 
         [Test]
-        public void NotIsGreaterThanZeroWorks()
+        public void NotIsStrictlyPositiveWorks()
         {
             const float MinusFifty = -50F;
 
-            Check.That(MinusFifty).Not.IsGreaterThanZero();
+            Check.That(MinusFifty).Not.IsStrictlyPositive();
         }
 
         #endregion
