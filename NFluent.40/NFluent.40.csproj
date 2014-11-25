@@ -137,8 +137,14 @@
     <Compile Include="..\NFluent.35\Constants.cs">
       <Link>Constants.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35\Extensibility\ActualLabelBlock.cs">
+      <Link>Extensibility\ActualLabelBlock.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35\Extensibility\Checker.cs">
       <Link>Extensibility\Checker.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensibility\ExpectedLabelBlock.cs">
+      <Link>Extensibility\ExpectedLabelBlock.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\Extensibility\ExtensibilityHelper.cs">
       <Link>Extensibility\ExtensibilityHelper.cs</Link>
@@ -148,6 +154,9 @@
     </Compile>
     <Compile Include="..\NFluent.35\Extensibility\IChecker.cs">
       <Link>Extensibility\IChecker.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensibility\ILabelBlock.cs">
+      <Link>Extensibility\ILabelBlock.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\Extensibility\InstanceBlock.cs">
       <Link>Extensibility\InstanceBlock.cs</Link>
@@ -369,7 +378,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
