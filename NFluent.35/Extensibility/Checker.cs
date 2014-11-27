@@ -89,7 +89,12 @@ namespace NFluent.Extensibility
         /// <returns>A <see cref="FluentMessage"/> instance.</returns>
         public FluentMessage BuildMessage(string message)
         {
-            var result = BuildShortMessage(message);
+            var result = this.BuildShortMessage(message);
+            if (!string.IsNullOrEmpty(this.sutLabel))
+            {
+                result.For(this.sutLabel);
+            }
+
             result.On(this.Value);
             return result;
         }
@@ -102,10 +107,11 @@ namespace NFluent.Extensibility
         public FluentMessage BuildShortMessage(string message)
         {
             var result = FluentMessage.BuildMessage(message);
-            if (this.sutLabel != null)
+            if (!string.IsNullOrEmpty(this.sutLabel))
             {
-                result.SetSutLabel(this.sutLabel);
+                result.For(this.sutLabel);
             }
+
             return result;
         }
 
@@ -115,7 +121,7 @@ namespace NFluent.Extensibility
         /// <param name="sutLabel">The label for the SUT.</param>
         public void SetSutLabel(string sutLabel)
         {
-            this.sutLabel = sutLabel;
+            this.sutLabel = string.Format("[{0}]", sutLabel);
         }
 
         /// <summary>

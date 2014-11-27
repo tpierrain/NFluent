@@ -16,10 +16,33 @@
 #endregion
 namespace NFluent.Extensibility
 {
+    using System;
+    using System.Collections;
+
     /// <summary>
     /// Interface for Label generator.
     /// </summary>
     public interface ILabelBlock
     {
+    }
+
+    internal class LabelCoreLogic : ILabelBlock
+    {
+        public Type EntityType { get; set; }
+
+        protected string EntityName()
+        {
+            if (this.EntityType == typeof(bool))
+            {
+                return "boolean";
+            }
+
+            if (this.EntityType == typeof(IEnumerable))
+            {
+                return "enumerable";
+            }
+
+            return "value";
+        }
     }
 }

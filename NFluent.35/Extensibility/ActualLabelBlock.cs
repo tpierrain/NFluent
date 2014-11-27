@@ -21,7 +21,7 @@ namespace NFluent.Extensibility
     /// <summary>
     /// The actual label block.
     /// </summary>
-    public class ActualLabelBlock : ILabelBlock
+    internal class ActualLabelBlock : LabelCoreLogic
     {
         #region Public Methods and Operators
 
@@ -33,7 +33,7 @@ namespace NFluent.Extensibility
         /// </returns>
         public override string ToString()
         {
-            return "The actual value:";
+            return string.Format("The actual {0}:", this.EntityName());
         }
 
         #endregion

@@ -20,10 +20,10 @@ namespace NFluent.Tests
     public class AsOperatorTests
     {
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\n[the answer] is not after the reference value.\n[the answer]:\n\t[42]\nThe expected value: after\n\t[100]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked [answer] is not after the reference value.\nThe checked [answer]:\n\t[42]\nThe expected [answer]: after\n\t[100]")]
         public void ShouldProvideANameForTheSut()
         {
-            Check.That(42).As("the answer").IsAfter(100);
+            Check.That(42).As("answer").IsAfter(100);
         }
     }
 }

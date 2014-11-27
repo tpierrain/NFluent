@@ -21,21 +21,23 @@ namespace NFluent
     using NFluent.Extensibility;
 
     /// <summary>
+    /// Static classes hosting all error messages related extensions.
     /// </summary>
     public static class MessageRelatedExtensions
     {
         #region Public Methods and Operators
 
         /// <summary>
+        /// Define a specific name for the system under test.
         /// </summary>
-        /// <typeparam name="T">
+        /// <typeparam name="T">Tested type.
         /// </typeparam>
-        /// <param name="check">
+        /// <param name="check">Checker hosting the check context.
         /// </param>
-        /// <param name="sutLabel">
+        /// <param name="sutLabel">Name to use.
         /// </param>
         /// <returns>
-        /// The <see cref="ICheck{T}"/>.
+        /// The <see cref="ICheck{T}"/>Checker object.
         /// </returns>
         public static ICheck<T> As<T>(this ICheck<T> check, string sutLabel)
         {
