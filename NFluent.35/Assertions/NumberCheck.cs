@@ -185,6 +185,31 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the checked value is strictly less than the comparand.
+        /// </summary>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The checked value is not strictly less than the comparand.
+        /// </exception>
+        public ICheckLink<ICheck<TN>> IsStrictlyLessThan(TN comparand)
+        {
+            return this.checker.ExecuteCheck(
+                () =>
+                {
+                    if (this.checker.Value.CompareTo(comparand) >= 0)
+                    {
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is not strictly less than the comparand.").Expected(comparand).Comparison("strictly less than").ToString());
+                    }
+                },
+                this.checker.BuildMessage("The {0} is strictly less than the comparand.").Expected(comparand).Comparison("more than").ToString());
+        }
+
+        /// <summary>
         /// Checks that the actual value is more than a comparand.
         /// </summary>
         /// <param name="comparand">

@@ -180,6 +180,27 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the checked value is strictly less than the comparand.
+        /// </summary>
+        /// <param name="check">
+        /// The fluent check to be extended.
+        /// </param>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The value is not strictly less than the comparand.
+        /// </exception>
+        public static ICheckLink<ICheck<ulong>> IsStrictlyLessThan(this ICheck<ulong> check, ulong comparand)
+        {
+            var numberCheckStrategy = new NumberCheck<ulong>(check);
+            return numberCheckStrategy.IsStrictlyLessThan(comparand);
+        }
+
+        /// <summary>
         /// Checks that the actual value is more than an operand.
         /// </summary>
         /// <param name="check">

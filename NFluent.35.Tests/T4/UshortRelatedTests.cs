@@ -203,7 +203,7 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsLessThan & Co
+        #region IsLessThan
 
         [Test]
         public void IsLessThanWorks()
@@ -234,6 +234,49 @@ namespace NFluent.Tests
         }
 
         #endregion
+
+        #region IsStrictlyLessThan
+
+        [Test]
+        public void IsStrictlyLessThanWorks()
+        {
+            const ushort One = 1;
+            const ushort Twenty = 20;
+
+            Check.That(One).IsStrictlyLessThan(Twenty);
+        }
+
+        [Test]
+        public void NotIsStrictlyLessThanWorks()
+        {
+            const ushort One = 1;
+            const ushort Twenty = 20;
+
+            Check.That(Twenty).Not.IsStrictlyLessThan(One);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly less than the comparand.\nThe checked value:\n\t[1]\nThe expected value: strictly less than\n\t[1]")]
+        public void IsStrictlyLessThanThrowsExceptionWhenFailing()
+        {
+            const ushort One = 1;
+
+            Check.That(One).IsStrictlyLessThan(One);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is strictly less than the comparand.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
+        public void NotIsStrictlyLessThanThrowsExceptionWhenFailing()
+        {
+            const ushort One = 1;
+            const ushort Twenty = 20;
+
+            Check.That(One).Not.IsStrictlyLessThan(Twenty);
+        }
+
+        #endregion
+
+
 
         #region IsGreaterThan
 
