@@ -166,10 +166,32 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
+        [Obsolete("Use IsStrictlyLessThan instead.")]
         public static ICheckLink<ICheck<int>> IsLessThan(this ICheck<int> check, int comparand)
         {
             var numberCheckStrategy = new NumberCheck<int>(check);
             return numberCheckStrategy.IsLessThan(comparand);
+        }
+
+        /// <summary>
+        /// Checks that the checked value is strictly less than the comparand.
+        /// </summary>
+        /// <param name="check">
+        /// The fluent check to be extended.
+        /// </param>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The value is not strictly less than the comparand.
+        /// </exception>
+        public static ICheckLink<ICheck<int>> IsStrictlyLessThan(this ICheck<int> check, int comparand)
+        {
+            var numberCheckStrategy = new NumberCheck<int>(check);
+            return numberCheckStrategy.IsStrictlyLessThan(comparand);
         }
 
         /// <summary>
