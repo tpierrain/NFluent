@@ -134,6 +134,46 @@ namespace NFluent.Tests
 
         #endregion
 
+        #region IsPositiveOrZero
+
+        [Test]
+        public void IsPositiveOrZeroWorks()
+        {
+            const int Zero = 0;
+            const int Two = 2;
+
+            Check.That(Zero).IsPositiveOrZero();
+            Check.That(Two).IsPositiveOrZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive or equal to zero, whereas it must not.\nThe checked value:\n\t[2]")]
+        public void NotIsPositiveOrZeroThrowsExceptionWhenFailing()
+        {
+            const int Two = 2;
+
+            Check.That(Two).Not.IsPositiveOrZero();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not positive or equal to zero.\nThe checked value:\n\t[-50]")]
+        public void IsPositiveOrZeroThrowsExceptionWhenValueIsNegative()
+        {
+            const int MinusFifty = -50;
+
+            Check.That(MinusFifty).IsPositiveOrZero();
+        }
+
+        [Test]
+        public void NotIsPositiveOrZeroWorks()
+        {
+            const int MinusFifty = -50;
+
+            Check.That(MinusFifty).Not.IsPositiveOrZero();
+        }
+
+        #endregion
+
         #region IsNegative (obsolete)
 
         [Test]

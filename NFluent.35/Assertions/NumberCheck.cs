@@ -105,6 +105,25 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value is positive or equal to zero.
+        /// </summary>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">The value is not positive or equal to zero.</exception>
+        public ICheckLink<ICheck<TN>> IsPositiveOrZero()
+        {
+            return this.checker.ExecuteCheck(
+                () =>
+                {
+                    if (Convert.ToDouble(this.checker.Value) < 0)
+                    {
+                        throw new FluentCheckException(
+                            this.checker.BuildMessage("The {0} is not positive or equal to zero.").ToString());
+                    }
+                },
+                this.checker.BuildMessage("The {0} is positive or equal to zero, whereas it must not.").ToString());
+        }
+
+        /// <summary>
         /// Checks that the actual value is strictly negative.
         /// </summary>
         /// <returns>A check link.</returns>
