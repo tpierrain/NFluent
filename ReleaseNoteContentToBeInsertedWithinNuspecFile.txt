@@ -1,5 +1,6 @@
 New feature(s):
 * Numbers: introduce IsPositiveOrZero() check.
+* Numbers: introduce IsNegativeOrZero() check.
 --------------
 Change(s):
 * Numbers: introduce IsStrictlyPositive() as a substitute for IsPositive() which is now obsolete.
