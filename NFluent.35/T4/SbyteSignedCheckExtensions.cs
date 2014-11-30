@@ -103,5 +103,19 @@ namespace NFluent
             var numberCheckStrategy = new NumberCheck<sbyte>(check);
             return numberCheckStrategy.IsStrictlyNegative();
         }
+
+        /// <summary>
+        /// Checks that the actual value is negative or equal to zero.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The value is not negative or equal to zero.</exception>
+        public static ICheckLink<ICheck<sbyte>> IsNegativeOrZero(this ICheck<sbyte> check)
+        {
+            var numberCheckStrategy = new NumberCheck<sbyte>(check);
+            return numberCheckStrategy.IsNegativeOrZero();
+        }
     }
 }
