@@ -142,6 +142,24 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value is negative or equal to zero.
+        /// </summary>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">The value is not negative or equal to zero.</exception>
+        public ICheckLink<ICheck<TN>> IsNegativeOrZero()
+        {
+            return this.checker.ExecuteCheck(
+                () =>
+                {
+                    if (Convert.ToDouble(this.checker.Value) > 0)
+                    {
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is not negative or equal to zero.").ToString());
+                    }
+                },
+                this.checker.BuildMessage("The {0} is negative or equal to zero, whereas it must not.").ToString());
+        }
+
+        /// <summary>
         /// Checks that the actual value is less than a comparand.
         /// </summary>
         /// <param name="comparand">
