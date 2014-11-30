@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
     using NFluent.Extensibility;
 
     /// <summary>
@@ -185,10 +187,32 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
+        [Obsolete("Use IsStrictlyGreaterThan instead.")]
         public static ICheckLink<ICheck<int>> IsGreaterThan(this ICheck<int> check, int comparand)
         {
             var numberCheckStrategy = new NumberCheck<int>(check);
             return numberCheckStrategy.IsGreaterThan(comparand);
+        }
+
+        /// <summary>
+        /// Checks that the checked value is strictly greater than the comparand.
+        /// </summary>
+        /// <param name="check">
+        /// The fluent check to be extended.
+        /// </param>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The checked value is not strictly greater than the comparand.
+        /// </exception>
+        public static ICheckLink<ICheck<int>> IsStrictlyGreaterThan(this ICheck<int> check, int comparand)
+        {
+            var numberCheckStrategy = new NumberCheck<int>(check);
+            return numberCheckStrategy.IsStrictlyGreaterThan(comparand);
         }
     }
 }

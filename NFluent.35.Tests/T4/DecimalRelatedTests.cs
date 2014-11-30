@@ -268,6 +268,38 @@ namespace NFluent.Tests
 
         #endregion
 
+        #region IsStrictlyGreaterThan
+
+        [Test]
+        public void IsStrictlyGreaterThanWorks()
+        {
+            const decimal One = 1M;
+            const decimal Twenty = 20M;
+
+            Check.That(Twenty).IsStrictlyGreaterThan(One);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly greater than the comparand.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[1]")]
+        public void IsStrictlyGreaterThanThrowsExceptionWhenFailing()
+        {
+            const decimal One = 1M;
+
+            Check.That(One).IsStrictlyGreaterThan(One);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is strictly greater than the comparand.\nThe checked value:\n\t[20]\nThe expected value: less than or equal to\n\t[1]")]
+        public void NotIsStrictlyGreaterThanThrowsExceptionWhenFailing()
+        {
+            const decimal One = 1M;
+            const decimal Twenty = 20M;
+
+            Check.That(Twenty).Not.IsStrictlyGreaterThan(One);
+        }
+
+        #endregion
+
         [Test]
         public void AndOperatorCanChainMultipleAssertionOnNumber()
         {
