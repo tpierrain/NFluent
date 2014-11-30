@@ -147,12 +147,12 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive or equal to zero, whereas it must not.\nThe checked value:\n\t[2]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is positive or equal to zero, whereas it must not.\nThe checked value:\n\t[0]")]
         public void NotIsPositiveOrZeroThrowsExceptionWhenFailing()
         {
-            const int Two = 2;
+            const int Zero = 0;
 
-            Check.That(Two).Not.IsPositiveOrZero();
+            Check.That(Zero).Not.IsPositiveOrZero();
         }
 
         [Test]
