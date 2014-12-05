@@ -21,21 +21,22 @@ namespace NFluent.Extensibility
     /// <summary>
     /// The expected label block.
     /// </summary>
-    public class ExpectedLabelBlock : ILabelBlock
+    internal class ExpectedLabelBlock : GenericLabelBlock
     {
-        #region Public Methods and Operators
-
-        /// <summary>
-        ///     Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        ///     A string that represents the current object.
-        /// </returns>
-        public override string ToString()
+        protected override string Adjective()
         {
-            return "The expected value:";
+            return "expected";
         }
+   }
 
-        #endregion
+    /// <summary>
+    /// The expected label block.
+    /// </summary>
+    internal class GivenLabelBlock : GenericLabelBlock
+    {
+        protected override string Adjective()
+        {
+            return "given";
+        }
     }
 }

@@ -21,21 +21,11 @@ namespace NFluent.Extensibility
     /// <summary>
     /// The actual label block.
     /// </summary>
-    internal class ActualLabelBlock : LabelCoreLogic
+    internal class ActualLabelBlock : GenericLabelBlock
     {
-        #region Public Methods and Operators
-
-        /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        /// A string that represents the current object.
-        /// </returns>
-        public override string ToString()
+        protected override string Adjective()
         {
-            return string.Format("The actual {0}:", this.EntityName());
+            return "actual";
         }
-
-        #endregion
     }
 }

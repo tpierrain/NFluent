@@ -18,6 +18,8 @@ namespace NFluent.Extensibility
     using System;
     using System.Text;
 
+    using NFluent.Extensions;
+
     // TODO: probably worth to refactor the implementation of this class
 
     /// <summary>
@@ -27,9 +29,7 @@ namespace NFluent.Extensibility
     {
         #region fields
 
-        internal const string DefaultEntity = "value";
-
-        private const string TestedAdjective = "checked";
+        private const string DefaultEntity = "value";
 
         private const string ExpectedAdjective = "expected";
 
@@ -38,6 +38,12 @@ namespace NFluent.Extensibility
         internal const string EndOfLine = "\n";
 
         private readonly string message;
+
+        private EntityNameLogic entityNameLogic;
+
+        private ILabelBlock checkedLabel;
+
+        private ILabelBlock expectedLabel;
 
         private MessageBlock expectedBlock;
 
@@ -48,6 +54,8 @@ namespace NFluent.Extensibility
         private MessageBlock expectedValuesBlock;
 
         private string entity;
+
+        private Type referenceType;
 
         #endregion
 
@@ -67,6 +75,9 @@ namespace NFluent.Extensibility
         {
             this.message = message;
             this.EntityDescription = null;
+            this.entityNameLogic = new EntityNameLogic();
+            this.checkedLabel = new CheckedLabelBlock { EntityLogic = this.entityNameLogic };
+            this.expectedLabel = new ExpectedLabelBlock { EntityLogic = this.entityNameLogic };
         }
 
         #endregion
@@ -138,12 +149,7 @@ namespace NFluent.Extensibility
         {
             get
             {
-                if (this.checkedBlock == null)
-                {
-                    return string.Format("{0} {1}", TestedAdjective, this.EntityDescription);
-                }
-
-                return this.checkedBlock.GetBlockLabel();
+                return this.checkedLabel.ToString();
             }
         }
 
@@ -170,6 +176,16 @@ namespace NFluent.Extensibility
         public override string ToString()
         {
             var builder = new StringBuilder(EndOfLine);
+            if (this.referenceType != null)
+            {
+                this.entityNameLogic.EntityType = this.referenceType;
+            }
+
+            if (this.entity != null)
+            {
+                this.entityNameLogic.EntityName = this.entity;
+            }
+
             var givenOrExpectedLabel = this.ExpectedLabel;
 
             if (this.givenValueBlock != null)
@@ -231,7 +247,11 @@ namespace NFluent.Extensibility
         /// <returns>A <see cref="FluentMessage"/> to continue build the message.</returns>
         public MessageBlock On(object test)
         {
-            this.checkedBlock = new MessageBlock(this, test, TestedAdjective);
+            this.checkedBlock = new MessageBlock(this, test, this.checkedLabel);
+            if (this.referenceType == null)
+            {
+                this.referenceType = test.GetTypeWithoutThrowingException();
+            }
             return this.checkedBlock;
         }
 
@@ -242,7 +262,8 @@ namespace NFluent.Extensibility
         /// <returns>The created MessageBlock.</returns>
         public MessageBlock Expected(object expected)
         {
-            this.expectedBlock = new MessageBlock(this, expected, ExpectedAdjective);
+            this.expectedBlock = new MessageBlock(this, expected, this.expectedLabel);
+            this.referenceType = expected.GetTypeWithoutThrowingException();
             return this.expectedBlock;
         }
 
@@ -253,7 +274,8 @@ namespace NFluent.Extensibility
         /// <returns>The created MessageBlock.</returns>
         public MessageBlock ExpectedType(Type expectedType)
         {
-            this.expectedBlock = new MessageBlock(this, expectedType, ExpectedAdjective);
+            this.expectedBlock = new MessageBlock(this, expectedType, this.expectedLabel);
+            this.referenceType = expectedType;
             return this.expectedBlock;
         }
 
@@ -264,7 +286,8 @@ namespace NFluent.Extensibility
         /// <returns>The created MessageBlock.</returns>
         public MessageBlock ExpectedValues(object expectedValues)
         {
-            this.expectedValuesBlock = new MessageBlock(this, expectedValues, ExpectedAdjective);
+            this.expectedValuesBlock = new MessageBlock(this, expectedValues, this.expectedLabel);
+            this.referenceType = expectedValues.GetTypeWithoutThrowingException();
             this.expectedValuesBlock.Label("The expected value(s):");
             return this.expectedValuesBlock;
         }
@@ -277,28 +300,11 @@ namespace NFluent.Extensibility
         /// <returns>The created MessageBlock.</returns>
         public MessageBlock WithGivenValue(object givenValue)
         {
-            this.givenValueBlock = new MessageBlock(this, givenValue, GivenAdjective);
+            this.expectedLabel = new GivenLabelBlock { EntityLogic = this.entityNameLogic };
+            this.givenValueBlock = new MessageBlock(this, givenValue, this.expectedLabel);
             return this.givenValueBlock;
         }
 
-        /// <summary>
-        /// Gets the entity label based on the given type.
-        /// </summary>
-        /// <param name="value">The value to get the type from.</param>
-        /// <returns>The appropriate entity label.</returns>
-        internal string GetEntityFromType(object value)
-        {
-            return this.entity ?? DefaultEntity;
-        }
-
-        /// <summary>
-        /// Sets the sut label.
-        /// </summary>
-        /// <param name="sutLabel">The sut label.</param>
-        public void SetSutLabel(string sutLabel)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
     }
 }

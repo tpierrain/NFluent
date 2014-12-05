@@ -70,7 +70,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t['a']\nThe expected value:\n\t['b']")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is different from the expected one.\nThe checked char:\n\t['a']\nThe expected char:\n\t['b']")]
         public void IsEqualToThrowsWithAnotherChar()
         {
             const char FirstLetterLowerCase = 'a';
@@ -78,7 +78,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t['a']\nThe expected value:\n\t['A']")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is different from the expected one.\nThe checked char:\n\t['a']\nThe expected char:\n\t['A']")]
         public void IsEqualToThrowsWithSameCharWithDifferentCase()
         {
             const char FirstLetterLowerCase = 'a';

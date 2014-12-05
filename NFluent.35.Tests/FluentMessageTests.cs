@@ -42,7 +42,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void BlockFailTest()
         {
-            var block = new MessageBlock(null, null, string.Empty);
+            var block = new MessageBlock(null, null, null);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace NFluent.Tests
         {
             var message = FluentMessage.BuildMessage("test");
             const int X = 4;
-            var block = new MessageBlock(message, X, string.Empty);
+            var block = new MessageBlock(message, X, new GenericLabelBlock());
 
             Assert.AreEqual("The  value:\n\t[4]", block.GetMessage());
 
@@ -160,7 +160,7 @@ namespace NFluent.Tests
         {
             var label = new ExpectedLabelBlock();
 
-            Assert.AreEqual("The expected value:", label.ToString());
+            Assert.AreEqual("The expected value:", label.CustomMessage(null));
         }
     
         [Test]
@@ -168,7 +168,7 @@ namespace NFluent.Tests
         {
             var label = new ActualLabelBlock();
 
-            Assert.AreEqual("The actual value:", label.ToString());
+            Assert.AreEqual("The actual value:", label.CustomMessage(null));
         }
     }
 }

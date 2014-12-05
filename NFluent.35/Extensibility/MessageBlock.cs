@@ -1,19 +1,19 @@
 #region File header
 
-// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="MessageBlock.cs" company="">
-// //   Copyright 2014 Cyrille Dupuydauby, Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MessageBlock.cs" company="">
+//   Copyright 2014 Cyrille Dupuydauby, Thomas PIERRAIN
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 #endregion
 
 namespace NFluent.Extensibility
@@ -30,7 +30,7 @@ namespace NFluent.Extensibility
     {
         #region Fields
 
-        private readonly string attribute;
+        private readonly ILabelBlock block;
 
         private readonly FluentMessage message;
 
@@ -55,11 +55,11 @@ namespace NFluent.Extensibility
         /// <param name="test">
         /// The tested object.
         /// </param>
-        /// <param name="attribute">
+        /// <param name="block">
         /// The block attribute.
         /// </param>
-        public MessageBlock(FluentMessage message, object test, string attribute)
-            : this(message, test.GetTypeWithoutThrowingException(), attribute)
+        internal MessageBlock(FluentMessage message, object test, ILabelBlock block)
+            : this(message, test.GetTypeWithoutThrowingException(), block)
         {
             this.test = test;
             this.value = new ValueBlock(test);
@@ -74,10 +74,10 @@ namespace NFluent.Extensibility
         /// <param name="type">
         /// The tested type.
         /// </param>
-        /// <param name="attribute">
-        /// The block attribute.
+        /// <param name="label">
+        /// The block label.
         /// </param>
-        public MessageBlock(FluentMessage message, Type type, string attribute)
+        internal MessageBlock(FluentMessage message, Type type, ILabelBlock label)
         {
             if (message == null)
             {
@@ -87,11 +87,11 @@ namespace NFluent.Extensibility
             this.value = new InstanceBlock(type);
             this.message = message;
             this.test = null;
-            this.attribute = attribute;
+            this.block = label;
         }
 
         #endregion
-
+        
         #region Public Properties
 
         /// <summary>
@@ -125,17 +125,6 @@ namespace NFluent.Extensibility
         {
             this.comparisonLabel = comparison;
             return this;
-        }
-
-        /// <summary>
-        /// Gets the block label.
-        /// </summary>
-        /// <returns>
-        /// The block Label.
-        /// </returns>
-        public string GetBlockLabel()
-        {
-            return string.Format("{0} {1}", this.attribute, this.message.GetEntityFromType(this.test));
         }
 
         /// <summary>
@@ -245,10 +234,6 @@ namespace NFluent.Extensibility
             return this;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The full label.
         /// </summary>
@@ -260,17 +245,22 @@ namespace NFluent.Extensibility
             string fullLabel;
             if (string.IsNullOrEmpty(this.comparisonLabel))
             {
-                fullLabel = string.Format(
-                    this.customMessage ?? "The {0} {1}:", 
-                    this.attribute, 
-                    this.message.GetEntityFromType(this.test));
+                if (this.customMessage == null)
+                {
+                    fullLabel = string.Format("The {0}:",
+                        this.block);
+                }
+                else
+                {
+                    fullLabel = this.block.CustomMessage(customMessage);
+                    
+                }
             }
             else
             {
                 fullLabel = string.Format(
-                    this.customMessage ?? "The {0} {1}: {2}", 
-                    this.attribute, 
-                    this.message.GetEntityFromType(this.test), 
+                    this.customMessage ?? "The {0}: {1}", 
+                    this.block, 
                     this.comparisonLabel);
             }
 

@@ -64,6 +64,7 @@
     <Compile Include="Assertions\EventWaitHandleCheckExtensions.cs" />
     <Compile Include="Assertions\ObjectFieldsCheckExtensions.cs" />
     <Compile Include="Extensibility\ActualLabelBlock.cs" />
+    <Compile Include="Extensibility\CheckedLabelBlock.cs" />
     <Compile Include="Extensibility\ExpectedLabelBlock.cs" />
     <Compile Include="Extensibility\ILabelBlock.cs" />
     <Compile Include="Extensibility\InstanceBlock.cs" />
