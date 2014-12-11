@@ -36,11 +36,6 @@ namespace NFluent.Extensibility
         private bool fullTypeName;
 
         /// <summary>
-        /// The include type.
-        /// </summary>
-        private bool includeType;
-
-        /// <summary>
         /// The instance type.
         /// </summary>
         private Type type;
@@ -118,7 +113,6 @@ namespace NFluent.Extensibility
         public void WithType(bool active = true, bool full = false)
         {
             this.fullTypeName = full;
-            this.includeType = active;
         }
 
         /// <summary>
@@ -133,7 +127,6 @@ namespace NFluent.Extensibility
         public void WithType(Type forcedType)
         {
             this.type = forcedType;
-            this.includeType = true;
         }
 
         #endregion

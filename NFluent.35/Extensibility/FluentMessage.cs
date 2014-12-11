@@ -39,7 +39,7 @@ namespace NFluent.Extensibility
 
         private readonly string message;
 
-        private EntityNameLogic entityNameLogic;
+        private EntityNamer entityNamer;
 
         private ILabelBlock checkedLabel;
 
@@ -75,9 +75,9 @@ namespace NFluent.Extensibility
         {
             this.message = message;
             this.EntityDescription = null;
-            this.entityNameLogic = new EntityNameLogic();
-            this.checkedLabel = new CheckedLabelBlock { EntityLogic = this.entityNameLogic };
-            this.expectedLabel = new ExpectedLabelBlock { EntityLogic = this.entityNameLogic };
+            this.entityNamer = new EntityNamer();
+            this.checkedLabel = GenericLabelBlock.BuildCheckedBlock(this.entityNamer);
+            this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(this.entityNamer);
         }
 
         #endregion
@@ -178,12 +178,12 @@ namespace NFluent.Extensibility
             var builder = new StringBuilder(EndOfLine);
             if (this.referenceType != null)
             {
-                this.entityNameLogic.EntityType = this.referenceType;
+                this.entityNamer.EntityType = this.referenceType;
             }
 
             if (this.entity != null)
             {
-                this.entityNameLogic.EntityName = this.entity;
+                this.entityNamer.EntityName = this.entity;
             }
 
             var givenOrExpectedLabel = this.ExpectedLabel;
@@ -252,6 +252,7 @@ namespace NFluent.Extensibility
             {
                 this.referenceType = test.GetTypeWithoutThrowingException();
             }
+
             return this.checkedBlock;
         }
 
@@ -300,7 +301,7 @@ namespace NFluent.Extensibility
         /// <returns>The created MessageBlock.</returns>
         public MessageBlock WithGivenValue(object givenValue)
         {
-            this.expectedLabel = new GivenLabelBlock { EntityLogic = this.entityNameLogic };
+            this.expectedLabel = GenericLabelBlock.BuildGivenBlock(this.entityNamer);
             this.givenValueBlock = new MessageBlock(this, givenValue, this.expectedLabel);
             return this.givenValueBlock;
         }

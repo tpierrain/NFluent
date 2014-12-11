@@ -16,9 +16,6 @@
 #endregion
 namespace NFluent.Extensibility
 {
-    using System;
-    using System.Collections;
-
     /// <summary>
     /// Interface for Label generator.
     /// </summary>
@@ -34,6 +31,26 @@ namespace NFluent.Extensibility
 
     internal class GenericLabelBlock : ILabelBlock
     {
+        private string adjective;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericLabelBlock" /> class.
+        /// </summary>
+        /// <param name="adjective">The adjective.</param>
+        /// <param name="namer">The entity naming logic.</param>
+        public GenericLabelBlock(string adjective, EntityNamer namer)
+        {
+            this.adjective = adjective;
+            this.EntityLogic = namer;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericLabelBlock"/> class.
+        /// </summary>
+        public GenericLabelBlock()
+        {
+            this.adjective = string.Empty;
+        }
 
         /// <summary>
         /// Gets or sets the entity logic.
@@ -41,7 +58,7 @@ namespace NFluent.Extensibility
         /// <value>
         /// The entity logic.
         /// </value>
-        public EntityNameLogic EntityLogic { get; set; }
+        public EntityNamer EntityLogic { get; set; }
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -66,51 +83,32 @@ namespace NFluent.Extensibility
 
         protected virtual string Adjective()
         {
-            return string.Empty;
+            return this.adjective;
         }
 
         private string EntityName()
         {
             return this.EntityLogic == null ? "value" : this.EntityLogic.EntityName;
         }
-    }
 
-    internal class EntityNameLogic
-    {
-        private string forcedEntity;
-
-        public Type EntityType { get; set; }
-
-        public string EntityName
+        static public ILabelBlock BuildActualBlock(EntityNamer namer)
         {
-            get
-            {
-                if (forcedEntity != null)
-                {
-                    return forcedEntity;
-                }
+            return new GenericLabelBlock("actual", namer);
+        }
 
-                if (this.EntityType == typeof(bool) || this.EntityType == typeof(Boolean))
-                {
-                    return "boolean";
-                }
+        static public ILabelBlock BuildCheckedBlock(EntityNamer namer)
+        {
+            return new GenericLabelBlock("checked", namer);
+        }
 
-                if (this.EntityType == typeof(IEnumerable))
-                {
-                    return "enumerable";
-                }
+        static public ILabelBlock BuildExpectedBlock(EntityNamer namer)
+        {
+            return new GenericLabelBlock("expected", namer);
+        }
 
-                if (this.EntityType == typeof(char))
-                {
-                    return "char";
-                }
-
-                return "value";
-            }
-            set
-            {
-                this.forcedEntity = value;
-            }
+        static public ILabelBlock BuildGivenBlock(EntityNamer namer)
+        {
+            return new GenericLabelBlock("given", namer);
         }
     }
 }

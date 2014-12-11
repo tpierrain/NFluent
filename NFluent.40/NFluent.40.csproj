@@ -137,17 +137,11 @@
     <Compile Include="..\NFluent.35\Constants.cs">
       <Link>Constants.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.35\Extensibility\ActualLabelBlock.cs">
-      <Link>Extensibility\ActualLabelBlock.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.35\Extensibility\CheckedLabelBlock.cs">
-      <Link>Extensibility\CheckedLabelBlock.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.35\Extensibility\Checker.cs">
       <Link>Extensibility\Checker.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.35\Extensibility\ExpectedLabelBlock.cs">
-      <Link>Extensibility\ExpectedLabelBlock.cs</Link>
+    <Compile Include="..\NFluent.35\Extensibility\EntityNamer.cs">
+      <Link>Extensibility\EntityNamer.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\Extensibility\ExtensibilityHelper.cs">
       <Link>Extensibility\ExtensibilityHelper.cs</Link>

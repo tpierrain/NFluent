@@ -158,7 +158,7 @@ namespace NFluent.Tests
         [Test]
         public void ShouldCreateExpectedLabel()
         {
-            var label = new ExpectedLabelBlock();
+            var label = GenericLabelBlock.BuildExpectedBlock(null);
 
             Assert.AreEqual("The expected value:", label.CustomMessage(null));
         }
@@ -166,7 +166,7 @@ namespace NFluent.Tests
         [Test]
         public void ShouldCreateActualLabel()
         {
-            var label = new ActualLabelBlock();
+            var label = GenericLabelBlock.BuildActualBlock(null);
 
             Assert.AreEqual("The actual value:", label.CustomMessage(null));
         }
