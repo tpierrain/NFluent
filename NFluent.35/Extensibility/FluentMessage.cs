@@ -150,7 +150,17 @@ namespace NFluent.Extensibility
                 this.entityNamer.EntityName = this.entity;
             }
 
-            var givenOrExpectedLabel = this.expectedLabel.CustomMessage("{0} one");
+            string givenOrExpectedLabel;
+            if (this.expectedLabel.CustomMessage("{1}") == this.checkedLabel.CustomMessage("{1}"))
+            {
+                // same label, we avoid an ugly repetition
+                givenOrExpectedLabel = this.expectedLabel.CustomMessage("{0} one");
+            }
+            else
+            {
+                // ok, we have different entities, we must be specific
+                givenOrExpectedLabel = this.expectedLabel.ToString();
+            }
 
             builder.AppendFormat(this.message, this.TestedLabel, givenOrExpectedLabel);
 
