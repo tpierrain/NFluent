@@ -1,4 +1,4 @@
-﻿// -----0---------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FluentMessage.cs" company="">
 //   Copyright 2013 Cyrille DUPUYDAUBY, Thomas PIERRAIN
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,27 +31,19 @@ namespace NFluent.Extensibility
 
         private const string DefaultEntity = "value";
 
-        private const string ExpectedAdjective = "expected";
-
-        private const string GivenAdjective = "given";
-
         internal const string EndOfLine = "\n";
 
         private readonly string message;
 
-        private EntityNamer entityNamer;
+        private readonly EntityNamer entityNamer;
 
-        private ILabelBlock checkedLabel;
+        private readonly ILabelBlock checkedLabel;
 
         private ILabelBlock expectedLabel;
 
         private MessageBlock expectedBlock;
 
         private MessageBlock checkedBlock;
-
-        private MessageBlock givenValueBlock;
-
-        private MessageBlock expectedValuesBlock;
 
         private string entity;
 
@@ -98,20 +90,6 @@ namespace NFluent.Extensibility
         }
 
         /// <summary>
-        /// Gets the expected value label.
-        /// </summary>
-        /// <value>
-        /// The expected label.
-        /// </value>
-        private string ExpectedLabel
-        {
-            get
-            {
-                return string.Format("{0} {1}", ExpectedAdjective, "one");
-            }
-        }
-
-        /// <summary>
         /// Gets the expected values label.
         /// </summary>
         /// <value>
@@ -122,20 +100,6 @@ namespace NFluent.Extensibility
             get
             {
                 return "expected value(s)";
-            }
-        }
-
-        /// <summary>
-        /// Gets the given value label.
-        /// </summary>
-        /// <value>
-        /// The given value label.
-        /// </value>
-        private string GivenLabel
-        {
-            get
-            {
-                return string.Format("{0} {1}", GivenAdjective, this.EntityDescription);
             }
         }
 
@@ -186,19 +150,7 @@ namespace NFluent.Extensibility
                 this.entityNamer.EntityName = this.entity;
             }
 
-            var givenOrExpectedLabel = this.ExpectedLabel;
-
-            if (this.givenValueBlock != null)
-            {
-                // we defined a given block which should then replace the classical expected one.
-                givenOrExpectedLabel = this.GivenLabel;
-            }
-
-            if (this.expectedValuesBlock != null)
-            {
-                // we defined an expected values block which should then replace the classical expected one.
-                givenOrExpectedLabel = this.ExpectedValuesLabel;
-            }
+            var givenOrExpectedLabel = this.expectedLabel.CustomMessage("{0} one");
 
             builder.AppendFormat(this.message, this.TestedLabel, givenOrExpectedLabel);
 
@@ -206,18 +158,6 @@ namespace NFluent.Extensibility
             {
                 builder.Append(EndOfLine);
                 builder.Append(this.checkedBlock.GetMessage());
-            }
-
-            if (this.givenValueBlock != null)
-            {
-                builder.Append(EndOfLine);
-                builder.Append(this.givenValueBlock.GetMessage());
-            }
-
-            if (this.expectedValuesBlock != null)
-            {
-                builder.Append(EndOfLine);
-                builder.Append(this.expectedValuesBlock.GetMessage());
             }
 
             if (this.expectedBlock != null)
@@ -287,10 +227,11 @@ namespace NFluent.Extensibility
         /// <returns>The created MessageBlock.</returns>
         public MessageBlock ExpectedValues(object expectedValues)
         {
-            this.expectedValuesBlock = new MessageBlock(this, expectedValues, this.expectedLabel);
+            var customNamer = new EntityNamer { EntityName = "value(s)" };
+            this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(customNamer);
+            this.expectedBlock = new MessageBlock(this, expectedValues, this.expectedLabel);
             this.referenceType = expectedValues.GetTypeWithoutThrowingException();
-            this.expectedValuesBlock.Label("The expected value(s):");
-            return this.expectedValuesBlock;
+            return this.expectedBlock;
         }
 
         /// <summary>
@@ -302,8 +243,8 @@ namespace NFluent.Extensibility
         public MessageBlock WithGivenValue(object givenValue)
         {
             this.expectedLabel = GenericLabelBlock.BuildGivenBlock(this.entityNamer);
-            this.givenValueBlock = new MessageBlock(this, givenValue, this.expectedLabel);
-            return this.givenValueBlock;
+            this.expectedBlock = new MessageBlock(this, givenValue, this.expectedLabel);
+            return this.expectedBlock;
         }
 
         #endregion

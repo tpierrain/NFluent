@@ -34,8 +34,6 @@ namespace NFluent.Extensibility
 
         private readonly FluentMessage message;
 
-        private readonly object test;
-
         private readonly IValueDescription value;
 
         private string comparisonLabel;
@@ -61,7 +59,6 @@ namespace NFluent.Extensibility
         internal MessageBlock(FluentMessage message, object test, ILabelBlock block)
             : this(message, test.GetTypeWithoutThrowingException(), block)
         {
-            this.test = test;
             this.value = new ValueBlock(test);
         }
 
@@ -86,7 +83,6 @@ namespace NFluent.Extensibility
 
             this.value = new InstanceBlock(type);
             this.message = message;
-            this.test = null;
             this.block = label;
         }
 

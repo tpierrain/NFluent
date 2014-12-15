@@ -110,5 +110,6 @@ namespace NFluent.Extensibility
         {
             return new GenericLabelBlock("given", namer);
         }
+
     }
 }

@@ -48,7 +48,7 @@ namespace NFluent
                             throw new FluentCheckException(message);
                         }
                     },
-                checker.BuildMessage("The {0} is before the given date time whereas it must not.").For(LabelForTime).WithGivenValue(other).ToString());
+                checker.BuildMessage("The {0} is before the {1} whereas it must not.").For(LabelForTime).WithGivenValue(other).ToString());
         }
 
         /// <summary>
