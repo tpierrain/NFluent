@@ -72,7 +72,7 @@ namespace NFluent.Extensibility
 
             if (this.type != null)
             {
-                string temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormated();
+                var temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormated();
                 builder.AppendFormat(" of type: [{0}]", temp);
             }
 
@@ -126,9 +126,8 @@ namespace NFluent.Extensibility
         /// </remarks>
         public void WithType(Type forcedType)
         {
-            this.type = forcedType;
         }
 
         #endregion
     }
-}
+}   

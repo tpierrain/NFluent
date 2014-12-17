@@ -21,6 +21,7 @@ namespace NFluent
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
@@ -201,10 +202,10 @@ namespace NFluent
         /// </remarks>
         public static ICheckLink<ICheck<T>> HasNotFieldsWithSameValues<T>(this ICheck<T> check, object expected)
         {
-            IChecker<T, ICheck<T>> checker = ExtensibilityHelper.ExtractChecker(check);
-            bool negated = !checker.Negated;
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            var negated = !checker.Negated;
 
-            string message = CheckFieldEquality(checker, checker.Value, expected, negated);
+            var message = CheckFieldEquality(checker, checker.Value, expected, negated);
 
             if (message != null)
             {
@@ -318,6 +319,7 @@ namespace NFluent
             while (true)
             {
                 const BindingFlags BindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+                Debug.Assert(type != null, "Type must not be null");
                 var result = type.GetField(name, BindingFlags);
 
                 if (result != null)
@@ -472,7 +474,7 @@ namespace NFluent
 
             #region Public Properties
 
-            public bool DoValuesMatches
+            private bool DoValuesMatches
             {
                 get
                 {
@@ -490,7 +492,7 @@ namespace NFluent
                 }
             }
 
-            public ExtendedFieldInfo Expected
+            private ExtendedFieldInfo Expected
             {
                 get
                 {
@@ -520,7 +522,7 @@ namespace NFluent
                             checker.BuildShortMessage(
                                 string.Format(
                                     "The {{0}}'s {0} has the same value in the comparand, whereas it must not.",
-                                    this.Expected.FieldLabel.DoubleCurlyBraces()));
+                                    this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
                         EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, true);
                     }
                     else
@@ -530,7 +532,7 @@ namespace NFluent
                             result = checker.BuildShortMessage(
                                 string.Format(
                                     "The {{0}}'s {0} is absent from the {{1}}.",
-                                    this.Expected.FieldLabel.DoubleCurlyBraces()));
+                                    this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
                             result.Expected(this.expected.Value);
                         }
                         else
@@ -539,7 +541,7 @@ namespace NFluent
                                 checker.BuildShortMessage(
                                     string.Format(
                                         "The {{0}}'s {0} does not have the expected value.",
-                                        this.Expected.FieldLabel.DoubleCurlyBraces()));
+                                        this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
                             EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, false);
                         }
                     }
