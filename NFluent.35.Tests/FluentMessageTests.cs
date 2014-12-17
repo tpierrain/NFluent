@@ -115,10 +115,10 @@ namespace NFluent.Tests
 
             var errorMessage = FluentMessage.BuildMessage("The {0} is not one of the possible elements.")
                                             .On(CheckedValue)
-                                            .And.Expected(possibleElements).Label("The possible elements:")
+                                            .And.ReferenceValues(possibleElements).Label("The possible elements:")
                                             .ToString();
 
-            Assert.AreEqual("\nThe checked value is not one of the possible elements.\nThe checked value:\n\t[\"The Black Keys\"]\nThe possible elements:\n\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
+            Assert.AreEqual("\nThe checked string is not one of the possible elements.\nThe checked string:\n\t[\"The Black Keys\"]\nThe possible elements:\n\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
         }
 
         [Test]

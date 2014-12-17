@@ -22,23 +22,23 @@ namespace NFluent.Extensibility
     internal interface ILabelBlock
     {
         /// <summary>
-        /// Customs the message.
+        /// Build a custom message.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <returns></returns>
+        /// <returns>A custom formatted message.</returns>
         string CustomMessage(string message);
     }
 
     internal class GenericLabelBlock : ILabelBlock
     {
-        private string adjective;
+        private readonly string adjective;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericLabelBlock" /> class.
         /// </summary>
         /// <param name="adjective">The adjective.</param>
         /// <param name="namer">The entity naming logic.</param>
-        public GenericLabelBlock(string adjective, EntityNamer namer)
+        private GenericLabelBlock(string adjective, EntityNamer namer)
         {
             this.adjective = adjective;
             this.EntityLogic = namer;
@@ -58,7 +58,27 @@ namespace NFluent.Extensibility
         /// <value>
         /// The entity logic.
         /// </value>
-        public EntityNamer EntityLogic { get; set; }
+        private EntityNamer EntityLogic { get; set; }
+
+        public static ILabelBlock BuildActualBlock(EntityNamer namer)
+        {
+            return new GenericLabelBlock("actual", namer);
+        }
+
+        public static ILabelBlock BuildCheckedBlock(EntityNamer namer)
+        {
+            return new GenericLabelBlock("checked", namer);
+        }
+
+        public static ILabelBlock BuildExpectedBlock(EntityNamer namer)
+        {
+            return new GenericLabelBlock("expected", namer);
+        }
+
+        public static ILabelBlock BuildGivenBlock(EntityNamer namer)
+        {
+            return new GenericLabelBlock("given", namer);
+        }
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -75,13 +95,15 @@ namespace NFluent.Extensibility
         /// Customs the message.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A custom formatted message.
+        /// </returns>
         public string CustomMessage(string message)
         {
             return string.Format(message ?? "The {0} {1}:", this.Adjective(), this.EntityName());
         }
 
-        protected virtual string Adjective()
+        private string Adjective()
         {
             return this.adjective;
         }
@@ -90,26 +112,5 @@ namespace NFluent.Extensibility
         {
             return this.EntityLogic == null ? "value" : this.EntityLogic.EntityName;
         }
-
-        static public ILabelBlock BuildActualBlock(EntityNamer namer)
-        {
-            return new GenericLabelBlock("actual", namer);
-        }
-
-        static public ILabelBlock BuildCheckedBlock(EntityNamer namer)
-        {
-            return new GenericLabelBlock("checked", namer);
-        }
-
-        static public ILabelBlock BuildExpectedBlock(EntityNamer namer)
-        {
-            return new GenericLabelBlock("expected", namer);
-        }
-
-        static public ILabelBlock BuildGivenBlock(EntityNamer namer)
-        {
-            return new GenericLabelBlock("given", namer);
-        }
-
     }
 }

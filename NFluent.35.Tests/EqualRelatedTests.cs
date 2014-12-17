@@ -298,7 +298,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[\"What is the question?\"] of type: [string]\nThe expected value:\n\t[42] of type: [int]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected value.\nThe checked string:\n\t[\"What is the question?\"] of type: [string]\nThe expected value:\n\t[42] of type: [int]")]
         public void EqualsThrowsExceptionWhenFailing()
         {
             string question = "What is the question?";

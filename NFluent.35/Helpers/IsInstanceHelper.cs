@@ -165,6 +165,7 @@ namespace NFluent.Helpers
             else
             {
                 message = FluentMessage.BuildMessage(string.Format("The {{0}} is not an instance of [{0}].", expectedType.ToStringProperlyFormated()))
+                    .For("value")
                     .On(value)
                     .OfType(instanceType)
                     .And.ExpectedType(expectedType).WithType();

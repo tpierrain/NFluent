@@ -17,6 +17,7 @@ namespace NFluent.Extensibility
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
 
     internal class EntityNamer
     {
@@ -37,23 +38,31 @@ namespace NFluent.Extensibility
                     return this.forcedEntity;
                 }
 
-                if (this.EntityType == typeof(bool) || this.EntityType == typeof(Boolean))
+                if (this.EntityType == null)
+                {
+                    return "value";
+                }
+                
+                if (this.EntityType == typeof(bool))
                 {
                     return "boolean";
                 }
 
-                if (this.EntityType == typeof(IEnumerable))
+                if (this.EntityType == typeof(string))
+                {
+                    return "string";
+                }
+
+                List<Type> interfaces = new List<Type>(this.EntityType.GetInterfaces());
+
+                if (interfaces.Contains(typeof(IEnumerable)) || this.EntityType == typeof(IEnumerable))
                 {
                     return "enumerable";
                 }
 
-                if (this.EntityType == typeof(char))
-                {
-                    return "char";
-                }
-
-                return "value";
+                return this.EntityType == typeof(char) ? "char" : "value";
             }
+
             set
             {
                 this.forcedEntity = value;

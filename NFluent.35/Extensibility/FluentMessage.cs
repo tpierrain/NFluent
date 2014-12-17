@@ -29,13 +29,13 @@ namespace NFluent.Extensibility
     {
         #region fields
 
-        private const string DefaultEntity = "value";
-
         internal const string EndOfLine = "\n";
 
         private readonly string message;
 
-        private readonly EntityNamer entityNamer;
+        private readonly EntityNamer checkedNamer;
+       
+        private readonly EntityNamer expectedNamer;
 
         private readonly ILabelBlock checkedLabel;
 
@@ -48,6 +48,8 @@ namespace NFluent.Extensibility
         private string entity;
 
         private Type referenceType;
+
+        private Type checkedType;
 
         #endregion
 
@@ -67,9 +69,10 @@ namespace NFluent.Extensibility
         {
             this.message = message;
             this.EntityDescription = null;
-            this.entityNamer = new EntityNamer();
-            this.checkedLabel = GenericLabelBlock.BuildCheckedBlock(this.entityNamer);
-            this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(this.entityNamer);
+            this.checkedNamer = new EntityNamer();
+            this.expectedNamer = new EntityNamer();
+            this.checkedLabel = GenericLabelBlock.BuildCheckedBlock(this.checkedNamer);
+            this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(this.expectedNamer);
         }
 
         #endregion
@@ -78,42 +81,9 @@ namespace NFluent.Extensibility
 
         private string EntityDescription
         {
-            get
-            {
-                return this.entity ?? DefaultEntity;
-            }
-
             set
             {
                 this.entity = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the expected values label.
-        /// </summary>
-        /// <value>
-        /// The expected values label.
-        /// </value>
-        private string ExpectedValuesLabel
-        {
-            get
-            {
-                return "expected value(s)";
-            }
-        }
-
-        /// <summary>
-        /// Gets the tested value label.
-        /// </summary>
-        /// <value>
-        /// The tested label.
-        /// </value>
-        private string TestedLabel
-        {
-            get
-            {
-                return this.checkedLabel.ToString();
             }
         }
 
@@ -142,12 +112,14 @@ namespace NFluent.Extensibility
             var builder = new StringBuilder(EndOfLine);
             if (this.referenceType != null)
             {
-                this.entityNamer.EntityType = this.referenceType;
+                this.expectedNamer.EntityType = this.referenceType;
+                this.checkedNamer.EntityType = this.checkedType ?? this.referenceType;
             }
 
             if (this.entity != null)
             {
-                this.entityNamer.EntityName = this.entity;
+                this.checkedNamer.EntityName = this.entity;
+                this.expectedNamer.EntityName = this.entity;
             }
 
             string givenOrExpectedLabel;
@@ -162,7 +134,7 @@ namespace NFluent.Extensibility
                 givenOrExpectedLabel = this.expectedLabel.ToString();
             }
 
-            builder.AppendFormat(this.message, this.TestedLabel, givenOrExpectedLabel);
+            builder.AppendFormat(this.message, this.checkedLabel, givenOrExpectedLabel);
 
             if (this.checkedBlock != null)
             {
@@ -191,6 +163,17 @@ namespace NFluent.Extensibility
         }
 
         /// <summary>
+        /// Specifies the type of entities.
+        /// </summary>
+        /// <param name="forcedType">The type of the Entity.</param>
+        /// <returns>The same fluent message.</returns>
+        public FluentMessage For(Type forcedType)
+        {
+            this.referenceType = forcedType;
+            return this;
+        }
+
+        /// <summary>
         /// Adds a block describing the checked objet.
         /// </summary>
         /// <param name="test">The tested object/value.</param>
@@ -203,6 +186,8 @@ namespace NFluent.Extensibility
                 this.referenceType = test.GetTypeWithoutThrowingException();
             }
 
+            this.checkedType = test.GetTypeWithoutThrowingException();
+
             return this.checkedBlock;
         }
 
@@ -210,11 +195,26 @@ namespace NFluent.Extensibility
         /// Adds a message block to describe the expected result.
         /// </summary>
         /// <param name="expected">The expected value.</param>
-        /// <returns>The created MessageBlock.</returns>
+        /// <returns>
+        /// The created MessageBlock.
+        /// </returns>
         public MessageBlock Expected(object expected)
         {
             this.expectedBlock = new MessageBlock(this, expected, this.expectedLabel);
             this.referenceType = expected.GetTypeWithoutThrowingException();
+            return this.expectedBlock;
+        }
+
+        /// <summary>
+        /// Adds a message block to describe the expected result.
+        /// </summary>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        /// The created MessageBlock.
+        /// </returns>
+        public MessageBlock ReferenceValues(object expected)
+        {
+            this.expectedBlock = new MessageBlock(this, expected, this.expectedLabel);
             return this.expectedBlock;
         }
 
@@ -226,7 +226,7 @@ namespace NFluent.Extensibility
         public MessageBlock ExpectedType(Type expectedType)
         {
             this.expectedBlock = new MessageBlock(this, expectedType, this.expectedLabel);
-            this.referenceType = expectedType;
+            this.referenceType = null;
             return this.expectedBlock;
         }
 
@@ -240,7 +240,7 @@ namespace NFluent.Extensibility
             var customNamer = new EntityNamer { EntityName = "value(s)" };
             this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(customNamer);
             this.expectedBlock = new MessageBlock(this, expectedValues, this.expectedLabel);
-            this.referenceType = expectedValues.GetTypeWithoutThrowingException();
+            this.referenceType = this.referenceType ??  expectedValues.GetTypeWithoutThrowingException();
             return this.expectedBlock;
         }
 
@@ -252,7 +252,7 @@ namespace NFluent.Extensibility
         /// <returns>The created MessageBlock.</returns>
         public MessageBlock WithGivenValue(object givenValue)
         {
-            this.expectedLabel = GenericLabelBlock.BuildGivenBlock(this.entityNamer);
+            this.expectedLabel = GenericLabelBlock.BuildGivenBlock(this.checkedNamer);
             this.expectedBlock = new MessageBlock(this, givenValue, this.expectedLabel);
             return this.expectedBlock;
         }

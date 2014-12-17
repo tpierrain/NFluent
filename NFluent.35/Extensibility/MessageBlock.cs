@@ -243,13 +243,11 @@ namespace NFluent.Extensibility
             {
                 if (this.customMessage == null)
                 {
-                    fullLabel = string.Format("The {0}:",
-                        this.block);
+                    fullLabel = string.Format("The {0}:", this.block);
                 }
                 else
                 {
-                    fullLabel = this.block.CustomMessage(customMessage);
-                    
+                    fullLabel = this.block.CustomMessage(this.customMessage);
                 }
             }
             else
