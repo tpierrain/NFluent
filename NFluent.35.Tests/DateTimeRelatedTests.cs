@@ -164,7 +164,7 @@ namespace NFluent.Tests
         }
          
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nThe expected value:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is different from the expected one.\nThe checked date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nThe expected date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]")]
         public void IsEqualToThrowsExceptionWhenNotEqual()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -174,7 +174,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected string.\nThe checked value:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]\nThe expected string:\n\t[\"Batman\"] of type: [string]")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is different from the expected string.\nThe checked date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]\nThe expected string:\n\t[\"Batman\"] of type: [string]")]
         public void IsEqualToThrowsExceptionWhenTypeDiffer()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -183,7 +183,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is equal to the expected one whereas it must not.\nThe expected date time: different from\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]")]
         public void NotIsEqualToThrowsExceptionWhenAreEqual()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -192,7 +192,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]")]
+        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked date time is equal to the expected one whereas it must not.\nThe expected date time: different from\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]")]
         public void IsNotEqualToThrowsExceptionWhenEqual()
         {
             var christmas2013 = new DateTime(2013, 12, 25);

@@ -20,8 +20,6 @@ namespace NFluent.Extensibility
 
     using NFluent.Extensions;
 
-    // TODO: probably worth to refactor the implementation of this class
-
     /// <summary>
     /// Help to build a properly formatted fluent error message.
     /// </summary>
@@ -122,17 +120,8 @@ namespace NFluent.Extensibility
                 this.expectedNamer.EntityName = this.entity;
             }
 
-            string givenOrExpectedLabel;
-            if (this.expectedLabel.CustomMessage("{1}") == this.checkedLabel.CustomMessage("{1}"))
-            {
-                // same label, we avoid an ugly repetition
-                givenOrExpectedLabel = this.expectedLabel.CustomMessage("{0} one");
-            }
-            else
-            {
-                // ok, we have different entities, we must be specific
-                givenOrExpectedLabel = this.expectedLabel.ToString();
-            }
+            var givenOrExpectedLabel = this.expectedLabel.CustomMessage("{1}") == this.checkedLabel.CustomMessage("{1}") 
+                ? this.expectedLabel.CustomMessage("{0} one") : this.expectedLabel.ToString();
 
             builder.AppendFormat(this.message, this.checkedLabel, givenOrExpectedLabel);
 

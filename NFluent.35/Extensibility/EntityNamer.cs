@@ -21,6 +21,8 @@ namespace NFluent.Extensibility
 
     internal class EntityNamer
     {
+        public const string DefaultEntityName = "value";
+
         #region Fields
 
         private string forcedEntity;
@@ -40,7 +42,7 @@ namespace NFluent.Extensibility
 
                 if (this.EntityType == null)
                 {
-                    return "value";
+                    return DefaultEntityName;
                 }
                 
                 if (this.EntityType == typeof(bool))
@@ -53,14 +55,30 @@ namespace NFluent.Extensibility
                     return "string";
                 }
 
-                List<Type> interfaces = new List<Type>(this.EntityType.GetInterfaces());
+                if (this.EntityType == typeof(DateTime))
+                {
+                    return "date time";
+                }
 
-                if (interfaces.Contains(typeof(IEnumerable)) || this.EntityType == typeof(IEnumerable))
+                //if (this.EntityType == typeof(double))
+                //{
+                //    return "double";
+                //}
+
+                var interfaces = new List<Type>(this.EntityType.GetInterfaces());
+                interfaces.Add(this.EntityType);
+
+                if (interfaces.Contains(typeof(IDictionary)))
+                {
+                    return "dictionary";
+                }
+
+                if (interfaces.Contains(typeof(IEnumerable)))
                 {
                     return "enumerable";
                 }
 
-                return this.EntityType == typeof(char) ? "char" : "value";
+                return this.EntityType == typeof(char) ? "char" : DefaultEntityName;
             }
 
             set

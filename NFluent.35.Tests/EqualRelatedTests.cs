@@ -153,7 +153,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Son of a test\"]\nThe expected string:\n\t[null]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from expected one.\nThe checked value:\n\t[\"Son of a test\"]\nThe expected value:\n\t[null]")]
         public void IsEqualToThrowsProperExceptionEvenWithNullAsExpected()
         {
             var first = "Son of a test";
