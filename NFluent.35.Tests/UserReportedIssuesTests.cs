@@ -17,6 +17,7 @@ namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
 
     using NUnit.Framework;
 
@@ -64,20 +65,29 @@ namespace NFluent.Tests
         }
 
         // #issue 115,
-        [TestFixture]
-        public class Test
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'Price' does not have the expected value.\nThe checked value:\n\t[100] of type: [decimal]\nThe expected value:\n\t[100] of type: [int]")]
+        public void FailingTestForDemo()
         {
-            [Test]
-            [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'Price' does not have the expected value.\nThe checked value:\n\t[100] of type: [decimal]\nThe expected value:\n\t[100] of type: [int]")]
-            public void FailingTestForDemo()
-            {
-                var args = new OrderExecutedEventArgs(100M, 150, Way.Sell);
+            var args = new OrderExecutedEventArgs(100M, 150, Way.Sell);
 
-                Check.That(args).HasFieldsWithSameValues(new { Price = 100, Quantity = 150, Way = Way.Sell });
-            }
+            Check.That(args).HasFieldsWithSameValues(new { Price = 100, Quantity = 150, Way = Way.Sell });
         }
 
-        public class OrderExecutedEventArgs : EventArgs
+
+        [Test]
+        public void CheckForSupportOfByteArrays()
+        {
+            var coder = new ASCIIEncoding();
+
+            var sut = coder.GetBytes("test");
+            var expected = coder.GetBytes("test");
+
+            Check.That(sut).ContainsExactly(expected);
+        }
+
+        // helper classes for issue reproduction
+        private class OrderExecutedEventArgs : EventArgs
         {
             public decimal Price { get; private set; }
 
@@ -98,17 +108,18 @@ namespace NFluent.Tests
             Sell,
             Buy
         }
-        public class ModelA
+
+        private class ModelA
         {
             public string Name { get; set; }
         }
 
-        public class ModelB
+        private class ModelB
         {
             public IModelBName Name { get; set; }
         }
 
-        public class ModelBName : IModelBName
+        private class ModelBName : IModelBName
         {
             public string Title { get; set; }
         }
