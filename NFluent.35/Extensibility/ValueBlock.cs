@@ -169,7 +169,7 @@ namespace NFluent.Extensibility
         /// </returns>
         private string Description()
         {
-            var description = new StringBuilder("\t");
+            var description = new StringBuilder();
             description.AppendFormat("[{0}]", this.test.ToStringProperlyFormated());
 
             if (this.enumerableCount.HasValue)

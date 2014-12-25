@@ -97,7 +97,6 @@ namespace NFluent.Tests
             var givenValues = new[] { "Luke", "Yoda", "Chewie", "Vader" };
             
             var message = FluentMessage.BuildMessage("The {0} does not contain exactly the {1}.")
-                                            .For("enumerable")
                                             .On(heroes)
                                             .WithEnumerableCount(heroes.Count())
                                             .And.ExpectedValues(givenValues)
@@ -127,7 +126,6 @@ namespace NFluent.Tests
             const char LowerCasedA = 'a';
 
             var message = FluentMessage.BuildMessage("The {0} is properly displayed.")
-                                            .For("char")
                                             .On(LowerCasedA)
                                             .ToString();
 
@@ -140,7 +138,6 @@ namespace NFluent.Tests
             const char SlashChar = '/';
 
             var message = FluentMessage.BuildMessage("The {0} is properly displayed.")
-                                            .For("char")
                                             .On(SlashChar)
                                             .ToString();
 
@@ -150,9 +147,9 @@ namespace NFluent.Tests
         [Test]
         public void DoubleCurlyBracesWorks()
         {
-            var parameter = "string{45}";
+            const string Parameter = "string{45}";
 
-            Assert.AreEqual("string{{45}}", parameter.DoubleCurlyBraces());
+            Assert.AreEqual("string{{45}}", Parameter.DoubleCurlyBraces());
         }
 
         [Test]
@@ -169,6 +166,11 @@ namespace NFluent.Tests
             var label = GenericLabelBlock.BuildActualBlock(null);
 
             Assert.AreEqual("The actual value:", label.CustomMessage(null));
+        }
+
+        [Test]
+        public void ShouldBlockWorksOnLongEnumeration()
+        {
         }
     }
 }

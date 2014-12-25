@@ -68,7 +68,7 @@ namespace NFluent.Extensibility
         public string GetMessage()
         {
             var builder = new StringBuilder();
-            builder.Append("\tan instance");
+            builder.Append("an instance");
 
             if (this.type != null)
             {

@@ -134,6 +134,7 @@ namespace NFluent.Extensibility
             var builder = new StringBuilder();
             builder.Append(this.FullLabel());
             builder.Append(FluentMessage.EndOfLine);
+            builder.Append('\t');
             builder.Append(this.value.GetMessage());
             return builder.ToString();
         }

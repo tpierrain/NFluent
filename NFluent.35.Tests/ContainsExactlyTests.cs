@@ -17,6 +17,8 @@ namespace NFluent.Tests
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.IO;
+    using System.Text;
 
     using NUnit.Framework;
 
@@ -182,6 +184,15 @@ namespace NFluent.Tests
             Check.That(variousObjects).ContainsExactly(expectedVariousObjects);
         }
 
+        [Test]
+        public void ContainsExactlyWorksOnLargeArrays()
+        {
+            var checkString = File.ReadAllBytes("CheckedFile.xml");
+            var expectedString = File.ReadAllBytes("CheckedFile.xml");
+
+            Check.That(checkString).ContainsExactly(expectedString);
+
+        }
         #endregion
 
         #region test helpers

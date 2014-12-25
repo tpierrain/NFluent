@@ -24,11 +24,6 @@ namespace NFluent.Tests
     [TestFixture]
     public class UserReportedIssuesTests
     {
-        public interface IModelBName
-        {
-            string Title { get; set; }
-        }
-
         [Test]
         public void NullRefExcOnEnumerables()
         {
@@ -75,6 +70,8 @@ namespace NFluent.Tests
         }
 
 
+        // issue #127, request for byte array support
+        // actual issues unclear as it just works.
         [Test]
         public void CheckForSupportOfByteArrays()
         {
@@ -87,6 +84,11 @@ namespace NFluent.Tests
         }
 
         // helper classes for issue reproduction
+        public interface IModelBName
+        {
+            string Title { get; set; }
+        }
+
         private class OrderExecutedEventArgs : EventArgs
         {
             public decimal Price { get; private set; }

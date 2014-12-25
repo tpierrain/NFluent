@@ -504,8 +504,8 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 4758, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n	[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</ARTIST...<<truncated>>...    <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]\nThe expected string:\n	[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</ARTIST...<<truncated>>...    <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]")]
         public void LongStringErrorMessageIsProperlyTruncated()
         {
-            string checkString = File.ReadAllText("CheckedFile.xml", Encoding.UTF8);
-            string expectedString = File.ReadAllText("ExpectedFile.xml", Encoding.UTF8);
+            var checkString = File.ReadAllText("CheckedFile.xml", Encoding.UTF8);
+            var expectedString = File.ReadAllText("ExpectedFile.xml", Encoding.UTF8);
 
             Check.That(checkString).IsEqualTo(expectedString);
         }
