@@ -203,7 +203,7 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsLessThan & Co
+        #region IsLessThan
 
         [Test]
         public void IsLessThanWorks()
@@ -235,6 +235,49 @@ namespace NFluent.Tests
 
         #endregion
 
+        #region IsStrictlyLessThan
+
+        [Test]
+        public void IsStrictlyLessThanWorks()
+        {
+            const float One = 1F;
+            const float Twenty = 20F;
+
+            Check.That(One).IsStrictlyLessThan(Twenty);
+        }
+
+        [Test]
+        public void NotIsStrictlyLessThanWorks()
+        {
+            const float One = 1F;
+            const float Twenty = 20F;
+
+            Check.That(Twenty).Not.IsStrictlyLessThan(One);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly less than the comparand.\nThe checked value:\n\t[1]\nThe expected value: strictly less than\n\t[1]")]
+        public void IsStrictlyLessThanThrowsExceptionWhenFailing()
+        {
+            const float One = 1F;
+
+            Check.That(One).IsStrictlyLessThan(One);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is strictly less than the comparand.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
+        public void NotIsStrictlyLessThanThrowsExceptionWhenFailing()
+        {
+            const float One = 1F;
+            const float Twenty = 20F;
+
+            Check.That(One).Not.IsStrictlyLessThan(Twenty);
+        }
+
+        #endregion
+
+
+
         #region IsGreaterThan
 
         [Test]
@@ -264,6 +307,38 @@ namespace NFluent.Tests
             const float Twenty = 20F;
 
             Check.That(Twenty).Not.IsGreaterThan(One);
+        }
+
+        #endregion
+
+        #region IsStrictlyGreaterThan
+
+        [Test]
+        public void IsStrictlyGreaterThanWorks()
+        {
+            const float One = 1F;
+            const float Twenty = 20F;
+
+            Check.That(Twenty).IsStrictlyGreaterThan(One);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly greater than the comparand.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[1]")]
+        public void IsStrictlyGreaterThanThrowsExceptionWhenFailing()
+        {
+            const float One = 1F;
+
+            Check.That(One).IsStrictlyGreaterThan(One);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is strictly greater than the comparand.\nThe checked value:\n\t[20]\nThe expected value: less than or equal to\n\t[1]")]
+        public void NotIsStrictlyGreaterThanThrowsExceptionWhenFailing()
+        {
+            const float One = 1F;
+            const float Twenty = 20F;
+
+            Check.That(Twenty).Not.IsStrictlyGreaterThan(One);
         }
 
         #endregion

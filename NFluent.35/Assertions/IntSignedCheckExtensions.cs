@@ -33,25 +33,39 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        [Obsolete("Use IsGreaterThanZero instead.")]
+        [Obsolete("Use IsStrictlyPositive instead.")]
         public static ICheckLink<ICheck<int>> IsPositive(this ICheck<int> check)
         {
             var numberCheckStrategy = new NumberCheck<int>(check);
-            return numberCheckStrategy.IsGreaterThanZero();
+            return numberCheckStrategy.IsStrictlyPositive();
         }
 
         /// <summary>
-        /// Checks that the actual value is greater than zero.
+        /// Checks that the actual value is strictly positive.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The value is not greater than zero.</exception>
-        public static ICheckLink<ICheck<int>> IsGreaterThanZero(this ICheck<int> check)
+        /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
+        public static ICheckLink<ICheck<int>> IsStrictlyPositive(this ICheck<int> check)
         {
             var numberCheckStrategy = new NumberCheck<int>(check);
-            return numberCheckStrategy.IsGreaterThanZero();
+            return numberCheckStrategy.IsStrictlyPositive();
+        }
+
+        /// <summary>
+        /// Checks that the actual value is positive or equal to zero.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The value is not positive or equal to zero.</exception>
+        public static ICheckLink<ICheck<int>> IsPositiveOrZero(this ICheck<int> check)
+        {
+            var numberCheckStrategy = new NumberCheck<int>(check);
+            return numberCheckStrategy.IsPositiveOrZero();
         }
 
         /// <summary>
@@ -61,26 +75,40 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        [Obsolete("Use IsLessThanZero instead.")]
+        /// <exception cref="FluentCheckException">The value is not strictly negative.</exception>
+        [Obsolete("Use IsStrictlyNegative instead.")]
         public static ICheckLink<ICheck<int>> IsNegative(this ICheck<int> check)
         {
             var numberCheckStrategy = new NumberCheck<int>(check);
-            return numberCheckStrategy.IsLessThanZero();
+            return numberCheckStrategy.IsStrictlyNegative();
         }
 
         /// <summary>
-        /// Checks that the actual value is less than zero.
+        /// Checks that the actual value is strictly negative.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>
         /// A check link.
         /// </returns>
-        /// <exception cref="FluentCheckException">The value is not less than zero.</exception>
-        public static ICheckLink<ICheck<int>> IsLessThanZero(this ICheck<int> check)
+        /// <exception cref="FluentCheckException">The value is not strictly negative.</exception>
+        public static ICheckLink<ICheck<int>> IsStrictlyNegative(this ICheck<int> check)
         {
             var numberCheckStrategy = new NumberCheck<int>(check);
-            return numberCheckStrategy.IsLessThanZero();
+            return numberCheckStrategy.IsStrictlyNegative();
+        }
+
+        /// <summary>
+        /// Checks that the actual value is negative or equal to zero.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The value is not negative or equal to zero.</exception>
+        public static ICheckLink<ICheck<int>> IsNegativeOrZero(this ICheck<int> check)
+        {
+            var numberCheckStrategy = new NumberCheck<int>(check);
+            return numberCheckStrategy.IsNegativeOrZero();
         }
     }
 }

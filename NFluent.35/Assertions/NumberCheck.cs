@@ -86,11 +86,11 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual value is greater than zero (i.e. strictly positive).
+        /// Checks that the actual value is strictly positive (i.e. greater than zero).
         /// </summary>
         /// <returns>A check link.</returns>
-        /// <exception cref="FluentCheckException">The value is not greater than zero (i.e. strictly positive).</exception>
-        public ICheckLink<ICheck<TN>> IsGreaterThanZero()
+        /// <exception cref="FluentCheckException">The value is not strictly positive (i.e. greater than zero).</exception>
+        public ICheckLink<ICheck<TN>> IsStrictlyPositive()
         {
             return this.checker.ExecuteCheck(
                 () =>
@@ -98,10 +98,29 @@ namespace NFluent
                         if (Convert.ToDouble(this.checker.Value) <= 0)
                         {
                             throw new FluentCheckException(
-                                this.checker.BuildMessage("The {0} is not greater than zero.").ToString());
+                                this.checker.BuildMessage("The {0} is not strictly positive (i.e. greater than zero).").ToString());
                         }
                     },
-                this.checker.BuildMessage("The {0} is greater than zero, whereas it must not.").ToString());
+                this.checker.BuildMessage("The {0} is strictly positive (i.e. greater than zero), whereas it must not.").ToString());
+        }
+
+        /// <summary>
+        /// Checks that the actual value is positive or equal to zero.
+        /// </summary>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">The value is not positive or equal to zero.</exception>
+        public ICheckLink<ICheck<TN>> IsPositiveOrZero()
+        {
+            return this.checker.ExecuteCheck(
+                () =>
+                {
+                    if (Convert.ToDouble(this.checker.Value) < 0)
+                    {
+                        throw new FluentCheckException(
+                            this.checker.BuildMessage("The {0} is not positive or equal to zero.").ToString());
+                    }
+                },
+                this.checker.BuildMessage("The {0} is positive or equal to zero, whereas it must not.").ToString());
         }
 
         /// <summary>
@@ -109,17 +128,35 @@ namespace NFluent
         /// </summary>
         /// <returns>A check link.</returns>
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        public ICheckLink<ICheck<TN>> IsLessThanZero()
+        public ICheckLink<ICheck<TN>> IsStrictlyNegative()
         {
             return this.checker.ExecuteCheck(
                 () =>
                 {
                     if (Convert.ToDouble(this.checker.Value) >= 0)
                     {
-                        throw new FluentCheckException(checker.BuildMessage("The {0} is not less than zero.").ToString());
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is not strictly negative.").ToString());
                     }
                 },
-                this.checker.BuildMessage("The {0} is less than zero, whereas it must not.").ToString());
+                this.checker.BuildMessage("The {0} is strictly negative, whereas it must not.").ToString());
+        }
+
+        /// <summary>
+        /// Checks that the actual value is negative or equal to zero.
+        /// </summary>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">The value is not negative or equal to zero.</exception>
+        public ICheckLink<ICheck<TN>> IsNegativeOrZero()
+        {
+            return this.checker.ExecuteCheck(
+                () =>
+                {
+                    if (Convert.ToDouble(this.checker.Value) > 0)
+                    {
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is not negative or equal to zero.").ToString());
+                    }
+                },
+                this.checker.BuildMessage("The {0} is negative or equal to zero, whereas it must not.").ToString());
         }
 
         /// <summary>
@@ -148,6 +185,31 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the checked value is strictly less than the comparand.
+        /// </summary>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The checked value is not strictly less than the comparand.
+        /// </exception>
+        public ICheckLink<ICheck<TN>> IsStrictlyLessThan(TN comparand)
+        {
+            return this.checker.ExecuteCheck(
+                () =>
+                {
+                    if (this.checker.Value.CompareTo(comparand) >= 0)
+                    {
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is not strictly less than the comparand.").Expected(comparand).Comparison("strictly less than").ToString());
+                    }
+                },
+                this.checker.BuildMessage("The {0} is strictly less than the comparand.").Expected(comparand).Comparison("more than").ToString());
+        }
+
+        /// <summary>
         /// Checks that the actual value is more than a comparand.
         /// </summary>
         /// <param name="comparand">
@@ -170,6 +232,31 @@ namespace NFluent
                         }
                     },
                 this.checker.BuildMessage("The {0} is greater than the threshold.").Expected(comparand).Comparison("less than").ToString());
+        }
+
+        /// <summary>
+        /// Checks that the actual value is more than a comparand.
+        /// </summary>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The value is not less than the comparand.
+        /// </exception>
+        public ICheckLink<ICheck<TN>> IsStrictlyGreaterThan(TN comparand)
+        {
+            return this.checker.ExecuteCheck(
+                () =>
+                    {
+                        if (this.checker.Value.CompareTo(comparand) <= 0)
+                        {
+                            throw new FluentCheckException(checker.BuildMessage("The {0} is not strictly greater than the comparand.").Expected(comparand).Comparison("more than").ToString());
+                        }
+                    },
+                this.checker.BuildMessage("The {0} is strictly greater than the comparand.").Expected(comparand).Comparison("less than or equal to").ToString());
         }
 
         /// <summary>

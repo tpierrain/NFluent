@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
     using NFluent.Extensibility;
 
     /// <summary>
@@ -178,6 +180,27 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the checked value is strictly less than the comparand.
+        /// </summary>
+        /// <param name="check">
+        /// The fluent check to be extended.
+        /// </param>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The value is not strictly less than the comparand.
+        /// </exception>
+        public static ICheckLink<ICheck<uint>> IsStrictlyLessThan(this ICheck<uint> check, uint comparand)
+        {
+            var numberCheckStrategy = new NumberCheck<uint>(check);
+            return numberCheckStrategy.IsStrictlyLessThan(comparand);
+        }
+
+        /// <summary>
         /// Checks that the actual value is more than an operand.
         /// </summary>
         /// <param name="check">
@@ -192,10 +215,32 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
+        [Obsolete("Use IsStrictlyGreaterThan instead.")]
         public static ICheckLink<ICheck<uint>> IsGreaterThan(this ICheck<uint> check, uint comparand)
         {
             var numberCheckStrategy = new NumberCheck<uint>(check);
             return numberCheckStrategy.IsGreaterThan(comparand);
+        }
+
+        /// <summary>
+        /// Checks that the checked value is strictly greater than the comparand.
+        /// </summary>
+        /// <param name="check">
+        /// The fluent check to be extended.
+        /// </param>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The checked value is not strictly greater than the comparand.
+        /// </exception>
+        public static ICheckLink<ICheck<uint>> IsStrictlyGreaterThan(this ICheck<uint> check, uint comparand)
+        {
+            var numberCheckStrategy = new NumberCheck<uint>(check);
+            return numberCheckStrategy.IsStrictlyGreaterThan(comparand);
         }
     }
 }
