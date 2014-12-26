@@ -64,6 +64,7 @@
     <Compile Include="Assertions\EventWaitHandleCheckExtensions.cs" />
     <Compile Include="Assertions\ObjectFieldsCheckExtensions.cs" />
     <Compile Include="Extensibility\EntityNamer.cs" />
+    <Compile Include="Extensibility\EnumerationBlock.cs" />
     <Compile Include="Extensibility\ILabelBlock.cs" />
     <Compile Include="Extensibility\InstanceBlock.cs" />
     <Compile Include="Extensibility\IValueDescription.cs" />

@@ -51,5 +51,15 @@ namespace NFluent.Tests
             blk.WithEnumerableCount(list.GetLength(0));
             Assert.AreEqual("[\"a\", \"b\", \"c\"] (3 items)", blk.GetMessage());
         }
+
+        [Test]
+        public void ShouldTruncateLongEnumeration()
+        {
+            var list = "this is a long string to be converted to a byte array".ToCharArray();
+            var blk = new EnumerationBlock(list);
+
+            blk.WithEnumerableCount(list.GetLength(0));
+            Assert.AreEqual("[\'t\', \'h\', \'i\', \'s\', \' \', \'i\', \'s\', \' \', \'a\', ...] (53 items)", blk.GetMessage());
+        }
     }
 }
