@@ -126,6 +126,7 @@ namespace NFluent.Extensibility
         /// </remarks>
         public void WithType(Type forcedType)
         {
+            throw new NotSupportedException();
         }
 
         #endregion

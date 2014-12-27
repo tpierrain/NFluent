@@ -60,11 +60,6 @@ namespace NFluent.Extensibility
                     return "date time";
                 }
 
-                //if (this.EntityType == typeof(double))
-                //{
-                //    return "double";
-                //}
-
                 var interfaces = new List<Type>(this.EntityType.GetInterfaces());
                 interfaces.Add(this.EntityType);
 

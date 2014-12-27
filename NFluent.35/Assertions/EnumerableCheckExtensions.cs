@@ -206,6 +206,7 @@ namespace NFluent
                         {
                             throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker, enumerable, index));
                         }
+
                         index++;
                     }
 
@@ -437,7 +438,7 @@ namespace NFluent
             FluentMessage message;
             if (checkedValue != null && enumerable != null)
             {
-                if (sutCount <expectedCount && index == sutCount)
+                if (sutCount < expectedCount && index == sutCount)
                 {
                     message = checker.BuildMessage(string.Format("The {{0}} does not contain exactly the expected value(s). Items are missing starting at index #{0}.", index));
                 }
@@ -454,6 +455,7 @@ namespace NFluent
             {
                 message = checker.BuildMessage("The {0} does not contain exactly the expected value(s).");
             }
+
             message.For(typeof(IEnumerable))
             .On(checkedValue)
             .WithEnumerableCount(sutCount)

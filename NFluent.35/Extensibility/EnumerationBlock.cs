@@ -1,3 +1,18 @@
+//  --------------------------------------------------------------------------------------------------------------------
+//  <copyright file="EnumerationBlock.cs" company="">
+//    Copyright 2014 Cyrille DUPUYDAUBY
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//        http://www.apache.org/licenses/LICENSE-2.0
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//  </copyright>
+//  --------------------------------------------------------------------------------------------------------------------
+
 namespace NFluent.Extensibility
 {
     using System;
@@ -11,12 +26,20 @@ namespace NFluent.Extensibility
     /// </summary>
     internal class EnumerationBlock : IValueDescription
     {
+        #region Constants
+
+        private const int NumberOfItemsToList = 20;
+
+        #endregion
+
         #region Fields
 
         /// <summary>
         /// The tested object.
         /// </summary>
         private readonly IEnumerable test;
+
+        private readonly long referenceIndex;
 
         /// <summary>
         /// The enumerable count.
@@ -48,14 +71,14 @@ namespace NFluent.Extensibility
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnumerationBlock"/> class.
+        /// Initializes a new instance of the <see cref="EnumerationBlock" /> class.
         /// </summary>
-        /// <param name="test">
-        /// The tested object.
-        /// </param>
-        public EnumerationBlock(IEnumerable test)
+        /// <param name="test">The tested object.</param>
+        /// <param name="referenceIndex">Index of the reference value.</param>
+        public EnumerationBlock(IEnumerable test, long referenceIndex)
         {
             this.test = test;
+            this.referenceIndex = referenceIndex;
             this.type = test.GetTypeWithoutThrowingException();
         }
 
@@ -76,7 +99,9 @@ namespace NFluent.Extensibility
 
             if (this.includeType && this.type != null)
             {
-                string temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormated();
+                var temp = this.fullTypeName
+                    ? this.type.AssemblyQualifiedName
+                    : this.type.ToStringProperlyFormated();
                 builder.AppendFormat(" of type: [{0}]", temp);
             }
 
@@ -152,33 +177,57 @@ namespace NFluent.Extensibility
         /// </returns>
         private string Description()
         {
+            if (this.test == null)
+            {
+                return "[null]";
+            }
+
             var description = new StringBuilder("[");
             var iterator = this.test.GetEnumerator();
-            for(var i = 0; i < 10; i++)
+
+            // we skip the first items
+            var firstIndex = Math.Max(0, this.referenceIndex - (NumberOfItemsToList / 2));
+            if (firstIndex > 0)
+            {
+                for (var i = 0; i < firstIndex; i++)
+                {
+                    iterator.MoveNext();
+                }
+
+                description.Append("...");
+            }
+
+            // items to display
+            for (var i = firstIndex; i < firstIndex + NumberOfItemsToList; i++)
             {
                 if (!iterator.MoveNext())
                 {
+                    // end of enumeration
                     break;
                 }
-                if (i == 9)
-                {
-                    description.Append(", ...");
-                    break;
-                }
+
                 if (i != 0)
                 {
+                    // add comma
                     description.Append(", ");
                 }
+
+                if (i == firstIndex + NumberOfItemsToList - 1)
+                {
+                    description.Append("...");
+                    break;
+                }
+
                 description.Append(iterator.Current.ToStringProperlyFormated());
             }
-            
+
             description.AppendFormat("]");
 
             if (this.enumerableCount.HasValue)
             {
                 description.AppendFormat(
-                    " ({0} {1})", 
-                    this.enumerableCount, 
+                    " ({0} {1})",
+                    this.enumerableCount,
                     this.enumerableCount <= 1 ? "item" : "items");
             }
 
