@@ -90,10 +90,6 @@ namespace NFluent.Extensibility
         public FluentMessage BuildMessage(string message)
         {
             var result = this.BuildShortMessage(message);
-            if (!string.IsNullOrEmpty(this.sutLabel))
-            {
-                result.For(this.sutLabel);
-            }
 
             result.On(this.Value);
             return result;

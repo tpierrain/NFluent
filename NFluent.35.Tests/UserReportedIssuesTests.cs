@@ -17,6 +17,7 @@ namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Text;
 
     using NUnit.Framework;
@@ -81,6 +82,15 @@ namespace NFluent.Tests
             var expected = coder.GetBytes("test");
 
             Check.That(sut).ContainsExactly(expected);
+        }
+
+        [Test]
+        public void LongStringErrorMessageIsProperlyTruncated()
+        {
+            var checkString = File.ReadAllBytes("CheckedFile.xml");
+            var expectedString = File.ReadAllBytes("ExpectedFile.xml");
+// TODO: implement support for LONG enumeration
+//            Check.That(checkString).IsEqualTo(expectedString);
         }
 
         // helper classes for issue reproduction

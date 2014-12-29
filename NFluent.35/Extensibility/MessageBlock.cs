@@ -30,7 +30,7 @@ namespace NFluent.Extensibility
     {
         #region Fields
 
-        private readonly ILabelBlock block;
+        private readonly GenericLabelBlock block;
 
         private readonly FluentMessage message;
 
@@ -56,7 +56,7 @@ namespace NFluent.Extensibility
         /// <param name="block">
         /// The block attribute.
         /// </param>
-        internal MessageBlock(FluentMessage message, object test, ILabelBlock block)
+        internal MessageBlock(FluentMessage message, object test, GenericLabelBlock block)
             : this(message, test.GetTypeWithoutThrowingException(), block)
         {
             this.value = new ValueBlock(test);
@@ -74,7 +74,7 @@ namespace NFluent.Extensibility
         /// <param name="label">
         /// The block label.
         /// </param>
-        internal MessageBlock(FluentMessage message, Type type, ILabelBlock label)
+        internal MessageBlock(FluentMessage message, Type type, GenericLabelBlock label)
         {
             if (message == null)
             {

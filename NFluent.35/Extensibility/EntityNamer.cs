@@ -19,6 +19,12 @@ namespace NFluent.Extensibility
     using System.Collections;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Is responsible to provide adequate namings for values in NFluent. Rule is:
+    /// 1 specified name
+    /// 2 type dependant name (for known types)
+    /// 3 'value'
+    /// </summary>
     internal class EntityNamer
     {
         public const string DefaultEntityName = "value";

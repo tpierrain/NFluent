@@ -35,9 +35,9 @@ namespace NFluent.Extensibility
        
         private readonly EntityNamer expectedNamer;
 
-        private readonly ILabelBlock checkedLabel;
+        private readonly GenericLabelBlock checkedLabel;
 
-        private ILabelBlock expectedLabel;
+        private GenericLabelBlock expectedLabel;
 
         private MessageBlock expectedBlock;
 

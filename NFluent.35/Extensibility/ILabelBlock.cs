@@ -16,20 +16,8 @@
 #endregion
 namespace NFluent.Extensibility
 {
-    /// <summary>
-    /// Interface for Label generator.
-    /// </summary>
-    internal interface ILabelBlock
-    {
-        /// <summary>
-        /// Build a custom message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <returns>A custom formatted message.</returns>
-        string CustomMessage(string message);
-    }
 
-    internal class GenericLabelBlock : ILabelBlock
+   internal class GenericLabelBlock
     {
         private readonly string adjective;
 
@@ -60,22 +48,22 @@ namespace NFluent.Extensibility
         /// </value>
         private EntityNamer EntityLogic { get; set; }
 
-        public static ILabelBlock BuildActualBlock(EntityNamer namer)
+        public static GenericLabelBlock BuildActualBlock(EntityNamer namer)
         {
             return new GenericLabelBlock("actual", namer);
         }
 
-        public static ILabelBlock BuildCheckedBlock(EntityNamer namer)
+        public static GenericLabelBlock BuildCheckedBlock(EntityNamer namer)
         {
             return new GenericLabelBlock("checked", namer);
         }
 
-        public static ILabelBlock BuildExpectedBlock(EntityNamer namer)
+        public static GenericLabelBlock BuildExpectedBlock(EntityNamer namer)
         {
             return new GenericLabelBlock("expected", namer);
         }
 
-        public static ILabelBlock BuildGivenBlock(EntityNamer namer)
+        public static GenericLabelBlock BuildGivenBlock(EntityNamer namer)
         {
             return new GenericLabelBlock("given", namer);
         }
