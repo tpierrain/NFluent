@@ -19,6 +19,7 @@
 namespace NFluent.Extensibility
 {
     using System;
+    using System.Collections;
     using System.Text;
 
     using NFluent.Extensions;
@@ -59,7 +60,40 @@ namespace NFluent.Extensibility
         internal MessageBlock(FluentMessage message, object test, GenericLabelBlock block)
             : this(message, test.GetTypeWithoutThrowingException(), block)
         {
-            this.value = new ValueBlock(test);
+            if (!(test is string) && (test is IEnumerable))
+            {
+                this.value = new EnumerationBlock(test as IEnumerable, 0);
+            }
+            else
+            {
+                this.value = new ValueBlock(test);
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageBlock"/> class.
+        /// </summary>
+        /// <param name="message">
+        /// The message.
+        /// </param>
+        /// <param name="test">
+        /// The tested object.
+        /// </param>
+        /// <param name="block">
+        /// The block attribute.
+        /// </param>
+        /// <param name="index">index to focus on.</param>
+        internal MessageBlock(FluentMessage message, IEnumerable test, int index, GenericLabelBlock block)
+            : this(message, test.GetTypeWithoutThrowingException(), block)
+        {
+            if (!(test is string))
+            {
+                this.value = new EnumerationBlock(test, index);
+            }
+            else
+            {
+                this.value = new ValueBlock(test);
+            }
         }
 
         /// <summary>
