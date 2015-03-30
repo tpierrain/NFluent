@@ -79,10 +79,10 @@ namespace NFluent.Extensibility
         /// <param name="test">
         /// The tested object.
         /// </param>
+        /// <param name="index">Index to focus on.</param>
         /// <param name="block">
         /// The block attribute.
         /// </param>
-        /// <param name="index">index to focus on.</param>
         internal MessageBlock(FluentMessage message, IEnumerable test, int index, GenericLabelBlock block)
             : this(message, test.GetTypeWithoutThrowingException(), block)
         {

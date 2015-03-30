@@ -20,10 +20,11 @@ namespace NFluent.Extensibility
     using System.Collections.Generic;
 
     /// <summary>
-    /// Is responsible to provide adequate namings for values in NFluent. Rule is:
+    /// Is responsible to provide adequate naming for values in NFluent. Rule is:
     /// 1 specified name
     /// 2 type dependant name (for known types)
     /// 3 'value'
+    /// This provides a consistent algorithm for all messages.
     /// </summary>
     internal class EntityNamer
     {
