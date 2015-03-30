@@ -99,10 +99,10 @@ namespace NFluent
             if (!value.Equals(propertyValue))
             {
                 var message = FluentMessage
-                    .BuildMessage(string.Format("The property [{0}] of the {{0}} do not have the expected value.", propertyName.DoubleCurlyBraces()))
-                    .For("exception")
-                    .Expected(propertyValue)
-                    .And.WithGivenValue(value).ToString();
+                    .BuildMessage(string.Format("The {{0}} [{0}] does not have the expected value.", propertyName.DoubleCurlyBraces()))
+                    .For("expection's property")
+                    .On(value)
+                    .And.WithGivenValue(propertyValue).ToString();
 
                 throw new FluentCheckException(message);
             }

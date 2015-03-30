@@ -22,11 +22,7 @@ namespace NFluent
     /// <typeparam name="T">Type of the <see cref="IForkableCheck"/> to be chained.</typeparam>
     internal class CheckLink<T> : ICheckLink<T> where T : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
-        #region fields
-
         private readonly T newCheckWithSameValue;
-
-        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckLink{T}" /> class.

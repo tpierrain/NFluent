@@ -63,6 +63,14 @@
     <Compile Include="Assertions\DoubleSpecificCheckExtensions.cs" />
     <Compile Include="Assertions\EventWaitHandleCheckExtensions.cs" />
     <Compile Include="Assertions\ObjectFieldsCheckExtensions.cs" />
+    <Compile Include="Extensibility\EntityNamer.cs" />
+    <Compile Include="Extensibility\EnumerationBlock.cs" />
+    <Compile Include="Extensibility\GenericLabelBlock.cs" />
+    <Compile Include="Extensibility\InstanceBlock.cs" />
+    <Compile Include="Extensibility\IValueDescription.cs" />
+    <Compile Include="Extensibility\MessageBlock.cs" />
+    <Compile Include="Extensibility\ValueBlock.cs" />
+    <Compile Include="Extensions\MessageRelatedExtensions.cs" />
     <Compile Include="FluentCodeCheck.cs" />
     <Compile Include="Extensibility\ExtensibilityHelper.cs" />
     <Compile Include="Assertions\IntSignedCheckExtensions.cs" />

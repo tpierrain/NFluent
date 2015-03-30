@@ -28,12 +28,6 @@
 
 
 
-
-
-
-
-
-
 // Generated helper templates
 // Generated items
 // NFluent\NFluent.35\T4\FloatSpecificCheckExtensions.cs

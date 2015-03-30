@@ -11,6 +11,7 @@ Change(s):
 * Check.ThatCode(...).Throws&lt;T&gt;() now requires T to be an exception. This restriction ensures only Exceptions are proposed in autocompletion.
 * Simplify the way you can extend NFluent by adding your own checks. Now, you can call: var checker = ExtensibilityHelper.ExtractChecker(check);  at the beginning of your check extension method, and then rely on its ExecuteCheck() or BuildMessage() helper methods to do the job. Note: the Checker is part of the NFluent.Extensibility namespace.
 
+
 --------------
 Bug Fixe(s):
 * Fix the inversion between expected and actual error message for the .WithMessage checks on exception.

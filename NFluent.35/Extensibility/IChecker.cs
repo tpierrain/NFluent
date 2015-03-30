@@ -78,5 +78,11 @@ namespace NFluent.Extensibility
         /// <param name="message">The message.</param>
         /// <returns>A <see cref="FluentMessage"/> instance.</returns>
         FluentMessage BuildShortMessage(string message);
+
+        /// <summary>
+        /// Sets an optional label for the SUT to be used instead of the default one for message generation.
+        /// </summary>
+        /// <param name="sutLabel">The label for the SUT.</param>
+        void SetSutLabel(string sutLabel);
     }
 }

@@ -15,6 +15,13 @@
         }
 
         [Test]
+        public void ObsoleteAPIChecks()
+        {
+            var x = new DummyClass();
+            Check.That(x).HasFieldsEqualToThose(new DummyClass());
+        }
+
+        [Test]
         public void HasNotFieldsWithSameValuesWorks()
         {
             var x = new DummyClass();

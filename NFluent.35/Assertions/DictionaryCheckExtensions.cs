@@ -47,11 +47,11 @@ namespace NFluent
                 {
                     if (!checker.Value.Contains(key))
                     {
-                        var message = checker.BuildMessage("The {0} does not contain the expected key.").For("dictionary").Expected(key).Label("Expected key:").ToString();
+                        var message = checker.BuildMessage("The {0} does not contain the expected key.").Expected(key).Label("Expected key:").ToString();
                         throw new FluentCheckException(message);
                     }
                 },
-                checker.BuildMessage("The {0} does contain the given key, whereas it must not.").For("dictionary").Expected(key).Label("Given key:").ToString());
+                checker.BuildMessage("The {0} does contain the given key, whereas it must not.").Expected(key).Label("Given key:").ToString());
         }
 
         /// <summary>
@@ -88,11 +88,11 @@ namespace NFluent
 
                     if (!found)
                     {
-                        var message = checker.BuildMessage("The {0} does not contain the expected value.").For("dictionary").Expected(expectedValue).Label("given value:").ToString();
+                        var message = checker.BuildMessage("The {0} does not contain the expected value.").Expected(expectedValue).Label("Expected value:").ToString();
                         throw new FluentCheckException(message);
                     }
                 },
-                checker.BuildMessage("The {0} does contain the given value, whereas it must not.").For("dictionary").Expected(expectedValue).Label("Expected value:").ToString());
+                checker.BuildMessage("The {0} does contain the given value, whereas it must not.").Expected(expectedValue).Label("Expected value:").ToString());
         }
     }
 }
