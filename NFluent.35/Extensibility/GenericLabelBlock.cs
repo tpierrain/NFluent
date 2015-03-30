@@ -1,6 +1,6 @@
 ﻿#region File header
 // // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ILabelBlock.cs" company="">
+// // <copyright file="GenericLabelBlock.cs" company="">
 // //   Copyright 2014 Cyrille Dupuydauby, Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 #endregion
 namespace NFluent.Extensibility
 {
-
    internal class GenericLabelBlock
     {
         private readonly string adjective;
