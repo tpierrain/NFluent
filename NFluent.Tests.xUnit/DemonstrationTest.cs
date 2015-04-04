@@ -15,7 +15,7 @@
         [Fact]
         public void FailingTest()
         {
-            Check.That("test").IsEqualTo("tt");
+            //Check.That("test").IsEqualTo("tt");
         }
     }
 }

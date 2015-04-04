@@ -55,7 +55,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests", "NFluent
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.PCL", "NFluent.PCL\NFluent.PCL.csproj", "{4797A166-0410-451E-8DAB-DA7113D77062}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.xUnit", "NFluent.Tests.xUnit\NFluent.Tests.xUnit.csproj", "{C2A69048-F5A6-4614-8DBE-143F3BF684B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.xUnit.40", "NFluent.Tests.xUnit\NFluent.Tests.xUnit.40.csproj", "{C2A69048-F5A6-4614-8DBE-143F3BF684B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +88,7 @@ Global
 		{1BAA72CB-3A46-4711-9A5B-F96CF20D465E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BAA72CB-3A46-4711-9A5B-F96CF20D465E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C2A9D408-A220-4502-883A-33648C57354A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2A9D408-A220-4502-883A-33648C57354A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2A9D408-A220-4502-883A-33648C57354A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2A9D408-A220-4502-883A-33648C57354A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6B88C45A-D45E-40FB-8635-D0E0EF0454E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
