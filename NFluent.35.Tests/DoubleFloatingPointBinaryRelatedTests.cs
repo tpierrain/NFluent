@@ -102,5 +102,54 @@ namespace NFluent.Tests
         }
 
         #endregion
+
+        #region isEqualToUsingDelta
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "Expected: [0.556] but was: [0.555] using delta: [0.0001]")]
+        public void ShouldThrowsExceptionWhenValuesDeltaIsGreaterThanExpected()
+        {
+            // given
+            const double value = 0.555D;
+            const double expected = 0.556D;
+            var expectedDelta = Delta.Of(0.0001D);
+
+            // when
+            Check.That(value).IsEqualTo(expected, expectedDelta);
+
+            // then throw FluentCheckException
+        }
+
+        [Test]
+        public void ShouldReturnValuesAreEqualsWhenValuesDetltaIsEqualsToExpected()
+        {
+            // given
+            const double value = 0.1D;
+            const double expected = 0.2D;
+            var expectedDelta = Delta.Of(0.1D);
+           
+
+            // when
+            Check.That(value).IsEqualTo(expected, expectedDelta);
+
+            // then pass
+        }
+
+        [Test]
+        public void ShouldReturnValuesAreEqualsWhenValuesDetltaIsEqualsToZero()
+        {
+            // given
+            const double value = 0.1D;
+            const double expected = 0.1D;
+            var expectedDelta = Delta.Of(0.001D);
+
+
+            // when
+            Check.That(value).IsEqualTo(expected, expectedDelta);
+
+            // then pass
+        }
+
+        #endregion
     }
 }
