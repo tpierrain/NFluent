@@ -80,22 +80,22 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">Expected value</param>
-        /// <param name="delta">Precision</param>
+        /// <param name="expectedDelta">Expected precision</param>
         /// <returns>A check link.</returns>
-        public static ICheckLink<ICheck<double>> IsEqualTo(this ICheck<double> check, double expected, Delta delta)
+        public static ICheckLink<ICheck<double>> IsEqualTo(this ICheck<double> check, double expected, Delta expectedDelta)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var errorMessage = String.Format(CultureInfo.InvariantCulture, 
                 "Expected: [{0}] but was: [{1}] using delta: [{2}]",
-                expected, checker.Value, delta.Value);
+                expected, checker.Value, expectedDelta.Value);
             return checker.ExecuteCheck(() =>
-               {
-                   var comparation = Math.Abs(expected - checker.Value);
-                   if (comparation > delta.Value)
-                   {
+            {
+                var delta = Delta.Calculate(checker.Value, expected);
+                if (delta > expectedDelta)
+                {
                        throw new FluentCheckException(errorMessage);
-                   }
-               }, errorMessage);
+                }
+            }, errorMessage);
         } 
     }
 }
