@@ -12,6 +12,9 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using System.ComponentModel;
+
 namespace NFluent
 {
     using System;
@@ -259,7 +262,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not the same reference than the expected value.</exception>
-        public static ICheckLink<ICheck<T>> IsSameReferenceThan<T>(this ICheck<T> check, object expected)
+        public static ICheckLink<ICheck<T>> IsSameReferenceAs<T>(this ICheck<T> check, object expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = checker.Negated;
@@ -277,6 +280,25 @@ namespace NFluent
             }
 
             return checker.BuildChainingObject();
+        }
+
+        /// <summary>
+        /// Obsolete. Use <see cref="ObjectCheckExtensions.IsSameReferenceAs{T}"/> instead.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected object.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value is not the same reference than the expected value.</exception>
+        [Obsolete]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static ICheckLink<ICheck<T>> IsSameReferenceThan<T>(this ICheck<T> check, object expected)
+        {
+            return IsSameReferenceAs(check, expected);
         }
 
         private static string SameReferenceImpl(object expected, object value, bool negated, out string comparison)

@@ -23,24 +23,24 @@ namespace NFluent.Tests
     public class ObjectRelatedTest
     {
         [Test]
-        public void IsSameReferenceThanWorks()
+        public void IsSameReferenceAsWorks()
         {
             var test = new object();
-            Check.That(test).IsSameReferenceThan(test);
+            Check.That(test).IsSameReferenceAs(test);
         }
 
         [Test]
-        public void IsSameReferenceThanDoesNotLoseOriginalTypeForOtherCheck()
+        public void IsSameReferenceAsDoesNotLoseOriginalTypeForOtherCheck()
         {
             var numbers = new[] { 1, 4, 42 };
-            Check.That(numbers).IsSameReferenceThan(numbers).And.Contains(42);
+            Check.That(numbers).IsSameReferenceAs(numbers).And.Contains(42);
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked object must be the same instance than expected one.\nThe checked object:\n\t[System.Object]\nThe expected object: same instance than\n\t[System.Object]")]
         public void IsSameReferenceFailsProperly()
         {
-            Check.That(new object()).IsSameReferenceThan(new object());
+            Check.That(new object()).IsSameReferenceAs(new object());
         }
 
         [Test]
@@ -158,7 +158,7 @@ namespace NFluent.Tests
         {
             var test = new object();
             Check.That(test).Not.IsDistinctFrom(test);
-            Check.That(new object()).Not.IsSameReferenceThan(new object());
+            Check.That(new object()).Not.IsSameReferenceAs(new object());
         }
     }
 }
