@@ -139,6 +139,9 @@
     <Compile Include="..\NFluent.35\CheckLink.cs">
       <Link>CheckLink.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35\CollectionElementCheck.cs">
+      <Link>CollectionElementCheck.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35\Constants.cs">
       <Link>Constants.cs</Link>
     </Compile>
@@ -228,6 +231,9 @@
     </Compile>
     <Compile Include="..\NFluent.35\ICodeCheck.cs">
       <Link>ICodeCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\ICollectionElementCheck.cs">
+      <Link>ICollectionElementCheck.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\IExposingChecker.cs">
       <Link>IExposingChecker.cs</Link>

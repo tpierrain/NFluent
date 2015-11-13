@@ -65,6 +65,7 @@
     <Compile Include="Assertions\DoubleSpecificCheckExtensions.cs" />
     <Compile Include="Assertions\EventWaitHandleCheckExtensions.cs" />
     <Compile Include="Assertions\ObjectFieldsCheckExtensions.cs" />
+    <Compile Include="CollectionElementCheck.cs" />
     <Compile Include="Extensibility\EntityNamer.cs" />
     <Compile Include="Extensibility\EnumerationBlock.cs" />
     <Compile Include="Extensibility\GenericLabelBlock.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Extensibility\FluentMessage.cs" />
     <Compile Include="ICodeCheck.cs" />
+    <Compile Include="ICollectionElementCheck.cs" />
     <Compile Include="IExposingChecker.cs" />
     <Compile Include="IHasParentCheck.cs" />
     <Compile Include="ILambdaExceptionCheck.cs" />

@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
@@ -345,6 +346,122 @@ namespace NFluent
             return new CheckLink<ICheck<IEnumerable>>(check);
         }
 
+        /// <summary>
+        /// Checks that the enumerable has a first element, and returns a check on that element.
+        /// </summary>
+        /// <typeparam name="T">The element type of the collection.</typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>A check on the first element.</returns>
+        public static ICollectionElementCheck<T> HasFirstElement<T>(this ICheck<IEnumerable<T>> check)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+
+            if (checker.Value == null)
+            {
+                var errorMessage = BuildShortMessage(checker, "The {0} is null, where as it must have a first element.");
+                throw new FluentCheckException(errorMessage);
+            }
+
+            T first;
+            if (!TryGetElementByNumber(checker.Value, 1, out first))
+            {
+                var errorMessage = BuildShortMessage(checker, "The {0} is empty, where as it must have a first element.");
+                throw new FluentCheckException(errorMessage);
+            }
+            return new CollectionElementCheck<T>(first);
+        }
+
+        /// <summary>
+        /// Checks that the enumerable has a last element, and returns a check on that element.
+        /// </summary>
+        /// <typeparam name="T">The element type of the collection.</typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>A check on the last element.</returns>
+        public static ICollectionElementCheck<T> HasLastElement<T>(this ICheck<IEnumerable<T>> check)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+
+            if (checker.Value == null)
+            {
+                var nullErrorMessage = BuildShortMessage(checker, "The {0} is null, where as it must have a last element.");
+                throw new FluentCheckException(nullErrorMessage);
+            }
+
+            T last;
+            if (!TryGetLastElement(checker.Value, out last))
+            {
+                var emptyErrorMessage = BuildShortMessage(checker, "The {0} is empty, where as it must have a last element.");
+                throw new FluentCheckException(emptyErrorMessage);
+            }
+            return new CollectionElementCheck<T>(last);
+        }
+
+        /// <summary>
+        /// Checks that the enumerable has an element with the specified number, and returns a check on that element.
+        /// </summary>
+        /// <typeparam name="T">The element type of the collection.</typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="number">The 1-based number of the element</param>
+        /// <returns>A check on the element with the specified number.</returns>
+        public static ICollectionElementCheck<T> HasElementNumber<T>(this ICheck<IEnumerable<T>> check, int number)
+        {
+            if (number <= 0)
+                throw new ArgumentOutOfRangeException("number", "The specified number is less than or equal to zero, where as it must be a 1-based index.");
+
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+
+            if (checker.Value == null)
+            {
+                var errorMessage = BuildShortMessage(checker, string.Format("The {{0}} is null, where as it must have an element with number {0}.", number));
+                throw new FluentCheckException(errorMessage);
+            }
+
+            T element;
+            if (!TryGetElementByNumber(checker.Value, number, out element))
+            {
+                var errorMessage = BuildMessage(checker, string.Format("The {{0}} has less that {0} elements, where as it must have an element with number {0}.", number));
+                throw new FluentCheckException(errorMessage);
+            }
+
+            return new CollectionElementCheck<T>(element);
+        }
+
+        /// <summary>
+        /// Checks that the enumerable has a single element, and returns a check on that element.
+        /// </summary>
+        /// <typeparam name="T">The element type of the collection.</typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>A check on the single element.</returns>
+        public static ICollectionElementCheck<T> HasOneElementOnly<T>(this ICheck<IEnumerable<T>> check)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+
+            if (checker.Value == null)
+            {
+                var errorMessage = BuildShortMessage(checker, "The {0} is null, where as it must have one element.");
+                throw new FluentCheckException(errorMessage);
+            }
+
+            using (var enumerator = checker.Value.GetEnumerator())
+            {
+                if (!enumerator.MoveNext())
+                {
+                    var errorMessage = BuildShortMessage(checker, "The {0} is empty, where as it must have one element.");
+                    throw new FluentCheckException(errorMessage);
+                }
+
+                var first = enumerator.Current;
+
+                if (enumerator.MoveNext())
+                {
+                    var errorMessage = BuildMessage(checker, "The {0} contains more than one element, where as it must have one element only.");
+                    throw new FluentCheckException(errorMessage);
+                }
+
+                return new CollectionElementCheck<T>(first);
+            }
+        }
+
         #region private or internal methods
 
         /// <summary>
@@ -478,6 +595,78 @@ namespace NFluent
             }
 
             return properExpectedValues;
+        }
+
+        private static string BuildShortMessage<T>(IChecker<IEnumerable<T>, ICheck<IEnumerable<T>>> checker, string message)
+        {
+            return checker.BuildShortMessage(message)
+                .For(typeof(IEnumerable))
+                .ToString();
+        }
+
+        private static string BuildMessage<T>(IChecker<IEnumerable<T>, ICheck<IEnumerable<T>>> checker, string message)
+        {
+            return checker.BuildMessage(message)
+                .For(typeof(IEnumerable))
+                .ToString();
+        }
+
+        private static bool TryGetLastElement<T>(IEnumerable<T> collection, out T last)
+        {
+            var list = collection as IList<T>;
+            if (list != null)
+            {
+                if (list.Count != 0)
+                {
+                    last = list[list.Count - 1];
+                    return true;
+                }
+            }
+            else
+            {
+                using (var enumerator = collection.GetEnumerator())
+                {
+                    if (enumerator.MoveNext())
+                    {
+                        last = enumerator.Current;
+                        while (enumerator.MoveNext())
+                        {
+                            last = enumerator.Current;
+                        }
+                        return true;
+                    }
+                }
+            }
+            last = default(T);
+            return false;
+        }
+
+        private static bool TryGetElementByNumber<T>(IEnumerable<T> collection, int number, out T element)
+        {
+            var list = collection as IList<T>;
+            if (list != null)
+            {
+                if (list.Count >= number)
+                {
+                    element = list[number - 1];
+                    return true;
+                }
+            }
+            else
+            {
+                var currentNumber = 1;
+                foreach (var currentElement in collection)
+                {
+                    if (currentNumber == number)
+                    {
+                        element = currentElement;
+                        return true;
+                    }
+                    currentNumber++;
+                }
+            }
+            element = default(T);
+            return false;
         }
 
         #endregion

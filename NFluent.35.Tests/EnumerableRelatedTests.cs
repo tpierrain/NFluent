@@ -12,10 +12,13 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
 namespace NFluent.Tests
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     using NUnit.Framework;
 
@@ -176,6 +179,166 @@ namespace NFluent.Tests
             var persons = new List<Person>();
 
             Check.That(persons).Not.IsEmpty();
+        }
+
+        #endregion
+
+        #region HasFirstElement
+
+        [Test]
+        public void HasFirstElementWorks()
+        {
+            var enumerable = new List<int> { 42, 43 };
+
+            Check.That(enumerable).HasFirstElement().That.IsEqualTo(42);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is empty, where as it must have a first element.")]
+        public void HasFirstElementThrowsWhenCollectionIsEmpty()
+        {
+            Check.That(EmptyEnumerable).HasFirstElement();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is null, where as it must have a first element.")]
+        public void HasFirstElementThrowsWhenCollectionIsNull()
+        {
+            var nullEnumerable = (List<int>)null;
+
+            // ReSharper disable once ExpressionIsAlwaysNull
+            Check.That(nullEnumerable).HasFirstElement();
+        }
+
+        #endregion
+
+        #region HasLastElement
+
+        [Test]
+        public void HasLastElementWorksForList()
+        {
+            var enumerable = new List<int> { 42, 43 };
+
+            Check.That(enumerable).HasLastElement().That.IsEqualTo(43);
+        }
+
+        [Test]
+        public void HasLastElementWorksForEnumerable()
+        {
+            var enumerable = new List<int> { 4, 3, 1, 2 }.OrderBy(x => x);
+
+            Check.That(enumerable).HasLastElement().That.IsEqualTo(4);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is empty, where as it must have a last element.")]
+        public void HasLastElementThrowsWhenCollectionIsEmpty()
+        {
+            Check.That(EmptyEnumerable).HasLastElement();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is null, where as it must have a last element.")]
+        public void HasLastElementThrowsWhenCollectionIsNull()
+        {
+            var nullEnumerable = (List<int>)null;
+
+            // ReSharper disable once ExpressionIsAlwaysNull
+            Check.That(nullEnumerable).HasLastElement();
+        }
+
+        #endregion
+
+        #region HasElementNumber
+
+        [Test]
+        public void HasElementNumberWorksForList()
+        {
+            var enumerable = new List<int> { 42, 43, 44 };
+
+            Check.That(enumerable).HasElementNumber(2).That.IsEqualTo(43);
+        }
+
+        [Test]
+        public void HasElementNumberWorksForEnumerable()
+        {
+            var enumerable = new List<int> { 4, 3, 1, 2 }.OrderBy(x => x);
+
+            Check.That(enumerable).HasElementNumber(3).That.IsEqualTo(3);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable has less that 1 elements, where as it must have an element with number 1.\nThe checked enumerable:\n\t[]")]
+        public void HasElementNumberThrowsWhenCollectionHasEnoughElementsIsEmpty()
+        {
+            Check.That(EmptyEnumerable).HasElementNumber(1);
+        }
+
+        [TestCase(-1)]
+        [TestCase(0)]
+        [ExpectedException(typeof(ArgumentOutOfRangeException), ExpectedMessage = "The specified number is less than or equal to zero, where as it must be a 1-based index.\r\nParameter name: number")]
+        public void HasElementNumberThrowsWhenNumberIsInvalid(int number)
+        {
+            var enumerable = new List<int> { 42 };
+
+            Check.That(enumerable).HasElementNumber(number);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is null, where as it must have an element with number 1.")]
+        public void HasElementNumberThrowsWhenCollectionIsNull()
+        {
+            var nullEnumerable = (List<int>)null;
+
+            // ReSharper disable once ExpressionIsAlwaysNull
+            Check.That(nullEnumerable).HasElementNumber(1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable has less that 3 elements, where as it must have an element with number 3.\nThe checked enumerable:\n\t[42, 43]")]
+        public void HasElementNumberThrowsWhenCollectionHasNotEnoughElements()
+        {
+            var enumerable = new List<int> { 42, 43 };
+
+            Check.That(enumerable).HasElementNumber(3);
+        }
+
+        #endregion
+
+        #region HasOneElementOnly
+
+        [Test]
+        public void HasOneElementOnlyWorks()
+        {
+            var enumerable = new List<int> { 42 };
+
+            Check.That(enumerable).HasOneElementOnly().That.IsEqualTo(42);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is empty, where as it must have one element.")]
+        public void HasOneElementOnlyThrowsWhenCollectionIsEmpty()
+        {
+            Check.That(EmptyEnumerable).HasOneElementOnly();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is null, where as it must have one element.")]
+        public void HasOneElementOnlyThrowsWhenCollectionIsNull()
+        {
+            var nullEnumerable = (List<int>)null;
+
+            // ReSharper disable once ExpressionIsAlwaysNull
+            Check.That(nullEnumerable).HasOneElementOnly();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable contains more than one element, where as it must have one element only.\nThe checked enumerable:\n\t[42, 43, 1000]")]
+        public void HasOneElementOnlyThrowsWhenCollectionHasMoreThanOneElement()
+        {
+            var enumerable = new List<int> { 42, 43, 1000 };
+
+            Check.That(enumerable).HasOneElementOnly();
         }
 
         #endregion
