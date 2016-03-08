@@ -63,6 +63,7 @@
     <Compile Include="Assertions\DoubleSpecificCheckExtensions.cs" />
     <Compile Include="Assertions\EventWaitHandleCheckExtensions.cs" />
     <Compile Include="Assertions\ObjectFieldsCheckExtensions.cs" />
+    <Compile Include="Delta.cs" />
     <Compile Include="FluentCodeCheck.cs" />
     <Compile Include="Extensibility\ExtensibilityHelper.cs" />
     <Compile Include="Assertions\IntSignedCheckExtensions.cs" />

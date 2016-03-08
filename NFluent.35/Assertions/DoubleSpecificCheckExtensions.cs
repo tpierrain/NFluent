@@ -12,6 +12,10 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Globalization;
+
 namespace NFluent
 {
     using NFluent.Extensibility;
@@ -70,5 +74,28 @@ namespace NFluent
                 },
                 checker.BuildMessage("The {0} is a finite number whereas it must not.").For("double value").On(checker.Value).ToString());
         }
+
+        /// <summary>
+        ///  Determines whether the specified number equals to value with given precision.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">Expected value</param>
+        /// <param name="expectedDelta">Expected precision</param>
+        /// <returns>A check link.</returns>
+        public static ICheckLink<ICheck<double>> IsEqualTo(this ICheck<double> check, double expected, Delta expectedDelta)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            var errorMessage = String.Format(CultureInfo.InvariantCulture, 
+                "Expected: [{0}] but was: [{1}] using delta: [{2}]",
+                expected, checker.Value, expectedDelta.Value);
+            return checker.ExecuteCheck(() =>
+            {
+                var delta = Delta.Calculate(checker.Value, expected);
+                if (delta > expectedDelta)
+                {
+                       throw new FluentCheckException(errorMessage);
+                }
+            }, errorMessage);
+        } 
     }
 }
