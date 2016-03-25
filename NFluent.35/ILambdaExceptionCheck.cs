@@ -14,6 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using System;
+
     /// <summary>
     /// Provides check methods to be executed on the exception raised by a given lambda/action.
     /// </summary>
@@ -41,5 +43,13 @@ namespace NFluent
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
         ICheckLink<ILambdaExceptionCheck<TParent>> WithProperty(string propertyName, object propertyValue);
+
+        /// <summary>
+        /// Checks that an inner exception is present within the outer exception stack trace.
+        /// </summary>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        ICheckLink<ILambdaExceptionCheck<TParent>> DueTo<T>() where T : Exception;
     }
 }

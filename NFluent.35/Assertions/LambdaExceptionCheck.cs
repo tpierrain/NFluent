@@ -99,10 +99,45 @@ namespace NFluent
             if (!value.Equals(propertyValue))
             {
                 var message = FluentMessage
-                    .BuildMessage(string.Format("The property [{0}] of the {{0}} do not have the expected value.", propertyName.DoubleCurlyBraces()))
+                    .BuildMessage(string.Format("The property [{0}] of the {{0}} does not have the expected value.", propertyName.DoubleCurlyBraces()))
                     .For("exception")
                     .Expected(propertyValue)
                     .And.WithGivenValue(value).ToString();
+
+                throw new FluentCheckException(message);
+            }
+
+            return new CheckLink<ILambdaExceptionCheck<T>>(this);
+        }
+
+        /// <summary>
+        /// Checks that an inner exception is present within the outer exception stack trace.
+        /// </summary>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        public ICheckLink<ILambdaExceptionCheck<T>> DueTo<E>() where E : Exception
+        {
+            var innerException = this.Value.InnerException;
+            bool foundDueTo = false;
+            while (innerException != null)
+            {
+                if (innerException.GetType() == typeof(E))
+                {
+                    foundDueTo = true;
+                    break;
+                }
+                innerException = innerException.InnerException;
+            }
+
+            if (!foundDueTo)
+            {
+                var message = FluentMessage.BuildMessage(string.Format("The {{0}} did not contain an expected inner exception whereas it must."))
+                                            .For("exception")
+                                            .WithGivenValue(this.Value.InnerException)
+                                            .And
+                                            .Expected(typeof(E)).Label("An expected inner exception:")
+                                            .ToString();
 
                 throw new FluentCheckException(message);
             }
