@@ -18,6 +18,7 @@ namespace NFluent
 
     using NFluent.Extensibility;
     using NFluent.Extensions;
+    using NFluent.Helpers;
 
     /// <summary>
     /// Implements specific Value check after lambda checks.
@@ -119,24 +120,25 @@ namespace NFluent
         public ICheckLink<ILambdaExceptionCheck<T>> DueTo<E>() where E : Exception
         {
             var innerException = this.Value.InnerException;
-            bool foundDueTo = false;
+            var dueToExceptionFound = false;
             while (innerException != null)
             {
                 if (innerException.GetType() == typeof(E))
                 {
-                    foundDueTo = true;
+                    dueToExceptionFound = true;
                     break;
                 }
                 innerException = innerException.InnerException;
             }
 
-            if (!foundDueTo)
+            if (!dueToExceptionFound)
             {
                 var message = FluentMessage.BuildMessage(string.Format("The {{0}} did not contain an expected inner exception whereas it must."))
                                             .For("exception")
-                                            .WithGivenValue(this.Value.InnerException)
+                                            .WithGivenValue(ExceptionHelper.DumpInnerExceptionStackTrace(this.Value))
+                                            .Label("The inner exception(s):")
                                             .And
-                                            .Expected(typeof(E)).Label("An expected inner exception:")
+                                            .Expected(typeof(E)).Label("The expected inner exception:")
                                             .ToString();
 
                 throw new FluentCheckException(message);

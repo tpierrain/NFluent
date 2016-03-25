@@ -193,13 +193,26 @@ namespace NFluent.Tests
             Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new ArgumentOutOfRangeException("kamoulox")); })
                 .Throws<ArgumentException>()
                 .DueTo<ArgumentOutOfRangeException>();
+
+            Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new NotFiniteNumberException("whatever mate", new ArgumentOutOfRangeException("kamoulox"))); })
+                .Throws<ArgumentException>()
+                .DueTo<ArgumentOutOfRangeException>();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked exception did not contain an expected inner exception whereas it must.\nThe given exception:\n\t[{System.ArgumentOutOfRangeException}: 'Specified argument was out of the range of valid values.\r\nParameter name: kamoulox']\nAn expected inner exception:\n\t[System.NotFiniteNumberException]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\r\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.NotFiniteNumberException]")]
         public void Should_raise_when_expected_DueTo_exception_is_not_found_somewhere_within_the_inner_exception()
         {
             Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new ArgumentOutOfRangeException("kamoulox")); })
+                .Throws<ArgumentException>()
+                .DueTo<NotFiniteNumberException>();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.InvalidCastException } \"whatever mate\"\n--> { System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\r\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.NotFiniteNumberException]")]
+        public void Should_raise_with_the_complete_stack_of_InnerExceptions_details_when_expected_DueTo_exception_is_not_found_somewhere_within_the_inner_exception()
+        {
+            Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new InvalidCastException("whatever mate", new ArgumentOutOfRangeException("kamoulox"))); })
                 .Throws<ArgumentException>()
                 .DueTo<NotFiniteNumberException>();
         }

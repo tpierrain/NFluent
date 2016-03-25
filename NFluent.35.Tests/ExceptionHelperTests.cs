@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutomaticNUnitExceptionDetectionTest.cs" company="">
+// <copyright file="ExceptionHelperTests.cs" company="">
 //   Copyright 2013 Cyrille DUPUYDAUBY, Rui CARVALHO, Thomas PIERRAIN
 //   // //   Licensed under the Apache License, Version 2.0 (the "License");
 //   // //   you may not use this file except in compliance with the License.
@@ -12,19 +12,28 @@
 //   // //   limitations under the License.
 // </copyright>
 // <summary>
-//   
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using System;
+
     using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
-    public class AutomaticNUnitExceptionDetectionTest
+    public class ExceptionHelperTests
     {
         [Test]
-        public void NUnitDetection()
+        public void Should_Dump_InnerException_stack_trace()
+        {
+            var exception = new ArgumentException("blahblah#1", new ArgumentOutOfRangeException("blahblah#2", new NotFiniteNumberException("blahblah#3")));
+
+            Check.That(ExceptionHelper.DumpInnerExceptionStackTrace(exception)).IsEqualTo("{ System.ArgumentOutOfRangeException } \"blahblah#2\"\n--> { System.NotFiniteNumberException } \"blahblah#3\"");
+        }
+
+        [Test]
+        public void Should_detect_NUnit()
         {
             var ex = ExceptionHelper.BuildException("the message");
             
