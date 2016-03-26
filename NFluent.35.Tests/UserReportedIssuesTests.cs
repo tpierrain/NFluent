@@ -25,6 +25,14 @@ namespace NFluent.Tests
     [TestFixture]
     public class UserReportedIssuesTests
     {
+        // Issue #131: Pull Request to add First() and Single() for enumeration
+        [Test]
+        public void CheckForFIrst()
+        {
+            var enumerable = new List<int> { 42, 43 };
+            Check.That(enumerable).Contains(42, 43).InThatOrder();
+        }
+
         [Test]
         public void NullRefExcOnEnumerables()
         {
