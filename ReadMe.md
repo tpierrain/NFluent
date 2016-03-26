@@ -3,7 +3,7 @@
 NFluent overview
 ==============
 
-Build status: ![BuildStatus](http://teamcity.codebetter.com/httpAuth/app/rest/builds/id:214181/statusIcon.svg)
+[![Build Status](http://teamcity.codebetter.com/httpAuth/app/rest/builds/id:214181/statusIcon.svg)](http://teamcity.codebetter.com/project.html?projectId=NFluent&tab=projectOverview)
 
 NFluent is __an check library__ which aims __to fluent your .NET TDD experience__.
 
