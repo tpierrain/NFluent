@@ -157,6 +157,8 @@ $RECYCLE.BIN/
 .DS_Store
 ._.DS_Store
 
+*MyPersonalPaperNote.md
+
 NFluent.userprefs
 
 NFluent.Tests/test-results/NFluent.Tests.csproj-Debug-2014-02-24.xml

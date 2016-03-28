@@ -53,7 +53,7 @@
     </Compile>
     <Compile Include="AndRelatedTests.cs" />
     <Compile Include="AsOperatorTests.cs" />
-    <Compile Include="AutomaticNUnitExceptionDetectionTest.cs" />
+    <Compile Include="ExceptionHelperTests.cs" />
     <Compile Include="CharTests.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DictionaryChecksTests.cs" />
@@ -185,6 +185,7 @@
     </Content>
     <Content Include="ExpectedFile.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="T4\NumberTestsGenerator.txt">
       <AutoGen>True</AutoGen>

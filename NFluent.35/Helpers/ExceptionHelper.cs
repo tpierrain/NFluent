@@ -15,21 +15,23 @@
 //   
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-#if !(PORTABLE)
 namespace NFluent.Helpers
 {
     using System;
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
-
-    // ncrunch: no coverage start
+    using System.Text;
 
     /// <summary>
     /// Offer factory services to get adequate exception type depending on testing framework.
     /// </summary>
     public static class ExceptionHelper
     {
+#if !(PORTABLE)
+
+        // ncrunch: no coverage start
+
         private static ExceptionConstructor constructors;
 
         private static ExceptionConstructor Constructors
@@ -162,8 +164,35 @@ namespace NFluent.Helpers
 
             public ConstructorInfo IgnoreException { get; set; }
         }
+
+        // ncrunch: no coverage end
+
+#endif
+        /// <summary>
+        /// Return a string containing the complete stack trace of the InnerExceptions for the given Exception.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <returns>A string containing the complete stack trace of the InnerExceptions for the given Exception.</returns>
+        public static string DumpInnerExceptionStackTrace(Exception exception)
+        {
+            var result = new StringBuilder();
+            var innerException = exception.InnerException;
+            var firstRow = true;
+            while (innerException != null)
+            {
+                if (!firstRow)
+                {
+                    // TODO: parametrized this line sep part
+                    result.Append("\n--> ");
+                }
+                result.AppendFormat("{{ {0} }} \"{1}\"", innerException.GetType(), innerException.Message);
+                
+                innerException = innerException.InnerException;
+                firstRow = false;
+            }
+
+            return result.ToString();
+        }
     }
 
-    // ncrunch: no coverage end
 }
-#endif
