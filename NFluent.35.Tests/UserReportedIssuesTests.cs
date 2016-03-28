@@ -25,6 +25,53 @@ namespace NFluent.Tests
     [TestFixture]
     public class UserReportedIssuesTests
     {
+        // Issue #141: issue with private inheritance and 'hasfieldswithsamevalue'
+        class Base
+        {
+            public string BaseProperty { get; set; }
+        }
+        class Impl : Base
+        {
+
+            public string ImplProperty { get; set; }
+        }
+
+        [Test]
+        [ExpectedException]
+        public void Test1()
+        {
+            Impl impl = new Impl { BaseProperty = "Any", ImplProperty = "Any1" };
+
+            Check.That(impl).HasFieldsWithSameValues(new { BaseProperty = "Any", ImplProperty = "Any2" });
+        }
+
+        [Test]
+        [ExpectedException]
+        public void Test2()
+        {
+            Impl impl = new Impl { BaseProperty = "Any1", ImplProperty = "Any" };
+
+            Check.That(impl).HasFieldsWithSameValues(new { BaseProperty = "Any2", ImplProperty = "Any" });
+        }
+
+        [Test]
+        [ExpectedException]
+        public void Test3()
+        {
+            Impl impl = new Impl { BaseProperty = "Any1", ImplProperty = "Any" };
+            Impl impl2 = new Impl { BaseProperty = "Any2", ImplProperty = "Any" };
+
+            Check.That(impl).HasFieldsWithSameValues(impl2);
+        }
+ /*
+        // Issue #315: superfluous casting required
+        [Test]
+        public void Casting()
+        {
+            ushort usValue = 0;
+            Check.That(usValue).IsEqualTo(0);
+        }
+*/
         // Issue #131: Pull Request to add First() and Single() for enumeration
         [Test]
         public void CheckForFIrst()

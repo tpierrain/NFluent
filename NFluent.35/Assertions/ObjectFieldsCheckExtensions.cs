@@ -217,39 +217,44 @@ namespace NFluent
 
         private static IEnumerable<FieldMatch> ScanFields(object value, object expected, string prefix = null)
         {
+            ;
             var result = new List<FieldMatch>();
-            foreach (var fieldInfo in
-                expected.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+            for (var expectedType = expected.GetType(); expectedType != null; expectedType = expectedType.BaseType)
             {
-                var expectedFieldDescription = new ExtendedFieldInfo(prefix, fieldInfo);
-                var actualFieldMatching = FindField(value.GetType(), expectedFieldDescription.NameInSource);
-
-                // field not found in SUT
-                if (actualFieldMatching == null)
+                foreach (var fieldInfo in
+                    expectedType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy))
                 {
-                    result.Add(new FieldMatch(expectedFieldDescription, null));
-                    continue;
+                    var expectedFieldDescription = new ExtendedFieldInfo(prefix, fieldInfo);
+                    var actualFieldMatching = FindField(value.GetType(), expectedFieldDescription.NameInSource);
+
+                    // field not found in SUT
+                    if (actualFieldMatching == null)
+                    {
+                        result.Add(new FieldMatch(expectedFieldDescription, null));
+                        continue;
+                    }
+
+                    var actualFieldDescription = new ExtendedFieldInfo(prefix, actualFieldMatching);
+
+                    // now, let's get to the values
+                    expectedFieldDescription.CaptureFieldValue(expected);
+                    actualFieldDescription.CaptureFieldValue(value);
+
+                    if (expectedFieldDescription.ChecksIfImplementsEqual())
+                    {
+                        result.Add(new FieldMatch(expectedFieldDescription, actualFieldDescription));
+                    }
+                    else
+                    {
+                        // we need to recurse the scan
+                        result.AddRange(
+                            ScanFields(
+                                actualFieldDescription.Value,
+                                expectedFieldDescription.Value,
+                                string.Format("{0}.", expectedFieldDescription.LongFieldName)));
+                    }
                 }
 
-                var actualFieldDescription = new ExtendedFieldInfo(prefix, actualFieldMatching);
-
-                // now, let's get to the values
-                expectedFieldDescription.CaptureFieldValue(expected);
-                actualFieldDescription.CaptureFieldValue(value);
-
-                if (expectedFieldDescription.ChecksIfImplementsEqual())
-                {
-                    result.Add(new FieldMatch(expectedFieldDescription, actualFieldDescription));
-                }
-                else
-                {
-                    // we need to recurse the scan
-                    result.AddRange(
-                        ScanFields(
-                            actualFieldDescription.Value, 
-                            expectedFieldDescription.Value, 
-                            string.Format("{0}.", expectedFieldDescription.LongFieldName)));
-                }
             }
 
             return result;
