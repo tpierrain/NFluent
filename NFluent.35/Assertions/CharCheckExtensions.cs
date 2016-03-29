@@ -21,8 +21,6 @@ namespace NFluent
     /// </summary>
     public static class CharCheckExtensions
     {
-        private const string EntityDescription = "char";
-
         /// <summary>
         /// Checks that the checked <see cref="char"/> is a letter.
         /// </summary>
@@ -50,10 +48,10 @@ namespace NFluent
                         if (!IsALetter(checker.Value))
                         {
                             throw new FluentCheckException(
-                                checker.BuildMessage("The {0} is not a letter.").For(EntityDescription).ToString());
+                                checker.BuildMessage("The {0} is not a letter.").ToString());
                         }
                     },
-                checker.BuildMessage("The {0} is a letter whereas it must not.").For(EntityDescription).ToString());
+                checker.BuildMessage("The {0} is a letter whereas it must not.").ToString());
         }
 
         /// <summary>
@@ -71,10 +69,10 @@ namespace NFluent
                 {
                     if (!char.IsDigit(checker.Value))
                     {
-                        throw new FluentCheckException(checker.BuildMessage("The {0} is not a decimal digit.").For(EntityDescription).ToString());
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is not a decimal digit.").ToString());
                     }
                 },
-                checker.BuildMessage("The {0} is a decimal digit whereas it must not.").For(EntityDescription).ToString());
+                checker.BuildMessage("The {0} is a decimal digit whereas it must not.").ToString());
         }
 
         /// <summary>
@@ -92,10 +90,10 @@ namespace NFluent
                 {
                     if (!char.IsPunctuation(checker.Value))
                     {
-                        throw new FluentCheckException(checker.BuildMessage("The {0} is not a punctuation mark.").For(EntityDescription).ToString());
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is not a punctuation mark.").ToString());
                     }
                 },
-                checker.BuildMessage("The {0} is a punctuation mark whereas it must not.").For(EntityDescription).ToString());
+                checker.BuildMessage("The {0} is a punctuation mark whereas it must not.").ToString());
         }
 
         /// <summary>
@@ -114,17 +112,17 @@ namespace NFluent
                 {
                     if (!IsALetter(checker.Value))
                     {
-                        var errorMessage = checker.BuildMessage("The {0} is not the same letter as the given one (whatever the case).\nThe checked char is not even a letter!").For(EntityDescription).WithGivenValue(otherChar).ToString();
+                        var errorMessage = checker.BuildMessage("The {0} is not the same letter as the {1} (whatever the case).\nThe checked char is not even a letter!").WithGivenValue(otherChar).ToString();
                         throw new FluentCheckException(errorMessage);
                     }
 
                     if (!IsSameCharCaseInsensitive(checker.Value, otherChar))
                     {
-                        var errorMessage = checker.BuildMessage("The {0} is not the same letter as the given one (whatever the case).").For(EntityDescription).WithGivenValue(otherChar).ToString();
+                        var errorMessage = checker.BuildMessage("The {0} is not the same letter as the {1} (whatever the case).").WithGivenValue(otherChar).ToString();
                         throw new FluentCheckException(errorMessage);
                     }
                 },
-                checker.BuildMessage("The {0} is the same letter as the given one (whatever the case), whereas it must not.").For(EntityDescription).WithGivenValue(otherChar).ToString());
+                checker.BuildMessage("The {0} is the same letter as the {1} (whatever the case), whereas it must not.").WithGivenValue(otherChar).ToString());
         }
 
         /// <summary>
@@ -143,11 +141,11 @@ namespace NFluent
                     {
                         if (!IsALetter(checker.Value) || !IsSameCharCaseInsensitive(checker.Value, otherChar) || HaveSameCase(checker.Value, otherChar))
                         {
-                            var errorMessage = checker.BuildMessage("The {0} is not the same letter but with different case as the given one.").For(EntityDescription).WithGivenValue(otherChar).ToString();
+                            var errorMessage = checker.BuildMessage("The {0} is not the same letter but with different case as the {1}.").WithGivenValue(otherChar).ToString();
                             throw new FluentCheckException(errorMessage);
                         }
                     },
-                    checker.BuildMessage("The {0} is the same letter as the given one but with different case, whereas it must not.").For(EntityDescription).WithGivenValue(otherChar).ToString());
+                    checker.BuildMessage("The {0} is the same letter as the {1} but with different case, whereas it must not.").WithGivenValue(otherChar).ToString());
         }
 
         #region helper methods

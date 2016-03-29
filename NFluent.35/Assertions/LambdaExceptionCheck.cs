@@ -101,9 +101,9 @@ namespace NFluent
             {
                 var message = FluentMessage
                     .BuildMessage(string.Format("The property [{0}] of the {{0}} does not have the expected value.", propertyName.DoubleCurlyBraces()))
-                    .For("exception")
-                    .Expected(propertyValue)
-                    .And.WithGivenValue(value).ToString();
+                    .For("exception's property")
+                    .On(value)
+                    .And.WithGivenValue(propertyValue).ToString();
 
                 throw new FluentCheckException(message);
             }
@@ -135,7 +135,7 @@ namespace NFluent
             {
                 var message = FluentMessage.BuildMessage(string.Format("The {{0}} did not contain an expected inner exception whereas it must."))
                                             .For("exception")
-                                            .WithGivenValue(ExceptionHelper.DumpInnerExceptionStackTrace(this.Value))
+                                            .On(ExceptionHelper.DumpInnerExceptionStackTrace(this.Value))
                                             .Label("The inner exception(s):")
                                             .And
                                             .Expected(typeof(E)).Label("The expected inner exception:")

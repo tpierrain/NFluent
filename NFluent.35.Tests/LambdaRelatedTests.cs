@@ -13,6 +13,9 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+using System.Globalization;
+using System.Threading;
+
 namespace NFluent.Tests
 {
     using System;
@@ -24,6 +27,22 @@ namespace NFluent.Tests
     public class LambdaRelatedTests
     {
         private readonly ExceptionTests exceptionTests = new ExceptionTests();
+        private CultureInfo savedCulture;
+
+        [SetUp]
+        public void SetUp()
+        {
+            // Important so that exception message are in english.
+            this.savedCulture = Thread.CurrentThread.CurrentUICulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            // Boy scout rule ;-)
+            Thread.CurrentThread.CurrentUICulture = this.savedCulture;
+        }
 
         [Test]
         public void NoExceptionRaised()
@@ -38,7 +57,8 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.ApplicationException}: 'Error in the application.']")]
+        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.ApplicationException}: ")]
+        //[ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.ApplicationException}: 'Error in the application.']")]
         public void UnexpectedExceptionRaised()
         {
             Check.ThatCode(() => { throw new ApplicationException(); }).DoesNotThrow();
@@ -53,7 +73,8 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code raised an exception of a different type than expected.\nRaised Exception\n\t[{System.Exception}: 'Exception of type 'System.Exception' was thrown.']\nThe expected exception:\n\tan instance of type: [System.ApplicationException]")]
+        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code raised an exception of a different type than expected.\nRaised Exception\n\t[{System.Exception}:")] //" 'Exception of type 'System.Exception' was thrown.']\nThe expected exception:\n\tan instance of type: [System.ApplicationException]")]
+        //[ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code raised an exception of a different type than expected.\nRaised Exception\n\t[{System.Exception}: 'Exception of type 'System.Exception' was thrown.']\nThe expected exception:\n\tan instance of type: [System.ApplicationException]")]
         public void DidNotRaiseExpected()
         {
             Check.ThatCode(() => { throw new Exception(); }).Throws<ApplicationException>();
@@ -111,14 +132,14 @@ namespace NFluent.Tests
         [Test]
         public void DidNotRaiseWhenUsedWithAValidParameterlessVoidMethod()
         {
-            var sut = new LambdaRelatedTests.AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas();
+            var sut = new AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas();
             Check.ThatCode(sut.AVoidParameterLessMethodThatShouldNotCrash).DoesNotThrow();
         }
 
         [Test]
         public void DidNotRaiseWhenUsedWithAValidParameterlessMethodReturningObject()
         {
-            var obj = new LambdaRelatedTests.AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas();
+            var obj = new AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas();
             Func<object> sut = obj.AScalarParameterLessMethodThatShouldNotCrash;
             Check.ThatCode(sut).DoesNotThrow();
         }
@@ -138,13 +159,13 @@ namespace NFluent.Tests
         [Test]
         public void CanRaiseWithNewObjectHavingAFailingCtor()
         {
-            Check.ThatCode(() => new LambdaRelatedTests.AnObjectThatCanCrashOnCtor(0)).Throws<DivideByZeroException>();
+            Check.ThatCode(() => new AnObjectThatCanCrashOnCtor(0)).Throws<DivideByZeroException>();
         }
 
         [Test]
         public void CanRaiseWithFailingPropertyGetter()
         {
-            var sut = new LambdaRelatedTests.AnObjectThatCanCrashWithPropertyGet(0);
+            var sut = new AnObjectThatCanCrashWithPropertyGet(0);
             Check.ThatCode(() => sut.BeastBreaker).Throws<DivideByZeroException>();
 
             // obsolete for coverage
@@ -175,7 +196,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe property [ExceptionNumber] of the checked exception does not have the expected value.\nThe given exception:\n\t[321]\nThe expected exception:\n\t[123]")]
+        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe property [ExceptionNumber] of the checked exception's property does not have the expected value.\nThe checked exception's property:\n\t[321]\nThe given exception's property:\n\t[123]")]
         public void DidNotHaveExpectedPropertyValue()
         {
             Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithProperty("ExceptionNumber", 123);
