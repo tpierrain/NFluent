@@ -13,6 +13,9 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+using System.Globalization;
+using System.Threading;
+
 namespace NFluent.Tests
 {
     using System;
@@ -24,6 +27,22 @@ namespace NFluent.Tests
     public class LambdaRelatedTests
     {
         private readonly ExceptionTests exceptionTests = new ExceptionTests();
+        private CultureInfo savedCulture;
+
+        [SetUp]
+        public void SetUp()
+        {
+            // Important so that exception message are in english.
+            this.savedCulture = Thread.CurrentThread.CurrentUICulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            // Boy scout rule ;-)
+            Thread.CurrentThread.CurrentUICulture = this.savedCulture;
+        }
 
         [Test]
         public void NoExceptionRaised()
