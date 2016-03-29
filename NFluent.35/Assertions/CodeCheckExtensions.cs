@@ -336,7 +336,7 @@ namespace NFluent
                                 checker.BuildShortMessage(
                                     "The {0} did not raise an exception, whereas it must.")
                                              .For(LabelForCode)
-                                             .ExpectedType(typeof(T))
+                                             .ExpectedType(typeof(T)).WithType()
                                              .Label("The {0} exception:")
                                              .ToString();
                             throw new FluentCheckException(message);
@@ -350,7 +350,7 @@ namespace NFluent
                                              .For(LabelForCode)
                                              .On(checker.Value.RaisedException)
                                              .Label("Raised Exception")
-                                             .And.ExpectedType(typeof(T))
+                                             .And.ExpectedType(typeof(T)).WithType()
                                              .Label("The {0} exception:")
                                              .ToString();
 

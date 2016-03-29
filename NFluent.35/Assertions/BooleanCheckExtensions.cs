@@ -29,6 +29,8 @@ namespace NFluent
         // message when the value must be true
         private const string MustBeTrueMessage = "The {0} is false whereas it must be true.";
 
+        private const string EntityDescription = "boolean";
+
         #endregion
 
         #region methods
@@ -51,11 +53,11 @@ namespace NFluent
                         if (!checker.Value)
                         {
                             var message =
-                                checker.BuildMessage(MustBeTrueMessage).ToString();
+                                checker.BuildMessage(MustBeTrueMessage).For(EntityDescription).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                checker.BuildMessage(MustBeFalseMessage).ToString());
+                checker.BuildMessage(MustBeFalseMessage).For(EntityDescription).ToString());
         }
 
         /// <summary>
@@ -76,10 +78,10 @@ namespace NFluent
                         if (checker.Value)
                         {
                             throw new FluentCheckException(
-                                checker.BuildMessage(MustBeFalseMessage).ToString());
+                                checker.BuildMessage(MustBeFalseMessage).For(EntityDescription).ToString());
                         }
                     },
-                checker.BuildMessage(MustBeTrueMessage).ToString());
+                checker.BuildMessage(MustBeTrueMessage).For(EntityDescription).ToString());
         }
     }
 

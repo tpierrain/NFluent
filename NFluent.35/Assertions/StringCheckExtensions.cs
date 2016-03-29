@@ -202,6 +202,7 @@ namespace NFluent
             if (negated)
             {
                 messageText = checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.")
+                                    .For("string")
                                     .Expected(expected)
                                     .Comparison("different from")
                                     .ToString();
@@ -292,7 +293,7 @@ namespace NFluent
                     expectedString = HighlightTabsIfAny(expectedString);    
                 }
 
-                messageText = checker.BuildMessage(message).On(value).And.Expected(expectedString).ToString();
+                messageText = checker.BuildMessage(message).For("string").On(value).And.Expected(expectedString).ToString();
             }
 
             return messageText;
@@ -345,7 +346,7 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return (negated || notContains) ? null : checker.BuildShortMessage("The {0} is null.").For(typeof(string)).ReferenceValues(values).Label("The {0} substring(s):").ToString();
+                return (negated || notContains) ? null : checker.BuildShortMessage("The {0} is null.").For("string").Expected(values).Label("The {0} substring(s):").ToString();
             }
 
             var items = values.Where(item => checkedValue.Contains(item) == notContains).ToList();
@@ -365,7 +366,8 @@ namespace NFluent
                 return
                     checker.BuildMessage(
                         "The {0} contains unauthorized value(s): " + items.ToEnumeratedString())
-                                 .ReferenceValues(values)
+                                 .For("string")
+                                 .Expected(values)
                                  .Label("The unauthorized substring(s):")
                                  .ToString();
             }
@@ -373,7 +375,8 @@ namespace NFluent
             return
                 checker.BuildMessage(
                     "The {0} does not contains the expected value(s): " + items.ToEnumeratedString())
-                             .ReferenceValues(values)
+                             .For("string")
+                             .Expected(values)
                              .Label("The {0} substring(s):")
                              .ToString();
         }
@@ -407,7 +410,7 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return negated ? null : checker.BuildShortMessage("The {0} is null.").Expected(starts).Comparison("starts with").ToString();
+                return negated ? null : checker.BuildShortMessage("The {0} is null.").For("string").Expected(starts).Comparison("starts with").ToString();
             }
 
             if (checkedValue.StartsWith(starts) != negated)
@@ -420,6 +423,7 @@ namespace NFluent
             {
                 return
                     checker.BuildMessage("The {0} starts with {1}, whereas it must not.")
+                                    .For("string")
                                     .Expected(starts)
                                     .Comparison("does not start with")
                                     .ToString();
@@ -427,7 +431,7 @@ namespace NFluent
 
             return
                 checker.BuildMessage("The {0}'s start is different from the {1}.")
-                             .Expected(starts)
+                .For("string").Expected(starts)
                              .Comparison("starts with")
                              .ToString();
         }
@@ -461,7 +465,7 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return negated ? null : checker.BuildShortMessage("The {0} is null.").Expected(ends).Comparison("ends with").ToString();
+                return negated ? null : checker.BuildShortMessage("The {0} is null.").For("string").Expected(ends).Comparison("ends with").ToString();
             }
 
             if (checkedValue.EndsWith(ends) != negated)
@@ -474,13 +478,14 @@ namespace NFluent
             {
                 return
                     checker.BuildMessage("The {0} ends with {1}, whereas it must not.")
-                                .Expected(ends)
-                                .Comparison("does not end with")
-                                .ToString();
+                    .For("string").Expected(ends)
+                                 .Comparison("does not end with")
+                                 .ToString();
             }
 
             return
                 checker.BuildMessage("The {0}'s end is different from the {1}.")
+                .For("string")
                              .Expected(ends)
                              .Comparison("ends with")
                              .ToString();
@@ -539,7 +544,7 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return negated ? null : checker.BuildShortMessage("The {0} is null.").Expected(regExp).Comparison("matches").ToString();
+                return negated ? null : checker.BuildShortMessage("The {0} is null.").For("string").Expected(regExp).Comparison("matches").ToString();
             }
 
             var exp = new Regex(regExp);
@@ -553,6 +558,7 @@ namespace NFluent
             {
                 return
                     checker.BuildMessage("The {0} matches {1}, whereas it must not.")
+                    .For("string")
                                  .Expected(regExp)
                                  .Comparison("does not match")
                                  .ToString();
@@ -560,6 +566,7 @@ namespace NFluent
 
             return
                 checker.BuildMessage("The {0} does not match the {1}.")
+                .For("string")
                              .Expected(regExp)
                              .Comparison("matches")
                              .ToString();
@@ -663,8 +670,8 @@ namespace NFluent
                     return null;
                 }
 
-                return negated ? checker.BuildShortMessage("The {0} is null whereas it must have content.").For(typeof(string)).ToString()
-                    : checker.BuildShortMessage("The {0} is null instead of being empty.").For(typeof(string)).ToString();
+                return negated ? checker.BuildShortMessage("The {0} is null whereas it must have content.").For("string").ToString()
+                    : checker.BuildShortMessage("The {0} is null instead of being empty.").For("string").ToString();
             }
 
             if (string.IsNullOrEmpty(checkedValue) != negated)
@@ -677,12 +684,13 @@ namespace NFluent
             {
                 return
                     checker.BuildShortMessage("The {0} is empty, whereas it must not.")
-                                .For(typeof(string))
-                                .ToString();
+                    .For("string")
+                                 .ToString();
             }
 
             return
                 checker.BuildMessage("The {0} is not empty or null.")
+                .For("string")
                              .On(checkedValue)
                              .ToString();
         }

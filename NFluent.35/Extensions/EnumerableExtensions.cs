@@ -12,10 +12,11 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+// ReSharper disable CheckNamespace
 namespace NFluent
+// ReSharper restore CheckNamespace
 {
     using System.Collections;
-    using System.Linq;
     using System.Text;
 
     using NFluent.Extensions;
@@ -45,7 +46,20 @@ namespace NFluent
         /// <returns>The number of items present within the specified enumerable (returns 0 if the enumerable is null).</returns>
         public static long Count(this IEnumerable enumerable)
         {
-            return enumerable == null ? 0 : enumerable.Cast<object>().LongCount();
+            if (enumerable == null)
+            {
+                return 0;
+            }
+            else
+            {
+                long itemsCount = 0;
+                foreach (var item in enumerable)
+                {
+                    itemsCount++;
+                }
+
+                return itemsCount;
+            }
         }
 
         /// <summary>
@@ -74,7 +88,7 @@ namespace NFluent
                     sb.Append(separator);
                 }
 
-                sb.Append(obj.ToStringProperlyFormated());
+                sb.Append(obj == null ? "null" : obj.ToStringProperlyFormated());
 
                 firstTime = false;
                 itemsCount++;

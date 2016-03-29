@@ -17,67 +17,15 @@ namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Text;
 
     using NUnit.Framework;
 
     [TestFixture]
     public class UserReportedIssuesTests
     {
-        // Issue #141: issue with private inheritance and 'hasfieldswithsamevalue'
-        class Base
+        public interface IModelBName
         {
-            public string BaseProperty { get; set; }
-        }
-        class Impl : Base
-        {
-
-            public string ImplProperty { get; set; }
-        }
-
-        [Test]
-        [ExpectedException]
-        public void Test1()
-        {
-            Impl impl = new Impl { BaseProperty = "Any", ImplProperty = "Any1" };
-
-            Check.That(impl).HasFieldsWithSameValues(new { BaseProperty = "Any", ImplProperty = "Any2" });
-        }
-
-        [Test]
-        [ExpectedException]
-        public void Test2()
-        {
-            Impl impl = new Impl { BaseProperty = "Any1", ImplProperty = "Any" };
-
-            Check.That(impl).HasFieldsWithSameValues(new { BaseProperty = "Any2", ImplProperty = "Any" });
-        }
-
-        [Test]
-        [ExpectedException]
-        public void Test3()
-        {
-            Impl impl = new Impl { BaseProperty = "Any1", ImplProperty = "Any" };
-            Impl impl2 = new Impl { BaseProperty = "Any2", ImplProperty = "Any" };
-
-            Check.That(impl).HasFieldsWithSameValues(impl2);
-        }
- /*
-        // Issue #315: superfluous casting required
-        [Test]
-        public void Casting()
-        {
-            ushort usValue = 0;
-            Check.That(usValue).IsEqualTo(0);
-        }
-*/
-        // Issue #131: Pull Request to add First() and Single() for enumeration
-        [Test]
-        public void CheckForFIrst()
-        {
-            var enumerable = new List<int> { 42, 43 };
-            Check.That(enumerable).Contains(42, 43).InThatOrder();
+            string Title { get; set; }
         }
 
         [Test]
@@ -116,45 +64,20 @@ namespace NFluent.Tests
         }
 
         // #issue 115,
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'Price' does not have the expected value.\nThe checked value:\n\t[100] of type: [decimal]\nThe expected value:\n\t[100] of type: [int]")]
-        public void FailingTestForDemo()
+        [TestFixture]
+        public class Test
         {
-            var args = new OrderExecutedEventArgs(100M, 150, Way.Sell);
+            [Test]
+            [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'Price' does not have the expected value.\nThe checked value:\n\t[100] of type: [decimal]\nThe expected value:\n\t[100] of type: [int]")]
+            public void FailingTestForDemo()
+            {
+                var args = new OrderExecutedEventArgs(100M, 150, Way.Sell);
 
-            Check.That(args).HasFieldsWithSameValues(new { Price = 100, Quantity = 150, Way = Way.Sell });
+                Check.That(args).HasFieldsWithSameValues(new { Price = 100, Quantity = 150, Way = Way.Sell });
+            }
         }
 
-
-        // issue #127, request for byte array support
-        // actual issues unclear as it just works.
-        [Test]
-        public void CheckForSupportOfByteArrays()
-        {
-            var coder = new ASCIIEncoding();
-
-            var sut = coder.GetBytes("test");
-            var expected = coder.GetBytes("test");
-
-            Check.That(sut).ContainsExactly(expected);
-        }
-
-        [Test]
-        public void LongStringErrorMessageIsProperlyTruncated()
-        {
-            var checkString = File.ReadAllBytes("CheckedFile.xml");
-            var expectedString = File.ReadAllBytes("ExpectedFile.xml");
-// TODO: implement support for LONG enumeration
-//            Check.That(checkString).IsEqualTo(expectedString);
-        }
-
-        // helper classes for issue reproduction
-        public interface IModelBName
-        {
-            string Title { get; set; }
-        }
-
-        private class OrderExecutedEventArgs : EventArgs
+        public class OrderExecutedEventArgs : EventArgs
         {
             public decimal Price { get; private set; }
 
@@ -175,18 +98,17 @@ namespace NFluent.Tests
             Sell,
             Buy
         }
-
-        private class ModelA
+        public class ModelA
         {
             public string Name { get; set; }
         }
 
-        private class ModelB
+        public class ModelB
         {
             public IModelBName Name { get; set; }
         }
 
-        private class ModelBName : IModelBName
+        public class ModelBName : IModelBName
         {
             public string Title { get; set; }
         }

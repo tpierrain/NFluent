@@ -140,35 +140,14 @@
     <Compile Include="..\NFluent.35\Extensibility\Checker.cs">
       <Link>Extensibility\Checker.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.35\Extensibility\EntityNamer.cs">
-      <Link>Extensibility\EntityNamer.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.35\Extensibility\EnumerationBlock.cs">
-      <Link>Extensibility\EnumerationBlock.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.35\Extensibility\ExtensibilityHelper.cs">
       <Link>Extensibility\ExtensibilityHelper.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\Extensibility\FluentMessage.cs">
       <Link>Extensibility\FluentMessage.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.35\Extensibility\GenericLabelBlock.cs">
-      <Link>Extensibility\GenericLabelBlock.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.35\Extensibility\IChecker.cs">
       <Link>Extensibility\IChecker.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.35\Extensibility\InstanceBlock.cs">
-      <Link>Extensibility\InstanceBlock.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.35\Extensibility\IValueDescription.cs">
-      <Link>Extensibility\IValueDescription.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.35\Extensibility\MessageBlock.cs">
-      <Link>Extensibility\MessageBlock.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.35\Extensibility\ValueBlock.cs">
-      <Link>Extensibility\ValueBlock.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\Extensions\EnumerableExtensions.cs">
       <Link>Extensions\EnumerableExtensions.cs</Link>
@@ -178,9 +157,6 @@
     </Compile>
     <Compile Include="..\NFluent.35\Extensions\ExtractingExtensions.cs">
       <Link>Extensions\ExtractingExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.35\Extensions\MessageRelatedExtensions.cs">
-      <Link>Extensions\MessageRelatedExtensions.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\Extensions\ObjectExtensions.cs">
       <Link>Extensions\ObjectExtensions.cs</Link>
@@ -378,7 +354,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

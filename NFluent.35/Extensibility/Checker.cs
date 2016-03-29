@@ -1,17 +1,17 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Checker.cs" company="">
-//   Copyright 2013 Thomas PIERRAIN
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//       http://www.apache.org/licenses/LICENSE-2.0
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-// </copyright>  
-// --------------------------------------------------------------------------------------------------------------------
+﻿// // --------------------------------------------------------------------------------------------------------------------
+// // <copyright file="Checker.cs" company="">
+// //   Copyright 2013 Thomas PIERRAIN
+// //   Licensed under the Apache License, Version 2.0 (the "License");
+// //   you may not use this file except in compliance with the License.
+// //   You may obtain a copy of the License at
+// //       http://www.apache.org/licenses/LICENSE-2.0
+// //   Unless required by applicable law or agreed to in writing, software
+// //   distributed under the License is distributed on an "AS IS" BASIS,
+// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// //   See the License for the specific language governing permissions and
+// //   limitations under the License.
+// // </copyright>  
+// // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Extensibility
 {
     using System;
@@ -29,8 +29,6 @@ namespace NFluent.Extensibility
         #region fields
 
         private readonly ICheckForExtensibility<T, TC> fluentCheckForExtensibility;
-
-        private string sutLabel;
 
         #endregion
 
@@ -89,8 +87,7 @@ namespace NFluent.Extensibility
         /// <returns>A <see cref="FluentMessage"/> instance.</returns>
         public FluentMessage BuildMessage(string message)
         {
-            var result = this.BuildShortMessage(message);
-
+            var result = FluentMessage.BuildMessage(message);
             result.On(this.Value);
             return result;
         }
@@ -103,21 +100,7 @@ namespace NFluent.Extensibility
         public FluentMessage BuildShortMessage(string message)
         {
             var result = FluentMessage.BuildMessage(message);
-            if (!string.IsNullOrEmpty(this.sutLabel))
-            {
-                result.For(this.sutLabel);
-            }
-
             return result;
-        }
-
-        /// <summary>
-        /// Sets an optional label for the SUT to be used instead of the default one for message generation.
-        /// </summary>
-        /// <param name="sutLabel">The label for the SUT.</param>
-        public void SetSutLabel(string sutLabel)
-        {
-            this.sutLabel = string.Format("[{0}]", sutLabel);
         }
 
         /// <summary>

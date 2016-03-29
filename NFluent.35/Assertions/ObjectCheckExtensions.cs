@@ -43,9 +43,13 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The actual value is not equal to the expected value.
         /// </exception>
-        public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, T expected)
+        public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, object expected)
         {
-            return IsEqualTo(check, (object)expected);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+
+            return checker.ExecuteCheck(
+                () => EqualityHelper.IsEqualTo(checker, expected),
+                EqualityHelper.BuildErrorMessage(checker, expected, true));
         }
 
         /// <summary>
@@ -66,13 +70,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The actual value is not equal to the expected value.
         /// </exception>
-        public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, object expected)
+        public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, T expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () => EqualityHelper.IsEqualTo(checker, expected),
-                EqualityHelper.BuildErrorMessage(checker, expected, true));
+            return IsEqualTo(check, (object)expected);
         }
 
         /// <summary>

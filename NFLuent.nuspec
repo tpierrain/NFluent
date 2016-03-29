@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>NFluent</id>
+    <title>NFluent, smooth your .NET TDD experience!</title>
+    <version>1.0.0.0</version>
+    <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR</authors>
+    <owners>Thomas PIERRAIN</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://www.n-fluent.net</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>https://raw.github.com/tpierrain/NFluent/master/Images/Icon.png</iconUrl>
+    <description>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).</description>
+    <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
+    <releaseNotes>New feature(s):
+* NFluent is now also bundled for .NET 4.0 framework
+* Adds recursion to the HasFieldsEqualToThose() check on object
+--------------
+Change(s):
+* You can now easily link your own checks by using the And operator thanks to the IChecker.ReturnValueForLinkage property.
+--------------
+Bug Fixe(s):
+* Fixes a bug in the IsAfter() check that was throwing an exception when the givenValue type (considered as a IComparable instead of a number ;-(  was not the same as the checked value.</releaseNotes>
+    <copyright>Copyright 2014  Thomas PIERRAIN</copyright>
+    <language>en-US</language>
+    <tags>tdd bdd test fluent check checks easy nunit xunit mbunit mstestsucks</tags>
+  </metadata>
+  <files>
+    <!-- .NET 3.5 -->
+    <file src="Artifacts\Binaries\35\NFluent.dll" target="lib\net35\NFluent.dll" />
+    <file src="Artifacts\Binaries\35\NFluent.xml" target="lib\net35\NFluent.xml" />
+    <!-- .NET 4.0 (for dynamics and tasks support) -->
+    <file src="Artifacts\Binaries\40\NFluent.dll" target="lib\net40\NFluent.dll" />
+    <file src="Artifacts\Binaries\40\NFluent.xml" target="lib\net40\NFluent.xml" />
+    <!-- PCL -->
+    <file src="Artifacts\Binaries\PCL\NFluent.dll" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\NFluent.dll" />
+    <file src="Artifacts\Binaries\PCL\NFluent.xml" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\NFluent.xml" />
+  </files>
+</package>

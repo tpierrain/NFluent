@@ -21,7 +21,6 @@ namespace NFluent
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
@@ -202,10 +201,10 @@ namespace NFluent
         /// </remarks>
         public static ICheckLink<ICheck<T>> HasNotFieldsWithSameValues<T>(this ICheck<T> check, object expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var negated = !checker.Negated;
+            IChecker<T, ICheck<T>> checker = ExtensibilityHelper.ExtractChecker(check);
+            bool negated = !checker.Negated;
 
-            var message = CheckFieldEquality(checker, checker.Value, expected, negated);
+            string message = CheckFieldEquality(checker, checker.Value, expected, negated);
 
             if (message != null)
             {
@@ -217,44 +216,39 @@ namespace NFluent
 
         private static IEnumerable<FieldMatch> ScanFields(object value, object expected, string prefix = null)
         {
-            ;
             var result = new List<FieldMatch>();
-            for (var expectedType = expected.GetType(); expectedType != null; expectedType = expectedType.BaseType)
+            foreach (var fieldInfo in
+                expected.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
             {
-                foreach (var fieldInfo in
-                    expectedType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy))
+                var expectedFieldDescription = new ExtendedFieldInfo(prefix, fieldInfo);
+                var actualFieldMatching = FindField(value.GetType(), expectedFieldDescription.NameInSource);
+
+                // field not found in SUT
+                if (actualFieldMatching == null)
                 {
-                    var expectedFieldDescription = new ExtendedFieldInfo(prefix, fieldInfo);
-                    var actualFieldMatching = FindField(value.GetType(), expectedFieldDescription.NameInSource);
-
-                    // field not found in SUT
-                    if (actualFieldMatching == null)
-                    {
-                        result.Add(new FieldMatch(expectedFieldDescription, null));
-                        continue;
-                    }
-
-                    var actualFieldDescription = new ExtendedFieldInfo(prefix, actualFieldMatching);
-
-                    // now, let's get to the values
-                    expectedFieldDescription.CaptureFieldValue(expected);
-                    actualFieldDescription.CaptureFieldValue(value);
-
-                    if (expectedFieldDescription.ChecksIfImplementsEqual())
-                    {
-                        result.Add(new FieldMatch(expectedFieldDescription, actualFieldDescription));
-                    }
-                    else
-                    {
-                        // we need to recurse the scan
-                        result.AddRange(
-                            ScanFields(
-                                actualFieldDescription.Value,
-                                expectedFieldDescription.Value,
-                                string.Format("{0}.", expectedFieldDescription.LongFieldName)));
-                    }
+                    result.Add(new FieldMatch(expectedFieldDescription, null));
+                    continue;
                 }
 
+                var actualFieldDescription = new ExtendedFieldInfo(prefix, actualFieldMatching);
+
+                // now, let's get to the values
+                expectedFieldDescription.CaptureFieldValue(expected);
+                actualFieldDescription.CaptureFieldValue(value);
+
+                if (expectedFieldDescription.ChecksIfImplementsEqual())
+                {
+                    result.Add(new FieldMatch(expectedFieldDescription, actualFieldDescription));
+                }
+                else
+                {
+                    // we need to recurse the scan
+                    result.AddRange(
+                        ScanFields(
+                            actualFieldDescription.Value, 
+                            expectedFieldDescription.Value, 
+                            string.Format("{0}.", expectedFieldDescription.LongFieldName)));
+                }
             }
 
             return result;
@@ -324,7 +318,6 @@ namespace NFluent
             while (true)
             {
                 const BindingFlags BindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
-                Debug.Assert(type != null, "Type must not be null");
                 var result = type.GetField(name, BindingFlags);
 
                 if (result != null)
@@ -479,7 +472,7 @@ namespace NFluent
 
             #region Public Properties
 
-            private bool DoValuesMatches
+            public bool DoValuesMatches
             {
                 get
                 {
@@ -497,7 +490,7 @@ namespace NFluent
                 }
             }
 
-            private ExtendedFieldInfo Expected
+            public ExtendedFieldInfo Expected
             {
                 get
                 {
@@ -527,7 +520,7 @@ namespace NFluent
                             checker.BuildShortMessage(
                                 string.Format(
                                     "The {{0}}'s {0} has the same value in the comparand, whereas it must not.",
-                                    this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
+                                    this.Expected.FieldLabel.DoubleCurlyBraces()));
                         EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, true);
                     }
                     else
@@ -537,7 +530,7 @@ namespace NFluent
                             result = checker.BuildShortMessage(
                                 string.Format(
                                     "The {{0}}'s {0} is absent from the {{1}}.",
-                                    this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
+                                    this.Expected.FieldLabel.DoubleCurlyBraces()));
                             result.Expected(this.expected.Value);
                         }
                         else
@@ -546,7 +539,7 @@ namespace NFluent
                                 checker.BuildShortMessage(
                                     string.Format(
                                         "The {{0}}'s {0} does not have the expected value.",
-                                        this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
+                                        this.Expected.FieldLabel.DoubleCurlyBraces()));
                             EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, false);
                         }
                     }

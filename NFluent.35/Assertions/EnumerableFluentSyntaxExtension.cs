@@ -76,6 +76,7 @@ namespace NFluent
                                             "The {{0}} has extra occurences of the expected items. Item [{0}] at position {1} is redundant.",
                                 item.ToStringProperlyFormated().DoubleCurlyBraces(),
                                             itemidx))
+                                       .For(EnumerableCheckExtensions.LabelForEnumerable)
                                        .ExpectedValues(chainedCheckLink.OriginalComparand);
 
                     throw new FluentCheckException(message.ToString());
@@ -149,6 +150,7 @@ namespace NFluent
                                 item.ToStringProperlyFormated().DoubleCurlyBraces(),
                                 faillingIndex,
                                 index > scanIndex ? "early" : "late"))
+                                         .For(EnumerableCheckExtensions.LabelForEnumerable)
                                          .ExpectedValues(chainedCheckLink.OriginalComparand);
 
                         throw new FluentCheckException(message.ToString());

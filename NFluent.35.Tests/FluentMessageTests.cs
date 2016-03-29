@@ -42,7 +42,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void BlockFailTest()
         {
-            var block = new MessageBlock(null, null, null);
+            var block = new FluentMessage.MessageBlock(null, null, string.Empty);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace NFluent.Tests
         {
             var message = FluentMessage.BuildMessage("test");
             const int X = 4;
-            var block = new MessageBlock(message, X, new GenericLabelBlock());
+            var block = new FluentMessage.MessageBlock(message, X, string.Empty);
 
             Assert.AreEqual("The  value:\n\t[4]", block.GetMessage());
 
@@ -87,7 +87,7 @@ namespace NFluent.Tests
                                             .On("portna")
                                             .And.WithGivenValue("ouaq").ToString();
 
-            Assert.AreEqual("\nThe checked date time is before the given one whereas it must not.\nThe checked date time:\n\t[\"portna\"]\nThe given date time:\n\t[\"ouaq\"]", message);
+            Assert.AreEqual("\nThe checked date time is before the given date time whereas it must not.\nThe checked date time:\n\t[\"portna\"]\nThe given date time:\n\t[\"ouaq\"]", message);
         }
 
         [Test]
@@ -97,6 +97,7 @@ namespace NFluent.Tests
             var givenValues = new[] { "Luke", "Yoda", "Chewie", "Vader" };
             
             var message = FluentMessage.BuildMessage("The {0} does not contain exactly the {1}.")
+                                            .For("enumerable")
                                             .On(heroes)
                                             .WithEnumerableCount(heroes.Count())
                                             .And.ExpectedValues(givenValues)
@@ -109,15 +110,15 @@ namespace NFluent.Tests
         [Test]
         public void WeCanConfigureTheExpectedLabel()
         {
-            var possibleElements = new[] { "Paco de Lucia", "Jimi Hendrix", "Baden Powell" };
-            const string CheckedValue = "The Black Keys";
+            var possibleElements = new string[] { "Paco de Lucia", "Jimi Hendrix", "Baden Powell" };
+            var checkedValue = "The Black Keys";
 
             var errorMessage = FluentMessage.BuildMessage("The {0} is not one of the possible elements.")
-                                            .On(CheckedValue)
-                                            .And.ReferenceValues(possibleElements).Label("The possible elements:")
+                                            .On(checkedValue)
+                                            .And.Expected(possibleElements).Label("The possible elements:")
                                             .ToString();
 
-            Assert.AreEqual("\nThe checked string is not one of the possible elements.\nThe checked string:\n\t[\"The Black Keys\"]\nThe possible elements:\n\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
+            Assert.AreEqual("\nThe checked value is not one of the possible elements.\nThe checked value:\n\t[\"The Black Keys\"]\nThe possible elements:\n\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
         }
 
         [Test]
@@ -126,6 +127,7 @@ namespace NFluent.Tests
             const char LowerCasedA = 'a';
 
             var message = FluentMessage.BuildMessage("The {0} is properly displayed.")
+                                            .For("char")
                                             .On(LowerCasedA)
                                             .ToString();
 
@@ -138,6 +140,7 @@ namespace NFluent.Tests
             const char SlashChar = '/';
 
             var message = FluentMessage.BuildMessage("The {0} is properly displayed.")
+                                            .For("char")
                                             .On(SlashChar)
                                             .ToString();
 
@@ -147,30 +150,9 @@ namespace NFluent.Tests
         [Test]
         public void DoubleCurlyBracesWorks()
         {
-            const string Parameter = "string{45}";
+            var parameter = "string{45}";
 
-            Assert.AreEqual("string{{45}}", Parameter.DoubleCurlyBraces());
-        }
-
-        [Test]
-        public void ShouldCreateExpectedLabel()
-        {
-            var label = GenericLabelBlock.BuildExpectedBlock(null);
-
-            Assert.AreEqual("The expected value:", label.CustomMessage(null));
-        }
-    
-        [Test]
-        public void ShouldCreateActualLabel()
-        {
-            var label = GenericLabelBlock.BuildActualBlock(null);
-
-            Assert.AreEqual("The actual value:", label.CustomMessage(null));
-        }
-
-        [Test]
-        public void ShouldBlockWorksOnLongEnumeration()
-        {
+            Assert.AreEqual("string{{45}}", parameter.DoubleCurlyBraces());
         }
     }
 }

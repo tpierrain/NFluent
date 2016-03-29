@@ -17,8 +17,6 @@ namespace NFluent.Tests
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.IO;
-    using System.Text;
 
     using NUnit.Framework;
 
@@ -42,7 +40,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s). Items are missing starting at index #3.\nThe checked enumerable:\n\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)\nThe expected value(s):\n\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"] (4 items)")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)\nThe expected value(s):\n\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"] (4 items)")]
         public void ContainsExactlyThrowsExceptionWhenMoreItemsAreIndicated()
         {
             var heroes = new[] { "Luke", "Yoda", "Chewie" };
@@ -50,7 +48,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s). There are extra items starting at index #2.\nThe checked enumerable:\n\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)\nThe expected value(s):\n\t[\"Luke\", \"Yoda\"] (2 items)")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)\nThe expected value(s):\n\t[\"Luke\", \"Yoda\"] (2 items)")]
         public void ContainsExactlyThrowsExceptionWhenItemsAreMissing()
         {
             var heroes = new[] { "Luke", "Yoda", "Chewie" };
@@ -58,7 +56,7 @@ namespace NFluent.Tests
         }
         
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s). First difference is at index #0.\nThe checked enumerable:\n\t[1, 2, 3, 4, 5, 666] (6 items)\nThe expected value(s):\n\t[666, 3, 1, 2, 4, 5] (6 items)")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[1, 2, 3, 4, 5, 666] (6 items)\nThe expected value(s):\n\t[666, 3, 1, 2, 4, 5] (6 items)")]
         public void ContainsExactlyWithArraysThrowsExceptionWhenSameItemsInWrongOrder()
         {
             var integers = new[] { 1, 2, 3, 4, 5, 666 };
@@ -66,7 +64,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s). First difference is at index #0.\nThe checked enumerable:\n\t[1, 2, 3, 4, 5, 666] (6 items)\nThe expected value(s):\n\t[42, 42, 42] (3 items)")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[1, 2, 3, 4, 5, 666] (6 items)\nThe expected value(s):\n\t[42, 42, 42] (3 items)")]
         public void ContainsExactlyWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new[] { 1, 2, 3, 4, 5, 666 };
@@ -74,7 +72,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s). First difference is at index #0.\nThe checked enumerable:\n\t[\"Hendrix\", \"Paco de Lucia\", \"Django Reinhardt\", \"Baden Powell\"] (4 items)\nThe expected value(s):\n\t[\"Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell\"] (1 item)")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[\"Hendrix\", \"Paco de Lucia\", \"Django Reinhardt\", \"Baden Powell\"] (4 items)\nThe expected value(s):\n\t[\"Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell\"] (1 item)")]
         public void ContainsExactlyWithArraysThrowsExceptionWithClearStatusWhenFailsWithStrings()
         {
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
@@ -92,7 +90,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s). Items are missing starting at index #0.\nThe checked enumerable:\n\t[] (0 item)\nThe expected value(s):\n\t[\"what da heck!\"] (1 item)")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[] (0 item)\nThe expected value(s):\n\t[\"what da heck!\"] (1 item)")]
         public void ContainsExactlyThrowsWithEmptyList()
         {
             var emptyList = new List<int>();
@@ -109,7 +107,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is null and thus does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[null]\nThe expected value(s):\n\t[\"what da heck!\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is null and thus, does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[null]\nThe expected value(s):\n\t[\"what da heck!\"]")]
         public void ContainsExactlyThrowsWithNullAsCheckedValue()
         {
             List<int> nullList = null;
@@ -126,7 +124,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s). First difference is at index #0.\nThe checked enumerable:\n\t[1, 2, 3, 4, 5, 666] (6 items)\nThe expected value(s):\n\t[666, 3, 1, 2, 4, 5] (6 items)")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[1, 2, 3, 4, 5, 666] (6 items)\nThe expected value(s):\n\t[666, 3, 1, 2, 4, 5] (6 items)")]
         public void ContainsExactlyWithEnumerableThrowsExceptionWhenSameItemsInWrongOrder()
         {
             var integers = new List<int> { 1, 2, 3, 4, 5, 666 };
@@ -135,7 +133,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s). First difference is at index #0.\nThe checked enumerable:\n\t[1, 2, 3, 4, 5, 666] (6 items)\nThe expected value(s):\n\t[666, 3, 1, 2, 4, 5] (6 items)")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[1, 2, 3, 4, 5, 666] (6 items)\nThe expected value(s):\n\t[666, 3, 1, 2, 4, 5] (6 items)")]
         public void ContainsExactlyWithGenericEnumerableThrowsExceptionWhenSameItemsInWrongOrder()
         {
             var integers = new List<int> { 1, 2, 3, 4, 5, 666 };
@@ -144,7 +142,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s). First difference is at index #0.\nThe checked enumerable:\n\t[\"Michel Gondry\", \"Joon-ho Bong\", \"Darren Aronofsky\"] (3 items)\nThe expected value(s):\n\t[\"Steve Tesich\", \"Albert Camus\", \"Eiji Yoshikawa\", \"Friedrich Nietzsche\"] (4 items)")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[\"Michel Gondry\", \"Joon-ho Bong\", \"Darren Aronofsky\"] (3 items)\nThe expected value(s):\n\t[\"Steve Tesich\", \"Albert Camus\", \"Eiji Yoshikawa\", \"Friedrich Nietzsche\"] (4 items)")]
         public void ContainsExactlyThrowsExceptionWhenFailingWithEnumerable()
         {
             IEnumerable writersNames = InstantiateWriters().Properties("Name");
@@ -184,15 +182,6 @@ namespace NFluent.Tests
             Check.That(variousObjects).ContainsExactly(expectedVariousObjects);
         }
 
-        [Test]
-        public void ContainsExactlyWorksOnLargeArrays()
-        {
-            var checkString = File.ReadAllBytes("CheckedFile.xml");
-            var expectedString = File.ReadAllBytes("CheckedFile.xml");
-
-            Check.That(checkString).ContainsExactly(expectedString);
-
-        }
         #endregion
 
         #region test helpers

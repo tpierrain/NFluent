@@ -39,20 +39,18 @@
     <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
     <Compile Include="AndRelatedTests.cs" />
-    <Compile Include="AsOperatorTests.cs" />
     <Compile Include="ExceptionHelperTests.cs" />
     <Compile Include="CharTests.cs" />
     <Compile Include="Constants.cs" />
@@ -151,7 +149,6 @@
     <Compile Include="TimeSpanTests.cs" />
     <Compile Include="ToEnumeratedStringTests.cs" />
     <Compile Include="UserReportedIssuesTests.cs" />
-    <Compile Include="ValueBlockTests.cs" />
     <Compile Include="XamarinSpecificTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -185,7 +182,6 @@
     </Content>
     <Content Include="ExpectedFile.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="T4\NumberTestsGenerator.txt">
       <AutoGen>True</AutoGen>

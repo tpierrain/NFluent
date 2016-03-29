@@ -77,7 +77,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked dictionary does not contain the expected value.\nThe checked dictionary:\n\t[[demo, value]]\nExpected value:\n\t[\"demo\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked dictionary does not contain the expected value.\nThe checked dictionary:\n\t[[demo, value]]\ngiven value:\n\t[\"demo\"]")]
         public void ContainsValueFailsProperly()
         {
             Check.That(SimpleDico).ContainsValue("demo");

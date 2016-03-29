@@ -26,9 +26,9 @@ namespace NFluent.Tests
         [Test]
         public void IsBeforeWorksWithVersion()
         {
-            var v1 = new Version(1, 0);
-            var v2 = new Version(2, 0);
-            var v3 = new Version(3, 0);
+            Version v1 = new Version(1, 0);
+            Version v2 = new Version(2, 0);
+            Version v3 = new Version(3, 0);
 
             Check.That(v1).IsBefore(v2).And.IsBefore(v3);
         }
@@ -37,8 +37,8 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not before the reference value.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[1.0]")]
         public void IsBeforeThrowsExceptionWhenFailing()
         {
-            var v1 = new Version(1, 0);
-            var v2 = new Version(2, 0);
+            Version v1 = new Version(1, 0);
+            Version v2 = new Version(2, 0);
 
             Check.That(v2).IsBefore(v1);
         }
@@ -46,7 +46,7 @@ namespace NFluent.Tests
         [Test]
         public void IsBeforeDoesNotThrowNullReferenceExceptionWithNullAsInput()
         {
-            var v1 = new Version(1, 0);
+            Version v1 = new Version(1, 0);
             Version v2 = null;
 
             Check.That(v2).IsBefore(v1);
@@ -56,16 +56,17 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not before the reference value.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[null]")]
         public void IsBeforeDoesNotThrowNullReferenceExceptionWithNullAsAfterValue()
         {
-            var v2 = new Version(2, 0);
+            Version v1 = null;
+            Version v2 = new Version(2, 0);
 
-            Check.That(v2).IsBefore(null);
+            Check.That(v2).IsBefore(v1);
         }
 
         [Test]
         public void NotOperatorWorksWithIsBefore()
         {
-            var v1 = new Version(1, 0);
-            var v2 = new Version(2, 0);
+            Version v1 = new Version(1, 0);
+            Version v2 = new Version(2, 0);
 
             Check.That(v2).Not.IsBefore(v1);
         }
@@ -74,8 +75,8 @@ namespace NFluent.Tests
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is before the reference value whereas it must not.\nThe checked value:\n\t[1.0]\nThe expected value: after\n\t[2.0]")]
         public void IsBeforeWithNotOperatorCanThrowException()
         {
-            var v1 = new Version(1, 0);
-            var v2 = new Version(2, 0);
+            Version v1 = new Version(1, 0);
+            Version v2 = new Version(2, 0);
 
             Check.That(v1).Not.IsBefore(v2);
         }

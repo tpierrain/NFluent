@@ -173,7 +173,6 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The value is not less than the comparand.
         /// </exception>
-        [Obsolete("Use IsStrictlyLessThan instead.")]
         public static ICheckLink<ICheck<double>> IsLessThan(this ICheck<double> check, double comparand)
         {
             var numberCheckStrategy = new NumberCheck<double>(check);
