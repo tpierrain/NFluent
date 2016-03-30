@@ -15,13 +15,20 @@
         }
 
         [Test]
+        public void ObsoleteAPIChecks()
+        {
+            var x = new DummyClass();
+            Check.That(x).HasFieldsEqualToThose(new DummyClass());
+        }
+
+        [Test]
         public void HasNotFieldsWithSameValuesWorks()
         {
             var x = new DummyClass();
             Check.That(x).HasNotFieldsWithSameValues(new DummyClass(1, 2)); 
 
             // check with missing fields
-            Check.That(new DummyClass()).HasNotFieldsWithSameValues(new DummyHeritance());
+            Check.That(new DummyClass()).HasNotFieldsWithSameValues(new DummyHeritance(1,2));
         }
 
         [Test]
@@ -38,7 +45,7 @@
             Check.That(x).HasFieldsNotEqualToThose(new DummyClass(1, 2));
 
             // check with missing fields
-            Check.That(new DummyClass()).HasFieldsNotEqualToThose(new DummyHeritance());
+            Check.That(new DummyClass()).HasFieldsNotEqualToThose(new DummyHeritance(1,2));
         }
 
         [Test]
@@ -47,6 +54,14 @@
         {
             var x = new DummyClass();
             Check.That(x).HasFieldsWithSameValues(new DummyClass(1, 2));
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value\'s field \'y\' does not have the expected value.\nThe checked value:\n\t[3]\nThe expected value:\n\t[1]")]
+        public void IsEqualFailsIfFieldsDifferentEvenInBaseClass()
+        {
+            var x = new DummyHeritance();
+            Check.That(x).HasFieldsWithSameValues(new DummyHeritance(2, 1));
         }
 
         [Test]
@@ -175,6 +190,10 @@
 #pragma warning disable 169
             private int z = 2;
 #pragma warning restore 169
+            public DummyHeritance() { }
+            public DummyHeritance(int x, int y) : base(x, y)
+            {
+            }
         }
 
         private class DummyWithAutoProperty

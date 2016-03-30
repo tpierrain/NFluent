@@ -334,7 +334,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked expression type does not have the expected inheritance.\nIndeed, the checked expression type\n\t[NFluent.Tests.Person]\nis not a derived type of\n\t[NFluent.Tests.Child]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked expression type does not have the expected inheritance.\nThe checked expression type:\n\t[NFluent.Tests.Person]\nThe expected expression type: inherits from\n\t[NFluent.Tests.Child]")]
         public void InheritsFromThrowsExceptionWhenFailing()
         {
             var father = new Person { Name = "Odysseus" };

@@ -28,12 +28,7 @@ namespace NFluent.Extensions
         /// </returns>
         public static Type GetTypeWithoutThrowingException(this object reference)
         {
-            if (reference == null)
-            {
-                return null;
-            }
-
-            return reference.GetType();
+            return reference == null ? null : reference.GetType();
         }
     }
 }

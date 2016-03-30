@@ -1,6 +1,6 @@
 ![NFluent](https://github.com/tpierrain/nfluent/blob/master/NFluentBanner.png?raw=true)
 ![Motto](https://github.com/tpierrain/nfluent/blob/master/Images/AssertIsDead.png?raw=true)
-NFluent overview
+NFluent overview [![](http://teamcity.codebetter.com/httpAuth/app/rest/builds/id:214181/statusIcon.svg?guest=1)](http://teamcity.codebetter.com/project.html?projectId=NFluent&tab=projectOverview&guest=1) 
 ==============
 
 NFluent is __an check library__ which aims __to fluent your .NET TDD experience__.

@@ -181,7 +181,7 @@ namespace NFluent.Tests
         #endregion
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[45, 43, 54, 666] of type: [System.Collections.Generic.List<int>]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is equal to the expected one whereas it must not.\nThe expected enumerable: different from\n\t[45, 43, 54, 666] of type: [System.Collections.Generic.List<int>]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             IEnumerable enumerable = new List<int> { 45, 43, 54, 666 };
