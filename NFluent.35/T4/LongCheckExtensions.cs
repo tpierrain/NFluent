@@ -12,6 +12,9 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using NFluent.Helpers;
+
 namespace NFluent
 {
     using System;
@@ -243,5 +246,29 @@ namespace NFluent
             var numberCheckStrategy = new NumberCheck<long>(check);
             return numberCheckStrategy.IsStrictlyGreaterThan(comparand);
         }
+        /// <summary>
+        /// Checks that the actual value is equal to another expected value.
+        /// </summary>
+        /// <param name="check">
+        /// The fluent check to be extended.
+        /// </param>
+        /// <param name="expected">
+        /// The expected value.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The actual value is not equal to the expected value.
+        /// </exception>
+        public static ICheckLink<ICheck<long>> IsEqualTo(this ICheck<long> check, long expected)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker<long>(check);
+
+            return checker.ExecuteCheck(
+                () => EqualityHelper.IsEqualTo(checker, expected),
+                EqualityHelper.BuildErrorMessage(checker, expected, true));
+        }
+
     }
 }

@@ -63,15 +63,25 @@ namespace NFluent.Tests
 
             Check.That(impl).HasFieldsWithSameValues(impl2);
         }
- /*
-        // Issue #315: superfluous casting required
+
+        // Issue #138: superfluous casting required for mathematical expression
+        [Test]
+        public void CastingForExpression()
+        {
+            ushort usValue = 0;
+            Check.That(usValue).IsEqualTo(0);
+        }
+
+
+        // Issue #135: superfluous casting required
         [Test]
         public void Casting()
         {
             ushort usValue = 0;
             Check.That(usValue).IsEqualTo(0);
         }
-*/
+
+
         // Issue #131: Pull Request to add First() and Single() for enumeration
         [Test]
         public void CheckForFIrst()

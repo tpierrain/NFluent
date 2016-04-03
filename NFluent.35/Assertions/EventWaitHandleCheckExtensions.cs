@@ -14,7 +14,6 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System;
     using System.Threading;
     using NFluent.Extensibility;
     using NFluent.Helpers;
