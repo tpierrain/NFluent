@@ -25,11 +25,23 @@ namespace NFluent.Tests
     [TestFixture]
     public class UserReportedIssuesTests
     {
+
+        // Issue #148: object cycle should work with hasfieldswithsamevalue
+        [Test]
+        public void LoopTest()
+        {
+            var node = new Node();
+
+            Check.That(node).HasFieldsWithSameValues(new Node());
+        }
+
+
         // Issue #141: issue with private inheritance and 'hasfieldswithsamevalue'
         class Base
         {
             public string BaseProperty { get; set; }
         }
+
         class Impl : Base
         {
 
@@ -199,6 +211,16 @@ namespace NFluent.Tests
         private class ModelBName : IModelBName
         {
             public string Title { get; set; }
+        }
+
+        private class Node
+        {
+            private Node loop;
+
+            public Node()
+            {
+                this.loop = this;
+            }
         }
     }
 }
