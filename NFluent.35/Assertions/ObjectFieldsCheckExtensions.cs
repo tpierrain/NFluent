@@ -215,9 +215,8 @@ namespace NFluent
             return checker.BuildChainingObject();
         }
 
-        private static IEnumerable<FieldMatch> ScanFields(object value, object expected, string prefix = null)
+        private static IEnumerable<FieldMatch> ScanFields(object value, object expected, IList<object> scanned, string prefix = null)
         {
-            ;
             var result = new List<FieldMatch>();
             for (var expectedType = expected.GetType(); expectedType != null; expectedType = expectedType.BaseType)
             {
@@ -244,17 +243,20 @@ namespace NFluent
                     {
                         result.Add(new FieldMatch(expectedFieldDescription, actualFieldDescription));
                     }
-                    else
+                    else if (!scanned.Contains(expectedFieldDescription.Value))
                     {
+                       scanned.Add(expectedFieldDescription.Value);
+                       
                         // we need to recurse the scan
                         result.AddRange(
                             ScanFields(
                                 actualFieldDescription.Value,
                                 expectedFieldDescription.Value,
+                                scanned,
                                 string.Format("{0}.", expectedFieldDescription.LongFieldName)));
+
                     }
                 }
-
             }
 
             return result;
@@ -292,7 +294,7 @@ namespace NFluent
 
         private static string CheckFieldEquality<T>(IChecker<T, ICheck<T>> checker, object value, object expected, bool negated)
         {
-            var analysis = ScanFields(value, expected);
+            var analysis = ScanFields(value, expected, new List<object>());
 
             foreach (var fieldMatch in analysis)
             {

@@ -12,6 +12,10 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using NFluent.Extensibility;
+using NFluent.Helpers;
+
 namespace NFluent
 {
     using System;
@@ -110,5 +114,6 @@ namespace NFluent
             var numberCheckStrategy = new NumberCheck<int>(check);
             return numberCheckStrategy.IsNegativeOrZero();
         }
+
     }
 }
