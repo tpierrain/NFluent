@@ -248,10 +248,10 @@ Check.That(persons.Properties(<span class="str">"Nationality"</span>)).ContainsE
         <!-- code formatted by http://manoli.net/csharpformat/ -->
         <pre class="csharpcode">
 <span class="rem">// Works also with lambda for exception checking</span>
-Check.That(() =&gt; { <span class="kwrd">throw</span> <span class="kwrd">new</span> InvalidOperationException(); }).Throws&lt;InvalidOperationException&gt;();
+Check.ThatCode(() =&gt; { <span class="kwrd">throw</span> <span class="kwrd">new</span> InvalidOperationException(); }).Throws&lt;InvalidOperationException&gt;();
 
 <span class="rem">// or execution duration checking</span>
-Check.That(() =&gt; Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+Check.ThatCode(() =&gt; Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
         </pre>
         <p>
         </p>
