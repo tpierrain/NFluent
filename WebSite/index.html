@@ -229,12 +229,12 @@ Check.That(motivationalSaying).IsNotInstanceOf&lt;<span class="kwrd">int</span>&
                          <span class="kwrd">new</span> Person { Name = <span class="str">"Arjun"</span>, Age = 7, Nationality = Nationality.Indian }
                      };
 
-Check.That(persons.Properties(<span class="str">"Name"</span>)).ContainsExactly(<span class="str">"Thomas"</span>, <span class="str">"Achille"</span>, <span class="str">"Anton"</span>, <span class="str">"Arjun"</span>);
-Check.That(persons.Properties(<span class="str">"Age"</span>)).ContainsExactly(38, 10, 7, 7);
-Check.That(persons.Properties(<span class="str">"Nationality"</span>)).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+Check.That(persons.Extracting(<span class="str">"Name"</span>)).ContainsExactly(<span class="str">"Thomas"</span>, <span class="str">"Achille"</span>, <span class="str">"Anton"</span>, <span class="str">"Arjun"</span>);
+Check.That(persons.Extracting(<span class="str">"Age"</span>)).ContainsExactly(38, 10, 7, 7);
+Check.That(persons.Extracting(<span class="str">"Nationality"</span>)).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
 
 <span class="rem">// more fluent than the following classical NUnit way, isn't it? </span>
-<span class="rem">// CollectionAssert.AreEquivalent(persons.Properties("Age"), new[] { 38, 10, 7, 7 });</span>
+<span class="rem">// CollectionAssert.AreEquivalent(persons.Extracting("Age"), new[] { 38, 10, 7, 7 });</span>
 
 <span class="rem">// it's maybe even more fluent than the java versions</span>
 
@@ -248,10 +248,10 @@ Check.That(persons.Properties(<span class="str">"Nationality"</span>)).ContainsE
         <!-- code formatted by http://manoli.net/csharpformat/ -->
         <pre class="csharpcode">
 <span class="rem">// Works also with lambda for exception checking</span>
-Check.That(() =&gt; { <span class="kwrd">throw</span> <span class="kwrd">new</span> InvalidOperationException(); }).Throws&lt;InvalidOperationException&gt;();
+Check.ThatCode(() =&gt; { <span class="kwrd">throw</span> <span class="kwrd">new</span> InvalidOperationException(); }).Throws&lt;InvalidOperationException&gt;();
 
 <span class="rem">// or execution duration checking</span>
-Check.That(() =&gt; Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
+Check.ThatCode(() =&gt; Thread.Sleep(30)).LastsLessThan(60, TimeUnit.Milliseconds);
         </pre>
         <p>
         </p>
