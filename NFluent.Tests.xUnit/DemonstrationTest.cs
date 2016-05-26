@@ -1,21 +1,21 @@
-﻿namespace NFluent.Tests.XUnit
+﻿namespace NFluent.Tests.XUnitTest
 {
     using NFluent;
     using Xunit;
     
     public class DemonstrationTest
     {
-        [Fact]
+        [Xunit.Fact]
         public void BasicCheck()
         {
             Check.That(10).IsEqualTo(10);
             Check.That("test").IsEqualTo("test");
         }
 
-        [Fact]
+        [Xunit.Fact]
         public void FailingTest()
         {
-            //Check.That("test").IsEqualTo("tt");
+            // Check.That("test").IsEqualTo("tt");
         }
     }
 }

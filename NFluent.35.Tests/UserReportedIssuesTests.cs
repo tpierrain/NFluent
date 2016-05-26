@@ -25,11 +25,23 @@ namespace NFluent.Tests
     [TestFixture]
     public class UserReportedIssuesTests
     {
+
+        // Issue #148: object cycle should work with hasfieldswithsamevalue
+        [Test]
+        public void LoopTest()
+        {
+            var node = new Node();
+
+            Check.That(node).HasFieldsWithSameValues(new Node());
+        }
+
+
         // Issue #141: issue with private inheritance and 'hasfieldswithsamevalue'
         class Base
         {
             public string BaseProperty { get; set; }
         }
+
         class Impl : Base
         {
 
@@ -63,15 +75,25 @@ namespace NFluent.Tests
 
             Check.That(impl).HasFieldsWithSameValues(impl2);
         }
- /*
-        // Issue #315: superfluous casting required
+
+        // Issue #138: superfluous casting required for mathematical expression
+        [Test]
+        public void CastingForExpression()
+        {
+            ushort usValue = 0;
+            Check.That(usValue).IsEqualTo(0);
+        }
+
+
+        // Issue #135: superfluous casting required
         [Test]
         public void Casting()
         {
             ushort usValue = 0;
             Check.That(usValue).IsEqualTo(0);
         }
-*/
+
+
         // Issue #131: Pull Request to add First() and Single() for enumeration
         [Test]
         public void CheckForFIrst()
@@ -189,6 +211,16 @@ namespace NFluent.Tests
         private class ModelBName : IModelBName
         {
             public string Title { get; set; }
+        }
+
+        private class Node
+        {
+            private Node loop;
+
+            public Node()
+            {
+                this.loop = this;
+            }
         }
     }
 }
