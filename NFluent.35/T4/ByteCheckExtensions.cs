@@ -263,7 +263,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<byte>> IsEqualTo(this ICheck<byte> check, byte expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker<byte>(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () => EqualityHelper.IsEqualTo(checker, expected),

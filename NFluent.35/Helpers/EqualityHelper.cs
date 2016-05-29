@@ -12,9 +12,13 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using NFluent.Extensions;
+
 namespace NFluent.Helpers
 {
-    using NFluent.Extensibility;
+    using Extensibility;
 
     /// <summary>
     /// Helper class related to Equality methods (used like a traits).
@@ -44,7 +48,24 @@ namespace NFluent.Helpers
             {
                 return;
             }
+#if! PORTABLE
+            if (expected != null && instance != null)
+            {
+                var expectedType = expected.GetType();
+                // if both types are numerical, check if the values are the same to generate a precise message
+                if (ExtensionsCommonHelpers.IsNumerical(expectedType) && ExtensionsCommonHelpers.IsNumerical(instance.GetType()))
+                {
+                    var changeType = Convert.ChangeType(instance, expectedType);
+                    if (expected.Equals(changeType))
+                    {
+                        var msg = checker.BuildShortMessage("The {0} is not of the expected type, but has the same value than the {1}.");
 
+                        FillEqualityErrorMessage(msg, checker.Value, expected, false);
+                        throw new FluentCheckException(msg.ToString());
+                    }
+                }
+            }
+#endif
             // Should throw
             var errorMessage = BuildErrorMessage(checker, expected, false);
 
@@ -53,6 +74,7 @@ namespace NFluent.Helpers
 
         private static bool FluentEquals(object instance, object expected)
         {
+            // ReSharper disable once RedundantNameQualifier
             return object.Equals(instance, expected);
         }
 
@@ -105,7 +127,6 @@ namespace NFluent.Helpers
                 .And.Expected(expected)
                 .WithType(withType)
                 .WithHashCode(withHash);
-            return;
         }
 
         /// <summary>

@@ -26,9 +26,9 @@ namespace NFluent
     using System.Reflection;
     using System.Text.RegularExpressions;
 
-    using NFluent.Extensibility;
-    using NFluent.Extensions;
-    using NFluent.Helpers;
+    using Extensibility;
+    using Extensions;
+    using Helpers;
 
     /// <summary>
     ///     Provides check methods to be executed on an object instance.
@@ -325,9 +325,9 @@ namespace NFluent
         {
             while (true)
             {
-                const BindingFlags BindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+                const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
                 Debug.Assert(type != null, "Type must not be null");
-                var result = type.GetField(name, BindingFlags);
+                var result = type.GetField(name, bindingFlags);
 
                 if (result != null)
                 {
@@ -343,7 +343,7 @@ namespace NFluent
                 FieldKind fieldKind;
                 var actualName = ExtractFieldNameAsInSourceCode(name, out fieldKind);
 
-                foreach (var field in from field in type.GetFields(BindingFlags)
+                foreach (var field in from field in type.GetFields(bindingFlags)
                                             let fieldName = ExtractFieldNameAsInSourceCode(field.Name, out fieldKind)
                                             where fieldName == actualName
                                             select field)

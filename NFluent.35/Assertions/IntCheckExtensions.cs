@@ -256,7 +256,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<int>> IsEqualTo(this ICheck<int> check, int expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker<int>(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () => EqualityHelper.IsEqualTo(checker, expected),

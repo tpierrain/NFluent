@@ -225,6 +225,5 @@ namespace NFluent.Tests
             IEnumerable integerEmptyList = new List<int>();
             Check.That(integerEmptyList).IsEmpty().And.HasSize(0);
         }
-
     }
 }
