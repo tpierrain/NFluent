@@ -18,7 +18,7 @@ namespace NFluent.Tests
     using System;
     using System.Collections.Generic;
 
-    using NFluent.Extensibility;
+    using Extensibility;
     using NFluent.Extensions;
 
     using NUnit.Framework;
@@ -42,6 +42,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void BlockFailTest()
         {
+            // ReSharper disable once UnusedVariable
             var block = new MessageBlock(null, null, null);
         }
 
@@ -171,6 +172,15 @@ namespace NFluent.Tests
         [Test]
         public void ShouldBlockWorksOnLongEnumeration()
         {
+            var possibleElements = "We need to test the message block methods with a long enumeration. A string convterted to a char array should be enough.";
+            const string CheckedValue = "The Black Keys";
+
+            var errorMessage = FluentMessage.BuildMessage("The {0} is not one of the possible elements.")
+                                            .On(CheckedValue.ToCharArray())
+                                            .And.ReferenceValues(possibleElements.ToCharArray()).Label("The possible elements:")
+                                            .ToString();
+
+//            Assert.AreEqual("\nThe checked enumerable is not one of the possible elements.\nThe checked enumrable:\n\t[\"The Black Keys\"]\nThe possible elements:\n\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
         }
     }
 }

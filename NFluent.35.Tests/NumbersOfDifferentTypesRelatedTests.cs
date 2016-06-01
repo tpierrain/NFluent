@@ -95,23 +95,23 @@ namespace NFluent.Tests
         [Test]
         public void NotIsEqualToWorksWithDifferentTypes()
         {
-            const int IntValue = 42;
-            const long LongValue = 21L;
+            const int intValue = 42;
+            const long longValue = 21L;
 
-            Check.That(IntValue).Not.IsEqualTo(LongValue);
+            Check.That(intValue).Not.IsEqualTo(longValue);
         }
 
         [Test]
         public void IsAfterWorks()
         {
-            long value = 42;
+            const long value = 42;
             Check.That(value).IsNotZero().And.IsAfter(40);
         }
 
         [Test]
         public void IsBeforeWorks()
         {
-            long value = 42;
+            const long value = 42;
             Check.That(value).IsNotZero().And.IsBefore(100);
         }
 

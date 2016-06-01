@@ -47,11 +47,6 @@ namespace NFluent
         /// </summary>
         private static readonly Regex AutoPropertyMask;
 
-        /// <summary>
-        ///     The mono anonymous type field mask.
-        /// </summary>
-        private static readonly Regex MonoAnonymousTypeFieldMask;
-
         #endregion
 
         #region Constructors and Destructors
@@ -62,8 +57,7 @@ namespace NFluent
         static ObjectFieldsCheckExtensions()
         {
             AutoPropertyMask = new Regex("^<(.*)>k_");
-            AnonymousTypeFieldMask = new Regex("^<(.*)>i_");
-            MonoAnonymousTypeFieldMask = new Regex("^<(.*)>\\z");
+            AnonymousTypeFieldMask = new Regex("^<(.*)>(i_|\\z)");
         }
 
         #endregion
@@ -281,12 +275,6 @@ namespace NFluent
                 return result;
             }
 
-            if (EvaluateCriteria(MonoAnonymousTypeFieldMask, name, out result))
-            {
-                kind = FieldKind.AnonymousClass;
-                return result;
-            }
-
             result = name;
             kind = FieldKind.Normal;
             return result;
@@ -311,7 +299,7 @@ namespace NFluent
         private static bool EvaluateCriteria(Regex expression, string name, out string actualFieldName)
         {
             var regTest = expression.Match(name);
-            if (regTest.Groups.Count == 2)
+            if (regTest.Groups.Count >= 2)
             {
                 actualFieldName = name.Substring(regTest.Groups[1].Index, regTest.Groups[1].Length);
                 return true;
@@ -325,9 +313,9 @@ namespace NFluent
         {
             while (true)
             {
-                const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+                const BindingFlags BindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
                 Debug.Assert(type != null, "Type must not be null");
-                var result = type.GetField(name, bindingFlags);
+                var result = type.GetField(name, BindingFlags);
 
                 if (result != null)
                 {
@@ -343,7 +331,7 @@ namespace NFluent
                 FieldKind fieldKind;
                 var actualName = ExtractFieldNameAsInSourceCode(name, out fieldKind);
 
-                foreach (var field in from field in type.GetFields(bindingFlags)
+                foreach (var field in from field in type.GetFields(BindingFlags)
                                             let fieldName = ExtractFieldNameAsInSourceCode(field.Name, out fieldKind)
                                             where fieldName == actualName
                                             select field)
@@ -382,10 +370,6 @@ namespace NFluent
                     this.kind = FieldKind.AutoProperty;
                 }
                 else if (EvaluateCriteria(AnonymousTypeFieldMask, info.Name, out this.nameInSource))
-                {
-                    this.kind = FieldKind.AnonymousClass;
-                }
-                else if (EvaluateCriteria(MonoAnonymousTypeFieldMask, info.Name, out this.nameInSource))
                 {
                     this.kind = FieldKind.AnonymousClass;
                 }

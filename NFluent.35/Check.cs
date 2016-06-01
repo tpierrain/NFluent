@@ -75,10 +75,9 @@ namespace NFluent
         {
             return new FluentCodeCheck<RunTraceResult<TResult>>(CodeCheckExtensions.GetAsyncTrace(awaitableFunction));
         }
-
 #endif
 
-#if !(PORTABLE)
+#if !PORTABLE
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
@@ -95,7 +94,7 @@ namespace NFluent
         {
             return new LambdaCheck(value);
         }
-
+        
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
