@@ -17,4 +17,5 @@ Bug Fixe(s):
 * Fix the inversion between expected and actual error message for the .WithMessage checks on exception.
 * Fix the issue with null value on Check.That(...).IsBefore(...)
 * HasFieldsWithSameValues now recurse along the hierarchy class (Fix for #141)
+* Fix stack overflow triggered by HasFieldsWithSameValues() on object with reference loop (#148)
 
