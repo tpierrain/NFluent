@@ -14,7 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
-    using NFluent.Tests.ForDocumentation;
+    using ForDocumentation;
 
     using NUnit.Framework;
 

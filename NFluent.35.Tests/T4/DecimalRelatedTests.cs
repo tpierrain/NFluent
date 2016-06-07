@@ -365,6 +365,15 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [ExpectedException(typeof(FluentCheckException))]
+        public void IsEqualFailsWhenRelevant()
+        {
+            const decimal Twenty = 20M;
+
+            Check.That(Twenty).IsEqualTo(0);
+        }
+
+        [Test]
         public void EqualsWorksToo()
         {
             const decimal Twenty = 20M;

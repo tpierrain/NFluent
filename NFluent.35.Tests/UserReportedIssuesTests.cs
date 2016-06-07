@@ -138,13 +138,12 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), 
-            ExpectedMessage = "\nThe checked value is not of the expected type, but has the same value than the expected one.\nThe checked value:\n\t[2] of type: [ushort]\nThe expected value:\n\t[2] of type: [int]")]
         public void ImprovedErrorMessagessForNumerals()
         {
             ushort usValue = 2; int iValue = 1;
             Check.That(usValue).IsEqualTo(iValue + 1);
         }
+
         // Issue #148: object cycle should work with hasfieldswithsamevalue
         [Test]
         public void LoopTest()

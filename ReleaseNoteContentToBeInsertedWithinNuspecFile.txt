@@ -1,7 +1,9 @@
 New feature(s):
 * Numbers: introduce IsPositiveOrZero() check.
 * Numbers: introduce IsNegativeOrZero() check.
+* FloatingNumbers (float, double): introduce IsCloseTo(expected, within) check for estimated value.
 * Exceptions: introduce the DueTo&lt;InnerException&gt; operator after the Throws&lt;Exception&gt; check.
+
 --------------
 Change(s):
 * Numbers: introduce IsStrictlyPositive() as a substitute for IsPositive() which is now obsolete.

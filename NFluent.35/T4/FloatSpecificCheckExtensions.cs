@@ -12,9 +12,12 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+
 namespace NFluent
 {
-    using NFluent.Extensibility;
+    using Extensibility;
 
     /// <summary>
     /// Provides specific check methods to be executed on an <see cref="float"/> value.
@@ -76,6 +79,30 @@ namespace NFluent
                     }
                 },
                 checker.BuildMessage("The {0} is a finite number whereas it must not.").For("float value").On(checker.Value).ToString());
+        }
+
+        /// <summary>
+        /// Determines wehther the actual number is close to an expected value within a given within.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <param name="within">The within.</param>
+        /// <returns></returns>
+        /// <exception cref="FluentCheckException"></exception>
+        public static ICheckLink<ICheck<float>> IsCloseTo(this ICheck<float> check, Double expected, Double within)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            var range = new RangeBlock(expected, within);
+            return checker.ExecuteCheck(
+                () =>
+                {
+                    if (!range.IsInRange(checker.Value))
+                    {
+                        var errorMessage = checker.BuildMessage("The {0} is outside the expected value range.").On(checker.Value).And.Expected(range).ToString();
+                        throw new FluentCheckException(errorMessage);
+                    }
+                },
+                checker.BuildMessage("The {0} is within the expected range, whereas it must not.").On(checker.Value).And.Expected(range).ToString());
         }
     }
 }

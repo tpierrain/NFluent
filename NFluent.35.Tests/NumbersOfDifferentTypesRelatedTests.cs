@@ -42,10 +42,10 @@ namespace NFluent.Tests
         #region IsEqualTo / IsNotEqualTo
 
         [Test]
-        public void IntValueIsNotEqualToTheSameByteValue()
+        public void IntValueIsEqualToTheSameByteValue()
         {
             byte byteValue = 2;
-            Check.That(byteValue).IsNotEqualTo(2);
+            Check.That(byteValue).IsEqualTo(2);
         }
 
         [Test]
@@ -80,14 +80,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void LongValueIsNotEqualToTheSameIntValue()
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[2] of type: [long]")]
+        public void LongValueIsNotEqualToTheSameIntValueAndThrows()
         {
             Check.That(2).IsNotEqualTo(2L);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not of the expected type, but has the same value than the expected one.\nThe checked value:\n\t[42] of type: [int]\nThe expected value:\n\t[42] of type: [long]")]
-        public void LongValueIsNotEqualToTheSameIntValueAndThrows()
+        public void LongValueIsEqualToTheSameIntValue()
         {
             Check.That(42).IsEqualTo(42L);
         }
