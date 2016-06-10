@@ -365,6 +365,15 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [ExpectedException(typeof(FluentCheckException))]
+        public void IsEqualFailsWhenRelevant()
+        {
+            const short Twenty = 20;
+
+            Check.That(Twenty).IsEqualTo(0);
+        }
+
+        [Test]
         public void EqualsWorksToo()
         {
             const short Twenty = 20;

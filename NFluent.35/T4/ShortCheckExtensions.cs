@@ -19,7 +19,7 @@ namespace NFluent
 {
     using System;
 
-    using NFluent.Extensibility;
+    using Extensibility;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="short"/> value.
@@ -263,7 +263,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<short>> IsEqualTo(this ICheck<short> check, short expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker<short>(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () => EqualityHelper.IsEqualTo(checker, expected),

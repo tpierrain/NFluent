@@ -19,7 +19,7 @@ namespace NFluent.Extensibility
     using System.Collections;
     using System.Text;
 
-    using NFluent.Extensions;
+    using Extensions;
 
     /// <summary>
     /// Class describing a value block.

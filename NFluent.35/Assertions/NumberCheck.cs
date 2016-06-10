@@ -79,7 +79,7 @@ namespace NFluent
 
                         if (res)
                         {
-                            throw new FluentCheckException(checker.BuildMessage("The {0} is equal to zero, whereas it must not.").ToString());
+                            throw new FluentCheckException(this.checker.BuildMessage("The {0} is equal to zero, whereas it must not.").ToString());
                         }
                     },
                 this.checker.BuildMessage("The {0} is different from zero.").ToString());

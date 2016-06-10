@@ -17,7 +17,7 @@ namespace NFluent.Tests
 {
     using System;
 
-    using NFluent.Extensibility;
+    using Extensibility;
 
     using NUnit.Framework;
 
@@ -77,7 +77,20 @@ namespace NFluent.Tests
             blk.WithEnumerableCount(list.GetLength(0));
             Assert.AreEqual("[null]", blk.GetMessage());
         }
-    
+
+        [Test]
+        public void ShoulSupportWithType()
+        {
+            var list = string.Empty.ToCharArray();
+            var blk = new EnumerationBlock(list, 0);
+
+            blk.WithEnumerableCount(list.GetLength(0));
+            blk.WithType();
+            Assert.AreEqual("[] (0 item) of type: [char[]]", blk.GetMessage());
+            blk.WithType(typeof(string));
+            Assert.AreEqual("[] (0 item) of type: [string]", blk.GetMessage());
+        }
+
         [Test]
         public void ShouldFocusOnSomePart()
         {

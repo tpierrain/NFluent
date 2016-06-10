@@ -26,6 +26,124 @@ namespace NFluent.Tests
     public class UserReportedIssuesTests
     {
 
+        // issue #119: need to propose various behavior for HasFieldsWithSameValues
+        public class TestMe
+        {
+            public int Id { get; set; }
+            public List<int> OtherIds;
+        }
+
+          
+            [Test]
+            public void TestPrivateField()
+            {
+                TestMe test1 = CreateTestItem();
+                TestMe test2 = CreateTestItem();
+
+                var stream = new MemoryStream();
+                Serialize(stream, test1);
+                stream.Position = 0;
+
+                Deserialize(stream, test1);
+
+                // Id is not checked at all and the List<int>._version field is tested when it should not be
+                //this check fails
+//                Check.That(test1).HasFieldsWithSameValues(test2);
+            }
+
+            private static void Deserialize(MemoryStream stream, TestMe testItem)
+            {
+                var binaryReader = new BinaryReader(stream);
+                testItem.Id = binaryReader.ReadInt32();
+                var length = binaryReader.ReadInt32();
+                testItem.OtherIds.Clear();
+                for (int i = 0; i < length; i++)
+                {
+                    testItem.OtherIds.Add(binaryReader.ReadInt32());
+                }
+            }
+
+            private static void Serialize(MemoryStream stream, TestMe testItem)
+            {
+                var binaryWriter = new BinaryWriter(stream);
+                binaryWriter.Write(testItem.Id);
+                binaryWriter.Write(testItem.OtherIds.Count);
+                foreach (var otherId in testItem.OtherIds)
+                {
+                    binaryWriter.Write(otherId);
+                }
+            }
+
+            private static TestMe CreateTestItem()
+            {
+                var testItem = new TestMe();
+                testItem.Id = 42;
+                testItem.OtherIds = new List<int> {1, 2, 3, 4};
+                return testItem;
+            }
+
+
+        // issue #154: NFluent does not use the overloaded operators
+        [Test]
+        public void FailsToUseOperator()
+        {
+
+            Person mySelf = new Person() { Name = "SilNak" };
+            PersonEx myClone = new PersonEx() { Name = "SilNak" };
+
+            //Check.That(myClone).IsEqualTo(mySelf); 
+            //Check.That(mySelf).IsEqualTo(myClone); 
+        }
+        internal class Person
+        {
+            public String Name { get; set; }
+            public String Surname { get; set; }
+
+        }
+        internal class PersonEx
+        {
+            public String Name { get; set; }
+            public String Surname { get; set; }
+
+            public static bool operator ==(PersonEx person1, Person person2)
+            {
+                return person1.Name == person2.Name;
+            }
+            public static bool operator !=(PersonEx person1, Person person2)
+            {
+                return person1.Name != person2.Name;
+            }
+            public static bool operator ==(Person person1, PersonEx person2)
+            {
+                return person1.Name == person2.Name;
+            }
+            public static bool operator !=(Person person1, PersonEx person2)
+            {
+                return person1.Name != person2.Name;
+            }
+        }
+        // issue #124: Improve ContainsExactly error messages
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s). First difference is at index #4.\nThe checked enumerable:\n\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concert\", \"Conjured Mana Cake\"] (6 items)\nThe expected value(s):\n\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concer\", \"Conjured Mana Cake\"] (6 items)")]
+         public void ContainsExactly()
+        {
+            var stringArray = new string[]
+            {
+                "+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros",
+                "Backstagex passes to a TAFKAL80ETC concert", "Conjured Mana Cake"
+            };
+
+            Check.That(stringArray).ContainsExactly(new string [] { "+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros",
+                "Backstagex passes to a TAFKAL80ETC concer", "Conjured Mana Cake"});
+        }
+
+        [Test]
+        public void ImprovedErrorMessagessForNumerals()
+        {
+            ushort usValue = 2; int iValue = 1;
+            Check.That(usValue).IsEqualTo(iValue + 1);
+        }
+
         // Issue #148: object cycle should work with hasfieldswithsamevalue
         [Test]
         public void LoopTest()

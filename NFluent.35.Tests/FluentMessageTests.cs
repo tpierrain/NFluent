@@ -13,12 +13,14 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+using System.CodeDom;
+
 namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
 
-    using NFluent.Extensibility;
+    using Extensibility;
     using NFluent.Extensions;
 
     using NUnit.Framework;
@@ -42,6 +44,7 @@ namespace NFluent.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void BlockFailTest()
         {
+            // ReSharper disable once UnusedVariable
             var block = new MessageBlock(null, null, null);
         }
 
@@ -168,9 +171,47 @@ namespace NFluent.Tests
             Assert.AreEqual("The actual value:", label.CustomMessage(null));
         }
 
+
+        [Test]
+        public void InstanceValuesMustGenerateProperText()
+        {
+            var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).ToString();
+            Assert.AreEqual("\ndon't care\nThe expected value:\n\tan instance of type: [string]", errorMessage);
+        }
+
+        [Test]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void InstanceValuesMustNotSupportEnumerationFeatures()
+        {
+            var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithEnumerableCount(0);
+        }
+
+        [Test]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void InstanceValuesMustNotSupportHashCodes()
+        {
+            var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithHashCode();
+        }
+
+        [Test]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void InstanceValuesMustNotSupportWithType()
+        {
+            var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).OfType(typeof(int));
+        }
+
         [Test]
         public void ShouldBlockWorksOnLongEnumeration()
         {
+            var possibleElements = "We need to test the message block methods with a long enumeration. A string convterted to a char array should be enough.";
+            const string CheckedValue = "The Black Keys";
+
+            var errorMessage = FluentMessage.BuildMessage("The {0} is not one of the possible elements.")
+                                            .On(CheckedValue.ToCharArray())
+                                            .And.ReferenceValues(possibleElements.ToCharArray()).Label("The possible elements:")
+                                            .ToString();
+
+//            Assert.AreEqual("\nThe checked enumerable is not one of the possible elements.\nThe checked enumrable:\n\t[\"The Black Keys\"]\nThe possible elements:\n\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
         }
     }
 }

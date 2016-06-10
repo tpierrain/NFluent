@@ -98,9 +98,6 @@
     <Compile Include="..\NFluent.35\Assertions\IntSignedCheckExtensions.cs">
       <Link>Assertions\IntSignedCheckExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.35\Assertions\LambdaCheck.cs">
-      <Link>Assertions\LambdaCheck.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.35\Assertions\LambdaExceptionCheck.cs">
       <Link>Assertions\LambdaExceptionCheck.cs</Link>
     </Compile>
@@ -166,6 +163,9 @@
     </Compile>
     <Compile Include="..\NFluent.35\Extensibility\MessageBlock.cs">
       <Link>Extensibility\MessageBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.35\Extensibility\RangeBlock.cs">
+      <Link>Extensibility\RangeBlock.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.35\Extensibility\ValueBlock.cs">
       <Link>Extensibility\ValueBlock.cs</Link>

@@ -21,8 +21,8 @@ namespace NFluent
     using System.Collections.Generic;
     using System.Diagnostics;
 
-    using NFluent.Extensibility;
-    using NFluent.Extensions;
+    using Extensibility;
+    using Extensions;
 
     /// <summary>
     /// Provides extension method on a ICheckLink for IEnumerable types.

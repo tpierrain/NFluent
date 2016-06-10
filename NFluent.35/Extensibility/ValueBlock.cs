@@ -21,7 +21,7 @@ namespace NFluent.Extensibility
     using System;
     using System.Text;
 
-    using NFluent.Extensions;
+    using Extensions;
 
     /// <summary>
     /// Class describing a value block.

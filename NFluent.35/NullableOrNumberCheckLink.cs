@@ -16,7 +16,7 @@ namespace NFluent
 {
     using System.Diagnostics.CodeAnalysis;
 
-    using NFluent.Extensibility;
+    using Extensibility;
 
     /// <summary>
     /// Provides a way to chain two <see cref="IForkableCheck"/> instances or to chain.
@@ -35,7 +35,7 @@ namespace NFluent
             this.previousCheck = previousCheck;
         }
 
-        // used only for check discovery by helpers
+        // used only for check discovery by helpers used for documentation generation
         private TN? Value { get; set; }
 
         /// <summary>

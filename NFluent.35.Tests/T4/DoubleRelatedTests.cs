@@ -365,6 +365,15 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [ExpectedException(typeof(FluentCheckException))]
+        public void IsEqualFailsWhenRelevant()
+        {
+            const double Twenty = 20D;
+
+            Check.That(Twenty).IsEqualTo(0);
+        }
+
+        [Test]
         public void EqualsWorksToo()
         {
             const double Twenty = 20D;
