@@ -139,7 +139,6 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="ICheckLink.cs" />
     <Compile Include="IForkableCheck.cs" />
-    <Compile Include="Assertions\LambdaCheck.cs" />
     <Compile Include="Assertions\NumberCheck.cs" />
     <Compile Include="FluentCheckException.cs" />
     <Compile Include="Assertions\ComparableCheckExtensions.cs" />

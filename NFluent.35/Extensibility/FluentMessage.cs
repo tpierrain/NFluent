@@ -18,7 +18,7 @@ namespace NFluent.Extensibility
     using System;
     using System.Text;
 
-    using NFluent.Extensions;
+    using Extensions;
 
     /// <summary>
     /// Help to build a properly formatted fluent error message.

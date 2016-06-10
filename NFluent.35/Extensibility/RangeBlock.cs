@@ -2,11 +2,19 @@
 
 namespace NFluent.Extensibility
 {
+    /// <summary>
+    /// Class representing a range of value
+    /// </summary>
     internal class RangeBlock
     {
-        private double referenceValue;
-        private double tolerance;
-
+        private readonly double referenceValue;
+        private readonly double tolerance;
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="referenceValue">Reference value (mid point)</param>
+        /// <param name="tolerance">Tolerance</param>
+        /// <remarks>This represents a range of <see cref="referenceValue"/> +/- <see cref="tolerance"/></remarks>
         public RangeBlock(double referenceValue, double tolerance)
         {
             this.referenceValue = referenceValue;

@@ -13,6 +13,8 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+using System.CodeDom;
+
 namespace NFluent.Tests
 {
     using System;
@@ -167,6 +169,35 @@ namespace NFluent.Tests
             var label = GenericLabelBlock.BuildActualBlock(null);
 
             Assert.AreEqual("The actual value:", label.CustomMessage(null));
+        }
+
+
+        [Test]
+        public void InstanceValuesMustGenerateProperText()
+        {
+            var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).ToString();
+            Assert.AreEqual("\ndon't care\nThe expected value:\n\tan instance of type: [string]", errorMessage);
+        }
+
+        [Test]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void InstanceValuesMustNotSupportEnumerationFeatures()
+        {
+            var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithEnumerableCount(0);
+        }
+
+        [Test]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void InstanceValuesMustNotSupportHashCodes()
+        {
+            var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithHashCode();
+        }
+
+        [Test]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void InstanceValuesMustNotSupportWithType()
+        {
+            var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).OfType(typeof(int));
         }
 
         [Test]
