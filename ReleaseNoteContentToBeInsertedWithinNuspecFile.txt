@@ -3,6 +3,7 @@ New feature(s):
 * Numbers: introduce IsNegativeOrZero() check.
 * FloatingNumbers (float, double): introduce IsCloseTo(expected, within) check for estimated value.
 * Exceptions: introduce the DueTo&lt;InnerException&gt; operator after the Throws&lt;Exception&gt; check.
+* Exceptions: introduce WhichMessage that allows to use string check on the exception message.
 
 --------------
 Change(s):

@@ -34,6 +34,10 @@ namespace NFluent
         ICheckLink<ILambdaExceptionCheck<TParent>> WithMessage(string exceptionMessage);
 
         /// <summary>
+        /// Access the error message
+        /// </summary>
+        ICheck<string> WhichMessage { get; }
+            /// <summary>
         /// Checks that a specific property of the considered exception has an expected value.
         /// </summary>
         /// <param name="propertyName">The name of the property to check on the considered exception.</param>

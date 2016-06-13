@@ -138,7 +138,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ImprovedErrorMessagessForNumerals()
+        public void ImproveCrossTypeCheckingForNumerals()
         {
             ushort usValue = 2; int iValue = 1;
             Check.That(usValue).IsEqualTo(iValue + 1);

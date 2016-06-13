@@ -78,6 +78,14 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Permits to perform checks on the exception message
+        /// </summary>
+        public ICheck<string> WhichMessage
+        {
+            get { return new FluentCheck<string>(this.Value.Message);}
+        }
+
+        /// <summary>
         /// Checks that a specific property of the considered Value has an expected value.
         /// </summary>
         /// <param name="propertyName">The name of the property to check on the considered Value.</param>

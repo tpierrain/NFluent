@@ -165,9 +165,14 @@ namespace NFluent.Tests
         public void CanCheckForAMessageOnExceptionRaised()
         {
             Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(123, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithMessage("Err #123 : my error message").And.WithProperty("ExceptionNumber", 123);
-
         }
 
+        [Test]
+        public void CanUseStringChecksOnMessage()
+        {
+            Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(123, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WhichMessage.Contains("error");
+
+        }
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe message of the checked exception is not as expected.\nThe checked exception message:\n\t[\"Err #321 : my error message\"]\nThe expected exception message:\n\t[\"a buggy message\"]")]
         public void DidNotRaiseTheExpectedMessage()
