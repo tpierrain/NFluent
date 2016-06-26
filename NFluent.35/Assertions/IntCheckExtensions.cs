@@ -258,9 +258,7 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
-            return checker.ExecuteCheck(
-                () => EqualityHelper.IsEqualTo(checker, expected),
-                EqualityHelper.BuildErrorMessage(checker, expected, true));
+            return EqualityHelper.PerformEqualCheck(checker, expected, false);
         }
 
     }

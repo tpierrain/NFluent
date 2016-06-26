@@ -514,7 +514,7 @@ namespace NFluent
                                 string.Format(
                                     "The {{0}}'s {0} has the same value in the comparand, whereas it must not.",
                                     this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
-                        EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, true);
+                        EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, true, false);
                     }
                     else
                     {
@@ -533,7 +533,7 @@ namespace NFluent
                                     string.Format(
                                         "The {{0}}'s {0} does not have the expected value.",
                                         this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
-                            EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, false);
+                            EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, false, false);
                         }
                     }
                 }

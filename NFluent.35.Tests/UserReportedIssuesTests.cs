@@ -13,6 +13,8 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
+
 namespace NFluent.Tests
 {
     using System;
@@ -88,11 +90,20 @@ namespace NFluent.Tests
         public void FailsToUseOperator()
         {
 
-            Person mySelf = new Person() { Name = "SilNak" };
-            PersonEx myClone = new PersonEx() { Name = "SilNak" };
+            var mySelf = new Person() { Name = "SilNak" };
+            var myClone = new PersonEx() { Name = "SilNak" };
+            var mySon = new Son() { Name = "SilNak" };
 
-            //Check.That(myClone).IsEqualTo(mySelf); 
-            //Check.That(mySelf).IsEqualTo(myClone); 
+            Check.That(myClone).HasSameValueAs(mySelf); 
+            if (mySelf == myClone)
+                Check.That(mySelf).HasSameValueAs(myClone);
+            if (mySon == myClone)
+                Check.That(myClone).HasSameValueAs(mySon);
+            if (myClone == mySelf)
+                Check.That(myClone).HasSameValueAs(mySelf);
+
+            Check.That(myClone).HasSameValueAs(myClone);
+            Check.That(mySelf).HasDifferentValueThan(4);
         }
         internal class Person
         {
@@ -121,6 +132,11 @@ namespace NFluent.Tests
             {
                 return person1.Name != person2.Name;
             }
+        }
+
+        internal class Son : Person
+        {
+            
         }
         // issue #124: Improve ContainsExactly error messages
         [Test]
