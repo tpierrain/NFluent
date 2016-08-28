@@ -25,6 +25,10 @@ Making Changes
 
 You should **never** work on a clone of master, and you should **never** send a pull request from master - always from a branch. The reasons for this are detailed below.
 
+Before adding code
+------------------
+Don't forget to install the __[Project Linker Visual Studio Add-in](https://visualstudiogallery.msdn.microsoft.com/7c36d531-4464-479b-934b-bbe71e621528)__ so that NFluent35 and NFluent 40 projects (same for tests) contain the same elements (adding all your new types in the *35 projects by default if possible, and letting the plugin to add links in the *40 version).
+
 Handling Updates from Upstream/Master
 -------------------------------------
 
