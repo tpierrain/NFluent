@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using System;
     using System.IO;
     using System.Text;
 
@@ -501,13 +502,77 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 4758, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n	[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</ARTIST...<<truncated>>...    <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]\nThe expected string:\n	[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<!--  Edited by XMLSpy  -->\n<CATALOG>\n  <CD>\n    <TITLE>Empire Burlesque</TITLE>\n    <ARTIST>Bob Dylan</ARTIST...<<truncated>>...    <YEAR>1987</YEAR>\n  </CD>\n</CATALOG>\"]")]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string is different from the expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]\nThe expected string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]")]
         public void LongStringErrorMessageIsProperlyTruncated()
         {
             var checkString = File.ReadAllText("CheckedFile.xml", Encoding.UTF8);
             var expectedString = File.ReadAllText("ExpectedFile.xml", Encoding.UTF8);
 
             Check.That(checkString).IsEqualTo(expectedString);
+
+            //try
+            //{
+            //    Check.That(checkString).IsEqualTo(expectedString);
+            //}
+            //catch (FluentCheckException fce)
+            //{
+            //    var resu = MessagesHelper.GetProperlyEscapedMessage(fce.Message);
+            //    File.WriteAllText(@"C:\\Temp\\NFluentTroubleShoot.txt", resu);
+            //}
+        }
+
+        [Test]
+        public void Should_Escape_tabs()
+        {
+            Check.That(MessagesHelper.GetProperlyEscapedMessage("tab is:	.")).IsEqualTo(@"tab is:\t.");
+        }
+
+        [Test]
+        public void Should_Escape_quote()
+        {
+            Check.That(MessagesHelper.GetProperlyEscapedMessage("quote is:\"like this\".")).IsEqualTo(@"quote is:\""like this\"".");
+        }
+
+        [Test]
+        public void Should_Escape_CRLF()
+        {
+            Check.That(MessagesHelper.GetProperlyEscapedMessage(@"CRLF is:
+.")).IsEqualTo(@"CRLF is:\r\n.");
+        }
+        
+        public class MessagesHelper
+        {
+            public static string GetProperlyEscapedMessage(string input)
+            {
+                var result = new StringBuilder(input.Length);
+                foreach (var character in input)
+                {
+                    switch (character)
+                    {
+                        case '\t':
+                            result.Append("\\t");
+                            break;
+
+                        case '\"':
+                            result.Append("\\\"");
+                            break;
+
+                        case '\r':
+                            result.Append("\\r");
+                            break;
+
+                        case '\n':
+                            result.Append("\\n");
+                            break;
+
+                        default:
+                            result.Append(character);
+                            break;
+                    }
+                }
+
+                return result.ToString();
+            }
         }
     }
 }
