@@ -14,10 +14,9 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
-    using System;
     using System.IO;
     using System.Text;
-
+    using NFluent.Extensibility;
     using NUnit.Framework;
 
     [TestFixture]
@@ -510,69 +509,7 @@ namespace NFluent.Tests
 
             Check.That(checkString).IsEqualTo(expectedString);
 
-            //try
-            //{
-            //    Check.That(checkString).IsEqualTo(expectedString);
-            //}
-            //catch (FluentCheckException fce)
-            //{
-            //    var resu = MessagesHelper.GetProperlyEscapedMessage(fce.Message);
-            //    File.WriteAllText(@"C:\\Temp\\NFluentTroubleShoot.txt", resu);
-            //}
-        }
-
-        [Test]
-        public void Should_Escape_tabs()
-        {
-            Check.That(MessagesHelper.GetProperlyEscapedMessage("tab is:	.")).IsEqualTo(@"tab is:\t.");
-        }
-
-        [Test]
-        public void Should_Escape_quote()
-        {
-            Check.That(MessagesHelper.GetProperlyEscapedMessage("quote is:\"like this\".")).IsEqualTo(@"quote is:\""like this\"".");
-        }
-
-        [Test]
-        public void Should_Escape_CRLF()
-        {
-            Check.That(MessagesHelper.GetProperlyEscapedMessage(@"CRLF is:
-.")).IsEqualTo(@"CRLF is:\r\n.");
-        }
-        
-        public class MessagesHelper
-        {
-            public static string GetProperlyEscapedMessage(string input)
-            {
-                var result = new StringBuilder(input.Length);
-                foreach (var character in input)
-                {
-                    switch (character)
-                    {
-                        case '\t':
-                            result.Append("\\t");
-                            break;
-
-                        case '\"':
-                            result.Append("\\\"");
-                            break;
-
-                        case '\r':
-                            result.Append("\\r");
-                            break;
-
-                        case '\n':
-                            result.Append("\\n");
-                            break;
-
-                        default:
-                            result.Append(character);
-                            break;
-                    }
-                }
-
-                return result.ToString();
-            }
+            // ReverseEngineeringExceptionMessagesHelper.DumpReadyToCopyAndPasteExceptionMessageInAFile(() => Check.That(checkString).IsEqualTo(expectedString));
         }
     }
 }

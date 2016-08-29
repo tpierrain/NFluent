@@ -172,6 +172,9 @@
     <Compile Include="..\NFluent.35\Extensibility\MessageBlock.cs">
       <Link>Extensibility\MessageBlock.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35\Extensibility\ReverseEngineeringExceptionMessagesHelper.cs">
+      <Link>Extensibility\ReverseEngineeringExceptionMessagesHelper.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35\Extensibility\ValueBlock.cs">
       <Link>Extensibility\ValueBlock.cs</Link>
     </Compile>
@@ -364,7 +367,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

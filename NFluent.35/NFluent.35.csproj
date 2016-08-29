@@ -71,6 +71,7 @@
     <Compile Include="Extensibility\InstanceBlock.cs" />
     <Compile Include="Extensibility\IValueDescription.cs" />
     <Compile Include="Extensibility\MessageBlock.cs" />
+    <Compile Include="Extensibility\ReverseEngineeringExceptionMessagesHelper.cs" />
     <Compile Include="Extensibility\ValueBlock.cs" />
     <Compile Include="Extensions\MessageRelatedExtensions.cs" />
     <Compile Include="FluentCodeCheck.cs" />
