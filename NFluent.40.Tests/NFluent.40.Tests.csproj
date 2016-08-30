@@ -192,6 +192,9 @@
     <Compile Include="..\NFluent.35.Tests\ReverseEngineeringExceptionMessagesHelperTests.cs">
       <Link>ReverseEngineeringExceptionMessagesHelperTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.35.Tests\StreamTests.cs">
+      <Link>StreamTests.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35.Tests\StringRelatedTests.cs">
       <Link>StringRelatedTests.cs</Link>
     </Compile>
@@ -340,7 +343,7 @@
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

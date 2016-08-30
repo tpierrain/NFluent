@@ -1,4 +1,5 @@
 New feature(s):
+* Streams: introduce HasSameContentAs() check.
 * Numbers: introduce IsPositiveOrZero() check.
 * Numbers: introduce IsNegativeOrZero() check.
 * Exceptions: introduce the DueTo&lt;InnerException&gt; operator after the Throws&lt;Exception&gt; check.

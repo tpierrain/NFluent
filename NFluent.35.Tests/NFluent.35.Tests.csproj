@@ -96,6 +96,7 @@
     <Compile Include="EnumerableRelatedTests.cs" />
     <Compile Include="ReadmeRelatedTests.cs" />
     <Compile Include="ReverseEngineeringExceptionMessagesHelperTests.cs" />
+    <Compile Include="StreamTests.cs" />
     <Compile Include="StringRelatedTests.cs" />
     <Compile Include="T4\ByteRelatedTests.cs">
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
