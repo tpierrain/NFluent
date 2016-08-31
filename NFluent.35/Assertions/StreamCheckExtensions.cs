@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Assertions
 {
+    using System;
     using System.IO;
     using NFluent.Extensibility;
 
@@ -22,7 +23,7 @@ namespace NFluent.Assertions
     /// </summary>
     public static class StreamCheckExtensions
     {
-        #region HasSameContentAs
+        #region HasSameSequenceOfBytesAs
 
         /// <summary>
         /// Checks that the actual stream has the same content as another one.
@@ -30,7 +31,7 @@ namespace NFluent.Assertions
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The stream to compare content with.</param>
         /// <returns>A check link</returns>
-        public static ICheckLink<ICheck<Stream>> HasSameContentAs(this ICheck<Stream> check, Stream expected)
+        public static ICheckLink<ICheck<Stream>> HasSameSequenceOfBytesAs(this ICheck<Stream> check, Stream expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var value = checker.Value;
@@ -71,10 +72,10 @@ namespace NFluent.Assertions
             var negatedMessage =
                 FluentMessage.BuildMessage("The checked Stream has the same content as the other one, whereas it must not.")
                     .On(value)
-                    .Comparison($"(Length: {value.Length})")
+                    .Comparison(string.Format("(Length: {0})", value.Length))
                     .And.Expected(expected)
                     .Label("The other one:")
-                    .Comparison($"(Length: {expected.Length})");
+                    .Comparison(string.Format("(Length: {0})", expected.Length));
             return negatedMessage;
         }
 
@@ -94,9 +95,9 @@ namespace NFluent.Assertions
             var message =
                 checker.BuildMessage("The {0} doesn't have the same content as the expected one. They don't even have the same Length!")
                     .On(value)
-                    .Comparison($"(Length: {value.Length})")
+                    .Comparison(string.Format("(Length: {0})", value.Length))
                     .And.Expected(expected)
-                    .Comparison($"(Length: {expected.Length})");
+                    .Comparison(string.Format("(Length: {0})", expected.Length));
 
             throw new FluentCheckException(message.ToString());
         }

@@ -23,7 +23,7 @@ namespace NFluent.Tests
     public class StreamTests
     {
         [Test]
-        public void HasSameContentAs_works()
+        public void HasSameSequenceOfBytesAs_works()
         {
             using (var memoryStream = new MemoryStream())
             {
@@ -37,7 +37,7 @@ namespace NFluent.Tests
                         memoryStream.WriteTo(secondStream);
 
                         Check.That(memoryStream.Length).IsEqualTo(secondStream.Length);
-                        Check.That(memoryStream).HasSameContentAs(secondStream);
+                        Check.That(memoryStream).HasSameSequenceOfBytesAs(secondStream);
                     }
                 }
             }
@@ -45,7 +45,7 @@ namespace NFluent.Tests
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked Stream has the same content as the other one, whereas it must not.\nThe checked value: (Length: 13)\n\t[System.IO.MemoryStream]\nThe other one:\n\t[System.IO.MemoryStream]")]
-        public void Not_HasSameContentAs_throws_with_same_content()
+        public void Not_HasSameSequenceOfBytesAs_throws_with_same_content()
         {
             using (var memoryStream = new MemoryStream())
             {
@@ -58,14 +58,14 @@ namespace NFluent.Tests
                     {
                         memoryStream.WriteTo(secondStream);
                         
-                        Check.That(memoryStream).Not.HasSameContentAs(secondStream);
+                        Check.That(memoryStream).Not.HasSameSequenceOfBytesAs(secondStream);
                     }
                 }
             }
         }
 
         [Test]
-        public void HasSameContentAs_doesnt_produce_side_effects()
+        public void HasSameSequenceOfBytesAs_doesnt_produce_side_effects()
         {
             using (var memoryStream = new MemoryStream())
             {
@@ -85,7 +85,7 @@ namespace NFluent.Tests
                         Check.That(otherStream.Position).IsEqualTo(3);
 
                         // Compares
-                        Check.That(memoryStream).HasSameContentAs(otherStream);
+                        Check.That(memoryStream).HasSameSequenceOfBytesAs(otherStream);
 
                         // Ensures our comparison is side-effect free
                         Check.That(memoryStream.Position).IsEqualTo(2);
@@ -97,7 +97,7 @@ namespace NFluent.Tests
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value doesn't have the same content as the expected one. They don't even have the same Length!\nThe checked value: (Length: 18)\n\t[System.IO.MemoryStream]\nThe expected value: (Length: 11)\n\t[System.IO.MemoryStream]")]
-        public void HasSameContentAs_throws_exception_with_different_content_with_different_size()
+        public void HasSameSequenceOfBytesAs_throws_exception_with_different_content_with_different_size()
         {
             using (var memoryStream = new MemoryStream())
             using (var otherStream = new MemoryStream())
@@ -111,14 +111,14 @@ namespace NFluent.Tests
                     otherWriter.Write("Kant ;-(");
                     otherWriter.Flush();
 
-                    Check.That(memoryStream).HasSameContentAs(otherStream);
+                    Check.That(memoryStream).HasSameSequenceOfBytesAs(otherStream);
                 }
             }
         }
 
         [Test]
         [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value doesn't have the same content as the expected one (despite the fact that they have the same Length: 12).\nThe checked value:\n\t[System.IO.MemoryStream]\nThe expected value:\n\t[System.IO.MemoryStream]")]
-        public void HasSameContentAs_throws_exception_with_different_content_but_same_size()
+        public void HasSameSequenceOfBytesAs_throws_exception_with_different_content_but_same_size()
         {
             using (var memoryStream = new MemoryStream())
             using (var otherStream = new MemoryStream())
@@ -132,13 +132,13 @@ namespace NFluent.Tests
                     otherWriter.Write("981234567");
                     otherWriter.Flush();
 
-                    Check.That(memoryStream).HasSameContentAs(otherStream);
+                    Check.That(memoryStream).HasSameSequenceOfBytesAs(otherStream);
                 }
             }
         }
 
         [Test]
-        public void Not_HasSameContentAs_works()
+        public void Not_HasSameSequenceOfBytesAs_works()
         {
             using (var memoryStream = new MemoryStream())
             using (var otherStream = new MemoryStream())
@@ -152,7 +152,7 @@ namespace NFluent.Tests
                     otherWriter.Write("Kant ;-(");
                     otherWriter.Flush();
 
-                    Check.That(memoryStream).Not.HasSameContentAs(otherStream);
+                    Check.That(memoryStream).Not.HasSameSequenceOfBytesAs(otherStream);
                 }
             }
         }
