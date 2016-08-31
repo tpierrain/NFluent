@@ -43,12 +43,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(OverflowException))]
         public void ConvertToMillisecondsThrowsWhenNumberOfMillisecondsIsSuperiorToTheIntMaxValue()
         {
-            double maxValue = int.MaxValue;
-            maxValue++;
-            Duration.ConvertToMilliseconds(maxValue, TimeUnit.Milliseconds);
+            
+            Check.ThatCode(() =>
+                                {
+                                    double maxValue = int.MaxValue;
+                                    maxValue++;
+                                    Duration.ConvertToMilliseconds(maxValue, TimeUnit.Milliseconds);
+                                })
+                                .Throws<OverflowException>();
         }
 
         [Test]

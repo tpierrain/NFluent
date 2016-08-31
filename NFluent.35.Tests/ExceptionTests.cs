@@ -28,10 +28,15 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.")]
+        //[ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.")]
         public void UnexpectedExceptionRaised()
         {
-            Check.ThatCode(() => { throw new ApplicationException(); }).DoesNotThrow();
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => { throw new ApplicationException(); }).DoesNotThrow();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked code raised an exception, whereas it must not."); // TODO: reproduce startWith
         }
 
         [Test]
@@ -42,24 +47,37 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe checked code raised an exception of a different type than expected.")]
+        //[ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "")]
         public void DidNotRaiseExpected()
         {
-            Check.ThatCode(() => { throw new Exception(); }).Throws<ApplicationException>();
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => { throw new Exception(); }).Throws<ApplicationException>();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked code raised an exception of a different type than expected."); // TODO: reproduce Contains
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code did not raise an exception, whereas it must.")]
         public void DidNotRaiseAny()
         {
-            Check.ThatCode(() => { new object(); }).ThrowsAny();
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => { new object(); }).ThrowsAny();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked code did not raise an exception, whereas it must.");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code did not raise an exception, whereas it must.\nThe expected exception:\n\tan instance of type: [System.Exception]")]
         public void DidNotRaiseAnyTypedCheck()
         {
-            Check.ThatCode(() => { new object(); }).Throws<Exception>();
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => { new object(); }).Throws<Exception>();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked code did not raise an exception, whereas it must.\nThe expected exception:\n\tan instance of type: [System.Exception]");
         }
     }
 }

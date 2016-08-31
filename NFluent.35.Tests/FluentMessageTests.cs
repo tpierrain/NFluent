@@ -39,10 +39,13 @@ namespace NFluent.Tests
         }
         
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void BlockFailTest()
         {
-            var block = new MessageBlock(null, null, null);
+            Check.ThatCode(() =>
+            {
+                var block = new MessageBlock(null, null, null);
+            })
+            .Throws<ArgumentNullException>();
         }
 
         [Test]

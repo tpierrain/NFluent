@@ -51,10 +51,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked dictionary does not contain the expected key.\nThe checked dictionary:\n\t[[demo, value]]\nExpected key:\n\t[\"value\"]")]
         public void ContainsKeyFailsProperly()
         {
-            Check.That(SimpleDico).ContainsKey("value");
+            Check.ThatCode(() =>
+            {
+                Check.That(SimpleDico).ContainsKey("value");
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked dictionary does not contain the expected key.\nThe checked dictionary:\n\t[[demo, value]]\nExpected key:\n\t[\"value\"]");
         }
 
         [Test]
@@ -64,10 +68,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked dictionary does contain the given key, whereas it must not.\nThe checked dictionary:\n\t[[demo, value]]\nGiven key:\n\t[\"demo\"]")]
         public void NotContainsKeyFailsProperly()
         {
-            Check.That(SimpleDico).Not.ContainsKey("demo");
+            Check.ThatCode(() =>
+            {
+                Check.That(SimpleDico).Not.ContainsKey("demo");
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked dictionary does contain the given key, whereas it must not.\nThe checked dictionary:\n\t[[demo, value]]\nGiven key:\n\t[\"demo\"]");
         }
 
         [Test]
@@ -77,10 +85,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked dictionary does not contain the expected value.\nThe checked dictionary:\n\t[[demo, value]]\nExpected value:\n\t[\"demo\"]")]
         public void ContainsValueFailsProperly()
         {
-            Check.That(SimpleDico).ContainsValue("demo");
+            Check.ThatCode(() =>
+            {
+                Check.That(SimpleDico).ContainsValue("demo");
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked dictionary does not contain the expected value.\nThe checked dictionary:\n\t[[demo, value]]\nExpected value:\n\t[\"demo\"]");
         }
 
         [Test]
@@ -90,10 +102,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked dictionary does contain the given value, whereas it must not.\nThe checked dictionary:\n\t[[demo, value]]\nExpected value:\n\t[\"value\"]")]
         public void NotContainsValueFailsProperly()
         {
-            Check.That(SimpleDico).Not.ContainsValue("value");
+            Check.ThatCode(() =>
+            {
+                Check.That(SimpleDico).Not.ContainsValue("value");
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked dictionary does contain the given value, whereas it must not.\nThe checked dictionary:\n\t[[demo, value]]\nExpected value:\n\t[\"value\"]");
         }
     }
 }

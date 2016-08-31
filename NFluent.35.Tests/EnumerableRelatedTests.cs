@@ -181,19 +181,29 @@ namespace NFluent.Tests
         #endregion
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is equal to the expected one whereas it must not.\nThe expected enumerable: different from\n\t[45, 43, 54, 666] of type: [System.Collections.Generic.List<int>]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             IEnumerable enumerable = new List<int> { 45, 43, 54, 666 };
-            Check.That(enumerable).Not.IsEqualTo(enumerable);
+
+            Check.ThatCode(() =>
+            {
+                Check.That(enumerable).Not.IsEqualTo(enumerable);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable is equal to the expected one whereas it must not.\nThe expected enumerable: different from\n\t[45, 43, 54, 666] of type: [System.Collections.Generic.List<int>]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[45, 43, 54, 666]\nThe expected value:\n\t[null]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             IEnumerable enumerable = new List<int> { 45, 43, 54, 666 };
-            Check.That(enumerable).Not.IsNotEqualTo(null);
+
+            Check.ThatCode(() =>
+            {
+                Check.That(enumerable).Not.IsNotEqualTo(null);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is different from the expected one.\nThe checked value:\n\t[45, 43, 54, 666]\nThe expected value:\n\t[null]");
         }
 
         [Test]

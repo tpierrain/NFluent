@@ -66,11 +66,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[666, 1974]\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected value(s):\n\t[1, 2, 3]")]
         public void IsOnlyMadeOfWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new[] { 3, 2, 666, 1974, 1 };
-            Check.That(integers).IsOnlyMadeOf(1, 2, 3);
+
+            Check.ThatCode(() =>
+            {
+                Check.That(integers).IsOnlyMadeOf(1, 2, 3);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[666, 1974]\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected value(s):\n\t[1, 2, 3]");
         }
 
         #endregion
@@ -127,12 +132,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is null and thus, does not contain exactly the given value(s).\nThe checked enumerable:\n\t[null]\nThe expected value(s):\n\t[\"what da heck!\"]")]
         public void IsOnlyMadeOfThrowsWithNullAsCheckedValue()
         {
             List<int> nullList = null;
 
-            Check.That(nullList).IsOnlyMadeOf("what da heck!");
+            Check.ThatCode(() =>
+            {
+                Check.That(nullList).IsOnlyMadeOf("what da heck!");
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable is null and thus, does not contain exactly the given value(s).\nThe checked enumerable:\n\t[null]\nThe expected value(s):\n\t[\"what da heck!\"]");
         }
 
         [Test]
@@ -144,12 +153,17 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[666, 1974]\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected value(s):\n\t[1, 2, 3]")]
         public void IsOnlyMadeOfWithEnumerableThrowsExceptionWhenFailing()
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
             IEnumerable expectedValues = new List<int> { 1, 2, 3 };
-            Check.That(integers).IsOnlyMadeOf(expectedValues);
+
+            Check.ThatCode(() =>
+            {
+                Check.That(integers).IsOnlyMadeOf(expectedValues);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[666, 1974]\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected value(s):\n\t[1, 2, 3]");
         }
 
         [Test]
@@ -161,12 +175,17 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable contains only the given values whereas it must not.\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected value(s):\n\t[1, 2, 3, 666, 1974]")]
         public void NotIsOnlyMadeOfWithEnumerableThrowsExceptionWhenFailing()
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
             IEnumerable expectedValues = new List<int> { 1, 2, 3, 666, 1974 };
-            Check.That(integers).Not.IsOnlyMadeOf(expectedValues);
+
+            Check.ThatCode(() =>
+            {
+                Check.That(integers).Not.IsOnlyMadeOf(expectedValues);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable contains only the given values whereas it must not.\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected value(s):\n\t[1, 2, 3, 666, 1974]");
         }
 
         [Test]
@@ -188,13 +207,17 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable contains only the given values whereas it must not.\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected value(s):\n\t[3, 2, 3, 2, 2, 1]")]
         public void NotIsOnlyMadeOfWithArrayListThrowsWhenFailing()
         {
             List<int> integers = new List<int> { 1, 2, 3 };
             ArrayList expectedValues = new ArrayList { 3, 2, 3, 2, 2, 1 };
 
-            Check.That(integers).Not.IsOnlyMadeOf(expectedValues);
+            Check.ThatCode(() =>
+            {
+                Check.That(integers).Not.IsOnlyMadeOf(expectedValues);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable contains only the given values whereas it must not.\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected value(s):\n\t[3, 2, 3, 2, 2, 1]");
         }
 
         [Test]
@@ -207,12 +230,17 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[\"uno\", \"tres\"]\nThe checked enumerable:\n\t[1, \"uno\", \"tres\", 45.3]\nThe expected value(s):\n\t[1, \"Tres\", 45.3]")]
         public void IsOnlyMadeOfWithEnumerableThrowCaseSensitiveException()
         {
             var variousObjects = new ArrayList { 1, "uno", "tres", 45.3F };
             IEnumerable expectedVariousObjectsWithBadCase = new ArrayList { 1, "Tres", 45.3F };
-            Check.That(variousObjects).IsOnlyMadeOf(expectedVariousObjectsWithBadCase);
+
+            Check.ThatCode(() =>
+            {
+                Check.That(variousObjects).IsOnlyMadeOf(expectedVariousObjectsWithBadCase);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[\"uno\", \"tres\"]\nThe checked enumerable:\n\t[1, \"uno\", \"tres\", 45.3]\nThe expected value(s):\n\t[1, \"Tres\", 45.3]");
         }
 
         [Test]

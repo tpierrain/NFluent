@@ -50,7 +50,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ExtractingThrowInvalidOperationExceptionIfPropertyDoesNotExist()
         {
             var musicians = new List<Person>
@@ -59,10 +58,14 @@ namespace NFluent.Tests
                                      new Person { Name = "GZA", Nationality = Nationality.American }
                                  };
 
-            // Forced to enumerate the result so that the Extracting extension method is executed (IEnumerable's lazy evaluation)
-            foreach (var propertyValue in musicians.Extracting("Portnaouaq"))
+            Check.ThatCode(() =>
             {
-            }
+                // Forced to enumerate the result so that the Extracting extension method is executed (IEnumerable's lazy evaluation)
+                foreach (var propertyValue in musicians.Extracting("Portnaouaq"))
+                {
+                }
+            })
+            .Throws<InvalidOperationException>();
         }
 
         [Test]
