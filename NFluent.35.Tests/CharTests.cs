@@ -43,23 +43,29 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [char] whereas it must not.\nThe checked value:\n\t['a'] of type: [char]\nThe expected value: different from\n\tan instance of type: [char]")]
         public void NotIsInstanceOfThrows()
         {
             const char FirstLetterLowerCase = 'a';
-            Check.That(FirstLetterLowerCase).Not.IsInstanceOf<char>();
+            ;
+
+            Check.ThatCode(() => Check.That(FirstLetterLowerCase).Not.IsInstanceOf<char>())
+                    .Throws<FluentCheckException>()
+                    .WithMessage("\nThe checked value is an instance of [char] whereas it must not.\nThe checked value:\n\t['a'] of type: [char]\nThe expected value: different from\n\tan instance of type: [char]");
+
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [char] whereas it must not.\nThe checked value:\n\t['a'] of type: [char]\nThe expected value: different from\n\tan instance of type: [char]")]
         public void IsNotInstanceOfThrows()
         {
             const char FirstLetterLowerCase = 'a';
-            Check.That(FirstLetterLowerCase).IsNotInstanceOf<char>();
+
+            Check.ThatCode(() => Check.That(FirstLetterLowerCase).IsNotInstanceOf<char>())
+                    .Throws<FluentCheckException>()
+                    .WithMessage("\nThe checked value is an instance of [char] whereas it must not.\nThe checked value:\n\t['a'] of type: [char]\nThe expected value: different from\n\tan instance of type: [char]");
         }
 
         #endregion
-        
+
         #region IsEqualTo ...
 
         [Test]

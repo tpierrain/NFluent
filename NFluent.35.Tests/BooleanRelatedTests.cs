@@ -50,57 +50,65 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked boolean is false whereas it must be true.\nThe checked boolean:\n\t[False]")]
         public void NotIsFalseMayThrowExceptions()
         {
             const bool TddSucks = false;
             
-            Check.That(TddSucks).Not.IsFalse();
+            Check.ThatCode( () => Check.That(TddSucks).Not.IsFalse())
+                    .Throws<FluentCheckException>()
+                    .WithMessage("\nThe checked boolean is false whereas it must be true.\nThe checked boolean:\n\t[False]");
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked boolean is false whereas it must be true.\nThe checked boolean:\n\t[False]")]
         public void IsTrueThrowsExceptionWhenFalse()
         {
             const bool NFluentRocks = false;
 
-            Check.That(NFluentRocks).IsTrue();
+            Check.ThatCode(() => Check.That(NFluentRocks).IsTrue())
+                    .Throws<FluentCheckException>()
+                    .WithMessage("\nThe checked boolean is false whereas it must be true.\nThe checked boolean:\n\t[False]");
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked boolean is true whereas it must be false.\nThe checked boolean:\n\t[True]")]
         public void NotIsTrueThrowsExceptionWhenFalse()
         {
             const bool NFluentRocks = true;
 
-            Check.That(NFluentRocks).Not.IsTrue();
+            Check.ThatCode(() => Check.That(NFluentRocks).Not.IsTrue())
+                    .Throws<FluentCheckException>()
+                    .WithMessage("\nThe checked boolean is true whereas it must be false.\nThe checked boolean:\n\t[True]");
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked boolean is different from the expected one.\nThe checked boolean:\n\t[True]\nThe expected boolean:\n\t[False]")]
         public void IsEqualThrowsExceptionWhenNotEqual()
         {
             const bool NFluentRocks = true;
             const bool TddSucks = false;
-            Check.That(NFluentRocks).IsEqualTo(TddSucks);
+
+            Check.ThatCode(() => Check.That(NFluentRocks).IsEqualTo(TddSucks))
+                    .Throws<FluentCheckException>()
+                    .WithMessage("\nThe checked boolean is different from the expected one.\nThe checked boolean:\n\t[True]\nThe expected boolean:\n\t[False]");
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked boolean is equal to the expected one whereas it must not.\nThe expected boolean: different from\n\t[True] of type: [bool]")]
         public void IsNotEqualThrowsExceptionWhenEqual()
         {
             const bool NFluentRocks = true;
             const bool WinterNotNFluentRocks = true;
-            Check.That(NFluentRocks).IsNotEqualTo(WinterNotNFluentRocks);
+
+            Check.ThatCode(() => Check.That(NFluentRocks).IsNotEqualTo(WinterNotNFluentRocks))
+                    .Throws<FluentCheckException>()
+                    .WithMessage("\nThe checked boolean is equal to the expected one whereas it must not.\nThe expected boolean: different from\n\t[True] of type: [bool]");
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked boolean is true whereas it must be false.\nThe checked boolean:\n\t[True]")]
         public void IsFalseThrowsExceptionWhenTrue()
         {
             const bool NFluentRocks = true;
 
-            Check.That(NFluentRocks).IsFalse();
+            Check.ThatCode(() => Check.That(NFluentRocks).IsFalse())
+                    .Throws<FluentCheckException>()
+                    .WithMessage("\nThe checked boolean is true whereas it must be false.\nThe checked boolean:\n\t[True]");
         }
     }
 }

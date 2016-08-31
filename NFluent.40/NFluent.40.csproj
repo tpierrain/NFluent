@@ -355,6 +355,9 @@
     <None Include="..\NFluent.35\NFluent.snk">
       <Link>NFluent.snk</Link>
     </None>
+    <None Include="..\NFluent.35\packages.config">
+      <Link>packages.config</Link>
+    </None>
     <None Include="..\NFluent.35\Settings.StyleCop">
       <Link>Settings.StyleCop</Link>
     </None>
