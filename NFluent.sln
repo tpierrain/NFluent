@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CCA550FA-833A-4F2E-9C81-78EE585A49CC}"
 	ProjectSection(SolutionItems) = preProject
@@ -56,8 +56,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests", "NFluent
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.PCL", "NFluent.PCL\NFluent.PCL.csproj", "{4797A166-0410-451E-8DAB-DA7113D77062}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.xUnit.40", "NFluent.Tests.xUnit\NFluent.Tests.xUnit.40.csproj", "{C2A69048-F5A6-4614-8DBE-143F3BF684B9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,10 +98,6 @@ Global
 		{4797A166-0410-451E-8DAB-DA7113D77062}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4797A166-0410-451E-8DAB-DA7113D77062}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4797A166-0410-451E-8DAB-DA7113D77062}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C2A69048-F5A6-4614-8DBE-143F3BF684B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C2A69048-F5A6-4614-8DBE-143F3BF684B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C2A69048-F5A6-4614-8DBE-143F3BF684B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C2A69048-F5A6-4614-8DBE-143F3BF684B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
