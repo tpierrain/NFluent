@@ -37,10 +37,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked object must be the same instance than expected one.\nThe checked object:\n\t[System.Object]\nThe expected object: same instance than\n\t[System.Object]")]
         public void IsSameReferenceFailsProperly()
         {
-            Check.That(new object()).IsSameReferenceThan(new object());
+            Check.ThatCode(() =>
+            {
+                Check.That(new object()).IsSameReferenceThan(new object());
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked object must be the same instance than expected one.\nThe checked object:\n\t[System.Object]\nThe expected object: same instance than\n\t[System.Object]");
         }
 
         [Test]
@@ -84,10 +88,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value is null whereas it must not.")]
         public void IsNotNullThrowsExceptionWithNullNullable()
         {
-            Check.That((Mood?)null).IsNotNull();
+            Check.ThatCode(() =>
+            {
+                Check.That((Mood?)null).IsNotNull();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked nullable value is null whereas it must not.");
         }
 
         [Test]
@@ -111,25 +119,38 @@ namespace NFluent.Tests
         }
         
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value must be null.\nThe checked value:\n\t[NFluent.Tests.Extensions.Mood]")]
         public void NotIsNotNullThrowsWithNonNullNullable()
         {
             Mood? goodMood = new Mood();
-            Check.That(goodMood).Not.IsNotNull();
+
+            Check.ThatCode(() =>
+            {
+                Check.That(goodMood).Not.IsNotNull();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked nullable value must be null.\nThe checked value:\n\t[NFluent.Tests.Extensions.Mood]");
         }
         
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value is null whereas it must not.")]
         public void NotIsNullThrowsExceptionWithNullNullable()
         {
-            Check.That((Mood?)null).Not.IsNull();
+            Check.ThatCode(() =>
+            {
+                Check.That((Mood?)null).Not.IsNull();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked nullable value is null whereas it must not.");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked object must be null.\nThe checked object:\n\t[System.Object]")]
         public void IsNullFailsProperly()
         {
-            Check.That(new object()).IsNull();
+            Check.ThatCode(() =>
+            {
+                Check.That(new object()).IsNull();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked object must be null.\nThe checked object:\n\t[System.Object]");
         }
 
         [Test]
@@ -139,18 +160,27 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked object must not be null.\nThe checked object:\n\t[null]")]
         public void IsNotNullFailsProperly()
         {
-            Check.That((object)null).IsNotNull();
+            Check.ThatCode(() =>
+            {
+                Check.That((object)null).IsNotNull();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked object must not be null.\nThe checked object:\n\t[null]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked object must have be an instance distinct from expected one.\nThe checked object:\n\t[System.Object]\nThe expected object: distinct from\n\t[System.Object]")]
         public void IsDistinctFailsProperly()
         {
             var test = new object();
-            Check.That(test).IsDistinctFrom(test);
+
+            Check.ThatCode(() =>
+            {
+                Check.That(test).IsDistinctFrom(test);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked object must have be an instance distinct from expected one.\nThe checked object:\n\t[System.Object]\nThe expected object: distinct from\n\t[System.Object]");
         }
 
         [Test]

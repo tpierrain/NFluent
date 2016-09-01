@@ -37,10 +37,15 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code took too much time to execute.\n")]
+        //[ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code took too much time to execute.\n")]
         public void FailDurationTest()
         {
-            Check.ThatCode(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked code took too much time to execute.\n"); // TODO mimic startsWith
         }
 
         [Test]
@@ -54,22 +59,27 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code consumed too much CPU time.\nThe checked cpu time:")]
+        //[ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code consumed too much CPU time.\nThe checked cpu time:")]
         public void ConsumedTestFailsProperly()
         {
-            Check.ThatCode(
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(
                 () =>
+                {
+                    var timer = new Stopwatch();
+                    timer.Start();
+                    while (timer.ElapsedMilliseconds < 40)
                     {
-                        var timer = new Stopwatch();
-                        timer.Start();
-                        while (timer.ElapsedMilliseconds < 40)
+                        for (var i = 0; i < 1000000; i++)
                         {
-                            for (var i = 0; i < 1000000; i++)
-                            {
-                                var x = i * 2;
-                            }
+                            var x = i * 2;
                         }
+                    }
                 }).ConsumesLessThan(10, TimeUnit.Milliseconds);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked code consumed too much CPU time.\nThe checked cpu time:"); // TODO mimic startsWith
         }
     }
 }

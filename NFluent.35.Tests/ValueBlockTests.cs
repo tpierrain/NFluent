@@ -89,30 +89,39 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(NotSupportedException))]
         public void InstanceBlockShouldThrowOnEnumeration()
         {
-            var blk = new InstanceBlock(typeof(string));
+            Check.ThatCode(() =>
+            {
+                var blk = new InstanceBlock(typeof(string));
 
-            blk.WithEnumerableCount(0);
+                blk.WithEnumerableCount(0);
+            })
+            .Throws<NotSupportedException>();
         }
 
         [Test]
-        [ExpectedException(typeof(NotSupportedException))]
         public void InstanceBlockShouldThrowOnhashcode()
         {
-            var blk = new InstanceBlock(typeof(string));
+            Check.ThatCode(() =>
+            {
+                var blk = new InstanceBlock(typeof(string));
 
-            blk.WithHashCode();
+                blk.WithHashCode();
+            })
+            .Throws<NotSupportedException>();
         }
 
         [Test]
-        [ExpectedException(typeof(NotSupportedException))]
         public void InstanceBlockShouldThrowOnForceType()
         {
-            var blk = new InstanceBlock(typeof(string));
+            Check.ThatCode(() =>
+            {
+                var blk = new InstanceBlock(typeof(string));
 
-            blk.WithType(typeof(string));
+                blk.WithType(typeof(string));
+            })
+            .Throws<NotSupportedException>();
         }
     }
 }

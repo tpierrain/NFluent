@@ -49,31 +49,38 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException]
         public void Test1()
         {
-            Impl impl = new Impl { BaseProperty = "Any", ImplProperty = "Any1" };
-
-            Check.That(impl).HasFieldsWithSameValues(new { BaseProperty = "Any", ImplProperty = "Any2" });
+            Check.ThatCode(() =>
+            {
+                Impl impl = new Impl { BaseProperty = "Any", ImplProperty = "Any1" };
+                Check.That(impl).HasFieldsWithSameValues(new { BaseProperty = "Any", ImplProperty = "Any2" });
+            })
+            .ThrowsAny();
         }
 
         [Test]
-        [ExpectedException]
         public void Test2()
         {
-            Impl impl = new Impl { BaseProperty = "Any1", ImplProperty = "Any" };
-
-            Check.That(impl).HasFieldsWithSameValues(new { BaseProperty = "Any2", ImplProperty = "Any" });
+            Check.ThatCode(() =>
+            {
+                Impl impl = new Impl { BaseProperty = "Any1", ImplProperty = "Any" };
+                Check.That(impl).HasFieldsWithSameValues(new { BaseProperty = "Any2", ImplProperty = "Any" });
+            })
+            .ThrowsAny();
         }
 
         [Test]
-        [ExpectedException]
         public void Test3()
         {
-            Impl impl = new Impl { BaseProperty = "Any1", ImplProperty = "Any" };
-            Impl impl2 = new Impl { BaseProperty = "Any2", ImplProperty = "Any" };
+            Check.ThatCode(() =>
+            {
+                Impl impl = new Impl { BaseProperty = "Any1", ImplProperty = "Any" };
+                Impl impl2 = new Impl { BaseProperty = "Any2", ImplProperty = "Any" };
 
-            Check.That(impl).HasFieldsWithSameValues(impl2);
+                Check.That(impl).HasFieldsWithSameValues(impl2);
+            })
+            .ThrowsAny();
         }
 
         // Issue #138: superfluous casting required for mathematical expression
@@ -110,13 +117,17 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException))]
         public void NullRefonHasFieldsWithSameValueWithInterfaces()
         {
-            var modelA = new ModelA { Name = "Yoda" };
-            var modelB = new ModelB { Name = new ModelBName { Title = "Frank" } };
+            
+            Check.ThatCode(() =>
+            {
+                var modelA = new ModelA { Name = "Yoda" };
+                var modelB = new ModelB { Name = new ModelBName { Title = "Frank" } };
 
-            Check.That(modelA).HasFieldsWithSameValues(modelB);
+                Check.That(modelA).HasFieldsWithSameValues(modelB);
+            })
+            .Throws<FluentCheckException>();
         }
 
         // Issue #111
@@ -129,24 +140,31 @@ namespace NFluent.Tests
 
         // 30/05/14 Invalid exception on strings with curly braces
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[\"MaChaine{964}\"]\nThe checked enumerable:\n\t[\"MaChaine{94}\"]\nThe expected value(s):\n\t[\"MaChaine{964}\"]")]
         public void SpuriousExceptionOnError()
         {
-            var toTest = new System.Collections.ArrayList { "MaChaine{94}" };
-            const string Result = "MaChaine{964}";
-            Check.That(toTest).Contains(Result);
+            Check.ThatCode(() =>
+            {
+                var toTest = new System.Collections.ArrayList { "MaChaine{94}" };
+                const string Result = "MaChaine{964}";
+                Check.That(toTest).Contains(Result);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable does not contain the expected value(s):\n\t[\"MaChaine{964}\"]\nThe checked enumerable:\n\t[\"MaChaine{94}\"]\nThe expected value(s):\n\t[\"MaChaine{964}\"]");
         }
 
         // #issue 115,
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'Price' does not have the expected value.\nThe checked value:\n\t[100] of type: [decimal]\nThe expected value:\n\t[100] of type: [int]")]
         public void FailingTestForDemo()
         {
-            var args = new OrderExecutedEventArgs(100M, 150, Way.Sell);
+            Check.ThatCode(() =>
+            {
+                var args = new OrderExecutedEventArgs(100M, 150, Way.Sell);
 
-            Check.That(args).HasFieldsWithSameValues(new { Price = 100, Quantity = 150, Way = Way.Sell });
+                Check.That(args).HasFieldsWithSameValues(new { Price = 100, Quantity = 150, Way = Way.Sell });
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value's field 'Price' does not have the expected value.\nThe checked value:\n\t[100] of type: [decimal]\nThe expected value:\n\t[100] of type: [int]");
         }
-
 
         // issue #127, request for byte array support
         // actual issues unclear as it just works.

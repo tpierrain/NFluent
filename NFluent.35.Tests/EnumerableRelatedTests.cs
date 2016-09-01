@@ -70,12 +70,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable has 1 element instead of 5.\nThe checked enumerable:\n\t[666]")]
         public void HasSizeThrowsExceptionWhenFailingWithOneElementFound()
         {
             var enumerable = new List<int> { 666 };
 
-            Check.That(enumerable).HasSize(5);
+            Check.ThatCode(() =>
+            {
+                Check.That(enumerable).HasSize(5);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable has 1 element instead of 5.\nThe checked enumerable:\n\t[666]");
         }
 
         [Test]
@@ -87,21 +91,29 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable has 1 element which is unexpected.\nThe checked enumerable:\n\t[666]")]
         public void NotHasSizeThrowsExceptionWhenFailing()
         {
             var enumerable = new List<int> { 666 };
 
-            Check.That(enumerable).Not.HasSize(1);
+            Check.ThatCode(() =>
+            {
+                Check.That(enumerable).Not.HasSize(1);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable has 1 element which is unexpected.\nThe checked enumerable:\n\t[666]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable has 4 elements instead of 1.\nThe checked enumerable:\n\t[45, 43, 54, 666]")]
         public void HasSizeThrowsExceptionWithClearStatusWhenFailsWithOneExpectedElement()
         {
             var enumerable = new List<int> { 45, 43, 54, 666 };
 
-            Check.That(enumerable).HasSize(1);
+            Check.ThatCode(() =>
+            {
+                Check.That(enumerable).HasSize(1);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable has 4 elements instead of 1.\nThe checked enumerable:\n\t[45, 43, 54, 666]");
         }
 
         #endregion
@@ -117,12 +129,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is not empty.\nThe checked enumerable:\n\t[null, null, Thomas]")]
         public void IsEmptyThrowsExceptionWhenNotEmpty()
         {
             var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
             
-            Check.That(persons).IsEmpty();
+            Check.ThatCode(() =>
+            {
+                Check.That(persons).IsEmpty();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable is not empty.\nThe checked enumerable:\n\t[null, null, Thomas]");
         }
 
         [Test]
@@ -133,11 +149,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable contains items, whereas it must be null or empty.\nThe checked enumerable:\n\t[null, null, Thomas]")]
         public void IsNullOrEmptyFailsAppropriately()
         {
             var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
-            Check.That(persons).IsNullOrEmpty();
+
+            Check.ThatCode(() =>
+            {
+                Check.That(persons).IsNullOrEmpty();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable contains items, whereas it must be null or empty.\nThe checked enumerable:\n\t[null, null, Thomas]");
         }
 
         [Test]
@@ -148,17 +169,25 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is empty, where as it must contain at least one item.")]
         public void NotIsNullOrEmptyFailsIfEmpty()
         {
-            Check.That(EmptyEnumerable).Not.IsNullOrEmpty();
+            Check.ThatCode(() =>
+            {
+                Check.That(EmptyEnumerable).Not.IsNullOrEmpty();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable is empty, where as it must contain at least one item.");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is null, where as it must contain at least one item.")]
         public void NotIsNullOrEmptyFailsIfNull()
         {
-            Check.That((IEnumerable)null).Not.IsNullOrEmpty();
+            Check.ThatCode(() =>
+            {
+                Check.That((IEnumerable)null).Not.IsNullOrEmpty();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable is null, where as it must contain at least one item.");
         }
 
         [Test]
@@ -170,12 +199,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is empty, which is unexpected.")]
         public void NotIsEmptyThrowsExceptionWhenFailing()
         {
             var persons = new List<Person>();
 
-            Check.That(persons).Not.IsEmpty();
+            Check.ThatCode(() =>
+            {
+                Check.That(persons).Not.IsEmpty();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable is empty, which is unexpected.");
         }
 
         #endregion

@@ -57,10 +57,13 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void GetInNanoSecondsThrowsWhenHackingTimeUnitValue()
         {
-            TimeHelper.GetInNanoSeconds(10, (TimeUnit)100);
+            Check.ThatCode(() =>
+            {
+                TimeHelper.GetInNanoSeconds(10, (TimeUnit)100);
+            })
+            .Throws<InvalidOperationException>();
         }
 
         [Test]
