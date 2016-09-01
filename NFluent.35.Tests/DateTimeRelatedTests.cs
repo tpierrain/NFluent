@@ -58,7 +58,7 @@ namespace NFluent.Tests
 
             Check.ThatCode(() =>
             {
-                //XXX
+                Check.That(christmas2013).Not.IsBefore(newYearsEve2014);
             })
             .Throws<FluentCheckException>()
             .WithMessage("\nThe checked date time is before the given one whereas it must not.\nThe checked date time:\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]\nThe given date time:\n\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
@@ -244,11 +244,9 @@ namespace NFluent.Tests
             var christmas2013 = new DateTime(2013, 12, 25);
             var anotherVersionOfChristmas2013 = new DateTime(2013, 12, 25);
 
-            Check.That(christmas2013).IsNotEqualTo(anotherVersionOfChristmas2013);
-
             Check.ThatCode(() =>
             {
-                Check.That(christmas2013).IsEqualTo("Batman");
+                Check.That(christmas2013).IsNotEqualTo(anotherVersionOfChristmas2013);
             })
             .Throws<FluentCheckException>()
             .WithMessage("\nThe checked date time is equal to the expected one whereas it must not.\nThe expected date time: different from\n\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]");

@@ -224,8 +224,7 @@ namespace NFluent.Tests.ForDocumentation
             var report = new FullRunDescription();
 
             // get all test fixtures
-            foreach (var type in
-                Assembly.GetExecutingAssembly().GetTypes())
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
             {
                 try
                 {
@@ -236,13 +235,13 @@ namespace NFluent.Tests.ForDocumentation
                             .Where(
                                 method =>
                                 {
-                                    var attributes = method.GetCustomAttributes(typeof(ExpectedExceptionAttribute), false);
-                                    if (attributes.Length == 1)
-                                    {
-                                        var attrib = attributes[0] as ExpectedExceptionAttribute;
-                                        return attrib == null
-                                               || attrib.ExpectedException == typeof(FluentCheckException);
-                                    }
+                                    //var attributes = method.GetCustomAttributes(typeof(ExpectedExceptionAttribute), false);
+                                    //if (attributes.Length == 1)
+                                    //{
+                                    //    var attrib = attributes[0] as ExpectedExceptionAttribute;
+                                    //    return attrib == null || attrib.ExpectedException == typeof(FluentCheckException);
+                                    //}
+                                    throw new NotImplementedException("we have to find a new way since NUnit's ExceptedException has disapeared.");
 
                                     return false;
                                 });

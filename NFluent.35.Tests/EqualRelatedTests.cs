@@ -219,7 +219,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        // [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Regex, ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\\t\\[John\\] with HashCode: \\[.*\\]\nThe expected value:\n\\t\\[John\\] with HashCode: \\[.*\\]")]
+        //[ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Regex, ExpectedMessage = "")]
         public void WeCanAlsoSeeTheDifferenceBetweenTwoDifferentInstancesOfTheSameTypeWhithIdenticalToString()
         {
             Person dad = new Person { Name = "John" };
@@ -229,7 +229,7 @@ namespace NFluent.Tests
             {
                 Check.That(uncle).IsEqualTo(dad);
             })
-            .Throws<NotImplementedException>(); // TODO: reproduce Messagematch.Regex
+            .Throws<FluentCheckException>().WithMessage("\nThe checked value is different from the expected one.\nThe checked value:\n\\t\\[John\\] with HashCode: \\[.*\\]\nThe expected value:\n\\t\\[John\\] with HashCode: \\[.*\\]"); // TODO: reproduce Messagematch.Regex
         }
 
         #endregion

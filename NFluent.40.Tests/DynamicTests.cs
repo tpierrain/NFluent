@@ -20,11 +20,14 @@ namespace NFluent.Tests
     public class DynamicTests
     {
         [Test]
-        [ExpectedException]
         public void CanCheckThatOnADynamic()
         {
             dynamic car = "car";
-            Check.That(car.FuelLevel).IsEmpty();
+            Check.ThatCode(() =>
+            {
+                Check.That(car.FuelLevel).IsEmpty();
+            })
+            .ThrowsAny();
         }
     }
 }
