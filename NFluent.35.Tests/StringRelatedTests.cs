@@ -12,6 +12,9 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using NFluent.ApiChecks;
+
 namespace NFluent.Tests
 {
     using System.IO;
@@ -676,8 +679,9 @@ namespace NFluent.Tests
                 Check.That(checkString).IsEqualTo(expectedString);
                 // ReverseEngineeringExceptionMessagesHelper.DumpReadyToCopyAndPasteExceptionMessageInAFile(() => Check.That(checkString).IsEqualTo(expectedString));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked string is different from the expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]\nThe expected string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]");
+            .Throws<FluentCheckException>().AndWhichMessage()
+            .IsEqualTo("\nThe checked string is different from the expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'\nThe checked string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]\nThe expected string:\n\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]");
+
         }
     }
 }

@@ -12,6 +12,9 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using NFluent.ApiChecks;
+
 namespace NFluent.Tests
 {
     using System;
@@ -188,7 +191,7 @@ namespace NFluent.Tests
                 Check.That(first).IsEqualTo(null);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value is different from expected one.\nThe checked value:\n\t[\"Son of a test\"]\nThe expected value:\n\t[null]");
+            .WithMessage("\nThe checked value is not null whereas it must.\nThe checked value:\n\t[\"Son of a test\"]\nThe expected value:\n\t[null]");
         }
 
         [Test]
@@ -201,7 +204,7 @@ namespace NFluent.Tests
                 Check.That(first).IsEqualTo("Kamoulox !");
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked string is different from expected one.\nThe checked string:\n\t[null]\nThe expected string:\n\t[\"Kamoulox !\"]");
+            .WithMessage("\nThe checked string is null whereas it must not.\nThe checked string:\n\t[null]\nThe expected string:\n\t[\"Kamoulox !\"]");
         }
 
         [Test]
@@ -224,12 +227,13 @@ namespace NFluent.Tests
         {
             Person dad = new Person { Name = "John" };
             Person uncle = new Person { Name = "John" };
-            
+
             Check.ThatCode(() =>
             {
                 Check.That(uncle).IsEqualTo(dad);
             })
-            .Throws<FluentCheckException>().WithMessage("\nThe checked value is different from the expected one.\nThe checked value:\n\\t\\[John\\] with HashCode: \\[.*\\]\nThe expected value:\n\\t\\[John\\] with HashCode: \\[.*\\]"); // TODO: reproduce Messagematch.Regex
+                .Throws<FluentCheckException>().AndWhichMessage().Matches("\nThe checked value is different from the expected one.\nThe checked value:\n\\t\\[John\\] with HashCode: \\[.*\\]\nThe expected value:\n\\t\\[John\\] with HashCode: \\[.*\\]");
+            //.WithMessage("\nThe checked value is different from the expected one.\nThe checked value:\n\\t\\[John\\] with HashCode: \\[.*\\]\nThe expected value:\n\\t\\[John\\] with HashCode: \\[.*\\]"); // TODO: reproduce Messagematch.Regex
         }
 
         #endregion

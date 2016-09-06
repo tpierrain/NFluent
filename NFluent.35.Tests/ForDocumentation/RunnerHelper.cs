@@ -26,7 +26,7 @@ namespace NFluent.Tests.ForDocumentation
     using NUnit.Framework;
     
     /// <summary>
-    /// Hosts several methods helping to execute unit test in a controlled fashion.
+    /// Hosts several methods helping to execute unit tests in a controlled fashion.
     /// </summary>
     public static class RunnerHelper
     {

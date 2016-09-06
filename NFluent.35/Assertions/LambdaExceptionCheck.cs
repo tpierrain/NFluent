@@ -49,7 +49,7 @@ namespace NFluent
         /// <value>
         /// The value.
         /// </value>
-        private Exception Value { get; set; }
+        internal Exception Value { get; set; }
 
         #endregion
 
