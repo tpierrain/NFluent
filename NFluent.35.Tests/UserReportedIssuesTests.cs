@@ -182,8 +182,8 @@ namespace NFluent.Tests
         [Test]
         public void LongStringErrorMessageIsProperlyTruncated()
         {
-            var checkString = File.ReadAllBytes("CheckedFile.xml");
-            var expectedString = File.ReadAllBytes("ExpectedFile.xml");
+            var checkString = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "\\CheckedFile.xml");
+            var expectedString = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "\\ExpectedFile.xml");
 // TODO: implement support for LONG enumeration
 //            Check.That(checkString).IsEqualTo(expectedString);
         }

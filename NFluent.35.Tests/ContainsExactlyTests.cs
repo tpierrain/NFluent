@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
@@ -249,8 +250,8 @@ namespace NFluent.Tests
         [Test]
         public void ContainsExactlyWorksOnLargeArrays()
         {
-            var checkString = File.ReadAllBytes("CheckedFile.xml");
-            var expectedString = File.ReadAllBytes("CheckedFile.xml");
+            var checkString = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "\\CheckedFile.xml");
+            var expectedString = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "\\CheckedFile.xml");
 
             Check.That(checkString).ContainsExactly(expectedString);
 
