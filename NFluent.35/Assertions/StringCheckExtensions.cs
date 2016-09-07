@@ -193,7 +193,8 @@ namespace NFluent
 
         private static string AssessEquals(IChecker<string, ICheck<string>> checker, object expected, bool negated, bool ignoreCase = false)
         {
-            if (string.Equals(checker.Value, (string)expected, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture) != negated)
+            var value = checker.Value;
+            if (string.Equals(value, (string)expected, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture) != negated)
             {
                 return null;
             }
@@ -206,6 +207,24 @@ namespace NFluent
                                     .Comparison("different from")
                                     .ToString();
             }
+            else if (value == null)
+            {
+                messageText = checker.BuildShortMessage("The {0} is null whereas it must not.")
+                    .For(typeof(string))
+                    .On(value)
+                    .And
+                     .Expected(expected)
+                     .ToString();
+            }
+            else if (expected == null)
+            {
+                messageText = checker.BuildShortMessage("The {0} is not null whereas it must.")
+                    .For(typeof(string))
+                    .On(value)
+                    .And
+                     .Expected(expected)
+                     .ToString();
+            }
             else
             {
                 // we try to refine the difference
@@ -216,80 +235,92 @@ namespace NFluent
                 var firstDiffPos = 0;
 
                 // TODO: refactor to reduce method lines
-                var value = checker.Value;
-                if (expectedString != null && value != null)
+
+                var firstDiff = 0;
+                var blockStart = 0;
+                var blockLen = 0;
+
+                var minLength = Math.Min(value.Length, expectedString.Length);
+
+                // scan for firstDiff
+                for (; firstDiff < minLength; firstDiff++)
                 {
-                    var firstDiff = 0;
-                    var blockStart = 0;
-                    var blockLen = 0;
-
-                    var minLength = Math.Min(value.Length, expectedString.Length);
-
-                    for (; firstDiff < minLength; firstDiff++)
+                    if (value[firstDiff] != expectedString[firstDiff])
                     {
-                        if (value[firstDiff] != expectedString[firstDiff])
-                        {
-                            firstDiffPos = firstDiff;
-                            isCrlfAndLfDifference = IsACRLFDifference(firstDiff, expectedString, value);
-                            isTabAndWhiteSpaceDifference = IsATabAndWhiteSpaceDifference(firstDiff, expectedString, value);
-                        
-                            blockStart = Math.Max(0, firstDiff - 10);
-                            blockLen = Math.Min(minLength - blockStart, 20);
-                            break;
-                        }
+                        firstDiffPos = firstDiff;
+                        isCrlfAndLfDifference = IsACRLFDifference(firstDiff, expectedString, value);
+                        isTabAndWhiteSpaceDifference = IsATabAndWhiteSpaceDifference(firstDiff, expectedString,
+                            value);
+
+                        blockStart = Math.Max(0, firstDiff - 10);
+                        blockLen = Math.Min(minLength - blockStart, 20);
+                        break;
                     }
-
-                    if (expectedString.Length == value.Length)
+                }
+                var useDiffInMessage = true;
+                // if strings have sam length, diff may be minor
+                if (expectedString.Length == value.Length)
+                {
+                    // same length
+                    if (string.Compare(value, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0)
                     {
-                        // same length
-                        if (string.Compare(value, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0)
-                        {
-                            message = "The {0} is different from the {1} but only in case.";
-                        }
-                        else
-                        {
-                            message = "The {0} is different from the {1} but has same length.";
-                        }   
-
-                        var prefix = blockStart == 0 ? string.Empty : "...";
-                        var suffix = (blockStart + blockLen) == minLength ? string.Empty : "...";
-                        message += string.Format(
-                                                    " At {0}, expected '{3}{1}{4}' was '{3}{2}{4}'",
-                                                    firstDiff,
-                                                    expectedString.Substring(blockStart, blockLen),
-                                                    value.Substring(blockStart, blockLen),
-                                                    prefix,
-                                                    suffix);
+                        message = "The {0} is different from the {1} but only in case.";
                     }
                     else
                     {
-                        if (expectedString.Length > value.Length)
-                        {
-                            if (expectedString.StartsWith(value, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
-                            {
-                                message = "The {0} is different from {1}, it is missing the end.";
-                            }
-                        }
-                        else
-                        {
-                            if (value.StartsWith(expectedString, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
-                            {
-                                message = "The {0} is different from {1}, it contains extra text at the end.";
-                            }
-                        }
+                        message = "The {0} is different from the {1} but has same length.";
                     }
                 }
-
+                else if (expectedString.Length > value.Length)
+                {
+                    if (expectedString.StartsWith(value,
+                        ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
+                    {
+                        message = "The {0} is different from {1}, it is missing the end.";
+                        useDiffInMessage = false;
+                    }
+                    else
+                    {
+                        useDiffInMessage = blockStart > 0;
+                    }
+                }
+                else
+                {
+                    if (value.StartsWith(expectedString,
+                        ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
+                    {
+                        message = "The {0} is different from {1}, it contains extra text at the end.";
+                        useDiffInMessage = false;
+                    }
+                    else
+                    {
+                        useDiffInMessage = blockStart > 0;
+                    }
+                }
+                // add part of strings  that are different (if needed)
+                if (useDiffInMessage)
+                {
+                    var prefix = blockStart == 0 ? string.Empty : "...";
+                    var suffix = (blockStart + blockLen) == minLength ? string.Empty : "...";
+                    message += string.Format(
+                        " At {0}, expected '{3}{1}{4}' was '{3}{2}{4}'",
+                        firstDiff,
+                        expectedString.Substring(blockStart, blockLen),
+                        value.Substring(blockStart, blockLen),
+                        prefix,
+                        suffix);
+                }
+                // highlight diff in end of line char (if needed)
                 if (isCrlfAndLfDifference)
                 {
                     value = HighlightFirstCrlfOrLfIfAny(value, firstDiffPos);
                     expectedString = HighlightFirstCrlfOrLfIfAny(expectedString, firstDiffPos);
                 }
-
+                // highlight tab vs space diff (if needed)
                 if (isTabAndWhiteSpaceDifference)
                 {
                     value = HighlightTabsIfAny(value);
-                    expectedString = HighlightTabsIfAny(expectedString);    
+                    expectedString = HighlightTabsIfAny(expectedString);
                 }
 
                 messageText = checker.BuildMessage(message).On(value).And.Expected(expectedString).ToString();

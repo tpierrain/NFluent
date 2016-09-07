@@ -59,6 +59,7 @@
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="ApiChecks\ExceptionChecks.cs" />
     <Compile Include="Assertions\BooleanCheckExtensions.cs">
       <SubType>Code</SubType>
     </Compile>

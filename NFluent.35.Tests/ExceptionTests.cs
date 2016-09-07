@@ -12,6 +12,9 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using NFluent.ApiChecks;
+
 namespace NFluent.Tests
 {
     using System;
@@ -36,7 +39,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { throw new ApplicationException(); }).DoesNotThrow();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked code raised an exception, whereas it must not."); // TODO: reproduce startWith
+            .AndWhichMessage().StartsWith("\nThe checked code raised an exception, whereas it must not."); // TODO: reproduce startWith
         }
 
         [Test]
@@ -55,7 +58,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { throw new Exception(); }).Throws<ApplicationException>();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked code raised an exception of a different type than expected."); // TODO: reproduce Contains
+            .AndWhichMessage().Contains("\nThe checked code raised an exception of a different type than expected."); // TODO: reproduce Contains
         }
 
         [Test]

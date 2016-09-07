@@ -15,6 +15,7 @@
 
 using System.Globalization;
 using System.Threading;
+using NFluent.ApiChecks;
 
 namespace NFluent.Tests
 {
@@ -57,8 +58,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        //[ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.ApplicationException}: ")]
-        //[ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.ApplicationException}: 'Error in the application.']")]
         public void UnexpectedExceptionRaised()
         {
             Check.ThatCode(() =>
@@ -66,7 +65,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { throw new ApplicationException(); }).DoesNotThrow();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.ApplicationException}:"); // TODO: mimic StartsWith
+            .AndWhichMessage().StartsWith("\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.ApplicationException}:"); // TODO: mimic StartsWith
         }
 
         [Test]
@@ -78,7 +77,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        //[ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code raised an exception of a different type than expected.\nRaised Exception\n\t[{System.Exception}:")] //" 'Exception of type 'System.Exception' was thrown.']\nThe expected exception:\n\tan instance of type: [System.ApplicationException]")]
         public void DidNotRaiseExpected()
         {
             Check.ThatCode(() =>
@@ -86,7 +84,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { throw new Exception(); }).Throws<ApplicationException>();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked code raised an exception of a different type than expected.\nRaised Exception\n\t[{System.Exception}:"); // TODO: mimic StartsWith
+            .AndWhichMessage().StartsWith("\nThe checked code raised an exception of a different type than expected.\nRaised Exception\n\t[{System.Exception}:"); // TODO: mimic StartsWith
         }
 
         [Test]

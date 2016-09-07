@@ -12,6 +12,9 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using NFluent.ApiChecks;
+
 namespace NFluent.Tests
 {
     using System.Diagnostics;
@@ -37,7 +40,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        //[ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code took too much time to execute.\n")]
         public void FailDurationTest()
         {
             Check.ThatCode(() =>
@@ -45,7 +47,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked code took too much time to execute.\n"); // TODO mimic startsWith
+            .AndWhichMessage().StartsWith("\nThe checked code took too much time to execute.\n"); // TODO mimic startsWith
         }
 
         [Test]
@@ -59,7 +61,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        //[ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code consumed too much CPU time.\nThe checked cpu time:")]
         public void ConsumedTestFailsProperly()
         {
             Check.ThatCode(() =>
@@ -79,7 +80,7 @@ namespace NFluent.Tests
                 }).ConsumesLessThan(10, TimeUnit.Milliseconds);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked code consumed too much CPU time.\nThe checked cpu time:"); // TODO mimic startsWith
+            .AndWhichMessage().StartsWith("\nThe checked code consumed too much CPU time.\nThe checked cpu time:"); // TODO mimic startsWith
         }
     }
 }
