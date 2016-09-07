@@ -16,9 +16,9 @@ namespace NFluent
 {
     using System;
 
-    using NFluent.Extensibility;
-    using NFluent.Extensions;
-    using NFluent.Helpers;
+    using Extensibility;
+    using Extensions;
+    using Helpers;
 
     /// <summary>
     /// Implements specific Value check after lambda checks.
@@ -78,6 +78,14 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Permits to perform checks on the exception message
+        /// </summary>
+        public ICheck<string> WhichMessage
+        {
+            get { return new FluentCheck<string>(this.Value.Message);}
+        }
+
+        /// <summary>
         /// Checks that a specific property of the considered Value has an expected value.
         /// </summary>
         /// <param name="propertyName">The name of the property to check on the considered Value.</param>
@@ -117,13 +125,13 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public ICheckLink<ILambdaExceptionCheck<T>> DueTo<E>() where E : Exception
+        public ICheckLink<ILambdaExceptionCheck<T>> DueTo<TE>() where TE : Exception
         {
             var innerException = this.Value.InnerException;
             var dueToExceptionFound = false;
             while (innerException != null)
             {
-                if (innerException.GetType() == typeof(E))
+                if (innerException.GetType() == typeof(TE))
                 {
                     dueToExceptionFound = true;
                     break;
@@ -133,12 +141,12 @@ namespace NFluent
 
             if (!dueToExceptionFound)
             {
-                var message = FluentMessage.BuildMessage(string.Format("The {{0}} did not contain an expected inner exception whereas it must."))
+                var message = FluentMessage.BuildMessage("The {0} did not contain an expected inner exception whereas it must.")
                                             .For("exception")
                                             .On(ExceptionHelper.DumpInnerExceptionStackTrace(this.Value))
                                             .Label("The inner exception(s):")
                                             .And
-                                            .Expected(typeof(E)).Label("The expected inner exception:")
+                                            .Expected(typeof(TE)).Label("The expected inner exception:")
                                             .ToString();
 
                 throw new FluentCheckException(message);

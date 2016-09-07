@@ -42,10 +42,10 @@ namespace NFluent.Tests
         #region IsEqualTo / IsNotEqualTo
 
         [Test]
-        public void IntValueIsNotEqualToTheSameByteValue()
+        public void IntValueIsEqualToTheSameByteValue()
         {
             byte byteValue = 2;
-            Check.That(byteValue).IsNotEqualTo(2);
+            Check.That(byteValue).IsEqualTo(2);
         }
 
         [Test]
@@ -80,13 +80,13 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void LongValueIsNotEqualToTheSameIntValue()
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[2] of type: [long]")]
+        public void LongValueIsNotEqualToTheSameIntValueAndThrows()
         {
             Check.That(2).IsNotEqualTo(2L);
         }
 
         [Test]
-        public void LongValueIsNotEqualToTheSameIntValueAndThrows()
         {
             Check.ThatCode(() =>
             {
@@ -99,23 +99,23 @@ namespace NFluent.Tests
         [Test]
         public void NotIsEqualToWorksWithDifferentTypes()
         {
-            const int IntValue = 42;
-            const long LongValue = 21L;
+            const int intValue = 42;
+            const long longValue = 21L;
 
-            Check.That(IntValue).Not.IsEqualTo(LongValue);
+            Check.That(intValue).Not.IsEqualTo(longValue);
         }
 
         [Test]
         public void IsAfterWorks()
         {
-            long value = 42;
+            const long value = 42;
             Check.That(value).IsNotZero().And.IsAfter(40);
         }
 
         [Test]
         public void IsBeforeWorks()
         {
-            long value = 42;
+            const long value = 42;
             Check.That(value).IsNotZero().And.IsBefore(100);
         }
 

@@ -22,7 +22,7 @@ namespace NFluent.Extensibility
     using System.Collections;
     using System.Text;
 
-    using NFluent.Extensions;
+    using Extensions;
 
     /// <summary>
     /// Class describing a message block.
@@ -57,38 +57,13 @@ namespace NFluent.Extensibility
         /// <param name="block">
         /// The block attribute.
         /// </param>
-        internal MessageBlock(FluentMessage message, object test, GenericLabelBlock block)
+        /// <param name="index">The index for enumerable types</param>
+        internal MessageBlock(FluentMessage message, object test, GenericLabelBlock block, int index = 0)
             : this(message, test.GetTypeWithoutThrowingException(), block)
         {
             if (!(test is string) && (test is IEnumerable))
             {
-                this.value = new EnumerationBlock(test as IEnumerable, 0);
-            }
-            else
-            {
-                this.value = new ValueBlock(test);
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageBlock"/> class.
-        /// </summary>
-        /// <param name="message">
-        /// The message.
-        /// </param>
-        /// <param name="test">
-        /// The tested object.
-        /// </param>
-        /// <param name="index">Index to focus on.</param>
-        /// <param name="block">
-        /// The block attribute.
-        /// </param>
-        internal MessageBlock(FluentMessage message, IEnumerable test, int index, GenericLabelBlock block)
-            : this(message, test.GetTypeWithoutThrowingException(), block)
-        {
-            if (!(test is string))
-            {
-                this.value = new EnumerationBlock(test, index);
+                this.value = new EnumerationBlock((IEnumerable) test, index);
             }
             else
             {
@@ -112,7 +87,7 @@ namespace NFluent.Extensibility
         {
             if (message == null)
             {
-                throw new ArgumentNullException("message");
+                throw new ArgumentNullException(nameof(message));
             }
 
             this.value = new InstanceBlock(type);

@@ -28,7 +28,7 @@ namespace NFluent.Extensibility
     /// </summary>
     internal class EntityNamer
     {
-        public const string DefaultEntityName = "value";
+        private const string DefaultEntityName = "value";
 
         #region Fields
 

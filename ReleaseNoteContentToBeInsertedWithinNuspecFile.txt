@@ -2,7 +2,10 @@ New feature(s):
 * Streams: introduce HasSameSequenceOfBytesAs() check.
 * Numbers: introduce IsPositiveOrZero() check.
 * Numbers: introduce IsNegativeOrZero() check.
+* FloatingNumbers (float, double): introduce IsCloseTo(expected, within) check for estimated value.
 * Exceptions: introduce the DueTo&lt;InnerException&gt; operator after the Throws&lt;Exception&gt; check.
+* Exceptions: introduce WhichMessage that allows to use string check on the exception message.
+
 --------------
 
 Change(s):
@@ -17,10 +20,13 @@ Change(s):
 * Check.ThatCode(...).Throws&lt;T&gt;() now requires T to be an exception. This restriction ensures only Exceptions are proposed in autocompletion.
 * Simplify the way you can extend NFluent by adding your own checks. Now, you can call: var checker = ExtensibilityHelper.ExtractChecker(check);
   at the beginning of your check extension method, and then rely on its ExecuteCheck() or BuildMessage() helper methods to do the job. Note: the Checker is part of the NFluent.Extensibility namespace.
+* Check.That(Action) can no longer be used (obsolete)
+* Check.That(Func<T>) can no longer be used (obsolete)
 
 --------------
 Bug Fixe(s):
 * Fix the inversion between expected and actual error message for the .WithMessage checks on exception.
 * Fix the issue with null value on Check.That(...).IsBefore(...)
 * HasFieldsWithSameValues now recurse along the hierarchy class (Fix for #141)
+* Fix stack overflow triggered by HasFieldsWithSameValues() on object with reference loop (#148)
 

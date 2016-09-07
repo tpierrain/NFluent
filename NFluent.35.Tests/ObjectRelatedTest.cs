@@ -13,6 +13,8 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace NFluent.Tests
 {
     using NFluent.Tests.Extensions;
@@ -189,6 +191,56 @@ namespace NFluent.Tests
             var test = new object();
             Check.That(test).Not.IsDistinctFrom(test);
             Check.That(new object()).Not.IsSameReferenceThan(new object());
+        }
+
+        [Test]
+        [ExpectedException(ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[NFluent.Tests.ObjectRelatedTest+PersonEx] of type: [NFluent.Tests.ObjectRelatedTest+PersonEx]\nThe expected value: equals to (using operator==)\n\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]")]
+        public void HasSameValueAsFailsWithCorrectMessage()
+        {
+            var mySelf = new Person() { Name = "dupdob" };
+            var myClone = new PersonEx() { Name = "tpierrain" };
+ 
+            Check.That(myClone).HasSameValueAs(mySelf);
+        }
+
+        [Test]
+        [ExpectedException(ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from (using operator!=)\n\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]")]
+        public void HasDifferentValueAsFailsWithCorrectMessage()
+        {
+            var mySelf = new Person() { Name = "dupdob" };
+            var myClone = new PersonEx() { Name = "dupdob" };
+
+            Check.That(myClone).HasDifferentValueThan(mySelf);
+
+        }
+
+        private class Person
+        {
+            public String Name { get; set; }
+            public String Surname { get; set; }
+
+        }
+        private class PersonEx
+        {
+            public String Name { get; set; }
+            public String Surname { get; set; }
+
+            public static bool operator ==(PersonEx person1, Person person2)
+            {
+                return person1.Name == person2.Name;
+            }
+            public static bool operator !=(PersonEx person1, Person person2)
+            {
+                return person1.Name != person2.Name;
+            }
+            public static bool operator ==(Person person1, PersonEx person2)
+            {
+                return person1.Name == person2.Name;
+            }
+            public static bool operator !=(Person person1, PersonEx person2)
+            {
+                return person1.Name != person2.Name;
+            }
         }
     }
 }

@@ -16,8 +16,8 @@ namespace NFluent
 {
     using System;
 
-    using NFluent.Extensibility;
-    using NFluent.Extensions;
+    using Extensibility;
+    using Extensions;
 
     /// <summary>
     /// Provides check methods to be executed on a date time instance. 
@@ -40,11 +40,9 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                     {
-                        if (checker.Value >= other)
-                        {
-                            var message = checker.BuildMessage("The {0} is not before the {1}.").WithGivenValue(other).ToString();
-                            throw new FluentCheckException(message);
-                        }
+                        if (checker.Value < other) return;
+                        var message = checker.BuildMessage("The {0} is not before the {1}.").WithGivenValue(other).ToString();
+                        throw new FluentCheckException(message);
                     },
                 checker.BuildMessage("The {0} is before the {1} whereas it must not.").WithGivenValue(other).ToString());
         }
@@ -65,11 +63,9 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                 {
-                    if (checker.Value > other)
-                    {
-                        var message = checker.BuildMessage("The {0} is not before or equals to the {1}.").WithGivenValue(other).ToString();
-                        throw new FluentCheckException(message);
-                    }
+                    if (checker.Value <= other) return;
+                    var message = checker.BuildMessage("The {0} is not before or equals to the {1}.").WithGivenValue(other).ToString();
+                    throw new FluentCheckException(message);
                 },
                 checker.BuildMessage("The {0} is before or equals to the {1} whereas it must not.").WithGivenValue(other).ToString());
         }
@@ -90,11 +86,9 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                     {
-                        if (checker.Value <= other)
-                        {
-                            var message = checker.BuildMessage("The {0} is not after the {1}.").WithGivenValue(other).ToString();
-                            throw new FluentCheckException(message);
-                        }
+                        if (checker.Value > other) return;
+                        var message = checker.BuildMessage("The {0} is not after the {1}.").WithGivenValue(other).ToString();
+                        throw new FluentCheckException(message);
                     },
                 checker.BuildMessage("The {0} is after the {1} whereas it must not.").WithGivenValue(other).ToString());
         }
@@ -115,11 +109,9 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                     {
-                        if (checker.Value < other)
-                        {
-                            var message = checker.BuildMessage("The {0} is not after or equals to the {1}.").WithGivenValue(other).ToString();
-                            throw new FluentCheckException(message);
-                        }
+                        if (checker.Value >= other) return;
+                        var message = checker.BuildMessage("The {0} is not after or equals to the {1}.").WithGivenValue(other).ToString();
+                        throw new FluentCheckException(message);
                     },
                 checker.BuildMessage("The {0} is after or equals to the {1} whereas it must not.").WithGivenValue(other).ToString());
         }
@@ -157,11 +149,11 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                     {
-                        if (checker.Value.Year != other.Year || checker.Value.Month != other.Month || checker.Value.Day != other.Day || checker.Value.Hour != other.Hour || checker.Value.Minute != other.Minute || checker.Value.Second != other.Second)
-                        {
-                            var message = checker.BuildMessage("The {0} is not equal to the {1} (ignoring milliseconds).").WithGivenValue(other).ToString();
-                            throw new FluentCheckException(message);
-                        }
+                        if (checker.Value.Year == other.Year && checker.Value.Month == other.Month &&
+                            checker.Value.Day == other.Day && checker.Value.Hour == other.Hour &&
+                            checker.Value.Minute == other.Minute && checker.Value.Second == other.Second) return;
+                        var message = checker.BuildMessage("The {0} is not equal to the {1} (ignoring milliseconds).").WithGivenValue(other).ToString();
+                        throw new FluentCheckException(message);
                     },
                 checker.BuildMessage("The {0} is equal to the {1} (ignoring milliseconds) whereas it must not.").WithGivenValue(other).ToString());
         }

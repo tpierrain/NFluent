@@ -124,6 +124,21 @@ namespace NFluent.Tests
             .WithMessage("\nThe checked float value is a finite number whereas it must not.\nThe checked float value:\n\t[20]");
         }
 
+        [Test]
+        public void IsAroundWorks()
+        {
+            const float Twenty = 20F;
+            Check.That(Twenty).IsCloseTo(20.1, 0.2);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is outside the expected value range.\nThe checked value:\n\t[20]\nThe expected value:\n\t[20,1 (+/- 0,01)]")]
+        public void IsAroundShouldFailsIfToFar()
+        {
+            const float Twenty = 20F;
+            Check.That(Twenty).IsCloseTo(20.1, 0.01);
+        }
+
         #endregion
     }
 }

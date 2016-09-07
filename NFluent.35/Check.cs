@@ -75,10 +75,9 @@ namespace NFluent
         {
             return new FluentCodeCheck<RunTraceResult<TResult>>(CodeCheckExtensions.GetAsyncTrace(awaitableFunction));
         }
-
 #endif
 
-#if !(PORTABLE)
+#if !PORTABLE
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
@@ -90,12 +89,12 @@ namespace NFluent
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use ThatCode instead.")]
+        [Obsolete("Use ThatCode instead.", true)]
         public static ILambdaCheck That(Action value)
         {
-            return new LambdaCheck(value);
+            return null;
         }
-
+        
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
@@ -133,16 +132,16 @@ namespace NFluent
         /// <typeparam name="T">Type of the value returned by the <see cref="System.Func{TResult}"/> to be checked.</typeparam>
         /// <param name="value">The value to be tested.</param>
         /// <returns>
-        /// A <see cref="LambdaCheck" /> instance to use in order to assert things on the given value.
+        /// A <see cref="ILambdaCheck" /> instance to use in order to assert things on the given value.
         /// </returns>
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use ThatCode instead.")]
+        [Obsolete("Use ThatCode instead.", true)]
         public static ILambdaCheck That<T>(Func<T> value)
         {
-            return new LambdaCheck(value);
+            return null;
         }
 #endif
         /// <summary>

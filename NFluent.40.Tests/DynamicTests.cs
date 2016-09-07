@@ -29,5 +29,18 @@ namespace NFluent.Tests
             })
             .ThrowsAny();
         }
-    }
+
+        class Command
+        {
+            internal dynamic Subject { get; set; }
+        }
+
+        [Test]
+        public void CanCheckNulls()
+        {
+            var cmd = new Command();
+            // this check fails
+            //Check.That<object>(cmd.Subject).IsNotNull();
+        }
+}
 }
