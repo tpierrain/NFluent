@@ -177,6 +177,7 @@
     </Compile>
     <Compile Include="..\NFluent.35\Extensibility\ReverseEngineeringExceptionMessagesHelper.cs">
       <Link>Extensibility\ReverseEngineeringExceptionMessagesHelper.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.35\Extensibility\RangeBlock.cs">
       <Link>Extensibility\RangeBlock.cs</Link>
     </Compile>

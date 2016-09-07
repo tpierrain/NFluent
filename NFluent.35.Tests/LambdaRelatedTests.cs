@@ -98,13 +98,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-            Check.ThatCode(() =>
-            {
-                // obsolete signature, kept for coverage
-                Check.That(() => { new object(); }).ThrowsAny();
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked code did not raise an exception, whereas it must.");
         public void DidNotRaiseAnyTypedCheck()
         {
             Check.ThatCode(() =>
@@ -119,7 +112,7 @@ namespace NFluent.Tests
         public void DidNotRaiseWhenUsedWithValidParameterlessFuncVariable()
         {
             Func<bool> sut = () => true;
-//            Check.That(sut).DoesNotThrow();
+            Check.ThatCode(sut).DoesNotThrow();
         }
 
         [Test]
@@ -189,12 +182,6 @@ namespace NFluent.Tests
             Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(123, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithMessage("Err #123 : my error message").And.WithProperty("ExceptionNumber", 123);
         }
 
-        [Test]
-        public void CanUseStringChecksOnMessage()
-        {
-            Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(123, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WhichMessage.Contains("error");
-
-        }
         [Test]
         public void DidNotRaiseTheExpectedMessage()
         {

@@ -426,12 +426,15 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException))]
         public void IsEqualFailsWhenRelevant()
         {
             const long Twenty = 20L;
 
-            Check.That(Twenty).IsEqualTo(0);
+            Check.ThatCode(() =>
+                {
+                    Check.That(Twenty).IsEqualTo(0);
+                })
+                .Throws<FluentCheckException>();
         }
 
         [Test]

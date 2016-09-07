@@ -182,24 +182,31 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(NotSupportedException))]
         public void InstanceValuesMustNotSupportEnumerationFeatures()
         {
-            var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithEnumerableCount(0);
+            Check.ThatCode(()=>
+            {
+                var errorMessage =
+                    FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithEnumerableCount(0);
+            }).Throws<NotSupportedException>();
         }
 
         [Test]
-        [ExpectedException(typeof(NotSupportedException))]
         public void InstanceValuesMustNotSupportHashCodes()
         {
-            var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithHashCode();
+            Check.ThatCode(() =>
+            {
+                var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithHashCode();
+            }).Throws<NotSupportedException>();
         }
 
         [Test]
-        [ExpectedException(typeof(NotSupportedException))]
         public void InstanceValuesMustNotSupportWithType()
         {
-            var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).OfType(typeof(int));
+            Check.ThatCode(() =>
+            {
+                var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).OfType(typeof(int));
+            }).Throws<NotSupportedException>();
         }
 
         [Test]

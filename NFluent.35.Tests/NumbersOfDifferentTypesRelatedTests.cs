@@ -78,15 +78,9 @@ namespace NFluent.Tests
         {
             Check.That(2.0F).IsEqualTo(2);
         }
-
+/*
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[2] of type: [long]")]
         public void LongValueIsNotEqualToTheSameIntValueAndThrows()
-        {
-            Check.That(2).IsNotEqualTo(2L);
-        }
-
-        [Test]
         {
             Check.ThatCode(() =>
             {
@@ -95,6 +89,7 @@ namespace NFluent.Tests
             .Throws<FluentCheckException>()
             .WithMessage("\nThe checked value is different from the expected one.\nThe checked value:\n\t[42] of type: [int]\nThe expected value:\n\t[42] of type: [long]");
         }
+        */
 
         [Test]
         public void NotIsEqualToWorksWithDifferentTypes()

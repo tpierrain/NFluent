@@ -140,7 +140,6 @@ namespace NFluent.Tests
         }
         // issue #124: Improve ContainsExactly error messages
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain exactly the expected value(s). First difference is at index #4.\nThe checked enumerable:\n\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concert\", \"Conjured Mana Cake\"] (6 items)\nThe expected value(s):\n\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concer\", \"Conjured Mana Cake\"] (6 items)")]
          public void ContainsExactly()
         {
             var stringArray = new string[]
@@ -148,9 +147,14 @@ namespace NFluent.Tests
                 "+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros",
                 "Backstagex passes to a TAFKAL80ETC concert", "Conjured Mana Cake"
             };
-
-            Check.That(stringArray).ContainsExactly(new string [] { "+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros",
-                "Backstagex passes to a TAFKAL80ETC concer", "Conjured Mana Cake"});
+            Check.ThatCode(() =>
+            {
+                Check.That(stringArray).ContainsExactly(new string[]
+                {
+                    "+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros",
+                    "Backstagex passes to a TAFKAL80ETC concer", "Conjured Mana Cake"
+                });
+            }).ThrowsAny().WithMessage("\nThe checked enumerable does not contain exactly the expected value(s). First difference is at index #4.\nThe checked enumerable:\n\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concert\", \"Conjured Mana Cake\"] (6 items)\nThe expected value(s):\n\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concer\", \"Conjured Mana Cake\"] (6 items)");
         }
 
         [Test]

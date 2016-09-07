@@ -125,11 +125,11 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is outside the expected value range.\nThe checked value:\n\t[20]\nThe expected value:\n\t[20,1 (+/- 0,01)]")]
         public void IsAroundShouldFailsIfToFar()
         {
             const double Twenty = 20D;
-            Check.That(Twenty).IsCloseTo(20.1, 0.01);
+            Check.ThatCode(() => {
+                Check.That(Twenty).IsCloseTo(20.1, 0.01); }).Throws<FluentCheckException>().WithMessage("\nThe checked value is outside the expected value range.\nThe checked value:\n\t[20]\nThe expected value:\n\t[20,1 (+/- 0,01)]");
         }
 
         #endregion

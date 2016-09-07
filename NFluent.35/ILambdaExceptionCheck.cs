@@ -33,10 +33,6 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
         ICheckLink<ILambdaExceptionCheck<TParent>> WithMessage(string exceptionMessage);
 
-        /// <summary>
-        /// Access the error message
-        /// </summary>
-        ICheck<string> WhichMessage { get; }
             /// <summary>
         /// Checks that a specific property of the considered exception has an expected value.
         /// </summary>

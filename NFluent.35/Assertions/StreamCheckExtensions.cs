@@ -14,7 +14,6 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Assertions
 {
-    using System;
     using System.IO;
     using NFluent.Extensibility;
 

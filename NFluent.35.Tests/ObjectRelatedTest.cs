@@ -194,23 +194,30 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[NFluent.Tests.ObjectRelatedTest+PersonEx] of type: [NFluent.Tests.ObjectRelatedTest+PersonEx]\nThe expected value: equals to (using operator==)\n\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]")]
         public void HasSameValueAsFailsWithCorrectMessage()
         {
             var mySelf = new Person() { Name = "dupdob" };
             var myClone = new PersonEx() { Name = "tpierrain" };
- 
-            Check.That(myClone).HasSameValueAs(mySelf);
+            Check.ThatCode(() => {
+                    Check.That(myClone).HasSameValueAs(mySelf);
+                })
+                .ThrowsAny()
+                .WithMessage(
+                    "\nThe checked value is different from the expected one.\nThe checked value:\n\t[NFluent.Tests.ObjectRelatedTest+PersonEx] of type: [NFluent.Tests.ObjectRelatedTest+PersonEx]\nThe expected value: equals to (using operator==)\n\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
         }
 
         [Test]
-        [ExpectedException(ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from (using operator!=)\n\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]")]
         public void HasDifferentValueAsFailsWithCorrectMessage()
         {
             var mySelf = new Person() { Name = "dupdob" };
             var myClone = new PersonEx() { Name = "dupdob" };
 
-            Check.That(myClone).HasDifferentValueThan(mySelf);
+            Check.ThatCode(() => {
+                Check.That(myClone).HasDifferentValueThan(mySelf);
+            })
+                .ThrowsAny()
+                .WithMessage(
+                    "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from (using operator!=)\n\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
 
         }
 
