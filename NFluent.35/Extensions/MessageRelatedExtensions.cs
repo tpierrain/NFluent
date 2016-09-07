@@ -18,7 +18,7 @@
 
 namespace NFluent
 {
-    using NFluent.Extensibility;
+    using Extensibility;
 
     /// <summary>
     /// Static classes hosting all error messages related extensions.

@@ -44,24 +44,29 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked Stream has the same content as the other one, whereas it must not.\nThe checked value: (Length: 13)\n\t[System.IO.MemoryStream]\nThe other one:\n\t[System.IO.MemoryStream]")]
         public void Not_HasSameSequenceOfBytesAs_throws_with_same_content()
         {
-            using (var memoryStream = new MemoryStream())
+            Check.ThatCode(() =>
             {
-                using (var writer = new StreamWriter(memoryStream, Encoding.UTF8))
+                using (var memoryStream = new MemoryStream())
                 {
-                    writer.Write("What else!");
-                    writer.Flush();
-
-                    using (var secondStream = new MemoryStream())
+                    using (var writer = new StreamWriter(memoryStream, Encoding.UTF8))
                     {
-                        memoryStream.WriteTo(secondStream);
-                        
-                        Check.That(memoryStream).Not.HasSameSequenceOfBytesAs(secondStream);
+                        writer.Write("What else!");
+                        writer.Flush();
+
+                        using (var secondStream = new MemoryStream())
+                        {
+                            memoryStream.WriteTo(secondStream);
+
+                            Check.That(memoryStream).Not.HasSameSequenceOfBytesAs(secondStream);
+                        }
                     }
                 }
-            }
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked stream has the same content as the other one, whereas it must not.\nThe checked stream: (Length: 13)\n\t[System.IO.MemoryStream]\nThe expected stream: (Length: 13)\n\t[System.IO.MemoryStream]");
+            
         }
 
         [Test]
@@ -96,45 +101,53 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value doesn't have the same content as the expected one. They don't even have the same Length!\nThe checked value: (Length: 18)\n\t[System.IO.MemoryStream]\nThe expected value: (Length: 11)\n\t[System.IO.MemoryStream]")]
         public void HasSameSequenceOfBytesAs_throws_exception_with_different_content_with_different_size()
         {
-            using (var memoryStream = new MemoryStream())
-            using (var otherStream = new MemoryStream())
+            Check.ThatCode(() =>
             {
-                using (var writer = new StreamWriter(memoryStream, Encoding.UTF8))
-                using (var otherWriter = new StreamWriter(otherStream, Encoding.UTF8))
+                using (var memoryStream = new MemoryStream())
+                using (var otherStream = new MemoryStream())
                 {
-                    writer.Write("Spinoza FTW ;-)");
-                    writer.Flush();
+                    using (var writer = new StreamWriter(memoryStream, Encoding.UTF8))
+                    using (var otherWriter = new StreamWriter(otherStream, Encoding.UTF8))
+                    {
+                        writer.Write("Spinoza FTW ;-)");
+                        writer.Flush();
 
-                    otherWriter.Write("Kant ;-(");
-                    otherWriter.Flush();
+                        otherWriter.Write("Kant ;-(");
+                        otherWriter.Flush();
 
-                    Check.That(memoryStream).HasSameSequenceOfBytesAs(otherStream);
+                        Check.That(memoryStream).HasSameSequenceOfBytesAs(otherStream);
+                    }
                 }
-            }
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value doesn't have the same content as the expected one. They don't even have the same Length!\nThe checked value: (Length: 18)\n\t[System.IO.MemoryStream]\nThe expected value: (Length: 11)\n\t[System.IO.MemoryStream]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value doesn't have the same content as the expected one (despite the fact that they have the same Length: 12).\nThe checked value:\n\t[System.IO.MemoryStream]\nThe expected value:\n\t[System.IO.MemoryStream]")]
         public void HasSameSequenceOfBytesAs_throws_exception_with_different_content_but_same_size()
         {
-            using (var memoryStream = new MemoryStream())
-            using (var otherStream = new MemoryStream())
+            Check.ThatCode(() =>
             {
-                using (var writer = new StreamWriter(memoryStream, Encoding.UTF8))
-                using (var otherWriter = new StreamWriter(otherStream, Encoding.UTF8))
+                using (var memoryStream = new MemoryStream())
+                using (var otherStream = new MemoryStream())
                 {
-                    writer.Write("123456789");
-                    writer.Flush();
+                    using (var writer = new StreamWriter(memoryStream, Encoding.UTF8))
+                    using (var otherWriter = new StreamWriter(otherStream, Encoding.UTF8))
+                    {
+                        writer.Write("123456789");
+                        writer.Flush();
 
-                    otherWriter.Write("981234567");
-                    otherWriter.Flush();
+                        otherWriter.Write("981234567");
+                        otherWriter.Flush();
 
-                    Check.That(memoryStream).HasSameSequenceOfBytesAs(otherStream);
+                        Check.That(memoryStream).HasSameSequenceOfBytesAs(otherStream);
+                    }
                 }
-            }
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value doesn't have the same content as the expected one (despite the fact that they have the same Length: 12).\nThe checked value:\n\t[System.IO.MemoryStream]\nThe expected value:\n\t[System.IO.MemoryStream]");
         }
 
         [Test]

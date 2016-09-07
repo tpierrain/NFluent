@@ -15,6 +15,7 @@
 
 using System.Globalization;
 using System.Threading;
+using NFluent.ApiChecks;
 
 namespace NFluent.Tests
 {
@@ -57,11 +58,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.ApplicationException}: ")]
-        //[ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.ApplicationException}: 'Error in the application.']")]
         public void UnexpectedExceptionRaised()
         {
-            Check.ThatCode(() => { throw new ApplicationException(); }).DoesNotThrow();
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => { throw new ApplicationException(); }).DoesNotThrow();
+            })
+            .Throws<FluentCheckException>()
+            .AndWhichMessage().StartsWith("\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.ApplicationException}:"); // TODO: mimic StartsWith
         }
 
         [Test]
@@ -69,44 +73,46 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
             Check.ThatCode(() => { throw new ApplicationException(); }).ThrowsAny();
-            Check.That(() => { throw new ApplicationException(); }).ThrowsAny();
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code raised an exception of a different type than expected.\nRaised Exception\n\t[{System.Exception}:")] //" 'Exception of type 'System.Exception' was thrown.']\nThe expected exception:\n\tan instance of type: [System.ApplicationException]")]
-        //[ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code raised an exception of a different type than expected.\nRaised Exception\n\t[{System.Exception}: 'Exception of type 'System.Exception' was thrown.']\nThe expected exception:\n\tan instance of type: [System.ApplicationException]")]
         public void DidNotRaiseExpected()
         {
-            Check.ThatCode(() => { throw new Exception(); }).Throws<ApplicationException>();
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => { throw new Exception(); }).Throws<ApplicationException>();
+            })
+            .Throws<FluentCheckException>()
+            .AndWhichMessage().StartsWith("\nThe checked code raised an exception of a different type than expected.\nRaised Exception\n\t[{System.Exception}:"); // TODO: mimic StartsWith
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code did not raise an exception, whereas it must.")]
         public void DidNotRaiseAny()
         {
-            Check.ThatCode(() => { new object(); }).ThrowsAny();
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => { new object(); }).ThrowsAny();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked code did not raise an exception, whereas it must.");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code did not raise an exception, whereas it must.")]
-        public void DidNotRaiseAnyOldSyntax()
-        {
-            // obsolete signature, kept for coverage
-            Check.That(() => { new object(); }).ThrowsAny();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked code did not raise an exception, whereas it must.\nThe expected exception:\n\tan instance of type: [System.Exception]")]
         public void DidNotRaiseAnyTypedCheck()
         {
-            Check.ThatCode(() => { new object(); }).Throws<Exception>();
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => { new object(); }).Throws<Exception>();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked code did not raise an exception, whereas it must.\nThe expected exception:\n\tan instance of type: [System.Exception]");
         }
 
         [Test]
         public void DidNotRaiseWhenUsedWithValidParameterlessFuncVariable()
         {
             Func<bool> sut = () => true;
-            Check.That(sut).DoesNotThrow();
+            Check.ThatCode(sut).DoesNotThrow();
         }
 
         [Test]
@@ -168,38 +174,45 @@ namespace NFluent.Tests
             var sut = new AnObjectThatCanCrashWithPropertyGet(0);
             Check.ThatCode(() => sut.BeastBreaker).Throws<DivideByZeroException>();
 
-            // obsolete for coverage
-            Check.That(() => sut.BeastBreaker).Throws<DivideByZeroException>();
         }
 
         [Test]
         public void CanCheckForAMessageOnExceptionRaised()
         {
             Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(123, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithMessage("Err #123 : my error message").And.WithProperty("ExceptionNumber", 123);
-
-            // obsolete for coverage
-            Check.That(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(123, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithMessage("Err #123 : my error message").And.WithProperty("ExceptionNumber", 123);
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe message of the checked exception is not as expected.\nThe checked exception message:\n\t[\"Err #321 : my error message\"]\nThe expected exception message:\n\t[\"a buggy message\"]")]
         public void DidNotRaiseTheExpectedMessage()
         {
-            Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithMessage("a buggy message");
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithMessage("a buggy message");
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe message of the checked exception is not as expected.\nThe checked exception message:\n\t[\"Err #321 : my error message\"]\nThe expected exception message:\n\t[\"a buggy message\"]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThere is no property [inexistingProperty] on exception type [LambdaExceptionForTest].")]
         public void DidNotHaveExpectedPropertyName()
         {
-            Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithProperty("inexistingProperty", 123);
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithProperty("inexistingProperty", 123);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThere is no property [inexistingProperty] on exception type [LambdaExceptionForTest]."); // TODO: mimic Contains
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe property [ExceptionNumber] of the checked exception's property does not have the expected value.\nThe checked exception's property:\n\t[321]\nThe given exception's property:\n\t[123]")]
         public void DidNotHaveExpectedPropertyValue()
         {
-            Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithProperty("ExceptionNumber", 123);
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithProperty("ExceptionNumber", 123);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe property [ExceptionNumber] of the checked exception's property does not have the expected value.\nThe checked exception's property:\n\t[321]\nThe given exception's property:\n\t[123]"); // TODO: mimic Contains
         }
 
         [Test]
@@ -221,21 +234,29 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\r\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.NotFiniteNumberException]")]
         public void Should_raise_when_expected_DueTo_exception_is_not_found_somewhere_within_the_inner_exception()
         {
-            Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new ArgumentOutOfRangeException("kamoulox")); })
-                .Throws<ArgumentException>()
-                .DueTo<NotFiniteNumberException>();
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new ArgumentOutOfRangeException("kamoulox")); })
+                        .Throws<ArgumentException>()
+                        .DueTo<NotFiniteNumberException>();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\r\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.NotFiniteNumberException]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.InvalidCastException } \"whatever mate\"\n--> { System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\r\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.NotFiniteNumberException]")]
         public void Should_raise_with_the_complete_stack_of_InnerExceptions_details_when_expected_DueTo_exception_is_not_found_somewhere_within_the_inner_exception()
         {
-            Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new InvalidCastException("whatever mate", new ArgumentOutOfRangeException("kamoulox"))); })
-                .Throws<ArgumentException>()
-                .DueTo<NotFiniteNumberException>();
+            Check.ThatCode(() =>
+            {
+                Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new InvalidCastException("whatever mate", new ArgumentOutOfRangeException("kamoulox"))); })
+                        .Throws<ArgumentException>()
+                        .DueTo<NotFiniteNumberException>();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.InvalidCastException } \"whatever mate\"\n--> { System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\r\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.NotFiniteNumberException]");
         }
 
 

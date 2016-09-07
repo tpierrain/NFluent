@@ -43,23 +43,29 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [char] whereas it must not.\nThe checked value:\n\t['a'] of type: [char]\nThe expected value: different from\n\tan instance of type: [char]")]
         public void NotIsInstanceOfThrows()
         {
             const char FirstLetterLowerCase = 'a';
-            Check.That(FirstLetterLowerCase).Not.IsInstanceOf<char>();
+            ;
+
+            Check.ThatCode(() => Check.That(FirstLetterLowerCase).Not.IsInstanceOf<char>())
+                    .Throws<FluentCheckException>()
+                    .WithMessage("\nThe checked value is an instance of [char] whereas it must not.\nThe checked value:\n\t['a'] of type: [char]\nThe expected value: different from\n\tan instance of type: [char]");
+
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [char] whereas it must not.\nThe checked value:\n\t['a'] of type: [char]\nThe expected value: different from\n\tan instance of type: [char]")]
         public void IsNotInstanceOfThrows()
         {
             const char FirstLetterLowerCase = 'a';
-            Check.That(FirstLetterLowerCase).IsNotInstanceOf<char>();
+
+            Check.ThatCode(() => Check.That(FirstLetterLowerCase).IsNotInstanceOf<char>())
+                    .Throws<FluentCheckException>()
+                    .WithMessage("\nThe checked value is an instance of [char] whereas it must not.\nThe checked value:\n\t['a'] of type: [char]\nThe expected value: different from\n\tan instance of type: [char]");
         }
 
         #endregion
-        
+
         #region IsEqualTo ...
 
         [Test]
@@ -70,27 +76,42 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is different from the expected one.\nThe checked char:\n\t['a']\nThe expected char:\n\t['b']")]
         public void IsEqualToThrowsWithAnotherChar()
         {
             const char FirstLetterLowerCase = 'a';
-            Check.That(FirstLetterLowerCase).IsEqualTo('b');
+
+            Check.ThatCode(() =>
+            {
+                Check.That(FirstLetterLowerCase).IsEqualTo('b');
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is different from the expected one.\nThe checked char:\n\t['a']\nThe expected char:\n\t['b']");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is different from the expected one.\nThe checked char:\n\t['a']\nThe expected char:\n\t['A']")]
         public void IsEqualToThrowsWithSameCharWithDifferentCase()
         {
             const char FirstLetterLowerCase = 'a';
-            Check.That(FirstLetterLowerCase).IsEqualTo('A');
+
+            Check.ThatCode(() =>
+            {
+                Check.That(FirstLetterLowerCase).IsEqualTo('A');
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is different from the expected one.\nThe checked char:\n\t['a']\nThe expected char:\n\t['A']");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is different from the expected string.\nThe checked char:\n\t['a'] of type: [char]\nThe expected string:\n\t[\"a\"] of type: [string]")]
         public void ACharIsNotEqualToTheSameCharAsString()
         {
             const char FirstLetterLowerCase = 'a';
-            Check.That(FirstLetterLowerCase).IsEqualTo("a");
+
+            Check.ThatCode(() =>
+            {
+                Check.That(FirstLetterLowerCase).IsEqualTo("a");
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is different from the expected string.\nThe checked char:\n\t['a'] of type: [char]\nThe expected string:\n\t[\"a\"] of type: [string]");
         }
 
         [Test]
@@ -119,11 +140,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is the same letter as the given one but with different case, whereas it must not.\nThe checked char:\n\t['A']\nThe given char:\n\t['a']")]
         public void NotIsSameLetterWithDifferentCaseThrows()
         {
             const char FirstLetterLowerCase = 'A';
-            Check.That(FirstLetterLowerCase).Not.IsSameLetterButWithDifferentCaseAs('a');
+
+            Check.ThatCode(() =>
+            {
+                Check.That(FirstLetterLowerCase).Not.IsSameLetterButWithDifferentCaseAs('a');
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is the same letter as the given one but with different case, whereas it must not.\nThe checked char:\n\t['A']\nThe given char:\n\t['a']");
         }
 
         [Test]
@@ -144,35 +170,55 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is not the same letter but with different case as the given one.\nThe checked char:\n\t['a']\nThe given char:\n\t['a']")]
         public void IsSameLetterWithDifferentCaseThrowsWithSameCharWithSameCase()
         {
             const char LowerCasedChar = 'a';
-            Check.That(LowerCasedChar).IsSameLetterButWithDifferentCaseAs('a');
+
+            Check.ThatCode(() =>
+            {
+                Check.That(LowerCasedChar).IsSameLetterButWithDifferentCaseAs('a');
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is not the same letter but with different case as the given one.\nThe checked char:\n\t['a']\nThe given char:\n\t['a']");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is not the same letter but with different case as the given one.\nThe checked char:\n\t['a']\nThe given char:\n\t['b']")]
         public void IsSameLetterWithDifferentCaseThrowsWithAnotherChar()
         {
             const char LowerCasedChar = 'a';
-            Check.That(LowerCasedChar).IsSameLetterButWithDifferentCaseAs('b');
+
+            Check.ThatCode(() =>
+            {
+                Check.That(LowerCasedChar).IsSameLetterButWithDifferentCaseAs('b');
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is not the same letter but with different case as the given one.\nThe checked char:\n\t['a']\nThe given char:\n\t['b']");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is not the same letter but with different case as the given one.\nThe checked char:\n\t['a']\nThe given char:\n\t['B']")]
         public void IsSameLetterWithDifferentCaseThrowsWithAnotherCharCasedDifferently()
         {
             const char LowerCasedChar = 'a';
-            Check.That(LowerCasedChar).IsSameLetterButWithDifferentCaseAs('B');
+
+            Check.ThatCode(() =>
+            {
+                Check.That(LowerCasedChar).IsSameLetterButWithDifferentCaseAs('B');
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is not the same letter but with different case as the given one.\nThe checked char:\n\t['a']\nThe given char:\n\t['B']");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is not the same letter but with different case as the given one.\nThe checked char:\n\t['.']\nThe given char:\n\t['.']")]
         public void IsSameLetterWithDifferentCaseThrowsWithNonLetter()
         {
             const char NonLetterChar = '.';
-            Check.That(NonLetterChar).IsSameLetterButWithDifferentCaseAs('.');
+
+            Check.ThatCode(() =>
+            {
+                Check.That(NonLetterChar).IsSameLetterButWithDifferentCaseAs('.');
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is not the same letter but with different case as the given one.\nThe checked char:\n\t['.']\nThe given char:\n\t['.']");
         }
 
         #endregion
@@ -200,27 +246,42 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is not the same letter as the given one (whatever the case).\nThe checked char:\n\t['a']\nThe given char:\n\t['z']")]
         public void IsSameLetterThrowsWithDifferentLetters()
         {
             const char LowerCasedA = 'a';
-            Check.That(LowerCasedA).IsSameLetterAs('z');
+
+            Check.ThatCode(() =>
+            {
+                Check.That(LowerCasedA).IsSameLetterAs('z');
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is not the same letter as the given one (whatever the case).\nThe checked char:\n\t['a']\nThe given char:\n\t['z']");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is not the same letter as the given one (whatever the case).\nThe checked char is not even a letter!\nThe checked char:\n\t['/']\nThe given char:\n\t['/']")]
         public void IsSameLetterThrowsWithNonLetterChar()
         {
             const char NonLetterChar = '/';
-            Check.That(NonLetterChar).IsSameLetterAs('/');
+
+            Check.ThatCode(() =>
+            {
+                Check.That(NonLetterChar).IsSameLetterAs('/');
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is not the same letter as the given one (whatever the case).\nThe checked char is not even a letter!\nThe checked char:\n\t['/']\nThe given char:\n\t['/']");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is the same letter as the given one (whatever the case), whereas it must not.\nThe checked char:\n\t['a']\nThe given char:\n\t['A']")]
         public void NotIsSameLetterThrows()
         {
             const char LowerCasedA = 'a';
-            Check.That(LowerCasedA).Not.IsSameLetterAs('A');
+
+            Check.ThatCode(() =>
+            {
+                Check.That(LowerCasedA).Not.IsSameLetterAs('A');
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is the same letter as the given one (whatever the case), whereas it must not.\nThe checked char:\n\t['a']\nThe given char:\n\t['A']");
         }
 
         #endregion
@@ -235,11 +296,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is not a letter.\nThe checked char:\n\t['/']")]
         public void IsALetterThrowsWithNonLetterChar()
         {
             const char NonLetterChar = '/';
-            Check.That(NonLetterChar).IsALetter();
+
+            Check.ThatCode(() =>
+            {
+                Check.That(NonLetterChar).IsALetter();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is not a letter.\nThe checked char:\n\t['/']");
         }
 
         [Test]
@@ -256,11 +322,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is a letter whereas it must not.\nThe checked char:\n\t['a']")]
         public void NotIsALetterThrows()
         {
             const char LowerCasedLetter = 'a';
-            Check.That(LowerCasedLetter).Not.IsALetter();
+
+            Check.ThatCode(() =>
+            {
+                Check.That(LowerCasedLetter).Not.IsALetter();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is a letter whereas it must not.\nThe checked char:\n\t['a']");
         }
 
         #endregion
@@ -288,19 +359,29 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is not a decimal digit.\nThe checked char:\n\t['Z']")]
         public void IsADigitThrows()
         {
             const char Letter = 'Z';
-            Check.That(Letter).IsADigit();
+
+            Check.ThatCode(() =>
+            {
+                Check.That(Letter).IsADigit();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is not a decimal digit.\nThe checked char:\n\t['Z']");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is a decimal digit whereas it must not.\nThe checked char:\n\t['2']")]
         public void NotIsADigitThrows()
         {
             const char DigitChar = '2';
-            Check.That(DigitChar).Not.IsADigit();
+
+            Check.ThatCode(() =>
+            {
+                Check.That(DigitChar).Not.IsADigit();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is a decimal digit whereas it must not.\nThe checked char:\n\t['2']");
         }
 
         #endregion
@@ -328,19 +409,29 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is not a punctuation mark.\nThe checked char:\n\t['2']")]
         public void IsPunctuationThrows()
         {
             const char DigitChar = '2';
-            Check.That(DigitChar).IsAPunctuationMark();
+
+            Check.ThatCode(() =>
+            {
+                Check.That(DigitChar).IsAPunctuationMark();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is not a punctuation mark.\nThe checked char:\n\t['2']");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked char is a punctuation mark whereas it must not.\nThe checked char:\n\t['-']")]
         public void NotIsPunctuationThrows()
         {
             char punctuation = '-';
-            Check.That(punctuation).Not.IsAPunctuationMark();
+
+            Check.ThatCode(() =>
+            {
+                Check.That(punctuation).Not.IsAPunctuationMark();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked char is a punctuation mark whereas it must not.\nThe checked char:\n\t['-']");
         }
 
         #endregion

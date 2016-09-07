@@ -13,6 +13,8 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
+
 namespace NFluent.Tests
 {
     using System;
@@ -25,6 +27,142 @@ namespace NFluent.Tests
     [TestFixture]
     public class UserReportedIssuesTests
     {
+
+        // issue #119: need to propose various behavior for HasFieldsWithSameValues
+        public class TestMe
+        {
+            public int Id { get; set; }
+            public List<int> OtherIds;
+        }
+
+          
+            [Test]
+            public void TestPrivateField()
+            {
+                TestMe test1 = CreateTestItem();
+                TestMe test2 = CreateTestItem();
+
+                var stream = new MemoryStream();
+                Serialize(stream, test1);
+                stream.Position = 0;
+
+                Deserialize(stream, test1);
+
+                // Id is not checked at all and the List<int>._version field is tested when it should not be
+                //this check fails
+//                Check.That(test1).HasFieldsWithSameValues(test2);
+            }
+
+            private static void Deserialize(MemoryStream stream, TestMe testItem)
+            {
+                var binaryReader = new BinaryReader(stream);
+                testItem.Id = binaryReader.ReadInt32();
+                var length = binaryReader.ReadInt32();
+                testItem.OtherIds.Clear();
+                for (int i = 0; i < length; i++)
+                {
+                    testItem.OtherIds.Add(binaryReader.ReadInt32());
+                }
+            }
+
+            private static void Serialize(MemoryStream stream, TestMe testItem)
+            {
+                var binaryWriter = new BinaryWriter(stream);
+                binaryWriter.Write(testItem.Id);
+                binaryWriter.Write(testItem.OtherIds.Count);
+                foreach (var otherId in testItem.OtherIds)
+                {
+                    binaryWriter.Write(otherId);
+                }
+            }
+
+            private static TestMe CreateTestItem()
+            {
+                var testItem = new TestMe();
+                testItem.Id = 42;
+                testItem.OtherIds = new List<int> {1, 2, 3, 4};
+                return testItem;
+            }
+
+
+        // issue #154: NFluent does not use the overloaded operators
+        [Test]
+        public void FailsToUseOperator()
+        {
+
+            var mySelf = new Person() { Name = "SilNak" };
+            var myClone = new PersonEx() { Name = "SilNak" };
+            var mySon = new Son() { Name = "SilNak" };
+
+            Check.That(myClone).HasSameValueAs(mySelf); 
+            if (mySelf == myClone)
+                Check.That(mySelf).HasSameValueAs(myClone);
+            if (mySon == myClone)
+                Check.That(myClone).HasSameValueAs(mySon);
+            if (myClone == mySelf)
+                Check.That(myClone).HasSameValueAs(mySelf);
+
+            Check.That(myClone).HasSameValueAs(myClone);
+            Check.That(mySelf).HasDifferentValueThan(4);
+        }
+        internal class Person
+        {
+            public String Name { get; set; }
+            public String Surname { get; set; }
+
+        }
+        internal class PersonEx
+        {
+            public String Name { get; set; }
+            public String Surname { get; set; }
+
+            public static bool operator ==(PersonEx person1, Person person2)
+            {
+                return person1.Name == person2.Name;
+            }
+            public static bool operator !=(PersonEx person1, Person person2)
+            {
+                return person1.Name != person2.Name;
+            }
+            public static bool operator ==(Person person1, PersonEx person2)
+            {
+                return person1.Name == person2.Name;
+            }
+            public static bool operator !=(Person person1, PersonEx person2)
+            {
+                return person1.Name != person2.Name;
+            }
+        }
+
+        internal class Son : Person
+        {
+            
+        }
+        // issue #124: Improve ContainsExactly error messages
+        [Test]
+         public void ContainsExactly()
+        {
+            var stringArray = new string[]
+            {
+                "+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros",
+                "Backstagex passes to a TAFKAL80ETC concert", "Conjured Mana Cake"
+            };
+            Check.ThatCode(() =>
+            {
+                Check.That(stringArray).ContainsExactly(new string[]
+                {
+                    "+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros",
+                    "Backstagex passes to a TAFKAL80ETC concer", "Conjured Mana Cake"
+                });
+            }).ThrowsAny().WithMessage("\nThe checked enumerable does not contain exactly the expected value(s). First difference is at index #4.\nThe checked enumerable:\n\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concert\", \"Conjured Mana Cake\"] (6 items)\nThe expected value(s):\n\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concer\", \"Conjured Mana Cake\"] (6 items)");
+        }
+
+        [Test]
+        public void ImproveCrossTypeCheckingForNumerals()
+        {
+            ushort usValue = 2; int iValue = 1;
+            Check.That(usValue).IsEqualTo(iValue + 1);
+        }
 
         // Issue #148: object cycle should work with hasfieldswithsamevalue
         [Test]
@@ -49,31 +187,38 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException]
         public void Test1()
         {
-            Impl impl = new Impl { BaseProperty = "Any", ImplProperty = "Any1" };
-
-            Check.That(impl).HasFieldsWithSameValues(new { BaseProperty = "Any", ImplProperty = "Any2" });
+            Check.ThatCode(() =>
+            {
+                Impl impl = new Impl { BaseProperty = "Any", ImplProperty = "Any1" };
+                Check.That(impl).HasFieldsWithSameValues(new { BaseProperty = "Any", ImplProperty = "Any2" });
+            })
+            .ThrowsAny();
         }
 
         [Test]
-        [ExpectedException]
         public void Test2()
         {
-            Impl impl = new Impl { BaseProperty = "Any1", ImplProperty = "Any" };
-
-            Check.That(impl).HasFieldsWithSameValues(new { BaseProperty = "Any2", ImplProperty = "Any" });
+            Check.ThatCode(() =>
+            {
+                Impl impl = new Impl { BaseProperty = "Any1", ImplProperty = "Any" };
+                Check.That(impl).HasFieldsWithSameValues(new { BaseProperty = "Any2", ImplProperty = "Any" });
+            })
+            .ThrowsAny();
         }
 
         [Test]
-        [ExpectedException]
         public void Test3()
         {
-            Impl impl = new Impl { BaseProperty = "Any1", ImplProperty = "Any" };
-            Impl impl2 = new Impl { BaseProperty = "Any2", ImplProperty = "Any" };
+            Check.ThatCode(() =>
+            {
+                Impl impl = new Impl { BaseProperty = "Any1", ImplProperty = "Any" };
+                Impl impl2 = new Impl { BaseProperty = "Any2", ImplProperty = "Any" };
 
-            Check.That(impl).HasFieldsWithSameValues(impl2);
+                Check.That(impl).HasFieldsWithSameValues(impl2);
+            })
+            .ThrowsAny();
         }
 
         // Issue #138: superfluous casting required for mathematical expression
@@ -110,13 +255,17 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException))]
         public void NullRefonHasFieldsWithSameValueWithInterfaces()
         {
-            var modelA = new ModelA { Name = "Yoda" };
-            var modelB = new ModelB { Name = new ModelBName { Title = "Frank" } };
+            
+            Check.ThatCode(() =>
+            {
+                var modelA = new ModelA { Name = "Yoda" };
+                var modelB = new ModelB { Name = new ModelBName { Title = "Frank" } };
 
-            Check.That(modelA).HasFieldsWithSameValues(modelB);
+                Check.That(modelA).HasFieldsWithSameValues(modelB);
+            })
+            .Throws<FluentCheckException>();
         }
 
         // Issue #111
@@ -129,24 +278,31 @@ namespace NFluent.Tests
 
         // 30/05/14 Invalid exception on strings with curly braces
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[\"MaChaine{964}\"]\nThe checked enumerable:\n\t[\"MaChaine{94}\"]\nThe expected value(s):\n\t[\"MaChaine{964}\"]")]
         public void SpuriousExceptionOnError()
         {
-            var toTest = new System.Collections.ArrayList { "MaChaine{94}" };
-            const string Result = "MaChaine{964}";
-            Check.That(toTest).Contains(Result);
+            Check.ThatCode(() =>
+            {
+                var toTest = new System.Collections.ArrayList { "MaChaine{94}" };
+                const string Result = "MaChaine{964}";
+                Check.That(toTest).Contains(Result);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable does not contain the expected value(s):\n\t[\"MaChaine{964}\"]\nThe checked enumerable:\n\t[\"MaChaine{94}\"]\nThe expected value(s):\n\t[\"MaChaine{964}\"]");
         }
 
         // #issue 115,
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value's field 'Price' does not have the expected value.\nThe checked value:\n\t[100] of type: [decimal]\nThe expected value:\n\t[100] of type: [int]")]
         public void FailingTestForDemo()
         {
-            var args = new OrderExecutedEventArgs(100M, 150, Way.Sell);
+            Check.ThatCode(() =>
+            {
+                var args = new OrderExecutedEventArgs(100M, 150, Way.Sell);
 
-            Check.That(args).HasFieldsWithSameValues(new { Price = 100, Quantity = 150, Way = Way.Sell });
+                Check.That(args).HasFieldsWithSameValues(new { Price = 100, Quantity = 150, Way = Way.Sell });
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value's field 'Price' does not have the expected value.\nThe checked value:\n\t[100] of type: [decimal]\nThe expected value:\n\t[100] of type: [int]");
         }
-
 
         // issue #127, request for byte array support
         // actual issues unclear as it just works.
@@ -164,8 +320,8 @@ namespace NFluent.Tests
         [Test]
         public void LongStringErrorMessageIsProperlyTruncated()
         {
-            var checkString = File.ReadAllBytes("CheckedFile.xml");
-            var expectedString = File.ReadAllBytes("ExpectedFile.xml");
+            var checkString = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "\\CheckedFile.xml");
+            var expectedString = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "\\ExpectedFile.xml");
 // TODO: implement support for LONG enumeration
 //            Check.That(checkString).IsEqualTo(expectedString);
         }

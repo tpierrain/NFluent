@@ -132,7 +132,7 @@ namespace NFluent
         /// </exception>
         public new bool Equals(object obj)
         {
-            this.checker.ExecuteCheck(() => EqualityHelper.IsEqualTo(this.checker, obj), EqualityHelper.BuildErrorMessage(this.checker, obj, true));
+            this.checker.ExecuteCheck(() => EqualityHelper.IsEqualTo(this.checker, obj, false), EqualityHelper.BuildErrorMessage(this.checker, obj, true, false));
  
             return true;
         }

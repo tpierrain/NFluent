@@ -57,12 +57,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to zero, whereas it must not.\nThe checked value:\n\t[0]")]
         public void IsNotZeroThrowsExceptionWhenFails()
         {
             const int Zero = 0;
 
-            Check.That(Zero).IsNotZero();
+            Check.ThatCode(() =>
+            {
+                Check.That(Zero).IsNotZero();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is equal to zero, whereas it must not.\nThe checked value:\n\t[0]");
         }
 
         #endregion
@@ -78,12 +82,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to zero whereas it must not.")]
         public void NotIsZeroThrowsExceptionWhenFailing()
         {
             const int Zero = 0;
 
-            Check.That(Zero).Not.IsZero();
+            Check.ThatCode(() =>
+            {
+                Check.That(Zero).Not.IsZero();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is equal to zero whereas it must not.");
         }
 
         #endregion
@@ -99,11 +107,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from zero.\nThe checked value:\n\t[2]")]
         public void NotIsNotZeroThrowsExceptionWhenFailing()
         {
             const int Two = 2;
-            Check.That(Two).Not.IsNotZero();
+
+            Check.ThatCode(() =>
+            {
+                Check.That(Two).Not.IsNotZero();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is different from zero.\nThe checked value:\n\t[2]");
         }
 
         #endregion
@@ -129,32 +142,44 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not before the reference value.\nThe checked value:\n\t[20]\nThe expected value: before\n\t[2]")]
         public void IsBeforeThrowsExceptionWhenFailing()
         {
             const int Two = 2;
             const int Twenty = 20;
 
-            Check.That(Twenty).IsBefore(Two);
+            Check.ThatCode(() =>
+            {
+                Check.That(Twenty).IsBefore(Two);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is not before the reference value.\nThe checked value:\n\t[20]\nThe expected value: before\n\t[2]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not before the reference value.\nThe checked value:\n\t[2]\nThe expected value: before\n\t[2]")]
         public void IsBeforeThrowsExceptionWhenGivingTheSameValue()
         {
             const int Two = 2;
 
-            Check.That(Two).IsBefore(Two);
+            Check.ThatCode(() =>
+            {
+                Check.That(Two).IsBefore(Two);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is not before the reference value.\nThe checked value:\n\t[2]\nThe expected value: before\n\t[2]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is before the reference value whereas it must not.\nThe checked value:\n\t[2]\nThe expected value: after\n\t[20]")]
         public void NotIsBeforeThrowsExceptionWhenFailing()
         {
             const int Two = 2;
             const int Twenty = 20;
 
-            Check.That(Two).Not.IsBefore(Twenty);
+            Check.ThatCode(() =>
+            {
+                Check.That(Two).Not.IsBefore(Twenty);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is before the reference value whereas it must not.\nThe checked value:\n\t[2]\nThe expected value: after\n\t[20]");
         }
 
         [Test]
@@ -176,22 +201,30 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not after the reference value.\nThe checked value:\n\t[2]\nThe expected value: after\n\t[2]")]
         public void IsAfterThrowsExceptionWhenFailing()
         {
             const int Two = 2;
 
-            Check.That(Two).IsAfter(Two);
+            Check.ThatCode(() =>
+            {
+                Check.That(Two).IsAfter(Two);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is not after the reference value.\nThe checked value:\n\t[2]\nThe expected value: after\n\t[2]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is after the reference value whereas it must not.\nThe checked value:\n\t[20]\nThe expected value: before\n\t[2]")]
         public void NotIsAfterThrowsExceptionWhenFailing()
         {
             const int Two = 2;
             const int Twenty = 20;
 
-            Check.That(Twenty).Not.IsAfter(Two);
+            Check.ThatCode(() =>
+            {
+                Check.That(Twenty).Not.IsAfter(Two);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is after the reference value whereas it must not.\nThe checked value:\n\t[20]\nThe expected value: before\n\t[2]");
         }
 
         #endregion
@@ -217,13 +250,17 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
         public void NotIsLessThanThrowsExceptionWhenFailing()
         {
             const int One = 1;
             const int Twenty = 20;
 
-            Check.That(One).Not.IsLessThan(Twenty);
+            Check.ThatCode(() =>
+            {
+                Check.That(One).Not.IsLessThan(Twenty);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]");
         }
 
         #endregion
@@ -249,22 +286,30 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly less than the comparand.\nThe checked value:\n\t[1]\nThe expected value: strictly less than\n\t[1]")]
         public void IsStrictlyLessThanThrowsExceptionWhenFailing()
         {
             const int One = 1;
 
-            Check.That(One).IsStrictlyLessThan(One);
+            Check.ThatCode(() =>
+            {
+                Check.That(One).IsStrictlyLessThan(One);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is not strictly less than the comparand.\nThe checked value:\n\t[1]\nThe expected value: strictly less than\n\t[1]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is strictly less than the comparand.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
         public void NotIsStrictlyLessThanThrowsExceptionWhenFailing()
         {
             const int One = 1;
             const int Twenty = 20;
 
-            Check.That(One).Not.IsStrictlyLessThan(Twenty);
+            Check.ThatCode(() =>
+            {
+                Check.That(One).Not.IsStrictlyLessThan(Twenty);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is strictly less than the comparand.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]");
         }
 
         #endregion
@@ -283,23 +328,31 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]")]
         public void IsGreaterThanThrowsExceptionWhenFailing()
         {
             const int One = 1;
             const int Twenty = 20;
 
-            Check.That(One).IsGreaterThan(Twenty);
+            Check.ThatCode(() =>
+            {
+                Check.That(One).IsGreaterThan(Twenty);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is less than the threshold.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[20]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is greater than the threshold.\nThe checked value:\n\t[20]\nThe expected value: less than\n\t[1]")]
         public void NotIsGreaterThanThrowsExceptionWhenFailing()
         {
             const int One = 1;
             const int Twenty = 20;
 
-            Check.That(Twenty).Not.IsGreaterThan(One);
+            Check.ThatCode(() =>
+            {
+                Check.That(Twenty).Not.IsGreaterThan(One);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is greater than the threshold.\nThe checked value:\n\t[20]\nThe expected value: less than\n\t[1]");
         }
 
         #endregion
@@ -316,22 +369,30 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not strictly greater than the comparand.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[1]")]
         public void IsStrictlyGreaterThanThrowsExceptionWhenFailing()
         {
             const int One = 1;
 
-            Check.That(One).IsStrictlyGreaterThan(One);
+            Check.ThatCode(() =>
+            {
+                Check.That(One).IsStrictlyGreaterThan(One);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is not strictly greater than the comparand.\nThe checked value:\n\t[1]\nThe expected value: more than\n\t[1]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is strictly greater than the comparand.\nThe checked value:\n\t[20]\nThe expected value: less than or equal to\n\t[1]")]
         public void NotIsStrictlyGreaterThanThrowsExceptionWhenFailing()
         {
             const int One = 1;
             const int Twenty = 20;
 
-            Check.That(Twenty).Not.IsStrictlyGreaterThan(One);
+            Check.ThatCode(() =>
+            {
+                Check.That(Twenty).Not.IsStrictlyGreaterThan(One);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is strictly greater than the comparand.\nThe checked value:\n\t[20]\nThe expected value: less than or equal to\n\t[1]");
         }
 
         #endregion
@@ -358,6 +419,18 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsEqualFailsWhenRelevant()
+        {
+            const int Twenty = 20;
+
+            Check.ThatCode(() =>
+                {
+                    Check.That(Twenty).IsEqualTo(0);
+                })
+                .Throws<FluentCheckException>();
+        }
+
+        [Test]
         public void EqualsWorksToo()
         {
             const int Twenty = 20;
@@ -380,21 +453,29 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [int]")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             const int Twenty = 20;
 
-            Check.That(Twenty).Not.IsEqualTo(Twenty);
+            Check.ThatCode(() =>
+            {
+                Check.That(Twenty).Not.IsEqualTo(Twenty);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [int]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [int]")]
         public void NotEqualsThrowsExceptionWhenFailing()
         {
             const int Twenty = 20;
 
-            Check.That(Twenty).Not.Equals(Twenty);
+            Check.ThatCode(() =>
+            {
+                Check.That(Twenty).Not.Equals(Twenty);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [int]");
         }
 
         [Test]
@@ -407,22 +488,30 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [int]")]
         public void IsNotEqualToThrowsExceptionWhenFailing()
         {
             const int Twenty = 20;
 
-            Check.That(Twenty).IsNotEqualTo(Twenty);
+            Check.ThatCode(() =>
+            {
+                Check.That(Twenty).IsNotEqualTo(Twenty);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[20] of type: [int]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[1]\nThe expected value:\n\t[20]")]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
             const int One = 1;
             const int Twenty = 20;
 
-            Check.That(One).Not.IsNotEqualTo(Twenty);
+            Check.ThatCode(() =>
+            {
+                Check.That(One).Not.IsNotEqualTo(Twenty);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is different from the expected one.\nThe checked value:\n\t[1]\nThe expected value:\n\t[20]");
         }
 
         #endregion
@@ -440,12 +529,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable has no value, which is unexpected.")]
         public void HasValueThrowsExceptionWhenFailing()
         {
             int? noValue = null;
 
-            Check.That(noValue).HasAValue();
+            Check.ThatCode(() =>
+            {
+                Check.That(noValue).HasAValue();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked nullable has no value, which is unexpected.");
         }
 
         [Test]
@@ -457,12 +550,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable has a value, which is unexpected.\nThe checked nullable:\n\t[1]")]
         public void NotHasValueThrowsExceptionWhenFailing()
         {
             int? one = 1;
 
-            Check.That(one).Not.HasAValue();
+            Check.ThatCode(() =>
+            {
+                Check.That(one).Not.HasAValue();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked nullable has a value, which is unexpected.\nThe checked nullable:\n\t[1]");
         }
 
         [Test]
@@ -475,13 +572,17 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable has no value to be checked.")]
         public void TryingToChainANullableWithoutAValueIsPossibleButThrowsAnException()
         {
             int? noValue = null;
             const int Zero = 0;
 
-            Check.That(noValue).Not.HasAValue().Which.IsAfter(Zero);
+            Check.ThatCode(() =>
+            {
+                Check.That(noValue).Not.HasAValue().Which.IsAfter(Zero);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked nullable has no value to be checked.");
         }
 
         #endregion
@@ -497,12 +598,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value has a value, whereas it must not.\nThe checked value:\n\t[1]")]
         public void HasNoValueThrowsExceptionWhenFailing()
         {
             int? one = 1;
 
-            Check.That(one).HasNoValue();
+            Check.ThatCode(() =>
+            {
+                Check.That(one).HasNoValue();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value has a value, whereas it must not.\nThe checked value:\n\t[1]");
         }
 
         [Test]
@@ -514,12 +619,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable has no value, which is unexpected.")]
         public void NotHasNoValueThrowsExceptionWhenFailing()
         {
             int? noValue = null;
 
-            Check.That(noValue).Not.HasNoValue();
+            Check.ThatCode(() =>
+            {
+                Check.That(noValue).Not.HasNoValue();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked nullable has no value, which is unexpected.");
         }
 
         #endregion
@@ -544,12 +653,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [int?] whereas it must not.\nThe checked value:\n\t[1] of type: [int?]\nThe expected value: different from\n\tan instance of type: [int?]")]
         public void NotIsInstanceOfWorksWithNullable()
         {
             int? one = 1;
 
-            Check.That(one).Not.IsInstanceOf<int?>();
+            Check.ThatCode(() =>
+            {
+                Check.That(one).Not.IsInstanceOf<int?>();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is an instance of [int?] whereas it must not.\nThe checked value:\n\t[1] of type: [int?]\nThe expected value: different from\n\tan instance of type: [int?]");
         }
 
         [Test]
@@ -561,21 +674,29 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [int?] whereas it must not.\nThe checked value:\n\t[null] of type: [int?]\nThe expected value: different from\n\tan instance of type: [int?]")]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             int? noValue = null;
 
-            Check.That(noValue).Not.IsInstanceOf<int?>();
+            Check.ThatCode(() =>
+            {
+                Check.That(noValue).Not.IsInstanceOf<int?>();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is an instance of [int?] whereas it must not.\nThe checked value:\n\t[null] of type: [int?]\nThe expected value: different from\n\tan instance of type: [int?]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of [string].\nThe checked value:\n\t[null] of type: [int?]\nThe expected value:\n\tan instance of type: [string]")]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
             int? one = null;
 
-            Check.That(one).IsInstanceOf<string>();
+            Check.ThatCode(() =>
+            {
+                Check.That(one).IsInstanceOf<string>();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is not an instance of [string].\nThe checked value:\n\t[null] of type: [int?]\nThe expected value:\n\tan instance of type: [string]");
         }
 
         #endregion
@@ -591,21 +712,29 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [int?] whereas it must not.\nThe checked value:\n\t[1] of type: [int?]\nThe expected value: different from\n\tan instance of type: [int?]")]
         public void IsNotInstanceOfThrowsWithValueIsOfSameNullableType()
         {
             int? one = 1;
 
-            Check.That(one).IsNotInstanceOf<int?>();
+            Check.ThatCode(() =>
+            {
+                Check.That(one).IsNotInstanceOf<int?>();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is an instance of [int?] whereas it must not.\nThe checked value:\n\t[1] of type: [int?]\nThe expected value: different from\n\tan instance of type: [int?]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [int?] whereas it must not.\nThe checked value:\n\t[null] of type: [int?]\nThe expected value: different from\n\tan instance of type: [int?]")]
         public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
             int? noValue = null;
 
-            Check.That(noValue).IsNotInstanceOf<int?>();
+            Check.ThatCode(() =>
+            {
+                Check.That(noValue).IsNotInstanceOf<int?>();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is an instance of [int?] whereas it must not.\nThe checked value:\n\t[null] of type: [int?]\nThe expected value: different from\n\tan instance of type: [int?]");
         }
 
         #endregion

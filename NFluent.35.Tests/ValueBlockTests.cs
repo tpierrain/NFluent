@@ -17,7 +17,7 @@ namespace NFluent.Tests
 {
     using System;
 
-    using NFluent.Extensibility;
+    using Extensibility;
 
     using NUnit.Framework;
 
@@ -77,7 +77,20 @@ namespace NFluent.Tests
             blk.WithEnumerableCount(list.GetLength(0));
             Assert.AreEqual("[null]", blk.GetMessage());
         }
-    
+
+        [Test]
+        public void ShoulSupportWithType()
+        {
+            var list = string.Empty.ToCharArray();
+            var blk = new EnumerationBlock(list, 0);
+
+            blk.WithEnumerableCount(list.GetLength(0));
+            blk.WithType();
+            Assert.AreEqual("[] (0 item) of type: [char[]]", blk.GetMessage());
+            blk.WithType(typeof(string));
+            Assert.AreEqual("[] (0 item) of type: [string]", blk.GetMessage());
+        }
+
         [Test]
         public void ShouldFocusOnSomePart()
         {
@@ -89,30 +102,39 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(NotSupportedException))]
         public void InstanceBlockShouldThrowOnEnumeration()
         {
-            var blk = new InstanceBlock(typeof(string));
+            Check.ThatCode(() =>
+            {
+                var blk = new InstanceBlock(typeof(string));
 
-            blk.WithEnumerableCount(0);
+                blk.WithEnumerableCount(0);
+            })
+            .Throws<NotSupportedException>();
         }
 
         [Test]
-        [ExpectedException(typeof(NotSupportedException))]
         public void InstanceBlockShouldThrowOnhashcode()
         {
-            var blk = new InstanceBlock(typeof(string));
+            Check.ThatCode(() =>
+            {
+                var blk = new InstanceBlock(typeof(string));
 
-            blk.WithHashCode();
+                blk.WithHashCode();
+            })
+            .Throws<NotSupportedException>();
         }
 
         [Test]
-        [ExpectedException(typeof(NotSupportedException))]
         public void InstanceBlockShouldThrowOnForceType()
         {
-            var blk = new InstanceBlock(typeof(string));
+            Check.ThatCode(() =>
+            {
+                var blk = new InstanceBlock(typeof(string));
 
-            blk.WithType(typeof(string));
+                blk.WithType(typeof(string));
+            })
+            .Throws<NotSupportedException>();
         }
     }
 }

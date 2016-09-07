@@ -14,7 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
-    using NFluent.Tests.ForDocumentation;
+    using ForDocumentation;
 
     using NUnit.Framework;
 
@@ -43,10 +43,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string contains unauthorized value(s): \"Batman\"\nThe checked string:\n\t[\"Batman and Robin\"]\nThe unauthorized substring(s):\n\t[\"Batman\"]")]
         public void NotThrowsException()
         {
-            Check.That("Batman and Robin").Not.Contains("Batman");
+            Check.ThatCode(() =>
+            {
+                Check.That("Batman and Robin").Not.Contains("Batman");
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked string contains unauthorized value(s): \"Batman\"\nThe checked string:\n\t[\"Batman and Robin\"]\nThe unauthorized substring(s):\n\t[\"Batman\"]");
         }
 
         [Test]
@@ -56,10 +60,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked string contains unauthorized value(s): \"Robin\"\nThe checked string:\n\t[\"Batman and Robin\"]\nThe unauthorized substring(s):\n\t[\"Robin\"]")]
         public void ThrowsProperExceptionWhenCombineNotAndAndOperatorsInTheSameCheckStatement()
         {
-            Check.That("Batman and Robin").Not.Contains("Joker").And.StartsWith("Bat").And.Not.Contains("Robin");
+            Check.ThatCode(() =>
+            {
+                Check.That("Batman and Robin").Not.Contains("Joker").And.StartsWith("Bat").And.Not.Contains("Robin");
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked string contains unauthorized value(s): \"Robin\"\nThe checked string:\n\t[\"Batman and Robin\"]\nThe unauthorized substring(s):\n\t[\"Robin\"]");
         }
 
         [Test]

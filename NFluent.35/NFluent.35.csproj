@@ -14,7 +14,8 @@
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,6 +58,7 @@
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="ApiChecks\ExceptionChecks.cs" />
     <Compile Include="Assertions\BooleanCheckExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -73,6 +75,7 @@
     <Compile Include="Extensibility\IValueDescription.cs" />
     <Compile Include="Extensibility\MessageBlock.cs" />
     <Compile Include="Extensibility\ReverseEngineeringExceptionMessagesHelper.cs" />
+    <Compile Include="Extensibility\RangeBlock.cs" />
     <Compile Include="Extensibility\ValueBlock.cs" />
     <Compile Include="Extensions\MessageRelatedExtensions.cs" />
     <Compile Include="FluentCodeCheck.cs" />
@@ -140,7 +143,6 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="ICheckLink.cs" />
     <Compile Include="IForkableCheck.cs" />
-    <Compile Include="Assertions\LambdaCheck.cs" />
     <Compile Include="Assertions\NumberCheck.cs" />
     <Compile Include="FluentCheckException.cs" />
     <Compile Include="Assertions\ComparableCheckExtensions.cs" />
@@ -213,7 +215,7 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="..\packages\MSBuildTasks.1.5.0.196\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.196\build\MSBuildTasks.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -26,7 +26,7 @@ namespace NFluent.Tests.ForDocumentation
     using NUnit.Framework;
     
     /// <summary>
-    /// Hosts several methods helping to execute unit test in a controlled fashion.
+    /// Hosts several methods helping to execute unit tests in a controlled fashion.
     /// </summary>
     public static class RunnerHelper
     {
@@ -92,83 +92,83 @@ namespace NFluent.Tests.ForDocumentation
             }
             catch (Exception e)
             {
-                if (specificTest.GetCustomAttributes(typeof(ExpectedExceptionAttribute), false).Length == 0)
-                {
-                    if (CheckContext.DefaulNegated == false)
-                    {
-                        return;
-                    }
+                throw new NotImplementedException("we have to find a new way since NUnit's ExceptedException has disapeared.");
 
-                    throw;
-                }
+                //if (specificTest.GetCustomAttributes(typeof(ExpectedExceptionAttribute), false).Length == 0)
+                //{
+                //    if (CheckContext.DefaulNegated == false)
+                //    {
+                //        return;
+                //    }
 
-                Type expectedType =
-                    ((ExpectedExceptionAttribute)
-                     specificTest.GetCustomAttributes(typeof(ExpectedExceptionAttribute), false)[0]).ExpectedException;
-                if (e.InnerException != null)
-                {
-                    if (e.InnerException is FluentCheckException)
-                    {
-                        var fluExc = e.InnerException as FluentCheckException;
-                        var desc = GetCheckAndType(fluExc);
-                        if (desc != null)
-                        {
-                            var method = desc.Check;
-                            var testedtype = desc.CheckedType;
-                            desc.ErrorSampleMessage = fluExc.Message;
+                //    throw;
+                //}
 
-                            // are we building a report
-                            if (log)
-                            {
-                                Log(
-                                    string.Format(
-                                        "Check.That({1} sut).{0} failure message\n****\n{2}\n****",
-                                        method.Name,
-                                        testedtype.Name,
-                                        fluExc.Message));
-                            }
+                //Type expectedType = ((ExpectedExceptionAttribute) specificTest.GetCustomAttributes(typeof(ExpectedExceptionAttribute), false)[0]).ExpectedException;
+                //if (e.InnerException != null)
+                //{
+                //    if (e.InnerException is FluentCheckException)
+                //    {
+                //        var fluExc = e.InnerException as FluentCheckException;
+                //        var desc = GetCheckAndType(fluExc);
+                //        if (desc != null)
+                //        {
+                //            var method = desc.Check;
+                //            var testedtype = desc.CheckedType;
+                //            desc.ErrorSampleMessage = fluExc.Message;
 
-                            if (report != null)
-                            {
-                                report.AddEntry(desc);
-                            }
+                //            // are we building a report
+                //            if (log)
+                //            {
+                //                Log(
+                //                    string.Format(
+                //                        "Check.That({1} sut).{0} failure message\n****\n{2}\n****",
+                //                        method.Name,
+                //                        testedtype.Name,
+                //                        fluExc.Message));
+                //            }
 
-                            if (CheckContext.DefaulNegated == false)
-                            {
-                                Log(string.Format("(Forced) Negated test '{0}' should have succeeded, but it failed (method {1}).", specificTest.Name, desc.Signature));
-                            }
-                        }
-                        else
-                        {
-                            Log(string.Format("Failed to parse the method signature {0}", specificTest.Name));
-                        }
+                //            if (report != null)
+                //            {
+                //                report.AddEntry(desc);
+                //            }
 
-                        return;
-                    }
+                //            if (CheckContext.DefaulNegated == false)
+                //            {
+                //                Log(string.Format("(Forced) Negated test '{0}' should have succeeded, but it failed (method {1}).", specificTest.Name, desc.Signature));
+                //            }
+                //        }
+                //        else
+                //        {
+                //            Log(string.Format("Failed to parse the method signature {0}", specificTest.Name));
+                //        }
 
-                    if (report != null)
-                    {
-                        Log(
-                            string.Format(
-                                "{0} did not generate a fluent check:\n{1}",
-                                specificTest.Name,
-                                e.InnerException.Message));
-                    }
+                //        return;
+                //    }
 
-                    if (e.InnerException.GetType() != expectedType && expectedType != null)
-                    {
-                        throw;
-                    }
-                }
-                else
-                {
-                    if (report != null)
-                    {
-                        Log(string.Format("{0} failed to run:\n{1}", specificTest.Name, e));
-                    }
+                //    if (report != null)
+                //    {
+                //        Log(
+                //            string.Format(
+                //                "{0} did not generate a fluent check:\n{1}",
+                //                specificTest.Name,
+                //                e.InnerException.Message));
+                //    }
 
-                    throw;
-                }
+                //    if (e.InnerException.GetType() != expectedType && expectedType != null)
+                //    {
+                //        throw;
+                //    }
+                //}
+                //    else
+                //    {
+                //        if (report != null)
+                //        {
+                //            Log(string.Format("{0} failed to run:\n{1}", specificTest.Name, e));
+                //        }
+
+                //        throw;
+                //    }
             }
         }
 

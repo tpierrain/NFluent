@@ -13,6 +13,8 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace NFluent.Tests
 {
     using NFluent.Tests.Extensions;
@@ -37,10 +39,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked object must be the same instance than expected one.\nThe checked object:\n\t[System.Object]\nThe expected object: same instance than\n\t[System.Object]")]
         public void IsSameReferenceFailsProperly()
         {
-            Check.That(new object()).IsSameReferenceThan(new object());
+            Check.ThatCode(() =>
+            {
+                Check.That(new object()).IsSameReferenceThan(new object());
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked object must be the same instance than expected one.\nThe checked object:\n\t[System.Object]\nThe expected object: same instance than\n\t[System.Object]");
         }
 
         [Test]
@@ -84,10 +90,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value is null whereas it must not.")]
         public void IsNotNullThrowsExceptionWithNullNullable()
         {
-            Check.That((Mood?)null).IsNotNull();
+            Check.ThatCode(() =>
+            {
+                Check.That((Mood?)null).IsNotNull();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked nullable value is null whereas it must not.");
         }
 
         [Test]
@@ -111,25 +121,38 @@ namespace NFluent.Tests
         }
         
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value must be null.\nThe checked value:\n\t[NFluent.Tests.Extensions.Mood]")]
         public void NotIsNotNullThrowsWithNonNullNullable()
         {
             Mood? goodMood = new Mood();
-            Check.That(goodMood).Not.IsNotNull();
+
+            Check.ThatCode(() =>
+            {
+                Check.That(goodMood).Not.IsNotNull();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked nullable value must be null.\nThe checked value:\n\t[NFluent.Tests.Extensions.Mood]");
         }
         
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked nullable value is null whereas it must not.")]
         public void NotIsNullThrowsExceptionWithNullNullable()
         {
-            Check.That((Mood?)null).Not.IsNull();
+            Check.ThatCode(() =>
+            {
+                Check.That((Mood?)null).Not.IsNull();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked nullable value is null whereas it must not.");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked object must be null.\nThe checked object:\n\t[System.Object]")]
         public void IsNullFailsProperly()
         {
-            Check.That(new object()).IsNull();
+            Check.ThatCode(() =>
+            {
+                Check.That(new object()).IsNull();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked object must be null.\nThe checked object:\n\t[System.Object]");
         }
 
         [Test]
@@ -139,18 +162,27 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked object must not be null.\nThe checked object:\n\t[null]")]
         public void IsNotNullFailsProperly()
         {
-            Check.That((object)null).IsNotNull();
+            Check.ThatCode(() =>
+            {
+                Check.That((object)null).IsNotNull();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked object must not be null.\nThe checked object:\n\t[null]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked object must have be an instance distinct from expected one.\nThe checked object:\n\t[System.Object]\nThe expected object: distinct from\n\t[System.Object]")]
         public void IsDistinctFailsProperly()
         {
             var test = new object();
-            Check.That(test).IsDistinctFrom(test);
+
+            Check.ThatCode(() =>
+            {
+                Check.That(test).IsDistinctFrom(test);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked object must have be an instance distinct from expected one.\nThe checked object:\n\t[System.Object]\nThe expected object: distinct from\n\t[System.Object]");
         }
 
         [Test]
@@ -159,6 +191,63 @@ namespace NFluent.Tests
             var test = new object();
             Check.That(test).Not.IsDistinctFrom(test);
             Check.That(new object()).Not.IsSameReferenceThan(new object());
+        }
+
+        [Test]
+        public void HasSameValueAsFailsWithCorrectMessage()
+        {
+            var mySelf = new Person() { Name = "dupdob" };
+            var myClone = new PersonEx() { Name = "tpierrain" };
+            Check.ThatCode(() => {
+                    Check.That(myClone).HasSameValueAs(mySelf);
+                })
+                .ThrowsAny()
+                .WithMessage(
+                    "\nThe checked value is different from the expected one.\nThe checked value:\n\t[NFluent.Tests.ObjectRelatedTest+PersonEx] of type: [NFluent.Tests.ObjectRelatedTest+PersonEx]\nThe expected value: equals to (using operator==)\n\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
+        }
+
+        [Test]
+        public void HasDifferentValueAsFailsWithCorrectMessage()
+        {
+            var mySelf = new Person() { Name = "dupdob" };
+            var myClone = new PersonEx() { Name = "dupdob" };
+
+            Check.ThatCode(() => {
+                Check.That(myClone).HasDifferentValueThan(mySelf);
+            })
+                .ThrowsAny()
+                .WithMessage(
+                    "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from (using operator!=)\n\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
+
+        }
+
+        private class Person
+        {
+            public String Name { get; set; }
+            public String Surname { get; set; }
+
+        }
+        private class PersonEx
+        {
+            public String Name { get; set; }
+            public String Surname { get; set; }
+
+            public static bool operator ==(PersonEx person1, Person person2)
+            {
+                return person1.Name == person2.Name;
+            }
+            public static bool operator !=(PersonEx person1, Person person2)
+            {
+                return person1.Name != person2.Name;
+            }
+            public static bool operator ==(Person person1, PersonEx person2)
+            {
+                return person1.Name == person2.Name;
+            }
+            public static bool operator !=(Person person1, PersonEx person2)
+            {
+                return person1.Name != person2.Name;
+            }
         }
     }
 }

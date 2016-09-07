@@ -33,12 +33,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked double value is a number whereas it must not.\nThe checked double value:\n\t[20]")]
         public void IsNaNThrowsWhenTheValueIsANumber()
         {
             const double Twenty = 20D;
 
-            Check.That(Twenty).IsNaN();
+            Check.ThatCode(() =>
+            {
+                Check.That(Twenty).IsNaN();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked double value is a number whereas it must not.\nThe checked double value:\n\t[20]");
         }
 
         [Test]
@@ -50,13 +54,17 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked double value is not a number (NaN) whereas it must.\nThe checked double value:\n\t[NaN]")]
         public void NotIsNaNThrowsAnExceptionWhenFailing()
         {
             const double Zero = 0D;
             const double NotANumber = Zero / Zero;
 
-            Check.That(NotANumber).Not.IsNaN();
+            Check.ThatCode(() =>
+            {
+                Check.That(NotANumber).Not.IsNaN();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked double value is not a number (NaN) whereas it must.\nThe checked double value:\n\t[NaN]");
         }
 
         #endregion
@@ -72,14 +80,18 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked double value is an infinite number whereas it must not.\nThe checked double value:\n\t[Infinity]")]
         public void IsFiniteThrowsWithInfinity()
         {
             const double Zero = 0D;
             const double Twenty = 20D;
             const double InfiniteNumber = Twenty / Zero;
 
-            Check.That(InfiniteNumber).IsFinite();
+            Check.ThatCode(() =>
+            {
+                Check.That(InfiniteNumber).IsFinite();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked double value is an infinite number whereas it must not.\nThe checked double value:\n\t[Infinity]");
         }
 
         [Test]
@@ -93,12 +105,31 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked double value is a finite number whereas it must not.\nThe checked double value:\n\t[20]")]
         public void NotIsFiniteThrowsWithFiniteNumber()
         {
             const double Twenty = 20D;
 
-            Check.That(Twenty).Not.IsFinite();
+            Check.ThatCode(() =>
+            {
+                Check.That(Twenty).Not.IsFinite();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked double value is a finite number whereas it must not.\nThe checked double value:\n\t[20]");
+        }
+
+        [Test]
+        public void IsAroundWorks()
+        {
+            const double Twenty = 20D;
+            Check.That(Twenty).IsCloseTo(20.1, 0.2);
+        }
+
+        [Test]
+        public void IsAroundShouldFailsIfToFar()
+        {
+            const double Twenty = 20D;
+            Check.ThatCode(() => {
+                Check.That(Twenty).IsCloseTo(20.1, 0.01); }).Throws<FluentCheckException>().WithMessage("\nThe checked value is outside the expected value range.\nThe checked value:\n\t[20]\nThe expected value:\n\t[20,1 (+/- 0,01)]");
         }
 
         #endregion

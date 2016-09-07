@@ -19,7 +19,7 @@ namespace NFluent
 {
     using System;
 
-    using NFluent.Extensibility;
+    using Extensibility;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="sbyte"/> value.
@@ -263,11 +263,9 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<sbyte>> IsEqualTo(this ICheck<sbyte> check, sbyte expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker<sbyte>(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
-            return checker.ExecuteCheck(
-                () => EqualityHelper.IsEqualTo(checker, expected),
-                EqualityHelper.BuildErrorMessage(checker, expected, true));
+            return EqualityHelper.PerformEqualCheck(checker, expected, false);
         }
 
     }

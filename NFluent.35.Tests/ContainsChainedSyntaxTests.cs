@@ -41,26 +41,38 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not follow to the expected order. Item [\"un\"] appears too late in the list, at index '2'.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"un\", \"tres\"]\nThe expected value(s):\n\t[\"un\", \"dos\", \"tres\"]")]
         public void ContainsInThatOrderFails()
         {
             var tresAmigosAndMore = new[] { "un", "dos", "un", "tres" };
 
-            Check.That(tresAmigosAndMore).Contains(this.tresAmigos).InThatOrder();
+            Check.ThatCode(() =>
+                    {
+                        Check.That(tresAmigosAndMore).Contains(this.tresAmigos).InThatOrder();
+                    })
+                    .Throws<FluentCheckException>()
+                    .WithMessage("\nThe checked enumerable does not follow to the expected order. Item [\"un\"] appears too late in the list, at index '2'.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"un\", \"tres\"]\nThe expected value(s):\n\t[\"un\", \"dos\", \"tres\"]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not follow to the expected order. Item [\"dos\"] appears too late in the list, at index '1'.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"tres\"]\nThe expected value(s):\n\t[\"dos\", \"un\", \"tres\"]")]
         public void ContainsInThatOrderFails2()
         {
-            Check.That(this.tresAmigos).Contains("dos", "un", "tres").InThatOrder();
+            Check.ThatCode(() =>
+            {
+                Check.That(this.tresAmigos).Contains("dos", "un", "tres").InThatOrder();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable does not follow to the expected order. Item [\"dos\"] appears too late in the list, at index '1'.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"tres\"]\nThe expected value(s):\n\t[\"dos\", \"un\", \"tres\"]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not follow to the expected order. Item [\"dos\"] appears too early in the list, at index '1'.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"tres\"]\nThe expected value(s):\n\t[\"un\", \"tres\", \"dos\"]")]
         public void ContainsInThatOrderFails3()
         {
-            Check.That(this.tresAmigos).Contains("un", "tres", "dos").InThatOrder();
+            Check.ThatCode(() =>
+            {
+                Check.That(this.tresAmigos).Contains("un", "tres", "dos").InThatOrder();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable does not follow to the expected order. Item [\"dos\"] appears too early in the list, at index '1'.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"tres\"]\nThe expected value(s):\n\t[\"un\", \"tres\", \"dos\"]");
         }
 
         [Test]
@@ -77,11 +89,15 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable has extra occurences of the expected items. Item [\"tres\"] at position 3 is redundant.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"tres\", \"tres\"]\nThe expected value(s):\n\t[\"un\", \"dos\", \"tres\"]")]
         public void ContainsOnceFails()
         {
             var tresAmigosAndMore = new[] { "un", "dos", "tres", "tres" };
-            Check.That(tresAmigosAndMore).Contains(this.tresAmigos).Once();
+            Check.ThatCode(() =>
+            {
+                Check.That(tresAmigosAndMore).Contains(this.tresAmigos).Once();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable has extra occurences of the expected items. Item [\"tres\"] at position 3 is redundant.\nThe checked enumerable:\n\t[\"un\", \"dos\", \"tres\", \"tres\"]\nThe expected value(s):\n\t[\"un\", \"dos\", \"tres\"]");
         }
     }
 }

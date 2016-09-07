@@ -13,9 +13,6 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using NFluent.Extensibility;
-using NFluent.Helpers;
-
 namespace NFluent
 {
     using System;

@@ -18,7 +18,7 @@ namespace NFluent.Extensibility
     using System;
     using System.Text;
 
-    using NFluent.Extensions;
+    using Extensions;
 
     /// <summary>
     /// Help to build a properly formatted fluent error message.
@@ -166,10 +166,11 @@ namespace NFluent.Extensibility
         /// Adds a block describing the checked objet.
         /// </summary>
         /// <param name="test">The tested object/value.</param>
+        /// <param name="index">The interesting index (for enumerable types)</param>
         /// <returns>A <see cref="FluentMessage"/> to continue build the message.</returns>
-        public MessageBlock On(object test)
+        public MessageBlock On(object test, int index=0)
         {
-            this.checkedBlock = new MessageBlock(this, test, this.checkedLabel);
+            this.checkedBlock = new MessageBlock(this, test, this.checkedLabel, index);
             if (this.referenceType == null)
             {
                 this.referenceType = test.GetTypeWithoutThrowingException();

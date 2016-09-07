@@ -34,12 +34,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked event has not been set before the given timeout.\nThe given timeout (in msec):\n\t[10]")]
         public void IsSetWithinThrowsExceptionWhenFailingForAutoResetEvent()
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                Check.That(myEvent).IsSetWithin(10, TimeUnit.Milliseconds);
+                Check.ThatCode(() =>
+                {
+                    Check.That(myEvent).IsSetWithin(10, TimeUnit.Milliseconds);
+                })
+                .Throws<FluentCheckException>()
+                .WithMessage("\nThe checked event has not been set before the given timeout.\nThe given timeout (in msec):\n\t[10]");
             }
         }
 
@@ -53,13 +57,17 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked event has been set before the given timeout whereas it must not.\nThe given timeout (in msec):\n\t[50]")]
         public void NotIsSetWithinThrowsExceptionForAutoResetEvent()
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
-                Check.That(myEvent).Not.IsSetWithin(50, TimeUnit.Milliseconds);
+                Check.ThatCode(() =>
+                {
+                    SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
+                    Check.That(myEvent).Not.IsSetWithin(50, TimeUnit.Milliseconds);
+                })
+                .Throws<FluentCheckException>()
+                .WithMessage("\nThe checked event has been set before the given timeout whereas it must not.\nThe given timeout (in msec):\n\t[50]");
             }
         }
 
@@ -77,13 +85,17 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked event has been set before the given timeout.\nThe given timeout (in msec):\n\t[100]")]
         public void IsNotSetWithinThrowsExceptionWhenFailingForAutoResetEvent()
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
-                Check.That(myEvent).IsNotSetWithin(100, TimeUnit.Milliseconds);
+                Check.ThatCode(() =>
+                {
+                    SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
+                    Check.That(myEvent).IsNotSetWithin(100, TimeUnit.Milliseconds);
+                })
+                .Throws<FluentCheckException>()
+                .WithMessage("\nThe checked event has been set before the given timeout.\nThe given timeout (in msec):\n\t[100]");
             }
         }
 
@@ -98,12 +110,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(ExpectedException = typeof(FluentCheckException), ExpectedMessage = "\nThe checked event has not been set before the given timeout whereas it must.\nThe given timeout (in msec):\n\t[10]")]
         public void NotIsNotSetWithinThrowsExceptionForAutoResetEvent()
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                Check.That(myEvent).Not.IsNotSetWithin(10, TimeUnit.Milliseconds);
+                Check.ThatCode(() =>
+                {
+                    Check.That(myEvent).Not.IsNotSetWithin(10, TimeUnit.Milliseconds);
+                })
+                .Throws<FluentCheckException>()
+                .WithMessage("\nThe checked event has not been set before the given timeout whereas it must.\nThe given timeout (in msec):\n\t[10]");
             }
         }
 

@@ -53,11 +53,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[666, 1974]\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected value(s):\n\t[3, 2, 666, 1974]")]
         public void ContainsWithArraysThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new[] { 1, 2, 3 };
-            Check.That(integers).Contains(3, 2, 666, 1974);
+
+            Check.ThatCode(() =>
+            {
+                Check.That(integers).Contains(3, 2, 666, 1974);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable does not contain the expected value(s):\n\t[666, 1974]\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected value(s):\n\t[3, 2, 666, 1974]");
         }
 
         [Test]
@@ -68,11 +73,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable contains all the given values whereas it must not.\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected value(s):\n\t[3, 2, 1]")]
         public void NotContainsThrowsExceptionWhenFailingWithArrays()
         {
             var integers = new[] { 1, 2, 3 };
-            Check.That(integers).Not.Contains(3, 2, 1);
+
+            Check.ThatCode(() =>
+            {
+                Check.That(integers).Not.Contains(3, 2, 1);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable contains all the given values whereas it must not.\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected value(s):\n\t[3, 2, 1]");
         }
 
         #endregion
@@ -104,12 +114,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[\"what da heck!\"]\nThe checked enumerable:\n\t[]\nThe expected value(s):\n\t[\"what da heck!\"]")]
         public void ContainsThrowsWithEmptyList()
         {
             var emptyList = new List<int>();
 
-            Check.That(emptyList).Contains("what da heck!");
+            Check.ThatCode(() =>
+            {
+                Check.That(emptyList).Contains("what da heck!");
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable does not contain the expected value(s):\n\t[\"what da heck!\"]\nThe checked enumerable:\n\t[]\nThe expected value(s):\n\t[\"what da heck!\"]");
         }
 
         [Test]
@@ -121,12 +135,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable is null and thus, does not contain the given expected value(s).\nThe checked enumerable:\n\t[null]\nThe expected value(s):\n\t[\"what da heck!\"]")]
         public void ContainsThrowsWithNullAsCheckedValue()
         {
             List<int> nullList = null;
 
-            Check.That(nullList).Contains("what da heck!");
+            Check.ThatCode(() =>
+            {
+                Check.That(nullList).Contains("what da heck!");
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable is null and thus, does not contain the given expected value(s).\nThe checked enumerable:\n\t[null]\nThe expected value(s):\n\t[\"what da heck!\"]");
         }
 
         [Test]
@@ -138,12 +156,17 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked enumerable does not contain the expected value(s):\n\t[666, 1974]\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected value(s):\n\t[3, 2, 666, 1974]")]
         public void ContainsWithEnumerableThrowsExceptionWithClearStatusWhenFails()
         {
             var integers = new List<int> { 1, 2, 3 };
             IEnumerable expectedNumbers = new List<int> { 3, 2, 666, 1974 };
-            Check.That(integers).Contains(expectedNumbers);
+
+            Check.ThatCode(() =>
+            {
+                Check.That(integers).Contains(expectedNumbers);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked enumerable does not contain the expected value(s):\n\t[666, 1974]\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected value(s):\n\t[3, 2, 666, 1974]");
         }
 
         [Test]

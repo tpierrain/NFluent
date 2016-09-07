@@ -18,7 +18,6 @@ namespace NFluent
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
-
     using NFluent.Extensibility;
 
     /// <summary>
@@ -113,36 +112,43 @@ namespace NFluent
 
             return checker.ExecuteCheck(
                 () =>
-                {
-                    string errorMessage;
-                    if (possibleElements == null)
                     {
-                        // the rare case where possible elements is null
-                        if (checker.Value == null)
+                        string errorMessage;
+                        if (possibleElements == null)
+                        {
+                            // the rare case where possible elements is null
+                            if (checker.Value == null)
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                errorMessage =
+                                    checker.BuildMessage("The {0} is not one of the possible elements.")
+                                        .On(checker.Value)
+                                        .And.Expected(possibleElements)
+                                        .Label("The possible elements:")
+                                        .ToString();
+                                throw new FluentCheckException(errorMessage);
+                            }
+                        }
+
+                        if (possibleElements.Any(possibleElement => string.Equals(possibleElement, checker.Value)))
                         {
                             return;
                         }
-                        else
-                        {
-                            errorMessage = checker.BuildMessage("The {0} is not one of the possible elements.")
-                                            .On(checker.Value)
-                                            .And.Expected(possibleElements).Label("The possible elements:")
-                                            .ToString();
-                            throw new FluentCheckException(errorMessage);
-                        }
-                    }
 
-                    if (possibleElements.Any(possibleElement => string.Equals(possibleElement, checker.Value)))
-                    {
-                        return;
-                    }
-
-                    errorMessage = checker.BuildMessage("The {0} is not one of the possible elements.")
-                                            .Expected(possibleElements).Label("The possible elements:")
-                                            .ToString();
-                    throw new FluentCheckException(errorMessage);
-                },
-                checker.BuildMessage("The {0} is one of the possible elements whereas it must not.").Expected(possibleElements).Label("The possible elements:").ToString());
+                        errorMessage =
+                            checker.BuildMessage("The {0} is not one of the possible elements.")
+                                .Expected(possibleElements)
+                                .Label("The possible elements:")
+                                .ToString();
+                        throw new FluentCheckException(errorMessage);
+                    }, 
+                checker.BuildMessage("The {0} is one of the possible elements whereas it must not.")
+                    .Expected(possibleElements)
+                    .Label("The possible elements:")
+                    .ToString());
         }
 
         /// <summary>
@@ -193,7 +199,8 @@ namespace NFluent
 
         private static string AssessEquals(IChecker<string, ICheck<string>> checker, object expected, bool negated, bool ignoreCase = false)
         {
-            if (string.Equals(checker.Value, (string)expected, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture) != negated)
+            var value = checker.Value;
+            if (string.Equals(value, (string)expected, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture) != negated)
             {
                 return null;
             }
@@ -201,10 +208,16 @@ namespace NFluent
             string messageText;
             if (negated)
             {
-                messageText = checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.")
-                                    .Expected(expected)
-                                    .Comparison("different from")
-                                    .ToString();
+                messageText =
+                    checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.").Expected(expected).Comparison("different from").ToString();
+            }
+            else if (value == null)
+            {
+                messageText = checker.BuildShortMessage("The {0} is null whereas it must not.").For(typeof(string)).On(value).And.Expected(expected).ToString();
+            }
+            else if (expected == null)
+            {
+                messageText = checker.BuildShortMessage("The {0} is not null whereas it must.").For(typeof(string)).On(value).And.Expected(expected).ToString();
             }
             else
             {
@@ -216,80 +229,93 @@ namespace NFluent
                 var firstDiffPos = 0;
 
                 // TODO: refactor to reduce method lines
-                var value = checker.Value;
-                if (expectedString != null && value != null)
+                var firstDiff = 0;
+                var blockStart = 0;
+                var blockLen = 0;
+
+                var minLength = Math.Min(value.Length, expectedString.Length);
+
+                // scan for firstDiff
+                for (; firstDiff < minLength; firstDiff++)
                 {
-                    var firstDiff = 0;
-                    var blockStart = 0;
-                    var blockLen = 0;
-
-                    var minLength = Math.Min(value.Length, expectedString.Length);
-
-                    for (; firstDiff < minLength; firstDiff++)
+                    if (value[firstDiff] != expectedString[firstDiff])
                     {
-                        if (value[firstDiff] != expectedString[firstDiff])
-                        {
-                            firstDiffPos = firstDiff;
-                            isCrlfAndLfDifference = IsACRLFDifference(firstDiff, expectedString, value);
-                            isTabAndWhiteSpaceDifference = IsATabAndWhiteSpaceDifference(firstDiff, expectedString, value);
-                        
-                            blockStart = Math.Max(0, firstDiff - 10);
-                            blockLen = Math.Min(minLength - blockStart, 20);
-                            break;
-                        }
-                    }
+                        firstDiffPos = firstDiff;
+                        isCrlfAndLfDifference = IsACRLFDifference(firstDiff, expectedString, value);
+                        isTabAndWhiteSpaceDifference = IsATabAndWhiteSpaceDifference(firstDiff, expectedString, value);
 
-                    if (expectedString.Length == value.Length)
-                    {
-                        // same length
-                        if (string.Compare(value, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0)
-                        {
-                            message = "The {0} is different from the {1} but only in case.";
-                        }
-                        else
-                        {
-                            message = "The {0} is different from the {1} but has same length.";
-                        }   
-
-                        var prefix = blockStart == 0 ? string.Empty : "...";
-                        var suffix = (blockStart + blockLen) == minLength ? string.Empty : "...";
-                        message += string.Format(
-                                                    " At {0}, expected '{3}{1}{4}' was '{3}{2}{4}'",
-                                                    firstDiff,
-                                                    expectedString.Substring(blockStart, blockLen),
-                                                    value.Substring(blockStart, blockLen),
-                                                    prefix,
-                                                    suffix);
-                    }
-                    else
-                    {
-                        if (expectedString.Length > value.Length)
-                        {
-                            if (expectedString.StartsWith(value, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
-                            {
-                                message = "The {0} is different from {1}, it is missing the end.";
-                            }
-                        }
-                        else
-                        {
-                            if (value.StartsWith(expectedString, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
-                            {
-                                message = "The {0} is different from {1}, it contains extra text at the end.";
-                            }
-                        }
+                        blockStart = Math.Max(0, firstDiff - 10);
+                        blockLen = Math.Min(minLength - blockStart, 20);
+                        break;
                     }
                 }
 
+                var useDiffInMessage = true;
+
+                // if strings have sam length, diff may be minor
+                if (expectedString.Length == value.Length)
+                {
+                    // same length
+                    if (string.Compare(value, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0)
+                    {
+                        message = "The {0} is different from the {1} but only in case.";
+                    }
+                    else
+                    {
+                        message = "The {0} is different from the {1} but has same length.";
+                    }
+                }
+                else if (expectedString.Length > value.Length)
+                {
+                    if (expectedString.StartsWith(value, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
+                    {
+                        message = "The {0} is different from {1}, it is missing the end.";
+                        useDiffInMessage = false;
+                    }
+                    else
+                    {
+                        useDiffInMessage = blockStart > 0;
+                    }
+                }
+                else
+                {
+                    if (value.StartsWith(expectedString, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
+                    {
+                        message = "The {0} is different from {1}, it contains extra text at the end.";
+                        useDiffInMessage = false;
+                    }
+                    else
+                    {
+                        useDiffInMessage = blockStart > 0;
+                    }
+                }
+
+                // add part of strings  that are different (if needed)
+                if (useDiffInMessage)
+                {
+                    var prefix = blockStart == 0 ? string.Empty : "...";
+                    var suffix = blockStart + blockLen == minLength ? string.Empty : "...";
+                    message += string.Format(
+                        " At {0}, expected '{3}{1}{4}' was '{3}{2}{4}'", 
+                        firstDiff, 
+                        expectedString.Substring(blockStart, blockLen), 
+                        value.Substring(blockStart, blockLen), 
+                        prefix, 
+                        suffix);
+                }
+
+                // highlight diff in end of line char (if needed)
                 if (isCrlfAndLfDifference)
                 {
                     value = HighlightFirstCrlfOrLfIfAny(value, firstDiffPos);
                     expectedString = HighlightFirstCrlfOrLfIfAny(expectedString, firstDiffPos);
                 }
 
+                // highlight tab vs space diff (if needed)
                 if (isTabAndWhiteSpaceDifference)
                 {
                     value = HighlightTabsIfAny(value);
-                    expectedString = HighlightTabsIfAny(expectedString);    
+                    expectedString = HighlightTabsIfAny(expectedString);
                 }
 
                 messageText = checker.BuildMessage(message).On(value).And.Expected(expectedString).ToString();
@@ -345,12 +371,14 @@ namespace NFluent
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
-                return (negated || notContains) ? null : checker.BuildShortMessage("The {0} is null.").For(typeof(string)).ReferenceValues(values).Label("The {0} substring(s):").ToString();
+                return negated || notContains
+                           ? null
+                           : checker.BuildShortMessage("The {0} is null.").For(typeof(string)).ReferenceValues(values).Label("The {0} substring(s):").ToString();
             }
 
             var items = values.Where(item => checkedValue.Contains(item) == notContains).ToList();
 
-            if (negated == (items.Count > 0))
+            if (negated == items.Count > 0)
             {
                 return null;
             }
@@ -363,19 +391,17 @@ namespace NFluent
             if (negated != notContains)
             {
                 return
-                    checker.BuildMessage(
-                        "The {0} contains unauthorized value(s): " + items.ToEnumeratedString())
-                                 .ReferenceValues(values)
-                                 .Label("The unauthorized substring(s):")
-                                 .ToString();
+                    checker.BuildMessage("The {0} contains unauthorized value(s): " + items.ToEnumeratedString())
+                        .ReferenceValues(values)
+                        .Label("The unauthorized substring(s):")
+                        .ToString();
             }
 
             return
-                checker.BuildMessage(
-                    "The {0} does not contains the expected value(s): " + items.ToEnumeratedString())
-                             .ReferenceValues(values)
-                             .Label("The {0} substring(s):")
-                             .ToString();
+                checker.BuildMessage("The {0} does not contains the expected value(s): " + items.ToEnumeratedString())
+                    .ReferenceValues(values)
+                    .Label("The {0} substring(s):")
+                    .ToString();
         }
 
         /// <summary>
@@ -418,18 +444,10 @@ namespace NFluent
 
             if (negated)
             {
-                return
-                    checker.BuildMessage("The {0} starts with {1}, whereas it must not.")
-                                    .Expected(starts)
-                                    .Comparison("does not start with")
-                                    .ToString();
+                return checker.BuildMessage("The {0} starts with {1}, whereas it must not.").Expected(starts).Comparison("does not start with").ToString();
             }
 
-            return
-                checker.BuildMessage("The {0}'s start is different from the {1}.")
-                             .Expected(starts)
-                             .Comparison("starts with")
-                             .ToString();
+            return checker.BuildMessage("The {0}'s start is different from the {1}.").Expected(starts).Comparison("starts with").ToString();
         }
 
         /// <summary>
@@ -443,7 +461,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
         public static ICheckLink<ICheck<string>> EndsWith(this ICheck<string> check, string expectedEnd)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check); 
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             var result = EndsWithImpl(checker, expectedEnd, checker.Negated);
             if (string.IsNullOrEmpty(result))
@@ -472,18 +490,10 @@ namespace NFluent
 
             if (negated)
             {
-                return
-                    checker.BuildMessage("The {0} ends with {1}, whereas it must not.")
-                                .Expected(ends)
-                                .Comparison("does not end with")
-                                .ToString();
+                return checker.BuildMessage("The {0} ends with {1}, whereas it must not.").Expected(ends).Comparison("does not end with").ToString();
             }
 
-            return
-                checker.BuildMessage("The {0}'s end is different from the {1}.")
-                             .Expected(ends)
-                             .Comparison("ends with")
-                             .ToString();
+            return checker.BuildMessage("The {0}'s end is different from the {1}.").Expected(ends).Comparison("ends with").ToString();
         }
 
         /// <summary>
@@ -495,8 +505,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
-        public static ICheckLink<ICheck<string>> Matches(
-            this ICheck<string> check, string regExp)
+        public static ICheckLink<ICheck<string>> Matches(this ICheck<string> check, string regExp)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
@@ -518,8 +527,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
-        public static ICheckLink<ICheck<string>> DoesNotMatch(
-            this ICheck<string> check, string regExp)
+        public static ICheckLink<ICheck<string>> DoesNotMatch(this ICheck<string> check, string regExp)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
@@ -551,18 +559,10 @@ namespace NFluent
 
             if (negated)
             {
-                return
-                    checker.BuildMessage("The {0} matches {1}, whereas it must not.")
-                                 .Expected(regExp)
-                                 .Comparison("does not match")
-                                 .ToString();
+                return checker.BuildMessage("The {0} matches {1}, whereas it must not.").Expected(regExp).Comparison("does not match").ToString();
             }
 
-            return
-                checker.BuildMessage("The {0} does not match the {1}.")
-                             .Expected(regExp)
-                             .Comparison("matches")
-                             .ToString();
+            return checker.BuildMessage("The {0} does not match the {1}.").Expected(regExp).Comparison("matches").ToString();
         }
 
         /// <summary>
@@ -573,8 +573,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string is not empty.</exception>
-        public static ICheckLink<ICheck<string>> IsEmpty(
-            this ICheck<string> check)
+        public static ICheckLink<ICheck<string>> IsEmpty(this ICheck<string> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
@@ -597,7 +596,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string is neither empty or null.</exception>
         public static ICheckLink<ICheck<string>> IsNullOrEmpty(this ICheck<string> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check); 
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             var result = IsEmptyImpl(checker, true, checker.Negated);
             if (!string.IsNullOrEmpty(result))
@@ -616,10 +615,9 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string is empty.</exception>
-        public static ICheckLink<ICheck<string>> IsNotEmpty(
-            this ICheck<string> check)
+        public static ICheckLink<ICheck<string>> IsNotEmpty(this ICheck<string> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check); 
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             var result = IsEmptyImpl(checker, false, !checker.Negated);
             if (!string.IsNullOrEmpty(result))
@@ -654,7 +652,7 @@ namespace NFluent
         private static string IsEmptyImpl(IChecker<string, ICheck<string>> checker, bool canBeNull, bool negated)
         {
             var checkedValue = checker.Value;
-            
+
             // special case if checkedvalue is null
             if (checkedValue == null)
             {
@@ -663,8 +661,9 @@ namespace NFluent
                     return null;
                 }
 
-                return negated ? checker.BuildShortMessage("The {0} is null whereas it must have content.").For(typeof(string)).ToString()
-                    : checker.BuildShortMessage("The {0} is null instead of being empty.").For(typeof(string)).ToString();
+                return negated
+                           ? checker.BuildShortMessage("The {0} is null whereas it must have content.").For(typeof(string)).ToString()
+                           : checker.BuildShortMessage("The {0} is null instead of being empty.").For(typeof(string)).ToString();
             }
 
             if (string.IsNullOrEmpty(checkedValue) != negated)
@@ -675,16 +674,10 @@ namespace NFluent
 
             if (negated)
             {
-                return
-                    checker.BuildShortMessage("The {0} is empty, whereas it must not.")
-                                .For(typeof(string))
-                                .ToString();
+                return checker.BuildShortMessage("The {0} is empty, whereas it must not.").For(typeof(string)).ToString();
             }
 
-            return
-                checker.BuildMessage("The {0} is not empty or null.")
-                             .On(checkedValue)
-                             .ToString();
+            return checker.BuildMessage("The {0} is not empty or null.").On(checkedValue).ToString();
         }
 
         /// <summary>
@@ -696,8 +689,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string is not equal to the comparand.</exception>
-        public static ICheckLink<ICheck<string>> IsEqualIgnoringCase(
-            this ICheck<string> check, string comparand)
+        public static ICheckLink<ICheck<string>> IsEqualIgnoringCase(this ICheck<string> check, string comparand)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 

@@ -14,7 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
-    using NFluent.Tests.Extensions;
+    using Extensions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -33,11 +33,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is different from the expected one.\nThe checked value:\n\t[French]\nThe expected value:\n\t[American]")]
         public void IsEqualToThrowsExceptionWhenFailingWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnum(FrenchNationality).IsEqualTo(Nationality.American);
+
+            Check.ThatCode(() =>
+            {
+                Check.ThatEnum(FrenchNationality).IsEqualTo(Nationality.American);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is different from the expected one.\nThe checked value:\n\t[French]\nThe expected value:\n\t[American]");
         }
 
         [Test]
@@ -48,11 +53,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[French] of type: [NFluent.Tests.Nationality]")]
         public void IsNotEqualToThrowsExceptionWhenFailingWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.French);
+
+            Check.ThatCode(() =>
+            {
+                Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.French);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[French] of type: [NFluent.Tests.Nationality]");
         }
 
         [Test]
@@ -63,11 +73,16 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[French] of type: [NFluent.Tests.Nationality]")]
         public void NotIsEqualToThrowsExceptionWhenFailingWithEnum()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnum(FrenchNationality).Not.IsEqualTo(Nationality.French);
+
+            Check.ThatCode(() =>
+            {
+                Check.ThatEnum(FrenchNationality).Not.IsEqualTo(Nationality.French);
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[French] of type: [NFluent.Tests.Nationality]");
         }
 
         [Test]
@@ -100,19 +115,29 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[French] of type: [NFluent.Tests.Nationality]\nThe expected value:\n\tan instance of type: [int]")]
         public void IsInstanceOfFailsPropery()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnum(FrenchNationality).IsInstanceOf<int>();
+
+            Check.ThatCode(() =>
+            {
+                Check.ThatEnum(FrenchNationality).IsInstanceOf<int>();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[French] of type: [NFluent.Tests.Nationality]\nThe expected value:\n\tan instance of type: [int]");
         }
 
         [Test]
-        [ExpectedException(typeof(FluentCheckException), ExpectedMessage = "\nThe checked value is an instance of [NFluent.Tests.Nationality] whereas it must not.\nThe checked value:\n\t[French] of type: [NFluent.Tests.Nationality]\nThe expected value: different from\n\tan instance of type: [NFluent.Tests.Nationality]")]
         public void IsNotInstanceOfFailsProperly()
         {
             const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnum(FrenchNationality).IsNotInstanceOf<Nationality>();
+
+            Check.ThatCode(() =>
+            {
+                Check.ThatEnum(FrenchNationality).IsNotInstanceOf<Nationality>();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage("\nThe checked value is an instance of [NFluent.Tests.Nationality] whereas it must not.\nThe checked value:\n\t[French] of type: [NFluent.Tests.Nationality]\nThe expected value: different from\n\tan instance of type: [NFluent.Tests.Nationality]");
         }
     }
 }
