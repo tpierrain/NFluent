@@ -212,7 +212,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        //[ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThere is no property [inexistingProperty] on exception type [LambdaExceptionForTest].")]
         public void DidNotHaveExpectedPropertyName()
         {
             Check.ThatCode(() =>
@@ -224,7 +223,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        //[ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "\nThe property [ExceptionNumber] of the checked exception's property does not have the expected value.\nThe checked exception's property:\n\t[321]\nThe given exception's property:\n\t[123]")]
         public void DidNotHaveExpectedPropertyValue()
         {
             Check.ThatCode(() =>

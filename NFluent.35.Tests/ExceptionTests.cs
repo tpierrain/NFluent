@@ -31,7 +31,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        //[ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.StartsWith, ExpectedMessage = "\nThe checked code raised an exception, whereas it must not.")]
         public void UnexpectedExceptionRaised()
         {
             Check.ThatCode(() =>
@@ -50,7 +49,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        //[ExpectedException(typeof(FluentCheckException), MatchType = MessageMatch.Contains, ExpectedMessage = "")]
         public void DidNotRaiseExpected()
         {
             Check.ThatCode(() =>
