@@ -65,7 +65,7 @@ namespace NFluent.Tests
                 }
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked Stream has the same content as the other one, whereas it must not.\nThe checked value: (Length: 13)\n\t[System.IO.MemoryStream]\nThe other one:\n\t[System.IO.MemoryStream]");
+            .WithMessage("\nThe checked stream has the same content as the other one, whereas it must not.\nThe checked stream: (Length: 13)\n\t[System.IO.MemoryStream]\nThe expected stream: (Length: 13)\n\t[System.IO.MemoryStream]");
             
         }
 

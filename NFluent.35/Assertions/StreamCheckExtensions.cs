@@ -15,7 +15,7 @@
 namespace NFluent.Assertions
 {
     using System.IO;
-    using NFluent.Extensibility;
+    using Extensibility;
 
     /// <summary>
     /// Provides check methods to be executed on a stream instance.
@@ -66,14 +66,12 @@ namespace NFluent.Assertions
 
         private static MessageBlock BuildNegatedMessage(Stream expected, Stream value)
         {
-            // TODO: find out how can I rely on {0} to remove hard-coded "The checked Stream"
-            // BUG: Specifying a Label prevents Comparison to work.
             var negatedMessage =
-                FluentMessage.BuildMessage("The checked Stream has the same content as the other one, whereas it must not.")
+                FluentMessage.BuildMessage("The {0} has the same content as the other one, whereas it must not.")
+                    .For("stream")
                     .On(value)
                     .Comparison(string.Format("(Length: {0})", value.Length))
                     .And.Expected(expected)
-                    .Label("The other one:")
                     .Comparison(string.Format("(Length: {0})", expected.Length));
             return negatedMessage;
         }
