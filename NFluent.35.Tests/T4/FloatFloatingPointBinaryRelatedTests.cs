@@ -17,6 +17,7 @@ namespace NFluent.Tests
     using NUnit.Framework;
 
     [TestFixture]
+    [SetCulture("en-US")] // to avoid issues with expected exception messages on CI slaves.
     public class FloatFloatingPointBinaryRelatedTests
     {
         #pragma warning disable 169
@@ -136,7 +137,10 @@ namespace NFluent.Tests
         {
             const float Twenty = 20F;
             Check.ThatCode(() => {
-                Check.That(Twenty).IsCloseTo(20.1, 0.01); }).Throws<FluentCheckException>().WithMessage("\nThe checked value is outside the expected value range.\nThe checked value:\n\t[20]\nThe expected value:\n\t[20,1 (+/- 0,01)]");
+                                    Check.That(Twenty).IsCloseTo(20.1, 0.01);
+                                 })
+                                .Throws<FluentCheckException>()
+                                .WithMessage("\nThe checked value is outside the expected value range.\nThe checked value:\n\t[20]\nThe expected value:\n\t[20.1 (+/- 0.01)]");
         }
 
         #endregion
