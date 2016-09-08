@@ -40,7 +40,8 @@ namespace NFluent.Assertions
                     {
                         if (value.Length != expected.Length)
                         {
-                            ThrowTheyDontEvenHaveTheSameLength(expected, checker, value);
+                            var message = GenerateMessageWhenFullyDistinct(expected, checker, value);
+                            throw new FluentCheckException(message.ToString());
                         }
 
                         // Keeps initial positions to be able to restore them after the check
@@ -53,7 +54,8 @@ namespace NFluent.Assertions
                         {
                             if (value.ReadByte() != expected.ReadByte())
                             {
-                                ThrowTheyDontHaveTheSameContentButHaveTheSameLength(expected, checker, value);
+                                var message = GenerateMessageWhenSameLenghtButDiffContent(expected, checker, value);
+                                throw new FluentCheckException(message.ToString());
                             }
                         }
 
@@ -62,6 +64,29 @@ namespace NFluent.Assertions
                         expected.Position = otherInitialPosition;
                     },
                 BuildNegatedMessage(expected, value).ToString());
+        }
+
+        private static MessageBlock GenerateMessageWhenSameLenghtButDiffContent(Stream expected, IChecker<Stream, ICheck<Stream>> checker, Stream value)
+        {
+            var message =
+                checker.BuildMessage(
+                        "The {0} doesn't have the same content as the expected one (despite the fact that they have the same Length: " +
+                        value.Length + ").")
+                    .On(value)
+                    .And.Expected(expected);
+            return message;
+        }
+
+        private static MessageBlock GenerateMessageWhenFullyDistinct(Stream expected, IChecker<Stream, ICheck<Stream>> checker, Stream value)
+        {
+            var message =
+                checker.BuildMessage(
+                        "The {0} doesn't have the same content as the expected one. They don't even have the same Length!")
+                    .On(value)
+                    .Comparison(string.Format("(Length: {0})", value.Length))
+                    .And.Expected(expected)
+                    .Comparison(string.Format("(Length: {0})", expected.Length));
+            return message;
         }
 
         private static MessageBlock BuildNegatedMessage(Stream expected, Stream value)
@@ -74,29 +99,6 @@ namespace NFluent.Assertions
                     .And.Expected(expected)
                     .Comparison(string.Format("(Length: {0})", expected.Length));
             return negatedMessage;
-        }
-
-        private static void ThrowTheyDontHaveTheSameContentButHaveTheSameLength(Stream expected, IChecker<Stream, ICheck<Stream>> checker, Stream value)
-        {
-            var message =
-                checker.BuildMessage(
-                    "The {0} doesn't have the same content as the expected one (despite the fact that they have the same Length: " + value.Length + ").")
-                    .On(value)
-                    .And.Expected(expected);
-
-            throw new FluentCheckException(message.ToString());
-        }
-
-        private static void ThrowTheyDontEvenHaveTheSameLength(Stream expected, IChecker<Stream, ICheck<Stream>> checker, Stream value)
-        {
-            var message =
-                checker.BuildMessage("The {0} doesn't have the same content as the expected one. They don't even have the same Length!")
-                    .On(value)
-                    .Comparison(string.Format("(Length: {0})", value.Length))
-                    .And.Expected(expected)
-                    .Comparison(string.Format("(Length: {0})", expected.Length));
-
-            throw new FluentCheckException(message.ToString());
         }
 
         #endregion
