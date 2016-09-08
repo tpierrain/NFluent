@@ -28,15 +28,15 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualToWorksWithBooleans()
         {
-            const bool TddSucks = false;
-            Check.That(TddSucks).IsNotEqualTo(true);
+            const bool tddSucks = false;
+            Check.That(tddSucks).IsNotEqualTo(true);
         }
 
         [Test]
         public void CanNegateIsEqualToWithBooleans()
         {
-            const bool TddSucks = false;
-            Check.That(TddSucks).Not.IsNotEqualTo(false);
+            const bool tddSucks = false;
+            Check.That(tddSucks).Not.IsNotEqualTo(false);
         }
 
         [Test]
@@ -73,19 +73,21 @@ namespace NFluent.Tests
             Check.That(heroe).Not.IsEqualTo(null);
         }
 
+        /*
         [Test]
         public void IsEqualToThrowsWhenSameNumberOfDifferentTypes()
         {
-            const int IntValue = 42;
-            const long LongValue = 42L;
+            const int intValue = 42;
+            const long longValue = 42L;
 
             Check.ThatCode(() =>
             {
-                Check.That(IntValue).IsEqualTo(LongValue);
+                Check.That(intValue).IsEqualTo(longValue);
             })
             .Throws<FluentCheckException>()
             .WithMessage("\nThe checked value is different from the expected one.\nThe checked value:\n\t[42] of type: [int]\nThe expected value:\n\t[42] of type: [long]");
         }
+        */
 
         [Test]
         public void NotIsEqualToWithObjectThrowsExceptionWhenFailing()
@@ -197,11 +199,10 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualToThrowsProperExceptionEvenWithNullAsValue()
         {
-            string first = null;
 
             Check.ThatCode(() =>
             {
-                Check.That(first).IsEqualTo("Kamoulox !");
+                Check.That((string)null).IsEqualTo("Kamoulox !");
             })
             .Throws<FluentCheckException>()
             .WithMessage("\nThe checked string is null whereas it must not.\nThe checked string:\n\t[null]\nThe expected string:\n\t[\"Kamoulox !\"]");
@@ -241,15 +242,15 @@ namespace NFluent.Tests
         [Test]
         public void IsNotEqualToWorksWithBooleans()
         {
-            const bool TddSucks = false;
-            Check.That(TddSucks).IsEqualTo(false);
+            const bool tddSucks = false;
+            Check.That(tddSucks).IsEqualTo(false);
         }
 
         [Test]
         public void CanNegateIsNotEqualToWithBooleans()
         {
-            const bool TddSucks = false;
-            Check.That(TddSucks).Not.IsEqualTo(true);
+            const bool tddSucks = false;
+            Check.That(tddSucks).Not.IsEqualTo(true);
         }
 
         [Test]
@@ -375,7 +376,7 @@ namespace NFluent.Tests
         {
             double doubleNumber = 37.2D;
             
-            Check.That(doubleNumber).IsEqualTo(37.2D).And.IsNotEqualTo(40.0D).And.IsNotZero().And.IsPositive();
+            Check.That(doubleNumber).IsEqualTo(37.2D).And.IsNotEqualTo(40.0D).And.IsNotZero().And.IsStrictlyPositive();
             Check.That(doubleNumber).IsNotEqualTo(40.0D).And.IsEqualTo(37.2D);
         }
 

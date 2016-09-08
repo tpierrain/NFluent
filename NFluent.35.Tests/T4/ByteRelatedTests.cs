@@ -426,6 +426,18 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsEqualFailsWhenRelevant()
+        {
+            const byte Twenty = 20;
+
+            Check.ThatCode(() =>
+                {
+                    Check.That(Twenty).IsEqualTo(0);
+                })
+                .Throws<FluentCheckException>();
+        }
+
+        [Test]
         public void EqualsWorksToo()
         {
             const byte Twenty = 20;

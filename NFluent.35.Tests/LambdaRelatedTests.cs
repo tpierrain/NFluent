@@ -73,7 +73,6 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
             Check.ThatCode(() => { throw new ApplicationException(); }).ThrowsAny();
-            Check.That(() => { throw new ApplicationException(); }).ThrowsAny();
         }
 
         [Test]
@@ -99,18 +98,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void DidNotRaiseAnyOldSyntax()
-        {
-            Check.ThatCode(() =>
-            {
-                // obsolete signature, kept for coverage
-                Check.That(() => { new object(); }).ThrowsAny();
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked code did not raise an exception, whereas it must.");
-        }
-
-        [Test]
         public void DidNotRaiseAnyTypedCheck()
         {
             Check.ThatCode(() =>
@@ -125,7 +112,7 @@ namespace NFluent.Tests
         public void DidNotRaiseWhenUsedWithValidParameterlessFuncVariable()
         {
             Func<bool> sut = () => true;
-            Check.That(sut).DoesNotThrow();
+            Check.ThatCode(sut).DoesNotThrow();
         }
 
         [Test]
@@ -187,17 +174,12 @@ namespace NFluent.Tests
             var sut = new AnObjectThatCanCrashWithPropertyGet(0);
             Check.ThatCode(() => sut.BeastBreaker).Throws<DivideByZeroException>();
 
-            // obsolete for coverage
-            Check.That(() => sut.BeastBreaker).Throws<DivideByZeroException>();
         }
 
         [Test]
         public void CanCheckForAMessageOnExceptionRaised()
         {
             Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(123, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithMessage("Err #123 : my error message").And.WithProperty("ExceptionNumber", 123);
-
-            // obsolete for coverage
-            Check.That(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(123, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithMessage("Err #123 : my error message").And.WithProperty("ExceptionNumber", 123);
         }
 
         [Test]

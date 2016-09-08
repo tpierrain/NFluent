@@ -419,6 +419,18 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsEqualFailsWhenRelevant()
+        {
+            const int Twenty = 20;
+
+            Check.ThatCode(() =>
+                {
+                    Check.That(Twenty).IsEqualTo(0);
+                })
+                .Throws<FluentCheckException>();
+        }
+
+        [Test]
         public void EqualsWorksToo()
         {
             const int Twenty = 20;

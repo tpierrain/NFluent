@@ -12,6 +12,9 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Collections.Generic;
+
 namespace NFluent.Extensions
 {
     using System;
@@ -26,6 +29,33 @@ namespace NFluent.Extensions
     public static class ExtensionsCommonHelpers
     {
         private const string NullText = "null";
+        private const int MaximumSizeBeforeTruncation = 197;
+        private const int StartingLengthForLongString = 150;
+        private const int EndingLengthForLongString = 40;
+        private const string TruncationMarkerText = "...<<truncated>>...";
+
+        private static readonly Dictionary<Type, string> TypeToString = new Dictionary<Type, string>()
+            {
+            {typeof(string), "string" },{typeof(byte), "byte" }, {typeof(sbyte), "sbyte"}, {typeof(char), "char" },
+            {typeof(short), "short"}, {typeof(ushort), "ushort"}, {typeof(int), "int" }, {typeof(uint), "uint" },
+            {typeof(long), "long" }, {typeof(ulong), "ulong" }, {typeof(float), "float" }, {typeof(double), "double" },
+            {typeof(bool), "bool" }, {typeof(decimal), "decimal" }, { typeof(object), "object"}, {typeof(void), "void" }
+            };
+
+        private static readonly HashSet<Type> NumericalTypes = new HashSet<Type>()
+        { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint),
+            typeof(long), typeof(ulong), typeof(double), typeof(float)};
+
+
+        /// <summary>
+        /// Checks if a type is numerical (i.e: int, double, short, uint...)
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsNumerical(Type type)
+        {
+            return NumericalTypes.Contains(type);
+        }
 
         /// <summary>
         /// Returns a string that represents the current object. If the object is already a string, this method will surround it with brackets.
@@ -90,22 +120,17 @@ namespace NFluent.Extensions
 
             var result = theObject.ToString();
 
-            if (result == null)
-            {
-                return NullText;
-            }
-
-            return TruncateLongString(result);
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            return result == null ? NullText : TruncateLongString(result);
         }
 
         private static string TruncateLongString(string result)
         {
-            if (result.Length > 197)
+            if (result.Length > MaximumSizeBeforeTruncation)
             {
-                result = result.Substring(0, 150) + "...<<truncated>>..."
-                         + result.Substring(result.Length - 40);
+                result = result.Substring(0, StartingLengthForLongString) + TruncationMarkerText
+                         + result.Substring(result.Length - EndingLengthForLongString);
             }
-
             return result;
         }
 
@@ -125,122 +150,46 @@ namespace NFluent.Extensions
         {
             if (type.IsArray)
             {
-                return type.GetElementType().ToStringProperlyFormated() + "[]";
+                return type.GetElementType().TypeToStringProperlyFormated() + "[]";
             }
 
-            if (type == typeof(string))
+            // try to find the type among primitive types
+            string localResult;
+            if (TypeToString.TryGetValue(type, out localResult))
             {
-                return "string";
+                return localResult;
             }
-
-            if (type == typeof(byte))
-            {
-                return "byte";
-            }
-
-            if (type == typeof(char))
-            {
-                return "char";
-            }
-
-            if (type == typeof(short))
-            {
-                return "short";
-            }
-
-            if (type == typeof(ushort))
-            {
-                return "ushort";
-            }
-
-            if (type == typeof(int))
-            {
-                return "int";
-            }
-
-            if (type == typeof(uint))
-            {
-                return "uint";
-            }
-
-            if (type == typeof(long))
-            {
-                return "long";
-            }
-
-            if (type == typeof(ulong))
-            {
-                return "ulong";
-            }
-
-            if (type == typeof(sbyte))
-            {
-                return "sbyte";
-            }
-
-            if (type == typeof(bool))
-            {
-                return "bool";
-            }
-
-            if (type == typeof(float))
-            {
-                return "float";
-            }
-
-            if (type == typeof(double))
-            {
-                return "double";
-            }
-
-            if (type == typeof(decimal))
-            {
-                return "decimal";
-            }
-
-            if (type == typeof(object))
-            {
-                return "object";
-            }
-
-            if (type == typeof(void))
-            {
-                return "void";
-            }
-
+            // is this a generic type
             var arguments = type.GetGenericArguments();
             var name = shortName ? type.Name : type.ToString();
 
-            if (arguments.Length > 0)
+            if (arguments.Length <= 0) return name;
+
+            // this is a generic type
+            var builder = new StringBuilder();
+            var typeRoot = name.Substring(0, name.IndexOf('`'));
+            if (IsNullable(type))
             {
-                // this is a generic type
-                var builder = new StringBuilder();
-                var typeRoot = name.Substring(0, name.IndexOf('`'));
-                if (typeRoot == "Nullable" || typeRoot == "System.Nullable")
-                {
-                    // specific case for Nullable
-                    return TypeToStringProperlyFormated(arguments[0], shortName) + '?';
-                }
-
-                builder.Append(typeRoot);
-                builder.Append('<');
-                bool first = true;
-                foreach (var genType in arguments)
-                {
-                    if (!first)
-                    {
-                        builder.Append(", ");
-                    }
-
-                    first = false;
-                    builder.Append(TypeToStringProperlyFormated(genType, shortName));
-                }
-
-                builder.Append('>');
-                return builder.ToString();
+                // specific case for Nullable
+                return TypeToStringProperlyFormated(arguments[0], shortName) + '?';
             }
 
-            return name;
+            builder.Append(typeRoot);
+            builder.Append('<');
+            var first = true;
+            foreach (var genType in arguments)
+            {
+                if (!first)
+                {
+                    builder.Append(", ");
+                }
+
+                first = false;
+                builder.Append(TypeToStringProperlyFormated(genType, shortName));
+            }
+
+            builder.Append('>');
+            return builder.ToString();
         }
 
         /// <summary>
@@ -248,7 +197,7 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="theDateTime">The DateTime.</param>
         /// <returns>A string that represents the current object with current culture ignore.</returns>
-        public static string ToStringProperlyFormated(this DateTime theDateTime)
+        private static string ToStringProperlyFormated(this DateTime theDateTime)
         {
             // return a ISO-8601 Date format
             return string.Format(CultureInfo.InvariantCulture, "{0:o}, Kind = {1}", theDateTime, theDateTime.Kind);
@@ -259,7 +208,7 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="theBoolean">The Boolean.</param>
         /// <returns>A string that represents the current object with current culture ignore.</returns>
-        public static string ToStringProperlyFormated(this bool theBoolean)
+        private static string ToStringProperlyFormated(this bool theBoolean)
         {
             // Ensure that boolean values are not localized 
 #if !(PORTABLE)
@@ -274,7 +223,7 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>A string that represents the current object with current culture ignore.</returns>
-        public static string ToStringProperlyFormated(this double value)
+        private static string ToStringProperlyFormated(this double value)
         {
             // Ensure that boolean values are not localized 
 #if !(PORTABLE)
@@ -289,7 +238,7 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>A string that represents the current object with current culture ignore.</returns>
-        public static string ToStringProperlyFormated(this float value)
+        private static string ToStringProperlyFormated(this float value)
         {
             // Ensure that boolean values are not localized 
 #if !(PORTABLE)

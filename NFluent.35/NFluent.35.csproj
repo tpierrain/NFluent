@@ -75,6 +75,7 @@
     <Compile Include="Extensibility\IValueDescription.cs" />
     <Compile Include="Extensibility\MessageBlock.cs" />
     <Compile Include="Extensibility\ReverseEngineeringExceptionMessagesHelper.cs" />
+    <Compile Include="Extensibility\RangeBlock.cs" />
     <Compile Include="Extensibility\ValueBlock.cs" />
     <Compile Include="Extensions\MessageRelatedExtensions.cs" />
     <Compile Include="FluentCodeCheck.cs" />
@@ -142,7 +143,6 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="ICheckLink.cs" />
     <Compile Include="IForkableCheck.cs" />
-    <Compile Include="Assertions\LambdaCheck.cs" />
     <Compile Include="Assertions\NumberCheck.cs" />
     <Compile Include="FluentCheckException.cs" />
     <Compile Include="Assertions\ComparableCheckExtensions.cs" />

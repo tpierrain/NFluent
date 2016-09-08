@@ -38,7 +38,7 @@ namespace NFluent.Extensibility
         /// <summary>
         /// The instance type.
         /// </summary>
-        private Type type;
+        private readonly Type type;
 
         #endregion
 

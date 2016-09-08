@@ -26,9 +26,9 @@ namespace NFluent
     using System.Reflection;
     using System.Text.RegularExpressions;
 
-    using NFluent.Extensibility;
-    using NFluent.Extensions;
-    using NFluent.Helpers;
+    using Extensibility;
+    using Extensions;
+    using Helpers;
 
     /// <summary>
     ///     Provides check methods to be executed on an object instance.
@@ -47,11 +47,6 @@ namespace NFluent
         /// </summary>
         private static readonly Regex AutoPropertyMask;
 
-        /// <summary>
-        ///     The mono anonymous type field mask.
-        /// </summary>
-        private static readonly Regex MonoAnonymousTypeFieldMask;
-
         #endregion
 
         #region Constructors and Destructors
@@ -62,8 +57,7 @@ namespace NFluent
         static ObjectFieldsCheckExtensions()
         {
             AutoPropertyMask = new Regex("^<(.*)>k_");
-            AnonymousTypeFieldMask = new Regex("^<(.*)>i_");
-            MonoAnonymousTypeFieldMask = new Regex("^<(.*)>\\z");
+            AnonymousTypeFieldMask = new Regex("^<(.*)>(i_|\\z)");
         }
 
         #endregion
@@ -281,12 +275,6 @@ namespace NFluent
                 return result;
             }
 
-            if (EvaluateCriteria(MonoAnonymousTypeFieldMask, name, out result))
-            {
-                kind = FieldKind.AnonymousClass;
-                return result;
-            }
-
             result = name;
             kind = FieldKind.Normal;
             return result;
@@ -311,7 +299,7 @@ namespace NFluent
         private static bool EvaluateCriteria(Regex expression, string name, out string actualFieldName)
         {
             var regTest = expression.Match(name);
-            if (regTest.Groups.Count == 2)
+            if (regTest.Groups.Count >= 2)
             {
                 actualFieldName = name.Substring(regTest.Groups[1].Index, regTest.Groups[1].Length);
                 return true;
@@ -382,10 +370,6 @@ namespace NFluent
                     this.kind = FieldKind.AutoProperty;
                 }
                 else if (EvaluateCriteria(AnonymousTypeFieldMask, info.Name, out this.nameInSource))
-                {
-                    this.kind = FieldKind.AnonymousClass;
-                }
-                else if (EvaluateCriteria(MonoAnonymousTypeFieldMask, info.Name, out this.nameInSource))
                 {
                     this.kind = FieldKind.AnonymousClass;
                 }
@@ -530,7 +514,7 @@ namespace NFluent
                                 string.Format(
                                     "The {{0}}'s {0} has the same value in the comparand, whereas it must not.",
                                     this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
-                        EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, true);
+                        EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, true, false);
                     }
                     else
                     {
@@ -549,7 +533,7 @@ namespace NFluent
                                     string.Format(
                                         "The {{0}}'s {0} does not have the expected value.",
                                         this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
-                            EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, false);
+                            EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.expected.Value, false, false);
                         }
                     }
                 }

@@ -36,7 +36,7 @@ namespace NFluent.Tests
         public void DurationTestObsoleteVersion()
         {
             // obsolete signature, kept for coverage
-            Check.That(() => Thread.Sleep(3)).LastsLessThan(EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed, TimeUnit.Milliseconds);
+//            Check.That(() => Thread.Sleep(3)).LastsLessThan(EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed, TimeUnit.Milliseconds);
         }
 
         [Test]

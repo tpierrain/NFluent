@@ -12,13 +12,14 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
 namespace NFluent
 {
     using System;
 
-    using NFluent.Extensibility;
-    using NFluent.Extensions;
-    using NFluent.Helpers;
+    using Extensibility;
+    using Extensions;
+    using Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on an object instance.
@@ -70,9 +71,56 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
-            return checker.ExecuteCheck(
-                () => EqualityHelper.IsEqualTo(checker, expected),
-                EqualityHelper.BuildErrorMessage(checker, expected, true));
+            return EqualityHelper.PerformEqualCheck(checker, expected, false);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is equal to another expected value using operator==.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
+        /// <param name="check">
+        /// The fluent check to be extended.
+        /// </param>
+        /// <param name="expected">
+        /// The expected value.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The actual value is not equal to the expected value.
+        /// </exception>
+        public static ICheckLink<ICheck<T>> HasSameValueAs<T>(this ICheck<T> check, object expected)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+
+            return EqualityHelper.PerformEqualCheck(checker, expected, true);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is different from another expected value using operator!=.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
+        /// <param name="check">
+        /// The fluent check to be extended.
+        /// </param>
+        /// <param name="expected">
+        /// The expected value.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The actual value is equal to the expected value.
+        /// </exception>
+        public static ICheckLink<ICheck<T>> HasDifferentValueThan<T>(this ICheck<T> check, object expected)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            return EqualityHelper.PerformEqualCheck(checker, expected, true, true);
         }
 
         /// <summary>
@@ -92,8 +140,8 @@ namespace NFluent
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
-                () => EqualityHelper.IsNotEqualTo(checker, expected),
-                EqualityHelper.BuildErrorMessage(checker, expected, false));
+                () => EqualityHelper.IsNotEqualTo(checker, expected, false),
+                EqualityHelper.BuildErrorMessage(checker, expected, false, false));
         }
 
         /// <summary>
