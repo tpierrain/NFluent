@@ -81,23 +81,6 @@ namespace NFluent
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
-        /// <param name="value">The value to be tested.</param>
-        /// <returns>
-        /// A <see cref="ILambdaCheck" /> instance to use in order to assert things on the given value.
-        /// </returns>
-        /// <remarks>
-        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
-        /// </remarks>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use ThatCode instead.", true)]
-        public static ILambdaCheck That(Action value)
-        {
-            return null;
-        }
-        
-        /// <summary>
-        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
-        /// </summary>
         /// <param name="value">The code to be tested.</param>
         /// <returns>
         /// A <see cref="ICheck{RunTrace}" /> instance to use in order to assert things on the given value.
@@ -137,12 +120,32 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
+        //ncrunch: no coverage start
+        // coverage disabled as this code cannot be executed and is to be removed at a later stage
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Use ThatCode instead.", true)]
         public static ILambdaCheck That<T>(Func<T> value)
         {
+            return null; //ncrunch: no coverage
+        }
+
+        /// <summary>
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
+        /// </summary>
+        /// <param name="value">The value to be tested.</param>
+        /// <returns>
+        /// A <see cref="ILambdaCheck" /> instance to use in order to assert things on the given value.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
+        /// </remarks>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use ThatCode instead.", true)]
+        public static ILambdaCheck That(Action value)
+        {
             return null;
         }
+        //ncrunch: no coverage end
 #endif
         /// <summary>
         /// Returns a <see cref="IStructCheck{T}" /> instance that will provide check methods to be executed on a given enum or struct value.
