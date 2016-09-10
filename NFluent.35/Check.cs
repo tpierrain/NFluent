@@ -126,7 +126,7 @@ namespace NFluent
         [Obsolete("Use ThatCode instead.", true)]
         public static ILambdaCheck That<T>(Func<T> value)
         {
-            return null; //ncrunch: no coverage
+            return null;
         }
 
         /// <summary>
