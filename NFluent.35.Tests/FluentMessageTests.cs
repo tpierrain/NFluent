@@ -21,6 +21,7 @@ namespace NFluent.Tests
     using System.Collections.Generic;
 
     using Extensibility;
+    using Messages;
     using NFluent.Extensions;
 
     using NUnit.Framework;

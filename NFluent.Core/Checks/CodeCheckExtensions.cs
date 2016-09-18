@@ -48,147 +48,6 @@ namespace NFluent
         #region Methods
 
         /// <summary>
-        /// Execute the action to capture the run.
-        /// </summary>
-        /// <param name="action">
-        /// <see cref="Action"/> to be analyzed.
-        /// </param>
-        /// <returns>
-        /// Return <see cref="RunTrace"/> describing the execution.
-        /// </returns>
-        internal static RunTrace GetTrace(Action action)
-        {
-            var result = new RunTrace();
-            CaptureTrace(action, result);
-            return result;
-        }
-
-        private static void CaptureTrace(Action action, RunTrace result)
-        {
-            var watch = new Stopwatch();
-            var cpu = Process.GetCurrentProcess().TotalProcessorTime;
-            try
-            {
-                watch.Start();
-                action();
-            }
-            catch (Exception e)
-            {
-                result.RaisedException = e;
-            }
-            finally
-            {
-                watch.Stop();
-                result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
-            }
-
-            // ReSharper disable PossibleLossOfFraction
-            result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
-        }
-
-#if DOTNET_40
-        internal static RunTrace GetAsyncTrace(Func<Task> awaitableMethod)
-        {
-            var result = new RunTrace();
-            CaptureAsyncTrace(awaitableMethod, result);
-            return result;
-        }
-
-        private static void CaptureAsyncTrace(Func<Task> awaitableMethod, RunTrace result)
-        {
-            var watch = new Stopwatch();
-            var cpu = Process.GetCurrentProcess().TotalProcessorTime;
-            try
-            {
-                watch.Start();
-
-                // starts and waits the completion of the awaitable method
-                awaitableMethod().Wait();
-            }
-            catch (AggregateException agex)
-            {
-                result.RaisedException = agex.InnerException;
-            }
-            catch (Exception ex)
-            {
-                result.RaisedException = ex;
-            }
-            finally
-            {
-                watch.Stop();
-                result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
-            }
-
-            // AFAIK, ObjectDisposedException should never happen here
-
-            // ReSharper disable PossibleLossOfFraction
-            result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
-        }
-
-        /// <summary>
-        /// Execute the function to capture the run.
-        /// </summary>
-        /// <typeparam name="TResult">Result type of the awaitable function.</typeparam>
-        /// <param name="awaitableFunction">
-        /// <see cref="Action"/> to be analyzed.
-        /// </param>
-        /// <returns>
-        /// Return <see cref="RunTrace"/> describing the execution.
-        /// </returns>
-        internal static RunTraceResult<TResult> GetAsyncTrace<TResult>(Func<Task<TResult>> awaitableFunction)
-        {
-            var result = new RunTraceResult<TResult>();
-            CaptureAsyncTrace(awaitableFunction, result);
-            return result;
-        }
-
-        private static void CaptureAsyncTrace<TResult>(Func<Task<TResult>> awaitableFunction, RunTraceResult<TResult> result)
-        {
-            var watch = new Stopwatch();
-            var cpu = Process.GetCurrentProcess().TotalProcessorTime;
-            try
-            {
-                watch.Start();
-
-                // starts and waits the completion of the awaitable method
-                awaitableFunction().Wait();
-                result.Result = awaitableFunction().Result;
-            }
-            catch (AggregateException agex)
-            {
-                result.RaisedException = agex.InnerException;
-            }
-            finally
-            {
-                watch.Stop();
-                result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
-            }
-
-            // AFAIK, ObjectDisposedException should never happen here
-
-            // ReSharper disable PossibleLossOfFraction
-            result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
-        }
-#endif
-
-        /// <summary>
-        /// Execute the function to capture the run.
-        /// </summary>
-        /// <typeparam name="TU">Result type of the function.</typeparam>
-        /// <param name="function">
-        /// <see cref="Action"/> to be analyzed.
-        /// </param>
-        /// <returns>
-        /// Return <see cref="RunTrace"/> describing the execution.
-        /// </returns>
-        internal static RunTraceResult<TU> GetTrace<TU>(Func<TU> function)
-        {
-            var result = new RunTraceResult<TU>();
-            CaptureTrace(() => result.Result = function(), result);
-            return result;
-        }
-
-        /// <summary>
         /// Checks that the execution time is below a specified threshold.
         /// </summary>
         /// <typeparam name="T">Type of the checked type.</typeparam>
@@ -231,7 +90,7 @@ namespace NFluent
                 },
                 checker.BuildMessage("The checked code took too little time to execute.").For(LabelForExecTime).Expected(durationThreshold).Comparison(LabelForMoreThan).ToString());
 
-            return ExtensibilityHelper.BuildLink(check);
+            return checker.BuildChainingObject();
         }
 
         /// <summary>
@@ -277,7 +136,7 @@ namespace NFluent
                 },
                 checker.BuildMessage("The checked code took too little cpu time to execute.").For(LabelForCpuTime).Expected(durationThreshold).Comparison(LabelForMoreThan).ToString());
 
-            return ExtensibilityHelper.BuildLink(check);
+            return checker.BuildChainingObject();
         }
 
         /// <summary>
@@ -311,7 +170,7 @@ namespace NFluent
                     }
                 },
                 checker.BuildMessage("The {0} did not raise an exception, whereas it must.").For(LabelForCode).ToString());
-            return ExtensibilityHelper.BuildLink(check);
+            return checker.BuildChainingObject();
         }
 
         /// <summary>

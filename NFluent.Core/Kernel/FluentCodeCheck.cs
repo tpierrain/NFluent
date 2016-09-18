@@ -17,7 +17,9 @@ namespace NFluent.Kernel
 {
     using System;
     using System.Diagnostics;
+#if DOTNET_40
     using System.Threading.Tasks;
+#endif
     using System.Diagnostics.CodeAnalysis;
     using Extensibility;
 
@@ -138,11 +140,13 @@ namespace NFluent.Kernel
 
         private static void CaptureTrace(Action action, RunTrace result)
         {
+#if !PORTABLE
             var watch = new Stopwatch();
             var cpu = Process.GetCurrentProcess().TotalProcessorTime;
+                watch.Start();
+#endif
             try
             {
-                watch.Start();
                 action();
             }
             catch (Exception e)
@@ -151,12 +155,14 @@ namespace NFluent.Kernel
             }
             finally
             {
+#if !PORTABLE
                 watch.Stop();
                 result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
+                // ReSharper disable PossibleLossOfFraction
+                result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
+#endif
             }
 
-            // ReSharper disable PossibleLossOfFraction
-            result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
         }
 
 #if DOTNET_40

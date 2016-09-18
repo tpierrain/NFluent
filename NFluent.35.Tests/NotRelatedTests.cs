@@ -15,7 +15,7 @@
 namespace NFluent.Tests
 {
     using ForDocumentation;
-
+    using Kernel;
     using NUnit.Framework;
 
     [TestFixture]

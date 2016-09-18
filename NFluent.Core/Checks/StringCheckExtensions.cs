@@ -18,7 +18,6 @@ namespace NFluent
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Kernel;
     using NFluent.Extensibility;
 
     /// <summary>
@@ -45,7 +44,7 @@ namespace NFluent
                 throw new FluentCheckException(messageText);
             }
 
-            return new CheckLink<ICheck<string>>(check);
+            return checker.BuildChainingObject();
         }
 
         /// <summary>
@@ -81,7 +80,7 @@ namespace NFluent
                 throw new FluentCheckException(messageText);
             }
 
-            return new CheckLink<ICheck<string>>(check);
+            return checker.BuildChainingObject();
         }
 
         /// <summary>
@@ -169,7 +168,7 @@ namespace NFluent
 
             if (string.IsNullOrEmpty(result))
             {
-                return new ExtendableCheckLink<string, string[]>(check, values);
+                return ExtensibilityHelper.BuildExtendableCheckLink(check, values);
             }
 
             throw new FluentCheckException(result);
@@ -192,7 +191,7 @@ namespace NFluent
 
             if (string.IsNullOrEmpty(result))
             {
-                return new CheckLink<ICheck<string>>(check);
+                return checker.BuildChainingObject();
             }
 
             throw new FluentCheckException(result);
@@ -421,7 +420,7 @@ namespace NFluent
             var result = StartsWithImpl(checker, expectedPrefix, checker.Negated);
             if (string.IsNullOrEmpty(result))
             {
-                return new CheckLink<ICheck<string>>(check);
+                return checker.BuildChainingObject();
             }
 
             throw new FluentCheckException(result);
@@ -467,7 +466,7 @@ namespace NFluent
             var result = EndsWithImpl(checker, expectedEnd, checker.Negated);
             if (string.IsNullOrEmpty(result))
             {
-                return new CheckLink<ICheck<string>>(check);
+                return checker.BuildChainingObject();
             }
 
             throw new FluentCheckException(result);
@@ -516,7 +515,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new CheckLink<ICheck<string>>(check);
+            return checker.BuildChainingObject();
         }
 
         /// <summary>
@@ -538,7 +537,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new CheckLink<ICheck<string>>(check);
+            return checker.BuildChainingObject();
         }
 
         private static string MatchesImpl(IChecker<string, ICheck<string>> checker, string regExp, bool negated)
@@ -584,7 +583,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new CheckLink<ICheck<string>>(check);
+            return checker.BuildChainingObject();
         }
 
         /// <summary>
@@ -605,7 +604,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new CheckLink<ICheck<string>>(check);
+            return checker.BuildChainingObject();
         }
 
         /// <summary>
@@ -626,7 +625,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new CheckLink<ICheck<string>>(check);
+            return checker.BuildChainingObject();
         }
 
         /// <summary>
@@ -647,7 +646,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new CheckLink<ICheck<string>>(check);
+            return checker.BuildChainingObject();
         }
 
         private static string IsEmptyImpl(IChecker<string, ICheck<string>> checker, bool canBeNull, bool negated)
@@ -700,7 +699,7 @@ namespace NFluent
                 throw new FluentCheckException(result);
             }
 
-            return new CheckLink<ICheck<string>>(check);
+            return checker.BuildChainingObject();
         }
     }
 }

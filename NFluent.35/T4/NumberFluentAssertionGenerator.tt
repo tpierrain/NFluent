@@ -3,7 +3,7 @@
 <#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
 <#@ assembly name="EnvDTE" #>
 <#@ import namespace="EnvDTE" #>
-<#@ include file="..\T4\TemplateFileManagerV2.1.ttinclude" #>
+<#@ include file="..\T4\TemplateFileManager.CS.ttinclude" #>
 <#@ include file="..\T4\TypeCloningHelper.ttinclude" #>
 <#
     // --------------------------------------------------------------------------------------------------------------------
@@ -31,7 +31,10 @@
 
 	var typesToGenerateAssertionsFor = new string[] { "byte", "sbyte", "decimal", "double", "float", "long", "short", "uint", "ulong", "ushort" };
 	
-	string goldenSourceClassFileName = Host.ResolvePath(@"..\Assertions\IntCheckExtensions.cs");
+    var sourcePath = "..\\..\\NFluent.Core\\Checks\\";
+    var project = "NFluent.Core";
+    var folder = "T4Generated";
+	string goldenSourceClassFileName = Host.ResolvePath(sourcePath+"IntCheckExtensions.cs");
 
 	foreach(string typeName in typesToGenerateAssertionsFor)
     {
@@ -41,7 +44,7 @@
 		string properlyCasedTypeName = textInfo.ToTitleCase(typeName);
 		string checkClassName =  properlyCasedTypeName + "CheckExtensions"; // FloatCheckExtensions
 		
-		manager.StartNewFile(checkClassName + ".cs");
+		manager.StartNewFile(checkClassName + ".cs", project, folder);
 		
 		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
 		
@@ -51,7 +54,7 @@
 	// ----------------------------------------------
 	// Methods for signed type only
 	var signedTypesToGenerateAssertionsFor = new string[] { "sbyte", "decimal", "double", "float", "long", "short" };
-	goldenSourceClassFileName = Host.ResolvePath(@"..\Assertions\IntSignedCheckExtensions.cs");
+	goldenSourceClassFileName = Host.ResolvePath(sourcePath+"IntSignedCheckExtensions.cs");
 	
 	foreach(string typeName in signedTypesToGenerateAssertionsFor)
     {
@@ -61,7 +64,7 @@
 		string properlyCasedTypeName = textInfo.ToTitleCase(typeName);
 		string checkClassName =  properlyCasedTypeName + "SignedCheckExtensions"; // FloatCheckExtensions
 		
-		manager.StartNewFile(checkClassName + ".cs");
+		manager.StartNewFile(checkClassName + ".cs", project, folder);
 		
 		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
 		
@@ -71,7 +74,7 @@
 	// ----------------------------------------------
 	// Methods for Floating Point binary related types only
 	var floatingPointBinaryTypesToGenerateAssertionsFor = new string[] { "float" };
-	goldenSourceClassFileName = Host.ResolvePath(@"..\Assertions\DoubleSpecificCheckExtensions.cs");
+	goldenSourceClassFileName = Host.ResolvePath(sourcePath+"DoubleSpecificCheckExtensions.cs");
 	
 	foreach(string typeName in floatingPointBinaryTypesToGenerateAssertionsFor)
     {
@@ -81,7 +84,7 @@
 		string properlyCasedTypeName = textInfo.ToTitleCase(typeName);
 		string checkClassName =  properlyCasedTypeName + "SpecificCheckExtensions";
 		
-		manager.StartNewFile(checkClassName + ".cs");
+		manager.StartNewFile(checkClassName + ".cs", project, folder);
 		
 		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
 		

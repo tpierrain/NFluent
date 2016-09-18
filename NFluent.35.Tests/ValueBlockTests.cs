@@ -18,7 +18,7 @@ namespace NFluent.Tests
     using System;
 
     using Extensibility;
-
+    using Messages;
     using NUnit.Framework;
 
     [TestFixture]

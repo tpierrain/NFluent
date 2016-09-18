@@ -59,27 +59,4 @@ namespace NFluent.Kernel
             }
         }
     }
-
-    /// <summary>
-    /// Provides an specific implementation for IEnumerable fluent check. Required to implement IEnumerable fluent API.
-    /// </summary>
-    /// <typeparam name="T">
-    /// Type managed by this extension.
-    /// </typeparam>
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    internal class ExtendableCheckLink<T> : ExtendableCheckLink<T, T>, IExtendableCheckLink<T>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExtendableCheckLink{T}"/> class. 
-        /// </summary>
-        /// <param name="previousCheck">
-        /// The previous fluent check.
-        /// </param>
-        /// <param name="originalComparand">
-        /// Comparand used for the first check.
-        /// </param>
-        public ExtendableCheckLink(IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense previousCheck, T originalComparand) : base(previousCheck, originalComparand)
-        {
-        }
-    }
 }

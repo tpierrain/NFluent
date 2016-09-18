@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using Kernel;
     using NFluent.Extensibility;
 
     using NUnit.Framework;

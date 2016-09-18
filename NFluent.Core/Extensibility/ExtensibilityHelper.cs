@@ -51,39 +51,6 @@ namespace NFluent.Extensibility
         }
 
         /// <summary>
-        /// Builds a linker to support further checks.
-        /// </summary>
-        /// <typeparam name="T">Checked type</typeparam>
-        /// <param name="check"></param>
-        /// <returns></returns>
-        public static ICheckLink<ICheck<T>> BuildLink<T>(ICheck<T> check)
-        {
-            return new CheckLink<ICheck<T>>(check);
-        }
-
-        /// <summary>
-        /// Builds a linker to support further checks.
-        /// </summary>
-        /// <typeparam name="T">Checked type</typeparam>
-        /// <param name="check"></param>
-        /// <returns></returns>
-        public static ICheckLink<ICodeCheck<T>> BuildLink<T>(ICodeCheck<T> check) where T: RunTrace
-        {
-            return new CheckLink<ICodeCheck<T>>(check);
-        }
-
-        /// <summary>
-        /// Builds a linker to support further checks.
-        /// </summary>
-        /// <typeparam name="T">Checked type</typeparam>
-        /// <param name="check"></param>
-        /// <returns></returns>
-        public static ICheckLink<IStructCheck<T>> BuildLink<T>(IStructCheck<T> check) where T: struct
-        {
-            return new CheckLink<IStructCheck<T>>(check);
-        }
-
-        /// <summary>
         /// Extracts the checker to be used in order to check things on the struct instance contained within
         /// the given fluent check.
         /// </summary>
@@ -98,5 +65,20 @@ namespace NFluent.Extensibility
             // ReSharper disable once SuspiciousTypeConversion.Global
             return ((ICheckForExtensibility<TS, IStructCheck<TS>>)check).Checker;
         }
+
+
+        /// <summary>
+        /// Gets an <see cref="IExtendableCheckLink{T, TU}"/> that permits refining checks
+        /// </summary>
+        /// <param name="check">check to extend</param>
+        /// <param name="value">initial operands</param>
+        /// <typeparam name="T">type of checkd value</typeparam>
+        /// <typeparam name="TU">Type of comparand for previous check</typeparam>
+        /// <returns>An <see cref="IExtendableCheckLink{T,TU}"/>implementation.</returns>
+        public static IExtendableCheckLink<T, TU> BuildExtendableCheckLink<T, TU>(ICheck<T> check, TU value)
+        {
+            return new ExtendableCheckLink<T, TU>(check, value);
+        }
+
     }
 }

@@ -17,7 +17,7 @@ namespace NFluent
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Provides a way to chain two <see cref="IForkableCheck"/> instances or to chain.
+    /// Provides a way to chain two <see cref="ICheck{T}"/> instances or to chain.
     /// </summary>
     /// <typeparam name="N">Number type of the checked nullable.</typeparam>
     public interface INullableOrNumberCheckLink<N> where N : struct

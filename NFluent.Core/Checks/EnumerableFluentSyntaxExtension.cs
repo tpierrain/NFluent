@@ -38,7 +38,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<IEnumerable> Only(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
+        public static IExtendableCheckLink<IEnumerable, IEnumerable> Only(this IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
         {
             chainedCheckLink.And.IsOnlyMadeOf(chainedCheckLink.OriginalComparand);
             return chainedCheckLink;
@@ -53,7 +53,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<IEnumerable> Once(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
+        public static IExtendableCheckLink<IEnumerable, IEnumerable> Once(this IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
         {
             var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
             var itemidx = 0;
@@ -96,7 +96,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<IEnumerable> InThatOrder(this IExtendableCheckLink<IEnumerable> chainedCheckLink)
+        public static IExtendableCheckLink<IEnumerable, IEnumerable> InThatOrder(this IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
         {
             var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
             var orderedList = ConvertToList(chainedCheckLink);
@@ -166,7 +166,7 @@ namespace NFluent
             return chainedCheckLink;
         }
 
-        private static List<object> ConvertToList(IExtendableCheckLink<IEnumerable> chainedCheckLink)
+        private static List<object> ConvertToList(IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
         {
             var orderedList = new List<object>();
             foreach (var item in chainedCheckLink.OriginalComparand)

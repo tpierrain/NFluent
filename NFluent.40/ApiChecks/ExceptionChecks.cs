@@ -1,5 +1,7 @@
 ﻿namespace NFluent.ApiChecks
 {
+    using Kernel;
+
     /// <summary>
     /// This class hosts extensions methods related to exception related checks for APIs/lib.
     /// </summary>

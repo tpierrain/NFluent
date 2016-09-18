@@ -165,3 +165,4 @@ NFluent.Tests/test-results/NFluent.Tests.csproj-Debug-2014-02-24.xml
 
 NFluent.Tests/test-results/NFluent.Tests.csproj.test-cache
 .vs/config/applicationhost.config
+.vs/restore.dg

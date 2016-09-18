@@ -26,7 +26,7 @@ namespace NFluent.Extensions
     /// <summary>
     /// Common helper methods for the NFluent extension methods.
     /// </summary>
-    internal static class ExtensionsCommonHelpers
+    public static class ExtensionsCommonHelpers
     {
         private const string NullText = "null";
         private const int MaximumSizeBeforeTruncation = 197;

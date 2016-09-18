@@ -20,7 +20,7 @@ namespace NFluent
     public interface INegated
     {
         /// <summary>
-        /// Gets a value indicating whether this <see cref="FluentCheck{T}" /> should be negated or not.
+        /// Gets a value indicating whether this <see cref="ICheck{T}" /> should be negated or not.
         /// This property is useful when you implement check methods. 
         /// </summary>
         /// <value>

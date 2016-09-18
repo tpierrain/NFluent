@@ -1,20 +1,21 @@
 
 // Generated helper templates
+// NFluent\NFluent.Core\T4Generated\NumberFluentAssertionGenerator.txt4
 // Generated items
-// NFluent\NFluent.35\T4\FloatSpecificCheckExtensions.cs
-// NFluent\NFluent.35\T4\ShortSignedCheckExtensions.cs
-// NFluent\NFluent.35\T4\LongSignedCheckExtensions.cs
-// NFluent\NFluent.35\T4\FloatSignedCheckExtensions.cs
-// NFluent\NFluent.35\T4\DoubleSignedCheckExtensions.cs
-// NFluent\NFluent.35\T4\DecimalSignedCheckExtensions.cs
-// NFluent\NFluent.35\T4\SbyteSignedCheckExtensions.cs
-// NFluent\NFluent.35\T4\UshortCheckExtensions.cs
-// NFluent\NFluent.35\T4\UlongCheckExtensions.cs
-// NFluent\NFluent.35\T4\UintCheckExtensions.cs
-// NFluent\NFluent.35\T4\ShortCheckExtensions.cs
-// NFluent\NFluent.35\T4\LongCheckExtensions.cs
-// NFluent\NFluent.35\T4\FloatCheckExtensions.cs
-// NFluent\NFluent.35\T4\DoubleCheckExtensions.cs
-// NFluent\NFluent.35\T4\DecimalCheckExtensions.cs
-// NFluent\NFluent.35\T4\SbyteCheckExtensions.cs
-// NFluent\NFluent.35\T4\ByteCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\FloatSpecificCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\ShortSignedCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\LongSignedCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\FloatSignedCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\DoubleSignedCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\DecimalSignedCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\SbyteSignedCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\UshortCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\UlongCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\UintCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\ShortCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\LongCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\FloatCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\DoubleCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\DecimalCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\SbyteCheckExtensions.cs
+// NFluent\NFluent.Core\T4Generated\ByteCheckExtensions.cs

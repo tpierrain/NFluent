@@ -15,11 +15,10 @@
 namespace NFluent
 {
     using System.Diagnostics.CodeAnalysis;
-
     /// <summary>
-    /// Provides a way to chain two <see cref="ICheck"/> instances. 
+    /// Provides a way to chain two <see cref="ICheck{T}"/> instances. 
     /// </summary>
-    /// <typeparam name="T">Type of the <see cref="ICheck"/> to be chained.</typeparam>
+    /// <typeparam name="T">Type of the <see cref="ICheck{T}"/> to be chained.</typeparam>
     public interface ICheckLink<out T> where T : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         /// <summary>

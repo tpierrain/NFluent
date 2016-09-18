@@ -10,12 +10,11 @@
         /// <summary>
         /// Provides access to the error message of the exception.
         /// </summary>
-        /// <param name="check"></param>
-        /// <typeparam name="TParent"></typeparam>
+        /// <param name="check"></param>typeparam>
         /// <returns></returns>
-        public static ICheck<string> AndWhichMessage<TParent>(this ILambdaExceptionCheck<TParent> check)
+        public static ICheck<string> AndWhichMessage(this ILambdaExceptionCheck<RunTrace> check)
         {
-            var checker = check as LambdaExceptionCheck<TParent>;
+            var checker = check as LambdaExceptionCheck<RunTrace>;
             return new FluentCheck<string>(checker.Value.Message);
         }
     }

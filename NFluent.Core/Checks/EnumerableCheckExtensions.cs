@@ -17,7 +17,6 @@ namespace NFluent
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using Kernel;
     using NFluent.Extensibility;
     using NFluent.Extensions;
 
@@ -36,7 +35,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values.</exception>
-        public static IExtendableCheckLink<IEnumerable> Contains<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
+        public static IExtendableCheckLink<IEnumerable, IEnumerable> Contains<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
         {
             var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             return check.Contains(properExpectedValues);
@@ -51,7 +50,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
-        public static IExtendableCheckLink<IEnumerable> Contains(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
+        public static IExtendableCheckLink<IEnumerable, IEnumerable> Contains(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
@@ -79,7 +78,7 @@ namespace NFluent
                 },
                 checker.BuildMessage("The {0} contains all the given values whereas it must not.").ExpectedValues(otherEnumerable).ToString());
 
-            return new ExtendableCheckLink<IEnumerable>(check, otherEnumerable);
+            return ExtensibilityHelper.BuildExtendableCheckLink(check, otherEnumerable);
         }
 
         /// <summary>
@@ -342,7 +341,7 @@ namespace NFluent
                 throw new FluentCheckException(message);
             }
 
-            return new CheckLink<ICheck<IEnumerable>>(check);
+            return checker.BuildChainingObject();
         }
 
         #region private or internal methods
