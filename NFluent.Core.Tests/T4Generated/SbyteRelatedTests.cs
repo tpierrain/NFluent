@@ -16,6 +16,7 @@ namespace NFluent.Tests
 {
     using System.Globalization;
     using NUnit.Framework;
+    using NFluent.Tests.Helpers;
 
     [TestFixture]
     public class SbyteRelatedTests
@@ -33,19 +34,18 @@ namespace NFluent.Tests
         private const string Blabla = ".*?";
         private const string LineFeed = "\\n";
         private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
-        private CultureInfo savedCulture;
+        private CultureSession cultureSession;
 
         [OneTimeSetUp]
         public void ForceCulture()
         {
-            this.savedCulture = CultureInfo.CurrentCulture;
-            CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
+            this.cultureSession = new CultureSession("fr-FR");
         }
 
         [OneTimeTearDown]
         public void RestoreCulture()
         {
-            CultureInfo.CurrentCulture = this.savedCulture;
+            this.cultureSession.Dispose();
         }
 
 

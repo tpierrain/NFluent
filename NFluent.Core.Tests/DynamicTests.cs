@@ -15,7 +15,7 @@
 namespace NFluent.Tests
 {
     using NUnit.Framework;
-
+#if CORE || DOTNET_40
     [TestFixture]
     public class DynamicTests
     {
@@ -43,4 +43,5 @@ namespace NFluent.Tests
             //Check.That<object>(cmd.Subject).IsNotNull();
         }
 }
+#endif
 }

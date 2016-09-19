@@ -13,30 +13,30 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using System.Globalization;
 using NFluent.ApiChecks;
 
 namespace NFluent.Tests
 {
     using System;
+    using System.Runtime.Serialization;
+    using Helpers;
     using NUnit.Framework;
 
     [TestFixture]
     public class LambdaRelatedTests
     {
-        private CultureInfo savedCulture;
+        private CultureSession session;
 
-        [OneTimeSetUp]
+        [SetUp]
         public void ForceCulture()
         {
-            this.savedCulture = CultureInfo.CurrentCulture;
-            CultureInfo.CurrentCulture = new CultureInfo("en-US");
+            this.session = new CultureSession("en-US");
         }
 
-        [OneTimeTearDown]
+        [TearDown]
         public void RestoreCulture()
         {
-            CultureInfo.CurrentCulture = this.savedCulture;
+            this.session.Dispose();
         }
 
         [Test]

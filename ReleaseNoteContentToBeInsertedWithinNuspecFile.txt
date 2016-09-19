@@ -1,4 +1,5 @@
 New feature(s):
+* Preliminary support for .Net Standard (ex .Net Core)
 * Streams: introduce HasSameSequenceOfBytesAs() check.
 * Numbers: introduce IsPositiveOrZero() check.
 * Numbers: introduce IsNegativeOrZero() check.
@@ -21,6 +22,7 @@ Change(s):
   at the beginning of your check extension method, and then rely on its ExecuteCheck() or BuildMessage() helper methods to do the job. Note: the Checker is part of the NFluent.Extensibility namespace.
 * Check.That(Action) can no longer be used (obsolete)
 * Check.That(Func&lt;T&gt;) can no longer be used (obsolete)
+* Reviewing of public elements: Some classes are no longer public. They should never have been in the first class.
 
 --------------
 Bug Fixe(s):

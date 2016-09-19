@@ -95,7 +95,8 @@ namespace NFluent.Tests.ForDocumentation
             }
             catch (Exception e)
             {
-                throw new NotImplementedException("we have to find a new way since NUnit's ExceptedException has disapeared.");
+                throw;
+               // throw new NotImplementedException("we have to find a new way since NUnit's ExceptedException has disapeared.");
 
                 //if (specificTest.GetCustomAttributes(typeof(ExpectedExceptionAttribute), false).Length == 0)
                 //{

@@ -15,23 +15,23 @@
 
 namespace NFluent.Tests
 {
+#if CORE || DOTNET_40
     using System;
     using System.Security;
     using System.Threading;
     using System.Threading.Tasks;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class AsyncRelatedTests
     {
-        #region Fields
+#region Fields
 
         private bool sideEffectAchieved;
 
-        #endregion
+#endregion
 
-        #region Public Methods and Operators
+#region Public Methods and Operators
         
         [Test]
         public void ShouldNotUseCheckThatCodeForAsyncMethods()
@@ -92,9 +92,9 @@ namespace NFluent.Tests
             Check.ThatAsyncCode(this.ReturnTheAnswerAfterAWhileAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
         }
 
-        #endregion
+#endregion
 
-        #region Methods
+#region Methods
 
         private async Task<int> DoSomethingBadAfterAWhileAndBeforeAnsweringAsync()
         {
@@ -131,6 +131,7 @@ namespace NFluent.Tests
             this.sideEffectAchieved = true;
         }
 
-        #endregion
+#endregion
     }
+#endif
 }

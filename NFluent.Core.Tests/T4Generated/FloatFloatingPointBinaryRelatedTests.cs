@@ -15,6 +15,7 @@
 namespace NFluent.Tests
 {
     using System.Globalization;
+    using Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -28,21 +29,6 @@ namespace NFluent.Tests
         //// as the golden source/model for this autogeneration
         //// (i.e. the one dedicated to the integer values).
         //// -----------------------------------------------------
-        private CultureInfo savedCulture;
-
-        [OneTimeSetUp]
-        public void ForceCulture()
-        {
-            this.savedCulture = CultureInfo.CurrentCulture;
-            CultureInfo.CurrentCulture = new CultureInfo("en-US");
-        }
-
-        [OneTimeTearDown]
-        public void RestoreCulture()
-        {
-            CultureInfo.CurrentCulture = this.savedCulture;
-        }
-
 
         #region IsNaN
 
@@ -150,12 +136,15 @@ namespace NFluent.Tests
         [Test]
         public void IsAroundShouldFailsIfToFar()
         {
-            const float Twenty = 20F;
-            Check.ThatCode(() => {
-                                    Check.That(Twenty).IsCloseTo(20.1, 0.01);
-                                 })
-                                .Throws<FluentCheckException>()
-                                .WithMessage("\nThe checked value is outside the expected value range.\nThe checked value:\n\t[20]\nThe expected value:\n\t[20.1 (+/- 0.01)]");
+            using (new CultureSession("en-US"))
+            {
+                const float Twenty = 20F;
+                Check.ThatCode(() => {
+                    Check.That(Twenty).IsCloseTo(20.1, 0.01);
+                })
+                                    .Throws<FluentCheckException>()
+                                    .WithMessage("\nThe checked value is outside the expected value range.\nThe checked value:\n\t[20]\nThe expected value:\n\t[20.1 (+/- 0.01)]");
+            }
         }
 
         #endregion

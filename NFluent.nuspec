@@ -13,23 +13,40 @@
     <description>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).</description>
     <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
     <releaseNotes>New feature(s):
-* Numbers: introduce IsPositiveOrZero() check.
-* Numbers: introduce IsNegativeOrZero() check.
-* Exceptions: introduce the DueTo&lt;InnerException&gt; operator after the Throws&lt;Exception&gt; check.
---------------
-Change(s):
-* Numbers: introduce IsStrictlyPositive() as a substitute for IsPositive() which is now obsolete.
-* Numbers: introduce IsStrictlyNegative() as a substitute for IsNegative() which is now obsolete.
-* Numbers: introduce IsStrictlyGreaterThan() as a substitute for IsGreaterThan() which is now obsolete.
-* Numbers: introduce IsStrictlyLessThan() as a substitute for IsLessThan() which is now obsolete.
-* Improve error messages (consistency and relevance).
-* Check.ThatCode(...).Throws&lt;T&gt;() now requires T to be an exception. This restriction ensures only Exceptions are proposed in autocompletion.
-* Simplify the way you can extend NFluent by adding your own checks. Now, you can call: var checker = ExtensibilityHelper.ExtractChecker(check);  at the beginning of your check extension method, and then rely on its ExecuteCheck() or BuildMessage() helper methods to do the job. Note: the Checker is part of the NFluent.Extensibility namespace.
---------------
-Bug Fixe(s):
-* Fix the inversion between expected and actual error message for the .WithMessage checks on exception.
-* Fix the issue with null value on Check.That(...).IsBefore(...)
-* HasFieldsWithSameValues now recurse along the hierarchy class (Fix for #141)</releaseNotes>
+
+* Numbers: introduce IsPositiveOrZero() check.
+
+* Numbers: introduce IsNegativeOrZero() check.
+
+* Exceptions: introduce the DueTo&lt;InnerException&gt; operator after the Throws&lt;Exception&gt; check.
+
+--------------
+
+Change(s):
+
+* Numbers: introduce IsStrictlyPositive() as a substitute for IsPositive() which is now obsolete.
+
+* Numbers: introduce IsStrictlyNegative() as a substitute for IsNegative() which is now obsolete.
+
+* Numbers: introduce IsStrictlyGreaterThan() as a substitute for IsGreaterThan() which is now obsolete.
+
+* Numbers: introduce IsStrictlyLessThan() as a substitute for IsLessThan() which is now obsolete.
+
+* Improve error messages (consistency and relevance).
+
+* Check.ThatCode(...).Throws&lt;T&gt;() now requires T to be an exception. This restriction ensures only Exceptions are proposed in autocompletion.
+
+* Simplify the way you can extend NFluent by adding your own checks. Now, you can call: var checker = ExtensibilityHelper.ExtractChecker(check);  at the beginning of your check extension method, and then rely on its ExecuteCheck() or BuildMessage() helper methods to do the job. Note: the Checker is part of the NFluent.Extensibility namespace.
+
+--------------
+
+Bug Fixe(s):
+
+* Fix the inversion between expected and actual error message for the .WithMessage checks on exception.
+
+* Fix the issue with null value on Check.That(...).IsBefore(...)
+
+* HasFieldsWithSameValues now recurse along the hierarchy class (Fix for #141)</releaseNotes>
     <copyright>Copyright 2014  Thomas PIERRAIN</copyright>
     <language>en-US</language>
     <tags>tdd bdd test fluent check checks easy nunit xunit mbunit mstestsucks</tags>

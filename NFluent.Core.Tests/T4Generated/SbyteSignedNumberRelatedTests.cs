@@ -14,7 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
-    using System.Globalization;
+    using Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -29,19 +29,18 @@ namespace NFluent.Tests
         //// (i.e. the one dedicated to the integer values).
         //// -----------------------------------------------------
 
-        private CultureInfo savedCulture;
+        private CultureSession session;
 
         [OneTimeSetUp]
         public void ForceCulture()
         {
-            this.savedCulture = CultureInfo.CurrentCulture;
-            CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
+            this.session = new CultureSession("fr-FR");
         }
 
         [OneTimeTearDown]
         public void RestoreCulture()
         {
-            CultureInfo.CurrentCulture = this.savedCulture;
+            this.session.Dispose();
         }
 
 

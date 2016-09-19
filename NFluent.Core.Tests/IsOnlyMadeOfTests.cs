@@ -18,24 +18,24 @@ namespace NFluent.Tests
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Globalization;
+    using Helpers;
     using NUnit.Framework;
 
     [TestFixture]
     public class IsOnlyMadeOfTests
     {
-        private CultureInfo savedCulture;
+        private CultureSession savedCulture;
 
         [OneTimeSetUp]
         public void ForceCulture()
         {
-            this.savedCulture = CultureInfo.CurrentCulture;
-            CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
+            this.savedCulture = new CultureSession("fr-FR");
         }
 
         [OneTimeTearDown]
         public void RestoreCulture()
         {
-            CultureInfo.CurrentCulture = this.savedCulture;
+            this.savedCulture.Dispose();
         }
 
 

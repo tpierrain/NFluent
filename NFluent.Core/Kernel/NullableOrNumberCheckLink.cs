@@ -35,7 +35,7 @@ namespace NFluent.Kernel
         }
 
         // used only for check discovery by helpers used for documentation generation
-        private TN? Value { get; set; }
+        private TN? Value { get; set; } //ncrunch: no coverage 
 
         /// <summary>
         /// Chains a new fluent check on the current one for the nullable value.

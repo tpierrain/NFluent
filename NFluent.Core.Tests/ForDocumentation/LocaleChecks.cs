@@ -14,41 +14,50 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests.ForDocumentation
 {
+    using Helpers;
     using NUnit.Framework;
 
     [TestFixture]
     public class LocaleChecks
     {
         [Test]
-        [Culture("es-ES")]
         [Explicit("Scan all assemblies, execute tests in Spanish.")]
         public void Spanish()
         {
-            RunnerHelper.RunAllTests(false);
+            using (new CultureSession("es-ES"))
+            {
+                RunnerHelper.RunAllTests(false);
+            }
         }
 
         [Test]
-        [Culture("zh-CN")]
         [Explicit("Scan all assemblies, execute tests in Chinese.")]
         public void Chinese()
         {
-            RunnerHelper.RunAllTests(false);
+            using (new CultureSession("zh-CN"))
+            {
+                RunnerHelper.RunAllTests(false);
+            }
         }
 
         [Test]
-        [Culture("fr-CA")]
         [Explicit("Scan all assemblies, execute tests in Canadian French.")]
         public void CanadianFrench()
         {
-            RunnerHelper.RunAllTests(false);
+            using (new CultureSession("fr-CA"))
+            {
+                RunnerHelper.RunAllTests(false);
+            }
         }
 
         [Test]
-        [Culture("ja-JP")]
         [Explicit("Scan all assemblies, execute tests in Japanese.")]
         public void Japanese()
         {
-            RunnerHelper.RunAllTests(false);
+            using (new CultureSession("ja-JP"))
+            {
+                RunnerHelper.RunAllTests(false);
+            }
         }
 
         // TODO: makes the teamcity build execute Explicit tests

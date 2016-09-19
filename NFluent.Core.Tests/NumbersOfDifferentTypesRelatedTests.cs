@@ -14,27 +14,25 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
-    using System.Globalization;
+    using Helpers;
     using NUnit.Framework;
 
     [TestFixture]
     public class NumbersOfDifferentTypesRelatedTests
     {
-        private CultureInfo savedCulture;
+        private CultureSession session;
 
         [OneTimeSetUp]
         public void ForceCulture()
         {
-            this.savedCulture = CultureInfo.CurrentCulture;
-            CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
+            this.session = new CultureSession("en-US");
         }
 
         [OneTimeTearDown]
         public void RestoreCulture()
         {
-            CultureInfo.CurrentCulture = this.savedCulture;
+            this.session.Dispose();
         }
-
 
         #region IsEqualTo / IsNotEqualTo
 

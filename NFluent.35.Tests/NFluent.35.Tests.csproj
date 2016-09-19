@@ -49,113 +49,226 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NFluent.Core.Tests\AndRelatedTests.cs">
+      <Link>AndRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\AsOperatorTests.cs">
+      <Link>AsOperatorTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\AsyncRelatedTests.cs">
+      <Link>AsyncRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\BooleanRelatedTests.cs">
+      <Link>BooleanRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\CharTests.cs">
+      <Link>CharTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ComparableRelatedTests.cs">
+      <Link>ComparableRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\Constants.cs">
+      <Link>Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ContainsChainedSyntaxTests.cs">
+      <Link>ContainsChainedSyntaxTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ContainsExactlyTests.cs">
+      <Link>ContainsExactlyTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ContainsTests.cs">
+      <Link>ContainsTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\DateTimeRelatedTests.cs">
+      <Link>DateTimeRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\DictionaryChecksTests.cs">
+      <Link>DictionaryChecksTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\DoubleFloatingPointBinaryRelatedTests.cs">
+      <Link>DoubleFloatingPointBinaryRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\DurationTests.cs">
+      <Link>DurationTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\DynamicTests.cs">
+      <Link>DynamicTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\EdgeCasesTest.cs">
+      <Link>EdgeCasesTest.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\EnumerableRelatedTests.cs">
+      <Link>EnumerableRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\EnumOrStructRelatedTests.cs">
+      <Link>EnumOrStructRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\EqualRelatedTests.cs">
+      <Link>EqualRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\EventWaitHandleTests.cs">
+      <Link>EventWaitHandleTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ExceptionHelperTests.cs">
+      <Link>ExceptionHelperTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ExceptionTests.cs">
+      <Link>ExceptionTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ExtensibilityHelperTests.cs">
+      <Link>ExtensibilityHelperTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ExtensionSpikeTests.cs">
+      <Link>ExtensionSpikeTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ExtractingRelatedTests.cs">
+      <Link>ExtractingRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\FluentMessageTests.cs">
+      <Link>FluentMessageTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\CheckDescription.cs">
+      <Link>ForDocumentation\CheckDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\CheckList.cs">
+      <Link>ForDocumentation\CheckList.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\FullRunDescription.cs">
+      <Link>ForDocumentation\FullRunDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\GenerateErrorMessages.cs">
+      <Link>ForDocumentation\GenerateErrorMessages.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\LocaleChecks.cs">
+      <Link>ForDocumentation\LocaleChecks.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\RunnerHelper.cs">
+      <Link>ForDocumentation\RunnerHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\TypeChecks.cs">
+      <Link>ForDocumentation\TypeChecks.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\HelpersTest.cs">
+      <Link>HelpersTest.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\Helpers\CultureSession.cs">
+      <Link>Helpers\CultureSession.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\IntRelatedTests.cs">
+      <Link>IntRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\IntSignedNumberRelatedTests.cs">
+      <Link>IntSignedNumberRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\IsInstanceOfTests.cs">
+      <Link>IsInstanceOfTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\IsOnlyMadeOfTests.cs">
+      <Link>IsOnlyMadeOfTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\LambdaDurationTests.cs">
+      <Link>LambdaDurationTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\LambdaRelatedTests.cs">
+      <Link>LambdaRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\NotRelatedTests.cs">
+      <Link>NotRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\NumbersOfDifferentTypesRelatedTests.cs">
+      <Link>NumbersOfDifferentTypesRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ObjectFIeldsRelatedTest.cs">
+      <Link>ObjectFIeldsRelatedTest.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ObjectRelatedTest.cs">
+      <Link>ObjectRelatedTest.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ReadmeRelatedTests.cs">
+      <Link>ReadmeRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ReverseEngineeringExceptionMessagesHelperTests.cs">
+      <Link>ReverseEngineeringExceptionMessagesHelperTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\StreamTests.cs">
+      <Link>StreamTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\StringRelatedTests.cs">
+      <Link>StringRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\ByteRelatedTests.cs">
+      <Link>T4Generated\ByteRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\DecimalRelatedTests.cs">
+      <Link>T4Generated\DecimalRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\DecimalSignedNumberRelatedTests.cs">
+      <Link>T4Generated\DecimalSignedNumberRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\DoubleRelatedTests.cs">
+      <Link>T4Generated\DoubleRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\DoubleSignedNumberRelatedTests.cs">
+      <Link>T4Generated\DoubleSignedNumberRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\FloatFloatingPointBinaryRelatedTests.cs">
+      <Link>T4Generated\FloatFloatingPointBinaryRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\FloatRelatedTests.cs">
+      <Link>T4Generated\FloatRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\FloatSignedNumberRelatedTests.cs">
+      <Link>T4Generated\FloatSignedNumberRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\LongRelatedTests.cs">
+      <Link>T4Generated\LongRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\LongSignedNumberRelatedTests.cs">
+      <Link>T4Generated\LongSignedNumberRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\SbyteRelatedTests.cs">
+      <Link>T4Generated\SbyteRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\SbyteSignedNumberRelatedTests.cs">
+      <Link>T4Generated\SbyteSignedNumberRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\ShortRelatedTests.cs">
+      <Link>T4Generated\ShortRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\ShortSignedNumberRelatedTests.cs">
+      <Link>T4Generated\ShortSignedNumberRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\UintRelatedTests.cs">
+      <Link>T4Generated\UintRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\UlongRelatedTests.cs">
+      <Link>T4Generated\UlongRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\T4Generated\UshortRelatedTests.cs">
+      <Link>T4Generated\UshortRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\TimeHelperTest.cs">
+      <Link>TimeHelperTest.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\TimeSpanTests.cs">
+      <Link>TimeSpanTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ToEnumeratedStringTests.cs">
+      <Link>ToEnumeratedStringTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\UserReportedIssuesTests.cs">
+      <Link>UserReportedIssuesTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\ValueBlockTests.cs">
+      <Link>ValueBlockTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\XamarinSpecificTests.cs">
+      <Link>XamarinSpecificTests.cs</Link>
+    </Compile>
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="AndRelatedTests.cs" />
-    <Compile Include="AsOperatorTests.cs" />
-    <Compile Include="ExceptionHelperTests.cs" />
-    <Compile Include="CharTests.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="DictionaryChecksTests.cs" />
-    <Compile Include="DoubleFloatingPointBinaryRelatedTests.cs" />
-    <Compile Include="DurationTests.cs" />
-    <Compile Include="EdgeCasesTest.cs" />
-    <Compile Include="EventWaitHandleTests.cs" />
-    <Compile Include="ExceptionTests.cs" />
-    <Compile Include="ExtensibilityHelperTests.cs" />
-    <Compile Include="HelpersTest.cs" />
-    <Compile Include="IntSignedNumberRelatedTests.cs" />
-    <Compile Include="IntRelatedTests.cs" />
-    <Compile Include="EnumOrStructRelatedTests.cs" />
-    <Compile Include="ContainsChainedSyntaxTests.cs" />
-    <Compile Include="ForDocumentation\CheckDescription.cs" />
-    <Compile Include="ComparableRelatedTests.cs" />
-    <Compile Include="IsOnlyMadeOfTests.cs" />
-    <Compile Include="ContainsExactlyTests.cs" />
-    <Compile Include="ContainsTests.cs" />
-    <Compile Include="ExtensionSpikeTests.cs" />
-    <Compile Include="BooleanRelatedTests.cs" />
-    <Compile Include="DateTimeRelatedTests.cs" />
-    <Compile Include="ForDocumentation\CheckList.cs" />
-    <Compile Include="ForDocumentation\FullRunDescription.cs" />
-    <Compile Include="ForDocumentation\GenerateErrorMessages.cs" />
-    <Compile Include="ForDocumentation\LocaleChecks.cs" />
-    <Compile Include="ForDocumentation\RunnerHelper.cs" />
-    <Compile Include="ForDocumentation\TypeChecks.cs" />
-    <Compile Include="IsInstanceOfTests.cs" />
-    <Compile Include="LambdaDurationTests.cs" />
-    <Compile Include="LambdaRelatedTests.cs" />
-    <Compile Include="FluentMessageTests.cs" />
-    <Compile Include="NotRelatedTests.cs" />
-    <Compile Include="NumbersOfDifferentTypesRelatedTests.cs" />
-    <Compile Include="ObjectFIeldsRelatedTest.cs" />
-    <Compile Include="ObjectRelatedTest.cs" />
-    <Compile Include="ExtractingRelatedTests.cs" />
-    <Compile Include="EqualRelatedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="EnumerableRelatedTests.cs" />
-    <Compile Include="ReadmeRelatedTests.cs" />
-    <Compile Include="ReverseEngineeringExceptionMessagesHelperTests.cs" />
-    <Compile Include="StreamTests.cs" />
-    <Compile Include="StringRelatedTests.cs" />
-    <Compile Include="T4\ByteRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\DecimalRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\DecimalSignedNumberRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\DoubleRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\DoubleSignedNumberRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\FloatFloatingPointBinaryRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\FloatRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\FloatSignedNumberRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\LongRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\LongSignedNumberRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\SbyteRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\SbyteSignedNumberRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\ShortRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\ShortSignedNumberRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\UintRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\UlongRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\UshortRelatedTests.cs">
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TimeHelperTest.cs" />
-    <Compile Include="TimeSpanTests.cs" />
-    <Compile Include="ToEnumeratedStringTests.cs" />
-    <Compile Include="UserReportedIssuesTests.cs" />
-    <Compile Include="ValueBlockTests.cs" />
-    <Compile Include="XamarinSpecificTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NFluent.snk" />
@@ -188,7 +301,6 @@
     </Content>
     <Content Include="ExpectedFile.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="T4\NumberTestsGenerator.txt">
       <AutoGen>True</AutoGen>
