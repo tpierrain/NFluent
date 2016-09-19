@@ -23,7 +23,7 @@ namespace NFluent.Helpers
     /// <summary>
     /// Represents a duration as an unit and a quantity.
     /// </summary>
-    internal struct Duration
+    public struct Duration
     {
         #region fields
 

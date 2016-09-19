@@ -13,8 +13,6 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-
 namespace NFluent.Tests
 {
     using System;

@@ -23,7 +23,7 @@ namespace NFluent
     /// <summary>
     /// Static classes hosting all error messages related extensions.
     /// </summary>
-    internal static class MessageRelatedExtensions
+    public static class MessageRelatedExtensions
     {
         #region Public Methods and Operators
 

@@ -48,6 +48,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.PCL", "NFluent.PCL\
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NFluent.Core", "NFluent.Core\NFluent.Core.xproj", "{0807754F-A6C2-40EA-B42E-64D8578F6B8C}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NFluent.Core.Tests", "NFluent.Core.Tests\NFluent.Core.Tests.xproj", "{EE24FFE4-76DA-4500-A464-21C96C02E66A}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NFluent.Tests.Extensions.Core", "NFluent.Tests.Extensions.Core\NFluent.Tests.Extensions.Core.xproj", "{B262ABB9-6192-4DEE-8144-89C3C7E465EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +90,14 @@ Global
 		{0807754F-A6C2-40EA-B42E-64D8578F6B8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0807754F-A6C2-40EA-B42E-64D8578F6B8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0807754F-A6C2-40EA-B42E-64D8578F6B8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE24FFE4-76DA-4500-A464-21C96C02E66A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE24FFE4-76DA-4500-A464-21C96C02E66A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE24FFE4-76DA-4500-A464-21C96C02E66A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE24FFE4-76DA-4500-A464-21C96C02E66A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B262ABB9-6192-4DEE-8144-89C3C7E465EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B262ABB9-6192-4DEE-8144-89C3C7E465EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B262ABB9-6192-4DEE-8144-89C3C7E465EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B262ABB9-6192-4DEE-8144-89C3C7E465EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

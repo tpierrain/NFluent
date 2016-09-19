@@ -28,8 +28,6 @@ namespace NFluent.Helpers
     /// </summary>
     public static class ExceptionHelper
     {
-#if !(PORTABLE) && !(CORE)
-
         // ncrunch: no coverage start
 
         private static ExceptionConstructor constructors;
@@ -52,6 +50,7 @@ namespace NFluent.Helpers
                     // assert we have a default constructor
                     Debug.Assert(defaultConstructor != null, "NFluent exception must provide a constructor accepting a single string as parameter!");
 
+
                     ExceptionConstructor resultScan;
 
                     // look for MSTest
@@ -72,7 +71,6 @@ namespace NFluent.Helpers
                     {
                         result = resultScan;
                     }
-
                     constructors = result;
                 }
 
@@ -82,8 +80,9 @@ namespace NFluent.Helpers
 
         private static ExceptionConstructor ExceptionScanner(string assemblyMarker, string nameSpace, string assertionExceptionName, string ignoreExceptionName, string inconclusiveExceptionName)
         {
+#if !(PORTABLE) && !(CORE)
             var foundExceptions = 0;
-            var result = new ExceptionConstructor();
+           var result = new ExceptionConstructor();
             var defaultSignature = new[] { typeof(string) };
             foreach (
                 var assembly in 
@@ -139,6 +138,8 @@ namespace NFluent.Helpers
                     }
                 }
             }
+#endif
+
 
             return null;
         }
@@ -167,12 +168,11 @@ namespace NFluent.Helpers
 
         // ncrunch: no coverage end
 
-#endif
-        /// <summary>
-        /// Return a string containing the complete stack trace of the InnerExceptions for the given Exception.
-        /// </summary>
-        /// <param name="exception">The exception.</param>
-        /// <returns>A string containing the complete stack trace of the InnerExceptions for the given Exception.</returns>
+                    /// <summary>
+                    /// Return a string containing the complete stack trace of the InnerExceptions for the given Exception.
+                    /// </summary>
+                    /// <param name="exception">The exception.</param>
+                    /// <returns>A string containing the complete stack trace of the InnerExceptions for the given Exception.</returns>
         public static string DumpInnerExceptionStackTrace(Exception exception)
         {
             var result = new StringBuilder();
