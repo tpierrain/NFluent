@@ -165,8 +165,8 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>NumberTestsGenerator.txt</LastGenOutput>
     </None>
-    <None Include="T4\TemplateFileManagerV2.1.ttinclude" />
-    <None Include="T4\TypeCloningHelper.ttinclude" />
+    <None Include="T4\TemplateFilemanager.CS.ttinclude" />
+    <None Include="T4\TestsCloningHelper.ttinclude" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NFluent.35\NFluent.35.csproj">

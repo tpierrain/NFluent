@@ -28,7 +28,7 @@ public class UnitTestsConfigurationForType
 /// <summary>
 /// Provides a way to clone an existing generic type into other ones with different type params.
 /// </summary>
-public static class TypeCloningHelper
+public static class TestsCloningHelper
 {
 	public static string GenerateTestSourceCode(string goldenSourceClassFileName, string originalSourceClassName, string checkClassName, UnitTestsConfigurationForType config)
     {
@@ -75,10 +75,10 @@ public static class TypeCloningHelper
 		return sb.ToString();
     }
 
-	public static void GenerateTestsViaCloning(string goldenSourceClassFileName, string originalSourceClassName, string outputFileNameSuffix, List<UnitTestsConfigurationForType> typesToWriteTestsFor, TemplateFileManager templateFileManager, TextTransformation textTransformation)
+	public static void GenerateTestsViaCloning(string goldenSourceClassFileName, string originalSourceClassName, string outputFileNameSuffix
+        , string project, string folder
+        , List<UnitTestsConfigurationForType> typesToWriteTestsFor, TemplateFileManager templateFileManager, TextTransformation textTransformation)
     {
-		// TODO: infer the originalSourceClassName from the goldenSourceClassFileName last part
-
 		foreach(var unitTestConfig in typesToWriteTestsFor)
 		{
 			// Creates a TextInfo based on the "en-US" culture in order to use the ToTitleCase() method
@@ -87,10 +87,10 @@ public static class TypeCloningHelper
 			string checkClassName =  properlyCasedTypeName + outputFileNameSuffix;
 		
 			// Prepares he creation of a new output file
-			templateFileManager.StartNewFile(checkClassName + ".cs");
+			templateFileManager.StartNewFile(checkClassName + ".cs", project, folder);
 		
 			// Infers the source code for this new output file
-			string sourceCode = TypeCloningHelper.GenerateTestSourceCode(goldenSourceClassFileName, originalSourceClassName, checkClassName, unitTestConfig);
+			string sourceCode = TestsCloningHelper.GenerateTestSourceCode(goldenSourceClassFileName, originalSourceClassName, checkClassName, unitTestConfig);
 			textTransformation.Write(sourceCode);
 		}
     }
