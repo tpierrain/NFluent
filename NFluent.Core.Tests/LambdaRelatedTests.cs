@@ -14,21 +14,30 @@
 // // --------------------------------------------------------------------------------------------------------------------
 
 using System.Globalization;
-using System.Threading;
 using NFluent.ApiChecks;
 
 namespace NFluent.Tests
 {
     using System;
-    using System.Runtime.Serialization;
-
     using NUnit.Framework;
 
     [TestFixture]
-    [Culture("en-US")]
     public class LambdaRelatedTests
     {
-        private readonly ExceptionTests exceptionTests = new ExceptionTests();
+        private CultureInfo savedCulture;
+
+        [OneTimeSetUp]
+        public void ForceCulture()
+        {
+            this.savedCulture = CultureInfo.CurrentCulture;
+            CultureInfo.CurrentCulture = new CultureInfo("en-US");
+        }
+
+        [OneTimeTearDown]
+        public void RestoreCulture()
+        {
+            CultureInfo.CurrentCulture = this.savedCulture;
+        }
 
         [Test]
         public void NoExceptionRaised()
@@ -50,7 +59,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { throw new Exception(); }).DoesNotThrow();
             })
             .Throws<FluentCheckException>()
-            .AndWhichMessage().StartsWith("\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.ApplicationException}:"); // TODO: mimic StartsWith
+            .AndWhichMessage().StartsWith("\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.Exception}:"); // TODO: mimic StartsWith
         }
 
         [Test]
@@ -228,7 +237,7 @@ namespace NFluent.Tests
                         .DueTo<Exception>();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\r\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.NotFiniteNumberException]");
+            .WithMessage("\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\r\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.Exception]");
         }
 
         [Test]
@@ -241,7 +250,7 @@ namespace NFluent.Tests
                         .DueTo<Exception>();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.InvalidCastException } \"whatever mate\"\n--> { System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\r\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.NotFiniteNumberException]");
+            .WithMessage("\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.InvalidCastException } \"whatever mate\"\n--> { System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\r\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.Exception]");
         }
 
 
