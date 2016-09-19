@@ -151,6 +151,9 @@
     <Compile Include="..\NFluent.Core\Extensions\ObjectExtensions.cs">
       <Link>Extensions\ObjectExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.Core\Extensions\StringExtensions.cs">
+      <Link>Extensions\StringExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.Core\ExtractingExtensions.cs">
       <Link>ExtractingExtensions.cs</Link>
     </Compile>

@@ -53,7 +53,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatCode(() => { throw new Exception(); }).Throws<Exception>();
+                Check.ThatCode(() => { throw new Exception(); }).Throws<InvalidOperationException>();
             })
             .Throws<FluentCheckException>()
             .AndWhichMessage().Contains("\nThe checked code raised an exception of a different type than expected."); // TODO: reproduce Contains

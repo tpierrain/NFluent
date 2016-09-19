@@ -18,6 +18,7 @@ namespace NFluent
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using Extensions;
     using NFluent.Extensibility;
 
     /// <summary>
@@ -298,8 +299,8 @@ namespace NFluent
                     message += string.Format(
                         " At {0}, expected '{3}{1}{4}' was '{3}{2}{4}'", 
                         firstDiff, 
-                        expectedString.Substring(blockStart, blockLen), 
-                        value.Substring(blockStart, blockLen), 
+                        expectedString.Substring(blockStart, blockLen).Escaped(), 
+                        value.Substring(blockStart, blockLen).Escaped(), 
                         prefix, 
                         suffix);
                 }
@@ -329,6 +330,7 @@ namespace NFluent
             return (actual[firstDiff].Equals(' ') && expected[firstDiff].Equals('\t')) || (actual[firstDiff].Equals('\t') && expected[firstDiff].Equals(' '));
         }
 
+        // ReSharper disable once InconsistentNaming
         private static bool IsACRLFDifference(int firstDiff, string expected, string actual)
         {
             return (actual[firstDiff].Equals('\n') && expected[firstDiff].Equals('\r')) || (actual[firstDiff].Equals('\r') && expected[firstDiff].Equals('\n'));

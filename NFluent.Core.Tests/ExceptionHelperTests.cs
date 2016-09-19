@@ -29,17 +29,20 @@ namespace NFluent.Tests
         {
             var exception = new ArgumentException("blahblah#1", new ArgumentOutOfRangeException("blahblah#2", new Exception("blahblah#3")));
 
-            Check.That(ExceptionHelper.DumpInnerExceptionStackTrace(exception)).IsEqualTo("{ System.ArgumentOutOfRangeException } \"blahblah#2\"\n--> { System.NotFiniteNumberException } \"blahblah#3\"");
+            Check.That(ExceptionHelper.DumpInnerExceptionStackTrace(exception)).IsEqualTo("{ System.ArgumentOutOfRangeException } \"blahblah#2\"\n--> { System.Exception } \"blahblah#3\"");
         }
 
         [Test]
         public void Should_detect_NUnit()
         {
             var ex = ExceptionHelper.BuildException("the message");
-            
+#if CORE
+            Check.That(ex.GetType().FullName).IsEqualTo("NFluent.FluentCheckException");
+#else    
             // test is relaxed due to issue on Xamarin
             Check.That(ex.GetType().FullName).IsEqualTo("NUnit.Framework.AssertionException");
             ////Check.That(ex).IsInstanceOf<AssertionException>();
+#endif
         }
     }
 }
