@@ -3,8 +3,8 @@
 <#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
 <#@ assembly name="EnvDTE" #>
 <#@ import namespace="EnvDTE" #>
-<#@ include file="TemplateFileManagerV2.1.ttinclude" #>
-<#@ include file="TypeCloningHelper.ttinclude" #>
+<#@ include file="TemplateFileManager.CS.ttinclude" #>
+<#@ include file="TestsCloningHelper.ttinclude" #>
 <#
     // --------------------------------------------------------------------------------------------------------------------
     // <copyright file="NumberTestsGenerator.tt" company="">
@@ -46,8 +46,13 @@
 		};
 
 // ...RelatedTests ----------------------------------------------------
-	string goldenSourceClassFileName = Host.ResolvePath(@"..\IntRelatedTests.cs");
-	TypeCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntRelatedTests", "RelatedTests", typesToWriteTestsFor, manager, this);
+		// TODO: infer the originalSourceClassName from the goldenSourceClassFileName last part
+        var sourcePath = @"..\..\NFluent.Core.Tests\";
+        var project = "NFluent.Core.Tests";
+        var folder = "T4Generated";
+
+	string goldenSourceClassFileName = Host.ResolvePath(sourcePath+"IntRelatedTests.cs");
+	TestsCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntRelatedTests", "RelatedTests", project, folder, typesToWriteTestsFor, manager, this);
 	
 
 // Signed...RelatedTests ----------------------------------------------------
@@ -61,8 +66,8 @@
 			new UnitTestsConfigurationForType() { TypeName = "short", DetailedTypeName = "short", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
 			new UnitTestsConfigurationForType() { TypeName = "sbyte", DetailedTypeName = "sbyte", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
 		};
-	goldenSourceClassFileName = Host.ResolvePath(@"..\IntSignedNumberRelatedTests.cs");
-	TypeCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntSignedNumberRelatedTests", "SignedNumberRelatedTests", signedTypesToWriteTestsFor, manager, this);
+	goldenSourceClassFileName = Host.ResolvePath(sourcePath+"IntSignedNumberRelatedTests.cs");
+	TestsCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntSignedNumberRelatedTests", "SignedNumberRelatedTests", project, folder, signedTypesToWriteTestsFor, manager, this);
 	
 
 
@@ -72,8 +77,8 @@
 			// signed types
 			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "float", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F", ValueForMinusFifty = "-50F" }
 		};
-	goldenSourceClassFileName = Host.ResolvePath(@"..\DoubleFloatingPointBinaryRelatedTests.cs");
-	TypeCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "DoubleFloatingPointBinaryRelatedTests", "FloatingPointBinaryRelatedTests", floatingPointBinaryTypesToWriteTestsFor, manager, this);
+	goldenSourceClassFileName = Host.ResolvePath(sourcePath+"DoubleFloatingPointBinaryRelatedTests.cs");
+	TestsCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "DoubleFloatingPointBinaryRelatedTests", "FloatingPointBinaryRelatedTests", project, folder, floatingPointBinaryTypesToWriteTestsFor, manager, this);
 	
 
 	// Write output code into multiple files

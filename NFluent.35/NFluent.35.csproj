@@ -48,144 +48,293 @@
     <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <Reference Include="envdte100, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NFluent.Core\ApiChecks\ExceptionChecks.cs">
+      <Link>ApiChecks\ExceptionChecks.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Check.cs">
+      <Link>Check.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\BooleanCheckExtensions.cs">
+      <Link>Checks\BooleanCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\CharCheckExtensions.cs">
+      <Link>Checks\CharCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\CodeCheckExtensions.cs">
+      <Link>Checks\CodeCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\ComparableCheckExtensions.cs">
+      <Link>Checks\ComparableCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\Constants.cs">
+      <Link>Checks\Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\DateTimeCheckExtensions.cs">
+      <Link>Checks\DateTimeCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\DictionaryCheckExtensions.cs">
+      <Link>Checks\DictionaryCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\DoubleSpecificCheckExtensions.cs">
+      <Link>Checks\DoubleSpecificCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\EnumerableCheckExtensions.cs">
+      <Link>Checks\EnumerableCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\EnumerableFluentSyntaxExtension.cs">
+      <Link>Checks\EnumerableFluentSyntaxExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\EventWaitHandleCheckExtensions.cs">
+      <Link>Checks\EventWaitHandleCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\IntCheckExtensions.cs">
+      <Link>Checks\IntCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\IntSignedCheckExtensions.cs">
+      <Link>Checks\IntSignedCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\LambdaExceptionCheck.cs">
+      <Link>Checks\LambdaExceptionCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\ObjectCheckExtensions.cs">
+      <Link>Checks\ObjectCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\ObjectFieldsCheckExtensions.cs">
+      <Link>Checks\ObjectFieldsCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\StreamCheckExtensions.cs">
+      <Link>Checks\StreamCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\StringCheckExtensions.cs">
+      <Link>Checks\StringCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\StringFluentSyntaxExtension.cs">
+      <Link>Checks\StringFluentSyntaxExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\StructCheckExtensions.cs">
+      <Link>Checks\StructCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Checks\TimeSpanCheckExtensions.cs">
+      <Link>Checks\TimeSpanCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Extensibility\ExtensibilityHelper.cs">
+      <Link>Extensibility\ExtensibilityHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Extensibility\IChecker.cs">
+      <Link>Extensibility\IChecker.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Extensibility\ICheckForExtensibility.cs">
+      <Link>Extensibility\ICheckForExtensibility.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Extensibility\IExposingChecker.cs">
+      <Link>Extensibility\IExposingChecker.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Extensibility\MessageBlock.cs">
+      <Link>Extensibility\MessageBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Extensions\EnumerableExtensions.cs">
+      <Link>Extensions\EnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Extensions\ExtensionsCommonHelpers.cs">
+      <Link>Extensions\ExtensionsCommonHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Extensions\MessageRelatedExtensions.cs">
+      <Link>Extensions\MessageRelatedExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Extensions\ObjectExtensions.cs">
+      <Link>Extensions\ObjectExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Extensions\StringExtensions.cs">
+      <Link>Extensions\StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\ExtractingExtensions.cs">
+      <Link>ExtractingExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\FluentCheckException.cs">
+      <Link>FluentCheckException.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Helpers\Duration.cs">
+      <Link>Helpers\Duration.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Helpers\EqualityHelper.cs">
+      <Link>Helpers\EqualityHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Helpers\ExceptionHelper.cs">
+      <Link>Helpers\ExceptionHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Helpers\IsInstanceHelper.cs">
+      <Link>Helpers\IsInstanceHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Helpers\TimeHelper.cs">
+      <Link>Helpers\TimeHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\ICheck.cs">
+      <Link>ICheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\ICheckLink.cs">
+      <Link>ICheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\ICodeCheck.cs">
+      <Link>ICodeCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\IExtendableCheckLink.cs">
+      <Link>IExtendableCheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\IHasParentCheck.cs">
+      <Link>IHasParentCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\ILambdaExceptionCheck.cs">
+      <Link>ILambdaExceptionCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense.cs">
+      <Link>IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\INegateableCheck.cs">
+      <Link>INegateableCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\INegated.cs">
+      <Link>INegated.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\INullableOrNumberCheckLink.cs">
+      <Link>INullableOrNumberCheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\IStructCheck.cs">
+      <Link>IStructCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\IWithValue.cs">
+      <Link>IWithValue.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Kernel\CheckContext.cs">
+      <Link>Kernel\CheckContext.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Kernel\Checker.cs">
+      <Link>Kernel\Checker.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Kernel\CheckLink.cs">
+      <Link>Kernel\CheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Kernel\ExtendableCheckLink.cs">
+      <Link>Kernel\ExtendableCheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Kernel\FluentCheck.cs">
+      <Link>Kernel\FluentCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Kernel\FluentCodeCheck.cs">
+      <Link>Kernel\FluentCodeCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Kernel\FluentStructCheck.cs">
+      <Link>Kernel\FluentStructCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Kernel\IForkableCheck.cs">
+      <Link>Kernel\IForkableCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Kernel\NullableOrNumberCheckLink.cs">
+      <Link>Kernel\NullableOrNumberCheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Kernel\NumberCheck.cs">
+      <Link>Kernel\NumberCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Messages\EntityNamer.cs">
+      <Link>Messages\EntityNamer.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Messages\EnumerationBlock.cs">
+      <Link>Messages\EnumerationBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Messages\FluentMessage.cs">
+      <Link>Messages\FluentMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Messages\GenericLabelBlock.cs">
+      <Link>Messages\GenericLabelBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Messages\InstanceBlock.cs">
+      <Link>Messages\InstanceBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Messages\IValueDescription.cs">
+      <Link>Messages\IValueDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Messages\RangeBlock.cs">
+      <Link>Messages\RangeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Messages\ReverseEngineeringExceptionMessagesHelper.cs">
+      <Link>Messages\ReverseEngineeringExceptionMessagesHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Messages\ValueBlock.cs">
+      <Link>Messages\ValueBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Obsolete\ILambdaCheck.cs">
+      <Link>Obsolete\ILambdaCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\RunTrace.cs">
+      <Link>RunTrace.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\RunTraceResult.cs">
+      <Link>RunTraceResult.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\ByteCheckExtensions.cs">
+      <Link>T4Generated\ByteCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\DecimalCheckExtensions.cs">
+      <Link>T4Generated\DecimalCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\DecimalSignedCheckExtensions.cs">
+      <Link>T4Generated\DecimalSignedCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\DoubleCheckExtensions.cs">
+      <Link>T4Generated\DoubleCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\DoubleSignedCheckExtensions.cs">
+      <Link>T4Generated\DoubleSignedCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\FloatCheckExtensions.cs">
+      <Link>T4Generated\FloatCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\FloatSignedCheckExtensions.cs">
+      <Link>T4Generated\FloatSignedCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\FloatSpecificCheckExtensions.cs">
+      <Link>T4Generated\FloatSpecificCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\LongCheckExtensions.cs">
+      <Link>T4Generated\LongCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\LongSignedCheckExtensions.cs">
+      <Link>T4Generated\LongSignedCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\SbyteCheckExtensions.cs">
+      <Link>T4Generated\SbyteCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\SbyteSignedCheckExtensions.cs">
+      <Link>T4Generated\SbyteSignedCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\ShortCheckExtensions.cs">
+      <Link>T4Generated\ShortCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\ShortSignedCheckExtensions.cs">
+      <Link>T4Generated\ShortSignedCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\UintCheckExtensions.cs">
+      <Link>T4Generated\UintCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\UlongCheckExtensions.cs">
+      <Link>T4Generated\UlongCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\T4Generated\UshortCheckExtensions.cs">
+      <Link>T4Generated\UshortCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\TimeUnit.cs">
+      <Link>TimeUnit.cs</Link>
+    </Compile>
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="ApiChecks\ExceptionChecks.cs" />
-    <Compile Include="Assertions\BooleanCheckExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Assertions\CharCheckExtensions.cs" />
-    <Compile Include="Assertions\CodeCheckExtensions.cs" />
-    <Compile Include="Assertions\DoubleSpecificCheckExtensions.cs" />
-    <Compile Include="Assertions\EventWaitHandleCheckExtensions.cs" />
-    <Compile Include="Assertions\StreamCheckExtensions.cs" />
-    <Compile Include="Assertions\ObjectFieldsCheckExtensions.cs" />
-    <Compile Include="Extensibility\EntityNamer.cs" />
-    <Compile Include="Extensibility\EnumerationBlock.cs" />
-    <Compile Include="Extensibility\GenericLabelBlock.cs" />
-    <Compile Include="Extensibility\InstanceBlock.cs" />
-    <Compile Include="Extensibility\IValueDescription.cs" />
-    <Compile Include="Extensibility\MessageBlock.cs" />
-    <Compile Include="Extensibility\ReverseEngineeringExceptionMessagesHelper.cs" />
-    <Compile Include="Extensibility\RangeBlock.cs" />
-    <Compile Include="Extensibility\ValueBlock.cs" />
-    <Compile Include="Extensions\MessageRelatedExtensions.cs" />
-    <Compile Include="FluentCodeCheck.cs" />
-    <Compile Include="Extensibility\ExtensibilityHelper.cs" />
-    <Compile Include="Assertions\IntSignedCheckExtensions.cs" />
-    <Compile Include="Assertions\DictionaryCheckExtensions.cs" />
-    <Compile Include="Assertions\StringFluentSyntaxExtension.cs" />
-    <Compile Include="CheckContext.cs" />
-    <Compile Include="Helpers\Duration.cs" />
-    <Compile Include="Helpers\ExceptionHelper.cs" />
-    <Compile Include="Extensibility\FluentMessage.cs" />
-    <Compile Include="ICodeCheck.cs" />
-    <Compile Include="IExposingChecker.cs" />
-    <Compile Include="IHasParentCheck.cs" />
-    <Compile Include="ILambdaExceptionCheck.cs" />
-    <Compile Include="IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense.cs" />
-    <Compile Include="Assertions\LambdaExceptionCheck.cs" />
-    <Compile Include="IWithValue.cs" />
-    <Compile Include="RunTrace.cs" />
-    <Compile Include="RunTraceResult.cs" />
-    <Compile Include="T4\DecimalSignedCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\DoubleSignedCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\FloatSignedCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\FloatSpecificCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\LongSignedCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\SbyteSignedCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\ShortSignedCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TimeUnit.cs" />
-    <Compile Include="IExtendableCheckLink.cs" />
-    <Compile Include="Assertions\StructCheckExtensions.cs" />
-    <Compile Include="NullableOrNumberCheckLink.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="INullableOrNumberCheckLink.cs" />
-    <Compile Include="INegated.cs" />
-    <Compile Include="ICheckForExtensibility.cs" />
-    <Compile Include="FluentStructCheck.cs" />
-    <Compile Include="Extensibility\Checker.cs" />
-    <Compile Include="Extensibility\IChecker.cs" />
-    <Compile Include="INegateableCheck.cs" />
-    <Compile Include="IStructCheck.cs" />
-    <Compile Include="Assertions\ExtendableCheckLink.cs" />
-    <Compile Include="Assertions\EnumerableFluentSyntaxExtension.cs" />
-    <Compile Include="ILambdaCheck.cs" />
-    <Compile Include="Assertions\TimeSpanCheckExtensions.cs" />
-    <Compile Include="CheckLink.cs" />
-    <Compile Include="Check.cs" />
-    <Compile Include="Assertions\DateTimeCheckExtensions.cs" />
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Helpers\EqualityHelper.cs" />
-    <Compile Include="Extensions\ExtensionsCommonHelpers.cs" />
-    <Compile Include="Extensions\ObjectExtensions.cs" />
-    <Compile Include="ICheckLink.cs" />
-    <Compile Include="IForkableCheck.cs" />
-    <Compile Include="Assertions\NumberCheck.cs" />
-    <Compile Include="FluentCheckException.cs" />
-    <Compile Include="Assertions\ComparableCheckExtensions.cs" />
-    <Compile Include="Assertions\EnumerableCheckExtensions.cs" />
-    <Compile Include="Assertions\ObjectCheckExtensions.cs" />
-    <Compile Include="FluentCheck.cs" />
-    <Compile Include="ICheck.cs" />
-    <Compile Include="Assertions\IntCheckExtensions.cs" />
-    <Compile Include="Helpers\IsInstanceHelper.cs" />
-    <Compile Include="Extensions\ExtractingExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Assertions\StringCheckExtensions.cs" />
-    <Compile Include="Helpers\TimeHelper.cs" />
-    <Compile Include="T4\ByteCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\DecimalCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\DoubleCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\FloatCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\LongCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\SbyteCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\ShortCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\UintCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\UlongCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T4\UshortCheckExtensions.cs">
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="NFluent.snk" />
@@ -196,7 +345,6 @@
       <TransformOnBuild>False</TransformOnBuild>
       <LastGenOutput>NumberFluentAssertionGenerator.txt</LastGenOutput>
     </None>
-    <None Include="T4\TemplateFileManagerV2.1.ttinclude" />
     <None Include="Settings.StyleCop" />
     <None Include="T4\TypeCloningHelper.ttinclude" />
   </ItemGroup>
@@ -210,6 +358,7 @@
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
