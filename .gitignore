@@ -157,6 +157,14 @@ $RECYCLE.BIN/
 .DS_Store
 ._.DS_Store
 
+# dotnet core crap
+*.swp
+*.*~
+bin/
+obj/
+project.lock.json
+.DS_Store
+
 *MyPersonalPaperNote.md
 
 NFluent.userprefs
