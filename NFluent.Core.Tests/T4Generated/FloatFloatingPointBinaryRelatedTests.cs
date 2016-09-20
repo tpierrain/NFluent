@@ -14,7 +14,6 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
-    using System.Globalization;
     using Helpers;
     using NUnit.Framework;
 
