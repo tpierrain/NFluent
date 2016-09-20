@@ -346,6 +346,7 @@
       <LastGenOutput>NumberFluentAssertionGenerator.txt</LastGenOutput>
     </None>
     <None Include="Settings.StyleCop" />
+    <None Include="T4\TemplateFilemanager.CS.ttinclude" />
     <None Include="T4\TypeCloningHelper.ttinclude" />
   </ItemGroup>
   <ItemGroup>
