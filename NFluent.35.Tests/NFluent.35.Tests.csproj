@@ -154,6 +154,9 @@
     <Compile Include="..\NFluent.Core.Tests\Helpers\CultureSession.cs">
       <Link>Helpers\CultureSession.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.Core.Tests\Helpers\TestFiles.cs">
+      <Link>Helpers\TestFiles.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.Core.Tests\IntRelatedTests.cs">
       <Link>IntRelatedTests.cs</Link>
     </Compile>
@@ -268,7 +271,6 @@
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="Helpers\TestFiles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
