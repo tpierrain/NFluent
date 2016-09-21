@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 
 using NFluent.ApiChecks;
+using NFluent.Tests.Helpers;
 
 namespace NFluent.Tests
 {
@@ -672,13 +673,8 @@ namespace NFluent.Tests
         [Test]
         public void LongStringErrorMessageIsProperlyTruncated()
         {
-#if CORE
-            var workdir = AppContext.BaseDirectory;
-#else
-            var workdir = AppDomain.CurrentDomain.BaseDirectory;
-#endif
-            var checkString = File.ReadAllText(workdir + "\\CheckedFile.xml", Encoding.UTF8);
-            var expectedString = File.ReadAllText(workdir + "\\ExpectedFile.xml", Encoding.UTF8);
+            var checkString = File.ReadAllText(TestFiles.CheckedFile, Encoding.UTF8);
+            var expectedString = File.ReadAllText(TestFiles.ExpectedFile, Encoding.UTF8);
 
             Check.ThatCode(() =>
             {

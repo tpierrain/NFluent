@@ -12,6 +12,9 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using NFluent.Tests.Helpers;
+
 namespace NFluent.Tests
 {
     using System;
@@ -250,14 +253,8 @@ namespace NFluent.Tests
         [Test]
         public void ContainsExactlyWorksOnLargeArrays()
         {
-#if CORE
-            var workDir = AppContext.BaseDirectory;
-#else
-            var workDir = AppDomain.CurrentDomain.BaseDirectory;
-#endif
-            var file = Path.Combine(workDir, "CheckedFile.xml");
-            var checkString = File.ReadAllBytes(file);
-            var expectedString = File.ReadAllBytes(file);
+            var checkString = File.ReadAllBytes(TestFiles.CheckedFile);
+            var expectedString = File.ReadAllBytes(TestFiles.CheckedFile);
 
             Check.That(checkString).ContainsExactly(expectedString);
 
