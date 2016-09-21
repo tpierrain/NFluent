@@ -255,8 +255,9 @@ namespace NFluent.Tests
 #else
             var workDir = AppDomain.CurrentDomain.BaseDirectory;
 #endif
-            var checkString = File.ReadAllBytes(workDir + "\\CheckedFile.xml");
-            var expectedString = File.ReadAllBytes(workDir + "\\CheckedFile.xml");
+            var file = Path.Combine(workDir, "CheckedFile.xml");
+            var checkString = File.ReadAllBytes(file);
+            var expectedString = File.ReadAllBytes(file);
 
             Check.That(checkString).ContainsExactly(expectedString);
 
