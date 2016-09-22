@@ -237,7 +237,7 @@ namespace NFluent.Tests
                         .DueTo<Exception>();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.Exception]");
+            .WithMessage("\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values."+ Environment.NewLine + "Parameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.Exception]");
         }
 
         [Test]
@@ -250,7 +250,7 @@ namespace NFluent.Tests
                         .DueTo<Exception>();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.InvalidCastException } \"whatever mate\"\n--> { System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.Exception]");
+            .WithMessage("\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.InvalidCastException } \"whatever mate\"\n--> { System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values." + Environment.NewLine + "Parameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.Exception]");
         }
 
 
