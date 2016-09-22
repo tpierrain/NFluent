@@ -13,17 +13,16 @@
     <description>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).</description>
     <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
     <releaseNotes>New feature(s):
-* Numbers: introduce IsPositiveOrZero() check.
 
-* Numbers: introduce IsNegativeOrZero() check.
+* Preliminary support for .Net Standard (ex .Net Core)
 
-* Exceptions: introduce the DueTo&lt;InnerException&gt; operator after the Throws&lt;Exception&gt; check.
-
-=======
+* Streams: introduce HasSameSequenceOfBytesAs() check.
 
 * Numbers: introduce IsPositiveOrZero() check.
 
 * Numbers: introduce IsNegativeOrZero() check.
+
+* FloatingNumbers (float, double): introduce IsCloseTo(expected, within) check for estimated value.
 
 * Exceptions: introduce the DueTo&lt;InnerException&gt; operator after the Throws&lt;Exception&gt; check.
 
@@ -39,11 +38,25 @@ Change(s):
 
 * Numbers: introduce IsStrictlyLessThan() as a substitute for IsLessThan() which is now obsolete.
 
+* Strings: generate specific error message using IsEqualTo() when the actual string is empty
+
+* Strings: generate specific error message using IsEqualTo() when the expected string is empty
+
+* Strings: provides part of string where first difference occurs even when strings have different lenghts
+
 * Improve error messages (consistency and relevance).
 
 * Check.ThatCode(...).Throws&lt;T&gt;() now requires T to be an exception. This restriction ensures only Exceptions are proposed in autocompletion.
 
-* Simplify the way you can extend NFluent by adding your own checks. Now, you can call: var checker = ExtensibilityHelper.ExtractChecker(check);  at the beginning of your check extension method, and then rely on its ExecuteCheck() or BuildMessage() helper methods to do the job. Note: the Checker is part of the NFluent.Extensibility namespace.
+* Simplify the way you can extend NFluent by adding your own checks. Now, you can call: var checker = ExtensibilityHelper.ExtractChecker(check);
+
+at the beginning of your check extension method, and then rely on its ExecuteCheck() or BuildMessage() helper methods to do the job. Note: the Checker is part of the NFluent.Extensibility namespace.
+
+* Check.That(Action) can no longer be used (obsolete)
+
+* Check.That(Func&lt;T&gt;) can no longer be used (obsolete)
+
+* Reviewing of public elements: Some classes are no longer public. They should never have been in the first class.
 
 --------------
 
@@ -53,7 +66,9 @@ Bug Fixe(s):
 
 * Fix the issue with null value on Check.That(...).IsBefore(...)
 
-* HasFieldsWithSameValues now recurse along the hierarchy class (Fix for #141)</releaseNotes>
+* HasFieldsWithSameValues now recurse along the hierarchy class (Fix for #141)
+
+* Fix stack overflow triggered by HasFieldsWithSameValues() on object with reference loop (#148)</releaseNotes>
     <copyright>Copyright 2014  Thomas PIERRAIN</copyright>
     <language>en-US</language>
     <tags>tdd bdd test fluent check checks easy nunit xunit mbunit mstestsucks</tags>
@@ -68,5 +83,8 @@ Bug Fixe(s):
     <!-- PCL -->
     <file src="Artifacts\Binaries\PCL\NFluent.dll" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\NFluent.dll" />
     <file src="Artifacts\Binaries\PCL\NFluent.xml" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\NFluent.xml" />
+    <!-- Core -->
+    <file src="Artifacts\Binaries\Core\NFluent.dll" target="lib\Core10\NFluent.dll" />
+    <file src="Artifacts\Binaries\Core\NFluent.xml" target="lib\Core10\NFluent.xml" />
   </files>
 </package>

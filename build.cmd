@@ -5,4 +5,4 @@ if "%config%" == "" (
    set config=release
 )
 
-msbuild %~dp0\.build\Build.proj /p:Configuration="%config%" /t:RunAll /v:M /fl /flp:LogFile=.\.build\msbuild.log;Verbosity=Diagnostic /nr:false
+msbuild .\.build\Build.proj /p:Configuration="%config%" /t:RunAll /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Diagnostic /nr:false
