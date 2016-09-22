@@ -32,7 +32,8 @@
   <Target Name="NugetRestore">
       
     <Message Importance="high" Text="============ NugetRestore"/>     
-    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(NuGetToolsPath)\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
+    <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
+    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\NFluent.40.Tests\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
   </Target>
   
   <Target Name="Build" DependsOnTargets="NugetRestore">
@@ -85,20 +86,20 @@ RUN ALL UNIT TESTS
       <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
       
       <!-- NFluent (3.5) first -->
-      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /Y /D" />
-      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /Y /D" />
+      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /E /Y" />
+      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /E /Y" />
 	  
 	    <!-- NFluent (4.0) then -->
-      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /Y /D" />
-      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /Y /D" />
+      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /E /Y" />
+      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /E /Y" />
 
       <!-- NFluent (Core) then -->
-      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).Core\bin\$(Configuration)\*.* $(BinariesPath)\Core\ /Y /D" />
-      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).Core\bin\$(Configuration)\*.* $(BinariesPath)\Core\ /Y /D" />
+      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).Core\bin\$(Configuration)\*.* $(BinariesPath)\Core\ /E /Y" />
+      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).Core\bin\$(Configuration)\*.* $(BinariesPath)\Core\ /E /Y" />
 
       <!-- NFluent (PCL) then -->
-      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /Y /D" />
-      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /Y /D" />
+      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /E /Y" />
+      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /E /Y" />
     
       <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
       <GetAssemblyIdentity AssemblyFiles="$(BinariesPath)\35\$(SolutionName).dll">
@@ -118,7 +119,7 @@ RUN ALL UNIT TESTS
         XmlInputPath="$(NuspecFilePath)"
           Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
         Query="x:package/x:metadata/x:version" 
-        Value="$(PackageVersion)" />
+        Value="$(PackageVersion)-alpha" />
 
       <!-- Gets the release note content from the proper file -->
       <ReadLinesFromFile File="$(SolutionRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.txt">
