@@ -199,7 +199,8 @@ public class TemplateFileManager
 						Name = name,
 						ProjectName = projectName,
 						FolderName = folderName,
-						FileProperties = fileProperties ?? new FileProperties()
+						FileProperties = fileProperties ?? new FileProperties(),
+                        ExtraProjects = new List<string>()
 					  };
     }
 
@@ -259,6 +260,7 @@ public class TemplateFileManager
 						ProjectName = block.ProjectName,
 						FolderName = block.FolderName,
 						FileProperties = block.FileProperties,
+                        ExtraProjects = block.ExtraProjects,
 						Content = content
 					};
 
@@ -777,6 +779,7 @@ public sealed class Block
 	public string ProjectName { get; set; }
 	public string FolderName { get; set; }
 	public FileProperties FileProperties { get; set; }
+    public IList<string> ExtraProjects { get; set;}
 }
 
 public class ParamTextTemplate
@@ -1117,6 +1120,7 @@ public sealed class OutputFile
 	public string FolderName { get; set; }
 	public string Content { get; set; }
 	public FileProperties FileProperties { get; set; }
+    public IList<string> ExtraProjects { get; set;}
 }
 
 public class BuildAction

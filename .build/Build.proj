@@ -17,8 +17,8 @@
       <BinariesPath>$(ArtifactsPath)\Binaries</BinariesPath>
       <PackagesPath>$(ArtifactsPath)\Packages</PackagesPath>
       <DocPath>$(ArtifactsPath)\Docs</DocPath>
-      <NuGetToolsPath>$(SolutionRoot)\.nuget</NuGetToolsPath>
-      <NuGetExePath>$(NuGetToolsPath)\nuget.exe</NuGetExePath>
+      <NuGetToolsPath></NuGetToolsPath>
+      <NuGetExePath>$(NuGetToolsPath)nuget.exe</NuGetExePath>
       <DocuExePath>$(ToolsPath)docu\docu.exe</DocuExePath>
       <ZipExe>$(ToolsPath)7za\7za.exe</ZipExe>
       <TestRunnerPath>$(SolutionRoot)\packages\NUnit.Runners.2.6.2\tools\nunit-console.exe</TestRunnerPath>
