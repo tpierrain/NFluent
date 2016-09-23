@@ -24,12 +24,24 @@
       <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.4.1\tools\nunit3-console.exe</TestRunnerPath>
   </PropertyGroup>
     
-  <Target Name="RunAll" DependsOnTargets="Build; BuildDocs; RunTests; Package" />
+  <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
   
-  <Target Name="CI" DependsOnTargets="Build; BuildDocs" />
+  <Target Name="CI" DependsOnTargets="Build" />
+  <!--<Target Name="CI" DependsOnTargets="Build; BuildDocs" />-->
 
   <!-- 1- Do the BUILD -->
-  <Target Name="NugetRestore">
+
+  <Target Name="DotnetRestore">
+      
+    <Message Importance="high" Text="============ DotnetRestore"/>     
+    <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
+    <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Core\project.json" />
+    <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Core.Tests\project.json" />
+    <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Tests.Extensions.Core\project.json" />
+  </Target>
+  
+
+  <Target Name="NugetRestore" DependsOnTargets="DotnetRestore">
       
     <Message Importance="high" Text="============ NugetRestore"/>     
     <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
