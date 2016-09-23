@@ -90,6 +90,11 @@ RUN ALL UNIT TESTS
     <Message Importance="high" Text="debug message: TestProjectsWithArguments.Identity:'%(TestProjectsWithArguments.Identity)'"/>
 
     <Exec Command="&quot;$(TestRunnerPath)&quot; %(TestProjectsWithArguments.Identity)" LogStandardErrorAsError="true" />
+
+    
+    <Message Importance="high" Text="Run the .NET core tests:'"/>
+    <Exec Command="dotnet test $(SolutionRoot)\NFluent.Core.Tests\project.json" />
+
   </Target>
 
   <!-- 4- Then PACKAGE -->
