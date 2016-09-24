@@ -109,7 +109,6 @@ RUN ALL UNIT TESTS
 
     <Message Importance="high" Text="--------- RUN THE .NET CORE TESTS ---------"/>
 
-      <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Core.Tests\project.json" />
       <Exec Command="dotnet test $(SolutionRoot)\NFluent.Core.Tests\project.json" />
       
     <Message Importance="high" Text="--------- end of RUN THE .NET CORE TESTS ---------"/>
