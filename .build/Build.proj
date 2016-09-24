@@ -33,11 +33,13 @@
 
   <Target Name="DotnetRestore">
       
-    <Message Importance="high" Text="============ DotnetRestore"/>     
+    <Message Importance="high" Text="--------- DOTNET RESTORE  ---------"/>     
     <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
     <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Core\project.json" />
     <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Core.Tests\project.json" />
     <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Tests.Extensions.Core\project.json" />
+
+    <Message Importance="high" Text="--------- end of DOTNET RESTORE  ---------"/>
   </Target>
   
 
@@ -49,6 +51,9 @@
   </Target>
   
   <Target Name="Build" DependsOnTargets="NugetRestore">
+
+      <Message Importance="high" Text="--------- NUGET RESTORE  ---------"/>
+
       <Message Importance="high" Text="
 ---------------------------------------------------------------
 BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
@@ -57,11 +62,15 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
       <MSBuild Projects="$(SolutionRoot)\$(SolutionName).sln" 
                 Targets="Build" 
                 Properties="Configuration=$(Configuration)" />
+
+      <Message Importance="high" Text="--------- end of NUGET RESTORE  ---------"/>
   </Target>
     
     
   <!-- 2- BUILD THE DOCS -->
   <Target Name="BuildDocs">
+
+      <Message Importance="high" Text="--------- DOCUMENTATION GENERATION  ---------"/>
       <Message Importance="high" Text="
 ---------------------------------------------------------------
 GENERATING DOCS for:
@@ -71,6 +80,8 @@ GENERATING DOCS for:
       <MakeDir Directories="$(DocPath)" Condition="!Exists('$(DocPath)')" />
       <Exec Command="$(DocuExePath) $(BinariesPath)\$(SolutionName).dll --output=$(DocPath)" />
       <Exec Command="&quot;$(ZipExe)&quot; a -tzip &quot;$(PackagesPath)\$(SolutionName).docs.zip&quot; &quot;$(DocPath)&quot;" />
+
+      <Message Importance="high" Text="--------- end of DOCUMENTATION GENERATION  ---------"/>
   </Target>
 
   
@@ -86,20 +97,29 @@ GENERATING DOCS for:
 RUN ALL UNIT TESTS
 ---------------------------------------------------------------
           "  />
-      
-    <Message Importance="high" Text="debug message: TestProjectsWithArguments.Identity:'%(TestProjectsWithArguments.Identity)'"/>
 
-    <Exec Command="&quot;$(TestRunnerPath)&quot; %(TestProjectsWithArguments.Identity)" LogStandardErrorAsError="true" />
+    <Message Importance="high" Text="--------- RUN CLASSICAL .NET TESTS ---------"/>
 
+      <Message Importance="high" Text="debug message: TestProjectsWithArguments.Identity:'%(TestProjectsWithArguments.Identity)'"/>
+
+      <Exec Command="&quot;$(TestRunnerPath)&quot; %(TestProjectsWithArguments.Identity)" LogStandardErrorAsError="true" />
+
+    <Message Importance="high" Text="--------- end of RUN CLASSICAL .NET TESTS ---------"/>
     
-    <Message Importance="high" Text="Run the .NET core tests:'"/>
-    <Exec Command="dotnet test $(SolutionRoot)\NFluent.Core.Tests\project.json" />
+
+    <Message Importance="high" Text="--------- RUN THE .NET CORE TESTS ---------"/>
+
+      <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Core.Tests\project.json" />
+      <Exec Command="dotnet test $(SolutionRoot)\NFluent.Core.Tests\project.json" />
+      
+    <Message Importance="high" Text="--------- end of RUN THE .NET CORE TESTS ---------"/>
 
   </Target>
 
   <!-- 4- Then PACKAGE -->
   <Target Name="Package" DependsOnTargets="RunTests">
 
+      <Message Importance="high" Text="--------- PACKAGE ---------"/>
       <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
       
       <!-- NFluent (3.5) first -->
@@ -168,6 +188,8 @@ CREATING NUGET PACKAGE IN:
       <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
       <Exec Command="&quot;$(NuGetExePath)&quot; pack &quot;$(NuspecFilePath)&quot; -o &quot;$(PackagesPath)&quot;"
         LogStandardErrorAsError="true" />
+
+        <Message Importance="high" Text="--------- End of PACKAGE ---------"/>
   </Target>
 
 </Project>
