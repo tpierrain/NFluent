@@ -12,6 +12,8 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+using System;
+
 namespace NFluent.Tests
 {
     using ForDocumentation;
@@ -50,7 +52,7 @@ namespace NFluent.Tests
                 Check.That("Batman and Robin").Not.Contains("Batman");
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked string contains unauthorized value(s): \"Batman\"\nThe checked string:\n\t[\"Batman and Robin\"]\nThe unauthorized substring(s):\n\t[\"Batman\"]");
+            .WithMessage(Environment.NewLine+ "The checked string contains unauthorized value(s): \"Batman\"" +Environment.NewLine +"The checked string:" + Environment.NewLine + "\t[\"Batman and Robin\"]" + Environment.NewLine + "The unauthorized substring(s):" + Environment.NewLine + "\t[\"Batman\"]");
         }
 
         [Test]
@@ -67,7 +69,7 @@ namespace NFluent.Tests
                 Check.That("Batman and Robin").Not.Contains("Joker").And.StartsWith("Bat").And.Not.Contains("Robin");
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked string contains unauthorized value(s): \"Robin\"\nThe checked string:\n\t[\"Batman and Robin\"]\nThe unauthorized substring(s):\n\t[\"Robin\"]");
+            .WithMessage(Environment.NewLine+ "The checked string contains unauthorized value(s): \"Robin\"" +Environment.NewLine +"The checked string:" + Environment.NewLine + "\t[\"Batman and Robin\"]" + Environment.NewLine + "The unauthorized substring(s):" + Environment.NewLine + "\t[\"Robin\"]");
         }
 
         [Test]

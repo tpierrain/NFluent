@@ -12,6 +12,8 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+using System;
+
 namespace NFluent.Tests
 {
     using Extensions;
@@ -21,7 +23,7 @@ namespace NFluent.Tests
     public class EnumOrStructRelatedTests
     {
         private const string Blabla = ".*?";
-        private const string LineFeed = "\\n";
+        private const string LineFeed = "\n";
         private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
 
         [Test]
@@ -42,7 +44,7 @@ namespace NFluent.Tests
                 Check.ThatEnum(FrenchNationality).IsEqualTo(Nationality.American);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value is different from the expected one.\nThe checked value:\n\t[French]\nThe expected value:\n\t[American]");
+            .WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[French]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[American]");
         }
 
         [Test]
@@ -62,7 +64,7 @@ namespace NFluent.Tests
                 Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.French);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[French] of type: [NFluent.Tests.Nationality]");
+            .WithMessage(Environment.NewLine+ "The checked value is equal to the expected one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[French] of type: [NFluent.Tests.Nationality]");
         }
 
         [Test]
@@ -82,7 +84,7 @@ namespace NFluent.Tests
                 Check.ThatEnum(FrenchNationality).Not.IsEqualTo(Nationality.French);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[French] of type: [NFluent.Tests.Nationality]");
+            .WithMessage(Environment.NewLine+ "The checked value is equal to the expected one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[French] of type: [NFluent.Tests.Nationality]");
         }
 
         [Test]
@@ -124,7 +126,7 @@ namespace NFluent.Tests
                 Check.ThatEnum(FrenchNationality).IsInstanceOf<int>();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value is not an instance of the expected type.\nThe checked value:\n\t[French] of type: [NFluent.Tests.Nationality]\nThe expected value:\n\tan instance of type: [int]");
+            .WithMessage(Environment.NewLine+ "The checked value is not an instance of the expected type." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[French] of type: [NFluent.Tests.Nationality]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [int]");
         }
 
         [Test]
@@ -137,7 +139,7 @@ namespace NFluent.Tests
                 Check.ThatEnum(FrenchNationality).IsNotInstanceOf<Nationality>();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value is an instance of [NFluent.Tests.Nationality] whereas it must not.\nThe checked value:\n\t[French] of type: [NFluent.Tests.Nationality]\nThe expected value: different from\n\tan instance of type: [NFluent.Tests.Nationality]");
+            .WithMessage(Environment.NewLine+ "The checked value is an instance of [NFluent.Tests.Nationality] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[French] of type: [NFluent.Tests.Nationality]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [NFluent.Tests.Nationality]");
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace NFluent.Tests
+﻿using System;
+
+namespace NFluent.Tests
 {
     using System.Collections.Generic;
 
@@ -58,7 +60,7 @@
                 Check.That(x).HasFieldsWithSameValues(new DummyClass(1, 2));
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value's field 'x' does not have the expected value.\nThe checked value:\n\t[2]\nThe expected value:\n\t[1]");
+            .WithMessage(Environment.NewLine+ "The checked value's field 'x' does not have the expected value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[1]");
         }
 
         [Test]
@@ -71,7 +73,7 @@
                 Check.That(x).HasFieldsWithSameValues(new DummyHeritance(2, 1));
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value\'s field \'y\' does not have the expected value.\nThe checked value:\n\t[3]\nThe expected value:\n\t[1]");
+            .WithMessage(Environment.NewLine+ "The checked value\'s field \'y\' does not have the expected value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[3]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[1]");
         }
 
         [Test]
@@ -82,7 +84,7 @@
                 Check.That(new DummyClass()).HasNotFieldsWithSameValues(new DummyClass());
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value's field 'x' has the same value in the comparand, whereas it must not.\nThe expected value: different from\n\t[2] of type: [int]");
+            .WithMessage(Environment.NewLine+ "The checked value's field 'x' has the same value in the comparand, whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[2] of type: [int]");
         }
 
         [Test]
@@ -95,7 +97,7 @@
                 Check.That(x).HasFieldsWithSameValues(new DummyHeritance());
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value's field 'z' is absent from the expected one.\nThe expected value:\n\t[null]");
+            .WithMessage(Environment.NewLine+ "The checked value's field 'z' is absent from the expected one." + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[null]");
         }
 
         [Test]
@@ -152,7 +154,7 @@
                 Check.That(x).HasNotFieldsWithSameValues(new DummyWithAutoProperty());
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value's autoproperty 'Application' (field '<Application>k__BackingField') has the same value in the comparand, whereas it must not.\nThe expected value: different from\n\t[null]");
+            .WithMessage(Environment.NewLine+ "The checked value's autoproperty 'Application' (field '<Application>k__BackingField') has the same value in the comparand, whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[null]");
         }
 
         [Test]
@@ -165,7 +167,7 @@
                 Check.That(x).HasFieldsWithSameValues(new DummyWithAutoProperty());
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value's autoproperty 'Application' (field '<Application>k__BackingField') does not have the expected value.\nThe checked value:\n\t[\"check\"]\nThe expected value:\n\t[null]");
+            .WithMessage(Environment.NewLine+ "The checked value's autoproperty 'Application' (field '<Application>k__BackingField') does not have the expected value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"check\"]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[null]");
         }
 
         [Test]
@@ -180,7 +182,7 @@
                 Check.That(y).HasFieldsWithSameValues(x);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value's autoproperty 'Application' (field '<Application>k__BackingField') does not have the expected value.\nThe checked value:\n\t[null]\nThe expected value:\n\t[\"check\"] of type: [string]");
+            .WithMessage(Environment.NewLine+ "The checked value's autoproperty 'Application' (field '<Application>k__BackingField') does not have the expected value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[\"check\"] of type: [string]");
         }
 
         [Test]
@@ -202,7 +204,7 @@
                 Check.That(x).HasFieldsWithSameValues(y);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value's field 'x.y' does not have the expected value.\nThe checked value:\n\t[3]\nThe expected value:\n\t[4]");
+            .WithMessage(Environment.NewLine+ "The checked value's field 'x.y' does not have the expected value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[3]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[4]");
         }
 
         private class DummyClass

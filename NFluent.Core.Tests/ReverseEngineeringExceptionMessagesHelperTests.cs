@@ -1,4 +1,6 @@
-﻿namespace NFluent.Tests
+﻿using System;
+
+namespace NFluent.Tests
 {
     using NFluent.Extensibility;
     using NUnit.Framework;
@@ -19,6 +21,7 @@
         }
 
         [Test]
+        [Ignore("It's maybe time to get rid of this helper class since R# is able to transform text to a regular string")]
         public void Should_Escape_CRLF()
         {
             Check.That(ReverseEngineeringExceptionMessagesHelper.GetProperlyEscapedMessage(@"CRLF is:

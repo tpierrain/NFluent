@@ -12,6 +12,8 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+using System;
+
 namespace NFluent.Tests
 {
     using System.IO;
@@ -64,7 +66,7 @@ namespace NFluent.Tests
                 }
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked stream has the same content as the other one, whereas it must not.\nThe checked stream: (Length: 13)\n\t[System.IO.MemoryStream]\nThe expected stream: (Length: 13)\n\t[System.IO.MemoryStream]");
+            .WithMessage(Environment.NewLine+ "The checked stream has the same content as the other one, whereas it must not." + Environment.NewLine + "The checked stream: (Length: 13)" + Environment.NewLine + "\t[System.IO.MemoryStream]" + Environment.NewLine + "The expected stream: (Length: 13)" + Environment.NewLine + "\t[System.IO.MemoryStream]");
             
         }
 
@@ -121,7 +123,7 @@ namespace NFluent.Tests
                 }
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value doesn't have the same content as the expected one. They don't even have the same Length!\nThe checked value: (Length: 18)\n\t[System.IO.MemoryStream]\nThe expected value: (Length: 11)\n\t[System.IO.MemoryStream]");
+            .WithMessage(Environment.NewLine+ "The checked value doesn't have the same content as the expected one. They don't even have the same Length!" + Environment.NewLine + "The checked value: (Length: 18)" + Environment.NewLine + "\t[System.IO.MemoryStream]" + Environment.NewLine + "The expected value: (Length: 11)" + Environment.NewLine + "\t[System.IO.MemoryStream]");
         }
 
         [Test]
@@ -146,7 +148,7 @@ namespace NFluent.Tests
                 }
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value doesn't have the same content as the expected one (despite the fact that they have the same Length: 12).\nThe checked value:\n\t[System.IO.MemoryStream]\nThe expected value:\n\t[System.IO.MemoryStream]");
+            .WithMessage(Environment.NewLine+ "The checked value doesn't have the same content as the expected one (despite the fact that they have the same Length: 12)." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[System.IO.MemoryStream]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[System.IO.MemoryStream]");
         }
 
         [Test]

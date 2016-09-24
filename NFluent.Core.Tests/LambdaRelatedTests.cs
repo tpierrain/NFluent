@@ -59,7 +59,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { throw new Exception(); }).DoesNotThrow();
             })
             .Throws<FluentCheckException>()
-            .AndWhichMessage().StartsWith("\nThe checked code raised an exception, whereas it must not.\nThe raised exception:\n\t[{System.Exception}:"); // TODO: mimic StartsWith
+            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code raised an exception, whereas it must not." + Environment.NewLine + "The raised exception:" + Environment.NewLine + "\t[{System.Exception}:"); // TODO: mimic StartsWith
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { throw new Exception(); }).Throws<InvalidOperationException>();
             })
             .Throws<FluentCheckException>()
-            .AndWhichMessage().StartsWith("\nThe checked code raised an exception of a different type than expected.\nRaised Exception\n\t[{System.Exception}:"); // TODO: mimic StartsWith
+            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code raised an exception of a different type than expected." + Environment.NewLine + "Raised Exception" + Environment.NewLine + "\t[{System.Exception}:"); // TODO: mimic StartsWith
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { new object(); }).ThrowsAny();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked code did not raise an exception, whereas it must.");
+            .WithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { new object(); }).Throws<Exception>();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked code did not raise an exception, whereas it must.\nThe expected exception:\n\tan instance of type: [System.Exception]");
+            .WithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected exception:" + Environment.NewLine + "\tan instance of type: [System.Exception]");
         }
 
         [Test]
@@ -184,7 +184,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithMessage("a buggy message");
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe message of the checked exception is not as expected.\nThe checked exception message:\n\t[\"Err #321 : my error message\"]\nThe expected exception message:\n\t[\"a buggy message\"]");
+            .WithMessage(Environment.NewLine+ "The message of the checked exception is not as expected." + Environment.NewLine + "The checked exception message:" + Environment.NewLine + "\t[\"Err #321 : my error message\"]" + Environment.NewLine + "The expected exception message:" + Environment.NewLine + "\t[\"a buggy message\"]");
         }
 
         [Test]
@@ -195,7 +195,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithProperty("inexistingProperty", 123);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThere is no property [inexistingProperty] on exception type [LambdaExceptionForTest]."); // TODO: mimic Contains
+            .WithMessage(Environment.NewLine+ "There is no property [inexistingProperty] on exception type [LambdaExceptionForTest]."); // TODO: mimic Contains
         }
 
         [Test]
@@ -206,7 +206,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithProperty("ExceptionNumber", 123);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe property [ExceptionNumber] of the checked exception's property does not have the expected value.\nThe checked exception's property:\n\t[321]\nThe given exception's property:\n\t[123]"); // TODO: mimic Contains
+            .WithMessage(Environment.NewLine+ "The property [ExceptionNumber] of the checked exception's property does not have the expected value." + Environment.NewLine + "The checked exception's property:" + Environment.NewLine + "\t[321]" + Environment.NewLine + "The given exception's property:" + Environment.NewLine + "\t[123]"); // TODO: mimic Contains
         }
 
         [Test]
@@ -237,7 +237,7 @@ namespace NFluent.Tests
                         .DueTo<Exception>();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\r\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.Exception]");
+            .WithMessage(Environment.NewLine+ "The checked exception did not contain an expected inner exception whereas it must." + Environment.NewLine + "The inner exception(s):" + Environment.NewLine + "\t[\"{ System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values." + Environment.NewLine + "Parameter name: kamoulox\"\"]" + Environment.NewLine + "The expected inner exception:" + Environment.NewLine + "\t[System.Exception]");
         }
 
         [Test]
@@ -250,7 +250,7 @@ namespace NFluent.Tests
                         .DueTo<Exception>();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked exception did not contain an expected inner exception whereas it must.\nThe inner exception(s):\n\t[\"{ System.InvalidCastException } \"whatever mate\"\n--> { System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values.\r\nParameter name: kamoulox\"\"]\nThe expected inner exception:\n\t[System.Exception]");
+            .WithMessage(Environment.NewLine+ "The checked exception did not contain an expected inner exception whereas it must." + Environment.NewLine + "The inner exception(s):" + Environment.NewLine + "\t[\"{ System.InvalidCastException } \"whatever mate\"" +Environment.NewLine +"--> { System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values." + Environment.NewLine + "Parameter name: kamoulox\"\"]" + Environment.NewLine + "The expected inner exception:" + Environment.NewLine + "\t[System.Exception]");
         }
 
 

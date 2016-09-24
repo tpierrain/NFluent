@@ -12,6 +12,8 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+using System;
+
 namespace NFluent.Tests
 {
     using NUnit.Framework;
@@ -24,7 +26,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode( () => Check.That(42).As("answer").IsAfter(100))
                 .Throws<FluentCheckException>()
-                .WithMessage("\nThe checked [answer] is not after the reference value.\nThe checked [answer]:\n\t[42]\nThe expected [answer]: after\n\t[100]");
+                .WithMessage(Environment.NewLine+ "The checked [answer] is not after the reference value." + Environment.NewLine + "The checked [answer]:" + Environment.NewLine + "\t[42]" + Environment.NewLine + "The expected [answer]: after" + Environment.NewLine + "\t[100]");
         }
     }
 }

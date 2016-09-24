@@ -85,7 +85,7 @@ namespace NFluent.Tests
                 Check.That(intValue).IsEqualTo(longValue);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value is different from the expected one.\nThe checked value:\n\t[42] of type: [int]\nThe expected value:\n\t[42] of type: [long]");
+            .WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[42] of type: [int]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[42] of type: [long]");
         }
         */
 
@@ -100,7 +100,7 @@ namespace NFluent.Tests
                 Check.That(heroe).Not.IsEqualTo(otherReference);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from\n\t[Gandhi] of type: [NFluent.Tests.Person]");
+            .WithMessage(Environment.NewLine+ "The checked value is equal to the expected one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[Gandhi] of type: [NFluent.Tests.Person]");
         }
 
         [Test]
@@ -153,7 +153,7 @@ namespace NFluent.Tests
                 Check.That(first).IsEqualTo("no way");
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Son of a test\"]\nThe expected string:\n\t[\"no way\"]");
+            .WithMessage(Environment.NewLine+ "The checked string is different from expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"no way\"]");
         }
 
         [Test]
@@ -166,7 +166,7 @@ namespace NFluent.Tests
                 Check.That(first).Not.IsEqualTo(first);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked string is equal to the expected one whereas it must not.\nThe expected string: different from\n\t[\"Son of a test\"]");
+            .WithMessage(Environment.NewLine+ "The checked string is equal to the expected one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace NFluent.Tests
                 Check.That(heroe).IsEqualTo(bastard);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value is different from the expected one.\nThe checked value:\n\t[Gandhi]\nThe expected value:\n\t[PolPot]");
+            .WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[Gandhi]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[PolPot]");
         }
 
         [Test]
@@ -193,7 +193,7 @@ namespace NFluent.Tests
                 Check.That(first).IsEqualTo(null);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value is not null whereas it must.\nThe checked value:\n\t[\"Son of a test\"]\nThe expected value:\n\t[null]");
+            .WithMessage(Environment.NewLine+ "The checked value is not null whereas it must." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[null]");
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace NFluent.Tests
                 Check.That((string)null).IsEqualTo("Kamoulox !");
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked string is null whereas it must not.\nThe checked string:\n\t[null]\nThe expected string:\n\t[\"Kamoulox !\"]");
+            .WithMessage(Environment.NewLine+ "The checked string is null whereas it must not." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"Kamoulox !\"]");
         }
 
         [Test]
@@ -219,7 +219,7 @@ namespace NFluent.Tests
                 Check.That(son).IsEqualTo(dad);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value is different from the expected one.\nThe checked value:\n\t[John] of type: [NFluent.Tests.Child]\nThe expected value:\n\t[John] of type: [NFluent.Tests.Person]");
+            .WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[John] of type: [NFluent.Tests.Child]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[John] of type: [NFluent.Tests.Person]");
         }
 
         [Test]
@@ -232,7 +232,7 @@ namespace NFluent.Tests
             {
                 Check.That(uncle).IsEqualTo(dad);
             })
-            .Throws<FluentCheckException>().AndWhichMessage().Matches("\nThe checked value is different from the expected one.\nThe checked value:\n\\t\\[John\\] with HashCode: \\[.*\\]\nThe expected value:\n\\t\\[John\\] with HashCode: \\[.*\\]");
+            .Throws<FluentCheckException>().AndWhichMessage().Matches(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\\t\\[John\\] with HashCode: \\[.*\\]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\\t\\[John\\] with HashCode: \\[.*\\]");
         }
 
         #endregion
@@ -318,7 +318,7 @@ namespace NFluent.Tests
                 Check.That(first).IsNotEqualTo(otherReferenceToSameObject);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked string is equal to the expected one whereas it must not.\nThe expected string: different from\n\t[\"Son of a test\"]");
+            .WithMessage(Environment.NewLine+ "The checked string is equal to the expected one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
         }
 
         [Test]
@@ -331,7 +331,7 @@ namespace NFluent.Tests
                 Check.That(first).Not.IsNotEqualTo("what?");
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked string is different from expected one.\nThe checked string:\n\t[\"Son of a test\"]\nThe expected string:\n\t[\"what?\"]");
+            .WithMessage(Environment.NewLine+ "The checked string is different from expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"what?\"]");
         }
 
         #endregion
@@ -366,7 +366,7 @@ namespace NFluent.Tests
                 Check.That(question).Equals(magicNumber);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked string is different from the expected value.\nThe checked string:\n\t[\"What is the question?\"] of type: [string]\nThe expected value:\n\t[42] of type: [int]");
+            .WithMessage(Environment.NewLine+ "The checked string is different from the expected value." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"What is the question?\"] of type: [string]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[42] of type: [int]");
         }
 
         #endregion

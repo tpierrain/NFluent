@@ -153,7 +153,7 @@ namespace NFluent.Tests
                     "+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros",
                     "Backstagex passes to a TAFKAL80ETC concer", "Conjured Mana Cake"
                 });
-            }).ThrowsAny().WithMessage("\nThe checked enumerable does not contain exactly the expected value(s). First difference is at index #4.\nThe checked enumerable:\n\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concert\", \"Conjured Mana Cake\"] (6 items)\nThe expected value(s):\n\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concer\", \"Conjured Mana Cake\"] (6 items)");
+            }).ThrowsAny().WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). First difference is at index #4." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concert\", \"Conjured Mana Cake\"] (6 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concer\", \"Conjured Mana Cake\"] (6 items)");
         }
 
         [Test]
@@ -286,7 +286,7 @@ namespace NFluent.Tests
                 Check.That(toTest).Contains(Result);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked enumerable does not contain the expected value(s):\n\t[\"MaChaine{964}\"]\nThe checked enumerable:\n\t[\"MaChaine{94}\"]\nThe expected value(s):\n\t[\"MaChaine{964}\"]");
+            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[\"MaChaine{964}\"]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"MaChaine{94}\"]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"MaChaine{964}\"]");
         }
 
         // #issue 115,
@@ -300,7 +300,7 @@ namespace NFluent.Tests
                 Check.That(args).HasFieldsWithSameValues(new { Price = 100, Quantity = 150, Way = Way.Sell });
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value's field 'Price' does not have the expected value.\nThe checked value:\n\t[100] of type: [decimal]\nThe expected value:\n\t[100] of type: [int]");
+            .WithMessage(Environment.NewLine+ "The checked value's field 'Price' does not have the expected value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[100] of type: [decimal]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[100] of type: [int]");
         }
 
         // issue #127, request for byte array support

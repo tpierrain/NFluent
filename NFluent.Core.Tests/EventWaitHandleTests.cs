@@ -12,6 +12,8 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+using System;
+
 namespace NFluent.Tests
 {
     using System.Threading;
@@ -43,7 +45,7 @@ namespace NFluent.Tests
                     Check.That(myEvent).IsSetWithin(10, TimeUnit.Milliseconds);
                 })
                 .Throws<FluentCheckException>()
-                .WithMessage("\nThe checked event has not been set before the given timeout.\nThe given timeout (in msec):\n\t[10]");
+                .WithMessage(Environment.NewLine+ "The checked event has not been set before the given timeout." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[10]");
             }
         }
 
@@ -67,7 +69,7 @@ namespace NFluent.Tests
                     Check.That(myEvent).Not.IsSetWithin(50, TimeUnit.Milliseconds);
                 })
                 .Throws<FluentCheckException>()
-                .WithMessage("\nThe checked event has been set before the given timeout whereas it must not.\nThe given timeout (in msec):\n\t[50]");
+                .WithMessage(Environment.NewLine+ "The checked event has been set before the given timeout whereas it must not." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[50]");
             }
         }
 
@@ -95,7 +97,7 @@ namespace NFluent.Tests
                     Check.That(myEvent).IsNotSetWithin(100, TimeUnit.Milliseconds);
                 })
                 .Throws<FluentCheckException>()
-                .WithMessage("\nThe checked event has been set before the given timeout.\nThe given timeout (in msec):\n\t[100]");
+                .WithMessage(Environment.NewLine+ "The checked event has been set before the given timeout." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[100]");
             }
         }
 
@@ -119,7 +121,7 @@ namespace NFluent.Tests
                     Check.That(myEvent).Not.IsNotSetWithin(10, TimeUnit.Milliseconds);
                 })
                 .Throws<FluentCheckException>()
-                .WithMessage("\nThe checked event has not been set before the given timeout whereas it must.\nThe given timeout (in msec):\n\t[10]");
+                .WithMessage(Environment.NewLine+ "The checked event has not been set before the given timeout whereas it must." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[10]");
             }
         }
 

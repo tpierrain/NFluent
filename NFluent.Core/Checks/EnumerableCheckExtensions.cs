@@ -12,6 +12,8 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+using System;
+
 namespace NFluent
 {
     using System.Collections;
@@ -72,7 +74,7 @@ namespace NFluent
 
                     if (notFoundValues.Count > 0)
                     {
-                        var message = checker.BuildMessage(string.Format("The {{0}} does not contain the expected value(s):\n\t[{0}]", notFoundValues.ToEnumeratedString().DoubleCurlyBraces())).ExpectedValues(otherEnumerable).ToString();
+                        var message = checker.BuildMessage(string.Format("The {{0}} does not contain the expected value(s):" + Environment.NewLine + "\t[{0}]", notFoundValues.ToEnumeratedString().DoubleCurlyBraces())).ExpectedValues(otherEnumerable).ToString();
                         throw new FluentCheckException(message);
                     }
                 },
@@ -132,7 +134,7 @@ namespace NFluent
 
                         if (unexpectedValuesFound.Count > 0)
                         {
-                            var message = checker.BuildMessage(string.Format("The {{0}} does not contain only the given value(s).\nIt contains also other values:\n\t[{0}]", unexpectedValuesFound.ToEnumeratedString().DoubleCurlyBraces())).ExpectedValues(expectedValues).ToString();
+                            var message = checker.BuildMessage(string.Format("The {{0}} does not contain only the given value(s)." + Environment.NewLine + "It contains also other values:" + Environment.NewLine + "\t[{0}]", unexpectedValuesFound.ToEnumeratedString().DoubleCurlyBraces())).ExpectedValues(expectedValues).ToString();
                             throw new FluentCheckException(message);
                         }
                 },

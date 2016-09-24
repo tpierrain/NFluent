@@ -13,6 +13,8 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace NFluent.Tests
 {
     using System.Collections.Generic;
@@ -58,7 +60,7 @@ namespace NFluent.Tests
                 Check.That(SimpleDico).ContainsKey("value");
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked dictionary does not contain the expected key.\nThe checked dictionary:\n\t[[demo, value]]\nExpected key:\n\t[\"value\"]");
+            .WithMessage(Environment.NewLine+ "The checked dictionary does not contain the expected key." + Environment.NewLine + "The checked dictionary:" + Environment.NewLine + "\t[[demo, value]]" + Environment.NewLine + "Expected key:" + Environment.NewLine + "\t[\"value\"]");
         }
 
         [Test]
@@ -75,7 +77,7 @@ namespace NFluent.Tests
                 Check.That(SimpleDico).Not.ContainsKey("demo");
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked dictionary does contain the given key, whereas it must not.\nThe checked dictionary:\n\t[[demo, value]]\nGiven key:\n\t[\"demo\"]");
+            .WithMessage(Environment.NewLine+ "The checked dictionary does contain the given key, whereas it must not." + Environment.NewLine + "The checked dictionary:" + Environment.NewLine + "\t[[demo, value]]" + Environment.NewLine + "Given key:" + Environment.NewLine + "\t[\"demo\"]");
         }
 
         [Test]
@@ -92,7 +94,7 @@ namespace NFluent.Tests
                 Check.That(SimpleDico).ContainsValue("demo");
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked dictionary does not contain the expected value.\nThe checked dictionary:\n\t[[demo, value]]\nExpected value:\n\t[\"demo\"]");
+            .WithMessage(Environment.NewLine+ "The checked dictionary does not contain the expected value." + Environment.NewLine + "The checked dictionary:" + Environment.NewLine + "\t[[demo, value]]" + Environment.NewLine + "Expected value:" + Environment.NewLine + "\t[\"demo\"]");
         }
 
         [Test]
@@ -109,7 +111,7 @@ namespace NFluent.Tests
                 Check.That(SimpleDico).Not.ContainsValue("value");
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked dictionary does contain the given value, whereas it must not.\nThe checked dictionary:\n\t[[demo, value]]\nExpected value:\n\t[\"value\"]");
+            .WithMessage(Environment.NewLine+ "The checked dictionary does contain the given value, whereas it must not." + Environment.NewLine + "The checked dictionary:" + Environment.NewLine + "\t[[demo, value]]" + Environment.NewLine + "Expected value:" + Environment.NewLine + "\t[\"value\"]");
         }
     }
 }

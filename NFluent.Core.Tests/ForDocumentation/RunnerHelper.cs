@@ -126,7 +126,7 @@ namespace NFluent.Tests.ForDocumentation
                 //            {
                 //                Log(
                 //                    string.Format(
-                //                        "Check.That({1} sut).{0} failure message\n****\n{2}\n****",
+                //                        "Check.That({1} sut).{0} failure message" + Environment.NewLine + "****" + Environment.NewLine + "{2}" + Environment.NewLine + "****",
                 //                        method.Name,
                 //                        testedtype.Name,
                 //                        fluExc.Message));
@@ -154,7 +154,7 @@ namespace NFluent.Tests.ForDocumentation
                 //    {
                 //        Log(
                 //            string.Format(
-                //                "{0} did not generate a fluent check:\n{1}",
+                //                "{0} did not generate a fluent check:" + Environment.NewLine + "{1}",
                 //                specificTest.Name,
                 //                e.InnerException.Message));
                 //    }
@@ -168,7 +168,7 @@ namespace NFluent.Tests.ForDocumentation
                 //    {
                 //        if (report != null)
                 //        {
-                //            Log(string.Format("{0} failed to run:\n{1}", specificTest.Name, e));
+                //            Log(string.Format("{0} failed to run:" + Environment.NewLine + "{1}", specificTest.Name, e));
                 //        }
 
                 //        throw;

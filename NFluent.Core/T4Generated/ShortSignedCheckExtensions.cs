@@ -32,7 +32,7 @@ namespace NFluent
         //// (i.e. the one dedicated to the integer values).
         //// -----------------------------------------------------
 
-        // Since this class is the model/template for the generation of all the other signed numbers related CheckExtensions classes, don't forget to re-generate all the other classes every time you change this one. To do that, just save the ..\T4\NumberFluentAssertionGenerator.tt file within Visual Studio 2012. This will trigger the T4 code generation process.
+        #pragma warning restore 169
 
         /// <summary>
         /// Checks that the actual value is strictly positive.
