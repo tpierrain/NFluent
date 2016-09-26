@@ -12,6 +12,8 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+using System;
+
 namespace NFluent
 {
     using System.Threading;
@@ -43,11 +45,11 @@ namespace NFluent
                 {
                     if (!checker.Value.WaitOne(timeOutInMsec))
                     {
-                        var errorMessage = checker.BuildShortMessage(string.Format("The checked event has not been set before the given timeout.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString();
+                        var errorMessage = checker.BuildShortMessage(string.Format("The checked event has not been set before the given timeout." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[{0}]", timeOutInMsec)).ToString();
                         throw new FluentCheckException(errorMessage);
                     }
                 },
-                checker.BuildShortMessage(string.Format("The checked event has been set before the given timeout whereas it must not.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString());
+                checker.BuildShortMessage(string.Format("The checked event has been set before the given timeout whereas it must not." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[{0}]", timeOutInMsec)).ToString());
         }
 
         /// <summary>
@@ -70,11 +72,11 @@ namespace NFluent
                 {
                     if (checker.Value.WaitOne(timeOutInMsec))
                     {
-                        var errorMessage = checker.BuildShortMessage(string.Format("The checked event has been set before the given timeout.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString();
+                        var errorMessage = checker.BuildShortMessage(string.Format("The checked event has been set before the given timeout." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[{0}]", timeOutInMsec)).ToString();
                         throw new FluentCheckException(errorMessage);
                     }
                 },
-                checker.BuildShortMessage(string.Format("The checked event has not been set before the given timeout whereas it must.\nThe given timeout (in msec):\n\t[{0}]", timeOutInMsec)).ToString());
+                checker.BuildShortMessage(string.Format("The checked event has not been set before the given timeout whereas it must." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[{0}]", timeOutInMsec)).ToString());
         }
     }
 }

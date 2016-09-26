@@ -34,11 +34,11 @@ namespace NFluent.Tests
         {
             var message = FluentMessage.BuildMessage("The {0} is ok.").ToString();
 
-            Assert.AreEqual("\nThe checked value is ok.", message);
+            Assert.AreEqual(Environment.NewLine+ "The checked value is ok.", message);
 
             // override entity
             message = FluentMessage.BuildMessage("The {0} is ok.").For("string").ToString();
-            Assert.AreEqual("\nThe checked string is ok.", message);
+            Assert.AreEqual(Environment.NewLine+ "The checked string is ok.", message);
         }
         
         [Test]
@@ -68,11 +68,11 @@ namespace NFluent.Tests
             const int X = 4;
             var block = new MessageBlock(message, X, new GenericLabelBlock());
 
-            Assert.AreEqual("The  value:\n\t[4]", block.GetMessage());
+            Assert.AreEqual("The  value:" + Environment.NewLine + "\t[4]", block.GetMessage());
 
             block.WithHashCode().WithType();
 
-            Assert.AreEqual("The  value:\n\t[4] of type: [int] with HashCode: [4]", block.GetMessage());
+            Assert.AreEqual("The  value:" + Environment.NewLine + "\t[4] of type: [int] with HashCode: [4]", block.GetMessage());
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace NFluent.Tests
                                             .On("portna")
                                             .And.WithGivenValue("ouaq").ToString();
 
-            Assert.AreEqual("\nThe checked date time is before the given one whereas it must not.\nThe checked date time:\n\t[\"portna\"]\nThe given date time:\n\t[\"ouaq\"]", message);
+            Assert.AreEqual(Environment.NewLine+ "The checked date time is before the given one whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[\"portna\"]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[\"ouaq\"]", message);
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace NFluent.Tests
                                             .WithEnumerableCount(givenValues.Count())
                                             .ToString();
 
-            Assert.AreEqual("\nThe checked enumerable does not contain exactly the expected value(s).\nThe checked enumerable:\n\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)\nThe expected value(s):\n\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"] (4 items)", message);
+            Assert.AreEqual(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"] (4 items)", message);
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace NFluent.Tests
                                             .And.ReferenceValues(possibleElements).Label("The possible elements:")
                                             .ToString();
 
-            Assert.AreEqual("\nThe checked string is not one of the possible elements.\nThe checked string:\n\t[\"The Black Keys\"]\nThe possible elements:\n\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
+            Assert.AreEqual(Environment.NewLine+ "The checked string is not one of the possible elements." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" + Environment.NewLine + "\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
         }
 
         [Test]
@@ -135,7 +135,7 @@ namespace NFluent.Tests
                                             .On(LowerCasedA)
                                             .ToString();
 
-            Assert.AreEqual("\nThe checked char is properly displayed.\nThe checked char:\n\t['a']", message);
+            Assert.AreEqual(Environment.NewLine+ "The checked char is properly displayed." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']", message);
         }
 
         [Test]
@@ -147,7 +147,7 @@ namespace NFluent.Tests
                                             .On(SlashChar)
                                             .ToString();
 
-            Assert.AreEqual("\nThe checked char is properly displayed.\nThe checked char:\n\t['/']", message);
+            Assert.AreEqual(Environment.NewLine+ "The checked char is properly displayed." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['/']", message);
         }
 
         [Test]
@@ -179,7 +179,7 @@ namespace NFluent.Tests
         public void InstanceValuesMustGenerateProperText()
         {
             var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).ToString();
-            Assert.AreEqual("\ndon't care\nThe expected value:\n\tan instance of type: [string]", errorMessage);
+            Assert.AreEqual(Environment.NewLine+ "don't care" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [string]", errorMessage);
         }
 
         [Test]
@@ -221,7 +221,7 @@ namespace NFluent.Tests
                                             .And.ReferenceValues(possibleElements.ToCharArray()).Label("The possible elements:")
                                             .ToString();
 
-//            Assert.AreEqual("\nThe checked enumerable is not one of the possible elements.\nThe checked enumrable:\n\t[\"The Black Keys\"]\nThe possible elements:\n\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
+//            Assert.AreEqual(Environment.NewLine+ "The checked enumerable is not one of the possible elements." + Environment.NewLine + "The checked enumrable:" + Environment.NewLine + "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" + Environment.NewLine + "\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
         }
     }
 }

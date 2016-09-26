@@ -273,3 +273,4 @@ NFluent.Tests/test-results/NFluent.Tests.csproj.test-cache
 .vs/config/applicationhost.config
 .vs/restore.dg
 *.ncrunch*
+*.orig

@@ -46,7 +46,7 @@ namespace NFluent.Tests
                 Check.That(new object()).IsSameReferenceThan(new object());
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked object must be the same instance than expected one.\nThe checked object:\n\t[System.Object]\nThe expected object: same instance than\n\t[System.Object]");
+            .WithMessage(Environment.NewLine+ "The checked object must be the same instance than expected one." + Environment.NewLine + "The checked object:" + Environment.NewLine + "\t[System.Object]" + Environment.NewLine + "The expected object: same instance than" + Environment.NewLine + "\t[System.Object]");
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace NFluent.Tests
                 Check.That((Mood?)null).IsNotNull();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked nullable value is null whereas it must not.");
+            .WithMessage(Environment.NewLine+ "The checked nullable value is null whereas it must not.");
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace NFluent.Tests
                 Check.That(goodMood).Not.IsNotNull();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked nullable value must be null.\nThe checked value:\n\t[NFluent.Tests.Extensions.Mood]");
+            .WithMessage(Environment.NewLine+ "The checked nullable value must be null." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[NFluent.Tests.Extensions.Mood]");
         }
         
         [Test]
@@ -141,7 +141,7 @@ namespace NFluent.Tests
                 Check.That((Mood?)null).Not.IsNull();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked nullable value is null whereas it must not.");
+            .WithMessage(Environment.NewLine+ "The checked nullable value is null whereas it must not.");
         }
 
         [Test]
@@ -152,7 +152,7 @@ namespace NFluent.Tests
                 Check.That(new object()).IsNull();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked object must be null.\nThe checked object:\n\t[System.Object]");
+            .WithMessage(Environment.NewLine+ "The checked object must be null." + Environment.NewLine + "The checked object:" + Environment.NewLine + "\t[System.Object]");
         }
 
         [Test]
@@ -169,7 +169,7 @@ namespace NFluent.Tests
                 Check.That((object)null).IsNotNull();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked object must not be null.\nThe checked object:\n\t[null]");
+            .WithMessage(Environment.NewLine+ "The checked object must not be null." + Environment.NewLine + "The checked object:" + Environment.NewLine + "\t[null]");
         }
 
         [Test]
@@ -182,7 +182,7 @@ namespace NFluent.Tests
                 Check.That(test).IsDistinctFrom(test);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked object must have be an instance distinct from expected one.\nThe checked object:\n\t[System.Object]\nThe expected object: distinct from\n\t[System.Object]");
+            .WithMessage(Environment.NewLine+ "The checked object must have be an instance distinct from expected one." + Environment.NewLine + "The checked object:" + Environment.NewLine + "\t[System.Object]" + Environment.NewLine + "The expected object: distinct from" + Environment.NewLine + "\t[System.Object]");
         }
 
         [Test]
@@ -203,7 +203,7 @@ namespace NFluent.Tests
                 })
                 .ThrowsAny()
                 .WithMessage(
-                    "\nThe checked value is different from the expected one.\nThe checked value:\n\t[NFluent.Tests.ObjectRelatedTest+PersonEx] of type: [NFluent.Tests.ObjectRelatedTest+PersonEx]\nThe expected value: equals to (using operator==)\n\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
+                    Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[NFluent.Tests.ObjectRelatedTest+PersonEx] of type: [NFluent.Tests.ObjectRelatedTest+PersonEx]" + Environment.NewLine + "The expected value: equals to (using operator==)" + Environment.NewLine + "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
         }
 
         [Test]
@@ -217,7 +217,7 @@ namespace NFluent.Tests
             })
                 .ThrowsAny()
                 .WithMessage(
-                    "\nThe checked value is equal to the expected one whereas it must not.\nThe expected value: different from (using operator!=)\n\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
+                    Environment.NewLine+ "The checked value is equal to the expected one whereas it must not." + Environment.NewLine + "The expected value: different from (using operator!=)" + Environment.NewLine + "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
 
         }
 

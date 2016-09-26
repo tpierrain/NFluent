@@ -38,7 +38,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { throw new Exception(); }).DoesNotThrow();
             })
             .Throws<FluentCheckException>()
-            .AndWhichMessage().StartsWith("\nThe checked code raised an exception, whereas it must not."); // TODO: reproduce startWith
+            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code raised an exception, whereas it must not."); // TODO: reproduce startWith
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { throw new Exception(); }).Throws<InvalidOperationException>();
             })
             .Throws<FluentCheckException>()
-            .AndWhichMessage().Contains("\nThe checked code raised an exception of a different type than expected."); // TODO: reproduce Contains
+            .AndWhichMessage().Contains(Environment.NewLine+ "The checked code raised an exception of a different type than expected."); // TODO: reproduce Contains
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { new object(); }).ThrowsAny();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked code did not raise an exception, whereas it must.");
+            .WithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { new object(); }).Throws<Exception>();
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked code did not raise an exception, whereas it must.\nThe expected exception:\n\tan instance of type: [System.Exception]");
+            .WithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected exception:" + Environment.NewLine + "\tan instance of type: [System.Exception]");
         }
     }
 }

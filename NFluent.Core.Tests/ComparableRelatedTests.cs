@@ -41,7 +41,7 @@ namespace NFluent.Tests
 
             Check.ThatCode(() => Check.That(v2).IsBefore(v1))
                     .Throws<FluentCheckException>()
-                    .WithMessage("\nThe checked value is not before the reference value.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[1.0]");
+                    .WithMessage(Environment.NewLine+ "The checked value is not before the reference value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2.0]" + Environment.NewLine + "The expected value: before" + Environment.NewLine + "\t[1.0]");
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace NFluent.Tests
 
             Check.ThatCode(() => Check.That(v2).IsBefore(null))
                     .Throws<FluentCheckException>()
-                    .WithMessage("\nThe checked value is not before the reference value.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[null]");
+                    .WithMessage(Environment.NewLine+ "The checked value is not before the reference value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2.0]" + Environment.NewLine + "The expected value: before" + Environment.NewLine + "\t[null]");
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace NFluent.Tests
 
             Check.ThatCode(() => Check.That(v1).Not.IsBefore(v2))
                     .Throws<FluentCheckException>()
-                    .WithMessage("\nThe checked value is before the reference value whereas it must not.\nThe checked value:\n\t[1.0]\nThe expected value: after\n\t[2.0]");
+                    .WithMessage(Environment.NewLine+ "The checked value is before the reference value whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1.0]" + Environment.NewLine + "The expected value: after" + Environment.NewLine + "\t[2.0]");
         }
 
         #endregion
@@ -113,7 +113,7 @@ namespace NFluent.Tests
 
             Check.ThatCode(() => Check.That(v1).IsAfter(v2))
                     .Throws<FluentCheckException>()
-                    .WithMessage("\nThe checked value is not after the reference value.\nThe checked value:\n\t[1.0]\nThe expected value: after\n\t[2.0]");
+                    .WithMessage(Environment.NewLine+ "The checked value is not after the reference value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1.0]" + Environment.NewLine + "The expected value: after" + Environment.NewLine + "\t[2.0]");
         }
 
         [Test]
@@ -124,7 +124,7 @@ namespace NFluent.Tests
 
             Check.ThatCode(() => Check.That(v2).Not.IsAfter(v1))
                     .Throws<FluentCheckException>()
-                    .WithMessage("\nThe checked value is after the reference value whereas it must not.\nThe checked value:\n\t[2.0]\nThe expected value: before\n\t[1.0]");
+                    .WithMessage(Environment.NewLine+ "The checked value is after the reference value whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2.0]" + Environment.NewLine + "The expected value: before" + Environment.NewLine + "\t[1.0]");
         }
 
         [Test]
@@ -135,7 +135,7 @@ namespace NFluent.Tests
 
             Check.ThatCode(() => Check.That(v2).IsAfter(v1))
                     .Throws<FluentCheckException>()
-                    .WithMessage("\nThe checked value is null so not after the reference value.\nThe checked value:\n\t[null]\nThe expected value: after\n\t[1.0]");
+                    .WithMessage(Environment.NewLine+ "The checked value is null so not after the reference value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected value: after" + Environment.NewLine + "\t[1.0]");
         }
 
         #endregion

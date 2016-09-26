@@ -12,6 +12,8 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+using System;
+
 namespace NFluent
 {
     using NFluent.Extensibility;
@@ -112,7 +114,7 @@ namespace NFluent
                 {
                     if (!IsALetter(checker.Value))
                     {
-                        var errorMessage = checker.BuildMessage("The {0} is not the same letter as the {1} (whatever the case).\nThe checked char is not even a letter!").WithGivenValue(otherChar).ToString();
+                        var errorMessage = checker.BuildMessage("The {0} is not the same letter as the {1} (whatever the case)." + Environment.NewLine + "The checked char is not even a letter!").WithGivenValue(otherChar).ToString();
                         throw new FluentCheckException(errorMessage);
                     }
 

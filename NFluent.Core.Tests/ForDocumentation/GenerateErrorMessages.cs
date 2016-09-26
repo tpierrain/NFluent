@@ -173,21 +173,21 @@ namespace NFluent.Tests.ForDocumentation
                                     }
                                     catch (Exception e)
                                     {
-                                        RunnerHelper.Log(string.Format("Exception while assessing test {2} on type:{0}\n{1}", type.FullName, e, checkMethod.Name));
+                                        RunnerHelper.Log(string.Format("Exception while assessing test {2} on type:{0}" + Environment.NewLine + "{1}", type.FullName, e, checkMethod.Name));
                                     }
                                 }
                             }
                         }
                         catch (Exception e)
                         {
-                            RunnerHelper.Log(string.Format("Exception while working on type:{0}\n{1}", type.FullName, e));
+                            RunnerHelper.Log(string.Format("Exception while working on type:{0}" + Environment.NewLine + "{1}", type.FullName, e));
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    RunnerHelper.Log(string.Format("Exception while working on assembly:{0}\n{1}", assembly.FullName, e));
-                    throw new Exception(string.Format("Exception while working on assembly:{0}\n{1}", assembly.FullName, e));
+                    RunnerHelper.Log(string.Format("Exception while working on assembly:{0}" + Environment.NewLine + "{1}", assembly.FullName, e));
+                    throw new Exception(string.Format("Exception while working on assembly:{0}" + Environment.NewLine + "{1}", assembly.FullName, e));
                 }
             }
 
@@ -254,7 +254,7 @@ namespace NFluent.Tests.ForDocumentation
                 }
                 catch (Exception e)
                 {
-                    RunnerHelper.Log(string.Format("Exception while working on type:{0}\n{1}", type.FullName, e));
+                    RunnerHelper.Log(string.Format("Exception while working on type:{0}" + Environment.NewLine + "{1}", type.FullName, e));
                 }
             }
 #endif

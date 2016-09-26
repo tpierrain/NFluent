@@ -12,6 +12,8 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+using System;
+
 namespace NFluent.Tests
 {
     using System.Collections;
@@ -72,7 +74,7 @@ namespace NFluent.Tests
                 Check.That(integers).IsOnlyMadeOf(1, 2, 3);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[666, 1974]\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected value(s):\n\t[1, 2, 3]");
+            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain only the given value(s)." + Environment.NewLine + "It contains also other values:" + Environment.NewLine + "\t[666, 1974]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[3, 2, 666, 1974, 1]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[1, 2, 3]");
         }
 
         #endregion
@@ -138,7 +140,7 @@ namespace NFluent.Tests
                 Check.That(nullList).IsOnlyMadeOf("what da heck!");
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked enumerable is null and thus, does not contain exactly the given value(s).\nThe checked enumerable:\n\t[null]\nThe expected value(s):\n\t[\"what da heck!\"]");
+            .WithMessage(Environment.NewLine+ "The checked enumerable is null and thus, does not contain exactly the given value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]");
         }
 
         [Test]
@@ -160,7 +162,7 @@ namespace NFluent.Tests
                 Check.That(integers).IsOnlyMadeOf(expectedValues);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[666, 1974]\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected value(s):\n\t[1, 2, 3]");
+            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain only the given value(s)." + Environment.NewLine + "It contains also other values:" + Environment.NewLine + "\t[666, 1974]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[3, 2, 666, 1974, 1]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[1, 2, 3]");
         }
 
         [Test]
@@ -182,7 +184,7 @@ namespace NFluent.Tests
                 Check.That(integers).Not.IsOnlyMadeOf(expectedValues);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked enumerable contains only the given values whereas it must not.\nThe checked enumerable:\n\t[3, 2, 666, 1974, 1]\nThe expected value(s):\n\t[1, 2, 3, 666, 1974]");
+            .WithMessage(Environment.NewLine+ "The checked enumerable contains only the given values whereas it must not." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[3, 2, 666, 1974, 1]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[1, 2, 3, 666, 1974]");
         }
 
         [Test]
@@ -214,7 +216,7 @@ namespace NFluent.Tests
                 Check.That(integers).Not.IsOnlyMadeOf(expectedValues);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked enumerable contains only the given values whereas it must not.\nThe checked enumerable:\n\t[1, 2, 3]\nThe expected value(s):\n\t[3, 2, 3, 2, 2, 1]");
+            .WithMessage(Environment.NewLine+ "The checked enumerable contains only the given values whereas it must not." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 3, 2, 2, 1]");
         }
 
         [Test]
@@ -237,7 +239,7 @@ namespace NFluent.Tests
                 Check.That(variousObjects).IsOnlyMadeOf(expectedVariousObjectsWithBadCase);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked enumerable does not contain only the given value(s).\nIt contains also other values:\n\t[\"uno\", \"tres\"]\nThe checked enumerable:\n\t[1, \"uno\", \"tres\", 45.3]\nThe expected value(s):\n\t[1, \"Tres\", 45.3]");
+            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain only the given value(s)." + Environment.NewLine + "It contains also other values:" + Environment.NewLine + "\t[\"uno\", \"tres\"]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, \"uno\", \"tres\", 45.3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[1, \"Tres\", 45.3]");
         }
 
         [Test]

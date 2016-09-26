@@ -28,7 +28,7 @@ namespace NFluent.Extensibility
     {
         #region fields
 
-        internal const string EndOfLine = "\n";
+        internal static string EndOfLine = Environment.NewLine; // TODO: inline it
 
         private readonly string message;
 

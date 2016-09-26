@@ -82,7 +82,7 @@ namespace NFluent.Tests
                 Check.That(42).IsEqualTo(42L);
             })
             .Throws<FluentCheckException>()
-            .WithMessage("\nThe checked value is different from the expected one.\nThe checked value:\n\t[42] of type: [int]\nThe expected value:\n\t[42] of type: [long]");
+            .WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[42] of type: [int]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[42] of type: [long]");
         }
         */
 

@@ -183,7 +183,7 @@ namespace NFluent.Helpers
                 if (!firstRow)
                 {
                     // TODO: parametrized this line sep part
-                    result.Append("\n--> ");
+                    result.Append(Environment.NewLine+ "--> ");
                 }
                 result.AppendFormat("{{ {0} }} \"{1}\"", innerException.GetType(), innerException.Message);
                 

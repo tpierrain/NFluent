@@ -302,11 +302,11 @@ namespace NFluent
                     {
                         if (checker.Value.Year != other.Year)
                         {
-                            var message = checker.BuildMessage(string.Format("The {{0}} does not have the same year as the {{1}}.\nYear of the checked date time:\n\t[{0}]\nYear of the given date time:\n\t[{1}]", checker.Value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated())).WithGivenValue(other).ToString();
+                            var message = checker.BuildMessage(string.Format("The {{0}} does not have the same year as the {{1}}." + Environment.NewLine + "Year of the checked date time:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "Year of the given date time:" + Environment.NewLine + "\t[{1}]", checker.Value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated())).WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                checker.BuildMessage(string.Format("The {{0}} has the same year as the {{1}} whereas it must not.\nYear of the checked date time:\n\t[{0}]\nYear of the given date time:\n\t[{1}]", checker.Value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated())).WithGivenValue(other).ToString());
+                checker.BuildMessage(string.Format("The {{0}} has the same year as the {{1}} whereas it must not." + Environment.NewLine + "Year of the checked date time:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "Year of the given date time:" + Environment.NewLine + "\t[{1}]", checker.Value.Year.ToStringProperlyFormated(), other.Year.ToStringProperlyFormated())).WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -327,11 +327,11 @@ namespace NFluent
                     {
                         if (checker.Value.Month != other.Month)
                         {
-                            var message = checker.BuildMessage(string.Format("The {{0}} does not have the same month as the {{1}}.\nMonth of the checked date time:\n\t[{0}]\nMonth of the given date time:\n\t[{1}]", checker.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated())).WithGivenValue(other).ToString();
+                            var message = checker.BuildMessage(string.Format("The {{0}} does not have the same month as the {{1}}." + Environment.NewLine + "Month of the checked date time:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "Month of the given date time:" + Environment.NewLine + "\t[{1}]", checker.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated())).WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                checker.BuildMessage(string.Format("The {{0}} has the same month as the {{1}} whereas it must not.\nMonth of the checked date time:\n\t[{0}]\nMonth of the given date time:\n\t[{1}]", checker.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated())).WithGivenValue(other).ToString());
+                checker.BuildMessage(string.Format("The {{0}} has the same month as the {{1}} whereas it must not." + Environment.NewLine + "Month of the checked date time:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "Month of the given date time:" + Environment.NewLine + "\t[{1}]", checker.Value.Month.ToStringProperlyFormated(), other.Month.ToStringProperlyFormated())).WithGivenValue(other).ToString());
         }
 
         /// <summary>
@@ -352,11 +352,11 @@ namespace NFluent
                     {
                         if (checker.Value.Day != other.Day)
                         {
-                            var message = checker.BuildMessage(string.Format("The {{0}} does not have the same day as the {{1}}.\nDay of the checked date time:\n\t[{0}]\nDay of the given date time:\n\t[{1}]", checker.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated())).WithGivenValue(other).ToString();
+                            var message = checker.BuildMessage(string.Format("The {{0}} does not have the same day as the {{1}}." + Environment.NewLine + "Day of the checked date time:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "Day of the given date time:" + Environment.NewLine + "\t[{1}]", checker.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated())).WithGivenValue(other).ToString();
                             throw new FluentCheckException(message);
                         }
                     },
-                checker.BuildMessage(string.Format("The {{0}} has the same day as the {{1}} whereas it must not.\nDay of the checked date time:\n\t[{0}]\nDay of the given date time:\n\t[{1}]", checker.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated())).WithGivenValue(other).ToString());
+                checker.BuildMessage(string.Format("The {{0}} has the same day as the {{1}} whereas it must not." + Environment.NewLine + "Day of the checked date time:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "Day of the given date time:" + Environment.NewLine + "\t[{1}]", checker.Value.Day.ToStringProperlyFormated(), other.Day.ToStringProperlyFormated())).WithGivenValue(other).ToString());
         }
     }
 }

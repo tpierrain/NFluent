@@ -13,6 +13,7 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using NFluent.ApiChecks;
 
 namespace NFluent.Tests
@@ -47,7 +48,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
             })
             .Throws<FluentCheckException>()
-            .AndWhichMessage().StartsWith("\nThe checked code took too much time to execute.\n"); // TODO mimic startsWith
+            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code took too much time to execute." +Environment.NewLine); // TODO mimic startsWith
         }
 
         [Test]
@@ -80,7 +81,7 @@ namespace NFluent.Tests
                 }).ConsumesLessThan(10, TimeUnit.Milliseconds);
             })
             .Throws<FluentCheckException>()
-            .AndWhichMessage().StartsWith("\nThe checked code consumed too much CPU time.\nThe checked cpu time:"); // TODO mimic startsWith
+            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code consumed too much CPU time." + Environment.NewLine + "The checked cpu time:"); // TODO mimic startsWith
         }
     }
 }
