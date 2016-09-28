@@ -251,7 +251,7 @@ namespace NFluent.Tests
                 Check.That(check).IsEqualTo("tutu");
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string is different from the expected one but has same length. At 1, expected 'tutu' was 'toto'" + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"toto\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"tutu\"]");
+            .WithMessage(Environment.NewLine+ "The checked string is different from the expected one but has same length." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"toto\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"tutu\"]");
         }
 
         [Test]
@@ -264,7 +264,7 @@ namespace NFluent.Tests
                 Check.That(check).IsEqualTo("TOTO");
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string is different from the expected one but only in case. At 0, expected 'TOTO' was 'toto'" + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"toto\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"TOTO\"]");
+            .WithMessage(Environment.NewLine+ "The checked string is different from the expected one but only in case." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"toto\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"TOTO\"]");
         }
 
         [Test]

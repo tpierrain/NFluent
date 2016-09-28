@@ -21,5 +21,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("NFluent for .NET Core")]
 
 [assembly: InternalsVisibleTo("NFluent.Core.Tests")]
-
-
+[assembly: InternalsVisibleTo("NFluent.Core.Internals.Tests")]

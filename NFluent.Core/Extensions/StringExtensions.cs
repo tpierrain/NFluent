@@ -15,19 +15,35 @@
 
 namespace NFluent.Extensions
 {
+    using System;
+
     /// <summary>
-    /// Hosts all string related extensions used by NFluent
+    ///     Hosts all string related extensions used by NFluent
     /// </summary>
     internal static class StringExtensions
     {
         /// <summary>
-        /// Generates an espaced copy of a chain for use in format (e.G. { replaced by {{).
+        ///     Generates an espaced copy of a chain for use in format (e.G. { replaced by {{).
         /// </summary>
         /// <param name="toEscape">String to be escaped</param>
         /// <returns>Escaped version of the string.</returns>
         public static string Escaped(this string toEscape)
         {
-            return toEscape.Replace("{", "{{").Replace("}","}}");
+            return toEscape.Replace("{", "{{").Replace("}", "}}");
+        }
+
+        /// <summary>
+        /// Compare char in a case sensitive or insensitive way.
+        /// </summary>
+        /// <param name="carA">first char</param>
+        /// <param name="carB">second char</param>
+        /// <param name="ignoreCase">true if comparison is made in a case insensitive way.</param>
+        /// <returns>true if chars are the same.</returns>
+        public static bool CompareChar(char carA, char carB, bool ignoreCase)
+        {
+            if (ignoreCase)
+                return string.Compare(carA.ToString(), carB.ToString(), StringComparison.CurrentCultureIgnoreCase) == 0;
+            return carA == carB;
         }
     }
 }

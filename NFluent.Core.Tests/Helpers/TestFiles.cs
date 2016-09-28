@@ -31,7 +31,7 @@ namespace NFluent.Tests.Helpers
 
         }
 
-        internal static string Workdir { get; set; }
+        private static string Workdir { get; }
 
         internal static string CheckedFile { get; private set; }
         internal static string ExpectedFile { get; private set; }

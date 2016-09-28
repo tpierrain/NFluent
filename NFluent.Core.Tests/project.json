@@ -2,7 +2,7 @@
     "version": "1.0.0-*",
     "dependencies": {
         "dotnet-test-nunit": "3.4.0-beta-2",
-        "NFluent.Core": "1.0.0-*",
+        "NFluent.Core": "2.0.0-*",
         "NFluent.Tests.Extensions.Core": "1.0.0-*",
         "NUnit": "3.4.1",
         "NUnit.Runners": "3.4.1",
@@ -23,7 +23,7 @@
             "imports": "portable-net45+win8",
             "dependencies": {
                 "Microsoft.NETCore.App": {
-                    "version": "1.0.0-*",
+                    "version": "1.0.1-*",
                     "type": "platform"
                 }
             }
