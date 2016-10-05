@@ -140,27 +140,6 @@
     <Compile Include="..\NFluent.Core.Tests\FluentMessageTests.cs">
       <Link>FluentMessageTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\CheckDescription.cs">
-      <Link>ForDocumentation\CheckDescription.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\CheckList.cs">
-      <Link>ForDocumentation\CheckList.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\FullRunDescription.cs">
-      <Link>ForDocumentation\FullRunDescription.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\GenerateErrorMessages.cs">
-      <Link>ForDocumentation\GenerateErrorMessages.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\LocaleChecks.cs">
-      <Link>ForDocumentation\LocaleChecks.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\RunnerHelper.cs">
-      <Link>ForDocumentation\RunnerHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\TypeChecks.cs">
-      <Link>ForDocumentation\TypeChecks.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.Core.Tests\HelpersTest.cs">
       <Link>HelpersTest.cs</Link>
     </Compile>
@@ -275,12 +254,6 @@
     <Compile Include="..\NFluent.Core.Tests\UserReportedIssuesTests.cs">
       <Link>UserReportedIssuesTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ValueBlockTests.cs">
-      <Link>ValueBlockTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\XamarinSpecificTests.cs">
-      <Link>XamarinSpecificTests.cs</Link>
-    </Compile>
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
@@ -322,7 +295,7 @@
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" />
+      <UserProperties ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

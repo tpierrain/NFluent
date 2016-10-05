@@ -20,5 +20,4 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("NFluent for .NET Core")]
 
-[assembly: InternalsVisibleTo("NFluent.Core.Tests")]
 [assembly: InternalsVisibleTo("NFluent.Core.Internals.Tests")]

@@ -131,6 +131,17 @@ namespace NFluent.Tests
             {
                 return person1.Name != person2.Name;
             }
+            public override bool Equals(object obj)
+            {
+                if (!(obj is PersonEx))
+                    return false;
+                return this == obj as PersonEx;
+            }
+
+            public override int GetHashCode()
+            {
+                return Name.GetHashCode() + Surname.GetHashCode();
+            }
         }
 
         internal class Son : Person

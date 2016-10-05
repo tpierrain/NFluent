@@ -41,7 +41,16 @@ namespace NFluent.Tests
             Assert.AreEqual(Environment.NewLine+ "The checked string is ok.", message);
         }
         
- 
+        [Test]
+        public void BlockFailTest()
+        {
+            Check.ThatCode(() =>
+            {
+                var block = new MessageBlock(null, null, null);
+            })
+            .Throws<ArgumentNullException>();
+        }
+
         [Test]
         public void CheckedBlockTest()
         {
@@ -50,6 +59,20 @@ namespace NFluent.Tests
             var lines = message.Split('\n');
             Assert.AreEqual(4, lines.Length);
             Assert.IsTrue(lines[1].Contains("checked"));
+        }
+
+        [Test]
+        public void BlockTest()
+        {
+            var message = FluentMessage.BuildMessage("test");
+            const int X = 4;
+            var block = new MessageBlock(message, X, new GenericLabelBlock());
+
+            Assert.AreEqual("The  value:" + Environment.NewLine + "\t[4]", block.GetMessage());
+
+            block.WithHashCode().WithType();
+
+            Assert.AreEqual("The  value:" + Environment.NewLine + "\t[4] of type: [int] with HashCode: [4]", block.GetMessage());
         }
 
         [Test]
@@ -133,6 +156,22 @@ namespace NFluent.Tests
             const string Parameter = "string{45}";
 
             Assert.AreEqual("string{{45}}", Parameter.DoubleCurlyBraces());
+        }
+
+        [Test]
+        public void ShouldCreateExpectedLabel()
+        {
+            var label = GenericLabelBlock.BuildExpectedBlock(null);
+
+            Assert.AreEqual("The expected value:", label.CustomMessage(null));
+        }
+    
+        [Test]
+        public void ShouldCreateActualLabel()
+        {
+            var label = GenericLabelBlock.BuildActualBlock(null);
+
+            Assert.AreEqual("The actual value:", label.CustomMessage(null));
         }
 
 

@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ExtensibilityHelperTests.cs" company="">
+// // <copyright file="NotRelatedTests.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -12,31 +12,50 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+using System;
+
 namespace NFluent.Tests
 {
+    using ForDocumentation;
     using Kernel;
-    using NFluent.Extensibility;
-
     using NUnit.Framework;
 
     [TestFixture]
-    public class ExtensibilityHelperTests
+    public class NotRelatedTests
     {
         [Test]
-        public void ExtractcheckerWorks()
+        public void CheckContextWorks()
         {
-            var checker = ExtensibilityHelper.ExtractChecker(Check.That("kamoulox"));
-            Check.That(checker).IsNotNull();
-            Check.That(checker.Negated).IsFalse();
-            Check.That(checker.Value).IsEqualTo("kamoulox");
+            Assert.IsTrue(CheckContext.DefaulNegated);
+            CheckContext.DefaulNegated = false;
+            try
+            {
+               Assert.IsFalse(CheckContext.DefaulNegated);
+            }
+            finally
+            {
+                CheckContext.DefaulNegated = true;
+            }
         }
 
         [Test]
-        public void ExtractRunnableStructCheckWorks()
+        [Explicit("Experimental: to check if negation works")]
+        public void ForceNegationOnAllTest()
         {
-            var runnableStructCheck = ExtensibilityHelper.ExtractStructChecker(Check.ThatEnum(Nationality.Chinese));
-            Check.ThatEnum(runnableStructCheck.Value).IsEqualTo(Nationality.Chinese);
-            Check.That(runnableStructCheck.Negated).IsFalse();
+            if (!CheckContext.DefaulNegated)
+            {
+                return;
+            }
+
+            CheckContext.DefaulNegated = false;
+            try
+            {
+                RunnerHelper.RunAllTests(false);
+            }
+            finally
+            {
+                CheckContext.DefaulNegated = true;
+            }
         }
     }
 }

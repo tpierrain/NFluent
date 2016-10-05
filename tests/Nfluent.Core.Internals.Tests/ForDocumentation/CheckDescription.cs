@@ -123,7 +123,7 @@ namespace NFluent.Tests.ForDocumentation
 
             if (method.IsStatic)
             {
-#if !CORE
+#if NET20
                 // check if this is an extension method
                 if (method.GetCustomAttributes(typeof(ExtensionAttribute), false).Length > 0)
                 {

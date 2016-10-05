@@ -16,28 +16,11 @@ using System;
 
 namespace NFluent.Tests
 {
-    using ForDocumentation;
-    using Kernel;
     using NUnit.Framework;
 
     [TestFixture]
     public class NotRelatedTests
     {
-        [Test]
-        public void CheckContextWorks()
-        {
-            Assert.IsTrue(CheckContext.DefaulNegated);
-            CheckContext.DefaulNegated = false;
-            try
-            {
-               Assert.IsFalse(CheckContext.DefaulNegated);
-            }
-            finally
-            {
-                CheckContext.DefaulNegated = true;
-            }
-        }
-
         [Test]
         public void NotIsWorking()
         {
@@ -72,24 +55,5 @@ namespace NFluent.Tests
             .WithMessage(Environment.NewLine+ "The checked string contains unauthorized value(s): \"Robin\"" +Environment.NewLine +"The checked string:" + Environment.NewLine + "\t[\"Batman and Robin\"]" + Environment.NewLine + "The unauthorized substring(s):" + Environment.NewLine + "\t[\"Robin\"]");
         }
 
-        [Test]
-        [Explicit("Experimental: to check if negation works")]
-        public void ForceNegationOnAllTest()
-        {
-            if (!CheckContext.DefaulNegated)
-            {
-                return;
-            }
-
-            CheckContext.DefaulNegated = false;
-            try
-            {
-                RunnerHelper.RunAllTests(false);
-            }
-            finally
-            {
-                CheckContext.DefaulNegated = true;
-            }
-        }
     }
 }

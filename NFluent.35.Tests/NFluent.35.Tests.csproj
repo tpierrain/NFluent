@@ -127,27 +127,6 @@
     <Compile Include="..\NFluent.Core.Tests\FluentMessageTests.cs">
       <Link>FluentMessageTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\CheckDescription.cs">
-      <Link>ForDocumentation\CheckDescription.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\CheckList.cs">
-      <Link>ForDocumentation\CheckList.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\FullRunDescription.cs">
-      <Link>ForDocumentation\FullRunDescription.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\GenerateErrorMessages.cs">
-      <Link>ForDocumentation\GenerateErrorMessages.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\LocaleChecks.cs">
-      <Link>ForDocumentation\LocaleChecks.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\RunnerHelper.cs">
-      <Link>ForDocumentation\RunnerHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\TypeChecks.cs">
-      <Link>ForDocumentation\TypeChecks.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.Core.Tests\HelpersTest.cs">
       <Link>HelpersTest.cs</Link>
     </Compile>
@@ -261,12 +240,6 @@
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\UserReportedIssuesTests.cs">
       <Link>UserReportedIssuesTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ValueBlockTests.cs">
-      <Link>ValueBlockTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\XamarinSpecificTests.cs">
-      <Link>XamarinSpecificTests.cs</Link>
     </Compile>
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>

@@ -29,14 +29,6 @@ namespace NFluent.Tests.ForDocumentation
     [TestFixture]
     public class GenerateErrorMessages
     {
-        // run this test to debug a specific test that the code is unable to properly identify
-        [Test]
-        [Explicit("Use to debug detection when failing.")]
-        public void SpecificTest()
-        {
-            RunnerHelper.RunAction(new LambdaRelatedTests().DidNotRaiseAny);
-        }
-
         // Run this test to get all error messages
         /* Algo is:
          * - Get all Types from this assembly and with a TestFixture Attribute
@@ -109,7 +101,7 @@ namespace NFluent.Tests.ForDocumentation
         public void ScanAssembliesForCheckAndGenerateReport()
         {
             var report = new FullRunDescription();
-#if !CORE
+#if NET20
             // scan all assemblies
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -227,7 +219,7 @@ namespace NFluent.Tests.ForDocumentation
         private static FullRunDescription RunFailingTests(bool log)
         {
             var report = new FullRunDescription();
-#if !CORE
+#if NET20
             // get all test fixtures
             foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
             {

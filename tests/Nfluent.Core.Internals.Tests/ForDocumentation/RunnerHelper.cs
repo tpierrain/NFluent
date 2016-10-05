@@ -41,7 +41,7 @@ namespace NFluent.Tests.ForDocumentation
             }
 
             Log(string.Format("TestFixture :{0}", type.FullName));
-#if !CORE
+#if NET20
             // creates an instance
             var test = type.InvokeMember(
                 string.Empty,
@@ -51,7 +51,7 @@ namespace NFluent.Tests.ForDocumentation
                 new object[] { });
 
             // run TestFixtureSetup
-            RunAllMethodsWithASpecificAttribute(type, typeof(TestFixtureSetUpAttribute), test);
+            RunAllMethodsWithASpecificAttribute(type, typeof(OneTimeSetUpAttribute), test);
 
             try
             {
@@ -75,14 +75,14 @@ namespace NFluent.Tests.ForDocumentation
             }
             finally
             {
-                RunAllMethodsWithASpecificAttribute(type, typeof(TestFixtureTearDownAttribute), test);
+                RunAllMethodsWithASpecificAttribute(type, typeof(OneTimeTearDownAttribute), test);
             }
 #endif
         }
 
         public static void RunAction(Action action)
         {
-#if  !CORE
+#if NET20
             RunMethod(action.Method, action.Target, null, false);
 #endif
         }
@@ -196,7 +196,7 @@ namespace NFluent.Tests.ForDocumentation
             try
             {
                 inProcess = true;
-#if !CORE
+#if NET20
                 // get all test fixtures
                 foreach (var type in
                     Assembly.GetExecutingAssembly().GetTypes())
@@ -233,7 +233,7 @@ namespace NFluent.Tests.ForDocumentation
 
             return CheckDescription.AnalyzeSignature(method);
         }
-#if !CORE
+#if NET20
         private static void RunAllMethodsWithASpecificAttribute(Type type, Type attributeTypeToScan, object test)
         {
             IEnumerable<MethodInfo> startup =
