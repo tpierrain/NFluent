@@ -123,14 +123,22 @@ namespace NFluent.Tests.ForDocumentation
 
             if (method.IsStatic)
             {
-#if NET20
                 // check if this is an extension method
-                if (method.GetCustomAttributes(typeof(ExtensionAttribute), false).Length > 0)
+                var customAttributes = method.GetCustomAttributes(typeof(ExtensionAttribute), false);
+                int count = 0;
+                if (customAttributes != null)
+                {
+                    foreach (var customAttribute in customAttributes)
+                    {
+                        count++;
+                    }
+                }
+                if (count > 0)
                 {
                     var parameters = method.GetParameters();
                     var param = parameters[0];
                     var paramType = param.ParameterType;
-                    if (!paramType.IsGenericType)
+                    if (!paramType.GetTypeInfo().IsGenericType)
                     {
                         // this is not an check implementation
                         return null;
@@ -145,7 +153,7 @@ namespace NFluent.Tests.ForDocumentation
                     if (paramType.Name == "IExtendableCheckLink`1"
                         || paramType.Name == "IExtendableCheckLink`2"
                         || paramType.Name == "ICheck`1"
-                        || paramType.GetInterface("ICheck`1") != null
+                        || paramType.GetTypeInfo().GetInterface("ICheck`1") != null
                         || paramType.Name == "IStructCheck`1"
                         || paramType.Name == "ICodeCheck`1")
                     {
@@ -154,7 +162,7 @@ namespace NFluent.Tests.ForDocumentation
                         var testedtype = paramType.GetGenericArguments()[0];
                         if (testedtype.IsGenericParameter)
                         {
-                            testedtype = testedtype.BaseType;
+                            testedtype = testedtype.GetTypeInfo().BaseType;
                         }
 
                         result.CheckedType = testedtype;
@@ -189,15 +197,15 @@ namespace NFluent.Tests.ForDocumentation
                 }
 
                 // this is an instance method, tested type is part of type defintion
-                Type scanning = method.DeclaringType.GetInterface("ICheck`1");
-                if (scanning != null && scanning.IsGenericType)
+                Type scanning = method.DeclaringType.GetTypeInfo().GetInterface("ICheck`1");
+                if (scanning != null && scanning.GetTypeInfo().IsGenericType)
                 {
                     // the type implements ICheck<T>
-                    result.CheckedType = scanning.IsGenericType ? scanning.GetGenericArguments()[0] : null;
+                    result.CheckedType = scanning.GetTypeInfo().IsGenericType ? scanning.GetGenericArguments()[0] : null;
 
-                    if (result != null && result.CheckedType.IsGenericType)
+                    if (result != null && result.CheckedType.GetTypeInfo().IsGenericType)
                     {
-                        result.CheckedType = result.CheckedType.BaseType;
+                        result.CheckedType = result.CheckedType.GetTypeInfo().BaseType;
                     }
 
                     // get other parameters
@@ -228,7 +236,6 @@ namespace NFluent.Tests.ForDocumentation
                         Debug.WriteLine(string.Format("Type {0} needs to implement a Value property (method {1})", method.DeclaringType.Name, method.Name));
                     }
                 }
-#endif
             }
 
             return result;

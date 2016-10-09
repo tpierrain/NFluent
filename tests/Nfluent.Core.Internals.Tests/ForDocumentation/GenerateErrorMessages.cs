@@ -12,6 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
 namespace NFluent.Tests.ForDocumentation
 {
     using System;
@@ -101,9 +102,9 @@ namespace NFluent.Tests.ForDocumentation
         public void ScanAssembliesForCheckAndGenerateReport()
         {
             var report = new FullRunDescription();
-#if NET20
+
             // scan all assemblies
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var assembly in RunnerHelper.GetLoadedAssemblies())
             {
                 if (assembly.GetName().Name == "MonoDevelop.NUnit")
                 {
@@ -118,10 +119,10 @@ namespace NFluent.Tests.ForDocumentation
                         assembly.GetTypes()
                             .Where(
                                     type =>
-                                    ((type.GetInterface("IForkableCheck") != null
-                                    && (type.Attributes & TypeAttributes.Abstract) == 0)
-                                    || type.GetCustomAttributes(typeof(ExtensionAttribute), false).Length > 0)
-                                    && ((type.Attributes & TypeAttributes.Public) == TypeAttributes.Public)))
+                                    ((type.GetTypeInfo().GetInterface("IForkableCheck") != null
+                                    && (type.GetTypeInfo().Attributes & TypeAttributes.Abstract) == 0)
+                                    || type.GetTypeInfo().GetCustomAttributes(typeof(ExtensionAttribute), false).Any())
+                                    && ((type.GetTypeInfo().Attributes & TypeAttributes.Public) == TypeAttributes.Public)))
                     {
                         try
                         {
@@ -212,23 +213,23 @@ namespace NFluent.Tests.ForDocumentation
 
             Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(Name)));
                 Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(Name2)));
-#endif
+
         }
 
         // run a set of test
         private static FullRunDescription RunFailingTests(bool log)
         {
             var report = new FullRunDescription();
-#if NET20
+
             // get all test fixtures
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (var type in typeof(GenerateErrorMessages).GetTypeInfo().Assembly.GetExportedTypes())
             {
                 try
                 {
                     // enumerate testmethods with expectedexception attribute with an FluentException type
                     var tests =
                         type.GetMethods()
-                            .Where(method => method.GetCustomAttributes(typeof(TestAttribute), false).Length > 0)
+                            .Where(method => method.GetCustomAttributes(typeof(TestAttribute), false).Any())
                             .Where(
                                 method =>
                                 {
@@ -249,7 +250,7 @@ namespace NFluent.Tests.ForDocumentation
                     RunnerHelper.Log(string.Format("Exception while working on type:{0}" + Environment.NewLine + "{1}", type.FullName, e));
                 }
             }
-#endif
+
             return report;
         }
     }

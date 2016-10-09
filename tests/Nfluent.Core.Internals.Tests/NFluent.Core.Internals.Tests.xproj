@@ -17,6 +17,7 @@
   </PropertyGroup>
   <ItemGroup>
     <DnxInvisibleContent Include="Nfluent.Core.Internals.Tests.v2.ncrunchproject" />
+    <DnxInvisibleContent Include="StyleCop.Cache" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>

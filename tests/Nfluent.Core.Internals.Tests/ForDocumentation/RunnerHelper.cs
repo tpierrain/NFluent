@@ -24,7 +24,10 @@ namespace NFluent.Tests.ForDocumentation
     using System.Linq;
     using System.Reflection;
     using NUnit.Framework;
-    
+#if CORE
+    using Microsoft.Extensions.DependencyModel;
+#endif
+
     /// <summary>
     /// Hosts several methods helping to execute unit tests in a controlled fashion.
     /// </summary>
@@ -41,14 +44,9 @@ namespace NFluent.Tests.ForDocumentation
             }
 
             Log(string.Format("TestFixture :{0}", type.FullName));
-#if NET20
+            var constructor = type.GetTypeInfo().GetConstructor(new Type[0]);
             // creates an instance
-            var test = type.InvokeMember(
-                string.Empty,
-                BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance,
-                null,
-                null,
-                new object[] { });
+            var test = constructor.Invoke(new Type[0]);
 
             // run TestFixtureSetup
             RunAllMethodsWithASpecificAttribute(type, typeof(OneTimeSetUpAttribute), test);
@@ -57,8 +55,8 @@ namespace NFluent.Tests.ForDocumentation
             {
                 // run all tests
                 foreach (var specificTest in specificTests.Where(
-                    specificTest => specificTest.GetCustomAttributes(typeof(ExplicitAttribute), false).Length == 0 
-                                    && specificTest.GetCustomAttributes(typeof(IgnoreAttribute), false).Length == 0))
+                    specificTest => !specificTest.GetCustomAttributes(typeof(ExplicitAttribute), false).Any() 
+                                    && !specificTest.GetCustomAttributes(typeof(IgnoreAttribute), false).Any()))
                 {
                     RunAllMethodsWithASpecificAttribute(type, typeof(SetUpAttribute), test);
 
@@ -77,15 +75,57 @@ namespace NFluent.Tests.ForDocumentation
             {
                 RunAllMethodsWithASpecificAttribute(type, typeof(OneTimeTearDownAttribute), test);
             }
-#endif
         }
 
         public static void RunAction(Action action)
         {
-#if NET20
-            RunMethod(action.Method, action.Target, null, false);
-#endif
+            RunMethod(action.GetMethodInfo().GetBaseDefinition(), action.Target, null, false);
         }
+
+        internal static Assembly[] GetLoadedAssemblies()
+        {
+#if CORE
+            var assemblies = new List<Assembly>();
+            var dependencies = DependencyContext.Default.RuntimeLibraries;
+            foreach (var library in dependencies)
+            {
+                if (!IsCandidateCompilationLibrary(library)) continue;
+                var assembly = Assembly.Load(new AssemblyName(library.Name));
+                assemblies.Add(assembly);
+            }
+            return assemblies.ToArray();
+        }
+
+        private static bool IsCandidateCompilationLibrary(Library compilationLibrary)
+        {
+            return compilationLibrary.Name == ("Specify")
+                || compilationLibrary.Dependencies.Any(d => d.Name.StartsWith("Specify"));
+        }
+
+#else
+            return AppDomain.CurrentDomain.GetAssemblies();
+        }
+
+        /// <summary>
+        /// Polyfills for TypeInfo
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> of interest.</param>
+        /// <returns>Related type infos</returns>
+        public static Type GetTypeInfo(this Type type)
+        {
+            return type;
+        }
+
+        /// <summary>
+        /// Polyfill for GetMthodInfo
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static MethodInfo GetMethodInfo(this Action info)
+        {
+            return info.Method;
+        }
+#endif
 
         private static void RunMethod(MethodBase specificTest, object test, FullRunDescription report, bool log)
         {
@@ -196,17 +236,16 @@ namespace NFluent.Tests.ForDocumentation
             try
             {
                 inProcess = true;
-#if NET20
+
                 // get all test fixtures
-                foreach (var type in
-                    Assembly.GetExecutingAssembly().GetTypes())
+                foreach (var type in typeof(RunnerHelper).GetTypeInfo().Assembly.GetTypes())
                 {
                     // enumerate testmethods with expectedexception attribute with an FluentException type
                     var tests =
-                        type.GetMethods().Where(method => method.GetCustomAttributes(typeof(TestAttribute), false).Length > 0);
+                        type.GetMethods().Where(method => method.GetCustomAttributes(typeof(TestAttribute), false).Any());
                     RunThoseTests(tests, type, null, log);
                 }
-#endif
+
             }
             finally
             {
@@ -233,11 +272,11 @@ namespace NFluent.Tests.ForDocumentation
 
             return CheckDescription.AnalyzeSignature(method);
         }
-#if NET20
+
         private static void RunAllMethodsWithASpecificAttribute(Type type, Type attributeTypeToScan, object test)
         {
             IEnumerable<MethodInfo> startup =
-                type.GetMethods().Where(method => method.GetCustomAttributes(attributeTypeToScan, false).Length > 0);
+                type.GetMethods().Where(method => method.GetCustomAttributes(attributeTypeToScan, false).Any());
             foreach (var methodInfo in startup)
             {
                 try
@@ -250,6 +289,6 @@ namespace NFluent.Tests.ForDocumentation
                 }
             }
         }
-#endif
+
     }
 }

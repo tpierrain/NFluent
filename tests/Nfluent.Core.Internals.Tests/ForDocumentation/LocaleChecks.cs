@@ -16,6 +16,7 @@ namespace NFluent.Tests.ForDocumentation
 {
     using Helpers;
     using NUnit.Framework;
+    using Helpers;
 
     [TestFixture]
     public class LocaleChecks

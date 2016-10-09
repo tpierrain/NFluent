@@ -332,7 +332,7 @@
       <Link>TimeUnit.cs</Link>
     </Compile>
     <Compile Include="..\Version.cs">
-      <Link>Version.cs</Link>
+      <Link>Properties\Version.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
