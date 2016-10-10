@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Nfluent.Tests
+﻿namespace Nfluent.Tests
 {
     using NFluent;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -25,7 +23,6 @@ namespace Nfluent.Tests
         }
 
         [Test]
-        [Ignore("In progress")]
         public void ShouldReportDifferenceForCaseSensitive()
         {
             var stringDifferences = StringDifferenceAnalyzer.Analyze("toto", "toTo");
@@ -33,37 +30,16 @@ namespace Nfluent.Tests
             Check.That(stringDifferences[0].Type).IsEqualTo(StringDifference.DifferenceMode.CaseDifference);
             Check.That(stringDifferences[0].Position).IsEqualTo(2);
         }
-    }
 
-    internal static class StringDifferenceAnalyzer
-    {
-        public static IList<StringDifference> Analyze(string actual, string expected)
+        [Test]
+        public void ShouldReportDifferenceForGeneralEvenIfFirstDiffIsCase()
         {
-            if (actual != expected)
-            {
-                var stringDifference = new StringDifference();
-                int difPos;
-                for (difPos = 0;
-                    difPos < Math.Min(actual.Length, expected.Length) && actual[difPos] == expected[difPos];
-                    difPos++) ;
-                stringDifference.Position = difPos;
-                var result = new List<StringDifference> { stringDifference };
-                return result;
-            }
-            return null;
+            var stringDifferences = StringDifferenceAnalyzer.Analyze("toto", "toTd");
+            Check.That(stringDifferences).HasSize(1);
+            Check.That(stringDifferences[0].Type).IsEqualTo(StringDifference.DifferenceMode.General);
+            Check.That(stringDifferences[0].Position).IsEqualTo(3);
         }
     }
 
-    public class StringDifference
-    {
-        public enum DifferenceMode
-        {
-            General,
-            CaseDifference
-        }
-
-        public DifferenceMode Type;
-        public int Position;
-    }
 
 }
