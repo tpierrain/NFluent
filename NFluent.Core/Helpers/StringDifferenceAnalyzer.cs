@@ -11,30 +11,55 @@ namespace NFluent.Helpers
         {
             if (actual != expected)
             {
-                var stringDifference = new StringDifference();
-                for (var i = 0;
-                    i < Math.Min(actual.Length, expected.Length);
-                    i++)
+                var actualLines = actual.Split('\n');
+                var expectedLines = expected.Split('\n');
+                var result = new List<StringDifference>();
+                for (var line = 0; line < Math.Min(actualLines.Length, expectedLines.Length); line++)
                 {
-                    if (actual[i] != expected[i])
+                    var stringDifference = new StringDifference();
+                    var actualLine = actualLines[line];
+                    var expectedLine = expectedLines[line];
+                    // scan the initial part of both strings
+                    for (var i = 0;
+                        i < Math.Min(actualLine.Length, expectedLine.Length);
+                        i++)
                     {
-                        if (StringExtensions.CompareChar(actual[i], expected[i], true))
+                        if (actualLine[i] == expectedLine[i])
                         {
-                            if (stringDifference.Type != StringDifference.DifferenceMode.CaseDifference)
+                            continue;
+                        }
+                        if (StringExtensions.CompareChar(actualLine[i], expectedLine[i], true))
+                        {
+                            if (stringDifference.Type != DifferenceMode.CaseDifference)
                             {
-                                stringDifference.Type = StringDifference.DifferenceMode.CaseDifference;
+                                stringDifference.Type = DifferenceMode.CaseDifference;
                                 stringDifference.Position = i;
                             }
                         }
                         else
                         {
-                            stringDifference.Type = StringDifference.DifferenceMode.General;
+                            stringDifference.Type = DifferenceMode.General;
                             stringDifference.Position = i;
                             break;
                         }
                     }
+                    // strings are same so far
+                    if (stringDifference.Type == DifferenceMode.NoDifference)
+                    {
+                        // the actualLine string is longer than expectedLine
+                        if (actualLine.Length > expectedLine.Length)
+                        {
+                            stringDifference.Position = expectedLine.Length;
+                            stringDifference.Type = DifferenceMode.Longer;
+                        }
+                        else if (actualLine.Length < expectedLine.Length)
+                        {
+                            stringDifference.Position = actualLine.Length;
+                            stringDifference.Type = DifferenceMode.Shorter;
+                        }
+                    }
+                    result.Add(stringDifference);
                 }
-                var result = new List<StringDifference> { stringDifference };
                 return result;
             }
             return null;
@@ -43,13 +68,16 @@ namespace NFluent.Helpers
 
     internal class StringDifference
     {
-        public enum DifferenceMode
-        {
-            General,
-            CaseDifference
-        }
-
-        public DifferenceMode Type;
+        public DifferenceMode Type = DifferenceMode.NoDifference;
         public int Position;
+    }
+
+    internal enum DifferenceMode
+    {
+        NoDifference,
+        General,
+        CaseDifference,
+        Longer,
+        Shorter
     }
 }
