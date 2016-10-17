@@ -67,6 +67,16 @@
             Check.That(stringDifferences[0].Position).IsEqualTo(1);
             Check.That(stringDifferences[0].Line).IsEqualTo(1);
         }
+
+        [Test]
+        public void ShouldReportDifferenceOfEoL()
+        {
+            var stringDifferences = StringDifferenceAnalyzer.Analyze("toto\ntiti", "toto\r\ntiti");
+            Check.That(stringDifferences).HasSize(1);
+            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.EndOfLine);
+            Check.That(stringDifferences[0].Position).IsEqualTo(4);
+            Check.That(stringDifferences[0].Line).IsEqualTo(0);
+        }
     }
 
 

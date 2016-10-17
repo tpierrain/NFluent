@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace NFluent.Helpers
 {
+    using System.Linq;
     using Extensions;
 
     internal static class StringDifferenceAnalyzer
@@ -50,13 +51,29 @@ namespace NFluent.Helpers
                         // the actualLine string is longer than expectedLine
                         if (actualLine.Length > expectedLine.Length)
                         {
-                            stringDifference.Position = expectedLine.Length;
-                            stringDifference.Type = DifferenceMode.Longer;
+                            if ((actualLine.Length == expectedLine.Length + 1) && actualLine.Last()=='\r')
+                            {
+                                stringDifference.Position = expectedLine.Length;
+                                stringDifference.Type = DifferenceMode.EndOfLine;
+                            }
+                            else
+                            {
+                                stringDifference.Position = expectedLine.Length;
+                                stringDifference.Type = DifferenceMode.Longer;
+                            }
                         }
                         else if (actualLine.Length < expectedLine.Length)
                         {
-                            stringDifference.Position = actualLine.Length;
-                            stringDifference.Type = DifferenceMode.Shorter;
+                            if ((actualLine.Length +1 == expectedLine.Length) && expectedLine.Last() == '\r')
+                            {
+                                stringDifference.Position = actualLine.Length;
+                                stringDifference.Type = DifferenceMode.EndOfLine;
+                            }
+                            else
+                            {
+                                stringDifference.Position = actualLine.Length;
+                                stringDifference.Type = DifferenceMode.Shorter;
+                            }
                         }
                     }
                     if (stringDifference.Type != DifferenceMode.NoDifference)
@@ -84,6 +101,7 @@ namespace NFluent.Helpers
         General,
         CaseDifference,
         Longer,
-        Shorter
+        Shorter,
+        EndOfLine
     }
 }
