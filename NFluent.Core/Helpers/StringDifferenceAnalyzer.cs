@@ -19,6 +19,7 @@ namespace NFluent.Helpers
                     var stringDifference = new StringDifference();
                     var actualLine = actualLines[line];
                     var expectedLine = expectedLines[line];
+                    stringDifference.Line = line;
                     // scan the initial part of both strings
                     for (var i = 0;
                         i < Math.Min(actualLine.Length, expectedLine.Length);
@@ -58,7 +59,10 @@ namespace NFluent.Helpers
                             stringDifference.Type = DifferenceMode.Shorter;
                         }
                     }
-                    result.Add(stringDifference);
+                    if (stringDifference.Type != DifferenceMode.NoDifference)
+                    {
+                        result.Add(stringDifference);
+                    }
                 }
                 return result;
             }
@@ -70,6 +74,8 @@ namespace NFluent.Helpers
     {
         public DifferenceMode Type = DifferenceMode.NoDifference;
         public int Position;
+
+        public int Line { get; internal set; }
     }
 
     internal enum DifferenceMode

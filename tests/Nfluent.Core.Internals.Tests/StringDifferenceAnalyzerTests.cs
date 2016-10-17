@@ -63,8 +63,9 @@
         {
             var stringDifferences = StringDifferenceAnalyzer.Analyze("toto\ntiti", "toto\ntata");
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.Shorter);
-            Check.That(stringDifferences[0].Position).IsEqualTo(4);
+            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
+            Check.That(stringDifferences[0].Position).IsEqualTo(1);
+            Check.That(stringDifferences[0].Line).IsEqualTo(1);
         }
     }
 
