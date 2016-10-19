@@ -251,7 +251,7 @@ namespace NFluent.Tests
                 Check.That(check).IsEqualTo("tutu");
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string is different from the expected one but has same length. At 1, expected 'tutu' was 'toto'" + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"toto\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"tutu\"]");
+            .WithMessage(Environment.NewLine+ "The checked string is different from expected one but has same length. At 1, expected 'tutu' was 'toto'" + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"toto\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"tutu\"]");
         }
 
         [Test]
@@ -264,7 +264,7 @@ namespace NFluent.Tests
                 Check.That(check).IsEqualTo("TOTO");
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string is different from the expected one but only in case. At 0, expected 'TOTO' was 'toto'" + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"toto\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"TOTO\"]");
+            .WithMessage(Environment.NewLine+ "The checked string is different from expected one but only in case. At 0, expected 'TOTO' was 'toto'" + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"toto\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"TOTO\"]");
         }
 
         [Test]
@@ -682,7 +682,7 @@ namespace NFluent.Tests
                 // ReverseEngineeringExceptionMessagesHelper.DumpReadyToCopyAndPasteExceptionMessageInAFile(() => Check.That(checkString).IsEqualTo(expectedString));
             })
             .Throws<FluentCheckException>().AndWhichMessage()
-            .IsEqualTo(Environment.NewLine+ "The checked string is different from the expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'" + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + Environment.NewLine + "<!--  Edited by XMLSpy  -->" + Environment.NewLine + "<CATALOG>" + Environment.NewLine + "  <CD>" + Environment.NewLine + "    <TITLE>Empire Burlesque</TITLE>" + Environment.NewLine + "    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>" + Environment.NewLine + "  </CD>" + Environment.NewLine + "</CATALOG>\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + Environment.NewLine + "<!--  Edited by XMLSpy  -->" + Environment.NewLine + "<CATALOG>" + Environment.NewLine + "  <CD>" + Environment.NewLine + "    <TITLE>Empire Burlesque</TITLE>" + Environment.NewLine + "    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>" + Environment.NewLine + "  </CD>" + Environment.NewLine + "</CATALOG>\"]");
+            .IsEqualTo(Environment.NewLine+ "The checked string is different from expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'" + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<!--  Edited by XMLSpy  -->\r\n<CATALOG>\r\n  <CD>\r\n    <TITLE>Empire Burlesque</TITLE>\r\n    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>\r\n  </CD>\r\n</CATALOG>\"]");
 
         }
     }

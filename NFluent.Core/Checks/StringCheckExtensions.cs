@@ -12,6 +12,9 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using System.Text;
+
 namespace NFluent
 {
     using System;
@@ -209,8 +212,7 @@ namespace NFluent
             string messageText;
             if (negated)
             {
-                messageText =
-                    checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.").Expected(expected).Comparison("different from").ToString();
+                messageText = checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.").Expected(expected).Comparison("different from").ToString();
             }
             else if (value == null)
             {
@@ -224,72 +226,19 @@ namespace NFluent
             {
                 // we try to refine the difference
                 var expectedString = expected as string;
-                var message = "The {0} is different from {1}.";
-                var isCrlfAndLfDifference = false;
-                var isTabAndWhiteSpaceDifference = false;
-                var firstDiffPos = 0;
-
-                // TODO: refactor to reduce method lines
-                var firstDiff = 0;
-                var blockStart = 0;
-                var blockLen = 0;
 
                 var minLength = Math.Min(value.Length, expectedString.Length);
+                var firstDiffPos = Enumerable.Range(0, minLength + 1).First(i => minLength == i || value[i] != expectedString[i]);
+                firstDiffPos = Math.Min(firstDiffPos, minLength - 1);
 
-                // scan for firstDiff
-                for (; firstDiff < minLength; firstDiff++)
-                {
-                    if (value[firstDiff] != expectedString[firstDiff])
-                    {
-                        firstDiffPos = firstDiff;
-                        isCrlfAndLfDifference = IsACRLFDifference(firstDiff, expectedString, value);
-                        isTabAndWhiteSpaceDifference = IsATabAndWhiteSpaceDifference(firstDiff, expectedString, value);
+                var isCrlfAndLfDifference = IsACRLFDifference(firstDiffPos, expectedString, value);
+                var isTabAndWhiteSpaceDifference = IsATabAndWhiteSpaceDifference(firstDiffPos, expectedString, value);
 
-                        blockStart = Math.Max(0, firstDiff - 10);
-                        blockLen = Math.Min(minLength - blockStart, 20);
-                        break;
-                    }
-                }
+                var blockStart = Math.Max(0, firstDiffPos - 10);
+                var blockLen = Math.Min(minLength - blockStart, 20);
 
                 var useDiffInMessage = true;
-
-                // if strings have sam length, diff may be minor
-                if (expectedString.Length == value.Length)
-                {
-                    // same length
-                    if (string.Compare(value, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0)
-                    {
-                        message = "The {0} is different from the {1} but only in case.";
-                    }
-                    else
-                    {
-                        message = "The {0} is different from the {1} but has same length.";
-                    }
-                }
-                else if (expectedString.Length > value.Length)
-                {
-                    if (expectedString.StartsWith(value, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
-                    {
-                        message = "The {0} is different from {1}, it is missing the end.";
-                        useDiffInMessage = false;
-                    }
-                    else
-                    {
-                        useDiffInMessage = blockStart > 0;
-                    }
-                }
-                else
-                {
-                    if (value.StartsWith(expectedString, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
-                    {
-                        message = "The {0} is different from {1}, it contains extra text at the end.";
-                        useDiffInMessage = false;
-                    }
-                    else
-                    {
-                        useDiffInMessage = blockStart > 0;
-                    }
-                }
+                var message = GetRelationShipMessage(expectedString, value, blockStart, ignoreCase, ref useDiffInMessage);
 
                 // add part of strings  that are different (if needed)
                 if (useDiffInMessage)
@@ -297,11 +246,11 @@ namespace NFluent
                     var prefix = blockStart == 0 ? string.Empty : "...";
                     var suffix = blockStart + blockLen == minLength ? string.Empty : "...";
                     message += string.Format(
-                        " At {0}, expected '{3}{1}{4}' was '{3}{2}{4}'", 
-                        firstDiff, 
-                        expectedString.Substring(blockStart, blockLen).Escaped(), 
-                        value.Substring(blockStart, blockLen).Escaped(), 
-                        prefix, 
+                        " At {0}, expected '{3}{1}{4}' was '{3}{2}{4}'",
+                        firstDiffPos,
+                        expectedString.Substring(blockStart, blockLen).Escaped(),
+                        value.Substring(blockStart, blockLen).Escaped(),
+                        prefix,
                         suffix);
                 }
 
@@ -323,6 +272,51 @@ namespace NFluent
             }
 
             return messageText;
+        }
+
+        private static string GetRelationShipMessage(string exptected, string value, int blockStart, bool ignoreCase, ref bool useDiffInMessage)
+        {
+            var message = new StringBuilder("The {0} is different from {1}");
+            var comparison = ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture;
+            // if strings have sam length, diff may be minor
+            if (exptected.Length == value.Length)
+            {
+                // same length
+                if (string.Compare(value, exptected, StringComparison.CurrentCultureIgnoreCase) == 0)
+                {
+                    message.Append(" but only in case");
+                }
+                else
+                {
+                    message.Append(" but has same length");
+                }
+            }
+            else if (exptected.Length > value.Length)
+            {
+                if (exptected.StartsWith(value, comparison))
+                {
+                    message.Append(", it is missing the end");
+                    useDiffInMessage = false;
+                }
+                else
+                {
+                    useDiffInMessage = blockStart > 0;
+                }
+            }
+            else
+            {
+                if (value.StartsWith(exptected, comparison))
+                {
+                    message.Append(", it contains extra text at the end");
+                    useDiffInMessage = false;
+                }
+                else
+                {
+                    useDiffInMessage = blockStart > 0;
+                }
+            }
+            message.Append(".");
+            return message.ToString();
         }
 
         private static bool IsATabAndWhiteSpaceDifference(int firstDiff, string expected, string actual)
