@@ -66,6 +66,14 @@
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[0].Position).IsEqualTo(1);
             Check.That(stringDifferences[0].Line).IsEqualTo(1);
+            stringDifferences = StringDifferenceAnalyzer.Analyze("maybe\ntiti", "toto\ntata");
+            Check.That(stringDifferences).HasSize(2);
+            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
+            Check.That(stringDifferences[0].Position).IsEqualTo(0);
+            Check.That(stringDifferences[0].Line).IsEqualTo(0);
+            Check.That(stringDifferences[1].Type).IsEqualTo(DifferenceMode.General);
+            Check.That(stringDifferences[1].Position).IsEqualTo(1);
+            Check.That(stringDifferences[1].Line).IsEqualTo(1);
         }
 
         [Test]
@@ -77,7 +85,15 @@
             Check.That(stringDifferences[0].Position).IsEqualTo(4);
             Check.That(stringDifferences[0].Line).IsEqualTo(0);
         }
+
+        [Test]
+        public void ShouldReportDifferenceOfNumberOfLinesL()
+        {
+            var stringDifferences = StringDifferenceAnalyzer.Analyze("toto\ntiti", "toto");
+            Check.That(stringDifferences).HasSize(1);
+            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.EndOfLine);
+            Check.That(stringDifferences[0].Position).IsEqualTo(4);
+            Check.That(stringDifferences[0].Line).IsEqualTo(0);
+        }
     }
-
-
 }

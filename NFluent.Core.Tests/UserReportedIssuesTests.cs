@@ -26,6 +26,12 @@ namespace NFluent.Tests
     [TestFixture]
     public class UserReportedIssuesTests
     {
+        // issue #176: Check.That(1).Not.IsZero() fails
+        [Test]
+        public void IssueWithIsZero()
+        {
+            Check.That(1).Not.IsZero();
+        }
 
         // issue #119: need to propose various behavior for HasFieldsWithSameValues
         public class TestMe
