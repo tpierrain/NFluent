@@ -91,9 +91,9 @@
         {
             var stringDifferences = StringDifferenceAnalyzer.Analyze("toto\ntiti", "toto");
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.EndOfLine);
-            Check.That(stringDifferences[0].Position).IsEqualTo(4);
-            Check.That(stringDifferences[0].Line).IsEqualTo(0);
+            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.ExtraLines);
+            Check.That(stringDifferences[0].Position).IsEqualTo(0);
+            Check.That(stringDifferences[0].Line).IsEqualTo(1);
         }
     }
 }
