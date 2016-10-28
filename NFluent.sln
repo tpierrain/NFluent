@@ -57,6 +57,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40.Internals.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Internals.Tests", "tests\NFluent.35.Internals.Tests\NFluent.35.Internals.Tests.csproj", "{9E500148-4F6C-424A-AA09-801DB1749677}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Compatibility", "Compatibility", "{E3F40977-9951-4FCE-AA2C-9D3D804D836C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nugget", "tests\Nugget\Nugget.csproj", "{50136517-047A-4081-AC30-878560F108DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +119,10 @@ Global
 		{9E500148-4F6C-424A-AA09-801DB1749677}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E500148-4F6C-424A-AA09-801DB1749677}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E500148-4F6C-424A-AA09-801DB1749677}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50136517-047A-4081-AC30-878560F108DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50136517-047A-4081-AC30-878560F108DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50136517-047A-4081-AC30-878560F108DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50136517-047A-4081-AC30-878560F108DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,6 +141,8 @@ Global
 		{E7AB344B-2120-4901-99C3-1B2F3B9B37B6} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
 		{A7C2F427-3D13-4C9B-8663-1CE1E0734608} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
 		{9E500148-4F6C-424A-AA09-801DB1749677} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
+		{E3F40977-9951-4FCE-AA2C-9D3D804D836C} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
+		{50136517-047A-4081-AC30-878560F108DF} = {E3F40977-9951-4FCE-AA2C-9D3D804D836C}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = NFluent.40.Tests\NFluent.40.Tests.csproj

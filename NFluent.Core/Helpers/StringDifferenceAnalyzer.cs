@@ -22,9 +22,7 @@ namespace NFluent.Helpers
             var sharedLines = Math.Min(actualLines.Length, expectedLines.Length);
             for (var line = 0; line < sharedLines; line++)
             {
-                var actualLine = actualLines[line];
-                var expectedLine = expectedLines[line];
-                var stringDifference = StringDifferenceAnalyzer.AnalyseLine(line, actualLine, expectedLine);
+                var stringDifference = new StringDifference(line, actualLines[line], expectedLines[line]);
                 if (stringDifference.Type != DifferenceMode.NoDifference)
                 {
                     result.Add(stringDifference);
@@ -32,76 +30,13 @@ namespace NFluent.Helpers
             }
             if (expectedLines.Length > sharedLines)
             {
-                result.Add(new StringDifference {Line = sharedLines, Type = DifferenceMode.MissingLine});
+                result.Add(new StringDifference(sharedLines, null, expectedLines[sharedLines]));
             }
             else if (actualLines.Length > sharedLines)
             {
-                result.Add(new StringDifference { Line = sharedLines, Type = DifferenceMode.ExtraLines });
+                result.Add(new StringDifference (  sharedLines, actualLines[sharedLines], null));
             }
             return result;
-        }
-
-        private static StringDifference AnalyseLine(int line, string actualLine, string expectedLine)
-        {
-            var stringDifference = new StringDifference {Line = line};
-            // scan the initial part of both strings
-            var sharedLine = Math.Min(actualLine.Length, expectedLine.Length);
-            for (var i = 0;
-                i < sharedLine;
-                i++)
-            {
-                if (actualLine[i] == expectedLine[i])
-                {
-                    continue;
-                }
-                if (StringExtensions.CompareChar(actualLine[i], expectedLine[i], true))
-                {
-                    if (stringDifference.Type == DifferenceMode.CaseDifference)
-                    {
-                        continue;
-                    }
-                    stringDifference.Type = DifferenceMode.CaseDifference;
-                    stringDifference.Position = i;
-                }
-                else
-                {
-                    stringDifference.Type = DifferenceMode.General;
-                    stringDifference.Position = i;
-                    break;
-                }
-            }
-            // strings are same so far
-            if (stringDifference.Type != DifferenceMode.NoDifference)
-            {
-                return stringDifference;
-            }
-
-            // the actualLine string is longer than expectedLine
-            if (actualLine.Length > expectedLine.Length)
-            {
-                stringDifference.Position = expectedLine.Length;
-                if ((actualLine.Length == expectedLine.Length + 1) && actualLine.Last() == '\r')
-                {
-                    stringDifference.Type = DifferenceMode.EndOfLine;
-                }
-                else
-                {
-                    stringDifference.Type = DifferenceMode.Longer;
-                }
-            }
-            else if (actualLine.Length < expectedLine.Length)
-            {
-                stringDifference.Position = actualLine.Length;
-                if ((actualLine.Length + 1 == expectedLine.Length) && expectedLine.Last() == '\r')
-                {
-                    stringDifference.Type = DifferenceMode.EndOfLine;
-                }
-                else
-                {
-                    stringDifference.Type = DifferenceMode.Shorter;
-                }
-            }
-            return stringDifference;
         }
     }
 
@@ -109,7 +44,73 @@ namespace NFluent.Helpers
     {
         public DifferenceMode Type = DifferenceMode.NoDifference;
         public int Position;
+
         public int Line { get; internal set; }
+        public string Expected { get; internal set; }
+        public string Actual { get; internal set; }
+
+        public StringDifference(int line, string actual, string expected)
+        {
+            this.Line = line;
+            this.Expected = expected;
+            this.Actual = actual;           // scan the initial part of both strings
+            if (actual == null)
+            {
+                this.Type = DifferenceMode.MissingLine;
+                return;
+            }
+            if (expected == null)
+            {
+                this.Type = DifferenceMode.ExtraLines;
+                return;
+            }
+            var sharedLine = Math.Min(actual.Length, expected.Length);
+            for (var i = 0;
+                i < sharedLine;
+                i++)
+            {
+                if (actual[i] == expected[i])
+                {
+                    // same char
+                    continue;
+                }
+                if (StringExtensions.CompareChar(actual[i], expected[i], true))
+                {
+                    // difference in case only
+                    if (this.Type == DifferenceMode.CaseDifference)
+                    {
+                        continue;
+                    }
+                    this.Type = DifferenceMode.CaseDifference;
+                    this.Position = i;
+                }
+                else
+                {
+                    this.Type = DifferenceMode.General;
+                    this.Position = i;
+                    break;
+                }
+            }
+            // strings are same so far
+            if (this.Type != DifferenceMode.NoDifference)
+            {
+                return;
+            }
+
+            // the actualLine string is longer than expectedLine
+            if (actual.Length > expected.Length)
+            {
+                this.Position = sharedLine;
+                this.Type = actual.Substring(sharedLine)=="\r" ? DifferenceMode.EndOfLine : DifferenceMode.Longer;
+            }
+            else if (actual.Length < expected.Length)
+            {
+                this.Position = sharedLine;
+                this.Type = expected.Substring(sharedLine) == "\r" ? DifferenceMode.EndOfLine : DifferenceMode.Shorter;
+            }
+
+        }
+
     }
 
     internal enum DifferenceMode
