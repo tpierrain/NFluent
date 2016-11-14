@@ -10,13 +10,13 @@
         [Test]
         public void ShouldNotReportWhenNoDifference()
         {
-            Check.That(StringDifferenceAnalyzer.Analyze("toto", "toto")).IsNull();
+            Check.That(StringDifference.Analyze("toto", "toto")).IsNull();
         }
 
         [Test]
         public void ShouldReportDifferentLineWhenOneLine()
         {
-            var stringDifferences = StringDifferenceAnalyzer.Analyze("toto", "tutu");
+            var stringDifferences = StringDifference.Analyze("toto", "tutu");
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[0].Position).IsEqualTo(1);
@@ -25,7 +25,7 @@
         [Test]
         public void ShouldReportDifferenceForCaseSensitive()
         {
-            var stringDifferences = StringDifferenceAnalyzer.Analyze("toto", "toTo");
+            var stringDifferences = StringDifference.Analyze("toto", "toTO");
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.CaseDifference);
             Check.That(stringDifferences[0].Position).IsEqualTo(2);
@@ -34,7 +34,7 @@
         [Test]
         public void ShouldReportDifferenceForGeneralEvenIfFirstDiffIsCase()
         {
-            var stringDifferences = StringDifferenceAnalyzer.Analyze("toto", "toTd");
+            var stringDifferences = StringDifference.Analyze("toto", "toTd");
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[0].Position).IsEqualTo(3);
@@ -43,7 +43,7 @@
         [Test]
         public void ShouldReportDifferenceForLongerText()
         {
-            var stringDifferences = StringDifferenceAnalyzer.Analyze("toto et tutu", "toto");
+            var stringDifferences = StringDifference.Analyze("toto et tutu", "toto");
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.Longer);
             Check.That(stringDifferences[0].Position).IsEqualTo(4);
@@ -52,7 +52,7 @@
         [Test]
         public void ShouldReportDifferenceForShorterText()
         {
-            var stringDifferences = StringDifferenceAnalyzer.Analyze("toto", "toto et tata");
+            var stringDifferences = StringDifference.Analyze("toto", "toto et tata");
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.Shorter);
             Check.That(stringDifferences[0].Position).IsEqualTo(4);
@@ -61,12 +61,12 @@
         [Test]
         public void ShouldReportDifferenceForMultipleLines()
         {
-            var stringDifferences = StringDifferenceAnalyzer.Analyze("toto\ntiti", "toto\ntata");
+            var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto\ntata");
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[0].Position).IsEqualTo(1);
             Check.That(stringDifferences[0].Line).IsEqualTo(1);
-            stringDifferences = StringDifferenceAnalyzer.Analyze("maybe\ntiti", "toto\ntata");
+            stringDifferences = StringDifference.Analyze("maybe\ntiti", "toto\ntata");
             Check.That(stringDifferences).HasSize(2);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[0].Position).IsEqualTo(0);
@@ -79,7 +79,7 @@
         [Test]
         public void ShouldReportDifferenceOfEoL()
         {
-            var stringDifferences = StringDifferenceAnalyzer.Analyze("toto\ntiti", "toto\r\ntiti");
+            var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto\r\ntiti");
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.EndOfLine);
             Check.That(stringDifferences[0].Position).IsEqualTo(4);
@@ -89,9 +89,14 @@
         [Test]
         public void ShouldReportDifferenceOfNumberOfLinesL()
         {
-            var stringDifferences = StringDifferenceAnalyzer.Analyze("toto\ntiti", "toto");
+            var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto");
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.ExtraLines);
+            Check.That(stringDifferences[0].Position).IsEqualTo(0);
+            Check.That(stringDifferences[0].Line).IsEqualTo(1);
+            stringDifferences = StringDifference.Analyze("toto", "toto\n");
+            Check.That(stringDifferences).HasSize(1);
+            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.MissingLines);
             Check.That(stringDifferences[0].Position).IsEqualTo(0);
             Check.That(stringDifferences[0].Line).IsEqualTo(1);
         }

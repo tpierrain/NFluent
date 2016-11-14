@@ -3,11 +3,56 @@ using System.Collections.Generic;
 
 namespace NFluent.Helpers
 {
-    using System.Linq;
     using Extensions;
 
-    internal static class StringDifferenceAnalyzer
+    internal class StringDifference
     {
+        public DifferenceMode Type = DifferenceMode.NoDifference;
+        public int Position;
+
+        public int Line { get; internal set; }
+        public string Expected { get; internal set; }
+        public string Actual { get; internal set; }
+
+        public StringDifference(int line, string actual, string expected)
+        {
+            this.Line = line;
+            this.Expected = expected;
+            this.Actual = actual;
+            // do we have both strings?
+            if (actual == null)
+            {
+                this.Type = DifferenceMode.MissingLines;
+                return;
+            }
+            if (expected == null)
+            {
+                this.Type = DifferenceMode.ExtraLines;
+                return;
+            }
+            // check the common part of both strings
+            var sharedLine = CheckCommonPart();
+            if (this.Type != DifferenceMode.NoDifference)
+            {
+                // we have difference, we can stop
+                return;
+            }
+
+            // strings are same so far
+            // the actualLine string is longer than expectedLine
+            if (actual.Length > expected.Length)
+            {
+                this.Position = sharedLine;
+                this.Type = actual.Substring(sharedLine)=="\r" ? DifferenceMode.EndOfLine : DifferenceMode.Longer;
+            }
+            else if (actual.Length < expected.Length)
+            {
+                this.Position = sharedLine;
+                this.Type = expected.Substring(sharedLine) == "\r" ? DifferenceMode.EndOfLine : DifferenceMode.Shorter;
+            }
+
+        }
+
         public static IList<StringDifference> Analyze(string actual, string expected)
         {
             if (actual == expected)
@@ -34,47 +79,24 @@ namespace NFluent.Helpers
             }
             else if (actualLines.Length > sharedLines)
             {
-                result.Add(new StringDifference (  sharedLines, actualLines[sharedLines], null));
+                result.Add(new StringDifference(sharedLines, actualLines[sharedLines], null));
             }
             return result;
         }
-    }
 
-    internal class StringDifference
-    {
-        public DifferenceMode Type = DifferenceMode.NoDifference;
-        public int Position;
-
-        public int Line { get; internal set; }
-        public string Expected { get; internal set; }
-        public string Actual { get; internal set; }
-
-        public StringDifference(int line, string actual, string expected)
+        private int CheckCommonPart()
         {
-            this.Line = line;
-            this.Expected = expected;
-            this.Actual = actual;           // scan the initial part of both strings
-            if (actual == null)
-            {
-                this.Type = DifferenceMode.MissingLine;
-                return;
-            }
-            if (expected == null)
-            {
-                this.Type = DifferenceMode.ExtraLines;
-                return;
-            }
-            var sharedLine = Math.Min(actual.Length, expected.Length);
+            var sharedLine = Math.Min(this.Actual.Length, this.Expected.Length);
             for (var i = 0;
                 i < sharedLine;
                 i++)
             {
-                if (actual[i] == expected[i])
+                if (this.Actual[i] == this.Expected[i])
                 {
                     // same char
                     continue;
                 }
-                if (StringExtensions.CompareChar(actual[i], expected[i], true))
+                if (StringExtensions.CompareChar(this.Actual[i], this.Expected[i], true))
                 {
                     // difference in case only
                     if (this.Type == DifferenceMode.CaseDifference)
@@ -91,26 +113,8 @@ namespace NFluent.Helpers
                     break;
                 }
             }
-            // strings are same so far
-            if (this.Type != DifferenceMode.NoDifference)
-            {
-                return;
-            }
-
-            // the actualLine string is longer than expectedLine
-            if (actual.Length > expected.Length)
-            {
-                this.Position = sharedLine;
-                this.Type = actual.Substring(sharedLine)=="\r" ? DifferenceMode.EndOfLine : DifferenceMode.Longer;
-            }
-            else if (actual.Length < expected.Length)
-            {
-                this.Position = sharedLine;
-                this.Type = expected.Substring(sharedLine) == "\r" ? DifferenceMode.EndOfLine : DifferenceMode.Shorter;
-            }
-
+            return sharedLine;
         }
-
     }
 
     internal enum DifferenceMode
@@ -121,7 +125,7 @@ namespace NFluent.Helpers
         Longer,
         Shorter,
         EndOfLine,
-        MissingLine,
+        MissingLines,
         ExtraLines
     }
 }

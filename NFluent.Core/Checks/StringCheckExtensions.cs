@@ -39,7 +39,7 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
-            var messageText = AssessEquals(checker, expected, checker.Negated);
+            var messageText = StringCheckExtensions.AssessEquals(checker, expected, checker.Negated);
             if (!string.IsNullOrEmpty(messageText))
             {
                 throw new FluentCheckException(messageText);
