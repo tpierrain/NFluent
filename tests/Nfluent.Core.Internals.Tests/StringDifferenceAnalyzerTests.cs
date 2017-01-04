@@ -1,4 +1,6 @@
-﻿namespace Nfluent.Tests
+﻿using System.Globalization;
+
+namespace Nfluent.Tests
 {
     using NFluent;
     using NFluent.Helpers;
@@ -56,6 +58,15 @@
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.Shorter);
             Check.That(stringDifferences[0].Position).IsEqualTo(4);
+        }
+
+        [Test]
+        public void ShouldReportDifferenceInSpaces()
+        {
+            var stringDifference = StringDifference.Analyze("toto and tutu", "toto\tand\ttutu");
+            Check.That(stringDifference).HasSize(1);
+            Check.That(stringDifference[0].Type).IsEqualTo(DifferenceMode.General);
+            Check.That(char.IsWhiteSpace(' ')).IsTrue();
         }
 
         [Test]

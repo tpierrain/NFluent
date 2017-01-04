@@ -131,12 +131,26 @@ namespace NFluent.Tests
 
         private static void SetTheEventFromAnotherThreadAfterADelay(AutoResetEvent myEvent, int delayBeforeEventIsSetInMilliseconds)
         {
+            var signal = new object();
+            var started = false;
             var otherThread = new Thread(() =>
             {
+                lock (signal)
+                {
+                    started = true;
+                    Monitor.PulseAll(signal);
+                }
                 Thread.Sleep(delayBeforeEventIsSetInMilliseconds);
                 myEvent.Set();
             });
             otherThread.Start();
+            lock (signal)
+            {
+                if (!started)
+                {
+                    Monitor.Wait(signal, 10000);
+                }
+            }
         }
 
         #endregion
