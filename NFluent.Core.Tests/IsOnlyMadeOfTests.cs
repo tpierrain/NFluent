@@ -195,6 +195,7 @@ namespace NFluent.Tests
 
             Check.That(integers).IsOnlyMadeOf(expectedValues);
         }
+#if !NETCOREAPP1_0
 
         [Test]
         public void IsOnlyMadeOfWithArrayListWorksEvenWhenGivingSameExpectedValueMultipleTimes()
@@ -218,7 +219,7 @@ namespace NFluent.Tests
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked enumerable contains only the given values whereas it must not." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 3, 2, 2, 1]");
         }
-
+        
         [Test]
         public void IsOnlyMadeOfWithStringCollectionWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
@@ -249,6 +250,7 @@ namespace NFluent.Tests
             IEnumerable expectedVariousObjects = new ArrayList { 1, "uno", "uno", 45.3F, "tres" };
             Check.That(variousObjects).IsOnlyMadeOf(expectedVariousObjects);
         }
+#endif
 
         #endregion
     }

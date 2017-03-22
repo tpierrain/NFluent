@@ -171,6 +171,7 @@ namespace NFluent.Tests
             .WithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[666, 1974]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 666, 1974]");
         }
 
+#if !NETCOREAPP1_0
         [Test]
         public void ContainsWithEnumerableOfVariousObjectsTypesWorks()
         {
@@ -178,7 +179,8 @@ namespace NFluent.Tests
             IEnumerable expectedVariousObjects = new ArrayList { "tres", 45.3F };
             Check.That(variousObjects).Contains(expectedVariousObjects);
         }
+#endif
 
-        #endregion
+#endregion
     }
 }

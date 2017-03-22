@@ -100,6 +100,7 @@ namespace NFluent.Tests
             Check.That(persons.Extracting("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
         }
 
+#pragma warning disable 618
         [Test]
         public void PropertiesWorksWithArray()
         {
@@ -113,6 +114,7 @@ namespace NFluent.Tests
 
             Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
         }
+#pragma warning restore 618
 
         #endregion
     }

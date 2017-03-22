@@ -16,11 +16,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Xml.Serialization;
+
 namespace NFluent.Tests.ForDocumentation
 {
     using System;
     using System.Collections.Generic;
-    using System.Xml.Serialization;
 
     using NFluent.Extensions;
 

@@ -45,6 +45,7 @@ namespace NFluent.Tests
 
             Check.That(Test).IsEqualTo(4);
         }
+#pragma warning disable 618
 
         [Test]
         public void CheckNumbersWithDecimalParts()
@@ -55,4 +56,5 @@ namespace NFluent.Tests
             Check.That(.02).IsGreaterThan(.01);
         }
     }
+#pragma warning restore 618
 }

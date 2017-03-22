@@ -24,7 +24,7 @@ namespace NFluent.Tests.ForDocumentation
     using System.Linq;
     using System.Reflection;
     using NUnit.Framework;
-#if CORE
+#if NETCOREAPP1_0
     using Microsoft.Extensions.DependencyModel;
 #endif
 
@@ -84,7 +84,7 @@ namespace NFluent.Tests.ForDocumentation
 
         internal static Assembly[] GetLoadedAssemblies()
         {
-#if CORE
+#if NETCOREAPP1_0
             var assemblies = new List<Assembly>();
             var dependencies = DependencyContext.Default.RuntimeLibraries;
             foreach (var library in dependencies)
@@ -133,7 +133,7 @@ namespace NFluent.Tests.ForDocumentation
             {
                 specificTest.Invoke(test, new object[] { });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
                // throw new NotImplementedException("we have to find a new way since NUnit's ExceptedException has disapeared.");

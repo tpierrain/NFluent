@@ -144,6 +144,7 @@ namespace NFluent.Tests
                 myEvent.Set();
             });
             otherThread.Start();
+            // we wait for the thread to be actualy started to reduce risk of false negative due to CPU contention
             lock (signal)
             {
                 if (!started)

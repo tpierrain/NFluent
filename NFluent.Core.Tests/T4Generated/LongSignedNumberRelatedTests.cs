@@ -46,9 +46,9 @@ namespace NFluent.Tests
         }
 
 
-        #pragma warning restore 169
+        // Since this class is the model/template for the generation of the tests on all the other numbers types, don't forget to re-generate all the other classes every time you change this one. To do that, just save the .\T4" + Environment.NewLine + "umberTestsGenerator.tt file within Visual Studio 2012. This will trigger the T4 code generation process.
         #region IsPositive (obsolete)
-
+#pragma warning disable 618
         [Test]
         public void IsPositiveWorks()
         {
@@ -105,6 +105,66 @@ namespace NFluent.Tests
         }
 
         #endregion
+
+        #region IsNegative (obsolete)
+
+        [Test]
+        public void IsNegativeWorks()
+        {
+            const long MinusFifty = -50L;
+
+            Check.That(MinusFifty).IsNegative();
+        }
+
+        [Test]
+        public void IsNegativeThrowsExceptionWhenEqualToZero()
+        {
+            const long Zero = 0L;
+
+            Check.ThatCode(() =>
+            {
+                Check.That(Zero).IsNegative();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage(Environment.NewLine + "The checked value is not strictly negative." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[0]");
+        }
+
+        [Test]
+        public void NotIsNegativeThrowsExceptionWhenFailing()
+        {
+            const long MinusFifty = -50L;
+
+            Check.ThatCode(() =>
+            {
+                Check.That(MinusFifty).Not.IsNegative();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage(Environment.NewLine + "The checked value is strictly negative, whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[-50]");
+        }
+
+        [Test]
+        public void IsNegativeThrowsExceptionWhenValueIsPositive()
+        {
+            const long Two = 2L;
+
+            Check.ThatCode(() =>
+            {
+                Check.That(Two).IsNegative();
+            })
+            .Throws<FluentCheckException>()
+            .WithMessage(Environment.NewLine + "The checked value is not strictly negative." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]");
+        }
+
+        [Test]
+        public void NotIsNegativeWorks()
+        {
+            const long Two = 2L;
+
+            Check.That(Two).Not.IsNegative();
+        }
+
+        #endregion
+#pragma warning restore 618
 
         #region IsStrictlyPositive
 
@@ -209,65 +269,6 @@ namespace NFluent.Tests
             const long MinusFifty = -50L;
 
             Check.That(MinusFifty).Not.IsPositiveOrZero();
-        }
-
-        #endregion
-
-        #region IsNegative (obsolete)
-
-        [Test]
-        public void IsNegativeWorks()
-        {
-            const long MinusFifty = -50L;
-
-            Check.That(MinusFifty).IsNegative();
-        }
-
-        [Test]
-        public void IsNegativeThrowsExceptionWhenEqualToZero()
-        {
-            const long Zero = 0L;
-
-            Check.ThatCode(() =>
-            {
-                Check.That(Zero).IsNegative();
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not strictly negative." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[0]");
-        }
-
-        [Test]
-        public void NotIsNegativeThrowsExceptionWhenFailing()
-        {
-            const long MinusFifty = -50L;
-
-            Check.ThatCode(() =>
-            {
-                Check.That(MinusFifty).Not.IsNegative();
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is strictly negative, whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[-50]");
-        }
-
-        [Test]
-        public void IsNegativeThrowsExceptionWhenValueIsPositive()
-        {
-            const long Two = 2L;
-
-            Check.ThatCode(() =>
-            {
-                Check.That(Two).IsNegative();
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not strictly negative." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]");
-        }
-
-        [Test]
-        public void NotIsNegativeWorks()
-        {
-            const long Two = 2L;
-
-            Check.That(Two).Not.IsNegative();
         }
 
         #endregion

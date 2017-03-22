@@ -16,7 +16,6 @@ using System;
 
 namespace NFluent.Tests
 {
-    using System.Globalization;
     using NUnit.Framework;
     using NFluent.Tests.Helpers;
 
@@ -228,6 +227,7 @@ namespace NFluent.Tests
         #endregion
 
         #region IsLessThan
+#pragma warning disable 618
 
         [Test]
         public void IsLessThanWorks()
@@ -261,6 +261,7 @@ namespace NFluent.Tests
             .WithMessage(Environment.NewLine+ "The checked value is less than the threshold." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1]" + Environment.NewLine + "The expected value: more than" + Environment.NewLine + "\t[20]");
         }
 
+#pragma warning restore 618
         #endregion
 
         #region IsStrictlyLessThan
@@ -315,13 +316,13 @@ namespace NFluent.Tests
 
 
         #region IsGreaterThan
+#pragma warning disable 618
 
         [Test]
         public void IsGreaterThanWorks()
         {
             const int One = 1;
             const int Twenty = 20;
-
             Check.That(Twenty).IsGreaterThan(One);
         }
 
@@ -353,6 +354,7 @@ namespace NFluent.Tests
             .WithMessage(Environment.NewLine+ "The checked value is greater than the threshold." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[20]" + Environment.NewLine + "The expected value: less than" + Environment.NewLine + "\t[1]");
         }
 
+#pragma warning restore 618
         #endregion
 
         #region IsStrictlyGreaterThan

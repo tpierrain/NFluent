@@ -87,20 +87,39 @@ namespace NFluent.Helpers
         private int CheckCommonPart()
         {
             var sharedLine = Math.Min(this.Actual.Length, this.Expected.Length);
+            var lastCharWasSpace = true;
+            var j = 0;
             for (var i = 0;
-                i < sharedLine;
-                i++)
+                i < this.Actual.Length && j < this.Expected.Length;
+                i++, j++)
             {
-                if (this.Actual[i] == this.Expected[i])
+                var actualChar = this.Actual[i];
+                var expectedChar = this.Expected[j];
+                if (actualChar == expectedChar)
                 {
                     // same char
-                    continue;
                 }
-                if (StringExtensions.CompareChar(this.Actual[i], this.Expected[i], true))
+                else if ((char.IsWhiteSpace(actualChar) && char.IsWhiteSpace(expectedChar)) 
+                    || (lastCharWasSpace && (char.IsWhiteSpace(actualChar) || char.IsWhiteSpace(expectedChar))))
+                {
+                    //we skip all spaces
+                    while (i+1 < this.Actual.Length && char.IsWhiteSpace(this.Actual[i+1]))
+                    {
+                        i++;
+                    }
+                    while (j+1 < this.Expected.Length && char.IsWhiteSpace(this.Expected[j+1]))
+                    {
+                        j++;
+                    }
+                    if (this.Type == DifferenceMode.NoDifference)
+                        this.Type = DifferenceMode.Spaces;
+                }
+                else if (StringExtensions.CompareChar(actualChar, expectedChar, true))
                 {
                     // difference in case only
                     if (this.Type == DifferenceMode.CaseDifference)
                     {
+                        lastCharWasSpace = char.IsWhiteSpace(actualChar);
                         continue;
                     }
                     this.Type = DifferenceMode.CaseDifference;
@@ -112,6 +131,7 @@ namespace NFluent.Helpers
                     this.Position = i;
                     break;
                 }
+                lastCharWasSpace = char.IsWhiteSpace(actualChar);
             }
             return sharedLine;
         }
@@ -126,6 +146,7 @@ namespace NFluent.Helpers
         Shorter,
         EndOfLine,
         MissingLines,
-        ExtraLines
+        ExtraLines,
+        Spaces
     }
 }

@@ -23,7 +23,7 @@ namespace NFluent.Tests.ForDocumentation
     using System.Xml.Serialization;
     using NFluent.Extensions;
 
-    [Serializable]
+//    [Serializable]
     public class CheckDescription
     {
         #region field

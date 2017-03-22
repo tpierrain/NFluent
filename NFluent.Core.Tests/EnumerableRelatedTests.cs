@@ -63,6 +63,7 @@ namespace NFluent.Tests
             Check.That(enumerable).HasSize(4).And.Contains(666);
         }
 
+#if !NETCOREAPP1_0
         [Test]
         public void HasSizeWorksWithArrayList()
         {
@@ -70,6 +71,7 @@ namespace NFluent.Tests
 
             Check.That(arrayList).HasSize(4);
         }
+#endif
 
         [Test]
         public void HasSizeThrowsExceptionWhenFailingWithOneElementFound()

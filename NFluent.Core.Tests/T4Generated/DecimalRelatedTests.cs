@@ -16,7 +16,6 @@ using System;
 
 namespace NFluent.Tests
 {
-    using System.Globalization;
     using NUnit.Framework;
     using NFluent.Tests.Helpers;
 
@@ -32,7 +31,7 @@ namespace NFluent.Tests
         //// (i.e. the one dedicated to the integer values).
         //// -----------------------------------------------------
 
-        #pragma warning restore 169
+        // Since this class is the model/template for the generation of the tests on all the other numbers types, don't forget to re-generate all the other classes every time you change this one. To do that, just save the .\T4" + Environment.NewLine + "umberTestsGenerator.tt file within Visual Studio 2012. This will trigger the T4 code generation process.
         private const string Blabla = ".*?";
         private const string LineFeed = "\n";
         private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
@@ -235,6 +234,7 @@ namespace NFluent.Tests
         #endregion
 
         #region IsLessThan
+#pragma warning disable 618
 
         [Test]
         public void IsLessThanWorks()
@@ -268,6 +268,7 @@ namespace NFluent.Tests
             .WithMessage(Environment.NewLine+ "The checked value is less than the threshold." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1]" + Environment.NewLine + "The expected value: more than" + Environment.NewLine + "\t[20]");
         }
 
+#pragma warning restore 618
         #endregion
 
         #region IsStrictlyLessThan
@@ -322,13 +323,13 @@ namespace NFluent.Tests
 
 
         #region IsGreaterThan
+#pragma warning disable 618
 
         [Test]
         public void IsGreaterThanWorks()
         {
             const decimal One = 1M;
             const decimal Twenty = 20M;
-
             Check.That(Twenty).IsGreaterThan(One);
         }
 
@@ -360,6 +361,7 @@ namespace NFluent.Tests
             .WithMessage(Environment.NewLine+ "The checked value is greater than the threshold." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[20]" + Environment.NewLine + "The expected value: less than" + Environment.NewLine + "\t[1]");
         }
 
+#pragma warning restore 618
         #endregion
 
         #region IsStrictlyGreaterThan

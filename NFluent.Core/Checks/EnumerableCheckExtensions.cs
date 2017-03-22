@@ -403,7 +403,7 @@ namespace NFluent
 
             return unexpectedValuesFound;
         }
-#if !(PORTABLE) && !(CORE)
+#if !(PORTABLE) && !(NETCOREAPP1_0)
         private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
         {
             // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.

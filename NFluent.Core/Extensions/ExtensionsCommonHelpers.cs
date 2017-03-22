@@ -211,7 +211,7 @@ namespace NFluent.Extensions
         private static string ToStringProperlyFormated(this bool theBoolean)
         {
             // Ensure that boolean values are not localized 
-#if !(PORTABLE) && !(CORE)
+#if !(PORTABLE) && !(NETCOREAPP1_0)
             return theBoolean.ToString(CultureInfo.InvariantCulture);
 #else
             return theBoolean.ToString();
@@ -260,7 +260,7 @@ namespace NFluent.Extensions
         public static bool IsNullable(this Type type)
         {
             // return Nullable.GetUnderlyingType(type) != null;
-#if CORE
+#if NETCOREAPP1_0
             if (!type.GetTypeInfo().IsGenericType)
 #else
             if (!type.IsGenericType)
@@ -306,7 +306,7 @@ namespace NFluent.Extensions
         /// <remarks>Simplify port to .Net Core</remarks>
         public static Type GetBaseType(this Type type)
         {
-#if CORE
+#if NETCOREAPP1_0
             return type.GetTypeInfo().BaseType;
 #else
             return type.BaseType;

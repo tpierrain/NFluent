@@ -17,13 +17,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ObsoleteAPIChecks()
-        {
-            var x = new DummyClass();
-            Check.That(x).HasFieldsEqualToThose(new DummyClass());
-        }
-
-        [Test]
         public void HasNotFieldsWithSameValuesWorks()
         {
             var x = new DummyClass();
@@ -40,6 +33,14 @@ namespace NFluent.Tests
             Check.That(numbers).HasNotFieldsWithSameValues(new { Length = 99 }).And.Contains(2);
         }
 
+        #pragma warning disable 618
+        [Test]
+        public void ObsoleteAPIChecks()
+        {
+            var x = new DummyClass();
+            Check.That(x).HasFieldsEqualToThose(new DummyClass());
+        }
+
         [Test]
         public void HasFieldsNotEqualToThoseIsObsoleteButWorks()
         {
@@ -49,6 +50,7 @@ namespace NFluent.Tests
             // check with missing fields
             Check.That(new DummyClass()).HasFieldsNotEqualToThose(new DummyHeritance(1,2));
         }
+#pragma warning restore 618
 
         [Test]
         public void IsEqualFailsIfFieldsDifferent()
@@ -128,14 +130,14 @@ namespace NFluent.Tests
             var numbers = new List<int>( new[] { 1, 2, 3 });
             Check.That(numbers).HasFieldsWithSameValues(new { _size = 3 }).And.Contains(2);
         }
-
+#pragma warning disable 618
         [Test]
         public void HasFieldsEqualToThoseIsObsoleteButWorksAgainstAnonymousClass()
         {
             var x = new DummyClass();
             Check.That(x).HasFieldsEqualToThose(new { x = 2, y = 3 });
         }
-
+#pragma warning restore 618
         [Test]
         public void HasFieldsEqualWorksAgainstAnonymousClassAndAutoProperties()
         {
@@ -215,8 +217,7 @@ namespace NFluent.Tests
             private int y = 3;
 
             public DummyClass()
-            {
-            }
+            {}
 
             public DummyClass(int x, int y)
             {
@@ -228,13 +229,11 @@ namespace NFluent.Tests
         private class DummyHeritance : DummyClass
         {
             // ReSharper disable once NotAccessedField.Local
-#pragma warning disable 169
             private int z = 2;
-#pragma warning restore 169
+            public int X { get { return z; } }
             public DummyHeritance() { }
             public DummyHeritance(int x, int y) : base(x, y)
-            {
-            }
+            {}
         }
 
         private class DummyWithAutoProperty

@@ -26,6 +26,14 @@ namespace NFluent.Tests
     [TestFixture]
     public class UserReportedIssuesTests
     {
+        // issue #178: issue with IDictionary
+        [Test]
+        public void IssueWithIDictionary()
+        {
+            Dictionary<string, int> dico =new Dictionary<string, int>();
+            dico["test"] = 2;
+            Check.That(dico).ContainsKey("test");
+        }
         // issue #176: Check.That(1).Not.IsZero() fails
         [Test]
         public void IssueWithIsZero()
@@ -292,6 +300,7 @@ namespace NFluent.Tests
             Check.That(test).IsNotNull().And.HasSize(0);
         }
 
+#if !NETCOREAPP1_0
         // 30/05/14 Invalid exception on strings with curly braces
         [Test]
         public void SpuriousExceptionOnError()
@@ -305,6 +314,7 @@ namespace NFluent.Tests
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[\"MaChaine{964}\"]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"MaChaine{94}\"]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"MaChaine{964}\"]");
         }
+#endif
 
         // #issue 115,
         [Test]

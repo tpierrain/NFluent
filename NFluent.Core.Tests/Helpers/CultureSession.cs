@@ -39,7 +39,7 @@ namespace NFluent.Tests.Helpers
 
         private static void SetCulture(CultureInfo newCulture, CultureInfo newUICulture)
         {
-#if CORE
+#if NETCOREAPP1_0
             CultureInfo.CurrentUICulture = newCulture;
             CultureInfo.CurrentCulture = newCulture;
 #else

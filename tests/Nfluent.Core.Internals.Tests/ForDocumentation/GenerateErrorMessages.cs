@@ -240,8 +240,6 @@ namespace NFluent.Tests.ForDocumentation
                                     //    return attrib == null || attrib.ExpectedException == typeof(FluentCheckException);
                                     //}
                                     throw new NotImplementedException("we have to find a new way since NUnit's ExceptedException has disapeared.");
-
-                                    return false;
                                 });
                     RunnerHelper.RunThoseTests(tests, type, report, log);
                 }

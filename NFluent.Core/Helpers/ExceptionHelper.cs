@@ -80,7 +80,7 @@ namespace NFluent.Helpers
 
         private static ExceptionConstructor ExceptionScanner(string assemblyMarker, string nameSpace, string assertionExceptionName, string ignoreExceptionName, string inconclusiveExceptionName)
         {
-#if !(PORTABLE) && !(CORE)
+#if !(PORTABLE) && !(NETCOREAPP1_0)
             var foundExceptions = 0;
            var result = new ExceptionConstructor();
             var defaultSignature = new[] { typeof(string) };

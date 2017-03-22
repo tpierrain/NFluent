@@ -16,9 +16,7 @@ namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
-
-    using NFluent.Tests.Extensions;
-
+    using Extensions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -54,10 +52,10 @@ namespace NFluent.Tests
             var one = new decimal(1);
             var pi = new decimal(Math.PI);
 
-            Check.That(pi).IsInstanceOf<decimal>().And.IsNotZero().And.IsPositive();
+            Check.That(pi).IsInstanceOf<decimal>().And.IsNotZero().And.IsStrictlyPositive();
 
             // TODO make the next line to build
-            // Check.That(one).IsBefore(pi);
+             Check.That(one).IsBefore(pi);
         }
 
         [Test]

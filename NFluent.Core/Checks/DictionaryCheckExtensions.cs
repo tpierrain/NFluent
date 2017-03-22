@@ -12,6 +12,10 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+
 namespace NFluent
 {
     using System.Collections;
@@ -38,6 +42,23 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
+        /*
+        public static ICheckLink<ICheck<IDictionary<K,U>>> ContainsKey<K, U>(this ICheck<IDictionary<K, U> > check, K key)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+
+            return checker.ExecuteCheck(
+                () =>
+                {
+                    if (!checker.Value.ContainsKey(key))
+                    {
+                        var message = checker.BuildMessage("The {0} does not contain the expected key.").Expected(key).Label("Expected key:").ToString();
+                        throw new FluentCheckException(message);
+                    }
+                },
+                checker.BuildMessage("The {0} does contain the given key, whereas it must not.").Expected(key).Label("Given key:").ToString());
+        }
+        */
         public static ICheckLink<ICheck<IDictionary>> ContainsKey<K>(this ICheck<IDictionary> check, K key)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
@@ -57,7 +78,7 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual <see cref="IDictionary"/> contains the expected value.
         /// </summary>
-        /// <typeparam name="K">
+        /// <typeparam name="TK">
         /// The type of the key element.
         /// </typeparam>
         /// <param name="check">
@@ -69,7 +90,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static ICheckLink<ICheck<IDictionary>> ContainsValue<K>(this ICheck<IDictionary> check, K expectedValue)
+        public static ICheckLink<ICheck<IDictionary>> ContainsValue<TK>(this ICheck<IDictionary> check, TK expectedValue)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 

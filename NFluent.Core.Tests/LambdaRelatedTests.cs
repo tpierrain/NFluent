@@ -18,7 +18,9 @@ using NFluent.ApiChecks;
 namespace NFluent.Tests
 {
     using System;
+#if !NETCOREAPP1_0
     using System.Runtime.Serialization;
+#endif
     using Helpers;
     using NUnit.Framework;
 
@@ -254,9 +256,10 @@ namespace NFluent.Tests
         }
 
 
-        #region Lambda related Test Data
-
+#region Lambda related Test Data
+#if !NETCOREAPP1_0
         [Serializable]
+#endif
         private class LambdaExceptionForTest : Exception
         {
             public int ExceptionNumber { get; private set; }
@@ -267,8 +270,8 @@ namespace NFluent.Tests
                 this.ExceptionNumber = exeptionNumber;
             }
 
-            #region Serializable stuff
-#if !CORE
+#region Serializable stuff
+#if !NETCOREAPP1_0
             protected LambdaExceptionForTest(SerializationInfo info, StreamingContext context)
                 : base(info, context)
             {

@@ -120,7 +120,7 @@ namespace NFluent.Tests
         [Test]
         public void ContainsExactlyAlsoWorksWithEnumerableParameter()
         {
-            Check.That(InstantiateDirectors().Properties("Name")).ContainsExactly(InstantiateDirectors().Properties("Name"));
+            Check.That(InstantiateDirectors().Extracting("Name")).ContainsExactly(InstantiateDirectors().Extracting("Name"));
         }
 
         [Test]
@@ -197,11 +197,11 @@ namespace NFluent.Tests
         [Test]
         public void ContainsExactlyThrowsExceptionWhenFailingWithEnumerable()
         {
-            IEnumerable writersNames = InstantiateWriters().Properties("Name");
+            IEnumerable writersNames = InstantiateWriters().Extracting("Name");
 
             Check.ThatCode(() =>
             {
-                Check.That(InstantiateDirectors().Properties("Name")).ContainsExactly(writersNames);
+                Check.That(InstantiateDirectors().Extracting("Name")).ContainsExactly(writersNames);
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). First difference is at index #0." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Michel Gondry\", \"Joon-ho Bong\", \"Darren Aronofsky\"] (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"Steve Tesich\", \"Albert Camus\", \"Eiji Yoshikawa\", \"Friedrich Nietzsche\"] (4 items)");
@@ -210,8 +210,8 @@ namespace NFluent.Tests
         [Test]
         public void NotContainsExactlyWorksWithEnumerable()
         {
-            IEnumerable writersNames = InstantiateWriters().Properties("Name");
-            IEnumerable directorsNames = InstantiateDirectors().Properties("Name");
+            IEnumerable writersNames = InstantiateWriters().Extracting("Name");
+            IEnumerable directorsNames = InstantiateDirectors().Extracting("Name");
             
             Check.That(directorsNames).Not.ContainsExactly(writersNames);
         }
@@ -219,7 +219,7 @@ namespace NFluent.Tests
         [Test]
         public void NotContainsExactlyThrowsExceptionWhenFailingWithEnumerable()
         {
-            IEnumerable writersNames = InstantiateWriters().Properties("Name");
+            IEnumerable writersNames = InstantiateWriters().Extracting("Name");
 
             Check.ThatCode(() =>
             {
@@ -236,11 +236,13 @@ namespace NFluent.Tests
 
             Check.ThatCode(() =>
             {
-                Check.That(InstantiateDirectors().Properties("Name")).ContainsExactly(nullEnumerable);
+                Check.That(InstantiateDirectors().Extracting("Name")).ContainsExactly(nullEnumerable);
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Michel Gondry\", \"Joon-ho Bong\", \"Darren Aronofsky\"] (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[null] (0 item)");
         }
+
+#if !NETCOREAPP1_0
 
         [Test]
         public void ContainsExactlyWithEnumerableOfVariousObjectsTypesWorks()
@@ -249,7 +251,7 @@ namespace NFluent.Tests
             IEnumerable expectedVariousObjects = new ArrayList { 1, "uno", "tres", 45.3F };
             Check.That(variousObjects).ContainsExactly(expectedVariousObjects);
         }
-
+#endif
         [Test]
         public void ContainsExactlyWorksOnLargeArrays()
         {
@@ -259,9 +261,9 @@ namespace NFluent.Tests
             Check.That(checkString).ContainsExactly(expectedString);
 
         }
-        #endregion
+#endregion
 
-        #region test helpers
+#region test helpers
 
         private static IEnumerable<Person> InstantiateDirectors()
         {
@@ -284,6 +286,6 @@ namespace NFluent.Tests
                        };
         }
 
-        #endregion
+#endregion
     }
 }

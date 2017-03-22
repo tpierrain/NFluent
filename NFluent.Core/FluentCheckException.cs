@@ -19,7 +19,7 @@ namespace NFluent
     /// <summary>
     /// Thrown when an check failed.
     /// </summary>
-#if !(PORTABLE) && !(CORE)
+#if !(PORTABLE) && !(NETCOREAPP1_0)
     [Serializable]
 #endif
     public class FluentCheckException : Exception
