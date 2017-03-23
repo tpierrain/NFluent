@@ -39,7 +39,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\NFluent.Tests.Extensions\NFluent.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation">
@@ -52,49 +52,40 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\NFluent.Tests.Extensions\Child.cs">
+    <Compile Include="..\NFluent.Tests.Extensions.Core\Child.cs">
       <Link>Child.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions\ExtensionsForMarketingPurpose.cs">
+    <Compile Include="..\NFluent.Tests.Extensions.Core\ExtensionsForMarketingPurpose.cs">
       <Link>ExtensionsForMarketingPurpose.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions\LinkableExtensionsTests.cs">
+    <Compile Include="..\NFluent.Tests.Extensions.Core\LinkableExtensionsTests.cs">
       <Link>LinkableExtensionsTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions\Movie.cs">
+    <Compile Include="..\NFluent.Tests.Extensions.Core\Movie.cs">
       <Link>Movie.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions\MovieCheckExtensions.cs">
+    <Compile Include="..\NFluent.Tests.Extensions.Core\MovieCheckExtensions.cs">
       <Link>MovieCheckExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions\Nationality.cs">
+    <Compile Include="..\NFluent.Tests.Extensions.Core\Nationality.cs">
       <Link>Nationality.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions\NationalityExtensions.cs">
+    <Compile Include="..\NFluent.Tests.Extensions.Core\NationalityExtensions.cs">
       <Link>NationalityExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions\Person.cs">
+    <Compile Include="..\NFluent.Tests.Extensions.Core\Person.cs">
       <Link>Person.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions\PersonExtensions.cs">
+    <Compile Include="..\NFluent.Tests.Extensions.Core\PersonExtensions.cs">
       <Link>PersonExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions\SupaStructure.cs">
+    <Compile Include="..\NFluent.Tests.Extensions.Core\SupaStructure.cs">
       <Link>SupaStructure.cs</Link>
     </Compile>
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\NFluent.Tests.Extensions\NFluent.snk">
-      <Link>NFluent.snk</Link>
-    </None>
-    <None Include="..\NFluent.Tests.Extensions\Settings.StyleCop">
-      <Link>Settings.StyleCop</Link>
-    </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NFluent.40\NFluent.40.csproj">
@@ -105,10 +96,13 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="NFluent.snk" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="ac520fdb-8125-46f3-85f3-d4962c53c136" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="ac520fdb-8125-46f3-85f3-d4962c53c136" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
