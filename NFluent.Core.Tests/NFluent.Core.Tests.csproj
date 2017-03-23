@@ -6,7 +6,7 @@
     <ApplicationIcon />
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject />
-    <SignAssembly>False</SignAssembly>
+    <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageId></PackageId>
@@ -38,5 +38,14 @@
   <ItemGroup>
     <ProjectReference Include="..\NFluent.Core\NFluent.Core.csproj" />
     <ProjectReference Include="..\NFluent.Tests.Extensions.Core\NFluent.Tests.Extensions.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="CheckedFile.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ExpectedFile.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>  

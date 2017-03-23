@@ -63,10 +63,9 @@ namespace Nfluent.Tests
         [Test]
         public void ShouldReportDifferenceInSpaces()
         {
-            var stringDifference = StringDifference.Analyze("toto and tutu", "toto\tand\t tutu");
+            var stringDifference = StringDifference.Analyze("toto  and tutu", "toto\tand\t tutu");
             Check.That(stringDifference).HasSize(1);
             Check.That(stringDifference[0].Type).IsEqualTo(DifferenceMode.Spaces);
-            Check.That(char.IsWhiteSpace(' ')).IsTrue();
         }
 
         [Test]

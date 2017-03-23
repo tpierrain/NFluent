@@ -36,7 +36,7 @@ namespace NFluent.Tests
         public void Should_detect_NUnit()
         {
             var ex = ExceptionHelper.BuildException("the message");
-#if CORE
+#if NETCOREAPP1_0
             Check.That(ex.GetType().FullName).IsEqualTo("NFluent.FluentCheckException");
 #else    
             // test is relaxed due to issue on Xamarin

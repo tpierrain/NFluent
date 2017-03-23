@@ -403,19 +403,16 @@ namespace NFluent
 
             return unexpectedValuesFound;
         }
-#if !(PORTABLE) && !(NETCOREAPP1_0)
+
         private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
         {
             // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
+#if !(PORTABLE) && !(NETSTANDARD1_3)
             return expectedValues != null && (expectedValues.LongLength == 1) && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
-        }
 #else
-        private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
-        {
-            // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
             return expectedValues != null && (expectedValues.Length == 1) && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
-        }
 #endif
+        }
 
         private static bool IsAnEnumerableButNotAnEnumerableOfChars<T>(T element)
         {
