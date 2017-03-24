@@ -37,7 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NFluent.Core\NFluent.Core.csproj" />
-    <ProjectReference Include="..\NFluent.Tests.Extensions.Core\NFluent.Tests.Extensions.Core.csproj" />
+    <ProjectReference Include="..\NFluent.Tests.Extensions.Core\NFluent.Core.Tests.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

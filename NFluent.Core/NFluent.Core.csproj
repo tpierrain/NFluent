@@ -7,7 +7,7 @@
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject />
     <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>../NFluent.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageId></PackageId>
     <Version>1.0.0</Version>

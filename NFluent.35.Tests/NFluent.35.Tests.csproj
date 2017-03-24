@@ -256,9 +256,9 @@
       <Project>{3A474510-F384-41CE-9270-539B1E51DA7E}</Project>
       <Name>NFluent.35</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NFluent.Tests.Extensions\NFluent.Tests.Extensions.csproj">
+    <ProjectReference Include="..\NFluent.Tests.Extensions\NFluent.35.Tests.Extensions.csproj">
       <Project>{AC520FDB-8125-46F3-85F3-D4962C53C136}</Project>
-      <Name>NFluent.Tests.Extensions</Name>
+      <Name>NFluent.35.Tests.Extensions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
