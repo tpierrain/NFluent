@@ -13,7 +13,7 @@ namespace NFluent.Extensibility
     public static class ReverseEngineeringExceptionMessagesHelper
     {
         private const string DefaultFilePath = @"C:\\Temp\\NFluentTroubleShoot.txt";
-
+#if SCANEXCEPTION
         /// <summary>
         /// Generate a file containing the ready-to-be-copied-and-pasted-in-a-test exception message that occured while executing the provided lambda.
         /// </summary>
@@ -45,7 +45,7 @@ namespace NFluent.Extensibility
             var properlyEscapedMessage = GetProperlyEscapedMessage(message);
             File.WriteAllText(outputfilePath, properlyEscapedMessage);
         }
-
+#endif
         /// <summary>
         /// Build a ready-to-be-copied-and-pasted-in-a-string message (it will "escape" tabs, CRLF, and quote characters).
         /// </summary>
@@ -84,4 +84,4 @@ namespace NFluent.Extensibility
         }
     }
 #endif
-}
+    }

@@ -140,7 +140,6 @@ namespace NFluent.Helpers
             }
 #endif
 
-
             return null;
         }
 
@@ -194,5 +193,4 @@ namespace NFluent.Helpers
             return result.ToString();
         }
     }
-
 }

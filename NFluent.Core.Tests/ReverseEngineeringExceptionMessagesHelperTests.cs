@@ -9,6 +9,12 @@ namespace NFluent.Tests
     public class ReverseEngineeringExceptionMessagesHelperTests
     {
         [Test]
+        public void Should_Escape_eol()
+        {
+            Check.That(ReverseEngineeringExceptionMessagesHelper.GetProperlyEscapedMessage("\r\n")).IsEqualTo(@"\r\n");
+        }
+
+        [Test]
         public void Should_Escape_tabs()
         {
             Check.That(ReverseEngineeringExceptionMessagesHelper.GetProperlyEscapedMessage("tab is:	.")).IsEqualTo(@"tab is:\t.");

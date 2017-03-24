@@ -106,21 +106,20 @@ namespace NFluent.Helpers
                 if (ope == null) return ret;
                 ret =(bool) ope.Invoke(null, new[] { instance, expected});
             }
-#if !PORTABLE
             else if (expected != null && instance != null)
             {
                 var expectedType = expected.GetType();
                 // if both types are numerical, check if the values are the same to generate a precise message
                 if (ExtensionsCommonHelpers.IsNumerical(expectedType) && ExtensionsCommonHelpers.IsNumerical(instance.GetType()))
                 {
-                    var changeType = Convert.ChangeType(instance, expectedType);
+
+                    var changeType = Convert.ChangeType(instance, expectedType, null);
                     if (expected.Equals(changeType))
                     {
                         return true;
                     }
                 }
             }
-#endif
             return ret;
         }
 

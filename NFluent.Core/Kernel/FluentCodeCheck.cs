@@ -17,7 +17,7 @@ namespace NFluent.Kernel
 {
     using System;
     using System.Diagnostics;
-#if DOTNET_40
+#if !DOTNET_3_5
     using System.Threading.Tasks;
 #endif
     using System.Diagnostics.CodeAnalysis;
@@ -101,10 +101,11 @@ namespace NFluent.Kernel
         /// <remarks>This method is used during the chaining of multiple checks.</remarks>
         /// <returns>A new instance of the same fluent check type, with the same Value property.</returns>
         public object ForkInstance()
-         {
+        {
              this.Negated = !CheckContext.DefaulNegated;
              return this;
         }
+
         /// <summary>
         /// Execute the action to capture the run.
         /// </summary>
@@ -143,7 +144,9 @@ namespace NFluent.Kernel
 #if !PORTABLE
             var watch = new Stopwatch();
             var cpu = Process.GetCurrentProcess().TotalProcessorTime;
-                watch.Start();
+            watch.Start();
+#else
+            var watchPortable = DateTime.UtcNow;
 #endif
             try
             {
@@ -160,12 +163,15 @@ namespace NFluent.Kernel
                 result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
                 // ReSharper disable PossibleLossOfFraction
                 result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
+#else
+                result.ExecutionTime = DateTime.Now - watchPortable;
+                result.TotalProcessorTime = result.ExecutionTime;
 #endif
             }
 
         }
 
-#if DOTNET_40
+#if !DOTNET_3_5
         internal static RunTrace GetAsyncTrace(Func<Task> awaitableMethod)
         {
             var result = new RunTrace();
@@ -175,33 +181,18 @@ namespace NFluent.Kernel
 
         private static void CaptureAsyncTrace(Func<Task> awaitableMethod, RunTrace result)
         {
-            var watch = new Stopwatch();
-            var cpu = Process.GetCurrentProcess().TotalProcessorTime;
-            try
+            CaptureTrace(() =>
             {
-                watch.Start();
-
-                // starts and waits the completion of the awaitable method
-                awaitableMethod().Wait();
-            }
-            catch (AggregateException agex)
-            {
-                result.RaisedException = agex.InnerException;
-            }
-            catch (Exception ex)
-            {
-                result.RaisedException = ex;
-            }
-            finally
-            {
-                watch.Stop();
-                result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
-            }
-
-            // AFAIK, ObjectDisposedException should never happen here
-
-            // ReSharper disable PossibleLossOfFraction
-            result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
+                try
+                {
+                    // starts and waits the completion of the awaitable method
+                    awaitableMethod().Wait();
+                }
+                catch (AggregateException agex)
+                {
+                    result.RaisedException = agex.InnerException;
+                }
+            }, result);
         }
 
         /// <summary>
@@ -217,36 +208,20 @@ namespace NFluent.Kernel
         internal static RunTraceResult<TResult> GetAsyncTrace<TResult>(Func<Task<TResult>> awaitableFunction)
         {
             var result = new RunTraceResult<TResult>();
-            CaptureAsyncTrace(awaitableFunction, result);
+            CaptureTrace(() =>
+            {
+                try
+                {
+                    // starts and waits the completion of the awaitable method
+                    awaitableFunction().Wait();
+                    result.Result = awaitableFunction().Result;
+                }
+                catch (AggregateException agex)
+                {
+                    result.RaisedException = agex.InnerException;
+                }
+            }, result);
             return result;
-        }
-
-        private static void CaptureAsyncTrace<TResult>(Func<Task<TResult>> awaitableFunction, RunTraceResult<TResult> result)
-        {
-            var watch = new Stopwatch();
-            var cpu = Process.GetCurrentProcess().TotalProcessorTime;
-            try
-            {
-                watch.Start();
-
-                // starts and waits the completion of the awaitable method
-                awaitableFunction().Wait();
-                result.Result = awaitableFunction().Result;
-            }
-            catch (AggregateException agex)
-            {
-                result.RaisedException = agex.InnerException;
-            }
-            finally
-            {
-                watch.Stop();
-                result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
-            }
-
-            // AFAIK, ObjectDisposedException should never happen here
-
-            // ReSharper disable PossibleLossOfFraction
-            result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
         }
 #endif
 

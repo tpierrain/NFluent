@@ -94,10 +94,10 @@ namespace NFluent.Tests
                 Check.ThatCode(() =>
                 {
                     SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
-                    Check.That(myEvent).IsNotSetWithin(100, TimeUnit.Milliseconds);
+                    Check.That(myEvent).IsNotSetWithin(200, TimeUnit.Milliseconds);
                 })
                 .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine+ "The checked event has been set before the given timeout." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[100]");
+                .WithMessage(Environment.NewLine+ "The checked event has been set before the given timeout." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[200]");
             }
         }
 

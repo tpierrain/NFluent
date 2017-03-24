@@ -55,9 +55,6 @@
     <Compile Include="..\NFluent.Core.Tests\AsOperatorTests.cs">
       <Link>AsOperatorTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Tests\AsyncRelatedTests.cs">
-      <Link>AsyncRelatedTests.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.Core.Tests\BooleanRelatedTests.cs">
       <Link>BooleanRelatedTests.cs</Link>
     </Compile>
@@ -90,9 +87,6 @@
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\DurationTests.cs">
       <Link>DurationTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\DynamicTests.cs">
-      <Link>DynamicTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\EdgeCasesTest.cs">
       <Link>EdgeCasesTest.cs</Link>

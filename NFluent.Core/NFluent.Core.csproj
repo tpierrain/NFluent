@@ -20,6 +20,7 @@
     <Copyright>Copyright © 2017- 2014. Licensed under the Apache License, Version 2.0.</Copyright>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>http://www.n-fluent.net/</PackageProjectUrl>
+    <RootNamespace>NFluent</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
