@@ -14,9 +14,9 @@
 // // --------------------------------------------------------------------------------------------------------------------
 using System;
 
+
 namespace NFluent.Tests
 {
-    using Extensions;
     using NUnit.Framework;
 
     [TestFixture]

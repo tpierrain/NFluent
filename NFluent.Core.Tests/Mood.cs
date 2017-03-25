@@ -1,4 +1,4 @@
-﻿namespace NFluent.Tests.Extensions
+﻿namespace NFluent.Tests
 {
     /// <summary>
     /// Provides some information about someone's mood. 

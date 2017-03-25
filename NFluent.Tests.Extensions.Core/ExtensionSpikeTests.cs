@@ -12,11 +12,10 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent.Tests
+namespace NFluent.Tests.Extensions
 {
     using System;
     using System.Collections.Generic;
-    using Extensions;
     using NUnit.Framework;
 
     [TestFixture]

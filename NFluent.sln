@@ -46,9 +46,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests", "NFluent
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.PCL", "NFluent.PCL\NFluent.PCL.csproj", "{4797A166-0410-451E-8DAB-DA7113D77062}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40.Internals.Tests", "tests\NFluent.40.Internals.Tests\NFluent.40.Internals.Tests.csproj", "{A7C2F427-3D13-4C9B-8663-1CE1E0734608}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40.Tests.Internals", "tests\NFluent.40.Internals.Tests\NFluent.40.Tests.Internals.csproj", "{A7C2F427-3D13-4C9B-8663-1CE1E0734608}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Internals.Tests", "tests\NFluent.35.Internals.Tests\NFluent.35.Internals.Tests.csproj", "{9E500148-4F6C-424A-AA09-801DB1749677}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests.Internals", "tests\NFluent.35.Internals.Tests\NFluent.35.Tests.Internals.csproj", "{9E500148-4F6C-424A-AA09-801DB1749677}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuggetVersion", "tests\Nugget\NuggetVersion.csproj", "{50136517-047A-4081-AC30-878560F108DF}"
 EndProject
@@ -58,7 +58,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.Tests.Extensio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.Tests", "NFluent.Core.Tests\NFluent.Core.Tests.csproj", "{269C2952-A589-4B42-83E6-B187E8B6A495}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.Internals.Tests", "Tests\NFluent.Core.Internals.Tests\NFluent.Core.Internals.Tests.csproj", "{CE90E7CF-957D-4DF9-AE63-93CEA369B231}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.Tests.Internals", "Tests\NFluent.Core.Internals.Tests\NFluent.Core.Tests.Internals.csproj", "{CE90E7CF-957D-4DF9-AE63-93CEA369B231}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OlderTests", "OlderTests", "{261B1CE2-51CF-4F30-B689-3E78C3916F3E}"
 EndProject

@@ -17,7 +17,6 @@ using System;
 
 namespace NFluent.Tests
 {
-    using NFluent.Tests.Extensions;
 
     using NUnit.Framework;
 
@@ -130,7 +129,7 @@ namespace NFluent.Tests
                 Check.That(goodMood).Not.IsNotNull();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked nullable value must be null." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[NFluent.Tests.Extensions.Mood]");
+            .WithMessage(Environment.NewLine+ "The checked nullable value must be null." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[NFluent.Tests.Mood]");
         }
         
         [Test]

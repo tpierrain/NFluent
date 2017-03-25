@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <None Remove="NFluent.Core.Internals.Tests.v3.ncrunchproject" />
+    <None Remove="NFluent.Core.Tests.Internals.v3.ncrunchproject" />
   </ItemGroup>
 
   <ItemGroup>

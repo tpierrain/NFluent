@@ -13,13 +13,13 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using NFluent.Tests.Helpers;
 
 namespace NFluent.Tests
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using NFluent.Tests.Helpers;
     using System.Collections.Specialized;
     using System.IO;
     using System.Text;

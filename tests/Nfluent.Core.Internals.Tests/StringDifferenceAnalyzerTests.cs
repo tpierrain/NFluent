@@ -1,42 +1,58 @@
-﻿using System.Globalization;
+﻿// -------------------------------------------------------------------------------------------------------------------
+// <copyright file="StringDifferenceAnalyzerTests.cs" company="">
+//   Copyright 2017 Cyrille Dupuydauby
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+using NFluent;
+using NFluent.Helpers;
+using NUnit.Framework;
 
 namespace Nfluent.Tests
 {
-    using NFluent;
-    using NFluent.Helpers;
-    using NUnit.Framework;
-
     [TestFixture]
     public class StringDifferenceAnalyzerTests
     {
         [Test]
-        public void ShouldNotReportWhenNoDifference()
+        public void ShouldHandleNullString()
         {
-            Check.That(StringDifference.Analyze("toto", "toto")).IsNull();
+            Check.That(StringDifference.Analyze(null, "foo", false)).HasSize(1);
         }
 
         [Test]
-        public void ShouldReportDifferentLineWhenOneLine()
+        public void ShouldNotReportWhenNoDifference()
         {
-            var stringDifferences = StringDifference.Analyze("toto", "tutu");
-            Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
-            Check.That(stringDifferences[0].Position).IsEqualTo(1);
+            Check.That(StringDifference.Analyze("foo", "foo", false)).IsNull();
         }
 
         [Test]
         public void ShouldReportDifferenceForCaseSensitive()
         {
-            var stringDifferences = StringDifference.Analyze("toto", "toTO");
+            var stringDifferences = StringDifference.Analyze("foo", "foO", false);
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.CaseDifference);
             Check.That(stringDifferences[0].Position).IsEqualTo(2);
         }
 
         [Test]
+        public void ShouldNONRReportDifferenceForCaseSensitiveWhenDisabled()
+        {
+            var stringDifferences = StringDifference.Analyze("foo", "foO", true);
+            Check.That(stringDifferences).HasSize(0);
+        }
+
+        [Test]
         public void ShouldReportDifferenceForGeneralEvenIfFirstDiffIsCase()
         {
-            var stringDifferences = StringDifference.Analyze("toto", "toTd");
+            var stringDifferences = StringDifference.Analyze("food", "FoOG", false);
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[0].Position).IsEqualTo(3);
@@ -45,38 +61,21 @@ namespace Nfluent.Tests
         [Test]
         public void ShouldReportDifferenceForLongerText()
         {
-            var stringDifferences = StringDifference.Analyze("toto et tutu", "toto");
+            var stringDifferences = StringDifference.Analyze("foo bar", "foo", false);
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.Longer);
-            Check.That(stringDifferences[0].Position).IsEqualTo(4);
-        }
-
-        [Test]
-        public void ShouldReportDifferenceForShorterText()
-        {
-            var stringDifferences = StringDifference.Analyze("toto", "toto et tata");
-            Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.Shorter);
-            Check.That(stringDifferences[0].Position).IsEqualTo(4);
-        }
-
-        [Test]
-        public void ShouldReportDifferenceInSpaces()
-        {
-            var stringDifference = StringDifference.Analyze("toto  and tutu", "toto\tand\t tutu");
-            Check.That(stringDifference).HasSize(1);
-            Check.That(stringDifference[0].Type).IsEqualTo(DifferenceMode.Spaces);
+            Check.That(stringDifferences[0].Position).IsEqualTo(3);
         }
 
         [Test]
         public void ShouldReportDifferenceForMultipleLines()
         {
-            var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto\ntata");
+            var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto\ntata", false);
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[0].Position).IsEqualTo(1);
             Check.That(stringDifferences[0].Line).IsEqualTo(1);
-            stringDifferences = StringDifference.Analyze("maybe\ntiti", "toto\ntata");
+            stringDifferences = StringDifference.Analyze("maybe\ntiti", "toto\ntata", false);
             Check.That(stringDifferences).HasSize(2);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[0].Position).IsEqualTo(0);
@@ -87,9 +86,26 @@ namespace Nfluent.Tests
         }
 
         [Test]
+        public void ShouldReportDifferenceForShorterText()
+        {
+            var stringDifferences = StringDifference.Analyze("toto", "toto et tata", false);
+            Check.That(stringDifferences).HasSize(1);
+            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.Shorter);
+            Check.That(stringDifferences[0].Position).IsEqualTo(4);
+        }
+
+        [Test]
+        public void ShouldReportDifferenceInSpaces()
+        {
+            var stringDifference = StringDifference.Analyze("toto  and tutu", "toto\tand\t tutu", false);
+            Check.That(stringDifference).HasSize(1);
+            Check.That(stringDifference[0].Type).IsEqualTo(DifferenceMode.Spaces);
+        }
+
+        [Test]
         public void ShouldReportDifferenceOfEoL()
         {
-            var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto\r\ntiti");
+            var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto\r\ntiti", false);
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.EndOfLine);
             Check.That(stringDifferences[0].Position).IsEqualTo(4);
@@ -99,16 +115,25 @@ namespace Nfluent.Tests
         [Test]
         public void ShouldReportDifferenceOfNumberOfLinesL()
         {
-            var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto");
+            var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto", false);
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.ExtraLines);
             Check.That(stringDifferences[0].Position).IsEqualTo(0);
             Check.That(stringDifferences[0].Line).IsEqualTo(1);
-            stringDifferences = StringDifference.Analyze("toto", "toto\n");
+            stringDifferences = StringDifference.Analyze("toto", "toto\n", false);
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.MissingLines);
             Check.That(stringDifferences[0].Position).IsEqualTo(0);
             Check.That(stringDifferences[0].Line).IsEqualTo(1);
+        }
+
+        [Test]
+        public void ShouldReportDifferentLineWhenOneLine()
+        {
+            var stringDifferences = StringDifference.Analyze("foo", "far", false);
+            Check.That(stringDifferences).HasSize(1);
+            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
+            Check.That(stringDifferences[0].Position).IsEqualTo(1);
         }
     }
 }

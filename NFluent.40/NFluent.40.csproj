@@ -173,8 +173,8 @@
     <Compile Include="..\NFluent.Core\Helpers\IsInstanceHelper.cs">
       <Link>Helpers\IsInstanceHelper.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core\Helpers\StringDifferenceAnalyzer.cs">
-      <Link>Helpers\StringDifferenceAnalyzer.cs</Link>
+    <Compile Include="..\NFluent.Core\Helpers\StringDifference.cs">
+      <Link>Helpers\StringDifference.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core\Helpers\TimeHelper.cs">
       <Link>Helpers\TimeHelper.cs</Link>
@@ -353,7 +353,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

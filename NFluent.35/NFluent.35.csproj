@@ -172,8 +172,8 @@
     <Compile Include="..\NFluent.Core\Helpers\IsInstanceHelper.cs">
       <Link>Helpers\IsInstanceHelper.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core\Helpers\StringDifferenceAnalyzer.cs">
-      <Link>Helpers\StringDifferenceAnalyzer.cs</Link>
+    <Compile Include="..\NFluent.Core\Helpers\StringDifference.cs">
+      <Link>Helpers\StringDifference.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core\Helpers\TimeHelper.cs">
       <Link>Helpers\TimeHelper.cs</Link>

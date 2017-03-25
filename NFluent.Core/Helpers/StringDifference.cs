@@ -1,31 +1,46 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="StringDifferenceAnalyzer.cs" company="">
-// //   Copyright 2017 Cyrille Dupuydauby
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
-
+// -------------------------------------------------------------------------------------------------------------------
+// <copyright file="StringDifferenceAnalyzer.cs" company="">
+//   Copyright 2017 Cyrille Dupuydauby
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
 using NFluent.Extensions;
 
 namespace NFluent.Helpers
 {
+    internal enum DifferenceMode
+    {
+        NoDifference,
+        General,
+        CaseDifference,
+        Longer,
+        Shorter,
+        EndOfLine,
+        MissingLines,
+        ExtraLines,
+        Spaces
+    }
+
     internal class StringDifference
     {
         private const char Separator = '\n';
         public int Position;
         public DifferenceMode Type = DifferenceMode.NoDifference;
 
-        public StringDifference(int line, string actual, string expected)
+        public int Line { get; internal set; }
+        public string Expected { get; internal set; }
+        public string Actual { get; internal set; }
+
+        private StringDifference(int line, string actual, string expected, bool ignoreCase)
         {
             this.Line = line;
             this.Expected = expected;
@@ -42,7 +57,7 @@ namespace NFluent.Helpers
                 return;
             }
             // check the common part of both strings
-            var sharedLine = this.CheckCommonPart();
+            var sharedLine = this.CheckCommonPart(ignoreCase);
             if (this.Type != DifferenceMode.NoDifference)
                 return;
 
@@ -60,33 +75,40 @@ namespace NFluent.Helpers
             }
         }
 
-        public int Line { get; internal set; }
-        public string Expected { get; internal set; }
-        public string Actual { get; internal set; }
 
-        public static IList<StringDifference> Analyze(string actual, string expected)
+        public static IList<StringDifference> Analyze(string actual, string expected, bool caseInsensitive)
         {
             if (actual == expected)
                 return null;
+            var result = new List<StringDifference>();
+            if (actual == null)
+            {
+                result.Add(new StringDifference(0, null, expected, caseInsensitive));
+                return result;
+            }
+            if (expected == null)
+            {
+                result.Add(new StringDifference(0, actual, null, caseInsensitive));
+                return result;
+            }
             // perform a per line analysis
             var actualLines = actual.Split(Separator);
             var expectedLines = expected.Split(Separator);
-            var result = new List<StringDifference>();
             var sharedLines = Math.Min(actualLines.Length, expectedLines.Length);
             for (var line = 0; line < sharedLines; line++)
             {
-                var stringDifference = new StringDifference(line, actualLines[line], expectedLines[line]);
+                var stringDifference = new StringDifference(line, actualLines[line], expectedLines[line], caseInsensitive);
                 if (stringDifference.Type != DifferenceMode.NoDifference)
                     result.Add(stringDifference);
             }
             if (expectedLines.Length > sharedLines)
-                result.Add(new StringDifference(sharedLines, null, expectedLines[sharedLines]));
+                result.Add(new StringDifference(sharedLines, null, expectedLines[sharedLines], caseInsensitive));
             else if (actualLines.Length > sharedLines)
-                result.Add(new StringDifference(sharedLines, actualLines[sharedLines], null));
+                result.Add(new StringDifference(sharedLines, actualLines[sharedLines], null, caseInsensitive));
             return result;
         }
 
-        private int CheckCommonPart()
+        private int CheckCommonPart(bool ignoreCase)
         {
             var sharedLine = Math.Min(this.Actual.Length, this.Expected.Length);
             var lastCharWasSpace = true;
@@ -114,6 +136,8 @@ namespace NFluent.Helpers
                 }
                 else if (StringExtensions.CompareChar(actualChar, expectedChar, true))
                 {
+                    if (ignoreCase)
+                        continue;
                     // difference in case only
                     if (this.Type == DifferenceMode.CaseDifference)
                     {
@@ -133,18 +157,5 @@ namespace NFluent.Helpers
             }
             return sharedLine;
         }
-    }
-
-    internal enum DifferenceMode
-    {
-        NoDifference,
-        General,
-        CaseDifference,
-        Longer,
-        Shorter,
-        EndOfLine,
-        MissingLines,
-        ExtraLines,
-        Spaces
     }
 }

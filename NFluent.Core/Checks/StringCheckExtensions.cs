@@ -12,6 +12,9 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
+using NFluent.Helpers;
+
 namespace NFluent
 {
     using System;
@@ -201,6 +204,9 @@ namespace NFluent
         private static string AssessEquals(IChecker<string, ICheck<string>> checker, object expected, bool negated, bool ignoreCase = false)
         {
             var value = checker.Value;
+
+            var analyse = StringDifference.Analyze(value, (string) expected, ignoreCase);
+            //var analyse = StringDifference.Analyze(checker.Value, (string) expected);
             if (string.Equals(value, (string)expected, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture) != negated)
             {
                 // check is successful

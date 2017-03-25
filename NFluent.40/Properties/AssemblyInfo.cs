@@ -19,7 +19,7 @@ using System.Runtime.CompilerServices;
 
 // Friend assemblies
 // [assembly: InternalsVisibleTo("NFluent.Web")]
-[assembly: InternalsVisibleTo("NFluent.40.Internals.Tests,PublicKey=" +
+[assembly: InternalsVisibleTo("NFluent.40.Tests.Internals,PublicKey=" +
     "00240000048000009400000006020000002400005253413100040000010001009569885379aa3b" +
     "3290d5604eabddbd838a22742506af21650f2709b9138357d61f78489e9d3946b64d6f769255b9" +
     "038f723d4a185c87d688ed1d1ab0c56e65d2cde0d1fc49716ab2bcd27af72c4df7264c71b12fa1" +

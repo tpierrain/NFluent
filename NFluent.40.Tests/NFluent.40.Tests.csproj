@@ -77,6 +77,9 @@
     <Compile Include="..\NFluent.Core.Tests\CharTests.cs">
       <Link>CharTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.Core.Tests\Child.cs">
+      <Link>Child.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.Core.Tests\ComparableRelatedTests.cs">
       <Link>ComparableRelatedTests.cs</Link>
     </Compile>
@@ -131,9 +134,6 @@
     <Compile Include="..\NFluent.Core.Tests\ExtensibilityHelperTests.cs">
       <Link>ExtensibilityHelperTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ExtensionSpikeTests.cs">
-      <Link>ExtensionSpikeTests.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.Core.Tests\ExtractingRelatedTests.cs">
       <Link>ExtractingRelatedTests.cs</Link>
     </Compile>
@@ -167,6 +167,12 @@
     <Compile Include="..\NFluent.Core.Tests\LambdaRelatedTests.cs">
       <Link>LambdaRelatedTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.Core.Tests\Mood.cs">
+      <Link>Mood.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\Nationality.cs">
+      <Link>Nationality.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.Core.Tests\NotRelatedTests.cs">
       <Link>NotRelatedTests.cs</Link>
     </Compile>
@@ -179,8 +185,8 @@
     <Compile Include="..\NFluent.Core.Tests\ObjectRelatedTest.cs">
       <Link>ObjectRelatedTest.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ReadmeRelatedTests.cs">
-      <Link>ReadmeRelatedTests.cs</Link>
+    <Compile Include="..\NFluent.Core.Tests\Person.cs">
+      <Link>Person.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\ReverseEngineeringExceptionMessagesHelperTests.cs">
       <Link>ReverseEngineeringExceptionMessagesHelperTests.cs</Link>
@@ -271,10 +277,6 @@
       <Project>{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}</Project>
       <Name>NFluent.40</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NFluent.Tests.Extensions.40\NFluent.40.Tests.Extensions.csproj">
-      <Project>{1baa72cb-3a46-4711-9a5b-f96cf20d465e}</Project>
-      <Name>NFluent.40.Tests.Extensions</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -295,7 +297,7 @@
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" />
+      <UserProperties ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
