@@ -206,10 +206,9 @@ namespace NFluent
             var value = checker.Value;
 
             var analyse = StringDifference.Analyze(value, (string) expected, ignoreCase);
-            //var analyse = StringDifference.Analyze(checker.Value, (string) expected);
-            if (string.Equals(value, (string)expected, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture) != negated)
+
+            if (negated == (analyse !=null && analyse.Count>0))
             {
-                // check is successful
                 return null;
             }
 
@@ -226,9 +225,11 @@ namespace NFluent
             {
                 return  checker.BuildShortMessage("The {0} is not null whereas it must.").For(typeof(string)).On(value).And.Expected(expected).ToString();
             }
+
             // we try to refine the difference
-            var expectedString = (string) expected;
             var message = "The {0} is different from {1}.";
+
+            var expectedString = (string)expected;
 
             var minLength = Math.Min(value.Length, expectedString.Length);
 

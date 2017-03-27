@@ -157,5 +157,24 @@ namespace NFluent.Helpers
             }
             return sharedLine;
         }
+
+        public static DifferenceMode Summarize(IEnumerable<StringDifference> stringDifferences)
+        {
+            var result = DifferenceMode.NoDifference;
+            foreach (var stringDifference in stringDifferences)
+            {
+                if (stringDifference.Type == DifferenceMode.NoDifference) continue;
+                if (result == DifferenceMode.NoDifference)
+                {
+                    result = stringDifference.Type;
+                }
+                else if (result != stringDifference.Type)
+                {
+                    result  = DifferenceMode.General;
+                    break;
+                }
+            }
+            return result;
+        }
     }
 }

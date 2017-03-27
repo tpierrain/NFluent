@@ -86,6 +86,17 @@ namespace Nfluent.Tests
         }
 
         [Test]
+        public void ShouldProvideSyntheticView()
+        {
+            var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto\nTiTi", false);
+
+            Check.That(StringDifference.Summarize(stringDifferences)).IsEqualTo(DifferenceMode.CaseDifference);
+
+            stringDifferences = StringDifference.Analyze("Toto\ntiti", "toto\ntata", false);
+            Check.That(StringDifference.Summarize(stringDifferences)).IsEqualTo(DifferenceMode.General);
+        }
+
+        [Test]
         public void ShouldReportDifferenceForShorterText()
         {
             var stringDifferences = StringDifference.Analyze("toto", "toto et tata", false);
