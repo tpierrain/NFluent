@@ -40,39 +40,90 @@ namespace NFluent.Helpers
         public string Expected { get; internal set; }
         public string Actual { get; internal set; }
 
-        private StringDifference(int line, string actual, string expected, bool ignoreCase)
+        private StringDifference(DifferenceMode mode, int line, int position , string actual, string expected)
         {
+            this.Type = mode;
             this.Line = line;
+            this.Position = position;
             this.Expected = expected;
             this.Actual = actual;
-            // do we have both strings?
+        }
+
+        private static StringDifference Build(int line, string actual, string expected, bool ignoreCase)
+        {
             if (actual == null)
             {
-                this.Type = DifferenceMode.MissingLines;
-                return;
+                return new StringDifference(DifferenceMode.MissingLines, line, 0, actual, expected);
             }
             if (expected == null)
             {
-                this.Type = DifferenceMode.ExtraLines;
-                return;
+                return new StringDifference(DifferenceMode.ExtraLines, line, 0, actual, expected);
             }
             // check the common part of both strings
-            var sharedLine = this.CheckCommonPart(ignoreCase);
-            if (this.Type != DifferenceMode.NoDifference)
-                return;
+            var sharedLine1 = Math.Min(actual.Length, expected.Length);
+            var lastCharWasSpace = true;
+            var j = 0;
+            var type = DifferenceMode.NoDifference;
+            var position = 0;
+            for (var i = 0;
+                i < actual.Length && j < expected.Length;
+                i++, j++)
+            {
+                var actualChar = actual[i];
+                var expectedChar = expected[j];
+                if (actualChar == expectedChar)
+                {
+                    // same char
+                }
+                else if (char.IsWhiteSpace(actualChar) && char.IsWhiteSpace(expectedChar)
+                         || lastCharWasSpace && (char.IsWhiteSpace(actualChar) || char.IsWhiteSpace(expectedChar)))
+                {
+                    //we skip all spaces
+                    while (i + 1 < actual.Length && char.IsWhiteSpace(actual[i + 1]))
+                        i++;
+                    while (j + 1 < expected.Length && char.IsWhiteSpace(expected[j + 1]))
+                        j++;
+                    if (type == DifferenceMode.NoDifference)
+                        type = DifferenceMode.Spaces;
+                }
+                else if (StringExtensions.CompareChar(actualChar, expectedChar, true))
+                {
+                    if (ignoreCase)
+                        continue;
+                    // difference in case only
+                    if (type == DifferenceMode.CaseDifference)
+                    {
+                        lastCharWasSpace = char.IsWhiteSpace(actualChar);
+                        continue;
+                    }
+                    type = DifferenceMode.CaseDifference;
+                    position = i;
+                }
+                else
+                {
+                    type = DifferenceMode.General;
+                    position = i;
+                    break;
+                }
+                lastCharWasSpace = char.IsWhiteSpace(actualChar);
+            }
+            var sharedLine = sharedLine1;
+            if (type != DifferenceMode.NoDifference)
+                return new StringDifference(type, line, position, actual, expected);
 
             // strings are same so far
             // the actualLine string is longer than expectedLine
             if (actual.Length > expected.Length)
             {
-                this.Position = sharedLine;
-                this.Type = actual.Substring(sharedLine) == "\r" ? DifferenceMode.EndOfLine : DifferenceMode.Longer;
+                return new StringDifference(actual.Substring(sharedLine) == "\r" ? DifferenceMode.EndOfLine : DifferenceMode.Longer, 
+                    line, sharedLine, actual, expected);
             }
-            else if (actual.Length < expected.Length)
+            if (actual.Length < expected.Length)
             {
-                this.Position = sharedLine;
-                this.Type = expected.Substring(sharedLine) == "\r" ? DifferenceMode.EndOfLine : DifferenceMode.Shorter;
+                return new StringDifference(expected.Substring(sharedLine) == "\r" ? DifferenceMode.EndOfLine : DifferenceMode.Shorter,
+                    line, sharedLine, actual, expected);
             }
+            return new StringDifference(DifferenceMode.NoDifference, line, 0, actual, expected);
         }
 
 
@@ -83,12 +134,12 @@ namespace NFluent.Helpers
             var result = new List<StringDifference>();
             if (actual == null)
             {
-                result.Add(new StringDifference(0, null, expected, caseInsensitive));
+                result.Add(StringDifference.Build(0, null, expected, caseInsensitive));
                 return result;
             }
             if (expected == null)
             {
-                result.Add(new StringDifference(0, actual, null, caseInsensitive));
+                result.Add(StringDifference.Build(0, actual, null, caseInsensitive));
                 return result;
             }
             // perform a per line analysis
@@ -97,65 +148,15 @@ namespace NFluent.Helpers
             var sharedLines = Math.Min(actualLines.Length, expectedLines.Length);
             for (var line = 0; line < sharedLines; line++)
             {
-                var stringDifference = new StringDifference(line, actualLines[line], expectedLines[line], caseInsensitive);
+                var stringDifference = StringDifference.Build(line, actualLines[line], expectedLines[line], caseInsensitive);
                 if (stringDifference.Type != DifferenceMode.NoDifference)
                     result.Add(stringDifference);
             }
             if (expectedLines.Length > sharedLines)
-                result.Add(new StringDifference(sharedLines, null, expectedLines[sharedLines], caseInsensitive));
+                result.Add(StringDifference.Build(sharedLines, null, expectedLines[sharedLines], caseInsensitive));
             else if (actualLines.Length > sharedLines)
-                result.Add(new StringDifference(sharedLines, actualLines[sharedLines], null, caseInsensitive));
+                result.Add(StringDifference.Build(sharedLines, actualLines[sharedLines], null, caseInsensitive));
             return result;
-        }
-
-        private int CheckCommonPart(bool ignoreCase)
-        {
-            var sharedLine = Math.Min(this.Actual.Length, this.Expected.Length);
-            var lastCharWasSpace = true;
-            var j = 0;
-            for (var i = 0;
-                i < this.Actual.Length && j < this.Expected.Length;
-                i++, j++)
-            {
-                var actualChar = this.Actual[i];
-                var expectedChar = this.Expected[j];
-                if (actualChar == expectedChar)
-                {
-                    // same char
-                }
-                else if (char.IsWhiteSpace(actualChar) && char.IsWhiteSpace(expectedChar)
-                         || lastCharWasSpace && (char.IsWhiteSpace(actualChar) || char.IsWhiteSpace(expectedChar)))
-                {
-                    //we skip all spaces
-                    while (i + 1 < this.Actual.Length && char.IsWhiteSpace(this.Actual[i + 1]))
-                        i++;
-                    while (j + 1 < this.Expected.Length && char.IsWhiteSpace(this.Expected[j + 1]))
-                        j++;
-                    if (this.Type == DifferenceMode.NoDifference)
-                        this.Type = DifferenceMode.Spaces;
-                }
-                else if (StringExtensions.CompareChar(actualChar, expectedChar, true))
-                {
-                    if (ignoreCase)
-                        continue;
-                    // difference in case only
-                    if (this.Type == DifferenceMode.CaseDifference)
-                    {
-                        lastCharWasSpace = char.IsWhiteSpace(actualChar);
-                        continue;
-                    }
-                    this.Type = DifferenceMode.CaseDifference;
-                    this.Position = i;
-                }
-                else
-                {
-                    this.Type = DifferenceMode.General;
-                    this.Position = i;
-                    break;
-                }
-                lastCharWasSpace = char.IsWhiteSpace(actualChar);
-            }
-            return sharedLine;
         }
 
         public static DifferenceMode Summarize(IEnumerable<StringDifference> stringDifferences)
