@@ -625,7 +625,7 @@ namespace NFluent.Tests
                 Check.That(withTab).IsEqualTo(withWSp);
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string is different from expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Hello<<tab>>How are you?\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"Hello    How are you?\"]");
+            .WithMessage(Environment.NewLine+ "The checked string has different spaces than expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Hello<<tab>>How are you?\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"Hello    How are you?\"]");
         }
 
         [Test]
@@ -639,7 +639,7 @@ namespace NFluent.Tests
                 Check.That(withWSp).IsEqualTo(withTab);
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string is different from expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Hello    How are you?    kiddo\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"Hello<<tab>>How are you?<<tab>>kiddo\"]");
+            .WithMessage(Environment.NewLine+ "The checked string has different spaces than expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Hello    How are you?    kiddo\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"Hello<<tab>>How are you?<<tab>>kiddo\"]");
         }
 
         [Test]
@@ -653,7 +653,7 @@ namespace NFluent.Tests
                     Check.That(withCRLF).IsEqualTo(withLF);
                 })
                 .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine +"The checked string is different from expected one."+ Environment.NewLine + "The checked string:"+ Environment.NewLine + "\t[\"Hello<<CRLF>>\r\nHow are you?\"]"+ Environment.NewLine+ "The expected string:"+ Environment.NewLine + "\t[\"Hello<<LF>>\nHow are you?\"]");
+                .WithMessage(Environment.NewLine + "The checked string has different end of line markers than expected one." + Environment.NewLine + "The checked string:"+ Environment.NewLine + "\t[\"Hello<<CRLF>>\r\nHow are you?\"]"+ Environment.NewLine+ "The expected string:"+ Environment.NewLine + "\t[\"Hello<<LF>>\nHow are you?\"]");
         }
 
         [Test]
@@ -667,7 +667,7 @@ namespace NFluent.Tests
                 Check.That(withLF).IsEqualTo(withCRLF);
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string is different from expected one." + Environment.NewLine + "The checked string:"+ Environment.NewLine + "	[\"Hello<<LF>>\nHow are you?\nAre you kidding?\"]"+ Environment.NewLine + "The expected string:"+ Environment.NewLine + "	[\"Hello<<CRLF>>\r\nHow are you?\r\nAre you kidding?\"]");
+            .WithMessage(Environment.NewLine+ "The checked string has different end of line markers than expected one." + Environment.NewLine + "The checked string:"+ Environment.NewLine + "	[\"Hello<<LF>>\nHow are you?\nAre you kidding?\"]"+ Environment.NewLine + "The expected string:"+ Environment.NewLine + "	[\"Hello<<CRLF>>\r\nHow are you?\r\nAre you kidding?\"]");
         }
 
         [Test]

@@ -226,8 +226,22 @@ namespace NFluent
                 return  checker.BuildShortMessage("The {0} is not null whereas it must.").For(typeof(string)).On(value).And.Expected(expected).ToString();
             }
 
+            var summary = StringDifference.Summarize(analyse);
+            string message="";
+            switch (summary)
+            {
+                case DifferenceMode.General:
+                    message = "The {0} is different from {1}.";
+                    break;
+                case DifferenceMode.Spaces:
+                    message = "The {0} has different spaces than {1}.";
+                    break;
+                case DifferenceMode.EndOfLine:
+                    message = "The {0} has different end of line markers than {1}.";
+                    break;
+            }
+
             // we try to refine the difference
-            var message = "The {0} is different from {1}.";
 
             var expectedString = (string)expected;
 
