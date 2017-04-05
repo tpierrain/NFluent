@@ -68,6 +68,15 @@ namespace Nfluent.Tests
         }
 
         [Test]
+        public void ShouldReportDifferenceForLongerTextOnMultiline()
+        {
+            var stringDifferences = StringDifference.Analyze("foo bar\ntest", "foo\ntest", false);
+            Check.That(stringDifferences).HasSize(1);
+            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.LongerLine);
+            Check.That(stringDifferences[0].Position).IsEqualTo(3);
+        }
+
+        [Test]
         public void ShouldReportDifferenceForMultipleLines()
         {
             var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto\ntata", false);
@@ -102,6 +111,15 @@ namespace Nfluent.Tests
             var stringDifferences = StringDifference.Analyze("toto", "toto et tata", false);
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.Shorter);
+            Check.That(stringDifferences[0].Position).IsEqualTo(4);
+        }
+
+        [Test]
+        public void ShouldReportDifferenceForShorterTextOnMultiline()
+        {
+            var stringDifferences = StringDifference.Analyze("toto\ntest", "toto et tata\ntest", false);
+            Check.That(stringDifferences).HasSize(1);
+            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.ShorterLine);
             Check.That(stringDifferences[0].Position).IsEqualTo(4);
         }
 
@@ -146,5 +164,5 @@ namespace Nfluent.Tests
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[0].Position).IsEqualTo(1);
         }
-    }
+   }
 }

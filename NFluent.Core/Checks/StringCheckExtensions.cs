@@ -227,7 +227,7 @@ namespace NFluent
             }
 
             var summary = StringDifference.Summarize(analyse);
-            string message="";
+            var message="";
             switch (summary)
             {
                 case DifferenceMode.General:
@@ -245,8 +245,23 @@ namespace NFluent
                 case DifferenceMode.ExtraLines:
                     message = "The {0} is different from {1}, it contains extra text at the end.";
                     break;
+                case DifferenceMode.LongerLine:
+                    message = "The {0} is different from {1}, one line is longer.";
+                    break;
+                case DifferenceMode.NoDifference:
+                    message = "The {0} is the same as {1}.";
+                    break;
+                case DifferenceMode.ShorterLine:
+                    message = "The {0} is different from {1}, one line is shorter.";
+                    break;
+                case DifferenceMode.MissingLines:
+                    message = "The {0} is different from {1}, it is missing some line(s).";
+                    break;
                 case DifferenceMode.Longer:
-                    message = "The {0} is different in case from {1}.";
+                    message = "The {0} is different from {1}, it contains extra text at the end.";
+                    break;
+                case DifferenceMode.Shorter:
+                    message = "The {0} is different from {1}, it is missing the end.";
                     break;
             }
 
@@ -257,6 +272,7 @@ namespace NFluent
             var minLength = Math.Min(value.Length, expectedString.Length);
 
             // scan for firstDiff
+            /*
             var firstDiff = 0;
             for (;firstDiff < minLength && StringExtensions.CompareChar(value[firstDiff], expectedString[firstDiff], ignoreCase);
                 firstDiff++);
@@ -266,7 +282,8 @@ namespace NFluent
                 message = value.Length > expectedString.Length ? "The {0} is different from {1}, it contains extra text at the end." : "The {0} is different from {1}, it is missing the end.";
                 return checker.BuildMessage(message).On(value).And.Expected(expectedString).ToString();
             }
-            expectedString = ExpectedString(expectedString, ref value, firstDiff, minLength, ref message);
+            */
+            expectedString = ExpectedString(expectedString, ref value, analyse[0].Position, minLength, ref message);
 
             var messageText = checker.BuildMessage(message).On(value).And.Expected(expectedString).ToString();
 

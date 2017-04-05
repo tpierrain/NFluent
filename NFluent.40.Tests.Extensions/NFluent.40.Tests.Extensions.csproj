@@ -52,37 +52,37 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\NFluent.Tests.Extensions.Core\Child.cs">
+    <Compile Include="..\NFluent.Core.Tests.Extensions\Child.cs">
       <Link>Child.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions.Core\ExtensionsForMarketingPurpose.cs">
+    <Compile Include="..\NFluent.Core.Tests.Extensions\ExtensionsForMarketingPurpose.cs">
       <Link>ExtensionsForMarketingPurpose.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions.Core\ExtensionSpikeTests.cs">
+    <Compile Include="..\NFluent.Core.Tests.Extensions\ExtensionSpikeTests.cs">
       <Link>ExtensionSpikeTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions.Core\LinkableExtensionsTests.cs">
+    <Compile Include="..\NFluent.Core.Tests.Extensions\LinkableExtensionsTests.cs">
       <Link>LinkableExtensionsTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions.Core\Movie.cs">
+    <Compile Include="..\NFluent.Core.Tests.Extensions\Movie.cs">
       <Link>Movie.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions.Core\MovieCheckExtensions.cs">
+    <Compile Include="..\NFluent.Core.Tests.Extensions\MovieCheckExtensions.cs">
       <Link>MovieCheckExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions.Core\Nationality.cs">
+    <Compile Include="..\NFluent.Core.Tests.Extensions\Nationality.cs">
       <Link>Nationality.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions.Core\NationalityExtensions.cs">
+    <Compile Include="..\NFluent.Core.Tests.Extensions\NationalityExtensions.cs">
       <Link>NationalityExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions.Core\Person.cs">
+    <Compile Include="..\NFluent.Core.Tests.Extensions\Person.cs">
       <Link>Person.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions.Core\PersonExtensions.cs">
+    <Compile Include="..\NFluent.Core.Tests.Extensions\PersonExtensions.cs">
       <Link>PersonExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Tests.Extensions.Core\ReadmeRelatedTests.cs">
+    <Compile Include="..\NFluent.Core.Tests.Extensions\ReadmeRelatedTests.cs">
       <Link>ReadmeRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\Version.cs">
@@ -105,7 +105,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="ac520fdb-8125-46f3-85f3-d4962c53c136" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="ac520fdb-8125-46f3-85f3-d4962c53c136" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
