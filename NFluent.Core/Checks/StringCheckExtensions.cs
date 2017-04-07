@@ -17,11 +17,9 @@ using NFluent.Helpers;
 
 namespace NFluent
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Extensions;
     using Extensibility;
 
     /// <summary>
@@ -227,172 +225,10 @@ namespace NFluent
             }
 
             var summary = StringDifference.Summarize(analyse);
-            var message="";
-            switch (summary)
-            {
-                case DifferenceMode.General:
-                    message = "The {0} is different from {1}.";
-                    break;
-                case DifferenceMode.Spaces:
-                    message = "The {0} has different spaces than {1}.";
-                    break;
-                case DifferenceMode.EndOfLine:
-                    message = "The {0} has different end of line markers than {1}.";
-                    break;
-                case DifferenceMode.CaseDifference:
-                    message = "The {0} is different in case from {1}.";
-                    break;
-                case DifferenceMode.ExtraLines:
-                    message = "The {0} is different from {1}, it contains extra text at the end.";
-                    break;
-                case DifferenceMode.LongerLine:
-                    message = "The {0} is different from {1}, one line is longer.";
-                    break;
-                case DifferenceMode.NoDifference:
-                    message = "The {0} is the same as {1}.";
-                    break;
-                case DifferenceMode.ShorterLine:
-                    message = "The {0} is different from {1}, one line is shorter.";
-                    break;
-                case DifferenceMode.MissingLines:
-                    message = "The {0} is different from {1}, it is missing some line(s).";
-                    break;
-                case DifferenceMode.Longer:
-                    message = "The {0} is different from {1}, it contains extra text at the end.";
-                    break;
-                case DifferenceMode.Shorter:
-                    message = "The {0} is different from {1}, it is missing the end.";
-                    break;
-            }
+            var message= analyse[0].BuildMessage(summary);
 
             // we try to refine the difference
-
-            var expectedString = (string)expected;
-
-            var minLength = Math.Min(value.Length, expectedString.Length);
-
-            // scan for firstDiff
-            /*
-            var firstDiff = 0;
-            for (;firstDiff < minLength && StringExtensions.CompareChar(value[firstDiff], expectedString[firstDiff], ignoreCase);
-                firstDiff++);
-            if (firstDiff == minLength)
-            {
-                // strings are identical at the beginning
-                message = value.Length > expectedString.Length ? "The {0} is different from {1}, it contains extra text at the end." : "The {0} is different from {1}, it is missing the end.";
-                return checker.BuildMessage(message).On(value).And.Expected(expectedString).ToString();
-            }
-            */
-            expectedString = ExpectedString(expectedString, ref value, analyse[0].Position, minLength, ref message);
-
-            var messageText = checker.BuildMessage(message).On(value).And.Expected(expectedString).ToString();
-
-            return messageText;
-        }
-
-        private static string ExpectedString(string expectedString, ref string value, int firstDiff, int minLength,
-            ref string message)
-        {
-            var isCrlfAndLfDifference = false;
-            var isTabAndWhiteSpaceDifference = false;
-            var firstDiffPos = 0;
-
-            if (firstDiff < minLength)
-            {
-                firstDiffPos = firstDiff;
-                isCrlfAndLfDifference = IsACRLFDifference(firstDiffPos, expectedString, value);
-                isTabAndWhiteSpaceDifference = IsATabAndWhiteSpaceDifference(firstDiffPos, expectedString, value);
-            }
-
-            var blockStart = Math.Max(0, firstDiff - 10);
-            var blockLen = Math.Min(minLength - blockStart, 20);
-
-            var useDiffInMessage = true;
-
-            // if strings have sam length, diff may be minor
-            if (expectedString.Length == value.Length)
-            {
-                // same length
-                if (string.Compare(value, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0)
-                {
-                    message = "The {0} is different from the {1} but only in case.";
-                }
-                else
-                {
-                    message = "The {0} is different from the {1} but has same length.";
-                }
-            }
-            useDiffInMessage = blockStart > 0;
-
-            // add part of strings  that are different (if needed)
-            if (useDiffInMessage)
-            {
-                var prefix = blockStart == 0 ? string.Empty : "...";
-                var suffix = blockStart + blockLen == minLength ? string.Empty : "...";
-                message += string.Format(
-                    " At {0}, expected '{3}{1}{4}' was '{3}{2}{4}'",
-                    firstDiff,
-                    expectedString.Substring(blockStart, blockLen).Escaped(),
-                    value.Substring(blockStart, blockLen).Escaped(),
-                    prefix,
-                    suffix);
-            }
-
-            // highlight diff in end of line char (if needed)
-            if (isCrlfAndLfDifference)
-            {
-                value = HighlightFirstCrlfOrLfIfAny(value, firstDiffPos);
-                expectedString = HighlightFirstCrlfOrLfIfAny(expectedString, firstDiffPos);
-            }
-
-            // highlight tab vs space diff (if needed)
-            if (isTabAndWhiteSpaceDifference)
-            {
-                value = HighlightTabsIfAny(value);
-                expectedString = HighlightTabsIfAny(expectedString);
-            }
-            return expectedString;
-        }
-
-        private static bool IsATabAndWhiteSpaceDifference(int firstDiff, string expected, string actual)
-        {
-            return (actual[firstDiff].Equals(' ') && expected[firstDiff].Equals('\t')) || (actual[firstDiff].Equals('\t') && expected[firstDiff].Equals(' '));
-        }
-
-        // ReSharper disable once InconsistentNaming
-        private static bool IsACRLFDifference(int firstDiff, string expected, string actual)
-        {
-            return (actual[firstDiff].Equals('\n') && expected[firstDiff].Equals('\r')) || (actual[firstDiff].Equals('\r') && expected[firstDiff].Equals('\n'));
-        }
-
-        /// <summary>
-        /// Inserts &lt;&lt;CRLF&gt;&gt; before the first CRLF or &lt;&lt;LF&gt;&gt; before the first LF.
-        /// </summary>
-        /// <param name="str">The string.</param>
-        /// <param name="firstDiffPos">The first difference position.</param>
-        /// <returns>The same string but with &lt;&lt;CRLF&gt;&gt; inserted before the first CRLF or &lt;&lt;LF&gt;&gt; inserted before the first LF.</returns>
-        private static string HighlightFirstCrlfOrLfIfAny(string str, int firstDiffPos)
-        {
-            if (str.Substring(firstDiffPos).StartsWith("\r\n"))
-            {
-                str = str.Insert(firstDiffPos, "<<CRLF>>");
-            }
-            else if (str.Substring(firstDiffPos).StartsWith("\n"))
-            {
-                str = str.Insert(firstDiffPos, "<<LF>>");
-            }
-
-            return str;
-        }
-
-        /// <summary>
-        /// Replace every tab char by "&lt;&lt;tab&gt;&gt;".
-        /// </summary>
-        /// <param name="str">The original string.</param>
-        /// <returns>The original string with every \t replaced with "&lt;&lt;tab&gt;&gt;".</returns>
-        private static string HighlightTabsIfAny(string str)
-        {
-            return str.Replace("\t", "<<tab>>");
+            return message.ToString();
         }
 
         private static string ContainsImpl(IChecker<string, ICheck<string>> checker, IEnumerable<string> values, bool negated, bool notContains)

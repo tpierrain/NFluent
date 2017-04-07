@@ -50,9 +50,18 @@ namespace Nfluent.Tests
         }
 
         [Test]
-        public void ShouldReportDifferenceForGeneralEvenIfFirstDiffIsCase()
+        public void ShouldReportDifferenceForGeneralSameLength()
         {
             var stringDifferences = StringDifference.Analyze("food", "FoOG", false);
+            Check.That(stringDifferences).HasSize(1);
+            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.GeneralSameLength);
+            Check.That(stringDifferences[0].Position).IsEqualTo(3);
+        }
+
+        [Test]
+        public void ShouldReportDifferenceForGeneralEvenIfFirstDiffIsCase()
+        {
+            var stringDifferences = StringDifference.Analyze("food", "FoOGd", false);
             Check.That(stringDifferences).HasSize(1);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[0].Position).IsEqualTo(3);
@@ -81,10 +90,10 @@ namespace Nfluent.Tests
         {
             var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto\ntata", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
+            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.GeneralSameLength);
             Check.That(stringDifferences[0].Position).IsEqualTo(1);
             Check.That(stringDifferences[0].Line).IsEqualTo(1);
-            stringDifferences = StringDifference.Analyze("maybe\ntiti", "toto\ntata", false);
+            stringDifferences = StringDifference.Analyze("maybe\ntiti", "toto\ntatata", false);
             Check.That(stringDifferences).HasSize(2);
             Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[0].Position).IsEqualTo(0);
@@ -161,7 +170,7 @@ namespace Nfluent.Tests
         {
             var stringDifferences = StringDifference.Analyze("foo", "far", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
+            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.GeneralSameLength);
             Check.That(stringDifferences[0].Position).IsEqualTo(1);
         }
    }

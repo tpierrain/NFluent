@@ -13,23 +13,65 @@
 // --------------------------------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Text;
+using NFluent.Extensibility;
 using NFluent.Extensions;
 
 namespace NFluent.Helpers
 {
+    /// <summary>
+    /// Describes difference between strings
+    /// </summary>
     internal enum DifferenceMode
     {
+        /// <summary>
+        /// Strings are same
+        /// </summary>
         NoDifference,
+        /// <summary>
+        /// General difference
+        /// </summary>
         General,
+        /// <summary>
+        /// Difference only in case (eg. Foo vs foo)
+        /// </summary>
         CaseDifference,
+        /// <summary>
+        /// Contains at least one longer line
+        /// </summary>
         LongerLine,
+        /// <summary>
+        /// Contains at least one shorter line 
+        /// </summary>
         ShorterLine,
+        /// <summary>
+        /// End of line marker is different.
+        /// </summary>
         EndOfLine,
+        /// <summary>
+        /// Line(s) are missing
+        /// </summary>
         MissingLines,
+        /// <summary>
+        /// Extra lines found
+        /// </summary>
         ExtraLines,
+        /// <summary>
+        /// Different in spaces (one vs many, tabs vs spaces...)
+        /// </summary>
         Spaces,
+        /// <summary>
+        /// String is longer
+        /// </summary>
         Longer,
-        Shorter
+        /// <summary>
+        /// String is shorter
+        /// </summary>
+        Shorter,
+        /// <summary>
+        /// Strings have the same length but are different.
+        /// </summary>
+        GeneralSameLength
     }
 
     internal class StringDifference
@@ -37,6 +79,7 @@ namespace NFluent.Helpers
         private const char Separator = '\n';
         public int Position;
         public readonly DifferenceMode Type;
+        private const char CarriageReturn='\r';
 
         public int Line { get; private set; }
         public string Expected { get; internal set; }
@@ -50,6 +93,113 @@ namespace NFluent.Helpers
             this.Expected = expected;
             this.Actual = actual;
         }
+
+        /// <summary>
+        /// Summarize a list of issues to a single difference code.
+        /// </summary>
+        /// <param name="stringDifferences">list of differences</param>
+        /// <returns>a <see cref="DifferenceMode"/> value describing the overall differences.</returns>
+        /// <remarks>Returns <see cref="DifferenceMode.General"/> unless all differences are of same kind.</remarks>
+        public static DifferenceMode Summarize(IEnumerable<StringDifference> stringDifferences)
+        {
+            var result = DifferenceMode.NoDifference;
+            foreach (var stringDifference in stringDifferences)
+            {
+                if (result == DifferenceMode.NoDifference)
+                {
+                    result = stringDifference.Type;
+                }
+                else if (result != stringDifference.Type)
+                {
+                    result = DifferenceMode.General;
+                    break;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Builds a <see cref="FluentMessage"/> instance describing the difference.
+        /// </summary>
+        /// <returns>A <see cref="FluentMessage"/> instance.</returns>
+        public FluentMessage BuildMessage(DifferenceMode summary)
+        {
+            var message = GetMessage(summary);
+            var actual = this.Actual;
+            var expected = this.Expected;
+            if (summary == DifferenceMode.Spaces)
+            {
+                actual = HighlightTabsIfAny(actual);
+                expected = HighlightTabsIfAny(expected);
+            }
+            else if (summary == DifferenceMode.EndOfLine)
+            {
+                actual = HighlightFirstCrlfOrLfIfAny(actual);
+                expected = HighlightFirstCrlfOrLfIfAny(expected);
+            }
+            if (this.Line > 0)
+            {
+                message += string.Format(
+                    " At line {0}, col {3}, expected '{1}' was '{2}'",
+                    this.Line,
+                    Extract(actual, this.Position, 20),
+                    Extract(expected, this.Position, 20),
+                    this.Position);
+
+            }
+            var updatedMessage = FluentMessage.BuildMessage(message);
+            updatedMessage.On(actual).And.Expected(expected);
+            return updatedMessage;
+        }
+
+        private static string Extract(string texte, int middle, int len)
+        {
+            var result = new StringBuilder(len);
+            middle = middle - len / 2;
+            if (middle > 0)
+            {
+                result.Append("...");
+            }
+            else
+            {
+                middle = 0;
+            }
+            result.Append(texte.Substring(middle, len).Escaped());
+            if (middle + len < texte.Length)
+            {
+                result.Append("...");
+            }
+            return result.ToString();
+        }
+        /// <summary>
+        /// Inserts &lt;&lt;CRLF&gt;&gt; before the first CRLF or &lt;&lt;LF&gt;&gt; before the first LF.
+        /// </summary>
+        /// <param name="str">The string.</param>
+        /// <returns>The same string but with &lt;&lt;CRLF&gt;&gt; inserted before the first CRLF or &lt;&lt;LF&gt;&gt; inserted before the first LF.</returns>
+        private static string HighlightFirstCrlfOrLfIfAny(string str)
+        {
+            if (str.EndsWith("\r"))
+            {
+                str = str.Substring(0, str.Length - 1) + "<<CRLF>>";
+            }
+            else
+            {
+                str = str + "<<LF>>";
+            }
+            return str;
+        }
+
+        /// <summary>
+        /// Replace every tab char by "&lt;&lt;tab&gt;&gt;".
+        /// </summary>
+        /// <param name="str">The original string.</param>
+        /// <returns>The original string with every \t replaced with "&lt;&lt;tab&gt;&gt;".</returns>
+        private static string HighlightTabsIfAny(string str)
+        {
+            return str.Replace("\t", "<<tab>>");
+        }
+
+        #region Static Methods
 
         private static StringDifference Build(int line, string actual, string expected, bool ignoreCase)
         {
@@ -110,23 +260,74 @@ namespace NFluent.Helpers
                 lastCharWasSpace = char.IsWhiteSpace(actualChar);
             }
             if (type == DifferenceMode.General)
+            {
+                if (actual.Length == expected.Length)
+                    type = DifferenceMode.GeneralSameLength;
                 return new StringDifference(type, line, position, actual, expected);
+            }
 
             // strings are same so far
             // the actualLine string is longer than expectedLine
             if (i < actual.Length)
             {
-                return new StringDifference(actual[i] == '\r' ? DifferenceMode.EndOfLine : DifferenceMode.LongerLine, 
+                return new StringDifference(actual[i] == CarriageReturn ? DifferenceMode.EndOfLine : DifferenceMode.LongerLine, 
                     line, i, actual, expected);
             }
             if (j < expected.Length)
             {
-                return new StringDifference(expected[j] == '\r' ? DifferenceMode.EndOfLine : DifferenceMode.ShorterLine,
+                return new StringDifference(expected[j] == CarriageReturn ? DifferenceMode.EndOfLine : DifferenceMode.ShorterLine,
                     line, i, actual, expected);
             }
             return new StringDifference(type, line, position, actual, expected);
         }
 
+        private static string GetMessage(DifferenceMode summary)
+        {
+            string message;
+            switch (summary)
+            {
+                case DifferenceMode.General:
+                    message = "The {0} is different from {1}.";
+                    break;
+                case DifferenceMode.GeneralSameLength:
+                    message = "The {0} is different from the {1} but has same length.";
+                    break;
+                case DifferenceMode.Spaces:
+                    message = "The {0} has different spaces than {1}.";
+                    break;
+                case DifferenceMode.EndOfLine:
+                    message = "The {0} has different end of line markers than {1}.";
+                    break;
+                case DifferenceMode.CaseDifference:
+                    message = "The {0} is different in case from the {1}.";
+                    break;
+                case DifferenceMode.ExtraLines:
+                    message = "The {0} is different from {1}, it contains extra text at the end.";
+                    break;
+                case DifferenceMode.LongerLine:
+                    message = "The {0} is different from {1}, one line is longer.";
+                    break;
+                case DifferenceMode.NoDifference:
+                    message = "The {0} is the same as {1}.";
+                    break;
+                case DifferenceMode.ShorterLine:
+                    message = "The {0} is different from {1}, one line is shorter.";
+                    break;
+                case DifferenceMode.MissingLines:
+                    message = "The {0} is different from {1}, it is missing some line(s).";
+                    break;
+                case DifferenceMode.Longer:
+                    message = "The {0} is different from {1}, it contains extra text at the end.";
+                    break;
+                case DifferenceMode.Shorter:
+                    message = "The {0} is different from {1}, it is missing the end.";
+                    break;
+                default:
+                    message = "";
+                    break;
+            }
+            return message;
+        }
 
         public static IList<StringDifference> Analyze(string actual, string expected, bool caseInsensitive)
         {
@@ -184,23 +385,6 @@ namespace NFluent.Helpers
             }
             return result;
         }
-
-        public static DifferenceMode Summarize(IEnumerable<StringDifference> stringDifferences)
-        {
-            var result = DifferenceMode.NoDifference;
-            foreach (var stringDifference in stringDifferences)
-            {
-                if (result == DifferenceMode.NoDifference)
-                {
-                    result = stringDifference.Type;
-                }
-                else if (result != stringDifference.Type)
-                {
-                    result  = DifferenceMode.General;
-                    break;
-                }
-            }
-            return result;
-        }
+        #endregion
     }
 }

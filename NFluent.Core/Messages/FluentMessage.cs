@@ -28,7 +28,7 @@ namespace NFluent.Extensibility
     {
         #region fields
 
-        internal static string EndOfLine = Environment.NewLine; // TODO: inline it
+        internal static readonly string EndOfLine = Environment.NewLine; // TODO: inline it
 
         private readonly string message;
 
@@ -67,23 +67,11 @@ namespace NFluent.Extensibility
         private FluentMessage(string message)
         {
             this.message = message;
-            this.EntityDescription = null;
+            this.entity = null;
             this.checkedNamer = new EntityNamer();
             this.expectedNamer = new EntityNamer();
             this.checkedLabel = GenericLabelBlock.BuildCheckedBlock(this.checkedNamer);
             this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(this.expectedNamer);
-        }
-
-        #endregion
-
-        #region properties
-
-        private string EntityDescription
-        {
-            set
-            {
-                this.entity = value;
-            }
         }
 
         #endregion
@@ -148,7 +136,7 @@ namespace NFluent.Extensibility
         /// <returns>The same fluent message.</returns>
         public FluentMessage For(string newEntityDescription)
         {
-            this.EntityDescription = newEntityDescription;
+            this.entity = newEntityDescription;
             return this;
         }
 
