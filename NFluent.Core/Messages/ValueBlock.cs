@@ -93,7 +93,7 @@ namespace NFluent.Messages
 
             if (this.includeType && this.type != null)
             {
-                string temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormated();
+                var temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormated();
                 builder.AppendFormat(" of type: [{0}]", temp);
             }
 

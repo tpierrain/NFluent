@@ -13,7 +13,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using System.Text;
 using NFluent.Extensibility;
 using NFluent.Extensions;
 
@@ -137,14 +136,20 @@ namespace NFluent.Helpers
                 actual = HighlightFirstCrlfOrLfIfAny(actual);
                 expected = HighlightFirstCrlfOrLfIfAny(expected);
             }
-            if (this.Line > 0)
+            else
+            {
+                actual = actual?.TrimEnd('\r');
+                expected = expected?.TrimEnd('\r');
+            }
+            var extractLength = 20;
+            if (this.Line > 0 || this.Expected.Length>extractLength*2 || this.Actual.Length>extractLength*2)
             {
                 message += string.Format(
-                    " At line {0}, col {3}, expected '{1}' was '{2}'",
-                    this.Line,
-                    Extract(actual, this.Position, 20),
-                    Extract(expected, this.Position, 20),
-                    this.Position);
+                    " At line {0}, col {3}, expected '{1}' was '{2}'.",
+                    this.Line+1,
+                    expected.Extract(this.Position, extractLength),
+                    actual.Extract(this.Position, extractLength),
+                    this.Position+1);
 
             }
             var updatedMessage = FluentMessage.BuildMessage(message);
@@ -152,25 +157,6 @@ namespace NFluent.Helpers
             return updatedMessage;
         }
 
-        private static string Extract(string texte, int middle, int len)
-        {
-            var result = new StringBuilder(len);
-            middle = middle - len / 2;
-            if (middle > 0)
-            {
-                result.Append("...");
-            }
-            else
-            {
-                middle = 0;
-            }
-            result.Append(texte.Substring(middle, len).Escaped());
-            if (middle + len < texte.Length)
-            {
-                result.Append("...");
-            }
-            return result.ToString();
-        }
         /// <summary>
         /// Inserts &lt;&lt;CRLF&gt;&gt; before the first CRLF or &lt;&lt;LF&gt;&gt; before the first LF.
         /// </summary>
@@ -238,7 +224,7 @@ namespace NFluent.Helpers
                     if (type == DifferenceMode.NoDifference)
                         type = DifferenceMode.Spaces;
                 }
-                else if (StringExtensions.CompareChar(actualChar, expectedChar, true))
+                else if (StringExtensions.CompareCharIgnoringCase(actualChar, expectedChar))
                 {
                     if (ignoreCase)
                         continue;
@@ -283,7 +269,7 @@ namespace NFluent.Helpers
 
         private static string GetMessage(DifferenceMode summary)
         {
-            string message;
+            string message = string.Empty;
             switch (summary)
             {
                 case DifferenceMode.General:
@@ -302,13 +288,10 @@ namespace NFluent.Helpers
                     message = "The {0} is different in case from the {1}.";
                     break;
                 case DifferenceMode.ExtraLines:
-                    message = "The {0} is different from {1}, it contains extra text at the end.";
+                    message = "The {0} is different from {1}, it contains extra lines at the end.";
                     break;
                 case DifferenceMode.LongerLine:
                     message = "The {0} is different from {1}, one line is longer.";
-                    break;
-                case DifferenceMode.NoDifference:
-                    message = "The {0} is the same as {1}.";
                     break;
                 case DifferenceMode.ShorterLine:
                     message = "The {0} is different from {1}, one line is shorter.";
@@ -321,9 +304,6 @@ namespace NFluent.Helpers
                     break;
                 case DifferenceMode.Shorter:
                     message = "The {0} is different from {1}, it is missing the end.";
-                    break;
-                default:
-                    message = "";
                     break;
             }
             return message;

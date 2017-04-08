@@ -13,6 +13,8 @@
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
 
+using System.Text;
+
 namespace NFluent.Extensions
 {
     using System;
@@ -37,13 +39,45 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="carA">first char</param>
         /// <param name="carB">second char</param>
-        /// <param name="ignoreCase">true if comparison is made in a case insensitive way.</param>
         /// <returns>true if chars are the same.</returns>
-        public static bool CompareChar(char carA, char carB, bool ignoreCase)
+        public static bool CompareCharIgnoringCase(char carA, char carB)
         {
-            if (ignoreCase)
-                return string.Compare(carA.ToString(), carB.ToString(), StringComparison.CurrentCultureIgnoreCase) == 0;
-            return carA == carB;
+            return string.Compare(carA.ToString(), carB.ToString(), StringComparison.CurrentCultureIgnoreCase) == 0;
         }
+
+        /// <summary>
+        /// Extracts a sub string based on a middle position and a length.
+        /// If truncation was needeed, three dots are added were appropriate.
+        /// </summary>
+        /// <param name="texte">Texte to extract from</param>
+        /// <param name="middle">Middle position</param>
+        /// <param name="len">Length of the extract</param>
+        /// <returns>the desired substring.</returns>
+        public static string Extract(this string texte, int middle, int len)
+        {
+            if (texte == null)
+                return texte;
+            var result = new StringBuilder(len);
+            middle -= len / 2;
+            if (middle > 0)
+            {
+                result.Append("...");
+            }
+            else
+            {
+                middle = 0;
+            }
+            if (middle + len >= texte.Length)
+            {
+                len = texte.Length - middle;
+            }
+            result.Append(texte.Substring(middle, len).Escaped());
+            if (middle + len < texte.Length)
+            {
+                result.Append("...");
+            }
+            return result.ToString();
+        }
+
     }
 }

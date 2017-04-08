@@ -13,7 +13,10 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
 using NFluent.Helpers;
+using NFluent.Kernel;
 
 namespace NFluent
 {
@@ -243,7 +246,8 @@ namespace NFluent
                            : checker.BuildShortMessage("The {0} is null.").For(typeof(string)).ReferenceValues(values).Label("The {0} substring(s):").ToString();
             }
 
-            var items = values.Where(item => checkedValue.Contains(item) == notContains).ToList();
+            var enumerable = values as string[] ?? values.ToArray();
+            var items = enumerable.Where(item => checkedValue.Contains(item) == notContains).ToList();
 
             if (negated == items.Count > 0)
             {
@@ -252,7 +256,7 @@ namespace NFluent
 
             if (!notContains && negated)
             {
-                items = values.ToList();
+                items = enumerable.ToList();
             }
 
             if (negated != notContains)
@@ -567,6 +571,30 @@ namespace NFluent
             }
 
             return checker.BuildChainingObject();
+        }
+
+        /// <summary>
+        /// Convert a string to an array of lines.
+        /// </summary>
+        /// <param name="check">The fluent check to be processed</param>
+        /// <returns>A checker.</returns>
+        public static ICheck<IEnumerable<string>> AsLines(this ICheck<string> check)
+        {
+            IEnumerable<string> next = null;
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            if (checker.Value != null)
+            {
+                var lines = checker.Value.Split(Environment.NewLine[0]);
+                if (Environment.NewLine.Length > 1)
+                {
+                    for (var i = 0; i < lines.Length; i++)
+                    {
+                        lines[i] = lines[i].Trim(Environment.NewLine[1]);
+                    }
+                }
+                next = lines;
+            }
+            return new FluentCheck<IEnumerable<string>>(next);
         }
     }
 }

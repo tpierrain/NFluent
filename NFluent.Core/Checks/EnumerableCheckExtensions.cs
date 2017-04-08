@@ -118,8 +118,7 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                     {
-                        // TODO: refactor this implementation?
-                        if (checker.Value == null && expectedValues == null)
+                        if (checker.Value == expectedValues)
                         {
                             return;
                         }
@@ -155,7 +154,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
         public static ICheckLink<ICheck<IEnumerable>> ContainsExactly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
         {
-            IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
+            var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             
             return check.ContainsExactly(properExpectedValues);
         }
@@ -178,8 +177,7 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () => 
                 {
-                    // TODO: refactor this implementation
-                    if (checker.Value == null && otherEnumerable == null)
+                    if (checker.Value == otherEnumerable )
                     {
                         return;
                     }
@@ -196,24 +194,26 @@ namespace NFluent
                     }
 
                     var index = 0;
-                    var first = checker.Value.GetEnumerator();
                     var enumerable = otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
-                    var second = enumerable.GetEnumerator();
-
-                    while (first.MoveNext())
+                    var first = checker.Value.GetEnumerator();
+                    using (var second = enumerable.GetEnumerator())
                     {
-                        if (!second.MoveNext() 
-                            || !Equals(first.Current, second.Current))
+                        while (first.MoveNext())
+                        {
+                            if (!second.MoveNext()
+                                || !Equals(first.Current, second.Current))
+                            {
+                                throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker, enumerable, index));
+                            }
+
+                            index++;
+                        }
+
+                        if (second.MoveNext())
                         {
                             throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker, enumerable, index));
                         }
 
-                        index++;
-                    }
-
-                    if (second.MoveNext())
-                    {
-                        throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker, enumerable, index));
                     }
                 },
                 BuildExceptionMessageForContainsExactly(checker, otherEnumerable));

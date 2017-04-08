@@ -658,32 +658,103 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldDisplayFullLineIfItIsShort()
+        {
+            var multilineExpected = "Hello\nThis\nwill fail.";
+            var multileActual = "Hello\nIt has\nfailed";
+
+            Check.ThatCode(() => Check.That(multileActual).IsEqualTo(multilineExpected))
+                .Throws<FluentCheckException>()
+                .WithMessage(Environment.NewLine +
+                             "The checked string is different from expected one. At line 2, col 1, expected 'This' was 'It has'." +
+                             Environment.NewLine + "The checked string:" + Environment.NewLine +
+                             "	[\"It has\"]" + Environment.NewLine +
+                             "The expected string:" + Environment.NewLine +
+                             "	[\"This\"]");
+        }
+
+        [Test]
         public void LongStringErrorMessageIsProperlyTruncated()
         {
-            var checkString = File.ReadAllText(TestFiles.CheckedFile, Encoding.UTF8);
-            var expectedString = File.ReadAllText(TestFiles.ExpectedFile, Encoding.UTF8);
+            var checkString = File.ReadAllText(TestFiles.CheckedFile, Encoding.UTF8).Replace("\r\n", "");
+            var expectedString = File.ReadAllText(TestFiles.ExpectedFile, Encoding.UTF8).Replace("\r\n", "");
 
             Check.ThatCode(() =>
                 {
                     Check.That(checkString).IsEqualTo(expectedString);
-                    // ReverseEngineeringExceptionMessagesHelper.DumpReadyToCopyAndPasteExceptionMessageInAFile(() => Check.That(checkString).IsEqualTo(expectedString));
                 })
                 .Throws<FluentCheckException>()
                 .AndWhichMessage()
-                .IsEqualTo(Environment.NewLine +
-                           "The checked string is different from the expected one but has same length. At 4963, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'" +
-                           Environment.NewLine + "The checked string:" + Environment.NewLine +
-                           "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + Environment.NewLine +
-                           "<!--  Edited by XMLSpy  -->" + Environment.NewLine + "<CATALOG>" + Environment.NewLine +
-                           "  <CD>" + Environment.NewLine + "    <TITLE>Empire Burlesque</TITLE>" +
-                           Environment.NewLine + "    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>" +
-                           Environment.NewLine + "  </CD>" + Environment.NewLine + "</CATALOG>\"]" +
-                           Environment.NewLine + "The expected string:" + Environment.NewLine +
-                           "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + Environment.NewLine +
-                           "<!--  Edited by XMLSpy  -->" + Environment.NewLine + "<CATALOG>" + Environment.NewLine +
-                           "  <CD>" + Environment.NewLine + "    <TITLE>Empire Burlesque</TITLE>" +
-                           Environment.NewLine + "    <ARTIST>Bob Dylan</A...<<truncated>>...  <YEAR>1987</YEAR>" +
-                           Environment.NewLine + "  </CD>" + Environment.NewLine + "</CATALOG>\"]");
+                .AsLines()
+                .ContainsExactly("",
+                    "The checked string is different from the expected one but has same length. At line 1, col 4554, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'.",
+                    "The checked string:",
+                    "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?><!--  Edited by XMLSpy  --><CATALOG>  <CD>    <TITLE>Empire Burlesque</TITLE>    <ARTIST>Bob Dylan</ARTIST>    ...<<truncated>>...E>    <YEAR>1987</YEAR>  </CD></CATALOG>\"]",
+                    "The expected string:",
+                    "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?><!--  Edited by XMLSpy  --><CATALOG>  <CD>    <TITLE>Empire Burlesque</TITLE>    <ARTIST>Bob Dylan</ARTIST>    ...<<truncated>>...E>    <YEAR>1987</YEAR>  </CD></CATALOG>\"]"
+                    );
+        }
+
+        [Test]
+        public void ShouldReportExtraLines()
+        {
+            Check.ThatCode(() =>
+                {
+                    Check.That("This is one line.\nAnd another.").IsEqualTo("This is one line.");
+                })
+                .Throws<FluentCheckException>()
+                .AndWhichMessage().AsLines().ContainsExactly("",
+                "The checked value is different from expected one, it contains extra lines at the end. At line 2, col 1, expected '' was 'And another.'.",
+                "The checked value:",
+                "\t[\"And another.\"]",
+                "The expected value:",
+                "\t[null]");
+        }
+
+        [Test]
+        public void ShouldReportLongerLines()
+        {
+            Check.ThatCode(() =>
+                {
+                    Check.That("This is one line.\nAnd another line.").IsEqualTo("This is one line.\nAnd another");
+                })
+                .Throws<FluentCheckException>()
+                .AndWhichMessage().AsLines().Contains(
+                    "The checked string is different from expected one, one line is longer. At line 2, col 12, expected '...nd another' was '...nd another line.'.",
+                "\t[\"And another\"]",
+                "\t[\"And another line.\"]");
+        }
+
+        [Test]
+        public void ShouldReportShorterLines()
+        {
+            Check.ThatCode(() =>
+                {
+                    Check.That("This is one line.\nAnd another").IsEqualTo("This is one line.\nAnd another line.");
+                })
+                .Throws<FluentCheckException>()
+                .AndWhichMessage().AsLines().Contains(
+                    "The checked string is different from expected one, one line is shorter. At line 2, col 12, expected '...nd another line.' was '...nd another'.",
+                "\t[\"And another\"]",
+                "\t[\"And another line.\"]");
+        }
+
+        [Test]
+        public void ShouldReportMissingLines()
+        {
+            Check.ThatCode(() =>
+                {
+                    Check.That("This is one line.").IsEqualTo("This is one line.\nAnd another.");
+                })
+                .Throws<FluentCheckException>()
+                .AndWhichMessage()
+                .AsLines()
+                .ContainsExactly("",
+                    "The checked string is different from expected one, it is missing some line(s). At line 2, col 1, expected 'And another.' was ''.",
+                    "The checked string:",
+                    "\t[null]",
+                    "The expected string:",
+                    "\t[\"And another.\"]");
         }
     }
 }
