@@ -12,12 +12,12 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-using System;
-
 namespace NFluent.Tests
 {
     using NUnit.Framework;
-    using NFluent.Tests.Helpers;
+    using Helpers;
+    using System;
+
 
     [TestFixture]
     public class UintRelatedTests
@@ -32,9 +32,10 @@ namespace NFluent.Tests
         //// -----------------------------------------------------
 
         // Since this class is the model/template for the generation of the tests on all the other numbers types, don't forget to re-generate all the other classes every time you change this one. To do that, just save the .\T4" + Environment.NewLine + "umberTestsGenerator.tt file within Visual Studio 2012. This will trigger the T4 code generation process.
-        private const string Blabla = ".*?";
-        private const string LineFeed = "\n";
-        private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
+        private const uint Twenty = 20;
+        private const uint Two = 2;
+        private const uint Zero = 0;
+        private const uint One = 1;
         private CultureSession cultureSession;
 
         [OneTimeSetUp]
@@ -55,16 +56,12 @@ namespace NFluent.Tests
         [Test]
         public void IsNotZeroWorks()
         {
-            const uint Two = 2;
-
             Check.That(Two).IsNotZero();
         }
 
         [Test]
         public void IsNotZeroThrowsExceptionWhenFails()
         {
-            const uint Zero = 0;
-
             Check.ThatCode(() =>
             {
                 Check.That(Zero).IsNotZero();
@@ -80,16 +77,12 @@ namespace NFluent.Tests
         [Test]
         public void NotIsZeroWorks()
         {
-            const uint Two = 2;
-
             Check.That(Two).Not.IsZero();
         }
 
         [Test]
         public void NotIsZeroThrowsExceptionWhenFailing()
         {
-            const uint Zero = 0;
-
             Check.ThatCode(() =>
             {
                 Check.That(Zero).Not.IsZero();
@@ -105,16 +98,12 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNotZeroWorks()
         {
-            const uint Zero = 0;
-
             Check.That(Zero).Not.IsNotZero();
         }
 
         [Test]
         public void NotIsNotZeroThrowsExceptionWhenFailing()
         {
-            const uint Two = 2;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).Not.IsNotZero();
@@ -130,27 +119,18 @@ namespace NFluent.Tests
         [Test]
         public void IsBeforeWorks()
         {
-            const uint Two = 2;
-            const uint Twenty = 20;
-
             Check.That(Two).IsBefore(Twenty);
         }
 
         [Test]
         public void NotIsBeforeWorks()
         {
-            const uint Two = 2;
-            const uint Twenty = 20;
-
             Check.That(Twenty).Not.IsBefore(Two);
         }
 
         [Test]
         public void IsBeforeThrowsExceptionWhenFailing()
         {
-            const uint Two = 2;
-            const uint Twenty = 20;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).IsBefore(Two);
@@ -162,8 +142,6 @@ namespace NFluent.Tests
         [Test]
         public void IsBeforeThrowsExceptionWhenGivingTheSameValue()
         {
-            const uint Two = 2;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).IsBefore(Two);
@@ -175,9 +153,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsBeforeThrowsExceptionWhenFailing()
         {
-            const uint Two = 2;
-            const uint Twenty = 20;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).Not.IsBefore(Twenty);
@@ -189,26 +164,18 @@ namespace NFluent.Tests
         [Test]
         public void IsAfterWorks()
         {
-            const uint Two = 2;
-            const uint Twenty = 20;
-
             Check.That(Twenty).IsAfter(Two);
         }
 
         [Test]
         public void NotIsAfterWorks()
         {
-            const uint Two = 2;
-            const uint Twenty = 20;
-
             Check.That(Two).Not.IsAfter(Twenty);
         }
 
         [Test]
         public void IsAfterThrowsExceptionWhenFailing()
         {
-            const uint Two = 2;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).IsAfter(Two);
@@ -220,9 +187,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsAfterThrowsExceptionWhenFailing()
         {
-            const uint Two = 2;
-            const uint Twenty = 20;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).Not.IsAfter(Two);
@@ -239,27 +203,18 @@ namespace NFluent.Tests
         [Test]
         public void IsLessThanWorks()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
-
             Check.That(One).IsLessThan(Twenty);
         }
 
         [Test]
         public void NotIsLessThanWorks()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
-
             Check.That(Twenty).Not.IsLessThan(One);
         }
 
         [Test]
         public void NotIsLessThanThrowsExceptionWhenFailing()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
-
             Check.ThatCode(() =>
             {
                 Check.That(One).Not.IsLessThan(Twenty);
@@ -276,26 +231,18 @@ namespace NFluent.Tests
         [Test]
         public void IsStrictlyLessThanWorks()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
-
             Check.That(One).IsStrictlyLessThan(Twenty);
         }
 
         [Test]
         public void NotIsStrictlyLessThanWorks()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
-
             Check.That(Twenty).Not.IsStrictlyLessThan(One);
         }
 
         [Test]
         public void IsStrictlyLessThanThrowsExceptionWhenFailing()
         {
-            const uint One = 1;
-
             Check.ThatCode(() =>
             {
                 Check.That(One).IsStrictlyLessThan(One);
@@ -307,9 +254,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsStrictlyLessThanThrowsExceptionWhenFailing()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
-
             Check.ThatCode(() =>
             {
                 Check.That(One).Not.IsStrictlyLessThan(Twenty);
@@ -328,17 +272,12 @@ namespace NFluent.Tests
         [Test]
         public void IsGreaterThanWorks()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
             Check.That(Twenty).IsGreaterThan(One);
         }
 
         [Test]
         public void IsGreaterThanThrowsExceptionWhenFailing()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
-
             Check.ThatCode(() =>
             {
                 Check.That(One).IsGreaterThan(Twenty);
@@ -350,9 +289,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsGreaterThanThrowsExceptionWhenFailing()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).Not.IsGreaterThan(One);
@@ -369,17 +305,12 @@ namespace NFluent.Tests
         [Test]
         public void IsStrictlyGreaterThanWorks()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
-
             Check.That(Twenty).IsStrictlyGreaterThan(One);
         }
 
         [Test]
         public void IsStrictlyGreaterThanThrowsExceptionWhenFailing()
         {
-            const uint One = 1;
-
             Check.ThatCode(() =>
             {
                 Check.That(One).IsStrictlyGreaterThan(One);
@@ -391,9 +322,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsStrictlyGreaterThanThrowsExceptionWhenFailing()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).Not.IsStrictlyGreaterThan(One);
@@ -407,9 +335,6 @@ namespace NFluent.Tests
         [Test]
         public void AndOperatorCanChainMultipleAssertionOnNumber()
         {
-            const uint Twenty = 20;
-            const uint Zero = 0;
-
             Check.That(Twenty).IsNotZero().And.IsAfter(Zero);
             Check.That(Twenty).IsAfter(Zero).And.IsNotZero();
         }
@@ -419,17 +344,14 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualToWorksWithOtherSameValue()
         {
-            const uint Twenty = 20;
-            const uint OtherTwenty = 20;
+            const uint otherTwenty = 20;
 
-            Check.That(Twenty).IsEqualTo(OtherTwenty);
+            Check.That(Twenty).IsEqualTo(otherTwenty);
         }
 
         [Test]
         public void IsEqualFailsWhenRelevant()
         {
-            const uint Twenty = 20;
-
             Check.ThatCode(() =>
                 {
                     Check.That(Twenty).IsEqualTo(0);
@@ -440,30 +362,23 @@ namespace NFluent.Tests
         [Test]
         public void EqualsWorksToo()
         {
-            const uint Twenty = 20;
-            const uint OtherTwenty = 20;
-            const uint Zero = 0;
+            const uint otherTwenty = 20;
 
-            Check.That(Twenty).Equals(OtherTwenty);
+            Check.That(Twenty).Equals(otherTwenty);
 
             // check the 'other implementation of equals
-            Check.That(Twenty).IsAfter(Zero).And.Equals(OtherTwenty);
+            Check.That(Twenty).IsAfter(Zero).And.Equals(otherTwenty);
         }
 
         [Test]
         public void NotIsEqualToWorks()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
-
             Check.That(One).Not.IsEqualTo(Twenty);
         }
 
         [Test]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
-            const uint Twenty = 20;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).Not.IsEqualTo(Twenty);
@@ -475,8 +390,6 @@ namespace NFluent.Tests
         [Test]
         public void NotEqualsThrowsExceptionWhenFailing()
         {
-            const uint Twenty = 20;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).Not.Equals(Twenty);
@@ -488,17 +401,12 @@ namespace NFluent.Tests
         [Test]
         public void IsNotEqualToWorks()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
-
             Check.That(One).IsNotEqualTo(Twenty);
         }
 
         [Test]
         public void IsNotEqualToThrowsExceptionWhenFailing()
         {
-            const uint Twenty = 20;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).IsNotEqualTo(Twenty);
@@ -510,9 +418,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
-            const uint One = 1;
-            const uint Twenty = 20;
-
             Check.ThatCode(() =>
             {
                 Check.That(One).Not.IsNotEqualTo(Twenty);
@@ -538,11 +443,9 @@ namespace NFluent.Tests
         [Test]
         public void HasValueThrowsExceptionWhenFailing()
         {
-            uint? noValue = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(noValue).HasAValue();
+                Check.That((uint?) null).HasAValue();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked nullable has no value, which is unexpected.");
@@ -551,9 +454,7 @@ namespace NFluent.Tests
         [Test]
         public void NotHasValueWorks()
         {
-            uint? noValue = null;
-
-            Check.That(noValue).Not.HasAValue();
+            Check.That((uint?) null).Not.HasAValue();
         }
 
         [Test]
@@ -573,20 +474,16 @@ namespace NFluent.Tests
         public void HasValueSupportsToBeChainedWithTheWhichOperator()
         {
             uint? one = 1;
-            const uint Zero = 0;
 
-            Check.That(one).HasAValue().Which.IsAfter(Zero).And.IsEqualTo((uint)1);
+            Check.That(one).HasAValue().Which.IsAfter(Zero).And.IsEqualTo(1);
         }
 
         [Test]
         public void TryingToChainANullableWithoutAValueIsPossibleButThrowsAnException()
         {
-            uint? noValue = null;
-            const uint Zero = 0;
-
             Check.ThatCode(() =>
             {
-                Check.That(noValue).Not.HasAValue().Which.IsAfter(Zero);
+                Check.That((uint?) null).Not.HasAValue().Which.IsAfter(Zero);
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked nullable has no value to be checked.");
@@ -599,9 +496,7 @@ namespace NFluent.Tests
         [Test]
         public void HasNoValueWorks()
         {
-            uint? noValue = null;
-
-            Check.That(noValue).HasNoValue();
+            Check.That((uint?) null).HasNoValue();
         }
 
         [Test]
@@ -628,11 +523,9 @@ namespace NFluent.Tests
         [Test]
         public void NotHasNoValueThrowsExceptionWhenFailing()
         {
-            uint? noValue = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(noValue).Not.HasNoValue();
+                Check.That((uint?) null).Not.HasNoValue();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked nullable has no value, which is unexpected.");
@@ -647,7 +540,7 @@ namespace NFluent.Tests
         {
             uint? one = 1;
 
-            Check.That(one).IsInstanceOf<uint?>().And.HasAValue().Which.IsEqualTo((uint)1);
+            Check.That(one).IsInstanceOf<uint?>().And.HasAValue().Which.IsEqualTo(1);
         }
 
         [Test]
@@ -655,7 +548,7 @@ namespace NFluent.Tests
         {
             uint? one = 1;
 
-            Check.That(one).IsInstanceOf<uint?>().And.HasAValue().Which.IsEqualTo((uint)1);
+            Check.That(one).IsInstanceOf<uint?>().And.HasAValue().Which.IsEqualTo(1);
             Check.That(one).HasAValue().And.IsInstanceOf<uint?>();
         }
 
@@ -675,19 +568,15 @@ namespace NFluent.Tests
         [Test]
         public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
         {
-            uint? noValue = null;
-
-            Check.That(noValue).IsInstanceOf<uint?>();
+            Check.That((uint?) null).IsInstanceOf<uint?>();
         }
 
         [Test]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            uint? noValue = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(noValue).Not.IsInstanceOf<uint?>();
+                Check.That((uint?) null).Not.IsInstanceOf<uint?>();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked value is an instance of [uint?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [uint?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [uint?]");
@@ -696,11 +585,9 @@ namespace NFluent.Tests
         [Test]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
-            uint? one = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(one).IsInstanceOf<string>();
+                Check.That((uint?) null).IsInstanceOf<string>();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked value is not an instance of [string]." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [uint?]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [string]");
@@ -715,7 +602,7 @@ namespace NFluent.Tests
         {
             uint? one = 1;
 
-            Check.That(one).IsNotInstanceOf<uint>().And.HasAValue().Which.IsEqualTo((uint)1);
+            Check.That(one).IsNotInstanceOf<uint>().And.HasAValue().Which.IsEqualTo(1);
         }
 
         [Test]
@@ -734,11 +621,9 @@ namespace NFluent.Tests
         [Test]
         public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            uint? noValue = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(noValue).IsNotInstanceOf<uint?>();
+                Check.That((uint?) null).IsNotInstanceOf<uint?>();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked value is an instance of [uint?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [uint?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [uint?]");

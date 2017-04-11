@@ -12,13 +12,12 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-using System;
-
+// ReSharper disable once CheckNamespace
 namespace NFluent.Tests
 {
     using System.Collections;
     using System.Collections.Generic;
-
+    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -139,11 +138,9 @@ namespace NFluent.Tests
         [Test]
         public void ContainsThrowsWithNullAsCheckedValue()
         {
-            List<int> nullList = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(nullList).Contains("what da heck!");
+                Check.That((List<int>) null).Contains("what da heck!");
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked enumerable is null and thus, does not contain the given expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]");
@@ -152,9 +149,7 @@ namespace NFluent.Tests
         [Test]
         public void ContainsDoNotThrowIfBothValuesAreNull()
         {
-            List<int> nullList = null;
-
-            Check.That(nullList).Contains(null);
+            Check.That((List<int>) null).Contains(null);
         }
 
         [Test]

@@ -12,6 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+// ReSharper disable once CheckNamespace
 namespace NFluent.Extensibility
 {
     using Kernel;

@@ -12,6 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+// ReSharper disable once CheckNamespace
 namespace NFluent.Tests.Extensions
 {
     using System;
@@ -24,12 +25,12 @@ namespace NFluent.Tests.Extensions
         [Test]
         public void CanUseVariousExtensions()
         {
-            const int MythicNumber = 42;
-            const string YodaStatement = "Has the force";
+            const int mythicNumber = 42;
+            const string yodaStatement = "Has the force";
 
-            Check.That(MythicNumber as IComparable).IsBefore(100).And.IsBefore(200);
-            Check.That(MythicNumber).IsNotZero().And.IsInstanceOf<int>();
-            Check.That(YodaStatement).Contains("force");
+            Check.That(mythicNumber as IComparable).IsBefore(100).And.IsBefore(200);
+            Check.That(mythicNumber).IsNotZero().And.IsInstanceOf<int>();
+            Check.That(yodaStatement).Contains("force");
         }
 
         [Test]
@@ -63,7 +64,7 @@ namespace NFluent.Tests.Extensions
             var eternalSunshineOfTheSpotlessMind = new Movie("Eternal sunshine of the spotless mind", new Person { Name = "Michel GONDRY" }, new List<Nationality> { Nationality.American });
 
             Check.That(eternalSunshineOfTheSpotlessMind).IsDirectedBy("Michel GONDRY");
-            Check.That(eternalSunshineOfTheSpotlessMind).IsAFGreatMovie();
+            Check.That(eternalSunshineOfTheSpotlessMind).IsAfGreatMovie();
         }
     }
 }

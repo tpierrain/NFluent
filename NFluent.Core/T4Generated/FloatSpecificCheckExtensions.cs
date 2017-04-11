@@ -25,14 +25,7 @@ namespace NFluent
     /// </summary>
     public static class FloatSpecificCheckExtensions
     {
-        #pragma warning disable 169
-
-        //// ---------------------- WARNING ----------------------
-        //// AUTO-GENERATED FILE WHICH SHOULD NOT BE MODIFIED!
-        //// To change this class, change the one that is used
-        //// as the golden source/model for this autogeneration
-        //// (i.e. the one dedicated to the integer values).
-        //// -----------------------------------------------------
+        // DoNotChangeOrRemoveThisLine
 
         /// <summary>
         /// Determines whether the specified number evaluates to a value that is not a number (NaN).

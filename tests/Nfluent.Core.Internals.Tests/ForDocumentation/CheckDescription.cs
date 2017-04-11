@@ -12,6 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+// ReSharper disable once CheckNamespace
 namespace NFluent.Tests.ForDocumentation
 {
     using System;
@@ -21,7 +22,7 @@ namespace NFluent.Tests.ForDocumentation
     using System.Runtime.CompilerServices;
     using System.Text;
     using System.Xml.Serialization;
-    using NFluent.Extensions;
+    using Extensions;
 
 //    [Serializable]
     public class CheckDescription
@@ -114,6 +115,7 @@ namespace NFluent.Tests.ForDocumentation
         [XmlIgnore]
         public IList<Type> CheckParameters { get; set; }
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string ErrorSampleMessage { get; set; }
         #endregion
 
@@ -126,12 +128,9 @@ namespace NFluent.Tests.ForDocumentation
                 // check if this is an extension method
                 var customAttributes = method.GetCustomAttributes(typeof(ExtensionAttribute), false);
                 int count = 0;
-                if (customAttributes != null)
+                foreach (var unused in customAttributes)
                 {
-                    foreach (var customAttribute in customAttributes)
-                    {
-                        count++;
-                    }
+                    count++;
                 }
                 if (count > 0)
                 {
@@ -203,7 +202,7 @@ namespace NFluent.Tests.ForDocumentation
                     // the type implements ICheck<T>
                     result.CheckedType = scanning.GetTypeInfo().IsGenericType ? scanning.GetGenericArguments()[0] : null;
 
-                    if (result != null && result.CheckedType.GetTypeInfo().IsGenericType)
+                    if (result.CheckedType.GetTypeInfo().IsGenericType)
                     {
                         result.CheckedType = result.CheckedType.GetTypeInfo().BaseType;
                     }
@@ -233,6 +232,7 @@ namespace NFluent.Tests.ForDocumentation
                     else
                     {
                         // not a check method
+                        // ReSharper disable once RedundantStringFormatCall
                         Debug.WriteLine(string.Format("Type {0} needs to implement a Value property (method {1})", method.DeclaringType.Name, method.Name));
                     }
                 }

@@ -44,13 +44,19 @@ namespace NFluent.Tests
         [Test]
         public void NoExceptionRaised()
         {
-            Check.ThatCode((Action)(() => new object())).DoesNotThrow();
+            Check.ThatCode(() =>
+            {
+                var unused = new object();
+            }).DoesNotThrow();
         }
 
         [Test]
         public void NotWords()
         {
-            Check.ThatCode((Action)(() => new object())).Not.ThrowsAny();
+            Check.ThatCode(() =>
+            {
+                var unused = new object();
+            }).Not.ThrowsAny();
         }
 
         [Test]
@@ -87,7 +93,10 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatCode(() => { new object(); }).ThrowsAny();
+                Check.ThatCode(() =>
+                {
+                    var unused = new object();
+                }).ThrowsAny();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
@@ -98,7 +107,10 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatCode(() => { new object(); }).Throws<Exception>();
+                Check.ThatCode(() =>
+                {
+                    var unused = new object();
+                }).Throws<Exception>();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected exception:" + Environment.NewLine + "\tan instance of type: [System.Exception]");
@@ -128,7 +140,7 @@ namespace NFluent.Tests
         [Test]
         public void DidNotRaiseWhenUsedWithValidDelegateExpression()
         {
-            Check.ThatCode(delegate { var obj = new object(); }).DoesNotThrow();
+            Check.ThatCode(delegate { var unused = new object(); }).DoesNotThrow();
         }
 
         [Test]
@@ -175,7 +187,7 @@ namespace NFluent.Tests
         [Test]
         public void CanCheckForAMessageOnExceptionRaised()
         {
-            Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(123, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithMessage("Err #123 : my error message").And.WithProperty("ExceptionNumber", 123);
+            Check.ThatCode(() => { throw new LambdaExceptionForTest(123, "my error message"); }).Throws<LambdaExceptionForTest>().WithMessage("Err #123 : my error message").And.WithProperty("ExceptionNumber", 123);
         }
 
         [Test]
@@ -183,7 +195,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithMessage("a buggy message");
+                Check.ThatCode(() => { throw new LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaExceptionForTest>().WithMessage("a buggy message");
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The message of the checked exception is not as expected." + Environment.NewLine + "The checked exception message:" + Environment.NewLine + "\t[\"Err #321 : my error message\"]" + Environment.NewLine + "The expected exception message:" + Environment.NewLine + "\t[\"a buggy message\"]");
@@ -194,7 +206,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithProperty("inexistingProperty", 123);
+                Check.ThatCode(() => { throw new LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaExceptionForTest>().WithProperty("inexistingProperty", 123);
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "There is no property [inexistingProperty] on exception type [LambdaExceptionForTest]."); // TODO: mimic Contains
@@ -205,7 +217,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaRelatedTests.LambdaExceptionForTest>().WithProperty("ExceptionNumber", 123);
+                Check.ThatCode(() => { throw new LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaExceptionForTest>().WithProperty("ExceptionNumber", 123);
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The property [ExceptionNumber] of the checked exception's property does not have the expected value." + Environment.NewLine + "The checked exception's property:" + Environment.NewLine + "\t[321]" + Environment.NewLine + "The given exception's property:" + Environment.NewLine + "\t[123]"); // TODO: mimic Contains
@@ -220,10 +232,12 @@ namespace NFluent.Tests
         [Test]
         public void Should_not_raise_when_expected_DueTo_exception_type_is_part_of_inner_exception()
         {
+            // ReSharper disable once NotResolvedInText
             Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new ArgumentOutOfRangeException("kamoulox")); })
                 .Throws<ArgumentException>()
                 .DueTo<ArgumentOutOfRangeException>();
 
+            // ReSharper disable once NotResolvedInText
             Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new Exception("whatever mate", new ArgumentOutOfRangeException("kamoulox"))); })
                 .Throws<ArgumentException>()
                 .DueTo<ArgumentOutOfRangeException>();
@@ -234,6 +248,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
+                // ReSharper disable once NotResolvedInText
                 Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new ArgumentOutOfRangeException("kamoulox")); })
                         .Throws<ArgumentException>()
                         .DueTo<Exception>();
@@ -247,6 +262,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
+                // ReSharper disable once NotResolvedInText
                 Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new InvalidCastException("whatever mate", new ArgumentOutOfRangeException("kamoulox"))); })
                         .Throws<ArgumentException>()
                         .DueTo<Exception>();
@@ -262,6 +278,7 @@ namespace NFluent.Tests
 #endif
         private class LambdaExceptionForTest : Exception
         {
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public int ExceptionNumber { get; private set; }
 
             public LambdaExceptionForTest(int exeptionNumber, string message)
@@ -296,7 +313,7 @@ namespace NFluent.Tests
         {
             public AnObjectThatCanCrashOnCtor(int i)
             {
-                var j = 1 / i;
+                var unused = 1 / i;
             }
         }
 
@@ -320,6 +337,7 @@ namespace NFluent.Tests
 
         private class AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas
         {
+            // ReSharper disable once UnusedMember.Local
             public void AVoidParameterLessMethodThatCrashes()
             {
                 throw new LambdaExceptionForTest(666, "test");
@@ -327,9 +345,10 @@ namespace NFluent.Tests
 
             public void AVoidParameterLessMethodThatShouldNotCrash()
             {
-                new object();
+                var unused = new object();
             }
 
+            // ReSharper disable once UnusedMember.Local
             public void AScalarParameterLessMethodThatCrashes()
             {
                 throw new LambdaExceptionForTest(666, "test");

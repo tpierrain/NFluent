@@ -12,16 +12,18 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-using System;
-
 namespace NFluent.Tests
 {
+    using System;
     using Helpers;
     using NUnit.Framework;
 
     [TestFixture]
     public class DoubleSignedNumberRelatedTests
     {
+        private const double Zero = 0D;
+        private const double Two = 2D;
+        private const double MinusFifty = -50D;
         #pragma warning disable 169
 
         //// ---------------------- WARNING ----------------------
@@ -47,23 +49,17 @@ namespace NFluent.Tests
 
 
         // Since this class is the model/template for the generation of the tests on all the other numbers types, don't forget to re-generate all the other classes every time you change this one. To do that, just save the .\T4" + Environment.NewLine + "umberTestsGenerator.tt file within Visual Studio 2012. This will trigger the T4 code generation process.
-        #pragma warning disable 618
-
         #region IsPositive (obsolete)
-
+#pragma warning disable 618
         [Test]
         public void IsPositiveWorks()
         {
-            const double Two = 2D;
-
             Check.That(Two).IsPositive();
         }
 
         [Test]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
-            const double Zero = 0D;
-
             Check.ThatCode(() =>
             {
                 Check.That(Zero).IsPositive();
@@ -75,8 +71,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsPositiveThrowsExceptionWhenFailing()
         {
-            const double Two = 2D;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).Not.IsPositive();
@@ -88,8 +82,6 @@ namespace NFluent.Tests
         [Test]
         public void IsPositiveThrowsExceptionWhenValueIsNegative()
         {
-            const double MinusFifty = -50D;
-
             Check.ThatCode(() =>
             {
                 Check.That(MinusFifty).IsPositive();
@@ -101,8 +93,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsPositiveWorks()
         {
-            const double MinusFifty = -50D;
-
             Check.That(MinusFifty).Not.IsPositive();
         }
 
@@ -113,16 +103,12 @@ namespace NFluent.Tests
         [Test]
         public void IsNegativeWorks()
         {
-            const double MinusFifty = -50D;
-
             Check.That(MinusFifty).IsNegative();
         }
 
         [Test]
         public void IsNegativeThrowsExceptionWhenEqualToZero()
         {
-            const double Zero = 0D;
-
             Check.ThatCode(() =>
             {
                 Check.That(Zero).IsNegative();
@@ -134,8 +120,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNegativeThrowsExceptionWhenFailing()
         {
-            const double MinusFifty = -50D;
-
             Check.ThatCode(() =>
             {
                 Check.That(MinusFifty).Not.IsNegative();
@@ -147,8 +131,6 @@ namespace NFluent.Tests
         [Test]
         public void IsNegativeThrowsExceptionWhenValueIsPositive()
         {
-            const double Two = 2D;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).IsNegative();
@@ -160,30 +142,23 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNegativeWorks()
         {
-            const double Two = 2D;
-
             Check.That(Two).Not.IsNegative();
         }
 
         #endregion
-
-        #pragma warning restore 618
+#pragma warning restore 618
 
         #region IsStrictlyPositive
 
         [Test]
         public void IsStrictlyPositiveWorks()
         {
-            const double Two = 2D;
-
             Check.That(Two).IsStrictlyPositive();
         }
 
         [Test]
         public void IsStrictlyPositiveThrowsExceptionWhenEqualToZero()
         {
-            const double Zero = 0D;
-
             Check.ThatCode(() =>
             {
                 Check.That(Zero).IsStrictlyPositive();
@@ -195,8 +170,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsStrictlyPositiveThrowsExceptionWhenFailing()
         {
-            const double Two = 2D;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).Not.IsStrictlyPositive();
@@ -208,8 +181,6 @@ namespace NFluent.Tests
         [Test]
         public void IsStrictlyPositiveThrowsExceptionWhenValueIsNegative()
         {
-            const double MinusFifty = -50D;
-
             Check.ThatCode(() =>
             {
                 Check.That(MinusFifty).IsStrictlyPositive();
@@ -221,8 +192,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsStrictlyPositiveWorks()
         {
-            const double MinusFifty = -50D;
-
             Check.That(MinusFifty).Not.IsStrictlyPositive();
         }
 
@@ -233,9 +202,6 @@ namespace NFluent.Tests
         [Test]
         public void IsPositiveOrZeroWorks()
         {
-            const double Zero = 0D;
-            const double Two = 2D;
-
             Check.That(Zero).IsPositiveOrZero();
             Check.That(Two).IsPositiveOrZero();
         }
@@ -243,8 +209,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsPositiveOrZeroThrowsExceptionWhenFailing()
         {
-            const double Zero = 0D;
-
             Check.ThatCode(() =>
             {
                 Check.That(Zero).Not.IsPositiveOrZero();
@@ -256,8 +220,6 @@ namespace NFluent.Tests
         [Test]
         public void IsPositiveOrZeroThrowsExceptionWhenValueIsNegative()
         {
-            const double MinusFifty = -50D;
-
             Check.ThatCode(() =>
             {
                 Check.That(MinusFifty).IsPositiveOrZero();
@@ -269,29 +231,22 @@ namespace NFluent.Tests
         [Test]
         public void NotIsPositiveOrZeroWorks()
         {
-            const double MinusFifty = -50D;
-
             Check.That(MinusFifty).Not.IsPositiveOrZero();
         }
 
         #endregion
-
 
         #region IsStrictlyNegative
 
         [Test]
         public void IsStrictyNegativeWorks()
         {
-            const double MinusFifty = -50D;
-
             Check.That(MinusFifty).IsStrictlyNegative();
         }
 
         [Test]
         public void IsStrictyNegativeThrowsExceptionWhenEqualToZero()
         {
-            const double Zero = 0D;
-            
             Check.ThatCode(() =>
             {
                 Check.That(Zero).IsStrictlyNegative();
@@ -303,8 +258,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsStrictyNegativeThrowsExceptionWhenFailing()
         {
-            const double MinusFifty = -50D;
-
             Check.ThatCode(() =>
             {
                 Check.That(MinusFifty).Not.IsStrictlyNegative();
@@ -316,8 +269,6 @@ namespace NFluent.Tests
         [Test]
         public void IsStrictyNegativeThrowsExceptionWhenValueIsPositive()
         {
-            const double Two = 2D;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).IsStrictlyNegative();
@@ -329,8 +280,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsStrictyNegativeWorks()
         {
-            const double Two = 2D;
-
             Check.That(Two).Not.IsStrictlyNegative();
         }
 
@@ -341,8 +290,6 @@ namespace NFluent.Tests
         [Test]
         public void IsNegativeOrZeroWorks()
         {
-            const double MinusFifty = -50D;
-            const double Zero = 0D;
 
             Check.That(Zero).IsNegativeOrZero();
             Check.That(MinusFifty).IsNegativeOrZero();
@@ -351,8 +298,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNegativeOrZeroThrowsExceptionWhenFailing()
         {
-            const double MinusFifty = -50D;
-
             Check.ThatCode(() =>
             {
                 Check.That(MinusFifty).Not.IsNegativeOrZero();
@@ -364,8 +309,6 @@ namespace NFluent.Tests
         [Test]
         public void IsIsNegativeOrZeroThrowsExceptionWhenValueIsPositive()
         {
-            const double Two = 2D;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).IsNegativeOrZero();
@@ -377,8 +320,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNegativeOrZeroWorks()
         {
-            const double Two = 2D;
-
             Check.That(Two).Not.IsNegativeOrZero();
         }
 

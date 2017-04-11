@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NFluent.Tests
+﻿namespace NFluent.Tests
 {
     using Extensibility;
     using NUnit.Framework;

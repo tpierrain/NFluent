@@ -1,5 +1,6 @@
 ﻿namespace NFluent.ApiChecks
 {
+    using System.Diagnostics;
     using Kernel;
 
     /// <summary>
@@ -16,6 +17,7 @@
         public static ICheck<string> AndWhichMessage<TParent>(this ILambdaExceptionCheck<TParent> check)
         {
             var checker = check as LambdaExceptionCheck<TParent>;
+            Debug.Assert(checker != null, "checker != null");
             return new FluentCheck<string>(checker.Value.Message);
         }
     }

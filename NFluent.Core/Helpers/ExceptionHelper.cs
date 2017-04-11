@@ -19,7 +19,10 @@ namespace NFluent.Helpers
 {
     using System;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
+#if !(PORTABLE) && !(NETSTANDARD1_3)
     using System.Linq;
+#endif
     using System.Reflection;
     using System.Text;
 
@@ -78,6 +81,7 @@ namespace NFluent.Helpers
             }
         }
 
+        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         private static ExceptionConstructor ExceptionScanner(string assemblyMarker, string nameSpace, string assertionExceptionName, string ignoreExceptionName, string inconclusiveExceptionName)
         {
 #if !(PORTABLE) && !(NETSTANDARD1_3)
@@ -92,7 +96,7 @@ namespace NFluent.Helpers
                 var exportedTypes = assembly.GetExportedTypes();
                 foreach (var type in exportedTypes)
                 {
-                    if (type.Namespace.StartsWith(nameSpace))
+                    if (type.Namespace != null && type.Namespace.StartsWith(nameSpace))
                     {
                         if (type.Name == assertionExceptionName)
                         {
@@ -160,8 +164,10 @@ namespace NFluent.Helpers
         {
             public ConstructorInfo FailedException { get; set; }
 
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public ConstructorInfo InconclusiveException { get; set; }
 
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public ConstructorInfo IgnoreException { get; set; }
         }
 

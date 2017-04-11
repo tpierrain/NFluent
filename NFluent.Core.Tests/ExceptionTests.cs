@@ -64,6 +64,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
+                // ReSharper disable once ObjectCreationAsStatement
                 Check.ThatCode(() => { new object(); }).ThrowsAny();
             })
             .Throws<FluentCheckException>()
@@ -75,6 +76,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
+                // ReSharper disable once ObjectCreationAsStatement
                 Check.ThatCode(() => { new object(); }).Throws<Exception>();
             })
             .Throws<FluentCheckException>()

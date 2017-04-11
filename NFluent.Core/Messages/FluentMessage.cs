@@ -13,6 +13,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable once CheckNamespace
 namespace NFluent.Extensibility
 {
     using System;

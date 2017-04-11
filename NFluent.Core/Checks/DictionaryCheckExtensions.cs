@@ -13,14 +13,11 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
 namespace NFluent
 {
     using System.Collections;
 
-    using NFluent.Extensibility;
+    using Extensibility;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="IDictionary"/> value.
@@ -30,7 +27,7 @@ namespace NFluent
         /// <summary>
         /// Checks that the actual <see cref="IDictionary"/> contains the expected key.
         /// </summary>
-        /// <typeparam name="K">
+        /// <typeparam name="TK">
         /// The type of the key element.
         /// </typeparam>
         /// <param name="check">
@@ -59,7 +56,7 @@ namespace NFluent
                 checker.BuildMessage("The {0} does contain the given key, whereas it must not.").Expected(key).Label("Given key:").ToString());
         }
         */
-        public static ICheckLink<ICheck<IDictionary>> ContainsKey<K>(this ICheck<IDictionary> check, K key)
+        public static ICheckLink<ICheck<IDictionary>> ContainsKey<TK>(this ICheck<IDictionary> check, TK key)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 

@@ -15,12 +15,13 @@
 namespace NFluent
 {
     using System;
-    using System.Reflection;
     using Extensibility;
     using Extensions;
     using Helpers;
     using Kernel;
-
+#if NETSTANDARD1_3
+    using System.Reflection;
+#endif
     /// <summary>
     /// Implements specific Value check after lambda checks.
     /// </summary>

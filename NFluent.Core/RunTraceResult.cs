@@ -14,8 +14,6 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using Kernel;
-
     /// <summary>
     /// This code stores trace information for a code evaluation and its returned value.
     /// </summary>

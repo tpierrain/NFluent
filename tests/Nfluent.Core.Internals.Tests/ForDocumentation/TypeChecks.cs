@@ -16,14 +16,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Xml.Serialization;
-
+// ReSharper disable once CheckNamespace
 namespace NFluent.Tests.ForDocumentation
 {
     using System;
     using System.Collections.Generic;
-
-    using NFluent.Extensions;
+    using System.Xml.Serialization;
+    using Extensions;
 
     public class TypeChecks
     {

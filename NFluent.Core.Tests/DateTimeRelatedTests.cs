@@ -46,8 +46,7 @@ namespace NFluent.Tests
         [Test]
         public void NullableDatTimesAreSupported()
         {
-            DateTime? nullableDate = null;
-            Check.That(nullableDate).IsEqualTo(null);
+            Check.That((DateTime?)null).IsEqualTo(null);
         }
 
         [Test]

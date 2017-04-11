@@ -16,11 +16,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable once CheckNamespace
 namespace NFluent.Tests.ForDocumentation
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
     using NUnit.Framework;
@@ -46,7 +48,7 @@ namespace NFluent.Tests.ForDocumentation
             Log(string.Format("TestFixture :{0}", type.FullName));
             var constructor = type.GetTypeInfo().GetConstructor(new Type[0]);
             // creates an instance
-            var test = constructor.Invoke(new Type[0]);
+            var test = constructor?.Invoke(new object[0]);
 
             // run TestFixtureSetup
             RunAllMethodsWithASpecificAttribute(type, typeof(OneTimeSetUpAttribute), test);
@@ -127,12 +129,14 @@ namespace NFluent.Tests.ForDocumentation
         }
 #endif
 
+        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         private static void RunMethod(MethodBase specificTest, object test, FullRunDescription report, bool log)
         {
             try
             {
                 specificTest.Invoke(test, new object[] { });
             }
+            // ReSharper disable once RedundantCatchClause
             catch (Exception)
             {
                 throw;
@@ -253,6 +257,7 @@ namespace NFluent.Tests.ForDocumentation
             }
         }
 
+        // ReSharper disable once UnusedMember.Local
         private static CheckDescription GetCheckAndType(FluentCheckException fluExc)
         {
             // identify failing test
@@ -265,9 +270,10 @@ namespace NFluent.Tests.ForDocumentation
                 frameIndex = 0;
             }
 
-            var frame = trace.GetFrames()[frameIndex];
+            var frame = trace.GetFrames()?[frameIndex];
 
             // get method
+            // ReSharper disable once PossibleNullReferenceException
             var method = frame.GetMethod();
 
             return CheckDescription.AnalyzeSignature(method);

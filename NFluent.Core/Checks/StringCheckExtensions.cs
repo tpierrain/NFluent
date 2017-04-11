@@ -13,17 +13,16 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections;
-using NFluent.Helpers;
-using NFluent.Kernel;
-
 namespace NFluent
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
     using Extensibility;
+    using System;
+    using Helpers;
+    using Kernel;
+
 
     /// <summary>
     /// Provides check methods to be executed on a string instance.
@@ -43,7 +42,7 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
-            var messageText = StringCheckExtensions.AssessEquals(checker, expected, checker.Negated);
+            var messageText = AssessEquals(checker, expected, checker.Negated);
             if (!string.IsNullOrEmpty(messageText))
             {
                 throw new FluentCheckException(messageText);
@@ -224,7 +223,7 @@ namespace NFluent
             }
             if (expected == null)
             {
-                return  checker.BuildShortMessage("The {0} is not null whereas it must.").For(typeof(string)).On(value).And.Expected(expected).ToString();
+                return  checker.BuildShortMessage("The {0} is not null whereas it must.").For(typeof(string)).On(value).And.Expected(null).ToString();
             }
 
             var summary = StringDifference.Summarize(analyse);

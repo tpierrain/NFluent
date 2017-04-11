@@ -28,7 +28,8 @@ namespace NFluent.Tests
             })
             .ThrowsAny();
         }
-
+        // TODO: fix this when dynamics work with extension methods
+/*
         class Command
         {
             internal dynamic Subject { get; set; }
@@ -39,7 +40,8 @@ namespace NFluent.Tests
         {
             var cmd = new Command();
             // this check fails
-            //Check.That<object>(cmd.Subject).IsNotNull();
+            Check.That<object>(cmd.Subject).IsNotNull();
         }
-}
+        */
+    }
 }

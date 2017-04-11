@@ -19,11 +19,9 @@ namespace NFluent.Tests
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using NFluent.Tests.Helpers;
-    using System.Collections.Specialized;
+    using System.Diagnostics.CodeAnalysis;
+    using Helpers;
     using System.IO;
-    using System.Text;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -147,11 +145,9 @@ namespace NFluent.Tests
         [Test]
         public void ContainsExactlyThrowsWithNullAsCheckedValue()
         {
-            List<int> nullList = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(nullList).ContainsExactly("what da heck!");
+                Check.That((List<int>) null).ContainsExactly("what da heck!");
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked enumerable is null and thus does not contain exactly the expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]");
@@ -161,9 +157,7 @@ namespace NFluent.Tests
         [Test]
         public void ContainsExactlyDoNotThrowIfBothValuesAreNull()
         {
-            List<int> nullList = null;
-
-            Check.That(nullList).ContainsExactly(null);
+            Check.That((List<int>) null).ContainsExactly(null);
         }
 
         [Test]
@@ -217,6 +211,7 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public void NotContainsExactlyThrowsExceptionWhenFailingWithEnumerable()
         {
             IEnumerable writersNames = InstantiateWriters().Extracting("Name");
@@ -232,11 +227,9 @@ namespace NFluent.Tests
         [Test]
         public void ContainsExactlyThrowsExceptionWithClearStatusWhenFailsWithNullEnumerable()
         {
-            IEnumerable nullEnumerable = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(InstantiateDirectors().Extracting("Name")).ContainsExactly(nullEnumerable);
+                Check.That(InstantiateDirectors().Extracting("Name")).ContainsExactly(null);
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Michel Gondry\", \"Joon-ho Bong\", \"Darren Aronofsky\"] (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[null] (0 item)");

@@ -12,9 +12,10 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+// ReSharper disable once CheckNamespace
 namespace NFluent.Tests.Extensions
 {
-    using NFluent.Extensibility;
+    using Extensibility;
 
     /// <summary>
     /// Extensions methods check

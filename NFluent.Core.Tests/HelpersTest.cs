@@ -15,7 +15,7 @@
 
 namespace NFluent.Tests
 {
-    using NFluent.Extensions;
+    using Extensions;
 
     using NUnit.Framework;
 
@@ -53,7 +53,7 @@ namespace NFluent.Tests
             /// </returns>
             public override int GetHashCode()
             {
-                return base.GetHashCode();
+                return 0;
             }
         }
     }

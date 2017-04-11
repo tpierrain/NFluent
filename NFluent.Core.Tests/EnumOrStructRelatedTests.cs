@@ -22,14 +22,11 @@ namespace NFluent.Tests
     [TestFixture]
     public class EnumOrStructRelatedTests
     {
-        private const string Blabla = ".*?";
-        private const string LineFeed = "\n";
-        private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
+        private const Nationality FrenchNationality = Nationality.French;
 
         [Test]
         public void IsEqualToWorksWithEnum()
         {
-            const Nationality FrenchNationality = Nationality.French;
             Check.ThatEnum(FrenchNationality).IsEqualTo(Nationality.French);
             Check.That(FrenchNationality).IsEqualTo(Nationality.French);
         }
@@ -37,7 +34,6 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualToThrowsExceptionWhenFailingWithEnum()
         {
-            const Nationality FrenchNationality = Nationality.French;
 
             Check.ThatCode(() =>
             {
@@ -50,15 +46,12 @@ namespace NFluent.Tests
         [Test]
         public void IsNotEqualToWorksWithEnum()
         {
-            const Nationality FrenchNationality = Nationality.French;
             Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.Korean);
         }
 
         [Test]
         public void IsNotEqualToThrowsExceptionWhenFailingWithEnum()
         {
-            const Nationality FrenchNationality = Nationality.French;
-
             Check.ThatCode(() =>
             {
                 Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.French);
@@ -70,15 +63,12 @@ namespace NFluent.Tests
         [Test]
         public void NotOperatorWorksOnIsEqualToForEnum()
         {
-            const Nationality FrenchNationality = Nationality.French;
             Check.ThatEnum(FrenchNationality).Not.IsEqualTo(Nationality.American);
         }
 
         [Test]
         public void NotIsEqualToThrowsExceptionWhenFailingWithEnum()
         {
-            const Nationality FrenchNationality = Nationality.French;
-
             Check.ThatCode(() =>
             {
                 Check.ThatEnum(FrenchNationality).Not.IsEqualTo(Nationality.French);
@@ -90,7 +80,6 @@ namespace NFluent.Tests
         [Test]
         public void NotOperatorWorksOnIsNotEqualToForEnum()
         {
-            const Nationality FrenchNationality = Nationality.French;
             Check.ThatEnum(FrenchNationality).Not.IsNotEqualTo(Nationality.French);
         }
 
@@ -105,22 +94,18 @@ namespace NFluent.Tests
         [Test]
         public void IsInstanceOfWorks()
         {
-            const Nationality FrenchNationality = Nationality.French;
             Check.ThatEnum(FrenchNationality).IsInstanceOf<Nationality>();
         }
 
         [Test]
         public void IsNotInstanceOfWorks()
         {
-            const Nationality FrenchNationality = Nationality.French;
             Check.ThatEnum(FrenchNationality).IsNotInstanceOf<int>();
         }
 
         [Test]
         public void IsInstanceOfFailsPropery()
         {
-            const Nationality FrenchNationality = Nationality.French;
-
             Check.ThatCode(() =>
             {
                 Check.ThatEnum(FrenchNationality).IsInstanceOf<int>();
@@ -132,8 +117,6 @@ namespace NFluent.Tests
         [Test]
         public void IsNotInstanceOfFailsProperly()
         {
-            const Nationality FrenchNationality = Nationality.French;
-
             Check.ThatCode(() =>
             {
                 Check.ThatEnum(FrenchNationality).IsNotInstanceOf<Nationality>();

@@ -16,7 +16,6 @@
 namespace NFluent.Tests
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
@@ -53,6 +52,7 @@ namespace NFluent.Tests
             public void TestPrivateField()
             {
                 TestMe test1 = CreateTestItem();
+                // ReSharper disable once UnusedVariable
                 TestMe test2 = CreateTestItem();
 
                 var stream = new MemoryStream();
@@ -120,41 +120,50 @@ namespace NFluent.Tests
         }
         internal class Person
         {
-            public String Name { get; set; }
-            public String Surname { get; set; }
+            public string Name { get; set; }
+            public string Surname { get; set; }
 
         }
         internal class PersonEx
         {
-            public String Name { get; set; }
-            public String Surname { get; set; }
+            public string Name { get; set; }
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
+            private string Surname { get; set; }
 
             public static bool operator ==(PersonEx person1, Person person2)
             {
-                return person1.Name == person2.Name;
+                return person1?.Name == person2?.Name;
             }
             public static bool operator !=(PersonEx person1, Person person2)
             {
-                return person1.Name != person2.Name;
+                return person1?.Name != person2?.Name;
             }
             public static bool operator ==(Person person1, PersonEx person2)
             {
-                return person1.Name == person2.Name;
+                return person1?.Name == person2?.Name;
             }
             public static bool operator !=(Person person1, PersonEx person2)
             {
-                return person1.Name != person2.Name;
+                return person1?.Name != person2?.Name;
             }
             public override bool Equals(object obj)
             {
                 if (!(obj is PersonEx))
                     return false;
-                return this == obj as PersonEx;
+#pragma warning disable 252,253
+                return this == (PersonEx) obj;
+#pragma warning restore 252,253
             }
 
             public override int GetHashCode()
             {
-                return Name.GetHashCode() + Surname.GetHashCode();
+                // ReSharper disable once NonReadonlyMemberInGetHashCode
+                var name = this.Name;
+                // ReSharper disable once NonReadonlyMemberInGetHashCode
+                var surname = this.Surname;
+                if (name == null || surname == null)
+                    return 0;
+                return name.GetHashCode() + surname.GetHashCode();
             }
         }
 
@@ -166,7 +175,7 @@ namespace NFluent.Tests
         [Test]
          public void ContainsExactly()
         {
-            var stringArray = new string[]
+            var stringArray = new[]
             {
                 "+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros",
                 "Backstagex passes to a TAFKAL80ETC concert", "Conjured Mana Cake"
@@ -201,12 +210,13 @@ namespace NFluent.Tests
         // Issue #141: issue with private inheritance and 'hasfieldswithsamevalue'
         class Base
         {
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public string BaseProperty { get; set; }
         }
 
         class Impl : Base
         {
-
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public string ImplProperty { get; set; }
         }
 
@@ -300,21 +310,19 @@ namespace NFluent.Tests
             Check.That(test).IsNotNull().And.HasSize(0);
         }
 
-#if !NETCOREAPP1_0
         // 30/05/14 Invalid exception on strings with curly braces
         [Test]
         public void SpuriousExceptionOnError()
         {
             Check.ThatCode(() =>
             {
-                var toTest = new ArrayList { "MaChaine{94}" };
-                const string Result = "MaChaine{964}";
-                Check.That(toTest).Contains(Result);
+                var toTest = new List<string> { "MaChaine{94}" };
+                const string result = "MaChaine{964}";
+                Check.That(toTest).Contains(result);
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[\"MaChaine{964}\"]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"MaChaine{94}\"]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"MaChaine{964}\"]");
         }
-#endif
 
         // #issue 115,
         [Test]
@@ -359,10 +367,13 @@ namespace NFluent.Tests
 
         private class OrderExecutedEventArgs : EventArgs
         {
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public decimal Price { get; private set; }
 
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public int Quantity { get; private set; }
 
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public Way Way { get; private set; }
 
             public OrderExecutedEventArgs(decimal price, int quantity, Way way)
@@ -381,11 +392,13 @@ namespace NFluent.Tests
 
         private class ModelA
         {
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public string Name { get; set; }
         }
 
         private class ModelB
         {
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public IModelBName Name { get; set; }
         }
 
@@ -396,6 +409,7 @@ namespace NFluent.Tests
 
         private class Node
         {
+            // ReSharper disable once NotAccessedField.Local
             private Node loop;
 
             public Node()

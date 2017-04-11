@@ -13,7 +13,8 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-namespace NFluent.Tests
+// ReSharper disable once CheckNamespace
+namespace NFluent.Tests.Internals
 {
     using NUnit.Framework;
 

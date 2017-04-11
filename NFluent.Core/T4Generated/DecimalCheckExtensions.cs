@@ -13,12 +13,10 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using NFluent.Helpers;
-
 namespace NFluent
 {
     using System;
-
+    using Helpers;
     using Extensibility;
     using Kernel;
 
@@ -27,17 +25,10 @@ namespace NFluent
     /// </summary>
     public static class DecimalCheckExtensions
     {
-        #pragma warning disable 169
-
-        //// ---------------------- WARNING ----------------------
-        //// AUTO-GENERATED FILE WHICH SHOULD NOT BE MODIFIED!
-        //// To change this class, change the one that is used
-        //// as the golden source/model for this autogeneration
-        //// (i.e. the one dedicated to the integer values).
-        //// -----------------------------------------------------
+        // DoNotChangeOrRemoveThisLine
 
         #pragma warning restore 169
-        
+
         /// <summary>
         /// Determines whether the specified value is before the other one.
         /// </summary>
@@ -53,13 +44,20 @@ namespace NFluent
 
             return checker.ExecuteCheck(
                 () =>
+                {
+                    if (checker.Value.CompareTo(givenValue) >= 0)
                     {
-                        if (checker.Value.CompareTo(givenValue) >= 0)
-                        {
-                            throw new FluentCheckException(checker.BuildMessage("The {0} is not before the reference value.").Expected(givenValue).Comparison("before").ToString());
-                        }
-                    },
-                checker.BuildMessage("The {0} is before the reference value whereas it must not.").Expected(givenValue).Comparison("after").ToString());
+                        throw new FluentCheckException(checker
+                            .BuildMessage("The {0} is not before the reference value.")
+                            .Expected(givenValue)
+                            .Comparison("before")
+                            .ToString());
+                    }
+                },
+                checker.BuildMessage("The {0} is before the reference value whereas it must not.")
+                    .Expected(givenValue)
+                    .Comparison("after")
+                    .ToString());
         }
 
         /// <summary>
@@ -80,10 +78,16 @@ namespace NFluent
                 {
                     if (checker.Value.CompareTo(givenValue) <= 0)
                     {
-                        throw new FluentCheckException(checker.BuildMessage("The {0} is not after the reference value.").Expected(givenValue).Comparison("after").ToString());
+                        throw new FluentCheckException(checker.BuildMessage("The {0} is not after the reference value.")
+                            .Expected(givenValue)
+                            .Comparison("after")
+                            .ToString());
                     }
                 },
-                checker.BuildMessage("The {0} is after the reference value whereas it must not.").Expected(givenValue).Comparison("before").ToString());
+                checker.BuildMessage("The {0} is after the reference value whereas it must not.")
+                    .Expected(givenValue)
+                    .Comparison("before")
+                    .ToString());
         }
 
         /// <summary>
@@ -112,14 +116,16 @@ namespace NFluent
 
             checker.ExecuteCheck(
                 () =>
+                {
+                    if (checker.Value == null)
                     {
-                        if (checker.Value == null)
-                        {
-                            throw new FluentCheckException(
-                                checker.BuildShortMessage(
-                                    "The {0} has no value, which is unexpected.").For("nullable").ToString());
-                        }
-                    },
+                        throw new FluentCheckException(
+                            checker.BuildShortMessage(
+                                    "The {0} has no value, which is unexpected.")
+                                .For("nullable")
+                                .ToString());
+                    }
+                },
                 checker.BuildMessage("The {0} has a value, which is unexpected.").For("nullable").ToString());
 
             return new NullableOrNumberCheckLink<decimal>(check);
@@ -137,17 +143,17 @@ namespace NFluent
 
             checker.ExecuteCheck(
                 () =>
+                {
+                    if (checker.Value != null)
                     {
-                        if (checker.Value != null)
-                        {
-                            throw new FluentCheckException(
-                                checker.BuildMessage("The {0} has a value, whereas it must not.")
-                                       .ToString());
-                        }
-                    },
+                        throw new FluentCheckException(
+                            checker.BuildMessage("The {0} has a value, whereas it must not.")
+                                .ToString());
+                    }
+                },
                 checker.BuildShortMessage("The {0} has no value, which is unexpected.").For("nullable").ToString());
         }
-        
+
         /// <summary>
         /// Checks that the actual value is NOT equal to zero.
         /// </summary>
@@ -247,6 +253,7 @@ namespace NFluent
             var numberCheckStrategy = new NumberCheck<decimal>(check);
             return numberCheckStrategy.IsStrictlyGreaterThan(comparand);
         }
+
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
@@ -268,6 +275,5 @@ namespace NFluent
 
             return EqualityHelper.PerformEqualCheck(checker, expected, false);
         }
-
     }
 }

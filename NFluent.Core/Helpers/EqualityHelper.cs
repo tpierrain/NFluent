@@ -13,13 +13,15 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using NFluent.Extensions;
-
 namespace NFluent.Helpers
 {
     using Extensibility;
+    using System;
+#if NETSTANDARD1_3
     using System.Reflection;
+#endif
+    using Extensions;
+
 
     /// <summary>
     /// Helper class related to Equality methods (used like a traits).

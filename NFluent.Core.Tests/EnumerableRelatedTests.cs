@@ -24,9 +24,6 @@ namespace NFluent.Tests
     [TestFixture]
     public class EnumerableRelatedTests
     {
-        private const string Blabla = ".*?";
-        private const string LineFeed = "\n";
-        private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
         private static readonly List<int> EmptyEnumerable = new List<int>();
 
         #region HasSize

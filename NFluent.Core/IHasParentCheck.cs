@@ -18,6 +18,7 @@ namespace NFluent
     /// A contract to force the type of the expected parent.
     /// </summary>
     /// <typeparam name="TParent">The type of the parent.</typeparam>
+    // ReSharper disable once UnusedTypeParameter
     public interface IHasParentCheck<out TParent>
     {
     }

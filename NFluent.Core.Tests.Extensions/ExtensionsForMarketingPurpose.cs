@@ -12,6 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+// ReSharper disable once CheckNamespace
 namespace NFluent.Tests
 {
     using System.Diagnostics.CodeAnalysis;
@@ -37,6 +38,7 @@ namespace NFluent.Tests
         /// </summary>
         /// <typeparam name="T">don't give a ...</typeparam>
         /// <param name="tddCheck">The TDD check.</param>
+        // ReSharper disable once UnusedTypeParameter
         public static void IsAnInstanceOf<T>(this ICheck<TddForMarketing> tddCheck)
         {
         }

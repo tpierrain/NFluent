@@ -222,42 +222,49 @@ namespace NFluent.Tests
 
         private class Person
         {
-            public String Name { get; set; }
-            public String Surname { get; set; }
+            public string Name { get; set; }
+            // ReSharper disable once UnusedMember.Local
+            public string Surname { get; set; }
 
         }
         private class PersonEx
         {
-            public String Name { get; set; }
-            public String Surname { get; set; }
+            public string Name { get; set; }
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
+            public string Surname { get; set; }
 
             public static bool operator ==(PersonEx person1, Person person2)
             {
-                return person1.Name == person2.Name;
+                return person1?.Name == person2?.Name;
             }
             public static bool operator !=(PersonEx person1, Person person2)
             {
-                return person1.Name != person2.Name;
+                return person1?.Name != person2?.Name;
             }
             public static bool operator ==(Person person1, PersonEx person2)
             {
-                return person1.Name == person2.Name;
+                return person1?.Name == person2?.Name;
             }
             public static bool operator !=(Person person1, PersonEx person2)
             {
-                return person1.Name != person2.Name;
+                return person1?.Name != person2?.Name;
             }
 
             public override bool Equals(object obj)
             {
                 if (!(obj is PersonEx))
                     return false;
-                return this == obj as PersonEx;
+#pragma warning disable 252,253
+                return (PersonEx) obj == this;
+#pragma warning restore 252,253
             }
 
             public override int GetHashCode()
             {
-                return Name.GetHashCode() + Surname.GetHashCode();
+                // ReSharper disable once NonReadonlyMemberInGetHashCode
+                return this.Name.GetHashCode()
+                       // ReSharper disable once NonReadonlyMemberInGetHashCode
+                    + this.Surname.GetHashCode();
             }
         }
     }

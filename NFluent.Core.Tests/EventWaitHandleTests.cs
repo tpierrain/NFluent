@@ -13,6 +13,7 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 using System;
+// ReSharper disable AccessToDisposedClosure
 
 namespace NFluent.Tests
 {

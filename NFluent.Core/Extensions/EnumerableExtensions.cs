@@ -18,7 +18,7 @@ namespace NFluent
     using System.Linq;
     using System.Text;
 
-    using NFluent.Extensions;
+    using Extensions;
 
     /// <summary>
     /// Extension methods for adding new fluent methods to enumerable.
@@ -93,8 +93,8 @@ namespace NFluent
         /// </returns>
         public static string ToEnumeratedString(this IEnumerable enumerable, out long itemsCount)
         {
-            const string Separator = ", ";
-            return ToEnumeratedString(enumerable, out itemsCount, Separator);
+            const string separator = ", ";
+            return ToEnumeratedString(enumerable, out itemsCount, separator);
         }
 
         /// <summary>

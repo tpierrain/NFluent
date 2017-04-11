@@ -16,9 +16,11 @@ namespace NFluent.Helpers
 {
     using System;
 
-    using NFluent.Extensibility;
-    using NFluent.Extensions;
+    using Extensibility;
+    using Extensions;
+#if NETSTANDARD1_3
     using System.Reflection;
+#endif
 
     /// <summary>
     /// Helper class related to Is(Not)Instance methods (used like a traits).

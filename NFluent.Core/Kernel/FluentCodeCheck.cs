@@ -16,7 +16,9 @@
 namespace NFluent.Kernel
 {
     using System;
+#if !PORTABLE
     using System.Diagnostics;
+#endif
 #if !DOTNET_3_5
     using System.Threading.Tasks;
 #endif

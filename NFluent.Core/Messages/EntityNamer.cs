@@ -18,7 +18,9 @@ namespace NFluent.Messages
     using System;
     using System.Collections;
     using System.Collections.Generic;
+#if NETSTANDARD1_3
     using System.Reflection;
+#endif
 
     /// <summary>
     /// Is responsible to provide adequate naming for values in NFluent. Rule is:
@@ -31,13 +33,13 @@ namespace NFluent.Messages
     {
         private const string DefaultEntityName = "value";
 
-        #region Fields
+#region Fields
 
         private string forcedEntity;
 
-        #endregion
+#endregion
 
-        #region Public Properties
+#region Public Properties
 
         public string EntityName
         {
@@ -92,6 +94,6 @@ namespace NFluent.Messages
 
         public Type EntityType { get; set; }
 
-        #endregion
+#endregion
     }
 }

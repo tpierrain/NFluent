@@ -19,8 +19,8 @@ namespace NFluent
     /// <summary>
     /// Provides a way to chain two <see cref="ICheck{T}"/> instances or to chain.
     /// </summary>
-    /// <typeparam name="N">Number type of the checked nullable.</typeparam>
-    public interface INullableOrNumberCheckLink<N> where N : struct
+    /// <typeparam name="TN">Number type of the checked nullable.</typeparam>
+    public interface INullableOrNumberCheckLink<TN> where TN : struct
     {
         /// <summary>
         /// Chains a new fluent check on the current one for the nullable value.
@@ -29,7 +29,7 @@ namespace NFluent
         /// The new fluent check instance dedicated to the nullable, which has been chained to the previous one.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        ICheck<N?> And { get; }
+        ICheck<TN?> And { get; }
 
         /// <summary>
         /// Chains a new <see cref="ICheck{T}"/> instance to the current check.
@@ -38,6 +38,6 @@ namespace NFluent
         /// The new fluent check instance dedicated to the nullable Value, which has been chained to the previous one.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        ICheck<N> Which { get; }
+        ICheck<TN> Which { get; }
     }
 }

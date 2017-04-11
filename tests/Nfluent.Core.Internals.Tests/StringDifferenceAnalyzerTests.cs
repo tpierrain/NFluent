@@ -11,13 +11,12 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
-using NFluent;
-using NFluent.Helpers;
-using NUnit.Framework;
-
-namespace Nfluent.Tests
+// ReSharper disable once CheckNamespace
+namespace NFluent.Tests
 {
+    using NFluent.Helpers;
+    using NUnit.Framework;
+
     [TestFixture]
     public class StringDifferenceAnalyzerTests
     {
@@ -43,7 +42,7 @@ namespace Nfluent.Tests
         }
 
         [Test]
-        public void ShouldNONRReportDifferenceForCaseSensitiveWhenDisabled()
+        public void ShouldNotReportDifferenceForCaseSensitiveWhenDisabled()
         {
             var stringDifferences = StringDifference.Analyze("foo", "foO", true);
             Check.That(stringDifferences).HasSize(0);

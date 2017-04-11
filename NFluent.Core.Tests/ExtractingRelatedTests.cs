@@ -61,10 +61,10 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 // Forced to enumerate the result so that the Extracting extension method is executed (IEnumerable's lazy evaluation)
-                foreach (var propertyValue in musicians.Extracting("Portnaouaq"))
+                foreach (var unused in musicians.Extracting("Portnaouaq"))
                 {
                 }
-            })
+            })  
             .Throws<InvalidOperationException>();
         }
 

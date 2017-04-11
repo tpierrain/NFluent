@@ -15,12 +15,7 @@
 namespace NFluent
 {
     using System;
-
     using Kernel;
-#if !DOTNET_3_5
-    using System.Threading.Tasks;
-#endif
-
     using Extensibility;
     using Helpers;
 

@@ -12,6 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+// ReSharper disable once CheckNamespace
 namespace NFluent.Tests.Extensions
 {
     using NUnit.Framework;
@@ -31,9 +32,9 @@ namespace NFluent.Tests.Extensions
         [Test]
         public void CanChainMyStructChecks()
         {
-            const Nationality FrenchNationality = Nationality.French;
+            const Nationality frenchNationality = Nationality.French;
 
-            Check.ThatEnum(FrenchNationality).IsEuropean().And.IsOccidental();
+            Check.ThatEnum(frenchNationality).IsEuropean().And.IsOccidental();
         }
     }
 }

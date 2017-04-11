@@ -12,16 +12,18 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-using System;
-
 namespace NFluent.Tests
 {
+    using System;
     using Helpers;
     using NUnit.Framework;
 
     [TestFixture]
     public class DecimalSignedNumberRelatedTests
     {
+        private const decimal Zero = 0M;
+        private const decimal Two = 2M;
+        private const decimal MinusFifty = -50M;
         #pragma warning disable 169
 
         //// ---------------------- WARNING ----------------------
@@ -52,16 +54,12 @@ namespace NFluent.Tests
         [Test]
         public void IsPositiveWorks()
         {
-            const decimal Two = 2M;
-
             Check.That(Two).IsPositive();
         }
 
         [Test]
         public void IsPositiveThrowsExceptionWhenEqualToZero()
         {
-            const decimal Zero = 0M;
-
             Check.ThatCode(() =>
             {
                 Check.That(Zero).IsPositive();
@@ -73,8 +71,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsPositiveThrowsExceptionWhenFailing()
         {
-            const decimal Two = 2M;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).Not.IsPositive();
@@ -86,8 +82,6 @@ namespace NFluent.Tests
         [Test]
         public void IsPositiveThrowsExceptionWhenValueIsNegative()
         {
-            const decimal MinusFifty = -50M;
-
             Check.ThatCode(() =>
             {
                 Check.That(MinusFifty).IsPositive();
@@ -99,8 +93,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsPositiveWorks()
         {
-            const decimal MinusFifty = -50M;
-
             Check.That(MinusFifty).Not.IsPositive();
         }
 
@@ -111,16 +103,12 @@ namespace NFluent.Tests
         [Test]
         public void IsNegativeWorks()
         {
-            const decimal MinusFifty = -50M;
-
             Check.That(MinusFifty).IsNegative();
         }
 
         [Test]
         public void IsNegativeThrowsExceptionWhenEqualToZero()
         {
-            const decimal Zero = 0M;
-
             Check.ThatCode(() =>
             {
                 Check.That(Zero).IsNegative();
@@ -132,8 +120,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNegativeThrowsExceptionWhenFailing()
         {
-            const decimal MinusFifty = -50M;
-
             Check.ThatCode(() =>
             {
                 Check.That(MinusFifty).Not.IsNegative();
@@ -145,8 +131,6 @@ namespace NFluent.Tests
         [Test]
         public void IsNegativeThrowsExceptionWhenValueIsPositive()
         {
-            const decimal Two = 2M;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).IsNegative();
@@ -158,8 +142,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNegativeWorks()
         {
-            const decimal Two = 2M;
-
             Check.That(Two).Not.IsNegative();
         }
 
@@ -171,16 +153,12 @@ namespace NFluent.Tests
         [Test]
         public void IsStrictlyPositiveWorks()
         {
-            const decimal Two = 2M;
-
             Check.That(Two).IsStrictlyPositive();
         }
 
         [Test]
         public void IsStrictlyPositiveThrowsExceptionWhenEqualToZero()
         {
-            const decimal Zero = 0M;
-
             Check.ThatCode(() =>
             {
                 Check.That(Zero).IsStrictlyPositive();
@@ -192,8 +170,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsStrictlyPositiveThrowsExceptionWhenFailing()
         {
-            const decimal Two = 2M;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).Not.IsStrictlyPositive();
@@ -205,8 +181,6 @@ namespace NFluent.Tests
         [Test]
         public void IsStrictlyPositiveThrowsExceptionWhenValueIsNegative()
         {
-            const decimal MinusFifty = -50M;
-
             Check.ThatCode(() =>
             {
                 Check.That(MinusFifty).IsStrictlyPositive();
@@ -218,8 +192,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsStrictlyPositiveWorks()
         {
-            const decimal MinusFifty = -50M;
-
             Check.That(MinusFifty).Not.IsStrictlyPositive();
         }
 
@@ -230,9 +202,6 @@ namespace NFluent.Tests
         [Test]
         public void IsPositiveOrZeroWorks()
         {
-            const decimal Zero = 0M;
-            const decimal Two = 2M;
-
             Check.That(Zero).IsPositiveOrZero();
             Check.That(Two).IsPositiveOrZero();
         }
@@ -240,8 +209,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsPositiveOrZeroThrowsExceptionWhenFailing()
         {
-            const decimal Zero = 0M;
-
             Check.ThatCode(() =>
             {
                 Check.That(Zero).Not.IsPositiveOrZero();
@@ -253,8 +220,6 @@ namespace NFluent.Tests
         [Test]
         public void IsPositiveOrZeroThrowsExceptionWhenValueIsNegative()
         {
-            const decimal MinusFifty = -50M;
-
             Check.ThatCode(() =>
             {
                 Check.That(MinusFifty).IsPositiveOrZero();
@@ -266,8 +231,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsPositiveOrZeroWorks()
         {
-            const decimal MinusFifty = -50M;
-
             Check.That(MinusFifty).Not.IsPositiveOrZero();
         }
 
@@ -278,16 +241,12 @@ namespace NFluent.Tests
         [Test]
         public void IsStrictyNegativeWorks()
         {
-            const decimal MinusFifty = -50M;
-
             Check.That(MinusFifty).IsStrictlyNegative();
         }
 
         [Test]
         public void IsStrictyNegativeThrowsExceptionWhenEqualToZero()
         {
-            const decimal Zero = 0M;
-            
             Check.ThatCode(() =>
             {
                 Check.That(Zero).IsStrictlyNegative();
@@ -299,8 +258,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsStrictyNegativeThrowsExceptionWhenFailing()
         {
-            const decimal MinusFifty = -50M;
-
             Check.ThatCode(() =>
             {
                 Check.That(MinusFifty).Not.IsStrictlyNegative();
@@ -312,8 +269,6 @@ namespace NFluent.Tests
         [Test]
         public void IsStrictyNegativeThrowsExceptionWhenValueIsPositive()
         {
-            const decimal Two = 2M;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).IsStrictlyNegative();
@@ -325,8 +280,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsStrictyNegativeWorks()
         {
-            const decimal Two = 2M;
-
             Check.That(Two).Not.IsStrictlyNegative();
         }
 
@@ -337,8 +290,6 @@ namespace NFluent.Tests
         [Test]
         public void IsNegativeOrZeroWorks()
         {
-            const decimal MinusFifty = -50M;
-            const decimal Zero = 0M;
 
             Check.That(Zero).IsNegativeOrZero();
             Check.That(MinusFifty).IsNegativeOrZero();
@@ -347,8 +298,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNegativeOrZeroThrowsExceptionWhenFailing()
         {
-            const decimal MinusFifty = -50M;
-
             Check.ThatCode(() =>
             {
                 Check.That(MinusFifty).Not.IsNegativeOrZero();
@@ -360,8 +309,6 @@ namespace NFluent.Tests
         [Test]
         public void IsIsNegativeOrZeroThrowsExceptionWhenValueIsPositive()
         {
-            const decimal Two = 2M;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).IsNegativeOrZero();
@@ -373,8 +320,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNegativeOrZeroWorks()
         {
-            const decimal Two = 2M;
-
             Check.That(Two).Not.IsNegativeOrZero();
         }
 

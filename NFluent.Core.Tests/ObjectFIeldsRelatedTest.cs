@@ -35,7 +35,7 @@ namespace NFluent.Tests
 
         #pragma warning disable 618
         [Test]
-        public void ObsoleteAPIChecks()
+        public void ObsoleteApiChecks()
         {
             var x = new DummyClass();
             Check.That(x).HasFieldsEqualToThose(new DummyClass());
@@ -230,7 +230,8 @@ namespace NFluent.Tests
         {
             // ReSharper disable once NotAccessedField.Local
             private int z = 2;
-            public int X { get { return z; } }
+            // ReSharper disable once UnusedMember.Local
+            public int X { get { return this.z; } }
             public DummyHeritance() { }
             public DummyHeritance(int x, int y) : base(x, y)
             {}

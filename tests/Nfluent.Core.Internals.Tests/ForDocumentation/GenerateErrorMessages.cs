@@ -13,6 +13,7 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable once CheckNamespace
 namespace NFluent.Tests.ForDocumentation
 {
     using System;
@@ -23,7 +24,7 @@ namespace NFluent.Tests.ForDocumentation
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
-    using NFluent.Extensions;
+    using Extensions;
 
     using NUnit.Framework;
 
@@ -47,9 +48,9 @@ namespace NFluent.Tests.ForDocumentation
         {
             var report = RunFailingTests(true);
 
-            const string Name = "FluentReport.xml";
-            report.Save(Name);
-            Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(Name)));
+            const string name = "FluentReport.xml";
+            report.Save(name);
+            Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(name)));
         }
 
         [Test]
@@ -185,12 +186,13 @@ namespace NFluent.Tests.ForDocumentation
             }
 
             // xml save
+            // ReSharper disable once InconsistentNaming
             const string Name = "FluentChecks.xml";
             report.Save(Name);
 
-            const string Name2 = "FluentChecks.csv";
+            const string name2 = "FluentChecks.csv";
 
-            using (var exportFile = File.Create(Name2))
+            using (var exportFile = File.Create(name2))
             {
                 // csv file
                 using (var writer = new StreamWriter(exportFile))
@@ -212,7 +214,7 @@ namespace NFluent.Tests.ForDocumentation
             }
 
             Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(Name)));
-                Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(Name2)));
+                Debug.Write(string.Format("Report generated in {0}", Path.GetFullPath(name2)));
 
         }
 

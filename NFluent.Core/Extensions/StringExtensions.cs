@@ -56,7 +56,7 @@ namespace NFluent.Extensions
         public static string Extract(this string texte, int middle, int len)
         {
             if (texte == null)
-                return texte;
+                return null;
             var result = new StringBuilder(len);
             middle -= len / 2;
             if (middle > 0)

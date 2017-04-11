@@ -13,11 +13,10 @@
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable once CheckNamespace
 namespace NFluent.Tests
 {
     using System;
-
-    using Extensibility;
     using Messages;
     using NUnit.Framework;
 

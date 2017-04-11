@@ -12,6 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+// ReSharper disable once CheckNamespace
 namespace NFluent.Tests
 {
     using System;
@@ -31,6 +32,7 @@ namespace NFluent.Tests
         #region dummy fields for the NFluentMotto method to compile
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
+        // ReSharper disable once InconsistentNaming
         private static readonly TddForMarketing TDD = new TddForMarketing();
         private static readonly NFluentForMarketing NFluent = new NFluentForMarketing();
 
@@ -48,10 +50,10 @@ namespace NFluent.Tests
         [Test]
         public void CodeSnippetForReadmeMarkdownFile()
         {
-            var integers = new int[] { 1, 2, 3, 4, 5, 666 };
+            var integers = new[] { 1, 2, 3, 4, 5, 666 };
             Check.That(integers).Contains(3, 5, 666);
 
-            integers = new int[] { 1, 2, 3 };
+            integers = new[] { 1, 2, 3 };
             Check.That(integers).IsOnlyMadeOf(3, 2, 1);
 
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
@@ -67,8 +69,8 @@ namespace NFluent.Tests
             int? one = 1;
             Check.That(one).HasAValue().Which.IsStrictlyPositive().And.IsEqualTo(1);
 
-            const Nationality FrenchNationality = Nationality.French;
-            Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.Korean);
+            const Nationality frenchNationality = Nationality.French;
+            Check.ThatEnum(frenchNationality).IsNotEqualTo(Nationality.Korean);
 
             string motivationalSaying = "Failure is mother of success.";
             Check.That(motivationalSaying).IsNotInstanceOf<int>();
