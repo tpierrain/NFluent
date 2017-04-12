@@ -24,9 +24,7 @@ namespace NFluent.Kernel
     {
         private const string MustBeZeroMessage = "The {0} is different from zero.";
 
-        // private readonly N value;
         private readonly Checker<TN, ICheck<TN>> checker;
-        private readonly ICheckForExtensibility<TN, ICheck<TN>> checkForExtensibility;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberCheck{TN}" /> class.
@@ -34,9 +32,8 @@ namespace NFluent.Kernel
         /// <param name="check">The fluent check.</param>
         public NumberCheck(ICheck<TN> check)
         {
-            // this.value = ((ICheckForExtensibility<N>)check).Value;
-            this.checker = new Checker<TN, ICheck<TN>>(check as ICheckForExtensibility<TN, ICheck<TN>>);
-            this.checkForExtensibility = check as ICheckForExtensibility<TN, ICheck<TN>>;
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            this.checker = new Checker<TN, ICheck<TN>>((ICheckForExtensibility<TN, ICheck<TN>>) check);
         }
 
         /// <summary>

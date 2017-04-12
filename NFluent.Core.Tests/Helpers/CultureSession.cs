@@ -17,16 +17,13 @@ using System;
 namespace NFluent.Tests.Helpers
 {
     using System.Globalization;
+#if !NETCOREAPP1_0
     using System.Threading;
-
+#endif
     public class CultureSession : IDisposable
     {
         private readonly CultureInfo savedCulture;
         private readonly CultureInfo savedUiCulture;
-
-        public CultureSession()
-        {
-        }
 
         public CultureSession(string culture)
         {
@@ -37,14 +34,14 @@ namespace NFluent.Tests.Helpers
             SetCulture(newCulture, newCulture);
         }
 
-        private static void SetCulture(CultureInfo newCulture, CultureInfo newUICulture)
+        private static void SetCulture(CultureInfo newCulture, CultureInfo newUiCulture)
         {
-#if CORE
-            CultureInfo.CurrentUICulture = newCulture;
+#if NETCOREAPP1_0
+            CultureInfo.CurrentUICulture = newUiCulture;
             CultureInfo.CurrentCulture = newCulture;
 #else
-            Thread.CurrentThread.CurrentUICulture = newCulture;
-            Thread.CurrentThread.CurrentCulture = newUICulture;
+            Thread.CurrentThread.CurrentUICulture = newUiCulture;
+            Thread.CurrentThread.CurrentCulture = newCulture;
 #endif
         }
 

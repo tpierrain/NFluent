@@ -13,13 +13,15 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using NFluent.Extensions;
-
 namespace NFluent.Helpers
 {
     using Extensibility;
+    using System;
+#if NETSTANDARD1_3
     using System.Reflection;
+#endif
+    using Extensions;
+
 
     /// <summary>
     /// Helper class related to Equality methods (used like a traits).
@@ -106,21 +108,20 @@ namespace NFluent.Helpers
                 if (ope == null) return ret;
                 ret =(bool) ope.Invoke(null, new[] { instance, expected});
             }
-#if !PORTABLE
             else if (expected != null && instance != null)
             {
                 var expectedType = expected.GetType();
                 // if both types are numerical, check if the values are the same to generate a precise message
                 if (ExtensionsCommonHelpers.IsNumerical(expectedType) && ExtensionsCommonHelpers.IsNumerical(instance.GetType()))
                 {
-                    var changeType = Convert.ChangeType(instance, expectedType);
+
+                    var changeType = Convert.ChangeType(instance, expectedType, null);
                     if (expected.Equals(changeType))
                     {
                         return true;
                     }
                 }
             }
-#endif
             return ret;
         }
 

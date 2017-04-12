@@ -24,39 +24,39 @@ namespace NFluent.Tests
         [Test]
         public void CheckThatWorksOnBoolean()
         {
-            const bool NFluentRocks = true;
-            const bool TddSucks = false;
+            const bool nFluentRocks = true;
+            const bool tddSucks = false;
 
-            Check.That(NFluentRocks).IsTrue();
-            Check.That(TddSucks).IsFalse();
+            Check.That(nFluentRocks).IsTrue();
+            Check.That(tddSucks).IsFalse();
         }
 
         [Test]
         public void AndOperatorCanChainMultipleAssertionOnBoolean()
         {
-            const bool NFluentRocks = true;
-            const bool TddSucks = false;
+            const bool nFluentRocks = true;
+            const bool tddSucks = false;
 
-            Check.That(NFluentRocks).IsTrue().And.IsEqualTo(true).And.IsNotEqualTo(TddSucks);
-            Check.That(TddSucks).IsFalse().And.IsEqualTo(false).And.IsNotEqualTo(NFluentRocks);
+            Check.That(nFluentRocks).IsTrue().And.IsEqualTo(true).And.IsNotEqualTo(tddSucks);
+            Check.That(tddSucks).IsFalse().And.IsEqualTo(false).And.IsNotEqualTo(nFluentRocks);
         }
 
         [Test]
         public void NotOperatorWorks()
         {
-            const bool NFluentRocks = true;
-            const bool TddSucks = false;
+            const bool nFluentRocks = true;
+            const bool tddSucks = false;
 
-            Check.That(NFluentRocks).Not.IsFalse();
-            Check.That(TddSucks).Not.IsTrue();
+            Check.That(nFluentRocks).Not.IsFalse();
+            Check.That(tddSucks).Not.IsTrue();
         }
 
         [Test]
         public void NotIsFalseMayThrowExceptions()
         {
-            const bool TddSucks = false;
+            const bool tddSucks = false;
             
-            Check.ThatCode( () => Check.That(TddSucks).Not.IsFalse())
+            Check.ThatCode( () => Check.That(tddSucks).Not.IsFalse())
                     .Throws<FluentCheckException>()
                     .WithMessage(Environment.NewLine+ "The checked boolean is false whereas it must be true." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[False]");
         }
@@ -64,9 +64,9 @@ namespace NFluent.Tests
         [Test]
         public void IsTrueThrowsExceptionWhenFalse()
         {
-            const bool NFluentRocks = false;
+            const bool nFluentRocks = false;
 
-            Check.ThatCode(() => Check.That(NFluentRocks).IsTrue())
+            Check.ThatCode(() => Check.That(nFluentRocks).IsTrue())
                     .Throws<FluentCheckException>()
                     .WithMessage(Environment.NewLine+ "The checked boolean is false whereas it must be true." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[False]");
         }
@@ -74,9 +74,9 @@ namespace NFluent.Tests
         [Test]
         public void NotIsTrueThrowsExceptionWhenFalse()
         {
-            const bool NFluentRocks = true;
+            const bool nFluentRocks = true;
 
-            Check.ThatCode(() => Check.That(NFluentRocks).Not.IsTrue())
+            Check.ThatCode(() => Check.That(nFluentRocks).Not.IsTrue())
                     .Throws<FluentCheckException>()
                     .WithMessage(Environment.NewLine+ "The checked boolean is true whereas it must be false." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[True]");
         }
@@ -84,10 +84,10 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualThrowsExceptionWhenNotEqual()
         {
-            const bool NFluentRocks = true;
-            const bool TddSucks = false;
+            const bool nFluentRocks = true;
+            const bool tddSucks = false;
 
-            Check.ThatCode(() => Check.That(NFluentRocks).IsEqualTo(TddSucks))
+            Check.ThatCode(() => Check.That(nFluentRocks).IsEqualTo(tddSucks))
                     .Throws<FluentCheckException>()
                     .WithMessage(Environment.NewLine+ "The checked boolean is different from the expected one." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[True]" + Environment.NewLine + "The expected boolean:" + Environment.NewLine + "\t[False]");
         }
@@ -95,10 +95,10 @@ namespace NFluent.Tests
         [Test]
         public void IsNotEqualThrowsExceptionWhenEqual()
         {
-            const bool NFluentRocks = true;
-            const bool WinterNotNFluentRocks = true;
+            const bool nFluentRocks = true;
+            const bool winterNotNFluentRocks = true;
 
-            Check.ThatCode(() => Check.That(NFluentRocks).IsNotEqualTo(WinterNotNFluentRocks))
+            Check.ThatCode(() => Check.That(nFluentRocks).IsNotEqualTo(winterNotNFluentRocks))
                     .Throws<FluentCheckException>()
                     .WithMessage(Environment.NewLine+ "The checked boolean is equal to the expected one whereas it must not." + Environment.NewLine + "The expected boolean: different from" + Environment.NewLine + "\t[True] of type: [bool]");
         }
@@ -106,9 +106,9 @@ namespace NFluent.Tests
         [Test]
         public void IsFalseThrowsExceptionWhenTrue()
         {
-            const bool NFluentRocks = true;
+            const bool nFluentRocks = true;
 
-            Check.ThatCode(() => Check.That(NFluentRocks).IsFalse())
+            Check.ThatCode(() => Check.That(nFluentRocks).IsFalse())
                     .Throws<FluentCheckException>()
                     .WithMessage(Environment.NewLine+ "The checked boolean is true whereas it must be false." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[True]");
         }

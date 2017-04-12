@@ -12,13 +12,12 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-using System;
-
 namespace NFluent.Tests
 {
-    using System.Globalization;
     using NUnit.Framework;
-    using NFluent.Tests.Helpers;
+    using Helpers;
+    using System;
+
 
     [TestFixture]
     public class FloatRelatedTests
@@ -32,10 +31,11 @@ namespace NFluent.Tests
         //// (i.e. the one dedicated to the integer values).
         //// -----------------------------------------------------
 
-        #pragma warning restore 169
-        private const string Blabla = ".*?";
-        private const string LineFeed = "\n";
-        private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
+        // Since this class is the model/template for the generation of the tests on all the other numbers types, don't forget to re-generate all the other classes every time you change this one. To do that, just save the .\T4" + Environment.NewLine + "umberTestsGenerator.tt file within Visual Studio 2012. This will trigger the T4 code generation process.
+        private const float Twenty = 20F;
+        private const float Two = 2F;
+        private const float Zero = 0F;
+        private const float One = 1F;
         private CultureSession cultureSession;
 
         [OneTimeSetUp]
@@ -56,16 +56,12 @@ namespace NFluent.Tests
         [Test]
         public void IsNotZeroWorks()
         {
-            const float Two = 2F;
-
             Check.That(Two).IsNotZero();
         }
 
         [Test]
         public void IsNotZeroThrowsExceptionWhenFails()
         {
-            const float Zero = 0F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Zero).IsNotZero();
@@ -81,16 +77,12 @@ namespace NFluent.Tests
         [Test]
         public void NotIsZeroWorks()
         {
-            const float Two = 2F;
-
             Check.That(Two).Not.IsZero();
         }
 
         [Test]
         public void NotIsZeroThrowsExceptionWhenFailing()
         {
-            const float Zero = 0F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Zero).Not.IsZero();
@@ -106,16 +98,12 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNotZeroWorks()
         {
-            const float Zero = 0F;
-
             Check.That(Zero).Not.IsNotZero();
         }
 
         [Test]
         public void NotIsNotZeroThrowsExceptionWhenFailing()
         {
-            const float Two = 2F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).Not.IsNotZero();
@@ -131,27 +119,18 @@ namespace NFluent.Tests
         [Test]
         public void IsBeforeWorks()
         {
-            const float Two = 2F;
-            const float Twenty = 20F;
-
             Check.That(Two).IsBefore(Twenty);
         }
 
         [Test]
         public void NotIsBeforeWorks()
         {
-            const float Two = 2F;
-            const float Twenty = 20F;
-
             Check.That(Twenty).Not.IsBefore(Two);
         }
 
         [Test]
         public void IsBeforeThrowsExceptionWhenFailing()
         {
-            const float Two = 2F;
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).IsBefore(Two);
@@ -163,8 +142,6 @@ namespace NFluent.Tests
         [Test]
         public void IsBeforeThrowsExceptionWhenGivingTheSameValue()
         {
-            const float Two = 2F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).IsBefore(Two);
@@ -176,9 +153,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsBeforeThrowsExceptionWhenFailing()
         {
-            const float Two = 2F;
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).Not.IsBefore(Twenty);
@@ -190,26 +164,18 @@ namespace NFluent.Tests
         [Test]
         public void IsAfterWorks()
         {
-            const float Two = 2F;
-            const float Twenty = 20F;
-
             Check.That(Twenty).IsAfter(Two);
         }
 
         [Test]
         public void NotIsAfterWorks()
         {
-            const float Two = 2F;
-            const float Twenty = 20F;
-
             Check.That(Two).Not.IsAfter(Twenty);
         }
 
         [Test]
         public void IsAfterThrowsExceptionWhenFailing()
         {
-            const float Two = 2F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Two).IsAfter(Two);
@@ -221,9 +187,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsAfterThrowsExceptionWhenFailing()
         {
-            const float Two = 2F;
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).Not.IsAfter(Two);
@@ -235,31 +198,23 @@ namespace NFluent.Tests
         #endregion
 
         #region IsLessThan
+#pragma warning disable 618
 
         [Test]
         public void IsLessThanWorks()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.That(One).IsLessThan(Twenty);
         }
 
         [Test]
         public void NotIsLessThanWorks()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.That(Twenty).Not.IsLessThan(One);
         }
 
         [Test]
         public void NotIsLessThanThrowsExceptionWhenFailing()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(One).Not.IsLessThan(Twenty);
@@ -268,6 +223,7 @@ namespace NFluent.Tests
             .WithMessage(Environment.NewLine+ "The checked value is less than the threshold." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1]" + Environment.NewLine + "The expected value: more than" + Environment.NewLine + "\t[20]");
         }
 
+#pragma warning restore 618
         #endregion
 
         #region IsStrictlyLessThan
@@ -275,26 +231,18 @@ namespace NFluent.Tests
         [Test]
         public void IsStrictlyLessThanWorks()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.That(One).IsStrictlyLessThan(Twenty);
         }
 
         [Test]
         public void NotIsStrictlyLessThanWorks()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.That(Twenty).Not.IsStrictlyLessThan(One);
         }
 
         [Test]
         public void IsStrictlyLessThanThrowsExceptionWhenFailing()
         {
-            const float One = 1F;
-
             Check.ThatCode(() =>
             {
                 Check.That(One).IsStrictlyLessThan(One);
@@ -306,9 +254,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsStrictlyLessThanThrowsExceptionWhenFailing()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(One).Not.IsStrictlyLessThan(Twenty);
@@ -322,22 +267,17 @@ namespace NFluent.Tests
 
 
         #region IsGreaterThan
+#pragma warning disable 618
 
         [Test]
         public void IsGreaterThanWorks()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.That(Twenty).IsGreaterThan(One);
         }
 
         [Test]
         public void IsGreaterThanThrowsExceptionWhenFailing()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(One).IsGreaterThan(Twenty);
@@ -349,9 +289,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsGreaterThanThrowsExceptionWhenFailing()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).Not.IsGreaterThan(One);
@@ -360,6 +297,7 @@ namespace NFluent.Tests
             .WithMessage(Environment.NewLine+ "The checked value is greater than the threshold." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[20]" + Environment.NewLine + "The expected value: less than" + Environment.NewLine + "\t[1]");
         }
 
+#pragma warning restore 618
         #endregion
 
         #region IsStrictlyGreaterThan
@@ -367,17 +305,12 @@ namespace NFluent.Tests
         [Test]
         public void IsStrictlyGreaterThanWorks()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.That(Twenty).IsStrictlyGreaterThan(One);
         }
 
         [Test]
         public void IsStrictlyGreaterThanThrowsExceptionWhenFailing()
         {
-            const float One = 1F;
-
             Check.ThatCode(() =>
             {
                 Check.That(One).IsStrictlyGreaterThan(One);
@@ -389,9 +322,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsStrictlyGreaterThanThrowsExceptionWhenFailing()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).Not.IsStrictlyGreaterThan(One);
@@ -405,9 +335,6 @@ namespace NFluent.Tests
         [Test]
         public void AndOperatorCanChainMultipleAssertionOnNumber()
         {
-            const float Twenty = 20F;
-            const float Zero = 0F;
-
             Check.That(Twenty).IsNotZero().And.IsAfter(Zero);
             Check.That(Twenty).IsAfter(Zero).And.IsNotZero();
         }
@@ -417,17 +344,14 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualToWorksWithOtherSameValue()
         {
-            const float Twenty = 20F;
-            const float OtherTwenty = 20F;
+            const float otherTwenty = 20F;
 
-            Check.That(Twenty).IsEqualTo(OtherTwenty);
+            Check.That(Twenty).IsEqualTo(otherTwenty);
         }
 
         [Test]
         public void IsEqualFailsWhenRelevant()
         {
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
                 {
                     Check.That(Twenty).IsEqualTo(0);
@@ -438,30 +362,23 @@ namespace NFluent.Tests
         [Test]
         public void EqualsWorksToo()
         {
-            const float Twenty = 20F;
-            const float OtherTwenty = 20F;
-            const float Zero = 0F;
+            const float otherTwenty = 20F;
 
-            Check.That(Twenty).Equals(OtherTwenty);
+            Check.That(Twenty).Equals(otherTwenty);
 
             // check the 'other implementation of equals
-            Check.That(Twenty).IsAfter(Zero).And.Equals(OtherTwenty);
+            Check.That(Twenty).IsAfter(Zero).And.Equals(otherTwenty);
         }
 
         [Test]
         public void NotIsEqualToWorks()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.That(One).Not.IsEqualTo(Twenty);
         }
 
         [Test]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).Not.IsEqualTo(Twenty);
@@ -473,8 +390,6 @@ namespace NFluent.Tests
         [Test]
         public void NotEqualsThrowsExceptionWhenFailing()
         {
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).Not.Equals(Twenty);
@@ -486,17 +401,12 @@ namespace NFluent.Tests
         [Test]
         public void IsNotEqualToWorks()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.That(One).IsNotEqualTo(Twenty);
         }
 
         [Test]
         public void IsNotEqualToThrowsExceptionWhenFailing()
         {
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).IsNotEqualTo(Twenty);
@@ -508,9 +418,6 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
-            const float One = 1F;
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(One).Not.IsNotEqualTo(Twenty);
@@ -536,11 +443,9 @@ namespace NFluent.Tests
         [Test]
         public void HasValueThrowsExceptionWhenFailing()
         {
-            float? noValue = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(noValue).HasAValue();
+                Check.That((float?) null).HasAValue();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked nullable has no value, which is unexpected.");
@@ -549,9 +454,7 @@ namespace NFluent.Tests
         [Test]
         public void NotHasValueWorks()
         {
-            float? noValue = null;
-
-            Check.That(noValue).Not.HasAValue();
+            Check.That((float?) null).Not.HasAValue();
         }
 
         [Test]
@@ -571,20 +474,16 @@ namespace NFluent.Tests
         public void HasValueSupportsToBeChainedWithTheWhichOperator()
         {
             float? one = 1F;
-            const float Zero = 0F;
 
-            Check.That(one).HasAValue().Which.IsAfter(Zero).And.IsEqualTo((float)1);
+            Check.That(one).HasAValue().Which.IsAfter(Zero).And.IsEqualTo(1F);
         }
 
         [Test]
         public void TryingToChainANullableWithoutAValueIsPossibleButThrowsAnException()
         {
-            float? noValue = null;
-            const float Zero = 0F;
-
             Check.ThatCode(() =>
             {
-                Check.That(noValue).Not.HasAValue().Which.IsAfter(Zero);
+                Check.That((float?) null).Not.HasAValue().Which.IsAfter(Zero);
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked nullable has no value to be checked.");
@@ -597,9 +496,7 @@ namespace NFluent.Tests
         [Test]
         public void HasNoValueWorks()
         {
-            float? noValue = null;
-
-            Check.That(noValue).HasNoValue();
+            Check.That((float?) null).HasNoValue();
         }
 
         [Test]
@@ -626,11 +523,9 @@ namespace NFluent.Tests
         [Test]
         public void NotHasNoValueThrowsExceptionWhenFailing()
         {
-            float? noValue = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(noValue).Not.HasNoValue();
+                Check.That((float?) null).Not.HasNoValue();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked nullable has no value, which is unexpected.");
@@ -645,7 +540,7 @@ namespace NFluent.Tests
         {
             float? one = 1F;
 
-            Check.That(one).IsInstanceOf<float?>().And.HasAValue().Which.IsEqualTo((float)1);
+            Check.That(one).IsInstanceOf<float?>().And.HasAValue().Which.IsEqualTo(1F);
         }
 
         [Test]
@@ -653,7 +548,7 @@ namespace NFluent.Tests
         {
             float? one = 1F;
 
-            Check.That(one).IsInstanceOf<float?>().And.HasAValue().Which.IsEqualTo((float)1);
+            Check.That(one).IsInstanceOf<float?>().And.HasAValue().Which.IsEqualTo(1F);
             Check.That(one).HasAValue().And.IsInstanceOf<float?>();
         }
 
@@ -673,19 +568,15 @@ namespace NFluent.Tests
         [Test]
         public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
         {
-            float? noValue = null;
-
-            Check.That(noValue).IsInstanceOf<float?>();
+            Check.That((float?) null).IsInstanceOf<float?>();
         }
 
         [Test]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            float? noValue = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(noValue).Not.IsInstanceOf<float?>();
+                Check.That((float?) null).Not.IsInstanceOf<float?>();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked value is an instance of [float?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [float?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [float?]");
@@ -694,11 +585,9 @@ namespace NFluent.Tests
         [Test]
         public void IsInstanceOfThowsExceptionWhenFailingWithNullable()
         {
-            float? one = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(one).IsInstanceOf<string>();
+                Check.That((float?) null).IsInstanceOf<string>();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked value is not an instance of [string]." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [float?]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [string]");
@@ -713,7 +602,7 @@ namespace NFluent.Tests
         {
             float? one = 1F;
 
-            Check.That(one).IsNotInstanceOf<float>().And.HasAValue().Which.IsEqualTo((float)1);
+            Check.That(one).IsNotInstanceOf<float>().And.HasAValue().Which.IsEqualTo(1F);
         }
 
         [Test]
@@ -732,11 +621,9 @@ namespace NFluent.Tests
         [Test]
         public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            float? noValue = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(noValue).IsNotInstanceOf<float?>();
+                Check.That((float?) null).IsNotInstanceOf<float?>();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked value is an instance of [float?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [float?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [float?]");

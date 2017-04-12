@@ -12,14 +12,17 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
 namespace NFluent
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Extensions;
-    using NFluent.Extensibility;
+    using Extensibility;
+    using System;
+    using Helpers;
+    using Kernel;
+
 
     /// <summary>
     /// Provides check methods to be executed on a string instance.
@@ -127,7 +130,7 @@ namespace NFluent
                                 errorMessage =
                                     checker.BuildMessage("The {0} is not one of the possible elements.")
                                         .On(checker.Value)
-                                        .And.Expected(possibleElements)
+                                        .And.Expected(null/*possibleElements*/)
                                         .Label("The possible elements:")
                                         .ToString();
                                 throw new FluentCheckException(errorMessage);
@@ -201,169 +204,33 @@ namespace NFluent
         private static string AssessEquals(IChecker<string, ICheck<string>> checker, object expected, bool negated, bool ignoreCase = false)
         {
             var value = checker.Value;
-            if (string.Equals(value, (string)expected, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture) != negated)
+
+            var analyse = StringDifference.Analyze(value, (string) expected, ignoreCase);
+
+            if (negated == (analyse !=null && analyse.Count>0))
             {
                 return null;
             }
 
-            string messageText;
             if (negated)
             {
-                messageText =
+                return 
                     checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.").Expected(expected).Comparison("different from").ToString();
             }
-            else if (value == null)
+            if (value == null)
             {
-                messageText = checker.BuildShortMessage("The {0} is null whereas it must not.").For(typeof(string)).On(value).And.Expected(expected).ToString();
+                return checker.BuildShortMessage("The {0} is null whereas it must not.").For(typeof(string)).On(null/*value*/).And.Expected(expected).ToString();
             }
-            else if (expected == null)
+            if (expected == null)
             {
-                messageText = checker.BuildShortMessage("The {0} is not null whereas it must.").For(typeof(string)).On(value).And.Expected(expected).ToString();
-            }
-            else
-            {
-                // we try to refine the difference
-                var expectedString = expected as string;
-                var message = "The {0} is different from {1}.";
-                var isCrlfAndLfDifference = false;
-                var isTabAndWhiteSpaceDifference = false;
-                var firstDiffPos = 0;
-
-                // TODO: refactor to reduce method lines
-                var firstDiff = 0;
-                var blockStart = 0;
-                var blockLen = 0;
-
-                var minLength = Math.Min(value.Length, expectedString.Length);
-
-                // scan for firstDiff
-                for (; firstDiff < minLength; firstDiff++)
-                {
-                    if (value[firstDiff] != expectedString[firstDiff])
-                    {
-                        firstDiffPos = firstDiff;
-                        isCrlfAndLfDifference = IsACRLFDifference(firstDiff, expectedString, value);
-                        isTabAndWhiteSpaceDifference = IsATabAndWhiteSpaceDifference(firstDiff, expectedString, value);
-
-                        blockStart = Math.Max(0, firstDiff - 10);
-                        blockLen = Math.Min(minLength - blockStart, 20);
-                        break;
-                    }
-                }
-
-                var useDiffInMessage = true;
-
-                // if strings have sam length, diff may be minor
-                if (expectedString.Length == value.Length)
-                {
-                    // same length
-                    if (string.Compare(value, expectedString, StringComparison.CurrentCultureIgnoreCase) == 0)
-                    {
-                        message = "The {0} is different from the {1} but only in case.";
-                    }
-                    else
-                    {
-                        message = "The {0} is different from the {1} but has same length.";
-                    }
-                }
-                else if (expectedString.Length > value.Length)
-                {
-                    if (expectedString.StartsWith(value, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
-                    {
-                        message = "The {0} is different from {1}, it is missing the end.";
-                        useDiffInMessage = false;
-                    }
-                    else
-                    {
-                        useDiffInMessage = blockStart > 0;
-                    }
-                }
-                else
-                {
-                    if (value.StartsWith(expectedString, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
-                    {
-                        message = "The {0} is different from {1}, it contains extra text at the end.";
-                        useDiffInMessage = false;
-                    }
-                    else
-                    {
-                        useDiffInMessage = blockStart > 0;
-                    }
-                }
-
-                // add part of strings  that are different (if needed)
-                if (useDiffInMessage)
-                {
-                    var prefix = blockStart == 0 ? string.Empty : "...";
-                    var suffix = blockStart + blockLen == minLength ? string.Empty : "...";
-                    message += string.Format(
-                        " At {0}, expected '{3}{1}{4}' was '{3}{2}{4}'", 
-                        firstDiff, 
-                        expectedString.Substring(blockStart, blockLen).Escaped(), 
-                        value.Substring(blockStart, blockLen).Escaped(), 
-                        prefix, 
-                        suffix);
-                }
-
-                // highlight diff in end of line char (if needed)
-                if (isCrlfAndLfDifference)
-                {
-                    value = HighlightFirstCrlfOrLfIfAny(value, firstDiffPos);
-                    expectedString = HighlightFirstCrlfOrLfIfAny(expectedString, firstDiffPos);
-                }
-
-                // highlight tab vs space diff (if needed)
-                if (isTabAndWhiteSpaceDifference)
-                {
-                    value = HighlightTabsIfAny(value);
-                    expectedString = HighlightTabsIfAny(expectedString);
-                }
-
-                messageText = checker.BuildMessage(message).On(value).And.Expected(expectedString).ToString();
+                return  checker.BuildShortMessage("The {0} is not null whereas it must.").For(typeof(string)).On(value).And.Expected(null).ToString();
             }
 
-            return messageText;
-        }
+            var summary = StringDifference.Summarize(analyse);
+            var message= analyse[0].BuildMessage(summary);
 
-        private static bool IsATabAndWhiteSpaceDifference(int firstDiff, string expected, string actual)
-        {
-            return (actual[firstDiff].Equals(' ') && expected[firstDiff].Equals('\t')) || (actual[firstDiff].Equals('\t') && expected[firstDiff].Equals(' '));
-        }
-
-        // ReSharper disable once InconsistentNaming
-        private static bool IsACRLFDifference(int firstDiff, string expected, string actual)
-        {
-            return (actual[firstDiff].Equals('\n') && expected[firstDiff].Equals('\r')) || (actual[firstDiff].Equals('\r') && expected[firstDiff].Equals('\n'));
-        }
-
-        /// <summary>
-        /// Inserts &lt;&lt;CRLF&gt;&gt; before the first CRLF or &lt;&lt;LF&gt;&gt; before the first LF.
-        /// </summary>
-        /// <param name="str">The string.</param>
-        /// <param name="firstDiffPos">The first difference position.</param>
-        /// <returns>The same string but with &lt;&lt;CRLF&gt;&gt; inserted before the first CRLF or &lt;&lt;LF&gt;&gt; inserted before the first LF.</returns>
-        private static string HighlightFirstCrlfOrLfIfAny(string str, int firstDiffPos)
-        {
-            if (str.Substring(firstDiffPos).StartsWith("\r\n"))
-            {
-                str = str.Insert(firstDiffPos, "<<CRLF>>");
-            }
-            else if (str.Substring(firstDiffPos).StartsWith("\n"))
-            {
-                str = str.Insert(firstDiffPos, "<<LF>>");
-            }
-
-            return str;
-        }
-
-        /// <summary>
-        /// Replace every tab char by "&lt;&lt;tab&gt;&gt;".
-        /// </summary>
-        /// <param name="str">The original string.</param>
-        /// <returns>The original string with every \t replaced with "&lt;&lt;tab&gt;&gt;".</returns>
-        private static string HighlightTabsIfAny(string str)
-        {
-            return str.Replace("\t", "<<tab>>");
+            // we try to refine the difference
+            return message.ToString();
         }
 
         private static string ContainsImpl(IChecker<string, ICheck<string>> checker, IEnumerable<string> values, bool negated, bool notContains)
@@ -378,7 +245,8 @@ namespace NFluent
                            : checker.BuildShortMessage("The {0} is null.").For(typeof(string)).ReferenceValues(values).Label("The {0} substring(s):").ToString();
             }
 
-            var items = values.Where(item => checkedValue.Contains(item) == notContains).ToList();
+            var enumerable = values as string[] ?? values.ToArray();
+            var items = enumerable.Where(item => checkedValue.Contains(item) == notContains).ToList();
 
             if (negated == items.Count > 0)
             {
@@ -387,7 +255,7 @@ namespace NFluent
 
             if (!notContains && negated)
             {
-                items = values.ToList();
+                items = enumerable.ToList();
             }
 
             if (negated != notContains)
@@ -702,6 +570,30 @@ namespace NFluent
             }
 
             return checker.BuildChainingObject();
+        }
+
+        /// <summary>
+        /// Convert a string to an array of lines.
+        /// </summary>
+        /// <param name="check">The fluent check to be processed</param>
+        /// <returns>A checker.</returns>
+        public static ICheck<IEnumerable<string>> AsLines(this ICheck<string> check)
+        {
+            IEnumerable<string> next = null;
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            if (checker.Value != null)
+            {
+                var lines = checker.Value.Split(Environment.NewLine[0]);
+                if (Environment.NewLine.Length > 1)
+                {
+                    for (var i = 0; i < lines.Length; i++)
+                    {
+                        lines[i] = lines[i].Trim(Environment.NewLine[1]);
+                    }
+                }
+                next = lines;
+            }
+            return new FluentCheck<IEnumerable<string>>(next);
         }
     }
 }

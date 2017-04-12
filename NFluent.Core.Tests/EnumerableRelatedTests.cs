@@ -24,9 +24,6 @@ namespace NFluent.Tests
     [TestFixture]
     public class EnumerableRelatedTests
     {
-        private const string Blabla = ".*?";
-        private const string LineFeed = "\n";
-        private const string NumericalHashCodeWithinBrackets = "(\\[(\\d+)\\])";
         private static readonly List<int> EmptyEnumerable = new List<int>();
 
         #region HasSize
@@ -63,6 +60,7 @@ namespace NFluent.Tests
             Check.That(enumerable).HasSize(4).And.Contains(666);
         }
 
+#if !NETCOREAPP1_0
         [Test]
         public void HasSizeWorksWithArrayList()
         {
@@ -70,6 +68,7 @@ namespace NFluent.Tests
 
             Check.That(arrayList).HasSize(4);
         }
+#endif
 
         [Test]
         public void HasSizeThrowsExceptionWhenFailingWithOneElementFound()

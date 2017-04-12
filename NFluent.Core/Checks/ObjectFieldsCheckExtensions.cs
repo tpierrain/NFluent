@@ -451,10 +451,10 @@ namespace NFluent
         {
             while (true)
             {
-                const BindingFlags FlagsForFields = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+                const BindingFlags flagsForFields = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
                 // Debug.Assert(type != null, "Type must not be null");
-                var result = type.GetField(name, FlagsForFields);
+                var result = type.GetField(name, flagsForFields);
 
                 if (result != null)
                     return result;
@@ -465,7 +465,7 @@ namespace NFluent
                 FieldKind fieldKind;
                 var actualName = ExtractFieldNameAsInSourceCode(name, out fieldKind);
 
-                foreach (var field in type.GetFields(FlagsForFields))
+                foreach (var field in type.GetFields(flagsForFields))
                 {
                     var fieldName = ExtractFieldNameAsInSourceCode(field.Name, out fieldKind);
                     if (fieldName == actualName) return field;

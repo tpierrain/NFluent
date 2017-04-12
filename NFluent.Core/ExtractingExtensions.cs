@@ -65,7 +65,7 @@ namespace NFluent
         [Obsolete("Use Extracting instead.")]
         public static IEnumerable Properties<T>(this IEnumerable<T> enumerable, string propertyName)
         {
-            return Extracting<T>(enumerable, propertyName);
+            return Extracting(enumerable, propertyName);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace NFluent
         public static IEnumerable Extracting<T>(this T[] array, string propertyName)
         {
             var enumerableArray = array as IEnumerable<T>;
-            return enumerableArray.Extracting<T>(propertyName);
+            return enumerableArray.Extracting(propertyName);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace NFluent
         [Obsolete("Use Extracting instead.")]
         public static IEnumerable Properties<T>(this T[] array, string propertyName)
         {
-            return Extracting<T>(array, propertyName);
+            return Extracting(array, propertyName);
         }
     }
 }

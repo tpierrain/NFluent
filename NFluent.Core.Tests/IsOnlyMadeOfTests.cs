@@ -12,14 +12,15 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-using System;
 
 namespace NFluent.Tests
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
+#if !NETCOREAPP1_0
     using System.Collections.Specialized;
-    using System.Globalization;
+#endif
     using Helpers;
     using NUnit.Framework;
 
@@ -41,7 +42,7 @@ namespace NFluent.Tests
         }
 
 
-        #region IsOnlyMadeOf with arrays
+#region IsOnlyMadeOf with arrays
 
         [Test]
         public void IsOnlyMadeOfWithIntArrayWorks()
@@ -77,9 +78,9 @@ namespace NFluent.Tests
             .WithMessage(Environment.NewLine+ "The checked enumerable does not contain only the given value(s)." + Environment.NewLine + "It contains also other values:" + Environment.NewLine + "\t[666, 1974]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[3, 2, 666, 1974, 1]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[1, 2, 3]");
         }
 
-        #endregion
+#endregion
 
-        #region IsOnlyMadeOf with enumerable
+#region IsOnlyMadeOf with enumerable
 
         [Test]
         public void IsOnlyMadeOfWithEnumerableWorks()
@@ -133,11 +134,9 @@ namespace NFluent.Tests
         [Test]
         public void IsOnlyMadeOfThrowsWithNullAsCheckedValue()
         {
-            List<int> nullList = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(nullList).IsOnlyMadeOf("what da heck!");
+                Check.That((List<int>) null).IsOnlyMadeOf("what da heck!");
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked enumerable is null and thus, does not contain exactly the given value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]");
@@ -146,9 +145,7 @@ namespace NFluent.Tests
         [Test]
         public void IsOnlyMadeOfDoNotThrowIfBothValuesAreNull()
         {
-            List<int> nullList = null;
-
-            Check.That(nullList).IsOnlyMadeOf(null).And.IsEqualTo(null);
+            Check.That((List<int>) null).IsOnlyMadeOf(null).And.IsEqualTo(null);
         }
 
         [Test]
@@ -196,6 +193,8 @@ namespace NFluent.Tests
             Check.That(integers).IsOnlyMadeOf(expectedValues);
         }
 
+#if !NETCOREAPP1_0
+
         [Test]
         public void IsOnlyMadeOfWithArrayListWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
@@ -218,7 +217,7 @@ namespace NFluent.Tests
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked enumerable contains only the given values whereas it must not." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 3, 2, 2, 1]");
         }
-
+        
         [Test]
         public void IsOnlyMadeOfWithStringCollectionWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
@@ -249,7 +248,8 @@ namespace NFluent.Tests
             IEnumerable expectedVariousObjects = new ArrayList { 1, "uno", "uno", 45.3F, "tres" };
             Check.That(variousObjects).IsOnlyMadeOf(expectedVariousObjects);
         }
+#endif
 
-        #endregion
+#endregion
     }
 }

@@ -18,7 +18,6 @@ namespace NFluent.Messages
     using System;
     using System.Collections;
     using System.Text;
-    using Extensibility;
     using Extensions;
 
     /// <summary>

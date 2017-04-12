@@ -13,16 +13,14 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using NFluent.Kernel;
-
 namespace NFluent
 {
     using System;
     using System.ComponentModel;
-
-#if (DOTNET_40)
+#if !DOTNET_3_5
     using System.Threading.Tasks;
 #endif
+    using Kernel;
 
     /// <summary>
     /// Provides <see cref="ICheck{T}"/> instances to be used in order to make 
@@ -46,7 +44,7 @@ namespace NFluent
             return new FluentCheck<T>(value);
         }
 
-#if (DOTNET_40)
+#if !DOTNET_3_5
 
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given async code (returning Task).
@@ -80,7 +78,6 @@ namespace NFluent
         }
 #endif
 
-#if !PORTABLE
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
@@ -123,7 +120,7 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
-        //ncrunch: no coverage start
+        // ncrunch: no coverage start
         // coverage disabled as this code cannot be executed and is to be removed at a later stage
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Use ThatCode instead.", true)]
@@ -149,7 +146,7 @@ namespace NFluent
             return null;
         }
         //ncrunch: no coverage end
-#endif
+
         /// <summary>
         /// Returns a <see cref="IStructCheck{T}" /> instance that will provide check methods to be executed on a given enum or struct value.
         /// </summary>

@@ -14,8 +14,9 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using NFluent.Extensibility;
-    using NFluent.Extensions;
+    using System;
+    using Extensibility;
+    using Extensions;
 
     /// <summary>
     /// Provides extension method on a ICheckLink for IEnumerable types.
@@ -38,8 +39,8 @@ namespace NFluent
             var comparand = chainedCheckLink.OriginalComparand;
             foreach (var text in comparand)
             {
-                var firstIndex = value.IndexOf(text);
-                var lastIndexOf = value.LastIndexOf(text);
+                var firstIndex = value.IndexOf(text, StringComparison.Ordinal);
+                var lastIndexOf = value.LastIndexOf(text, StringComparison.Ordinal);
                 if (firstIndex != lastIndexOf)
                 {
                     // failed 
@@ -72,7 +73,7 @@ namespace NFluent
             var lastIndex = 0;
             foreach (var text in comparand)
             {
-                lastIndex = value.IndexOf(text, lastIndex);
+                lastIndex = value.IndexOf(text, lastIndex, StringComparison.Ordinal);
                 if (lastIndex < 0)
                 {
                     // failed 

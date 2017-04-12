@@ -12,15 +12,14 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-using System;
-
 namespace NFluent
 {
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using NFluent.Extensibility;
-    using NFluent.Extensions;
+    using Extensibility;
+    using Extensions;
+    using System;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="IEnumerable"/> value.
@@ -118,8 +117,7 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                     {
-                        // TODO: refactor this implementation?
-                        if (checker.Value == null && expectedValues == null)
+                        if (Equals(checker.Value, expectedValues))
                         {
                             return;
                         }
@@ -155,7 +153,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
         public static ICheckLink<ICheck<IEnumerable>> ContainsExactly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
         {
-            IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
+            var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             
             return check.ContainsExactly(properExpectedValues);
         }
@@ -178,8 +176,7 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () => 
                 {
-                    // TODO: refactor this implementation
-                    if (checker.Value == null && otherEnumerable == null)
+                    if (Equals(checker.Value, otherEnumerable))
                     {
                         return;
                     }
@@ -196,27 +193,29 @@ namespace NFluent
                     }
 
                     var index = 0;
-                    var first = checker.Value.GetEnumerator();
                     var enumerable = otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
-                    var second = enumerable.GetEnumerator();
-
-                    while (first.MoveNext())
+                    var first = checker.Value.GetEnumerator();
+                    using (var second = enumerable.GetEnumerator())
                     {
-                        if (!second.MoveNext() 
-                            || !Equals(first.Current, second.Current))
+                        while (first.MoveNext())
+                        {
+                            if (!second.MoveNext()
+                                || !Equals(first.Current, second.Current))
+                            {
+                                throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker, enumerable, index));
+                            }
+
+                            index++;
+                        }
+
+                        if (second.MoveNext())
                         {
                             throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker, enumerable, index));
                         }
 
-                        index++;
-                    }
-
-                    if (second.MoveNext())
-                    {
-                        throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker, enumerable, index));
                     }
                 },
-                BuildExceptionMessageForContainsExactly(checker, otherEnumerable));
+                BuildExceptionMessageForContainsExactly(checker));
         }
 
         /// <summary>
@@ -356,24 +355,20 @@ namespace NFluent
         /// <returns>
         /// A list containing all the expected values that aren't present in the enumerable.
         /// </returns>
-        internal static IList ExtractNotFoundValues(IEnumerable enumerable, IEnumerable expectedValues)
+        private static IList ExtractNotFoundValues(IEnumerable enumerable, IEnumerable expectedValues)
         {
             // Prepares the list to return
-            var notFoundValues = new List<object>();
-            foreach (var expectedValue in expectedValues)
-            {
-                notFoundValues.Add(expectedValue);
-            }
+
+            var values = expectedValues as object[] ?? expectedValues.Cast<object>().ToArray();
+            var notFoundValues = values.ToList();
 
             foreach (var element in enumerable)
             {
-                foreach (var expectedValue in expectedValues)
+                foreach (var expectedValue in values)
                 {
-                    if (object.Equals(element, expectedValue))
-                    {
-                        notFoundValues.RemoveAll(one => one.Equals(expectedValue));
-                        break;
-                    }
+                    if (!Equals(element, expectedValue)) continue;
+                    notFoundValues.RemoveAll(one => Equals(one, expectedValue));
+                    break;
                 }
             }
 
@@ -388,12 +383,13 @@ namespace NFluent
         /// <returns>
         /// A list with all the values found in the enumerable that don't belong to the expected ones.
         /// </returns>
-        internal static IList ExtractUnexpectedValues(IEnumerable enumerable, IEnumerable expectedValues)
+        private static IList ExtractUnexpectedValues(IEnumerable enumerable, IEnumerable expectedValues)
         {
             var unexpectedValuesFound = new List<object>();
+            var values = expectedValues as object[] ?? expectedValues.Cast<object>().ToArray();
             foreach (var element in enumerable)
             {
-                var isExpectedValue = expectedValues.Cast<object>().Contains(element);
+                var isExpectedValue = values.Contains(element);
 
                 if (!isExpectedValue)
                 {
@@ -403,26 +399,23 @@ namespace NFluent
 
             return unexpectedValuesFound;
         }
-#if !(PORTABLE) && !(CORE)
+
         private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
         {
             // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
+#if !(PORTABLE) && !(NETSTANDARD1_3)
             return expectedValues != null && (expectedValues.LongLength == 1) && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
-        }
 #else
-        private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
-        {
-            // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
             return expectedValues != null && (expectedValues.Length == 1) && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
-        }
 #endif
+        }
 
         private static bool IsAnEnumerableButNotAnEnumerableOfChars<T>(T element)
         {
             return (element is IEnumerable) && !(element is IEnumerable<char>);
         }
 
-        private static string BuildExceptionMessageForContainsExactly(IChecker<IEnumerable, ICheck<IEnumerable>> checker, IEnumerable enumerable)
+        private static string BuildExceptionMessageForContainsExactly(IChecker<IEnumerable, ICheck<IEnumerable>> checker)
         {
             var checkedValue = checker.Value;
             return checker.BuildMessage("The {0} contains exactly the given values whereas it must not.")

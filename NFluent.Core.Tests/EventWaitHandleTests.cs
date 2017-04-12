@@ -13,6 +13,7 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 using System;
+// ReSharper disable AccessToDisposedClosure
 
 namespace NFluent.Tests
 {
@@ -66,10 +67,10 @@ namespace NFluent.Tests
                 Check.ThatCode(() =>
                 {
                     SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
-                    Check.That(myEvent).Not.IsSetWithin(50, TimeUnit.Milliseconds);
+                    Check.That(myEvent).Not.IsSetWithin(500, TimeUnit.Milliseconds);
                 })
                 .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine+ "The checked event has been set before the given timeout whereas it must not." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[50]");
+                .WithMessage(Environment.NewLine+ "The checked event has been set before the given timeout whereas it must not." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[500]");
             }
         }
 
@@ -94,10 +95,10 @@ namespace NFluent.Tests
                 Check.ThatCode(() =>
                 {
                     SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
-                    Check.That(myEvent).IsNotSetWithin(100, TimeUnit.Milliseconds);
+                    Check.That(myEvent).IsNotSetWithin(200, TimeUnit.Milliseconds);
                 })
                 .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine+ "The checked event has been set before the given timeout." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[100]");
+                .WithMessage(Environment.NewLine+ "The checked event has been set before the given timeout." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[200]");
             }
         }
 
@@ -107,7 +108,7 @@ namespace NFluent.Tests
             using (var myEvent = new AutoResetEvent(false))
             {
                 SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
-                Check.That(myEvent).Not.IsNotSetWithin(100, TimeUnit.Milliseconds);
+                Check.That(myEvent).Not.IsNotSetWithin(200, TimeUnit.Milliseconds);
             }
         }
 
@@ -131,12 +132,27 @@ namespace NFluent.Tests
 
         private static void SetTheEventFromAnotherThreadAfterADelay(AutoResetEvent myEvent, int delayBeforeEventIsSetInMilliseconds)
         {
+            var signal = new object();
+            var started = false;
             var otherThread = new Thread(() =>
             {
+                lock (signal)
+                {
+                    started = true;
+                    Monitor.PulseAll(signal);
+                }
                 Thread.Sleep(delayBeforeEventIsSetInMilliseconds);
                 myEvent.Set();
             });
             otherThread.Start();
+            // we wait for the thread to be actualy started to reduce risk of false negative due to CPU contention
+            lock (signal)
+            {
+                if (!started)
+                {
+                    Monitor.Wait(signal, 10000);
+                }
+            }
         }
 
         #endregion

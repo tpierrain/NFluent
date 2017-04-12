@@ -16,8 +16,8 @@ namespace NFluent
 {
     using System;
 
-    using NFluent.Extensibility;
-    using NFluent.Helpers;
+    using Extensibility;
+    using Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="TimeSpan"/> instance.

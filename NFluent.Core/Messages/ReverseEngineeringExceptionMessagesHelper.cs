@@ -1,9 +1,23 @@
+// -------------------------------------------------------------------------------------------------------------------
+// <copyright file="ReverseEngineeringExceptionMessagesHelper.cs" company="">
+//   Copyright 2016 Thomas Pierrain
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+// ReSharper disable once EmptyNamespace
+// ReSharper disable once CheckNamespace
 namespace NFluent.Extensibility
 {
-    using System;
-    using System.IO;
-    using System.Text;
 #if !(PORTABLE)
+    using System.Text;
     /// <summary>
     /// Helper class that helps to retrieve well formated strings exception messages from a failing NFluent Check execution.
     /// 1. You provide the lambda containing the failing check. You run it (from within a test for instance)
@@ -12,8 +26,8 @@ namespace NFluent.Extensibility
     /// </summary>
     public static class ReverseEngineeringExceptionMessagesHelper
     {
+#if SCANEXCEPTION
         private const string DefaultFilePath = @"C:\\Temp\\NFluentTroubleShoot.txt";
-
         /// <summary>
         /// Generate a file containing the ready-to-be-copied-and-pasted-in-a-test exception message that occured while executing the provided lambda.
         /// </summary>
@@ -45,7 +59,7 @@ namespace NFluent.Extensibility
             var properlyEscapedMessage = GetProperlyEscapedMessage(message);
             File.WriteAllText(outputfilePath, properlyEscapedMessage);
         }
-
+#endif
         /// <summary>
         /// Build a ready-to-be-copied-and-pasted-in-a-string message (it will "escape" tabs, CRLF, and quote characters).
         /// </summary>

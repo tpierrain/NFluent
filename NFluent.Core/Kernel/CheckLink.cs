@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Kernel
 {
+    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
@@ -31,6 +32,7 @@ namespace NFluent.Kernel
         public CheckLink(IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense previousCheck)
         {
             var forkableCheck = previousCheck as IForkableCheck;
+            Debug.Assert(forkableCheck != null, "forkableCheck != null");
             this.newCheckWithSameValue = forkableCheck.ForkInstance() as T;
         }
 

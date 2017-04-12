@@ -139,11 +139,9 @@ namespace NFluent.Tests
         [Test]
         public void ContainsThrowsWithNullAsCheckedValue()
         {
-            List<int> nullList = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(nullList).Contains("what da heck!");
+                Check.That((List<int>)null).Contains("what da heck!");
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked enumerable is null and thus, does not contain the given expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]");
@@ -152,9 +150,7 @@ namespace NFluent.Tests
         [Test]
         public void ContainsDoNotThrowIfBothValuesAreNull()
         {
-            List<int> nullList = null;
-
-            Check.That(nullList).Contains(null);
+            Check.That((List<int>)null).Contains(null);
         }
 
         [Test]
@@ -171,6 +167,7 @@ namespace NFluent.Tests
             .WithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[666, 1974]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 666, 1974]");
         }
 
+#if !NETCOREAPP1_0
         [Test]
         public void ContainsWithEnumerableOfVariousObjectsTypesWorks()
         {
@@ -178,7 +175,8 @@ namespace NFluent.Tests
             IEnumerable expectedVariousObjects = new ArrayList { "tres", 45.3F };
             Check.That(variousObjects).Contains(expectedVariousObjects);
         }
+#endif
 
-        #endregion
+#endregion
     }
 }

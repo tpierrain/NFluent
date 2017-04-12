@@ -220,7 +220,7 @@ namespace NFluent.Helpers
         {
             var firstFactor = TimeHelper.GetConversionFactor(this.Unit);
             var secondFactor = TimeHelper.GetConversionFactor(other.Unit);
-            return this.RawDuration == (other.RawDuration / firstFactor * secondFactor);
+            return Math.Abs(this.RawDuration - (other.RawDuration / firstFactor * secondFactor)) < 0.001;
         }
 
         /// <summary>

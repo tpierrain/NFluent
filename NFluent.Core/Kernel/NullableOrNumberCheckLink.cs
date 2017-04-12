@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Kernel
 {
+    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using Extensibility;
 
@@ -35,6 +36,7 @@ namespace NFluent.Kernel
         }
 
         // used only for check discovery by helpers used for documentation generation
+        // ReSharper disable once UnusedMember.Local
         private TN? Value { get; set; } //ncrunch: no coverage 
 
         /// <summary>
@@ -49,6 +51,7 @@ namespace NFluent.Kernel
             get
             {
                 var forkableCheck = this.previousCheck as IForkableCheck;
+                Debug.Assert(forkableCheck != null, "forkableCheck != null");
                 return forkableCheck.ForkInstance() as ICheck<TN?>;
             }
         }

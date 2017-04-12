@@ -14,8 +14,8 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using NFluent.Extensibility;
-    using NFluent.Helpers;
+    using Extensibility;
+    using Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on an struct instance.

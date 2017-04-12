@@ -20,8 +20,7 @@ namespace NFluent.Messages
 {
     using System;
     using System.Text;
-    using Extensibility;
-    using NFluent.Extensions;
+    using Extensions;
 
     /// <summary>
     /// Class describing block for any instance of a given type.

@@ -17,7 +17,6 @@ using System;
 
 namespace NFluent.Tests
 {
-    using NFluent.Tests.Extensions;
 
     using NUnit.Framework;
 
@@ -130,7 +129,7 @@ namespace NFluent.Tests
                 Check.That(goodMood).Not.IsNotNull();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked nullable value must be null." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[NFluent.Tests.Extensions.Mood]");
+            .WithMessage(Environment.NewLine+ "The checked nullable value must be null." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[NFluent.Tests.Mood]");
         }
         
         [Test]
@@ -223,30 +222,49 @@ namespace NFluent.Tests
 
         private class Person
         {
-            public String Name { get; set; }
-            public String Surname { get; set; }
+            public string Name { get; set; }
+            // ReSharper disable once UnusedMember.Local
+            public string Surname { get; set; }
 
         }
         private class PersonEx
         {
-            public String Name { get; set; }
-            public String Surname { get; set; }
+            public string Name { get; set; }
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
+            public string Surname { get; set; }
 
             public static bool operator ==(PersonEx person1, Person person2)
             {
-                return person1.Name == person2.Name;
+                return person1?.Name == person2?.Name;
             }
             public static bool operator !=(PersonEx person1, Person person2)
             {
-                return person1.Name != person2.Name;
+                return person1?.Name != person2?.Name;
             }
             public static bool operator ==(Person person1, PersonEx person2)
             {
-                return person1.Name == person2.Name;
+                return person1?.Name == person2?.Name;
             }
             public static bool operator !=(Person person1, PersonEx person2)
             {
-                return person1.Name != person2.Name;
+                return person1?.Name != person2?.Name;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (!(obj is PersonEx))
+                    return false;
+#pragma warning disable 252,253
+                return (PersonEx) obj == this;
+#pragma warning restore 252,253
+            }
+
+            public override int GetHashCode()
+            {
+                // ReSharper disable once NonReadonlyMemberInGetHashCode
+                return this.Name.GetHashCode()
+                       // ReSharper disable once NonReadonlyMemberInGetHashCode
+                    + this.Surname.GetHashCode();
             }
         }
     }

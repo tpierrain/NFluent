@@ -12,17 +12,10 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-#if !(PORTABLE)
 namespace NFluent
 {
     using System;
-    using System.Diagnostics;
-    using System.Threading;
     using Kernel;
-#if DOTNET_40
-    using System.Threading.Tasks;
-#endif
-
     using Extensibility;
     using Helpers;
 
@@ -268,4 +261,3 @@ namespace NFluent
         #endregion
     }
 }
-#endif

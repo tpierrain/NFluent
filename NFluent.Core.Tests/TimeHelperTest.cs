@@ -23,8 +23,6 @@ namespace NFluent.Tests
     [TestFixture]
     public class TimeHelperTest
     {
-        private readonly DurationTests durationTests = new DurationTests();
-
         [Test]
         public void CheckUnits()
         {

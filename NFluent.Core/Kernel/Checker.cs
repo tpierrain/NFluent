@@ -12,6 +12,7 @@
 //   limitations under the License.
 // </copyright>  
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace NFluent.Kernel
 {
     using System;
@@ -25,7 +26,8 @@ namespace NFluent.Kernel
     /// </summary>
     /// <typeparam name="T">Type of the value to assert on.</typeparam>
     /// <typeparam name="TC">Check interface.</typeparam>
-    internal class Checker<T, TC> : IChecker<T, TC> where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    internal class Checker<T, TC> : IChecker<T, TC>
+        where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         #region fields
 
@@ -58,10 +60,7 @@ namespace NFluent.Kernel
         /// </value>
         public T Value
         {
-            get
-            {
-                return this.fluentCheckForExtensibility.Value;
-            }
+            get { return this.fluentCheckForExtensibility.Value; }
         }
 
         /// <summary>
@@ -73,10 +72,7 @@ namespace NFluent.Kernel
         /// </value>
         public bool Negated
         {
-            get
-            {
-                return this.fluentCheckForExtensibility.Negated;
-            }
+            get { return this.fluentCheckForExtensibility.Negated; }
         }
 
         #endregion
@@ -115,10 +111,10 @@ namespace NFluent.Kernel
         /// <summary>
         /// Sets an optional label for the SUT to be used instead of the default one for message generation.
         /// </summary>
-        /// <param name="sutLabel">The label for the SUT.</param>
-        public void SetSutLabel(string sutLabel)
+        /// <param name="newLabel">The label for the SUT.</param>
+        public void SetSutLabel(string newLabel)
         {
-            this.sutLabel = string.Format("[{0}]", sutLabel);
+            this.sutLabel = string.Format("[{0}]", newLabel);
         }
 
         /// <summary>

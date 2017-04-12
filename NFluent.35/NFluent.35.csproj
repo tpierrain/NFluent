@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DOTNET_3_5</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\NFluent.XML</DocumentationFile>
@@ -34,7 +34,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;DOTNET_3_5</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\NFluent.XML</DocumentationFile>
@@ -171,6 +171,9 @@
     </Compile>
     <Compile Include="..\NFluent.Core\Helpers\IsInstanceHelper.cs">
       <Link>Helpers\IsInstanceHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core\Helpers\StringDifference.cs">
+      <Link>Helpers\StringDifference.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core\Helpers\TimeHelper.cs">
       <Link>Helpers\TimeHelper.cs</Link>
@@ -332,7 +335,7 @@
       <Link>TimeUnit.cs</Link>
     </Compile>
     <Compile Include="..\Version.cs">
-      <Link>Version.cs</Link>
+      <Link>Properties\Version.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

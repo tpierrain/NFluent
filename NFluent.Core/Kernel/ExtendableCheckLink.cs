@@ -18,18 +18,16 @@
 
 namespace NFluent.Kernel
 {
-    using System.Diagnostics.CodeAnalysis;
-
     /// <summary>
     /// Provides an specific implementation for IEnumerable fluent check. Required to implement IEnumerable fluent API.
     /// </summary>
     /// <typeparam name="T">
     /// Type managed by this extension.
     /// </typeparam>
-    /// <typeparam name="U">Type of the reference comparand.</typeparam>
-    internal class ExtendableCheckLink<T, U> : CheckLink<ICheck<T>>, IExtendableCheckLink<T, U>
+    /// <typeparam name="TU">Type of the reference comparand.</typeparam>
+    internal class ExtendableCheckLink<T, TU> : CheckLink<ICheck<T>>, IExtendableCheckLink<T, TU>
     {
-        private readonly U originalComparand;
+        private readonly TU originalComparand;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtendableCheckLink{T,U}"/> class. 
@@ -40,7 +38,7 @@ namespace NFluent.Kernel
         /// <param name="originalComparand">
         /// Comparand used for the first check.
         /// </param>
-        public ExtendableCheckLink(IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense previousCheck, U originalComparand) : base(previousCheck)
+        public ExtendableCheckLink(IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense previousCheck, TU originalComparand) : base(previousCheck)
         {
             this.originalComparand = originalComparand;
         }
@@ -51,7 +49,7 @@ namespace NFluent.Kernel
         /// <value>
         /// Initial list that was used in Contains.
         /// </value>
-        public U OriginalComparand
+        public TU OriginalComparand
         {
             get
             {
