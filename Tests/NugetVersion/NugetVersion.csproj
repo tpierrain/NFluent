@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{50136517-047A-4081-AC30-878560F108DF}</ProjectGuid>
+    <ProjectGuid>{86CDBF0C-273F-4A35-9519-E666ED839561}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NuggetVersion</RootNamespace>
-    <AssemblyName>NuggetVersion</AssemblyName>
+    <RootNamespace>NugetVersion</RootNamespace>
+    <AssemblyName>NugetVersion</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

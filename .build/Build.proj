@@ -48,7 +48,7 @@
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
     
     <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
-    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\NuggetVersion\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
+    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\Tests\NugetVersion\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
     <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\NFluent.40.Tests\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
   
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
