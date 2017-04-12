@@ -46,6 +46,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\NFluent.Core.Tests\NFluent.Core.Tests.csproj" />
-    <ProjectReference Include="..\..\NFluent.Core\NFluent.Core.csproj" />
+    <ProjectReference Include="..\..\NFluent\NFluent.csproj" />
   </ItemGroup>
 </Project>  

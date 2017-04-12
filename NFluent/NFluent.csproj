@@ -21,7 +21,7 @@
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>http://www.n-fluent.net/</PackageProjectUrl>
     <RootNamespace>NFluent</RootNamespace>
-    <AssemblyName>NFluent.Standard</AssemblyName>
+    <AssemblyName>NFluent</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

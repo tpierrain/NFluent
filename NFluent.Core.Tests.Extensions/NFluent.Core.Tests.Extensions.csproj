@@ -24,14 +24,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NFluent.Core\NFluent.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NFluent\NFluent.csproj" />
   </ItemGroup>
 </Project>  

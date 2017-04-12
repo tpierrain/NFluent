@@ -66,9 +66,6 @@
     <Compile Include="..\NFluent.Core.Tests\ComparableRelatedTests.cs">
       <Link>ComparableRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Tests\Constants.cs">
-      <Link>Constants.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.Core.Tests\ContainsChainedSyntaxTests.cs">
       <Link>ContainsChainedSyntaxTests.cs</Link>
     </Compile>
