@@ -1,6 +1,6 @@
 ﻿<ProjectConfiguration>
   <Settings>
-    <IgnoreThisComponentCompletely>True</IgnoreThisComponentCompletely>
+    <IgnoreThisComponentCompletely>False</IgnoreThisComponentCompletely>
     <PreviouslyBuiltSuccessfully>True</PreviouslyBuiltSuccessfully>
   </Settings>
 </ProjectConfiguration>
