@@ -31,39 +31,48 @@
 
   <!-- 1- Do the BUILD -->
 
-  <Target Name="DotnetRestore">
+  <Target Name="DotnetCoreRestore">
       
-    <Message Importance="high" Text="--------- DOTNET RESTORE  ---------"/>     
+    <Message Importance="high" Text="--------- DOTNET RESTORE  -------------------------------------------"/>     
     <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
-    <Exec Command="dotnet restore $(SolutionRoot)\NFluent\project.json" />
-    <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Core.Tests\project.json" />
-    <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Tests.Extensions.Core\project.json" />
+    <Exec Command="dotnet restore $(SolutionRoot)\NFluent\" />
+    <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Core.Tests\" />
+    <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Core.Tests.Extensions\" />
 
-    <Message Importance="high" Text="--------- end of DOTNET RESTORE  ---------"/>
+    <Message Importance="high" Text="--------- end of DOTNET RESTORE  -------------------------------------"/>
   </Target>
   
 
-  <Target Name="NugetRestore" DependsOnTargets="DotnetRestore">
+  <Target Name="NugetRestore" DependsOnTargets="DotnetCoreRestore">
       
-    <Message Importance="high" Text="============ NugetRestore"/>     
+    <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
+    
     <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
     <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\NFluent.40.Tests\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
+  
+    <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
+  
   </Target>
   
   <Target Name="Build" DependsOnTargets="NugetRestore">
 
-      <Message Importance="high" Text="--------- NUGET RESTORE  ---------"/>
-
+    <Message Importance="high" Text="--------- BUILD  -------------------------------------------"/>
+    
       <Message Importance="high" Text="
 ---------------------------------------------------------------
 BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
 ---------------------------------------------------------------
       "  />
+
+<Message Importance="high" Text="--------- will run: $(SolutionRoot)\$(SolutionName).sln"/>
+
       <MSBuild Projects="$(SolutionRoot)\$(SolutionName).sln" 
                 Targets="Build" 
                 Properties="Configuration=$(Configuration)" />
 
-      <Message Importance="high" Text="--------- end of NUGET RESTORE  ---------"/>
+
+    <Message Importance="high" Text="--------- end of BUILD  -------------------------------------"/>
+  
   </Target>
     
     
@@ -109,7 +118,7 @@ RUN ALL UNIT TESTS
 
     <Message Importance="high" Text="--------- RUN THE .NET CORE TESTS ---------"/>
 
-      <Exec Command="dotnet test $(SolutionRoot)\NFluent.Core.Tests\project.json" />
+      <Exec Command="dotnet test $(SolutionRoot)\NFluent.Core.Tests\NFluent.Core.Tests.csproj" />
       
     <Message Importance="high" Text="--------- end of RUN THE .NET CORE TESTS ---------"/>
 
@@ -130,8 +139,8 @@ RUN ALL UNIT TESTS
       <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /E /Y" />
 
       <!-- NFluent (Core) then -->
-      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).Core\bin\$(Configuration)\*.* $(BinariesPath)\Core\ /E /Y" />
-      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).Core\bin\$(Configuration)\*.* $(BinariesPath)\Core\ /E /Y" />
+      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName)\bin\$(Configuration)\*.* $(BinariesPath)\Core\ /E /Y" />
+      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName)\bin\$(Configuration)\*.* $(BinariesPath)\Core\ /E /Y" />
 
       <!-- NFluent (PCL) then -->
       <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /E /Y" />
