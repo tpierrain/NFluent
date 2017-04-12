@@ -51,43 +51,43 @@
     <Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Internals.Tests\ContainsTests.cs">
+    <Compile Include="..\NFluent.Core.Tests.Internals\ContainsTests.cs">
       <Link>ContainsTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Internals.Tests\FluentMessageTests.cs">
+    <Compile Include="..\NFluent.Core.Tests.Internals\FluentMessageTests.cs">
       <Link>FluentMessageTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Internals.Tests\ForDocumentation\CheckDescription.cs">
+    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\CheckDescription.cs">
       <Link>ForDocumentation\CheckDescription.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Internals.Tests\ForDocumentation\CheckList.cs">
+    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\CheckList.cs">
       <Link>ForDocumentation\CheckList.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Internals.Tests\ForDocumentation\FullRunDescription.cs">
+    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\FullRunDescription.cs">
       <Link>ForDocumentation\FullRunDescription.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Internals.Tests\ForDocumentation\GenerateErrorMessages.cs">
+    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\GenerateErrorMessages.cs">
       <Link>ForDocumentation\GenerateErrorMessages.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Internals.Tests\ForDocumentation\LocaleChecks.cs">
+    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\LocaleChecks.cs">
       <Link>ForDocumentation\LocaleChecks.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Internals.Tests\ForDocumentation\RunnerHelper.cs">
+    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\RunnerHelper.cs">
       <Link>ForDocumentation\RunnerHelper.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Internals.Tests\ForDocumentation\TypeChecks.cs">
+    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\TypeChecks.cs">
       <Link>ForDocumentation\TypeChecks.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Internals.Tests\NotRelatedTests.cs">
+    <Compile Include="..\NFluent.Core.Tests.Internals\NotRelatedTests.cs">
       <Link>NotRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Internals.Tests\StringDifferenceAnalyzerTests.cs">
+    <Compile Include="..\NFluent.Core.Tests.Internals\StringDifferenceAnalyzerTests.cs">
       <Link>StringDifferenceAnalyzerTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Internals.Tests\ValueBlockTests.cs">
+    <Compile Include="..\NFluent.Core.Tests.Internals\ValueBlockTests.cs">
       <Link>ValueBlockTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Internals.Tests\XamarinSpecificTests.cs">
+    <Compile Include="..\NFluent.Core.Tests.Internals\XamarinSpecificTests.cs">
       <Link>XamarinSpecificTests.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
