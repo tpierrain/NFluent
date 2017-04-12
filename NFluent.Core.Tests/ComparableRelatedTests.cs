@@ -48,9 +48,7 @@ namespace NFluent.Tests
         public void IsBeforeDoesNotThrowNullReferenceExceptionWithNullAsInput()
         {
             var v1 = new Version(1, 0);
-            Version v2 = null;
-
-            Check.That(v2).IsBefore(v1);
+            Check.That((Version) null).IsBefore(v1);
         }
 
         [Test]
@@ -131,9 +129,7 @@ namespace NFluent.Tests
         public void IsAfterDoesNotThrowNullReferenceExceptionWithNullAsInput()
         {
             var v1 = new Version(1, 0);
-            Version v2 = null;
-
-            Check.ThatCode(() => Check.That(v2).IsAfter(v1))
+            Check.ThatCode(() => Check.That((Version) null).IsAfter(v1))
                     .Throws<FluentCheckException>()
                     .WithMessage(Environment.NewLine+ "The checked value is null so not after the reference value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected value: after" + Environment.NewLine + "\t[1.0]");
         }

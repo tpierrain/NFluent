@@ -74,6 +74,7 @@ namespace NFluent.Tests
             Check.That(anotherDurationWithSameValue.Equals(firstDuration)).IsTrue();
             Check.That(anotherDurationWithSameValue == firstDuration).IsTrue();
             Check.That(anotherDurationWithSameValue.Equals(null)).IsFalse();
+            // ReSharper disable once SuspiciousTypeConversion.Global
             Check.That(anotherDurationWithSameValue.Equals(20)).IsFalse();
             Check.That(anotherDurationWithSameValue.Equals((object)firstDuration)).IsTrue();
         }

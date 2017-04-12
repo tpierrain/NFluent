@@ -13,16 +13,13 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using System.CodeDom;
-
 namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
 
     using Extensibility;
-    using Messages;
-    using NFluent.Extensions;
+    using Extensions;
 
     using NUnit.Framework;
 
@@ -41,16 +38,7 @@ namespace NFluent.Tests
             Assert.AreEqual(Environment.NewLine+ "The checked string is ok.", message);
         }
         
-        [Test]
-        public void BlockFailTest()
-        {
-            Check.ThatCode(() =>
-            {
-                var block = new MessageBlock(null, null, null);
-            })
-            .Throws<ArgumentNullException>();
-        }
-
+ 
         [Test]
         public void CheckedBlockTest()
         {
@@ -59,20 +47,6 @@ namespace NFluent.Tests
             var lines = message.Split('\n');
             Assert.AreEqual(4, lines.Length);
             Assert.IsTrue(lines[1].Contains("checked"));
-        }
-
-        [Test]
-        public void BlockTest()
-        {
-            var message = FluentMessage.BuildMessage("test");
-            const int X = 4;
-            var block = new MessageBlock(message, X, new GenericLabelBlock());
-
-            Assert.AreEqual("The  value:" + Environment.NewLine + "\t[4]", block.GetMessage());
-
-            block.WithHashCode().WithType();
-
-            Assert.AreEqual("The  value:" + Environment.NewLine + "\t[4] of type: [int] with HashCode: [4]", block.GetMessage());
         }
 
         [Test]
@@ -116,10 +90,10 @@ namespace NFluent.Tests
         public void WeCanConfigureTheExpectedLabel()
         {
             var possibleElements = new[] { "Paco de Lucia", "Jimi Hendrix", "Baden Powell" };
-            const string CheckedValue = "The Black Keys";
+            const string checkedValue = "The Black Keys";
 
             var errorMessage = FluentMessage.BuildMessage("The {0} is not one of the possible elements.")
-                                            .On(CheckedValue)
+                                            .On(checkedValue)
                                             .And.ReferenceValues(possibleElements).Label("The possible elements:")
                                             .ToString();
 
@@ -129,10 +103,10 @@ namespace NFluent.Tests
         [Test]
         public void WorksWithChar()
         {
-            const char LowerCasedA = 'a';
+            const char lowerCasedA = 'a';
 
             var message = FluentMessage.BuildMessage("The {0} is properly displayed.")
-                                            .On(LowerCasedA)
+                                            .On(lowerCasedA)
                                             .ToString();
 
             Assert.AreEqual(Environment.NewLine+ "The checked char is properly displayed." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']", message);
@@ -141,10 +115,10 @@ namespace NFluent.Tests
         [Test]
         public void WorksWithPunctuationChar()
         {
-            const char SlashChar = '/';
+            const char slashChar = '/';
 
             var message = FluentMessage.BuildMessage("The {0} is properly displayed.")
-                                            .On(SlashChar)
+                                            .On(slashChar)
                                             .ToString();
 
             Assert.AreEqual(Environment.NewLine+ "The checked char is properly displayed." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['/']", message);
@@ -153,25 +127,9 @@ namespace NFluent.Tests
         [Test]
         public void DoubleCurlyBracesWorks()
         {
-            const string Parameter = "string{45}";
+            const string parameter = "string{45}";
 
-            Assert.AreEqual("string{{45}}", Parameter.DoubleCurlyBraces());
-        }
-
-        [Test]
-        public void ShouldCreateExpectedLabel()
-        {
-            var label = GenericLabelBlock.BuildExpectedBlock(null);
-
-            Assert.AreEqual("The expected value:", label.CustomMessage(null));
-        }
-    
-        [Test]
-        public void ShouldCreateActualLabel()
-        {
-            var label = GenericLabelBlock.BuildActualBlock(null);
-
-            Assert.AreEqual("The actual value:", label.CustomMessage(null));
+            Assert.AreEqual("string{{45}}", parameter.DoubleCurlyBraces());
         }
 
 
@@ -187,8 +145,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(()=>
             {
-                var errorMessage =
-                    FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithEnumerableCount(0);
+                FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithEnumerableCount(0);
             }).Throws<NotSupportedException>();
         }
 
@@ -197,7 +154,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithHashCode();
+                FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithHashCode();
             }).Throws<NotSupportedException>();
         }
 
@@ -206,7 +163,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).OfType(typeof(int));
+                FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).OfType(typeof(int));
             }).Throws<NotSupportedException>();
         }
 
@@ -214,10 +171,11 @@ namespace NFluent.Tests
         public void ShouldBlockWorksOnLongEnumeration()
         {
             var possibleElements = "We need to test the message block methods with a long enumeration. A string convterted to a char array should be enough.";
-            const string CheckedValue = "The Black Keys";
+            const string checkedValue = "The Black Keys";
 
+            // ReSharper disable once UnusedVariable
             var errorMessage = FluentMessage.BuildMessage("The {0} is not one of the possible elements.")
-                                            .On(CheckedValue.ToCharArray())
+                                            .On(checkedValue.ToCharArray())
                                             .And.ReferenceValues(possibleElements.ToCharArray()).Label("The possible elements:")
                                             .ToString();
 

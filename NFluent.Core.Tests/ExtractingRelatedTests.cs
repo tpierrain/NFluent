@@ -61,10 +61,10 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 // Forced to enumerate the result so that the Extracting extension method is executed (IEnumerable's lazy evaluation)
-                foreach (var propertyValue in musicians.Extracting("Portnaouaq"))
+                foreach (var unused in musicians.Extracting("Portnaouaq"))
                 {
                 }
-            })
+            })  
             .Throws<InvalidOperationException>();
         }
 
@@ -100,6 +100,7 @@ namespace NFluent.Tests
             Check.That(persons.Extracting("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
         }
 
+#pragma warning disable 618
         [Test]
         public void PropertiesWorksWithArray()
         {
@@ -113,6 +114,21 @@ namespace NFluent.Tests
 
             Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
         }
+
+        [Test]
+        public void PropertiesWorksWithEnumerable()
+        {
+            var persons = new List<Person>
+                                 {
+                                     new Person { Name = "Thomas", Age = 38 },
+                                     new Person { Name = "Achille", Age = 10, Nationality = Nationality.French },
+                                     new Person { Name = "Anton", Age = 7, Nationality = Nationality.French },
+                                     new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
+                                 };
+
+            Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+        }
+#pragma warning restore 618
 
         #endregion
     }

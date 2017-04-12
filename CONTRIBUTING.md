@@ -1,17 +1,17 @@
-How to contribute
-=================
+# How to contribute
 
 First of all, thank you for wanting to contribute to NFluent! 
 There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things.
 
 
-Reporting an Issue
-------------------
+## Reporting an Issue
+
 Reported issues are assessed rapidly and fix in a timely manner if identified as important. Note that feedback on error messages are welcomed.
 When reporting an issue in Git, please fill all present fields. Quality of our response depends on your effort!
 
-Making Changes
---------------
+
+## Making Changes
+
 
 1. [Fork](http://help.github.com/forking/) on GitHub
 1. Make sure your line-endings are [configured correctly](https://github.com/NancyFx/Nancy/wiki/Make-sure-line-endings-doesn%27t-bite-you)
@@ -25,8 +25,8 @@ Making Changes
 
 You should **never** work on a clone of master, and you should **never** send a pull request from master - always from a branch. The reasons for this are detailed below.
 
-Before adding code
-------------------
+## Before adding code
+
  - Don't forget to install the __[Project Linker Visual Studio Add-in](https://visualstudiogallery.msdn.microsoft.com/7c36d531-4464-479b-934b-bbe71e621528)__ so that NFluent35 and NFluent 40 projects (same for tests) contain the same elements (adding all your new types in the *35 projects by default if possible, and letting the plugin to add links in the *40 version).
 
 #### WARNING: (almost) all files are now located within the NFluent.Core project, and the other projects embed file aliases
@@ -35,8 +35,7 @@ __Since T4 template aren't supported for dotnet core projects, we've setup a hac
 
 ---
 
-Handling Updates from Upstream/Master
--------------------------------------
+## Handling Updates from Upstream/Master
 
 While you're working away in your branch it's quite possible that your upstream master (most likely the canonical NFluent version) may be updated. If this happens you should:
 
@@ -51,8 +50,7 @@ This ensures that your history is "clean" i.e. you have one branch off from mast
 
 If you're working on a long running feature then you may want to do this quite often, rather than run the risk of potential merge issues further down the line.
 
-Sending a Pull Request
-----------------------
+## Sending a Pull Request
 
 First of all, check that your code is in line with the __[NFluent Definition of Done (DoD) for Development](./DevDoD.md)__.
 
@@ -67,7 +65,7 @@ When you're ready to go you should confirm that you are up to date and rebased w
 
 - - - 
 
-Disclaimer
-----------
+## Disclaimer
+
 This `How to contribute` procedure was mostly extracted from the awesome [Nancy](https://github.com/NancyFx/Nancy) open source project.
 Thanks to them for their inspiration.

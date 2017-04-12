@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AC520FDB-8125-46F3-85F3-D4962C53C136}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NFluent.Tests.Extensions</RootNamespace>
+    <AssemblyName>NFluent.Tests.Extensions</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.1\lib\net35\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\NFluent.Core.Tests.Extensions\Child.cs">
+      <Link>Child.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests.Extensions\ExtensionsForMarketingPurpose.cs">
+      <Link>ExtensionsForMarketingPurpose.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests.Extensions\ExtensionSpikeTests.cs">
+      <Link>ExtensionSpikeTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests.Extensions\LinkableExtensionsTests.cs">
+      <Link>LinkableExtensionsTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests.Extensions\Movie.cs">
+      <Link>Movie.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests.Extensions\MovieCheckExtensions.cs">
+      <Link>MovieCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests.Extensions\Nationality.cs">
+      <Link>Nationality.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests.Extensions\NationalityExtensions.cs">
+      <Link>NationalityExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests.Extensions\Person.cs">
+      <Link>Person.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests.Extensions\PersonExtensions.cs">
+      <Link>PersonExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests.Extensions\ReadmeRelatedTests.cs">
+      <Link>ReadmeRelatedTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NFluent.35\NFluent.35.csproj">
+      <Project>{3A474510-F384-41CE-9270-539B1E51DA7E}</Project>
+      <Name>NFluent.35</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NFluent.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

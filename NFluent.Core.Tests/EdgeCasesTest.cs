@@ -41,10 +41,11 @@ namespace NFluent.Tests
         [Test]
         public void NumberTypeChanges()
         {
-            const long Test = 4L;
+            const long test = 4L;
 
-            Check.That(Test).IsEqualTo(4);
+            Check.That(test).IsEqualTo(4);
         }
+#pragma warning disable 618
 
         [Test]
         public void CheckNumbersWithDecimalParts()
@@ -55,4 +56,5 @@ namespace NFluent.Tests
             Check.That(.02).IsGreaterThan(.01);
         }
     }
+#pragma warning restore 618
 }

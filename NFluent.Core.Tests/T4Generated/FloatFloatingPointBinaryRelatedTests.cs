@@ -30,14 +30,18 @@ namespace NFluent.Tests
         //// as the golden source/model for this autogeneration
         //// (i.e. the one dedicated to the integer values).
         //// -----------------------------------------------------
+        private const float Zero = 0F;
+        private const float NotANumber = Zero / Zero;
+        private const float Twenty = 20F;
+        private const float InfiniteNumber = Twenty / Zero;
+        private const float TwentyF = 20F;
+
 
         #region IsNaN
 
         [Test]
         public void IsNaNWorks()
         {
-            const float Zero = 0F;
-            const float NotANumber = Zero / Zero;
 
             Check.That(NotANumber).IsNaN();
         }
@@ -45,8 +49,6 @@ namespace NFluent.Tests
         [Test]
         public void IsNaNThrowsWhenTheValueIsANumber()
         {
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).IsNaN();
@@ -58,17 +60,12 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNaNWorks()
         {
-            const float Twenty = 20F;
-
             Check.That(Twenty).Not.IsNaN();
         }
 
         [Test]
         public void NotIsNaNThrowsAnExceptionWhenFailing()
         {
-            const float Zero = 0F;
-            const float NotANumber = Zero / Zero;
-
             Check.ThatCode(() =>
             {
                 Check.That(NotANumber).Not.IsNaN();
@@ -84,18 +81,12 @@ namespace NFluent.Tests
         [Test]
         public void IsFiniteWorks()
         {
-            const float Twenty = 20F;
-
             Check.That(Twenty).IsFinite();
         }
 
         [Test]
         public void IsFiniteThrowsWithInfinity()
         {
-            const float Zero = 0F;
-            const float Twenty = 20F;
-            const float InfiniteNumber = Twenty / Zero;
-
             Check.ThatCode(() =>
             {
                 Check.That(InfiniteNumber).IsFinite();
@@ -107,18 +98,12 @@ namespace NFluent.Tests
         [Test]
         public void NotIsFiniteWorks()
         {
-            const float Zero = 0F;
-            const float Twenty = 20F;
-            const float InfiniteNumber = Twenty / Zero;
-
             Check.That(InfiniteNumber).Not.IsFinite();
         }
 
         [Test]
         public void NotIsFiniteThrowsWithFiniteNumber()
         {
-            const float Twenty = 20F;
-
             Check.ThatCode(() =>
             {
                 Check.That(Twenty).Not.IsFinite();
@@ -130,7 +115,6 @@ namespace NFluent.Tests
         [Test]
         public void IsAroundWorks()
         {
-            const float Twenty = 20F;
             Check.That(Twenty).IsCloseTo(20.1, 0.2);
         }
 
@@ -139,9 +123,8 @@ namespace NFluent.Tests
         {
             using (new CultureSession("en-US"))
             {
-                const float Twenty = 20F;
                 Check.ThatCode(() => {
-                    Check.That(Twenty).IsCloseTo(20.1, 0.01);
+                    Check.That(TwentyF).IsCloseTo(20.1, 0.01);
                 })
                                     .Throws<FluentCheckException>()
                                     .WithMessage(Environment.NewLine+ "The checked value is outside the expected value range." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[20]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[20.1 (+/- 0.01)]");

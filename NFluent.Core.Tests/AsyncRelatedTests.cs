@@ -15,7 +15,6 @@
 
 namespace NFluent.Tests
 {
-#if CORE || DOTNET_40
     using System;
     using System.Security;
     using System.Threading;
@@ -133,5 +132,4 @@ namespace NFluent.Tests
 
 #endregion
     }
-#endif
 }

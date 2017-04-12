@@ -6,9 +6,6 @@
 <#@ assembly name="System.Windows.Forms" #>
 <#@ assembly name="EnvDTE"#>
 <#@ assembly name="EnvDTE80" #>
-<#@ assembly name="Microsoft.VisualStudio.Shell.10.0"#>
-<#@ assembly name="Microsoft.VisualStudio.Shell.Interop "#>
-<#@ import namespace="Microsoft.VisualStudio.Shell.Interop"#>
 <#@ import namespace="System" #>
 <#@ import namespace="System.Data" #>
 <#@ import namespace="System.Data.Objects" #>
@@ -80,6 +77,7 @@ void WriteLineToBuildPane (string message){
 /// </summary>
 /// <param name="message">Text to output</param>
 void WriteToBuildPane (string message){
+/*
        IVsOutputWindow outWindow = (this.Host as IServiceProvider).GetService(
 typeof( SVsOutputWindow ) ) as IVsOutputWindow;
        Guid generalPaneGuid =
@@ -89,6 +87,7 @@ Microsoft.VisualStudio.VSConstants.OutputWindowPaneGuid.BuildOutputPane_guid;
        outWindow.GetPane( ref generalPaneGuid , out generalPane );
        generalPane.OutputString( message  );
        generalPane.Activate(); // Brings this pane into view
+	   */
 }
 
 /// <summary>

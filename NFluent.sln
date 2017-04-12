@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CCA550FA-833A-4F2E-9C81-78EE585A49CC}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,7 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		CONTRIBUTING.md = CONTRIBUTING.md
 		DevDoD.md = DevDoD.md
 		ForNCrunchUsers.md = ForNCrunchUsers.md
-		global.json = global.json
 		HowToAddANewAssertion.md = HowToAddANewAssertion.md
 		LICENSE.txt = LICENSE.txt
 		.build\MSBuild.Community.Tasks.dll = .build\MSBuild.Community.Tasks.dll
@@ -28,7 +27,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		UseCases.md = UseCases.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.Extensions", "NFluent.Tests.Extensions\NFluent.Tests.Extensions.csproj", "{AC520FDB-8125-46F3-85F3-D4962C53C136}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5BD348A4-E85B-4283-AA2A-01967F6F11C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{64EFC15A-C599-41B6-BD22-144F8468A439}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Compatibility", "Compatibility", "{E3F40977-9951-4FCE-AA2C-9D3D804D836C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests.Extensions", "NFluent.35.Tests.Extensions\NFluent.35.Tests.Extensions.csproj", "{AC520FDB-8125-46F3-85F3-D4962C53C136}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35", "NFluent.35\NFluent.35.csproj", "{3A474510-F384-41CE-9270-539B1E51DA7E}"
 EndProject
@@ -36,22 +41,33 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40", "NFluent.40\NF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40.Tests", "NFluent.40.Tests\NFluent.40.Tests.csproj", "{BDAA4D22-45A1-470E-A142-70E1F194EE3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.Extensions.40", "NFluent.Tests.Extensions.40\NFluent.Tests.Extensions.40.csproj", "{1BAA72CB-3A46-4711-9A5B-F96CF20D465E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40.Tests.Extensions", "NFluent.40.Tests.Extensions\NFluent.40.Tests.Extensions.csproj", "{1BAA72CB-3A46-4711-9A5B-F96CF20D465E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests", "NFluent.35.Tests\NFluent.35.Tests.csproj", "{6B88C45A-D45E-40FB-8635-D0E0EF0454E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.PCL", "NFluent.PCL\NFluent.PCL.csproj", "{4797A166-0410-451E-8DAB-DA7113D77062}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NFluent.Core", "NFluent.Core\NFluent.Core.xproj", "{0807754F-A6C2-40EA-B42E-64D8578F6B8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40.Tests.Internals", "Tests\NFluent.40.Internals.Tests\NFluent.40.Tests.Internals.csproj", "{A7C2F427-3D13-4C9B-8663-1CE1E0734608}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NFluent.Core.Tests", "NFluent.Core.Tests\NFluent.Core.Tests.xproj", "{EE24FFE4-76DA-4500-A464-21C96C02E66A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests.Internals", "Tests\NFluent.35.Internals.Tests\NFluent.35.Tests.Internals.csproj", "{9E500148-4F6C-424A-AA09-801DB1749677}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NFluent.Tests.Extensions.Core", "NFluent.Tests.Extensions.Core\NFluent.Tests.Extensions.Core.xproj", "{B262ABB9-6192-4DEE-8144-89C3C7E465EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuggetVersion", "tests\Nugget\NuggetVersion.csproj", "{50136517-047A-4081-AC30-878560F108DF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent", "NFluent\NFluent.csproj", "{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.Tests.Extensions", "NFluent.Core.Tests.Extensions\NFluent.Core.Tests.Extensions.csproj", "{0EFC64F1-018A-4BB2-93FF-07CA668CA818}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.Tests", "NFluent.Core.Tests\NFluent.Core.Tests.csproj", "{269C2952-A589-4B42-83E6-B187E8B6A495}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.Tests.Internals", "Tests\NFluent.Core.Internals.Tests\NFluent.Core.Tests.Internals.csproj", "{CE90E7CF-957D-4DF9-AE63-93CEA369B231}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OlderTests", "OlderTests", "{261B1CE2-51CF-4F30-B689-3E78C3916F3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Description = NFluent project, including tests
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AC520FDB-8125-46F3-85F3-D4962C53C136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -82,21 +98,55 @@ Global
 		{4797A166-0410-451E-8DAB-DA7113D77062}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4797A166-0410-451E-8DAB-DA7113D77062}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4797A166-0410-451E-8DAB-DA7113D77062}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0807754F-A6C2-40EA-B42E-64D8578F6B8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0807754F-A6C2-40EA-B42E-64D8578F6B8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0807754F-A6C2-40EA-B42E-64D8578F6B8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0807754F-A6C2-40EA-B42E-64D8578F6B8C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE24FFE4-76DA-4500-A464-21C96C02E66A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE24FFE4-76DA-4500-A464-21C96C02E66A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE24FFE4-76DA-4500-A464-21C96C02E66A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE24FFE4-76DA-4500-A464-21C96C02E66A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B262ABB9-6192-4DEE-8144-89C3C7E465EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B262ABB9-6192-4DEE-8144-89C3C7E465EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B262ABB9-6192-4DEE-8144-89C3C7E465EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B262ABB9-6192-4DEE-8144-89C3C7E465EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7C2F427-3D13-4C9B-8663-1CE1E0734608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7C2F427-3D13-4C9B-8663-1CE1E0734608}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7C2F427-3D13-4C9B-8663-1CE1E0734608}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C2F427-3D13-4C9B-8663-1CE1E0734608}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E500148-4F6C-424A-AA09-801DB1749677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E500148-4F6C-424A-AA09-801DB1749677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E500148-4F6C-424A-AA09-801DB1749677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E500148-4F6C-424A-AA09-801DB1749677}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50136517-047A-4081-AC30-878560F108DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50136517-047A-4081-AC30-878560F108DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50136517-047A-4081-AC30-878560F108DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50136517-047A-4081-AC30-878560F108DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EFC64F1-018A-4BB2-93FF-07CA668CA818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EFC64F1-018A-4BB2-93FF-07CA668CA818}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EFC64F1-018A-4BB2-93FF-07CA668CA818}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EFC64F1-018A-4BB2-93FF-07CA668CA818}.Release|Any CPU.Build.0 = Release|Any CPU
+		{269C2952-A589-4B42-83E6-B187E8B6A495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{269C2952-A589-4B42-83E6-B187E8B6A495}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{269C2952-A589-4B42-83E6-B187E8B6A495}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{269C2952-A589-4B42-83E6-B187E8B6A495}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE90E7CF-957D-4DF9-AE63-93CEA369B231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE90E7CF-957D-4DF9-AE63-93CEA369B231}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE90E7CF-957D-4DF9-AE63-93CEA369B231}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE90E7CF-957D-4DF9-AE63-93CEA369B231}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E3F40977-9951-4FCE-AA2C-9D3D804D836C} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
+		{AC520FDB-8125-46F3-85F3-D4962C53C136} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
+		{3A474510-F384-41CE-9270-539B1E51DA7E} = {64EFC15A-C599-41B6-BD22-144F8468A439}
+		{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667} = {64EFC15A-C599-41B6-BD22-144F8468A439}
+		{BDAA4D22-45A1-470E-A142-70E1F194EE3F} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
+		{1BAA72CB-3A46-4711-9A5B-F96CF20D465E} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
+		{6B88C45A-D45E-40FB-8635-D0E0EF0454E9} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
+		{4797A166-0410-451E-8DAB-DA7113D77062} = {64EFC15A-C599-41B6-BD22-144F8468A439}
+		{A7C2F427-3D13-4C9B-8663-1CE1E0734608} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
+		{9E500148-4F6C-424A-AA09-801DB1749677} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
+		{50136517-047A-4081-AC30-878560F108DF} = {E3F40977-9951-4FCE-AA2C-9D3D804D836C}
+		{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B} = {64EFC15A-C599-41B6-BD22-144F8468A439}
+		{0EFC64F1-018A-4BB2-93FF-07CA668CA818} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
+		{269C2952-A589-4B42-83E6-B187E8B6A495} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
+		{CE90E7CF-957D-4DF9-AE63-93CEA369B231} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
+		{261B1CE2-51CF-4F30-B689-3E78C3916F3E} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = NFluent.40.Tests\NFluent.40.Tests.csproj

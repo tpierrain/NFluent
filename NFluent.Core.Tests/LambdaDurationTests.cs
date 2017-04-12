@@ -75,7 +75,7 @@ namespace NFluent.Tests
                     {
                         for (var i = 0; i < 1000000; i++)
                         {
-                            var x = i * 2;
+                            var unused = i * 2;
                         }
                     }
                 }).ConsumesLessThan(10, TimeUnit.Milliseconds);

@@ -40,9 +40,8 @@
     <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.4.1\lib\net35\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.1\lib\net35\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,20 +54,17 @@
     <Compile Include="..\NFluent.Core.Tests\AsOperatorTests.cs">
       <Link>AsOperatorTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Tests\AsyncRelatedTests.cs">
-      <Link>AsyncRelatedTests.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.Core.Tests\BooleanRelatedTests.cs">
       <Link>BooleanRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\CharTests.cs">
       <Link>CharTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.Core.Tests\Child.cs">
+      <Link>Child.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.Core.Tests\ComparableRelatedTests.cs">
       <Link>ComparableRelatedTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\Constants.cs">
-      <Link>Constants.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\ContainsChainedSyntaxTests.cs">
       <Link>ContainsChainedSyntaxTests.cs</Link>
@@ -90,9 +86,6 @@
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\DurationTests.cs">
       <Link>DurationTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\DynamicTests.cs">
-      <Link>DynamicTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\EdgeCasesTest.cs">
       <Link>EdgeCasesTest.cs</Link>
@@ -118,35 +111,11 @@
     <Compile Include="..\NFluent.Core.Tests\ExtensibilityHelperTests.cs">
       <Link>ExtensibilityHelperTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ExtensionSpikeTests.cs">
-      <Link>ExtensionSpikeTests.cs</Link>
-    </Compile>
     <Compile Include="..\NFluent.Core.Tests\ExtractingRelatedTests.cs">
       <Link>ExtractingRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\FluentMessageTests.cs">
       <Link>FluentMessageTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\CheckDescription.cs">
-      <Link>ForDocumentation\CheckDescription.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\CheckList.cs">
-      <Link>ForDocumentation\CheckList.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\FullRunDescription.cs">
-      <Link>ForDocumentation\FullRunDescription.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\GenerateErrorMessages.cs">
-      <Link>ForDocumentation\GenerateErrorMessages.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\LocaleChecks.cs">
-      <Link>ForDocumentation\LocaleChecks.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\RunnerHelper.cs">
-      <Link>ForDocumentation\RunnerHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ForDocumentation\TypeChecks.cs">
-      <Link>ForDocumentation\TypeChecks.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\HelpersTest.cs">
       <Link>HelpersTest.cs</Link>
@@ -175,6 +144,12 @@
     <Compile Include="..\NFluent.Core.Tests\LambdaRelatedTests.cs">
       <Link>LambdaRelatedTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.Core.Tests\Mood.cs">
+      <Link>Mood.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\Nationality.cs">
+      <Link>Nationality.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.Core.Tests\NotRelatedTests.cs">
       <Link>NotRelatedTests.cs</Link>
     </Compile>
@@ -187,8 +162,8 @@
     <Compile Include="..\NFluent.Core.Tests\ObjectRelatedTest.cs">
       <Link>ObjectRelatedTest.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ReadmeRelatedTests.cs">
-      <Link>ReadmeRelatedTests.cs</Link>
+    <Compile Include="..\NFluent.Core.Tests\Person.cs">
+      <Link>Person.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\ReverseEngineeringExceptionMessagesHelperTests.cs">
       <Link>ReverseEngineeringExceptionMessagesHelperTests.cs</Link>
@@ -262,14 +237,8 @@
     <Compile Include="..\NFluent.Core.Tests\UserReportedIssuesTests.cs">
       <Link>UserReportedIssuesTests.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Tests\ValueBlockTests.cs">
-      <Link>ValueBlockTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\XamarinSpecificTests.cs">
-      <Link>XamarinSpecificTests.cs</Link>
-    </Compile>
     <Compile Include="..\Version.cs">
-      <Link>Version.cs</Link>
+      <Link>Properties\Version.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -288,10 +257,6 @@
     <ProjectReference Include="..\NFluent.35\NFluent.35.csproj">
       <Project>{3A474510-F384-41CE-9270-539B1E51DA7E}</Project>
       <Name>NFluent.35</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NFluent.Tests.Extensions\NFluent.Tests.Extensions.csproj">
-      <Project>{AC520FDB-8125-46F3-85F3-D4962C53C136}</Project>
-      <Name>NFluent.Tests.Extensions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

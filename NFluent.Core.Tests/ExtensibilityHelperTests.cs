@@ -14,9 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
-    using Kernel;
-    using NFluent.Extensibility;
-
+    using Extensibility;
     using NUnit.Framework;
 
     [TestFixture]
@@ -25,7 +23,7 @@ namespace NFluent.Tests
         [Test]
         public void ExtractcheckerWorks()
         {
-            var checker = ExtensibilityHelper.ExtractChecker(new FluentCheck<string>("kamoulox"));
+            var checker = ExtensibilityHelper.ExtractChecker(Check.That("kamoulox"));
             Check.That(checker).IsNotNull();
             Check.That(checker.Negated).IsFalse();
             Check.That(checker.Value).IsEqualTo("kamoulox");
@@ -34,7 +32,7 @@ namespace NFluent.Tests
         [Test]
         public void ExtractRunnableStructCheckWorks()
         {
-            var runnableStructCheck = ExtensibilityHelper.ExtractStructChecker(new FluentStructCheck<Nationality>(Nationality.Chinese));
+            var runnableStructCheck = ExtensibilityHelper.ExtractStructChecker(Check.ThatEnum(Nationality.Chinese));
             Check.ThatEnum(runnableStructCheck.Value).IsEqualTo(Nationality.Chinese);
             Check.That(runnableStructCheck.Negated).IsFalse();
         }

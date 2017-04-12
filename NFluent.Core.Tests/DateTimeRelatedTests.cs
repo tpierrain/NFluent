@@ -46,8 +46,7 @@ namespace NFluent.Tests
         [Test]
         public void NullableDatTimesAreSupported()
         {
-            DateTime? nullableDate = null;
-            Check.That(nullableDate).IsEqualTo(null);
+            Check.That((DateTime?)null).IsEqualTo(null);
         }
 
         [Test]
@@ -759,7 +758,8 @@ namespace NFluent.Tests
                 tokyoDateTime = TimeZoneInfo.ConvertTime(now, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
             }
             catch
-#if !CORE
+#if !NETCOREAPP1_0
+
             (TimeZoneNotFoundException)
 #endif
             {

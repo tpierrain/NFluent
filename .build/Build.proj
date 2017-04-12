@@ -35,7 +35,7 @@
       
     <Message Importance="high" Text="--------- DOTNET RESTORE  ---------"/>     
     <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
-    <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Core\project.json" />
+    <Exec Command="dotnet restore $(SolutionRoot)\NFluent\project.json" />
     <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Core.Tests\project.json" />
     <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Tests.Extensions.Core\project.json" />
 

@@ -90,11 +90,9 @@ namespace NFluent.Tests
         [Test]
         public void IsInstanceOfThrowsIfValueIsNull()
         {
-            object nullValue = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(nullValue).IsInstanceOf<object>();
+                Check.That((object) null).IsInstanceOf<object>();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked value is not an instance of the expected type." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [object]");
@@ -103,8 +101,7 @@ namespace NFluent.Tests
         [Test]
         public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
         {
-            int? nullValue = null;
-            Check.That(nullValue).IsInstanceOf<int?>();
+            Check.That((int?) null).IsInstanceOf<int?>();
         }
 
         [Test]
@@ -242,18 +239,15 @@ namespace NFluent.Tests
         [Test]
         public void IsNotInstanceOfWorksIfValueIsNull()
         {
-            object nullValue = null;
-            Check.That(nullValue).IsNotInstanceOf<object>();
+            Check.That((object) null).IsNotInstanceOf<object>();
         }
 
         [Test]
         public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            int? nullValue = null;
-
             Check.ThatCode(() =>
             {
-                Check.That(nullValue).IsNotInstanceOf<int?>();
+                Check.That((int?) null).IsNotInstanceOf<int?>();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked value is an instance of [int?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [int?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [int?]");
@@ -302,11 +296,11 @@ namespace NFluent.Tests
         [Test]
         public void IsNotInstanceOfThrowsExceptionWithProperFormatWhenFailsWithInt()
         {
-            const int IntObject = 23;
+            const int intObject = 23;
 
             Check.ThatCode(() =>
             {
-                Check.That(IntObject).IsNotInstanceOf<int>();
+                Check.That(intObject).IsNotInstanceOf<int>();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked value is an instance of [int] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[23] of type: [int]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [int]");
@@ -315,11 +309,11 @@ namespace NFluent.Tests
         [Test]
         public void IsNotInstanceOfThrowsExceptionWithProperFormatWhenFailsWithString()
         {
-            const string Statement = "If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).";
+            const string statement = "If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).";
 
             Check.ThatCode(() =>
             {
-                Check.That(Statement).IsNotInstanceOf<string>();
+                Check.That(statement).IsNotInstanceOf<string>();
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked value is an instance of [string] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).\"] of type: [string]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [string]");
