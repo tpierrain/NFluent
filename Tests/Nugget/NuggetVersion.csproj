@@ -7,8 +7,8 @@
     <ProjectGuid>{50136517-047A-4081-AC30-878560F108DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nugget</RootNamespace>
-    <AssemblyName>Nugget</AssemblyName>
+    <RootNamespace>NuggetVersion</RootNamespace>
+    <AssemblyName>NuggetVersion</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

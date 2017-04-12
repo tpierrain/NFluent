@@ -1,8 +1,8 @@
-﻿namespace Nugget
-{
-    using NFluent;
-    using NUnit.Framework;
+﻿using NFluent;
+using NUnit.Framework;
 
+namespace NuggetVersion
+{
     public class UserReported
     {
         [Test]
