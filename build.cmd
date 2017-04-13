@@ -8,7 +8,7 @@ if "%config%" == "" (
 set targetPath=C:\projects\nfluent\
 set initialPath=%cd%
 
-git clone -q %initialPath% %targetPath%
+git clone %initialPath% %targetPath%
 
 cd %targetPath%
 
