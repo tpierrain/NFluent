@@ -16,7 +16,7 @@
 namespace NFluent
 {
     using System.Collections;
-
+    using System.Collections.Generic;
     using Extensibility;
 
     /// <summary>
@@ -30,6 +30,7 @@ namespace NFluent
         /// <typeparam name="TK">
         /// The type of the key element.
         /// </typeparam>
+        /// <typeparam name="TU">Type for values</typeparam>
         /// <param name="check">
         /// The fluent check to be extended.
         /// </param>
@@ -39,8 +40,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        /*
-        public static ICheckLink<ICheck<IDictionary<K,U>>> ContainsKey<K, U>(this ICheck<IDictionary<K, U> > check, K key)
+        public static ICheckLink<ICheck<IDictionary<TK,TU>>> ContainsKey<TK, TU>(this ICheck<IDictionary<TK, TU> > check, TK key)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
@@ -55,8 +55,8 @@ namespace NFluent
                 },
                 checker.BuildMessage("The {0} does contain the given key, whereas it must not.").Expected(key).Label("Given key:").ToString());
         }
-        */
-        public static ICheckLink<ICheck<IDictionary>> ContainsKey<TK>(this ICheck<IDictionary> check, TK key)
+        
+ /*       public static ICheckLink<ICheck<IDictionary>> ContainsKey<TK>(this ICheck<IDictionary> check, TK key)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
@@ -71,13 +71,14 @@ namespace NFluent
                 },
                 checker.BuildMessage("The {0} does contain the given key, whereas it must not.").Expected(key).Label("Given key:").ToString());
         }
-
+*/
         /// <summary>
         /// Checks that the actual <see cref="IDictionary"/> contains the expected value.
         /// </summary>
         /// <typeparam name="TK">
         /// The type of the key element.
         /// </typeparam>
+        /// <typeparam name="TU">value type</typeparam>
         /// <param name="check">
         /// The fluent check to be extended.
         /// </param>
@@ -87,24 +88,14 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static ICheckLink<ICheck<IDictionary>> ContainsValue<TK>(this ICheck<IDictionary> check, TK expectedValue)
+        public static ICheckLink<ICheck<IDictionary<TK, TU>>> ContainsValue<TK, TU>(this ICheck<IDictionary<TK, TU>> check, TU expectedValue)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
                 {
-                    var found = false;
-                    foreach (var item in checker.Value.Values)
-                    {
-                        if (item.Equals(expectedValue))
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found)
+                    if (!checker.Value.Values.Contains(expectedValue))
                     {
                         var message = checker.BuildMessage("The {0} does not contain the expected value.").Expected(expectedValue).Label("Expected value:").ToString();
                         throw new FluentCheckException(message);

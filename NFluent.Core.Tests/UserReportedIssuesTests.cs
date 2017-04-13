@@ -19,7 +19,6 @@ namespace NFluent.Tests
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -29,7 +28,7 @@ namespace NFluent.Tests
         [Test]
         public void IssueWithIDictionary()
         {
-            Dictionary<string, int> dico =new Dictionary<string, int>();
+            IDictionary<string, int> dico =new Dictionary<string, int>();
             dico["test"] = 2;
             Check.That(dico).ContainsKey("test");
         }
