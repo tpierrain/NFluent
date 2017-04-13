@@ -113,5 +113,11 @@ namespace NFluent.Tests
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked dictionary does contain the given value, whereas it must not." + Environment.NewLine + "The checked dictionary:" + Environment.NewLine + "\t[[demo, value]]" + Environment.NewLine + "Expected value:" + Environment.NewLine + "\t[\"value\"]");
         }
+
+        [Test]
+        public void ContainsPairWorksProperly()
+        {
+            Check.That(SimpleDico).ContainsPair("demo", "value");
+        }
     }
 }
