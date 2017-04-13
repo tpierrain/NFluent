@@ -13,6 +13,6 @@ git clone %initialPath% %targetPath%
 cd %targetPath%
 
 REM msbuild .\.build\Build.proj /p:Configuration="%config%" /t:RunAll /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Diagnostic /nr:false
-msbuild .\.build\Build.proj /p:Configuration="%config%" /t:Package /v:d /fl /flp:LogFile=msbuild.log;Verbosity=Diagnostic /nr:false
+msbuild .\.build\Build.proj /p:Configuration="%config%" /t:Package /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Diagnostic /nr:false
 
 cd %initialPath%
