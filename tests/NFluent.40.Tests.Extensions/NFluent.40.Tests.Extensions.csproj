@@ -42,13 +42,14 @@
     <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Globalization" />
+    <Reference Include="System.Runtime" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\NFluent.Core.Tests.Extensions\Child.cs">
@@ -84,13 +85,13 @@
     <Compile Include="..\NFluent.Core.Tests.Extensions\ReadmeRelatedTests.cs">
       <Link>ReadmeRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\Version.cs">
+    <Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NFluent.40\NFluent.40.csproj">
+    <ProjectReference Include="..\..\src\NFluent.40\NFluent.40.csproj">
       <Project>{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}</Project>
       <Name>NFluent.40</Name>
     </ProjectReference>

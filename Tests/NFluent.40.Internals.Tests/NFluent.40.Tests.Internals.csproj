@@ -101,11 +101,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NFluent.40.Tests\NFluent.40.Tests.csproj">
+    <ProjectReference Include="..\NFluent.40.Tests\NFluent.40.Tests.csproj">
       <Project>{bdaa4d22-45a1-470e-a142-70e1f194ee3f}</Project>
       <Name>NFluent.40.Tests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NFluent.40\NFluent.40.csproj">
+    <ProjectReference Include="..\..\src\NFluent.40\NFluent.40.csproj">
       <Project>{1e2d9d56-d0a4-4d2e-8f2b-f211000e1667}</Project>
       <Name>NFluent.40</Name>
     </ProjectReference>
@@ -116,7 +116,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="9e500148-4f6c-424a-aa09-801db1749677" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="9e500148-4f6c-424a-aa09-801db1749677" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

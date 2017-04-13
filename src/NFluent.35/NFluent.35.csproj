@@ -4,61 +4,60 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}</ProjectGuid>
+    <ProjectGuid>{3A474510-F384-41CE-9270-539B1E51DA7E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NFluent</RootNamespace>
     <AssemblyName>NFluent</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DOTNET_3_5</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\NFluent.XML</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
-    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;DOTNET_3_5</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Release\NFluent.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
-    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
-  <!-- Workaround for NCrunch issue (http://forum.ncrunch.net/yaf_postst935_Issue-when-using-conditional-compilation-symbols-in-linked-file.aspx) -->
-  <PropertyGroup Condition="'$(TargetFrameworkVersion)' == 'v4.5'">
-    <DefineConstants>$(DefineConstants);DOTNET_45</DefineConstants>
-  </PropertyGroup>
-  <!-- End of workaround for NCrunch issue (http://forum.ncrunch.net/yaf_postst935_Issue-when-using-conditional-compilation-symbols-in-linked-file.aspx) -->
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\NFluent.35\NFluent.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="envdte100, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
+    <Compile Include="..\NFluent\ApiChecks\ExceptionChecks.cs">
+      <Link>ApiChecks\ExceptionChecks.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent\Check.cs">
       <Link>Check.cs</Link>
     </Compile>
@@ -73,6 +72,9 @@
     </Compile>
     <Compile Include="..\NFluent\Checks\ComparableCheckExtensions.cs">
       <Link>Checks\ComparableCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent\Checks\Constants.cs">
+      <Link>Checks\Constants.cs</Link>
     </Compile>
     <Compile Include="..\NFluent\Checks\DateTimeCheckExtensions.cs">
       <Link>Checks\DateTimeCheckExtensions.cs</Link>
@@ -269,6 +271,9 @@
     <Compile Include="..\NFluent\Messages\ValueBlock.cs">
       <Link>Messages\ValueBlock.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent\Obsolete\ILambdaCheck.cs">
+      <Link>Obsolete\ILambdaCheck.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent\RunTrace.cs">
       <Link>RunTrace.cs</Link>
     </Compile>
@@ -329,30 +334,40 @@
     <Compile Include="..\NFluent\TimeUnit.cs">
       <Link>TimeUnit.cs</Link>
     </Compile>
-    <Compile Include="..\Version.cs">
+    <Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
-    <Compile Include="ApiChecks\ExceptionChecks.cs" />
-    <Compile Include="Obsolete\ILambdaCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\NFluent.35\NFluent.snk">
-      <Link>NFluent.snk</Link>
+    <None Include="NFluent.snk" />
+    <None Include="packages.config" />
+    <None Include="T4\NumberFluentAssertionGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastOutputs>.\NumberFluentAssertionExtensionsScript.cs</LastOutputs>
+      <TransformOnBuild>False</TransformOnBuild>
+      <LastGenOutput>NumberFluentAssertionGenerator.txt</LastGenOutput>
     </None>
-    <None Include="..\NFluent.35\packages.config">
-      <Link>packages.config</Link>
-    </None>
-    <None Include="..\NFluent.35\Settings.StyleCop">
-      <Link>Settings.StyleCop</Link>
-    </None>
+    <None Include="Settings.StyleCop" />
+    <None Include="T4\TemplateFilemanager.CS.ttinclude" />
+    <None Include="T4\TypeCloningHelper.ttinclude" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="T4\NumberFluentAssertionGenerator.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
-    </VisualStudio>
-  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
