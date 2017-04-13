@@ -25,17 +25,17 @@ namespace NFluent
     public static class DictionaryCheckExtensions
     {
         /// <summary>
-        /// Checks that the actual <see cref="IDictionary"/> contains the expected key.
+        /// Checks that the actual <see cref="IDictionary"/> contains the expected expectedKey.
         /// </summary>
         /// <typeparam name="TK">
-        /// The type of the key element.
+        /// The type of the expectedKey element.
         /// </typeparam>
         /// <typeparam name="TU">Type for values</typeparam>
         /// <param name="check">
         /// The fluent check to be extended.
         /// </param>
         /// <param name="key">
-        /// The expected key value.
+        /// The expected expectedKey value.
         /// </param>
         /// <returns>
         /// A check link.
@@ -56,27 +56,11 @@ namespace NFluent
                 checker.BuildMessage("The {0} does contain the given key, whereas it must not.").Expected(key).Label("Given key:").ToString());
         }
         
- /*       public static ICheckLink<ICheck<IDictionary>> ContainsKey<TK>(this ICheck<IDictionary> check, TK key)
-        {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                {
-                    if (!checker.Value.Contains(key))
-                    {
-                        var message = checker.BuildMessage("The {0} does not contain the expected key.").Expected(key).Label("Expected key:").ToString();
-                        throw new FluentCheckException(message);
-                    }
-                },
-                checker.BuildMessage("The {0} does contain the given key, whereas it must not.").Expected(key).Label("Given key:").ToString());
-        }
-*/
         /// <summary>
         /// Checks that the actual <see cref="IDictionary"/> contains the expected value.
         /// </summary>
         /// <typeparam name="TK">
-        /// The type of the key element.
+        /// The type of the expectedKey element.
         /// </typeparam>
         /// <typeparam name="TU">value type</typeparam>
         /// <param name="check">
@@ -95,13 +79,36 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                 {
-                    if (!checker.Value.Values.Contains(expectedValue))
-                    {
-                        var message = checker.BuildMessage("The {0} does not contain the expected value.").Expected(expectedValue).Label("Expected value:").ToString();
-                        throw new FluentCheckException(message);
-                    }
+                    if (checker.Value.Values.Contains(expectedValue)) return;
+                    var message = checker.BuildMessage("The {0} does not contain the expected value.").Expected(expectedValue).Label("Expected value:").ToString();
+                    throw new FluentCheckException(message);
                 },
                 checker.BuildMessage("The {0} does contain the given value, whereas it must not.").Expected(expectedValue).Label("Expected value:").ToString());
+        }
+
+        /// <summary>
+        /// Checks that the actual <see cref="IDictionary"/> contains the expected key-value pair.
+        /// </summary>
+        /// <typeparam name="TK">key type</typeparam>
+        /// <typeparam name="TU">value type</typeparam>
+        /// <param name="check">fluent check</param>
+        /// <param name="expectedKey">expected key</param>
+        /// <param name="expectedValue">expected value</param>
+        /// <returns>A check link</returns>
+        public static ICheckLink<ICheck<IDictionary<TK, TU>>> ContainsPair<TK, TU>(this ICheck<IDictionary<TK, TU>> check,
+            TK expectedKey, TU expectedValue)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+
+            return checker.ExecuteCheck(
+                () =>
+                {
+                    if (checker.Value.ContainsKey(expectedKey) && checker.Value[expectedKey].Equals(expectedValue)) return;
+                    var message = checker.BuildMessage("The {0} does not contain the expected value.").Expected(expectedValue).Label("Expected value:").ToString();
+                    throw new FluentCheckException(message);
+                },
+                checker.BuildMessage("The {0} does contain the given value, whereas it must not.").Expected(expectedValue).Label("Expected value:").ToString());
+
         }
     }
 }
