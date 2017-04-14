@@ -43,7 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NFluent\NFluent.csproj" />
+    <ProjectReference Include="..\..\src\NFluent\NFluent.csproj" />
   </ItemGroup>
 
   <ItemGroup>

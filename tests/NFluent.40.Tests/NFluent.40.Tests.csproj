@@ -269,7 +269,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NFluent.40\NFluent.40.csproj">
+    <ProjectReference Include="..\..\src\NFluent.40\NFluent.40.csproj">
       <Project>{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}</Project>
       <Name>NFluent.40</Name>
     </ProjectReference>

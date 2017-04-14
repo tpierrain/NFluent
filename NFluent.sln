@@ -36,9 +36,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Compatibility", "Compatibil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests.Extensions", "tests\NFluent.35.Tests.Extensions\NFluent.35.Tests.Extensions.csproj", "{AC520FDB-8125-46F3-85F3-D4962C53C136}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35", "NFluent.35\NFluent.35.csproj", "{3A474510-F384-41CE-9270-539B1E51DA7E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35", "src\NFluent.35\NFluent.35.csproj", "{3A474510-F384-41CE-9270-539B1E51DA7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40", "NFluent.40\NFluent.40.csproj", "{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40", "src\NFluent.40\NFluent.40.csproj", "{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40.Tests", "tests\NFluent.40.Tests\NFluent.40.Tests.csproj", "{BDAA4D22-45A1-470E-A142-70E1F194EE3F}"
 EndProject
@@ -46,7 +46,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40.Tests.Extensions
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests", "tests\NFluent.35.Tests\NFluent.35.Tests.csproj", "{6B88C45A-D45E-40FB-8635-D0E0EF0454E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.PCL", "NFluent.PCL\NFluent.PCL.csproj", "{4797A166-0410-451E-8DAB-DA7113D77062}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.PCL", "src\NFluent.PCL\NFluent.PCL.csproj", "{4797A166-0410-451E-8DAB-DA7113D77062}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40.Tests.Internals", "tests\NFluent.40.Tests.Internals\NFluent.40.Tests.Internals.csproj", "{A7C2F427-3D13-4C9B-8663-1CE1E0734608}"
 EndProject
@@ -54,7 +54,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests.Internals"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuggetVersion", "tests\Nugget\NuggetVersion.csproj", "{50136517-047A-4081-AC30-878560F108DF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent", "NFluent\NFluent.csproj", "{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent", "src\NFluent\NFluent.csproj", "{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.Tests.Extensions", "tests\NFluent.Core.Tests.Extensions\NFluent.Core.Tests.Extensions.csproj", "{0EFC64F1-018A-4BB2-93FF-07CA668CA818}"
 EndProject
