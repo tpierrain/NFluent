@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6B88C45A-D45E-40FB-8635-D0E0EF0454E9}</ProjectGuid>
+    <ProjectGuid>{BDAA4D22-45A1-470E-A142-70E1F194EE3F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NFluent.Tests</RootNamespace>
     <AssemblyName>NFluent.Tests</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -21,9 +21,11 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DOTNET_40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,7 +34,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+  <!-- Workaround for NCrunch issue (http://forum.ncrunch.net/yaf_postst935_Issue-when-using-conditional-compilation-symbols-in-linked-file.aspx) -->
+  <PropertyGroup Condition="'$(TargetFrameworkVersion)' == 'v4.5'">
+    <DefineConstants>$(DefineConstants);DOTNET_45</DefineConstants>
+  </PropertyGroup>
+  <!-- End of workaround for NCrunch issue (http://forum.ncrunch.net/yaf_postst935_Issue-when-using-conditional-compilation-symbols-in-linked-file.aspx) -->
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -41,18 +50,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.6.1\lib\net35\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.Core.Tests\AndRelatedTests.cs">
       <Link>AndRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\AsOperatorTests.cs">
       <Link>AsOperatorTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\AsyncRelatedTests.cs">
+      <Link>AsyncRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\BooleanRelatedTests.cs">
       <Link>BooleanRelatedTests.cs</Link>
@@ -86,6 +105,9 @@
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\DurationTests.cs">
       <Link>DurationTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent.Core.Tests\DynamicTests.cs">
+      <Link>DynamicTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\EdgeCasesTest.cs">
       <Link>EdgeCasesTest.cs</Link>
@@ -175,55 +197,55 @@
       <Link>StringRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\ByteRelatedTests.cs">
-      <Link>T4Generated\ByteRelatedTests.cs</Link>
+      <Link>T4Genereated\ByteRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\DecimalRelatedTests.cs">
-      <Link>T4Generated\DecimalRelatedTests.cs</Link>
+      <Link>T4Genereated\DecimalRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\DecimalSignedNumberRelatedTests.cs">
-      <Link>T4Generated\DecimalSignedNumberRelatedTests.cs</Link>
+      <Link>T4Genereated\DecimalSignedNumberRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\DoubleRelatedTests.cs">
-      <Link>T4Generated\DoubleRelatedTests.cs</Link>
+      <Link>T4Genereated\DoubleRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\DoubleSignedNumberRelatedTests.cs">
-      <Link>T4Generated\DoubleSignedNumberRelatedTests.cs</Link>
+      <Link>T4Genereated\DoubleSignedNumberRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\FloatFloatingPointBinaryRelatedTests.cs">
-      <Link>T4Generated\FloatFloatingPointBinaryRelatedTests.cs</Link>
+      <Link>T4Genereated\FloatFloatingPointBinaryRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\FloatRelatedTests.cs">
-      <Link>T4Generated\FloatRelatedTests.cs</Link>
+      <Link>T4Genereated\FloatRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\FloatSignedNumberRelatedTests.cs">
-      <Link>T4Generated\FloatSignedNumberRelatedTests.cs</Link>
+      <Link>T4Genereated\FloatSignedNumberRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\LongRelatedTests.cs">
-      <Link>T4Generated\LongRelatedTests.cs</Link>
+      <Link>T4Genereated\LongRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\LongSignedNumberRelatedTests.cs">
-      <Link>T4Generated\LongSignedNumberRelatedTests.cs</Link>
+      <Link>T4Genereated\LongSignedNumberRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\SbyteRelatedTests.cs">
-      <Link>T4Generated\SbyteRelatedTests.cs</Link>
+      <Link>T4Genereated\SbyteRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\SbyteSignedNumberRelatedTests.cs">
-      <Link>T4Generated\SbyteSignedNumberRelatedTests.cs</Link>
+      <Link>T4Genereated\SbyteSignedNumberRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\ShortRelatedTests.cs">
-      <Link>T4Generated\ShortRelatedTests.cs</Link>
+      <Link>T4Genereated\ShortRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\ShortSignedNumberRelatedTests.cs">
-      <Link>T4Generated\ShortSignedNumberRelatedTests.cs</Link>
+      <Link>T4Genereated\ShortSignedNumberRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\UintRelatedTests.cs">
-      <Link>T4Generated\UintRelatedTests.cs</Link>
+      <Link>T4Genereated\UintRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\UlongRelatedTests.cs">
-      <Link>T4Generated\UlongRelatedTests.cs</Link>
+      <Link>T4Genereated\UlongRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\T4Generated\UshortRelatedTests.cs">
-      <Link>T4Generated\UshortRelatedTests.cs</Link>
+      <Link>T4Genereated\UshortRelatedTests.cs</Link>
     </Compile>
     <Compile Include="..\NFluent.Core.Tests\TimeHelperTest.cs">
       <Link>TimeHelperTest.cs</Link>
@@ -237,31 +259,27 @@
     <Compile Include="..\NFluent.Core.Tests\UserReportedIssuesTests.cs">
       <Link>UserReportedIssuesTests.cs</Link>
     </Compile>
-    <Compile Include="..\Version.cs">
-      <Link>Properties\Version.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\NFluent.35.Tests\Settings.StyleCop">
+      <Link>Settings.StyleCop</Link>
+    </None>
     <None Include="NFluent.snk" />
     <None Include="packages.config" />
-    <None Include="Settings.StyleCop" />
-    <None Include="T4\NumberTestsGenerator.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>NumberTestsGenerator.txt</LastGenOutput>
-    </None>
-    <None Include="T4\TemplateFilemanager.CS.ttinclude" />
-    <None Include="T4\TestsCloningHelper.ttinclude" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NFluent.35\NFluent.35.csproj">
-      <Project>{3A474510-F384-41CE-9270-539B1E51DA7E}</Project>
-      <Name>NFluent.35</Name>
+    <ProjectReference Include="..\..\NFluent.40\NFluent.40.csproj">
+      <Project>{1E2D9D56-D0A4-4D2E-8F2B-F211000E1667}</Project>
+      <Name>NFluent.40</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="T4\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CheckedFile.xml">
@@ -270,13 +288,14 @@
     <Content Include="ExpectedFile.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="T4\NumberTestsGenerator.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

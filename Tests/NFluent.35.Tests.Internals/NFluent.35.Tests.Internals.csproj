@@ -90,13 +90,12 @@
     <Compile Include="..\NFluent.Core.Tests.Internals\XamarinSpecificTests.cs">
       <Link>XamarinSpecificTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.Core.Tests\Helpers\CultureSession.cs">
+      <Link>Helpers\CultureSession.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NFluent.35.Tests\NFluent.35.Tests.csproj">
-      <Project>{6B88C45A-D45E-40FB-8635-D0E0EF0454E9}</Project>
-      <Name>NFluent.35.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\NFluent.35\NFluent.35.csproj">
       <Project>{3a474510-f384-41ce-9270-539b1e51da7e}</Project>
       <Name>NFluent.35</Name>

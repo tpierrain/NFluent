@@ -33,6 +33,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\NFluent.Core.Tests\Helpers\CultureSession.cs" Link="Helpers\CultureSession.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 
@@ -45,7 +50,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NFluent.Core.Tests\NFluent.Core.Tests.csproj" />
     <ProjectReference Include="..\..\NFluent\NFluent.csproj" />
   </ItemGroup>
 </Project>  

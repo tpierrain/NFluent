@@ -32,6 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NFluent\NFluent.csproj" />
+    <ProjectReference Include="..\..\NFluent\NFluent.csproj" />
   </ItemGroup>
 </Project>  

@@ -36,9 +36,9 @@
     <Message Importance="high" Text="--------- DOTNET RESTORE  -------------------------------------------"/>     
     <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
     <Exec Command="dotnet restore $(SolutionRoot)\NFluent\" />
-    <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Core.Tests\" />
-    <Exec Command="dotnet restore $(SolutionRoot)\NFluent.Core.Tests.Extensions\" />
-    <Exec Command="dotnet restore $(SolutionRoot)\Tests\NFluent.Core.Tests.Internals\" />
+    <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests\" />
+    <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Extensions\" />
+    <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Internals\" />
 
     <Message Importance="high" Text="--------- end of DOTNET RESTORE  -------------------------------------"/>
   </Target>
@@ -49,8 +49,8 @@
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
     
     <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
-    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\NFluent.40.Tests\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
-    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\Tests\Nugget\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
+    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\tests\NFluent.40.Tests\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
+    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\tests\Nugget\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
   
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
   
@@ -98,12 +98,12 @@ GENERATING DOCS for:
   
   <!-- 3- Run the TESTS -->
   <ItemGroup>
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-3.5" />
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).35.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-3.5" />
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\Tests\$(SolutionName).35.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-3.5" />
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-4.0" />
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).40.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-4.0" />
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\Tests\$(SolutionName).40.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-4.0" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-3.5" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).35.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-3.5" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).35.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-3.5" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-4.0" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).40.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-4.0" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).40.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-4.0" />
   </ItemGroup>
 
   <Target Name="RunTests" DependsOnTargets="Build">
