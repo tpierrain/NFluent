@@ -141,8 +141,8 @@ RUN ALL UNIT TESTS
       <Exec Command="xcopy $(SolutionRoot)\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /E /Y" />
 
       <!-- NFluent (Core) then -->
-      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName)\bin\$(Configuration)\*.* $(BinariesPath)\Core\ /E /Y" />
-      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName)\bin\$(Configuration)\*.* $(BinariesPath)\Core\ /E /Y" />
+      <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName)\bin\$(Configuration)\*.* $(BinariesPath)\netstandard1.3\ /E /Y" />
+      <Exec Command="xcopy $(SolutionRoot)\$(SolutionName)\bin\$(Configuration)\*.* $(BinariesPath)\netstandard1.3\ /E /Y" />
 
       <!-- NFluent (PCL) then -->
       <Message Importance="high" Text="xcopy $(SolutionRoot)\$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /E /Y" />
