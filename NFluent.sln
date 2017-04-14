@@ -64,8 +64,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.Tests.Internal
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OlderTests", "OlderTests", "{261B1CE2-51CF-4F30-B689-3E78C3916F3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfHostedTests", "SelfHostedTests\SelfHostedTests.csproj", "{C93E0F2C-8BF9-4CA5-ADA4-8829B10BB6D1}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,10 +127,6 @@ Global
 		{CE90E7CF-957D-4DF9-AE63-93CEA369B231}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE90E7CF-957D-4DF9-AE63-93CEA369B231}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE90E7CF-957D-4DF9-AE63-93CEA369B231}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C93E0F2C-8BF9-4CA5-ADA4-8829B10BB6D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C93E0F2C-8BF9-4CA5-ADA4-8829B10BB6D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C93E0F2C-8BF9-4CA5-ADA4-8829B10BB6D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C93E0F2C-8BF9-4CA5-ADA4-8829B10BB6D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,7 +148,6 @@ Global
 		{269C2952-A589-4B42-83E6-B187E8B6A495} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
 		{CE90E7CF-957D-4DF9-AE63-93CEA369B231} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
 		{261B1CE2-51CF-4F30-B689-3E78C3916F3E} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
-		{C93E0F2C-8BF9-4CA5-ADA4-8829B10BB6D1} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = NFluent.40.Tests\NFluent.40.Tests.csproj
