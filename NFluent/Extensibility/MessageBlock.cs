@@ -87,7 +87,8 @@ namespace NFluent.Extensibility
         internal MessageBlock(FluentMessage message, Type type, GenericLabelBlock label)
         {
             this.value = new InstanceBlock(type);
-            this.message = message != null ? message : throw new ArgumentNullException(nameof(message));
+            if (message == null) throw new ArgumentNullException(nameof(message));
+            this.message = message;
             this.block = label;
         }
 
