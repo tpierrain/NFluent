@@ -98,8 +98,12 @@ GENERATING DOCS for:
   
   <!-- 3- Run the TESTS -->
   <ItemGroup>
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).35.Tests.dll&quot; /framework:net-3.5" />
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).40.Tests.dll&quot; /framework:net-4.0" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-3.5" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).35.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-3.5" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\Tests\$(SolutionName).35.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-3.5" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-4.0" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\$(SolutionName).40.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-4.0" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\Tests\$(SolutionName).40.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-4.0" />
   </ItemGroup>
 
   <Target Name="RunTests" DependsOnTargets="Build">
