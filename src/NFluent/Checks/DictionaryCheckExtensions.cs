@@ -15,7 +15,9 @@
 
 namespace NFluent
 {
+#if !NETSTANDARD1_3
     using System.Collections;
+#endif
     using System.Collections.Generic;
     using Extensibility;
 
@@ -104,7 +106,10 @@ namespace NFluent
                 () =>
                 {
                     if (checker.Value.ContainsKey(expectedKey) && checker.Value[expectedKey].Equals(expectedValue)) return;
-                    var message = checker.BuildMessage("The {0} does not contain the expected value.").Expected(expectedValue).Label("Expected value:").ToString();
+                    var message = checker.BuildMessage("The {0} does not contain the expected key-value pair.")
+                    .Expected(new KeyValuePair<TK, TU>(expectedKey, expectedValue))
+                    .Label("Expected pair:")
+                    .ToString();
                     throw new FluentCheckException(message);
                 },
                 checker.BuildMessage("The {0} does contain the given value, whereas it must not.").Expected(expectedValue).Label("Expected value:").ToString());

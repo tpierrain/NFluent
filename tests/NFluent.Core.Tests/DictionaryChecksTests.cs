@@ -18,7 +18,7 @@ using System;
 namespace NFluent.Tests
 {
     using System.Collections.Generic;
-
+    using ApiChecks;
     using NUnit.Framework;
 
     [TestFixture]
@@ -118,6 +118,24 @@ namespace NFluent.Tests
         public void ContainsPairWorksProperly()
         {
             Check.That(SimpleDico).ContainsPair("demo", "value");
+        }
+
+        [Test]
+        public void ContainsPairFailsAppropriately()
+        {
+            Check.ThatCode(() =>
+                    Check.That(SimpleDico).ContainsPair("demo", "1")
+                )
+                .Throws<FluentCheckException>()
+                .AndWhichMessage()
+                .AsLines()
+                .ContainsExactly(
+                "",
+                "The checked dictionary does not contain the expected key-value pair.",
+                "The checked dictionary:",
+                "\t[[demo, value]]",
+                "Expected pair:",
+                "\t[[demo, 1]]");
         }
     }
 }
