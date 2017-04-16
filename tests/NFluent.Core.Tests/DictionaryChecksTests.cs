@@ -131,11 +131,24 @@ namespace NFluent.Tests
                 .AsLines()
                 .ContainsExactly(
                 "",
-                "The checked dictionary does not contain the expected key-value pair.",
+                "The checked dictionary does not contain the expected value for the given key.",
                 "The checked dictionary:",
                 "\t[[demo, value]]",
                 "Expected pair:",
                 "\t[[demo, 1]]");
+            Check.ThatCode(() =>
+                    Check.That(SimpleDico).ContainsPair("demo2", "1")
+                )
+                .Throws<FluentCheckException>()
+                .AndWhichMessage()
+                .AsLines()
+                .ContainsExactly(
+                "",
+                "The checked dictionary does not contain the expected key-value pair. The given key was not found.",
+                "The checked dictionary:",
+                "\t[[demo, value]]",
+                "Expected pair:",
+                "\t[[demo2, 1]]");
         }
     }
 }

@@ -15,19 +15,16 @@
 
 namespace NFluent
 {
-#if !NETSTANDARD1_3
-    using System.Collections;
-#endif
     using System.Collections.Generic;
     using Extensibility;
 
     /// <summary>
-    /// Provides check methods to be executed on an <see cref="IDictionary"/> value.
+    /// Provides check methods to be executed on an <see cref="IDictionary{K,V}"/> value.
     /// </summary>
     public static class DictionaryCheckExtensions
     {
         /// <summary>
-        /// Checks that the actual <see cref="IDictionary"/> contains the expected expectedKey.
+        /// Checks that the actual <see cref="IDictionary{K,V}"/> contains the expected expectedKey.
         /// </summary>
         /// <typeparam name="TK">
         /// The type of the expectedKey element.
@@ -57,9 +54,9 @@ namespace NFluent
                 },
                 checker.BuildMessage("The {0} does contain the given key, whereas it must not.").Expected(key).Label("Given key:").ToString());
         }
-        
+
         /// <summary>
-        /// Checks that the actual <see cref="IDictionary"/> contains the expected value.
+        /// Checks that the actual <see cref="IDictionary{K,V}"/> contains the expected value.
         /// </summary>
         /// <typeparam name="TK">
         /// The type of the expectedKey element.
@@ -89,7 +86,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual <see cref="IDictionary"/> contains the expected key-value pair.
+        /// Checks that the actual <see cref="IDictionary{K,V}"/> contains the expected key-value pair.
         /// </summary>
         /// <typeparam name="TK">key type</typeparam>
         /// <typeparam name="TU">value type</typeparam>
@@ -105,12 +102,20 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                 {
-                    if (checker.Value.ContainsKey(expectedKey) && checker.Value[expectedKey].Equals(expectedValue)) return;
-                    var message = checker.BuildMessage("The {0} does not contain the expected key-value pair.")
-                    .Expected(new KeyValuePair<TK, TU>(expectedKey, expectedValue))
-                    .Label("Expected pair:")
-                    .ToString();
-                    throw new FluentCheckException(message);
+                    var checkedDictionary = checker.Value;
+                    if (checkedDictionary.ContainsKey(expectedKey) && checkedDictionary[expectedKey].Equals(expectedValue)) return;
+                    FluentMessage message;
+                    if (!checkedDictionary.ContainsKey(expectedKey))
+                    {
+                        message = checker.BuildMessage("The {0} does not contain the expected key-value pair. The given key was not found.");
+                    }
+                    else
+                    {
+                        message = checker.BuildMessage("The {0} does not contain the expected value for the given key.");
+                    }
+                    message.Expected(new KeyValuePair<TK, TU>(expectedKey, expectedValue))
+                        .Label("Expected pair:");
+                    throw new FluentCheckException(message.ToString());
                 },
                 checker.BuildMessage("The {0} does contain the given value, whereas it must not.").Expected(expectedValue).Label("Expected value:").ToString());
 
