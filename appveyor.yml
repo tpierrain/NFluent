@@ -9,8 +9,8 @@ build_script:
 - cmd: build.cmd
 test: off
 notifications:
-- provider: Webhook
-  url:
+- provider: Slack 
+  incoming_webhook:
       secure: 8HsB7ugtiao2POPBIleKwZhgUm/eXfndfmhRN9ewMr/JnWQARH4EK698Hzb/zzuuO81RKFJQmaYWfZSEWdCugEFXpED+5yo/3ICOzaiXHBI=
   method: POST
   on_build_success: false
