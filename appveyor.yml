@@ -9,13 +9,8 @@ build_script:
 - cmd: build.cmd
 test: off
 notifications:
-- provider: Slack 
-  incoming_webhook:
-      secure: 8HsB7ugtiao2POPBIleKwZhgUm/eXfndfmhRN9ewMr/JnWQARH4EK698Hzb/zzuuO81RKFJQmaYWfZSEWdCugEFXpED+5yo/3ICOzaiXHBI=
-  method: POST
-  on_build_success: false
-  on_build_failure: true
-  on_build_status_changed: true
+- provider: Slack
+  incoming_webhook: https://hooks.slack.com/services/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
 artifacts:
   - path: 'Artifacts\Packages\*.nupkg'
     name: NFluentPackages
