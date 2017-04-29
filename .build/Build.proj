@@ -50,7 +50,7 @@
   <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll; Publish"/>
   <Target Name="RC" DependsOnTargets="SetRC; RunAll; Publish"/>
   <Target Name="Release" DependsOnTargets="SetRelease; RunAll; Publish"/>
-  <Target Name="CI" DependsOnTargets="Build" />
+  <Target Name="CI" DependsOnTargets="Build; RunTests" />
 
   <!-- 1- Do the BUILD -->
 
