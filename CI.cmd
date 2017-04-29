@@ -1,0 +1,2 @@
+@echo Off
+build CI

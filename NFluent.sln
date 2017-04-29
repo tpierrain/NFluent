@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build.cmd = build.cmd
 		.build\Build.proj = .build\Build.proj
 		.build\Build.tasks = .build\Build.tasks
+		CI.cmd = CI.cmd
 		CONTRIBUTING.md = CONTRIBUTING.md
 		DevDoD.md = DevDoD.md
 		ForNCrunchUsers.md = ForNCrunchUsers.md
