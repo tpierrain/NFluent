@@ -22,4 +22,6 @@ assembly_info:
 notifications:
 - provider: Slack
   incoming_webhook: https://hooks.slack.com/services/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
-
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: false
