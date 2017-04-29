@@ -10,7 +10,7 @@ build_script:
 test: off
 
 environment:
-  MICHONNE_NUGET_API_KEY: ad9c47dd-d3b9-4962-9df5-13eff5b1032f
+  NFLUENT_NUGET_API_KEY: xxx
 
 assembly_info:
   patch: true

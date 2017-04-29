@@ -70,7 +70,11 @@
     <ProjectFolder Include="$(SourcePath)\NFluent.40"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.PCL"/>
     <ProjectFolder Include="$(TestsPath)\Michonne.Core.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\Michonne.Core.Tests.Internals"/>
     <ProjectFolder Include="$(TestsPath)\Michonne.40.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\Michonne.40.Tests.Internals"/>
+    <ProjectFolder Include="$(TestsPath)\Michonne.35.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\Michonne.35.Tests.Internals"/>
     <ProjectFolder Include="$(TestsPath)\NuggetVersion"/>
   </ItemGroup>
 
