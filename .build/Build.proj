@@ -13,6 +13,7 @@
       <SolutionRoot>$(MSBuildProjectDirectory)\..</SolutionRoot>
       <SolutionName>NFluent</SolutionName>
       <ToolsPath>$(SolutionRoot)\tools\</ToolsPath>
+      <SourcePath>$(SolutionRoot)\src\</SourcePath>
       <ArtifactsPath>$(SolutionRoot)\Artifacts</ArtifactsPath>
       <BinariesPath>$(ArtifactsPath)\Binaries</BinariesPath>
       <PackagesPath>$(ArtifactsPath)\Packages</PackagesPath>
@@ -35,9 +36,10 @@
       
     <Message Importance="high" Text="--------- DOTNET RESTORE  -------------------------------------------"/>     
     <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
-    <Exec Command="dotnet restore $(SolutionRoot)\src\NFluent\" />
+    <Exec Command="dotnet restore $(SourcePath)NFluent\" />
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests\" />
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Extensions\" />
+    <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Internals\" />
 
     <Message Importance="high" Text="--------- end of DOTNET RESTORE  -------------------------------------"/>
   </Target>
@@ -48,13 +50,8 @@
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
     
     <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
-    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\tests\NugetVersion\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
-
-    <!-- To be removed ? -->
-    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\tests\NFluent.Core.Tests\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
-    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\tests\NFluent.Core.Tests.Internals\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
-
     <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\tests\NFluent.40.Tests\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
+    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\tests\Nugget\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
   
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
   
@@ -102,8 +99,12 @@ GENERATING DOCS for:
   
   <!-- 3- Run the TESTS -->
   <ItemGroup>
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).35.Tests.dll&quot; /framework:net-3.5" />
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).40.Tests.dll&quot; /framework:net-4.0" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-3.5" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).35.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-3.5" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).35.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-3.5" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-4.0" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).40.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-4.0" />
+    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).40.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-4.0" />
   </ItemGroup>
 
   <Target Name="RunTests" DependsOnTargets="Build">
@@ -124,7 +125,7 @@ RUN ALL UNIT TESTS
 
     <Message Importance="high" Text="--------- RUN THE .NET CORE TESTS ---------"/>
 
-      <Exec Command="dotnet test $(SolutionRoot)\tests\NFluent.Core.Tests\NFluent.Core.Tests.csproj" />
+      <!--Exec Command="dotnet test $(SolutionRoot)\NFluent.Core.Tests\NFluent.Core.Tests.csproj" /-->
       
     <Message Importance="high" Text="--------- end of RUN THE .NET CORE TESTS ---------"/>
 
@@ -137,20 +138,20 @@ RUN ALL UNIT TESTS
       <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
       
       <!-- NFluent (3.5) first -->
-      <Message Importance="high" Text="xcopy $(SolutionRoot)\src\$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /E /Y" />
-      <Exec Command="xcopy $(SolutionRoot)\src\$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /E /Y" />
+      <Message Importance="high" Text="xcopy $(SourcePath)$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /E /Y" />
+      <Exec Command="xcopy $(SourcePath)$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /E /Y" />
 	  
 	    <!-- NFluent (4.0) then -->
-      <Message Importance="high" Text="xcopy $(SolutionRoot)\src\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /E /Y" />
-      <Exec Command="xcopy $(SolutionRoot)\src\$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /E /Y" />
+      <Message Importance="high" Text="xcopy $(SourcePath)$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /E /Y" />
+      <Exec Command="xcopy $(SourcePath)$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /E /Y" />
 
       <!-- NFluent (Core) then -->
-      <Message Importance="high" Text="xcopy $(SolutionRoot)\src\$(SolutionName)\bin\$(Configuration)\*.* $(BinariesPath)\Core\ /E /Y" />
-      <Exec Command="xcopy $(SolutionRoot)\src\$(SolutionName)\bin\$(Configuration)\*.* $(BinariesPath)\Core\ /E /Y" />
+      <Message Importance="high" Text="xcopy $(SourcePath)$(SolutionName)\bin\$(Configuration)\*.* $(BinariesPath)\netstandard1.3\ /E /Y" />
+      <Exec Command="xcopy $(SourcePath)$(SolutionName)\bin\$(Configuration)\*.* $(BinariesPath)\netstandard1.3\ /E /Y" />
 
       <!-- NFluent (PCL) then -->
-      <Message Importance="high" Text="xcopy $(SolutionRoot)\src\$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /E /Y" />
-      <Exec Command="xcopy $(SolutionRoot)\src\$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /E /Y" />
+      <Message Importance="high" Text="xcopy $(SourcePath)$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /E /Y" />
+      <Exec Command="xcopy $(SourcePath)$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /E /Y" />
     
       <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
       <GetAssemblyIdentity AssemblyFiles="$(BinariesPath)\35\$(SolutionName).dll">

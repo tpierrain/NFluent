@@ -39,11 +39,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.6.1\lib\net35\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.3.6.1\lib\net35\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.Core.Tests.Extensions\Child.cs">
       <Link>Child.cs</Link>
     </Compile>
@@ -77,8 +80,8 @@
     <Compile Include="..\NFluent.Core.Tests.Extensions\ReadmeRelatedTests.cs">
       <Link>ReadmeRelatedTests.cs</Link>
     </Compile>
-    <Compile Include="..\..\Version.cs">
-      <Link>Properties\Version.cs</Link>
+    <Compile Include="..\NFluent.Core.Tests\Helpers\CultureSession.cs">
+      <Link>Helpers\CultureSession.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -56,7 +56,7 @@
     <file src="Artifacts\Binaries\PCL\NFluent.dll" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\NFluent.dll" />
     <file src="Artifacts\Binaries\PCL\NFluent.xml" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\NFluent.xml" />
     <!-- Core -->
-    <file src="Artifacts\Binaries\Core\netstandard1.3\NFluent.dll" target="lib\netstandard1.3\NFluent.dll" />
-    <file src="Artifacts\Binaries\Core\netstandard1.3\NFluent.pdb" target="lib\netstandard1.3\NFluent.pdb" />
+    <file src="Artifacts\Binaries\netstandard1.3\netstandard1.3\NFluent.dll" target="lib\netstandard1.3\NFluent.dll" />
+    <file src="Artifacts\Binaries\netstandard1.3\netstandard1.3\NFluent.pdb" target="lib\netstandard1.3\NFluent.pdb" />
   </files>
 </package>

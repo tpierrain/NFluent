@@ -35,6 +35,8 @@
 
   <ItemGroup>
     <None Remove="NFluent.Core.v3.ncrunchproject" />
+    <None Remove="NFluent.csproj.DotSettings" />
+    <None Remove="NFluent.v3.ncrunchproject" />
     <None Remove="packages.config" />
     <None Remove="Settings.StyleCop" />
   </ItemGroup>

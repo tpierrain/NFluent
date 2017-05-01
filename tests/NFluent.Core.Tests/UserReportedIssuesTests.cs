@@ -19,19 +19,26 @@ namespace NFluent.Tests
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class UserReportedIssuesTests
     {
-        // issue #178: issue with IDictionary
+        // issue #179: issue with IDictionary
         [Test]
         public void IssueWithIDictionary()
         {
-            Dictionary<string, int> dico =new Dictionary<string, int>();
+            IDictionary<string, int> dico =new Dictionary<string, int>();
             dico["test"] = 2;
             Check.That(dico).ContainsKey("test");
+        }
+        // issue #178: allow to check for value and keys
+        [Test]
+        public void CheckForPair()
+        {
+            IDictionary<string, int> dico = new Dictionary<string, int>();
+            dico["test"] = 2;
+            Check.That(dico).ContainsPair("test", 2);
         }
         // issue #176: Check.That(1).Not.IsZero() fails
         [Test]

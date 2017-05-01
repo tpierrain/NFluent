@@ -18,7 +18,7 @@ using System;
 namespace NFluent.Tests
 {
     using System.Collections.Generic;
-
+    using ApiChecks;
     using NUnit.Framework;
 
     [TestFixture]
@@ -112,6 +112,43 @@ namespace NFluent.Tests
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked dictionary does contain the given value, whereas it must not." + Environment.NewLine + "The checked dictionary:" + Environment.NewLine + "\t[[demo, value]]" + Environment.NewLine + "Expected value:" + Environment.NewLine + "\t[\"value\"]");
+        }
+
+        [Test]
+        public void ContainsPairWorksProperly()
+        {
+            Check.That(SimpleDico).ContainsPair("demo", "value");
+        }
+
+        [Test]
+        public void ContainsPairFailsAppropriately()
+        {
+            Check.ThatCode(() =>
+                    Check.That(SimpleDico).ContainsPair("demo", "1")
+                )
+                .Throws<FluentCheckException>()
+                .AndWhichMessage()
+                .AsLines()
+                .ContainsExactly(
+                "",
+                "The checked dictionary does not contain the expected value for the given key.",
+                "The checked dictionary:",
+                "\t[[demo, value]]",
+                "Expected pair:",
+                "\t[[demo, 1]]");
+            Check.ThatCode(() =>
+                    Check.That(SimpleDico).ContainsPair("demo2", "1")
+                )
+                .Throws<FluentCheckException>()
+                .AndWhichMessage()
+                .AsLines()
+                .ContainsExactly(
+                "",
+                "The checked dictionary does not contain the expected key-value pair. The given key was not found.",
+                "The checked dictionary:",
+                "\t[[demo, value]]",
+                "Expected pair:",
+                "\t[[demo2, 1]]");
         }
     }
 }

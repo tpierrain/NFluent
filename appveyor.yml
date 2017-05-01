@@ -1,15 +1,16 @@
 version: 2.0.0.{build}
+image: Visual Studio 2017
 branches:
   only:
   - master
 configuration: Release
 platform: Any CPU
-
-image: Visual Studio 2017
-
 build_script:
 - cmd: build.cmd
 test: off
+notifications:
+- provider: Slack
+  incoming_webhook: https://hooks.slack.com/services/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
 artifacts:
   - path: 'Artifacts\Packages\*.nupkg'
     name: NFluentPackages
