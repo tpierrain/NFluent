@@ -43,11 +43,11 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\NFluent.35\NFluent.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <None Include="..\NFluent.35\NFluent.snk">
+    <None Include="..\..\NFluent.snk">
       <Link>NFluent.snk</Link>
     </None>
     <None Include="..\NFluent.35\Settings.StyleCop">

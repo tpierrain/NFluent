@@ -61,6 +61,7 @@
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests\" />
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Extensions\" />
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Internals\" />
+    <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Internals\" />
     <Message Importance="high" Text="--------- end of DOTNET RESTORE  -------------------------------------"/>
   </Target>
 
