@@ -241,18 +241,20 @@ CREATING NUGET PACKAGE IN:
 ---------------------------------------------------------------
             "  />
       <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
-      <Exec Command="&quot;$(NuGetExePath)&quot; pack &quot;$(NuspecFilePath)&quot; -o &quot;$(PackagesPath)&quot;"
-        LogStandardErrorAsError="true" />
+      <Exec Command='"$(NuGetExePath)" pack "$(NuspecFilePath)" -o "$(PackagesPath)"' LogStandardErrorAsError="true" />
 
         <Message Importance="high" Text="--------- End of PACKAGE ---------"/>
   </Target>
 
   <!-- 5- Then Publish (but not for PR)-->
   <Target Name="Publish" DependsOnTargets="Package">
+    <PropertyGroup>
+      <PackageFileName>$(PackagesPath)\$(SolutionName).$(PrettyVersion).nupkg</PackageFileName>
+    </PropertyGroup>
   <!--= Publish the package on Nuget-->
   <Message Importance="high" Text="--------- NUGET PUBLISH  -------------------------------------------"/>
 
-  <Exec Command='"$(NuGetExePath)" setApiKey $(NugetKey) -source https://www.nuget.org/api/v2/package -verbosity quiet' EchoOff='true' Condition="'($(NugetKey)'!='') AND ('$(APPVEYOR_PULL_REQUEST_NUMBER)'=='')"/>
+  <Exec Command='"$(NuGetExePath)" setApiKey $(NugetKey) -source https://www.nuget.org/api/v2/package -verbosity quiet' EchoOff='true' Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''"/>
   <Exec Command='"$(NuGetExePath)" push "$(PackageFileName)" -Source https://www.nuget.org/api/v2/package' />
 
   <Message Importance="high" Text="--------- end of NUGET PUBLISH  -------------------------------------"/>
