@@ -247,8 +247,8 @@ CREATING NUGET PACKAGE IN:
         <Message Importance="high" Text="--------- End of PACKAGE ---------"/>
   </Target>
 
-  <!-- 5- Then Publish -->
-  <Target Name="Publish" DependsOnTargets="Package">
+  <!-- 5- Then Publish (but not for PR)-->
+  <Target Name="Publish" DependsOnTargets="Package" Condition="'$(APPVEYOR_PULL_REQUEST_NUMBER)'==''">
   <!--= Publish the package on Nuget-->
   <Message Importance="high" Text="--------- NUGET PUBLISH  -------------------------------------------"/>
 

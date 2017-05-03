@@ -1,4 +1,4 @@
-version: 2.0.1.{build}
+version: 2.0.0.{build}
 image: Visual Studio 2017
 branches:
   only:
@@ -6,7 +6,7 @@ branches:
 configuration: Release
 platform: Any CPU
 build_script:
-- cmd: CI.cmd
+- cmd: build.cmd
 test: off
 
 environment:
@@ -26,5 +26,7 @@ notifications:
   on_build_failure: true
   on_build_status_changed: false
 - provider: GitHubPullRequest
+  template :"{{#passed}}:white_check_mark:{{/passed}}{{#failed}}:x:{{/failed}} [Build {{&projectName}} {{buildVersion}} {{status}}]({{buildUrl}}) (commit {{commitUrl}} by @{{&commitAuthorUsername}})"
   auth_token:
       secure: kCICf0+4Cc7GIVkQ072LtcxBKKhynEsSx612WwmUi3NAs8C/14iHy7PlXTUWyyYR9
+      
