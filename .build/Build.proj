@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="RunAll" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- note from Thomas PIERRAIN: I really hate MsBuild and its amazingly unintuitive syntax. Unbelievable... -->
-  <PropertyGroup>
-    <SolutionRoot>$(MSBuildProjectDirectory)\..</SolutionRoot>
-    <MSBuildCommunityTasksPath>$(SolutionRoot)\.build</MSBuildCommunityTasksPath>
-  </PropertyGroup>
-
-  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
-  <Import Project="build.tasks" />
+  <!-- updated by Cyrille Dupuydauby -->
 
   <PropertyGroup>
       <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
       <SolutionRoot>$(MSBuildProjectDirectory)\..</SolutionRoot>
+      <MSBuildCommunityTasksPath>$(SolutionRoot)\.build</MSBuildCommunityTasksPath>
       <SolutionName>NFluent</SolutionName>
       <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
       <ToolsPath>$(SolutionRoot)\tools\</ToolsPath>
@@ -27,9 +22,29 @@
       <ZipExe>$(ToolsPath)7za\7za.exe</ZipExe>
       <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.6.1\tools\nunit3-console.exe</TestRunnerPath>
      <PackageStream>alpha</PackageStream>
-     <NugetKey>$(NFLUETN_NUGET_API_KEY)</NugetKey>
+     <NugetKey>$(NFLUENT_NUGET_API_KEY)</NugetKey>
   </PropertyGroup>
+  
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+  <Import Project="build.tasks" />
+  <!-- Specifics for appveyor: use env provided nunit runner for result publication-->
+  <Choose>
+    <When Condition="'$(APPVEYOR)'=='True'">
+      <PropertyGroup>
+        <NunitOptions>--result=TestResults.xml;format=AppVeyor</NunitOptions>
+        <TestRunnerPath>nunit3-console</TestRunnerPath>
+      </PropertyGroup>
+    </When>
+  </Choose>
 
+
+  <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
+  <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll; Publish"/>
+  <Target Name="RC" DependsOnTargets="SetRC; RunAll; Publish"/>
+  <Target Name="Release" DependsOnTargets="SetRelease; RunAll; Publish"/>
+  <Target Name="CI" DependsOnTargets="Build; RunTests" />
+
+  <!--Targets-->
   <Target Name="SetNightly">
     <PropertyGroup>
       <PackageStream>nightly</PackageStream>
@@ -45,15 +60,7 @@
       <PackageStream></PackageStream>
     </PropertyGroup>
   </Target>
-
-  <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
-  <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll; Publish"/>
-  <Target Name="RC" DependsOnTargets="SetRC; RunAll; Publish"/>
-  <Target Name="Release" DependsOnTargets="SetRelease; RunAll; Publish"/>
-  <Target Name="CI" DependsOnTargets="Build; RunTests" />
-
   <!-- 1- Do the BUILD -->
-
   <Target Name="DotnetCoreRestore">
       
     <Message Importance="high" Text="--------- DOTNET RESTORE  -------------------------------------------"/>     
@@ -146,9 +153,9 @@ RUN ALL UNIT TESTS
 
     <Message Importance="high" Text="--------- RUN CLASSICAL .NET TESTS ---------"/>
 
-      <Message Importance="high" Text="debug message: TestProjectsWithArguments.Identity:'%(TestProjectsWithArguments.Identity)'"/>
+    <Message Importance="high" Text="debug message: TestProjectsWithArguments.Identity:'%(TestProjectsWithArguments.Identity)'"/>
 
-    <Exec Command='"$(TestRunnerPath)" %(TestProjectsWithArguments.Identity)' LogStandardErrorAsError="true" WorkingDirectory="../"/>
+    <Exec Command='"$(TestRunnerPath)" %(TestProjectsWithArguments.Identity) $(NunitOptions)' LogStandardErrorAsError="true" WorkingDirectory="../"/>
 
     <Message Importance="high" Text="--------- end of RUN CLASSICAL .NET TESTS ---------"/>
 
@@ -245,9 +252,8 @@ CREATING NUGET PACKAGE IN:
   <!--= Publish the package on Nuget-->
   <Message Importance="high" Text="--------- NUGET PUBLISH  -------------------------------------------"/>
 
-  <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
-  <Exec Command='"$(NuGetExePath)" setApiKey $(NugetKey) -source https://www.nuget.org/api/v2/package'/>
-  <Exec Command='"$(NuGetExePath)"  push "$(PackageFileName)" -Source https://www.nuget.org/api/v2/package' />
+  <Exec Command='"$(NuGetExePath)" setApiKey $(NugetKey) -source https://www.nuget.org/api/v2/package -verbosity quiet' EchoOff='true' Condition="'$(NugetKey)'!=''"/>
+  <Exec Command='"$(NuGetExePath)" push "$(PackageFileName)" -Source https://www.nuget.org/api/v2/package' />
 
   <Message Importance="high" Text="--------- end of NUGET PUBLISH  -------------------------------------"/>
   </Target>
