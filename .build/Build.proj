@@ -248,11 +248,11 @@ CREATING NUGET PACKAGE IN:
   </Target>
 
   <!-- 5- Then Publish (but not for PR)-->
-  <Target Name="Publish" DependsOnTargets="Package" Condition="'$(APPVEYOR_PULL_REQUEST_NUMBER)'==''">
+  <Target Name="Publish" DependsOnTargets="Package">
   <!--= Publish the package on Nuget-->
   <Message Importance="high" Text="--------- NUGET PUBLISH  -------------------------------------------"/>
 
-  <Exec Command='"$(NuGetExePath)" setApiKey $(NugetKey) -source https://www.nuget.org/api/v2/package -verbosity quiet' EchoOff='true' Condition="'$(NugetKey)'!=''"/>
+  <Exec Command='"$(NuGetExePath)" setApiKey $(NugetKey) -source https://www.nuget.org/api/v2/package -verbosity quiet' EchoOff='true' Condition="'($(NugetKey)'!='') AND ('$(APPVEYOR_PULL_REQUEST_NUMBER)'=='')"/>
   <Exec Command='"$(NuGetExePath)" push "$(PackageFileName)" -Source https://www.nuget.org/api/v2/package' />
 
   <Message Importance="high" Text="--------- end of NUGET PUBLISH  -------------------------------------"/>
