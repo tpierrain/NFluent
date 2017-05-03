@@ -26,7 +26,7 @@ notifications:
   on_build_failure: true
   on_build_status_changed: false
 - provider: GitHubPullRequest
-  template:"{{#passed}}:white_check_mark:{{/passed}}{{#failed}}:x:{{/failed}} [Build {{&projectName}} {{buildVersion}} {{status}}]({{buildUrl}}) (commit {{commitUrl}} by @{{&commitAuthorUsername}})"
+  template: "{{#passed}}:white_check_mark:{{/passed}}{{#failed}}:x:{{/failed}} [Build {{&projectName}} {{buildVersion}} {{status}}]({{buildUrl}}) (commit {{commitUrl}} by @{{&commitAuthorUsername}})"
   auth_token:
       secure: kCICf0+4Cc7GIVkQ072LtcxBKKhynEsSx612WwmUi3NAs8C/14iHy7PlXTUWyyYR9
       
