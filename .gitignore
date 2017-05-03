@@ -159,6 +159,8 @@ PublishScripts/
 *.nupkg
 # The packages folder can be ignored because of Package Restore
 **/packages/*
+# Special case for PCL project
+**/[Pp]ortable.[Dd]ependencies/*
 # except build/, which is used as an MSBuild target.
 !**/packages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
@@ -267,9 +269,6 @@ __pycache__/
 
 NFluent.userprefs
 
-NFluent.Tests/test-results/NFluent.Tests.csproj-Debug-2014-02-24.xml
-
-NFluent.Tests/test-results/NFluent.Tests.csproj.test-cache
 .vs/config/applicationhost.config
 .vs/restore.dg
 *.ncrunch*

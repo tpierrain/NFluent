@@ -1,4 +1,4 @@
-version: 2.0.{build}.0
+version: 2.0.0.{build}
 image: Visual Studio 2017
 branches:
   only:
@@ -8,9 +8,25 @@ platform: Any CPU
 build_script:
 - cmd: build.cmd
 test: off
+
+environment:
+  NFLUENT_NUGET_API_KEY: xxx
+
+assembly_info:
+  patch: true
+  file: version.cs
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+
 notifications:
 - provider: Slack
   incoming_webhook: https://hooks.slack.com/services/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
-artifacts:
-  - path: 'Artifacts\Packages\*.nupkg'
-    name: NFluentPackages
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: false
+- provider: GitHubPullRequest
+  template: "{{#passed}}:white_check_mark:{{/passed}}{{#failed}}:x:{{/failed}} [Build {{&projectName}} {{buildVersion}} {{status}}]({{buildUrl}}) (commit {{commitUrl}} by @{{&commitAuthorUsername}})"
+  auth_token:
+      secure: kCICf0+4Cc7GIVkQ072LtcxBKKhynEsSx612WwmUi3NAs8C/14iHy7PlXTUWyyYR9
+      

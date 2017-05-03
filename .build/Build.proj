@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="RunAll" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- note from Thomas PIERRAIN: I really hate MsBuild and its amazingly unintuitive syntax. Unbelievable... -->
-  <PropertyGroup>
-    <SolutionRoot>$(MSBuildProjectDirectory)\..</SolutionRoot>
-    <MSBuildCommunityTasksPath>$(SolutionRoot)\.build</MSBuildCommunityTasksPath>
-  </PropertyGroup>
+  <!-- updated by Cyrille Dupuydauby -->
 
-  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
-  
   <PropertyGroup>
       <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
       <SolutionRoot>$(MSBuildProjectDirectory)\..</SolutionRoot>
+      <MSBuildCommunityTasksPath>$(SolutionRoot)\.build</MSBuildCommunityTasksPath>
       <SolutionName>NFluent</SolutionName>
+      <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
       <ToolsPath>$(SolutionRoot)\tools\</ToolsPath>
       <SourcePath>$(SolutionRoot)\src\</SourcePath>
+      <TestsPath>$(SolutionRoot)\tests\</TestsPath>
       <ArtifactsPath>$(SolutionRoot)\Artifacts</ArtifactsPath>
       <BinariesPath>$(ArtifactsPath)\Binaries</BinariesPath>
       <PackagesPath>$(ArtifactsPath)\Packages</PackagesPath>
@@ -23,36 +21,77 @@
       <DocuExePath>$(ToolsPath)docu\docu.exe</DocuExePath>
       <ZipExe>$(ToolsPath)7za\7za.exe</ZipExe>
       <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.6.1\tools\nunit3-console.exe</TestRunnerPath>
+     <PackageStream>alpha</PackageStream>
+     <NugetKey>$(NFLUENT_NUGET_API_KEY)</NugetKey>
   </PropertyGroup>
-    
-  <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
   
-  <Target Name="CI" DependsOnTargets="Build" />
-  <!--<Target Name="CI" DependsOnTargets="Build; BuildDocs" />-->
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+  <Import Project="build.tasks" />
+  <!-- Specifics for appveyor: use env provided nunit runner for result publication-->
+  <Choose>
+    <When Condition="'$(APPVEYOR)'=='True'">
+      <PropertyGroup>
+        <NunitOptions>--result=TestResults.xml;format=AppVeyor</NunitOptions>
+        <TestRunnerPath>nunit3-console</TestRunnerPath>
+      </PropertyGroup>
+    </When>
+  </Choose>
 
+
+  <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
+  <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll; Publish"/>
+  <Target Name="RC" DependsOnTargets="SetRC; RunAll; Publish"/>
+  <Target Name="Release" DependsOnTargets="SetRelease; RunAll; Publish"/>
+  <Target Name="CI" DependsOnTargets="Build; RunTests" />
+
+  <!--Targets-->
+  <Target Name="SetNightly">
+    <PropertyGroup>
+      <PackageStream>nightly</PackageStream>
+    </PropertyGroup>
+  </Target>
+  <Target Name="SetRC">
+    <PropertyGroup>
+      <PackageStream>RC</PackageStream>
+    </PropertyGroup>
+  </Target>
+  <Target Name="SetRelease">
+    <PropertyGroup>
+      <PackageStream></PackageStream>
+    </PropertyGroup>
+  </Target>
   <!-- 1- Do the BUILD -->
-
   <Target Name="DotnetCoreRestore">
       
     <Message Importance="high" Text="--------- DOTNET RESTORE  -------------------------------------------"/>     
-    <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
     <Exec Command="dotnet restore $(SourcePath)NFluent\" />
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests\" />
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Extensions\" />
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Internals\" />
-
+    <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Internals\" />
     <Message Importance="high" Text="--------- end of DOTNET RESTORE  -------------------------------------"/>
   </Target>
-  
+
+  <ItemGroup>
+    <ProjectFolder Include="$(SourcePath)\NFluent"/>
+    <ProjectFolder Include="$(SourcePath)\NFluent.35"/>
+    <ProjectFolder Include="$(SourcePath)\NFluent.40"/>
+    <ProjectFolder Include="$(SourcePath)\NFluent.PCL"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Internals"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.40.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.40.Tests.Internals"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests.Internals"/>
+    <ProjectFolder Include="$(TestsPath)\Nugget"/>
+  </ItemGroup>
 
   <Target Name="NugetRestore" DependsOnTargets="DotnetCoreRestore">
       
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
-    
-    <!--<Exec Command="&quot;$(NuGetExePath) restore&quot;" />-->
-    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\tests\NFluent.40.Tests\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
-    <Exec Command="&quot;$(NuGetExePath)&quot;  install &quot;$(SolutionRoot)\tests\Nugget\packages.config&quot; -o &quot;$(SolutionRoot)\packages&quot;" />
-  
+
+    <Exec Command='"$(NuGetExePath)"  install "%(ProjectFolder.Identity)\packages.config" -o "$(SolutionRoot)\packages"'/>
+
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
   
   </Target>
@@ -67,17 +106,15 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
 ---------------------------------------------------------------
       "  />
 
-<Message Importance="high" Text="--------- will run: $(SolutionRoot)\$(SolutionName).sln"/>
+        <Message Importance="high" Text="--------- will run: $(SolutionRoot)\$(SolutionName).sln"/>
 
       <MSBuild Projects="$(SolutionRoot)\$(SolutionName).sln" 
                 Targets="Build" 
                 Properties="Configuration=$(Configuration)" />
 
-
     <Message Importance="high" Text="--------- end of BUILD  -------------------------------------"/>
   
   </Target>
-    
     
   <!-- 2- BUILD THE DOCS -->
   <Target Name="BuildDocs">
@@ -98,16 +135,16 @@ GENERATING DOCS for:
 
   
   <!-- 3- Run the TESTS -->
-  <ItemGroup>
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-3.5" />
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).35.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-3.5" />
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).35.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-3.5" />
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-4.0" />
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).40.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-4.0" />
-    <TestProjectsWithArguments Include="&quot;$(SolutionRoot)\tests\$(SolutionName).40.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-4.0" />
-  </ItemGroup>
 
   <Target Name="RunTests" DependsOnTargets="Build">
+    <ItemGroup>
+      <TestProjectsWithArguments Include="&quot;$(TestsPath)\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-3.5" />
+      <TestProjectsWithArguments Include="&quot;$(TestsPath)\$(SolutionName).35.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-3.5" />
+      <TestProjectsWithArguments Include="&quot;$(TestsPath)\$(SolutionName).35.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-3.5" />
+      <TestProjectsWithArguments Include="&quot;$(TestsPath)\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-4.0" />
+      <TestProjectsWithArguments Include="&quot;$(TestsPath)\$(SolutionName).40.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-4.0" />
+      <TestProjectsWithArguments Include="&quot;$(TestsPath)\$(SolutionName).40.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-4.0" />
+    </ItemGroup>
     <Message Importance="high" Text="
 ---------------------------------------------------------------
 RUN ALL UNIT TESTS
@@ -116,45 +153,43 @@ RUN ALL UNIT TESTS
 
     <Message Importance="high" Text="--------- RUN CLASSICAL .NET TESTS ---------"/>
 
-      <Message Importance="high" Text="debug message: TestProjectsWithArguments.Identity:'%(TestProjectsWithArguments.Identity)'"/>
+    <Message Importance="high" Text="debug message: TestProjectsWithArguments.Identity:'%(TestProjectsWithArguments.Identity)'"/>
 
-      <Exec Command="&quot;$(TestRunnerPath)&quot; %(TestProjectsWithArguments.Identity)" LogStandardErrorAsError="true" />
+    <Exec Command='"$(TestRunnerPath)" %(TestProjectsWithArguments.Identity) $(NunitOptions)' LogStandardErrorAsError="true" WorkingDirectory="../"/>
 
     <Message Importance="high" Text="--------- end of RUN CLASSICAL .NET TESTS ---------"/>
-    
 
     <Message Importance="high" Text="--------- RUN THE .NET CORE TESTS ---------"/>
 
       <!--Exec Command="dotnet test $(SolutionRoot)\NFluent.Core.Tests\NFluent.Core.Tests.csproj" /-->
       
     <Message Importance="high" Text="--------- end of RUN THE .NET CORE TESTS ---------"/>
-
   </Target>
 
   <!-- 4- Then PACKAGE -->
   <Target Name="Package" DependsOnTargets="RunTests">
+    <ItemGroup>
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).35\bin\$(Configuration)\*.*">
+        <TargetFwk>net35</TargetFwk>
+      </FilesForNuget>
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).40\bin\$(Configuration)\*.*">
+        <TargetFwk>net40</TargetFwk>
+      </FilesForNuget>
+      <FilesForNuget Include="$(SourcePath)$(SolutionName)\bin\$(Configuration)\netstandard1.3\*.*">
+        <TargetFwk>netstandard1.3</TargetFwk>
+      </FilesForNuget>
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).PCL\bin\$(Configuration)\*.*">
+        <TargetFwk>PCL</TargetFwk>
+      </FilesForNuget>
+    </ItemGroup>
 
-      <Message Importance="high" Text="--------- PACKAGE ---------"/>
+    <Message Importance="high" Text="--w------- PACKAGE ---------"/>
       <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
-      
-      <!-- NFluent (3.5) first -->
-      <Message Importance="high" Text="xcopy $(SourcePath)$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /E /Y" />
-      <Exec Command="xcopy $(SourcePath)$(SolutionName).35\bin\$(Configuration)\*.* $(BinariesPath)\35\ /E /Y" />
-	  
-	    <!-- NFluent (4.0) then -->
-      <Message Importance="high" Text="xcopy $(SourcePath)$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /E /Y" />
-      <Exec Command="xcopy $(SourcePath)$(SolutionName).40\bin\$(Configuration)\*.* $(BinariesPath)\40\ /E /Y" />
-
-      <!-- NFluent (Core) then -->
-      <Message Importance="high" Text="xcopy $(SourcePath)$(SolutionName)\bin\$(Configuration)\*.* $(BinariesPath)\netstandard1.3\ /E /Y" />
-      <Exec Command="xcopy $(SourcePath)$(SolutionName)\bin\$(Configuration)\*.* $(BinariesPath)\netstandard1.3\ /E /Y" />
-
-      <!-- NFluent (PCL) then -->
-      <Message Importance="high" Text="xcopy $(SourcePath)$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /E /Y" />
-      <Exec Command="xcopy $(SourcePath)$(SolutionName).PCL\bin\$(Configuration)\*.* $(BinariesPath)\PCL\ /E /Y" />
+      <Message Importance="high" Text="xcopy %(FilesForNuget.Identity) $(BinariesPath)\%(FilesForNuget.TargetFwk)\ /E /Y" />
+      <Exec Command='xcopy "%(FilesForNuget.FullPath)" "$(BinariesPath)\%(FilesForNuget.TargetFwk)\" /E /Y' />
     
       <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
-      <GetAssemblyIdentity AssemblyFiles="$(BinariesPath)\35\$(SolutionName).dll">
+      <GetAssemblyIdentity AssemblyFiles="$(BinariesPath)\net40\$(SolutionName).dll">
         <Output TaskParameter="Assemblies" ItemName="AsmInfo" />
       </GetAssemblyIdentity>
 
@@ -166,12 +201,17 @@ RUN ALL UNIT TESTS
       <Message Importance="high" Text="[Print] PackageVersion: '$(PackageVersion)'" />
       <Message Importance="high" Text="[Print] NuspecFilePath: '$(NuspecFilePath)'" />
 
-      <!-- insert the version number into the nuspec file -->
+    <VersionBuilding version ="$(PackageVersion)" stream="$(PackageStream)">
+      <Output PropertyName="PrettyVersion" TaskParameter="fullVersion" />
+    </VersionBuilding>
+    <Message Importance="high" Text="Pretty Version= $(PrettyVersion)" />
+
+    <!-- insert the version number into the nuspec file -->
       <XmlPoke 
         XmlInputPath="$(NuspecFilePath)"
           Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
         Query="x:package/x:metadata/x:version" 
-        Value="$(PackageVersion)-alpha" />
+        Value="$(PrettyVersion)" />
 
       <!-- Gets the release note content from the proper file -->
       <ReadLinesFromFile File="$(SolutionRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.txt">
@@ -201,10 +241,23 @@ CREATING NUGET PACKAGE IN:
 ---------------------------------------------------------------
             "  />
       <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
-      <Exec Command="&quot;$(NuGetExePath)&quot; pack &quot;$(NuspecFilePath)&quot; -o &quot;$(PackagesPath)&quot;"
-        LogStandardErrorAsError="true" />
+      <Exec Command='"$(NuGetExePath)" pack "$(NuspecFilePath)" -o "$(PackagesPath)"' LogStandardErrorAsError="true" />
 
         <Message Importance="high" Text="--------- End of PACKAGE ---------"/>
+  </Target>
+
+  <!-- 5- Then Publish (but not for PR)-->
+  <Target Name="Publish" DependsOnTargets="Package">
+    <PropertyGroup>
+      <PackageFileName>$(PackagesPath)\$(SolutionName).$(PrettyVersion).nupkg</PackageFileName>
+    </PropertyGroup>
+  <!--= Publish the package on Nuget-->
+  <Message Importance="high" Text="--------- NUGET PUBLISH  -------------------------------------------"/>
+
+  <Exec Command='"$(NuGetExePath)" setApiKey $(NugetKey) -source https://www.nuget.org/api/v2/package -verbosity quiet' EchoOff='true' Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''"/>
+  <Exec Command='"$(NuGetExePath)" push "$(PackageFileName)" -Source https://www.nuget.org/api/v2/package' Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''"/>
+
+  <Message Importance="high" Text="--------- end of NUGET PUBLISH  -------------------------------------"/>
   </Target>
 
 </Project>

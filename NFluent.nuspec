@@ -3,7 +3,7 @@
   <metadata>
     <id>NFluent</id>
     <title>NFluent, smooth your .NET TDD experience!</title>
-    <version>2.0.0.0-alpha</version>
+    <version>2.0.0-nightly-00</version>
     <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR</authors>
     <owners>Thomas PIERRAIN</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -47,16 +47,16 @@
   </metadata>
   <files>
     <!-- .NET 3.5 -->
-    <file src="Artifacts\Binaries\35\NFluent.dll" target="lib\net35\NFluent.dll" />
-    <file src="Artifacts\Binaries\35\NFluent.xml" target="lib\net35\NFluent.xml" />
+    <file src="Artifacts\Binaries\net35\NFluent.dll" target="lib\net35\NFluent.dll" />
+    <file src="Artifacts\Binaries\net35\NFluent.xml" target="lib\net35\NFluent.xml" />
     <!-- .NET 4.0 (for dynamics and tasks support) -->
-    <file src="Artifacts\Binaries\40\NFluent.dll" target="lib\net40\NFluent.dll" />
-    <file src="Artifacts\Binaries\40\NFluent.xml" target="lib\net40\NFluent.xml" />
+    <file src="Artifacts\Binaries\net40\NFluent.dll" target="lib\net40\NFluent.dll" />
+    <file src="Artifacts\Binaries\net40\NFluent.xml" target="lib\net40\NFluent.xml" />
     <!-- PCL -->
     <file src="Artifacts\Binaries\PCL\NFluent.dll" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\NFluent.dll" />
     <file src="Artifacts\Binaries\PCL\NFluent.xml" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\NFluent.xml" />
     <!-- Core -->
-    <file src="Artifacts\Binaries\netstandard1.3\netstandard1.3\NFluent.dll" target="lib\netstandard1.3\NFluent.dll" />
-    <file src="Artifacts\Binaries\netstandard1.3\netstandard1.3\NFluent.pdb" target="lib\netstandard1.3\NFluent.pdb" />
+    <file src="Artifacts\Binaries\netstandard1.3\NFluent.dll" target="lib\netstandard1.3\NFluent.dll" />
+    <file src="Artifacts\Binaries\netstandard1.3\NFluent.pdb" target="lib\netstandard1.3\NFluent.pdb" />
   </files>
 </package>

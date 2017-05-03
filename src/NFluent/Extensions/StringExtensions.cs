@@ -13,11 +13,11 @@
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
 
-using System.Text;
-
 namespace NFluent.Extensions
 {
     using System;
+    using System.Text;
+
 
     /// <summary>
     ///     Hosts all string related extensions used by NFluent
