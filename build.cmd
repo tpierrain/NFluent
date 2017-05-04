@@ -7,7 +7,7 @@ Rem other targets (e.G. CI) build 'alpha package'
 cls
 set target=%1
 if "%target%"=="" (
-	set target=Nightly
+	set target=Alpha
 )
 set config=%2
 if "%config%" == "" (

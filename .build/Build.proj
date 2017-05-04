@@ -38,10 +38,11 @@
   </Choose>
 
   <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
+  <Target Name="CI" DependsOnTargets="Build; RunTests" />
   <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll; Publish"/>
+  <Target Name="Alpha" DependsOnTargets="SetAlpha; RunAll; Publish"/>
   <Target Name="RC" DependsOnTargets="SetRC; RunAll; Publish"/>
   <Target Name="Release" DependsOnTargets="SetRelease; RunAll; Publish"/>
-  <Target Name="CI" DependsOnTargets="Build; RunTests" />
 
   <!--Targets-->
   <Target Name="SetNightly">
@@ -57,6 +58,11 @@
   <Target Name="SetRelease">
     <PropertyGroup>
       <PackageStream></PackageStream>
+    </PropertyGroup>
+  </Target>
+  <Target Name="SetAlpha">
+    <PropertyGroup>
+      <PackageStream>alpha</PackageStream>
     </PropertyGroup>
   </Target>
   
