@@ -10,7 +10,7 @@ build_script:
 test: off
 
 environment:
-  NFLUENT_NUGET_API_KEY: xxx
+  NFLUENT_NUGET_API_KEY: aeZH+rScDM4gdvzDlCPeBHGEX2G+eACBSI8yrsmXLJpyDgXpRj07Xk1sw+KuH2xM
 
 assembly_info:
   patch: true

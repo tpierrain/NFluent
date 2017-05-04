@@ -20,7 +20,7 @@
       <NuGetExePath>$(NuGetToolsPath)nuget.exe</NuGetExePath>
       <DocuExePath>$(ToolsPath)docu\docu.exe</DocuExePath>
       <ZipExe>$(ToolsPath)7za\7za.exe</ZipExe>
-      <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.6.1\tools\nunit3-console.exe</TestRunnerPath>
+      <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.6.1\tools\nunit3-console</TestRunnerPath>
      <PackageStream>alpha</PackageStream>
      <NugetKey>$(NFLUENT_NUGET_API_KEY)</NugetKey>
   </PropertyGroup>
@@ -36,7 +36,6 @@
       </PropertyGroup>
     </When>
   </Choose>
-
 
   <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
   <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll; Publish"/>
@@ -60,9 +59,9 @@
       <PackageStream></PackageStream>
     </PropertyGroup>
   </Target>
+  
   <!-- 1- Do the BUILD -->
   <Target Name="DotnetCoreRestore">
-      
     <Message Importance="high" Text="--------- DOTNET RESTORE  -------------------------------------------"/>     
     <Exec Command="dotnet restore $(SourcePath)NFluent\" />
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests\" />
@@ -87,33 +86,25 @@
   </ItemGroup>
 
   <Target Name="NugetRestore" DependsOnTargets="DotnetCoreRestore">
-      
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
-
     <Exec Command='"$(NuGetExePath)"  install "%(ProjectFolder.Identity)\packages.config" -o "$(SolutionRoot)\packages"'/>
-
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
-  
   </Target>
   
   <Target Name="Build" DependsOnTargets="NugetRestore">
-
     <Message Importance="high" Text="--------- BUILD  -------------------------------------------"/>
-    
       <Message Importance="high" Text="
 ---------------------------------------------------------------
 BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
 ---------------------------------------------------------------
       "  />
 
-        <Message Importance="high" Text="--------- will run: $(SolutionRoot)\$(SolutionName).sln"/>
-
+      <Message Importance="high" Text="--------- will run: $(SolutionRoot)\$(SolutionName).sln"/>
       <MSBuild Projects="$(SolutionRoot)\$(SolutionName).sln" 
                 Targets="Build" 
                 Properties="Configuration=$(Configuration)" />
 
     <Message Importance="high" Text="--------- end of BUILD  -------------------------------------"/>
-  
   </Target>
     
   <!-- 2- BUILD THE DOCS -->
@@ -133,9 +124,7 @@ GENERATING DOCS for:
       <Message Importance="high" Text="--------- end of DOCUMENTATION GENERATION  ---------"/>
   </Target>
 
-  
   <!-- 3- Run the TESTS -->
-
   <Target Name="RunTests" DependsOnTargets="Build">
     <ItemGroup>
       <TestProjectsWithArguments Include="&quot;$(TestsPath)\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-3.5" />
@@ -259,5 +248,4 @@ CREATING NUGET PACKAGE IN:
 
   <Message Importance="high" Text="--------- end of NUGET PUBLISH  -------------------------------------"/>
   </Target>
-
 </Project>
