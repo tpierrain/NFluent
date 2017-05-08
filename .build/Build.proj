@@ -38,7 +38,7 @@
   </Choose>
 
   <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
-  <Target Name="CI" DependsOnTargets="Build; RunTests" />
+  <Target Name="CI" DependsOnTargets="Build; RunTests; Package" />
   <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll; Publish"/>
   <Target Name="Alpha" DependsOnTargets="SetAlpha; RunAll; Publish"/>
   <Target Name="RC" DependsOnTargets="SetRC; RunAll; Publish"/>
