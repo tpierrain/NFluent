@@ -44,11 +44,14 @@ namespace NFluent.Tests
         public void FailDurationTest()
         {
             Check.ThatCode(() =>
-            {
-                Check.ThatCode(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
-            })
-            .Throws<FluentCheckException>()
-            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code took too much time to execute." +Environment.NewLine); // TODO mimic startsWith
+                {
+                    Check.ThatCode(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
+                })
+                .Throws<FluentCheckException>()
+                .AndWhichMessage().StartsWith(
+                    Environment.NewLine +
+                    "The checked code took too much time to execute." + Environment.NewLine +
+                    "The checked execution time:");
         }
 
         [Test]

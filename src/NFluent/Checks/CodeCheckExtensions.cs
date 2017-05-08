@@ -74,6 +74,7 @@ namespace NFluent
                             checker.BuildMessage(
                                 "The checked code took too much time to execute.")
                                          .For(LabelForExecTime)
+                                         .On(comparand).And
                                          .Expected(durationThreshold)
                                          .Comparison(LabelForLessThan)
                                          .ToString();
