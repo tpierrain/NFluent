@@ -20,11 +20,12 @@ assembly_info:
   assembly_informational_version: '{version}'
 
 notifications:
-- provider: Slack
-  incoming_webhook: https://hooks.slack.com/services/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
-  on_build_success: true
-  on_build_failure: true
-  on_build_status_changed: false
+# disable slack integration to try to pinpoint cause of double notification
+#- provider: Slack
+#  incoming_webhook: https://hooks.slack.com/services/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
+#  on_build_success: true
+#  on_build_failure: true
+#  on_build_status_changed: false
 - provider: GitHubPullRequest
   template: "{{#passed}}:white_check_mark:{{/passed}}{{#failed}}:x:{{/failed}} [Build {{&projectName}} {{buildVersion}} {{status}}]({{buildUrl}}) (commit {{commitUrl}} by @{{&commitAuthorUsername}})"
   auth_token:
