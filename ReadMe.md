@@ -38,7 +38,7 @@ All you've got to remember is: `Check.That`, cause every check is then provided 
 ------------------------------------------------------------------------------------------------------------------------
 
 
-Usage sample
+Usage samples
 ------------
 
 With NFluent, you can write simple checks like this:
