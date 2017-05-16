@@ -31,8 +31,8 @@
 
 	var typesToGenerateAssertionsFor = new string[] { "byte", "sbyte", "decimal", "double", "float", "long", "short", "uint", "ulong", "ushort" };
 	
-    var sourcePath = "..\\..\\NFluent.Core\\Checks\\";
-    var project = "NFluent.Core";
+    var sourcePath = "..\\..\\NFluent\\Checks\\";
+    var project = "NFluent";
     var folder = "T4Generated";
 	string goldenSourceClassFileName = Host.ResolvePath(sourcePath+"IntCheckExtensions.cs");
 
