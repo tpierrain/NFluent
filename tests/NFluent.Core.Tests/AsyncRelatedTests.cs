@@ -13,6 +13,7 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+#if DOTNET_45
 namespace NFluent.Tests
 {
     using System;
@@ -83,7 +84,6 @@ namespace NFluent.Tests
                 throw new SecurityException("Freeze motha...");
             }).Throws<SecurityException>();
         }
-
         [Test]
         public void CheckThatAsyncCodeWorksForFunctions()
         {
@@ -133,3 +133,4 @@ namespace NFluent.Tests
 #endregion
     }
 }
+#endif

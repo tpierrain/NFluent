@@ -13,10 +13,9 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace NFluent
 {
+    using System;
     using Extensibility;
     using Messages;
 

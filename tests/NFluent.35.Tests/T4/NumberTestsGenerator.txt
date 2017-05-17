@@ -1,21 +1,21 @@
 
 // Generated helper templates
-// NFluent\NFluent.Core.Tests\T4Generated\NumberTestsGenerator.txt4
+// NFluent\tests\NFluent.Core.Tests\T4Generated\NumberTestsGenerator.txt4
 // Generated items
-// NFluent\NFluent.Core.Tests\T4Generated\FloatFloatingPointBinaryRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\SbyteSignedNumberRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\ShortSignedNumberRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\LongSignedNumberRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\FloatSignedNumberRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\DoubleSignedNumberRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\DecimalSignedNumberRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\UshortRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\UlongRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\UintRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\ByteRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\SbyteRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\ShortRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\LongRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\FloatRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\DoubleRelatedTests.cs
-// NFluent\NFluent.Core.Tests\T4Generated\DecimalRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\FloatFloatingPointBinaryRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\SbyteSignedNumberRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\ShortSignedNumberRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\LongSignedNumberRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\FloatSignedNumberRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\DoubleSignedNumberRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\DecimalSignedNumberRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\UshortRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\UlongRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\UintRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\ByteRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\SbyteRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\ShortRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\LongRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\FloatRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\DoubleRelatedTests.cs
+// NFluent\tests\NFluent.Core.Tests\T4Generated\DecimalRelatedTests.cs
