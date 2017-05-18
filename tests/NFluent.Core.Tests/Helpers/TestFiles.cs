@@ -21,7 +21,7 @@ namespace NFluent.Tests.Helpers
     {
         static TestFiles()
         {
-#if NETCOREAPP1_0
+#if NETCOREAPP1_0 || NETCOREAPP1_1
             Workdir = AppContext.BaseDirectory;
 #else
             Workdir = AppDomain.CurrentDomain.BaseDirectory;

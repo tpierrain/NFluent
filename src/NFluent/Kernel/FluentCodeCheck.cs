@@ -19,10 +19,10 @@ namespace NFluent.Kernel
 #if !PORTABLE
     using System.Diagnostics;
 #endif
+    using System.Diagnostics.CodeAnalysis;
 #if !DOTNET_3_5
     using System.Threading.Tasks;
 #endif
-    using System.Diagnostics.CodeAnalysis;
     using Extensibility;
 
 

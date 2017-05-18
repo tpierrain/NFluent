@@ -216,6 +216,8 @@ namespace NFluent.Tests
             // ReSharper disable once NotAccessedField.Local
             private int y = 3;
 
+            private List<string> emptyList;
+
             public DummyClass()
             {}
 
@@ -223,6 +225,7 @@ namespace NFluent.Tests
             {
                 this.x = x;
                 this.y = y;
+                this.emptyList = new List<string>();
             }
         }
 

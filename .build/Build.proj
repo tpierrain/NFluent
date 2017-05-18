@@ -133,12 +133,33 @@ GENERATING DOCS for:
   <!-- 3- Run the TESTS -->
   <Target Name="RunTests" DependsOnTargets="Build">
     <ItemGroup>
-      <TestProjectsWithArguments Include="&quot;$(TestsPath)\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-3.5" />
-      <TestProjectsWithArguments Include="&quot;$(TestsPath)\$(SolutionName).35.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-3.5" />
-      <TestProjectsWithArguments Include="&quot;$(TestsPath)\$(SolutionName).35.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-3.5" />
-      <TestProjectsWithArguments Include="&quot;$(TestsPath)\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll&quot; /framework:net-4.0" />
-      <TestProjectsWithArguments Include="&quot;$(TestsPath)\$(SolutionName).40.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll&quot; /framework:net-4.0" />
-      <TestProjectsWithArguments Include="&quot;$(TestsPath)\$(SolutionName).40.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll&quot; /framework:net-4.0" />
+      <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll"'>
+        <Framework>net-3.5</Framework>
+      </TestProjectsWithArguments>
+      <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).35.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll"'>
+        <Framework>net-3.5</Framework>
+      </TestProjectsWithArguments>
+      <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).35.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll"'>
+        <Framework>net-3.5</Framework>
+      </TestProjectsWithArguments>
+      <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll"'>
+        <Framework>net-4.0</Framework>
+      </TestProjectsWithArguments>
+      <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).40.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll"'>
+        <Framework>net-4.0</Framework>
+      </TestProjectsWithArguments>
+      <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).40.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll"'>
+        <Framework>net-4.0</Framework>
+      </TestProjectsWithArguments>
+      <TestProjectsWithArguments Include='"$(TestsPath)NFluent.Core.Tests\NFluent.Core.Tests.csproj"'>
+        <Framework>core</Framework>
+      </TestProjectsWithArguments>
+      <TestProjectsWithArguments Include='"$(TestsPath)NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj"'>
+        <Framework>core</Framework>
+      </TestProjectsWithArguments>
+      <TestProjectsWithArguments Include='"$(TestsPath)NFluent.Core.Tests.Extensions\NFluent.Core.Tests.Extensions.csproj"'>
+        <Framework>core</Framework>
+      </TestProjectsWithArguments>
     </ItemGroup>
     <Message Importance="high" Text="
 ---------------------------------------------------------------
@@ -146,13 +167,16 @@ RUN ALL UNIT TESTS
 ---------------------------------------------------------------
           "  />
 
-    <Message Importance="high" Text="--------- RUN CLASSICAL .NET TESTS ---------"/>
+    <Message Importance="high" Text="--------- RUN TESTS ---------"/>
 
     <Message Importance="high" Text="debug message: TestProjectsWithArguments.Identity:'%(TestProjectsWithArguments.Identity)'"/>
 
-    <Exec Command='"$(TestRunnerPath)" %(TestProjectsWithArguments.Identity) $(NunitOptions)' LogStandardErrorAsError="true" WorkingDirectory="../"/>
+    <Exec Command='"$(TestRunnerPath)" %(TestProjectsWithArguments.Identity) $(NunitOptions) /framework:%(TestProjectsWithArguments.Framework)' 
+          LogStandardErrorAsError="true" WorkingDirectory="../" Condition="'%(TestProjectsWithArguments.Framework)'!='core'"/>
+    <Exec Command='dotnet test %(TestProjectsWithArguments.Identity) -c $(Configuration)' 
+          LogStandardErrorAsError="true" WorkingDirectory="../" Condition="'%(TestProjectsWithArguments.Framework)'=='core'"/>
 
-    <Message Importance="high" Text="--------- end of RUN CLASSICAL .NET TESTS ---------"/>
+    <Message Importance="high" Text="--------- end of RUN TESTS ---------"/>
 
     <Message Importance="high" Text="--------- RUN THE .NET CORE TESTS ---------"/>
 

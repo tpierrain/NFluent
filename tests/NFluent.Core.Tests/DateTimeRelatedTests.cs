@@ -758,7 +758,7 @@ namespace NFluent.Tests
                 tokyoDateTime = TimeZoneInfo.ConvertTime(now, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
             }
             catch
-#if !NETCOREAPP1_0
+#if !NETCOREAPP1_0 && !NETCOREAPP1_1
 
             (TimeZoneNotFoundException)
 #endif

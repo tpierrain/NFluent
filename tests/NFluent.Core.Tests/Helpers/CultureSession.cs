@@ -17,7 +17,7 @@ using System;
 namespace NFluent.Tests.Helpers
 {
     using System.Globalization;
-#if !NETCOREAPP1_0
+#if !NETCOREAPP1_0 && !NETCOREAPP1_1
     using System.Threading;
 #endif
     public class CultureSession : IDisposable
@@ -36,7 +36,7 @@ namespace NFluent.Tests.Helpers
 
         private static void SetCulture(CultureInfo newCulture, CultureInfo newUiCulture)
         {
-#if NETCOREAPP1_0
+#if NETCOREAPP1_0 || NETCOREAPP1_1
             CultureInfo.CurrentUICulture = newUiCulture;
             CultureInfo.CurrentCulture = newCulture;
 #else
