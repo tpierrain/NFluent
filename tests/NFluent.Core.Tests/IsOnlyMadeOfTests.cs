@@ -18,7 +18,7 @@ namespace NFluent.Tests
     using System;
     using System.Collections;
     using System.Collections.Generic;
-#if !NETCOREAPP1_0
+#if !NETCOREAPP1_0 && !NETCOREAPP1_1
     using System.Collections.Specialized;
 #endif
     using Helpers;
@@ -193,7 +193,7 @@ namespace NFluent.Tests
             Check.That(integers).IsOnlyMadeOf(expectedValues);
         }
 
-#if !NETCOREAPP1_0
+#if !NETCOREAPP1_0 && !NETCOREAPP1_1
 
         [Test]
         public void IsOnlyMadeOfWithArrayListWorksEvenWhenGivingSameExpectedValueMultipleTimes()

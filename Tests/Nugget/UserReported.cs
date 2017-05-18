@@ -5,8 +5,8 @@
 
     public class UserReported
     {
-        [Test]
         // issue #176
+        [Test]
         public void NegatedIsZero()
         {
             Check.That(1).Not.IsZero();

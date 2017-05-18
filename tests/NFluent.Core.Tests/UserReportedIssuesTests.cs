@@ -24,6 +24,34 @@ namespace NFluent.Tests
     [TestFixture]
     public class UserReportedIssuesTests
     {
+        // issue 187
+        private class FakeClass
+        {
+            public List<string> Items { get; set; }
+        }
+
+        [Test]
+        public void hasfieldswithsamevalue_should_process_null_fields()
+        {
+            var instance1 = new FakeClass()
+                                {
+                                    Items = new List<string>()
+                                };
+            var instance2 = new FakeClass();
+
+            try
+            {
+                Check.That(instance2).HasFieldsWithSameValues(instance1); // throws NullReferenceException
+                Check.That(instance1).HasFieldsWithSameValues(instance2); // throws FluentCheckException
+                throw new Exception("Checks should fail.");
+            }
+            catch (FluentCheckException)
+            {
+                
+            }
+
+        }
+
         // issue #179: issue with IDictionary
         [Test]
         public void IssueWithIDictionary()
@@ -32,6 +60,7 @@ namespace NFluent.Tests
             dico["test"] = 2;
             Check.That(dico).ContainsKey("test");
         }
+
         // issue #178: allow to check for value and keys
         [Test]
         public void CheckForPair()
@@ -54,24 +83,23 @@ namespace NFluent.Tests
             public List<int> OtherIds;
         }
 
-          
-            [Test]
-            public void TestPrivateField()
-            {
-                TestMe test1 = CreateTestItem();
-                // ReSharper disable once UnusedVariable
-                TestMe test2 = CreateTestItem();
+        [Test]
+        public void TestPrivateField()
+        {
+            TestMe test1 = CreateTestItem();
+            // ReSharper disable once UnusedVariable
+            TestMe test2 = CreateTestItem();
 
-                var stream = new MemoryStream();
-                Serialize(stream, test1);
-                stream.Position = 0;
+            var stream = new MemoryStream();
+            Serialize(stream, test1);
+            stream.Position = 0;
 
-                Deserialize(stream, test1);
+            Deserialize(stream, test1);
 
-                // Id is not checked at all and the List<int>._version field is tested when it should not be
-                //this check fails
+            // Id is not checked at all and the List<int>._version field is tested when it should not be
+            //this check fails
 //                Check.That(test1).HasFieldsWithSameValues(test2);
-            }
+        }
 
             private static void Deserialize(MemoryStream stream, TestMe testItem)
             {

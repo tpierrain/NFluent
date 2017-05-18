@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NFluent</RootNamespace>
     <AssemblyName>NFluent</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -91,6 +91,9 @@
     </Compile>
     <Compile Include="..\NFluent\Checks\EventWaitHandleCheckExtensions.cs">
       <Link>Checks\EventWaitHandleCheckExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent\Checks\FieldKind.cs">
+      <Link>Checks\FieldKind.cs</Link>
     </Compile>
     <Compile Include="..\NFluent\Checks\IntCheckExtensions.cs">
       <Link>Checks\IntCheckExtensions.cs</Link>
