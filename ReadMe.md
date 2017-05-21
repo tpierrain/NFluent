@@ -1,6 +1,11 @@
 ![NFluent](https://github.com/tpierrain/nfluent/blob/master/NFluentBanner.png?raw=true)
 ![Motto](https://github.com/tpierrain/nfluent/blob/master/Images/AssertIsDead.png?raw=true)
 [![Build status](https://ci.appveyor.com/api/projects/status/ju5m6t3fm2xsl0o9/branch/master?svg=true)](https://ci.appveyor.com/project/tpierrain/nfluent/branch/master)
+[![NuGet](https://img.shields.io/nuget/v/NFluent.svg)](https://www.nuget.org/packages/NFluent/)
+[![NuGet Pre Release](https://img.shields.io/nuget/vpre/NFluent.svg)]([![NuGet](https://img.shields.io/nuget/v/NFluent.svg)](https://www.nuget.org/packages/NFluent/))
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/tpierrain.svg?style=social&label=Follow Thomas)]()
+[![Twitter Follow](https://img.shields.io/twitter/follow/cyrdup.svg?style=social&label=Follow Cyrille)]()
 ==============
 
 NFluent is __an check library__ which aims __to fluent your .NET TDD experience__.
