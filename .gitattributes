@@ -7,6 +7,7 @@
 *.jpeg binary 
 *.gif binary
 *.pdf binary
+*.psd binary
 
 # Custom for Visual Studio
 *.cs     diff=csharp

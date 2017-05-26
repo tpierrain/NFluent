@@ -9,6 +9,10 @@ build_script:
 - cmd: CI.cmd
 test: off
 
+artifacts:
+  - path: 'Artifacts\Packages\*.nupkg'
+    name: NFluentPackages
+
 environment:
   NFLUENT_NUGET_API_KEY: aeZH+rScDM4gdvzDlCPeBHGEX2G+eACBSI8yrsmXLJpyDgXpRj07Xk1sw+KuH2xM
 
