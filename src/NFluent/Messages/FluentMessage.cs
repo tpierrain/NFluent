@@ -30,25 +30,15 @@ namespace NFluent.Extensibility
         #region fields
 
         internal static readonly string EndOfLine = Environment.NewLine; // TODO: inline it
-
-        private readonly string message;
-
         private readonly EntityNamer checkedNamer;
-       
         private readonly EntityNamer expectedNamer;
-
         private readonly GenericLabelBlock checkedLabel;
-
+        private string message;
         private GenericLabelBlock expectedLabel;
-
         private MessageBlock expectedBlock;
-
         private MessageBlock checkedBlock;
-
         private string entity;
-
         private Type referenceType;
-
         private Type checkedType;
 
         #endregion
@@ -131,6 +121,15 @@ namespace NFluent.Extensibility
         }
 
         /// <summary>
+        /// Change the main message.
+        /// </summary>
+        /// <param name="newMessage">New message to use.</param>
+        public void ChangeMessageTo(string newMessage)
+        {
+            this.message = newMessage;
+        }
+
+        /// <summary>
         /// Specifies the attribute to use to describe entities.
         /// </summary>
         /// <param name="newEntityDescription">The new description for the Entity.</param>
@@ -153,12 +152,18 @@ namespace NFluent.Extensibility
         }
 
         /// <summary>
-        /// Adds a block describing the checked objet.
+        /// Adds a block describing the checked object.
         /// </summary>
-        /// <param name="test">The tested object/value.</param>
-        /// <param name="index">The interesting index (for enumerable types)</param>
-        /// <returns>A <see cref="FluentMessage"/> to continue build the message.</returns>
-        public MessageBlock On(object test, int index=0)
+        /// <param name="test">
+        /// The tested object/value.
+        /// </param>
+        /// <param name="index">
+        /// The interesting index (for enumerable types).
+        /// </param>
+        /// <returns>
+        /// A <see cref="FluentMessage"/> to continue build the message.
+        /// </returns>
+        public MessageBlock On(object test, int index = 0)
         {
             this.checkedBlock = new MessageBlock(this, test, this.checkedLabel, index);
             if (this.referenceType == null)
@@ -217,8 +222,7 @@ namespace NFluent.Extensibility
         /// <returns>The created MessageBlock.</returns>
         public MessageBlock ExpectedValues(object expectedValues)
         {
-            var customNamer = new EntityNamer { EntityName = "value(s)" };
-            this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(customNamer);
+            this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(new EntityNamer { EntityName = "value(s)" });
             this.expectedBlock = new MessageBlock(this, expectedValues, this.expectedLabel);
             this.referenceType = this.referenceType ?? expectedValues.GetTypeWithoutThrowingException();
             return this.expectedBlock;

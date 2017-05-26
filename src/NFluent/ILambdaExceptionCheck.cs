@@ -47,6 +47,9 @@ namespace NFluent
         /// <summary>
         /// Checks that an inner exception is present within the outer exception stack trace.
         /// </summary>
+        /// <typeparam name="T">
+        /// Exception type.
+        /// </typeparam>
         /// <returns>
         /// A check link.
         /// </returns>

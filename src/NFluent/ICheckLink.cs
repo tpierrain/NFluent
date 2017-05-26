@@ -15,6 +15,7 @@
 namespace NFluent
 {
     using System.Diagnostics.CodeAnalysis;
+    
     /// <summary>
     /// Provides a way to chain two <see cref="ICheck{T}"/> instances. 
     /// </summary>

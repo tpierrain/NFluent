@@ -93,8 +93,8 @@ namespace NFluent
         /// </returns>
         public static string ToEnumeratedString(this IEnumerable enumerable, out long itemsCount)
         {
-            const string separator = ", ";
-            return ToEnumeratedString(enumerable, out itemsCount, separator);
+            const string Separator = ", ";
+            return ToEnumeratedString(enumerable, out itemsCount, Separator);
         }
 
         /// <summary>

@@ -99,7 +99,7 @@ namespace NFluent.Tests
                 Check.That(tresAmigosAndMore).Contains(this.tresAmigos).Once();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable has extra occurences of the expected items. Item [\"tres\"] at position 3 is redundant." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"un\", \"dos\", \"tres\", \"tres\"]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"un\", \"dos\", \"tres\"]");
+            .WithMessage(Environment.NewLine+ "The checked enumerable has extra occurrences of the expected items. Item [\"tres\"] at position 3 is redundant." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"un\", \"dos\", \"tres\", \"tres\"]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"un\", \"dos\", \"tres\"]");
         }
     }
 }

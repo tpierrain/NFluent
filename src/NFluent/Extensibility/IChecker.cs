@@ -39,6 +39,20 @@ namespace NFluent.Extensibility
         /// </returns>
         ICheckLink<TC> BuildChainingObject();
 
+
+        /// <summary>
+        /// Gets the check link to return for the next check to be executed (linked with the And operator).
+        /// This property is only useful for those that doesn't want to implement their check methods with the 
+        /// <see cref="ExecuteCheck"/> method.
+        /// </summary>
+        /// <param name="itemChecker">Checker for the sub item to check.</param>
+        /// <typeparam name="TU">Checker for sub item.</typeparam>
+        /// <returns>
+        ///     The check link to return for next check (linked with the And operator) to be executed.
+        /// </returns>
+        ICheckLinkWhich<TC, TU> BuildLinkWhich<TU>(TU itemChecker)
+            where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense;
+
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>

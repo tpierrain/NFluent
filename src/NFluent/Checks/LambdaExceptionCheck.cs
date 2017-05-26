@@ -116,6 +116,8 @@ namespace NFluent
         /// <summary>
         /// Checks that an inner exception is present within the outer exception stack trace.
         /// </summary>
+        /// <typeparam name="TE">Exception type.
+        /// </typeparam>
         /// <returns>
         /// A check link.
         /// </returns>

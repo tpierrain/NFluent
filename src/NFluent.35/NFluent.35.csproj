@@ -184,6 +184,9 @@
     <Compile Include="..\NFluent\ICheckLink.cs">
       <Link>ICheckLink.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent\ICheckLinkWhich.cs">
+      <Link>ICheckLinkWhich.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent\ICodeCheck.cs">
       <Link>ICodeCheck.cs</Link>
     </Compile>
@@ -222,6 +225,9 @@
     </Compile>
     <Compile Include="..\NFluent\Kernel\CheckLink.cs">
       <Link>Kernel\CheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent\Kernel\CheckLinkWhich.cs">
+      <Link>Kernel\CheckLinkWhich.cs</Link>
     </Compile>
     <Compile Include="..\NFluent\Kernel\ExtendableCheckLink.cs">
       <Link>Kernel\ExtendableCheckLink.cs</Link>

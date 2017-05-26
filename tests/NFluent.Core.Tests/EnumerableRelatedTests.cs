@@ -19,6 +19,8 @@ namespace NFluent.Tests
     using System.Collections;
     using System.Collections.Generic;
 
+    using NFluent.ApiChecks;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -268,6 +270,22 @@ namespace NFluent.Tests
 
             IEnumerable integerEmptyList = new List<int>();
             Check.That(integerEmptyList).IsEmpty().And.HasSize(0);
+        }
+
+        // item #183
+        [Test]
+        public void ShouldProvideItemExploration()
+        {
+            IEnumerable<string> randomWords = new List<string> {"yes", "foo", "bar", "nope"};
+            Check.ThatCode( () =>
+            Check.That(randomWords).HasItem(3).Which.IsEqualTo("hope")).Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
+                "",
+                "The checked [item #3] is different from the expected one but has same length.",
+                "The checked [item #3]:",
+                "\t[\"nope\"]",
+                "The expected [item #3]:",
+                "\t[\"hope\"]"
+                );
         }
     }
 }

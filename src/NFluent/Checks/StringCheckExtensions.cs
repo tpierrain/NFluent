@@ -15,14 +15,16 @@
 
 namespace NFluent
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Extensibility;
-    using System;
-    using Helpers;
-    using Kernel;
 
+    using Extensibility;
+
+    using Helpers;
+
+    using Kernel;
 
     /// <summary>
     /// Provides check methods to be executed on a string instance.
@@ -148,11 +150,8 @@ namespace NFluent
                                 .Label("The possible elements:")
                                 .ToString();
                         throw new FluentCheckException(errorMessage);
-                    }, 
-                checker.BuildMessage("The {0} is one of the possible elements whereas it must not.")
-                    .Expected(possibleElements)
-                    .Label("The possible elements:")
-                    .ToString());
+                    },
+                checker.BuildMessage("The {0} is one of the possible elements whereas it must not.").Expected(possibleElements).Label("The possible elements:").ToString());
         }
 
         /// <summary>
@@ -205,9 +204,9 @@ namespace NFluent
         {
             var value = checker.Value;
 
-            var analyse = StringDifference.Analyze(value, (string) expected, ignoreCase);
+            var analysis = StringDifference.Analyze(value, (string)expected, ignoreCase);
 
-            if (negated == (analyse !=null && analyse.Count>0))
+            if (negated == (analysis != null && analysis.Count > 0))
             {
                 return null;
             }
@@ -217,17 +216,20 @@ namespace NFluent
                 return 
                     checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.").Expected(expected).Comparison("different from").ToString();
             }
+
             if (value == null)
             {
                 return checker.BuildShortMessage("The {0} is null whereas it must not.").For(typeof(string)).On(null/*value*/).And.Expected(expected).ToString();
             }
+
             if (expected == null)
             {
-                return  checker.BuildShortMessage("The {0} is not null whereas it must.").For(typeof(string)).On(value).And.Expected(null).ToString();
+                return checker.BuildShortMessage("The {0} is not null whereas it must.").For(typeof(string)).On(value).And.Expected(null).ToString();
             }
 
-            var summary = StringDifference.Summarize(analyse);
-            var message= analyse[0].BuildMessage(summary);
+            var summary = StringDifference.Summarize(analysis);
+            var message = checker.BuildShortMessage(string.Empty);
+            analysis[0].FillMessage(message, summary);
 
             // we try to refine the difference
             return message.ToString();
@@ -237,7 +239,6 @@ namespace NFluent
         {
             var checkedValue = checker.Value;
 
-            // special case if checkedvalue is null
             if (checkedValue == null)
             {
                 return negated || notContains
@@ -575,7 +576,7 @@ namespace NFluent
         /// <summary>
         /// Convert a string to an array of lines.
         /// </summary>
-        /// <param name="check">The fluent check to be processed</param>
+        /// <param name="check">The fluent check to be processed.</param>
         /// <returns>A checker.</returns>
         public static ICheck<IEnumerable<string>> AsLines(this ICheck<string> check)
         {
@@ -591,8 +592,10 @@ namespace NFluent
                         lines[i] = lines[i].Trim(Environment.NewLine[1]);
                     }
                 }
+
                 next = lines;
             }
+
             return new FluentCheck<IEnumerable<string>>(next);
         }
     }
