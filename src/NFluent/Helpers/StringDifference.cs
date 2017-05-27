@@ -213,22 +213,6 @@ namespace NFluent.Helpers
         /// <summary>
         /// Builds a <see cref="FluentMessage"/> instance describing the difference.
         /// </summary>
-        /// <param name="summary">
-        /// Main difference between strings.
-        /// </param>
-        /// <returns>
-        /// A <see cref="FluentMessage"/> instance.
-        /// </returns>
-        public FluentMessage BuildMessage(DifferenceMode summary)
-        {
-            var message = FluentMessage.BuildMessage(string.Empty);
-            this.FillMessage(message, summary);
-            return message;
-        }
-
-        /// <summary>
-        /// Builds a <see cref="FluentMessage"/> instance describing the difference.
-        /// </summary>
         /// <param name="message">
         /// The fluent message to fill.
         /// </param>

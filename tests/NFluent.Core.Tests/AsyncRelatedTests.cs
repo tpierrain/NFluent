@@ -13,7 +13,7 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-#if DOTNET_45 || NETCOREAPP1_0
+#if DOTNET_45 || NETCOREAPP1_0 
 namespace NFluent.Tests
 {
     using System;

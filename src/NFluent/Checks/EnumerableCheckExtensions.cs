@@ -406,13 +406,14 @@ namespace NFluent
                         using (var scan = checker.Value.GetEnumerator())
                         {
                             int i;
-                            for (i = 0; scan.MoveNext() && i < index; i++)
+                            for (i = 0; i <= index && scan.MoveNext(); i++)
                             {
                             }
 
-                            if (i < index)
+                            if (i <= index)
                             {
-                                throw new FluentCheckException(checker.BuildMessage(string.Format("The {{0}} does not have an item at index {0}.", index)).ToString());
+                                throw new FluentCheckException(checker.BuildMessage(
+                                    $"The {{0}} does not have an item at index {index}.").ToString());
                             }
                             // ReSharper disable once SuspiciousTypeConversion.Global
                             var itemCheck = Check.That(scan.Current);

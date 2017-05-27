@@ -287,5 +287,18 @@ namespace NFluent.Tests
                 "\t[\"hope\"]"
                 );
         }
+
+        [Test]
+        public void HasItemShouldFailWhenNoItemAtIndex()
+        {
+            IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
+            Check.ThatCode(() =>
+                Check.That(randomWords).HasItem(3).Which.IsEqualTo("hope")).Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
+                "",
+                "The checked enumerable does not have an item at index 3.",
+                "The checked enumerable:",
+                "\t[\"yes\", \"foo\", \"bar\"]"
+            );
+        }
     }
 }

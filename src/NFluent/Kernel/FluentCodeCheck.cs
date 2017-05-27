@@ -25,7 +25,6 @@ namespace NFluent.Kernel
 #endif
     using Extensibility;
 
-
     /// <summary>
     /// This class stores all required information to check code.
     /// </summary>
@@ -62,14 +61,12 @@ namespace NFluent.Kernel
         /// <value>
         /// The next check negated.
         /// </value>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public ICodeCheck<T> Not
-        {
-            get
-            {
-                return new FluentCodeCheck<T>(this.Value, CheckContext.DefaulNegated);
-            }
-        }
+        [SuppressMessage(
+            "StyleCop.CSharp.DocumentationRules",
+            "SA1623:PropertySummaryDocumentationMustMatchAccessors",
+            Justification =
+                "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
+        public ICodeCheck<T> Not => new FluentCodeCheck<T>(this.Value, CheckContext.DefaulNegated);
 
         /// <summary>
         /// Gets the value to be tested (provided for any extension method to be able to test it).
@@ -96,7 +93,7 @@ namespace NFluent.Kernel
         /// </value>
         public bool Negated { get; private set; }
 
-         /// <summary>
+        /// <summary>
         /// Creates a new instance of the same fluent check type, injecting the same Value property 
         /// (i.e. the system under test), but with a false Negated property in any case.
         /// </summary>
@@ -104,8 +101,8 @@ namespace NFluent.Kernel
         /// <returns>A new instance of the same fluent check type, with the same Value property.</returns>
         public object ForkInstance()
         {
-             this.Negated = !CheckContext.DefaulNegated;
-             return this;
+            this.Negated = !CheckContext.DefaulNegated;
+            return this;
         }
 
         /// <summary>
@@ -163,6 +160,7 @@ namespace NFluent.Kernel
 #if !PORTABLE
                 watch.Stop();
                 result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
+
                 // ReSharper disable PossibleLossOfFraction
                 result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
 #else
@@ -170,10 +168,9 @@ namespace NFluent.Kernel
                 result.TotalProcessorTime = result.ExecutionTime;
 #endif
             }
-
         }
 
-#if !DOTNET_3_5
+#if !DOTNET_3_5 && !DOTNET_40
         internal static RunTrace GetAsyncTrace(Func<Task> awaitableMethod)
         {
             var result = new RunTrace();
@@ -183,49 +180,53 @@ namespace NFluent.Kernel
 
         private static void CaptureAsyncTrace(Func<Task> awaitableMethod, RunTrace result)
         {
-            CaptureTrace(() =>
-            {
-                try
-                {
-                    // starts and waits the completion of the awaitable method
-                    awaitableMethod().Wait();
-                }
-                catch (AggregateException agex)
-                {
-                    result.RaisedException = agex.InnerException;
-                }
-            }, result);
+            CaptureTrace(
+                () =>
+                    {
+                        try
+                        {
+                            // starts and waits the completion of the awaitable method
+                            awaitableMethod().Wait();
+                        }
+                        catch (AggregateException exception)
+                        {
+                            result.RaisedException = exception.InnerException;
+                        }
+                    },
+                result);
         }
 
         /// <summary>
         /// Execute the function to capture the run.
         /// </summary>
         /// <typeparam name="TResult">Result type of the awaitable function.</typeparam>
-        /// <param name="awaitableFunction">
+        /// <param name="waitableFunction">
         /// <see cref="Action"/> to be analyzed.
         /// </param>
         /// <returns>
         /// Return <see cref="RunTrace"/> describing the execution.
         /// </returns>
-        internal static RunTraceResult<TResult> GetAsyncTrace<TResult>(Func<Task<TResult>> awaitableFunction)
+        internal static RunTraceResult<TResult> GetAsyncTrace<TResult>(Func<Task<TResult>> waitableFunction)
         {
             var result = new RunTraceResult<TResult>();
-            CaptureTrace(() =>
-            {
-                try
-                {
-                    // starts and waits the completion of the awaitable method
-                    awaitableFunction().Wait();
-                    result.Result = awaitableFunction().Result;
-                }
-                catch (AggregateException agex)
-                {
-                    result.RaisedException = agex.InnerException;
-                }
-            }, result);
+            CaptureTrace(
+                () =>
+                    {
+                        try
+                        {
+                            // starts and waits the completion of the awaitable method
+                            waitableFunction().Wait();
+                            result.Result = waitableFunction().Result;
+                        }
+                        catch (AggregateException agex)
+                        {
+                            result.RaisedException = agex.InnerException;
+                        }
+                    },
+                result);
             return result;
         }
-#endif
 
+#endif
     }
 }
