@@ -85,15 +85,15 @@ namespace NFluent.Tests.ForDocumentation
                     // build parameter list
                     if (checkParameters.Count > 0)
                     {
-                        parameters.Append(checkParameters[0].TypeToStringProperlyFormated(true));
+                        parameters.Append(checkParameters[0].TypeToStringProperlyFormatted(true));
                         for (var i = 1; i < checkParameters.Count; i++)
                         {
                             parameters.Append(", ");
-                            parameters.Append(checkParameters[i].TypeToStringProperlyFormated(true));
+                            parameters.Append(checkParameters[i].TypeToStringProperlyFormatted(true));
                         }
                     }
 
-                    return string.Format("Check.{3}({0} sut).{1}({2})", this.CheckedType.TypeToStringProperlyFormated(true), methodName, parameters, this.entryPoint);
+                    return string.Format("Check.{3}({0} sut).{1}({2})", this.CheckedType.TypeToStringProperlyFormatted(true), methodName, parameters, this.entryPoint);
                 }
 
                 return string.Empty;

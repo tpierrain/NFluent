@@ -17,7 +17,7 @@ namespace NFluent
 {
     using System;
     using System.ComponentModel;
-#if !DOTNET_3_5
+#if !DOTNET_3_5 && !DOTNET_40
     using System.Threading.Tasks;
 #endif
     using Kernel;
@@ -45,7 +45,6 @@ namespace NFluent
         }
 
 #if !DOTNET_3_5 && !DOTNET_40
-
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given async code (returning Task).
         /// </summary>
@@ -109,19 +108,17 @@ namespace NFluent
             return new FluentCodeCheck<RunTraceResult<TU>>(FluentCodeCheck<RunTraceResult<TU>>.GetTrace(value));
         }
 
-        /*
-                /// <summary>
-                /// Returns a <see cref="ICheck{T}"/> instance that will provide check method on a type.
-                /// </summary>
-                /// <typeparam name="T">Type to be tested.</typeparam>
-                /// <returns>
-                /// A <see cref="ICheck{Type}" /> instance to use in order to assert things on the given test.
-                /// </returns>
-                public static ICheck<Type> That<T>()
-                {
-                    return new FluentCheck<Type>(typeof(T));
-                }
-        */
+        /// <summary>
+        /// Returns a <see cref="ICheck{T}"/> instance that will provide check method on a type.
+        /// </summary>
+        /// <typeparam name="T">Type to be tested.</typeparam>
+        /// <returns>
+        /// A <see cref="ICheck{Type}" /> instance to use in order to assert things on the given test.
+        /// </returns>
+        public static ICheck<Type> That<T>()
+        {
+            return new FluentCheck<Type>(typeof(T));
+        }
 
         // ncrunch: no coverage start
         // coverage disabled as this code cannot be executed and is to be removed at a later stage
@@ -160,9 +157,9 @@ namespace NFluent
         {
             return null;
         }
-        
+
         // ncrunch: no coverage end
-         
+
         /// <summary>
         /// Returns a <see cref="IStructCheck{T}" /> instance that will provide check methods to be executed on a given enum or struct value.
         /// </summary>
@@ -174,7 +171,8 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="IStructCheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
-        public static IStructCheck<T> ThatEnum<T>(T value) where T : struct
+        public static IStructCheck<T> ThatEnum<T>(T value)
+            where T : struct
         {
             return new FluentStructCheck<T>(value);
         }

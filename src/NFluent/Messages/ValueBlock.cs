@@ -93,7 +93,7 @@ namespace NFluent.Messages
 
             if (this.includeType && this.type != null)
             {
-                var temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormated();
+                var temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormatted();
                 builder.AppendFormat(" of type: [{0}]", temp);
             }
 
@@ -170,7 +170,7 @@ namespace NFluent.Messages
         private string Description()
         {
             var description = new StringBuilder();
-            description.AppendFormat("[{0}]", this.test.ToStringProperlyFormated());
+            description.AppendFormat("[{0}]", this.test.ToStringProperlyFormatted());
 
             if (this.enumerableCount.HasValue)
             {

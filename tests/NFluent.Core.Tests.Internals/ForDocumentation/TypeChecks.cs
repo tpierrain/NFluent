@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TypeChecks.cs" company="">
+// <copyright file="TypeCheckExtensions.cs" company="">
 //   Copyright 2013 Cyrille DUPUYDAUBY
 //   // //   Licensed under the Apache License, Version 2.0 (the "License");
 //   // //   you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ namespace NFluent.Tests.ForDocumentation
         {
             get
             {
-                return this.CheckedType.TypeToStringProperlyFormated(true);
+                return this.CheckedType.TypeToStringProperlyFormatted(true);
             }
 
 // ReSharper disable ValueParameterNotUsed

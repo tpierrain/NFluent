@@ -45,7 +45,7 @@ namespace NFluent
                 {
                     // failed 
                     var message =
-                        checker.BuildMessage(string.Format("The {{0}} contains {0} at {1} and {2}, where as it must contains it once.", text.ToStringProperlyFormated().DoubleCurlyBraces(), firstIndex, lastIndexOf))
+                        checker.BuildMessage(string.Format("The {{0}} contains {0} at {1} and {2}, where as it must contains it once.", text.ToStringProperlyFormatted().DoubleCurlyBraces(), firstIndex, lastIndexOf))
                                      .For("string")
                                      .On(value)
                                      .And.Expected(comparand).Comparison("one");

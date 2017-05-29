@@ -100,7 +100,7 @@ namespace NFluent.Messages
             {
                 var temp = this.fullTypeName
                     ? this.type.AssemblyQualifiedName
-                    : this.type.ToStringProperlyFormated();
+                    : this.type.ToStringProperlyFormatted();
                 builder.AppendFormat(" of type: [{0}]", temp);
             }
 
@@ -217,7 +217,7 @@ namespace NFluent.Messages
                     break;
                 }
 
-                description.Append(iterator.Current.ToStringProperlyFormated());
+                description.Append(iterator.Current.ToStringProperlyFormatted());
             }
 
             description.AppendFormat("]");

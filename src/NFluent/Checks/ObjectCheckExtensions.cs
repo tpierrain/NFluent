@@ -176,7 +176,7 @@ namespace NFluent
 
             checker.ExecuteNotChainableCheck(
                 () => IsInstanceHelper.InheritsFrom(checker, expectedBaseType),
-                string.Format(Environment.NewLine+ "The checked expression is part of the inheritance hierarchy or of the same type than the specified one." + Environment.NewLine + "Indeed, checked expression type:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "is a derived type of" + Environment.NewLine + "\t[{1}].", instanceType.ToStringProperlyFormated(), expectedBaseType.ToStringProperlyFormated()));
+                string.Format(Environment.NewLine+ "The checked expression is part of the inheritance hierarchy or of the same type than the specified one." + Environment.NewLine + "Indeed, checked expression type:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "is a derived type of" + Environment.NewLine + "\t[{1}].", instanceType.ToStringProperlyFormatted(), expectedBaseType.ToStringProperlyFormatted()));
         }
 
         /// <summary>

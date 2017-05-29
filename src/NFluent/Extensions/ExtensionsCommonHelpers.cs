@@ -18,6 +18,7 @@ namespace NFluent.Extensions
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Reflection;
     using System.Text;
@@ -47,10 +48,11 @@ namespace NFluent.Extensions
 
 
         /// <summary>
-        /// Checks if a type is numerical (i.e: int, double, short, uint...)
+        /// Checks if a type is numerical (i.e: int, double, short, uint...).
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="type">Type to evaluate.</param>
+        /// <returns>true if the type is a numerical type.</returns>
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
         public static bool IsNumerical(Type type)
         {
             return NumericalTypes.Contains(type);
@@ -61,7 +63,7 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="theObject">The theObject.</param>
         /// <returns>A string that represents the current object. If the object is already a string, this method will surround it with brackets.</returns>
-        public static string ToStringProperlyFormated(this object theObject)
+        public static string ToStringProperlyFormatted(this object theObject)
         {
             if (theObject == null)
             {
@@ -81,22 +83,22 @@ namespace NFluent.Extensions
             
             if (theObject is DateTime)
             {
-                return ToStringProperlyFormated((DateTime)theObject);
+                return ToStringProperlyFormatted((DateTime)theObject);
             }
 
             if (theObject is bool)
             {
-                return ToStringProperlyFormated((bool)theObject);
+                return ToStringProperlyFormatted((bool)theObject);
             }
 
             if (theObject is double)
             {
-                return ToStringProperlyFormated((double)theObject);
+                return ToStringProperlyFormatted((double)theObject);
             }
 
             if (theObject is float)
             {
-                return ToStringProperlyFormated((float)theObject);
+                return ToStringProperlyFormatted((float)theObject);
             }
 
             var ienum = theObject as IEnumerable;
@@ -108,7 +110,7 @@ namespace NFluent.Extensions
             var type = theObject as Type;
             if (type != null)
             {
-                return TypeToStringProperlyFormated(type);
+                return TypeToStringProperlyFormatted(type);
             }
 
             var exc = theObject as Exception;
@@ -145,11 +147,11 @@ namespace NFluent.Extensions
         /// <returns>
         /// A string containing the type name.
         /// </returns>
-        public static string TypeToStringProperlyFormated(this Type type, bool shortName = false)
+        public static string TypeToStringProperlyFormatted(this Type type, bool shortName = false)
         {
             if (type.IsArray)
             {
-                return type.GetElementType().TypeToStringProperlyFormated() + "[]";
+                return type.GetElementType().TypeToStringProperlyFormatted() + "[]";
             }
 
             // try to find the type among primitive types
@@ -170,7 +172,7 @@ namespace NFluent.Extensions
             if (IsNullable(type))
             {
                 // specific case for Nullable
-                return TypeToStringProperlyFormated(arguments[0], shortName) + '?';
+                return TypeToStringProperlyFormatted(arguments[0], shortName) + '?';
             }
 
             builder.Append(typeRoot);
@@ -184,7 +186,7 @@ namespace NFluent.Extensions
                 }
 
                 first = false;
-                builder.Append(TypeToStringProperlyFormated(genType, shortName));
+                builder.Append(TypeToStringProperlyFormatted(genType, shortName));
             }
 
             builder.Append('>');
@@ -196,7 +198,7 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="theDateTime">The DateTime.</param>
         /// <returns>A string that represents the current object with current culture ignore.</returns>
-        private static string ToStringProperlyFormated(this DateTime theDateTime)
+        private static string ToStringProperlyFormatted(this DateTime theDateTime)
         {
             // return a ISO-8601 Date format
             return string.Format(CultureInfo.InvariantCulture, "{0:o}, Kind = {1}", theDateTime, theDateTime.Kind);
@@ -207,7 +209,7 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="theBoolean">The Boolean.</param>
         /// <returns>A string that represents the current object with current culture ignore.</returns>
-        private static string ToStringProperlyFormated(this bool theBoolean)
+        private static string ToStringProperlyFormatted(this bool theBoolean)
         {
             // Ensure that boolean values are not localized 
 #if !(PORTABLE) && !(NETSTANDARD1_3)
@@ -222,7 +224,7 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>A string that represents the current object with current culture ignore.</returns>
-        private static string ToStringProperlyFormated(this double value)
+        private static string ToStringProperlyFormatted(this double value)
         {
             // Ensure that boolean values are not localized 
 #if !(PORTABLE)
@@ -237,7 +239,7 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>A string that represents the current object with current culture ignore.</returns>
-        private static string ToStringProperlyFormated(this float value)
+        private static string ToStringProperlyFormatted(this float value)
         {
             // Ensure that boolean values are not localized 
 #if !(PORTABLE)

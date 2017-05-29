@@ -237,6 +237,9 @@
     <Compile Include="..\NFluent.Core.Tests\ToEnumeratedStringTests.cs">
       <Link>ToEnumeratedStringTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.Core.Tests\TypeRelatedTests.cs">
+      <Link>TypeRelatedTests.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.Core.Tests\UserReportedIssuesTests.cs">
       <Link>UserReportedIssuesTests.cs</Link>
     </Compile>
