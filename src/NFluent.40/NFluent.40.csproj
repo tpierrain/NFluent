@@ -59,6 +59,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="..\NFluent\ApiChecks\ExceptionChecks.cs">
+      <Link>ApiChecks\ExceptionChecks.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent\Check.cs">
       <Link>Check.cs</Link>
     </Compile>
@@ -281,6 +284,9 @@
     <Compile Include="..\NFluent\Messages\ValueBlock.cs">
       <Link>Messages\ValueBlock.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent\Obsolete\ILambdaCheck.cs">
+      <Link>Obsolete\ILambdaCheck.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent\RunTrace.cs">
       <Link>RunTrace.cs</Link>
     </Compile>
@@ -344,8 +350,6 @@
     <Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
-    <Compile Include="ApiChecks\ExceptionChecks.cs" />
-    <Compile Include="Obsolete\ILambdaCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -362,7 +366,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
