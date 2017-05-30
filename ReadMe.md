@@ -67,7 +67,7 @@ With NFluent, you can write simple checks like this:
     const Nationality FrenchNationality = Nationality.French;
     Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.Korean);
 
-    string motivationalSaying = "Failure is mother of success.";
+    string motivationalSaying = "Failure is the mother of success.";
     Check.That(motivationalSaying).IsNotInstanceOf<int>();
 
 ```
@@ -132,7 +132,7 @@ Can't be more easy: NFluent is [available on nuget.org](http://nuget.org/package
 
 
 
-Uses cases
+Use cases
 ----------
 __[NFluent use cases are available here](./UseCases.md)__.
 
@@ -148,7 +148,7 @@ New feature to be added?
 ------------------------
 + If you want to join the project and contribute: __[check this out before](./CONTRIBUTING.md)__ before, but be our guest.
 + If you don't want to contribute to the library, but you need a feature not yet implemented, don't hesitate to request it on the __[NFluent-Discuss google group](https://groups.google.com/forum/#!forum/nfluent-discuss)__.
-__In any cases: you are welcome!__
+__In any case: you are welcome!__
 
 Other resources
 ---------------
