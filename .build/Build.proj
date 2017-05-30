@@ -70,23 +70,25 @@
   <Target Name="DotnetCoreRestore">
     <Message Importance="high" Text="--------- DOTNET RESTORE  -------------------------------------------"/>     
     <Exec Command="dotnet restore $(SourcePath)NFluent\" />
+    <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Internals\" />
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests\" />
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Extensions\" />
-    <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Internals\" />
     <Message Importance="high" Text="--------- end of DOTNET RESTORE  -------------------------------------"/>
   </Target>
 
   <ItemGroup>
-    <ProjectFolder Include="$(SourcePath)\NFluent"/>
-    <ProjectFolder Include="$(SourcePath)\NFluent.35"/>
-    <ProjectFolder Include="$(SourcePath)\NFluent.40"/>
-    <ProjectFolder Include="$(SourcePath)\NFluent.PCL"/>
-    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests"/>
+    <!-- ProjectFolder Include="$(SourcePath)\NFluent"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Internals"/>
-    <ProjectFolder Include="$(TestsPath)\NFluent.40.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Extensions"/-->
+    <ProjectFolder Include="$(SourcePath)\NFluent.40"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.40.Tests.Internals"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.40.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.40.Tests.Extensions"/>
+    <ProjectFolder Include="$(SourcePath)\NFluent.35"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests"/>
-    <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests.Internals"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests.Extensions"/>
+    <ProjectFolder Include="$(SourcePath)\NFluent.PCL"/>
     <ProjectFolder Include="$(TestsPath)\Nugget"/>
   </ItemGroup>
 
@@ -132,14 +134,17 @@ GENERATING DOCS for:
   <!-- 3- Run the TESTS -->
   <Target Name="RunTests" DependsOnTargets="Build">
     <ItemGroup>
+      <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).35.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll"'>
+        <Framework>net-3.5</Framework>
+      </TestProjectsWithArguments>
       <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).35.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll"'>
         <Framework>net-3.5</Framework>
       </TestProjectsWithArguments>
       <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).35.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll"'>
         <Framework>net-3.5</Framework>
       </TestProjectsWithArguments>
-      <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).35.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll"'>
-        <Framework>net-3.5</Framework>
+      <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).40.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll"'>
+        <Framework>net-4.0</Framework>
       </TestProjectsWithArguments>
       <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).40.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll"'>
         <Framework>net-4.0</Framework>
@@ -147,13 +152,10 @@ GENERATING DOCS for:
       <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).40.Tests.Extensions\bin\$(Configuration)\$(SolutionName).Tests.Extensions.dll"'>
         <Framework>net-4.0</Framework>
       </TestProjectsWithArguments>
-      <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).40.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll"'>
-        <Framework>net-4.0</Framework>
-      </TestProjectsWithArguments>
-      <TestProjectsWithArguments Include='"$(TestsPath)NFluent.Core.Tests\NFluent.Core.Tests.csproj"'>
+      <TestProjectsWithArguments Include='"$(TestsPath)NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj"'>
         <Framework>core</Framework>
       </TestProjectsWithArguments>
-      <TestProjectsWithArguments Include='"$(TestsPath)NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj"'>
+      <TestProjectsWithArguments Include='"$(TestsPath)NFluent.Core.Tests\NFluent.Core.Tests.csproj"'>
         <Framework>core</Framework>
       </TestProjectsWithArguments>
       <TestProjectsWithArguments Include='"$(TestsPath)NFluent.Core.Tests.Extensions\NFluent.Core.Tests.Extensions.csproj"'>

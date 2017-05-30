@@ -13,88 +13,47 @@
     <description>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).</description>
     <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
     <releaseNotes>New feature(s):
-
-* Support for NetStandard &gt; 1.3
-
-* Support for Net.Core &gt; 1.0
-
-* All: introduce: HasSameValueAs(x) that perform comparison using 'operator==' instead of 'Equals'.
-
-* All: introduce: HasAValueDifferentFrom(x) that perform comparison using 'operator!=' instead of '!Equals'.
-
-* Streams: introduce HasSameSequenceOfBytesAs() check.
-
-* Numbers: introduce IsPositiveOrZero() check.
-
-* Numbers: introduce IsNegativeOrZero() check.
-
-* FloatingNumbers (float, double): introduce IsCloseTo(expected, within) check for estimated value.
-
-* Exceptions: introduce the DueTo&lt;InnerException&gt; as an extension to Throws&lt;Exception&gt;. It verifies that the checked exception was triggered by a specific exception. This is done by scanning the 'innerException' chain until the expected type is identified. Further checking is done on the inner exception.
-
-* IEnumerable: introduce ContainsElementAt(int index) which checks for an item as a specific index. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).ContainsElementAt(3).Which.IsEqualTo("foo").
-
-* IEnumerable: introduce HasItemThatMatches( bool predicate()) which checks that an enumerable has at least on item matching the given predicate. You can use 'Which' to check further this item. E.g.: Check.That(_collection).HasItemThatMatches((_) =&gt; _.StartWith("foo")).Which.IsEqualTo("foobar").
-
-* IDictionary&lt;K,V&gt;: now explicitely supported.
-
-* IDictionary&lt;K,V&gt;: introduce ContainsEntry&lt;K, V&gt;(K key, V value) which checks that a dictionary contains a specific value for a given key.
-
-* Hashtable: now explicitely supported.
-
---------------
-
-Change(s):
-
-* IDictionnary: no longer supported. Hashtable is supported instead
-
-* Numbers: introduce IsStrictlyPositive() as a substitute for IsPositive() which is now obsolete.
-
-* Numbers: introduce IsStrictlyNegative() as a substitute for IsNegative() which is now obsolete.
-
-* Numbers: introduce IsStrictlyGreaterThan() as a substitute for IsGreaterThan() which is now obsolete.
-
-* Numbers: introduce IsStrictlyLessThan() as a substitute for IsLessThan() which is now obsolete.
-
-* Floating Numbers: introduce IsCloseTo() to check if a number is close to another one.
-
-* Check.ThatCode(...).Throws&lt;T&gt;() now requires T to be an exception. This restriction ensures only Exceptions are proposed in autocompletion.
-
-* Improve error messages (consistency and relevance).
-
-* Strings: generate specific error message using IsEqualTo() when the actual string is empty
-
-* Strings: generate specific error message using IsEqualTo() when the expected string is empty
-
-* Strings: provides part of string where first difference occurs even when strings have different lenghts
-
-* Objects: IsSameReferenceAs supersede IsSameReferenceThan (now flagged as obsolete)
-
-* Check.That(Action) can no longer be used (error, obsolete)
-
-* Check.That(Func&lt;T&gt;) can no longer be used (error, obsolete)
-
-* Simplify the way you can extend NFluent by adding your own checks. Now, you can call: var checker = ExtensibilityHelper.ExtractChecker(check);
-
-at the beginning of your check extension method, and then rely on its ExecuteCheck() or BuildMessage() helper methods to do the job. Note: the Checker is part of the NFluent.Extensibility namespace.
-
-* Reviewing of public elements: Some classes are no longer public. They should never have been in the first case.
-
---------------
-
-Bug Fixe(s):
-
-* Fix the inversion between expected and actual error message for the .WithMessage checks on exception.
-
-* Fix the issue with null value on Check.That(...).IsBefore(...)
-
-* HasFieldsWithSameValues now recurse along the hierarchy class (Fix for #141)
-
-* Fix stack overflow triggered by HasFieldsWithSameValues() on object with reference loop (#148)
-
-* Properly escaped strings when generating error messages.
-
-* GitHub issues: #124, #133, #141, #148, #153, #154, #156, #159, #164, #165, #167, #174, #177, #178, #179, #187</releaseNotes>
+* Support for NetStandard &gt; 1.3
+* Support for Net.Core &gt; 1.0
+* All: introduce: HasSameValueAs(x) that perform comparison using 'operator==' instead of 'Equals'.
+* All: introduce: HasAValueDifferentFrom(x) that perform comparison using 'operator!=' instead of '!Equals'.
+* Streams: introduce HasSameSequenceOfBytesAs() check.
+* Numbers: introduce IsPositiveOrZero() check.
+* Numbers: introduce IsNegativeOrZero() check.
+* FloatingNumbers (float, double): introduce IsCloseTo(expected, within) check for estimated value.
+* Exceptions: introduce the DueTo&lt;InnerException&gt; as an extension to Throws&lt;Exception&gt;. It verifies that the checked exception was triggered by a specific exception. This is done by scanning the 'innerException' chain until the expected type is identified. Further checking is done on the inner exception.
+* IEnumerable: introduce ContainsElementAt(int index) which checks for an item as a specific index. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).ContainsElementAt(3).Which.IsEqualTo("foo").
+* IEnumerable: introduce HasItemThatMatches( bool predicate()) which checks that an enumerable has at least on item matching the given predicate. You can use 'Which' to check further this item. E.g.: Check.That(_collection).HasItemThatMatches((_) =&gt; _.StartWith("foo")).Which.IsEqualTo("foobar").
+* IDictionary&lt;K,V&gt;: now explicitely supported.
+* IDictionary&lt;K,V&gt;: introduce ContainsEntry&lt;K, V&gt;(K key, V value) which checks that a dictionary contains a specific value for a given key.
+* Hashtable: now explicitely supported.
+--------------
+Change(s):
+* IDictionnary: no longer supported. Hashtable is supported instead
+* Numbers: introduce IsStrictlyPositive() as a substitute for IsPositive() which is now obsolete.
+* Numbers: introduce IsStrictlyNegative() as a substitute for IsNegative() which is now obsolete.
+* Numbers: introduce IsStrictlyGreaterThan() as a substitute for IsGreaterThan() which is now obsolete.
+* Numbers: introduce IsStrictlyLessThan() as a substitute for IsLessThan() which is now obsolete.
+* Floating Numbers: introduce IsCloseTo() to check if a number is close to another one.
+* Check.ThatCode(...).Throws&lt;T&gt;() now requires T to be an exception. This restriction ensures only Exceptions are proposed in autocompletion.
+* Improve error messages (consistency and relevance).
+* Strings: generate specific error message using IsEqualTo() when the actual string is empty
+* Strings: generate specific error message using IsEqualTo() when the expected string is empty
+* Strings: provides part of string where first difference occurs even when strings have different lenghts
+* Objects: IsSameReferenceAs supersede IsSameReferenceThan (now flagged as obsolete)
+* Check.That(Action) can no longer be used (error, obsolete)
+* Check.That(Func&lt;T&gt;) can no longer be used (error, obsolete)
+* Simplify the way you can extend NFluent by adding your own checks. Now, you can call: var checker = ExtensibilityHelper.ExtractChecker(check);
+at the beginning of your check extension method, and then rely on its ExecuteCheck() or BuildMessage() helper methods to do the job. Note: the Checker is part of the NFluent.Extensibility namespace.
+* Reviewing of public elements: Some classes are no longer public. They should never have been in the first case.
+--------------
+Bug Fixe(s):
+* Fix the inversion between expected and actual error message for the .WithMessage checks on exception.
+* Fix the issue with null value on Check.That(...).IsBefore(...)
+* HasFieldsWithSameValues now recurse along the hierarchy class (Fix for #141)
+* Fix stack overflow triggered by HasFieldsWithSameValues() on object with reference loop (#148)
+* Properly escaped strings when generating error messages.
+* GitHub issues: #124, #133, #141, #148, #153, #154, #156, #159, #164, #165, #167, #174, #177, #178, #179, #187</releaseNotes>
     <copyright>Copyright 2014-2017  Thomas PIERRAIN, Cyrille Dupuydauby</copyright>
     <language>en-US</language>
     <tags>tdd bdd test fluent check checks easy nunit xunit mbunit mstestsucks</tags>
