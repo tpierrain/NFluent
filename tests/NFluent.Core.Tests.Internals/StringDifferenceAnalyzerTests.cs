@@ -37,7 +37,7 @@ namespace NFluent.Tests
         {
             var stringDifferences = StringDifference.Analyze("foo", "foO", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.CaseDifference);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.CaseDifference);
             Check.That(stringDifferences[0].Position).IsEqualTo(2);
         }
 
@@ -53,7 +53,7 @@ namespace NFluent.Tests
         {
             var stringDifferences = StringDifference.Analyze("food", "FoOG", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.GeneralSameLength);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.GeneralSameLength);
             Check.That(stringDifferences[0].Position).IsEqualTo(3);
         }
 
@@ -62,7 +62,7 @@ namespace NFluent.Tests
         {
             var stringDifferences = StringDifference.Analyze("food", "FoOGd", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[0].Position).IsEqualTo(3);
         }
 
@@ -71,7 +71,7 @@ namespace NFluent.Tests
         {
             var stringDifferences = StringDifference.Analyze("foo bar", "foo", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.Longer);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.Longer);
             Check.That(stringDifferences[0].Position).IsEqualTo(3);
         }
 
@@ -80,7 +80,7 @@ namespace NFluent.Tests
         {
             var stringDifferences = StringDifference.Analyze("foo bar\ntest", "foo\ntest", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.LongerLine);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.LongerLine);
             Check.That(stringDifferences[0].Position).IsEqualTo(3);
         }
 
@@ -89,15 +89,15 @@ namespace NFluent.Tests
         {
             var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto\ntata", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.GeneralSameLength);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.GeneralSameLength);
             Check.That(stringDifferences[0].Position).IsEqualTo(1);
             Check.That(stringDifferences[0].Line).IsEqualTo(1);
             stringDifferences = StringDifference.Analyze("maybe\ntiti", "toto\ntatata", false);
             Check.That(stringDifferences).HasSize(2);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.General);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[0].Position).IsEqualTo(0);
             Check.That(stringDifferences[0].Line).IsEqualTo(0);
-            Check.That(stringDifferences[1].Type).IsEqualTo(DifferenceMode.General);
+            Check.That(stringDifferences[1].Kind).IsEqualTo(DifferenceMode.General);
             Check.That(stringDifferences[1].Position).IsEqualTo(1);
             Check.That(stringDifferences[1].Line).IsEqualTo(1);
         }
@@ -118,7 +118,7 @@ namespace NFluent.Tests
         {
             var stringDifferences = StringDifference.Analyze("toto", "toto et tata", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.Shorter);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.Shorter);
             Check.That(stringDifferences[0].Position).IsEqualTo(4);
         }
 
@@ -127,7 +127,7 @@ namespace NFluent.Tests
         {
             var stringDifferences = StringDifference.Analyze("toto\ntest", "toto et tata\ntest", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.ShorterLine);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.ShorterLine);
             Check.That(stringDifferences[0].Position).IsEqualTo(4);
         }
 
@@ -136,7 +136,7 @@ namespace NFluent.Tests
         {
             var stringDifference = StringDifference.Analyze("toto  and tutu", "toto\tand\t tutu", false);
             Check.That(stringDifference).HasSize(1);
-            Check.That(stringDifference[0].Type).IsEqualTo(DifferenceMode.Spaces);
+            Check.That(stringDifference[0].Kind).IsEqualTo(DifferenceMode.Spaces);
         }
 
         [Test]
@@ -144,7 +144,7 @@ namespace NFluent.Tests
         {
             var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto\r\ntiti", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.EndOfLine);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.EndOfLine);
             Check.That(stringDifferences[0].Position).IsEqualTo(4);
             Check.That(stringDifferences[0].Line).IsEqualTo(0);
         }
@@ -154,12 +154,12 @@ namespace NFluent.Tests
         {
             var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.ExtraLines);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.ExtraLines);
             Check.That(stringDifferences[0].Position).IsEqualTo(0);
             Check.That(stringDifferences[0].Line).IsEqualTo(1);
             stringDifferences = StringDifference.Analyze("toto", "toto\n", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.MissingLines);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.MissingLines);
             Check.That(stringDifferences[0].Position).IsEqualTo(0);
             Check.That(stringDifferences[0].Line).IsEqualTo(1);
         }
@@ -169,7 +169,7 @@ namespace NFluent.Tests
         {
             var stringDifferences = StringDifference.Analyze("foo", "far", false);
             Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Type).IsEqualTo(DifferenceMode.GeneralSameLength);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.GeneralSameLength);
             Check.That(stringDifferences[0].Position).IsEqualTo(1);
         }
    }

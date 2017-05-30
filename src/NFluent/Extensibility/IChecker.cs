@@ -27,7 +27,8 @@ namespace NFluent.Extensibility
     /// </typeparam>
     /// <typeparam name="TC">Interface for the check.
     /// </typeparam>
-    public interface IChecker<out T, out TC> : IWithValue<T>, INegated where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    public interface IChecker<out T, out TC> : IWithValue<T>, INegated
+        where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         /// <summary>
         /// Gets the check link to return for the next check to be executed (linked with the And operator).
@@ -38,6 +39,31 @@ namespace NFluent.Extensibility
         ///     The check link to return for next check (linked with the And operator) to be executed.
         /// </returns>
         ICheckLink<TC> BuildChainingObject();
+
+        /// <summary>
+        /// Gets the check link to return for the next check to be executed (linked with the And operator).
+        /// This property is only useful for those that doesn't want to implement their check methods with the 
+        /// <see cref="ExecuteCheck"/> method.
+        /// </summary>
+        /// <param name="itemChecker">Checker for the sub item to check.</param>
+        /// <typeparam name="TSub">Checker for sub item.</typeparam>
+        /// <returns>
+        ///     The check link to return for next check (linked with the And operator) to be executed.
+        /// </returns>
+        ICheckLinkWhich<TC, TSub> BuildLinkWhich<TSub>(TSub itemChecker)
+            where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense;
+
+        /// <summary>
+        /// Execute the check provided as an happy-path lambda.
+        /// </summary>
+        /// <typeparam name="TSub">Checker type for the sub item.</typeparam>
+        /// <param name="checkLambdaAction">The happy-path action (vs. the one for negated version which has not to be specified). 
+        ///     This lambda should simply return if everything is ok, or throws a 
+        ///     <see cref="FluentCheckException"/> otherwise.</param>
+        /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
+        /// <returns>The <see cref="BuildLinkWhich{TU}"/> to use for linking.</returns>
+        ICheckLinkWhich<TC, TSub> ExecuteCheckAndProvideSubItem<TSub>(Func<TSub> checkLambdaAction, string negatedExceptionMessage)
+            where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense;
 
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).

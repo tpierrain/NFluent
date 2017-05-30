@@ -47,7 +47,6 @@ namespace NFluent.Tests
             this.session.Dispose();
         }
 
-
         // Since this class is the model/template for the generation of the tests on all the other numbers types, don't forget to re-generate all the other classes every time you change this one. To do that, just save the .\T4" + Environment.NewLine + "umberTestsGenerator.tt file within Visual Studio 2012. This will trigger the T4 code generation process.
         #region IsPositive (obsolete)
 #pragma warning disable 618
@@ -65,7 +64,7 @@ namespace NFluent.Tests
                 Check.That(Zero).IsPositive();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not strictly positive (i.e. greater than zero)." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[0]");
+            .WithMessage(Environment.NewLine + "The checked value is not strictly positive (i.e. greater than zero)." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[0]");
         }
 
         [Test]
@@ -76,7 +75,7 @@ namespace NFluent.Tests
                 Check.That(Two).Not.IsPositive();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is strictly positive (i.e. greater than zero), whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]");
+            .WithMessage(Environment.NewLine + "The checked value is strictly positive (i.e. greater than zero), whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]");
         }
 
         [Test]
@@ -87,7 +86,7 @@ namespace NFluent.Tests
                 Check.That(MinusFifty).IsPositive();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not strictly positive (i.e. greater than zero)." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[-50]");
+            .WithMessage(Environment.NewLine + "The checked value is not strictly positive (i.e. greater than zero)." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[-50]");
         }
 
         [Test]
@@ -164,7 +163,7 @@ namespace NFluent.Tests
                 Check.That(Zero).IsStrictlyPositive();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not strictly positive (i.e. greater than zero)." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[0]");
+            .WithMessage(Environment.NewLine + "The checked value is not strictly positive (i.e. greater than zero)." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[0]");
         }
 
         [Test]
@@ -175,7 +174,7 @@ namespace NFluent.Tests
                 Check.That(Two).Not.IsStrictlyPositive();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is strictly positive (i.e. greater than zero), whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]");
+            .WithMessage(Environment.NewLine + "The checked value is strictly positive (i.e. greater than zero), whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]");
         }
 
         [Test]
@@ -186,7 +185,7 @@ namespace NFluent.Tests
                 Check.That(MinusFifty).IsStrictlyPositive();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not strictly positive (i.e. greater than zero)." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[-50]");
+            .WithMessage(Environment.NewLine + "The checked value is not strictly positive (i.e. greater than zero)." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[-50]");
         }
 
         [Test]
@@ -214,7 +213,7 @@ namespace NFluent.Tests
                 Check.That(Zero).Not.IsPositiveOrZero();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is positive or equal to zero, whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[0]");
+            .WithMessage(Environment.NewLine + "The checked value is positive or equal to zero, whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[0]");
         }
 
         [Test]
@@ -225,7 +224,7 @@ namespace NFluent.Tests
                 Check.That(MinusFifty).IsPositiveOrZero();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not positive or equal to zero." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[-50]");
+            .WithMessage(Environment.NewLine + "The checked value is not positive or equal to zero." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[-50]");
         }
 
         [Test]
@@ -252,7 +251,7 @@ namespace NFluent.Tests
                 Check.That(Zero).IsStrictlyNegative();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not strictly negative." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[0]");
+            .WithMessage(Environment.NewLine + "The checked value is not strictly negative." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[0]");
         }
 
         [Test]
@@ -263,7 +262,7 @@ namespace NFluent.Tests
                 Check.That(MinusFifty).Not.IsStrictlyNegative();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is strictly negative, whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[-50]");
+            .WithMessage(Environment.NewLine + "The checked value is strictly negative, whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[-50]");
         }
 
         [Test]
@@ -274,7 +273,7 @@ namespace NFluent.Tests
                 Check.That(Two).IsStrictlyNegative();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not strictly negative." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]");
+            .WithMessage(Environment.NewLine + "The checked value is not strictly negative." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]");
         }
 
         [Test]
@@ -290,7 +289,6 @@ namespace NFluent.Tests
         [Test]
         public void IsNegativeOrZeroWorks()
         {
-
             Check.That(Zero).IsNegativeOrZero();
             Check.That(MinusFifty).IsNegativeOrZero();
         }
@@ -303,7 +301,7 @@ namespace NFluent.Tests
                 Check.That(MinusFifty).Not.IsNegativeOrZero();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is negative or equal to zero, whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[-50]");
+            .WithMessage(Environment.NewLine + "The checked value is negative or equal to zero, whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[-50]");
         }
 
         [Test]
@@ -314,7 +312,7 @@ namespace NFluent.Tests
                 Check.That(Two).IsNegativeOrZero();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not negative or equal to zero." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]");
+            .WithMessage(Environment.NewLine + "The checked value is not negative or equal to zero." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]");
         }
 
         [Test]

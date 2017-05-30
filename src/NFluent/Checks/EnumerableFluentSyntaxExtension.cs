@@ -56,7 +56,7 @@ namespace NFluent
         public static IExtendableCheckLink<IEnumerable, IEnumerable> Once(this IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
         {
             var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
-            var itemidx = 0;
+            var itemIndex = 0;
             var expectedList = ConvertToList(chainedCheckLink);
             var listedItems = new List<object>();
             Debug.Assert(checker != null, "checker != null");
@@ -69,19 +69,19 @@ namespace NFluent
                 }
                 else if (listedItems.Contains(item))
                 {
-                    // failure, we found one extra occurence of one item
+                    // failure, we found one extra occurrence of one item
                     var message =
                         checker.BuildMessage(
                             string.Format(
-                                            "The {{0}} has extra occurences of the expected items. Item [{0}] at position {1} is redundant.",
-                                item.ToStringProperlyFormated().DoubleCurlyBraces(),
-                                            itemidx))
+                                            "The {{0}} has extra occurrences of the expected items. Item [{0}] at position {1} is redundant.",
+                                item.ToStringProperlyFormatted().DoubleCurlyBraces(),
+                                            itemIndex))
                                        .ExpectedValues(chainedCheckLink.OriginalComparand);
 
                     throw new FluentCheckException(message.ToString());
                 }
 
-                itemidx++;
+                itemIndex++;
             }
 
             return chainedCheckLink;
@@ -101,7 +101,7 @@ namespace NFluent
             var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
             var orderedList = ConvertToList(chainedCheckLink);
 
-            var faillingIndex = 0;
+            var failingIndex = 0;
             var scanIndex = 0;
             Debug.Assert(checker != null, "checker != null");
             foreach (var item in checker.Value)
@@ -146,8 +146,8 @@ namespace NFluent
                         var message = checker.BuildMessage(
                             string.Format(
                                 "The {{0}} does not follow to the expected order. Item [{0}] appears too {2} in the list, at index '{1}'.",
-                                item.ToStringProperlyFormated().DoubleCurlyBraces(),
-                                faillingIndex,
+                                item.ToStringProperlyFormatted().DoubleCurlyBraces(),
+                                failingIndex,
                                 index > scanIndex ? "early" : "late"))
                                          .ExpectedValues(chainedCheckLink.OriginalComparand);
 
@@ -160,7 +160,7 @@ namespace NFluent
                     }
                 }
 
-                faillingIndex++;
+                failingIndex++;
             }
 
             return chainedCheckLink;

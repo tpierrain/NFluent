@@ -25,9 +25,8 @@ namespace NFluent.ApiChecks
         /// <summary>
         ///     Provides access to the error message of the exception.
         /// </summary>
-        /// <param name="check"></param>
-        /// typeparam>
-        /// <returns></returns>
+        /// <param name="check">Exception checker.</param>
+        /// <returns>A string checker.</returns>
         public static ICheck<string> AndWhichMessage(this ILambdaExceptionCheck<RunTrace> check)
         {
             var checker = check as LambdaExceptionCheck<RunTrace>;

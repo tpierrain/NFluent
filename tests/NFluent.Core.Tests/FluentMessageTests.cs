@@ -50,13 +50,13 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ToStringProperlyFormatedCoverageTests()
+        public void ToStringProperlyFormattedCoverageTests()
         {
-            Assert.AreEqual("char", typeof(char).ToStringProperlyFormated());
-            Assert.AreEqual("void", typeof(void).ToStringProperlyFormated());
-            Assert.AreEqual("System.Collections.Generic.Dictionary<string, string>", typeof(Dictionary<string, string>).ToStringProperlyFormated());
-            Assert.AreEqual("Dictionary<string, string>", typeof(Dictionary<string, string>).TypeToStringProperlyFormated(true));
-            Assert.AreEqual("int?", typeof(int?).TypeToStringProperlyFormated(true));
+            Assert.AreEqual("char", typeof(char).ToStringProperlyFormatted());
+            Assert.AreEqual("void", typeof(void).ToStringProperlyFormatted());
+            Assert.AreEqual("System.Collections.Generic.Dictionary<string, string>", typeof(Dictionary<string, string>).ToStringProperlyFormatted());
+            Assert.AreEqual("Dictionary<string, string>", typeof(Dictionary<string, string>).TypeToStringProperlyFormatted(true));
+            Assert.AreEqual("int?", typeof(int?).TypeToStringProperlyFormatted(true));
         }
 
         [Test]

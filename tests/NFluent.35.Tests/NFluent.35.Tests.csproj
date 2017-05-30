@@ -237,6 +237,9 @@
     <Compile Include="..\NFluent.Core.Tests\ToEnumeratedStringTests.cs">
       <Link>ToEnumeratedStringTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.Core.Tests\TypeRelatedTests.cs">
+      <Link>TypeRelatedTests.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.Core.Tests\UserReportedIssuesTests.cs">
       <Link>UserReportedIssuesTests.cs</Link>
     </Compile>
@@ -264,10 +267,10 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CheckedFile.xml">
+    <Content Include="..\NFluent.Core.Tests\CheckedFile.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ExpectedFile.xml">
+    <Content Include="..\NFluent.Core.Tests\ExpectedFile.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="T4\NumberTestsGenerator.txt">

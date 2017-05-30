@@ -7,7 +7,7 @@
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject />
     <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="NFluent.Core.Tests.Extensions.v3.ncrunchproject" />
     <None Remove="NFluent.Tests.Extensions.Core.v3.ncrunchproject" />
     <None Remove="project.json" />
     <None Remove="project.lock.json" />
@@ -35,5 +36,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\NFluent\NFluent.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 </Project>  

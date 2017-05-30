@@ -12,12 +12,16 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
 namespace NFluent
 {
     using System;
-    using Kernel;
+
     using Extensibility;
+
     using Helpers;
+
+    using Kernel;
 
     /// <summary>
     /// Static class hosting extension methods in relation with checks for code.
@@ -59,7 +63,10 @@ namespace NFluent
         /// Execution was strictly above limit.
         /// </exception>
         public static ICheckLink<ICodeCheck<T>> LastsLessThan<T>(
-            this ICodeCheck<T> check, double threshold, TimeUnit timeUnit) where T : RunTrace
+            this ICodeCheck<T> check,
+            double threshold,
+            TimeUnit timeUnit)
+            where T : RunTrace
         {
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
             var comparand = new Duration(checker.Value.ExecutionTime, timeUnit);
@@ -67,22 +74,18 @@ namespace NFluent
 
             checker.ExecuteCheck(
                 () =>
-                {
-                    if (comparand > durationThreshold)
                     {
-                        var message =
-                            checker.BuildMessage(
-                                "The checked code took too much time to execute.")
-                                         .For(LabelForExecTime)
-                                         .On(comparand).And
-                                         .Expected(durationThreshold)
-                                         .Comparison(LabelForLessThan)
-                                         .ToString();
+                        if (comparand > durationThreshold)
+                        {
+                            var message = checker.BuildMessage("The checked code took too much time to execute.")
+                                .For(LabelForExecTime).On(comparand).And.Expected(durationThreshold)
+                                .Comparison(LabelForLessThan).ToString();
 
-                        throw new FluentCheckException(message);
-                    }
-                },
-                checker.BuildMessage("The checked code took too little time to execute.").For(LabelForExecTime).Expected(durationThreshold).Comparison(LabelForMoreThan).ToString());
+                            throw new FluentCheckException(message);
+                        }
+                    },
+                checker.BuildMessage("The checked code took too little time to execute.").For(LabelForExecTime)
+                    .Expected(durationThreshold).Comparison(LabelForMoreThan).ToString());
 
             return checker.BuildChainingObject();
         }
@@ -106,7 +109,10 @@ namespace NFluent
         /// Execution was strictly above limit.
         /// </exception>
         public static ICheckLink<ICodeCheck<T>> ConsumesLessThan<T>(
-            this ICodeCheck<T> check, double threshold, TimeUnit timeUnit) where T : RunTrace
+            this ICodeCheck<T> check,
+            double threshold,
+            TimeUnit timeUnit)
+            where T : RunTrace
         {
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
             var comparand = new Duration(checker.Value.TotalProcessorTime, timeUnit);
@@ -114,21 +120,18 @@ namespace NFluent
 
             checker.ExecuteCheck(
                 () =>
-                {
-                    if (comparand > durationThreshold)
                     {
-                        var message =
-                            checker.BuildMessage(
-                                "The checked code consumed too much CPU time.")
-                                         .For(LabelForCpuTime)
-                                         .Expected(durationThreshold)
-                                         .Comparison(LabelForLessThan)
-                                         .ToString();
+                        if (comparand > durationThreshold)
+                        {
+                            var message = checker.BuildMessage("The checked code consumed too much CPU time.")
+                                .For(LabelForCpuTime).Expected(durationThreshold).Comparison(LabelForLessThan)
+                                .ToString();
 
-                        throw new FluentCheckException(message);
-                    }
-                },
-                checker.BuildMessage("The checked code took too little cpu time to execute.").For(LabelForCpuTime).Expected(durationThreshold).Comparison(LabelForMoreThan).ToString());
+                            throw new FluentCheckException(message);
+                        }
+                    },
+                checker.BuildMessage("The checked code took too little cpu time to execute.").For(LabelForCpuTime)
+                    .Expected(durationThreshold).Comparison(LabelForMoreThan).ToString());
 
             return checker.BuildChainingObject();
         }
@@ -143,27 +146,25 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code raised an exception.</exception>
-        public static ICheckLink<ICodeCheck<T>> DoesNotThrow<T>(this ICodeCheck<T> check) where T : RunTrace
+        public static ICheckLink<ICodeCheck<T>> DoesNotThrow<T>(this ICodeCheck<T> check)
+            where T : RunTrace
         {
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
 
             checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value.RaisedException != null)
                     {
-                        var message =
-                            checker.BuildMessage(
-                                "The {0} raised an exception, whereas it must not.")
-                                         .For(LabelForCode)
-                                         .On(checker.Value.RaisedException)
-                                         .Label("The raised exception:")
-                                         .ToString();
+                        if (checker.Value.RaisedException != null)
+                        {
+                            var message = checker.BuildMessage("The {0} raised an exception, whereas it must not.")
+                                .For(LabelForCode).On(checker.Value.RaisedException).Label("The raised exception:")
+                                .ToString();
 
-                        throw new FluentCheckException(message);
-                    }
-                },
-                checker.BuildMessage("The {0} did not raise an exception, whereas it must.").For(LabelForCode).ToString());
+                            throw new FluentCheckException(message);
+                        }
+                    },
+                checker.BuildMessage("The {0} did not raise an exception, whereas it must.").For(LabelForCode)
+                    .ToString());
             return checker.BuildChainingObject();
         }
 
@@ -177,41 +178,37 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of the specified type, or did not raised an exception at all.</exception>
-        public static ILambdaExceptionCheck<RunTrace> Throws<T>(this ICodeCheck<RunTrace> check) where T : Exception
+        public static ILambdaExceptionCheck<RunTrace> Throws<T>(this ICodeCheck<RunTrace> check)
+            where T : Exception
         {
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
 
             checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value.RaisedException == null)
                     {
-                        var message =
-                            checker.BuildShortMessage(
-                                "The {0} did not raise an exception, whereas it must.")
-                                         .For(LabelForCode)
-                                         .ExpectedType(typeof(T))
-                                         .Label("The {0} exception:")
-                                         .ToString();
-                        throw new FluentCheckException(message);
-                    }
+                        string message;
+                        if (checker.Value.RaisedException == null)
+                        {
+                            message = checker
+                                .BuildShortMessage("The {0} did not raise an exception, whereas it must.")
+                                .For(LabelForCode).ExpectedType(typeof(T)).Label("The {0} exception:").ToString();
+                            throw new FluentCheckException(message);
+                        }
 
-                    if (!(checker.Value.RaisedException is T))
-                    {
-                        var message =
-                            checker.BuildShortMessage(
-                                "The {0} raised an exception of a different type than expected.")
-                                         .For(LabelForCode)
-                                         .On(checker.Value.RaisedException)
-                                         .Label("Raised Exception")
-                                         .And.ExpectedType(typeof(T))
-                                         .Label("The {0} exception:")
-                                         .ToString();
+                        if (checker.Value.RaisedException is T)
+                        {
+                            return;
+                        }
+
+                        message = checker
+                            .BuildShortMessage("The {0} raised an exception of a different type than expected.")
+                            .For(LabelForCode).On(checker.Value.RaisedException).Label("Raised Exception").And
+                            .ExpectedType(typeof(T)).Label("The {0} exception:").ToString();
 
                         throw new FluentCheckException(message);
-                    }
-                },
-                checker.BuildMessage("The {0} raised an exception of the forbidden type.").For(LabelForCode).On(checker.Value.RaisedException).Label("Raised Exception").ToString());
+                    },
+                checker.BuildMessage("The {0} raised an exception of the forbidden type.").For(LabelForCode)
+                    .On(checker.Value.RaisedException).Label("Raised Exception").ToString());
             return new LambdaExceptionCheck<RunTrace>(checker.Value.RaisedException);
         }
 
@@ -233,18 +230,17 @@ namespace NFluent
 
             checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value.RaisedException == null)
                     {
-                        var message =
-                            checker.BuildShortMessage(
-                                "The {0} did not raise an exception, whereas it must.")
-                                         .For(LabelForCode)
-                                         .ToString();
-                        throw new FluentCheckException(message);
-                    }
-                },
-                checker.BuildMessage("The {0} raised an exception, whereas it must not.").For(LabelForCode).On(checker.Value.RaisedException).Label("Raised Exception").ToString());
+                        if (checker.Value.RaisedException == null)
+                        {
+                            var message = checker
+                                .BuildShortMessage("The {0} did not raise an exception, whereas it must.")
+                                .For(LabelForCode).ToString();
+                            throw new FluentCheckException(message);
+                        }
+                    },
+                checker.BuildMessage("The {0} raised an exception, whereas it must not.").For(LabelForCode)
+                    .On(checker.Value.RaisedException).Label("Raised Exception").ToString());
             return new LambdaExceptionCheck<RunTrace>(checker.Value.RaisedException);
         }
 
@@ -259,6 +255,7 @@ namespace NFluent
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
             return new FluentCheck<T>(checker.Value.Result);
         }
+
         #endregion
     }
 }

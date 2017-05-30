@@ -42,9 +42,9 @@ namespace NFluent.Tests.Extensions
                 {
                     if (!checker.Value.Name.Contains("Eternal sunshine of the spotless mind"))
                         throw new FluentCheckException(string.Format("[{0}]Is not a great movie",
-                            checker.Value.Name.ToStringProperlyFormated()));
+                            checker.Value.Name.ToStringProperlyFormatted()));
                 },
-                string.Format("[{0}]Is a great movie!", checker.Value.Name.ToStringProperlyFormated()));
+                string.Format("[{0}]Is a great movie!", checker.Value.Name.ToStringProperlyFormatted()));
         }
     }
 }

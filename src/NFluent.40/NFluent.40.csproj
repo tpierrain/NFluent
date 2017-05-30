@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DOTNET_40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\NFluent.XML</DocumentationFile>
@@ -30,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;DOTNET_40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -59,6 +59,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="..\NFluent\ApiChecks\ExceptionChecks.cs">
+      <Link>ApiChecks\ExceptionChecks.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent\Check.cs">
       <Link>Check.cs</Link>
     </Compile>
@@ -125,6 +128,9 @@
     <Compile Include="..\NFluent\Checks\TimeSpanCheckExtensions.cs">
       <Link>Checks\TimeSpanCheckExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent\Checks\TypeCheckExtensions.cs">
+      <Link>Checks\TypeCheckExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent\Extensibility\ExtensibilityHelper.cs">
       <Link>Extensibility\ExtensibilityHelper.cs</Link>
     </Compile>
@@ -185,6 +191,9 @@
     <Compile Include="..\NFluent\ICheckLink.cs">
       <Link>ICheckLink.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent\ICheckLinkWhich.cs">
+      <Link>ICheckLinkWhich.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent\ICodeCheck.cs">
       <Link>ICodeCheck.cs</Link>
     </Compile>
@@ -223,6 +232,9 @@
     </Compile>
     <Compile Include="..\NFluent\Kernel\CheckLink.cs">
       <Link>Kernel\CheckLink.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent\Kernel\CheckLinkWhich.cs">
+      <Link>Kernel\CheckLinkWhich.cs</Link>
     </Compile>
     <Compile Include="..\NFluent\Kernel\ExtendableCheckLink.cs">
       <Link>Kernel\ExtendableCheckLink.cs</Link>
@@ -271,6 +283,9 @@
     </Compile>
     <Compile Include="..\NFluent\Messages\ValueBlock.cs">
       <Link>Messages\ValueBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\NFluent\Obsolete\ILambdaCheck.cs">
+      <Link>Obsolete\ILambdaCheck.cs</Link>
     </Compile>
     <Compile Include="..\NFluent\RunTrace.cs">
       <Link>RunTrace.cs</Link>
@@ -335,8 +350,6 @@
     <Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
-    <Compile Include="ApiChecks\ExceptionChecks.cs" />
-    <Compile Include="Obsolete\ILambdaCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

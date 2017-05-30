@@ -12,14 +12,17 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
 namespace NFluent
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+
     using Extensibility;
+
     using Extensions;
-    using System;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="IEnumerable"/> value.
@@ -36,7 +39,9 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values.</exception>
-        public static IExtendableCheckLink<IEnumerable, IEnumerable> Contains<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
+        public static IExtendableCheckLink<IEnumerable, IEnumerable> Contains<T>(
+            this ICheck<IEnumerable> check,
+            params T[] expectedValues)
         {
             var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             return check.Contains(properExpectedValues);
@@ -51,32 +56,42 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values present in the other enumerable.</exception>
-        public static IExtendableCheckLink<IEnumerable, IEnumerable> Contains(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
+        public static IExtendableCheckLink<IEnumerable, IEnumerable> Contains(
+            this ICheck<IEnumerable> check,
+            IEnumerable otherEnumerable)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             checker.ExecuteCheck(
                 () =>
-                {
-                    if (otherEnumerable == null)
                     {
-                        return;
-                    }
+                        if (otherEnumerable == null)
+                        {
+                            return;
+                        }
 
-                    if (checker.Value == null)
-                    {
-                        var message = checker.BuildMessage("The {0} is null and thus, does not contain the given expected value(s).").ExpectedValues(otherEnumerable).ToString();
-                        throw new FluentCheckException(message);
-                    }
+                        if (checker.Value == null)
+                        {
+                            var message = checker
+                                .BuildMessage("The {0} is null and thus, does not contain the given expected value(s).")
+                                .ExpectedValues(otherEnumerable).ToString();
+                            throw new FluentCheckException(message);
+                        }
 
-                    var notFoundValues = ExtractNotFoundValues(checker.Value, otherEnumerable);
+                        var notFoundValues = ExtractNotFoundValues(checker.Value, otherEnumerable);
 
-                    if (notFoundValues.Count > 0)
-                    {
-                        var message = checker.BuildMessage(string.Format("The {{0}} does not contain the expected value(s):" + Environment.NewLine + "\t[{0}]", notFoundValues.ToEnumeratedString().DoubleCurlyBraces())).ExpectedValues(otherEnumerable).ToString();
-                        throw new FluentCheckException(message);
-                    }
-                },
+                        if (notFoundValues.Count > 0)
+                        {
+                            var message = checker
+                                .BuildMessage(
+                                    string.Format(
+                                        "The {{0}} does not contain the expected value(s):" + Environment.NewLine
+                                        + "\t[{0}]",
+                                        notFoundValues.ToEnumeratedString().DoubleCurlyBraces()))
+                                .ExpectedValues(otherEnumerable).ToString();
+                            throw new FluentCheckException(message);
+                        }
+                    },
                 checker.BuildMessage("The {0} contains all the given values whereas it must not.").ExpectedValues(otherEnumerable).ToString());
 
             return ExtensibilityHelper.BuildExtendableCheckLink(check, otherEnumerable);
@@ -93,12 +108,14 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values provided.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> IsOnlyMadeOf<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
+        public static ICheckLink<ICheck<IEnumerable>> IsOnlyMadeOf<T>(
+            this ICheck<IEnumerable> check,
+            params T[] expectedValues)
         {
-            IEnumerable properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
+            var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
 
             return check.IsOnlyMadeOf(properExpectedValues);
-       }
+        }
 
         /// <summary>
         /// Checks that the enumerable contains only the values present in another enumerable, and nothing else, in any order.
@@ -110,10 +127,12 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values present in the other enumerable.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> IsOnlyMadeOf(this ICheck<IEnumerable> check, IEnumerable expectedValues)
+        public static ICheckLink<ICheck<IEnumerable>> IsOnlyMadeOf(
+            this ICheck<IEnumerable> check,
+            IEnumerable expectedValues)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            
+
             return checker.ExecuteCheck(
                 () =>
                     {
@@ -124,7 +143,9 @@ namespace NFluent
 
                         if (checker.Value == null && expectedValues != null)
                         {
-                            var message = checker.BuildMessage("The {0} is null and thus, does not contain exactly the given value(s).").ExpectedValues(expectedValues).ToString();
+                            var message = checker
+                                .BuildMessage("The {0} is null and thus, does not contain exactly the given value(s).")
+                                .ExpectedValues(expectedValues).ToString();
                             throw new FluentCheckException(message);
                         }
 
@@ -132,10 +153,16 @@ namespace NFluent
 
                         if (unexpectedValuesFound.Count > 0)
                         {
-                            var message = checker.BuildMessage(string.Format("The {{0}} does not contain only the given value(s)." + Environment.NewLine + "It contains also other values:" + Environment.NewLine + "\t[{0}]", unexpectedValuesFound.ToEnumeratedString().DoubleCurlyBraces())).ExpectedValues(expectedValues).ToString();
+                            var message = checker
+                                .BuildMessage(
+                                    string.Format(
+                                        "The {{0}} does not contain only the given value(s)." + Environment.NewLine
+                                        + "It contains also other values:" + Environment.NewLine + "\t[{0}]",
+                                        unexpectedValuesFound.ToEnumeratedString().DoubleCurlyBraces()))
+                                .ExpectedValues(expectedValues).ToString();
                             throw new FluentCheckException(message);
                         }
-                },
+                    },
                 checker.BuildMessage("The {0} contains only the given values whereas it must not.").ExpectedValues(expectedValues).ToString());
         }
 
@@ -151,10 +178,12 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> ContainsExactly<T>(this ICheck<IEnumerable> check, params T[] expectedValues)
+        public static ICheckLink<ICheck<IEnumerable>> ContainsExactly<T>(
+            this ICheck<IEnumerable> check,
+            params T[] expectedValues)
         {
             var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
-            
+
             return check.ContainsExactly(properExpectedValues);
         }
 
@@ -169,52 +198,56 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contains only the exact given values and nothing else, in order.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> ContainsExactly(this ICheck<IEnumerable> check, IEnumerable otherEnumerable)
+        public static ICheckLink<ICheck<IEnumerable>> ContainsExactly(
+            this ICheck<IEnumerable> check,
+            IEnumerable otherEnumerable)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            
+
             return checker.ExecuteCheck(
-                () => 
-                {
-                    if (Equals(checker.Value, otherEnumerable))
+                () =>
                     {
-                        return;
-                    }
-
-                    if (checker.Value == null && otherEnumerable != null)
-                    {
-                        var message = checker.BuildMessage("The {0} is null and thus does not contain exactly the {1}.").ExpectedValues(otherEnumerable).ToString();
-                        throw new FluentCheckException(message);
-                    }
-
-                    if (otherEnumerable == null)
-                    {
-                        throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker, null, 0));
-                    }
-
-                    var index = 0;
-                    var enumerable = otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
-                    var first = checker.Value.GetEnumerator();
-                    using (var second = enumerable.GetEnumerator())
-                    {
-                        while (first.MoveNext())
+                        if (Equals(checker.Value, otherEnumerable))
                         {
-                            if (!second.MoveNext()
-                                || !Equals(first.Current, second.Current))
+                            return;
+                        }
+
+                        if (checker.Value == null && otherEnumerable != null)
+                        {
+                            var message = checker
+                                .BuildMessage("The {0} is null and thus does not contain exactly the {1}.")
+                                .ExpectedValues(otherEnumerable).ToString();
+                            throw new FluentCheckException(message);
+                        }
+
+                        if (otherEnumerable == null)
+                        {
+                            throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker, null, 0));
+                        }
+
+                        var index = 0;
+                        var enumerable = otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
+                        var first = checker.Value.GetEnumerator();
+                        using (var second = enumerable.GetEnumerator())
+                        {
+                            while (first.MoveNext())
                             {
-                                throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker, enumerable, index));
+                                if (!second.MoveNext() || !Equals(first.Current, second.Current))
+                                {
+                                    throw new FluentCheckException(
+                                        BuildNotExactlyExceptionMessage(checker, enumerable, index));
+                                }
+
+                                index++;
                             }
 
-                            index++;
+                            if (second.MoveNext())
+                            {
+                                throw new FluentCheckException(
+                                    BuildNotExactlyExceptionMessage(checker, enumerable, index));
+                            }
                         }
-
-                        if (second.MoveNext())
-                        {
-                            throw new FluentCheckException(BuildNotExactlyExceptionMessage(checker, enumerable, index));
-                        }
-
-                    }
-                },
+                    },
                 BuildExceptionMessageForContainsExactly(checker));
         }
 
@@ -245,7 +278,9 @@ namespace NFluent
             {
                 var foundElementsNumberDescription = BuildElementNumberLiteral(itemsCount);
 
-                var errorMessage = checker.BuildMessage(string.Format("The {{0}} has {0} instead of {1}.", foundElementsNumberDescription.DoubleCurlyBraces(), expectedSize)).On(checkedEnumerable).ToString();
+                var errorMessage = checker
+                    .BuildMessage(
+                        $"The {{0}} has {foundElementsNumberDescription.DoubleCurlyBraces()} instead of {expectedSize}.").On(checkedEnumerable).ToString();
                 throw new FluentCheckException(errorMessage);
             }
         }
@@ -256,7 +291,11 @@ namespace NFluent
             long itemsCount = checkedEnumerable.Cast<object>().LongCount();
             var foundElementsNumberDescription = BuildElementNumberLiteral(itemsCount);
 
-            return checker.BuildMessage(string.Format("The {{0}} has {0} which is unexpected.", foundElementsNumberDescription.DoubleCurlyBraces())).On(checkedEnumerable).ToString();
+            return checker
+                .BuildMessage(
+                    string.Format(
+                        "The {{0}} has {0} which is unexpected.",
+                        foundElementsNumberDescription.DoubleCurlyBraces())).On(checkedEnumerable).ToString();
         }
 
         private static string BuildElementNumberLiteral(long itemsCount)
@@ -309,7 +348,7 @@ namespace NFluent
         public static ICheckLink<ICheck<IEnumerable>> IsNullOrEmpty(this ICheck<IEnumerable> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            
+
             string message = null;
 
             if (checker.Value != null && checker.Value.Count() > 0)
@@ -317,8 +356,7 @@ namespace NFluent
                 if (!checker.Negated)
                 {
                     message = checker.BuildMessage("The {0} contains items, whereas it must be null or empty.")
-                                             .For(typeof(IEnumerable))
-                                             .ToString();
+                        .For(typeof(IEnumerable)).ToString();
                 }
             }
             else if (checker.Negated)
@@ -326,14 +364,12 @@ namespace NFluent
                 if (checker.Value == null)
                 {
                     message = checker.BuildShortMessage("The {0} is null, where as it must contain at least one item.")
-                                             .For(typeof(IEnumerable))
-                                             .ToString();
+                        .For(typeof(IEnumerable)).ToString();
                 }
                 else
                 {
                     message = checker.BuildShortMessage("The {0} is empty, where as it must contain at least one item.")
-                                             .For(typeof(IEnumerable))
-                                             .ToString();
+                        .For(typeof(IEnumerable)).ToString();
                 }
             }
 
@@ -345,6 +381,94 @@ namespace NFluent
             return checker.BuildChainingObject();
         }
 
+        /// <summary>
+        /// Check a specific item in the <see cref="IEnumerable"/>.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Enumerated type.
+        /// </typeparam>
+        /// <param name="check">
+        /// The checker.
+        /// </param>
+        /// <param name="index">
+        /// Index to check.
+        /// </param>
+        /// <returns>
+        /// An extensible checker.
+        /// </returns>
+        public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasItem<T>(this ICheck<IEnumerable<T>> check, int index)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> result = null;
+            checker.ExecuteCheck(
+                () =>
+                    {
+                        using (var scan = checker.Value.GetEnumerator())
+                        {
+                            int i;
+                            for (i = 0; i <= index && scan.MoveNext(); i++)
+                            {
+                            }
+
+                            if (i <= index)
+                            {
+                                throw new FluentCheckException(checker.BuildMessage(
+                                    $"The {{0}} does not have an item at index {index}.").ToString());
+                            }
+                            // ReSharper disable once SuspiciousTypeConversion.Global
+                            var itemCheck = Check.That(scan.Current);
+                            var subChecker = ExtensibilityHelper.ExtractChecker(itemCheck);
+                            subChecker.SetSutLabel($"item #{index}");
+                            result = checker.BuildLinkWhich(itemCheck);
+                        }
+                    },
+                checker.BuildMessage("The {{0}} does have an item at index {0} whereas it should not.").ToString());
+            return result;
+        }
+
+        /// <summary>
+        /// Checks that the given enumerable does contain at least one item matching a predicate.
+        /// </summary>
+        /// <typeparam name="T">Type of items.</typeparam>
+        /// <param name="check">Check item.</param>
+        /// <param name="predicate">Predicate to evaluate.</param>
+        /// <returns>A linkable check.</returns>
+        public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasItemThatMatches<T>(
+            this ICheck<IEnumerable<T>> check,
+            Func<T, bool> predicate)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            return checker.ExecuteCheckAndProvideSubItem(
+                () =>
+                    {
+                        using (var scan = checker.Value.GetEnumerator())
+                        {
+                            int? index = null;
+                            for (var i = 0; scan.MoveNext(); i++)
+                            {
+                                if (predicate(scan.Current))
+                                {
+                                    index = i;
+                                    break;
+                                }
+                            }
+
+                            if (!index.HasValue)
+                            {
+                                var message =
+                                    checker.BuildMessage(
+                                        "The {0} does not contain any items that matches the given predicate.");
+                                throw new FluentCheckException(message.ToString());
+                            }
+
+                            var itemCheck = Check.That(scan.Current);
+                            var subChecker = ExtensibilityHelper.ExtractChecker(itemCheck);
+                            subChecker.SetSutLabel($"item #{index}");
+                            return itemCheck;
+                        }
+                    },
+            checker.BuildMessage("The {0} contains item(s) that matches the given predicate, whereas it must not.").ToString());
+        }
         #region private or internal methods
 
         /// <summary>
@@ -358,7 +482,6 @@ namespace NFluent
         private static IList ExtractNotFoundValues(IEnumerable enumerable, IEnumerable expectedValues)
         {
             // Prepares the list to return
-
             var values = expectedValues as object[] ?? expectedValues.Cast<object>().ToArray();
             var notFoundValues = values.ToList();
 
@@ -366,8 +489,14 @@ namespace NFluent
             {
                 foreach (var expectedValue in values)
                 {
-                    if (!Equals(element, expectedValue)) continue;
-                    notFoundValues.RemoveAll(one => Equals(one, expectedValue));
+                    // ReSharper disable once RedundantNameQualifier
+                    if (!object.Equals(element, expectedValue))
+                    {
+                        continue;
+                    }
+
+                    // ReSharper disable once RedundantNameQualifier
+                    notFoundValues.RemoveAll(one => object.Equals(one, expectedValue));
                     break;
                 }
             }
@@ -406,7 +535,8 @@ namespace NFluent
 #if !(PORTABLE) && !(NETSTANDARD1_3)
             return expectedValues != null && (expectedValues.LongLength == 1) && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
 #else
-            return expectedValues != null && (expectedValues.Length == 1) && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
+            return expectedValues != null && (expectedValues.Length == 1)
+                   && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
 #endif
         }
 
@@ -415,16 +545,18 @@ namespace NFluent
             return (element is IEnumerable) && !(element is IEnumerable<char>);
         }
 
-        private static string BuildExceptionMessageForContainsExactly(IChecker<IEnumerable, ICheck<IEnumerable>> checker)
+        private static string BuildExceptionMessageForContainsExactly(
+            IChecker<IEnumerable, ICheck<IEnumerable>> checker)
         {
             var checkedValue = checker.Value;
             return checker.BuildMessage("The {0} contains exactly the given values whereas it must not.")
-                                    .On(checkedValue)
-                                    .WithEnumerableCount(checkedValue.Count())
-                                    .ToString();
+                .On(checkedValue).WithEnumerableCount(checkedValue.Count()).ToString();
         }
 
-        private static string BuildNotExactlyExceptionMessage(IChecker<IEnumerable, ICheck<IEnumerable>> checker, IEnumerable<object> enumerable, int index)
+        private static string BuildNotExactlyExceptionMessage(
+            IChecker<IEnumerable, ICheck<IEnumerable>> checker,
+            IEnumerable<object> enumerable,
+            int index)
         {
             var checkedValue = checker.Value;
             var sutCount = checkedValue.Count();
@@ -434,15 +566,24 @@ namespace NFluent
             {
                 if (sutCount < expectedCount && index == sutCount)
                 {
-                    message = checker.BuildMessage(string.Format("The {{0}} does not contain exactly the expected value(s). Items are missing starting at index #{0}.", index));
+                    message = checker.BuildMessage(
+                        string.Format(
+                            "The {{0}} does not contain exactly the expected value(s). Items are missing starting at index #{0}.",
+                            index));
                 }
                 else if (sutCount > expectedCount && index == expectedCount)
                 {
-                     message = checker.BuildMessage(string.Format("The {{0}} does not contain exactly the expected value(s). There are extra items starting at index #{0}.", index));
+                    message = checker.BuildMessage(
+                        string.Format(
+                            "The {{0}} does not contain exactly the expected value(s). There are extra items starting at index #{0}.",
+                            index));
                 }
                 else
                 {
-                    message = checker.BuildMessage(string.Format("The {{0}} does not contain exactly the expected value(s). First difference is at index #{0}.", index));
+                    message = checker.BuildMessage(
+                        string.Format(
+                            "The {{0}} does not contain exactly the expected value(s). First difference is at index #{0}.",
+                            index));
                 }
             }
             else
@@ -450,11 +591,8 @@ namespace NFluent
                 message = checker.BuildMessage("The {0} does not contain exactly the expected value(s).");
             }
 
-            message.For(typeof(IEnumerable))
-            .On(checkedValue)
-            .WithEnumerableCount(sutCount)
-            .And.ExpectedValues(enumerable)
-            .WithEnumerableCount(expectedCount);
+            message.For(typeof(IEnumerable)).On(checkedValue).WithEnumerableCount(sutCount).And
+                .ExpectedValues(enumerable).WithEnumerableCount(expectedCount);
 
             return message.ToString();
         }

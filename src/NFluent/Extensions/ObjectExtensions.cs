@@ -30,5 +30,17 @@ namespace NFluent.Extensions
         {
             return reference?.GetType();
         }
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Stub implementation for GetTypeInfo() for Net Framework.
+        /// </summary>
+        /// <param name="type">Type to dig into.</param>
+        /// <returns>An instance allowing to use reflection.</returns>
+        public static Type GetTypeInfo(this Type type)
+        {
+            return type;
+        }
+#endif
     }
 }

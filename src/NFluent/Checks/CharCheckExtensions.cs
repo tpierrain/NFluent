@@ -37,7 +37,7 @@ namespace NFluent
             // Then, we let the checker's ExecuteCheck() method return the ICheckLink<ICheck<T>> result (with T as string here).
             // This method needs 2 arguments:
             //   1- a lambda that checks what's necessary, and throws a FluentAssertionException in case of failure
-            //      The exception message is usually fluently build with the FluentMessage.BuildMessage() static method.
+            //      The exception message is usually fluently build with the FluentMessage.FillMessage() static method.
             //
             //   2- a string containing the message for the exception to be thrown by the checker when 
             //      the check fails, in the case we were running the negated version.

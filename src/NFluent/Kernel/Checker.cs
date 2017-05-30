@@ -16,6 +16,7 @@
 namespace NFluent.Kernel
 {
     using System;
+
     using Extensibility;
 
     /// <summary>
@@ -50,7 +51,7 @@ namespace NFluent.Kernel
 
         #endregion
 
-        #region methods
+        #region properties
 
         /// <summary>
         /// Gets the value to be tested (provided for any extension method to be able to test it).
@@ -58,10 +59,7 @@ namespace NFluent.Kernel
         /// <value>
         /// The value to be tested by any fluent check extension method.
         /// </value>
-        public T Value
-        {
-            get { return this.fluentCheckForExtensibility.Value; }
-        }
+        public T Value => this.fluentCheckForExtensibility.Value;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="FluentCheck{T}" /> should be negated or not.
@@ -70,10 +68,7 @@ namespace NFluent.Kernel
         /// <value>
         /// <c>true</c> if all the methods applying to this check instance should be negated; <c>false</c> otherwise.
         /// </value>
-        public bool Negated
-        {
-            get { return this.fluentCheckForExtensibility.Negated; }
-        }
+        public bool Negated => this.fluentCheckForExtensibility.Negated;
 
         #endregion
 
@@ -87,7 +82,6 @@ namespace NFluent.Kernel
         public FluentMessage BuildMessage(string message)
         {
             var result = this.BuildShortMessage(message);
-
             result.On(this.Value);
             return result;
         }
@@ -114,7 +108,7 @@ namespace NFluent.Kernel
         /// <param name="newLabel">The label for the SUT.</param>
         public void SetSutLabel(string newLabel)
         {
-            this.sutLabel = string.Format("[{0}]", newLabel);
+            this.sutLabel = $"[{newLabel}]";
         }
 
         /// <summary>
@@ -128,6 +122,60 @@ namespace NFluent.Kernel
         public ICheckLink<TC> BuildChainingObject()
         {
             return new CheckLink<TC>(this.fluentCheckForExtensibility);
+        }
+
+        /// <summary>
+        /// Gets the check link to return for the next check to be executed (linked with the And operator).
+        /// Also provides a check to evaluate a given element (e.g. an entry in a dictionary).
+        /// This property is only useful for those that doesn't want to implement their check methods with the 
+        /// <see cref="IChecker{T,TC}.ExecuteCheck"/> method.
+        /// </summary>
+        /// <typeparam name="TSub">Type of the secondary checker.</typeparam>
+        /// <param name="itemChecker">Checker for the element to evaluate.</param>
+        /// <returns>An extended check link.</returns>
+        public ICheckLinkWhich<TC, TSub> BuildLinkWhich<TSub>(TSub itemChecker)
+            where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+        {
+            return new CheckLinkWhich<TC, TSub>(this.fluentCheckForExtensibility, itemChecker);
+        }
+
+        /// <summary>
+        /// Execute the check provided as an happy-path lambda.
+        /// </summary>
+        /// <typeparam name="TSub">Checker type for the sub item.</typeparam>
+        /// <param name="checkLambdaAction">The happy-path action (vs. the one for negated version which has not to be specified). 
+        ///     This lambda should simply return if everything is ok, or throws a 
+        ///     <see cref="FluentCheckException"/> otherwise.</param>
+        /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
+        /// <returns>The <see cref="BuildLinkWhich{TSub}"/> to use for linking.</returns>
+        public ICheckLinkWhich<TC, TSub> ExecuteCheckAndProvideSubItem<TSub>(Func<TSub> checkLambdaAction, string negatedExceptionMessage)
+            where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+        {
+            TSub checker;
+            try
+            {
+                // execute test
+                checker = checkLambdaAction();
+            }
+            catch (FluentCheckException)
+            {
+                // exception raised, and this was not expected
+                if (!this.fluentCheckForExtensibility.Negated)
+                {
+                    throw;
+                }
+
+                // exception was expected
+                return null;
+            }
+
+            if (this.fluentCheckForExtensibility.Negated)
+            {
+                // the expected exception did not occur
+                throw new FluentCheckException(negatedExceptionMessage);
+            }
+
+            return this.BuildLinkWhich(checker);
         }
 
         /// <summary>

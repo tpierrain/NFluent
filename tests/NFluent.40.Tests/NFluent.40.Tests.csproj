@@ -46,7 +46,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
@@ -256,6 +257,9 @@
     <Compile Include="..\NFluent.Core.Tests\ToEnumeratedStringTests.cs">
       <Link>ToEnumeratedStringTests.cs</Link>
     </Compile>
+    <Compile Include="..\NFluent.Core.Tests\TypeRelatedTests.cs">
+      <Link>TypeRelatedTests.cs</Link>
+    </Compile>
     <Compile Include="..\NFluent.Core.Tests\UserReportedIssuesTests.cs">
       <Link>UserReportedIssuesTests.cs</Link>
     </Compile>
@@ -265,7 +269,6 @@
     <None Include="..\NFluent.35.Tests\Settings.StyleCop">
       <Link>Settings.StyleCop</Link>
     </None>
-    <None Include="NFluent.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -282,10 +285,10 @@
     <Folder Include="T4\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CheckedFile.xml">
+    <Content Include="..\NFluent.Core.Tests\CheckedFile.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ExpectedFile.xml">
+    <Content Include="..\NFluent.Core.Tests\ExpectedFile.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

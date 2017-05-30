@@ -12,10 +12,10 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-using System;
 
 namespace NFluent.Tests
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 

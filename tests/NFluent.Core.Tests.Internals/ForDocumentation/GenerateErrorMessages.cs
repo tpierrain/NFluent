@@ -204,7 +204,7 @@ namespace NFluent.Tests.ForDocumentation
                             foreach (var signature in checkList.CheckSignatures)
                             {
                                 var message = string.Format(
-                                    "{0};{1};{2}", typeChecks.CheckedType.TypeToStringProperlyFormated(true),
+                                    "{0};{1};{2}", typeChecks.CheckedType.TypeToStringProperlyFormatted(true),
                                     checkList.CheckName, signature.Signature);
                                 writer.WriteLine(message);
                             }

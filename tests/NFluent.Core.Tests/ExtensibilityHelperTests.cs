@@ -36,5 +36,6 @@ namespace NFluent.Tests
             Check.ThatEnum(runnableStructCheck.Value).IsEqualTo(Nationality.Chinese);
             Check.That(runnableStructCheck.Negated).IsFalse();
         }
+
     }
 }

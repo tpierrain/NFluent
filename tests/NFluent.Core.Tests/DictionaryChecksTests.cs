@@ -17,6 +17,7 @@ using System;
 
 namespace NFluent.Tests
 {
+    using System.Collections;
     using System.Collections.Generic;
     using ApiChecks;
     using NUnit.Framework;
@@ -77,7 +78,7 @@ namespace NFluent.Tests
                 Check.That(SimpleDico).Not.ContainsKey("demo");
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked dictionary does contain the given key, whereas it must not." + Environment.NewLine + "The checked dictionary:" + Environment.NewLine + "\t[[demo, value]]" + Environment.NewLine + "Given key:" + Environment.NewLine + "\t[\"demo\"]");
+            .WithMessage(Environment.NewLine + "The checked dictionary does contain the given key, whereas it must not." + Environment.NewLine + "The checked dictionary:" + Environment.NewLine + "\t[[demo, value]]" + Environment.NewLine + "Given key:" + Environment.NewLine + "\t[\"demo\"]");
         }
 
         [Test]
@@ -120,6 +121,22 @@ namespace NFluent.Tests
             Check.That(SimpleDico).ContainsPair("demo", "value");
         }
 
+#if !PORTABLE
+        [Test]
+        public void CompatibleWithHashtable()
+        {
+            Hashtable basic = new Hashtable();
+            basic["foo"] = "bar";
+
+            Check.That(basic).ContainsKey("foo");
+            Check.That(basic).ContainsValue("bar");
+            Check.That(basic).ContainsPair("foo", "bar");
+
+            Check.ThatCode(() => { Check.That(basic).ContainsKey("bar"); }).Throws<FluentCheckException>();
+            Check.ThatCode(() => { Check.That(basic).ContainsValue("foo"); }).Throws<FluentCheckException>();
+            Check.ThatCode(() => { Check.That(basic).ContainsPair("bar", "foo"); }).Throws<FluentCheckException>();
+        }
+#endif
         [Test]
         public void ContainsPairFailsAppropriately()
         {
