@@ -108,7 +108,7 @@ namespace NFluent.Kernel
         /// <param name="newLabel">The label for the SUT.</param>
         public void SetSutLabel(string newLabel)
         {
-            this.sutLabel = string.Format("[{0}]", newLabel);
+            this.sutLabel = $"[{newLabel}]";
         }
 
         /// <summary>
@@ -130,13 +130,46 @@ namespace NFluent.Kernel
         /// This property is only useful for those that doesn't want to implement their check methods with the 
         /// <see cref="IChecker{T,TC}.ExecuteCheck"/> method.
         /// </summary>
-        /// <typeparam name="TU">Type of the secondary checker.</typeparam>
+        /// <typeparam name="TSub">Type of the secondary checker.</typeparam>
         /// <param name="itemChecker">Checker for the element to evaluate.</param>
         /// <returns>An extended check link.</returns>
-        public ICheckLinkWhich<TC, TU> BuildLinkWhich<TU>(TU itemChecker)
-            where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+        public ICheckLinkWhich<TC, TSub> BuildLinkWhich<TSub>(TSub itemChecker)
+            where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
-            return new CheckLinkWhich<TC, TU>(this.fluentCheckForExtensibility, itemChecker);
+            return new CheckLinkWhich<TC, TSub>(this.fluentCheckForExtensibility, itemChecker);
+        }
+
+        /// <summary>
+        /// Execute the check provided as an happy-path lambda.
+        /// </summary>
+        /// <typeparam name="TSub">Checker type for the sub item.</typeparam>
+        /// <param name="checkLambdaAction">The happy-path action (vs. the one for negated version which has not to be specified). 
+        ///     This lambda should simply return if everything is ok, or throws a 
+        ///     <see cref="FluentCheckException"/> otherwise.</param>
+        /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
+        /// <returns>The <see cref="BuildLinkWhich{TSub}"/> to use for linking.</returns>
+        public ICheckLinkWhich<TC, TSub> ExecuteCheckAndProvideSubItem<TSub>(Func<TSub> checkLambdaAction, string negatedExceptionMessage)
+            where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+        {
+            TSub checker;
+            try
+            {
+                // execute test
+                checker = checkLambdaAction();
+            }
+            catch (FluentCheckException)
+            {
+                // exception raised, and this was not expected
+                if (!this.fluentCheckForExtensibility.Negated)
+                {
+                    throw;
+                }
+
+                // exception was expected
+                return null;
+            }
+
+            return this.BuildLinkWhich(checker);
         }
 
         /// <summary>

@@ -1,21 +1,21 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="EnumerableRelatedTests.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN, Cyrille DUPUYDAUBY
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
-using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="EnumerableRelatedTests.cs" company="">
+//   Copyright 2013 Thomas PIERRAIN, Cyrille DUPUYDAUBY
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent.Tests
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -82,7 +82,7 @@ namespace NFluent.Tests
                 Check.That(enumerable).HasSize(5);
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable has 1 element instead of 5." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[666]");
+            .WithMessage(Environment.NewLine + "The checked enumerable has 1 element instead of 5." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[666]");
         }
 
         [Test]
@@ -103,7 +103,7 @@ namespace NFluent.Tests
                 Check.That(enumerable).Not.HasSize(1);
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable has 1 element which is unexpected." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[666]");
+            .WithMessage(Environment.NewLine + "The checked enumerable has 1 element which is unexpected." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[666]");
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace NFluent.Tests
                 Check.That(enumerable).HasSize(1);
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable has 4 elements instead of 1." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[45, 43, 54, 666]");
+            .WithMessage(Environment.NewLine + "The checked enumerable has 4 elements instead of 1." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[45, 43, 54, 666]");
         }
 
         #endregion
@@ -141,7 +141,7 @@ namespace NFluent.Tests
                 Check.That(persons).IsEmpty();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable is not empty." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null, null, Thomas]");
+            .WithMessage(Environment.NewLine + "The checked enumerable is not empty." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null, null, Thomas]");
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace NFluent.Tests
                 Check.That(persons).IsNullOrEmpty();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable contains items, whereas it must be null or empty." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null, null, Thomas]");
+            .WithMessage(Environment.NewLine + "The checked enumerable contains items, whereas it must be null or empty." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null, null, Thomas]");
         }
 
         [Test]
@@ -179,7 +179,7 @@ namespace NFluent.Tests
                 Check.That(EmptyEnumerable).Not.IsNullOrEmpty();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable is empty, where as it must contain at least one item.");
+            .WithMessage(Environment.NewLine + "The checked enumerable is empty, where as it must contain at least one item.");
         }
 
         [Test]
@@ -190,7 +190,7 @@ namespace NFluent.Tests
                 Check.That((IEnumerable)null).Not.IsNullOrEmpty();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable is null, where as it must contain at least one item.");
+            .WithMessage(Environment.NewLine + "The checked enumerable is null, where as it must contain at least one item.");
         }
 
         [Test]
@@ -211,7 +211,7 @@ namespace NFluent.Tests
                 Check.That(persons).Not.IsEmpty();
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable is empty, which is unexpected.");
+            .WithMessage(Environment.NewLine + "The checked enumerable is empty, which is unexpected.");
         }
 
         #endregion
@@ -226,7 +226,7 @@ namespace NFluent.Tests
                 Check.That(enumerable).Not.IsEqualTo(enumerable);
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable is equal to the expected one whereas it must not." + Environment.NewLine + "The expected enumerable: different from" + Environment.NewLine + "\t[45, 43, 54, 666] of type: [System.Collections.Generic.List<int>]");
+            .WithMessage(Environment.NewLine + "The checked enumerable is equal to the expected one whereas it must not." + Environment.NewLine + "The expected enumerable: different from" + Environment.NewLine + "\t[45, 43, 54, 666] of type: [System.Collections.Generic.List<int>]");
         }
 
         [Test]
@@ -239,7 +239,7 @@ namespace NFluent.Tests
                 Check.That(enumerable).Not.IsNotEqualTo(null);
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[45, 43, 54, 666]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[null]");
+            .WithMessage(Environment.NewLine + "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[45, 43, 54, 666]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[null]");
         }
 
         [Test]
@@ -276,16 +276,15 @@ namespace NFluent.Tests
         [Test]
         public void ShouldProvideItemExploration()
         {
-            IEnumerable<string> randomWords = new List<string> {"yes", "foo", "bar", "nope"};
-            Check.ThatCode( () =>
+            IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar", "nope" };
+            Check.ThatCode(() =>
             Check.That(randomWords).HasItem(3).Which.IsEqualTo("hope")).Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
-                "",
+                string.Empty,
                 "The checked [item #3] is different from the expected one but has same length.",
                 "The checked [item #3]:",
                 "\t[\"nope\"]",
                 "The expected [item #3]:",
-                "\t[\"hope\"]"
-                );
+                "\t[\"hope\"]");
         }
 
         [Test]
@@ -294,11 +293,25 @@ namespace NFluent.Tests
             IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
             Check.ThatCode(() =>
                 Check.That(randomWords).HasItem(3).Which.IsEqualTo("hope")).Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
-                "",
+                string.Empty,
                 "The checked enumerable does not have an item at index 3.",
                 "The checked enumerable:",
-                "\t[\"yes\", \"foo\", \"bar\"]"
-            );
+                "\t[\"yes\", \"foo\", \"bar\"]");
+        }
+
+        // Issue #183b 
+        [Test]
+        public void ShouldProvideFilterSupport()
+        {
+            IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
+            Check.That(randomWords).HasItemThatMatches((_) => _.StartsWith("ye"));
+        }
+
+        [Test]
+        public void FilterSupportShouldFailWhenRelevant()
+        {
+            IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
+            Check.That(randomWords).HasItemThatMatches((_) => _.StartsWith("ye"));
         }
     }
 }

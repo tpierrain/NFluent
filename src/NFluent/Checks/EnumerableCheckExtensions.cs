@@ -426,6 +426,40 @@ namespace NFluent
             return result;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="check"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasItemThatMatches<T>(
+            this ICheck<IEnumerable<T>> check,
+            Func<T, bool> predicate)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker<IEnumerable<T>>(check);
+            return checker.ExecuteCheckAndProvideSubItem(
+                () =>
+                    {
+                        using (var scan = checker.Value.GetEnumerator())
+                        {
+                            int i;
+                            for (i = 0; scan.MoveNext(); i++)
+                            {
+                                if (predicate(scan.Current))
+                                {
+                                    break;
+                                }
+                            }
+
+                            var itemCheck = Check.That<T>(scan.Current);
+                            var subChecker = ExtensibilityHelper.ExtractChecker<T>(itemCheck);
+                            subChecker.SetSutLabel($"item #{i}");
+                            return itemCheck;
+                        }
+                    },
+            string.Empty);
+        }
         #region private or internal methods
 
         /// <summary>

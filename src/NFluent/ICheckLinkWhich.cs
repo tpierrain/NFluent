@@ -14,11 +14,11 @@ namespace NFluent
     /// <summary>
     ///     Offer chaining for checks as well as zooming on a sub check.
     /// </summary>
-    /// <typeparam name="T">Main checker.</typeparam>
-    /// <typeparam name="TU">Alternative checker.</typeparam>
-    public interface ICheckLinkWhich<out T, out TU> : ICheckLink<T>
-        where T : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
-        where TU : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    /// <typeparam name="TMain">Main checker.</typeparam>
+    /// <typeparam name="TSub">Alternative checker.</typeparam>
+    public interface ICheckLinkWhich<out TMain, out TSub> : ICheckLink<TMain>
+        where TMain : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+        where TSub : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         /// <summary>
         ///     Checks item identifier in previous check.
@@ -28,6 +28,6 @@ namespace NFluent
             "StyleCop.CSharp.DocumentationRules",
             "SA1623:PropertySummaryDocumentationMustMatchAccessors",
             Justification = "Reviewed. Suppression is OK here.")]
-        TU Which { get; }
+        TSub Which { get; }
     }
 }
