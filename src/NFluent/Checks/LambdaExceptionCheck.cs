@@ -94,7 +94,8 @@ namespace NFluent
             var property = type.GetProperty(propertyName);
             if (property == null)
             {
-                var message = FluentMessage.BuildMessage(string.Format("There is no property [{0}] on exception type [{1}].", propertyName, type.Name)).ToString();
+                var message = FluentMessage.BuildMessage(
+                    $"There is no property [{propertyName}] on exception type [{type.Name}].").ToString();
                 throw new FluentCheckException(message);
             }
             
@@ -121,34 +122,34 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public ICheckLink<ILambdaExceptionCheck<T>> DueTo<TE>() where TE : Exception
+        public ILambdaExceptionCheck<T> DueTo<TE>()
+            where TE : Exception
         {
             var innerException = this.Value.InnerException;
-            var dueToExceptionFound = false;
             while (innerException != null)
             {
                 if (innerException.GetType() == typeof(TE))
                 {
-                    dueToExceptionFound = true;
                     break;
                 }
+
                 innerException = innerException.InnerException;
             }
 
-            if (!dueToExceptionFound)
+            if (innerException != null) 
             {
-                var message = FluentMessage.BuildMessage("The {0} did not contain an expected inner exception whereas it must.")
-                                            .For("exception")
-                                            .On(ExceptionHelper.DumpInnerExceptionStackTrace(this.Value))
-                                            .Label("The inner exception(s):")
-                                            .And
-                                            .Expected(typeof(TE)).Label("The expected inner exception:")
-                                            .ToString();
-
-                throw new FluentCheckException(message);
+                return new LambdaExceptionCheck<T>(innerException);
             }
 
-            return new CheckLink<ILambdaExceptionCheck<T>>(this);
+            var message = FluentMessage.BuildMessage("The {0} did not contain an expected inner exception whereas it must.")
+                .For("exception")
+                .On(ExceptionHelper.DumpInnerExceptionStackTrace(this.Value))
+                .Label("The inner exception(s):")
+                .And
+                .Expected(typeof(TE)).Label("The expected inner exception:")
+                .ToString();
+
+            throw new FluentCheckException(message);
         }
 
         /// <summary>

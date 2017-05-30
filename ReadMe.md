@@ -12,7 +12,7 @@ __Official site: [http://www.n-fluent.net/](http://www.n-fluent.net/)__
 - - -
 
 __NFluent will make your tests__:
-+ __fluent to write__: with a __[super-duper-happy](https://github.com/NancyFx/Nancy/wiki/Introduction) auto-completion 'dot' experience__. Indeed, just type the Check.That( followed by one of your object and a dot, and your IDE will show you all the checks available for the type of the given object to verify. No more, no less (i.e. no auto completion flooding).
++ __fluent to write__: with a __[super-duper-happy](https://github.com/NancyFx/Nancy/wiki/Introduction) auto-completion 'dot' experience__. Indeed, just type the Check.That( followed by one of your objects and a dot, and your IDE will show you all the checks available for the type of the given object to verify. No more, no less (i.e. no auto completion flooding).
 + __fluent to read__: very close to plain English, making it easier for non-technical people to read test code.
 + __fluent to troubleshoot__: every failing check of the NFluent library throws an Exception with a crystal-clear message status to ease your TDD experience (see examples below). Thus, no need to set a breakpoint and to debug in order to be able to figure out what went wrong.
 + __helpful to reverse engineer legacy code__: indeed, temporarily write an on-purpose failing assert on a legacy method, so you can understand it and leverage on the "ready-to-be-copied-and-paste-for-arrays-or-collections-initialization-purpose" NFluent assert failure messages.
@@ -36,7 +36,7 @@ As simple as possible
 
 With Nfluent check libraries:
 
-All you've got to remember is: `Check.That`, cause every check is then provided via a super-duper-auto-completion-dot-experience ;-)
+All you've got to remember is: `Check.That`, 'cause every check is then provided via a super-duper-auto-completion-dot-experience ;-)
 ------------------------------------------------------------------------------------------------------------------------
 
 
@@ -105,7 +105,7 @@ or like this:
 ```
 Why NFluent, and not another .NET fluent check framework?
 ----------------------------------------------------------------------------
-+ Because you think like us that writing a lambda expression within an check statement is not really a fluent experience (neither on a reading perspective).
++ Because you think like us that writing a lambda expression within a check statement is not really a fluent experience (for reading as well as writing).
 + Because NFluent is completely driven by the __[super-duper-happy-path](https://github.com/NancyFx/Nancy/wiki/Introduction)__ principle to fluent your TDD experience. For instance, we consider the 'dot' autocompletion experience as crucial. Thus, it should not be polluted by things not related to the current unit testing context (which occurs with extension methods on classical .NET types - intellisense flooding).
 + Because you think that those other check libraries have not chosen the proper vocabulary (`<subjectUnderTest>.Should().`... why don't they choose `Must` instead?!?). And thus, you'd rather rely on a stronger semantic for your checks (i.e. NFluent's `Check.That`).
 + Because you like *killing features* and extra bonus, such as the Properties() extension method for IEnumerable for instance (as showed within the usage sample above).
@@ -138,7 +138,7 @@ __[NFluent use cases are available here](./UseCases.md)__.
 
 Newsgroup
 ---------
-For any comment, remark or question on the library, please use the __[NFluent-Discuss google group](https://groups.google.com/forum/#!forum/nfluent-discuss)__.
+For any comment, remark or question about the library, please use the __[NFluent-Discuss google group](https://groups.google.com/forum/#!forum/nfluent-discuss)__.
 
 BackLog
 -------
@@ -147,7 +147,7 @@ Nfluent __backlog is now available as github issues__
 New feature to be added?
 ------------------------
 + If you want to join the project and contribute: __[check this out before](./CONTRIBUTING.md)__ before, but be our guest.
-+ If you don't want to contribute on the library, but you need a feature not yet implemented, don't hesitate to request it on the __[NFluent-Discuss google group](https://groups.google.com/forum/#!forum/nfluent-discuss)__.
++ If you don't want to contribute to the library, but you need a feature not yet implemented, don't hesitate to request it on the __[NFluent-Discuss google group](https://groups.google.com/forum/#!forum/nfluent-discuss)__.
 __In any cases: you are welcome!__
 
 Other resources

@@ -53,6 +53,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        ICheckLink<ILambdaExceptionCheck<TParent>> DueTo<T>() where T : Exception;
+        ILambdaExceptionCheck<TParent> DueTo<T>()
+            where T : Exception;
     }
 }

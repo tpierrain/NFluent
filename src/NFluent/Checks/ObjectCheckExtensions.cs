@@ -176,7 +176,12 @@ namespace NFluent
 
             checker.ExecuteNotChainableCheck(
                 () => IsInstanceHelper.InheritsFrom(checker, expectedBaseType),
-                string.Format(Environment.NewLine+ "The checked expression is part of the inheritance hierarchy or of the same type than the specified one." + Environment.NewLine + "Indeed, checked expression type:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "is a derived type of" + Environment.NewLine + "\t[{1}].", instanceType.ToStringProperlyFormatted(), expectedBaseType.ToStringProperlyFormatted()));
+                string.Format(
+                    Environment.NewLine + "The checked expression is part of the inheritance hierarchy or of the same type than the specified one."
+                    + Environment.NewLine + "Indeed, checked expression type:" + Environment.NewLine + "\t[{0}]"
+                    + Environment.NewLine + "is a derived type of" + Environment.NewLine + "\t[{1}].",
+                    instanceType.ToStringProperlyFormatted(),
+                    expectedBaseType.ToStringProperlyFormatted()));
         }
 
         /// <summary>
@@ -307,7 +312,25 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not the same reference than the expected value.</exception>
+        [Obsolete("Renamed to IsSameReferenceAs")]
         public static ICheckLink<ICheck<T>> IsSameReferenceThan<T>(this ICheck<T> check, object expected)
+        {
+            return IsSameReferenceAs(check, expected);
+        }
+
+        /// <summary>
+        /// Checks that the actual value has an expected reference.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type of the checked value.
+        /// </typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected object.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The actual value is not the same reference than the expected value.</exception>
+        public static ICheckLink<ICheck<T>> IsSameReferenceAs<T>(this ICheck<T> check, object expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = checker.Negated;

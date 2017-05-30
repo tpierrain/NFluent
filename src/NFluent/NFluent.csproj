@@ -31,6 +31,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\netstandard1.3\NFluent.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -45,5 +46,11 @@
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.1" />
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Collections.NonGeneric">
+      <HintPath>..\..\..\..\..\.nuget\packages\system.collections.nongeneric\4.3.0\ref\netstandard1.3\System.Collections.NonGeneric.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>  
