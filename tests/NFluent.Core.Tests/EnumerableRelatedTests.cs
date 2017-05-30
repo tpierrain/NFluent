@@ -311,7 +311,23 @@ namespace NFluent.Tests
         public void FilterSupportShouldFailWhenRelevant()
         {
             IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
-            Check.That(randomWords).HasItemThatMatches((_) => _.StartsWith("ye"));
+            Check.ThatCode(() => Check.That(randomWords).HasItemThatMatches((_) => _.StartsWith("to")))
+                .Throws<FluentCheckException>();
+        }
+
+        [Test]
+        public void NegatedFilterWorksAsExpected()
+        {
+            IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
+            Check.That(randomWords).Not.HasItemThatMatches((_) => _.StartsWith("to"));
+        }
+
+        [Test]
+        public void NegatedFilterFailsAsExpected()
+        {
+            IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
+            Check.ThatCode(() => Check.That(randomWords).Not.HasItemThatMatches((_) => _.StartsWith("ye")))
+                .Throws<FluentCheckException>();
         }
     }
 }

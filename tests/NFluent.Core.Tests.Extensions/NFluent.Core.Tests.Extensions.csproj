@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="NFluent.Core.Tests.Extensions.v3.ncrunchproject" />
     <None Remove="NFluent.Tests.Extensions.Core.v3.ncrunchproject" />
     <None Remove="project.json" />
     <None Remove="project.lock.json" />

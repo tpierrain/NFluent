@@ -67,19 +67,17 @@ namespace NFluent.Extensibility
             return ((ICheckForExtensibility<TS, IStructCheck<TS>>)check).Checker;
         }
 
-
         /// <summary>
         /// Gets an <see cref="IExtendableCheckLink{T, TU}"/> that permits refining checks
         /// </summary>
         /// <param name="check">check to extend</param>
         /// <param name="value">initial operands</param>
-        /// <typeparam name="T">type of checkd value</typeparam>
+        /// <typeparam name="T">type of checked value</typeparam>
         /// <typeparam name="TU">Type of comparand for previous check</typeparam>
         /// <returns>An <see cref="IExtendableCheckLink{T,TU}"/>implementation.</returns>
         public static IExtendableCheckLink<T, TU> BuildExtendableCheckLink<T, TU>(ICheck<T> check, TU value)
         {
             return new ExtendableCheckLink<T, TU>(check, value);
         }
-
     }
 }

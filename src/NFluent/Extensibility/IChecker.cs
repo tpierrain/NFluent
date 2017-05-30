@@ -40,7 +40,6 @@ namespace NFluent.Extensibility
         /// </returns>
         ICheckLink<TC> BuildChainingObject();
 
-
         /// <summary>
         /// Gets the check link to return for the next check to be executed (linked with the And operator).
         /// This property is only useful for those that doesn't want to implement their check methods with the 
@@ -111,6 +110,5 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="sutLabel">The label for the SUT.</param>
         void SetSutLabel(string sutLabel);
-
     }
 }

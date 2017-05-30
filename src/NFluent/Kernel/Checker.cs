@@ -169,6 +169,12 @@ namespace NFluent.Kernel
                 return null;
             }
 
+            if (this.fluentCheckForExtensibility.Negated)
+            {
+                // the expected exception did not occur
+                throw new FluentCheckException(negatedExceptionMessage);
+            }
+
             return this.BuildLinkWhich(checker);
         }
 

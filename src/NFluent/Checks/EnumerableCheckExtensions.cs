@@ -427,38 +427,47 @@ namespace NFluent
         }
 
         /// <summary>
-        /// 
+        /// Checks that the given enumerable does contain at least one item matching a predicate.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="check"></param>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">Type of items.</typeparam>
+        /// <param name="check">Check item.</param>
+        /// <param name="predicate">Predicate to evaluate.</param>
+        /// <returns>A linkable check.</returns>
         public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasItemThatMatches<T>(
             this ICheck<IEnumerable<T>> check,
             Func<T, bool> predicate)
         {
-            var checker = ExtensibilityHelper.ExtractChecker<IEnumerable<T>>(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
             return checker.ExecuteCheckAndProvideSubItem(
                 () =>
                     {
                         using (var scan = checker.Value.GetEnumerator())
                         {
-                            int i;
-                            for (i = 0; scan.MoveNext(); i++)
+                            int? index = null;
+                            for (var i = 0; scan.MoveNext(); i++)
                             {
                                 if (predicate(scan.Current))
                                 {
+                                    index = i;
                                     break;
                                 }
                             }
 
-                            var itemCheck = Check.That<T>(scan.Current);
-                            var subChecker = ExtensibilityHelper.ExtractChecker<T>(itemCheck);
-                            subChecker.SetSutLabel($"item #{i}");
+                            if (!index.HasValue)
+                            {
+                                var message =
+                                    checker.BuildMessage(
+                                        "The {0} does not contain any items that matches the given predicate.");
+                                throw new FluentCheckException(message.ToString());
+                            }
+
+                            var itemCheck = Check.That(scan.Current);
+                            var subChecker = ExtensibilityHelper.ExtractChecker(itemCheck);
+                            subChecker.SetSutLabel($"item #{index}");
                             return itemCheck;
                         }
                     },
-            string.Empty);
+            checker.BuildMessage("The {0} contains item(s) that matches the given predicate, whereas it must not.").ToString());
         }
         #region private or internal methods
 
@@ -480,11 +489,13 @@ namespace NFluent
             {
                 foreach (var expectedValue in values)
                 {
+                    // ReSharper disable once RedundantNameQualifier
                     if (!object.Equals(element, expectedValue))
                     {
                         continue;
                     }
 
+                    // ReSharper disable once RedundantNameQualifier
                     notFoundValues.RemoveAll(one => object.Equals(one, expectedValue));
                     break;
                 }
