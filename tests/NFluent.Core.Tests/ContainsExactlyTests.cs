@@ -53,7 +53,7 @@ namespace NFluent.Tests
                 Check.That(heroes).ContainsExactly("Luke", "Yoda", "Chewie", "Vader");
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). Items are missing starting at index #3." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"] (4 items)");
+            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). Elements are missing starting at index #3." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"] (4 items)");
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace NFluent.Tests
                 Check.That(heroes).ContainsExactly("Luke", "Yoda");
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). There are extra items starting at index #2." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"Luke\", \"Yoda\"] (2 items)");
+            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). There are extra elements starting at index #2." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"Luke\", \"Yoda\"] (2 items)");
         }
         
         [Test]
@@ -131,7 +131,7 @@ namespace NFluent.Tests
                 Check.That(emptyList).ContainsExactly("what da heck!");
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). Items are missing starting at index #0." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[] (0 item)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"] (1 item)");
+            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). Elements are missing starting at index #0." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[] (0 item)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"] (1 item)");
         }
 
         [Test]

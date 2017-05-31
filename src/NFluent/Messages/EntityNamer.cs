@@ -70,8 +70,7 @@ namespace NFluent.Messages
                     return "date time";
                 }
 
-                var interfaces = new List<Type>(this.EntityType.GetInterfaces());
-                interfaces.Add(this.EntityType);
+                var interfaces = new List<Type>(this.EntityType.GetInterfaces()) { this.EntityType };
 
                 if (interfaces.Contains(typeof(IDictionary)))
                 {

@@ -1,17 +1,17 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="EnumerableCheckExtensions.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="EnumerableCheckExtensions.cs" company="">
+//   Copyright 2013 Thomas PIERRAIN
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent
 {
@@ -355,7 +355,7 @@ namespace NFluent
             {
                 if (!checker.Negated)
                 {
-                    message = checker.BuildMessage("The {0} contains items, whereas it must be null or empty.")
+                    message = checker.BuildMessage("The {0} contains elements, whereas it must be null or empty.")
                         .For(typeof(IEnumerable)).ToString();
                 }
             }
@@ -363,12 +363,12 @@ namespace NFluent
             {
                 if (checker.Value == null)
                 {
-                    message = checker.BuildShortMessage("The {0} is null, where as it must contain at least one item.")
+                    message = checker.BuildShortMessage("The {0} is null, where as it must contain at least one element.")
                         .For(typeof(IEnumerable)).ToString();
                 }
                 else
                 {
-                    message = checker.BuildShortMessage("The {0} is empty, where as it must contain at least one item.")
+                    message = checker.BuildShortMessage("The {0} is empty, where as it must contain at least one element.")
                         .For(typeof(IEnumerable)).ToString();
                 }
             }
@@ -396,33 +396,31 @@ namespace NFluent
         /// <returns>
         /// An extensible checker.
         /// </returns>
-        public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasItem<T>(this ICheck<IEnumerable<T>> check, int index)
+        public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasElementAt<T>(this ICheck<IEnumerable<T>> check, int index)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> result = null;
             checker.ExecuteCheck(
                 () =>
                     {
-                        using (var scan = checker.Value.GetEnumerator())
+                        if (checker.Value == null)
                         {
-                            int i;
-                            for (i = 0; i <= index && scan.MoveNext(); i++)
-                            {
-                            }
-
-                            if (i <= index)
-                            {
-                                throw new FluentCheckException(checker.BuildMessage(
-                                    $"The {{0}} does not have an item at index {index}.").ToString());
-                            }
-                            // ReSharper disable once SuspiciousTypeConversion.Global
-                            var itemCheck = Check.That(scan.Current);
-                            var subChecker = ExtensibilityHelper.ExtractChecker(itemCheck);
-                            subChecker.SetSutLabel($"item #{index}");
-                            result = checker.BuildLinkWhich(itemCheck);
+                            throw new FluentCheckException(checker.BuildShortMessage(
+                                string.Format("The {{0}} is null, whereas it must have an element with number {0}.", index)).ToString());
                         }
+
+                        if (!TryGetElementByNumber(checker.Value, index, out T item))
+                        {
+                            throw new FluentCheckException(checker.BuildMessage(
+                                $"The {{0}} does not have an element at index {index}.").ToString());
+                        }
+                        // ReSharper disable once SuspiciousTypeConversion.Global
+                        var itemCheck = Check.That(item);
+                            var subChecker = ExtensibilityHelper.ExtractChecker(itemCheck);
+                            subChecker.SetSutLabel($"element #{index}");
+                            result = checker.BuildLinkWhich(itemCheck);
                     },
-                checker.BuildMessage("The {{0}} does have an item at index {0} whereas it should not.").ToString());
+                checker.BuildMessage("The {{0}} does have an element at index {0} whereas it should not.").ToString());
             return result;
         }
 
@@ -433,7 +431,7 @@ namespace NFluent
         /// <param name="check">Check item.</param>
         /// <param name="predicate">Predicate to evaluate.</param>
         /// <returns>A linkable check.</returns>
-        public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasItemThatMatches<T>(
+        public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasElementThatMatches<T>(
             this ICheck<IEnumerable<T>> check,
             Func<T, bool> predicate)
         {
@@ -457,18 +455,126 @@ namespace NFluent
                             {
                                 var message =
                                     checker.BuildMessage(
-                                        "The {0} does not contain any items that matches the given predicate.");
+                                        "The {0} does not contain any element that matches the given predicate.");
                                 throw new FluentCheckException(message.ToString());
                             }
 
                             var itemCheck = Check.That(scan.Current);
                             var subChecker = ExtensibilityHelper.ExtractChecker(itemCheck);
-                            subChecker.SetSutLabel($"item #{index}");
+                            subChecker.SetSutLabel($"element #{index}");
                             return itemCheck;
                         }
                     },
-            checker.BuildMessage("The {0} contains item(s) that matches the given predicate, whereas it must not.").ToString());
+            checker.BuildMessage("The {0} contains element(s) that matches the given predicate, whereas it must not.").ToString());
         }
+
+        /// <summary> 
+        /// Checks that the enumerable has a first element, and returns a check on that element. 
+        /// </summary> 
+        /// <typeparam name="T">The element type of the collection.</typeparam> 
+        /// <param name="check">The fluent check to be extended.</param> 
+        /// <returns>A check on the first element.</returns> 
+        public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasFirstElement<T>(this ICheck<IEnumerable<T>> check)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+
+            return checker.ExecuteCheckAndProvideSubItem(
+                () =>
+                    {
+                        if (checker.Value == null)
+                        {
+                            var errorMessage = checker.BuildShortMessage("The {0} is null, whereas it must have a first element.");
+                            throw new FluentCheckException(errorMessage.ToString());
+                        }
+
+                        if (!TryGetElementByNumber(checker.Value, 0, out T first))
+                        {
+                            var errorMessage = checker.BuildShortMessage("The {0} is empty, whereas it must have a first element.");
+                            throw new FluentCheckException(errorMessage.ToString());
+                        }
+
+                        var subChecker = Check.That(first);
+                        ExtensibilityHelper.ExtractChecker(subChecker).SetSutLabel("First item");
+                        return subChecker;
+                    },
+                checker.BuildMessage("The {0} has a first element, whereas it should not.").ToString());
+        }
+
+        /// <summary>
+        /// Checks that the enumerable has a last element, and returns a check on that element.
+        /// </summary>
+        /// <typeparam name="T">The element type of the collection.</typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>A check on the last element.</returns>
+        public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasLastElement<T>(this ICheck<IEnumerable<T>> check)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            return checker.ExecuteCheckAndProvideSubItem(
+                () =>
+                    {
+                        if (checker.Value == null)
+                        {
+                            var nullErrorMessage = checker.BuildShortMessage("The {0} is null, whereas it must have a last element.");
+                            throw new FluentCheckException(nullErrorMessage.ToString());
+                        }
+
+                        T last;
+                        if (!TryGetLastElement(checker.Value, out last))
+                        {
+                            var emptyErrorMessage = checker.BuildShortMessage("The {0} is empty, whereas it must have a last element.");
+                            throw new FluentCheckException(emptyErrorMessage.ToString());
+                        }
+
+                        var subChecker = Check.That(last);
+                        ExtensibilityHelper.ExtractChecker(subChecker).SetSutLabel("Last item");
+                        return subChecker;
+                    },
+                checker.BuildMessage("The {0} has a last element, whereas it must be empty.").ToString());
+         }
+
+        /// <summary>
+        /// Checks that the enumerable has a single element, and returns a check on that element.
+        /// </summary>
+        /// <typeparam name="T">The element type of the collection.</typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>A check on the single element.</returns>
+        public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasOneElementOnly<T>(this ICheck<IEnumerable<T>> check)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            return checker.ExecuteCheckAndProvideSubItem(
+                () =>
+                    {
+                        if (checker.Value == null)
+                        {
+                            var errorMessage = checker.BuildShortMessage("The {0} is null, whereas it must have one element.");
+                            throw new FluentCheckException(errorMessage.ToString());
+                        }
+
+                        using (var enumerator = checker.Value.GetEnumerator())
+                        {
+                            if (!enumerator.MoveNext())
+                            {
+                                var errorMessage = checker.BuildMessage("The {0} is empty, whereas it must have one element.");
+                                throw new FluentCheckException(errorMessage.ToString());
+                            }
+
+                            var first = enumerator.Current;
+
+                            if (enumerator.MoveNext())
+                            {
+                                var errorMessage = checker.BuildMessage("The {0} contains more than one element, whereas it must have one element only.");
+                                throw new FluentCheckException(errorMessage.ToString());
+                            }
+
+                            var subChecker = Check.That(first);
+                            ExtensibilityHelper.ExtractChecker(subChecker).SetSutLabel("single element");
+                            return subChecker;
+                        }
+
+                    },
+                checker.BuildMessage("The {0} has exactly one element, whereas it should not.").ToString());
+        }
+
         #region private or internal methods
 
         /// <summary>
@@ -568,14 +674,14 @@ namespace NFluent
                 {
                     message = checker.BuildMessage(
                         string.Format(
-                            "The {{0}} does not contain exactly the expected value(s). Items are missing starting at index #{0}.",
+                            "The {{0}} does not contain exactly the expected value(s). Elements are missing starting at index #{0}.",
                             index));
                 }
                 else if (sutCount > expectedCount && index == expectedCount)
                 {
                     message = checker.BuildMessage(
                         string.Format(
-                            "The {{0}} does not contain exactly the expected value(s). There are extra items starting at index #{0}.",
+                            "The {{0}} does not contain exactly the expected value(s). There are extra elements starting at index #{0}.",
                             index));
                 }
                 else
@@ -610,6 +716,73 @@ namespace NFluent
             }
 
             return properExpectedValues;
+        }
+
+        private static bool TryGetLastElement<T>(IEnumerable<T> collection, out T last)
+        {
+            var list = collection as IList<T>;
+            if (list != null)
+            {
+                if (list.Count != 0)
+                {
+                    last = list[list.Count - 1];
+                    return true;
+                }
+            }
+            else
+            {
+                using (var enumerator = collection.GetEnumerator())
+                {
+                    if (enumerator.MoveNext())
+                    {
+                        last = enumerator.Current;
+                        while (enumerator.MoveNext())
+                        {
+                            last = enumerator.Current;
+                        }
+
+                        return true;
+                    }
+                }
+            }
+
+            last = default(T);
+            return false;
+        }
+
+        private static bool TryGetElementByNumber<T>(IEnumerable<T> collection, int number, out T element)
+        {
+            if (number < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(number), "The specified number is less than zero, whereas it must be a 0-based index.");
+            }
+
+            var list = collection as IList<T>;
+            if (list != null)
+            {
+                if (list.Count > number)
+                {
+                    element = list[number];
+                    return true;
+                }
+            }
+            else
+            {
+                var currentNumber = 0;
+                foreach (var currentElement in collection)
+                {
+                    if (currentNumber == number)
+                    {
+                        element = currentElement;
+                        return true;
+                    }
+
+                    currentNumber++;
+                }
+            }
+
+            element = default(T);
+            return false;
         }
 
         #endregion

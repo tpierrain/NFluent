@@ -8,8 +8,11 @@ New feature(s):
 * Numbers: introduce IsNegativeOrZero() check.
 * FloatingNumbers (float, double): introduce IsCloseTo(expected, within) check for estimated value.
 * Exceptions: introduce the DueTo&lt;InnerException&gt; as an extension to Throws&lt;Exception&gt;. It verifies that the checked exception was triggered by a specific exception. This is done by scanning the 'innerException' chain until the expected type is identified. Further checking is done on the inner exception.
-* IEnumerable: introduce ContainsElementAt(int index) which checks for an item as a specific index. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).ContainsElementAt(3).Which.IsEqualTo("foo").
-* IEnumerable: introduce HasItemThatMatches( bool predicate()) which checks that an enumerable has at least on item matching the given predicate. You can use 'Which' to check further this item. E.g.: Check.That(_collection).HasItemThatMatches((_) => _.StartWith("foo")).Which.IsEqualTo("foobar").
+* IEnumerable: introduce HasElementAt(int index) which checks for an item as a specific index. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).ContainsElementAt(3).Which.IsEqualTo("foo").
+* IEnumerable: introduce HasFirstElement() which checks for the first item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).ContainsElementAt(3).Which.IsEqualTo("foo").
+* IEnumerable: introduce HasLastElement() which checks for the last item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).ContainsElementAt(3).Which.IsEqualTo("foo").
+* IEnumerable: introduce HasOneElementOnly() which checks for the first and single item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).ContainsElementAt(3).Which.IsEqualTo("foo").
+* IEnumerable: introduce HasElementThatMatches( bool predicate()) which checks that an enumerable has at least on item matching the given predicate. You can use 'Which' to check further this item. E.g.: Check.That(_collection).HasItemThatMatches((_) => _.StartWith("foo")).Which.IsEqualTo("foobar").
 * IDictionary&lt;K,V&gt;: now explicitely supported.
 * IDictionary&lt;K,V&gt;: introduce ContainsEntry&lt;K, V&gt;(K key, V value) which checks that a dictionary contains a specific value for a given key.
 * Hashtable: now explicitely supported.

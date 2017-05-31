@@ -98,6 +98,10 @@ namespace NFluent.Kernel
             {
                 result.For(this.sutLabel);
             }
+            else
+            {
+                result.For(typeof(T));
+            }
 
             return result;
         }
