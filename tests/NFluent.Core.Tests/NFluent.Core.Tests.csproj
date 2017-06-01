@@ -56,6 +56,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+  <Import Project="..\NFluent.Tests\NFluent.Tests.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <Content Update="C:\Users\dupdo\Documents\GitHub\NFluent\tests\NFluent.Tests\T4\NumberTestsGenerator.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="C:\Users\dupdo\Documents\GitHub\NFluent\tests\NFluent.Tests\T4\NumberTestsGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NumberTestsGenerator.txt</LastGenOutput>
+    </None>
   </ItemGroup>
 </Project>  

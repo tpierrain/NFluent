@@ -65,7 +65,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <Import Project="..\Tests.Internals\Tests.Internals.projitems" Label="Shared" />
+  <Import Project="..\NFluent.Tests.Internals\NFluent.Tests.Internals.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

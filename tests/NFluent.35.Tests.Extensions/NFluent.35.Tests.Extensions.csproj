@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DOTNET_3_5</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -27,7 +27,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;DOTNET_3_5</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -47,42 +47,6 @@
     <Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Extensions\Child.cs">
-      <Link>Child.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Extensions\ExtensionsForMarketingPurpose.cs">
-      <Link>ExtensionsForMarketingPurpose.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Extensions\ExtensionSpikeTests.cs">
-      <Link>ExtensionSpikeTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Extensions\LinkableExtensionsTests.cs">
-      <Link>LinkableExtensionsTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Extensions\Movie.cs">
-      <Link>Movie.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Extensions\MovieCheckExtensions.cs">
-      <Link>MovieCheckExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Extensions\Nationality.cs">
-      <Link>Nationality.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Extensions\NationalityExtensions.cs">
-      <Link>NationalityExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Extensions\Person.cs">
-      <Link>Person.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Extensions\PersonExtensions.cs">
-      <Link>PersonExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Extensions\ReadmeRelatedTests.cs">
-      <Link>ReadmeRelatedTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\Helpers\CultureSession.cs">
-      <Link>Helpers\CultureSession.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +62,7 @@
     <None Include="NFluent.snk" />
     <None Include="packages.config" />
   </ItemGroup>
+  <Import Project="..\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

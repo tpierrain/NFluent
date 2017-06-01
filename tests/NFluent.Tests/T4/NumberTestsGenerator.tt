@@ -47,8 +47,8 @@
 
 // ...RelatedTests ----------------------------------------------------
 		// TODO: infer the originalSourceClassName from the goldenSourceClassFileName last part
-        var sourcePath = @"..\..\NFluent.Core.Tests\";
-        var project = "NFluent.Core.Tests";
+        var sourcePath = @"..\";
+        var project = "NFluent.Tests";
         var folder = "T4Generated";
 
 	string goldenSourceClassFileName = Host.ResolvePath(sourcePath+"IntRelatedTests.cs");

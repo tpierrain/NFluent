@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>2b7f0e07-9b42-4bd2-8e30-f90fd78faf1f</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>NFluent.Tests</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Child.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtensionsForMarketingPurpose.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtensionSpikeTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LinkableExtensionsTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Movie.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MovieCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nationality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NationalityExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Person.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PersonExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ReadmeRelatedTests.cs" />
+  </ItemGroup>
+</Project>

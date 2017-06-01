@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>0425a660-ca7d-43f6-93ab-f72c95d506e3</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>NFluent.Tests</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AndRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsOperatorTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsyncRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BooleanRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CharTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Child.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ComparableRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ContainsChainedSyntaxTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ContainsExactlyTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ContainsTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DateTimeRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DictionaryChecksTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DoubleFloatingPointBinaryRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DurationTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EdgeCasesTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EnumerableRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EnumOrStructRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EqualRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EventWaitHandleTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExceptionHelperTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExceptionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtensibilityHelperTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtractingRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentMessageTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HelpersTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\CultureSession.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\TestFiles.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IntRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IntSignedNumberRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IsInstanceOfTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IsOnlyMadeOfTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LambdaDurationTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LambdaRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mood.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nationality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NotRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NumbersOfDifferentTypesRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ObjectFIeldsRelatedTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ObjectRelatedTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Person.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ReverseEngineeringExceptionMessagesHelperTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StreamTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StringRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\ByteRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DecimalRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DecimalSignedNumberRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DoubleRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DoubleSignedNumberRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\FloatFloatingPointBinaryRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\FloatRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\FloatSignedNumberRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\LongRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\LongSignedNumberRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\SbyteRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\SbyteSignedNumberRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\ShortRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\ShortSignedNumberRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\UintRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\UlongRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\UshortRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TimeHelperTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TimeSpanTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ToEnumeratedStringTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TypeRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserReportedIssuesTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)CheckedFile.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)ExpectedFile.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)T4\NumberTestsGenerator.tt" />
+    <None Include="$(MSBuildThisFileDirectory)T4\TemplateFilemanager.CS.ttinclude" />
+    <None Include="$(MSBuildThisFileDirectory)T4\TestsCloningHelper.ttinclude" />
+  </ItemGroup>
+</Project>

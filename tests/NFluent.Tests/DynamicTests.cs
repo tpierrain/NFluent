@@ -12,6 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+#if !DOTNET_3_5
 namespace NFluent.Tests
 {
     using NUnit.Framework;
@@ -29,19 +30,20 @@ namespace NFluent.Tests
             .ThrowsAny();
         }
         // TODO: fix this when dynamics work with extension methods
-/*
-        class Command
-        {
-            internal dynamic Subject { get; set; }
-        }
+        /*
+                class Command
+                {
+                    internal dynamic Subject { get; set; }
+                }
 
-        [Test]
-        public void CanCheckNulls()
-        {
-            var cmd = new Command();
-            // this check fails
-            Check.That<object>(cmd.Subject).IsNotNull();
-        }
-        */
+                [Test]
+                public void CanCheckNulls()
+                {
+                    var cmd = new Command();
+                    // this check fails
+                    Check.That<object>(cmd.Subject).IsNotNull();
+                }
+                */
     }
 }
+#endif
