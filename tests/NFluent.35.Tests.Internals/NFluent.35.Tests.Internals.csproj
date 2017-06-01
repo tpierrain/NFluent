@@ -51,48 +51,6 @@
     <Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Internals\ContainsTests.cs">
-      <Link>ContainsTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Internals\FluentMessageTests.cs">
-      <Link>FluentMessageTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\CheckDescription.cs">
-      <Link>ForDocumentation\CheckDescription.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\CheckList.cs">
-      <Link>ForDocumentation\CheckList.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\FullRunDescription.cs">
-      <Link>ForDocumentation\FullRunDescription.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\GenerateErrorMessages.cs">
-      <Link>ForDocumentation\GenerateErrorMessages.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\LocaleChecks.cs">
-      <Link>ForDocumentation\LocaleChecks.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\RunnerHelper.cs">
-      <Link>ForDocumentation\RunnerHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Internals\ForDocumentation\TypeChecks.cs">
-      <Link>ForDocumentation\TypeChecks.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Internals\NotRelatedTests.cs">
-      <Link>NotRelatedTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Internals\StringDifferenceAnalyzerTests.cs">
-      <Link>StringDifferenceAnalyzerTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Internals\ValueBlockTests.cs">
-      <Link>ValueBlockTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests.Internals\XamarinSpecificTests.cs">
-      <Link>XamarinSpecificTests.cs</Link>
-    </Compile>
-    <Compile Include="..\NFluent.Core.Tests\Helpers\CultureSession.cs">
-      <Link>Helpers\CultureSession.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +66,7 @@
     <None Include="..\..\NFluent.snk" />
     <None Include="packages.config" />
   </ItemGroup>
+  <Import Project="..\Tests.Internals\Tests.Internals.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

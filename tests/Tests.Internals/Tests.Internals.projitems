@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>ab38506b-6cd4-47ed-a085-a77e8a5be26c</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>NFluent.Tests.Internals</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ContainsTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentMessageTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\CheckDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\CheckList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\FullRunDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\GenerateErrorMessages.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\LocaleChecks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\RunnerHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\TypeChecks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\CultureSession.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NotRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StringDifferenceAnalyzerTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ValueBlockTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)XamarinSpecificTests.cs" />
+  </ItemGroup>
+</Project>
