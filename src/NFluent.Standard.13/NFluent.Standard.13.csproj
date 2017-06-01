@@ -43,9 +43,30 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="..\NFluent\T4\NumberFluentAssertionGenerator.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.1" />
     <PackageReference Include="System.Collections.NonGeneric" Version="4.3.0" />
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
+  </ItemGroup>
+
+  <Import Project="..\NFluent\NFluent.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <None Update="C:\Users\dupdo\Documents\GitHub\NFluent\src\NFluent\T4\NumberFluentAssertionGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NumberFluentAssertionGenerator.txt</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 </Project>  

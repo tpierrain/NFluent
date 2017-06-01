@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>dbfa1137-b129-496a-9201-149f5178747e</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>NFluent</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ApiChecks\ExceptionChecks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Check.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\BooleanCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\CharCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\CodeCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\ComparableCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\Constants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\DateTimeCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\DictionaryCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\DoubleSpecificCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\EnumerableCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\EnumerableFluentSyntaxExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\EventWaitHandleCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\FieldKind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\IntCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\IntSignedCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\LambdaExceptionCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\ObjectCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\ObjectFieldsCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\StreamCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\StringCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\StringFluentSyntaxExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\StructCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\TimeSpanCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\TypeCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensibility\ExtensibilityHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensibility\IChecker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensibility\ICheckForExtensibility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensibility\IExposingChecker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensibility\MessageBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnumerableExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ExtensionsCommonHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\MessageRelatedExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ObjectExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\StringExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtractingExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCheckException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Duration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\EqualityHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExceptionHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\IsInstanceHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\StringDifference.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\TimeHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICheckLink.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICheckLinkWhich.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICodeCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IExtendableCheckLink.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IHasParentCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ILambdaExceptionCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)INegateableCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)INegated.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)INullableOrNumberCheckLink.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IStructCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IWithValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\CheckContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\Checker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\CheckLink.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\CheckLinkWhich.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\ExtendableCheckLink.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\FluentCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\FluentCodeCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\FluentStructCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\IForkableCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\NullableOrNumberCheckLink.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\NumberCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\EntityNamer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\EnumerationBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\FluentMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\GenericLabelBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\InstanceBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\IValueDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\RangeBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ReverseEngineeringExceptionMessagesHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ValueBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\ILambdaCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RunTrace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RunTraceResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\ByteCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DecimalCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DecimalSignedCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DoubleCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DoubleSignedCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\FloatCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\FloatSignedCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\FloatSpecificCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\LongCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\LongSignedCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\SbyteCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\SbyteSignedCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\ShortCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\ShortSignedCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\UintCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\UlongCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\UshortCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TimeUnit.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)T4Generated\NumberFluentAssertionGenerator.txt4" />
+    <None Include="$(MSBuildThisFileDirectory)T4\NumberFluentAssertionGenerator.tt" />
+    <None Include="$(MSBuildThisFileDirectory)T4\TemplateFilemanager.CS.ttinclude" />
+    <None Include="$(MSBuildThisFileDirectory)T4\TypeCloningHelper.ttinclude" />
+  </ItemGroup>
+</Project>
