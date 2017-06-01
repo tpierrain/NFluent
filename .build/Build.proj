@@ -69,7 +69,7 @@
   <!-- 1- Do the BUILD -->
   <Target Name="DotnetCoreRestore">
     <Message Importance="high" Text="--------- DOTNET RESTORE  -------------------------------------------"/>     
-    <Exec Command="dotnet restore $(SourcePath)NFluent\" />
+    <Exec Command="dotnet restore $(SourcePath)NFluent.Standard.13\" />
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Internals\" />
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests\" />
     <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Extensions\" />
@@ -195,7 +195,7 @@ RUN ALL UNIT TESTS
       <FilesForNuget Include="$(SourcePath)$(SolutionName).40\bin\$(Configuration)\*.*">
         <TargetFwk>net40</TargetFwk>
       </FilesForNuget>
-      <FilesForNuget Include="$(SourcePath)$(SolutionName)\bin\$(Configuration)\netstandard1.3\*.*">
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).Standard.13\bin\$(Configuration)\netstandard1.3\*.*">
         <TargetFwk>netstandard1.3</TargetFwk>
       </FilesForNuget>
       <FilesForNuget Include="$(SourcePath)$(SolutionName).PCL\bin\$(Configuration)\*.*">
