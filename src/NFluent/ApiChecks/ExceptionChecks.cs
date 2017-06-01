@@ -14,6 +14,7 @@
 
 namespace NFluent.ApiChecks
 {
+    using System;
     using System.Diagnostics;
     using Kernel;
 
@@ -23,13 +24,20 @@ namespace NFluent.ApiChecks
     public static class ExceptionChecks
     {
         /// <summary>
-        ///     Provides access to the error message of the exception.
+        /// Provides access to the error message of the exception.
         /// </summary>
-        /// <param name="check">Exception checker.</param>
-        /// <returns>A string checker.</returns>
-        public static ICheck<string> AndWhichMessage(this ILambdaExceptionCheck<RunTrace> check)
+        /// <typeparam name="T"> Exception type.
+        /// </typeparam>
+        /// <param name="check">
+        /// Exception checker.
+        /// </param>
+        /// <returns>
+        /// A string checker.
+        /// </returns>
+        public static ICheck<string> AndWhichMessage<T>(this ILambdaExceptionCheck<T> check)
+            where T : Exception
         {
-            var checker = check as LambdaExceptionCheck<RunTrace>;
+            var checker = check as LambdaExceptionCheck<T>;
             Debug.Assert(checker != null, "checker != null");
             return new FluentCheck<string>(checker.Value.Message);
         }

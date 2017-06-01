@@ -12,22 +12,31 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
 namespace NFluent
 {
     using System;
+    using System.Linq.Expressions;
+
     using Extensibility;
+
     using Extensions;
+
     using Helpers;
+
     using Kernel;
+
 #if NETSTANDARD1_3
     using System.Reflection;
 #endif
+
     /// <summary>
     /// Implements specific Value check after lambda checks.
     /// </summary>
     /// <typeparam name="T">Code checker type./>.
     /// </typeparam>
     public class LambdaExceptionCheck<T> : ILambdaExceptionCheck<T>, IForkableCheck
+        where T : Exception
     {
         #region constructor
 
@@ -36,7 +45,7 @@ namespace NFluent
         /// This check can only be fluently called after a lambda check.
         /// </summary>
         /// <param name="value">The Value.</param>
-        public LambdaExceptionCheck(Exception value)
+        public LambdaExceptionCheck(T value)
         {
             this.Value = value;
         }
@@ -48,10 +57,10 @@ namespace NFluent
         /// <summary>
         /// Gets or sets with the parent class that fluently called this one.
         /// </summary>
-        /// <value>
-        /// The value.
-        /// </value>
-        internal Exception Value { get; set; }
+        /// <actualValue>
+        /// The actualValue.
+        /// </actualValue>
+        internal T Value { get; set; }
 
         #endregion
 
@@ -68,11 +77,8 @@ namespace NFluent
             if (this.Value.Message != exceptionMessage)
             {
                 var message = FluentMessage.BuildMessage("The message of the checked exception is not as expected.")
-                                            .For("exception message")
-                                            .Expected(exceptionMessage)
-                                            .And.On(this.Value.Message)
-                                            .ToString();
-                        
+                    .For("exception message").Expected(exceptionMessage).And.On(this.Value.Message).ToString();
+
                 throw new FluentCheckException(message);
             }
 
@@ -80,15 +86,16 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that a specific property of the considered Value has an expected value.
+        /// Checks that a specific property of the considered Value has an expected actualValue.
         /// </summary>
+        /// <typeparam name="TP"> Expected type of the property.</typeparam>
         /// <param name="propertyName">The name of the property to check on the considered Value.</param>
-        /// <param name="propertyValue">The expected value for the property to check on the considered Value.</param>
+        /// <param name="propertyValue">The expected actualValue for the property to check on the considered Value.</param>
         /// <returns>
         /// A check link.
         /// </returns>
         /// <Value cref="FluentCheckException">The code did not raised an Value of any type.</Value>
-        public ICheckLink<ILambdaExceptionCheck<T>> WithProperty(string propertyName, object propertyValue)
+        public ICheckLink<ILambdaExceptionCheck<T>> WithProperty<TP>(string propertyName, TP propertyValue)
         {
             var type = this.Value.GetType();
             var property = type.GetProperty(propertyName);
@@ -98,20 +105,49 @@ namespace NFluent
                     $"There is no property [{propertyName}] on exception type [{type.Name}].").ToString();
                 throw new FluentCheckException(message);
             }
-            
-            var value = property.GetValue(this.Value, null);
-            if (!value.Equals(propertyValue))
-            {
-                var message = FluentMessage
-                    .BuildMessage(string.Format("The property [{0}] of the {{0}} does not have the expected value.", propertyName.DoubleCurlyBraces()))
-                    .For("exception's property")
-                    .On(value)
-                    .And.WithGivenValue(propertyValue).ToString();
 
-                throw new FluentCheckException(message);
+            var value = property.GetValue(this.Value, null);
+            return this.CheckProperty(propertyName, propertyValue, value);
+        }
+
+        /// <summary>
+        /// Checks that a specific property of the considered exception has an expected actualValue.
+        /// </summary>
+        /// <typeparam name="TP"> Expected type of the property.
+        /// </typeparam>
+        /// <param name="propertyExpression">
+        ///     The Expression to retrieve the property Name.
+        /// </param>
+        /// <param name="propertyValue">
+        ///     The expected actualValue for the property to check on the considered exception.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The code did not raised an exception of any type.
+        /// </exception>
+        public ICheckLink<ILambdaExceptionCheck<T>> WithProperty<TP>(Expression<Func<T, TP>> propertyExpression, TP propertyValue)
+        {
+            var memberExpression = propertyExpression.Body as MemberExpression;
+
+            var name = memberExpression?.Member.Name ?? propertyExpression.ToString();
+
+            return this.CheckProperty(name, propertyValue, propertyExpression.Compile().Invoke(this.Value));
+        }
+
+        private ICheckLink<ILambdaExceptionCheck<T>> CheckProperty<TP>(string propertyName, TP expectedValue, TP actualValue)
+        {
+            if (actualValue.Equals(expectedValue))
+            {
+                return new CheckLink<ILambdaExceptionCheck<T>>(this);
             }
 
-            return new CheckLink<ILambdaExceptionCheck<T>>(this);
+            var message = FluentMessage.BuildMessage("The {0} does not have the expected value.").
+                For($"exception's property [{propertyName.DoubleCurlyBraces()}]").
+                On(actualValue).And.WithGivenValue(expectedValue).ToString();
+
+            throw new FluentCheckException(message);
         }
 
         /// <summary>
@@ -122,7 +158,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public ILambdaExceptionCheck<T> DueTo<TE>()
+        public ILambdaExceptionCheck<TE> DueTo<TE>()
             where TE : Exception
         {
             var innerException = this.Value.InnerException;
@@ -136,18 +172,15 @@ namespace NFluent
                 innerException = innerException.InnerException;
             }
 
-            if (innerException != null) 
+            if (innerException != null)
             {
-                return new LambdaExceptionCheck<T>(innerException);
+                return new LambdaExceptionCheck<TE>((TE)innerException);
             }
 
-            var message = FluentMessage.BuildMessage("The {0} did not contain an expected inner exception whereas it must.")
-                .For("exception")
-                .On(ExceptionHelper.DumpInnerExceptionStackTrace(this.Value))
-                .Label("The inner exception(s):")
-                .And
-                .Expected(typeof(TE)).Label("The expected inner exception:")
-                .ToString();
+            var message = FluentMessage
+                .BuildMessage("The {0} did not contain an expected inner exception whereas it must.").For("exception")
+                .On(ExceptionHelper.DumpInnerExceptionStackTrace(this.Value)).Label("The inner exception(s):").And
+                .Expected(typeof(TE)).Label("The expected inner exception:").ToString();
 
             throw new FluentCheckException(message);
         }

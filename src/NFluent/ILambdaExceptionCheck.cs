@@ -12,16 +12,19 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
 namespace NFluent
 {
     using System;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// Provides check methods to be executed on the exception raised by a given lambda/action.
     /// </summary>
-    /// <typeparam name="TParent">The type of the parent.</typeparam>
-    public interface ILambdaExceptionCheck<out TParent> : IHasParentCheck<TParent>,
+    /// <typeparam name="TException">The type of the exception.</typeparam>
+    public interface ILambdaExceptionCheck<TException> : IHasParentCheck<TException>,
         IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+        where TException : Exception
     {
         /// <summary>
         /// Checks that the message of the considered exception is correctly written.
@@ -31,18 +34,39 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
-        ICheckLink<ILambdaExceptionCheck<TParent>> WithMessage(string exceptionMessage);
+        ICheckLink<ILambdaExceptionCheck<TException>> WithMessage(string exceptionMessage);
 
-            /// <summary>
+        /// <summary>
         /// Checks that a specific property of the considered exception has an expected value.
         /// </summary>
+        /// <typeparam name="TP"> Expected type of the property.
+        /// </typeparam>
         /// <param name="propertyName">The name of the property to check on the considered exception.</param>
         /// <param name="propertyValue">The expected value for the property to check on the considered exception.</param>
         /// <returns>
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
-        ICheckLink<ILambdaExceptionCheck<TParent>> WithProperty(string propertyName, object propertyValue);
+        ICheckLink<ILambdaExceptionCheck<TException>> WithProperty<TP>(string propertyName, TP propertyValue);
+
+        /// <summary>
+        /// Checks that a specific property of the considered exception has an expected value.
+        /// </summary>
+        /// <typeparam name="TP"> Expected type of the property.
+        /// </typeparam>
+        /// <param name="propertyExpression">
+        /// The Expression to retrieve the property Name.
+        /// </param>
+        /// <param name="propertyValue">
+        /// The expected value for the property to check on the considered exception.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The code did not raised an exception of any type.
+        /// </exception>
+        ICheckLink<ILambdaExceptionCheck<TException>> WithProperty<TP>(Expression<Func<TException, TP>> propertyExpression, TP propertyValue);
 
         /// <summary>
         /// Checks that an inner exception is present within the outer exception stack trace.
@@ -53,7 +77,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        ILambdaExceptionCheck<TParent> DueTo<T>()
+        ILambdaExceptionCheck<T> DueTo<T>()
             where T : Exception;
     }
 }

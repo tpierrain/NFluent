@@ -13,15 +13,17 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using NFluent.ApiChecks;
-
 namespace NFluent.Tests
 {
-    using System;
 #if !NETCOREAPP1_0 && !NETCOREAPP1_1
     using System.Runtime.Serialization;
 #endif
+    using System;
+
     using Helpers;
+
+    using NFluent.ApiChecks;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -209,7 +211,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => { throw new LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaExceptionForTest>().WithProperty("inexistingProperty", 123);
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "There is no property [inexistingProperty] on exception type [LambdaExceptionForTest]."); // TODO: mimic Contains
+            .WithMessage(Environment.NewLine + "There is no property [inexistingProperty] on exception type [LambdaExceptionForTest]."); // TODO: mimic Contains
         }
 
         [Test]
@@ -217,11 +219,63 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatCode(() => { throw new LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaExceptionForTest>().WithProperty("ExceptionNumber", 123);
+                Check.ThatCode(() => { throw new LambdaExceptionForTest(321, "my error message"); })
+                .Throws<LambdaExceptionForTest>()
+                .WithProperty("ExceptionNumber", 123);
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The property [ExceptionNumber] of the checked exception's property does not have the expected value." + Environment.NewLine + "The checked exception's property:" + Environment.NewLine + "\t[321]" + Environment.NewLine + "The given exception's property:" + Environment.NewLine + "\t[123]"); // TODO: mimic Contains
+            .WithMessage(Environment.NewLine + 
+            "The checked exception's property [ExceptionNumber] does not have the expected value." + Environment.NewLine + 
+            "The checked exception's property [ExceptionNumber]:" + Environment.NewLine +
+            "\t[321]" + Environment.NewLine +
+            "The given exception's property [ExceptionNumber]:" + Environment.NewLine +
+            "\t[123]"); // TODO: mimic Contains
         }
+
+        [Test]
+        public void CanCheckForPropertyWithExpression()
+        {
+            Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); })
+                .Throws<LambdaExceptionForTest>()
+                .WithProperty(ex => ex.ExceptionNumber, 321);
+        }
+
+
+        [Test]
+        public void CanCheckForPropertyWithComplexExpression()
+        {
+            Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); })
+                .Throws<LambdaExceptionForTest>()
+                .WithProperty(ex => ex.ExceptionNumber + 0, 321);
+        }
+
+        [Test]
+        public void CanCheckForPropertyWithBasicExpression()
+        {
+            Check.ThatCode(() => { throw new LambdaExceptionForTest(321, "my error message"); })
+                .Throws<LambdaExceptionForTest>()
+                .WithProperty(ex => 321, 321);
+        }
+
+        [Test]
+        public void DidNotHaveExpectedPropertyValueWithExpression()
+        {
+            Check.ThatCode(
+                () =>
+                    {
+                        Check.ThatCode(
+                                () => { throw new LambdaExceptionForTest(321, "my error message"); })
+                            .Throws<LambdaExceptionForTest>()
+                            .WithProperty(ex => ex.ExceptionNumber, 123);
+                    }).Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
+                string.Empty,
+                "The checked exception's property [ExceptionNumber] does not have the expected value.",
+                "The checked exception's property [ExceptionNumber]:",
+                "\t[321]",
+                "The given exception's property [ExceptionNumber]:",
+                "\t[123]");
+        }
+
 
         [Test]
         public void CheckReturnValue()

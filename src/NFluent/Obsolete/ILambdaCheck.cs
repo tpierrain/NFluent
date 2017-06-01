@@ -52,7 +52,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of the specified type, or did not raised an exception at all.</exception>
-        ILambdaExceptionCheck<ILambdaCheck> Throws<T>() where T : Exception;
+        ILambdaExceptionCheck<T> Throws<T>() where T : Exception;
 
         /// <summary>
         /// Checks that the code did throw an exception of any type.
@@ -61,6 +61,6 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
-        ILambdaExceptionCheck<ILambdaCheck> ThrowsAny();
+        ILambdaExceptionCheck<Exception> ThrowsAny();
     }
 }

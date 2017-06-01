@@ -178,7 +178,7 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of the specified type, or did not raised an exception at all.</exception>
-        public static ILambdaExceptionCheck<RunTrace> Throws<T>(this ICodeCheck<RunTrace> check)
+        public static ILambdaExceptionCheck<T> Throws<T>(this ICodeCheck<RunTrace> check)
             where T : Exception
         {
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
@@ -209,7 +209,7 @@ namespace NFluent
                     },
                 checker.BuildMessage("The {0} raised an exception of the forbidden type.").For(LabelForCode)
                     .On(checker.Value.RaisedException).Label("Raised Exception").ToString());
-            return new LambdaExceptionCheck<RunTrace>(checker.Value.RaisedException);
+            return new LambdaExceptionCheck<T>((T)checker.Value.RaisedException);
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The code did not raised an exception of the specified type, or did not raised an exception at all.
         /// </exception>
-        public static ILambdaExceptionCheck<RunTrace> ThrowsAny(this ICodeCheck<RunTrace> check)
+        public static ILambdaExceptionCheck<Exception> ThrowsAny(this ICodeCheck<RunTrace> check)
         {
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
 
@@ -241,7 +241,7 @@ namespace NFluent
                     },
                 checker.BuildMessage("The {0} raised an exception, whereas it must not.").For(LabelForCode)
                     .On(checker.Value.RaisedException).Label("Raised Exception").ToString());
-            return new LambdaExceptionCheck<RunTrace>(checker.Value.RaisedException);
+            return new LambdaExceptionCheck<Exception>(checker.Value.RaisedException);
         }
 
         /// <summary>
