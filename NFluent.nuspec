@@ -65,6 +65,14 @@
   </metadata>
   <files>
     <!-- .NET 3.5 -->
+    <file src="Artifacts\Binaries\net20\NFluent.dll" target="lib\net20\" />
+    <file src="Artifacts\Binaries\net20\NFluent.xml" target="lib\net20\" />
+    <file src="Artifacts\Binaries\net20\NFluent.pdb" target="lib\net20\" />
+    <!-- .NET 3.0 -->
+    <file src="Artifacts\Binaries\net30\NFluent.dll" target="lib\net30\" />
+    <file src="Artifacts\Binaries\net30\NFluent.xml" target="lib\net30\" />
+    <file src="Artifacts\Binaries\net30\NFluent.pdb" target="lib\net30\" />
+    <!-- .NET 3.5 -->
     <file src="Artifacts\Binaries\net35\NFluent.dll" target="lib\net35\" />
     <file src="Artifacts\Binaries\net35\NFluent.xml" target="lib\net35\" />
     <file src="Artifacts\Binaries\net35\NFluent.pdb" target="lib\net35\" />

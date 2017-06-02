@@ -16,8 +16,9 @@
 namespace NFluent
 {
     using System;
+#if !DOTNET_30 && !DOTNET_20
     using System.Linq.Expressions;
-
+#endif
     using Extensibility;
 
     using Extensions;
@@ -38,7 +39,7 @@ namespace NFluent
     public class LambdaExceptionCheck<T> : ILambdaExceptionCheck<T>, IForkableCheck
         where T : Exception
     {
-        #region constructor
+#region constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LambdaExceptionCheck{T}"/> class.
@@ -50,9 +51,9 @@ namespace NFluent
             this.Value = value;
         }
 
-        #endregion
+#endregion
 
-        #region fields
+#region fields
 
         /// <summary>
         /// Gets or sets with the parent class that fluently called this one.
@@ -62,7 +63,7 @@ namespace NFluent
         /// </actualValue>
         internal T Value { get; set; }
 
-        #endregion
+#endregion
 
         /// <summary>
         /// Checks that the message of the considered Value is correctly written.
@@ -109,7 +110,7 @@ namespace NFluent
             var value = property.GetValue(this.Value, null);
             return this.CheckProperty(propertyName, propertyValue, value);
         }
-
+#if !DOTNET_30 && !DOTNET_20
         /// <summary>
         /// Checks that a specific property of the considered exception has an expected actualValue.
         /// </summary>
@@ -135,6 +136,7 @@ namespace NFluent
 
             return this.CheckProperty(name, propertyValue, propertyExpression.Compile().Invoke(this.Value));
         }
+#endif
 
         private ICheckLink<ILambdaExceptionCheck<T>> CheckProperty<TP>(string propertyName, TP expectedValue, TP actualValue)
         {

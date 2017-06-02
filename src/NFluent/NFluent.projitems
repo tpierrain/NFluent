@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ApiChecks\ExceptionChecks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Check.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\BooleanCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\CharCheckExtensions.cs" />
@@ -49,7 +50,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Duration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\EqualityHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExceptionHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExtensionAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\IsInstanceHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Polyfill.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\StringDifference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICheck.cs" />

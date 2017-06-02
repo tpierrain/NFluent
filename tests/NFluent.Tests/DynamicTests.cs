@@ -12,7 +12,7 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-#if !DOTNET_3_5
+#if !DOTNET_35 && !DOTNET_30 && !DOTNET_20
 namespace NFluent.Tests
 {
     using NUnit.Framework;

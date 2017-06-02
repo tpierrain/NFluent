@@ -16,8 +16,11 @@
 namespace NFluent
 {
     using System;
-    using Helpers;
+
     using Extensibility;
+
+    using Helpers;
+
     using Kernel;
 
     /// <summary>

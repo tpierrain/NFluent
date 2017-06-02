@@ -121,13 +121,19 @@ namespace NFluent.Tests
         [Test]
         public void DidNotRaiseWhenUsedWithValidParameterlessFuncVariable()
         {
+#if DOTNET_30 || DOTNET_20
+            NFluent.
+#endif
             Func<bool> sut = () => true;
-            Check.ThatCode(sut).DoesNotThrow();
+            Check.ThatCode<bool>(sut).DoesNotThrow();
         }
 
         [Test]
         public void CanRaiseWhenUsedWithParameterlessFuncVariable()
         {
+#if DOTNET_30 || DOTNET_20
+            NFluent.
+#endif
             Func<bool> sut = () => { throw new Exception(); };
 
             Check.ThatCode(sut).ThrowsAny();
@@ -156,6 +162,9 @@ namespace NFluent.Tests
         public void DidNotRaiseWhenUsedWithAValidParameterlessMethodReturningObject()
         {
             var obj = new AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas();
+#if DOTNET_30 || DOTNET_20
+            NFluent.
+#endif
             Func<object> sut = obj.AScalarParameterLessMethodThatShouldNotCrash;
             Check.ThatCode(sut).DoesNotThrow();
         }
@@ -231,7 +240,7 @@ namespace NFluent.Tests
             "The given exception's property [ExceptionNumber]:" + Environment.NewLine +
             "\t[123]"); // TODO: mimic Contains
         }
-
+#if !DOTNET_30 && !DOTNET_20
         [Test]
         public void CanCheckForPropertyWithExpression()
         {
@@ -275,7 +284,7 @@ namespace NFluent.Tests
                 "The given exception's property [ExceptionNumber]:",
                 "\t[123]");
         }
-
+#endif
 
         [Test]
         public void CheckReturnValue()
@@ -335,7 +344,7 @@ namespace NFluent.Tests
         }
 
 
-        #region Lambda related Test Data
+#region Lambda related Test Data
 #if !NETCOREAPP1_0 && !NETCOREAPP1_1
         [Serializable]
 #endif
@@ -350,7 +359,7 @@ namespace NFluent.Tests
                 this.ExceptionNumber = exeptionNumber;
             }
 
-            #region Serializable stuff
+#region Serializable stuff
 #if !NETCOREAPP1_0 && !NETCOREAPP1_1
             protected LambdaExceptionForTest(SerializationInfo info, StreamingContext context)
                 : base(info, context)

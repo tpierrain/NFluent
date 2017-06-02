@@ -15,7 +15,9 @@
 namespace NFluent
 {
     using System.Collections;
+#if !DOTNET_30 && !DOTNET_20
     using System.Linq;
+#endif
     using System.Text;
 
     using Extensions;

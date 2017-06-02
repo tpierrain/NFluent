@@ -20,7 +20,7 @@ namespace NFluent.Helpers
     using System;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
-#if !(PORTABLE) && !(NETSTANDARD1_3)
+#if !PORTABLE && !NETSTANDARD1_3 && !DOTNET_30 && !DOTNET_20
     using System.Linq;
 #endif
     using System.Reflection;

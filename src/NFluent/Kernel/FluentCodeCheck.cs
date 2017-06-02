@@ -20,7 +20,7 @@ namespace NFluent.Kernel
     using System.Diagnostics;
 #endif
     using System.Diagnostics.CodeAnalysis;
-#if !DOTNET_3_5
+#if !DOTNET_35 && !DOTNET_30 && !DOTNET_20
     using System.Threading.Tasks;
 #endif
     using Extensibility;
@@ -170,7 +170,7 @@ namespace NFluent.Kernel
             }
         }
 
-#if !DOTNET_3_5 && !DOTNET_40
+#if DOTNET_45 || NETSTANDARD1_3 || PORTABLE
         internal static RunTrace GetAsyncTrace(Func<Task> awaitableMethod)
         {
             var result = new RunTrace();

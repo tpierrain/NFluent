@@ -748,6 +748,7 @@ namespace NFluent.Tests
                 .IsNotEqualTo("Batman").And.IsNotEqualTo(new DateTime(2014));
         }
 
+#if !DOTNET_30 && !DOTNET_20
         [Test]
         public void CanProperlyCompareUtcAndLocalDateTime()
         {
@@ -775,5 +776,6 @@ namespace NFluent.Tests
             
             Check.That(DateTime.Today).IsEqualTo(DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc));
         }
+#endif
     }
 }

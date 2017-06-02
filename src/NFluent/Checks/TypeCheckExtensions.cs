@@ -16,8 +16,10 @@
 namespace NFluent
 {
     using System;
-    using System.Linq;
     using System.Reflection;
+#if !DOTNET_30 && !DOTNET_20
+    using System.Linq;
+#endif
 
     using NFluent.Extensibility;
     using NFluent.Extensions;

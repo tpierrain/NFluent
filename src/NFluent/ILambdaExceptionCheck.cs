@@ -16,7 +16,9 @@
 namespace NFluent
 {
     using System;
+#if !DOTNET_30 && !DOTNET_20
     using System.Linq.Expressions;
+#endif
 
     /// <summary>
     /// Provides check methods to be executed on the exception raised by a given lambda/action.
@@ -49,6 +51,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
         ICheckLink<ILambdaExceptionCheck<TException>> WithProperty<TP>(string propertyName, TP propertyValue);
 
+#if !DOTNET_30 && !DOTNET_20
         /// <summary>
         /// Checks that a specific property of the considered exception has an expected value.
         /// </summary>
@@ -67,7 +70,7 @@ namespace NFluent
         /// The code did not raised an exception of any type.
         /// </exception>
         ICheckLink<ILambdaExceptionCheck<TException>> WithProperty<TP>(Expression<Func<TException, TP>> propertyExpression, TP propertyValue);
-
+#endif
         /// <summary>
         /// Checks that an inner exception is present within the outer exception stack trace.
         /// </summary>

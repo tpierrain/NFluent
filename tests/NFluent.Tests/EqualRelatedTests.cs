@@ -13,11 +13,12 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using NFluent.ApiChecks;
-
 namespace NFluent.Tests
 {
     using System;
+
+    using NFluent.ApiChecks;
+
     using NUnit.Framework;
 
     [TestFixture]

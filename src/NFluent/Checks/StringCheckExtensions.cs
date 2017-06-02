@@ -17,7 +17,9 @@ namespace NFluent
 {
     using System;
     using System.Collections.Generic;
+#if !DOTNET_30 && !DOTNET_20
     using System.Linq;
+#endif
     using System.Text.RegularExpressions;
 
     using Extensibility;
@@ -246,7 +248,7 @@ namespace NFluent
                            : checker.BuildShortMessage("The {0} is null.").For(typeof(string)).ReferenceValues(values).Label("The {0} substring(s):").ToString();
             }
 
-            var enumerable = values as string[] ?? values.ToArray();
+            var enumerable = values as string[] ?? values.Cast<string>();
             var items = enumerable.Where(item => checkedValue.Contains(item) == notContains).ToList();
 
             if (negated == items.Count > 0)

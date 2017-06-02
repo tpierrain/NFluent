@@ -42,7 +42,7 @@ namespace NFluent.Extensions
             {typeof(bool), "bool" }, {typeof(decimal), "decimal" }, { typeof(object), "object"}, {typeof(void), "void" }
             };
 
-        private static readonly HashSet<Type> NumericalTypes = new HashSet<Type>()
+        private static readonly List<Type> NumericalTypes = new List<Type>()
         { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint),
             typeof(long), typeof(ulong), typeof(double), typeof(float)};
 

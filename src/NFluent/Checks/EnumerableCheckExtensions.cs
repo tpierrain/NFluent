@@ -18,8 +18,9 @@ namespace NFluent
     using System;
     using System.Collections;
     using System.Collections.Generic;
+#if !DOTNET_30 && !DOTNET_20
     using System.Linq;
-
+#endif
     using Extensibility;
 
     using Extensions;
@@ -575,7 +576,7 @@ namespace NFluent
                 checker.BuildMessage("The {0} has exactly one element, whereas it should not.").ToString());
         }
 
-        #region private or internal methods
+#region private or internal methods
 
         /// <summary>
         /// Returns all expected values that aren't present in the enumerable.
@@ -585,15 +586,14 @@ namespace NFluent
         /// <returns>
         /// A list containing all the expected values that aren't present in the enumerable.
         /// </returns>
-        private static IList ExtractNotFoundValues(IEnumerable enumerable, IEnumerable expectedValues)
+        private static IList<object> ExtractNotFoundValues(IEnumerable enumerable, IEnumerable expectedValues)
         {
             // Prepares the list to return
-            var values = expectedValues as object[] ?? expectedValues.Cast<object>().ToArray();
-            var notFoundValues = values.ToList();
+            var notFoundValues = expectedValues.Cast<object>().ToList();
 
             foreach (var element in enumerable)
             {
-                foreach (var expectedValue in values)
+                foreach (var expectedValue in expectedValues)
                 {
                     // ReSharper disable once RedundantNameQualifier
                     if (!object.Equals(element, expectedValue))
@@ -621,7 +621,7 @@ namespace NFluent
         private static IList ExtractUnexpectedValues(IEnumerable enumerable, IEnumerable expectedValues)
         {
             var unexpectedValuesFound = new List<object>();
-            var values = expectedValues as object[] ?? expectedValues.Cast<object>().ToArray();
+            var values = expectedValues as object[] ?? expectedValues.Cast<object>();
             foreach (var element in enumerable)
             {
                 var isExpectedValue = values.Contains(element);
@@ -785,6 +785,6 @@ namespace NFluent
             return false;
         }
 
-        #endregion
+#endregion
     }
 }

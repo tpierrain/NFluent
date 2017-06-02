@@ -88,6 +88,8 @@
     <ProjectFolder Include="$(SourcePath)\NFluent.35"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests.Extensions"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.30.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.20.Tests"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.PCL"/>
     <ProjectFolder Include="$(TestsPath)\Nugget"/>
   </ItemGroup>
@@ -134,6 +136,12 @@ GENERATING DOCS for:
   <!-- 3- Run the TESTS -->
   <Target Name="RunTests" DependsOnTargets="Build">
     <ItemGroup>
+      <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).20.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll"'>
+        <Framework>net-2.0</Framework>
+      </TestProjectsWithArguments>
+      <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).30.Tests\bin\$(Configuration)\$(SolutionName).Tests.dll"'>
+        <Framework>net-3.0</Framework>
+      </TestProjectsWithArguments>
       <TestProjectsWithArguments Include='"$(TestsPath)\$(SolutionName).35.Tests.Internals\bin\$(Configuration)\$(SolutionName).Tests.Internals.dll"'>
         <Framework>net-3.5</Framework>
       </TestProjectsWithArguments>
@@ -189,6 +197,12 @@ RUN ALL UNIT TESTS
   <!-- 4- Then PACKAGE -->
   <Target Name="Package" DependsOnTargets="RunTests">
     <ItemGroup>
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).20\bin\$(Configuration)\*.*">
+        <TargetFwk>net20</TargetFwk>
+      </FilesForNuget>
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).30\bin\$(Configuration)\*.*">
+        <TargetFwk>net30</TargetFwk>
+      </FilesForNuget>
       <FilesForNuget Include="$(SourcePath)$(SolutionName).35\bin\$(Configuration)\*.*">
         <TargetFwk>net35</TargetFwk>
       </FilesForNuget>
