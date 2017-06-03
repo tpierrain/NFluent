@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NFluent.Tests</RootNamespace>
-    <AssemblyName>NFluent.30.Tests</AssemblyName>
+    <AssemblyName>NFluent.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

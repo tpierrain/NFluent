@@ -7,8 +7,8 @@
     <ProjectGuid>{33ADF67E-963A-4950-966B-14A513C245A1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NFluent</RootNamespace>
-    <AssemblyName>NFluent</AssemblyName>
+    <RootNamespace>NFluent.Tests</RootNamespace>
+    <AssemblyName>NFluent.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
