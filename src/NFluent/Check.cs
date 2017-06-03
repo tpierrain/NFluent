@@ -17,7 +17,7 @@ namespace NFluent
 {
     using System;
     using System.ComponentModel;
-#if PORTABLE || NETSTANDARD1_3
+#if PORTABLE || NETSTANDARD1_3 || DOTNET_45
     using System.Threading.Tasks;
 #endif
     using Kernel;

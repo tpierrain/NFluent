@@ -31,7 +31,7 @@ namespace NFluent.Extensions
             return reference?.GetType();
         }
 
-#if !NETSTANDARD1_3
+#if !NETSTANDARD1_3 && !DOTNET_45
         /// <summary>
         /// Stub implementation for GetTypeInfo() for Net Framework.
         /// </summary>

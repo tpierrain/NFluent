@@ -83,8 +83,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.20", "src\NFluent.2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.20.Tests", "tests\NFluent.20.Tests\NFluent.20.Tests.csproj", "{9601B939-8314-4BE8-9CDE-217E47A7259C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.45", "src\NFluent.45\NFluent.45.csproj", "{CF1D857F-658F-4E1F-8487-CD751F189E6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.45.Tests", "tests\NFluent.45.Tests\NFluent.45.Tests.csproj", "{0014C223-A481-4B87-A480-3D4792A9B276}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		tests\NFluent.Tests\NFluent.Tests.projitems*{0014c223-a481-4b87-a480-3d4792a9b276}*SharedItemsImports = 4
 		tests\NFluent.Tests\NFluent.Tests.projitems*{0425a660-ca7d-43f6-93ab-f72c95d506e3}*SharedItemsImports = 13
 		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{1baa72cb-3a46-4711-9a5b-f96cf20d465e}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{1e2d9d56-d0a4-4d2e-8f2b-f211000e1667}*SharedItemsImports = 4
@@ -100,6 +105,7 @@ Global
 		tests\NFluent.Tests.Internals\NFluent.Tests.Internals.projitems*{ab38506b-6cd4-47ed-a085-a77e8a5be26c}*SharedItemsImports = 13
 		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{ac520fdb-8125-46f3-85f3-d4962c53c136}*SharedItemsImports = 4
 		tests\NFluent.Tests\NFluent.Tests.projitems*{bdaa4d22-45a1-470e-a142-70e1f194ee3f}*SharedItemsImports = 4
+		src\NFluent\NFluent.projitems*{cf1d857f-658f-4e1f-8487-cd751f189e6a}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{dbfa1137-b129-496a-9201-149f5178747e}*SharedItemsImports = 13
 		src\NFluent\NFluent.projitems*{fa7f7527-23c3-43f6-a3d0-8da4ec981ffd}*SharedItemsImports = 4
 	EndGlobalSection
@@ -181,6 +187,14 @@ Global
 		{9601B939-8314-4BE8-9CDE-217E47A7259C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9601B939-8314-4BE8-9CDE-217E47A7259C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9601B939-8314-4BE8-9CDE-217E47A7259C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF1D857F-658F-4E1F-8487-CD751F189E6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF1D857F-658F-4E1F-8487-CD751F189E6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF1D857F-658F-4E1F-8487-CD751F189E6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF1D857F-658F-4E1F-8487-CD751F189E6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0014C223-A481-4B87-A480-3D4792A9B276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0014C223-A481-4B87-A480-3D4792A9B276}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0014C223-A481-4B87-A480-3D4792A9B276}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0014C223-A481-4B87-A480-3D4792A9B276}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -211,6 +225,8 @@ Global
 		{A9EF7869-1CE8-49FB-94DF-57DD2A82A1E6} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
 		{FA7F7527-23C3-43F6-A3D0-8DA4EC981FFD} = {6A12E9B8-849A-4421-AEB3-B768E78EDC8A}
 		{9601B939-8314-4BE8-9CDE-217E47A7259C} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
+		{CF1D857F-658F-4E1F-8487-CD751F189E6A} = {6A12E9B8-849A-4421-AEB3-B768E78EDC8A}
+		{0014C223-A481-4B87-A480-3D4792A9B276} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = NFluent.40.Tests\NFluent.40.Tests.csproj

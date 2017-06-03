@@ -32,6 +32,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="..\..\src\NFluent\T4\NumberFluentAssertionGenerator.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Properties\" />
     <Folder Include="Properties\" />
   </ItemGroup>
@@ -71,6 +79,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="C:\Users\dupdo\Documents\GitHub\NFluent\src\NFluent\T4\NumberFluentAssertionGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NumberFluentAssertionGenerator.txt</LastGenOutput>
+    </None>
     <None Update="C:\Users\dupdo\Documents\GitHub\NFluent\tests\NFluent.Tests\T4\NumberTestsGenerator.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>NumberTestsGenerator.txt</LastGenOutput>

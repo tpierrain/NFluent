@@ -81,6 +81,8 @@
     <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Internals"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Extensions"/-->
+    <ProjectFolder Include="$(SourcePath)\NFluent.45"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.45.Tests"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.40"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.40.Tests.Internals"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.40.Tests"/>
@@ -89,6 +91,7 @@
     <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests.Extensions"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.30.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.20"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.20.Tests"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.PCL"/>
     <ProjectFolder Include="$(TestsPath)\Nugget"/>
@@ -160,6 +163,9 @@ GENERATING DOCS for:
       <TestProjectsWithArguments Include='"$(TestsPath)\NFluent.40.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll"'>
         <Framework>net-4.0</Framework>
       </TestProjectsWithArguments>
+      <TestProjectsWithArguments Include='"$(TestsPath)\NFluent.45.Tests\bin\$(Configuration)\NFluent.Tests.dll"'>
+        <Framework>net-4.5</Framework>
+      </TestProjectsWithArguments>
       <TestProjectsWithArguments Include='"$(TestsPath)NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj"'>
         <Framework>core</Framework>
       </TestProjectsWithArguments>
@@ -209,6 +215,9 @@ RUN ALL UNIT TESTS
       <FilesForNuget Include="$(SourcePath)$(SolutionName).40\bin\$(Configuration)\*.*">
         <TargetFwk>net40</TargetFwk>
       </FilesForNuget>
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).45\bin\$(Configuration)\*.*">
+        <TargetFwk>net45</TargetFwk>
+      </FilesForNuget>  
       <FilesForNuget Include="$(SourcePath)$(SolutionName).Standard.13\bin\$(Configuration)\netstandard1.3\*.*">
         <TargetFwk>netstandard1.3</TargetFwk>
       </FilesForNuget>
