@@ -7,8 +7,8 @@
     <ProjectGuid>{33ADF67E-963A-4950-966B-14A513C245A1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NFluent.Tests</RootNamespace>
-    <AssemblyName>NFluent.Tests</AssemblyName>
+    <RootNamespace>NFluent</RootNamespace>
+    <AssemblyName>NFluent</AssemblyName>
     <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -29,6 +29,7 @@
     <DefineConstants>TRACE;DOTNET_30</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\NFluent.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
