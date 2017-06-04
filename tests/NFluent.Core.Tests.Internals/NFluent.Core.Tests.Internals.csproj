@@ -1,5 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp1.0</TargetFramework>
@@ -9,7 +8,8 @@
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\NFluent.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <PackageId></PackageId>
+    <PackageId>
+    </PackageId>
     <Version>1.0.0</Version>
     <Authors>Thomas PIERRAIN (thomas@pierrain.net), Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR and Co</Authors>
     <Company>NFluent Team</Company>
@@ -22,24 +22,19 @@
     <PackageProjectUrl>http://www.n-fluent.net/</PackageProjectUrl>
     <AssemblyName>NFluent.Tests.Internals</AssemblyName>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="NFluent.Core.Internals.Tests.v3.ncrunchproject" />
     <None Remove="NFluent.Core.Tests.Internals.v3.ncrunchproject" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="..\..\NFluent.snk" Link="NFluent.snk" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
@@ -49,14 +44,11 @@
     <PackageReference Include="System.Diagnostics.StackTrace" Version="4.3.0" />
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\NFluent.Standard.13\NFluent.Standard.13.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
-
   <Import Project="..\NFluent.Tests.Internals\NFluent.Tests.Internals.projitems" Label="Shared" />
-</Project>  
+</Project>

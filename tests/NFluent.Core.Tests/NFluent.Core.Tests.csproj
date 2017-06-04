@@ -1,5 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp1.0</TargetFramework>
@@ -9,7 +8,8 @@
     <SignAssembly>False</SignAssembly>
     <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <PackageId></PackageId>
+    <PackageId>
+    </PackageId>
     <Version>1.0.0</Version>
     <Authors>Thomas PIERRAIN (thomas@pierrain.net), Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR and Co</Authors>
     <Company>NFluent Team</Company>
@@ -22,15 +22,12 @@
     <PackageProjectUrl>http://www.n-fluent.net/</PackageProjectUrl>
     <RootNamespace>NFluent.Tests</RootNamespace>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="NFluent.Core.Tests.v3.ncrunchproject" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="..\..\src\NFluent\T4\NumberFluentAssertionGenerator.txt">
       <DesignTime>True</DesignTime>
@@ -38,22 +35,18 @@
       <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Properties\" />
     <Folder Include="Properties\" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="NUnit" Version="3.6.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0-alpha1" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\NFluent.Standard.13\NFluent.Standard.13.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="CheckedFile.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -62,14 +55,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
-
   <Import Project="..\NFluent.Tests\NFluent.Tests.projitems" Label="Shared" />
-
   <ItemGroup>
     <Content Update="C:\Users\dupdo\Documents\GitHub\NFluent\tests\NFluent.Tests\T4\NumberTestsGenerator.txt">
       <DesignTime>True</DesignTime>
@@ -77,7 +67,6 @@
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
     <None Update="C:\Users\dupdo\Documents\GitHub\NFluent\src\NFluent\T4\NumberFluentAssertionGenerator.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -88,4 +77,4 @@
       <LastGenOutput>NumberTestsGenerator.txt</LastGenOutput>
     </None>
   </ItemGroup>
-</Project>  
+</Project>

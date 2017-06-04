@@ -17,6 +17,7 @@
       <PackagesPath>$(ArtifactsPath)\Packages</PackagesPath>
       <DocPath>$(ArtifactsPath)\Docs</DocPath>
       <NuGetToolsPath></NuGetToolsPath>
+    <AttributeVersionFile>$(SolutionRoot)\Version.cs</AttributeVersionFile>
       <NuGetExePath>$(NuGetToolsPath)nuget.exe</NuGetExePath>
       <DocuExePath>$(ToolsPath)docu\docu.exe</DocuExePath>
       <ZipExe>$(ToolsPath)7za\7za.exe</ZipExe>
@@ -66,6 +67,35 @@
     </PropertyGroup>
   </Target>
   
+
+  <Target Name="SynchroVersion">
+    <!-- Ensure version number is propagated in new CsProj format file-->
+<ItemGroup>
+  <CoreCsproj Include="$(SourcePath)\NFluent.Standard.13\NFluent.Standard.13.csproj"/>
+  <CoreCsproj Include="$(TestsPath)\NFluent.Core.Tests\NFluent.Core.Tests.csproj"/>
+  <CoreCsproj Include="$(TestsPath)\NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj"/>
+  <CoreCsproj Include="$(TestsPath)\NFluent.Core.Tests.Extensions\NFluent.Core.Tests.Extensions.csproj"/>
+</ItemGroup>
+    <PropertyGroup>
+      <In>$([System.IO.File]::ReadAllText('$(AttributeVersionFile)'))</In>
+      <Pattern>\[assembly: AssemblyVersion\("(?&lt;Major&gt;\d+)\.(?&lt;Minor&gt;\d+)\.(?&lt;Patch&gt;[\d]+)\.(?&lt;PreReleaseInfo&gt;[0-9A-Za-z-.]+)?</Pattern>
+      <AssemblyVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Major"].Value)</AssemblyVersionMajor>
+      <AssemblyVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Minor"].Value)</AssemblyVersionMinor>
+      <AssemblyVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Patch"].Value)</AssemblyVersionPatch>
+      <AssemblyVersionPreRelease>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["PreReleaseInfo"].Value)</AssemblyVersionPreRelease>
+    </PropertyGroup>
+    <Message Text="Output : $(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)"/>
+    
+      <XmlPoke 
+      XmlInputPath="%(CoreCsproj.FullPath)"
+        Query="//AssemblyVersion" 
+      Value="$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)" />
+      <XmlPoke 
+      XmlInputPath="%(CoreCsproj.FullPath)"
+        Query="//FileVersion" 
+      Value="$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)" />
+  </Target>
+    
   <!-- 1- Do the BUILD -->
   <Target Name="DotnetCoreRestore">
     <Message Importance="high" Text="--------- DOTNET RESTORE  -------------------------------------------"/>     
@@ -103,7 +133,7 @@
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
   </Target>
   
-  <Target Name="Build" DependsOnTargets="NugetRestore">
+  <Target Name="Build" DependsOnTargets="NugetRestore;SynchroVersion">
     <Message Importance="high" Text="--------- BUILD  -------------------------------------------"/>
       <Message Importance="high" Text="
 ---------------------------------------------------------------
