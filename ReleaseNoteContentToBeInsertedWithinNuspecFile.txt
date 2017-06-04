@@ -1,6 +1,8 @@
 New feature(s):
 * Support for NetStandard &gt; 1.3
 * Support for Net.Core &gt; 1.0
+* Compatible for Net &gt; 2.0
+* Built for: 2.0, 3.0, 3.5, 4.0, 4.5, NetStandard 1.3
 * All: introduce: HasSameValueAs(x) that perform comparison using 'operator==' instead of 'Equals'.
 * All: introduce: HasAValueDifferentFrom(x) that perform comparison using 'operator!=' instead of '!Equals'.
 * Streams: introduce HasSameSequenceOfBytesAs() check.

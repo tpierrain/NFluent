@@ -24,6 +24,7 @@
       <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.6.1\tools\nunit3-console</TestRunnerPath>
      <PackageStream>alpha</PackageStream>
      <NugetKey>$(NFLUENT_NUGET_API_KEY)</NugetKey>
+      <NugetFeed>$(NFLUENT_NUGET_FEED)</NugetFeed>
   </PropertyGroup>
   
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
@@ -327,8 +328,8 @@ CREATING NUGET PACKAGE IN:
   <!--= Publish the package on Nuget-->
   <Message Importance="high" Text="--------- NUGET PUBLISH  -------------------------------------------"/>
 
-  <Exec Command='"$(NuGetExePath)" setApiKey $(NugetKey) -source https://www.nuget.org/api/v2/package -verbosity quiet' EchoOff='true' Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''"/>
-  <Exec Command='"$(NuGetExePath)" push "$(PackageFileName)" -Source https://www.nuget.org/api/v2/package' Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''"/>
+  <Exec Command='"$(NuGetExePath)" setApiKey $(NugetKey) -source $(NugetFeed) -verbosity quiet' EchoOff='true' Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''"/>
+  <Exec Command='"$(NuGetExePath)" push "$(PackageFileName)" -Source $(NugetFeed)' Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''"/>
 
   <Message Importance="high" Text="--------- end of NUGET PUBLISH  -------------------------------------"/>
   </Target>
