@@ -66,7 +66,10 @@ namespace NFluent.Helpers
                 mode = EqualityMode.OperatorEq;
             }
             if (checker.Negated)
+            {
                 negated = !negated;
+            }
+
             if (negated == FluentEquals(checker.Value, expected, mode))
             {
                 throw new FluentCheckException(BuildErrorMessage(checker, expected, negated, userOperator));
@@ -178,7 +181,7 @@ namespace NFluent.Helpers
 
             // shall we display the hash too
             var withHash = instance != null && expected != null && instance.GetType() == expected.GetType()
-                           && instance.ToString() == expected.ToString();
+                           && instance.ToStringProperlyFormatted() == expected.ToStringProperlyFormatted();
 
             msg.On(instance)
                 .WithType(withType)

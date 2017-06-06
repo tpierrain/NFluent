@@ -25,18 +25,10 @@ namespace NFluent.Messages
         /// </summary>
         /// <param name="adjective">The adjective.</param>
         /// <param name="namer">The entity naming logic.</param>
-        private GenericLabelBlock(string adjective, EntityNamer namer)
+        internal GenericLabelBlock(string adjective, EntityNamer namer)
         {
             this.adjective = adjective;
             this.EntityLogic = namer;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GenericLabelBlock"/> class.
-        /// </summary>
-        public GenericLabelBlock()
-        {
-            this.adjective = string.Empty;
         }
 
         /// <summary>
@@ -46,11 +38,6 @@ namespace NFluent.Messages
         /// The entity logic.
         /// </value>
         private EntityNamer EntityLogic { get; set; }
-
-        public static GenericLabelBlock BuildActualBlock(EntityNamer namer)
-        {
-            return new GenericLabelBlock("actual", namer);
-        }
 
         public static GenericLabelBlock BuildCheckedBlock(EntityNamer namer)
         {
@@ -75,7 +62,7 @@ namespace NFluent.Messages
         /// </returns>
         public override string ToString()
         {
-            return string.Format("{0} {1}", this.Adjective(), this.EntityName());
+            return $"{this.Adjective()} {this.EntityName()}";
         }
 
         /// <summary>

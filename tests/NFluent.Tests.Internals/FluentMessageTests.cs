@@ -67,13 +67,13 @@ namespace NFluent.Tests
         {
             var message = FluentMessage.BuildMessage("test");
             const int X = 4;
-            var block = new MessageBlock(message, X, new GenericLabelBlock());
+            var block = new MessageBlock(message, X, GenericLabelBlock.BuildCheckedBlock(null));
 
-            Assert.AreEqual("The  value:" + NewLine + "\t[4]", block.GetMessage());
+            Assert.AreEqual("The checked value:" + NewLine + "\t[4]", block.GetMessage());
 
             block.WithHashCode().WithType();
 
-            Assert.AreEqual("The  value:" + NewLine + "\t[4] of type: [int] with HashCode: [4]", block.GetMessage());
+            Assert.AreEqual("The checked value:" + NewLine + "\t[4] of type: [int] with HashCode: [4]", block.GetMessage());
         }
 
         [Test]
@@ -178,15 +178,6 @@ namespace NFluent.Tests
             Assert.AreEqual("The expected value:", label.CustomMessage(null));
         }
     
-        [Test]
-        public void ShouldCreateActualLabel()
-        {
-            var label = GenericLabelBlock.BuildActualBlock(null);
-
-            Assert.AreEqual("The actual value:", label.CustomMessage(null));
-        }
-
-
         [Test]
         public void InstanceValuesMustGenerateProperText()
         {

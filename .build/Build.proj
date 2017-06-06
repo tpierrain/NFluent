@@ -17,7 +17,7 @@
       <PackagesPath>$(ArtifactsPath)\Packages</PackagesPath>
       <DocPath>$(ArtifactsPath)\Docs</DocPath>
       <NuGetToolsPath></NuGetToolsPath>
-    <AttributeVersionFile>$(SolutionRoot)\Version.cs</AttributeVersionFile>
+      <AttributeVersionFile>$(SolutionRoot)\Version.cs</AttributeVersionFile>
       <NuGetExePath>$(NuGetToolsPath)nuget.exe</NuGetExePath>
       <DocuExePath>$(ToolsPath)docu\docu.exe</DocuExePath>
       <ZipExe>$(ToolsPath)7za\7za.exe</ZipExe>

@@ -3,7 +3,7 @@
   <metadata>
     <id>NFluent</id>
     <title>NFluent, smooth your .NET TDD experience!</title>
-    <version>2.0.0-alpha-00</version>
+    <version>2.0.0-nightly-00</version>
     <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR</authors>
     <owners>Thomas PIERRAIN</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -15,6 +15,8 @@
     <releaseNotes>New feature(s):
 * Support for NetStandard &gt; 1.3
 * Support for Net.Core &gt; 1.0
+* Compatible for Net &gt; 2.0
+* Built for: 2.0, 3.0, 3.5, 4.0, 4.5, NetStandard 1.3
 * All: introduce: HasSameValueAs(x) that perform comparison using 'operator==' instead of 'Equals'.
 * All: introduce: HasAValueDifferentFrom(x) that perform comparison using 'operator!=' instead of '!Equals'.
 * Streams: introduce HasSameSequenceOfBytesAs() check.

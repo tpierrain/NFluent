@@ -22,6 +22,9 @@ namespace NFluent.Tests
     using System.Diagnostics.CodeAnalysis;
     using Helpers;
     using System.IO;
+
+    using NFluent.ApiChecks;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -164,14 +167,69 @@ namespace NFluent.Tests
         public void ContainsExactlyWithEnumerableThrowsExceptionWhenSameItemsInWrongOrder()
         {
             var integers = new List<int> { 1, 2, 3, 4, 5, 666 };
-            IEnumerable expectedValues = new List<int> { 666, 3, 1, 2, 4, 5 };
+            IEnumerable expectedValues = new List<int> { 1, 3, 666, 2, 4, 5 };
 
             Check.ThatCode(() =>
             {
                 Check.That(integers).ContainsExactly(expectedValues);
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). First difference is at index #0." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3, 4, 5, 666] (6 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[666, 3, 1, 2, 4, 5] (6 items)");
+            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). First difference is at index #1." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3, 4, 5, 666] (6 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[1, 3, 666, 2, 4, 5] (6 items)");
+        }
+
+        [Test]
+        public void ContainsExactlyWithEnumerableGenerateExtractForLongEnumerations()
+        {
+            var integers = new List<int>();
+            var expected = new List<int>();
+            for (var i = 0; i < 40; i++)
+            {
+                integers.Add(i);
+                expected.Add(i);
+            }
+            integers[25] = 666;
+
+            Check.ThatCode(() =>
+            {
+                Check.That(integers).ContainsExactly(expected);
+            })
+            .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
+                "",
+                "The checked enumerable does not contain exactly the expected value(s). First difference is at index #25.",
+                "The checked enumerable:",
+                "\t[..., 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 666, 26, 27, 28, 29, 30, 31, 32, 33, ...] (40 items)",
+                "The expected value(s):",
+                "\t[..., 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, ...] (40 items)");
+        }
+
+        [Test]
+        public void ContainsExactlyFailsWithArrayOfArray()
+        {
+            var actual = new List<List<int>> {new List<int> {4}};
+            var expected = new List<List<int>> {new List<int> {8}};
+            Check.ThatCode(() => { Check.That(actual).IsEqualTo(expected); }).Throws<FluentCheckException>()
+                .AndWhichMessage().AsLines().ContainsExactly(
+                    "",
+                    "The checked enumerable is different from the expected one.",
+                    "The checked enumerable:",
+                    "\t[4]",
+                    "The expected enumerable:",
+                    "\t[8]");
+        }
+
+        [Test]
+        public void ContainsExactlyFailsWithArrayOfArrayOfNull()
+        {
+            var actual = new List<List<object>> {new List<object> {4}};
+            var expected = new List<List<object>> {new List<object> {null}};
+            Check.ThatCode(() => { Check.That(actual).IsEqualTo(expected); }).Throws<FluentCheckException>()
+                .AndWhichMessage().AsLines().ContainsExactly(
+                    "",
+                    "The checked enumerable is different from the expected one.",
+                    "The checked enumerable:",
+                    "\t[4]",
+                    "The expected enumerable:",
+                    "\t[null]");
         }
 
         [Test]

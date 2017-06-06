@@ -64,7 +64,7 @@ namespace NFluent.Extensibility
         {
             if (!(test is string) && (test is IEnumerable))
             {
-                this.value = new EnumerationBlock((IEnumerable) test, index);
+                this.value = new EnumerationBlock((IEnumerable)test, index);
             }
             else
             {
@@ -87,7 +87,6 @@ namespace NFluent.Extensibility
         internal MessageBlock(FluentMessage message, Type type, GenericLabelBlock label)
         {
             this.value = new InstanceBlock(type);
-            if (message == null) throw new ArgumentNullException(nameof(message));
             this.message = message;
             this.block = label;
         }
@@ -102,13 +101,7 @@ namespace NFluent.Extensibility
         /// <value>
         /// The <see cref="FluentMessage"/> holding that block.
         /// </value>
-        public FluentMessage And
-        {
-            get
-            {
-                return this.message;
-            }
-        }
+        public FluentMessage And => this.message;
 
         #endregion
 

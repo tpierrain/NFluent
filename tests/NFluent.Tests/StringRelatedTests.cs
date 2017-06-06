@@ -658,6 +658,22 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsEqualToErrorMessageWhenVariousDifferences()
+        {
+            var withCRLF = "Hello\r\nHow are you?\r\nare you kidding?";
+            var withLF = "Hello\nHow are you?\nAre you kidding?";
+
+            Check.ThatCode(() => { Check.That(withLF).IsEqualTo(withCRLF); })
+                .Throws<FluentCheckException>()
+                .WithMessage(Environment.NewLine +
+                             "The checked string is different from expected one." +
+                             Environment.NewLine + "The checked string:" + Environment.NewLine +
+                             "	[\"Hello<<LF>>\"]" + Environment.NewLine +
+                             "The expected string:" + Environment.NewLine +
+                             "	[\"Hello<<CRLF>>\"]");
+        }
+
+        [Test]
         public void ShouldDisplayFullLineIfItIsShort()
         {
             var multilineExpected = "Hello\nThis\nwill fail.";

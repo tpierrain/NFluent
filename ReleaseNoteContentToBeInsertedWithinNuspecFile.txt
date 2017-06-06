@@ -22,6 +22,7 @@ New feature(s):
 
 --------------
 Change(s):
+* IEnumerable: improved description within error messages: partial dump around first difference for large sets
 * IDictionnary: no longer supported. Hashtable is supported instead
 * Numbers: introduce IsStrictlyPositive() as a substitute for IsPositive() which is now obsolete.
 * Numbers: introduce IsStrictlyNegative() as a substitute for IsNegative() which is now obsolete.
@@ -34,6 +35,7 @@ Change(s):
 * Strings: generate specific error message using IsEqualTo() when the expected string is empty
 * Strings: provides part of string where first difference occurs even when strings have different lenghts
 * Objects: IsSameReferenceAs supersede IsSameReferenceThan (now flagged as obsolete)
+* Objects: Dump hascodes only when NFluent cannot highligth difference.
 * Check.That(Action) can no longer be used (error, obsolete)
 * Check.That(Func&lt;T&gt;) can no longer be used (error, obsolete)
 * Simplify the way you can extend NFluent by adding your own checks. Now, you can call: var checker = ExtensibilityHelper.ExtractChecker(check);

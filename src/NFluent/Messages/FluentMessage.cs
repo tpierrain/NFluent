@@ -218,12 +218,19 @@ namespace NFluent.Extensibility
         /// <summary>
         /// Adds a message block to describe the expected values.
         /// </summary>
-        /// <param name="expectedValues">The expected values.</param>
-        /// <returns>The created MessageBlock.</returns>
-        public MessageBlock ExpectedValues(object expectedValues)
+        /// <param name="expectedValues">
+        /// The expected values.
+        /// </param>
+        /// <param name="index">
+        /// The index to highlight.
+        /// </param>
+        /// <returns>
+        /// The created MessageBlock.
+        /// </returns>
+        public MessageBlock ExpectedValues(object expectedValues, int index = 0)
         {
             this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(new EntityNamer { EntityName = "value(s)" });
-            this.expectedBlock = new MessageBlock(this, expectedValues, this.expectedLabel);
+            this.expectedBlock = new MessageBlock(this, expectedValues, this.expectedLabel, index);
             this.referenceType = this.referenceType ?? expectedValues.GetTypeWithoutThrowingException();
             return this.expectedBlock;
         }

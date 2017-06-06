@@ -224,20 +224,20 @@ namespace NFluent.Helpers
             var mainText = GetMessage(summary);
             var actual = this.Actual;
             var expected = this.Expected;
-            if (summary == DifferenceMode.Spaces)
+            switch (this.Kind)
             {
-                actual = HighlightTabsIfAny(actual);
-                expected = HighlightTabsIfAny(expected);
-            }
-            else if (summary == DifferenceMode.EndOfLine)
-            {
-                actual = HighlightFirstCrlfOrLfIfAny(actual);
-                expected = HighlightFirstCrlfOrLfIfAny(expected);
-            }
-            else
-            {
-                actual = actual?.TrimEnd('\r');
-                expected = expected?.TrimEnd('\r');
+                case DifferenceMode.Spaces:
+                    actual = HighlightTabsIfAny(actual);
+                    expected = HighlightTabsIfAny(expected);
+                    break;
+                case DifferenceMode.EndOfLine:
+                    actual = HighlightFirstCrlfOrLfIfAny(actual);
+                    expected = HighlightFirstCrlfOrLfIfAny(expected);
+                    break;
+                default:
+                    actual = actual?.TrimEnd('\r');
+                    expected = expected?.TrimEnd('\r');
+                    break;
             }
 
             const int ExtractLength = 20;

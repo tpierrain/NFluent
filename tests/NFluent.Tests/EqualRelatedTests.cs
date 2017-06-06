@@ -16,6 +16,7 @@
 namespace NFluent.Tests
 {
     using System;
+    using System.Collections.Generic;
 
     using NFluent.ApiChecks;
 
@@ -371,6 +372,12 @@ namespace NFluent.Tests
         }
 
         #endregion
+
+        [Test]
+        public void IsSameTypeWorks()
+        {
+ //           Check.That((IEnumerable<object>)new []{new object()}).IsInstanceOf<IEnumerable<object>>();
+        }
 
         [Test]
         public void AndOperatorCanChainMultipleAssertionsForDoubleNumber()

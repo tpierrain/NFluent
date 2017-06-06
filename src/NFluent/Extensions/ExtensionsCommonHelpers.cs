@@ -72,13 +72,13 @@ namespace NFluent.Extensions
 
             if (theObject is char)
             {
-                return string.Format("'{0}'", theObject);
+                return $"'{theObject}'";
             }
 
             var s = theObject as string;
             if (s != null)
             {
-                return string.Format(@"""{0}""", TruncateLongString(s));
+                return $@"""{TruncateLongString(s)}""";
             }
             
             if (theObject is DateTime)
@@ -101,10 +101,10 @@ namespace NFluent.Extensions
                 return ToStringProperlyFormatted((float)theObject);
             }
 
-            var ienum = theObject as IEnumerable;
-            if (ienum != null)
+            var enumerable = theObject as IEnumerable;
+            if (enumerable != null)
             {
-                return ienum.ToEnumeratedString();
+                return enumerable.ToEnumeratedString();
             }
 
             var type = theObject as Type;
@@ -116,7 +116,7 @@ namespace NFluent.Extensions
             var exc = theObject as Exception;
             if (exc != null)
             {
-                return string.Format("{{{0}}}: '{1}'", exc.GetType().FullName, exc.Message);
+                return $"{{{exc.GetType().FullName}}}: '{exc.Message}'";
             }
 
             var result = theObject.ToString();
@@ -212,7 +212,7 @@ namespace NFluent.Extensions
         private static string ToStringProperlyFormatted(this bool theBoolean)
         {
             // Ensure that boolean values are not localized 
-#if !(PORTABLE) && !(NETSTANDARD1_3)
+#if !PORTABLE && !NETSTANDARD1_3
             return theBoolean.ToString(CultureInfo.InvariantCulture);
 #else
             return theBoolean.ToString();
@@ -227,7 +227,7 @@ namespace NFluent.Extensions
         private static string ToStringProperlyFormatted(this double value)
         {
             // Ensure that boolean values are not localized 
-#if !(PORTABLE)
+#if !PORTABLE
             return value.ToString(CultureInfo.InvariantCulture);
 #else
             return value.ToString();
@@ -242,7 +242,7 @@ namespace NFluent.Extensions
         private static string ToStringProperlyFormatted(this float value)
         {
             // Ensure that boolean values are not localized 
-#if !(PORTABLE)
+#if !PORTABLE
             return value.ToString(CultureInfo.InvariantCulture);
 #else
             return value.ToString();
@@ -300,11 +300,11 @@ namespace NFluent.Extensions
         }
 
         /// <summary>
-        /// Gets the base type of the given type
+        /// Gets the base type of the given type.
         /// </summary>
-        /// <param name="type">Type</param>
-        /// <returns>The Base Type</returns>
-        /// <remarks>Simplify port to .Net Core</remarks>
+        /// <param name="type">Type to be analyzed.</param>
+        /// <returns>The Base Type.</returns>
+        /// <remarks>Simplify port to .Net Core.</remarks>
         public static Type GetBaseType(this Type type)
         {
 #if NETSTANDARD1_3
@@ -313,6 +313,7 @@ namespace NFluent.Extensions
             return type.BaseType;
 #endif
         }
+
         /// <summary>
         /// Doubles the curly braces in the string.
         /// </summary>

@@ -697,8 +697,8 @@ namespace NFluent
                 message = checker.BuildMessage("The {0} does not contain exactly the expected value(s).");
             }
 
-            message.For(typeof(IEnumerable)).On(checkedValue).WithEnumerableCount(sutCount).And
-                .ExpectedValues(enumerable).WithEnumerableCount(expectedCount);
+            message.For(typeof(IEnumerable)).On(checkedValue, index).WithEnumerableCount(sutCount).And
+                .ExpectedValues(enumerable, index).WithEnumerableCount(expectedCount);
 
             return message.ToString();
         }
