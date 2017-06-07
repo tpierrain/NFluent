@@ -45,14 +45,6 @@ namespace NFluent.Tests
         }
         
         [Test]
-        public void BlockFailTest()
-        {
-            // ReSharper disable once ObjectCreationAsStatement
-            Check.ThatCode(() => { new MessageBlock(null, null, null); })
-            .Throws<ArgumentNullException>();
-        }
-
-        [Test]
         public void CheckedBlockTest()
         {
             var test = DateTime.Today;

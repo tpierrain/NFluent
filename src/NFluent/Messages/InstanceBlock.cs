@@ -69,11 +69,13 @@ namespace NFluent.Messages
             var builder = new StringBuilder();
             builder.Append("an instance");
 
-            if (this.type != null)
+            if (this.type == null)
             {
-                var temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormatted();
-                builder.AppendFormat(" of type: [{0}]", temp);
+                return builder.ToString();
             }
+
+            var temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormatted();
+            builder.AppendFormat(" of type: [{0}]", temp);
 
             return builder.ToString();
         }
