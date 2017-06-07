@@ -1,7 +1,19 @@
 ![NFluent](https://github.com/tpierrain/nfluent/blob/master/NFluentBanner.png?raw=true)
 ![Motto](https://github.com/tpierrain/nfluent/blob/master/Images/AssertIsDead.png?raw=true)
 [![Build status](https://ci.appveyor.com/api/projects/status/ju5m6t3fm2xsl0o9/branch/master?svg=true)](https://ci.appveyor.com/project/tpierrain/nfluent/branch/master)
-[![NuGet Pre Release](https://img.shields.io/nuget/vpre/NFluent.svg)]([![NuGet](https://img.shields.io/nuget/v/NFluent.svg)](https://www.nuget.org/packages/NFluent/))
+[![GitHub stars](https://img.shields.io/github/stars/tpierrain/nfluent.svg?style=social&label=Star)](https://github.com/tpierrain/NFluent)
+
+**Stable**
+
+[![NuGet](https://img.shields.io/nuget/v/NFluent.svg)](https://www.nuget.org/packages/NFluent/)
+
+[![GitHub issues](https://img.shields.io/github/issues/tpierrain/NFluent.svg)](https://github.com/tpierrain/NFluent/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/tpierrain/NFluent.svg)](https://github.com/tpierrain/NFluent/issues?q=is%3Aissue+is%3Aclosed)
+
+**PreReleases**
+
+[![NuGet Pre Release](https://img.shields.io/nuget/vpre/NFluent.svg)]()
+[![MyGet](https://img.shields.io/myget/dupdobnightly/vpre/NFluent.svg)](https://www.myget.org/feed/dupdobnightly/package/nuget/NFluent)
 
 ==============
 

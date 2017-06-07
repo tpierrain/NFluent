@@ -3,7 +3,7 @@
   <metadata>
     <id>NFluent</id>
     <title>NFluent, smooth your .NET TDD experience!</title>
-    <version>2.0.0-nightly-00</version>
+    <version>2.0.0-alpha-00</version>
     <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR</authors>
     <owners>Thomas PIERRAIN</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -35,6 +35,7 @@
 * Hashtable: now explicitely supported.
 --------------
 Change(s):
+* IEnumerable: improved description within error messages: partial dump around first difference for large sets
 * IDictionnary: no longer supported. Hashtable is supported instead
 * Numbers: introduce IsStrictlyPositive() as a substitute for IsPositive() which is now obsolete.
 * Numbers: introduce IsStrictlyNegative() as a substitute for IsNegative() which is now obsolete.
@@ -47,6 +48,7 @@
 * Strings: generate specific error message using IsEqualTo() when the expected string is empty
 * Strings: provides part of string where first difference occurs even when strings have different lenghts
 * Objects: IsSameReferenceAs supersede IsSameReferenceThan (now flagged as obsolete)
+* Objects: Dump hascodes only when NFluent cannot highligth difference.
 * Check.That(Action) can no longer be used (error, obsolete)
 * Check.That(Func&lt;T&gt;) can no longer be used (error, obsolete)
 * Simplify the way you can extend NFluent by adding your own checks. Now, you can call: var checker = ExtensibilityHelper.ExtractChecker(check);
