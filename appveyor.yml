@@ -14,7 +14,7 @@ artifacts:
     name: NFluentPackages
 
 environment:
-  NFLUENT_NUGET_API_KEY: aeZH+rScDM4gdvzDlCPeBHGEX2G+eACBSI8yrsmXLJpyDgXpRj07Xk1sw+KuH2xM
+  NFLUENT_NUGET_API_KEY: 
   NFLUENT_NUGET_FEED: https://www.nuget.org/api/v2/package
 
 assembly_info:

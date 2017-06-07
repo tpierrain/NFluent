@@ -1,2 +1,2 @@
 @echo Off
-build Nightly
+build CI
