@@ -30,14 +30,14 @@ namespace NFluent.Messages
         #region Fields
 
         /// <summary>
-        /// The full type name.
-        /// </summary>
-        private bool fullTypeName;
-
-        /// <summary>
         /// The instance type.
         /// </summary>
         private readonly Type type;
+
+        /// <summary>
+        /// The full type name.
+        /// </summary>
+        private bool fullTypeName;
 
         #endregion
 
@@ -68,11 +68,6 @@ namespace NFluent.Messages
         {
             var builder = new StringBuilder();
             builder.Append("an instance");
-
-            if (this.type == null)
-            {
-                return builder.ToString();
-            }
 
             var temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormatted();
             builder.AppendFormat(" of type: [{0}]", temp);
