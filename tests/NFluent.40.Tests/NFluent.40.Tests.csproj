@@ -82,11 +82,12 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="..\NFluent.Tests\NFluent.Tests.projitems" Label="Shared" />
+  <Import Project="..\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" />
+      <UserProperties ProjectLinkReference="6B88C45A-D45E-40FB-8635-D0E0EF0454E9" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

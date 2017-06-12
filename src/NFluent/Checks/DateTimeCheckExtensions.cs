@@ -38,7 +38,7 @@ namespace NFluent
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
-                () =>
+                () => 
                     {
                         if (checker.Value < other) return;
                         var message = checker.BuildMessage("The {0} is not before the {1}.").WithGivenValue(other).ToString();

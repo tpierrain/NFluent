@@ -56,5 +56,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\NFluent.Tests\NFluent.Tests.projitems" Label="Shared" />
+  <Import Project="..\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

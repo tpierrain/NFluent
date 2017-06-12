@@ -6,6 +6,9 @@
 <#@ assembly name="System.Windows.Forms" #>
 <#@ assembly name="EnvDTE"#>
 <#@ assembly name="EnvDTE80" #>
+<#@ assembly name="Microsoft.VisualStudio.Shell.15.0"#>
+<#@ assembly name="Microsoft.VisualStudio.Shell.Interop"#>
+<#@ import namespace="Microsoft.VisualStudio.Shell.Interop"#>
 <#@ import namespace="System" #>
 <#@ import namespace="System.Data" #>
 <#@ import namespace="System.Data.Objects" #>
@@ -36,6 +39,8 @@
 The TemplateFileManager is based on EntityFrameworkTemplateFileManager (EFTFM) from MS.
 
 Differences to EFTFM
+Version 3.0
+-  Sync-Action call changed (Issue 10)
 Version 2.2.1
 - added Namespace to ParameterTemplate Engine in GetTemplateContent (better Compatibility with Solution2 (EnvDte80))
 - sample templates removed from nuget-package, use nuget package t4.samples instead
@@ -77,7 +82,6 @@ void WriteLineToBuildPane (string message){
 /// </summary>
 /// <param name="message">Text to output</param>
 void WriteToBuildPane (string message){
-/*
        IVsOutputWindow outWindow = (this.Host as IServiceProvider).GetService(
 typeof( SVsOutputWindow ) ) as IVsOutputWindow;
        Guid generalPaneGuid =
@@ -87,7 +91,6 @@ Microsoft.VisualStudio.VSConstants.OutputWindowPaneGuid.BuildOutputPane_guid;
        outWindow.GetPane( ref generalPaneGuid , out generalPane );
        generalPane.OutputString( message  );
        generalPane.Activate(); // Brings this pane into view
-	   */
 }
 
 /// <summary>
@@ -268,7 +271,6 @@ public class TemplateFileManager
             }
         }
 
-//		projectSyncAction.EndInvoke(projectSyncAction.BeginInvoke(list, null, null));
 		projectSyncAction(list);
 		this.CleanUpTemplatePlaceholders();
 		var items = VSHelper.GetOutputFilesAsProjectItems(this.dte, list);
@@ -495,12 +497,7 @@ public class TemplateFileManager
             if (isNotFound == true
                 && !(Path.GetFileNameWithoutExtension(pair.Key) + ".").StartsWith(originalOutput + "."))
             {
-                try
-                {
-                    pair.Value.Delete();
-                }
-                catch
-                {}
+                pair.Value.Delete();
             }
         }
 
@@ -1064,7 +1061,9 @@ public class VSHelper
 		if (item == null)
 			return null;
 
-		if (item.Properties == null)
+		if (item.Properties == null 
+      || item.Properties.Item("FullPath") == null
+      || item.Properties.Item("FullPath").Value == null)
 			return null;
 
 		return item.Properties.Item("FullPath").Value.ToString();

@@ -158,7 +158,7 @@ namespace NFluent.Tests
                 Check.That(FirstLetterLowerCase).IsSameLetterButWithDifferentCaseAs('a');
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked char is not the same letter but with different case as the given one." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The given char:" + Environment.NewLine + "\t['a']");
+            .WithMessage(Environment.NewLine+ "The checked char is the same letter, but must have different case than the given one." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The given char:" + Environment.NewLine + "\t['a']");
         }
 
         [Test]
@@ -169,31 +169,18 @@ namespace NFluent.Tests
                 Check.That(FirstLetterLowerCase).IsSameLetterButWithDifferentCaseAs('b');
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked char is not the same letter but with different case as the given one." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The given char:" + Environment.NewLine + "\t['b']");
+            .WithMessage(Environment.NewLine+ "The checked char is different from the expected letter." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The given char:" + Environment.NewLine + "\t['b']");
         }
 
         [Test]
-        public void IsSameLetterWithDifferentCaseThrowsWithAnotherCharCasedDifferently()
+        public void IsSameLetterWithDifferentCaseThrowsWithNotALetter()
         {
             Check.ThatCode(() =>
             {
-                Check.That(FirstLetterLowerCase).IsSameLetterButWithDifferentCaseAs('B');
+                Check.That('.').IsSameLetterButWithDifferentCaseAs('B');
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked char is not the same letter but with different case as the given one." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The given char:" + Environment.NewLine + "\t['B']");
-        }
-
-        [Test]
-        public void IsSameLetterWithDifferentCaseThrowsWithNonLetter()
-        {
-            const char nonLetterChar = '.';
-
-            Check.ThatCode(() =>
-            {
-                Check.That(nonLetterChar).IsSameLetterButWithDifferentCaseAs('.');
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked char is not the same letter but with different case as the given one." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['.']" + Environment.NewLine + "The given char:" + Environment.NewLine + "\t['.']");
+            .WithMessage(Environment.NewLine+ "The checked char is not a letter, where as it must." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['.']" + Environment.NewLine + "The given char:" + Environment.NewLine + "\t['B']");
         }
 
         #endregion

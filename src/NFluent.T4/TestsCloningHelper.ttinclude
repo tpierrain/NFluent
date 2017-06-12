@@ -30,7 +30,8 @@ public class UnitTestsConfigurationForType
 /// </summary>
 public static class TestsCloningHelper
 {
-	public static string GenerateTestSourceCode(string goldenSourceClassFileName, string originalSourceClassName, string checkClassName, UnitTestsConfigurationForType config)
+	public static string GenerateTestSourceCode(string goldenSourceClassFileName, 
+		string originalSourceClassName, string checkClassName, UnitTestsConfigurationForType config)
     {
 		// Retrieves the class to use as the golden source for all numbers
 		StringBuilder sb = new StringBuilder();
@@ -75,9 +76,15 @@ public static class TestsCloningHelper
 		return sb.ToString();
     }
 
-	public static void GenerateTestsViaCloning(string goldenSourceClassFileName, string originalSourceClassName, string outputFileNameSuffix
-        , string project, string folder
-        , List<UnitTestsConfigurationForType> typesToWriteTestsFor, TemplateFileManager templateFileManager, TextTransformation textTransformation)
+	public static void GenerateTestsViaCloning(
+		string goldenSourceClassFileName, 
+		string originalSourceClassName, 
+		string outputFileNameSuffix,
+		string project, 
+		string folder,
+		List<UnitTestsConfigurationForType> typesToWriteTestsFor, 
+		TemplateFileManager templateFileManager, 
+		TextTransformation textTransformation)
     {
 		foreach(var unitTestConfig in typesToWriteTestsFor)
 		{

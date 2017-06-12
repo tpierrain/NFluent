@@ -47,12 +47,20 @@
 
 // ...RelatedTests ----------------------------------------------------
 		// TODO: infer the originalSourceClassName from the goldenSourceClassFileName last part
-        var sourcePath = @"..\";
-        var project = "NFluent.Tests";
-        var folder = "T4Generated";
+        var sourcePath = "..\\..\\tests\\NFluent.Tests\\";
+        var project = "NFluent.Tests.Generated";
+        var folder = "";
 
 	string goldenSourceClassFileName = Host.ResolvePath(sourcePath+"IntRelatedTests.cs");
-	TestsCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntRelatedTests", "RelatedTests", project, folder, typesToWriteTestsFor, manager, this);
+	TestsCloningHelper.GenerateTestsViaCloning(
+	goldenSourceClassFileName, 
+		"IntRelatedTests", 
+		"RelatedTests", 
+		project, 
+		folder, 
+		typesToWriteTestsFor, 
+		manager, 
+		this);
 	
 
 // Signed...RelatedTests ----------------------------------------------------

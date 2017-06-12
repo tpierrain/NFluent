@@ -183,6 +183,10 @@ BundleArtifacts/
 Package.StoreAssociation.xml
 _pkginfo.txt
 
+# T4 files
+*Generator.txt
+*.txt4
+
 # Visual Studio cache files
 # files ending in .cache can be ignored
 *.[Cc]ache

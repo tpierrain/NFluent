@@ -69,6 +69,7 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="..\NFluent.Tests\NFluent.Tests.projitems" Label="Shared" />
+  <Import Project="..\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

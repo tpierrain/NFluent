@@ -60,6 +60,7 @@
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
   <Import Project="..\NFluent.Tests\NFluent.Tests.projitems" Label="Shared" />
+  <Import Project="..\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems" Label="Shared" />
   <ItemGroup>
     <Content Update="C:\Users\dupdo\Documents\GitHub\NFluent\tests\NFluent.Tests\T4\NumberTestsGenerator.txt">
       <DesignTime>True</DesignTime>

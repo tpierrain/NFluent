@@ -53,23 +53,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ReverseEngineeringExceptionMessagesHelperTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StreamTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\ByteRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DecimalRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DecimalSignedNumberRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DoubleRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DoubleSignedNumberRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\FloatFloatingPointBinaryRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\FloatRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\FloatSignedNumberRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\LongRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\LongSignedNumberRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\SbyteRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\SbyteSignedNumberRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\ShortRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\ShortSignedNumberRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\UintRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\UlongRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\UshortRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeHelperTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeSpanTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ToEnumeratedStringTests.cs" />
@@ -83,10 +66,5 @@
     <Content Include="$(MSBuildThisFileDirectory)ExpectedFile.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)T4\NumberTestsGenerator.tt" />
-    <None Include="$(MSBuildThisFileDirectory)T4\TemplateFilemanager.CS.ttinclude" />
-    <None Include="$(MSBuildThisFileDirectory)T4\TestsCloningHelper.ttinclude" />
   </ItemGroup>
 </Project>

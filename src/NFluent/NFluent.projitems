@@ -16,7 +16,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Checks\CharCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\CodeCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\ComparableCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Checks\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DateTimeCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DictionaryCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DoubleSpecificCheckExtensions.cs" />
@@ -91,29 +90,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Obsolete\ILambdaCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RunTrace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RunTraceResult.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\ByteCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DecimalCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DecimalSignedCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DoubleCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\DoubleSignedCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\FloatCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\FloatSignedCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\FloatSpecificCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\LongCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\LongSignedCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\SbyteCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\SbyteSignedCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\ShortCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\ShortSignedCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\UintCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\UlongCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)T4Generated\UshortCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeUnit.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)T4Generated\NumberFluentAssertionGenerator.txt4" />
-    <None Include="$(MSBuildThisFileDirectory)T4\NumberFluentAssertionGenerator.tt" />
-    <None Include="$(MSBuildThisFileDirectory)T4\TemplateFilemanager.CS.ttinclude" />
-    <None Include="$(MSBuildThisFileDirectory)T4\TypeCloningHelper.ttinclude" />
   </ItemGroup>
 </Project>

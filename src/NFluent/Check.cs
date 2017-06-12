@@ -163,7 +163,7 @@ namespace NFluent
         /// <summary>
         /// Returns a <see cref="IStructCheck{T}" /> instance that will provide check methods to be executed on a given enum or struct value.
         /// </summary>
-        /// <typeparam name="T">Type of the enum or struct value to be tested.</typeparam>
+        /// <typeparam name="T">Type of the enum or structure value to be tested.</typeparam>
         /// <param name="value">The value to be tested.</param>
         /// <returns>
         /// A <see cref="IStructCheck{T}" /> instance to use in order to assert things on the given enum or struct value.

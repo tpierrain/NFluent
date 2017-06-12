@@ -16,8 +16,11 @@
 namespace NFluent
 {
     using System;
-    using Helpers;
+
     using Extensibility;
+
+    using Helpers;
+
     using Kernel;
 
     /// <summary>
@@ -44,20 +47,15 @@ namespace NFluent
 
             return checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value.CompareTo(givenValue) >= 0)
                     {
-                        throw new FluentCheckException(checker
-                            .BuildMessage("The {0} is not before the reference value.")
-                            .Expected(givenValue)
-                            .Comparison("before")
-                            .ToString());
-                    }
-                },
-                checker.BuildMessage("The {0} is before the reference value whereas it must not.")
-                    .Expected(givenValue)
-                    .Comparison("after")
-                    .ToString());
+                        if (checker.Value.CompareTo(givenValue) >= 0)
+                        {
+                            throw new FluentCheckException(
+                                checker.BuildMessage("The {0} is not before the reference value.").Expected(givenValue)
+                                    .Comparison("before").ToString());
+                        }
+                    },
+                checker.BuildMessage("The {0} is before the reference value whereas it must not.").Expected(givenValue).Comparison("after").ToString());
         }
 
         /// <summary>
@@ -75,19 +73,15 @@ namespace NFluent
 
             return checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value.CompareTo(givenValue) <= 0)
                     {
-                        throw new FluentCheckException(checker.BuildMessage("The {0} is not after the reference value.")
-                            .Expected(givenValue)
-                            .Comparison("after")
-                            .ToString());
-                    }
-                },
-                checker.BuildMessage("The {0} is after the reference value whereas it must not.")
-                    .Expected(givenValue)
-                    .Comparison("before")
-                    .ToString());
+                        if (checker.Value.CompareTo(givenValue) <= 0)
+                        {
+                            throw new FluentCheckException(
+                                checker.BuildMessage("The {0} is not after the reference value.").Expected(givenValue)
+                                    .Comparison("after").ToString());
+                        }
+                    },
+                checker.BuildMessage("The {0} is after the reference value whereas it must not.").Expected(givenValue).Comparison("before").ToString());
         }
 
         /// <summary>
@@ -116,16 +110,14 @@ namespace NFluent
 
             checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value == null)
                     {
-                        throw new FluentCheckException(
-                            checker.BuildShortMessage(
-                                    "The {0} has no value, which is unexpected.")
-                                .For("nullable")
-                                .ToString());
-                    }
-                },
+                        if (checker.Value == null)
+                        {
+                            throw new FluentCheckException(
+                                checker.BuildShortMessage("The {0} has no value, which is unexpected.").For("nullable")
+                                    .ToString());
+                        }
+                    },
                 checker.BuildMessage("The {0} has a value, which is unexpected.").For("nullable").ToString());
 
             return new NullableOrNumberCheckLink<int>(check);
@@ -143,14 +135,13 @@ namespace NFluent
 
             checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value != null)
                     {
-                        throw new FluentCheckException(
-                            checker.BuildMessage("The {0} has a value, whereas it must not.")
-                                .ToString());
-                    }
-                },
+                        if (checker.Value != null)
+                        {
+                            throw new FluentCheckException(
+                                checker.BuildMessage("The {0} has a value, whereas it must not.").ToString());
+                        }
+                    },
                 checker.BuildShortMessage("The {0} has no value, which is unexpected.").For("nullable").ToString());
         }
 

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netstandard1.3</TargetFramework>
@@ -52,6 +52,7 @@
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
   </ItemGroup>
   <Import Project="..\NFluent\NFluent.projitems" Label="Shared" />
+  <Import Project="..\NFluent.Generated\NFluent.Generated.projitems" Label="Shared" />
   <ItemGroup>
     <None Update="C:\Users\dupdo\Documents\GitHub\NFluent\src\NFluent\T4\NumberFluentAssertionGenerator.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

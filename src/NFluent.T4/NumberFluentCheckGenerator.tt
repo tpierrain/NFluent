@@ -1,10 +1,11 @@
-<#@ template language="C#" hostspecific="true" debug="True" #>
+<#@ template language="C#" hostspecific="true" debug="true" #>
 <#@ output extension="txt" #>
 <#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
 <#@ assembly name="EnvDTE" #>
 <#@ import namespace="EnvDTE" #>
-<#@ include file="..\T4\TemplateFileManager.CS.ttinclude" #>
-<#@ include file="..\T4\TypeCloningHelper.ttinclude" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ include file=".\TemplateFileManager.CS.ttinclude" #>
+<#@ include file=".\TypeCloningHelper.ttinclude" #>
 <#
     // --------------------------------------------------------------------------------------------------------------------
     // <copyright file="NumberFluentAssertionGenerator.tt" company="">
@@ -24,18 +25,17 @@
 	// T4 template responsible to clone checks extensions methods for all number types from 
 	// a "golden source" one (the one for int)
 	// uses the method of: http://t4-editor.tangible-engineering.com/blog/how-to-generate-multiple-output-files-from-a-single-t4-template.html#Part1
- 
-	IServiceProvider hostServiceProvider = (IServiceProvider)Host;
+ 	IServiceProvider hostServiceProvider = (IServiceProvider)Host;
 	EnvDTE.DTE dte = (EnvDTE.DTE)hostServiceProvider.GetService(typeof(EnvDTE.DTE));
 	var manager = TemplateFileManager.Create(this);
 
 	var typesToGenerateAssertionsFor = new string[] { "byte", "sbyte", "decimal", "double", "float", "long", "short", "uint", "ulong", "ushort" };
 	
-    var sourcePath = "..\\Checks\\";
-    var project = "NFluent";
-    var folder = "T4Generated";
+    var sourcePath = "..\\NFluent\\Checks\\";
+    var project = "NFluent.Generated";
+    var folder = "";
 	string goldenSourceClassFileName = Host.ResolvePath(sourcePath+"IntCheckExtensions.cs");
-
+	
 	foreach(string typeName in typesToGenerateAssertionsFor)
     {
     

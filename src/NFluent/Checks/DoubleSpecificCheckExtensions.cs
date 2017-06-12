@@ -75,13 +75,12 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Determines wehther the actual number is close to an expected value within a given within.
+        /// Determines whether the actual number is close to an expected value within a given within.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
         /// <param name="within">The within.</param>
-        /// <returns></returns>
-        /// <exception cref="FluentCheckException"></exception>
+        /// <returns>A continuation check.</returns>
         public static ICheckLink<ICheck<double>> IsCloseTo(this ICheck<double> check, Double expected, Double within)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);

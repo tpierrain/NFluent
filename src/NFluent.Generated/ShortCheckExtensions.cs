@@ -1,5 +1,5 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="UintCheckExtensions.cs" company="">
+// // <copyright file="ShortCheckExtensions.cs" company="">
 // //   Copyright 2013 Thomas PIERRAIN
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
@@ -16,14 +16,17 @@
 namespace NFluent
 {
     using System;
-    using Helpers;
+
     using Extensibility;
+
+    using Helpers;
+
     using Kernel;
 
     /// <summary>
-    /// Provides check methods to be executed on an <see cref="uint"/> value.
+    /// Provides check methods to be executed on an <see cref="short"/> value.
     /// </summary>
-    public static class UintCheckExtensions
+    public static class ShortCheckExtensions
     {
         // DoNotChangeOrRemoveThisLine
 
@@ -38,26 +41,21 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The current value is not before the other one.</exception>
-        public static ICheckLink<ICheck<uint>> IsBefore(this ICheck<uint> check, uint givenValue)
+        public static ICheckLink<ICheck<short>> IsBefore(this ICheck<short> check, short givenValue)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value.CompareTo(givenValue) >= 0)
                     {
-                        throw new FluentCheckException(checker
-                            .BuildMessage("The {0} is not before the reference value.")
-                            .Expected(givenValue)
-                            .Comparison("before")
-                            .ToString());
-                    }
-                },
-                checker.BuildMessage("The {0} is before the reference value whereas it must not.")
-                    .Expected(givenValue)
-                    .Comparison("after")
-                    .ToString());
+                        if (checker.Value.CompareTo(givenValue) >= 0)
+                        {
+                            throw new FluentCheckException(
+                                checker.BuildMessage("The {0} is not before the reference value.").Expected(givenValue)
+                                    .Comparison("before").ToString());
+                        }
+                    },
+                checker.BuildMessage("The {0} is before the reference value whereas it must not.").Expected(givenValue).Comparison("after").ToString());
         }
 
         /// <summary>
@@ -69,25 +67,21 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The current value is not after the other one.</exception>
-        public static ICheckLink<ICheck<uint>> IsAfter(this ICheck<uint> check, uint givenValue)
+        public static ICheckLink<ICheck<short>> IsAfter(this ICheck<short> check, short givenValue)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value.CompareTo(givenValue) <= 0)
                     {
-                        throw new FluentCheckException(checker.BuildMessage("The {0} is not after the reference value.")
-                            .Expected(givenValue)
-                            .Comparison("after")
-                            .ToString());
-                    }
-                },
-                checker.BuildMessage("The {0} is after the reference value whereas it must not.")
-                    .Expected(givenValue)
-                    .Comparison("before")
-                    .ToString());
+                        if (checker.Value.CompareTo(givenValue) <= 0)
+                        {
+                            throw new FluentCheckException(
+                                checker.BuildMessage("The {0} is not after the reference value.").Expected(givenValue)
+                                    .Comparison("after").ToString());
+                        }
+                    },
+                checker.BuildMessage("The {0} is after the reference value whereas it must not.").Expected(givenValue).Comparison("before").ToString());
         }
 
         /// <summary>
@@ -98,9 +92,9 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not equal to zero.</exception>
-        public static ICheckLink<ICheck<uint>> IsZero(this ICheck<uint> check)
+        public static ICheckLink<ICheck<short>> IsZero(this ICheck<short> check)
         {
-            var numberCheckStrategy = new NumberCheck<uint>(check);
+            var numberCheckStrategy = new NumberCheck<short>(check);
             return numberCheckStrategy.IsZero();
         }
 
@@ -110,25 +104,23 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>A check link.</returns>
         /// <exception cref="FluentCheckException">The value is null.</exception>
-        public static INullableOrNumberCheckLink<uint> HasAValue(this ICheck<uint?> check)
+        public static INullableOrNumberCheckLink<short> HasAValue(this ICheck<short?> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value == null)
                     {
-                        throw new FluentCheckException(
-                            checker.BuildShortMessage(
-                                    "The {0} has no value, which is unexpected.")
-                                .For("nullable")
-                                .ToString());
-                    }
-                },
+                        if (checker.Value == null)
+                        {
+                            throw new FluentCheckException(
+                                checker.BuildShortMessage("The {0} has no value, which is unexpected.").For("nullable")
+                                    .ToString());
+                        }
+                    },
                 checker.BuildMessage("The {0} has a value, which is unexpected.").For("nullable").ToString());
 
-            return new NullableOrNumberCheckLink<uint>(check);
+            return new NullableOrNumberCheckLink<short>(check);
         }
 
         /// <summary>
@@ -137,20 +129,19 @@ namespace NFluent
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <exception cref="FluentCheckException">The value is not null.</exception>
-        public static void HasNoValue(this ICheck<uint?> check)
+        public static void HasNoValue(this ICheck<short?> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             checker.ExecuteCheck(
                 () =>
-                {
-                    if (checker.Value != null)
                     {
-                        throw new FluentCheckException(
-                            checker.BuildMessage("The {0} has a value, whereas it must not.")
-                                .ToString());
-                    }
-                },
+                        if (checker.Value != null)
+                        {
+                            throw new FluentCheckException(
+                                checker.BuildMessage("The {0} has a value, whereas it must not.").ToString());
+                        }
+                    },
                 checker.BuildShortMessage("The {0} has no value, which is unexpected.").For("nullable").ToString());
         }
 
@@ -162,9 +153,9 @@ namespace NFluent
         ///   <returns>A check link.</returns>
         /// </returns>
         /// <exception cref="FluentCheckException">The value is equal to zero.</exception>
-        public static ICheckLink<ICheck<uint>> IsNotZero(this ICheck<uint> check)
+        public static ICheckLink<ICheck<short>> IsNotZero(this ICheck<short> check)
         {
-            var numberCheckStrategy = new NumberCheck<uint>(check);
+            var numberCheckStrategy = new NumberCheck<short>(check);
             return numberCheckStrategy.IsNotZero();
         }
 
@@ -184,9 +175,9 @@ namespace NFluent
         /// The value is not less than the comparand.
         /// </exception>
         [Obsolete("Use IsStrictlyLessThan instead.")]
-        public static ICheckLink<ICheck<uint>> IsLessThan(this ICheck<uint> check, uint comparand)
+        public static ICheckLink<ICheck<short>> IsLessThan(this ICheck<short> check, short comparand)
         {
-            var numberCheckStrategy = new NumberCheck<uint>(check);
+            var numberCheckStrategy = new NumberCheck<short>(check);
             return numberCheckStrategy.IsLessThan(comparand);
         }
 
@@ -205,9 +196,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The value is not strictly less than the comparand.
         /// </exception>
-        public static ICheckLink<ICheck<uint>> IsStrictlyLessThan(this ICheck<uint> check, uint comparand)
+        public static ICheckLink<ICheck<short>> IsStrictlyLessThan(this ICheck<short> check, short comparand)
         {
-            var numberCheckStrategy = new NumberCheck<uint>(check);
+            var numberCheckStrategy = new NumberCheck<short>(check);
             return numberCheckStrategy.IsStrictlyLessThan(comparand);
         }
 
@@ -227,9 +218,9 @@ namespace NFluent
         /// The value is not less than the comparand.
         /// </exception>
         [Obsolete("Use IsStrictlyGreaterThan instead.")]
-        public static ICheckLink<ICheck<uint>> IsGreaterThan(this ICheck<uint> check, uint comparand)
+        public static ICheckLink<ICheck<short>> IsGreaterThan(this ICheck<short> check, short comparand)
         {
-            var numberCheckStrategy = new NumberCheck<uint>(check);
+            var numberCheckStrategy = new NumberCheck<short>(check);
             return numberCheckStrategy.IsGreaterThan(comparand);
         }
 
@@ -248,9 +239,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The checked value is not strictly greater than the comparand.
         /// </exception>
-        public static ICheckLink<ICheck<uint>> IsStrictlyGreaterThan(this ICheck<uint> check, uint comparand)
+        public static ICheckLink<ICheck<short>> IsStrictlyGreaterThan(this ICheck<short> check, short comparand)
         {
-            var numberCheckStrategy = new NumberCheck<uint>(check);
+            var numberCheckStrategy = new NumberCheck<short>(check);
             return numberCheckStrategy.IsStrictlyGreaterThan(comparand);
         }
 
@@ -269,7 +260,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The actual value is not equal to the expected value.
         /// </exception>
-        public static ICheckLink<ICheck<uint>> IsEqualTo(this ICheck<uint> check, uint expected)
+        public static ICheckLink<ICheck<short>> IsEqualTo(this ICheck<short> check, short expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
