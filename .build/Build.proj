@@ -244,7 +244,7 @@ RUN ALL UNIT TESTS
     <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:"$(TestRunnerPath)" -register:user -filter:"+[*]* -[*.Tests]*" -output:"$(SolutionRoot)\%(filename)-coverage.xml" -targetargs:""%(TestProjects.Identity)" -result="$(SolutionRoot)\results.xml" -framework:%(TestProjects.Fwk)""' Condition="'%(TestProjects.Coverage)'=='true'"/>
     <Exec Command="pip install codecov"/>
     <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(SolutionRoot)\%(filename)-coverage.xml" -t $(CodeCovKey) -X gcov'
-           Condition="('%(TestProjects.Coverage)'=='true') AND ('$(CodeCovKey)!='')"/>
+           Condition="('%(TestProjects.Coverage)'=='true') AND ('$(CodeCovKey)'!='')"/>
     <Message Importance="high" Text="--------- end of Coverage ---------"/>
   </Target>
 
