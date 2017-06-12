@@ -132,6 +132,7 @@
     <ProjectFolder Include="$(TestsPath)\NFluent.20.Tests"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.PCL"/>
     <ProjectFolder Include="$(TestsPath)\Nugget"/>
+    <ProjectFolder Include="$(SourcePath)\NFluent.T4"/>
   </ItemGroup>
 
   <Target Name="NugetRestore" DependsOnTargets="DotnetCoreRestore">
