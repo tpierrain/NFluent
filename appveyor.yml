@@ -16,6 +16,7 @@ artifacts:
 environment:
   NFLUENT_NUGET_API_KEY: 
   NFLUENT_NUGET_FEED: https://www.nuget.org/api/v2/package
+  CODECOV_KEY: 52c1cbc1-8337-4542-b5ae-70ded055284a
 
 assembly_info:
   patch: true

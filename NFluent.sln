@@ -95,6 +95,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NFluent.Generated", "src\NF
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NFluent.Tests.Generated", "tests\NFluent.Tests.Generated\NFluent.Tests.Generated.shproj", "{E298F1AF-A6A7-497C-9A2D-AC15584E1AC1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.45.Tests.Extensions", "tests\NFluent.45.Tests.Extensions\NFluent.45.Tests.Extensions.csproj", "{308A72A3-462B-4C4E-ABAE-9D9D49D251E7}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{0014c223-a481-4b87-a480-3d4792a9b276}*SharedItemsImports = 4
@@ -104,6 +106,7 @@ Global
 		src\NFluent.Generated\NFluent.Generated.projitems*{1e2d9d56-d0a4-4d2e-8f2b-f211000e1667}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{1e2d9d56-d0a4-4d2e-8f2b-f211000e1667}*SharedItemsImports = 4
 		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{2b7f0e07-9b42-4bd2-8e30-f90fd78faf1f}*SharedItemsImports = 13
+		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{308a72a3-462b-4c4e-abae-9d9d49d251e7}*SharedItemsImports = 4
 		src\NFluent.Generated\NFluent.Generated.projitems*{33adf67e-963a-4950-966b-14a513c245a1}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{33adf67e-963a-4950-966b-14a513c245a1}*SharedItemsImports = 4
 		src\NFluent.Generated\NFluent.Generated.projitems*{37fdae31-560d-40b8-8fa7-7def8a53b370}*SharedItemsImports = 13
@@ -225,6 +228,10 @@ Global
 		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{308A72A3-462B-4C4E-ABAE-9D9D49D251E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{308A72A3-462B-4C4E-ABAE-9D9D49D251E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{308A72A3-462B-4C4E-ABAE-9D9D49D251E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{308A72A3-462B-4C4E-ABAE-9D9D49D251E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -261,6 +268,7 @@ Global
 		{B6302A3A-55D6-41B7-BD2F-9C821228C98A} = {64EFC15A-C599-41B6-BD22-144F8468A439}
 		{37FDAE31-560D-40B8-8FA7-7DEF8A53B370} = {64EFC15A-C599-41B6-BD22-144F8468A439}
 		{E298F1AF-A6A7-497C-9A2D-AC15584E1AC1} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
+		{308A72A3-462B-4C4E-ABAE-9D9D49D251E7} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = NFluent.40.Tests\NFluent.40.Tests.csproj

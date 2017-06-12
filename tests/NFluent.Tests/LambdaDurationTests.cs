@@ -61,7 +61,7 @@ namespace NFluent.Tests
                 () =>
                 {
                     Thread.Sleep(100);
-                }).ConsumesLessThan(30, TimeUnit.Milliseconds);
+                }).ConsumesLessThan(50, TimeUnit.Milliseconds);
         }
 
         [Test]
