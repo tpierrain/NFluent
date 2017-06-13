@@ -15,13 +15,14 @@
 
 namespace NFluent.Helpers
 {
-    using Extensibility;
-    using System;
 #if NETSTANDARD1_3
     using System.Reflection;
 #endif
-    using Extensions;
+    using System;
 
+    using Extensibility;
+
+    using Extensions;
 
     /// <summary>
     /// Helper class related to Equality methods (used like a traits).
@@ -63,19 +64,23 @@ namespace NFluent.Helpers
             bool negated = false) where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
             var mode = EqualityMode.Equals;
-            if (userOperator)
-            {
-                mode = EqualityMode.OperatorEq;
-            }
             if (checker.Negated)
             {
                 negated = !negated;
             }
 
-            if (negated == FluentEquals(checker.Value, expected, mode))
+            var shouldFail = negated;
+            if (userOperator)
+            {
+                mode = negated ? EqualityMode.OperatorNeq : EqualityMode.OperatorEq;
+                shouldFail = false;
+            }
+
+            if (shouldFail == FluentEquals(checker.Value, expected, mode))
             {
                 throw new FluentCheckException(BuildErrorMessage(checker, expected, negated, userOperator));
             }
+
             return checker.BuildChainingObject();
         }
 
@@ -100,21 +105,30 @@ namespace NFluent.Helpers
         private static bool FluentEquals(object instance, object expected, EqualityMode mode)
         {
             // ReSharper disable once RedundantNameQualifier
-            var ret=  object.Equals(instance, expected);
+            var ret = object.Equals(instance, expected);
             if (mode == EqualityMode.OperatorEq || mode == EqualityMode.OperatorNeq)
             {
+                if (mode == EqualityMode.OperatorNeq)
+                {
+                    ret = !ret;
+                }
+
                 var actualType = instance.GetTypeWithoutThrowingException();
                 var expectedType = expected.GetTypeWithoutThrowingException();
                 var operatorName = mode == EqualityMode.OperatorEq ? "op_Equality" : "op_Inequality";
                 var ope = actualType
                     .GetMethod(operatorName, new[] { actualType, expectedType }) ?? expectedType
                         .GetMethod(operatorName, new[] { actualType, expectedType });
-                if (ope == null) return ret;
-                ret =(bool) ope.Invoke(null, new[] { instance, expected});
+                if (ope == null)
+                {
+                    return ret;
+                }
+                ret = (bool)ope.Invoke(null, new[] { instance, expected});
             }
             else if (expected != null && instance != null)
             {
                 var expectedType = expected.GetType();
+                
                 // if both types are numerical, check if the values are the same to generate a precise message
                 if (ExtensionsCommonHelpers.IsNumerical(expectedType) && ExtensionsCommonHelpers.IsNumerical(instance.GetType()))
                 {

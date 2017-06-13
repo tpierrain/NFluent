@@ -84,7 +84,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ContainsOnceSucceedsWithMultipleOccurences()
+        public void ContainsOnceSucceedsWithMultipleOccurrences()
         {
             var tresAmigosAndMore = new[] { "un", "dos", "tres", "tres" };
             Check.That(tresAmigosAndMore).Contains(tresAmigosAndMore).Once();

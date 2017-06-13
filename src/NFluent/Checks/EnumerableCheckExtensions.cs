@@ -571,7 +571,6 @@ namespace NFluent
                             ExtensibilityHelper.ExtractChecker(subChecker).SetSutLabel("single element");
                             return subChecker;
                         }
-
                     },
                 checker.BuildMessage("The {0} has exactly one element, whereas it should not.").ToString());
         }
