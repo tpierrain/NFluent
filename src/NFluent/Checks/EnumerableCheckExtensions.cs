@@ -668,7 +668,7 @@ namespace NFluent
             var sutCount = checkedValue.Count();
             var expectedCount = enumerable.Count();
             FluentMessage message;
-            if (checkedValue != null && enumerable != null)
+            if (enumerable != null)
             {
                 if (sutCount < expectedCount && index == sutCount)
                 {

@@ -248,8 +248,7 @@ namespace NFluent
                            : checker.BuildShortMessage("The {0} is null.").For(typeof(string)).ReferenceValues(values).Label("The {0} substring(s):").ToString();
             }
 
-            var enumerable = values as string[] ?? values.Cast<string>();
-            var items = enumerable.Where(item => checkedValue.Contains(item) == notContains).ToList();
+            var items = values.ToList().Where(item => checkedValue.Contains(item) == notContains).ToList();
 
             if (negated == items.Count > 0)
             {
@@ -258,7 +257,7 @@ namespace NFluent
 
             if (!notContains && negated)
             {
-                items = enumerable.ToList();
+                items = values.ToList();
             }
 
             if (negated != notContains)
@@ -526,7 +525,7 @@ namespace NFluent
         {
             var checkedValue = checker.Value;
 
-            // special case if checkedvalue is null
+            // special case if checkedValue is null
             if (checkedValue == null)
             {
                 if (canBeNull != negated)
@@ -582,7 +581,7 @@ namespace NFluent
         /// <returns>A checker.</returns>
         public static ICheck<IEnumerable<string>> AsLines(this ICheck<string> check)
         {
-            IEnumerable<string> next = null;
+            IEnumerable<string> next;
             var checker = ExtensibilityHelper.ExtractChecker(check);
             if (checker.Value != null)
             {
@@ -596,6 +595,10 @@ namespace NFluent
                 }
 
                 next = lines;
+            }
+            else
+            {
+                next = new List<string>();
             }
 
             return new FluentCheck<IEnumerable<string>>(next);

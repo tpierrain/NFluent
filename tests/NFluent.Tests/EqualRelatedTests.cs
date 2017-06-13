@@ -343,7 +343,7 @@ namespace NFluent.Tests
         [Test]
         public void EqualsWorksAsAnAssertion()
         {
-            object obj = new object();
+            var obj = new object();
 
             Check.That(obj).Equals(obj);
         }

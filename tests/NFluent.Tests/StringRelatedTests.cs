@@ -728,6 +728,12 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void AsLinesShouldWorkWithNull()
+        {
+            Check.That((string)null).AsLines().HasSize(0);
+        }
+
+        [Test]
         public void ShouldReportLongerLines()
         {
             Check.ThatCode(() =>

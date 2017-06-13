@@ -131,7 +131,7 @@ namespace NFluent.Kernel
         /// </exception>
         public new bool Equals(object obj)
         {
-            this.checker.ExecuteCheck(() => EqualityHelper.IsEqualTo(this.checker, obj, false), EqualityHelper.BuildErrorMessage(this.checker, obj, true, false));
+            this.checker.ExecuteCheck(() => EqualityHelper.IsEqualTo(this.checker, obj), EqualityHelper.BuildErrorMessage(this.checker, obj, true, false));
  
             return true;
         }

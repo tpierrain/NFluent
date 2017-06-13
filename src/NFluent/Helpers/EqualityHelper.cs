@@ -41,24 +41,26 @@ namespace NFluent.Helpers
         /// <param name="expected">
         /// The expected instance.
         /// </param>
-        /// <param name="useOperator">Set to true to use operator== instead of Equals</param>
         /// <exception cref="FluentCheckException">
         /// The actual value is not equal to the expected value.
         /// </exception>
-        public static void IsEqualTo<T, TU>(IChecker<T, TU> checker, object expected, bool useOperator) where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+        public static void IsEqualTo<T, TU>(IChecker<T, TU> checker, object expected) where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
             var instance = checker.Value;
-            if (FluentEquals(instance, expected, useOperator ? EqualityMode.OperatorEq : EqualityMode.Equals))
+            if (FluentEquals(instance, expected, EqualityMode.Equals))
             {
                 return;
             }
-            // Should throw
 
-            throw new FluentCheckException(BuildErrorMessage(checker, expected, false, useOperator));
+            // Should throw
+            throw new FluentCheckException(BuildErrorMessage(checker, expected, false, false));
         }
 
-        internal static ICheckLink<TU> PerformEqualCheck<T, TU, TE>(IChecker<T, TU> checker, TE expected,
-            bool userOperator, bool negated = false) where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+        internal static ICheckLink<TU> PerformEqualCheck<T, TU, TE>(
+            IChecker<T, TU> checker,
+            TE expected,
+            bool userOperator,
+            bool negated = false) where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
             var mode = EqualityMode.Equals;
             if (userOperator)
@@ -86,11 +88,10 @@ namespace NFluent.Helpers
         /// </typeparam>
         /// <param name="checker">The checker.</param>
         /// <param name="expected">The expected instance.</param>
-        /// <param name="useOperator">Set to true to use operator== instead of Equals</param>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static void IsNotEqualTo<T, TU>(IChecker<T, TU> checker, object expected, bool useOperator) where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+        public static void IsNotEqualTo<T, TU>(IChecker<T, TU> checker, object expected) where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
-            if (FluentEquals(checker.Value, expected, useOperator ? EqualityMode.OperatorEq : EqualityMode.Equals))
+            if (FluentEquals(checker.Value, expected, EqualityMode.Equals))
             {
                 throw new FluentCheckException(BuildErrorMessage(checker, expected, true, false));
             }
