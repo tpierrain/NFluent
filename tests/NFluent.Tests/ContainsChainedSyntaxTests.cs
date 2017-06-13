@@ -91,6 +91,13 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ContainsOnceSucceedsWithMissingEntry()
+        {
+            var tresAmigosAndMore = new[] { "un", "dos", "tres", "four" };
+            Check.That(tresAmigosAndMore).Contains(tresAmigos).Once();
+        }
+
+        [Test]
         public void ContainsOnceFails()
         {
             var tresAmigosAndMore = new[] { "un", "dos", "tres", "tres" };

@@ -734,6 +734,12 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void AsLinesShouldWorkWithOneLine()
+        {
+            Check.That("coucou").AsLines().HasSize(1);
+        }
+
+        [Test]
         public void ShouldReportLongerLines()
         {
             Check.ThatCode(() =>
