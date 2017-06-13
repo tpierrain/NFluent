@@ -35,10 +35,6 @@ namespace NFluent.Kernel
             this.previousCheck = previousCheck;
         }
 
-        // used only for check discovery by helpers used for documentation generation
-        // ReSharper disable once UnusedMember.Local
-        private TN? Value { get; set; } //ncrunch: no coverage 
-
         /// <summary>
         /// Chains a new fluent check on the current one for the nullable value.
         /// </summary>

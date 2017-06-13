@@ -293,6 +293,17 @@ namespace NFluent.Tests
             .WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Michel Gondry\", \"Joon-ho Bong\", \"Darren Aronofsky\"] (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[null] (0 item)");
         }
 
+        [Test]
+        public void ContainsExactlyGenerateCorrectMessageWhenArrayWithOneItem()
+        {
+            Check.ThatCode(() =>
+                    {
+                        Check.That(new []{"test"}).ContainsExactly(null);
+                    })
+                .Throws<FluentCheckException>()
+                .WithMessage(Environment.NewLine + "The checked enumerable does not contain exactly the expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"test\"] (1 item)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[null] (0 item)");
+        }
+
 #if !NETCOREAPP1_0
 
         [Test]
