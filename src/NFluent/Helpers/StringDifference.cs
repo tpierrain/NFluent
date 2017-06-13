@@ -16,6 +16,7 @@ namespace NFluent.Helpers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using NFluent.Extensibility;
     using NFluent.Extensions;
@@ -299,7 +300,6 @@ namespace NFluent.Helpers
             }
 
             // check the common part of both strings
-            var lastCharWasSpace = true;
             var j = 0;
             var i = 0;
             var type = DifferenceMode.NoDifference;
@@ -310,13 +310,11 @@ namespace NFluent.Helpers
             {
                 var actualChar = actual[i];
                 var expectedChar = expected[j];
-                if (actualChar == expectedChar)
+                if (char.IsWhiteSpace(actualChar) && char.IsWhiteSpace(expectedChar))
                 {
-                    // same char
-                }
-                else if ((char.IsWhiteSpace(actualChar) && char.IsWhiteSpace(expectedChar))
-                         || (lastCharWasSpace && (char.IsWhiteSpace(actualChar) || char.IsWhiteSpace(expectedChar))))
-                {
+                    int iStart = i;
+                    int jStart = j;
+
                     // we skip all spaces
                     while (i + 1 < actual.Length && char.IsWhiteSpace(actual[i + 1]))
                     {
@@ -327,11 +325,15 @@ namespace NFluent.Helpers
                     {
                         j++;
                     }
-
-                    if (type == DifferenceMode.NoDifference)
+                    if ((i - iStart) != (j - jStart) || actual.Substring(iStart, i - iStart)
+                        != expected.Substring(jStart, j - jStart))
                     {
                         type = DifferenceMode.Spaces;
                     }
+                }
+                else if (actualChar == expectedChar)
+                {
+                    
                 }
                 else if (StringExtensions.CompareCharIgnoringCase(actualChar, expectedChar))
                 {
@@ -343,7 +345,6 @@ namespace NFluent.Helpers
                     // difference in case only
                     if (type == DifferenceMode.CaseDifference)
                     {
-                        lastCharWasSpace = char.IsWhiteSpace(actualChar);
                         continue;
                     }
 
@@ -356,8 +357,6 @@ namespace NFluent.Helpers
                     position = i;
                     break;
                 }
-
-                lastCharWasSpace = char.IsWhiteSpace(actualChar);
             }
 
             if (type == DifferenceMode.General)
@@ -367,6 +366,11 @@ namespace NFluent.Helpers
                     type = DifferenceMode.GeneralSameLength;
                 }
 
+                return new StringDifference(type, line, position, actual, expected);
+            }
+
+            if (type == DifferenceMode.Spaces && i == actual.Length && j == expected.Length)
+            {
                 return new StringDifference(type, line, position, actual, expected);
             }
 

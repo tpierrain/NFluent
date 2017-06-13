@@ -142,9 +142,17 @@ namespace NFluent.Tests
         [Test]
         public void ShouldReportDifferenceInSpacesAtEnd()
         {
-            var stringDifference = StringDifference.Analyze("toto  ", "toto\t ", false);
+            var stringDifference = StringDifference.Analyze("toto  ", "toto ", false);
             Check.That(stringDifference).HasSize(1);
             Check.That(stringDifference[0].Kind).IsEqualTo(DifferenceMode.Spaces);
+        }
+
+        [Test]
+        public void ShouldReportGeneralDiffWhenDiffAfterMultipleSpace()
+        {
+            var stringDifference = StringDifference.Analyze("toto t", "toto  ", false);
+            Check.That(stringDifference).HasSize(1);
+            Check.That(stringDifference[0].Kind).IsEqualTo(DifferenceMode.Longer);
         }
 
         [Test]
