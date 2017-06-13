@@ -231,7 +231,6 @@ namespace NFluent.Extensibility
         {
             this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(new EntityNamer { EntityName = "value(s)" });
             this.expectedBlock = new MessageBlock(this, expectedValues, this.expectedLabel, index);
-            this.referenceType = this.referenceType ?? expectedValues.GetTypeWithoutThrowingException();
             return this.expectedBlock;
         }
 

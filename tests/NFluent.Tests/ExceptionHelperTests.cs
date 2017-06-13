@@ -30,6 +30,8 @@ namespace NFluent.Tests
             var exception = new ArgumentException("blahblah#1", new ArgumentOutOfRangeException("blahblah#2", new Exception("blahblah#3")));
 
             Check.That(ExceptionHelper.DumpInnerExceptionStackTrace(exception)).IsEqualTo("{ System.ArgumentOutOfRangeException } \"blahblah#2\"" +Environment.NewLine +"--> { System.Exception } \"blahblah#3\"");
+            exception = new ArgumentException("blahblah#1", new ArgumentOutOfRangeException("blahblah#2", new Exception("blahblah#3")));
+            Check.That(ExceptionHelper.DumpInnerExceptionStackTrace(exception)).IsEqualTo("{ System.ArgumentOutOfRangeException } \"blahblah#2\"" + Environment.NewLine + "--> { System.Exception } \"blahblah#3\"");
         }
 
         [Test]
