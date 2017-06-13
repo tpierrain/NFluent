@@ -7,10 +7,13 @@ Rem other targets (e.G. CI) build 'alpha package'
 cls
 set target=%1
 if "%target%"=="" (
-	set target=Alpha
+	set target=%NFLUENT_STREAM%
+)
+if "%target%"=="" (
+	set target=CI
 )
 set config=%2
 if "%config%" == "" (
    set config=Release
 )
-msbuild .build\Build.proj /t:%target% /p:Configuration="%config%" /fl /flp:LogFile=msbuild.log;Verbosity=m /nr:false
+msbuild .build\Build.proj /t:%target% /p:Configuration="%config%" /fl /flp:LogFile=msbuild.log;Verbosity=q /nr:false
