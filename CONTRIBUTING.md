@@ -25,14 +25,21 @@ When reporting an issue in Git, please fill all present fields. Quality of our r
 
 You should **never** work on a clone of master, and you should **never** send a pull request from master - always from a branch. The reasons for this are detailed below.
 
-## Before adding code
+## Prerequisite
+- As of May 2017, we use **Visual Studio 2017 Community Edition**. We strongly advise you do the same
+- You need to have support for **T4 templates**. You need to install 'Visual Studio Add-In development' pack with the VS 2017 installer.  
+- You need the **NUnit3 adapter** in order to run tests from the IDE, or R#.
+- We recommand having *R#* and *NCrunch* installed, but those are not prerequisites.
+- We recommand having *Python 2.x* installed, as it is needed for CodeCov toolset that is used by the build script.
 
- - Don't forget to install the __[Project Linker Visual Studio Add-in](https://visualstudiogallery.msdn.microsoft.com/7c36d531-4464-479b-934b-bbe71e621528)__ so that NFluent35 and NFluent 40 projects (same for tests) contain the same elements (adding all your new types in the *35 projects by default if possible, and letting the plugin to add links in the *40 version).
-
-#### WARNING: (almost) all files are now located within the NFluent.Core project, and the other projects embed file aliases
-
-__Since T4 template aren't supported for dotnet core projects, we've setup a hack that allow T4 template to be generated from the T4 located within the NFluent.35 project (which generates files within the proper dotnet core project target location)__
-
+## Solution organization
+ - As a general rule, we are happy with the current project organization. Thanks for keeping it as is, or raise an issue if you see a compelling reason for change.
+ - Tests projects are located in the 'tests' folder
+ - Main source files are in the 'Src' folder
+ - Per framework specific build projects are located in the 'Platforms' subfolder to tackle cross compatility. 
+ - You should add your tests to the NFluent.Tests *shared project*.
+ - You must add your code to the Nfluent *shared project*.
+ - The **NFluent.Generated** and **NFluent.Tests.Generated** are derived from *IntCheckExtensions, SignedIntCheckExtensions, DoubleCheckExtensions* and related tests. If you alter any of those files, use the 'Transform All T4 Templates' command from the build menu. This will regenerate checks and tests for other numerical types. 
 ---
 
 ## Handling Updates from Upstream/Master
