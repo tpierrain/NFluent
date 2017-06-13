@@ -140,6 +140,14 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldReportDifferenceInSpacesAtEnd()
+        {
+            var stringDifference = StringDifference.Analyze("toto  ", "toto\t ", false);
+            Check.That(stringDifference).HasSize(1);
+            Check.That(stringDifference[0].Kind).IsEqualTo(DifferenceMode.Spaces);
+        }
+
+        [Test]
         public void ShouldReportDifferenceOfEoL()
         {
             var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto\r\ntiti", false);

@@ -27,11 +27,12 @@ namespace NFluent.Tests
         // issue 187
         private class FakeClass
         {
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public List<string> Items { get; set; }
         }
 
         [Test]
-        public void hasfieldswithsamevalue_should_process_null_fields()
+        public void HasFieldsWithSameValueShouldProcessNullFields()
         {
             var instance1 = new FakeClass()
                                 {
@@ -352,8 +353,8 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 var toTest = new List<string> { "MaChaine{94}" };
-                const string result = "MaChaine{964}";
-                Check.That(toTest).Contains(result);
+                const string Result = "MaChaine{964}";
+                Check.That(toTest).Contains(Result);
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[\"MaChaine{964}\"]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"MaChaine{94}\"]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"MaChaine{964}\"]");
