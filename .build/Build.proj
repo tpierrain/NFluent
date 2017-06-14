@@ -31,7 +31,7 @@
     <ZipExe>$(ToolsPath)\7za\7za.exe</ZipExe>
     <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.6.1\tools\nunit3-console.exe</TestRunnerPath>
     <CoverToolPath>$(NuGetToolsPath)\OpenCover.4.6.519\tools</CoverToolPath>
-    <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow</MsTestRunnerPath>
+    <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
     <MsTestRunner>vstest.console.exe</MsTestRunner>
   </PropertyGroup>
   
@@ -243,7 +243,7 @@ RUN ALL UNIT TESTS
     <Message Importance="low" Text="debug message: TestProjectsWithArguments.Identity:'%(TestProjects.Identity)'"/>
     <Exec Command='"$(TestRunnerPath)" %(TestProjects.Identity) $(NunitOptions) /framework:%(TestProjects.Fwk)' 
           LogStandardErrorAsError="true" WorkingDirectory="../" Condition="'%(TestProjects.Fwk)'!='core' AND '%(TestProjects.Runner)'==''"/>
-    <Exec Command='"$(MsTestRunnerPath)\$(MsTestRunner)" %(TestProjects.Identity)' 
+    <Exec Command='"$(MsTestRunnerPath)$(MsTestRunner)" %(TestProjects.Identity)' 
           LogStandardErrorAsError="true" WorkingDirectory="../" Condition="'%(TestProjects.Fwk)'!='core' AND '%(TestProjects.Runner)'=='MsTest'"/>
     <Exec Command='dotnet test %(TestProjects.Identity) -c $(Configuration)' 
           LogStandardErrorAsError="true" WorkingDirectory="../" Condition="'%(TestProjects.Fwk)'=='core'"/>
