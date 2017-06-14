@@ -31,7 +31,6 @@ namespace NFluent.Helpers
     /// </summary>
     public static class ExceptionHelper
     {
-        // ncrunch: no coverage start
 
         private static ExceptionConstructor constructors;
 
@@ -41,7 +40,7 @@ namespace NFluent.Helpers
             {
                 if (constructors == null)
                 {
-                    // we need to identiy required exception types
+                    // we need to identify required exception types
                     var defaultConstructor = typeof(FluentCheckException).GetConstructor(new[] { typeof(string) });
                     var result = new ExceptionConstructor
                                      {

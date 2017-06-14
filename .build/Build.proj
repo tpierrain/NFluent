@@ -4,36 +4,38 @@
   <!-- updated by Cyrille Dupuydauby -->
 
   <PropertyGroup>
-      <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
-      <SolutionRoot>$(MSBuildProjectDirectory)\..</SolutionRoot>
-      <MSBuildCommunityTasksPath>$(SolutionRoot)\.build</MSBuildCommunityTasksPath>
-      <SolutionName>NFluent</SolutionName>
-      <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
-    <CodeCovURL>https://codecov.io/gh/dupdob/$(SolutionName)</CodeCovURL>
-    <ToolsPath>$(SolutionRoot)\tools\</ToolsPath>
+    <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
+    <SolutionRoot>$(MSBuildProjectDirectory)\..</SolutionRoot>
+    <MSBuildCommunityTasksPath>$(SolutionRoot)\.build</MSBuildCommunityTasksPath>
+    <SolutionName>NFluent</SolutionName>
+    <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
 
-      <ToolsPath>$(SolutionRoot)\tools\</ToolsPath>
-      <SourcePath>$(SolutionRoot)\src\</SourcePath>
-      <TestsPath>$(SolutionRoot)\tests</TestsPath>
-      <ArtifactsPath>$(SolutionRoot)\Artifacts</ArtifactsPath>
-      <BinariesPath>$(ArtifactsPath)\Binaries</BinariesPath>
-      <PackagesPath>$(ArtifactsPath)\Packages</PackagesPath>
-      <DocPath>$(ArtifactsPath)\Docs</DocPath>
+    <CodeCovURL>https://codecov.io/gh/dupdob/$(SolutionName)</CodeCovURL>
+    <PackageStream>alpha</PackageStream>
+    <NugetKey>$(NFLUENT_NUGET_API_KEY)</NugetKey>
+    <NugetFeed>$(NFLUENT_NUGET_FEED)</NugetFeed>
+    <CodeCovKey>$(CODECOV_KEY)</CodeCovKey>
+    <AttributeVersionFile>$(SolutionRoot)\Version.cs</AttributeVersionFile>
+
+    <ToolsPath>$(SolutionRoot)\tools\</ToolsPath>
+    <SourcePath>$(SolutionRoot)\src\</SourcePath>
+    <TestsPath>$(SolutionRoot)\tests</TestsPath>
+    <ArtifactsPath>$(SolutionRoot)\Artifacts</ArtifactsPath>
+    <BinariesPath>$(ArtifactsPath)\Binaries</BinariesPath>
+    <PackagesPath>$(ArtifactsPath)\Packages</PackagesPath>
+    <DocPath>$(ArtifactsPath)\Docs</DocPath>
     
-      <NuGetToolsPath>$(SolutionRoot)\Packages</NuGetToolsPath>
-      <AttributeVersionFile>$(SolutionRoot)\Version.cs</AttributeVersionFile>
-      <NuGetExePath>nuget.exe</NuGetExePath>
-      <DocuExePath>$(ToolsPath)docu\docu.exe</DocuExePath>
-      <ZipExe>$(ToolsPath)7za\7za.exe</ZipExe>
-      <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.6.1\tools\nunit3-console.exe</TestRunnerPath>
+    <NuGetToolsPath>$(SolutionRoot)\Packages</NuGetToolsPath>
+    <NuGetExePath>nuget.exe</NuGetExePath>
+    <DocuExePath>$(ToolsPath)\docu\docu.exe</DocuExePath>
+    <ZipExe>$(ToolsPath)\7za\7za.exe</ZipExe>
+    <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.6.1\tools\nunit3-console.exe</TestRunnerPath>
     <CoverToolPath>$(NuGetToolsPath)\OpenCover.4.6.519\tools</CoverToolPath>
-     <PackageStream>alpha</PackageStream>
-     <NugetKey>$(NFLUENT_NUGET_API_KEY)</NugetKey>
-      <NugetFeed>$(NFLUENT_NUGET_FEED)</NugetFeed>
-      <CodeCovKey>$(CODECOV_KEY)</CodeCovKey>
+    <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow</MsTestRunnerPath>
+    <MsTestRunner>vstest.console.exe</MsTestRunner>
   </PropertyGroup>
   
-  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+  <!--Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" /-->
   <Import Project="build.tasks" />
   <!-- Specifics for appveyor: use env provided nunit runner for result publication-->
   <Choose>
@@ -41,6 +43,7 @@
       <PropertyGroup>
         <NunitOptions>--result=TestResults.xml;format=AppVeyor</NunitOptions>
         <TestRunnerPath>nunit3-console.exe</TestRunnerPath>
+        <MsTestRunnerPath></MsTestRunnerPath>
       </PropertyGroup>
     </When>
   </Choose>
@@ -127,9 +130,11 @@
     <ProjectFolder Include="$(SourcePath)\NFluent.35"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests.Extensions"/>
+    <ProjectFolder Include="$(SourcePath)\NFluent.30"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.30.Tests"/>
-    <ProjectFolder Include="$(TestsPath)\NFluent.20"/>
+    <ProjectFolder Include="$(SourcePath)\NFluent.20"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.20.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.Tests.MsTest"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.PCL"/>
     <ProjectFolder Include="$(TestsPath)\Nugget"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.T4"/>
@@ -149,10 +154,10 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
 ---------------------------------------------------------------
       "  />
 
-      <Message Importance="high" Text="--------- will run: $(SolutionRoot)\$(SolutionName).sln"/>
+      <Message Importance="normal" Text="--------- will run: $(SolutionRoot)\$(SolutionName).sln"/>
       <MSBuild Projects="$(SolutionRoot)\$(SolutionName).sln" 
                 Targets="Build" 
-                Properties="Configuration=$(Configuration)" />
+                Properties="Configuration=$(Configuration)"/>
 
     <Message Importance="high" Text="--------- end of BUILD  -------------------------------------"/>
   </Target>
@@ -213,6 +218,10 @@ GENERATING DOCS for:
         <Fwk>net-4.5</Fwk>
         <Coverage>true</Coverage>
       </TestProjects>
+      <TestProjects Include='$(TestsPath)\NFluent.Tests.MsTest\bin\$(Configuration)\NFluent.Tests.MsTest.dll'>
+        <Fwk>net-4.5</Fwk>
+        <Runner>MsTest</Runner>
+      </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj'>
         <Fwk>core</Fwk>
       </TestProjects>
@@ -233,14 +242,16 @@ RUN ALL UNIT TESTS
 
     <Message Importance="low" Text="debug message: TestProjectsWithArguments.Identity:'%(TestProjects.Identity)'"/>
     <Exec Command='"$(TestRunnerPath)" %(TestProjects.Identity) $(NunitOptions) /framework:%(TestProjects.Fwk)' 
-          LogStandardErrorAsError="true" WorkingDirectory="../" Condition="'%(TestProjects.Fwk)'!='core'"/>
+          LogStandardErrorAsError="true" WorkingDirectory="../" Condition="'%(TestProjects.Fwk)'!='core' AND '%(TestProjects.Runner)'==''"/>
+    <Exec Command='"$(MsTestRunnerPath)\$(MsTestRunner)" %(TestProjects.Identity)' 
+          LogStandardErrorAsError="true" WorkingDirectory="../" Condition="'%(TestProjects.Fwk)'!='core' AND '%(TestProjects.Runner)'=='MsTest'"/>
     <Exec Command='dotnet test %(TestProjects.Identity) -c $(Configuration)' 
           LogStandardErrorAsError="true" WorkingDirectory="../" Condition="'%(TestProjects.Fwk)'=='core'"/>
     <Message Importance="high" Text="--------- end of RUN TESTS ---------"/>
 
     <Message Importance="high" Text="--------- Coverage ---------"/>
     <Message Importance="high" Text="Cover for %(TestProjects.Identity) : $(SolutionRoot)\%(filename)-coverage.xml" Condition="'%(TestProjects.Coverage)'=='true'"/>
-    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:"$(TestRunnerPath)" -register:user -filter:"+[*]* -[*.Tests*]*" -output:"$(SolutionRoot)\%(filename)-coverage.xml" -targetargs:""%(TestProjects.Identity)" -result="$(SolutionRoot)\results.xml" -framework:%(TestProjects.Fwk)""' Condition="'%(TestProjects.Coverage)'=='true'"/>
+    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:"$(TestRunnerPath)" -register:user -filter:"+[*]* -[*.Tests*]*" -output:"$(SolutionRoot)\%(filename)-coverage.xml" -targetargs:""%(TestProjects.Identity)" -result="$(SolutionRoot)\TestResult.xml" -framework:%(TestProjects.Fwk)""' Condition="'%(TestProjects.Coverage)'=='true'"/>
     <Exec Command="pip install codecov"/>
     <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(SolutionRoot)\%(filename)-coverage.xml" -t $(CodeCovKey) -X gcov'
            Condition="('%(TestProjects.Coverage)'=='true') AND ('$(CodeCovKey)'!='')"/>
