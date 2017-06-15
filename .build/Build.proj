@@ -221,6 +221,7 @@ GENERATING DOCS for:
       <TestProjects Include='$(TestsPath)\NFluent.Tests.MsTest\bin\$(Configuration)\NFluent.Tests.MsTest.dll'>
         <Fwk>net-4.5</Fwk>
         <Runner>MsTest</Runner>
+        <Coverage>true</Coverage>
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj'>
         <Fwk>core</Fwk>
