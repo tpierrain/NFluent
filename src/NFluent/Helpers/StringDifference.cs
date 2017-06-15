@@ -16,7 +16,6 @@ namespace NFluent.Helpers
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     using NFluent.Extensibility;
     using NFluent.Extensions;
@@ -312,8 +311,8 @@ namespace NFluent.Helpers
                 var expectedChar = expected[j];
                 if (char.IsWhiteSpace(actualChar) && char.IsWhiteSpace(expectedChar))
                 {
-                    int iStart = i;
-                    int jStart = j;
+                    var actualStart = i;
+                    var expectedStart = j;
 
                     // we skip all spaces
                     while (i + 1 < actual.Length && char.IsWhiteSpace(actual[i + 1]))
@@ -325,15 +324,15 @@ namespace NFluent.Helpers
                     {
                         j++;
                     }
-                    if ((i - iStart) != (j - jStart) || actual.Substring(iStart, i - iStart)
-                        != expected.Substring(jStart, j - jStart))
+
+                    if ((i - actualStart) != (j - expectedStart) || actual.Substring(actualStart, i - actualStart)
+                        != expected.Substring(expectedStart, j - expectedStart))
                     {
                         type = DifferenceMode.Spaces;
                     }
                 }
                 else if (actualChar == expectedChar)
                 {
-                    
                 }
                 else if (StringExtensions.CompareCharIgnoringCase(actualChar, expectedChar))
                 {
@@ -401,10 +400,10 @@ namespace NFluent.Helpers
 
         private static string GetMessage(DifferenceMode summary)
         {
-            var message = string.Empty;
+            string message;
             switch (summary)
             {
-                case DifferenceMode.General:
+                default:
                     message = "The {0} is different from {1}.";
                     break;
                 case DifferenceMode.GeneralSameLength:

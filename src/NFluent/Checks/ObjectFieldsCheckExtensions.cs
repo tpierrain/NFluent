@@ -35,197 +35,6 @@ namespace NFluent
     {
         #region Constructors and Destructors
 
-        /// <summary>
-        ///     Initializes static members of the <see cref="ObjectFieldsCheckExtensions" /> class.
-        /// </summary>
-        static ObjectFieldsCheckExtensions()
-        {
-            AutoPropertyMask = new Regex("^<(.*)>k_");
-            AnonymousTypeFieldMask = new Regex("^<(.*)>(i_|\\z)");
-        }
-
-        #endregion
-
-        #region Nested type: ExtendedFieldInfo
-
-        private class ExtendedFieldInfo
-        {
-            #region Fields
-
-            private readonly FieldInfo info;
-
-            private readonly FieldKind kind;
-
-            private readonly string nameInSource;
-
-            private readonly string prefix;
-
-            #endregion
-
-            public ExtendedFieldInfo(string prefix, FieldInfo info)
-            {
-                this.prefix = prefix;
-                this.info = info;
-                if (EvaluateCriteria(AutoPropertyMask, info.Name, out this.nameInSource))
-                {
-                    this.kind = FieldKind.AutoProperty;
-                }
-                else if (EvaluateCriteria(AnonymousTypeFieldMask, info.Name, out this.nameInSource))
-                {
-                    this.kind = FieldKind.AnonymousClass;
-                }
-                else
-                {
-                    this.nameInSource = info.Name;
-                    this.kind = FieldKind.Normal;
-                }
-            }
-
-            #region Public Properties
-
-            public string LongFieldName => this.prefix == null
-                                               ? this.nameInSource
-                                               : string.Format("{0}{1}", this.prefix, this.nameInSource);
-
-            public string FieldLabel
-            {
-                get
-                {
-                    string fieldLabel;
-                    switch (this.kind)
-                    {
-                        case FieldKind.AnonymousClass:
-                            fieldLabel = string.Format("field '{0}'", this.LongFieldName);
-                            break;
-                        case FieldKind.AutoProperty:
-                            fieldLabel = string.Format(
-                                "autoproperty '{0}' (field '{1}')",
-                                this.LongFieldName,
-                                this.info.Name);
-                            break;
-                        case FieldKind.Normal:
-                        default:
-                            fieldLabel = string.Format("field '{0}'", this.LongFieldName);
-                            break;
-                    }
-
-                    return fieldLabel;
-                }
-            }
-
-            public string NameInSource => this.nameInSource;
-
-            public object Value { get; private set; }
-
-            #endregion
-
-            #region Public Methods and Operators
-
-            public void CaptureFieldValue(object obj)
-            {
-                this.Value = this.info.GetValue(obj);
-            }
-
-            public bool ChecksIfImplementsEqual()
-            {
-                return this.info.FieldType.ImplementsEquals();
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Nested type: FieldMatch
-
-        private class FieldMatch
-        {
-            #region Constructors and Destructors
-
-            public FieldMatch(ExtendedFieldInfo expected, ExtendedFieldInfo actual)
-            {
-                this.actual = actual;
-                this.Expected = expected;
-            }
-
-            #endregion
-
-            #region Fields
-
-            private readonly ExtendedFieldInfo actual;
-
-            #endregion
-
-            #region Public Properties
-
-            private bool DoValuesMatches
-            {
-                get
-                {
-                    if (!this.ExpectedFieldFound)
-                        return false;
-
-                    if (this.Expected.Value == null)
-                        return this.actual.Value == null;
-
-                    return this.Expected.Value.Equals(this.actual.Value);
-                }
-            }
-
-            private ExtendedFieldInfo Expected { get; }
-
-            /// <summary>
-            ///     Gets a value indicating whether the expected field has been found.
-            /// </summary>
-            private bool ExpectedFieldFound
-            {
-                get { return this.actual != null; }
-            }
-
-            public FluentMessage BuildMessage<T>(IChecker<T, ICheck<T>> checker, bool negated)
-            {
-                FluentMessage result = null;
-                if (this.DoValuesMatches == negated)
-                    if (negated)
-                    {
-                        result =
-                            checker.BuildShortMessage(
-                                string.Format(
-                                    "The {{0}}'s {0} has the same value in the comparand, whereas it must not.",
-                                    this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
-                        EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.Expected.Value, true,
-                            false);
-                    }
-                    else
-                    {
-                        if (!this.ExpectedFieldFound)
-                        {
-                            result = checker.BuildShortMessage(
-                                string.Format(
-                                    "The {{0}}'s {0} is absent from the {{1}}.",
-                                    this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
-                            result.Expected(this.Expected.Value);
-                        }
-                        else
-                        {
-                            result =
-                                checker.BuildShortMessage(
-                                    string.Format(
-                                        "The {{0}}'s {0} does not have the expected value.",
-                                        this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
-                            EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.Expected.Value,
-                                false, false);
-                        }
-                    }
-
-                return result;
-            }
-
-            #endregion
-        }
-
-        #endregion
-
         #region Static Fields
 
         /// <summary>
@@ -237,6 +46,17 @@ namespace NFluent
         ///     The auto property mask.
         /// </summary>
         private static readonly Regex AutoPropertyMask;
+
+        #endregion
+
+        /// <summary>
+        ///     Initializes static members of the <see cref="ObjectFieldsCheckExtensions" /> class.
+        /// </summary>
+        static ObjectFieldsCheckExtensions()
+        {
+            AutoPropertyMask = new Regex("^<(.*)>k_");
+            AnonymousTypeFieldMask = new Regex("^<(.*)>(i_|\\z)");
+        }
 
         #endregion
 
@@ -319,7 +139,9 @@ namespace NFluent
             var message = CheckFieldEquality(checker, checker.Value, expected, checker.Negated);
 
             if (message != null)
+            {
                 throw new FluentCheckException(message);
+            }
 
             return checker.BuildChainingObject();
         }
@@ -426,25 +248,33 @@ namespace NFluent
         {
             while (true)
             {
-                const BindingFlags flagsForFields = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
-                // Debug.Assert(type != null, "Type must not be null");
-                var result = type.GetField(name, flagsForFields);
+                const BindingFlags FlagsForFields = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+
+                var result = type.GetField(name, FlagsForFields);
 
                 if (result != null)
+                {
                     return result;
+                }
 
                 if (type.GetBaseType() == null)
+                {
                     return null;
+                }
 
-                // compensate any autogenerated name
+                // compensate any auto-generated name
                 FieldKind fieldKind;
                 var actualName = ExtractFieldNameAsInSourceCode(name, out fieldKind);
 
-                foreach (var field in type.GetFields(flagsForFields))
+                foreach (var field in type.GetFields(FlagsForFields))
                 {
                     var fieldName = ExtractFieldNameAsInSourceCode(field.Name, out fieldKind);
-                    if (fieldName == actualName) return field;
+                    if (fieldName == actualName)
+                    {
+                        return field;
+                    }
                 }
+
                 type = type.GetBaseType();
             }
         }
@@ -469,8 +299,7 @@ namespace NFluent
             return result;
         }
 
-        private static string CheckFieldEquality<T>(IChecker<T, ICheck<T>> checker, object value, object expected,
-            bool negated)
+        private static string CheckFieldEquality<T>(IChecker<T, ICheck<T>> checker, object value, object expected, bool negated)
         {
             var analysis = ScanFields(value, expected, new List<object>());
 
@@ -478,7 +307,9 @@ namespace NFluent
             {
                 var result = fieldMatch.BuildMessage(checker, negated);
                 if (result != null)
+                {
                     return result.ToString();
+                }
             }
 
             return null;
@@ -495,6 +326,184 @@ namespace NFluent
 
             actualFieldName = string.Empty;
             return false;
+        }
+
+        #endregion
+        private class FieldMatch
+        {
+            #region Constructors and Destructors
+
+            #endregion
+
+            #region Fields
+
+            private readonly ExtendedFieldInfo actual;
+
+            #endregion
+
+            public FieldMatch(ExtendedFieldInfo expected, ExtendedFieldInfo actual)
+            {
+                this.actual = actual;
+                this.Expected = expected;
+            }
+
+            #region Public Properties
+
+            private bool DoValuesMatches
+            {
+                get
+                {
+                    if (!this.ExpectedFieldFound)
+                    {
+                        return false;
+                    }
+
+                    if (this.Expected.Value == null)
+                    {
+                        return this.actual.Value == null;
+                    }
+
+                    return this.Expected.Value.Equals(this.actual.Value);
+                }
+            }
+
+            private ExtendedFieldInfo Expected { get; }
+
+            /// <summary>
+            ///     Gets a value indicating whether the expected field has been found.
+            /// </summary>
+            private bool ExpectedFieldFound
+            {
+                get { return this.actual != null; }
+            }
+
+            public FluentMessage BuildMessage<T>(IChecker<T, ICheck<T>> checker, bool negated)
+            {
+                FluentMessage result = null;
+                if (this.DoValuesMatches == negated)
+                {
+                    if (negated)
+                    {
+                        result =
+                            checker.BuildShortMessage(
+                                string.Format(
+                                    "The {{0}}'s {0} has the same value in the comparand, whereas it must not.",
+                                    this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
+                        EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.Expected.Value, true, false);
+                    }
+                    else
+                    {
+                        if (!this.ExpectedFieldFound)
+                        {
+                            result = checker.BuildShortMessage(
+                                string.Format(
+                                    "The {{0}}'s {0} is absent from the {{1}}.",
+                                    this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
+                            result.Expected(this.Expected.Value);
+                        }
+                        else
+                        {
+                            result =
+                                checker.BuildShortMessage(
+                                    string.Format(
+                                        "The {{0}}'s {0} does not have the expected value.",
+                                        this.Expected.FieldLabel.DoubleCurlyBraces())).For("value");
+                            EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.Expected.Value, false, false);
+                        }
+                    }
+                }
+
+                return result;
+            }
+
+            #endregion
+        }
+
+        #region Nested type: ExtendedFieldInfo
+
+        private class ExtendedFieldInfo
+        {
+            #region Fields
+
+            private readonly FieldInfo info;
+
+            private readonly FieldKind kind;
+
+            private readonly string nameInSource;
+
+            private readonly string prefix;
+
+            #endregion
+
+            public ExtendedFieldInfo(string prefix, FieldInfo info)
+            {
+                this.prefix = prefix;
+                this.info = info;
+                if (EvaluateCriteria(AutoPropertyMask, info.Name, out this.nameInSource))
+                {
+                    this.kind = FieldKind.AutoProperty;
+                }
+                else if (EvaluateCriteria(AnonymousTypeFieldMask, info.Name, out this.nameInSource))
+                {
+                    this.kind = FieldKind.AnonymousClass;
+                }
+                else
+                {
+                    this.nameInSource = info.Name;
+                    this.kind = FieldKind.Normal;
+                }
+            }
+
+            #region Public Properties
+
+            public string LongFieldName => this.prefix == null
+                                               ? this.nameInSource
+                                               : string.Format("{0}{1}", this.prefix, this.nameInSource);
+
+            public string FieldLabel
+            {
+                get
+                {
+                    string fieldLabel;
+                    switch (this.kind)
+                    {
+                        case FieldKind.AnonymousClass:
+                            fieldLabel = string.Format("field '{0}'", this.LongFieldName);
+                            break;
+                        case FieldKind.AutoProperty:
+                            fieldLabel = string.Format(
+                                "autoproperty '{0}' (field '{1}')",
+                                this.LongFieldName,
+                                this.info.Name);
+                            break;
+                        default:
+                            fieldLabel = string.Format("field '{0}'", this.LongFieldName);
+                            break;
+                    }
+
+                    return fieldLabel;
+                }
+            }
+
+            public string NameInSource => this.nameInSource;
+
+            public object Value { get; private set; }
+
+            #endregion
+
+            #region Public Methods and Operators
+
+            public void CaptureFieldValue(object obj)
+            {
+                this.Value = this.info.GetValue(obj);
+            }
+
+            public bool ChecksIfImplementsEqual()
+            {
+                return this.info.FieldType.ImplementsEquals();
+            }
+
+            #endregion
         }
 
         #endregion

@@ -19,7 +19,6 @@ namespace NFluent.Helpers
 {
     using System;
     using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
 #if !PORTABLE && !NETSTANDARD1_3 && !DOTNET_30 && !DOTNET_20
     using System.Linq;
 #endif
@@ -31,7 +30,6 @@ namespace NFluent.Helpers
     /// </summary>
     public static class ExceptionHelper
     {
-
         private static ExceptionConstructor constructors;
 
         private static ExceptionConstructor Constructors
@@ -56,30 +54,21 @@ namespace NFluent.Helpers
                 Debug.Assert(defaultConstructor != null, "NFluent exception must provide a constructor accepting a single string as parameter!");
 
                 // look for MSTest
-                var resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException");
+                var resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException")
+                                 ?? ExceptionScanner(
+                                     "nunit",
+                                     "NUnit.",
+                                     "AssertionException",
+                                     "IgnoreException",
+                                     "InconclusiveException");
 
-                if (resultScan == null)
-                {
-                    // look for NUnit
-                    resultScan = ExceptionScanner(
-                        "nunit",
-                        "NUnit.",
-                        "AssertionException",
-                        "IgnoreException",
-                        "InconclusiveException");
-                }
-
-                if (resultScan != null)
-                {
-                    result = resultScan;
-                }
+                result = resultScan;
                 constructors = result;
 
                 return constructors;
             }
         }
 
-        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         private static ExceptionConstructor ExceptionScanner(string assemblyMarker, string nameSpace, string assertionExceptionName, string ignoreExceptionName, string inconclusiveExceptionName)
         {
 #if !(PORTABLE) && !(NETSTANDARD1_3)
@@ -94,43 +83,33 @@ namespace NFluent.Helpers
                 var exportedTypes = assembly.GetExportedTypes();
                 foreach (var type in exportedTypes)
                 {
-                    if (type.Namespace != null && type.Namespace.StartsWith(nameSpace))
+                    Debug.Assert(type.Namespace != null, "type.Namespace != null");
+                    if (type.Namespace.StartsWith(nameSpace))
                     {
                         if (type.Name == assertionExceptionName)
                         {
                             var info = type.GetConstructor(defaultSignature);
-                            if (info != null)
-                            {
-                                result.FailedException = info;
-                            }
-
+                            result.FailedException = info;
                             foundExceptions++;
                         }
                         else if (type.Name == ignoreExceptionName)
                         {
                             var info = type.GetConstructor(defaultSignature);
-                            if (info != null)
-                            {
-                                result.IgnoreException = info;
-                            }
-
+                            result.IgnoreException = info;
                             foundExceptions++;
                         }
                         else if (type.Name == inconclusiveExceptionName)
                         {
                             var info = type.GetConstructor(defaultSignature);
-                            if (info != null)
+                            result.InconclusiveException = info;
+                            foundExceptions++;
+                            if (string.IsNullOrEmpty(ignoreExceptionName))
                             {
-                                result.InconclusiveException = info;
+                                // if we do not expect a ignore exception, we remap inconclusive
+                                result.IgnoreException = info;
                                 foundExceptions++;
-                                if (string.IsNullOrEmpty(ignoreExceptionName))
-                                {
-                                    // if we do not expect a ignore exception, we remap inconclusive
-                                    result.IgnoreException = info;
-                                    foundExceptions++;
-                                }
                             }
-                        }
+                       }
                     }
 
                     // stop search if we found everything
@@ -186,7 +165,8 @@ namespace NFluent.Helpers
                 if (!firstRow)
                 {
                     // TODO: parametrized this line sep part
-                    result.Append(Environment.NewLine+ "--> ");
+                    result.Append(Environment.NewLine + "--> ");
+
                 }
                 result.AppendFormat("{{ {0} }} \"{1}\"", innerException.GetType(), innerException.Message);
                 
