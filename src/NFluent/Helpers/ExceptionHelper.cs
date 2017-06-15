@@ -38,43 +38,42 @@ namespace NFluent.Helpers
         {
             get
             {
-                if (constructors == null)
+                if (constructors != null)
                 {
-                    // we need to identify required exception types
-                    var defaultConstructor = typeof(FluentCheckException).GetConstructor(new[] { typeof(string) });
-                    var result = new ExceptionConstructor
-                                     {
-                                         FailedException = defaultConstructor,
-                                         IgnoreException = defaultConstructor,
-                                         InconclusiveException = defaultConstructor
-                                     };
-
-                    // assert we have a default constructor
-                    Debug.Assert(defaultConstructor != null, "NFluent exception must provide a constructor accepting a single string as parameter!");
-
-
-                    ExceptionConstructor resultScan;
-
-                    // look for MSTest
-                    resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException");
-
-                    if (resultScan == null)
-                    {
-                        // look for NUnit
-                        resultScan = ExceptionScanner(
-                            "nunit",
-                            "NUnit.",
-                            "AssertionException",
-                            "IgnoreException",
-                            "InconclusiveException");
-                    }
-
-                    if (resultScan != null)
-                    {
-                        result = resultScan;
-                    }
-                    constructors = result;
+                    return constructors;
                 }
+
+                // we need to identify required exception types
+                var defaultConstructor = typeof(FluentCheckException).GetConstructor(new[] { typeof(string) });
+                var result = new ExceptionConstructor
+                                 {
+                                     FailedException = defaultConstructor,
+                                     IgnoreException = defaultConstructor,
+                                     InconclusiveException = defaultConstructor
+                                 };
+
+                // assert we have a default constructor
+                Debug.Assert(defaultConstructor != null, "NFluent exception must provide a constructor accepting a single string as parameter!");
+
+                // look for MSTest
+                var resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException");
+
+                if (resultScan == null)
+                {
+                    // look for NUnit
+                    resultScan = ExceptionScanner(
+                        "nunit",
+                        "NUnit.",
+                        "AssertionException",
+                        "IgnoreException",
+                        "InconclusiveException");
+                }
+
+                if (resultScan != null)
+                {
+                    result = resultScan;
+                }
+                constructors = result;
 
                 return constructors;
             }
@@ -122,11 +121,11 @@ namespace NFluent.Helpers
                             var info = type.GetConstructor(defaultSignature);
                             if (info != null)
                             {
-                                // if we do not expect a ignore exception, we remap inconclusive
                                 result.InconclusiveException = info;
                                 foundExceptions++;
                                 if (string.IsNullOrEmpty(ignoreExceptionName))
                                 {
+                                    // if we do not expect a ignore exception, we remap inconclusive
                                     result.IgnoreException = info;
                                     foundExceptions++;
                                 }

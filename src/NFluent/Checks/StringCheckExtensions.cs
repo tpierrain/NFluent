@@ -583,18 +583,25 @@ namespace NFluent
         {
             IEnumerable<string> next;
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            if (checker.Value != null)
+            var checkedString = checker.Value;
+            if (checkedString != null)
             {
-                var lines = checker.Value.Split(Environment.NewLine[0]);
-                if (Environment.NewLine.Length > 1)
+                var start = 0;
+                var retLines = new List<string>();
+                var newLineLength = Environment.NewLine.Length;
+                while (start < checkedString.Length)
                 {
-                    for (var i = 0; i < lines.Length; i++)
+                    var indexOf = checkedString.IndexOf(Environment.NewLine, start);
+                    if (indexOf == -1)
                     {
-                        lines[i] = lines[i].Trim(Environment.NewLine[1]);
+                        indexOf = checkedString.Length;
                     }
+
+                    retLines.Add(checkedString.Substring(start, indexOf - start));
+                    start = indexOf + newLineLength;
                 }
 
-                next = lines;
+                next = retLines;
             }
             else
             {
