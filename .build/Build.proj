@@ -77,7 +77,6 @@
     </PropertyGroup>
   </Target>
   
-
   <Target Name="SynchroVersion">
     <!-- Ensure version number is propagated in new CsProj format file-->
 <ItemGroup>
@@ -106,21 +105,11 @@
       Value="$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)" />
   </Target>
     
-  <!-- 1- Do the BUILD -->
-  <Target Name="DotnetCoreRestore">
-    <Message Importance="high" Text="--------- DOTNET RESTORE  -------------------------------------------"/>     
-    <Exec Command="dotnet restore $(SourcePath)NFluent.Standard.13\" />
-    <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Internals\" />
-    <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests\" />
-    <Exec Command="dotnet restore $(SolutionRoot)\tests\NFluent.Core.Tests.Extensions\" />
-    <Message Importance="high" Text="--------- end of DOTNET RESTORE  -------------------------------------"/>
-  </Target>
-
   <ItemGroup>
-    <!-- ProjectFolder Include="$(SourcePath)\NFluent"/>
-    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Internals"/>
-    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests"/>
-    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Extensions"/-->
+    <ProjectFolder Include="$(SourcePath)\NFluent.Standard.13"><Fwk>core</Fwk></ProjectFolder>
+    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Internals"><Fwk>core</Fwk></ProjectFolder>
+    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests"><Fwk>core</Fwk></ProjectFolder>
+    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Extensions"><Fwk>core</Fwk></ProjectFolder>
     <ProjectFolder Include="$(SourcePath)\NFluent.45"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.45.Tests"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.40"/>
@@ -139,13 +128,24 @@
     <ProjectFolder Include="$(TestsPath)\Nugget"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.T4"/>
   </ItemGroup>
+  
+  <!-- 0- Restore dependencies -->
+  <Target Name="NugetRestore">
+    <ItemGroup>
+      <Prj Include="ProjectFolder" Condition="'%(ProjectFolder.Fwk)'=='core'">
+        <RestoreCommand>dotnet restore %(ProjectFolder.FullPath)\</RestoreCommand>
+      </Prj>
+      <Prj Include="ProjectFolder" Condition="'%(ProjectFolder.Fwk)'!='core'">
+        <RestoreCommand>"$(NuGetExePath)" install "%(ProjectFolder.FullPath)\packages.config" -o "$(SolutionRoot)\packages"</RestoreCommand>
+      </Prj>
+    </ItemGroup>
 
-  <Target Name="NugetRestore" DependsOnTargets="DotnetCoreRestore">
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
-    <Exec Command='"$(NuGetExePath)" install "%(ProjectFolder.Identity)\packages.config" -o "$(SolutionRoot)\packages"'/>
+    <Exec Command='%(Prj.RestoreCommand)'/>
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
   </Target>
   
+  <!-- 1- Do the BUILD -->
   <Target Name="Build" DependsOnTargets="NugetRestore;SynchroVersion">
     <Message Importance="high" Text="--------- BUILD  -------------------------------------------"/>
       <Message Importance="high" Text="
@@ -270,7 +270,7 @@ RUN ALL UNIT TESTS
     <Message Importance="normal" Text="Cover for %(TestProjects.Identity) : $(SolutionRoot)\%(filename)-coverage.xml" Condition="'%(TestProjects.Coverage)'=='true'"/>
     <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]*" -output:"$(SolutionRoot)\%(filename)-coverage.xml" -oldstyle -targetargs:"%(TestRun.Args)"' Condition="'%(TestRun.Coverage)'=='true'"/>
     <Exec Command="pip install codecov"/>
-    <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(SolutionRoot)\%(filename)-coverage.xml" -t $(CodeCovKey) -X gcov'
+    <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(SolutionRoot)\%(filename)-coverage.xml" -t $(CodeCovKey) -X gcov -n %(filename)'
            Condition="('%(TestProjects.Coverage)'=='true') AND ('$(CodeCovKey)'!='')"/>
     <Message Importance="high" Text="--------- end of Coverage ---------"/>
   </Target>
