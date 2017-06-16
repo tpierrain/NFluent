@@ -26,12 +26,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DebugType>portable</DebugType>
+    <DebugType>full</DebugType>
     <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE</DefineConstants>
     <DocumentationFile>bin\Release\netstandard1.3\NFluent.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="NFluent.Core.v3.ncrunchproject" />
