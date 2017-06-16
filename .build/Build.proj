@@ -142,7 +142,7 @@
 
   <Target Name="NugetRestore" DependsOnTargets="DotnetCoreRestore">
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
-    <Exec Command='"$(NuGetExePath)"  install "%(ProjectFolder.Identity)\packages.config" -o "$(SolutionRoot)\packages"'/>
+    <Exec Command='"$(NuGetExePath)" install "%(ProjectFolder.Identity)\packages.config" -o "$(SolutionRoot)\packages"'/>
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
   </Target>
   
