@@ -253,7 +253,7 @@ namespace NFluent.Extensibility
             else
             {
                 fullLabel = string.Format(
-                    this.customMessage ?? "The {0}: {1}", 
+                    "The {0}: {1}", 
                     this.block, 
                     this.comparisonLabel);
             }
