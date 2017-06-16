@@ -225,18 +225,21 @@ GENERATING DOCS for:
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj'>
         <Fwk>core</Fwk>
+        <Coverage>true</Coverage>
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Core.Tests\NFluent.Core.Tests.csproj'>
         <Fwk>core</Fwk>
+        <Coverage>true</Coverage>
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Core.Tests.Extensions\NFluent.Core.Tests.Extensions.csproj'>
         <Fwk>core</Fwk>
+        <Coverage>true</Coverage>
       </TestProjects>
     </ItemGroup>
 
     <ItemGroup>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Fwk)'=='core'">
-        <Runner>dotnet</Runner>
+        <Runner>dotnet.exe</Runner>
         <Args>test %(TestProjects.Identity) -c $(Configuration)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
