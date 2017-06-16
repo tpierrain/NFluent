@@ -51,7 +51,7 @@ namespace NFluent.Tests
 
             Check.That(SimpleDico).IsNotEqualTo(4);
 
-            Check.That(SimpleDico).IsSameReferenceThan(SimpleDico);
+            Check.That(SimpleDico).IsSameReferenceAs(SimpleDico);
         }
 
         [Test]

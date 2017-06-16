@@ -24,17 +24,26 @@ namespace NFluent.Tests
     public class ObjectRelatedTest
     {
         [Test]
+        public void IsSameReferenceAsWorks()
+        {
+            var test = new object();
+            Check.That(test).IsSameReferenceAs(test);
+        }
+
+        [Test]
         public void IsSameReferenceThanWorks()
         {
             var test = new object();
+#pragma warning disable CS0618
             Check.That(test).IsSameReferenceThan(test);
+#pragma warning restore CS0618
         }
 
         [Test]
         public void IsSameReferenceThanDoesNotLoseOriginalTypeForOtherCheck()
         {
             var numbers = new[] { 1, 4, 42 };
-            Check.That(numbers).IsSameReferenceThan(numbers).And.Contains(42);
+            Check.That(numbers).IsSameReferenceAs(numbers).And.Contains(42);
         }
 
         [Test]
@@ -42,7 +51,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.That(new object()).IsSameReferenceThan(new object());
+                Check.That(new object()).IsSameReferenceAs(new object());
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked object must be the same instance than expected one." + Environment.NewLine + "The checked object:" + Environment.NewLine + "\t[System.Object]" + Environment.NewLine + "The expected object: same instance than" + Environment.NewLine + "\t[System.Object]");
@@ -189,7 +198,7 @@ namespace NFluent.Tests
         {
             var test = new object();
             Check.That(test).Not.IsDistinctFrom(test);
-            Check.That(new object()).Not.IsSameReferenceThan(new object());
+            Check.That(new object()).Not.IsSameReferenceAs(new object());
         }
 
         [Test]
