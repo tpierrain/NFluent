@@ -62,7 +62,7 @@ namespace NFluent.Helpers
                                      "IgnoreException",
                                      "InconclusiveException");
 
-                result = resultScan;
+                result = resultScan ?? result;
                 constructors = result;
 
                 return constructors;
