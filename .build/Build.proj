@@ -49,11 +49,11 @@
   </Choose>
 
   <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
-  <Target Name="CI" DependsOnTargets="Build; RunTests; Package" />
-  <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll; Publish"/>
-  <Target Name="Alpha" DependsOnTargets="SetAlpha; RunAll; Publish"/>
-  <Target Name="RC" DependsOnTargets="SetRC; RunAll; Publish"/>
-  <Target Name="Release" DependsOnTargets="SetRelease; RunAll; Publish"/>
+  <Target Name="CI" DependsOnTargets="Build; RunTests; Package; CoverageReport" />
+  <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll; Publish; CoverageReport"/>
+  <Target Name="Alpha" DependsOnTargets="SetAlpha; RunAll; Publish; CoverageReport"/>
+  <Target Name="RC" DependsOnTargets="SetRC; RunAll; Publish; CoverageReport"/>
+  <Target Name="Release" DependsOnTargets="SetRelease; RunAll; Publish; CoverageReport"/>
 
   <!--Targets-->
   <Target Name="SetNightly">
@@ -136,7 +136,7 @@
         <RestoreCommand>dotnet restore %(ProjectFolder.FullPath)\</RestoreCommand>
       </Prj>
       <Prj Include="ProjectFolder" Condition="'%(ProjectFolder.Fwk)'!='core'">
-        <RestoreCommand>"$(NuGetExePath)" install "%(ProjectFolder.FullPath)\packages.config" -o "$(SolutionRoot)\packages"</RestoreCommand>
+        <RestoreCommand>"$(NuGetExePath)" install "%(ProjectFolder.FullPath)\packages.config" -o "$(SolutionRoot)\packages" -verbosity quiet</RestoreCommand>
       </Prj>
     </ItemGroup>
 
@@ -225,22 +225,22 @@ GENERATING DOCS for:
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj'>
         <Fwk>core</Fwk>
-        <Coverage>true</Coverage>
+        <Coverage>false</Coverage>
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Core.Tests\NFluent.Core.Tests.csproj'>
         <Fwk>core</Fwk>
-        <Coverage>true</Coverage>
+        <Coverage>false</Coverage>
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Core.Tests.Extensions\NFluent.Core.Tests.Extensions.csproj'>
         <Fwk>core</Fwk>
-        <Coverage>true</Coverage>
+        <Coverage>false</Coverage>
       </TestProjects>
     </ItemGroup>
 
     <ItemGroup>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Fwk)'=='core'">
         <Runner>dotnet.exe</Runner>
-        <Args>test %(TestProjects.Identity) -c $(Configuration)</Args>
+        <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Fwk)'!='core' AND '%(TestProjects.Runner)'=='MsTest'">
@@ -261,18 +261,25 @@ RUN ALL UNIT TESTS
           "  />
 
     <Message Importance="high" Text="--------- RUN TESTS ---------"/>
-
+    <Delete Files="NFluent-coverage.xml"/>
     <Message Importance="low" Text="debug message: TestProjectsWithArguments.Identity:'%(TestProjects.Identity)'"/>
     <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="../"/>
     <Message Importance="high" Text="--------- end of RUN TESTS ---------"/>
 
     <Message Importance="high" Text="--------- Coverage ---------"/>
-    <Message Importance="normal" Text="Cover for %(TestProjects.Identity) : $(SolutionRoot)\%(filename)-coverage.xml" Condition="'%(TestProjects.Coverage)'=='true'"/>
-    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]*" -output:"$(SolutionRoot)\%(filename)-coverage.xml" -oldstyle -targetargs:"%(TestRun.Args)"' Condition="'%(TestRun.Coverage)'=='true'"/>
-    <Exec Command="pip install codecov"/>
-    <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(SolutionRoot)\%(filename)-coverage.xml" -t $(CodeCovKey) -X gcov -n %(filename)'
-           Condition="('%(TestProjects.Coverage)'=='true') AND ('$(CodeCovKey)'!='')"/>
+    <Message Importance="normal" Text="Cover for %(TestProjects.Identity) : $(SolutionRoot)\NFluent-coverage.xml -mergeoutput" Condition="'%(TestProjects.Coverage)'=='true'"/>
+    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]*" -output:"$(SolutionRoot)\$(SolutionName)-coverage.xml" -oldstyle -mergeoutput -targetargs:"%(TestRun.Args)"' Condition="'%(TestRun.Coverage)'=='true'"/>
     <Message Importance="high" Text="--------- end of Coverage ---------"/>
+ </Target>
+  
+ <Target Name="CoverageReport" DependsOnTargets="RunTests">
+   <Message Importance="high" Text="--------- Publish Coverage ---------"/>
+    <Exec Command ='"$(NuGetToolsPath)\ReportGenerator.2.5.9-beta1\tools\ReportGenerator.exe" -reports:$(SolutionRoot)\$(SolutionName)-coverage.xml -targetdir:CoverageReport' Condition="'$(APPVEYOR)'!='True'"/>
+
+    <Exec Command="pip install codecov"/>
+    <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(SolutionRoot)\NFluent-coverage.xml" -t $(CodeCovKey) -X gcov -n %(filename)'
+           Condition="('%(TestProjects.Coverage)'=='true') AND ('$(CodeCovKey)'!='')"/>
+   <Message Importance="high" Text="--------- end of Publish Coverage ---------"/>
   </Target>
 
   <!-- 4- Then PACKAGE -->

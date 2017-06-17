@@ -37,6 +37,7 @@ TestResult.xml
 
 # OpenCover
 *coverage.xml
+CoverageReport/
 
 # Build Results of an ATL Project
 [Dd]ebugPS/
