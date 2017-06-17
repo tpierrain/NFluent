@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\TypeChecks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CultureSession.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NotRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NUnitSpecific.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringDifferenceAnalyzerTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ValueBlockTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)XamarinSpecificTests.cs" />
