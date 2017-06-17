@@ -41,7 +41,7 @@
   <Choose>
     <When Condition="'$(APPVEYOR)'=='True'">
       <PropertyGroup>
-        <NunitOptions>--result=TestResults.xml;format=AppVeyor</NunitOptions>
+        <NunitOptions>--result="$(SolutionRoot)\TestResults.xml";format=AppVeyor</NunitOptions>
         <TestRunnerPath>nunit3-console.exe</TestRunnerPath>
         <MsTestRunnerPath></MsTestRunnerPath>
       </PropertyGroup>
@@ -254,6 +254,7 @@ GENERATING DOCS for:
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
     </ItemGroup>
+
     <Message Importance="high" Text="
 ---------------------------------------------------------------
 RUN ALL UNIT TESTS
@@ -261,20 +262,20 @@ RUN ALL UNIT TESTS
           "  />
 
     <Message Importance="high" Text="--------- RUN TESTS ---------"/>
-    <Delete Files="NFluent-coverage.xml"/>
+    <Delete Files="$(SolutionRoot)\$(SolutionName)-coverage.xml"/>
     <Message Importance="low" Text="debug message: TestProjectsWithArguments.Identity:'%(TestProjects.Identity)'"/>
-    <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="../"/>
+    <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="$(SolutionRoot)"/>
     <Message Importance="high" Text="--------- end of RUN TESTS ---------"/>
 
     <Message Importance="high" Text="--------- Coverage ---------"/>
-    <Message Importance="normal" Text="Cover for %(TestProjects.Identity) : $(SolutionRoot)\NFluent-coverage.xml -mergeoutput" Condition="'%(TestProjects.Coverage)'=='true'"/>
-    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]*" -output:"$(SolutionRoot)\$(SolutionName)-coverage.xml" -oldstyle -mergeoutput -targetargs:"%(TestRun.Args)"' Condition="'%(TestRun.Coverage)'=='true'"/>
+    <Message Importance="normal" Text="Cover for %(TestProjects.Identity) : $(SolutionRoot)\$(SolutionName)-coverage.xml -mergeoutput" Condition="'%(TestProjects.Coverage)'=='true'"/>
+    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]*" -excludebyattribute:*.Obsolete*  -output:"$(SolutionRoot)\$(SolutionName)-coverage.xml" -oldstyle -mergeoutput -targetargs:"%(TestRun.Args)"' Condition="'%(TestRun.Coverage)'=='true'"/>
     <Message Importance="high" Text="--------- end of Coverage ---------"/>
  </Target>
   
  <Target Name="CoverageReport" DependsOnTargets="RunTests">
    <Message Importance="high" Text="--------- Publish Coverage ---------"/>
-    <Exec Command ='"$(NuGetToolsPath)\ReportGenerator.2.5.9-beta1\tools\ReportGenerator.exe" -reports:$(SolutionRoot)\$(SolutionName)-coverage.xml -targetdir:CoverageReport' Condition="'$(APPVEYOR)'!='True'"/>
+    <Exec Command ='"$(NuGetToolsPath)\ReportGenerator.2.5.9-beta1\tools\ReportGenerator.exe" -reports:$(SolutionRoot)\$(SolutionName)-coverage.xml -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="'$(APPVEYOR)'!='True'"/>
 
     <Exec Command="pip install codecov"/>
     <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(SolutionRoot)\NFluent-coverage.xml" -t $(CodeCovKey) -X gcov -n %(filename)'
