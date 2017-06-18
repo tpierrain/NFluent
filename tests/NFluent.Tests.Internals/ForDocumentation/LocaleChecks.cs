@@ -22,7 +22,7 @@ namespace NFluent.Tests.ForDocumentation
     public class LocaleChecks
     {
         [Test]
-        [Ignore("Scan all assemblies, execute tests in Spanish.")]
+        [Explicit("Scan all assemblies, execute tests in Spanish.")]
         public void Spanish()
         {
             using (new CultureSession("es-ES"))
@@ -32,7 +32,7 @@ namespace NFluent.Tests.ForDocumentation
         }
 
         [Test]
-        [Ignore("Scan all assemblies, execute tests in Chinese.")]
+        [Explicit("Scan all assemblies, execute tests in Chinese.")]
         public void Chinese()
         {
             using (new CultureSession("zh-CN"))
@@ -42,7 +42,7 @@ namespace NFluent.Tests.ForDocumentation
         }
 
         [Test]
-        [Ignore("Scan all assemblies, execute tests in Canadian French.")]
+        [Explicit("Scan all assemblies, execute tests in Canadian French.")]
         public void CanadianFrench()
         {
             using (new CultureSession("fr-CA"))
@@ -52,7 +52,7 @@ namespace NFluent.Tests.ForDocumentation
         }
 
         [Test]
-        [Ignore("Scan all assemblies, execute tests in Japanese.")]
+        [Explicit("Scan all assemblies, execute tests in Japanese.")]
         public void Japanese()
         {
             using (new CultureSession("ja-JP"))
