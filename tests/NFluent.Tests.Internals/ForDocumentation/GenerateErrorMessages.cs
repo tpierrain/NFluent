@@ -99,7 +99,7 @@ namespace NFluent.Tests.ForDocumentation
         }
 
         [Test]
-        [Ignore("Scan all assemblies and generate a report listing existing cheks.")]
+        [Explicit("Scan all assemblies and generate a report listing existing cheks.")]
         public void ScanAssembliesForCheckAndGenerateReport()
         {
             var report = new FullRunDescription();
