@@ -197,9 +197,9 @@ namespace NFluent.Tests
                 "",
                 "The checked enumerable does not contain exactly the expected value(s). First difference is at index #25.",
                 "The checked enumerable:",
-                "\t[..., 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 666, 26, 27, 28, 29, 30, 31, 32, 33, ...] (40 items)",
+                "\t[..., 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 666, 26, 27, 28, 29, 30, 31, 32, 33, 34...] (40 items)",
                 "The expected value(s):",
-                "\t[..., 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, ...] (40 items)");
+                "\t[..., 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34...] (40 items)");
         }
 
         [Test]

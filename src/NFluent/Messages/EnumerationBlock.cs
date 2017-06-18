@@ -211,13 +211,12 @@ namespace NFluent.Messages
                     description.Append(", ");
                 }
 
+                description.Append(iterator.Current.ToStringProperlyFormatted());
+                
                 if (i == firstIndex + NumberOfItemsToList - 1)
                 {
                     description.Append("...");
-                    break;
                 }
-
-                description.Append(iterator.Current.ToStringProperlyFormatted());
             }
 
             description.AppendFormat("]");

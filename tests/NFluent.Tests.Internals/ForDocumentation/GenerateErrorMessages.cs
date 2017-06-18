@@ -43,7 +43,7 @@ namespace NFluent.Tests.ForDocumentation
          *   - all TestFixtureTeardown are run
          */
         [Test]
-        [Explicit("Scan all assemblies, execute tests and generate a report for error messages.")]
+        [Ignore("Scan all assemblies, execute tests and generate a report for error messages.")]
         public void ScanUnitTestsAndGenerateReport()
         {
             var report = RunFailingTests(true);
@@ -54,7 +54,7 @@ namespace NFluent.Tests.ForDocumentation
         }
 
         [Test]
-        [Explicit("Assess error message quality")]
+        [Ignore("Assess error message quality")]
         public void ScanUnitTestsAndAssessMessages()
         {
             var report = RunFailingTests(false);
@@ -99,7 +99,7 @@ namespace NFluent.Tests.ForDocumentation
         }
 
         [Test]
-        [Explicit("Scan all assemblies and generate a report listing existing cheks.")]
+        [Ignore("Scan all assemblies and generate a report listing existing cheks.")]
         public void ScanAssembliesForCheckAndGenerateReport()
         {
             var report = new FullRunDescription();

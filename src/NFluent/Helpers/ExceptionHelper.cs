@@ -55,12 +55,7 @@ namespace NFluent.Helpers
 
                 // look for MSTest
                 var resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException")
-                                 ?? ExceptionScanner(
-                                     "nunit",
-                                     "NUnit.",
-                                     "AssertionException",
-                                     "IgnoreException",
-                                     "InconclusiveException");
+                                 ?? ExceptionScanner( "nunit", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException");
 
                 result = resultScan ?? result;
                 constructors = result;

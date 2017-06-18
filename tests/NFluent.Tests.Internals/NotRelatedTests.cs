@@ -39,7 +39,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [Explicit("Experimental: to check if negation works")]
+        [Ignore("Experimental: to check if negation works")]
         public void ForceNegationOnAllTest()
         {
             if (!CheckContext.DefaulNegated)

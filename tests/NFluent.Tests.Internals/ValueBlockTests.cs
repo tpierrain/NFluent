@@ -60,7 +60,7 @@ namespace NFluent.Tests
             var blk = new EnumerationBlock(list, 0);
 
             blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("[\'t\', \'h\', \'i\', \'s\', \' \', \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', ...] (53 items)", blk.GetMessage());
+            Assert.AreEqual("[\'t\', \'h\', \'i\', \'s\', \' \', \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\'...] (53 items)", blk.GetMessage());
         }
        
         [Test]
@@ -97,7 +97,7 @@ namespace NFluent.Tests
             var blk = new EnumerationBlock(list, 15);
 
             blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("[..., \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\', \'g\', \' \', \'t\', \'o\', ...] (53 items)", blk.GetMessage());
+            Assert.AreEqual("[..., \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\', \'g\', \' \', \'t\', \'o\', \' \'...] (53 items)", blk.GetMessage());
         }
 
         [Test]
