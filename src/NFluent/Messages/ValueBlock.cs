@@ -172,12 +172,13 @@ namespace NFluent.Messages
             var description = new StringBuilder();
             description.AppendFormat("[{0}]", this.test.ToStringProperlyFormatted());
 
-            if (this.enumerableCount.HasValue)
+            var count = this.enumerableCount.GetValueOrDefault(-1);
+            if (count>=0)
             {
                 description.AppendFormat(
                     " ({0} {1})", 
-                    this.enumerableCount, 
-                    this.enumerableCount <= 1 ? "item" : "items");
+                    count, 
+                    count <= 1 ? "item" : "items");
             }
 
             return description.ToString();
