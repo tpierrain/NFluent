@@ -305,7 +305,6 @@ namespace NFluent.Tests
         }
 
 #if !NETCOREAPP1_0
-
         [Test]
         public void ContainsExactlyWithEnumerableOfVariousObjectsTypesWorks()
         {
