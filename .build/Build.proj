@@ -269,7 +269,8 @@ RUN ALL UNIT TESTS
 
     <Message Importance="high" Text="--------- Coverage ---------"/>
     <Message Importance="normal" Text="Cover for %(TestProjects.Identity) : $(SolutionRoot)\$(SolutionName)-coverage.xml -mergeoutput" Condition="'%(TestProjects.Coverage)'=='true'"/>
-    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]*" -excludebyattribute:*.Obsolete*  -output:"$(SolutionRoot)\$(SolutionName)-coverage.xml" -oldstyle -mergeoutput -targetargs:"%(TestRun.Args)"' Condition="'%(TestRun.Coverage)'=='true'"/>
+    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]*" -excludebyattribute:*.Obsolete*  -output:"$(SolutionRoot)\$(SolutionName)-coverage.xml" -mergeoutput -targetargs:"%(TestRun.Args)"'
+          Condition="'%(TestRun.Coverage)'=='true'"/>
     <Message Importance="high" Text="--------- end of Coverage ---------"/>
  </Target>
   
@@ -278,8 +279,8 @@ RUN ALL UNIT TESTS
     <Exec Command ='"$(NuGetToolsPath)\ReportGenerator.2.5.9-beta1\tools\ReportGenerator.exe" -reports:$(SolutionRoot)\$(SolutionName)-coverage.xml -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="'$(APPVEYOR)'!='True'"/>
 
     <Exec Command="pip install codecov"/>
-    <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(SolutionRoot)\NFluent-coverage.xml" -t $(CodeCovKey) -X gcov -n %(filename)'
-           Condition="('%(TestProjects.Coverage)'=='true') AND ('$(CodeCovKey)'!='')"/>
+    <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(SolutionRoot)\$(SolutionName)-coverage.xml" -t $(CodeCovKey) -X gcov -n $(SolutionName)'
+           Condition="('$(CodeCovKey)'!='') AND ('$(APPVEYOR)'=='True')"/>
    <Message Importance="high" Text="--------- end of Publish Coverage ---------"/>
   </Target>
 

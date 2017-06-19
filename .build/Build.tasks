@@ -13,13 +13,9 @@
             var builder = new StringBuilder(version.Length+stream.Length);
             var parts = (version+".0.0").Split('.');
             var buildId = int.Parse(parts[3]);
-            if (buildId < 100)
+            if (buildId < 10000)
             {
-                parts[3] = buildId.ToString("00");
-            }
-            else if (buildId < 1000)
-            {
-                parts[3] = buildId.ToString("000");
+                parts[3] = buildId.ToString("0000");
             }
             else
             {
