@@ -9,14 +9,13 @@
     <MSBuildCommunityTasksPath>$(SolutionRoot)\.build</MSBuildCommunityTasksPath>
     <SolutionName>NFluent</SolutionName>
     <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
-
     <CodeCovURL>https://codecov.io/gh/dupdob/$(SolutionName)</CodeCovURL>
-    <PackageStream>alpha</PackageStream>
     <NugetKey>$(NFLUENT_NUGET_API_KEY)</NugetKey>
     <NugetFeed>$(NFLUENT_NUGET_FEED)</NugetFeed>
     <CodeCovKey>$(CODECOV_KEY)</CodeCovKey>
     <AttributeVersionFile>$(SolutionRoot)\Version.cs</AttributeVersionFile>
 
+    <PackageStream>alpha</PackageStream>
     <ToolsPath>$(SolutionRoot)\tools\</ToolsPath>
     <SourcePath>$(SolutionRoot)\src\</SourcePath>
     <TestsPath>$(SolutionRoot)\tests</TestsPath>
@@ -263,7 +262,6 @@ RUN ALL UNIT TESTS
 
     <Message Importance="high" Text="--------- RUN TESTS ---------"/>
     <Delete Files="$(SolutionRoot)\$(SolutionName)-coverage.xml"/>
-    <Message Importance="low" Text="debug message: TestProjectsWithArguments.Identity:'%(TestProjects.Identity)'"/>
     <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="$(SolutionRoot)"/>
     <Message Importance="high" Text="--------- end of RUN TESTS ---------"/>
 
@@ -272,9 +270,9 @@ RUN ALL UNIT TESTS
     <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]*" -excludebyattribute:*.Obsolete*  -output:"$(SolutionRoot)\$(SolutionName)-coverage.xml" -mergeoutput -targetargs:"%(TestRun.Args)"'
           Condition="'%(TestRun.Coverage)'=='true'"/>
     <Message Importance="high" Text="--------- end of Coverage ---------"/>
- </Target>
+  </Target>
   
- <Target Name="CoverageReport" DependsOnTargets="RunTests">
+  <Target Name="CoverageReport" DependsOnTargets="RunTests">
    <Message Importance="high" Text="--------- Publish Coverage ---------"/>
     <Exec Command ='"$(NuGetToolsPath)\ReportGenerator.2.5.9-beta1\tools\ReportGenerator.exe" -reports:$(SolutionRoot)\$(SolutionName)-coverage.xml -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="'$(APPVEYOR)'!='True'"/>
 
