@@ -53,6 +53,7 @@
   <Target Name="Alpha" DependsOnTargets="SetAlpha; RunAll; Publish; CoverageReport"/>
   <Target Name="RC" DependsOnTargets="SetRC; RunAll; Publish; CoverageReport"/>
   <Target Name="Release" DependsOnTargets="SetRelease; RunAll; Publish; CoverageReport"/>
+  <Target Name="DebugBuild" DependsOnTargets="Package"/>
 
   <!--Targets-->
   <Target Name="SetNightly">
