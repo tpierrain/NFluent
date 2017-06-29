@@ -3,7 +3,7 @@
   <metadata>
     <id>NFluent</id>
     <title>NFluent, smooth your .NET TDD experience!</title>
-    <version>2.0.0-alpha-0000</version>
+    <version>2.0.1-alpha-0000</version>
     <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR</authors>
     <owners>Thomas PIERRAIN</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -25,10 +25,10 @@
 * FloatingNumbers (float, double): introduce IsCloseTo(expected, within) check for estimated value.
 * Exception: introduce the DueTo&lt;InnerException&gt; as an extension to Throws&lt;Exception&gt;. It verifies that the checked exception was triggered by a specific exception. This is done by scanning the 'innerException' chain until the expected type is identified. Further checking is done on the inner exception.
 * Exception: introduce WithProperties( expression, expectedValue) to check the value of any exception members, thanks to a selector expression.
-* IEnumerable: introduce HasElementAt(int index) which checks for an item as a specific index. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).ContainsElementAt(3).Which.IsEqualTo("foo").
-* IEnumerable: introduce HasFirstElement() which checks for the first item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).ContainsElementAt(3).Which.IsEqualTo("foo").
-* IEnumerable: introduce HasLastElement() which checks for the last item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).ContainsElementAt(3).Which.IsEqualTo("foo").
-* IEnumerable: introduce HasOneElementOnly() which checks for the first and single item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).ContainsElementAt(3).Which.IsEqualTo("foo").
+* IEnumerable: introduce HasElementAt(int index) which checks for an item as a specific index. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasElementAt(3).Which.IsEqualTo("foo").
+* IEnumerable: introduce HasFirstElement() which checks for the first item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasFirstElement().Which.IsEqualTo("foo").
+* IEnumerable: introduce HasLastElement() which checks for the last item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasLastElement().Which.IsEqualTo("foo").
+* IEnumerable: introduce HasOneElementOnly() which checks for the first and single item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasOneElementOnly().Which.IsEqualTo("foo").
 * IEnumerable: introduce HasElementThatMatches( bool predicate()) which checks that an enumerable has at least on item matching the given predicate. You can use 'Which' to check further this item. E.g.: Check.That(_collection).HasItemThatMatches((_) =&gt; _.StartWith("foo")).Which.IsEqualTo("foobar").
 * IDictionary&lt;K,V&gt;: now explicitely supported.
 * IDictionary&lt;K,V&gt;: introduce ContainsEntry&lt;K, V&gt;(K key, V value) which checks that a dictionary contains a specific value for a given key.

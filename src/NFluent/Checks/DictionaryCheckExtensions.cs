@@ -15,7 +15,9 @@
 
 namespace NFluent
 {
+#if !PORTABLE
     using System.Collections;
+#endif
     using System.Collections.Generic;
 
     using Extensibility;

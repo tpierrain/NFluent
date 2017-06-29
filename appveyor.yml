@@ -1,8 +1,9 @@
-version: 2.0.0.{build}
+version: 2.0.1.{build}
 image: Visual Studio 2017
 branches:
   only:
   - master
+
 configuration: Release
 platform: Any CPU
 build_script:
