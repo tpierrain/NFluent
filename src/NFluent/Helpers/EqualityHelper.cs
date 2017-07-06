@@ -64,10 +64,6 @@ namespace NFluent.Helpers
             bool negated = false) where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
             var mode = EqualityMode.Equals;
-            if (checker.Negated)
-            {
-                negated = !negated;
-            }
 
             var shouldFail = negated;
             if (userOperator)
@@ -76,12 +72,15 @@ namespace NFluent.Helpers
                 shouldFail = false;
             }
 
-            if (shouldFail == FluentEquals(checker.Value, expected, mode))
+            return checker.ExecuteCheck(() =>
             {
-                throw new FluentCheckException(BuildErrorMessage(checker, expected, negated, userOperator));
-            }
+                if (shouldFail == FluentEquals(checker.Value, expected, mode))
+                {
+                    throw new FluentCheckException(BuildErrorMessage(checker, expected, negated, userOperator));
+                }
 
-            return checker.BuildChainingObject();
+            },
+            BuildErrorMessage(checker, expected, !negated, userOperator));
         }
 
         /// <summary>

@@ -57,7 +57,8 @@ namespace NFluent.Kernel
         /// <param name="negated">
         /// A boolean value indicating whether the check should be negated or not.
         /// </param>
-        private FluentCheck(T value, bool negated)
+        /// <param name="checker">Checker to be kept</param>
+        private FluentCheck(T value, bool negated, Checker<T, ICheck<T>> checker = null)
         {
             this.Value = value;
             this.Negated = negated;
@@ -83,13 +84,7 @@ namespace NFluent.Kernel
         /// The next check negated.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public ICheck<T> Not
-        {
-            get
-            {
-                return new FluentCheck<T>(this.Value, CheckContext.DefaulNegated);
-            }
-        }
+        public ICheck<T> Not => new FluentCheck<T>(this.Value, CheckContext.DefaulNegated, this.checker);
 
         /// <summary>
         /// Gets the value to be tested (provided for any extension method to be able to test it).
@@ -105,13 +100,7 @@ namespace NFluent.Kernel
         /// <value>
         /// The runner to use for checking something on a given type.
         /// </value>
-        public IChecker<T, ICheck<T>> Checker
-        {
-            get
-            {
-                return this.checker;
-            }
-        }
+        public IChecker<T, ICheck<T>> Checker => this.checker;
 
         #endregion
 

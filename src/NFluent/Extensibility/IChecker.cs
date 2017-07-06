@@ -110,5 +110,11 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="sutLabel">The label for the SUT.</param>
         void SetSutLabel(string sutLabel);
+        
+        /// <summary>
+        /// Fails by throwing the adequate exception with an error mesasge.
+        /// </summary>
+        /// <param name="message">Error message</param>
+        void Fails(string message);
     }
 }

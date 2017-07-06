@@ -525,9 +525,7 @@ namespace NFluent.Tests
         [Test]
         public void NegatedIsNotEmptyFailsIfNull()
         {
-            Check.ThatCode(() => { Check.That((string) null).Not.IsNotEmpty(); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is null instead of being empty.");
+            Check.That((string) null).Not.IsNotEmpty();
         }
 
         [Test]

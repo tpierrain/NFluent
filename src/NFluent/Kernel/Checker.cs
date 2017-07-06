@@ -16,8 +16,11 @@
 namespace NFluent.Kernel
 {
     using System;
+    using System.Diagnostics;
 
     using Extensibility;
+
+    using Helpers;
 
     /// <summary>
     /// Provides a mean to execute some checks on a value, taking care of whether it should be negated or not, etc.
@@ -228,12 +231,18 @@ namespace NFluent.Kernel
                 // exception was expected
                 return;
             }
-
+            
             if (this.fluentCheckForExtensibility.Negated)
             {
                 // the expected exception did not occur
                 throw new FluentCheckException(negatedExceptionMessage);
             }
+        }
+
+        [DebuggerHidden]
+        public void Fails(string message)
+        {
+            throw new FluentCheckException(message);
         }
 
         #endregion

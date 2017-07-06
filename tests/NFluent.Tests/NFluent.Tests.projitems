@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AsOperatorTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AsyncRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BooleanRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ChainingLogicRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CharTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Child.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ComparableRelatedTests.cs" />
@@ -24,7 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DoubleFloatingPointBinaryRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DurationTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)EdgeCasesTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FromIssues\EdgeCasesTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumerableRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumOrStructRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EqualRelatedTests.cs" />
@@ -34,6 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExtensibilityHelperTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExtractingRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FluentMessageTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FromIssues\UserReportedIssues2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HelpersTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CultureSession.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\TestFiles.cs" />
@@ -57,7 +59,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)TimeSpanTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ToEnumeratedStringTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TypeRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserReportedIssuesTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FromIssues\UserReportedIssuesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)CheckedFile.xml">

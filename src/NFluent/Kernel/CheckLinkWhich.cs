@@ -26,6 +26,6 @@ namespace NFluent.Kernel
             this.Which = detailChecker as TU;
         }
 
-        public TU Which { get; private set; }
+        public TU Which { get; }
     }
 }

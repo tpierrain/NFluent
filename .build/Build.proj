@@ -30,6 +30,7 @@
     <ZipExe>$(ToolsPath)\7za\7za.exe</ZipExe>
     <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.6.1\tools\nunit3-console.exe</TestRunnerPath>
     <CoverToolPath>$(NuGetToolsPath)\OpenCover.4.6.519\tools</CoverToolPath>
+    <CoverReportToolPath>$(NuGetToolsPath)\ReportGenerator.2.5.9\tools</CoverReportToolPath>
     <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
     <MsTestRunner>vstest.console.exe</MsTestRunner>
   </PropertyGroup>
@@ -275,7 +276,7 @@ RUN ALL UNIT TESTS
   
   <Target Name="CoverageReport" DependsOnTargets="RunTests">
    <Message Importance="high" Text="--------- Publish Coverage ---------"/>
-    <Exec Command ='"$(NuGetToolsPath)\ReportGenerator.2.5.9-beta1\tools\ReportGenerator.exe" -reports:$(SolutionRoot)\$(SolutionName)-coverage.xml -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="'$(APPVEYOR)'!='True'"/>
+    <Exec Command ='"$(CoverReportToolPath)\ReportGenerator.exe" -reports:$(SolutionRoot)\$(SolutionName)-coverage.xml -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="'$(APPVEYOR)'!='True'"/>
 
     <Exec Command="pip install codecov"/>
     <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(SolutionRoot)\$(SolutionName)-coverage.xml" -t $(CodeCovKey) -X gcov -n $(SolutionName)'

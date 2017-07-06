@@ -45,14 +45,15 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsEqualTo(this ICheck<string> check, object expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            var messageText = AssessEquals(checker, expected, checker.Negated);
-            if (!string.IsNullOrEmpty(messageText))
+            return checker.ExecuteCheck(() =>
             {
-                throw new FluentCheckException(messageText);
-            }
-
-            return checker.BuildChainingObject();
+                var messageText = AssessEquals(checker, expected, false);
+                if (!string.IsNullOrEmpty(messageText))
+                {
+                    throw new FluentCheckException(messageText);
+                }
+            },
+            checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.").Expected(expected).Comparison("different from").ToString());
         }
 
         /// <summary>
@@ -448,14 +449,7 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsEmpty(this ICheck<string> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            var result = IsEmptyImpl(checker, false, checker.Negated);
-            if (!string.IsNullOrEmpty(result))
-            {
-                throw new FluentCheckException(result);
-            }
-
-            return checker.BuildChainingObject();
+            return IsEmptyImpl(checker, false, false);
         }
 
         /// <summary>
@@ -470,13 +464,7 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
-            var result = IsEmptyImpl(checker, true, checker.Negated);
-            if (!string.IsNullOrEmpty(result))
-            {
-                throw new FluentCheckException(result);
-            }
-
-            return checker.BuildChainingObject();
+            return IsEmptyImpl(checker, true, false);
         }
 
         /// <summary>
@@ -490,14 +478,7 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsNotEmpty(this ICheck<string> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            var result = IsEmptyImpl(checker, false, !checker.Negated);
-            if (!string.IsNullOrEmpty(result))
-            {
-                throw new FluentCheckException(result);
-            }
-
-            return checker.BuildChainingObject();
+            return IsEmptyImpl(checker, false, true);
         }
 
         /// <summary>
@@ -511,45 +492,56 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> HasContent(this ICheck<string> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            var result = IsEmptyImpl(checker, true, !checker.Negated);
-            if (!string.IsNullOrEmpty(result))
-            {
-                throw new FluentCheckException(result);
-            }
-
-            return checker.BuildChainingObject();
+            return IsEmptyImpl(checker, false, true);
         }
 
-        private static string IsEmptyImpl(IChecker<string, ICheck<string>> checker, bool canBeNull, bool negated)
+        private static ICheckLink<ICheck<string>> IsEmptyImpl(IChecker<string, ICheck<string>> checker, bool canBeNull, bool negated)
         {
             var checkedValue = checker.Value;
-
-            // special case if checkedValue is null
-            if (checkedValue == null)
-            {
-                if (canBeNull != negated)
+            return checker.ExecuteCheck(() =>
                 {
-                    return null;
-                }
+                    // special case if checkedValue is null
+                    if (checkedValue == null)
+                    {
+                        if (canBeNull)
+                        {
+                            return;
+                        }
 
-                return negated
-                           ? checker.BuildShortMessage("The {0} is null whereas it must have content.").For(typeof(string)).ToString()
-                           : checker.BuildShortMessage("The {0} is null instead of being empty.").For(typeof(string)).ToString();
-            }
+                        throw new FluentCheckException(
+                            checker.BuildShortMessage(negated
+                                    ? "The {0} is null whereas it must have content."
+                                    : "The {0} is null instead of being empty.")
+                                .For(typeof(string)).ToString());
+                    }
 
-            if (string.IsNullOrEmpty(checkedValue) != negated)
-            {
-                // success
-                return null;
-            }
+                    if (string.IsNullOrEmpty(checkedValue) != negated)
+                    {
+                        // success
+                        return;
+                    }
 
-            if (negated)
-            {
-                return checker.BuildShortMessage("The {0} is empty, whereas it must not.").For(typeof(string)).ToString();
-            }
-
-            return checker.BuildMessage("The {0} is not empty or null.").On(checkedValue).ToString();
+                    string message;
+                    if (negated)
+                    {
+                        message = checker.BuildShortMessage("The {0} is empty, whereas it must not.")
+                            .For(typeof(string)).ToString();
+                    }
+                    else
+                    {
+                        message = checker.BuildShortMessage("The {0} is not empty or null.")
+                            .On(checkedValue).ToString();
+                        checker.Fails(message);
+                    }
+                    checker.Fails(message);
+                },
+                !negated
+                    ? checker.BuildShortMessage(checkedValue == null
+                            ? "The checked string is null instead of being empty."
+                            : "The {0} is empty, whereas it must not.")
+                        .For(typeof(string)).ToString()
+                    : checker.BuildShortMessage("The {0} is not empty or null.")
+                        .On(checkedValue).ToString());
         }
 
         /// <summary>

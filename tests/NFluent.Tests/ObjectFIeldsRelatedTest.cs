@@ -50,6 +50,13 @@ namespace NFluent.Tests
             // check with missing fields
             Check.That(new DummyClass()).HasFieldsNotEqualToThose(new DummyHeritance(1,2));
         }
+
+        [Test]
+        public void ShouldFailOnDifferentArrays()
+        {
+            Check.That(new[] {1, 2}).HasFieldsWithSameValues(new [] {1, 2});
+            Check.That(new[] {1, 2}).Not.HasFieldsWithSameValues(new [] {2, 3});
+        }
 #pragma warning restore 618
 
         [Test]
@@ -99,7 +106,7 @@ namespace NFluent.Tests
                 Check.That(x).HasFieldsWithSameValues(new DummyHeritance());
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value's field 'z' is absent from the expected one." + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[null]");
+            .WithMessage(Environment.NewLine+ "The checked value's field 'z' is absent from the expected one." + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[2]");
         }
 
         [Test]
