@@ -264,10 +264,10 @@ namespace NFluent.Tests
             var enumerable = new List<int> { 42, 43 };
             Check.That(enumerable).HasFirstElement().Which.IsEqualTo(42);
         }
-       [Test]
+        [Test]
         public void NotHasFirstElementWorks()
         {
-            var enumerable = new List<int> {};
+            var enumerable = new List<int> { };
             Check.That(enumerable).Not.HasFirstElement();
         }
 
@@ -277,7 +277,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             Check.That(EmptyEnumerable).HasFirstElement())
             .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
-                "", 
+                "",
                 "The checked enumerable is empty, whereas it must have a first element.");
         }
 
@@ -305,14 +305,14 @@ namespace NFluent.Tests
         [Test]
         public void NotHasLastElementWorks()
         {
-            var enumerable = new List<int> {};
+            var enumerable = new List<int> { };
             Check.That(enumerable).Not.HasLastElement();
         }
 
         [Test]
         public void NotHasLastElementWorksForNonList()
         {
-            var enumerable = (new List<int> {}).Where((_) => true);
+            var enumerable = (new List<int> { }).Where((_) => true);
             Check.That(enumerable).Not.HasLastElement();
         }
 
@@ -327,10 +327,10 @@ namespace NFluent.Tests
         [Test]
         public void HasLastElementThrowsWhenCollectionIsEmpty()
         {
-            Check.ThatCode( ()=>
-            Check.That(EmptyEnumerable).HasLastElement())
+            Check.ThatCode(() =>
+           Check.That(EmptyEnumerable).HasLastElement())
                 .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
-                "", 
+                "",
                 "The checked enumerable is empty, whereas it must have a last element.");
         }
 
@@ -345,6 +345,8 @@ namespace NFluent.Tests
         }
 
         #endregion
+
+
 
         #region HasElementNumber
 
@@ -379,7 +381,7 @@ namespace NFluent.Tests
                     Check.That(EmptyEnumerable).HasElementAt(0))
                 .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
                 "",
-                "The checked enumerable does not have an element at index 0.", 
+                "The checked enumerable does not have an element at index 0.",
                 "The checked enumerable:",
                 "\t[]");
         }
@@ -431,7 +433,7 @@ namespace NFluent.Tests
         [Test]
         public void NotHasOneElementOnlyWorks()
         {
-            var enumerable = new List<int> {};
+            var enumerable = new List<int> { };
             Check.That(enumerable).Not.HasOneElementOnly();
         }
 
@@ -470,6 +472,34 @@ namespace NFluent.Tests
                     "The checked enumerable:",
                     "\t[42, 43, 1000]");
 
+        }
+
+        #endregion
+
+        #region HasAllElements
+
+        [Test]
+        public void HasAllElementShouldNotFailIfCheckIsEmpty()
+        {
+            IEnumerable<string> emptyList = new List<string> { };
+            Check.ThatCode(() => Check.That(emptyList).HasAllElementsThatMatch(item => true))
+                .DoesNotThrow();
+        }
+
+        [Test]
+        public void HasAllElementShouldNotFailIfAllElementMatch()
+        {
+            IEnumerable<int> list = new List<int> {4,6,8 };
+            Check.ThatCode(() => Check.That(list).HasAllElementsThatMatch(item => item % 2 == 0))
+                .DoesNotThrow();
+        }
+
+        [Test]
+        public void HasAllElementShouldFailIfAnElementDoesNotMatch()
+        {
+            IEnumerable<int> list = new List<int> { 4, 5, 8 };
+            Check.ThatCode(() => Check.That(list).HasAllElementsThatMatch(item => item % 2 == 0))
+                .Throws<FluentCheckException>();
         }
 
         #endregion

@@ -469,6 +469,44 @@ namespace NFluent
             checker.BuildMessage("The {0} contains element(s) that matches the given predicate, whereas it must not.").ToString());
         }
 
+        /// <summary>
+        /// Checks that the given enumerable does contain all items matching a predicate.
+        /// </summary>
+        /// <typeparam name="T">Type of items.</typeparam>
+        /// <param name="check">Check item.</param>
+        /// <param name="predicate">Predicate to evaluate.</param>
+        /// <returns>A linkable check.</returns>
+        public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasAllElementsThatMatch<T>(
+            this ICheck<IEnumerable<T>> check,
+            Func<T, bool> predicate)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            return checker.ExecuteCheckAndProvideSubItem(
+                () =>
+                {
+                    using (var scan = checker.Value.GetEnumerator())
+                    {
+                     
+                        while (scan.MoveNext())
+                        {
+                            if (!predicate(scan.Current))
+                            {
+                                var message =
+                                    checker.BuildMessage(
+                                        "The {0} does contain an element that does not match the given predicate.");
+                                throw new FluentCheckException(message.ToString());
+                            }
+                        }
+
+                        var itemCheck = Check.That(scan.Current);
+                        var subChecker = ExtensibilityHelper.ExtractChecker(itemCheck);
+                        subChecker.SetSutLabel($"all elements");
+                        return itemCheck;
+                    }
+                },
+                checker.BuildMessage("The {0} contains all element(s) that match the given predicate, whereas it must not.").ToString());
+        }
+
         /// <summary> 
         /// Checks that the enumerable has a first element, and returns a check on that element. 
         /// </summary> 
