@@ -101,7 +101,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frameworks", "Frameworks", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.MsTest", "tests\NFluent.Tests.MsTest\NFluent.Tests.MsTest.csproj", "{7A26BC7D-87D1-4279-BA30-2F4CF456D58A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfHosted", "tests\SelfHosted\SelfHosted.csproj", "{E8773FD5-293B-42EC-A394-9D0C78DB3416}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.SelfHosted", "tests\NFluent.Tests.SelfHosted\NFluent.Tests.SelfHosted.csproj", "{E8773FD5-293B-42EC-A394-9D0C78DB3416}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

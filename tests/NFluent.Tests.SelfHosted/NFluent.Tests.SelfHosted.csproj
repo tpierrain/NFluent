@@ -7,7 +7,7 @@
     <ProjectGuid>{E8773FD5-293B-42EC-A394-9D0C78DB3416}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>NFluent.Tests.SelfHosted</RootNamespace>
-    <AssemblyName>SelfHosted</AssemblyName>
+    <AssemblyName>NFluent.Tests.SelfHosted</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
