@@ -237,7 +237,7 @@ GENERATING DOCS for:
         <Fwk>core</Fwk>
         <Coverage>false</Coverage>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\SelfHosted\bin\$(Configuration)\SelfHosted.exe'>
+      <TestProjects Include='$(TestsPath)\NFluent.Tests.SelfHosted\bin\$(Configuration)\NFluent.Tests.SelfHosted.exe'>
         <Fwk>net-4.5</Fwk>
         <Runner>Self</Runner>
         <Coverage>true</Coverage>
