@@ -240,9 +240,9 @@ namespace NFluent.Kernel
         }
 
         [DebuggerHidden]
-        public void Fails(string message)
+        public Exception Failure(string message)
         {
-            throw new FluentCheckException(message);
+            return new FluentCheckException(message);
         }
 
         #endregion

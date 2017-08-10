@@ -112,9 +112,10 @@ namespace NFluent.Extensibility
         void SetSutLabel(string sutLabel);
         
         /// <summary>
-        /// Fails by throwing the adequate exception with an error mesasge.
+        /// Build the adequate exception with an error mesasge.
         /// </summary>
         /// <param name="message">Error message</param>
-        void Fails(string message);
+        /// <returns>An appropriate exceptio,</returns>
+        Exception Failure(string message);
     }
 }

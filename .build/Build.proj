@@ -127,6 +127,7 @@
     <ProjectFolder Include="$(TestsPath)\NFluent.Tests.MsTest"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.PCL"/>
     <ProjectFolder Include="$(TestsPath)\Nugget"/>
+    <ProjectFolder Include="$(TestsPath)\SelfHosted"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.T4"/>
   </ItemGroup>
   
@@ -236,6 +237,11 @@ GENERATING DOCS for:
         <Fwk>core</Fwk>
         <Coverage>false</Coverage>
       </TestProjects>
+      <TestProjects Include='$(TestsPath)\SelfHosted\bin\$(Configuration)\SelfHosted.exe'>
+        <Fwk>net-4.5</Fwk>
+        <Runner>Self</Runner>
+        <Coverage>true</Coverage>
+      </TestProjects>
     </ItemGroup>
 
     <ItemGroup>
@@ -249,7 +255,12 @@ GENERATING DOCS for:
         <Args>%(TestProjects.Identity)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Fwk)'!='core' AND '%(TestProjects.Runner)'!='MsTest'">
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Runner)'=='Self'">
+        <Runner>"%(TestProjects.Identity)"</Runner>
+        <Args></Args>
+        <Coverage>%(TestProjects.Coverage)</Coverage>
+      </TestRun>
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Fwk)'!='core' AND '%(TestProjects.Runner)'==''">
         <Runner>"$(TestRunnerPath)"</Runner>
         <Args>%(TestProjects.FullPath) $(NunitOptions) /framework:%(TestProjects.Fwk)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>

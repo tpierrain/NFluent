@@ -22,10 +22,14 @@ namespace NFluent
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Reflection;
     using System.Text.RegularExpressions;
+
     using Extensibility;
+
     using Extensions;
+
     using Helpers;
 
     /// <summary>
@@ -33,9 +37,8 @@ namespace NFluent
     /// </summary>
     public static class ObjectFieldsCheckExtensions
     {
-        #region Constructors and Destructors
-
-        #region Static Fields
+        private const BindingFlags FlagsForFields =
+            BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
         /// <summary>
         ///     The anonymous type field mask.
@@ -47,8 +50,6 @@ namespace NFluent
         /// </summary>
         private static readonly Regex AutoPropertyMask;
 
-        #endregion
-
         /// <summary>
         ///     Initializes static members of the <see cref="ObjectFieldsCheckExtensions" /> class.
         /// </summary>
@@ -58,24 +59,20 @@ namespace NFluent
             AnonymousTypeFieldMask = new Regex("^<(.*)>(i_|\\z)");
         }
 
-        #endregion
-
-        #region Public Methods and Operators
-
         /// <summary>
-        ///     Checks that the actual value has fields equals to the expected value ones.
+        ///     Checks that the actual actualValue has fields equals to the expected actualValue ones.
         /// </summary>
         /// <param name="check">
         ///     The fluent check to be extended.
         /// </param>
         /// <param name="expected">
-        ///     The expected value.
+        ///     The expected actualValue.
         /// </param>
         /// <returns>
         ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
-        ///     The actual value doesn't have all fields equal to the expected value ones.
+        ///     The actual actualValue doesn't have all fields equal to the expected actualValue ones.
         /// </exception>
         /// <remarks>
         ///     The comparison is done field by field.
@@ -88,19 +85,19 @@ namespace NFluent
         }
 
         /// <summary>
-        ///     Checks that the actual value doesn't have all fields equal to the expected value ones.
+        ///     Checks that the actual actualValue doesn't have all fields equal to the expected actualValue ones.
         /// </summary>
         /// <param name="check">
         ///     The fluent check to be extended.
         /// </param>
         /// <param name="expected">
-        ///     The expected value.
+        ///     The expected actualValue.
         /// </param>
         /// <returns>
         ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
-        ///     The actual value has all fields equal to the expected value ones.
+        ///     The actual actualValue has all fields equal to the expected actualValue ones.
         /// </exception>
         /// <remarks>
         ///     The comparison is done field by field.
@@ -113,27 +110,28 @@ namespace NFluent
         }
 
         /// <summary>
-        ///     Checks that the actual value has fields equals to the expected value ones.
+        ///     Checks that the actual actualValue has fields equals to the expected actualValue ones.
         /// </summary>
         /// <typeparam name="T">
-        ///     Type of the checked value.
+        ///     Type of the checked actualValue.
         /// </typeparam>
+        /// <typeparam name="TU">Type of the expected actualValue.</typeparam>
         /// <param name="check">
         ///     The fluent check to be extended.
         /// </param>
         /// <param name="expected">
-        ///     The expected value.
+        ///     The expected actualValue.
         /// </param>
         /// <returns>
         ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
-        ///     The actual value doesn't have all fields equal to the expected value ones.
+        ///     The actual actualValue doesn't have all fields equal to the expected actualValue ones.
         /// </exception>
         /// <remarks>
         ///     The comparison is done field by field.
         /// </remarks>
-        public static ICheckLink<ICheck<T>> HasFieldsWithSameValues<T>(this ICheck<T> check, object expected)
+        public static ICheckLink<ICheck<T>> HasFieldsWithSameValues<T, TU>(this ICheck<T> check, TU expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var message = CheckFieldEquality(checker, checker.Value, expected, checker.Negated);
@@ -147,22 +145,22 @@ namespace NFluent
         }
 
         /// <summary>
-        ///     Checks that the actual value doesn't have all fields equal to the expected value ones.
+        ///     Checks that the actual actualValue doesn't have all fields equal to the expected actualValue ones.
         /// </summary>
         /// <typeparam name="T">
-        ///     Type of the checked value.
+        ///     Type of the checked actualValue.
         /// </typeparam>
         /// <param name="check">
         ///     The fluent check to be extended.
         /// </param>
         /// <param name="expected">
-        ///     The expected value.
+        ///     The expected actualValue.
         /// </param>
         /// <returns>
         ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
-        ///     The actual value has all fields equal to the expected value ones.
+        ///     The actual actualValue has all fields equal to the expected actualValue ones.
         /// </exception>
         /// <remarks>
         ///     The comparison is done field by field.
@@ -182,120 +180,132 @@ namespace NFluent
             return checker.BuildChainingObject();
         }
 
-        #endregion
-
-        #region Methods
-
         private static IEnumerable<FieldMatch> ScanFields(
-            object value,
+            object actualValue,
+            Type actualType,
             object expected,
+            Type expectedType,
             IList<object> scanned,
+            int depth,
             string prefix = null)
         {
             var result = new List<FieldMatch>();
 
-            for (var expectedType = expected.GetType(); expectedType != null; expectedType = expectedType.GetBaseType())
+            for (; expectedType != null; expectedType = expectedType.GetBaseType())
             {
-                if (expectedType.IsArray)
+                var fieldInfos = expectedType.GetFields(FlagsForFields);
+                if (fieldInfos.Length > 0)
                 {
-                    var array = expected as Array;
-                    var actualArray = value as Array;
-                    var extendedFieldInfo = new ExtendedFieldInfo(prefix, expectedType, "");
-                    extendedFieldInfo.SetFieldValue(value);
-                    if (actualArray == null)
+                    foreach (var fieldInfo in fieldInfos)
                     {
-                        result.Add(new FieldMatch(extendedFieldInfo, null));
-                    }
-                    else
-                    {
-                        if (actualArray.Length != array.Length)
+                        var expectedFieldValue = fieldInfo.GetValue(expected);
+                        var expectedFieldDescription = new ExtendedFieldInfo(
+                            prefix,
+                            expectedFieldValue?.GetType() ?? fieldInfo.FieldType,
+                            fieldInfo.Name);
+                        var actualFieldMatching = FindFieldInType(actualType, expectedFieldDescription.NameInSource);
+
+                        expectedFieldDescription.SetFieldValue(expectedFieldValue);
+
+                        // field not found in SUT
+                        if (actualFieldMatching == null)
                         {
-                            var actuelFieldInfo = new ExtendedFieldInfo(prefix, value.GetType(), "");
-                            actuelFieldInfo.SetFieldValue(value);
-                            result.Add(new FieldMatch(extendedFieldInfo,
-                                actuelFieldInfo));
+                            result.Add(new FieldMatch(expectedFieldDescription, null));
+                            continue;
                         }
-                        else
-                        {
-                            var fieldType = expectedType.GetElementType();
-                            var actualFieldType = actualArray.GetType().GetElementType();
-                            for (var i = 0; i < array.Length; i++)
-                            {
-                                var prefixWithIndex = $"[{i}]";
-                                var expectedFieldDescription = new ExtendedFieldInfo(prefix, fieldType, prefixWithIndex);
-                                var actualFieldDescription = new ExtendedFieldInfo(prefix, actualFieldType, prefixWithIndex);
-                                expectedFieldDescription.SetFieldValue(array.GetValue(i));
-                                actualFieldDescription.SetFieldValue(actualArray.GetValue(i));
-                                CompareValue(expectedFieldDescription, actualFieldDescription, result, scanned);
-                            }
-                        }
+
+                        var fieldActualValue = actualFieldMatching.GetValue(actualValue);
+                        var actualFieldDescription = new ExtendedFieldInfo(
+                            prefix,
+                            fieldActualValue?.GetType() ?? actualFieldMatching.FieldType,
+                            actualFieldMatching.Name);
+
+                        // now, let's get to the values
+                        actualFieldDescription.SetFieldValue(fieldActualValue);
+
+                        CompareValue(expectedFieldDescription, actualFieldDescription, result, scanned, depth - 1);
                     }
-                    break;
-                }
-
-                foreach (var fieldInfo in expectedType.GetFields(
-                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public
-                    | BindingFlags.FlattenHierarchy))
-                {
-                    var expectedFieldDescription = new ExtendedFieldInfo(prefix, fieldInfo.FieldType, fieldInfo.Name);
-                    var fieldType = value?.GetType() ?? fieldInfo.FieldType;
-                    var actualFieldMatching = FindField(fieldType, expectedFieldDescription.NameInSource);
-
-                    expectedFieldDescription.SetFieldValue(fieldInfo.GetValue(expected));
-                    // field not found in SUT
-                    if (actualFieldMatching == null)
-                    {
-                        result.Add(new FieldMatch(expectedFieldDescription, null));
-                        continue;
-                    }
-
-                    var actualFieldDescription =
-                        new ExtendedFieldInfo(prefix, actualFieldMatching.FieldType, actualFieldMatching.Name);
-
-                    // now, let's get to the values
-                    actualFieldDescription.SetFieldValue(actualFieldMatching.GetValue(value));
-
-                    CompareValue(expectedFieldDescription, actualFieldDescription, result, scanned);
                 }
             }
 
             return result;
         }
 
-        private static void CompareValue(ExtendedFieldInfo expectedFieldDescription,
+        private static void CompareValue(
+            ExtendedFieldInfo expectedFieldDescription,
             ExtendedFieldInfo actualFieldDescription,
-            List<FieldMatch> result, IList<object> scanned)
+            List<FieldMatch> result,
+            IList<object> scanned,
+            int depth)
         {
-            if (expectedFieldDescription.ChecksIfImplementsEqual())
+            if (expectedFieldDescription.Value != null && scanned.Contains(expectedFieldDescription.Value))
+            {
+                return;
+            }
+
+            if (depth <= 0 && expectedFieldDescription.ChecksIfImplementsEqual())
             {
                 result.Add(new FieldMatch(expectedFieldDescription, actualFieldDescription));
             }
-            else if (!scanned.Contains(expectedFieldDescription.Value))
+            else
             {
                 scanned.Add(expectedFieldDescription.Value);
                 if (expectedFieldDescription.Value == null)
                 {
                     result.Add(new FieldMatch(expectedFieldDescription, actualFieldDescription));
                 }
+                else if (actualFieldDescription.Value == null)
+                {
+                    result.Add(new FieldMatch(expectedFieldDescription, actualFieldDescription));
+                }
+                else if (expectedFieldDescription.GetValueType().IsArray)
+                {
+                    var array = (Array)expectedFieldDescription.Value;
+                    var actualArray = (Array)actualFieldDescription.Value;
+                    if (actualArray.Length != array.Length)
+                    {
+                        result.Add(new FieldMatch(expectedFieldDescription, actualFieldDescription));
+                    }
+                    else
+                    {
+                        var fieldType = array.GetType().GetElementType();
+                        var actualFieldType = actualArray.GetType().GetElementType();
+                        for (var i = 0; i < array.Length; i++)
+                        {
+                            var prefixWithIndex = $"[{i}]";
+                            var expectedEntryDescription = new ExtendedFieldInfo(
+                                expectedFieldDescription.LongFieldName,
+                                fieldType,
+                                prefixWithIndex);
+                            var actualEntryDescription = new ExtendedFieldInfo(
+                                expectedEntryDescription.LongFieldName,
+                                actualFieldType,
+                                prefixWithIndex);
+                            expectedEntryDescription.SetFieldValue(array.GetValue(i));
+                            actualEntryDescription.SetFieldValue(actualArray.GetValue(i));
+                            CompareValue(expectedEntryDescription, actualEntryDescription, result, scanned, depth - 1);
+                        }
+                    }
+                }
                 else
                 {
                     result.AddRange(
                         ScanFields(
                             actualFieldDescription.Value,
+                            actualFieldDescription.GetValueType(),
                             expectedFieldDescription.Value,
+                            expectedFieldDescription.GetValueType(),
                             scanned,
-                            $"{expectedFieldDescription.LongFieldName}."));
+                            depth - 1,
+                            expectedFieldDescription.LongFieldName));
                 }
             }
         }
 
-        private static FieldInfo FindField(Type type, string name)
+        private static FieldInfo FindFieldInType(Type type, string name)
         {
-            while (true)
+            while (type != null)
             {
-                const BindingFlags FlagsForFields =
-                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
-
                 var result = type.GetField(name, FlagsForFields);
 
                 if (result != null)
@@ -303,18 +313,12 @@ namespace NFluent
                     return result;
                 }
 
-                if (type.GetBaseType() == null)
-                {
-                    return null;
-                }
-
                 // compensate any auto-generated name
-                FieldKind fieldKind;
-                var actualName = ExtractFieldNameAsInSourceCode(name, out fieldKind);
+                var actualName = ExtractFieldNameAsInSourceCode(name, out _);
 
                 foreach (var field in type.GetFields(FlagsForFields))
                 {
-                    var fieldName = ExtractFieldNameAsInSourceCode(field.Name, out fieldKind);
+                    var fieldName = ExtractFieldNameAsInSourceCode(field.Name, out _);
                     if (fieldName == actualName)
                     {
                         return field;
@@ -323,12 +327,13 @@ namespace NFluent
 
                 type = type.GetBaseType();
             }
+
+            return null;
         }
 
         internal static string ExtractFieldNameAsInSourceCode(string name, out FieldKind kind)
         {
-            string result;
-            if (EvaluateCriteria(AutoPropertyMask, name, out result))
+            if (EvaluateCriteria(AutoPropertyMask, name, out var result))
             {
                 kind = FieldKind.AutoProperty;
                 return result;
@@ -345,10 +350,18 @@ namespace NFluent
             return result;
         }
 
-        private static string CheckFieldEquality<T>(IChecker<T, ICheck<T>> checker, object value, object expected,
+        private static string CheckFieldEquality<T, TU>(
+            IChecker<T, ICheck<T>> checker,
+            T value,
+            TU expected,
             bool negated)
         {
-            var analysis = ScanFields(value, expected, new List<object>());
+            var expectedValue = new ExtendedFieldInfo(string.Empty, expected?.GetType() ?? typeof(TU), string.Empty);
+            expectedValue.SetFieldValue(expected);
+            var actualValue = new ExtendedFieldInfo(string.Empty, value?.GetType() ?? typeof(T), string.Empty);
+            actualValue.SetFieldValue(value);
+            var analysis = new List<FieldMatch>();
+            CompareValue(expectedValue, actualValue, analysis, new List<object>(), 1);
 
             foreach (var fieldMatch in analysis)
             {
@@ -375,27 +388,15 @@ namespace NFluent
             return false;
         }
 
-        #endregion
-
         private class FieldMatch
         {
-            #region Constructors and Destructors
-
-            #endregion
-
-            #region Fields
-
             private readonly ExtendedFieldInfo actual;
-
-            #endregion
 
             public FieldMatch(ExtendedFieldInfo expected, ExtendedFieldInfo actual)
             {
                 this.actual = actual;
                 this.Expected = expected;
             }
-
-            #region Public Properties
 
             private bool DoValuesMatches
             {
@@ -418,58 +419,62 @@ namespace NFluent
             private ExtendedFieldInfo Expected { get; }
 
             /// <summary>
-            ///     Gets a value indicating whether the expected field has been found.
+            ///     Gets a actualValue indicating whether the expected field has been found.
             /// </summary>
             private bool ExpectedFieldFound => this.actual != null;
 
             public FluentMessage BuildMessage<T>(IChecker<T, ICheck<T>> checker, bool negated)
             {
-                FluentMessage result = null;
-                if (this.DoValuesMatches == negated)
+                FluentMessage result;
+                if (this.DoValuesMatches != negated)
                 {
-                    if (negated)
-                    {
-                        result =
-                            checker.BuildShortMessage(
-                                    $"The {{0}}'s {this.Expected.FieldLabel.DoubleCurlyBraces()} has the same value in the comparand, whereas it must not.")
-                                .For("value");
-                        EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.Expected.Value, true,
-                            false);
-                    }
-                    else
-                    {
-                        if (!this.ExpectedFieldFound)
-                        {
-                            result = checker.BuildShortMessage(
-                                    $"The {{0}}'s {this.Expected.FieldLabel.DoubleCurlyBraces()} is absent from the {{1}}.")
-                                .For("value");
-                            result.Expected(this.Expected.Value);
-                        }
-                        else
-                        {
-                            result =
-                                checker.BuildShortMessage(
-                                        $"The {{0}}'s {this.Expected.FieldLabel.DoubleCurlyBraces()} does not have the expected value.")
-                                    .For("value");
-                            EqualityHelper.FillEqualityErrorMessage(result, this.actual.Value, this.Expected.Value,
-                                false, false);
-                        }
-                    }
+                    return null;
+                }
+
+                if (negated)
+                {
+                    result = checker.BuildShortMessage(
+                            $"The {{0}}'s {this.Expected.FieldLabel.DoubleCurlyBraces()} has the same value in the comparand, whereas it must not.")
+                        .For("value");
+                    EqualityHelper.FillEqualityErrorMessage(
+                        result,
+                        this.actual.Value,
+                        this.Expected.Value,
+                        true,
+                        false);
+                }
+                else if (!this.ExpectedFieldFound)
+                {
+                    result = checker.BuildShortMessage(
+                            $"The {{0}}'s {this.Expected.FieldLabel.DoubleCurlyBraces()} is absent from the {{1}}.")
+                        .For("value");
+                    result.Expected(this.Expected.Value);
+                }
+                else
+                {
+                    result = checker.BuildShortMessage(
+                            $"The {{0}}'s {this.Expected.FieldLabel.DoubleCurlyBraces()} does not have the expected value.")
+                        .For("value");
+                    EqualityHelper.FillEqualityErrorMessage(
+                        result,
+                        this.actual.Value,
+                        this.Expected.Value,
+                        false,
+                        false);
                 }
 
                 return result;
             }
-
-            #endregion
         }
-
-        #region Nested type: ExtendedFieldInfo
 
         private class ExtendedFieldInfo
         {
             private readonly Type type;
+
             private readonly FieldKind kind;
+
             private readonly string nameInSource;
+
             private readonly string prefix;
 
             public ExtendedFieldInfo(string prefix, Type type, string infoName)
@@ -489,12 +494,13 @@ namespace NFluent
                     this.nameInSource = infoName;
                     this.kind = FieldKind.Normal;
                 }
+
                 this.ComputeName(infoName);
             }
 
-            public string LongFieldName => this.prefix == null
-                ? this.nameInSource
-                : $"{this.prefix}{this.nameInSource}";
+            public string LongFieldName => string.IsNullOrEmpty(this.prefix)
+                                               ? this.nameInSource
+                                               : $"{this.prefix}.{this.nameInSource}";
 
             public string FieldLabel { get; private set; }
 
@@ -502,10 +508,20 @@ namespace NFluent
 
             public object Value { get; private set; }
 
-            #region Public Methods and Operators
+            public Type GetValueType()
+            {
+                return this.type;
+            }
 
             private void ComputeName(string name)
             {
+                if (string.IsNullOrEmpty(name))
+                {
+                    // this is the SUT itself (or expected value)
+                    this.FieldLabel = string.Empty;
+                    return;
+                }
+
                 switch (this.kind)
                 {
                     case FieldKind.AnonymousClass:
@@ -529,10 +545,6 @@ namespace NFluent
             {
                 return this.type.ImplementsEquals();
             }
-
-            #endregion
         }
-
-        #endregion
     }
 }

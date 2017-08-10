@@ -388,13 +388,6 @@ namespace NFluent.Tests
         }
 
 
-        [Test]
-        public void LongStringErrorMessageIsProperlyTruncated()
-        {
-            // TODO: implement support for LONG enumeration
-            // Check.That(checkString).IsEqualTo(expectedString);
-        }
-
         // helper classes for issue reproduction
         public interface IModelBName
         {
@@ -404,12 +397,15 @@ namespace NFluent.Tests
         private class OrderExecutedEventArgs : EventArgs
         {
             // ReSharper disable once UnusedAutoPropertyAccessor.Local
+            // ReSharper disable once MemberCanBePrivate.Local
             public decimal Price { get; private set; }
 
             // ReSharper disable once UnusedAutoPropertyAccessor.Local
+            // ReSharper disable once MemberCanBePrivate.Local
             public int Quantity { get; private set; }
 
             // ReSharper disable once UnusedAutoPropertyAccessor.Local
+            // ReSharper disable once MemberCanBePrivate.Local
             public Way Way { get; private set; }
 
             public OrderExecutedEventArgs(decimal price, int quantity, Way way)

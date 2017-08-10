@@ -42,9 +42,7 @@ namespace NFluent.Extensions
             {typeof(bool), "bool" }, {typeof(decimal), "decimal" }, { typeof(object), "object"}, {typeof(void), "void" }
             };
 
-        private static readonly List<Type> NumericalTypes = new List<Type>()
-        { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint),
-            typeof(long), typeof(ulong), typeof(double), typeof(float)};
+        private static readonly List<Type> NumericalTypes = new List<Type>() { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(double), typeof(float)};
 
 
         /// <summary>
@@ -160,11 +158,15 @@ namespace NFluent.Extensions
             {
                 return localResult;
             }
+
             // is this a generic type
             var arguments = type.GetGenericArguments();
             var name = shortName ? type.Name : type.ToString();
 
-            if (arguments.Length <= 0) return name;
+            if (arguments.Length <= 0)
+            {
+                return name;
+            }
 
             // this is a generic type
             var builder = new StringBuilder();
@@ -290,11 +292,6 @@ namespace NFluent.Extensions
                 return true;
             }
             
-            if (info == null)
-            {
-                return false;
-            }
-
             // info cannot be null has ALL .Net types inherits Equals from System.Object
             return info.DeclaringType == type;
         }

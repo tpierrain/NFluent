@@ -531,9 +531,9 @@ namespace NFluent
                     {
                         message = checker.BuildShortMessage("The {0} is not empty or null.")
                             .On(checkedValue).ToString();
-                        checker.Fails(message);
+                        throw checker.Failure(message);
                     }
-                    checker.Fails(message);
+                    throw checker.Failure(message);
                 },
                 !negated
                     ? checker.BuildShortMessage(checkedValue == null

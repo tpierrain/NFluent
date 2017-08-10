@@ -1,3 +1,11 @@
+V 2.01
+--------------
+Bug Fixe(s):
+* Fixed support of array types for HasFielsWithSameValues
+* Fixed confusing examples about array item related checks in the readme
+
+V 2.00
+--------------
 New feature(s):
 * Support for NetStandard &gt; 1.3
 * Support for Net.Core &gt; 1.0

@@ -12,8 +12,8 @@ namespace NFluent.Tests.FromIssues
 //        [Ignore("test is baset on property, not fields")]
         public void should_recognize_autoproperty_readonly_values()
         {
-            var someClass = new SomeClass("Hello"){Other ="world", Values = new Dictionary<string, string>(){["key1"] = "value1"}};
-            Check.That(someClass).HasFieldsWithSameValues(new {Other = "world", Values = new Dictionary<string, string>() { ["key1"] = "value1" } });
+            var someClass = new SomeClass("Hello"){Other ="world", Values = new Dictionary<string, string>{["key1"] = "value1"}};
+            Check.That(someClass).HasFieldsWithSameValues(new {Other = "world", Values = new Dictionary<string, string> { ["key1"] = "value1" } });
         }
 
         [Test]
