@@ -476,7 +476,7 @@ namespace NFluent
         /// <param name="check">Check item.</param>
         /// <param name="predicate">Predicate to evaluate.</param>
         /// <returns>A linkable check.</returns>
-        public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasAllElementsThatMatch<T>(
+        public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> ContainsOnlyElementsThatMatch<T>(
             this ICheck<IEnumerable<T>> check,
             Func<T, bool> predicate)
         {
@@ -504,7 +504,7 @@ namespace NFluent
                         return itemCheck;
                     }
                 },
-                checker.BuildMessage("The {0} contains all element(s) that match the given predicate, whereas it must not.").ToString());
+                checker.BuildMessage("The {0} contains only element(s) that match the given predicate, whereas it must not.").ToString());
         }
 
         /// <summary> 

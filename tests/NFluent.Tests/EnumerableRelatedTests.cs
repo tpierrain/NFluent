@@ -476,29 +476,29 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region HasAllElements
+        #region ContainsOnlyElement
 
         [Test]
-        public void HasAllElementShouldNotFailIfCheckIsEmpty()
+        public void ContainsOnlyElementShouldNotFailIfCheckIsEmpty()
         {
             IEnumerable<string> emptyList = new List<string> { };
-            Check.ThatCode(() => Check.That(emptyList).HasAllElementsThatMatch(item => true))
+            Check.ThatCode(() => Check.That(emptyList).ContainsOnlyElementsThatMatch(item => true))
                 .DoesNotThrow();
         }
 
         [Test]
-        public void HasAllElementShouldNotFailIfAllElementMatch()
+        public void ContainsOnlyElementShouldNotFailIfAllElementMatch()
         {
             IEnumerable<int> list = new List<int> {4,6,8 };
-            Check.ThatCode(() => Check.That(list).HasAllElementsThatMatch(item => item % 2 == 0))
+            Check.ThatCode(() => Check.That(list).ContainsOnlyElementsThatMatch(item => item % 2 == 0))
                 .DoesNotThrow();
         }
 
         [Test]
-        public void HasAllElementShouldFailIfAnElementDoesNotMatch()
+        public void ContainsOnlyElementShouldFailIfAnElementDoesNotMatch()
         {
             IEnumerable<int> list = new List<int> { 4, 5, 8 };
-            Check.ThatCode(() => Check.That(list).HasAllElementsThatMatch(item => item % 2 == 0))
+            Check.ThatCode(() => Check.That(list).ContainsOnlyElementsThatMatch(item => item % 2 == 0))
                 .Throws<FluentCheckException>();
         }
 
