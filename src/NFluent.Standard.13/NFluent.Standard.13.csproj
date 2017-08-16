@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netstandard1.3</TargetFramework>
@@ -38,6 +38,8 @@
   <ItemGroup>
     <None Remove="NFluent.Core.v3.ncrunchproject" />
     <None Remove="NFluent.csproj.DotSettings" />
+    <None Remove="NFluent.Standard.13.csproj.DotSettings" />
+    <None Remove="NFluent.Standard.13.v3.ncrunchproject" />
     <None Remove="NFluent.v3.ncrunchproject" />
     <None Remove="packages.config" />
     <None Remove="Settings.StyleCop" />

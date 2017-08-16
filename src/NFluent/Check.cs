@@ -75,6 +75,20 @@ namespace NFluent
         {
             return new FluentCodeCheck<RunTraceResult<TResult>>(FluentCodeCheck<RunTraceResult<Task<TResult>>>.GetAsyncTrace(awaitableFunction));
         }
+
+        /// <summary>
+        /// Returns a <see cref="ICheckDynamic"/> instance that will provide check for dynamics.
+        /// </summary>
+        /// <param name="value">The code to be tested.</param>
+        /// <returns>
+        /// A <see cref="ICheckDynamic" /> instance to use in order to assert things on the given test.
+        /// </returns>
+        public static FluentDynamicCheck ThatDynamic(dynamic value)
+        {
+            //return null;
+            return new FluentDynamicCheck(value);
+        }
+
 #endif
 
         /// <summary>

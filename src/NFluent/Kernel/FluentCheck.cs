@@ -57,7 +57,7 @@ namespace NFluent.Kernel
         /// <param name="negated">
         /// A boolean value indicating whether the check should be negated or not.
         /// </param>
-        /// <param name="checker">Checker to be kept</param>
+        /// <param name="checker">Checker to be kept.</param>
         private FluentCheck(T value, bool negated, Checker<T, ICheck<T>> checker = null)
         {
             this.Value = value;

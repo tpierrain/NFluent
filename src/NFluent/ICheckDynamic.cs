@@ -1,6 +1,6 @@
 ﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="DynamicTests.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
+// // <copyright file="ICheckDynamic.cs" company="">
+// //   Copyright 2013 Thomas PIERRAIN, Rui CARVALHO
 // //   Licensed under the Apache License, Version 2.0 (the "License");
 // //   you may not use this file except in compliance with the License.
 // //   You may obtain a copy of the License at
@@ -13,39 +13,19 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-
-#if PORTABLE || NETSTANDARD1_3 || DOTNET_45
-namespace NFluent.Tests
+namespace NFluent
 {
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class DynamicTests
+#if PORTABLE || NETSTANDARD1_3 || DOTNET_45
+    /// <summary>
+    /// interface for dynamic related checks
+    /// </summary>
+    public interface ICheckDynamic
     {
-        /*
-    [Test]
-    public void CanCheckThatOnADynamic()
-    {
-        dynamic car = "car";
-            Check.ThatCode(() =>
-            {
-                Check.That(car.FuelLevel).IsEmpty();
-            })
-            .ThrowsAny();
-        } */
-        class Command
-        {
-            internal dynamic Subject { get; set; }
-        }
-
-        [Test]
-        public void CanCheckNulls()
-        {
-            var cmd = new Command();
-
-            // this check fails
-            Check.ThatCode(() => { Check.ThatDynamic(cmd.Subject).IsNotNull(); }).Throws<FluentCheckException>();
-        }
+        /// <summary>
+        /// Checks if the given dynamic is null
+        /// </summary>
+        /// <returns></returns>
+        ICheckDynamic IsNotNull();
     }
-}
 #endif
+}
