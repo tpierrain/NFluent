@@ -25,11 +25,28 @@
         /// </summary>
         public void IsNotNull()
         {
-            if (this.value == null)
+            if (this.value != null)
             {
-                var message = FluentMessage.BuildMessage("The {0} is null whereas it must not").For("dynamic").On(this.value);
-                throw new FluentCheckException(message.ToString());
+                return;
             }
+
+            var message = FluentMessage.BuildMessage("The {0} is null whereas it must not.").For("dynamic").On(this.value);
+            throw new FluentCheckException(message.ToString());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="expected"></param>
+        public void IsSameReferenceAs(dynamic expected)
+        {
+            if (object.ReferenceEquals(this.value, expected))
+            {
+                return;
+            }
+
+            var message = FluentMessage.BuildMessage("The {0} is not the expected reference.").For("dynamic").Expected(expected).And.On(this.value);
+            throw new FluentCheckException(message.ToString());
         }
     }
 #endif

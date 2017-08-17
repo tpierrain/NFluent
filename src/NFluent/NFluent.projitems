@@ -56,7 +56,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\StringDifference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICheck.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ICheckDynamic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICheckLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICheckLinkWhich.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICodeCheck.cs" />

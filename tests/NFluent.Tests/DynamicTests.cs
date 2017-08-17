@@ -42,9 +42,21 @@ namespace NFluent.Tests
         public void CanCheckNulls()
         {
             var cmd = new Command();
+            dynamic sut = "test";
 
+            Check.ThatDynamic(sut).IsNotNull();
             // this check fails
             Check.ThatCode(() => { Check.ThatDynamic(cmd.Subject).IsNotNull(); }).Throws<FluentCheckException>();
+        }
+
+        [Test]
+        public void CanCheckReference()
+        {
+            dynamic sut = "test";
+
+            // this check fails
+            Check.ThatDynamic(sut).IsSameReferenceAs(sut);
+            Check.ThatCode(() => { Check.ThatDynamic(sut).IsSameReferenceAs("tes"); }).Throws<FluentCheckException>();
         }
     }
 }
