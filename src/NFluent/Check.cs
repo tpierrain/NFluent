@@ -77,11 +77,11 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Returns a <see cref="ICheckDynamic"/> instance that will provide check for dynamics.
+        /// Returns a <see cref="FluentDynamicCheck"/> instance that will provide check for dynamics.
         /// </summary>
         /// <param name="value">The code to be tested.</param>
         /// <returns>
-        /// A <see cref="ICheckDynamic" /> instance to use in order to assert things on the given test.
+        /// A <see cref="FluentDynamicCheck" /> instance to use in order to assert things on the given test.
         /// </returns>
         public static FluentDynamicCheck ThatDynamic(dynamic value)
         {
