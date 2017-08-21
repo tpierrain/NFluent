@@ -245,11 +245,6 @@ GENERATING DOCS for:
     </ItemGroup>
 
     <ItemGroup>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Fwk)'=='core'">
-        <Runner>dotnet.exe</Runner>
-        <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
-        <Coverage>%(TestProjects.Coverage)</Coverage>
-      </TestRun>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Fwk)'!='core' AND '%(TestProjects.Runner)'=='MsTest'">
         <Runner>"$(MsTestRunnerPath)$(MsTestRunner)"</Runner>
         <Args>%(TestProjects.Identity)</Args>
@@ -263,6 +258,11 @@ GENERATING DOCS for:
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Fwk)'!='core' AND '%(TestProjects.Runner)'==''">
         <Runner>"$(TestRunnerPath)"</Runner>
         <Args>%(TestProjects.FullPath) $(NunitOptions) /framework:%(TestProjects.Fwk)</Args>
+        <Coverage>%(TestProjects.Coverage)</Coverage>
+      </TestRun>
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Fwk)'=='core'">
+        <Runner>dotnet.exe</Runner>
+        <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
     </ItemGroup>
