@@ -21,7 +21,7 @@ namespace NFluent.Tests.ForDocumentation
     [TestFixture]
     public class LocaleChecks
     {
-        [Test]
+        //[Test]
         [Explicit("Scan all assemblies, execute tests in Spanish.")]
         public void Spanish()
         {
@@ -31,7 +31,7 @@ namespace NFluent.Tests.ForDocumentation
             }
         }
 
-        [Test]
+        //[Test]
         [Explicit("Scan all assemblies, execute tests in Chinese.")]
         public void Chinese()
         {
@@ -41,7 +41,7 @@ namespace NFluent.Tests.ForDocumentation
             }
         }
 
-        [Test]
+        //[Test]
         [Explicit("Scan all assemblies, execute tests in Canadian French.")]
         public void CanadianFrench()
         {
@@ -51,7 +51,7 @@ namespace NFluent.Tests.ForDocumentation
             }
         }
 
-        [Test]
+        //[Test]
         [Explicit("Scan all assemblies, execute tests in Japanese.")]
         public void Japanese()
         {
