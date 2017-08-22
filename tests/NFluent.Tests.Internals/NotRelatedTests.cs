@@ -37,7 +37,7 @@ namespace NFluent.Tests
                 CheckContext.DefaulNegated = true;
             }
         }
-
+#if !NETCOREAPP1_0
         [Test]
         [Explicit("Experimental: to check if negation works")]
         public void ForceNegationOnAllTest()
@@ -57,5 +57,6 @@ namespace NFluent.Tests
                 CheckContext.DefaulNegated = true;
             }
         }
+#endif
     }
 }
