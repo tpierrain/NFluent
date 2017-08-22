@@ -16,6 +16,7 @@
 // ReSharper disable once CheckNamespace
 namespace NFluent.Tests.ForDocumentation
 {
+#if !NETCOREAPP1_0
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -254,4 +255,5 @@ namespace NFluent.Tests.ForDocumentation
             return report;
         }
     }
+#endif
 }

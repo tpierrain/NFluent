@@ -15,13 +15,14 @@
 // ReSharper disable once CheckNamespace
 namespace NFluent.Tests.ForDocumentation
 {
+#if !NETCOREAPP1_0
     using Helpers;
     using NUnit.Framework;
 
     [TestFixture]
     public class LocaleChecks
     {
-        //[Test]
+        [Test]
         [Explicit("Scan all assemblies, execute tests in Spanish.")]
         public void Spanish()
         {
@@ -31,7 +32,7 @@ namespace NFluent.Tests.ForDocumentation
             }
         }
 
-        //[Test]
+        [Test]
         [Explicit("Scan all assemblies, execute tests in Chinese.")]
         public void Chinese()
         {
@@ -41,7 +42,7 @@ namespace NFluent.Tests.ForDocumentation
             }
         }
 
-        //[Test]
+        [Test]
         [Explicit("Scan all assemblies, execute tests in Canadian French.")]
         public void CanadianFrench()
         {
@@ -51,7 +52,7 @@ namespace NFluent.Tests.ForDocumentation
             }
         }
 
-        //[Test]
+        [Test]
         [Explicit("Scan all assemblies, execute tests in Japanese.")]
         public void Japanese()
         {
@@ -63,4 +64,5 @@ namespace NFluent.Tests.ForDocumentation
 
         // TODO: makes the teamcity build execute Explicit tests
     }
+#endif
 }
