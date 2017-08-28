@@ -112,7 +112,7 @@
     <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests"><Fwk>core</Fwk></ProjectFolder>
     <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Extensions"><Fwk>core</Fwk></ProjectFolder>
     <ProjectFolder Include="$(SourcePath)\NFluent.45"/>
-    <ProjectFolder Include="$(TestsPath)\NFluent.45.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.45.Tests.Meta"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.40"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.40.Tests.Internals"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.40.Tests"/>
@@ -241,6 +241,10 @@ GENERATING DOCS for:
         <Fwk>net-4.5</Fwk>
         <Runner>Self</Runner>
         <Coverage>true</Coverage>
+      </TestProjects>
+      <TestProjects Include='$(TestsPath)\NFluent.45.Tests.Meta\bin\$(Configuration)\NFluent.Tests.Meta.dll'>
+        <Fwk>net-4.5</Fwk>
+        <Coverage>false</Coverage>
       </TestProjects>
     </ItemGroup>
 

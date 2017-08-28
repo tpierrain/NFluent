@@ -11,15 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ContainsTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FluentMessageTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\CheckDescription.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\CheckList.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\FullRunDescription.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\GenerateErrorMessages.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\LocaleChecks.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\RunnerHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ForDocumentation\TypeChecks.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\CultureSession.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)NotRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NUnitSpecific.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringDifferenceAnalyzerTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ValueBlockTests.cs" />

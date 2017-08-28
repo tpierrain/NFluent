@@ -14,7 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 
 
-#if PORTABLE || NETSTANDARD1_3 || DOTNET_45
+#if PORTABLE || NETCOREAPP1_0 || DOTNET_45
 namespace NFluent.Tests
 {
     using NUnit.Framework;
@@ -58,6 +58,17 @@ namespace NFluent.Tests
             Check.ThatDynamic(sut).IsSameReferenceAs(sut);
             Check.ThatCode(() => { Check.ThatDynamic(sut).IsSameReferenceAs("tes"); }).Throws<FluentCheckException>();
         }
+
+        [Test]
+        public void CanCheckEquality()
+        {
+            dynamic sut = "test";
+
+            // this check fails
+            Check.ThatDynamic(sut).IsEqualTo(sut);
+            Check.ThatCode(() => { Check.ThatDynamic(sut).IsEqualTo("tes"); }).Throws<FluentCheckException>();
+        }
+
     }
 }
 #endif

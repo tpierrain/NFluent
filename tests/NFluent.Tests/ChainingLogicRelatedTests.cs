@@ -22,7 +22,7 @@ namespace NFluent.Tests
         [Test]
         public void ShouldFailWhenNoAssertGiven()
         {
-            Check.That(2);
+            Check.That(2).IsStrictlyPositive();
             //Check.ThatCode(() => Check.That(3).IsNotZero()).ThrowsAny();
         }
     }

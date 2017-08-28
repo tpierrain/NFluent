@@ -21,7 +21,7 @@
         }
 
         /// <summary>
-        /// 
+        /// Checks if the given dynamic is null.
         /// </summary>
         public void IsNotNull()
         {
@@ -35,9 +35,9 @@
         }
 
         /// <summary>
-        /// 
+        /// Checks if the given dynamic has the expected reference.
         /// </summary>
-        /// <param name="expected"></param>
+        /// <param name="expected">Expected reference.</param>
         public void IsSameReferenceAs(dynamic expected)
         {
             if (object.ReferenceEquals(this.value, expected))
@@ -46,6 +46,20 @@
             }
 
             var message = FluentMessage.BuildMessage("The {0} is not the expected reference.").For("dynamic").Expected(expected).And.On(this.value);
+            throw new FluentCheckException(message.ToString());
+        }
+
+        /// <summary>
+        /// Checks if the given dynamic has the expected value.
+        /// </summary>
+        /// <param name="expected">The expected value. Comparison is done using <see cref="object.Equals(object, object)"/></param>
+        public void IsEqualTo(dynamic expected)
+        {
+            if (object.Equals(this.value, expected))
+            {
+                return;
+            }
+            var message = FluentMessage.BuildMessage("The {0} is not equal to the {1}.").For("dynamic").Expected(expected).And.On(this.value);
             throw new FluentCheckException(message.ToString());
         }
     }

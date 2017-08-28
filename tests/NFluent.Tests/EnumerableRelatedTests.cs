@@ -482,16 +482,14 @@ namespace NFluent.Tests
         public void ContainsOnlyElementShouldNotFailIfCheckIsEmpty()
         {
             IEnumerable<string> emptyList = new List<string> { };
-            Check.ThatCode(() => Check.That(emptyList).ContainsOnlyElementsThatMatch(item => true))
-                .DoesNotThrow();
+            Check.That(emptyList).ContainsOnlyElementsThatMatch(item => true);
         }
 
         [Test]
         public void ContainsOnlyElementShouldNotFailIfAllElementMatch()
         {
             IEnumerable<int> list = new List<int> {4,6,8 };
-            Check.ThatCode(() => Check.That(list).ContainsOnlyElementsThatMatch(item => item % 2 == 0))
-                .DoesNotThrow();
+            Check.That(list).ContainsOnlyElementsThatMatch(item => item % 2 == 0);
         }
 
         [Test]
