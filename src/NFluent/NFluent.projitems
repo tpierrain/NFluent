@@ -34,6 +34,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Checks\StructCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\TimeSpanCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\TypeCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicCheckLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\ExtensibilityHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\IChecker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\ICheckForExtensibility.cs" />

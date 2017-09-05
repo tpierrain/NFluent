@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CCA550FA-833A-4F2E-9C81-78EE585A49CC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{CCA550FA-833A-4F2E-9C81-78EE585A49CC}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
@@ -31,9 +31,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5BD348A4-E85B-4283-AA2A-01967F6F11C2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{64EFC15A-C599-41B6-BD22-144F8468A439}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{64EFC15A-C599-41B6-BD22-144F8468A439}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Compatibility", "Compatibility", "{E3F40977-9951-4FCE-AA2C-9D3D804D836C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "compatibility", "compatibility", "{E3F40977-9951-4FCE-AA2C-9D3D804D836C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests.Extensions", "tests\NFluent.35.Tests.Extensions\NFluent.35.Tests.Extensions.csproj", "{AC520FDB-8125-46F3-85F3-D4962C53C136}"
 EndProject
@@ -63,7 +63,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.Tests", "tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.Tests.Internals", "tests\NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj", "{CE90E7CF-957D-4DF9-AE63-93CEA369B231}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{261B1CE2-51CF-4F30-B689-3E78C3916F3E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "platforms", "platforms", "{261B1CE2-51CF-4F30-B689-3E78C3916F3E}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NFluent.Tests.Internals", "tests\NFluent.Tests.Internals\NFluent.Tests.Internals.shproj", "{AB38506B-6CD4-47ED-A085-A77E8A5BE26C}"
 EndProject
@@ -73,7 +73,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NFluent.Tests.Extensions", 
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NFluent", "src\NFluent\NFluent.shproj", "{DBFA1137-B129-496A-9201-149F5178747E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{6A12E9B8-849A-4421-AEB3-B768E78EDC8A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "platforms", "platforms", "{6A12E9B8-849A-4421-AEB3-B768E78EDC8A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.30", "src\NFluent.30\NFluent.30.csproj", "{33ADF67E-963A-4950-966B-14A513C245A1}"
 EndProject
@@ -97,7 +97,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NFluent.Tests.Generated", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.45.Tests.Extensions", "tests\NFluent.45.Tests.Extensions\NFluent.45.Tests.Extensions.csproj", "{308A72A3-462B-4C4E-ABAE-9D9D49D251E7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frameworks", "Frameworks", "{16966B1C-3F81-4587-97B2-0B06C7F0F9E2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "frameworks", "frameworks", "{16966B1C-3F81-4587-97B2-0B06C7F0F9E2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.MsTest", "tests\NFluent.Tests.MsTest\NFluent.Tests.MsTest.csproj", "{7A26BC7D-87D1-4279-BA30-2F4CF456D58A}"
 EndProject

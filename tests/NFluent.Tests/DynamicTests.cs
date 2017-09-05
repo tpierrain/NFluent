@@ -22,17 +22,6 @@ namespace NFluent.Tests
     [TestFixture]
     public class DynamicTests
     {
-        /*
-    [Test]
-    public void CanCheckThatOnADynamic()
-    {
-        dynamic car = "car";
-            Check.ThatCode(() =>
-            {
-                Check.That(car.FuelLevel).IsEmpty();
-            })
-            .ThrowsAny();
-        } */
         class Command
         {
             internal dynamic Subject { get; set; }
@@ -45,6 +34,17 @@ namespace NFluent.Tests
             dynamic sut = "test";
 
             Check.ThatDynamic(sut).IsNotNull();
+            // this check fails
+            Check.ThatCode(() => { Check.ThatDynamic(cmd.Subject).IsNotNull(); }).Throws<FluentCheckException>();
+        }
+
+        [Test]
+        public void AndWorks()
+        {
+            var cmd = new Command();
+            dynamic sut = "test";
+
+            Check.ThatDynamic(sut).IsNotNull().And.IsEqualTo("test");
             // this check fails
             Check.ThatCode(() => { Check.ThatDynamic(cmd.Subject).IsNotNull(); }).Throws<FluentCheckException>();
         }
