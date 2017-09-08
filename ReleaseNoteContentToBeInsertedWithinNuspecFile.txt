@@ -1,4 +1,4 @@
-V 2.01
+V 2.10
 --------------
 New feature(s):
 * Enumerable: new check ContainsOnlyElementsThatMatch which checks that all items verify a given predicate.
@@ -6,6 +6,7 @@ New feature(s):
   * Entry point is: Check.ThatDynamic()
   * Available checks are: IsNotNull(), IsEqualTo(...), IsSameReferenceAs(...)
   * And keyword is available
+  * Not keyword is available
 
 Bug Fixe(s):
 * Fixed support of array types for HasFielsWithSameValues
