@@ -14,6 +14,12 @@
     <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
     <releaseNotes>V 2.01
 --------------
+New feature(s):
+* Enumerable: new check ContainsOnlyElementsThatMatch which checks that all items verify a given predicate.
+* Initiate support for dynamics:
+* Entry point is: Check.ThatDynamic()
+* Available checks are: IsNotNull(), IsEqualTo(...), IsSameReferenceAs(...)
+* And keyword is available
 Bug Fixe(s):
 * Fixed support of array types for HasFielsWithSameValues
 * Fixed confusing examples about array item related checks in the readme

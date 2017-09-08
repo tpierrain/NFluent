@@ -22,9 +22,11 @@ namespace NFluent
     /// <summary>
     /// Provides fluent check methods to be executed on a given value.
     /// </summary>
-    public class FluentDynamicCheck: IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense, IForkableCheck
+    public class FluentDynamicCheck : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense,
+        IForkableCheck
     {
         private readonly dynamic value;
+        private bool negated;
 
         /// <summary>
         /// 
@@ -40,12 +42,14 @@ namespace NFluent
         /// </summary>
         public DynamicCheckLink IsNotNull()
         {
-            if (this.value != null)
+            if (this.negated != (this.value != null))
             {
                 return new DynamicCheckLink(this);
             }
 
-            var message = FluentMessage.BuildMessage("The {0} is null whereas it must not.").For("dynamic").On(this.value);
+            var message = FluentMessage.BuildMessage(this.negated ? "The {0} is not null whereas it must." : "The {0} is null whereas it must not.")
+                .For("dynamic")
+                .On(this.value);
             throw new FluentCheckException(message.ToString());
         }
 
@@ -55,12 +59,13 @@ namespace NFluent
         /// <param name="expected">Expected reference.</param>
         public DynamicCheckLink IsSameReferenceAs(dynamic expected)
         {
-            if (object.ReferenceEquals(this.value, expected))
+            if (this.negated != (object.ReferenceEquals(this.value, expected)))
             {
                 return new DynamicCheckLink(this);
             }
 
-            var message = FluentMessage.BuildMessage("The {0} is not the expected reference.").For("dynamic").Expected(expected).And.On(this.value);
+            var message = FluentMessage.BuildMessage(this.negated ? "The {0} is  the expected reference whereas it must not.": "The {0} is not the expected reference.").For("dynamic")
+                .Expected(expected).And.On(this.value);
             throw new FluentCheckException(message.ToString());
         }
 
@@ -70,11 +75,12 @@ namespace NFluent
         /// <param name="expected">The expected value. Comparison is done using <see cref="object.Equals(object, object)"/></param>
         public DynamicCheckLink IsEqualTo(dynamic expected)
         {
-            if (object.Equals(this.value, expected))
+            if (this.negated != object.Equals(this.value, expected))
             {
                 return new DynamicCheckLink(this);
             }
-            var message = FluentMessage.BuildMessage("The {0} is not equal to the {1}.").For("dynamic").Expected(expected).And.On(this.value);
+            var message = FluentMessage.BuildMessage(this.negated ? "The {0} is equal to the {1} whereas it must not." : "The {0} is not equal to the {1}.").For("dynamic")
+                .Expected(expected).And.On(this.value);
             throw new FluentCheckException(message.ToString());
         }
 
@@ -83,6 +89,19 @@ namespace NFluent
         public object ForkInstance()
         {
             return new FluentDynamicCheck(this.value);
+        }
+
+        /// <summary>
+        /// Invert test condition
+        /// </summary>
+        public FluentDynamicCheck Not
+        {
+            get
+            {
+                var ret = new FluentDynamicCheck(this.value);
+                ret.negated = !this.negated;
+                return ret;
+            }
         }
     }
 #endif

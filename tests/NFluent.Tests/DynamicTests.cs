@@ -54,7 +54,6 @@ namespace NFluent.Tests
         {
             dynamic sut = "test";
 
-            // this check fails
             Check.ThatDynamic(sut).IsSameReferenceAs(sut);
             Check.ThatCode(() => { Check.ThatDynamic(sut).IsSameReferenceAs("tes"); }).Throws<FluentCheckException>();
         }
@@ -64,9 +63,26 @@ namespace NFluent.Tests
         {
             dynamic sut = "test";
 
-            // this check fails
             Check.ThatDynamic(sut).IsEqualTo(sut);
+
             Check.ThatCode(() => { Check.ThatDynamic(sut).IsEqualTo("tes"); }).Throws<FluentCheckException>();
+        }
+
+        [Test]
+        public void NotWorks()
+        {
+            var cmd = new Command();
+            dynamic sut = "test";
+
+            Check.ThatDynamic(cmd.Subject).Not.IsNotNull();
+            // this check fails
+            Check.ThatCode(() => { Check.ThatDynamic(sut).Not.IsNotNull(); }).Throws<FluentCheckException>();
+
+            Check.ThatDynamic(sut).Not.IsEqualTo("tes");
+            Check.ThatCode(() => { Check.ThatDynamic(sut).Not.IsEqualTo(sut); }).Throws<FluentCheckException>();
+
+            Check.ThatDynamic(sut).Not.IsSameReferenceAs("tes");
+            Check.ThatCode(() => { Check.ThatDynamic(sut).Not.IsSameReferenceAs(sut); }).Throws<FluentCheckException>();
         }
 
     }
