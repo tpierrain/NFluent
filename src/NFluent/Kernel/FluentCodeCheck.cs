@@ -215,7 +215,6 @@ namespace NFluent.Kernel
                         try
                         {
                             // starts and waits the completion of the awaitable method
-                            waitableFunction().Wait();
                             result.Result = waitableFunction().Result;
                         }
                         catch (AggregateException agex)
