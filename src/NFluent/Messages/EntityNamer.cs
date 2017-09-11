@@ -33,13 +33,7 @@ namespace NFluent.Messages
     {
         private const string DefaultEntityName = "value";
 
-#region Fields
-
         private string forcedEntity;
-
-#endregion
-
-#region Public Properties
 
         public string EntityName
         {
@@ -92,7 +86,5 @@ namespace NFluent.Messages
         }
 
         public Type EntityType { get; set; }
-
-#endregion
     }
 }

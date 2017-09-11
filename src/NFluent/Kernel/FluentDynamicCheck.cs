@@ -20,7 +20,7 @@ namespace NFluent
 
 #if PORTABLE || NETSTANDARD1_3 || DOTNET_45
     /// <summary>
-    /// Provides fluent check methods to be executed on a given value.
+    ///     Provides fluent check methods to be executed on a given value.
     /// </summary>
     public class FluentDynamicCheck : IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense,
         IForkableCheck
@@ -29,7 +29,6 @@ namespace NFluent
         private bool negated;
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="value"></param>
         public FluentDynamicCheck(dynamic value)
@@ -38,7 +37,7 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks if the given dynamic is null.
+        ///     Checks if the given dynamic is null.
         /// </summary>
         public DynamicCheckLink IsNotNull()
         {
@@ -47,14 +46,16 @@ namespace NFluent
                 return new DynamicCheckLink(this);
             }
 
-            var message = FluentMessage.BuildMessage(this.negated ? "The {0} is not null whereas it must." : "The {0} is null whereas it must not.")
+            var message = FluentMessage.BuildMessage(this.negated
+                    ? "The {0} is not null whereas it must."
+                    : "The {0} is null whereas it must not.")
                 .For("dynamic")
                 .On(this.value);
             throw new FluentCheckException(message.ToString());
         }
 
         /// <summary>
-        /// Checks if the given dynamic has the expected reference.
+        ///     Checks if the given dynamic has the expected reference.
         /// </summary>
         /// <param name="expected">Expected reference.</param>
         public DynamicCheckLink IsSameReferenceAs(dynamic expected)
@@ -64,42 +65,52 @@ namespace NFluent
                 return new DynamicCheckLink(this);
             }
 
-            var message = FluentMessage.BuildMessage(this.negated ? "The {0} is  the expected reference whereas it must not.": "The {0} is not the expected reference.").For("dynamic")
+            var message = FluentMessage
+                .BuildMessage(this.negated
+                    ? "The {0} is  the expected reference whereas it must not."
+                    : "The {0} is not the expected reference.").For("dynamic")
                 .Expected(expected).And.On(this.value);
             throw new FluentCheckException(message.ToString());
         }
 
         /// <summary>
-        /// Checks if the given dynamic has the expected value.
+        ///     Checks if the given dynamic has the expected value.
         /// </summary>
-        /// <param name="expected">The expected value. Comparison is done using <see cref="object.Equals(object, object)"/></param>
+        /// <param name="expected">
+        ///     The expected value. Comparison is done using <see cref="object.Equals(object, object)" />
+        /// </param>
         public DynamicCheckLink IsEqualTo(dynamic expected)
         {
             if (this.negated != object.Equals(this.value, expected))
             {
                 return new DynamicCheckLink(this);
             }
-            var message = FluentMessage.BuildMessage(this.negated ? "The {0} is equal to the {1} whereas it must not." : "The {0} is not equal to the {1}.").For("dynamic")
+            var message = FluentMessage
+                .BuildMessage(this.negated
+                    ? "The {0} is equal to the {1} whereas it must not."
+                    : "The {0} is not equal to the {1}.").For("dynamic")
                 .Expected(expected).And.On(this.value);
             throw new FluentCheckException(message.ToString());
         }
 
 
-        /// <inheritdoc cref="IForkableCheck.ForkInstance"/>
+        /// <inheritdoc cref="IForkableCheck.ForkInstance" />
         public object ForkInstance()
         {
             return new FluentDynamicCheck(this.value);
         }
 
         /// <summary>
-        /// Invert test condition
+        ///     Invert test condition
         /// </summary>
         public FluentDynamicCheck Not
         {
             get
             {
-                var ret = new FluentDynamicCheck(this.value);
-                ret.negated = !this.negated;
+                var ret = new FluentDynamicCheck(this.value)
+                {
+                    negated = !this.negated
+                };
                 return ret;
             }
         }

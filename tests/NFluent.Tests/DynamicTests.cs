@@ -13,7 +13,6 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-
 #if PORTABLE || NETCOREAPP1_0 || DOTNET_45
 namespace NFluent.Tests
 {
@@ -30,6 +29,7 @@ namespace NFluent.Tests
         [Test]
         public void CanCheckNulls()
         {
+
             var cmd = new Command();
             dynamic sut = "test";
 
