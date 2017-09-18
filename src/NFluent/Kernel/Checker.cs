@@ -33,15 +33,9 @@ namespace NFluent.Kernel
     internal class Checker<T, TC> : IChecker<T, TC>
         where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
-        #region fields
-
         private readonly ICheckForExtensibility<T, TC> fluentCheckForExtensibility;
 
         private string sutLabel;
-
-        #endregion
-
-        #region constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Checker{T,TC}" /> class.
@@ -52,16 +46,7 @@ namespace NFluent.Kernel
             this.fluentCheckForExtensibility = fluentCheckForExtensibility;
         }
 
-        #endregion
-
-        #region properties
-
-        /// <summary>
-        /// Gets the value to be tested (provided for any extension method to be able to test it).
-        /// </summary>
-        /// <value>
-        /// The value to be tested by any fluent check extension method.
-        /// </value>
+        /// <inheritdoc />
         public T Value => this.fluentCheckForExtensibility.Value;
 
         /// <summary>
@@ -72,10 +57,6 @@ namespace NFluent.Kernel
         /// <c>true</c> if all the methods applying to this check instance should be negated; <c>false</c> otherwise.
         /// </value>
         public bool Negated => this.fluentCheckForExtensibility.Negated;
-
-        #endregion
-
-        #region methods
 
         /// <summary>
         /// Builds an error message in.
@@ -205,14 +186,7 @@ namespace NFluent.Kernel
             return this.BuildChainingObject();
         }
 
-        /// <summary>
-        /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
-        /// </summary>
-        /// <param name="action">The happy-path action (vs. the one for negated version which has not to be specified).
-        /// This lambda should simply return if everything is ok, or throws a
-        /// <see cref="FluentCheckException" /> otherwise.</param>
-        /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
-        /// <exception cref="FluentCheckException">The check fails.</exception>
+        /// <inheritdoc />
         public void ExecuteNotChainableCheck(Action action, string negatedExceptionMessage)
         {
             try
@@ -245,6 +219,5 @@ namespace NFluent.Kernel
             return new FluentCheckException(message);
         }
 
-        #endregion
     }
 }

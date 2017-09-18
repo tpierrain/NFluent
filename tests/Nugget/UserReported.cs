@@ -1,4 +1,8 @@
-﻿namespace Nugget
+﻿using System;
+using System.Threading.Tasks;
+using NUnit.Framework.Internal;
+
+namespace Nugget
 {
     using NFluent;
     using NUnit.Framework;
