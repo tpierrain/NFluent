@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+#if DOTNET_45
+using System;
 using System.Threading.Tasks;
+#endif
 using NUnit.Framework;
 
 namespace NFluent.Tests.FromIssues
@@ -21,8 +22,7 @@ namespace NFluent.Tests.FromIssues
         public void reproduce_issue_204()
         {
             Check.ThatAsyncCode(() => Execute(5)).Throws<Exception>();
-
-        }
+            }
         private Task<int> Execute(int i)
         {
             if (i == 5)
