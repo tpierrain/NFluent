@@ -96,19 +96,19 @@
     <!--file src="Artifacts\Binaries\net35\NFluent.pdb" target="lib\net35\" /-->
     <!-- .NET 4.0 (for dynamics and tasks support) -->
     <file src="Artifacts\Binaries\net40\NFluent.dll" target="lib\net40\" />
-    <file src="Artifacts\Binaries\net40\NFluent.pdb" target="lib\net40\" />
-    <!--file src="Artifacts\Binaries\net40\NFluent.xml" target="lib\net40\" /-->
+    <file src="Artifacts\Binaries\net40\NFluent.xml" target="lib\net40\" />
+    <!--file src="Artifacts\Binaries\net40\NFluent.pdb" target="lib\net40\" /-->
     <!-- .NET 4.5 (for dynamics and tasks support) -->
     <file src="Artifacts\Binaries\net45\NFluent.dll" target="lib\net45\" />
-    <file src="Artifacts\Binaries\net45\NFluent.pdb" target="lib\net45\" />
-    <!--file src="Artifacts\Binaries\net45\NFluent.xml" target="lib\net45\" /-->
+    <file src="Artifacts\Binaries\net45\NFluent.xml" target="lib\net45\" />
+    <!--file src="Artifacts\Binaries\net45\NFluent.pdb" target="lib\net45\" /-->
     <!-- PCL -->
     <file src="Artifacts\Binaries\PCL\NFluent.dll" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\" />
-    <file src="Artifacts\Binaries\PCL\NFluent.pdb" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\" />
-    <!--file src="Artifacts\Binaries\PCL\NFluent.xml" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\" /-->
+    <file src="Artifacts\Binaries\PCL\NFluent.xml" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\" />
+    <!--file src="Artifacts\Binaries\PCL\NFluent.pdb" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\" /-->
     <!-- Core -->
     <file src="Artifacts\Binaries\netstandard1.3\NFluent.dll" target="lib\netstandard1.3\" />
-    <file src="Artifacts\Binaries\netstandard1.3\NFluent.pdb" target="lib\netstandard1.3\" />
-    <!--file src="Artifacts\Binaries\netstandard1.3\NFluent.xml" target="lib\netstandard1.3\" /-->
+    <file src="Artifacts\Binaries\netstandard1.3\NFluent.xml" target="lib\netstandard1.3\" />
+    <!--file src="Artifacts\Binaries\netstandard1.3\NFluent.pdb" target="lib\netstandard1.3\" /-->
   </files>
 </package>

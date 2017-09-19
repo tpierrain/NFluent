@@ -30,7 +30,7 @@
     <ZipExe>$(ToolsPath)\7za\7za.exe</ZipExe>
     <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.7.0\tools\nunit3-console.exe</TestRunnerPath>
     <CoverToolPath>$(NuGetToolsPath)\OpenCover.4.6.519\tools</CoverToolPath>
-    <CoverReportToolPath>$(NuGetToolsPath)\ReportGenerator.2.5.11\tools</CoverReportToolPath>
+    <CoverReportToolPath>$(NuGetToolsPath)\ReportGenerator.3.0.0\tools</CoverReportToolPath>
     <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
     <MsTestRunner>vstest.console.exe</MsTestRunner>
   </PropertyGroup>
@@ -94,7 +94,7 @@
       <AssemblyVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Patch"].Value)</AssemblyVersionPatch>
       <AssemblyVersionPreRelease>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["PreReleaseInfo"].Value)</AssemblyVersionPreRelease>
     </PropertyGroup>
-    <Message Text="Output : $(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)"/>
+    <Message Importance="high" Text="Version : $(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)"/>
     
       <XmlPoke 
       XmlInputPath="%(CoreCsproj.FullPath)"
