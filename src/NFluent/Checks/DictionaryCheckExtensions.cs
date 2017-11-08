@@ -207,15 +207,16 @@ namespace NFluent
                 () =>
                 {
                     var checkedDictionary = checker.Value;
-                    if (checkedDictionary.ContainsKey(expectedKey)
+                    var containsKey = checkedDictionary.ContainsKey(expectedKey);
+                    if (containsKey
                         && checkedDictionary[expectedKey].Equals(expectedValue))
                     {
                         return;
                     }
 
-                    var message = checker.BuildMessage(!checkedDictionary.ContainsKey(expectedKey) ? "The {0} does not contain the expected key-value pair. The given key was not found." : "The {0} does not contain the expected value for the given key.");
-                    message.Expected(new KeyValuePair<object, object>(expectedKey, expectedValue))
-                        .Label("Expected pair:");
+                    var s = containsKey ? "The {0} does not contain the expected value for the given key." : "The {0} does not contain the expected key-value pair. The given key was not found.";
+                    var message = checker.BuildMessage(s);
+                    message.Expected(new KeyValuePair<object, object>(expectedKey, expectedValue)).Label("Expected pair:");
                     throw new FluentCheckException(message.ToString());
                 },
                 checker.BuildMessage("The {0} does contain the given value, whereas it must not.").Expected(expectedValue).Label("Expected value:").ToString());

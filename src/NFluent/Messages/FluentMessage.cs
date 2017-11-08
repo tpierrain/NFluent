@@ -27,7 +27,6 @@ namespace NFluent.Extensibility
     /// </summary>
     public class FluentMessage
     {
-        #region fields
 
         internal static readonly string EndOfLine = Environment.NewLine; // TODO: inline it
         private readonly EntityNamer checkedNamer;
@@ -40,10 +39,6 @@ namespace NFluent.Extensibility
         private string entity;
         private Type referenceType;
         private Type checkedType;
-
-        #endregion
-
-        #region constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FluentMessage"/> class.
@@ -64,10 +59,6 @@ namespace NFluent.Extensibility
             this.checkedLabel = GenericLabelBlock.BuildCheckedBlock(this.checkedNamer);
             this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(this.expectedNamer);
         }
-
-        #endregion
-
-        #region methods
 
         /// <summary>
         /// Builds the message.
@@ -100,7 +91,7 @@ namespace NFluent.Extensibility
                 this.expectedNamer.EntityName = this.entity;
             }
 
-            var givenOrExpectedLabel = this.expectedLabel.CustomMessage("{1}") == this.checkedLabel.CustomMessage("{1}") 
+            var givenOrExpectedLabel = this.expectedLabel.EntityName() == this.checkedLabel.EntityName() 
                 ? this.expectedLabel.CustomMessage("{0} one") : this.expectedLabel.ToString();
 
             builder.AppendFormat(this.message, this.checkedLabel, givenOrExpectedLabel);
@@ -247,6 +238,5 @@ namespace NFluent.Extensibility
             return this.expectedBlock;
         }
 
-        #endregion
     }
 }

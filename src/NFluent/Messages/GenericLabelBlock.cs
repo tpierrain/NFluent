@@ -82,7 +82,7 @@ namespace NFluent.Messages
             return this.adjective;
         }
 
-        private string EntityName()
+        public string EntityName()
         {
             return this.EntityLogic == null ? "value" : this.EntityLogic.EntityName;
         }
