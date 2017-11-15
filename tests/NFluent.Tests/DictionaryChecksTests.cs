@@ -136,6 +136,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That(basic).ContainsKey("bar"); }).Throws<FluentCheckException>();
             Check.ThatCode(() => { Check.That(basic).ContainsValue("foo"); }).Throws<FluentCheckException>();
             Check.ThatCode(() => { Check.That(basic).ContainsPair("bar", "foo"); }).Throws<FluentCheckException>();
+            Check.ThatCode(() => { Check.That(basic).ContainsPair("foo", "foo"); }).Throws<FluentCheckException>();
         }
 #endif
         [Test]
@@ -154,6 +155,7 @@ namespace NFluent.Tests
                 "\t[[demo, value]]",
                 "Expected pair:",
                 "\t[[demo, 1]]");
+
             Check.ThatCode(() =>
                     Check.That(SimpleDico).ContainsPair("demo2", "1")
                 )
