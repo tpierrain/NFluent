@@ -21,6 +21,7 @@ namespace NFluent.Tests.FromIssues
         double decimalValue => 0.95000000000000006d;
 
         // issue #205
+        /*
         [Test]
         [Ignore("Need to review T4 generation to handle this.")]
         public void should_generate_correct_error_message_for_double()
@@ -33,6 +34,7 @@ namespace NFluent.Tests.FromIssues
                 "The expected value:", 
                 "\t[0.95]");
         }
+        */
 
         public void CollectionTest()
         {

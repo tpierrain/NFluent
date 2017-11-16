@@ -28,9 +28,9 @@
     <NuGetExePath>nuget.exe</NuGetExePath>
     <DocuExePath>$(ToolsPath)\docu\docu.exe</DocuExePath>
     <ZipExe>$(ToolsPath)\7za\7za.exe</ZipExe>
-    <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.7.0\tools\nunit3-console.exe</TestRunnerPath>
+    <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe</TestRunnerPath>
     <CoverToolPath>$(NuGetToolsPath)\OpenCover.4.6.519\tools</CoverToolPath>
-    <CoverReportToolPath>$(NuGetToolsPath)\ReportGenerator.3.0.0\tools</CoverReportToolPath>
+    <CoverReportToolPath>$(NuGetToolsPath)\ReportGenerator.3.0.2\tools</CoverReportToolPath>
     <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
     <MsTestRunner>vstest.console.exe</MsTestRunner>
   </PropertyGroup>
