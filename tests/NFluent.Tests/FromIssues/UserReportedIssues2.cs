@@ -34,8 +34,6 @@ namespace NFluent.Tests.FromIssues
                 "\t[0.95]");
         }
 
-        [Test]
-        [Explicit]
         public void CollectionTest()
         {
             var a = new List<int> { 1, 2 };
