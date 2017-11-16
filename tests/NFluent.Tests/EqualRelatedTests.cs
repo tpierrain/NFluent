@@ -136,7 +136,7 @@ namespace NFluent.Tests
         public void IsEqualToThrowsExceptionWhenFailingWithIntArray()
         {
             var array = new[] { 45, 43, 54, 666 };
-            var otherSimilarButNotEqualArray = new[] { 45, 43, 54, 666 };
+            var otherSimilarButNotEqualArray = new[] { 45, 43, 54, 667 };
 
             Check.ThatCode(() =>
             {
@@ -270,7 +270,8 @@ namespace NFluent.Tests
             var similarButNotEqualArray = new[] { 45, 43, 54, 666 };
 
             Check.That(array).IsNotEqualTo(otherArray);
-            Check.That(array).IsNotEqualTo(similarButNotEqualArray);
+            // behavior changed on 14/11/17
+            //Check.That(array).IsNotEqualTo(similarButNotEqualArray);
         }
 
         [Test]

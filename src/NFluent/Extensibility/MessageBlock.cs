@@ -241,21 +241,11 @@ namespace NFluent.Extensibility
             string fullLabel;
             if (string.IsNullOrEmpty(this.comparisonLabel))
             {
-                if (this.customMessage == null)
-                {
-                    fullLabel = string.Format("The {0}:", this.block);
-                }
-                else
-                {
-                    fullLabel = this.block.CustomMessage(this.customMessage);
-                }
+                fullLabel = this.customMessage == null ? $"The {this.block}:" : this.block.CustomMessage(this.customMessage);
             }
             else
             {
-                fullLabel = string.Format(
-                    "The {0}: {1}", 
-                    this.block, 
-                    this.comparisonLabel);
+                fullLabel = $"The {this.block}: {this.comparisonLabel}";
             }
 
             return fullLabel;

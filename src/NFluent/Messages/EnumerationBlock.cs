@@ -104,11 +104,6 @@ namespace NFluent.Messages
                 builder.AppendFormat(" of type: [{0}]", temp);
             }
 
-            if (this.includeHash && this.test != null)
-            {
-                builder.AppendFormat(" with HashCode: [{0}]", this.test.GetHashCode());
-            }
-
             return builder.ToString();
         }
 

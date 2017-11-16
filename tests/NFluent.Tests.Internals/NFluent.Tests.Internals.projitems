@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ContainsTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomEqualTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FluentMessageTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NUnitSpecific.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringDifferenceAnalyzerTests.cs" />

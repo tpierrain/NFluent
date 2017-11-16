@@ -1,7 +1,9 @@
 V 2.10
 --------------
 New feature(s):
-* Enumerable: new check ContainsOnlyElementsThatMatch which checks that all items verify a given predicate.
+* Enumerable:
+  * Breaking change: equality for Enumerable is now content based (instead of reference based)
+  * New check ContainsOnlyElementsThatMatch which checks that all items verify a given predicate.
 * Initiate support for dynamics:
   * Entry point is: Check.ThatDynamic()
   * Available checks are: IsNotNull(), IsEqualTo(...), IsSameReferenceAs(...)

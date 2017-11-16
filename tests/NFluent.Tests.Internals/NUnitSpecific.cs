@@ -14,12 +14,11 @@
 // <summary>
 //   
 // </summary>
-// --------------------------------------------------------------------------------------------------------------------namespace NFluent.Tests
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent.Tests
 {
-    using NFluent.Helpers;
-
+    using Helpers;
     using NUnit.Framework;
 
     public class NUnitSpecific

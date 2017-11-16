@@ -13,6 +13,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using NFluent.Helpers;
+
 namespace NFluent
 {
     using System;
@@ -208,13 +210,13 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                     {
-                        if (Equals(checker.Value, otherEnumerable))
+                        if (checker.Value == null)
                         {
-                            return;
-                        }
+                            if (otherEnumerable == null)
+                            {
+                                return;
+                            }
 
-                        if (checker.Value == null && otherEnumerable != null)
-                        {
                             var message = checker
                                 .BuildMessage("The {0} is null and thus does not contain exactly the {1}.")
                                 .ExpectedValues(otherEnumerable).ToString();
@@ -233,7 +235,7 @@ namespace NFluent
                         {
                             while (first.MoveNext())
                             {
-                                if (!second.MoveNext() || !Equals(first.Current, second.Current))
+                                if (!second.MoveNext() || !EqualityHelper.FluentEquals(first.Current, second.Current))
                                 {
                                     throw new FluentCheckException(
                                         BuildNotExactlyExceptionMessage(checker, enumerable, index));
@@ -626,20 +628,19 @@ namespace NFluent
         private static IList<object> ExtractNotFoundValues(IEnumerable enumerable, IEnumerable expectedValues)
         {
             // Prepares the list to return
-            var notFoundValues = expectedValues.Cast<object>().ToList();
+            var values = expectedValues as IList<object> ?? expectedValues.Cast<object>().ToList();
+            var notFoundValues = values.ToList();
 
             foreach (var element in enumerable)
             {
-                foreach (var expectedValue in expectedValues)
+                foreach (var expectedValue in values)
                 {
-                    // ReSharper disable once RedundantNameQualifier
-                    if (!object.Equals(element, expectedValue))
+                    if (!EqualityHelper.FluentEquals(element, expectedValue))
                     {
                         continue;
                     }
 
-                    // ReSharper disable once RedundantNameQualifier
-                    notFoundValues.RemoveAll(one => object.Equals(one, expectedValue));
+                    notFoundValues.RemoveAll(one => EqualityHelper.FluentEquals(one, expectedValue));
                     break;
                 }
             }

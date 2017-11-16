@@ -292,7 +292,8 @@ namespace NFluent.Extensions
                 return true;
             }
             
-            // info cannot be null has ALL .Net types inherits Equals from System.Object
+            // info cannot be null as ALL .Net types inherits Equals from System.Object
+            // ReSharper disable once PossibleNullReferenceException
             return info.DeclaringType == type;
         }
 
