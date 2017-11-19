@@ -114,7 +114,7 @@
         [Test]
         public void HasNotFieldsWithSameValuesFailsIfSame()
         {
-            Check.ThatCode(() => { Check.That(new DummyClass()).HasNotFieldsWithSameValues(new DummyClass()); })
+            Check.ThatCode(() => { Check.That(new DummyClass()).HasNotFieldsWithSameValues(new DummyClass(2,2)); })
                 .Throws<FluentCheckException>().WithMessage(
                     Environment.NewLine
                     + "The checked value's field 'x' has the same value in the comparand, whereas it must not."
