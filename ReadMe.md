@@ -18,7 +18,7 @@
 
 ==============
 
-NFluent is __an check library__ which aims __to fluent your .NET TDD experience__.
+NFluent is __an assertion library__ which aims __to fluent your .NET TDD experience__.
 
 __Official site: [http://www.n-fluent.net/](http://www.n-fluent.net/)__
 
