@@ -3,14 +3,11 @@
 ![NFluent](https://github.com/tpierrain/nfluent/blob/master/NFluentBanner.png?raw=true)
 ![Motto](https://github.com/tpierrain/nfluent/blob/master/Images/AssertIsDead.png?raw=true)
 
-**Stable**
-[![NuGet](https://img.shields.io/nuget/v/NFluent.svg)](https://www.nuget.org/packages/NFluent/)
+**Stable**   [![NuGet](https://img.shields.io/nuget/v/NFluent.svg)](https://www.nuget.org/packages/NFluent/)
+ [![NuGet](https://img.shields.io/nuget/dt/NFluent.svg)](https://www.nuget.org/packages/NFluent/)
+**PreReleases**    [![NuGet Pre Release](https://img.shields.io/nuget/vpre/NFluent.svg)]()
 
-**PreReleases**
-[![NuGet Pre Release](https://img.shields.io/nuget/vpre/NFluent.svg)]()
-
-**Beta**
-[![MyGet](https://img.shields.io/myget/dupdobnightly/vpre/NFluent.svg)](https://www.myget.org/feed/dupdobnightly/package/nuget/NFluent)
+**Beta**    [![MyGet](https://img.shields.io/myget/dupdobnightly/vpre/NFluent.svg)](https://www.myget.org/feed/dupdobnightly/package/nuget/NFluent)
 
 **Issues**
 
