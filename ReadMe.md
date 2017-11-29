@@ -3,7 +3,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/ju5m6t3fm2xsl0o9/branch/master?svg=true)](https://ci.appveyor.com/project/tpierrain/nfluent/branch/master)
 [![Codecov](https://img.shields.io/codecov/c/github/NFluent/NFluent.svg)](https://codecov.io/gh/NFluent/NFluent)
 [![GitHub stars](https://img.shields.io/github/stars/tpierrain/nfluent.svg?style=social&label=Star)](https://github.com/tpierrain/NFluent)
-
+[![AppVeyor tests branch](https://img.shields.io/appveyor/tests/tpierrain/nfluent/master.svg)](https://ci.appveyor.com/project/tpierrain/nfluent/branch/master)
 **Stable**
 
 [![NuGet](https://img.shields.io/nuget/v/NFluent.svg)](https://www.nuget.org/packages/NFluent/)
@@ -16,7 +16,7 @@
 [![NuGet Pre Release](https://img.shields.io/nuget/vpre/NFluent.svg)]()
 [![MyGet](https://img.shields.io/myget/dupdobnightly/vpre/NFluent.svg)](https://www.myget.org/feed/dupdobnightly/package/nuget/NFluent)
 
-==============
+---
 
 NFluent is __an assertion library__ which aims __to fluent your .NET TDD experience__.
 
