@@ -22,7 +22,6 @@ namespace NFluent
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Reflection;
     using System.Text.RegularExpressions;
 
@@ -194,37 +193,39 @@ namespace NFluent
             for (; expectedType != null; expectedType = expectedType.GetBaseType())
             {
                 var fieldInfos = expectedType.GetFields(FlagsForFields);
-                if (fieldInfos.Length > 0)
+                if (fieldInfos.Length <= 0)
                 {
-                    foreach (var fieldInfo in fieldInfos)
+                    continue;
+                }
+
+                foreach (var fieldInfo in fieldInfos)
+                {
+                    var expectedFieldValue = fieldInfo.GetValue(expected);
+                    var expectedFieldDescription = new ExtendedFieldInfo(
+                        prefix,
+                        expectedFieldValue?.GetType() ?? fieldInfo.FieldType,
+                        fieldInfo.Name);
+                    var actualFieldMatching = FindFieldInType(actualType, expectedFieldDescription.NameInSource);
+
+                    expectedFieldDescription.SetFieldValue(expectedFieldValue);
+
+                    // field not found in SUT
+                    if (actualFieldMatching == null)
                     {
-                        var expectedFieldValue = fieldInfo.GetValue(expected);
-                        var expectedFieldDescription = new ExtendedFieldInfo(
-                            prefix,
-                            expectedFieldValue?.GetType() ?? fieldInfo.FieldType,
-                            fieldInfo.Name);
-                        var actualFieldMatching = FindFieldInType(actualType, expectedFieldDescription.NameInSource);
-
-                        expectedFieldDescription.SetFieldValue(expectedFieldValue);
-
-                        // field not found in SUT
-                        if (actualFieldMatching == null)
-                        {
-                            result.Add(new FieldMatch(expectedFieldDescription, null));
-                            continue;
-                        }
-
-                        var fieldActualValue = actualFieldMatching.GetValue(actualValue);
-                        var actualFieldDescription = new ExtendedFieldInfo(
-                            prefix,
-                            fieldActualValue?.GetType() ?? actualFieldMatching.FieldType,
-                            actualFieldMatching.Name);
-
-                        // now, let's get to the values
-                        actualFieldDescription.SetFieldValue(fieldActualValue);
-
-                        CompareValue(expectedFieldDescription, actualFieldDescription, result, scanned, depth - 1);
+                        result.Add(new FieldMatch(expectedFieldDescription, null));
+                        continue;
                     }
+
+                    var fieldActualValue = actualFieldMatching.GetValue(actualValue);
+                    var actualFieldDescription = new ExtendedFieldInfo(
+                        prefix,
+                        fieldActualValue?.GetType() ?? actualFieldMatching.FieldType,
+                        actualFieldMatching.Name);
+
+                    // now, let's get to the values
+                    actualFieldDescription.SetFieldValue(fieldActualValue);
+
+                    CompareValue(expectedFieldDescription, actualFieldDescription, result, scanned, depth - 1);
                 }
             }
 
@@ -398,23 +399,7 @@ namespace NFluent
                 this.Expected = expected;
             }
 
-            private bool DoValuesMatches
-            {
-                get
-                {
-                    if (!this.ExpectedFieldFound)
-                    {
-                        return false;
-                    }
-
-                    if (this.Expected.Value == null)
-                    {
-                        return this.actual.Value == null;
-                    }
-
-                    return this.Expected.Value.Equals(this.actual.Value);
-                }
-            }
+            private bool DoValuesMatches => this.ExpectedFieldFound && EqualityHelper.FluentEquals(this.actual.Value, this.Expected.Value);
 
             private ExtendedFieldInfo Expected { get; }
 
@@ -470,11 +455,8 @@ namespace NFluent
         private class ExtendedFieldInfo
         {
             private readonly Type type;
-
             private readonly FieldKind kind;
-
             private readonly string nameInSource;
-
             private readonly string prefix;
 
             public ExtendedFieldInfo(string prefix, Type type, string infoName)

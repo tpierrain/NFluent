@@ -59,7 +59,11 @@ namespace NFluent
         public static IList<T> Cast<T>(this IEnumerable list)
             where T: class
         {
-            List<T> result = new List<T>();
+            if (list is IList<T> list1)
+            {
+                return list1;
+            }
+            var result = new List<T>();
             foreach (var u in list)
             {
                 result.Add(u as T);
@@ -69,12 +73,7 @@ namespace NFluent
 
         public static IList<T> ToList<T>(this IEnumerable<T> list)
         {
-            var result = new List<T>();
-            foreach (var u in list)
-            {
-                result.Add(u);
-            }
-            return result;
+            return new List<T>(list);
         }
 
         public static long LongCount<T>(this IList<T> list)
@@ -111,7 +110,7 @@ namespace NFluent
             }
             return result;
         }
-
+        
         public static void RemoveAll<T>(this IList<T> list, Predicate<T> predicate)
         {
             for (int i = 0; i < list.Count; i++)
@@ -121,6 +120,18 @@ namespace NFluent
                     list.RemoveAt(i--);
                 }
             }
+        }
+
+        public static bool Contains<T>(this IEnumerable<T> list, T lookup, IEqualityComparer<T> comparer)
+        {
+            foreach (var item in list)
+            {
+                if (comparer.Equals(lookup, item))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 #endif
     }

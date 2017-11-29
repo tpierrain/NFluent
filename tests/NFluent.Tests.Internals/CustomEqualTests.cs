@@ -58,5 +58,18 @@ namespace NFluent.Tests
             result = EqualityHelper.ValueDifference(this.list, "a", new List<List<int>> { a }, "b");
             Check.That(result[0].FirstName).IsEqualTo("a[1]");
         }
+
+        [Test]
+        public void HandleRecursion()
+        {
+            var recursive = new List<object> {this.a};
+            recursive.Add(recursive);
+            var otherRecursive = new List<object> {this.a};
+            var interim = new List<object>();
+            interim.Add(recursive);
+            otherRecursive.Add(interim);
+            Check.ThatCode(() => Check.That(recursive).IsEqualTo(otherRecursive)).Throws<FluentCheckException>();
+            Check.ThatCode(() => Check.That(otherRecursive).IsEqualTo(recursive)).Throws<FluentCheckException>();
+        }
     }
 }

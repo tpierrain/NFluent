@@ -216,33 +216,27 @@ namespace NFluent.Helpers
             return ret;
         }
 
-        private static IList<DifferenceDetails> ValueDifferenceEnumerable(IEnumerable first, string firstName, IEnumerable second,
-            string secondName)
+        internal class EqualityComparer<T>: IEqualityComparer<T>
         {
-            var valueDifferences = new List<DifferenceDetails>();
-            var scanner = second.GetEnumerator();
-            var index = 0;
-            foreach (var firstItem in first)
+            public bool Equals(T x, T y)
             {
-                var firstItemName = $"{firstName}[{index}]";
-                if (!scanner.MoveNext())
-                {
-                    valueDifferences.Add(new DifferenceDetails(firstItemName, firstItem, null, null));
-                    break;
-                }
-                var secondItemName = $"{secondName}[{index}]";
-                valueDifferences.AddRange(ValueDifference(firstItem, firstItemName, scanner.Current,
-                    secondItemName));
-                index++;
+                return FluentEquals(x, y);
             }
-            if (scanner.MoveNext())
+
+            public int GetHashCode(T obj)
             {
-                valueDifferences.Add(new DifferenceDetails(null, null, $"{secondName}[{index}]", scanner.Current));
+               return obj.GetHashCode();
             }
-            return valueDifferences;
         }
 
-        internal static IList<DifferenceDetails> ValueDifference(object firstItem, string firstName, object otherItem, string secondName)
+        internal static IList<DifferenceDetails> ValueDifference(object firstItem, string firstName, object otherItem,
+            string secondName)
+        {
+            return ValueDifference(firstItem, firstName, otherItem, secondName, new List<object>(),
+                new List<object>());
+        }
+
+        private static IList<DifferenceDetails> ValueDifference(object firstItem, string firstName, object otherItem, string secondName, List<object> firstSeen, List<object> secondSeen)
         {
             var result = new List<DifferenceDetails>();
             if (firstItem == null)
@@ -258,11 +252,46 @@ namespace NFluent.Helpers
 
             if (firstItem is IEnumerable first && otherItem is IEnumerable second)
             {
-                return ValueDifferenceEnumerable(first, firstName, second, secondName);
+                if (firstSeen.Contains(firstItem) || secondSeen.Contains(otherItem))
+                {
+                    result.Add(new DifferenceDetails(firstName, null, secondName, null));
+                    return result;
+                }
+
+                firstSeen.Add(firstItem);
+                secondSeen.Add(otherItem);
+
+                return ValueDifferenceEnumerable(first, firstName, second, secondName, firstSeen, secondSeen);
             }
 
             result.Add(new DifferenceDetails(firstName, firstItem, secondName, otherItem));
             return result;
+        }
+
+        private static IList<DifferenceDetails> ValueDifferenceEnumerable(IEnumerable first, string firstName, IEnumerable second,
+            string secondName, List<object> firstSeen, List<object> secondSeen)
+        {
+            var valueDifferences = new List<DifferenceDetails>();
+            var scanner = second.GetEnumerator();
+            var index = 0;
+            foreach (var firstItem in first)
+            {
+                var firstItemName = $"{firstName}[{index}]";
+                if (!scanner.MoveNext())
+                {
+                    valueDifferences.Add(new DifferenceDetails(firstItemName, firstItem, null, null));
+                    break;
+                }
+                var secondItemName = $"{secondName}[{index}]";
+                valueDifferences.AddRange(ValueDifference(firstItem, firstItemName, scanner.Current,
+                    secondItemName, new List<object>(firstSeen), new List<object>(secondSeen)));
+                index++;
+            }
+            if (scanner.MoveNext())
+            {
+                valueDifferences.Add(new DifferenceDetails(null, null, $"{secondName}[{index}]", scanner.Current));
+            }
+            return valueDifferences;
         }
 
         internal class DifferenceDetails

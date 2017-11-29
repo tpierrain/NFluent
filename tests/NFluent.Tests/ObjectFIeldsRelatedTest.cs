@@ -92,7 +92,7 @@
         {
             var x = new DummyClass();
 
-            Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(new DummyClass(1, 2)); })
+            Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(new DummyClass(1, 3)); })
                 .Throws<FluentCheckException>().WithMessage(
                     Environment.NewLine + "The checked value's field 'x' does not have the expected value."
                     + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]" + Environment.NewLine

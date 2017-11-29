@@ -73,46 +73,42 @@ namespace NFluent.Extensions
                 return $"'{theObject}'";
             }
 
-            var s = theObject as string;
-            if (s != null)
+            if (theObject is string s)
             {
                 return $@"""{TruncateLongString(s)}""";
             }
             
-            if (theObject is DateTime)
+            if (theObject is DateTime time)
             {
-                return ToStringProperlyFormatted((DateTime)theObject);
+                return ToStringProperlyFormatted(time);
             }
 
-            if (theObject is bool)
+            if (theObject is bool b)
             {
-                return ToStringProperlyFormatted((bool)theObject);
+                return ToStringProperlyFormatted(b);
             }
 
-            if (theObject is double)
+            if (theObject is double d)
             {
-                return ToStringProperlyFormatted((double)theObject);
+                return ToStringProperlyFormatted(d);
             }
 
-            if (theObject is float)
+            if (theObject is float f)
             {
-                return ToStringProperlyFormatted((float)theObject);
+                return ToStringProperlyFormatted(f);
             }
 
-            var enumerable = theObject as IEnumerable;
-            if (enumerable != null)
+            if (theObject is IEnumerable enumerable)
             {
                 return enumerable.ToEnumeratedString();
             }
 
-            var type = theObject as Type;
-            if (type != null)
+            if (theObject is Type type)
             {
                 return TypeToStringProperlyFormatted(type);
             }
 
-            var exc = theObject as Exception;
-            if (exc != null)
+            if (theObject is Exception exc)
             {
                 return $"{{{exc.GetType().FullName}}}: '{exc.Message}'";
             }

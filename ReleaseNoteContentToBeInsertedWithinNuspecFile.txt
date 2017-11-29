@@ -11,8 +11,9 @@ New feature(s):
   * Not keyword is available
 
 Bug Fixe(s):
-* Fixed support of array types for HasFielsWithSameValues
+* Fixed support of array types for HasFielsWithSameValues (issue #200)
 * Fixed confusing examples about array item related checks in the readme
+* Fixed some stack overflow exceptions (issue #210).
 
 
 V 2.00
