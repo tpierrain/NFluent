@@ -90,9 +90,9 @@
         [Test]
         public void IsEqualFailsIfFieldsDifferent()
         {
-            var x = new DummyClass();
+            var x = new DummyClass(2, 2);
 
-            Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(new DummyClass(1, 3)); })
+            Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(new DummyClass(1, 2)); })
                 .Throws<FluentCheckException>().WithMessage(
                     Environment.NewLine + "The checked value's field 'x' does not have the expected value."
                     + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]" + Environment.NewLine
@@ -102,7 +102,7 @@
         [Test]
         public void IsEqualFailsIfFieldsDifferentEvenInBaseClass()
         {
-            var x = new DummyHeritance();
+            var x = new DummyHeritance(2, 3);
 
             Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(new DummyHeritance(2, 1)); })
                 .Throws<FluentCheckException>().WithMessage(
@@ -152,8 +152,8 @@
         {
             var x = new DummyClass(2, 4);
             var expected = new { x = 2, y = 4, emptyList = (int[])null };
-            Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(expected); }).Throws<FluentCheckException>();
-            Check.ThatCode(() => { Check.That(expected).HasFieldsWithSameValues(x); }).Throws<FluentCheckException>();
+            Check.That(x).HasFieldsWithSameValues(expected);
+            Check.That(expected).HasFieldsWithSameValues(x);;
         }
 
         [Test]
@@ -261,13 +261,13 @@
 
             public DummyClass()
             {
+                this.emptyList = new List<string>();
             }
 
             public DummyClass(int x, int y)
             {
                 this.x = x;
                 this.y = y;
-                this.emptyList = new List<string>();
             }
         }
 

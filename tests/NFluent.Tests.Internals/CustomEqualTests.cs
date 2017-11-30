@@ -53,7 +53,7 @@ namespace NFluent.Tests
         [Test]
         public void ValueDifferenceGivesDetailsOnFailureWithShorterEnums()
         {
-            var result = EqualityHelper.ValueDifference(new List<List<int>> { a }, "a", this.list, "b");
+            var result = EqualityHelper.ValueDifference(new List<List<int>> {this.a }, "a", this.list, "b");
             Check.That(result[0].FirstName).IsEqualTo(null);
             result = EqualityHelper.ValueDifference(this.list, "a", new List<List<int>> { a }, "b");
             Check.That(result[0].FirstName).IsEqualTo("a[1]");
@@ -65,11 +65,10 @@ namespace NFluent.Tests
             var recursive = new List<object> {this.a};
             recursive.Add(recursive);
             var otherRecursive = new List<object> {this.a};
-            var interim = new List<object>();
-            interim.Add(recursive);
+            var interim = new List<object> {recursive};
             otherRecursive.Add(interim);
             Check.ThatCode(() => Check.That(recursive).IsEqualTo(otherRecursive)).Throws<FluentCheckException>();
-            Check.ThatCode(() => Check.That(otherRecursive).IsEqualTo(recursive)).Throws<FluentCheckException>();
+            Check.ThatCode(() => Check.That(new List<object>{this.a, this.a}).IsEqualTo(recursive)).Throws<FluentCheckException>();
         }
     }
 }

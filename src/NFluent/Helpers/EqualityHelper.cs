@@ -223,9 +223,10 @@ namespace NFluent.Helpers
                 return FluentEquals(x, y);
             }
 
+            [Obsolete("Not implemented")]
             public int GetHashCode(T obj)
             {
-               return obj.GetHashCode();
+                throw new NotSupportedException();
             }
         }
 
