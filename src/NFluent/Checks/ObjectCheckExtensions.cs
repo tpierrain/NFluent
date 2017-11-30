@@ -76,6 +76,33 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the actual value is one of the legal values.
+        /// </summary>
+        /// <typeparam name="T">Type of the checked value.</typeparam>
+        /// <param name="check">The fluent check context object.</param>
+        /// <param name="values">List of possible values.</param>
+        /// <returns>A check link</returns>
+        public static ICheckLink<ICheck<T>> IsOneOf<T>(this ICheck<T> check, params T[] values)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+
+            return checker.ExecuteCheck(() =>
+                {
+                    var comparer = new EqualityHelper.EqualityComparer<T>();
+                    foreach (var value in values)
+                    {
+                        if (comparer.Equals(checker.Value, value))
+                        {
+                            return;
+                        }
+                    }
+                    var message = checker.BuildMessage("The {0} is not one of the {1}.").ExpectedValues(values);
+                    throw new FluentCheckException(message.ToString());
+                }, 
+                checker.BuildMessage("The {0} should not be one of the {1}.").ExpectedValues(values).ToString()
+            );
+        }
+        /// <summary>
         /// Checks that the actual value is equal to another expected value using operator==.
         /// </summary>
         /// <typeparam name="T">

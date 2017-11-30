@@ -42,6 +42,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IntRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IntSignedNumberRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IsInstanceOfTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IsOneOfRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IsOnlyMadeOfTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LambdaDurationTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LambdaRelatedTests.cs" />

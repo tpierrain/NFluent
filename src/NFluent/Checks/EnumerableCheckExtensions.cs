@@ -23,7 +23,6 @@ namespace NFluent
     using Helpers;
 
 #if !DOTNET_30 && !DOTNET_20
-    using System.ComponentModel;
     using System.Linq;
 #endif
 
@@ -587,17 +586,18 @@ namespace NFluent
 
                     var unexpectedValuesFound = ExtractUnexpectedValues(checker.Value, expectedValues);
 
-                    if (unexpectedValuesFound.Count > 0)
+                    if (unexpectedValuesFound.Count <= 0)
                     {
-                        var message = checker
+                        return;
+                    }
+                        var message2 = checker
                             .BuildMessage(
                                 string.Format(
                                     "The {{0}} does not contain only the given value(s)." + Environment.NewLine
                                     + "It contains also other values:" + Environment.NewLine + "\t[{0}]",
                                     unexpectedValuesFound.ToEnumeratedString().DoubleCurlyBraces()))
                             .ExpectedValues(expectedValues).ToString();
-                        throw new FluentCheckException(message);
-                    }
+                        throw new FluentCheckException(message2);
                 },
                 checker.BuildMessage("The {0} contains only the given values whereas it must not.")
                     .ExpectedValues(expectedValues).ToString());
@@ -706,15 +706,17 @@ namespace NFluent
             var notFoundValues = values.ToList();
 
             foreach (var element in enumerable)
-            foreach (var expectedValue in values)
             {
-                if (!EqualityHelper.FluentEquals(element, expectedValue))
+                foreach (var expectedValue in values)
                 {
-                    continue;
-                }
+                    if (!EqualityHelper.FluentEquals(element, expectedValue))
+                    {
+                        continue;
+                    }
 
-                notFoundValues.RemoveAll(one => EqualityHelper.FluentEquals(one, expectedValue));
-                break;
+                    notFoundValues.RemoveAll(one => EqualityHelper.FluentEquals(one, expectedValue));
+                    break;
+                }
             }
 
             return notFoundValues;
@@ -728,20 +730,12 @@ namespace NFluent
         /// <returns>
         ///     A list with all the values found in the enumerable that don't belong to the expected ones.
         /// </returns>
-        private static IList ExtractUnexpectedValues(IEnumerable enumerable, IEnumerable expectedValues)
+        private static IList<object> ExtractUnexpectedValues(IEnumerable enumerable, IEnumerable expectedValues)
         {
-            var unexpectedValuesFound = new List<object>();
-            var values = expectedValues as object[] ?? expectedValues.Cast<object>();
             var equalityComparer = new EqualityHelper.EqualityComparer<object>();
-            foreach (var element in enumerable)
-            {
-                if (!values.Contains(element, equalityComparer))
-                {
-                    unexpectedValuesFound.Add(element);
-                }
-            }
+            var values = expectedValues.Cast<object>().ToList();
 
-            return unexpectedValuesFound;
+            return enumerable.Cast<object>().Where(element => !values.Contains(element, equalityComparer)).ToList();
         }
 
         private static void HasSizeImpl(IChecker<IEnumerable, ICheck<IEnumerable>> checker, long expectedSize)
@@ -770,13 +764,8 @@ namespace NFluent
         private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
         {
             // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
-#if !(PORTABLE) && !(NETSTANDARD1_3)
-            return expectedValues != null && expectedValues.LongLength == 1 &&
+            return expectedValues != null && expectedValues.LongLength() == 1 &&
                    IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
-#else
-            return expectedValues != null && expectedValues.Length == 1
-                   && IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
-#endif
         }
 
         private static bool TryGetElementByNumber<T>(IEnumerable<T> collection, int number, out T element)

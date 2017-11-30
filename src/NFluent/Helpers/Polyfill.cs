@@ -134,5 +134,13 @@ namespace NFluent
             return false;
         }
 #endif
+        public static long LongLength<T>(this T[] array)
+        {
+#if PORTABLE || NETSTANDARD1_3
+            return array.Length;
+#else
+            return array.LongLength;
+#endif
+        }
     }
 }
