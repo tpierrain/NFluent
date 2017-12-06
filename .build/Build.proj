@@ -50,6 +50,7 @@
 
   <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
   <Target Name="CI" DependsOnTargets="Build; RunTests; Package; CoverageReport" />
+  <Target Name="Beta" DependsOnTargets="SetBeta;Build; RunTests; Package; CoverageReport" />
   <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll; Publish; CoverageReport"/>
   <Target Name="Alpha" DependsOnTargets="SetAlpha; RunAll; Publish; CoverageReport"/>
   <Target Name="RC" DependsOnTargets="SetRC; RunAll; Publish; CoverageReport"/>
@@ -75,6 +76,11 @@
   <Target Name="SetAlpha">
     <PropertyGroup>
       <PackageStream>alpha</PackageStream>
+    </PropertyGroup>
+  </Target>
+  <Target Name="SetBeta">
+    <PropertyGroup>
+      <PackageStream>beta</PackageStream>
     </PropertyGroup>
   </Target>
   
@@ -384,6 +390,7 @@ CREATING NUGET PACKAGE IN:
 ---------------------------------------------------------------
             "  />
       <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
+      <Delete Files="$(PackagesPath)\*.*"/>
       <Exec Command='"$(NuGetExePath)" pack "$(NuspecFilePath)" -o "$(PackagesPath)"' LogStandardErrorAsError="true" />
 
         <Message Importance="high" Text="--------- End of PACKAGE ---------"/>
