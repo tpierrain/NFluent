@@ -399,8 +399,14 @@ namespace NFluent
                 this.Expected = expected;
             }
 
-            private bool DoValuesMatches => this.ExpectedFieldFound && EqualityHelper.FluentEquals(this.actual.Value, this.Expected.Value);
-
+            private bool DoValuesMatches
+            {
+                get
+                {
+                    var comparer = new EqualityHelper.EqualityComparer<object>();
+                    return this.ExpectedFieldFound && comparer.Equals(this.actual.Value, this.Expected.Value);
+                }
+            }
             private ExtendedFieldInfo Expected { get; }
 
             /// <summary>

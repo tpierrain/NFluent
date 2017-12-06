@@ -29,13 +29,6 @@ namespace NFluent.Helpers
     /// </summary>
     internal static class EqualityHelper
     {
-        internal enum EqualityMode
-        {
-            Equals,
-            OperatorEq,
-            OperatorNeq
-        }
-
         /// <summary>
         ///     Builds the error message related to the Equality verification. This should be called only if the test failed (no
         ///     matter it is negated or not).
@@ -75,9 +68,13 @@ namespace NFluent.Helpers
         {
             string operatorText;
             if (usingOperator)
+            {
                 operatorText = negated ? "different from (using operator!=)" : "equals to (using operator==)";
+            }
             else
+            {
                 operatorText = negated ? "different from" : string.Empty;
+            }
 
             if (negated)
             {
@@ -125,7 +122,7 @@ namespace NFluent.Helpers
             where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
             var instance = checker.Value;
-            if (FluentEquals(instance, expected, EqualityMode.Equals))
+            if (FluentEquals(instance, expected))
                 return;
 
             // Should throw
@@ -148,8 +145,10 @@ namespace NFluent.Helpers
         public static void IsNotEqualTo<T, TU>(IChecker<T, TU> checker, object expected)
             where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
-            if (FluentEquals(checker.Value, expected, EqualityMode.Equals))
+            if (FluentEquals(checker.Value, expected))
+            {
                 throw new FluentCheckException(BuildErrorMessage(checker, expected, true, false));
+            }
         }
 
         internal static ICheckLink<TU> PerformEqualCheck<T, TU, TE>(
@@ -159,7 +158,7 @@ namespace NFluent.Helpers
             bool negated = false)
             where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
-            var mode = EqualityMode.Equals;
+            var mode = Check.EqualMode;
 
             var shouldFail = negated;
             if (userOperator)
@@ -171,24 +170,33 @@ namespace NFluent.Helpers
             return checker.ExecuteCheck(() =>
                 {
                     if (shouldFail == FluentEquals(checker.Value, expected, mode))
+                    {
                         throw new FluentCheckException(BuildErrorMessage(checker, expected, negated, userOperator));
+                    }
                 },
                 BuildErrorMessage(checker, expected, !negated, userOperator));
         }
 
-        internal static bool FluentEquals(object instance, object expected)
+        private static bool FluentEquals(object instance, object expected)
         {
-            return FluentEquals(instance, expected, EqualityMode.Equals);
+            return FluentEquals(instance, expected, Check.EqualMode);
         }
 
-        internal static bool FluentEquals(object instance, object expected, EqualityMode mode)
+        private static bool FluentEquals(object instance, object expected, EqualityMode mode)
         {
             // ReSharper disable once RedundantNameQualifier
-            var ret = ValueDifference(instance, "actual", expected, "expected").Count==0;
+            var ret = object.Equals(instance, expected);
+            if (mode == EqualityMode.FluentEquals)
+            {
+                return ValueDifference(instance, "actual", expected, "expected").Count == 0;
+            }
+
             if (mode == EqualityMode.OperatorEq || mode == EqualityMode.OperatorNeq)
             {
                 if (mode == EqualityMode.OperatorNeq)
+                {
                     ret = !ret;
+                }
 
                 var actualType = instance.GetTypeWithoutThrowingException();
                 var expectedType = expected.GetTypeWithoutThrowingException();
@@ -197,21 +205,11 @@ namespace NFluent.Helpers
                               .GetMethod(operatorName, new[] {actualType, expectedType}) ?? expectedType
                               .GetMethod(operatorName, new[] {actualType, expectedType});
                 if (ope == null)
-                    return ret;
-                ret = (bool) ope.Invoke(null, new[] {instance, expected});
-            }
-            else if (expected != null && instance != null)
-            {
-                var expectedType = expected.GetType();
-
-                // if both types are numerical, check if the values are the same to generate a precise message
-                if (ExtensionsCommonHelpers.IsNumerical(expectedType) &&
-                    ExtensionsCommonHelpers.IsNumerical(instance.GetType()))
                 {
-                    var changeType = Convert.ChangeType(instance, expectedType, null);
-                    if (expected.Equals(changeType))
-                        return true;
+                    return ret;
                 }
+
+                ret = (bool) ope.Invoke(null, new[] {instance, expected});
             }
             return ret;
         }
@@ -220,7 +218,7 @@ namespace NFluent.Helpers
         {
             public bool Equals(T x, T y)
             {
-                return FluentEquals(x, y);
+                return FluentEquals(x, y, Check.EqualMode);
             }
 
             [Obsolete("Not implemented")]
@@ -243,7 +241,9 @@ namespace NFluent.Helpers
             if (firstItem == null)
             {
                 if (otherItem != null)
+                {
                     result.Add(new DifferenceDetails(firstName, null, secondName, otherItem));
+                }
                 return result;
             }
             if (firstItem.Equals(otherItem))
@@ -251,40 +251,52 @@ namespace NFluent.Helpers
                 return result;
             }
 
-            if (firstItem is IEnumerable first && otherItem is IEnumerable second)
+            if (otherItem != null)
             {
-                if (firstSeen.Contains(firstItem) || secondSeen.Contains(otherItem))
+                if (firstItem is IEnumerable first && otherItem is IEnumerable second)
                 {
-                    result.Add(new DifferenceDetails(firstName, null, secondName, null));
-                    return result;
+                    return ValueDifferenceEnumerable(first, firstName, second, secondName, firstSeen, secondSeen);
                 }
-
-                firstSeen.Add(firstItem);
-                secondSeen.Add(otherItem);
-
-                return ValueDifferenceEnumerable(first, firstName, second, secondName, firstSeen, secondSeen);
+                if (ExtensionsCommonHelpers.IsNumerical(firstItem.GetType()) &&
+                    ExtensionsCommonHelpers.IsNumerical(otherItem.GetType()))
+                {
+                    var changeType = Convert.ChangeType(firstItem, otherItem.GetType(), null);
+                    if (otherItem.Equals(changeType))
+                    {
+                        return result;
+                    }
+                }
             }
 
             result.Add(new DifferenceDetails(firstName, firstItem, secondName, otherItem));
             return result;
         }
 
-        private static IList<DifferenceDetails> ValueDifferenceEnumerable(IEnumerable first, string firstName, IEnumerable second,
+        private static IList<DifferenceDetails> ValueDifferenceEnumerable(IEnumerable firstItem, string firstName, IEnumerable otherItem,
             string secondName, List<object> firstSeen, List<object> secondSeen)
         {
             var valueDifferences = new List<DifferenceDetails>();
-            var scanner = second.GetEnumerator();
+            if (firstSeen.Contains(firstItem) || secondSeen.Contains(otherItem))
+            {
+                valueDifferences.Add(new DifferenceDetails(firstName, null, secondName, null));
+                return valueDifferences;
+            }
+
+            firstSeen.Add(firstItem);
+            secondSeen.Add(otherItem);
+
+            var scanner = otherItem.GetEnumerator();
             var index = 0;
-            foreach (var firstItem in first)
+            foreach (var item in firstItem)
             {
                 var firstItemName = $"{firstName}[{index}]";
                 if (!scanner.MoveNext())
                 {
-                    valueDifferences.Add(new DifferenceDetails(firstItemName, firstItem, null, null));
+                    valueDifferences.Add(new DifferenceDetails(firstItemName, item, null, null));
                     break;
                 }
                 var secondItemName = $"{secondName}[{index}]";
-                valueDifferences.AddRange(ValueDifference(firstItem, firstItemName, scanner.Current,
+                valueDifferences.AddRange(ValueDifference(item, firstItemName, scanner.Current,
                     secondItemName, new List<object>(firstSeen), new List<object>(secondSeen)));
                 index++;
             }

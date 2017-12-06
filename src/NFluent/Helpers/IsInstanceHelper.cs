@@ -89,7 +89,7 @@ namespace NFluent.Helpers
         /// <param name="checker">The instance to be checked.</param>
         /// <param name="expectedBaseType">The Type which is expected to be a base Type of the instance.</param>
         /// <exception cref="FluentCheckException">The instance is not in the inheritance hierarchy of the specified type.</exception>
-        public static void InheritsFrom(IChecker<object, ICheck<object>> checker, Type expectedBaseType)
+        public static void InheritsFrom<T>(IChecker<T, ICheck<T>> checker, Type expectedBaseType)
         {
             var instanceType = checker.Value.GetTypeWithoutThrowingException();
             if (expectedBaseType.IsAssignableFrom(instanceType))
@@ -123,7 +123,8 @@ namespace NFluent.Helpers
             MessageBlock message;
             if (isSameType)
             {
-                message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of [{0}] whereas it must not.", typeOperand.ToStringProperlyFormatted()))
+                message = FluentMessage.BuildMessage(
+                        $"The {{0}} is an instance of [{typeOperand.ToStringProperlyFormatted()}] whereas it must not.")
                                        .For("value")
                                        .On(value)
                                        .WithType()
@@ -158,7 +159,8 @@ namespace NFluent.Helpers
             MessageBlock message;
             if (isSameType)
             {
-                message = FluentMessage.BuildMessage(string.Format("The {{0}} is an instance of [{0}] whereas it must not.", expectedType.ToStringProperlyFormatted()))
+                message = FluentMessage.BuildMessage(
+                        $"The {{0}} is an instance of [{expectedType.ToStringProperlyFormatted()}] whereas it must not.")
                     .For("value")
                     .On(value)
                     .OfType(instanceType)
@@ -167,7 +169,8 @@ namespace NFluent.Helpers
             }
             else
             {
-                message = FluentMessage.BuildMessage(string.Format("The {{0}} is not an instance of [{0}].", expectedType.ToStringProperlyFormatted()))
+                message = FluentMessage.BuildMessage(
+                        $"The {{0}} is not an instance of [{expectedType.ToStringProperlyFormatted()}].")
                     .For("value")
                     .On(value)
                     .OfType(instanceType)

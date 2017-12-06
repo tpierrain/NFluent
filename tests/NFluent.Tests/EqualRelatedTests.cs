@@ -13,12 +13,12 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+
 namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
-
-    using NFluent.ApiChecks;
+    using ApiChecks;
 
     using NUnit.Framework;
 
@@ -26,6 +26,20 @@ namespace NFluent.Tests
     public class EqualRelatedTests
     {
         #region IsEqualTo()
+
+        [Test]
+        public void LegacyMode()
+        {
+            var test = new List<string>();
+            var test2 = new List<string>();
+
+            Check.That(test).IsEqualTo(test2);
+
+            var currentMode = Check.EqualMode;
+            Check.EqualMode = EqualityMode.Equals;
+            Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).Throws<FluentCheckException>();
+            Check.EqualMode = currentMode;
+        }
 
         [Test]
         public void IsEqualToWorksWithBooleans()
@@ -74,22 +88,6 @@ namespace NFluent.Tests
 
             Check.That(heroe).Not.IsEqualTo(null);
         }
-
-        /*
-        [Test]
-        public void IsEqualToThrowsWhenSameNumberOfDifferentTypes()
-        {
-            const int intValue = 42;
-            const long longValue = 42L;
-
-            Check.ThatCode(() =>
-            {
-                Check.That(intValue).IsEqualTo(longValue);
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[42] of type: [int]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[42] of type: [long]");
-        }
-        */
 
         [Test]
         public void NotIsEqualToWithObjectThrowsExceptionWhenFailing()
@@ -267,11 +265,8 @@ namespace NFluent.Tests
         {
             var array = new[] { 45, 43, 54, 666 };
             var otherArray = new[] { 666, 74 };
-            var similarButNotEqualArray = new[] { 45, 43, 54, 666 };
 
             Check.That(array).IsNotEqualTo(otherArray);
-            // behavior changed on 14/11/17
-            //Check.That(array).IsNotEqualTo(similarButNotEqualArray);
         }
 
         [Test]

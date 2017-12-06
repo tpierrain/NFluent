@@ -17,7 +17,9 @@ namespace NFluent
 {
     using System;
     using System.ComponentModel;
-
+#if !DOTNET_20 && !DOTNET_30
+    using System.Linq;
+#endif
     using Extensibility;
     using Extensions;
     using Helpers;
@@ -71,7 +73,6 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, object expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-
             return EqualityHelper.PerformEqualCheck(checker, expected, false);
         }
 
@@ -89,12 +90,9 @@ namespace NFluent
             return checker.ExecuteCheck(() =>
                 {
                     var comparer = new EqualityHelper.EqualityComparer<T>();
-                    foreach (var value in values)
+                    if (values.Any(value => comparer.Equals(checker.Value, value)))
                     {
-                        if (comparer.Equals(checker.Value, value))
-                        {
-                            return;
-                        }
+                        return;
                     }
                     var message = checker.BuildMessage("The {0} is not one of the {1}.").ExpectedValues(values);
                     throw new FluentCheckException(message.ToString());
@@ -102,12 +100,14 @@ namespace NFluent
                 checker.BuildMessage("The {0} should not be one of the {1}.").ExpectedValues(values).ToString()
             );
         }
+
         /// <summary>
         /// Checks that the actual value is equal to another expected value using operator==.
         /// </summary>
         /// <typeparam name="T">
         /// Type of the checked value.
         /// </typeparam>
+        /// <typeparam name="TU">Type of the expected value</typeparam>
         /// <param name="check">
         /// The fluent check to be extended.
         /// </param>
@@ -120,7 +120,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The actual value is not equal to the expected value.
         /// </exception>
-        public static ICheckLink<ICheck<T>> HasSameValueAs<T>(this ICheck<T> check, object expected)
+        public static ICheckLink<ICheck<T>> HasSameValueAs<T, TU>(this ICheck<T> check, TU expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
@@ -133,6 +133,7 @@ namespace NFluent
         /// <typeparam name="T">
         /// Type of the checked value.
         /// </typeparam>
+        /// <typeparam name="TU">Type of the expected value.</typeparam>
         /// <param name="check">
         /// The fluent check to be extended.
         /// </param>
@@ -145,7 +146,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The actual value is equal to the expected value.
         /// </exception>
-        public static ICheckLink<ICheck<T>> HasDifferentValueThan<T>(this ICheck<T> check, object expected)
+        public static ICheckLink<ICheck<T>> HasDifferentValueThan<T, TU>(this ICheck<T> check, TU expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             return EqualityHelper.PerformEqualCheck(checker, expected, true, true);
@@ -199,8 +200,8 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
-            Type instanceType = checker.Value.GetTypeWithoutThrowingException();
-            Type expectedBaseType = typeof(T);
+            var instanceType = checker.Value.GetTypeWithoutThrowingException();
+            var expectedBaseType = typeof(T);
 
             checker.ExecuteNotChainableCheck(
                 () => IsInstanceHelper.InheritsFrom(checker, expectedBaseType),
@@ -255,11 +256,13 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                 {
-                    if (checker.Value != null)
+                    if (checker.Value == null)
                     {
-                        var message = checker.BuildMessage("The checked nullable value must be null.").ToString();
-                        throw new FluentCheckException(message);
+                        return;
                     }
+
+                    var message = checker.BuildMessage("The checked nullable value must be null.").ToString();
+                    throw new FluentCheckException(message);
                 },
                 checker.BuildShortMessage("The checked nullable value is null whereas it must not.").ToString());
         }
@@ -329,12 +332,13 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Obsolete. Use <see cref="ObjectCheckExtensions.IsSameReferenceAs{T}"/> instead. 
+        /// Obsolete. Use <see cref="ObjectCheckExtensions.IsSameReferenceAs{T, TU}"/> instead. 
         /// Checks that the actual value has an expected reference.
         /// </summary>
         /// <typeparam name="T">
         /// Type of the checked value.
         /// </typeparam>
+        /// <typeparam name="TU">Type of expected reference</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected object.</param>
         /// <returns>
@@ -343,7 +347,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not the same reference than the expected value.</exception>
         [Obsolete("Use IsSameReferenceAs")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static ICheckLink<ICheck<T>> IsSameReferenceThan<T>(this ICheck<T> check, object expected)
+        public static ICheckLink<ICheck<T>> IsSameReferenceThan<T, TU>(this ICheck<T> check, TU expected)
         {
             return IsSameReferenceAs(check, expected);
         }
@@ -354,20 +358,20 @@ namespace NFluent
         /// <typeparam name="T">
         /// Type of the checked value.
         /// </typeparam>
+        /// <typeparam name="TU">Type of expeted reference</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected object.</param>
         /// <returns>
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is not the same reference than the expected value.</exception>
-        public static ICheckLink<ICheck<T>> IsSameReferenceAs<T>(this ICheck<T> check, object expected)
+        public static ICheckLink<ICheck<T>> IsSameReferenceAs<T, TU>(this ICheck<T> check, TU expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = checker.Negated;
             var value = checker.Value;
 
-            string comparison;
-            var message = SameReferenceImpl(expected, value, negated, out comparison);
+            var message = SameReferenceImpl(expected, value, negated, out var comparison);
             if (!string.IsNullOrEmpty(message))
             {
                 throw new FluentCheckException(checker.BuildMessage(message)
@@ -382,21 +386,23 @@ namespace NFluent
 
         private static string SameReferenceImpl(object expected, object value, bool negated, out string comparison)
         {
-            string message = null;
+            string message;
             comparison = null;
 
-            if (ReferenceEquals(value, expected) == negated)
+            if (ReferenceEquals(value, expected) != negated)
             {
-                if (negated)
-                {
-                    message = "The {0} must have be an instance distinct from {1}.";
-                    comparison = "distinct from";
-                }
-                else
-                {
-                    message = "The {0} must be the same instance than {1}.";
-                    comparison = "same instance than";
-                }
+                return null;
+            }
+
+            if (negated)
+            {
+                message = "The {0} must have be an instance distinct from {1}.";
+                comparison = "distinct from";
+            }
+            else
+            {
+                message = "The {0} must be the same instance than {1}.";
+                comparison = "same instance than";
             }
 
             return message;
@@ -408,20 +414,20 @@ namespace NFluent
         /// <typeparam name="T">
         /// Type of the checked value.
         /// </typeparam>
+        /// <typeparam name="TU">Type of reference value.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="comparand">The expected value to be distinct from.</param>
         /// <returns>
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The actual value is the same instance than the comparand.</exception>
-        public static ICheckLink<ICheck<T>> IsDistinctFrom<T>(this ICheck<T> check, object comparand)
+        public static ICheckLink<ICheck<T>> IsDistinctFrom<T, TU>(this ICheck<T> check, TU comparand)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = !checker.Negated;
             var value = checker.Value;
 
-            string comparison;
-            var message = SameReferenceImpl(comparand, value, negated, out comparison);
+            var message = SameReferenceImpl(comparand, value, negated, out var comparison);
             if (!string.IsNullOrEmpty(message))
             {
                 throw new FluentCheckException(checker.BuildMessage(message)

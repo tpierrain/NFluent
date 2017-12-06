@@ -705,16 +705,18 @@ namespace NFluent
             var values = expectedValues as IList<object> ?? expectedValues.Cast<object>().ToList();
             var notFoundValues = values.ToList();
 
+            var comparer = new EqualityHelper.EqualityComparer<object>();
+
             foreach (var element in enumerable)
             {
                 foreach (var expectedValue in values)
                 {
-                    if (!EqualityHelper.FluentEquals(element, expectedValue))
+                    if (!comparer.Equals(element, expectedValue))
                     {
                         continue;
                     }
 
-                    notFoundValues.RemoveAll(one => EqualityHelper.FluentEquals(one, expectedValue));
+                    notFoundValues.RemoveAll(one => comparer.Equals(one, expectedValue));
                     break;
                 }
             }

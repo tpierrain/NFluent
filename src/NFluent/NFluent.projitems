@@ -47,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExtractingExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FluentCheckException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\EqualityMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\FluentDynamicCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Duration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\EqualityHelper.cs" />

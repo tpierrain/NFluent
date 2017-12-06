@@ -190,5 +190,10 @@ namespace NFluent
         {
             return new FluentStructCheck<T>(value);
         }
+
+        /// <summary>
+        /// Defines how equality comparison are done.
+        /// </summary>
+        public static EqualityMode EqualMode { get; set; }
     }
 }
