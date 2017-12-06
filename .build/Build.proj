@@ -49,12 +49,13 @@
   </Choose>
 
   <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
-  <Target Name="CI" DependsOnTargets="Build; RunTests; Package; CoverageReport" />
-  <Target Name="Beta" DependsOnTargets="SetBeta;Build; RunTests; Package; CoverageReport" />
-  <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll; Publish; CoverageReport"/>
-  <Target Name="Alpha" DependsOnTargets="SetAlpha; RunAll; Publish; CoverageReport"/>
-  <Target Name="RC" DependsOnTargets="SetRC; RunAll; Publish; CoverageReport"/>
-  <Target Name="Release" DependsOnTargets="SetRelease; RunAll; Publish; CoverageReport"/>
+  <Target Name="CI" DependsOnTargets="RunAll; CoverageReport" />
+  <Target Name="Push" DependsOnTargets="CI; Publish"/>
+  <Target Name="Beta" DependsOnTargets="SetBeta; Push" />
+  <Target Name="Nightly" DependsOnTargets="SetNightly; Push"/>
+  <Target Name="Alpha" DependsOnTargets="SetAlpha; Push"/>
+  <Target Name="RC" DependsOnTargets="SetRC; RunAll; Push"/>
+  <Target Name="Release" DependsOnTargets="SetRelease; Push"/>
   <Target Name="DebugBuild" DependsOnTargets="Package"/>
 
   <!--Targets-->
