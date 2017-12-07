@@ -151,17 +151,79 @@ namespace NFluent.Helpers
             }
         }
 
+        internal static ICheckLink<ICheck<double>> PerformEqualCheck(IChecker<double, ICheck<double>> checker,
+            double expected)
+        {
+            var diff = Math.Abs(checker.Value - expected);
+            return checker.ExecuteCheck(() =>
+                {
+                    // ReSharper disable once CompareOfFloatsByEqualityOperator
+                    if (diff == 0.0)
+                    {
+                        return;
+                    }
+
+                    // ReSharper disable once CompareOfFloatsByEqualityOperator
+                    var ratio = (expected == 0.0) ? 1.0 : Math.Abs(diff / expected);
+                    var mainLine = $"The {{0}} is different from the {{1}}";
+                    if (ratio < 0.0001)
+                    {
+                        mainLine += $", with a difference of {diff:G2}";
+                    }
+                    mainLine += ".";
+
+                    if (ratio < 0.000000001)
+                    {
+                        mainLine += " You may consider using IsCloseTo() for comparison.";
+                    }
+                    var message = checker.BuildMessage(mainLine).Expected(checker.Value);
+                    throw new FluentCheckException(message.ToString());
+                },
+                BuildErrorMessage(checker, expected, true, false));
+        }
+
+        internal static ICheckLink<ICheck<float>> PerformEqualCheck(IChecker<float, ICheck<float>> checker,
+            float expected)
+        {
+            var diff = Math.Abs(checker.Value - expected);
+            return checker.ExecuteCheck(() =>
+                {
+                    // ReSharper disable once CompareOfFloatsByEqualityOperator
+                    if (diff == 0.0)
+                    {
+                        return;
+                    }
+
+                    // ReSharper disable once CompareOfFloatsByEqualityOperator
+                    var ratio = (expected == 0.0) ? 1.0 : Math.Abs(diff / expected);
+                    var mainLine = $"The {{0}} is different from the {{1}}";
+                    if (ratio < 0.001)
+                    {
+                        mainLine += $", with a difference of {diff:G2}";
+                    }
+                    mainLine += ".";
+
+                    if (ratio < 0.00001)
+                    {
+                        mainLine += " You may consider using IsCloseTo() for comparison.";
+                    }
+                    var message = checker.BuildMessage(mainLine).Expected(checker.Value);
+                    throw new FluentCheckException(message.ToString());
+                },
+                BuildErrorMessage(checker, expected, true, false));
+        }
+
         internal static ICheckLink<TU> PerformEqualCheck<T, TU, TE>(
             IChecker<T, TU> checker,
             TE expected,
-            bool userOperator,
+            bool useOperator = false,
             bool negated = false)
             where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
             var mode = Check.EqualMode;
 
             var shouldFail = negated;
-            if (userOperator)
+            if (useOperator)
             {
                 mode = negated ? EqualityMode.OperatorNeq : EqualityMode.OperatorEq;
                 shouldFail = false;
@@ -171,10 +233,10 @@ namespace NFluent.Helpers
                 {
                     if (shouldFail == FluentEquals(checker.Value, expected, mode))
                     {
-                        throw new FluentCheckException(BuildErrorMessage(checker, expected, negated, userOperator));
+                        throw new FluentCheckException(BuildErrorMessage(checker, expected, negated, useOperator));
                     }
                 },
-                BuildErrorMessage(checker, expected, !negated, userOperator));
+                BuildErrorMessage(checker, expected, !negated, useOperator));
         }
 
         private static bool FluentEquals(object instance, object expected)

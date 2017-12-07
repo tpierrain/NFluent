@@ -8,6 +8,8 @@ using NUnit.Framework;
 
 namespace NFluent.Tests.FromIssues
 {
+    using Helpers;
+
     [TestFixture]
     public class UserReportedIssues2
     {
@@ -21,20 +23,30 @@ namespace NFluent.Tests.FromIssues
         double decimalValue => 0.95000000000000006d;
 
         // issue #205
-        /*
         [Test]
-        [Ignore("Need to review T4 generation to handle this.")]
         public void should_generate_correct_error_message_for_double()
         {
-            Check.ThatCode(() => Check.That(this.decimalValue).IsEqualTo(0.95d)).Throws<FluentCheckException>().AndWhichMessage().AsLines()
-                .ContainsExactly("", 
-                "The checked value is different from the expected one, with a difference of 1,1E-16. You may consider using IsCloseTo() for comparison.", 
-                "The checked value:", 
-                "\t[0.95]", 
-                "The expected value:", 
+            using (var session = new CultureSession("en-US"))
+            {
+                Check.ThatCode(() => Check.That(this.decimalValue).IsEqualTo(0.95d)).Throws<FluentCheckException>().AndWhichMessage().AsLines()
+                .ContainsExactly("",
+                "The checked value is different from the expected one, with a difference of 1.1E-16. You may consider using IsCloseTo() for comparison.",
+                "The checked value:",
+                "\t[0.95]",
+                "The expected value:",
                 "\t[0.95]");
+
+                Check.ThatCode(() => Check.That(0.9500001f).IsEqualTo(0.95f)).Throws<FluentCheckException>().AndWhichMessage().AsLines()
+                .ContainsExactly("",
+                "The checked value is different from the expected one, with a difference of 1.2E-07. You may consider using IsCloseTo() for comparison.",
+                "The checked value:",
+                "\t[0.9500001]",
+                "The expected value:",
+                "\t[0.9500001]");
+                
+            }
         }
-        */
+
         [Test]
         public void CollectionTest()
         {
