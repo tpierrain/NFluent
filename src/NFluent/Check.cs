@@ -192,8 +192,17 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Defines how equality comparison are done.
+        /// Gets/sets how equality comparison are done.
         /// </summary>
         public static EqualityMode EqualMode { get; set; }
+
+        /// <summary>
+        /// Gets/Sets the truncation length for long string.
+        /// </summary>
+        public static int StringTruncationLength
+        {
+            get => Extensions.ExtensionsCommonHelpers.StringTruncationLength;
+            set => Extensions.ExtensionsCommonHelpers.StringTruncationLength = value;
+        }
     }
 }

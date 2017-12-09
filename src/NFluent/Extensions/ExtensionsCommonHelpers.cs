@@ -29,21 +29,36 @@ namespace NFluent.Extensions
     public static class ExtensionsCommonHelpers
     {
         private const string NullText = "null";
-        private const int MaximumSizeBeforeTruncation = 197;
-        private const int StartingLengthForLongString = 150;
-        private const int EndingLengthForLongString = 40;
+        private static int maximumSizeBeforeTruncation = 197;
+        private static int startingLengthForLongString = 150;
+        private static int endingLengthForLongString = 40;
         private const string TruncationMarkerText = "...<<truncated>>...";
 
-        private static readonly Dictionary<Type, string> TypeToString = new Dictionary<Type, string>()
-            {
+        private static readonly Dictionary<Type, string> TypeToString = new Dictionary<Type, string>
+        {
             {typeof(string), "string" },{typeof(byte), "byte" }, {typeof(sbyte), "sbyte"}, {typeof(char), "char" },
             {typeof(short), "short"}, {typeof(ushort), "ushort"}, {typeof(int), "int" }, {typeof(uint), "uint" },
             {typeof(long), "long" }, {typeof(ulong), "ulong" }, {typeof(float), "float" }, {typeof(double), "double" },
             {typeof(bool), "bool" }, {typeof(decimal), "decimal" }, { typeof(object), "object"}, {typeof(void), "void" }
             };
 
-        private static readonly List<Type> NumericalTypes = new List<Type>() { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(double), typeof(float)};
+        private static readonly List<Type> NumericalTypes = new List<Type> { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(double), typeof(float)};
 
+        internal static int StringTruncationLength
+        {
+            get => maximumSizeBeforeTruncation;
+            set
+            {
+                if (value < 20)
+                {
+                    throw new ArgumentException();
+                }
+                maximumSizeBeforeTruncation = value;
+                value -= 7;
+                startingLengthForLongString = (value * 15) / 19;
+                endingLengthForLongString = value - startingLengthForLongString;
+            }
+        }
 
         /// <summary>
         /// Checks if a type is numerical (i.e: int, double, short, uint...).
@@ -121,10 +136,10 @@ namespace NFluent.Extensions
 
         private static string TruncateLongString(string result)
         {
-            if (result.Length > MaximumSizeBeforeTruncation)
+            if (result.Length > StringTruncationLength)
             {
-                result = result.Substring(0, StartingLengthForLongString) + TruncationMarkerText
-                         + result.Substring(result.Length - EndingLengthForLongString);
+                result = result.Substring(0, startingLengthForLongString) + TruncationMarkerText
+                         + result.Substring(result.Length - endingLengthForLongString);
             }
             return result;
         }
@@ -149,8 +164,7 @@ namespace NFluent.Extensions
             }
 
             // try to find the type among primitive types
-            string localResult;
-            if (TypeToString.TryGetValue(type, out localResult))
+            if (TypeToString.TryGetValue(type, out var localResult))
             {
                 return localResult;
             }

@@ -11,6 +11,7 @@ New feature(s):
   * Available checks are: IsNotNull(), IsEqualTo(...), IsSameReferenceAs(...)
   * And keyword is available
   * Not keyword is available
+* You can specify the maximum size (before truncate) for strings in error messages using **Check.StringTruncationLength** property
 
 --------------
 Bug Fixe(s):

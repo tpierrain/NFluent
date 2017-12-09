@@ -710,6 +710,31 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void UserCanControlTruncationLength()
+        {
+            var curLen = Check.StringTruncationLength;
+            try
+            {
+                Check.StringTruncationLength = 10000;
+                var checkString = File.ReadAllText(TestFiles.CheckedFile, Encoding.UTF8).Replace("\r\n", "");
+                var expectedString = File.ReadAllText(TestFiles.ExpectedFile, Encoding.UTF8).Replace("\r\n", "");
+
+                Check.ThatCode(() =>
+                    {
+                        Check.That(checkString).IsEqualTo(expectedString);
+                    })
+                    .Throws<FluentCheckException>()
+                    .AndWhichMessage()
+                    .AsLines().HasElementAt(3).Which.HasSize(4684);
+            }
+            finally
+            {
+                Check.StringTruncationLength = curLen;
+            }
+        }
+
+
+        [Test]
         public void ShouldReportExtraLines()
         {
             Check.ThatCode(() =>

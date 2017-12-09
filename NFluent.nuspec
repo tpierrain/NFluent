@@ -19,11 +19,13 @@
 * Breaking change: equality for Enumerable is now content based (instead of reference based). See issue #209. You can revert adding: Check.EqualMode = EqualityMode.Equals in your test set up code
 * New check ContainsOnlyElementsThatMatch which checks that all items verify a given predicate.
 * New Check: IsOneOf checks if the value belongs to a list of authorized value. Check.That(sut).IsOneOf(a, b, c, ...) fails if sut is different from all valid values
-* Initiate support for dynamics (issue #85):
+* Improved error messages for IsEqualTo() on floating point types. Difference is displayed when small, suggestion to use IsCloseTo when difference is really small (#205).
+* Initial support for dynamics (issue #85):
 * Entry point is: Check.ThatDynamic()
 * Available checks are: IsNotNull(), IsEqualTo(...), IsSameReferenceAs(...)
 * And keyword is available
 * Not keyword is available
+--------------
 Bug Fixe(s):
 * Fixed support of array types for HasFielsWithSameValues (issue #200)
 * Fixed some stack overflow exceptions (issue #210).
