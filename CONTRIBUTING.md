@@ -9,6 +9,8 @@ There are a few guidelines that we need contributors to follow so that we can ha
 Reported issues are assessed rapidly and fix in a timely manner if identified as important. Note that feedback on error messages are welcomed.
 When reporting an issue in Git, please fill all present fields. Quality of our response depends on your effort!
 
+Request for new checks:
+When you ask that we had a new assertion logic, please provide an example or a use case, it will help us understand the purpose of the check. 
 
 ## Making Changes
 
@@ -26,11 +28,11 @@ When reporting an issue in Git, please fill all present fields. Quality of our r
 You should **never** work on a clone of master, and you should **never** send a pull request from master - always from a branch. The reasons for this are detailed below.
 
 ## Prerequisite
-- As of May 2017, we use **Visual Studio 2017 Community Edition**. We strongly advise you do the same
-- You need to have support for **T4 templates**. You need to install 'Visual Studio Add-In development' pack with the VS 2017 installer.  
+- As of May 2017, we use **Visual Studio 2017 Community Edition**. We strongly advise you do the same.
+- You need to have support for **T4 templates**. You need to install **'Visual Studio Add-In development'** pack with the VS 2017 installer.  
 - You need the **NUnit3 adapter** in order to run tests from the IDE, or R#.
-- We recommand having *R#* and *NCrunch* installed, but those are not prerequisites.
-- We recommand having *Python 2.x* installed, as it is needed for CodeCov toolset that is used by the build script.
+- We recommend having *R#* and *NCrunch* installed, but those are not prerequisites.
+- The build script depends on *Python 2.x* (https://www.python.org/downloads/). But only NFluent team members needs it as it is used for publishing coverage data to CodeCov.io
 
 ## Solution organization
  - As a general rule, we are happy with the current project organization. Thanks for keeping it as is, or raise an issue if you see a compelling reason for change.
