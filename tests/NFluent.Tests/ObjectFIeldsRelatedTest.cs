@@ -238,7 +238,7 @@
         [Test]
         public void HasFieldsWithSameValuesFailsProperlyRecurse()
         {
-            var x = new { x = new DummyClass(), text = "toto" };
+            var x = new { x = new DummyClass(2, 3), text = "toto" };
             var y = new { x = new DummyClass(2, 4), text = "toto" };
 
             Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(y); }).Throws<FluentCheckException>()
