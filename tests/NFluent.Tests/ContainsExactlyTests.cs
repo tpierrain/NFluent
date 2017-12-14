@@ -23,7 +23,7 @@ namespace NFluent.Tests
     using Helpers;
     using System.IO;
 
-    using NFluent.ApiChecks;
+    using ApiChecks;
 
     using NUnit.Framework;
 

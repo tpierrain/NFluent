@@ -3,7 +3,7 @@
   <metadata>
     <id>NFluent</id>
     <title>NFluent, smooth your .NET TDD experience!</title>
-    <version>2.1.0-alpha-0000</version>
+    <version>2.2.0-alpha-0000</version>
     <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR</authors>
     <owners>Thomas PIERRAIN</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -25,6 +25,7 @@
 * Available checks are: IsNotNull(), IsEqualTo(...), IsSameReferenceAs(...)
 * And keyword is available
 * Not keyword is available
+* You can specify the maximum size (before truncate) for strings in error messages using **Check.StringTruncationLength** property
 --------------
 Bug Fixe(s):
 * Fixed support of array types for HasFielsWithSameValues (issue #200)
