@@ -68,6 +68,14 @@ namespace NFluent.Tests.FromIssues
             Check.That(list2).ContainsExactly(new List<List<int>> { a, b });  // Fail
         }
 
+        [Test(Description = "Issue #212")]
+        public void CollectionWithNumeric()
+        {
+            var expected = new int[] { 1, 2 };
+            var actual = new uint[] { 1, 2 };
+            Check.That(actual).ContainsExactly(expected);
+        }
+
 #if DOTNET_45
         [Test]
         public void reproduce_issue_204()
