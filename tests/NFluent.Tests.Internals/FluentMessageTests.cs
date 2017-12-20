@@ -58,8 +58,8 @@ namespace NFluent.Tests
         public void BlockTest()
         {
             var message = FluentMessage.BuildMessage("test");
-            const int X = 4;
-            var block = new MessageBlock(message, X, GenericLabelBlock.BuildCheckedBlock(null));
+            const int x = 4;
+            var block = new MessageBlock(message, x, GenericLabelBlock.BuildCheckedBlock(null));
 
             Assert.AreEqual("The checked value:" + NewLine + "\t[4]", block.GetMessage());
 

@@ -287,12 +287,13 @@ RUN ALL UNIT TESTS
     <Message Importance="high" Text="--------- RUN TESTS ---------"/>
     <Delete Files="$(SolutionRoot)\$(SolutionName)-coverage.xml"/>
     <Exec Command='dotnet --version'/>
+    <Exe></Exe>
     <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="$(SolutionRoot)"/>
     <Message Importance="high" Text="--------- end of RUN TESTS ---------"/>
 
     <Message Importance="high" Text="--------- Coverage ---------"/>
-    <Message Importance="normal" Text="Cover for %(TestProjects.Identity) : $(SolutionRoot)\$(SolutionName)-coverage.xml -mergeoutput" Condition="'%(TestProjects.Coverage)'=='true'"/>
-    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]*" -excludebyattribute:*.Obsolete*  -output:"$(SolutionRoot)\$(SolutionName)-coverage.xml" -mergeoutput -targetargs:"%(TestRun.Args)"'
+    <Message Importance="normal" Text="Cover for %(TestProjects.Identity) : $(SolutionRoot)\$(SolutionName)-coverage.xml -mergeoutput " Condition="'%(TestProjects.Coverage)'=='true'"/>
+    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]*" -excludebyattribute:*.Obsolete*  -output:"$(SolutionRoot)\$(SolutionName)-coverage.xml" -mergeoutput -mergebyhash -targetargs:"%(TestRun.Args)"'
           Condition="'%(TestRun.Coverage)'=='true'"/>
     <Message Importance="high" Text="--------- end of Coverage ---------"/>
   </Target>
