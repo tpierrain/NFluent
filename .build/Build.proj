@@ -287,7 +287,6 @@ RUN ALL UNIT TESTS
     <Message Importance="high" Text="--------- RUN TESTS ---------"/>
     <Delete Files="$(SolutionRoot)\$(SolutionName)-coverage.xml"/>
     <Exec Command='dotnet --version'/>
-    <Exe></Exe>
     <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="$(SolutionRoot)"/>
     <Message Importance="high" Text="--------- end of RUN TESTS ---------"/>
 
