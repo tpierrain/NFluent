@@ -133,7 +133,7 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> HasFieldsWithSameValues<T, TU>(this ICheck<T> check, TU expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var message = CheckFieldEquality(checker, checker.Value, expected, checker.Negated);
+            var message = CheckFieldEquality(checker, checker.Value, expected, checker.Negated, FlagsForFields);
 
             if (message != null)
             {
@@ -169,7 +169,7 @@ namespace NFluent
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = !checker.Negated;
 
-            var message = CheckFieldEquality(checker, checker.Value, expected, negated);
+            var message = CheckFieldEquality(checker, checker.Value, expected, negated, FlagsForFields);
 
             if (message != null)
             {
@@ -185,14 +185,14 @@ namespace NFluent
             object expected,
             Type expectedType,
             IList<object> scanned,
-            int depth,
+            int depth, BindingFlags flags,
             string prefix = null)
         {
             var result = new List<FieldMatch>();
 
             for (; expectedType != null; expectedType = expectedType.GetBaseType())
             {
-                var fieldInfos = expectedType.GetFields(FlagsForFields);
+                var fieldInfos = expectedType.GetFields(flags);
                 if (fieldInfos.Length <= 0)
                 {
                     continue;
@@ -205,7 +205,7 @@ namespace NFluent
                         prefix,
                         expectedFieldValue?.GetType() ?? fieldInfo.FieldType,
                         fieldInfo.Name);
-                    var actualFieldMatching = FindFieldInType(actualType, expectedFieldDescription.NameInSource);
+                    var actualFieldMatching = FindFieldInType(actualType, expectedFieldDescription.NameInSource, flags);
 
                     expectedFieldDescription.SetFieldValue(expectedFieldValue);
 
@@ -225,7 +225,7 @@ namespace NFluent
                     // now, let's get to the values
                     actualFieldDescription.SetFieldValue(fieldActualValue);
 
-                    CompareValue(expectedFieldDescription, actualFieldDescription, result, scanned, depth - 1);
+                    CompareValue(expectedFieldDescription, actualFieldDescription, result, scanned, depth - 1, flags);
                 }
             }
 
@@ -237,13 +237,13 @@ namespace NFluent
             ExtendedFieldInfo actualFieldDescription,
             List<FieldMatch> result,
             IList<object> scanned,
-            int depth)
+            int depth, BindingFlags flags)
         {
             if (expectedFieldDescription.Value != null && scanned.Contains(expectedFieldDescription.Value))
             {
                 return;
             }
-
+ 
             if (depth <= 0 && expectedFieldDescription.ChecksIfImplementsEqual())
             {
                 result.Add(new FieldMatch(expectedFieldDescription, actualFieldDescription));
@@ -284,7 +284,7 @@ namespace NFluent
                                 prefixWithIndex);
                             expectedEntryDescription.SetFieldValue(array.GetValue(i));
                             actualEntryDescription.SetFieldValue(actualArray.GetValue(i));
-                            CompareValue(expectedEntryDescription, actualEntryDescription, result, scanned, depth - 1);
+                            CompareValue(expectedEntryDescription, actualEntryDescription, result, scanned, depth - 1, flags);
                         }
                     }
                 }
@@ -297,17 +297,17 @@ namespace NFluent
                             expectedFieldDescription.Value,
                             expectedFieldDescription.GetValueType(),
                             scanned,
-                            depth - 1,
+                            depth - 1, flags,
                             expectedFieldDescription.LongFieldName));
                 }
             }
         }
-
-        private static FieldInfo FindFieldInType(Type type, string name)
+ 
+        private static FieldInfo FindFieldInType(Type type, string name, BindingFlags flags)
         {
             while (type != null)
             {
-                var result = type.GetField(name, FlagsForFields);
+                var result = type.GetField(name, flags);
 
                 if (result != null)
                 {
@@ -317,7 +317,7 @@ namespace NFluent
                 // compensate any auto-generated name
                 var actualName = ExtractFieldNameAsInSourceCode(name, out _);
 
-                foreach (var field in type.GetFields(FlagsForFields))
+                foreach (var field in type.GetFields(flags))
                 {
                     var fieldName = ExtractFieldNameAsInSourceCode(field.Name, out _);
                     if (fieldName == actualName)
@@ -339,7 +339,7 @@ namespace NFluent
                 kind = FieldKind.AutoProperty;
                 return result;
             }
-
+ 
             if (EvaluateCriteria(AnonymousTypeFieldMask, name, out result))
             {
                 kind = FieldKind.AnonymousClass;
@@ -355,14 +355,15 @@ namespace NFluent
             IChecker<T, ICheck<T>> checker,
             T value,
             TU expected,
-            bool negated)
+            bool negated,
+            BindingFlags flags)
         {
             var expectedValue = new ExtendedFieldInfo(string.Empty, expected?.GetType() ?? typeof(TU), string.Empty);
             expectedValue.SetFieldValue(expected);
             var actualValue = new ExtendedFieldInfo(string.Empty, value?.GetType() ?? typeof(T), string.Empty);
             actualValue.SetFieldValue(value);
             var analysis = new List<FieldMatch>();
-            CompareValue(expectedValue, actualValue, analysis, new List<object>(), 1);
+            CompareValue(expectedValue, actualValue, analysis, new List<object>(), 1, flags);
 
             foreach (var fieldMatch in analysis)
             {
@@ -407,6 +408,7 @@ namespace NFluent
                     return this.ExpectedFieldFound && comparer.Equals(this.actual.Value, this.Expected.Value);
                 }
             }
+
             private ExtendedFieldInfo Expected { get; }
 
             /// <summary>

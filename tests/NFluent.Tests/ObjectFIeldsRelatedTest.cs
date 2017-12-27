@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System;
-
+    using System.Collections;
     using NUnit.Framework;
 
     [TestFixture]
@@ -57,6 +57,15 @@
         }
 
 #pragma warning restore 618
+
+        [Test]
+        public void ShouldWorkOnPlainArrays()
+        {
+            var expected = new ArrayList();
+            expected.Add(1);
+            expected.Add(2);
+            Check.That(new[] { 1, 2 }).IsEqualTo(expected);
+        }
 
         [Test]
         public void ShouldFailOnDifferentArrays()
