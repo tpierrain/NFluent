@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="build.tasks" />
+
+  <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
+  <Target Name="CI" DependsOnTargets="RunAll; CoverageReport" />
+  <Target Name="Push" DependsOnTargets="CI; Publish"/>
+  <Target Name="Beta" DependsOnTargets="SetBeta; Push" />
+  <Target Name="Nightly" DependsOnTargets="SetNightly; Push"/>
+  <Target Name="Alpha" DependsOnTargets="SetAlpha; Push"/>
+  <Target Name="RC" DependsOnTargets="SetRC; RunAll; Push"/>
+  <Target Name="Release" DependsOnTargets="SetRelease; Push"/>
+  <Target Name="DebugBuild" DependsOnTargets="Package"/>
+
+  <!--Targets-->
+  <Target Name="SetNightly">
+    <PropertyGroup>
+      <PackageStream>nightly</PackageStream>
+    </PropertyGroup>
+  </Target>
+  <Target Name="SetRC">
+    <PropertyGroup>
+      <PackageStream>RC</PackageStream>
+    </PropertyGroup>
+  </Target>
+  <Target Name="SetRelease">
+    <PropertyGroup>
+      <PackageStream></PackageStream>
+    </PropertyGroup>
+  </Target>
+  <Target Name="SetAlpha">
+    <PropertyGroup>
+      <PackageStream>alpha</PackageStream>
+    </PropertyGroup>
+  </Target>
+  <Target Name="SetBeta">
+    <PropertyGroup>
+      <PackageStream>beta</PackageStream>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="SynchroVersion" Outputs="%(CoreCsproj.FullPath)" Inputs="$(AttributeVersionFile)">
+    <!-- Ensure version number is propagated in new CsProj format file-->
+    <PropertyGroup>
+      <In>$([System.IO.File]::ReadAllText('$(AttributeVersionFile)'))</In>
+      <Pattern>\[assembly: AssemblyVersion\("(?&lt;Major&gt;\d+)\.(?&lt;Minor&gt;\d+)\.(?&lt;Patch&gt;[\d]+)\.(?&lt;PreReleaseInfo&gt;[0-9A-Za-z-.]+)?</Pattern>
+      <AssemblyVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Major"].Value)</AssemblyVersionMajor>
+      <AssemblyVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Minor"].Value)</AssemblyVersionMinor>
+      <AssemblyVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Patch"].Value)</AssemblyVersionPatch>
+      <AssemblyVersionPreRelease>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["PreReleaseInfo"].Value)</AssemblyVersionPreRelease>
+    </PropertyGroup>
+    <Message Importance="high" Text="Version : $(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)"/>
+    
+    <XmlPoke 
+      XmlInputPath="%(CoreCsproj.FullPath)"
+      Query="//AssemblyVersion" 
+      Value="$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)" />
+    <XmlPoke 
+      XmlInputPath="%(CoreCsproj.FullPath)"
+      Query="//FileVersion" 
+      Value="$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)" />
+  </Target>
+
+  <!-- 0- Restore dependencies -->
+  <Target Name="NugetRestore">
+    <ItemGroup>
+      <Prj Include="ProjectFolder" Condition="'%(ProjectFolder.Fwk)'=='core'">
+        <RestoreCommand>dotnet restore %(ProjectFolder.FullPath)\</RestoreCommand>
+      </Prj>
+      <Prj Include="ProjectFolder" Condition="'%(ProjectFolder.Fwk)'!='core'">
+        <RestoreCommand>"$(NuGetExePath)" install "%(ProjectFolder.FullPath)\packages.config" -o "$(SolutionRoot)\packages" -verbosity quiet</RestoreCommand>
+      </Prj>
+    </ItemGroup>
+
+    <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
+    <Exec Command='%(Prj.RestoreCommand)'/>
+    <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
+  </Target>
+  
+  <!-- 1- Do the BUILD -->
+  <Target Name="Build" DependsOnTargets="NugetRestore;SynchroVersion">
+    <Message Importance="high" Text="--------- BUILD  -------------------------------------------"/>
+    <Message Importance="high" Text="
+---------------------------------------------------------------
+BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
+---------------------------------------------------------------
+      "  />
+
+    <Message Importance="normal" Text="--------- will run: $(SolutionRoot)\$(SolutionName).sln"/>
+    <MSBuild Projects="$(SolutionRoot)\$(SolutionName).sln" 
+             Targets="Build" 
+             Properties="Configuration=$(Configuration)"/>
+
+    <Message Importance="high" Text="--------- end of BUILD  -------------------------------------"/>
+  </Target>
+    
+  <!-- 2- BUILD THE DOCS -->
+  <Target Name="BuildDocs">
+
+    <Message Importance="high" Text="--------- DOCUMENTATION GENERATION  ---------"/>
+    <Message Importance="high" Text="
+---------------------------------------------------------------
+GENERATING DOCS for:
+  - $(BinariesPath)\$(SolutionName).dll
+---------------------------------------------------------------
+          "  />
+    <MakeDir Directories="$(DocPath)" Condition="!Exists('$(DocPath)')" />
+    <Exec Command="$(DocuExePath) $(BinariesPath)\$(SolutionName).dll --output=$(DocPath)" />
+    <Exec Command="&quot;$(ZipExe)&quot; a -tzip &quot;$(PackagesPath)\$(SolutionName).docs.zip&quot; &quot;$(DocPath)&quot;" />
+    <Message Importance="high" Text="--------- end of DOCUMENTATION GENERATION  ---------"/>
+  </Target>
+
+  <!-- 3- Run the TESTS -->
+  <Target Name="RunTests" DependsOnTargets="Build">
+    <ItemGroup>
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='core' AND '%(TestProjects.Runner)'=='MsTest'">
+        <Runner>"$(MsTestRunnerPath)$(MsTestRunner)"</Runner>
+        <Args>%(TestProjects.Identity)</Args>
+        <Coverage>%(TestProjects.Coverage)</Coverage>
+      </TestRun>
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Runner)'=='Self'">
+        <Runner>"%(TestProjects.Identity)"</Runner>
+        <Args></Args>
+        <Coverage>%(TestProjects.Coverage)</Coverage>
+      </TestRun>
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='core' AND '%(TestProjects.Runner)'==''">
+        <Runner>"$(TestRunnerPath)"</Runner>
+        <Args>%(TestProjects.FullPath) $(NunitOptions) /framework:%(TestProjects.Framework)</Args>
+        <Coverage>%(TestProjects.Coverage)</Coverage>
+      </TestRun>
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'=='core'">
+        <Runner>dotnet.exe</Runner>
+        <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
+        <Coverage>%(TestProjects.Coverage)</Coverage>
+      </TestRun>
+    </ItemGroup>
+
+    <Message Importance="high" Text="
+---------------------------------------------------------------
+RUN ALL UNIT TESTS
+---------------------------------------------------------------
+          "  />
+
+    <Message Importance="high" Text="--------- RUN TESTS ---------"/>
+    <Delete Files="$(SolutionRoot)\$(SolutionName)-coverage.xml"/>
+    <Exec Command='dotnet --version'/>
+    <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="$(SolutionRoot)"/>
+    <Message Importance="high" Text="--------- end of RUN TESTS ---------"/>
+
+    <Message Importance="high" Text="--------- Coverage ---------"/>
+    <Message Importance="normal" Text="Cover for %(TestProjects.Identity) : $(SolutionRoot)\$(SolutionName)-coverage.xml -mergeoutput " Condition="'%(TestProjects.Coverage)'=='true'"/>
+    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]*" -excludebyattribute:*.Obsolete*  -output:"$(SolutionRoot)\$(SolutionName)-coverage.xml" -mergeoutput -mergebyhash -targetargs:"%(TestRun.Args)"'
+          Condition="'%(TestRun.Coverage)'=='true'"/>
+    <Message Importance="high" Text="--------- end of Coverage ---------"/>
+  </Target>
+  
+  <Target Name="CoverageReport" DependsOnTargets="RunTests">
+   <Message Importance="high" Text="--------- Publish Coverage ---------"/>
+    <Exec Command ='"$(CoverReportToolPath)\ReportGenerator.exe" -reports:$(SolutionRoot)\$(SolutionName)-coverage.xml -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="'$(APPVEYOR)'!='True'"/>
+
+    <Exec Command="pip install codecov"/>
+    <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(SolutionRoot)\$(SolutionName)-coverage.xml" -t $(CodeCovKey) -X gcov -n $(SolutionName)'
+           Condition="('$(CodeCovKey)'!='') AND ('$(APPVEYOR)'=='True')"/>
+   <Message Importance="high" Text="--------- end of Publish Coverage ---------"/>
+  </Target>
+
+  <!-- 5- Then Publish (but not for PR)-->
+  <Target Name="Publish" DependsOnTargets="Package">
+    <PropertyGroup>
+      <PackageFileName>$(PackagesPath)\$(SolutionName).$(PrettyVersion).nupkg</PackageFileName>
+    </PropertyGroup>
+    <!--= Publish the package on Nuget-->
+    <Message Importance="high" Text="--------- NUGET PUBLISH  -------------------------------------------"/>
+
+    <Exec Command='"$(NuGetExePath)" setApiKey $(NugetKey) -source $(NugetFeed) -verbosity quiet' EchoOff='true' Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''"/>
+    <Exec Command='"$(NuGetExePath)" push "$(PackageFileName)" -Source $(NugetFeed)' Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''"/>
+
+    <Message Importance="high" Text="--------- end of NUGET PUBLISH  -------------------------------------"/>
+  </Target>
+
+  </Project>
+                                                                                             

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{CCA550FA-833A-4F2E-9C81-78EE585A49CC}"
 	ProjectSection(SolutionItems) = preProject
@@ -12,13 +12,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		build.cmd = build.cmd
 		.build\Build.proj = .build\Build.proj
 		.build\Build.tasks = .build\Build.tasks
+		.build\buildlogic.targets = .build\buildlogic.targets
 		CI.cmd = CI.cmd
 		CONTRIBUTING.md = CONTRIBUTING.md
 		DevDoD.md = DevDoD.md
 		ForNCrunchUsers.md = ForNCrunchUsers.md
 		HowToAddANewAssertion.md = HowToAddANewAssertion.md
 		LICENSE.txt = LICENSE.txt
-		.build\MSBuild.Community.Tasks.dll = .build\MSBuild.Community.Tasks.dll
 		MyPersonalPaperNote.md = MyPersonalPaperNote.md
 		NFluent.nuspec = NFluent.nuspec
 		NFluent.snk = NFluent.snk
