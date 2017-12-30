@@ -51,6 +51,7 @@
     <None Include="..\..\NFluent.snk">
       <Link>NFluent.snk</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\NFluent\NFluent.projitems" Label="Shared" />
   <Import Project="..\NFluent.Generated\NFluent.Generated.projitems" Label="Shared" />
