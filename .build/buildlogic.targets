@@ -113,16 +113,7 @@ GENERATING DOCS for:
   <!-- 3a- Run the TESTS -->
   <Target Name="RunTests" DependsOnTargets="Build">
     <ItemGroup>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='core' AND '%(TestProjects.Runner)'=='MsTest'">
-        <Runner>"$(MsTestRunnerPath)$(MsTestRunner)"</Runner>
-        <Args>%(TestProjects.Identity)</Args>
-        <Coverage>%(TestProjects.Coverage)</Coverage>
-      </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Runner)'=='Self'">
-        <Runner>"%(TestProjects.Identity)"</Runner>
-        <Args></Args>
-        <Coverage>%(TestProjects.Coverage)</Coverage>
-      </TestRun>
+
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='core' AND '%(TestProjects.Runner)'==''">
         <Runner>"$(TestRunnerPath)"</Runner>
         <Args>%(TestProjects.FullPath) $(NunitOptions) /framework:%(TestProjects.Framework)</Args>
@@ -133,7 +124,16 @@ GENERATING DOCS for:
         <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-    </ItemGroup>
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='core' AND '%(TestProjects.Runner)'=='MsTest'">
+        <Runner>"$(MsTestRunnerPath)$(MsTestRunner)"</Runner>
+        <Args>%(TestProjects.Identity)</Args>
+        <Coverage>%(TestProjects.Coverage)</Coverage>
+      </TestRun>
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Runner)'=='Self'">
+        <Runner>"%(TestProjects.Identity)"</Runner>
+        <Args></Args>
+        <Coverage>%(TestProjects.Coverage)</Coverage>
+      </TestRun>    </ItemGroup>
 
     <Message Importance="high" Text="
 ---------------------------------------------------------------
