@@ -110,73 +110,8 @@ GENERATING DOCS for:
     <Message Importance="high" Text="--------- end of DOCUMENTATION GENERATION  ---------"/>
   </Target>
 
-  <!-- 3- Run the TESTS -->
+  <!-- 3a- Run the TESTS -->
   <Target Name="RunTests" DependsOnTargets="Build">
-  <ItemGroup>
-      <TestProjects Include='$(TestsPath)\NFluent.20.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
-        <Framework>net-2.0</Framework>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.30.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
-        <Framework>net-3.0</Framework>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'>
-        <Framework>net-3.5</Framework>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.35.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
-        <Framework>net-3.5</Framework>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll'>
-        <Framework>net-3.5</Framework>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.40.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'>
-        <Framework>net-4.0</Framework>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.40.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
-        <Framework>net-4.0</Framework>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.40.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll'>
-        <Framework>net-4.0</Framework>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.45.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'>
-        <Framework>net-4.5</Framework>
-      <Coverage>true</Coverage>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.45.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
-        <Framework>net-4.5</Framework>
-      <Coverage>true</Coverage>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.45.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll'>
-        <Framework>net-4.5</Framework>
-        <Coverage>true</Coverage>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Tests.MsTest\bin\$(Configuration)\NFluent.Tests.MsTest.dll'>
-        <Framework>net-4.5</Framework>
-        <Runner>MsTest</Runner>
-        <Coverage>true</Coverage>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj'>
-        <Framework>core</Framework>
-        <Coverage>true</Coverage>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Core.Tests\NFluent.Core.Tests.csproj'>
-        <Framework>core</Framework>
-        <Coverage>true</Coverage>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Core.Tests.Extensions\NFluent.Core.Tests.Extensions.csproj'>
-        <Framework>core</Framework>
-        <Coverage>true</Coverage>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Tests.SelfHosted\bin\$(Configuration)\NFluent.Tests.SelfHosted.exe'>
-        <Framework>net-4.5</Framework>
-        <Runner>Self</Runner>
-        <Coverage>true</Coverage>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.45.Tests.Meta\bin\$(Configuration)\NFluent.Tests.Meta.dll'>
-        <Framework>net-4.5</Framework>
-        <Coverage>false</Coverage>
-      </TestProjects>
-    </ItemGroup>
-
     <ItemGroup>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='core' AND '%(TestProjects.Runner)'=='MsTest'">
         <Runner>"$(MsTestRunnerPath)$(MsTestRunner)"</Runner>
@@ -219,6 +154,7 @@ RUN ALL UNIT TESTS
     <Message Importance="high" Text="--------- end of Coverage ---------"/>
   </Target>
   
+  <!-- 3b- Tests coverage -->
   <Target Name="CoverageReport" DependsOnTargets="RunTests">
    <Message Importance="high" Text="--------- Publish Coverage ---------"/>
     <Exec Command ='"$(CoverReportToolPath)\ReportGenerator.exe" -reports:$(SolutionRoot)\$(SolutionName)-coverage.xml -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="'$(APPVEYOR)'!='True'"/>
