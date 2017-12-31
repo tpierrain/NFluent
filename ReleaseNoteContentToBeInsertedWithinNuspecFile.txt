@@ -1,4 +1,13 @@
-V 2.10
+V 2.2.0
+---------------
+New feature(s):
+*
+
+---------------
+Bug fix(es):
+
+
+V 2.1.0
 --------------
 New feature(s):
 * Enumerable:
@@ -18,7 +27,6 @@ Bug Fixe(s):
 * Fixed support of array types for HasFielsWithSameValues (issue #200)
 * Fixed some stack overflow exceptions (issue #210).
 * Fixed confusing examples about array item related checks in the readme
-
 
 
 V 2.00

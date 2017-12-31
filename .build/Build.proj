@@ -29,8 +29,6 @@
     <DocuExePath>$(ToolsPath)\docu\docu.exe</DocuExePath>
     <ZipExe>$(ToolsPath)\7za\7za.exe</ZipExe>
     <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.7.0\tools\nunit3-console.exe</TestRunnerPath>
-    <CoverToolPath>$(NuGetToolsPath)\OpenCover.4.6.519\tools</CoverToolPath>
-    <CoverReportToolPath>$(NuGetToolsPath)\ReportGenerator.3.0.2\tools</CoverReportToolPath>
     <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
     <MsTestRunner>vstest.console.exe</MsTestRunner>
   </PropertyGroup>
@@ -146,94 +144,28 @@
       </TestProjects>
     </ItemGroup>
 
-  <!-- 4- Then PACKAGE -->
-  <Target Name="Package" DependsOnTargets="RunTests">
-    <ItemGroup>
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).20\bin\$(Configuration)\*.*">
-        <TargetFwk>net20</TargetFwk>
-      </FilesForNuget>
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).30\bin\$(Configuration)\*.*">
-        <TargetFwk>net30</TargetFwk>
-      </FilesForNuget>
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).35\bin\$(Configuration)\*.*">
-        <TargetFwk>net35</TargetFwk>
-      </FilesForNuget>
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).40\bin\$(Configuration)\*.*">
-        <TargetFwk>net40</TargetFwk>
-      </FilesForNuget>
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).45\bin\$(Configuration)\*.*">
-        <TargetFwk>net45</TargetFwk>
-      </FilesForNuget>  
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).Standard.13\bin\$(Configuration)\netstandard1.3\*.*">
-        <TargetFwk>netstandard1.3</TargetFwk>
-      </FilesForNuget>
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).PCL\bin\$(Configuration)\*.*">
-        <TargetFwk>PCL</TargetFwk>
-      </FilesForNuget>
-    </ItemGroup>
-
-    <Message Importance="high" Text="--w------- PACKAGE ---------"/>
-      <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
-      <Message Importance="low" Text="xcopy %(FilesForNuget.Identity) $(BinariesPath)\%(FilesForNuget.TargetFwk)\ /E /Y" />
-      <Exec Command='xcopy "%(FilesForNuget.FullPath)" "$(BinariesPath)\%(FilesForNuget.TargetFwk)\" /E /Y /Q' />
-    
-      <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
-      <GetAssemblyIdentity AssemblyFiles="$(BinariesPath)\net40\$(SolutionName).dll">
-        <Output TaskParameter="Assemblies" ItemName="AsmInfo" />
-      </GetAssemblyIdentity>
-
-      <PropertyGroup>
-        <NuspecFilePath>$(SolutionRoot)\$(SolutionName).nuspec</NuspecFilePath>
-        <PackageVersion>%(AsmInfo.Version)</PackageVersion>
-      </PropertyGroup>
-
-      <Message Importance="high" Text="[Print] PackageVersion: '$(PackageVersion)'" />
-      <Message Importance="high" Text="[Print] NuspecFilePath: '$(NuspecFilePath)'" />
-
-    <VersionBuilding version ="$(PackageVersion)" stream="$(PackageStream)">
-      <Output PropertyName="PrettyVersion" TaskParameter="fullVersion" />
-    </VersionBuilding>
-    <Message Importance="high" Text="Pretty Version= $(PrettyVersion)" />
-
-    <!-- insert the version number into the nuspec file -->
-      <XmlPoke 
-        XmlInputPath="$(NuspecFilePath)"
-          Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
-        Query="x:package/x:metadata/x:version" 
-        Value="$(PrettyVersion)" />
-
-      <!-- Gets the release note content from the proper file -->
-      <ReadLinesFromFile File="$(SolutionRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.txt">
-        <Output TaskParameter="Lines" ItemName="FileContents" />
-      </ReadLinesFromFile>
-      
-      <!-- Sets its content into a variable with n/a as the default value -->
-      <PropertyGroup>
-        <ReleaseNoteContent>n/a</ReleaseNoteContent>
-      </PropertyGroup>
-
-      <PropertyGroup Condition=" '@(FileContents,'%0a%0d')' != '' ">
-        <ReleaseNoteContent>@(FileContents,'%0a%0d')</ReleaseNoteContent>
-      </PropertyGroup>
-
-      <!-- Updates the nuspec file with this variable content -->
-      <XmlPoke
-        XmlInputPath="$(NuspecFilePath)"
-          Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
-        Query="x:package/x:metadata/x:releaseNotes"
-        Value="$(ReleaseNoteContent)" />
-
-      <Message Importance="high" Text="
----------------------------------------------------------------
-CREATING NUGET PACKAGE IN:
-    - $(PackagesPath)
----------------------------------------------------------------
-            "  />
-      <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
-      <Delete Files="$(PackagesPath)\*.*"/>
-      <Exec Command='"$(NuGetExePath)" pack "$(NuspecFilePath)" -o "$(PackagesPath)"' LogStandardErrorAsError="true" />
-
-        <Message Importance="high" Text="--------- End of PACKAGE ---------"/>
-  </Target>
+  <ItemGroup>
+    <FilesForNuget Include="$(SourcePath)$(SolutionName).20\bin\$(Configuration)\*.*">
+      <TargetFwk>net20</TargetFwk>
+    </FilesForNuget>
+    <FilesForNuget Include="$(SourcePath)$(SolutionName).30\bin\$(Configuration)\*.*">
+      <TargetFwk>net30</TargetFwk>
+    </FilesForNuget>
+    <FilesForNuget Include="$(SourcePath)$(SolutionName).35\bin\$(Configuration)\*.*">
+      <TargetFwk>net35</TargetFwk>
+    </FilesForNuget>
+    <FilesForNuget Include="$(SourcePath)$(SolutionName).40\bin\$(Configuration)\*.*">
+      <TargetFwk>net40</TargetFwk>
+    </FilesForNuget>
+    <FilesForNuget Include="$(SourcePath)$(SolutionName).45\bin\$(Configuration)\*.*">
+      <TargetFwk>net45</TargetFwk>
+    </FilesForNuget>  
+    <FilesForNuget Include="$(SourcePath)$(SolutionName).Standard.13\bin\$(Configuration)\netstandard1.3\*.*">
+      <TargetFwk>netstandard1.3</TargetFwk>
+    </FilesForNuget>
+    <FilesForNuget Include="$(SourcePath)$(SolutionName).PCL\bin\$(Configuration)\*.*">
+      <TargetFwk>PCL</TargetFwk>
+    </FilesForNuget>
+  </ItemGroup>
 
 </Project>

@@ -39,7 +39,7 @@
     </PropertyGroup>
   </Target>
 
-  <Target Name="SynchroVersion" Outputs="%(CoreCsproj.FullPath)" Inputs="$(AttributeVersionFile)">
+  <Target Name="SynchroVersion">
     <!-- Ensure version number is propagated in new CsProj format file-->
     <PropertyGroup>
       <In>$([System.IO.File]::ReadAllText('$(AttributeVersionFile)'))</In>
@@ -48,21 +48,33 @@
       <AssemblyVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Minor"].Value)</AssemblyVersionMinor>
       <AssemblyVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Patch"].Value)</AssemblyVersionPatch>
       <AssemblyVersionPreRelease>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["PreReleaseInfo"].Value)</AssemblyVersionPreRelease>
+      <NumericalVersion>$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)</NumericalVersion>
+      <InformalVersion>$(NumericalVersion)-$(PackageStream)</InformalVersion>
     </PropertyGroup>
-    <Message Importance="high" Text="Version : $(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)"/>
+
+    <Message Importance="high" Text="Version : $(NumericalVersion)"/>
+    <Message Importance="high" Text="Informal Version : $(InformalVersion)"/>
     
     <XmlPoke 
       XmlInputPath="%(CoreCsproj.FullPath)"
       Query="//AssemblyVersion" 
-      Value="$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)" />
+      Value="$(NumericalVersion)" />
     <XmlPoke 
       XmlInputPath="%(CoreCsproj.FullPath)"
       Query="//FileVersion" 
-      Value="$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)" />
+      Value="$(NumericalVersion)" />
+    <XmlPoke 
+      XmlInputPath="%(CoreCsproj.FullPath)"
+      Query="//Version" 
+      Value="$(InformalVersion)" />
+    <XmlPoke 
+      XmlInputPath="%(CoreCsproj.FullPath)"
+      Query="//InformationalVersion" 
+      Value="$(InformalVersion)" />
   </Target>
 
   <!-- 0- Restore dependencies -->
-  <Target Name="NugetRestore">
+  <Target Name="NugetRestore" DependsOnTargets="SynchroVersion">
     <ItemGroup>
       <Prj Include="ProjectFolder" Condition="'%(ProjectFolder.Fwk)'=='core'">
         <RestoreCommand>dotnet restore %(ProjectFolder.FullPath)\</RestoreCommand>
@@ -78,7 +90,7 @@
   </Target>
   
   <!-- 1- Do the BUILD -->
-  <Target Name="Build" DependsOnTargets="NugetRestore;SynchroVersion">
+  <Target Name="Build" DependsOnTargets="NugetRestore">
     <Message Importance="high" Text="--------- BUILD  -------------------------------------------"/>
     <Message Importance="high" Text="
 ---------------------------------------------------------------
@@ -113,7 +125,6 @@ GENERATING DOCS for:
   <!-- 3a- Run the TESTS -->
   <Target Name="RunTests" DependsOnTargets="Build">
     <ItemGroup>
-
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='core' AND '%(TestProjects.Runner)'==''">
         <Runner>"$(TestRunnerPath)"</Runner>
         <Args>%(TestProjects.FullPath) $(NunitOptions) /framework:%(TestProjects.Framework)</Args>
@@ -148,6 +159,11 @@ RUN ALL UNIT TESTS
     <Message Importance="high" Text="--------- end of RUN TESTS ---------"/>
 
     <Message Importance="high" Text="--------- Coverage ---------"/>
+    <PropertyGroup>
+      <opencoverVersion>4.6.519</opencoverVersion>
+      <CoverToolPath>$(NuGetToolsPath)\OpenCover.$(opencoverVersion)\tools</CoverToolPath>
+    </PropertyGroup>
+    <Exec Command='"$(NuGetExePath)" install opencover -o "$(NuGetToolsPath)" -version $(opencoverVersion)'/>
     <Message Importance="normal" Text="Cover for %(TestProjects.Identity) : $(SolutionRoot)\$(SolutionName)-coverage.xml -mergeoutput " Condition="'%(TestProjects.Coverage)'=='true'"/>
     <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]*" -excludebyattribute:*.Obsolete*  -output:"$(SolutionRoot)\$(SolutionName)-coverage.xml" -mergeoutput -mergebyhash -targetargs:"%(TestRun.Args)"'
           Condition="'%(TestRun.Coverage)'=='true'"/>
@@ -155,14 +171,89 @@ RUN ALL UNIT TESTS
   </Target>
   
   <!-- 3b- Tests coverage -->
-  <Target Name="CoverageReport" DependsOnTargets="RunTests">
-   <Message Importance="high" Text="--------- Publish Coverage ---------"/>
+  <Target Name="CoverageReport">
+    <PropertyGroup>
+      <reportGeneratorVersion>3.1.1</reportGeneratorVersion>
+      <CoverReportToolPath>$(NuGetToolsPath)\ReportGenerator.$(reportGeneratorVersion)\tools</CoverReportToolPath>
+    </PropertyGroup>
+    <Exec Command='"$(NuGetExePath)" install reportgenerator -o "$(NuGetToolsPath)" -version $(reportGeneratorVersion)'/>
+
+    <Message Importance="high" Text="--------- Publish Coverage ---------"/>
+    <Message Importance="high" Text="Get Tools"/>
+
     <Exec Command ='"$(CoverReportToolPath)\ReportGenerator.exe" -reports:$(SolutionRoot)\$(SolutionName)-coverage.xml -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="'$(APPVEYOR)'!='True'"/>
 
     <Exec Command="pip install codecov"/>
     <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(SolutionRoot)\$(SolutionName)-coverage.xml" -t $(CodeCovKey) -X gcov -n $(SolutionName)'
            Condition="('$(CodeCovKey)'!='') AND ('$(APPVEYOR)'=='True')"/>
    <Message Importance="high" Text="--------- end of Publish Coverage ---------"/>
+  </Target>
+
+ <!-- 4- Then PACKAGE -->
+  <Target Name="Package" DependsOnTargets="RunTests">
+
+    <Message Importance="high" Text="--w------- PACKAGE ---------"/>
+      <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
+      <Message Importance="low" Text="xcopy %(FilesForNuget.Identity) $(BinariesPath)\%(FilesForNuget.TargetFwk)\ /E /Y" />
+      <Exec Command='xcopy "%(FilesForNuget.FullPath)" "$(BinariesPath)\%(FilesForNuget.TargetFwk)\" /E /Y /Q' />
+    
+      <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
+      <GetAssemblyIdentity AssemblyFiles="$(BinariesPath)\net40\$(SolutionName).dll">
+        <Output TaskParameter="Assemblies" ItemName="AsmInfo" />
+      </GetAssemblyIdentity>
+
+      <PropertyGroup>
+        <NuspecFilePath>$(SolutionRoot)\$(SolutionName).nuspec</NuspecFilePath>
+        <PackageVersion>%(AsmInfo.Version)</PackageVersion>
+      </PropertyGroup>
+
+      <Message Importance="high" Text="[Print] PackageVersion: '$(PackageVersion)'" />
+      <Message Importance="high" Text="[Print] NuspecFilePath: '$(NuspecFilePath)'" />
+
+    <VersionBuilding version ="$(PackageVersion)" stream="$(PackageStream)">
+      <Output PropertyName="PrettyVersion" TaskParameter="fullVersion" />
+    </VersionBuilding>
+    <Message Importance="high" Text="Pretty Version= $(PrettyVersion)" />
+
+    <!-- insert the version number into the nuspec file -->
+      <XmlPoke 
+        XmlInputPath="$(NuspecFilePath)"
+          Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
+        Query="x:package/x:metadata/x:version" 
+        Value="$(PrettyVersion)" />
+
+      <!-- Gets the release note content from the proper file -->
+      <ReadLinesFromFile File="$(SolutionRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.txt">
+        <Output TaskParameter="Lines" ItemName="FileContents" />
+      </ReadLinesFromFile>
+      
+      <!-- Sets its content into a variable with n/a as the default value -->
+      <PropertyGroup>
+        <ReleaseNoteContent>n/a</ReleaseNoteContent>
+      </PropertyGroup>
+
+      <PropertyGroup Condition=" '@(FileContents,'%0a%0d')' != '' ">
+        <ReleaseNoteContent>@(FileContents,'%0a%0d')</ReleaseNoteContent>
+      </PropertyGroup>
+
+      <!-- Updates the nuspec file with this variable content -->
+      <XmlPoke
+        XmlInputPath="$(NuspecFilePath)"
+          Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
+        Query="x:package/x:metadata/x:releaseNotes"
+        Value="$(ReleaseNoteContent)" />
+
+      <Message Importance="high" Text="
+---------------------------------------------------------------
+CREATING NUGET PACKAGE IN:
+    - $(PackagesPath)
+---------------------------------------------------------------
+            "  />
+      <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
+      <Delete Files="$(PackagesPath)\*.*"/>
+      <Exec Command='"$(NuGetExePath)" pack "$(NuspecFilePath)" -o "$(PackagesPath)"' LogStandardErrorAsError="true" />
+
+        <Message Importance="high" Text="--------- End of PACKAGE ---------"/>
   </Target>
 
   <!-- 5- Then Publish (but not for PR)-->
