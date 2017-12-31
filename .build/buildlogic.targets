@@ -49,7 +49,8 @@
       <AssemblyVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Patch"].Value)</AssemblyVersionPatch>
       <AssemblyVersionPreRelease>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["PreReleaseInfo"].Value)</AssemblyVersionPreRelease>
       <NumericalVersion>$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)</NumericalVersion>
-      <InformalVersion>$(NumericalVersion)-$(PackageStream)</InformalVersion>
+      <InformalVersion Condition="'$(PackageStream)'==''">$(NumericalVersion)</InformalVersion>
+      <InformalVersion Condition="'$(PackageStream)'!=''">$(NumericalVersion)-$(PackageStream)</InformalVersion>
     </PropertyGroup>
 
     <Message Importance="high" Text="Version : $(NumericalVersion)"/>
