@@ -192,7 +192,30 @@ RUN ALL UNIT TESTS
  <!-- 4- Then PACKAGE -->
   <Target Name="Package" DependsOnTargets="RunTests">
 
-    <Message Importance="high" Text="--w------- PACKAGE ---------"/>
+    <Message Importance="high" Text="---------- PACKAGE ---------"/>
+    <ItemGroup>
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).20\bin\$(Configuration)\*.*">
+        <TargetFwk>net20</TargetFwk>
+      </FilesForNuget>
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).30\bin\$(Configuration)\*.*">
+        <TargetFwk>net30</TargetFwk>
+      </FilesForNuget>
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).35\bin\$(Configuration)\*.*">
+        <TargetFwk>net35</TargetFwk>
+      </FilesForNuget>
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).40\bin\$(Configuration)\*.*">
+        <TargetFwk>net40</TargetFwk>
+      </FilesForNuget>
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).45\bin\$(Configuration)\*.*">
+        <TargetFwk>net45</TargetFwk>
+      </FilesForNuget>  
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).Standard.13\bin\$(Configuration)\netstandard1.3\*.*">
+        <TargetFwk>netstandard1.3</TargetFwk>
+      </FilesForNuget>
+      <FilesForNuget Include="$(SourcePath)$(SolutionName).PCL\bin\$(Configuration)\*.*">
+        <TargetFwk>PCL</TargetFwk>
+      </FilesForNuget>
+    </ItemGroup>
       <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
       <Message Importance="low" Text="xcopy %(FilesForNuget.Identity) $(BinariesPath)\%(FilesForNuget.TargetFwk)\ /E /Y" />
       <Exec Command='xcopy "%(FilesForNuget.FullPath)" "$(BinariesPath)\%(FilesForNuget.TargetFwk)\" /E /Y /Q' />

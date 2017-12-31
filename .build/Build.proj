@@ -144,28 +144,5 @@
       </TestProjects>
     </ItemGroup>
 
-  <ItemGroup>
-    <FilesForNuget Include="$(SourcePath)$(SolutionName).20\bin\$(Configuration)\*.*">
-      <TargetFwk>net20</TargetFwk>
-    </FilesForNuget>
-    <FilesForNuget Include="$(SourcePath)$(SolutionName).30\bin\$(Configuration)\*.*">
-      <TargetFwk>net30</TargetFwk>
-    </FilesForNuget>
-    <FilesForNuget Include="$(SourcePath)$(SolutionName).35\bin\$(Configuration)\*.*">
-      <TargetFwk>net35</TargetFwk>
-    </FilesForNuget>
-    <FilesForNuget Include="$(SourcePath)$(SolutionName).40\bin\$(Configuration)\*.*">
-      <TargetFwk>net40</TargetFwk>
-    </FilesForNuget>
-    <FilesForNuget Include="$(SourcePath)$(SolutionName).45\bin\$(Configuration)\*.*">
-      <TargetFwk>net45</TargetFwk>
-    </FilesForNuget>  
-    <FilesForNuget Include="$(SourcePath)$(SolutionName).Standard.13\bin\$(Configuration)\netstandard1.3\*.*">
-      <TargetFwk>netstandard1.3</TargetFwk>
-    </FilesForNuget>
-    <FilesForNuget Include="$(SourcePath)$(SolutionName).PCL\bin\$(Configuration)\*.*">
-      <TargetFwk>PCL</TargetFwk>
-    </FilesForNuget>
-  </ItemGroup>
 
 </Project>
