@@ -83,21 +83,21 @@
 
     <Message Importance="high" Text="Version : $(NumericalVersion)"/>
     <Message Importance="high" Text="Informal Version : $(InformalVersion)"/>
-    
-    <XmlPoke 
-      XmlInputPath="%(CoreCsproj.FullPath)"
+    <Message Importance ="high" Text="Patching versions in %(ProjectFolder.FullPath)" Condition="'%(ProjectFolder.Fwk)'=='core'"/>
+    <XmlPoke Condition="'%(ProjectFolder.Fwk)'=='core'"
+      XmlInputPath="%(ProjectFolder.FullPath)"
       Query="//AssemblyVersion" 
       Value="$(NumericalVersion)" />
-    <XmlPoke 
-      XmlInputPath="%(CoreCsproj.FullPath)"
+    <XmlPoke  Condition="'%(ProjectFolder.Fwk)'=='core'"
+      XmlInputPath="%(ProjectFolder.FullPath)"
       Query="//FileVersion" 
       Value="$(NumericalVersion)" />
-    <XmlPoke 
-      XmlInputPath="%(CoreCsproj.FullPath)"
+    <XmlPoke  Condition="'%()ProjectFolder.Fwk)'=='core'"
+      XmlInputPath="%(ProjectFolder.FullPath)"
       Query="//Version" 
       Value="$(InformalVersion)" />
-    <XmlPoke 
-      XmlInputPath="%(CoreCsproj.FullPath)"
+    <XmlPoke  Condition="'%(ProjectFolder.Fwk)'=='core'"
+      XmlInputPath="%(ProjectFolder.FullPath)"
       Query="//InformationalVersion" 
       Value="$(InformalVersion)" />
   </Target>
@@ -106,7 +106,7 @@
   <Target Name="NugetRestore" DependsOnTargets="SynchroVersion">
     <ItemGroup>
       <Prj Include="ProjectFolder" Condition="'%(ProjectFolder.Fwk)'=='core'">
-        <RestoreCommand>dotnet restore %(ProjectFolder.FullPath)\</RestoreCommand>
+        <RestoreCommand>dotnet restore %(RootDir)\%(Directory)\</RestoreCommand>
       </Prj>
       <Prj Include="ProjectFolder" Condition="'%(ProjectFolder.Fwk)'!='core'">
         <RestoreCommand>"$(NuGetExePath)" install "%(ProjectFolder.FullPath)\packages.config" -o "$(SolutionRoot)\packages" -verbosity quiet</RestoreCommand>

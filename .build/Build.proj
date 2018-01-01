@@ -23,19 +23,11 @@
   
   <Import Project="buildlogic.targets"/>
 
-
   <ItemGroup>
-    <CoreCsproj Include="$(SourcePath)\NFluent.Standard.13\NFluent.Standard.13.csproj"/>
-    <CoreCsproj Include="$(TestsPath)\NFluent.Core.Tests\NFluent.Core.Tests.csproj"/>
-    <CoreCsproj Include="$(TestsPath)\NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj"/>
-    <CoreCsproj Include="$(TestsPath)\NFluent.Core.Tests.Extensions\NFluent.Core.Tests.Extensions.csproj"/>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectFolder Include="$(SourcePath)\NFluent.Standard.13"><Fwk>core</Fwk></ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Internals"><Fwk>core</Fwk></ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests"><Fwk>core</Fwk></ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Extensions"><Fwk>core</Fwk></ProjectFolder>
+    <ProjectFolder Include="$(SourcePath)\NFluent.Standard.13\NFluent.Standard.13.csproj"><Fwk>core</Fwk></ProjectFolder>
+    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj"><Fwk>core</Fwk></ProjectFolder>
+    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests\NFluent.Core.Tests.csproj"><Fwk>core</Fwk></ProjectFolder>
+    <ProjectFolder Include="$(TestsPath)\NFluent.Core.Tests.Extensions\NFluent.Core.Tests.Extensions.csproj"><Fwk>core</Fwk></ProjectFolder>
     <ProjectFolder Include="$(SourcePath)\NFluent.45"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.45.Tests.Meta"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.40"/>
@@ -56,7 +48,7 @@
     <ProjectFolder Include="$(SourcePath)\NFluent.T4"/>
   </ItemGroup>
   
-  <ItemGroup>
+   <ItemGroup>
       <TestProjects Include='$(TestsPath)\NFluent.20.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
         <Framework>net-2.0</Framework>
       </TestProjects>
@@ -120,6 +112,5 @@
         <Coverage>false</Coverage>
       </TestProjects>
     </ItemGroup>
-
 
 </Project>
