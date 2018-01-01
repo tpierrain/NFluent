@@ -2,6 +2,34 @@
 <Project ToolsVersion="15.0" DefaultTargets="" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="build.tasks" />
 
+  <PropertyGroup>
+    <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
+    <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
+
+    <PackageStream>alpha</PackageStream>
+    <ArtifactsPath>$(SolutionRoot)\Artifacts</ArtifactsPath>
+    <BinariesPath>$(ArtifactsPath)\Binaries</BinariesPath>
+    <PackagesPath>$(SolutionRoot)\Packages</PackagesPath>
+    <DocPath>$(SolutionRoot)\Docs</DocPath>
+    
+    <NuGetToolsPath>$(PackagesPath)</NuGetToolsPath>
+    <NuGetExePath>nuget.exe</NuGetExePath>
+    <TestRunnerPath>$(NuGetToolsPath)\NUnit.ConsoleRunner.3.7.0\tools\nunit3-console.exe</TestRunnerPath>
+    <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
+    <MsTestRunner>vstest.console.exe</MsTestRunner>
+  </PropertyGroup>
+
+  <!-- Specifics for appveyor: use env provided nunit runner for result publication-->
+  <Choose>
+    <When Condition="'$(APPVEYOR)'=='True'">
+      <PropertyGroup>
+        <NunitOptions>--result="$(SolutionRoot)\TestResults.xml";format=AppVeyor</NunitOptions>
+        <TestRunnerPath>nunit3-console.exe</TestRunnerPath>
+        <MsTestRunnerPath></MsTestRunnerPath>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
   <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
   <Target Name="CI" DependsOnTargets="RunAll; CoverageReport" />
   <Target Name="Push" DependsOnTargets="CI; Publish"/>

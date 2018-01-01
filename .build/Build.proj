@@ -4,10 +4,8 @@
   <!-- updated by Cyrille Dupuydauby -->
 
   <PropertyGroup>
-    <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
-    <SolutionRoot>$(MSBuildProjectDirectory)\..</SolutionRoot>
-    <MSBuildCommunityTasksPath>$(SolutionRoot)\.build</MSBuildCommunityTasksPath>
     <SolutionName>NFluent</SolutionName>
+    <SolutionRoot>$(MSBuildProjectDirectory)\..</SolutionRoot>
     <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
     <CodeCovURL>https://codecov.io/gh/dupdob/$(SolutionName)</CodeCovURL>
     <NugetKey>$(NFLUENT_NUGET_API_KEY)</NugetKey>
@@ -15,36 +13,15 @@
     <CodeCovKey>$(CODECOV_KEY)</CodeCovKey>
     <AttributeVersionFile>$(SolutionRoot)\Version.cs</AttributeVersionFile>
 
-    <PackageStream>alpha</PackageStream>
     <ToolsPath>$(SolutionRoot)\tools\</ToolsPath>
     <SourcePath>$(SolutionRoot)\src\</SourcePath>
     <TestsPath>$(SolutionRoot)\tests</TestsPath>
-    <ArtifactsPath>$(SolutionRoot)\Artifacts</ArtifactsPath>
-    <BinariesPath>$(ArtifactsPath)\Binaries</BinariesPath>
-    <PackagesPath>$(ArtifactsPath)\Packages</PackagesPath>
-    <DocPath>$(ArtifactsPath)\Docs</DocPath>
     
-    <NuGetToolsPath>$(SolutionRoot)\Packages</NuGetToolsPath>
-    <NuGetExePath>nuget.exe</NuGetExePath>
     <DocuExePath>$(ToolsPath)\docu\docu.exe</DocuExePath>
     <ZipExe>$(ToolsPath)\7za\7za.exe</ZipExe>
-    <TestRunnerPath>$(SolutionRoot)\packages\NUnit.ConsoleRunner.3.7.0\tools\nunit3-console.exe</TestRunnerPath>
-    <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
-    <MsTestRunner>vstest.console.exe</MsTestRunner>
   </PropertyGroup>
   
-  <!--Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" /-->
   <Import Project="buildlogic.targets"/>
-  <!-- Specifics for appveyor: use env provided nunit runner for result publication-->
-  <Choose>
-    <When Condition="'$(APPVEYOR)'=='True'">
-      <PropertyGroup>
-        <NunitOptions>--result="$(SolutionRoot)\TestResults.xml";format=AppVeyor</NunitOptions>
-        <TestRunnerPath>nunit3-console.exe</TestRunnerPath>
-        <MsTestRunnerPath></MsTestRunnerPath>
-      </PropertyGroup>
-    </When>
-  </Choose>
 
 
   <ItemGroup>
