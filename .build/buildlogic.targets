@@ -69,6 +69,7 @@
 
   <Target Name="SynchroVersion">
     <!-- Ensure version number is propagated in new CsProj format file-->
+    <!-- Capture version number -->
     <PropertyGroup>
       <In>$([System.IO.File]::ReadAllText('$(AttributeVersionFile)'))</In>
       <Pattern>\[assembly: AssemblyVersion\("(?&lt;Major&gt;\d+)\.(?&lt;Minor&gt;\d+)\.(?&lt;Patch&gt;[\d]+)\.(?&lt;PreReleaseInfo&gt;[0-9A-Za-z-.]+)?</Pattern>
@@ -77,43 +78,56 @@
       <AssemblyVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Patch"].Value)</AssemblyVersionPatch>
       <AssemblyVersionPreRelease>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["PreReleaseInfo"].Value)</AssemblyVersionPreRelease>
       <NumericalVersion>$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)</NumericalVersion>
-      <InformalVersion Condition="'$(PackageStream)'==''">$(NumericalVersion)</InformalVersion>
-      <InformalVersion Condition="'$(PackageStream)'!=''">$(NumericalVersion)-$(PackageStream)</InformalVersion>
     </PropertyGroup>
 
-    <Message Importance="high" Text="Version : $(NumericalVersion)"/>
-    <Message Importance="high" Text="Informal Version : $(InformalVersion)"/>
-    <Message Importance ="high" Text="Patching versions in %(ProjectFolder.FullPath)" Condition="'%(ProjectFolder.Fwk)'=='core'"/>
-    <XmlPoke Condition="'%(ProjectFolder.Fwk)'=='core'"
-      XmlInputPath="%(ProjectFolder.FullPath)"
+    <VersionBuilding version ="$(NumericalVersion)" stream="$(PackageStream)">
+      <Output PropertyName="PrettyVersion" TaskParameter="fullVersion" />
+    </VersionBuilding>
+    <Message Importance="high" Text="Pretty Version= $(PrettyVersion)" />
+
+    <ItemGroup>
+      <CSProjToPatch Include="@(ProjectFolder)" Condition="'%(ProjectFolder.Fwk)'=='core'">
+        <FullName>%(ProjectFolder.FullPath)\%(ProjectFolder.CsProj)</FullName>
+      </CSProjToPatch>
+    </ItemGroup>
+    <Message Importance="high" Text="--------- VERSION NUMBER SYNCHRO  -------------------------------------"/>
+    <Message Text="Version : $(NumericalVersion)"/>
+    <Message Text="Informal Version : $(PrettyVersion)"/>
+    <Message Importance="high" Text="Patching versions in %(CSProjToPatch.FullName) to $(PrettyVersion)"/>
+    <XmlPoke
+      XmlInputPath="%(CSProjToPatch.FullName)"
       Query="//AssemblyVersion" 
       Value="$(NumericalVersion)" />
-    <XmlPoke  Condition="'%(ProjectFolder.Fwk)'=='core'"
-      XmlInputPath="%(ProjectFolder.FullPath)"
+    <XmlPoke
+      XmlInputPath="%(CSProjToPatch.FullName)"
       Query="//FileVersion" 
       Value="$(NumericalVersion)" />
-    <XmlPoke  Condition="'%()ProjectFolder.Fwk)'=='core'"
-      XmlInputPath="%(ProjectFolder.FullPath)"
+    <XmlPoke
+      XmlInputPath="%(CSProjToPatch.FullName)"
       Query="//Version" 
-      Value="$(InformalVersion)" />
-    <XmlPoke  Condition="'%(ProjectFolder.Fwk)'=='core'"
-      XmlInputPath="%(ProjectFolder.FullPath)"
+      Value="$(PrettyVersion)" />
+    <XmlPoke
+      XmlInputPath="%(CSProjToPatch.FullName)"
       Query="//InformationalVersion" 
-      Value="$(InformalVersion)" />
+      Value="$(PrettyVersion)" />
+    <Message Importance="high" Text="--------- end of VERSION NUMBER SYNCHRO  ------------------------------"/>
   </Target>
 
   <!-- 0- Restore dependencies -->
   <Target Name="NugetRestore" DependsOnTargets="SynchroVersion">
     <ItemGroup>
       <Prj Include="ProjectFolder" Condition="'%(ProjectFolder.Fwk)'=='core'">
-        <RestoreCommand>dotnet restore %(RootDir)\%(Directory)\</RestoreCommand>
+        <Title>%(ProjectFolder.FileName)</Title>
+        <RestoreCommand>nuget restore %(ProjectFolder.FullPath)\%(ProjectFolder.CsProj) -verbosity quiet</RestoreCommand>
       </Prj>
       <Prj Include="ProjectFolder" Condition="'%(ProjectFolder.Fwk)'!='core'">
+        <Title>%(ProjectFolder.FileName)</Title>
         <RestoreCommand>"$(NuGetExePath)" install "%(ProjectFolder.FullPath)\packages.config" -o "$(SolutionRoot)\packages" -verbosity quiet</RestoreCommand>
       </Prj>
     </ItemGroup>
 
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
+    <Message Importance="high" Text="Restoring %(Prj.Title)"/>
     <Exec Command='%(Prj.RestoreCommand)'/>
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
   </Target>
@@ -154,17 +168,17 @@ GENERATING DOCS for:
   <!-- 3a- Run the TESTS -->
   <Target Name="RunTests" DependsOnTargets="Build">
     <ItemGroup>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='core' AND '%(TestProjects.Runner)'==''">
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Runner)'==''">
         <Runner>"$(TestRunnerPath)"</Runner>
         <Args>%(TestProjects.FullPath) $(NunitOptions) /framework:%(TestProjects.Framework)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'=='core'">
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'=='netstandard1.3'">
         <Runner>dotnet.exe</Runner>
         <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='core' AND '%(TestProjects.Runner)'=='MsTest'">
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Runner)'=='MsTest'">
         <Runner>"$(MsTestRunnerPath)$(MsTestRunner)"</Runner>
         <Args>%(TestProjects.Identity)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
@@ -219,53 +233,27 @@ RUN ALL UNIT TESTS
   </Target>
 
  <!-- 4- Then PACKAGE -->
-  <Target Name="Package" DependsOnTargets="RunTests">
+  <Target Name="Package" DependsOnTargets="">
 
     <Message Importance="high" Text="---------- PACKAGE ---------"/>
     <ItemGroup>
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).20\bin\$(Configuration)\*.*">
-        <TargetFwk>net20</TargetFwk>
-      </FilesForNuget>
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).30\bin\$(Configuration)\*.*">
-        <TargetFwk>net30</TargetFwk>
-      </FilesForNuget>
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).35\bin\$(Configuration)\*.*">
-        <TargetFwk>net35</TargetFwk>
-      </FilesForNuget>
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).40\bin\$(Configuration)\*.*">
-        <TargetFwk>net40</TargetFwk>
-      </FilesForNuget>
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).45\bin\$(Configuration)\*.*">
-        <TargetFwk>net45</TargetFwk>
-      </FilesForNuget>  
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).Standard.13\bin\$(Configuration)\netstandard1.3\*.*">
-        <TargetFwk>netstandard1.3</TargetFwk>
-      </FilesForNuget>
-      <FilesForNuget Include="$(SourcePath)$(SolutionName).PCL\bin\$(Configuration)\*.*">
-        <TargetFwk>PCL</TargetFwk>
+      <FilesForNuget Include="@(ProjectFolder)" Condition="'%(ProjectFolder.Package)'!=''">
+        <TargetFwk>%(ProjectFolder.Package)</TargetFwk>
+        <SourceDir>%(ProjectFolder.FullPath)\bin\$(Configuration)\*.*</SourceDir>
       </FilesForNuget>
     </ItemGroup>
       <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
-      <Message Importance="low" Text="xcopy %(FilesForNuget.Identity) $(BinariesPath)\%(FilesForNuget.TargetFwk)\ /E /Y" />
-      <Exec Command='xcopy "%(FilesForNuget.FullPath)" "$(BinariesPath)\%(FilesForNuget.TargetFwk)\" /E /Y /Q' />
+      <Message Text="xcopy %(FilesForNuget.SourceDir) $(BinariesPath)\%(FilesForNuget.TargetFwk)\ /E /Y" />
+      <Exec Command='xcopy "%(FilesForNuget.SourceDir)" "$(BinariesPath)\%(FilesForNuget.TargetFwk)\" /E /Y /Q' />
     
       <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
-      <GetAssemblyIdentity AssemblyFiles="$(BinariesPath)\net40\$(SolutionName).dll">
-        <Output TaskParameter="Assemblies" ItemName="AsmInfo" />
-      </GetAssemblyIdentity>
 
       <PropertyGroup>
         <NuspecFilePath>$(SolutionRoot)\$(SolutionName).nuspec</NuspecFilePath>
-        <PackageVersion>%(AsmInfo.Version)</PackageVersion>
       </PropertyGroup>
 
-      <Message Importance="high" Text="[Print] PackageVersion: '$(PackageVersion)'" />
+      <Message Importance="high" Text="[Print] PackageVersion: '$(NumericalVersion)'" />
       <Message Importance="high" Text="[Print] NuspecFilePath: '$(NuspecFilePath)'" />
-
-    <VersionBuilding version ="$(PackageVersion)" stream="$(PackageStream)">
-      <Output PropertyName="PrettyVersion" TaskParameter="fullVersion" />
-    </VersionBuilding>
-    <Message Importance="high" Text="Pretty Version= $(PrettyVersion)" />
 
     <!-- insert the version number into the nuspec file -->
       <XmlPoke 
@@ -321,6 +309,5 @@ CREATING NUGET PACKAGE IN:
 
     <Message Importance="high" Text="--------- end of NUGET PUBLISH  -------------------------------------"/>
   </Target>
-
   </Project>
                                                                                              
