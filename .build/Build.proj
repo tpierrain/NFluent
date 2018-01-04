@@ -16,9 +16,9 @@
     <ToolsPath>$(SolutionRoot)\tools\</ToolsPath>
     <SourcePath>$(SolutionRoot)\src\</SourcePath>
     <TestsPath>$(SolutionRoot)\tests\</TestsPath>
-    
-    <DocuExePath>$(ToolsPath)\docu\docu.exe</DocuExePath>
-    <ZipExe>$(ToolsPath)\7za\7za.exe</ZipExe>
+
+    <NuspecFilePath>$(SolutionRoot)\$(SolutionName).nuspec</NuspecFilePath>
+    <ReleaseNoteFile>$(SolutionRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.txt</ReleaseNoteFile>
   </PropertyGroup>
   
   <Import Project="buildlogic.targets"/>

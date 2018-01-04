@@ -2,6 +2,7 @@
 <Project ToolsVersion="15.0" DefaultTargets="" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="build.tasks" />
 
+  <!--Configuration informations-->
   <PropertyGroup>
     <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
     <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
@@ -9,14 +10,16 @@
     <PackageStream>alpha</PackageStream>
     <ArtifactsPath>$(SolutionRoot)\Artifacts</ArtifactsPath>
     <BinariesPath>$(ArtifactsPath)\Binaries</BinariesPath>
-    <PackagesPath>$(SolutionRoot)\Packages</PackagesPath>
-    <DocPath>$(SolutionRoot)\Docs</DocPath>
+    <PackagesPath>$(ArtifactsPath)\Packages</PackagesPath>
     
-    <NuGetToolsPath>$(PackagesPath)</NuGetToolsPath>
+    <NuGetToolsPath>$(SolutionRoot)\Packages</NuGetToolsPath>
     <NuGetExePath>nuget.exe</NuGetExePath>
-    <TestRunnerPath>$(NuGetToolsPath)\NUnit.ConsoleRunner.3.7.0\tools\nunit3-console.exe</TestRunnerPath>
-    <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
     <MsTestRunner>vstest.console.exe</MsTestRunner>
+    <opencoverVersion>4.6.519</opencoverVersion>
+    <reportGeneratorVersion>3.1.1</reportGeneratorVersion>
+    <nunitConsoleVersion>3.7.0</nunitConsoleVersion>
+    <TestRunnerPath>$(NuGetToolsPath)\NUnit.ConsoleRunner.$(nunitConsoleVersion)\tools\nunit3-console.exe</TestRunnerPath>
+    <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
   </PropertyGroup>
 
   <!-- Specifics for appveyor: use env provided nunit runner for result publication-->
@@ -67,6 +70,21 @@
     </PropertyGroup>
   </Target>
 
+  <!--Scan framework in csproj files-->
+  <!--This is an experimentation in progress that aims at capturing info from csproj files. Not used in active script-->
+  <Target Name="Scan">
+    <ItemGroup>
+      <FullProjectDescription Include="@(ProjectFolder)" Condition="'%(ProjectFolder.CSproj)'!=''">
+        <CSProjFullName>%(ProjectFolder.FullPath)\%(ProjectFolder.CsProj)</CSProjFullName>
+        <Framework />
+      </FullProjectDescription>
+    </ItemGroup>
+    <XmlPeek Query="//TargetFramework" XmlInputPath="%(FullProjectDescription.CSProjFullName)" Result="%(Framework)">
+    </XmlPeek>
+    <Message Importance="high" Text="detected: %(Framework) in %(FullProjectDescription.CSProjFullName)"/>
+  </Target>
+
+  <!-- 0- Align version numners -->
   <Target Name="SynchroVersion">
     <!-- Ensure version number is propagated in new CsProj format file-->
     <!-- Capture version number -->
@@ -113,7 +131,7 @@
     <Message Importance="high" Text="--------- end of VERSION NUMBER SYNCHRO  ------------------------------"/>
   </Target>
 
-  <!-- 0- Restore dependencies -->
+  <!-- 1- Restore dependencies -->
   <Target Name="NugetRestore" DependsOnTargets="SynchroVersion">
     <ItemGroup>
       <Prj Include="ProjectFolder" Condition="'%(ProjectFolder.Fwk)'=='core'">
@@ -132,7 +150,7 @@
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
   </Target>
   
-  <!-- 1- Do the BUILD -->
+  <!-- 2- Do the BUILD -->
   <Target Name="Build" DependsOnTargets="NugetRestore">
     <Message Importance="high" Text="--------- BUILD  -------------------------------------------"/>
     <Message Importance="high" Text="
@@ -149,23 +167,7 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
     <Message Importance="high" Text="--------- end of BUILD  -------------------------------------"/>
   </Target>
     
-  <!-- 2- BUILD THE DOCS -->
-  <Target Name="BuildDocs">
-
-    <Message Importance="high" Text="--------- DOCUMENTATION GENERATION  ---------"/>
-    <Message Importance="high" Text="
----------------------------------------------------------------
-GENERATING DOCS for:
-  - $(BinariesPath)\$(SolutionName).dll
----------------------------------------------------------------
-          "  />
-    <MakeDir Directories="$(DocPath)" Condition="!Exists('$(DocPath)')" />
-    <Exec Command="$(DocuExePath) $(BinariesPath)\$(SolutionName).dll --output=$(DocPath)" />
-    <Exec Command="&quot;$(ZipExe)&quot; a -tzip &quot;$(PackagesPath)\$(SolutionName).docs.zip&quot; &quot;$(DocPath)&quot;" />
-    <Message Importance="high" Text="--------- end of DOCUMENTATION GENERATION  ---------"/>
-  </Target>
-
-  <!-- 3a- Run the TESTS -->
+  <!-- 3- Run the TESTS -->
   <Target Name="RunTests" DependsOnTargets="Build">
     <ItemGroup>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Runner)'==''">
@@ -194,16 +196,22 @@ GENERATING DOCS for:
 RUN ALL UNIT TESTS
 ---------------------------------------------------------------
           "  />
+    <PropertyGroup>
+      <CoverToolPath>$(NuGetToolsPath)\NUnit.Console.$(opencoverVersion)\tools</CoverToolPath>
+    </PropertyGroup>
+    <Exec Command='"$(NuGetExePath)" install nunit.console -o "$(NuGetToolsPath)" -version $(nunitConsoleVersion)'/>
 
     <Message Importance="high" Text="--------- RUN TESTS ---------"/>
     <Delete Files="$(SolutionRoot)\$(SolutionName)-coverage.xml"/>
     <Exec Command='dotnet --version'/>
     <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="$(SolutionRoot)"/>
     <Message Importance="high" Text="--------- end of RUN TESTS ---------"/>
+  </Target>
 
+  <!-- 4- Tests coverage -->
+  <Target Name="Coverage">
     <Message Importance="high" Text="--------- Coverage ---------"/>
     <PropertyGroup>
-      <opencoverVersion>4.6.519</opencoverVersion>
       <CoverToolPath>$(NuGetToolsPath)\OpenCover.$(opencoverVersion)\tools</CoverToolPath>
     </PropertyGroup>
     <Exec Command='"$(NuGetExePath)" install opencover -o "$(NuGetToolsPath)" -version $(opencoverVersion)'/>
@@ -213,10 +221,9 @@ RUN ALL UNIT TESTS
     <Message Importance="high" Text="--------- end of Coverage ---------"/>
   </Target>
   
-  <!-- 3b- Tests coverage -->
-  <Target Name="CoverageReport">
+  <!-- 5- Tests coverage report-->
+  <Target Name="CoverageReport" DependsOnTargets="Coverage">
     <PropertyGroup>
-      <reportGeneratorVersion>3.1.1</reportGeneratorVersion>
       <CoverReportToolPath>$(NuGetToolsPath)\ReportGenerator.$(reportGeneratorVersion)\tools</CoverReportToolPath>
     </PropertyGroup>
     <Exec Command='"$(NuGetExePath)" install reportgenerator -o "$(NuGetToolsPath)" -version $(reportGeneratorVersion)'/>
@@ -232,14 +239,17 @@ RUN ALL UNIT TESTS
    <Message Importance="high" Text="--------- end of Publish Coverage ---------"/>
   </Target>
 
- <!-- 4- Then PACKAGE -->
+ <!-- 5- Then PACKAGE -->
   <Target Name="Package" DependsOnTargets="">
-
     <Message Importance="high" Text="---------- PACKAGE ---------"/>
     <ItemGroup>
-      <FilesForNuget Include="@(ProjectFolder)" Condition="'%(ProjectFolder.Package)'!=''">
+      <FilesForNuget Include="@(ProjectFolder)" Condition="'%(ProjectFolder.Package)'!='' AND '%(ProjectFolder.Fwk)'!='core'">
         <TargetFwk>%(ProjectFolder.Package)</TargetFwk>
         <SourceDir>%(ProjectFolder.FullPath)\bin\$(Configuration)\*.*</SourceDir>
+      </FilesForNuget>
+      <FilesForNuget Include="@(ProjectFolder)" Condition="'%(ProjectFolder.Package)'!='' AND '%(ProjectFolder.Fwk)'=='core'">
+        <TargetFwk>%(ProjectFolder.Package)</TargetFwk>
+        <SourceDir>%(ProjectFolder.FullPath)\bin\$(Configuration)\%(ProjectFolder.Package)\*.*</SourceDir>
       </FilesForNuget>
     </ItemGroup>
       <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
@@ -247,11 +257,6 @@ RUN ALL UNIT TESTS
       <Exec Command='xcopy "%(FilesForNuget.SourceDir)" "$(BinariesPath)\%(FilesForNuget.TargetFwk)\" /E /Y /Q' />
     
       <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
-
-      <PropertyGroup>
-        <NuspecFilePath>$(SolutionRoot)\$(SolutionName).nuspec</NuspecFilePath>
-      </PropertyGroup>
-
       <Message Importance="high" Text="[Print] PackageVersion: '$(NumericalVersion)'" />
       <Message Importance="high" Text="[Print] NuspecFilePath: '$(NuspecFilePath)'" />
 
@@ -263,7 +268,7 @@ RUN ALL UNIT TESTS
         Value="$(PrettyVersion)" />
 
       <!-- Gets the release note content from the proper file -->
-      <ReadLinesFromFile File="$(SolutionRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.txt">
+      <ReadLinesFromFile File="$(ReleaseNoteFile)">
         <Output TaskParameter="Lines" ItemName="FileContents" />
       </ReadLinesFromFile>
       
@@ -296,7 +301,7 @@ CREATING NUGET PACKAGE IN:
         <Message Importance="high" Text="--------- End of PACKAGE ---------"/>
   </Target>
 
-  <!-- 5- Then Publish (but not for PR)-->
+  <!-- 6- Then Publish (but not for PR)-->
   <Target Name="Publish" DependsOnTargets="Package">
     <PropertyGroup>
       <PackageFileName>$(PackagesPath)\$(SolutionName).$(PrettyVersion).nupkg</PackageFileName>
