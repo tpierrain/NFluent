@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Version.cs" company="">
 //   Copyright 2013 Thomas PIERRAIN
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,7 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("2.1.1.0")]
 [assembly: AssemblyFileVersion("2.1.1.0")]
-[assembly: AssemblyInformationalVersion("2.1.1-beta")]
+[assembly: AssemblyInformationalVersion("2.1.1-alpha-0000")]
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information

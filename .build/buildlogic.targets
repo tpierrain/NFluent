@@ -97,11 +97,22 @@
       <AssemblyVersionPreRelease>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["PreReleaseInfo"].Value)</AssemblyVersionPreRelease>
       <NumericalVersion>$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)</NumericalVersion>
     </PropertyGroup>
-
     <VersionBuilding version ="$(NumericalVersion)" stream="$(PackageStream)">
       <Output PropertyName="PrettyVersion" TaskParameter="fullVersion" />
     </VersionBuilding>
     <Message Importance="high" Text="Pretty Version= $(PrettyVersion)" />
+
+    <ItemGroup>
+      <RegexTransform Include="$(AttributeVersionFile)">
+        <Find>(?&lt;major&gt;\d+)\.(?&lt;minor&gt;\d+)\.\d+\.(?&lt;revision&gt;\d+)</Find>
+        <ReplaceWith>$(NumericalVersion)</ReplaceWith>
+      </RegexTransform>
+      <RegexTransform Include="$(AttributeVersionFile)">
+        <Find>InformationalVersion\("(?&lt;major&gt;\d+)\.(?&lt;minor&gt;\d+)\.\d+[\.-](?&lt;revision&gt;[^)"]*)</Find>
+        <ReplaceWith>InformationalVersion("$(PrettyVersion)</ReplaceWith>
+      </RegexTransform>
+    </ItemGroup>
+    <RegexTransform Items="@(RegexTransform)" />
 
     <ItemGroup>
       <CSProjToPatch Include="@(ProjectFolder)" Condition="'%(ProjectFolder.Fwk)'=='core'">
