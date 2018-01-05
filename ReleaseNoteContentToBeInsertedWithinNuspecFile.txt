@@ -1,11 +1,7 @@
-V 2.2.0
----------------
-New feature(s):
-*
-
+V 2.1.1
 ---------------
 Bug fix(es):
-* fix issue #215
+* fix issue #215: null reference exception triggered by HasFields... on null interface fields.
 
 
 V 2.1.0
