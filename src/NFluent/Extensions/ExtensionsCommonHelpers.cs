@@ -304,7 +304,7 @@ namespace NFluent.Extensions
             
             // info cannot be null as ALL .Net types inherits Equals from System.Object
             // ReSharper disable once PossibleNullReferenceException
-            return info.DeclaringType == type;
+            return info!=null && info.DeclaringType == type;
         }
 
         /// <summary>

@@ -13,6 +13,32 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        #region issue #215
+        public class MyClass
+        {
+            public ISubClass SubClass { get; set; }
+        }
+
+        public interface ISubClass
+        {
+            int MyProperty { get; set; }
+        }
+
+        public class SubClass : ISubClass
+        {
+            public int MyProperty { get; set; }
+        }
+
+        [Test]
+        public void Test()
+        {
+            var first = new MyClass();
+            var second = new MyClass();
+
+            Check.That(first).HasFieldsWithSameValues(second);
+        }
+        #endregion 
+
         [Test]
         public void should_recognize_autoproperty_readonly_values()
         {

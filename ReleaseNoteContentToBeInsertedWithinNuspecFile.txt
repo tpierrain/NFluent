@@ -5,6 +5,7 @@ New feature(s):
 
 ---------------
 Bug fix(es):
+* fix issue #215
 
 
 V 2.1.0

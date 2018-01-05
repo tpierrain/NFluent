@@ -362,6 +362,13 @@ namespace NFluent
             expectedValue.SetFieldValue(expected);
             var actualValue = new ExtendedFieldInfo(string.Empty, value?.GetType() ?? typeof(T), string.Empty);
             actualValue.SetFieldValue(value);
+
+            return CompareFields(checker, negated, flags, expectedValue, actualValue);
+        }
+
+        private static string CompareFields<T>(IChecker<T, ICheck<T>> checker, bool negated, BindingFlags flags,
+            ExtendedFieldInfo expectedValue, ExtendedFieldInfo actualValue)
+        {
             var analysis = new List<FieldMatch>();
             CompareValue(expectedValue, actualValue, analysis, new List<object>(), 1, flags);
 
@@ -460,7 +467,7 @@ namespace NFluent
             }
         }
 
-        private class ExtendedFieldInfo
+        internal class ExtendedFieldInfo
         {
             private readonly Type type;
             private readonly FieldKind kind;

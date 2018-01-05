@@ -179,6 +179,7 @@
             var numbers = new List<int>(new[] { 1, 2, 3 });
             Check.That(numbers).HasFieldsWithSameValues(new { _size = 3 }).And.Contains(2);
         }
+
 #pragma warning disable 618
         [Test]
         public void HasFieldsEqualToThoseIsObsoleteButWorksAgainstAnonymousClass()
@@ -187,6 +188,7 @@
             Check.That(x).HasFieldsEqualToThose(new { x = 2, y = 3});
         }
 #pragma warning restore 618
+
         [Test]
         public void HasFieldsEqualWorksAgainstAnonymousClassAndAutoProperties()
         {
