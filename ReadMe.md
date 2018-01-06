@@ -8,7 +8,7 @@
 
 **PreReleases**    [![NuGet Pre Release](https://img.shields.io/nuget/vpre/NFluent.svg)]()
 
-**Beta**    [![MyGet](https://img.shields.io/myget/dupdobnightly/vpre/NFluent.svg)](https://www.myget.org/feed/dupdobnightly/package/nuget/NFluent)
+**Beta**    [![MyGet](https://img.shields.io/myget/dupdobnightly/vpre/NFluent.svg)](https://www.myget.org/feed/dupdobnightly/package/nuget/NFluent) [![MyGet](https://img.shields.io/myget/dupdobnightly/dt/NFluent.svg)](https://www.myget.org/feed/dupdobnightly/package/nuget/NFluent)
 
 **Issues**
 
