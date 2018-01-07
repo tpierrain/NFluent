@@ -26,9 +26,7 @@ namespace NFluent
     using System.Text.RegularExpressions;
 
     using Extensibility;
-
     using Extensions;
-
     using Helpers;
 
     /// <summary>
@@ -180,15 +178,14 @@ namespace NFluent
         }
 
         private static IEnumerable<FieldMatch> ScanFields(
-            object actualValue,
-            Type actualType,
-            object expected,
-            Type expectedType,
+            ExtendedFieldInfo actual,
+            ExtendedFieldInfo expected,
             IList<object> scanned,
             int depth, BindingFlags flags,
             string prefix = null)
         {
             var result = new List<FieldMatch>();
+            var expectedType = expected.GetValueType();
 
             for (; expectedType != null; expectedType = expectedType.GetBaseType())
             {
@@ -200,12 +197,12 @@ namespace NFluent
 
                 foreach (var fieldInfo in fieldInfos)
                 {
-                    var expectedFieldValue = fieldInfo.GetValue(expected);
+                    var expectedFieldValue = fieldInfo.GetValue(expected.Value);
                     var expectedFieldDescription = new ExtendedFieldInfo(
                         prefix,
                         expectedFieldValue?.GetType() ?? fieldInfo.FieldType,
                         fieldInfo.Name);
-                    var actualFieldMatching = FindFieldInType(actualType, expectedFieldDescription.NameInSource, flags);
+                    var actualFieldMatching = FindFieldInType(actual.GetValueType(), expectedFieldDescription.NameInSource, flags);
 
                     expectedFieldDescription.SetFieldValue(expectedFieldValue);
 
@@ -216,7 +213,7 @@ namespace NFluent
                         continue;
                     }
 
-                    var fieldActualValue = actualFieldMatching.GetValue(actualValue);
+                    var fieldActualValue = actualFieldMatching.GetValue(actual.Value);
                     var actualFieldDescription = new ExtendedFieldInfo(
                         prefix,
                         fieldActualValue?.GetType() ?? actualFieldMatching.FieldType,
@@ -292,10 +289,8 @@ namespace NFluent
                 {
                     result.AddRange(
                         ScanFields(
-                            actualFieldDescription.Value,
-                            actualFieldDescription.GetValueType(),
-                            expectedFieldDescription.Value,
-                            expectedFieldDescription.GetValueType(),
+                            actualFieldDescription,
+                            expectedFieldDescription,
                             scanned,
                             depth - 1, flags,
                             expectedFieldDescription.LongFieldName));
