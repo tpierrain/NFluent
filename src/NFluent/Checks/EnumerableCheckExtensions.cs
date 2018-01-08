@@ -460,6 +460,20 @@ namespace NFluent
         }
 
         /// <summary>
+        ///     Checks that the enumerable has the proper number of elements.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expectedCount">The expected count to be found.</param>
+        /// <returns>
+        ///     A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The enumerable has not the expected number of elements.</exception>
+        public static ICheckLink<ICheck<IEnumerable>> CountIs(this ICheck<IEnumerable> check, long expectedCount)
+        {
+            return HasSize(check, expectedCount);
+        }
+
+        /// <summary>
         ///     Checks that the enumerable is empty.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>

@@ -40,6 +40,15 @@ namespace NFluent.Tests
         }
 
         [Test]
+        // issue #121
+        public void CountIsWorksWithArray()
+        {
+            var array = new[] { 45, 43, 54, 666 };
+
+            Check.That(array).CountIs(4);
+        }
+
+        [Test]
         public void HasSizeGivesTheNumberOfElementsAndNotTheCapacity()
         {
             var enumerable = new List<string>(500);
