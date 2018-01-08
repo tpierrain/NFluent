@@ -33,11 +33,11 @@
     </When>
   </Choose>
 
-  <Target Name="RunAll" DependsOnTargets="Build; RunTests; Package" />
-  <Target Name="CI" DependsOnTargets="RunAll; CoverageReport" />
-  <Target Name="Push" DependsOnTargets="CI; Publish"/>
+  <Target Name="RunAll" DependsOnTargets="Build; RunTests; CoverageReport; Package" />
+  <Target Name="CI" DependsOnTargets="Build; CoverageReport; Package;" />
+  <Target Name="Push" DependsOnTargets="RunAll; Publish"/>
   <Target Name="Beta" DependsOnTargets="SetBeta; Push" />
-  <Target Name="Nightly" DependsOnTargets="SetNightly; Push"/>
+  <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll"/>
   <Target Name="Alpha" DependsOnTargets="SetAlpha; Push"/>
   <Target Name="RC" DependsOnTargets="SetRC; RunAll; Push"/>
   <Target Name="Release" DependsOnTargets="SetRelease; Push"/>
@@ -187,8 +187,9 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
     <Message Importance="high" Text="--------- end of BUILD  -------------------------------------"/>
   </Target>
     
+
   <!-- 3- Run the TESTS -->
-  <Target Name="RunTests" DependsOnTargets="Build">
+  <Target Name="ListTestProjects">
     <ItemGroup>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Runner)'==''">
         <Runner>"$(TestRunnerPath)"</Runner>
@@ -209,7 +210,11 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
         <Runner>"%(TestProjects.Identity)"</Runner>
         <Args></Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
-      </TestRun>    </ItemGroup>
+      </TestRun>
+      </ItemGroup>
+  </Target>
+
+  <Target Name="RunTests" DependsOnTargets="Build; ListTestProjects">
 
     <Message Importance="high" Text="
 ---------------------------------------------------------------
@@ -229,7 +234,7 @@ RUN ALL UNIT TESTS
   </Target>
 
   <!-- 4- Tests coverage -->
-  <Target Name="Coverage">
+  <Target Name="Coverage" DependsOnTargets="ListTestProjects">
     <Message Importance="high" Text="--------- Coverage ---------"/>
     <PropertyGroup>
       <CoverToolPath>$(NuGetToolsPath)\OpenCover.$(opencoverVersion)\tools</CoverToolPath>
@@ -242,7 +247,21 @@ RUN ALL UNIT TESTS
   </Target>
   
   <!-- 5- Tests coverage report-->
-  <Target Name="CoverageReport" DependsOnTargets="Coverage">
+  <Target Name="CheckCoverage" DependsOnTargets="">
+    <!--Scan result for partial coverage-->
+    <XmlPeek XmlInputPath='$(SolutionRoot)\$(SolutionName)-coverage.xml'
+             Query="//Class[Summary/@sequenceCoverage&lt;100 and Summary/@numSequencePoints>0]/FullName/text()">
+      <Output TaskParameter="Result" ItemName="Peeked" />
+    </XmlPeek>
+    <XmlPeek XmlInputPath='$(SolutionRoot)\$(SolutionName)-coverage.xml'
+             Query="//Class[Summary/@branchCoverage&lt;100 and Summary/@numBranchPoints>0]/FullName/text()">
+      <Output TaskParameter="Result" ItemName="BranchPeeked" />
+    </XmlPeek>
+    <Warning Text="Insufficient line coverage on @(Peeked) "/>
+    <Warning Text="Insufficient branch coverage on @(BranchPeeked) "/>
+  </Target>
+
+  <Target Name="CoverageReport" DependsOnTargets="Coverage;CheckCoverage">
     <PropertyGroup>
       <CoverReportToolPath>$(NuGetToolsPath)\ReportGenerator.$(reportGeneratorVersion)\tools</CoverReportToolPath>
     </PropertyGroup>
