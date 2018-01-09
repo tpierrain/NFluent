@@ -164,12 +164,12 @@ namespace NFluent
         /// <param name="check"></param>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        public static  ICheck<ExtendedFieldInfo> Considering<T>(this ICheck<T> check, Criteria criteria)
+        public static  ICheck<ReflectionWrapper> Considering<T>(this ICheck<T> check, Criteria criteria)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var fieldsWrapper = new ExtendedFieldInfo(string.Empty, typeof(T), string.Empty);
+            var fieldsWrapper = new ReflectionWrapper(string.Empty, typeof(T), string.Empty);
             fieldsWrapper.SetFieldValue(checker.Value);
-            return new FluentCheck<ExtendedFieldInfo>(fieldsWrapper);
+            return new FluentCheck<ReflectionWrapper>(fieldsWrapper);
         }
 
         /// <summary>
@@ -178,11 +178,11 @@ namespace NFluent
         /// <param name="check"></param>
         /// <param name="expected"></param>
         /// <returns></returns>
-        public static ICheckLink<ICheck<ExtendedFieldInfo>> IsEqualTo<TU>(this ICheck<ExtendedFieldInfo> check,
+        public static ICheckLink<ICheck<ReflectionWrapper>> IsEqualTo<TU>(this ICheck<ReflectionWrapper> check,
             TU expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var expectedWrapper = new ExtendedFieldInfo(string.Empty, typeof(TU), string.Empty);
+            var expectedWrapper = new ReflectionWrapper(string.Empty, typeof(TU), string.Empty);
             expectedWrapper.SetFieldValue(expected);
 
             CompareFields(checker, false, FlagsForFields, expectedWrapper, checker.Value);
@@ -224,16 +224,16 @@ namespace NFluent
             bool negated,
             BindingFlags flags)
         {
-            var expectedValue = new ExtendedFieldInfo(string.Empty, expected?.GetType() ?? typeof(TU), string.Empty);
+            var expectedValue = new ReflectionWrapper(string.Empty, expected?.GetType() ?? typeof(TU), string.Empty);
             expectedValue.SetFieldValue(expected);
-            var actualValue = new ExtendedFieldInfo(string.Empty, value?.GetType() ?? typeof(T), string.Empty);
+            var actualValue = new ReflectionWrapper(string.Empty, value?.GetType() ?? typeof(T), string.Empty);
             actualValue.SetFieldValue(value);
 
             return CompareFields(checker, negated, flags, expectedValue, actualValue);
         }
 
         private static string CompareFields<T>(IChecker<T, ICheck<T>> checker, bool negated, BindingFlags flags,
-            ExtendedFieldInfo expectedValue, ExtendedFieldInfo actualValue)
+            ReflectionWrapper expectedValue, ReflectionWrapper actualValue)
         {
             var analysis = expectedValue.CompareValue(actualValue, new List<object>(), 1, flags);
 

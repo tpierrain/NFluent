@@ -20,9 +20,9 @@ namespace NFluent.Helpers
 
     internal class FieldMatch
     {
-        private readonly ExtendedFieldInfo actual;
+        private readonly ReflectionWrapper actual;
 
-        public FieldMatch(ExtendedFieldInfo expected, ExtendedFieldInfo actual)
+        public FieldMatch(ReflectionWrapper expected, ReflectionWrapper actual)
         {
             this.actual = actual;
             this.Expected = expected;
@@ -37,7 +37,7 @@ namespace NFluent.Helpers
             }
         }
 
-        private ExtendedFieldInfo Expected { get; }
+        private ReflectionWrapper Expected { get; }
 
         /// <summary>
         ///     Gets a actualValue indicating whether the expected field has been found.
