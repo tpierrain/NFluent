@@ -23,7 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Checks\EnumerableFluentSyntaxExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\EventWaitHandleCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\FieldMatch.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExtendedFieldInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ReflectionWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\IntCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\IntSignedCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\LambdaExceptionCheck.cs" />

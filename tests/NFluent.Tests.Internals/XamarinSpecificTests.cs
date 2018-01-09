@@ -25,7 +25,7 @@ namespace NFluent.Tests.Internals
         [Test]
         public void MonoNamingConventionTests()
         {
-            var name = ExtendedFieldInfo.ExtractFieldNameAsInSourceCode("<autofield>");
+            var name = ReflectionWrapper.ExtractFieldNameAsInSourceCode("<autofield>");
             Check.That(name).IsEqualTo("autofield");
         }
     }

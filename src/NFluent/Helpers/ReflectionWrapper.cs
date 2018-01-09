@@ -29,12 +29,12 @@ namespace NFluent.Helpers
     /// <summary>
     /// 
     /// </summary>
-    public class ExtendedFieldInfo
+    public class ReflectionWrapper
     {
         private readonly string nameInSource;
         private readonly string prefix;
 
-        internal ExtendedFieldInfo(string prefix, Type type, string infoName)
+        internal ReflectionWrapper(string prefix, Type type, string infoName)
         {
             this.prefix = prefix;
             this.ValueType = type;
@@ -78,7 +78,7 @@ namespace NFluent.Helpers
         }
 
         internal List<FieldMatch> CompareValue(
-            ExtendedFieldInfo actualFieldDescription,
+            ReflectionWrapper actualFieldDescription,
             IList<object> scanned,
             int depth, BindingFlags flags)
         {
@@ -129,7 +129,7 @@ namespace NFluent.Helpers
             return result;
         }
 
-        private IEnumerable<FieldMatch> ScanFields(ExtendedFieldInfo actual, IList<object> scanned, int depth, BindingFlags flags)
+        private IEnumerable<FieldMatch> ScanFields(ReflectionWrapper actual, IList<object> scanned, int depth, BindingFlags flags)
         {
             var result = new List<FieldMatch>();
 
@@ -150,9 +150,9 @@ namespace NFluent.Helpers
             return result;
         }
 
-        private IEnumerable<ExtendedFieldInfo> GetSubExtendedFieldInfosFields(BindingFlags flags)
+        private IEnumerable<ReflectionWrapper> GetSubExtendedFieldInfosFields(BindingFlags flags)
         {
-            var result = new List<ExtendedFieldInfo>();
+            var result = new List<ReflectionWrapper>();
             if (this.IsArray)
             {
                 var array = (Array) this.Value;
@@ -160,7 +160,7 @@ namespace NFluent.Helpers
                 for (var i = 0; i < array.Length; i++)
                 {
                     var prefixWithIndex = $"[{i}]";
-                    var expectedEntryDescription = new ExtendedFieldInfo(
+                    var expectedEntryDescription = new ReflectionWrapper(
                         this.LongFieldName,
                         fieldType,
                         prefixWithIndex);
@@ -178,7 +178,7 @@ namespace NFluent.Helpers
                     foreach (var info in fieldsInfo)
                     {
                         var expectedValue = info.GetValue(this.Value);
-                        var extended = new ExtendedFieldInfo(this.LongFieldName,
+                        var extended = new ReflectionWrapper(this.LongFieldName,
                             expectedValue?.GetType() ?? info.FieldType,
                             info.Name);
                         extended.SetFieldValue(expectedValue);
@@ -189,7 +189,7 @@ namespace NFluent.Helpers
             return result;
         }
 
-        private ExtendedFieldInfo FindField(ExtendedFieldInfo other, BindingFlags flags)
+        private ReflectionWrapper FindField(ReflectionWrapper other, BindingFlags flags)
         {
             var fields = this.GetSubExtendedFieldInfosFields(flags);
             foreach (var info in fields)
@@ -216,7 +216,7 @@ namespace NFluent.Helpers
         /// <summary>
         ///     Initializes static members of the <see cref="ObjectFieldsCheckExtensions" /> class.
         /// </summary>
-        static ExtendedFieldInfo()
+        static ReflectionWrapper()
         {
             AutoPropertyMask = new Regex("^<(.*)>k_");
             AnonymousTypeFieldMask = new Regex("^<(.*)>(i_|\\z)");
