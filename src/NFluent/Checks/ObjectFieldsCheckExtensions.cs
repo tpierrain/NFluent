@@ -28,6 +28,44 @@ namespace NFluent
     using Kernel;
 
     /// <summary>
+    /// 
+    /// </summary>
+    public class Criteria
+    {
+        internal Criteria(BindingFlags bindingFlags)
+        {
+            this.BindingFlags = bindingFlags;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public BindingFlags BindingFlags { get;}
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static class Private
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Criteria Fields { get; } = new Criteria(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class Public
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Criteria Fields { get; } = new Criteria(BindingFlags.Instance | BindingFlags.Public);
+    }
+
+    /// <summary>
     ///     Provides check methods to be executed on an object instance.
     /// </summary>
     public static class ObjectFieldsCheckExtensions
@@ -167,7 +205,7 @@ namespace NFluent
         public static  ICheck<ReflectionWrapper> Considering<T>(this ICheck<T> check, Criteria criteria)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var fieldsWrapper = new ReflectionWrapper(string.Empty, typeof(T), string.Empty);
+            var fieldsWrapper = new ReflectionWrapper(typeof(T), criteria.BindingFlags);
             fieldsWrapper.SetFieldValue(checker.Value);
             return new FluentCheck<ReflectionWrapper>(fieldsWrapper);
         }
@@ -182,39 +220,16 @@ namespace NFluent
             TU expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var expectedWrapper = new ReflectionWrapper(string.Empty, typeof(TU), string.Empty);
+            var expectedWrapper = new ReflectionWrapper(typeof(TU), checker.Value.Flags);
             expectedWrapper.SetFieldValue(expected);
 
-            CompareFields(checker, false, FlagsForFields, expectedWrapper, checker.Value);
+            var message = CompareFields(checker, false, expectedWrapper, checker.Value);
+            if (message != null)
+            {
+                throw new FluentCheckException(message);
+            }
+
             return checker.BuildChainingObject();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public class Criteria
-        {}
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public class Private
-        {
-            /// <summary>
-            /// 
-            /// </summary>
-            public static Criteria Fields { get; private set; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static class Public
-        {
-            /// <summary>
-            /// 
-            /// </summary>
-            public static Criteria Fields { get; private set; }
         }
 
         private static string CheckFieldEquality<T, TU>(
@@ -224,18 +239,18 @@ namespace NFluent
             bool negated,
             BindingFlags flags)
         {
-            var expectedValue = new ReflectionWrapper(string.Empty, expected?.GetType() ?? typeof(TU), string.Empty);
+            var expectedValue = new ReflectionWrapper(expected?.GetType() ?? typeof(TU), flags);
             expectedValue.SetFieldValue(expected);
-            var actualValue = new ReflectionWrapper(string.Empty, value?.GetType() ?? typeof(T), string.Empty);
+            var actualValue = new ReflectionWrapper(value?.GetType() ?? typeof(T), flags);
             actualValue.SetFieldValue(value);
 
-            return CompareFields(checker, negated, flags, expectedValue, actualValue);
+            return CompareFields(checker, negated, expectedValue, actualValue);
         }
 
-        private static string CompareFields<T>(IChecker<T, ICheck<T>> checker, bool negated, BindingFlags flags,
+        private static string CompareFields<T>(IChecker<T, ICheck<T>> checker, bool negated,
             ReflectionWrapper expectedValue, ReflectionWrapper actualValue)
         {
-            var analysis = expectedValue.CompareValue(actualValue, new List<object>(), 1, flags);
+            var analysis = expectedValue.CompareValue(actualValue, new List<object>(), 1);
 
             foreach (var fieldMatch in analysis)
             {

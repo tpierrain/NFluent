@@ -33,10 +33,16 @@ namespace NFluent.Helpers
     {
         private readonly string nameInSource;
         private readonly string prefix;
+        private readonly BindingFlags flags;
 
-        internal ReflectionWrapper(string prefix, Type type, string infoName)
+        internal ReflectionWrapper(Type type, BindingFlags flags) : this(string.Empty, type, string.Empty, flags)
+        {
+        }
+
+        private ReflectionWrapper(string prefix, Type type, string infoName, BindingFlags flags)
         {
             this.prefix = prefix;
+            this.flags = flags;
             this.ValueType = type;
             if (EvaluateCriteria(AutoPropertyMask, infoName, out this.nameInSource))
             {
@@ -57,9 +63,9 @@ namespace NFluent.Helpers
             ? this.nameInSource
             : $"{this.prefix}.{this.nameInSource}";
 
-        internal string FieldLabel { get; private set; }
+        internal BindingFlags Flags => this.flags;
 
-        internal string NameInSource => this.nameInSource;
+        internal string FieldLabel { get; private set; }
 
         internal object Value { get; private set; }
 
@@ -80,7 +86,7 @@ namespace NFluent.Helpers
         internal List<FieldMatch> CompareValue(
             ReflectionWrapper actualFieldDescription,
             IList<object> scanned,
-            int depth, BindingFlags flags)
+            int depth)
         {
             var result = new List<FieldMatch>();
             if (this.Value != null && scanned.Contains(this.Value))
@@ -113,7 +119,7 @@ namespace NFluent.Helpers
                             this.ScanFields(
                                 actualFieldDescription,
                                 scanned,
-                                depth - 1, flags));
+                                depth - 1));
                     }
                 }
                 else
@@ -122,14 +128,14 @@ namespace NFluent.Helpers
                         this.ScanFields(
                             actualFieldDescription,
                             scanned,
-                            depth - 1, flags));
+                            depth - 1));
                 }
             }
 
             return result;
         }
 
-        private IEnumerable<FieldMatch> ScanFields(ReflectionWrapper actual, IList<object> scanned, int depth, BindingFlags flags)
+        private IEnumerable<FieldMatch> ScanFields(ReflectionWrapper actual, IList<object> scanned, int depth)
         {
             var result = new List<FieldMatch>();
 
@@ -144,7 +150,7 @@ namespace NFluent.Helpers
                     continue;
                 }
 
-                result.AddRange(fieldInfo.CompareValue(actualFieldMatching, scanned, depth - 1, flags));
+                result.AddRange(fieldInfo.CompareValue(actualFieldMatching, scanned, depth - 1));
             }
 
             return result;
@@ -163,7 +169,8 @@ namespace NFluent.Helpers
                     var expectedEntryDescription = new ReflectionWrapper(
                         this.LongFieldName,
                         fieldType,
-                        prefixWithIndex);
+                        prefixWithIndex,
+                        flags);
                     expectedEntryDescription.SetFieldValue(array.GetValue(i));
                     result.Add(expectedEntryDescription);
                 }
@@ -180,7 +187,8 @@ namespace NFluent.Helpers
                         var expectedValue = info.GetValue(this.Value);
                         var extended = new ReflectionWrapper(this.LongFieldName,
                             expectedValue?.GetType() ?? info.FieldType,
-                            info.Name);
+                            info.Name, 
+                            flags);
                         extended.SetFieldValue(expectedValue);
                         result.Add(extended);
                     }

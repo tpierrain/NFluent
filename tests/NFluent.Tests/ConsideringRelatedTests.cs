@@ -13,20 +13,33 @@ namespace NFluent.Tests
         public void ShouldWorkForFields()
         {
             var sut = new SutClass(2, 42);
-
-            Check.That(sut).Considering(ObjectFieldsCheckExtensions.Private.Fields).IsEqualTo(new SutClass(2, 42));
+            
+            Check.That(sut).Considering(Public.Fields).IsEqualTo(new SutClass(2, 42));
+            Check.ThatCode(()=>
+            Check.That(sut).Considering(Private.Fields).IsEqualTo(new SutClass(2, 42))).Throws<FluentCheckException>();
         }
 
         private class SutClass
         {
+            private static int autoInc = 0;
+            
             public int TheField;
 
-            public int TheProperty {get; set;}
+            private int theProperty;
+
+            public int TheProperty
+            {
+                get { return this.theProperty; }
+                set { this.theProperty = value; }
+            }
+
+            private int toto;
 
             public SutClass(int theField, int theProperty)
             {
                 TheField = theField;
                 TheProperty = theProperty;
+                this.toto = autoInc++;
             }
         }
     }
