@@ -16,6 +16,7 @@
 // ReSharper disable once CheckNamespace
 namespace NFluent.Tests.Internals
 {
+    using Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -24,11 +25,8 @@ namespace NFluent.Tests.Internals
         [Test]
         public void MonoNamingConventionTests()
         {
-            FieldKind result;
-            var name = ObjectFieldsCheckExtensions.ExtractFieldNameAsInSourceCode("<autofield>", out result);
+            var name = ExtendedFieldInfo.ExtractFieldNameAsInSourceCode("<autofield>");
             Check.That(name).IsEqualTo("autofield");
-
-            Check.That(result).IsEqualTo(FieldKind.AnonymousClass);
         }
     }
 }
