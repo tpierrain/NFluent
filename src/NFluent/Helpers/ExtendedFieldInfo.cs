@@ -26,12 +26,15 @@ namespace NFluent.Helpers
     using Extensions;
     using static System.String;
 
-    internal class ExtendedFieldInfo
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ExtendedFieldInfo
     {
         private readonly string nameInSource;
         private readonly string prefix;
 
-        public ExtendedFieldInfo(string prefix, Type type, string infoName)
+        internal ExtendedFieldInfo(string prefix, Type type, string infoName)
         {
             this.prefix = prefix;
             this.ValueType = type;
@@ -50,26 +53,26 @@ namespace NFluent.Helpers
             }
         }
 
-        public string LongFieldName => IsNullOrEmpty(this.prefix)
+        internal string LongFieldName => IsNullOrEmpty(this.prefix)
             ? this.nameInSource
             : $"{this.prefix}.{this.nameInSource}";
 
-        public string FieldLabel { get; private set; }
+        internal string FieldLabel { get; private set; }
 
-        public string NameInSource => this.nameInSource;
+        internal string NameInSource => this.nameInSource;
 
-        public object Value { get; private set; }
+        internal object Value { get; private set; }
 
-        public Type ValueType { get; private set; }
+        internal Type ValueType { get; private set; }
 
-        public bool IsArray => this.ValueType.IsArray;
+        internal bool IsArray => this.ValueType.IsArray;
 
-        public void SetFieldValue(object obj)
+        internal void SetFieldValue(object obj)
         {
             this.Value = obj;
         }
 
-        public bool ChecksIfImplementsEqual()
+        internal bool ChecksIfImplementsEqual()
         {
             return this.ValueType.ImplementsEquals();
         }

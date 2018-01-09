@@ -17,10 +17,6 @@
 
 #endregion
 
-namespace NFluent.Helpers
-{
-}
-
 namespace NFluent
 {
     using System;
@@ -29,6 +25,7 @@ namespace NFluent
     using System.Reflection;
     using Extensibility;
     using Helpers;
+    using Kernel;
 
     /// <summary>
     ///     Provides check methods to be executed on an object instance.
@@ -158,6 +155,66 @@ namespace NFluent
             }
 
             return checker.BuildChainingObject();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="check"></param>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
+        public static  ICheck<ExtendedFieldInfo> Considering<T>(this ICheck<T> check, Criteria criteria)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            var fieldsWrapper = new ExtendedFieldInfo(string.Empty, typeof(T), string.Empty);
+            fieldsWrapper.SetFieldValue(checker.Value);
+            return new FluentCheck<ExtendedFieldInfo>(fieldsWrapper);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="check"></param>
+        /// <param name="expected"></param>
+        /// <returns></returns>
+        public static ICheckLink<ICheck<ExtendedFieldInfo>> IsEqualTo<TU>(this ICheck<ExtendedFieldInfo> check,
+            TU expected)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            var expectedWrapper = new ExtendedFieldInfo(string.Empty, typeof(TU), string.Empty);
+            expectedWrapper.SetFieldValue(expected);
+
+            CompareFields(checker, false, FlagsForFields, expectedWrapper, checker.Value);
+            return checker.BuildChainingObject();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public class Criteria
+        {}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public class Private
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public static Criteria Fields { get; private set; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static class Public
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public static Criteria Fields { get; private set; }
         }
 
         private static string CheckFieldEquality<T, TU>(

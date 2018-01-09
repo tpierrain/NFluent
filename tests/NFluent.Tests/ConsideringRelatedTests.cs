@@ -14,7 +14,7 @@ namespace NFluent.Tests
         {
             var sut = new SutClass(2, 42);
 
-//            Check.That(sut).Considering(Private.Fields).IsEqualTo(new SutClass(2, 42));
+            Check.That(sut).Considering(ObjectFieldsCheckExtensions.Private.Fields).IsEqualTo(new SutClass(2, 42));
         }
 
         private class SutClass
@@ -31,25 +31,4 @@ namespace NFluent.Tests
         }
     }
 
-    public static class Temp
-    {
-        public static  ICheck<T> Considering<T>(this ICheck<T> checker, Criteria criteria)
-        {
-            return checker;
-        }
-    }
-
-    public class Criteria
-    {}
-
-    public class Private
-    {
-        public static Criteria Fields { get; private set; }
-    }
-
-    public static class Public
-
-    {
-        public static Criteria Fields { get; private set; }
-    }
 }
