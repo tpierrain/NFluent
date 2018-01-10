@@ -18,11 +18,11 @@ namespace NFluent.Helpers
     using Extensibility;
     using Extensions;
 
-    internal class FieldMatch
+    internal class MemberMatch
     {
         private readonly ReflectionWrapper actual;
 
-        public FieldMatch(ReflectionWrapper expected, ReflectionWrapper actual)
+        public MemberMatch(ReflectionWrapper expected, ReflectionWrapper actual)
         {
             this.actual = actual;
             this.Expected = expected;
@@ -55,7 +55,7 @@ namespace NFluent.Helpers
             if (negated)
             {
                 result = checker.BuildShortMessage(
-                        $"The {{0}}'s {this.Expected.FieldLabel.DoubleCurlyBraces()} has the same value in the comparand, whereas it must not.")
+                        $"The {{0}}'s {this.Expected.MemberLabel.DoubleCurlyBraces()} has the same value in the comparand, whereas it must not.")
                     .For("value");
                 EqualityHelper.FillEqualityErrorMessage(
                     result,
@@ -67,14 +67,14 @@ namespace NFluent.Helpers
             else if (!this.ExpectedFieldFound)
             {
                 result = checker.BuildShortMessage(
-                        $"The {{0}}'s {this.Expected.FieldLabel.DoubleCurlyBraces()} is absent from the {{1}}.")
+                        $"The {{0}}'s {this.Expected.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.")
                     .For("value");
                 result.Expected(this.Expected.Value);
             }
             else
             {
                 result = checker.BuildShortMessage(
-                        $"The {{0}}'s {this.Expected.FieldLabel.DoubleCurlyBraces()} does not have the expected value.")
+                        $"The {{0}}'s {this.Expected.MemberLabel.DoubleCurlyBraces()} does not have the expected value.")
                     .For("value");
                 EqualityHelper.FillEqualityErrorMessage(
                     result,
