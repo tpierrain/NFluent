@@ -26,10 +26,9 @@ namespace NFluent.Tests.Internals
         [Test]
         public void MonoNamingConventionTests()
         {
-            
-            var name = new ReflectionWrapper(string.Empty, typeof(int), "<autofield>", BindingFlags.Instance|BindingFlags.Public);
-                //ReflectionWrapper.ExtractFieldNameAsInSourceCode("<autofield>");
-            Check.That(name.LongFieldName).IsEqualTo("autofield");
+            // check that mono naming strategy is recognized
+            var name = new ReflectionWrapper(string.Empty, typeof(int), "<autofield>", Private.Fields);
+            Check.That(name.MemberLongName).IsEqualTo("autofield");
         }
     }
 }

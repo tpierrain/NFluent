@@ -27,44 +27,43 @@ namespace NFluent.Helpers
     using static System.String;
 
     /// <summary>
-    /// 
+    /// This class wraps instances for reflection based checks (in NFluent).
     /// </summary>
     public class ReflectionWrapper
     {
         private readonly string nameInSource;
         private readonly string prefix;
 
-        internal ReflectionWrapper(Type type, BindingFlags flags) : this(Empty, type, Empty, flags)
-        {
-        }
+        internal ReflectionWrapper(Type type, Criteria criteria) : this(Empty, type, Empty, criteria)
+        {}
 
-        internal ReflectionWrapper(string prefix, Type type, string infoName, BindingFlags flags)
+        internal ReflectionWrapper(string prefix, Type type, string infoName, Criteria criteria)
         {
             this.prefix = prefix;
-            this.Flags = flags;
+            this.Criteria = criteria;
             this.ValueType = type;
             if (EvaluateCriteria(AutoPropertyMask, infoName, out this.nameInSource))
             {
-                this.FieldLabel = $"autoproperty '{this.LongFieldName}' (field '{infoName}')";
+                this.MemberLabel = $"autoproperty '{this.MemberLongName}' (field '{infoName}')";
             }
             else if (EvaluateCriteria(AnonymousTypeFieldMask, infoName, out this.nameInSource))
             {
-                this.FieldLabel = $"field '{this.LongFieldName}'";
+                this.MemberLabel = $"field '{this.MemberLongName}'";
             }
             else
             {
                 this.nameInSource = infoName;
-                this.FieldLabel = $"field '{this.LongFieldName}'";
+                this.MemberLabel = $"field '{this.MemberLongName}'";
             }
         }
 
-        internal string LongFieldName => IsNullOrEmpty(this.prefix)
+        internal string MemberLongName => IsNullOrEmpty(this.prefix)
             ? this.nameInSource
             : $"{this.prefix}.{this.nameInSource}";
 
-        internal BindingFlags Flags { get; }
+        internal Criteria Criteria { get; }
 
-        internal string FieldLabel { get; }
+        internal string MemberLabel { get; }
 
         internal object Value { get; private set; }
 
@@ -72,7 +71,7 @@ namespace NFluent.Helpers
 
         internal bool IsArray => this.ValueType.IsArray;
 
-        internal void SetFieldValue(object obj)
+        internal void SetValue(object obj)
         {
             this.Value = obj;
         }
@@ -82,12 +81,12 @@ namespace NFluent.Helpers
             return this.ValueType.ImplementsEquals();
         }
 
-        internal List<FieldMatch> CompareValue(
+        internal List<MemberMatch> CompareValue(
             ReflectionWrapper actualFieldDescription,
             IList<object> scanned,
             int depth)
         {
-            var result = new List<FieldMatch>();
+            var result = new List<MemberMatch>();
             if (this.Value != null && scanned.Contains(this.Value))
             {
                 return result;
@@ -95,14 +94,14 @@ namespace NFluent.Helpers
 
             if (depth <= 0 && this.ChecksIfImplementsEqual())
             {
-                result.Add(new FieldMatch(this, actualFieldDescription));
+                result.Add(new MemberMatch(this, actualFieldDescription));
             }
             else
             {
                 scanned.Add(this.Value);
                 if (this.Value == null || actualFieldDescription.Value == null)
                 {
-                    result.Add(new FieldMatch(this, actualFieldDescription));
+                    result.Add(new MemberMatch(this, actualFieldDescription));
                 }
                 else if (this.IsArray)
                 {
@@ -110,7 +109,7 @@ namespace NFluent.Helpers
                     var actualArray = (Array) actualFieldDescription.Value;
                     if (actualArray.Length != array.Length)
                     {
-                        result.Add(new FieldMatch(this, actualFieldDescription));
+                        result.Add(new MemberMatch(this, actualFieldDescription));
                     }
                     else
                     {
@@ -134,28 +133,28 @@ namespace NFluent.Helpers
             return result;
         }
 
-        private IEnumerable<FieldMatch> ScanFields(ReflectionWrapper actual, IList<object> scanned, int depth)
+        private IEnumerable<MemberMatch> ScanFields(ReflectionWrapper actual, IList<object> scanned, int depth)
         {
-            var result = new List<FieldMatch>();
+            var result = new List<MemberMatch>();
 
-            foreach (var fieldInfo in this.GetSubExtendedFieldInfosFields())
+            foreach (var member in this.GetSubExtendedMemberInfosFields())
             {
-                var actualFieldMatching = actual.FindField(fieldInfo);
+                var actualFieldMatching = actual.FindMember(member);
 
                 // field not found in SUT
                 if (actualFieldMatching == null)
                 {
-                    result.Add(new FieldMatch(fieldInfo, null));
+                    result.Add(new MemberMatch(member, null));
                     continue;
                 }
 
-                result.AddRange(fieldInfo.CompareValue(actualFieldMatching, scanned, depth - 1));
+                result.AddRange(member.CompareValue(actualFieldMatching, scanned, depth - 1));
             }
 
             return result;
         }
 
-        private IEnumerable<ReflectionWrapper> GetSubExtendedFieldInfosFields()
+        private IEnumerable<ReflectionWrapper> GetSubExtendedMemberInfosFields()
         {
             var result = new List<ReflectionWrapper>();
             if (this.IsArray)
@@ -166,11 +165,11 @@ namespace NFluent.Helpers
                 {
                     var prefixWithIndex = $"[{i}]";
                     var expectedEntryDescription = new ReflectionWrapper(
-                        this.LongFieldName,
+                        this.MemberLongName,
                         fieldType,
                         prefixWithIndex,
-                        this.Flags);
-                    expectedEntryDescription.SetFieldValue(array.GetValue(i));
+                        this.Criteria);
+                    expectedEntryDescription.SetValue(array.GetValue(i));
                     result.Add(expectedEntryDescription);
                 }
             }
@@ -179,25 +178,41 @@ namespace NFluent.Helpers
                 var currentType = this.ValueType;
                 while (currentType != null)
                 {
-                    var fieldsInfo = currentType.GetFields(this.Flags);
-                    currentType = currentType.GetBaseType();
-                    foreach (var info in fieldsInfo)
+                    if (this.Criteria.WithFields)
                     {
-                        var expectedValue = info.GetValue(this.Value);
-                        var extended = new ReflectionWrapper(this.LongFieldName,
-                            expectedValue?.GetType() ?? info.FieldType,
-                            info.Name, this.Flags);
-                        extended.SetFieldValue(expectedValue);
-                        result.Add(extended);
+                        var fieldsInfo = currentType.GetFields(this.Criteria.BindingFlags);
+                        foreach (var info in fieldsInfo)
+                        {
+                            var expectedValue = info.GetValue(this.Value);
+                            var extended = new ReflectionWrapper(this.MemberLongName,
+                                expectedValue?.GetType() ?? info.FieldType,
+                                info.Name, this.Criteria);
+                            extended.SetValue(expectedValue);
+                            result.Add(extended);
+                        }
                     }
+                    else if (this.Criteria.WithProperties)
+                    {
+                        var fieldsInfo = currentType.GetProperties(this.Criteria.BindingFlags);
+                        foreach (var info in fieldsInfo)
+                        {
+                            var expectedValue = info.GetValue(this.Value, null);
+                            var extended = new ReflectionWrapper(this.MemberLongName,
+                                expectedValue?.GetType() ?? info.PropertyType,
+                                info.Name, this.Criteria);
+                            extended.SetValue(expectedValue);
+                            result.Add(extended);
+                        }
+                    }
+                    currentType = currentType.GetBaseType();
                 }
             }
             return result;
         }
 
-        private ReflectionWrapper FindField(ReflectionWrapper other)
+        private ReflectionWrapper FindMember(ReflectionWrapper other)
         {
-            var fields = this.GetSubExtendedFieldInfosFields();
+            var fields = this.GetSubExtendedMemberInfosFields();
             foreach (var info in fields)
             {
                 if (other.nameInSource == info.nameInSource)

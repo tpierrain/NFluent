@@ -32,15 +32,27 @@ namespace NFluent
     /// </summary>
     public class Criteria
     {
-        internal Criteria(BindingFlags bindingFlags)
+        internal Criteria(BindingFlags bindingFlags, bool withFields = true, bool withProperties = false)
         {
             this.BindingFlags = bindingFlags;
+            this.WithFields = withFields;
+            this.WithProperties = withProperties;
         }
 
         /// <summary>
         /// 
         /// </summary>
         public BindingFlags BindingFlags { get;}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool WithFields { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool WithProperties { get; }
     }
 
     /// <summary>
@@ -63,6 +75,11 @@ namespace NFluent
         /// 
         /// </summary>
         public static Criteria Fields { get; } = new Criteria(BindingFlags.Instance | BindingFlags.Public);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Criteria Properties { get; } = new Criteria(BindingFlags.Instance | BindingFlags.Public, false, true);
     }
 
     /// <summary>
@@ -70,8 +87,7 @@ namespace NFluent
     /// </summary>
     public static class ObjectFieldsCheckExtensions
     {
-        private const BindingFlags FlagsForFields =
-            BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+        private static readonly Criteria FlagsForFields = Private.Fields;
 
 
         /// <summary>
@@ -205,8 +221,8 @@ namespace NFluent
         public static  ICheck<ReflectionWrapper> Considering<T>(this ICheck<T> check, Criteria criteria)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var fieldsWrapper = new ReflectionWrapper(typeof(T), criteria.BindingFlags);
-            fieldsWrapper.SetFieldValue(checker.Value);
+            var fieldsWrapper = new ReflectionWrapper(typeof(T), criteria);
+            fieldsWrapper.SetValue(checker.Value);
             return new FluentCheck<ReflectionWrapper>(fieldsWrapper);
         }
 
@@ -220,8 +236,8 @@ namespace NFluent
             TU expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var expectedWrapper = new ReflectionWrapper(typeof(TU), checker.Value.Flags);
-            expectedWrapper.SetFieldValue(expected);
+            var expectedWrapper = new ReflectionWrapper(typeof(TU), checker.Value.Criteria);
+            expectedWrapper.SetValue(expected);
 
             var message = CompareFields(checker, false, expectedWrapper, checker.Value);
             if (message != null)
@@ -237,12 +253,12 @@ namespace NFluent
             T value,
             TU expected,
             bool negated,
-            BindingFlags flags)
+            Criteria criteria)
         {
-            var expectedValue = new ReflectionWrapper(expected?.GetType() ?? typeof(TU), flags);
-            expectedValue.SetFieldValue(expected);
-            var actualValue = new ReflectionWrapper(value?.GetType() ?? typeof(T), flags);
-            actualValue.SetFieldValue(value);
+            var expectedValue = new ReflectionWrapper(expected?.GetType() ?? typeof(TU), criteria);
+            expectedValue.SetValue(expected);
+            var actualValue = new ReflectionWrapper(value?.GetType() ?? typeof(T), criteria);
+            actualValue.SetValue(value);
 
             return CompareFields(checker, negated, expectedValue, actualValue);
         }
