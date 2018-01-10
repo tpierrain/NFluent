@@ -33,16 +33,15 @@ namespace NFluent.Helpers
     {
         private readonly string nameInSource;
         private readonly string prefix;
-        private readonly BindingFlags flags;
 
-        internal ReflectionWrapper(Type type, BindingFlags flags) : this(string.Empty, type, string.Empty, flags)
+        internal ReflectionWrapper(Type type, BindingFlags flags) : this(Empty, type, Empty, flags)
         {
         }
 
-        private ReflectionWrapper(string prefix, Type type, string infoName, BindingFlags flags)
+        internal ReflectionWrapper(string prefix, Type type, string infoName, BindingFlags flags)
         {
             this.prefix = prefix;
-            this.flags = flags;
+            this.Flags = flags;
             this.ValueType = type;
             if (EvaluateCriteria(AutoPropertyMask, infoName, out this.nameInSource))
             {
@@ -63,13 +62,13 @@ namespace NFluent.Helpers
             ? this.nameInSource
             : $"{this.prefix}.{this.nameInSource}";
 
-        internal BindingFlags Flags => this.flags;
+        internal BindingFlags Flags { get; }
 
-        internal string FieldLabel { get; private set; }
+        internal string FieldLabel { get; }
 
         internal object Value { get; private set; }
 
-        internal Type ValueType { get; private set; }
+        internal Type ValueType { get; }
 
         internal bool IsArray => this.ValueType.IsArray;
 
@@ -139,9 +138,9 @@ namespace NFluent.Helpers
         {
             var result = new List<FieldMatch>();
 
-            foreach (var fieldInfo in this.GetSubExtendedFieldInfosFields(flags))
+            foreach (var fieldInfo in this.GetSubExtendedFieldInfosFields())
             {
-                var actualFieldMatching = actual.FindField(fieldInfo, flags);
+                var actualFieldMatching = actual.FindField(fieldInfo);
 
                 // field not found in SUT
                 if (actualFieldMatching == null)
@@ -156,7 +155,7 @@ namespace NFluent.Helpers
             return result;
         }
 
-        private IEnumerable<ReflectionWrapper> GetSubExtendedFieldInfosFields(BindingFlags flags)
+        private IEnumerable<ReflectionWrapper> GetSubExtendedFieldInfosFields()
         {
             var result = new List<ReflectionWrapper>();
             if (this.IsArray)
@@ -170,7 +169,7 @@ namespace NFluent.Helpers
                         this.LongFieldName,
                         fieldType,
                         prefixWithIndex,
-                        flags);
+                        this.Flags);
                     expectedEntryDescription.SetFieldValue(array.GetValue(i));
                     result.Add(expectedEntryDescription);
                 }
@@ -180,15 +179,14 @@ namespace NFluent.Helpers
                 var currentType = this.ValueType;
                 while (currentType != null)
                 {
-                    var fieldsInfo = currentType.GetFields(flags);
+                    var fieldsInfo = currentType.GetFields(this.Flags);
                     currentType = currentType.GetBaseType();
                     foreach (var info in fieldsInfo)
                     {
                         var expectedValue = info.GetValue(this.Value);
                         var extended = new ReflectionWrapper(this.LongFieldName,
                             expectedValue?.GetType() ?? info.FieldType,
-                            info.Name, 
-                            flags);
+                            info.Name, this.Flags);
                         extended.SetFieldValue(expectedValue);
                         result.Add(extended);
                     }
@@ -197,9 +195,9 @@ namespace NFluent.Helpers
             return result;
         }
 
-        private ReflectionWrapper FindField(ReflectionWrapper other, BindingFlags flags)
+        private ReflectionWrapper FindField(ReflectionWrapper other)
         {
-            var fields = this.GetSubExtendedFieldInfosFields(flags);
+            var fields = this.GetSubExtendedFieldInfosFields();
             foreach (var info in fields)
             {
                 if (other.nameInSource == info.nameInSource)
@@ -228,22 +226,6 @@ namespace NFluent.Helpers
         {
             AutoPropertyMask = new Regex("^<(.*)>k_");
             AnonymousTypeFieldMask = new Regex("^<(.*)>(i_|\\z)");
-        }
-
-        internal static string ExtractFieldNameAsInSourceCode(string name)
-        {
-            if (EvaluateCriteria(AutoPropertyMask, name, out var result))
-            {
-                return result;
-            }
-
-            if (EvaluateCriteria(AnonymousTypeFieldMask, name, out result))
-            {
-                return result;
-            }
-
-            result = name;
-            return result;
         }
 
         private static bool EvaluateCriteria(Regex expression, string name, out string actualFieldName)
