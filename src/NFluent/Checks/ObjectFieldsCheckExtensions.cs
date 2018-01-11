@@ -165,7 +165,7 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> HasFieldsWithSameValues<T, TU>(this ICheck<T> check, TU expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var message = CheckFieldEquality(checker, checker.Value, expected, checker.Negated, FlagsForFields);
+            var message = CheckMemberEquality(checker, checker.Value, expected, checker.Negated, FlagsForFields);
 
             if (message != null)
             {
@@ -201,7 +201,7 @@ namespace NFluent
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = !checker.Negated;
 
-            var message = CheckFieldEquality(checker, checker.Value, expected, negated, FlagsForFields);
+            var message = CheckMemberEquality(checker, checker.Value, expected, negated, FlagsForFields);
 
             if (message != null)
             {
@@ -221,8 +221,7 @@ namespace NFluent
         public static  ICheck<ReflectionWrapper> Considering<T>(this ICheck<T> check, Criteria criteria)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var fieldsWrapper = new ReflectionWrapper(typeof(T), criteria);
-            fieldsWrapper.SetValue(checker.Value);
+            var fieldsWrapper = ReflectionWrapper.BuildFromInstance(typeof(T) , checker.Value, criteria);
             return new FluentCheck<ReflectionWrapper>(fieldsWrapper);
         }
 
@@ -236,10 +235,9 @@ namespace NFluent
             TU expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var expectedWrapper = new ReflectionWrapper(typeof(TU), checker.Value.Criteria);
-            expectedWrapper.SetValue(expected);
+            var expectedWrapper = ReflectionWrapper.BuildFromInstance(typeof(TU), expected, checker.Value.Criteria);
 
-            var message = CompareFields(checker, false, expectedWrapper, checker.Value);
+            var message = CompareMembers(checker, false, expectedWrapper, checker.Value);
             if (message != null)
             {
                 throw new FluentCheckException(message);
@@ -248,29 +246,27 @@ namespace NFluent
             return checker.BuildChainingObject();
         }
 
-        private static string CheckFieldEquality<T, TU>(
+        private static string CheckMemberEquality<T, TU>(
             IChecker<T, ICheck<T>> checker,
             T value,
             TU expected,
             bool negated,
             Criteria criteria)
         {
-            var expectedValue = new ReflectionWrapper(expected?.GetType() ?? typeof(TU), criteria);
-            expectedValue.SetValue(expected);
-            var actualValue = new ReflectionWrapper(value?.GetType() ?? typeof(T), criteria);
-            actualValue.SetValue(value);
+            var expectedValue = ReflectionWrapper.BuildFromInstance(expected?.GetType() ?? typeof(TU), expected,criteria);
+            var actualValue = ReflectionWrapper.BuildFromInstance(value?.GetType() ?? typeof(T), value,criteria);
 
-            return CompareFields(checker, negated, expectedValue, actualValue);
+            return CompareMembers(checker, negated, expectedValue, actualValue);
         }
 
-        private static string CompareFields<T>(IChecker<T, ICheck<T>> checker, bool negated,
+        private static string CompareMembers<T>(IChecker<T, ICheck<T>> checker, bool negated,
             ReflectionWrapper expectedValue, ReflectionWrapper actualValue)
         {
             var analysis = expectedValue.CompareValue(actualValue, new List<object>(), 1);
 
-            foreach (var fieldMatch in analysis)
+            foreach (var match in analysis)
             {
-                var result = fieldMatch.BuildMessage(checker, negated);
+                var result = match.BuildMessage(checker, negated);
                 if (result != null)
                 {
                     return result.ToString();

@@ -21,7 +21,9 @@ namespace NFluent.Helpers
 {
     using System;
     using System.Collections.Generic;
+#if NETSTANDARD1_3
     using System.Reflection;
+#endif
     using System.Text.RegularExpressions;
     using Extensions;
     using static System.String;
@@ -33,43 +35,62 @@ namespace NFluent.Helpers
     {
         private readonly string nameInSource;
         private readonly string prefix;
+        private readonly string labelPattern;
 
-        internal ReflectionWrapper(Type type, Criteria criteria) : this(Empty, type, Empty, criteria)
-        {}
-
-        internal ReflectionWrapper(string prefix, Type type, string infoName, Criteria criteria)
+        private ReflectionWrapper(string nameInSource, string prefix, string labelPattern, Type type, object value, Criteria criteria)
         {
+            this.nameInSource = nameInSource;
             this.prefix = prefix;
+            this.labelPattern = labelPattern;
             this.Criteria = criteria;
             this.ValueType = type;
-            if (EvaluateCriteria(AutoPropertyMask, infoName, out this.nameInSource))
-            {
-                this.MemberLabel = $"autoproperty '{this.MemberLongName}' (field '{infoName}')";
-            }
-            else if (EvaluateCriteria(AnonymousTypeFieldMask, infoName, out this.nameInSource))
-            {
-                this.MemberLabel = $"field '{this.MemberLongName}'";
-            }
-            else
-            {
-                this.nameInSource = infoName;
-                this.MemberLabel = $"field '{this.MemberLongName}'";
-            }
+            this.SetValue(value);
         }
 
         internal string MemberLongName => IsNullOrEmpty(this.prefix)
             ? this.nameInSource
             : $"{this.prefix}.{this.nameInSource}";
 
-        internal Criteria Criteria { get; }
+        internal Criteria Criteria { get; set; }
 
-        internal string MemberLabel { get; }
+        internal string MemberLabel => Format(this.labelPattern, this.MemberLongName);
 
         internal object Value { get; private set; }
 
-        internal Type ValueType { get; }
+        internal Type ValueType { get; set; }
 
         internal bool IsArray => this.ValueType.IsArray;
+
+        internal static ReflectionWrapper BuildFromInstance(Type type, object value, Criteria criteria)
+        {
+            return new ReflectionWrapper(Empty, Empty, "instance", type, value, criteria);
+        }
+
+        internal static ReflectionWrapper BuildFromField(string prefix, string name, Type type, object value, Criteria criteria)
+        {
+            string labelPattern;
+
+            if (EvaluateCriteria(AutoPropertyMask, name, out var nameInSource))
+            {
+                labelPattern = $"autoproperty '{{0}}' (field '{name}')";
+            }
+            else if (EvaluateCriteria(AnonymousTypeFieldMask, name, out nameInSource))
+            {
+                labelPattern = "field '{0}'";
+            }
+            else
+            {
+                nameInSource = name;
+                labelPattern = "field '{0}'";
+            }
+
+            return new ReflectionWrapper(nameInSource, prefix, labelPattern, value?.GetType()?? type, value, criteria);
+       }
+
+        internal static ReflectionWrapper BuildFromProperty(string prefix, string name, Type type, object value, Criteria criteria)
+        {
+            return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType()?? type, value, criteria);
+        }
 
         internal void SetValue(object obj)
         {
@@ -145,7 +166,7 @@ namespace NFluent.Helpers
                 if (actualFieldMatching == null)
                 {
                     result.Add(new MemberMatch(member, null));
-                    continue;
+                     continue;
                 }
 
                 result.AddRange(member.CompareValue(actualFieldMatching, scanned, depth - 1));
@@ -163,13 +184,7 @@ namespace NFluent.Helpers
                 var fieldType = array.GetType().GetElementType();
                 for (var i = 0; i < array.Length; i++)
                 {
-                    var prefixWithIndex = $"[{i}]";
-                    var expectedEntryDescription = new ReflectionWrapper(
-                        this.MemberLongName,
-                        fieldType,
-                        prefixWithIndex,
-                        this.Criteria);
-                    expectedEntryDescription.SetValue(array.GetValue(i));
+                    var expectedEntryDescription = BuildFromField(this.MemberLongName, $"[{i}]", fieldType, array.GetValue(i), this.Criteria);
                     result.Add(expectedEntryDescription);
                 }
             }
@@ -184,23 +199,19 @@ namespace NFluent.Helpers
                         foreach (var info in fieldsInfo)
                         {
                             var expectedValue = info.GetValue(this.Value);
-                            var extended = new ReflectionWrapper(this.MemberLongName,
-                                expectedValue?.GetType() ?? info.FieldType,
-                                info.Name, this.Criteria);
-                            extended.SetValue(expectedValue);
+                            var extended = BuildFromField(this.MemberLongName, info.Name, info.FieldType, expectedValue,
+                                this.Criteria);
                             result.Add(extended);
                         }
                     }
-                    else if (this.Criteria.WithProperties)
+                    if (this.Criteria.WithProperties)
                     {
                         var fieldsInfo = currentType.GetProperties(this.Criteria.BindingFlags);
                         foreach (var info in fieldsInfo)
                         {
                             var expectedValue = info.GetValue(this.Value, null);
-                            var extended = new ReflectionWrapper(this.MemberLongName,
-                                expectedValue?.GetType() ?? info.PropertyType,
-                                info.Name, this.Criteria);
-                            extended.SetValue(expectedValue);
+                            var extended = BuildFromProperty(this.MemberLongName,
+                                info.Name, info.PropertyType, expectedValue, this.Criteria);
                             result.Add(extended);
                         }
                     }

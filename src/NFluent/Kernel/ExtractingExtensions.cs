@@ -42,7 +42,9 @@ namespace NFluent
 
             if (getter == null)
             {
-                throw new InvalidOperationException(string.Format("Objects of expectedType {0} don't have property with name '{1}'", type, propertyName));
+                throw new InvalidOperationException(
+                    $"Objects of expectedType {type} don't have property with name '{propertyName}'");
+
             }
 
             foreach (var o in enumerable)

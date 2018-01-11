@@ -16,7 +16,6 @@
 // ReSharper disable once CheckNamespace
 namespace NFluent.Tests.Internals
 {
-    using System.Reflection;
     using Helpers;
     using NUnit.Framework;
 
@@ -27,7 +26,7 @@ namespace NFluent.Tests.Internals
         public void MonoNamingConventionTests()
         {
             // check that mono naming strategy is recognized
-            var name = new ReflectionWrapper(string.Empty, typeof(int), "<autofield>", Private.Fields);
+            var name = ReflectionWrapper.BuildFromField(string.Empty, "<autofield>", typeof(int), 2, Public.Fields);
             Check.That(name.MemberLongName).IsEqualTo("autofield");
         }
     }

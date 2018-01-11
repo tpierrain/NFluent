@@ -56,6 +56,16 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldFailForDifferentPublicProperties()
+        {
+            var sut = new SutClass(2, 42);
+
+            Check.ThatCode(() =>
+                    Check.That(sut).Considering(Public.Properties).IsEqualTo(new SutClass(2, 43)))
+                .Throws<FluentCheckException>();
+        }
+
+        [Test]
         public void ShouldWorkForPrivateFields()
         {
             var sut = new SutClass(2, 42, 4);
