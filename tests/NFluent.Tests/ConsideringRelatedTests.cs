@@ -25,7 +25,7 @@ namespace NFluent.Tests
         {
             var sut = new SutClass(2, 42);
 
-            Check.That(sut).Considering(Public.Fields).IsEqualTo(new SutClass(2, 42));
+            Check.That(sut).Considering().Public.Fields.IsEqualTo(new SutClass(2, 42));
         }
 
 
@@ -34,7 +34,7 @@ namespace NFluent.Tests
         {
             var sut = new SutClass(2, 42);
 
-            Check.That(sut).Considering(Public.Properties).IsEqualTo(new SutClass(1, 42));
+            Check.That(sut).Considering().Public.Properties.IsEqualTo(new SutClass(1, 42));
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace NFluent.Tests
         {
             var sut = new SutClass(2, 42);
 
-            Check.That(sut).Considering(Public.Fields).IsEqualTo(new SutClass(2, 43));
+            Check.That(sut).Considering().Public.Fields.IsEqualTo(new SutClass(2, 43));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace NFluent.Tests
             var sut = new SutClass(2, 42);
 
             Check.ThatCode(() =>
-                    Check.That(sut).Considering(Public.Fields).IsEqualTo(new SutClass(3, 42)))
+                    Check.That(sut).Considering().Public.Fields.IsEqualTo(new SutClass(3, 42)))
                 .Throws<FluentCheckException>();
         }
 
@@ -61,7 +61,7 @@ namespace NFluent.Tests
             var sut = new SutClass(2, 42);
 
             Check.ThatCode(() =>
-                    Check.That(sut).Considering(Public.Properties).IsEqualTo(new SutClass(2, 43)))
+                    Check.That(sut).Considering().Public.Properties.IsEqualTo(new SutClass(2, 43)))
                 .Throws<FluentCheckException>();
         }
 
@@ -70,7 +70,15 @@ namespace NFluent.Tests
         {
             var sut = new SutClass(2, 42, 4);
 
-            Check.That(sut).Considering(Private.Fields).IsEqualTo(new SutClass(2, 42, 4));
+            Check.That(sut).Considering().NonPublic.Fields.IsEqualTo(new SutClass(2, 42, 4));
+        }
+
+        [Test]
+        public void ShouldWorkForAllMembers()
+        {
+            var sut = new SutClass(2, 42, 4);
+
+            Check.That(sut).Considering().All.Fields.And.All.Properties.IsEqualTo(new SutClass(2, 42, 4));
         }
 
         private class SutClass

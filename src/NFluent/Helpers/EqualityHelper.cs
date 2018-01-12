@@ -283,11 +283,13 @@ namespace NFluent.Helpers
                 return FluentEquals(x, y, Check.EqualMode);
             }
 
+            //ncrunch: no coverage start
             [Obsolete("Not implemented")]
             public int GetHashCode(T obj)
             {
                 throw new NotSupportedException();
             }
+            //ncrunch: no coverage end
         }
 
         internal static IList<DifferenceDetails> ValueDifference(object firstItem, string firstName, object otherItem,

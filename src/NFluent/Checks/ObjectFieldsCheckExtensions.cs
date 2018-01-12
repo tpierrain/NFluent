@@ -27,10 +27,7 @@ namespace NFluent
     using Helpers;
     using Kernel;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class Criteria
+    internal class Criteria
     {
         internal Criteria(BindingFlags bindingFlags, bool withFields = true, bool withProperties = false)
         {
@@ -39,47 +36,11 @@ namespace NFluent
             this.WithProperties = withProperties;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public BindingFlags BindingFlags { get;}
+        public BindingFlags BindingFlags { get; internal set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool WithFields { get; }
+        public bool WithFields { get; internal set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool WithProperties { get; }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static class Private
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public static Criteria Fields { get; } = new Criteria(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class Public
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public static Criteria Fields { get; } = new Criteria(BindingFlags.Instance | BindingFlags.Public);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static Criteria Properties { get; } = new Criteria(BindingFlags.Instance | BindingFlags.Public, false, true);
+        public bool WithProperties { get; internal set; }
     }
 
     /// <summary>
@@ -87,7 +48,7 @@ namespace NFluent
     /// </summary>
     public static class ObjectFieldsCheckExtensions
     {
-        private static readonly Criteria FlagsForFields = Private.Fields;
+        private static readonly Criteria FlagsForFields = new Criteria(BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance);
 
 
         /// <summary>
@@ -211,18 +172,18 @@ namespace NFluent
             return checker.BuildChainingObject();
         }
 
+
         /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="check"></param>
-        /// <param name="criteria"></param>
         /// <returns></returns>
-        public static  ICheck<ReflectionWrapper> Considering<T>(this ICheck<T> check, Criteria criteria)
+        public static  IPublicOrNot Considering<T>(this ICheck<T> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var fieldsWrapper = ReflectionWrapper.BuildFromInstance(typeof(T) , checker.Value, criteria);
-            return new FluentCheck<ReflectionWrapper>(fieldsWrapper);
+            var fieldsWrapper = ReflectionWrapper.BuildFromInstance(typeof(T) , checker.Value, new Criteria(BindingFlags.Instance, false));
+            return new CheckWithConsidering(fieldsWrapper);
         }
 
         /// <summary>

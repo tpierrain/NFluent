@@ -46,6 +46,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MessageRelatedExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ObjectExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\StringExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICheckPlusAnd.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICheckWithConsidering.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IFieldsOrProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IPublicOrNot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\CheckWithConsidering.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\ExtractingExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FluentCheckException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\EqualityMode.cs" />
