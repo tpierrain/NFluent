@@ -26,5 +26,12 @@ namespace NFluent
         /// Link to add another scope
         /// </summary>
         IPublicOrNot And { get; }
+
+        /// <summary>
+        /// Lists excluded fields
+        /// </summary>
+        /// <param name="field">field names to be excluded</param>
+        /// <returns>Linking object to.</returns>
+        ICheckPlusAnd Excluding(params string[] field);
     }
 }

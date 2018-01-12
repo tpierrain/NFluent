@@ -48,7 +48,7 @@ namespace NFluent.Tests.FromIssues
 
         double decimalValue => 0.95000000000000006d;
 
-        // issue #205
+        // GH #205 
         [Test]
         public void should_generate_correct_error_message_for_double()
         {

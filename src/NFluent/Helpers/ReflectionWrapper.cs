@@ -33,13 +33,13 @@ namespace NFluent.Helpers
     /// </summary>
     public class ReflectionWrapper
     {
-        private readonly string nameInSource;
+        internal string NameInSource { get; private set; }
         private readonly string prefix;
         private readonly string labelPattern;
 
         private ReflectionWrapper(string nameInSource, string prefix, string labelPattern, Type type, object value, Criteria criteria)
         {
-            this.nameInSource = nameInSource;
+            this.NameInSource = nameInSource;
             this.prefix = prefix;
             this.labelPattern = labelPattern;
             this.Criteria = criteria;
@@ -48,8 +48,8 @@ namespace NFluent.Helpers
         }
 
         internal string MemberLongName => IsNullOrEmpty(this.prefix)
-            ? this.nameInSource
-            : $"{this.prefix}.{this.nameInSource}";
+            ? this.NameInSource
+            : $"{this.prefix}.{this.NameInSource}";
 
         internal Criteria Criteria { get; set; }
 
@@ -218,7 +218,18 @@ namespace NFluent.Helpers
                     currentType = currentType.GetBaseType();
                 }
             }
-            return result;
+            // scan
+            var finalResult = new List<ReflectionWrapper>(result.Count);
+            foreach (var member in result)
+            {
+                if (this.Criteria.IsNameExcluded(member.NameInSource) ||
+                    this.Criteria.IsNameExcluded(member.MemberLongName))
+                {
+                    continue;
+                }
+                finalResult.Add(member);
+            }
+            return finalResult;
         }
 
         private ReflectionWrapper FindMember(ReflectionWrapper other)
@@ -226,7 +237,7 @@ namespace NFluent.Helpers
             var fields = this.GetSubExtendedMemberInfosFields();
             foreach (var info in fields)
             {
-                if (other.nameInSource == info.nameInSource)
+                if (other.NameInSource == info.NameInSource)
                 {
                     return info;
                 }

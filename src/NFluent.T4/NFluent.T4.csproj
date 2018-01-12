@@ -54,7 +54,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
     </Content>
-    <None Include="packages.config" />
     <None Include="TemplateFilemanager.CS.ttinclude" />
     <None Include="TestsCloningHelper.ttinclude" />
     <None Include="TypeCloningHelper.ttinclude" />

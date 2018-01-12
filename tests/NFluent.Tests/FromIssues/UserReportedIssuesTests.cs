@@ -24,7 +24,7 @@ namespace NFluent.Tests
     [TestFixture]
     public class UserReportedIssuesTests
     {
-        // issue 187
+        // issue #187
         private class FakeClass
         {
             // ReSharper disable once UnusedAutoPropertyAccessor.Local

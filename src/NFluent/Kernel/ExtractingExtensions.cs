@@ -37,14 +37,13 @@ namespace NFluent
         /// <exception cref="System.InvalidOperationException">The object of type <typeparamref name="T"/> don't have a property with the given property name.</exception>
         public static IEnumerable Extracting<T>(this IEnumerable<T> enumerable, string propertyName)
         {
-            Type type = typeof(T);
+            var type = typeof(T);
             var getter = type.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-
+ 
             if (getter == null)
             {
                 throw new InvalidOperationException(
                     $"Objects of expectedType {type} don't have property with name '{propertyName}'");
-
             }
 
             foreach (var o in enumerable)

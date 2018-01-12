@@ -29,6 +29,8 @@ namespace NFluent
 
     internal class Criteria
     {
+        private List<string> exclusion;
+
         internal Criteria(BindingFlags bindingFlags, bool withFields = true, bool withProperties = false)
         {
             this.BindingFlags = bindingFlags;
@@ -41,6 +43,16 @@ namespace NFluent
         public bool WithFields { get; internal set; }
 
         public bool WithProperties { get; internal set; }
+
+        public bool IsNameExcluded(string name)
+        {
+            return this.exclusion?.Contains(name) ?? false;
+        }
+
+        public void SetExclusion(string[] fields)
+        {
+            this.exclusion = new List<string>(fields);
+        }
     }
 
     /// <summary>
@@ -163,7 +175,6 @@ namespace NFluent
             var negated = !checker.Negated;
 
             var message = CheckMemberEquality(checker, checker.Value, expected, negated, FlagsForFields);
-
             if (message != null)
             {
                 throw new FluentCheckException(message);

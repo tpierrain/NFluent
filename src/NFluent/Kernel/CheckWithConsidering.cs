@@ -55,6 +55,13 @@ namespace NFluent.Kernel
         public IPublicOrNot And => this;
 
         /// <inheritdoc />
+        public ICheckPlusAnd Excluding(params string[] field)
+        {
+            this.Value.Criteria.SetExclusion(field);
+            return this;
+        }
+
+        /// <inheritdoc />
         public ICheckPlusAnd Fields
         {
             get

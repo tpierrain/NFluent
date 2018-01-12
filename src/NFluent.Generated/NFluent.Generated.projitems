@@ -9,9 +9,6 @@
     <Import_RootNamespace>NFluent.Generated</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)NumberFluentCheckGenerator.txt4" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ByteCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DecimalCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DecimalSignedCheckExtensions.cs" />

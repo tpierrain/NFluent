@@ -81,6 +81,22 @@ namespace NFluent.Tests
             Check.That(sut).Considering().All.Fields.And.All.Properties.IsEqualTo(new SutClass(2, 42, 4, null));
         }
 
+        [Test]
+        public void ShouldWorkWithExclusions()
+        {
+            var sut = new SutClass(2, 42, 3, null);
+
+            Check.That(sut).Considering().All.Fields.Excluding("thePrivateField").IsEqualTo(new SutClass(2, 42, 4, null));
+        }
+
+        [Test]
+        public void ShouldWorkWithDeepExclusions()
+        {
+            var sut = new SutClass(2, 42, 4, new SutClass(1, 2));
+
+            Check.That(sut).Considering().All.Fields.Excluding("ThePrivateProperty.thePrivateField", "ThePrivateProperty.TheField").IsEqualTo(new SutClass(2, 42, 4, new SutClass(2, 2)));
+        }
+
         private class SutClass
         {
             private static int autoInc = 0;
@@ -89,7 +105,7 @@ namespace NFluent.Tests
             private int thePrivateField;
 
             private int theProperty;
-            protected internal object ThePrivatePropery { get; }
+            protected internal object ThePrivateProperty { get; }
 
             public int TheProperty
             {
@@ -104,11 +120,11 @@ namespace NFluent.Tests
                 this.thePrivateField = autoInc++;
             }
 
-            public SutClass(int theField, int theProperty, int thePrivateField, object thePrivatePropery)
+            public SutClass(int theField, int theProperty, int thePrivateField, object thePrivateProperty)
             {
                 TheField = theField;
                 TheProperty = theProperty;
-                this.ThePrivatePropery = thePrivatePropery;
+                this.ThePrivateProperty = thePrivateProperty;
                 this.thePrivateField = thePrivateField;
             }
         }
