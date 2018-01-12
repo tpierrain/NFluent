@@ -68,17 +68,17 @@ namespace NFluent.Tests
         [Test]
         public void ShouldWorkForPrivateFields()
         {
-            var sut = new SutClass(2, 42, 4);
+            var sut = new SutClass(2, 42, 4, null);
 
-            Check.That(sut).Considering().NonPublic.Fields.IsEqualTo(new SutClass(2, 42, 4));
+            Check.That(sut).Considering().NonPublic.Fields.IsEqualTo(new SutClass(2, 42, 4, null));
         }
 
         [Test]
         public void ShouldWorkForAllMembers()
         {
-            var sut = new SutClass(2, 42, 4);
+            var sut = new SutClass(2, 42, 4, null);
 
-            Check.That(sut).Considering().All.Fields.And.All.Properties.IsEqualTo(new SutClass(2, 42, 4));
+            Check.That(sut).Considering().All.Fields.And.All.Properties.IsEqualTo(new SutClass(2, 42, 4, null));
         }
 
         private class SutClass
@@ -89,6 +89,7 @@ namespace NFluent.Tests
             private int thePrivateField;
 
             private int theProperty;
+            protected internal object ThePrivatePropery { get; }
 
             public int TheProperty
             {
@@ -103,10 +104,11 @@ namespace NFluent.Tests
                 this.thePrivateField = autoInc++;
             }
 
-            public SutClass(int theField, int theProperty, int thePrivateField)
+            public SutClass(int theField, int theProperty, int thePrivateField, object thePrivatePropery)
             {
                 TheField = theField;
                 TheProperty = theProperty;
+                this.ThePrivatePropery = thePrivatePropery;
                 this.thePrivateField = thePrivateField;
             }
         }
