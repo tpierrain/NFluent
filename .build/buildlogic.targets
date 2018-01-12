@@ -29,7 +29,7 @@
         <NunitOptions>--result="$(SolutionRoot)\TestResults.xml";format=AppVeyor</NunitOptions>
         <TestRunnerPath>nunit3-console.exe</TestRunnerPath>
         <MsTestRunnerPath></MsTestRunnerPath>
-        <In >$(APPVEYOR_BUILD_VERSION)</In>
+        <In >"$(APPVEYOR_BUILD_VERSION)"</In>
         <Pattern>*(?&lt;Major&gt;\d+)\.(?&lt;Minor&gt;\d+)\.(?&lt;Patch&gt;[\d]+)\.(?&lt;PreReleaseInfo&gt;[\d]+)?</Pattern>
         <AssemblyVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Major"].Value)</AssemblyVersionMajor>
         <AssemblyVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Minor"].Value)</AssemblyVersionMinor>
