@@ -16,6 +16,15 @@
 namespace NFluent.Extensions
 {
     using System;
+#if DOTNET_45 || NETSTANDARD1_3
+    using System.Reflection;
+#endif
+#if !DOTNET_30 && !DOTNET_20
+    using System.Linq;
+#endif
+
+    using NFluent.Extensibility;
+    using NFluent.Extensions;
 
     internal static class ObjectExtensions
     {
@@ -42,5 +51,10 @@ namespace NFluent.Extensions
             return type;
         }
 #endif
+        public static bool TypeHasAttribute(this Type type, Type attribute)
+        {
+            return type.GetTypeInfo().GetCustomAttributes(false)
+                .Any(customAttribute => customAttribute.GetType() == attribute);
+        }
     }
 }

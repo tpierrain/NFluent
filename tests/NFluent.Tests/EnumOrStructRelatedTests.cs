@@ -17,6 +17,7 @@ using System;
 
 namespace NFluent.Tests
 {
+    using ApiChecks;
     using NUnit.Framework;
 
     [TestFixture]
@@ -123,6 +124,81 @@ namespace NFluent.Tests
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The checked value is an instance of [NFluent.Tests.Nationality] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[French] of type: [NFluent.Tests.Nationality]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [NFluent.Tests.Nationality]");
+        }
+
+        [Flags]
+        private enum Flags
+        {
+            None = 0,
+            First = 1,
+            Second = 2,
+            Third = 4
+        }
+
+        [Test]
+        public void HasFlagWorkAsExpected()
+        {
+            Check.ThatEnum(Flags.First).HasFlag(Flags.First);
+        }
+
+        [Test]
+        public void HasFlagFailsWhenRelevant()
+        {
+            Check.ThatCode( ()=>  Check.ThatEnum(Flags.Second|Flags.Third).HasFlag(Flags.First))
+                .Throws<FluentCheckException>()
+                .AndWhichMessage()
+                .AsLines()
+                .ContainsExactly("", 
+                    "The checked enum does not have the expected flag.", 
+                    "The checked enum:", 
+                    "\t[Second, Third]", 
+                    "The expected enum:", 
+                    "\t[First]");
+        }
+        
+        [Test]
+        public void HasFlagFailsProperlyWhenNegated()
+        {
+            Check.ThatCode( ()=>  Check.ThatEnum(Flags.First|Flags.Third).Not.HasFlag(Flags.First))
+                .Throws<FluentCheckException>()
+                .AndWhichMessage()
+                .AsLines()
+                .ContainsExactly("", 
+                    "The checked enum does have the expected flag, whereas it should not.", 
+                    "The checked enum:", 
+                    "\t[First, Third]", 
+                    "The expected enum:", 
+                    "\t[First]");
+        }
+
+        [Test]
+        public void FailsIfNotFlags()
+        {
+            Check.ThatCode( ()=>  Check.ThatEnum(Nationality.American).HasFlag(Nationality.French))
+                .Throws<FluentCheckException>()
+                .AndWhichMessage()
+                .AsLines()
+                .ContainsExactly("", 
+                    "The checked enum type is not a set of flags. You must add [Flags] attribute to its declaration.", 
+                    "The checked enum:", 
+                    "\t[American]", 
+                    "The expected enum:", 
+                    "\t[French]");
+        }
+ 
+        [Test]
+        public void FailsIfCHeckOn0()
+        {
+            Check.ThatCode( ()=>  Check.ThatEnum(Flags.First).HasFlag(Flags.None))
+                .Throws<FluentCheckException>()
+                .AndWhichMessage()
+                .AsLines()
+                .ContainsExactly("", 
+                    "Wrong chek: The expected flag is 0. You must use IsEqualTo, or a non zero flag value.", 
+                    "The checked enum:", 
+                    "\t[First]", 
+                    "The expected enum:", 
+                    "\t[None]");
         }
     }
 }

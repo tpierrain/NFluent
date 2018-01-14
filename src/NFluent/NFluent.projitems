@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DateTimeCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DictionaryCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DoubleSpecificCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\EnumCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\EnumerableCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\EnumerableFluentSyntaxExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\EventWaitHandleCheckExtensions.cs" />
