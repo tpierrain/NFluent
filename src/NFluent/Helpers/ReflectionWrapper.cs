@@ -277,5 +277,26 @@ namespace NFluent.Helpers
             actualFieldName = Empty;
             return false;
         }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            var other = BuildFromInstance(obj?.GetType() ?? typeof(object), obj, this.Criteria);
+            var scan=this.CompareValue(other, new List<object>(), 0);
+            foreach (var match in scan)
+            {
+                if (!match.DoValuesMatches)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

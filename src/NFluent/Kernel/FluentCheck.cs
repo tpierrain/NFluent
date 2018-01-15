@@ -57,8 +57,7 @@ namespace NFluent.Kernel
         /// <param name="negated">
         /// A boolean value indicating whether the check should be negated or not.
         /// </param>
-        /// <param name="checker">Checker to be kept.</param>
-        private FluentCheck(T value, bool negated, Checker<T, ICheck<T>> checker = null)
+        private FluentCheck(T value, bool negated)
         {
             this.Value = value;
             this.Negated = negated;
@@ -69,37 +68,17 @@ namespace NFluent.Kernel
 
         #region Public Properties
 
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="FluentCheck{T}"/> should be negated or not.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if all the methods applying to this check instance should be negated; <c>false</c> otherwise.
-        /// </value>
+        /// <inheritdoc />
         public bool Negated { get; private set; }
 
-        /// <summary>
-        /// Negates the next check.
-        /// </summary>
-        /// <value>
-        /// The next check negated.
-        /// </value>
+        /// <inheritdoc />
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public ICheck<T> Not => new FluentCheck<T>(this.Value, CheckContext.DefaulNegated, this.checker);
+        public ICheck<T> Not => new FluentCheck<T>(this.Value, CheckContext.DefaulNegated);
 
-        /// <summary>
-        /// Gets the value to be tested (provided for any extension method to be able to test it).
-        /// </summary>
-        /// <value>
-        /// The value to be tested by any fluent check extension method.
-        /// </value>
-        public T Value { get; private set; }
+        /// <inheritdoc />
+        public T Value { get; }
 
-        /// <summary>
-        /// Gets the runner to use for checking something on a given type.
-        /// </summary>
-        /// <value>
-        /// The runner to use for checking something on a given type.
-        /// </value>
+        /// <inheritdoc />
         public IChecker<T, ICheck<T>> Checker => this.checker;
 
         #endregion
@@ -120,35 +99,19 @@ namespace NFluent.Kernel
         /// </exception>
         public new bool Equals(object obj)
         {
-            this.checker.ExecuteCheck(() => EqualityHelper.IsEqualTo(this.checker, obj), EqualityHelper.BuildErrorMessage(this.checker, obj, true, false));
+            this.checker.ExecuteCheck(() => EqualityHelper.IsEqualTo(this.checker, obj), 
+                EqualityHelper.BuildErrorMessage(this.checker, obj, true, false));
  
             return true;
         }
 
-        /// <summary>
-        /// Checks whether if the checked value is of the given type.
-        /// </summary>
-        /// <typeparam name="TU">The given type to check the checked value against.</typeparam>
-        /// <returns>A chainable check.</returns>
-        /// <exception cref="FluentCheckException">The specified value is null (and not of the same nullable type) or not of the given type.</exception>
+        /// <inheritdoc />
         public ICheckLink<ICheck<T>> IsInstanceOf<TU>()
         {
-            if (typeof(T).IsNullable())
-            {
-                return this.checker.ExecuteCheck(
-                    () => IsInstanceHelper.IsSameType(typeof(T), typeof(TU), this.Value), 
-                    IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), typeof(TU), this.Value, true));
-            }
-
-            return this.checker.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(this.Value, typeof(TU)), IsInstanceHelper.BuildErrorMessage(this.Value, typeof(TU), true));
+            return this.IsInstanceOfType(typeof(TU));
         }
 
-        /// <summary>
-        /// Checks whether if the checked value is different from the given type.
-        /// </summary>
-        /// <typeparam name="TU">The given type to check the checked value against.</typeparam>
-        /// <returns>A chainable check.</returns>
-        /// <exception cref="FluentCheckException">The specified value is of the given type.</exception>
+        /// <inheritdoc />
         public ICheckLink<ICheck<T>> IsNotInstanceOf<TU>()
         {
             if (typeof(T).IsNullable())
@@ -166,16 +129,7 @@ namespace NFluent.Kernel
 
         #region Explicit Interface Methods
 
-        /// <summary>
-        /// Creates a new instance of the same fluent check type, injecting the same Value property
-        /// (i.e. the system under test), but with a false Negated property in any case.
-        /// </summary>
-        /// <returns>
-        /// A new instance of the same fluent check type, with the same Value property.
-        /// </returns>
-        /// <remarks>
-        /// This method is used during the chaining of multiple checks.
-        /// </remarks>
+        /// <inheritdoc />
         object IForkableCheck.ForkInstance()
         {
             this.Negated = !CheckContext.DefaulNegated;

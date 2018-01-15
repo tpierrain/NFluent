@@ -21,19 +21,20 @@ namespace NFluent
     public enum EqualityMode
     {
         /// <summary>
-        /// 
+        /// Compare objects using Equals methods, except for arrays for which comparison is made per entry.
         /// </summary>
+        /// <remarks>Default mode</remarks>
         FluentEquals,
         /// <summary>
-        /// 
+        /// Compare objects using Equals methods.
         /// </summary>
         Equals,
         /// <summary>
-        /// 
+        /// Compare objects using operator==
         /// </summary>
         OperatorEq,
         /// <summary>
-        /// 
+        /// Compare objects using operator!=
         /// </summary>
         OperatorNeq
     }

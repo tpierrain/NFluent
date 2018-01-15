@@ -28,7 +28,7 @@ namespace NFluent.Helpers
             this.Expected = expected;
         }
 
-        private bool DoValuesMatches
+        internal bool DoValuesMatches
         {
             get
             {
@@ -42,7 +42,7 @@ namespace NFluent.Helpers
         /// <summary>
         ///     Gets a actualValue indicating whether the expected field has been found.
         /// </summary>
-        private bool ExpectedFieldFound => this.actual != null;
+        internal bool ExpectedFieldFound => this.actual != null;
 
         public FluentMessage BuildMessage<T>(IChecker<T, ICheck<T>> checker, bool negated)
         {

@@ -661,27 +661,20 @@ namespace NFluent
             var sutCount = checkedValue.Count();
             var expectedCount = enumerable.Count();
             FluentMessage message;
-            if (enumerable != null)
+            if (sutCount < expectedCount && index == sutCount)
             {
-                if (sutCount < expectedCount && index == sutCount)
-                {
-                    message = checker.BuildMessage(
-                        $"The {{0}} does not contain exactly the expected value(s). Elements are missing starting at index #{index}.");
-                }
-                else if (sutCount > expectedCount && index == expectedCount)
-                {
-                    message = checker.BuildMessage(
-                        $"The {{0}} does not contain exactly the expected value(s). There are extra elements starting at index #{index}.");
-                }
-                else
-                {
-                    message = checker.BuildMessage(
-                        $"The {{0}} does not contain exactly the expected value(s). First difference is at index #{index}.");
-                }
+                message = checker.BuildMessage(
+                    $"The {{0}} does not contain exactly the expected value(s). Elements are missing starting at index #{index}.");
+            }
+            else if (sutCount > expectedCount && index == expectedCount)
+            {
+                message = checker.BuildMessage(
+                    $"The {{0}} does not contain exactly the expected value(s). There are extra elements starting at index #{index}.");
             }
             else
             {
-                message = checker.BuildMessage("The {0} does not contain exactly the expected value(s).");
+                message = checker.BuildMessage(
+                    $"The {{0}} does not contain exactly the expected value(s). First difference is at index #{index}.");
             }
 
             message.For(typeof(IEnumerable)).On(checkedValue, index).WithEnumerableCount(sutCount).And

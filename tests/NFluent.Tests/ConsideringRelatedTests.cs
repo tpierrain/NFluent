@@ -86,7 +86,8 @@ namespace NFluent.Tests
         {
             var sut = new SutClass(2, 42, 3, null);
 
-            Check.That(sut).Considering().All.Fields.Excluding("thePrivateField").IsEqualTo(new SutClass(2, 42, 4, null));
+            Check.That(sut).Considering().All.Fields.Excluding("thePrivateField")
+                .IsEqualTo(new SutClass(2, 42, 4, null));
         }
 
         [Test]
@@ -94,7 +95,16 @@ namespace NFluent.Tests
         {
             var sut = new SutClass(2, 42, 4, new SutClass(1, 2));
 
-            Check.That(sut).Considering().All.Fields.Excluding("ThePrivateProperty.thePrivateField", "ThePrivateProperty.TheField").IsEqualTo(new SutClass(2, 42, 4, new SutClass(2, 2)));
+            Check.That(sut).Considering().All.Fields
+                .Excluding("ThePrivateProperty.thePrivateField", "ThePrivateProperty.TheField")
+                .IsEqualTo(new SutClass(2, 42, 4, new SutClass(2, 2)));
+        }
+
+        [Test]
+        public void ShouldWorkForOtherChecks()
+        {
+            var sut = new SutClass(2, 42);
+            Check.That(sut).Considering().Public.Fields.Equals(new SutClass(2, 42));
         }
 
         private class SutClass

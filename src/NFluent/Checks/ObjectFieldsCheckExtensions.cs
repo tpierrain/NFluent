@@ -24,6 +24,7 @@ namespace NFluent
     using System.ComponentModel;
     using System.Reflection;
     using Extensibility;
+    using Extensions;
     using Helpers;
     using Kernel;
 
