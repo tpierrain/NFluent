@@ -9,7 +9,7 @@ Syntax is:
 
 **New feature(s):**
 - **Object**
-  - New check **IsInstanceOfType(Type type)** which is equivalent to *IsInstanceOf\<type\>()*, in a non genric form for parameterized tests.
+  - New check **IsInstanceOfType(Type type)** which is equivalent to *IsInstanceOf\&lt;type\&gt;()*, in a non genric form for parameterized tests.
 - **Enum**
   - New check **HasFlag(xxx)** that checks if a flag is present in an enum value.
 
