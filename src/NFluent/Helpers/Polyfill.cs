@@ -29,8 +29,9 @@ namespace NFluent
     /// <typeparam name="T">Type of return value.</typeparam>
     /// <returns>Return value.</returns>
     public delegate T Func<out T>();
+    
     /// <summary>
-    /// Delegates that has a return value and takes on parameter.
+    /// Delegates that has a return value and takes one parameter.
     /// </summary>
     /// <typeparam name="T">Type of return value.</typeparam>
     /// <typeparam name="TU">Type of parameter.</typeparam>
@@ -39,12 +40,36 @@ namespace NFluent
     public delegate T Func<in TU, out T>(TU param);
 
     /// <summary>
+    /// Delegates that has a return value and takes two parameters.
+    /// </summary>
+    /// <typeparam name="T">Type of return value.</typeparam>
+    /// <typeparam name="TU">Type of first parameter.</typeparam>
+    /// <typeparam name="T1">Type of second parameter.</typeparam>
+    /// <param name="param">value of the first parameter</param>
+    /// <param name="param2">value of the second parameter</param>
+    /// <returns>Return value.</returns>
+    public delegate T Func<in TU, in T1, out T>(TU param, T1 param2);
+
+    /// <summary>
+    /// Delegates that has a return value and takes three parameter.
+    /// </summary>
+    /// <typeparam name="T">Type of return value.</typeparam>
+    /// <typeparam name="TU">Type of first parameter.</typeparam>
+    /// <typeparam name="T1">Type of second parameter.</typeparam>
+    /// <typeparam name="T2">Type of second parameter.</typeparam>
+    /// <param name="param">value of the first parameter</param>
+    /// <param name="param2">value of the second parameter</param>
+    /// <param name="param3">value of the second parameter</param>
+    /// <returns>Return value.</returns>
+    public delegate T Func<in TU, in T1, in T2, out T>(TU param, T1 param2, T2 param3);
+
+    /// <summary>
     /// Delegates that is used as a filter. Returns true or false.
     /// </summary>
     /// <typeparam name="T">Type of parameter.</typeparam>
     /// <param name="item">Parameter value.</param>
     /// <returns>true if <see paramref="item"/> matches the rule.</returns>
-    internal delegate bool Predicate<T>(T item);
+    internal delegate bool Predicate<in T>(T item);
 #endif
 
     /// <summary>

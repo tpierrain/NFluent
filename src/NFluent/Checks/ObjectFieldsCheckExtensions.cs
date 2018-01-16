@@ -235,14 +235,39 @@ namespace NFluent
         private static string CompareMembers<T>(IChecker<T, ICheck<T>> checker, bool negated,
             ReflectionWrapper expectedValue, ReflectionWrapper actualValue)
         {
-            var analysis = expectedValue.CompareValue(actualValue, new List<object>(), 1);
 
-            foreach (var match in analysis)
+            var result = new List<MemberMatch>();
+            expectedValue.MapFields(actualValue, new List<object>(), 1, (expected, actual, depth) =>
             {
-                var result = match.BuildMessage(checker, negated);
-                if (result != null)
+                if (actual == null || expected.Value == null || actual.Value == null)
                 {
-                    return result.ToString();
+                    result.Add(new MemberMatch(expected, actual));
+                    return false;
+                }
+
+                if (depth <= 0 && expected.ValueType.ImplementsEquals())
+                {
+                    result.Add(new MemberMatch(expected, actual));
+                    return false;
+                }
+
+                if (expected.IsArray)
+                {
+                    if (!actual.IsArray || ((Array) expected.Value).Length != ((Array) actual.Value).Length)
+                    {
+                        result.Add(new MemberMatch(expected, actual));
+                        return false;
+                    }
+                }
+                return true;
+            });
+
+            foreach (var match in result)
+            {
+                var message = match.BuildMessage(checker, negated);
+                if (message != null)
+                {
+                    return message.ToString();
                 }
             }
 

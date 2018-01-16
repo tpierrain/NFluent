@@ -102,77 +102,30 @@ namespace NFluent.Helpers
             return this.ValueType.ImplementsEquals();
         }
 
-        internal List<MemberMatch> CompareValue(
-            ReflectionWrapper actualFieldDescription,
+        internal void MapFields(
+            ReflectionWrapper actual,
             IList<object> scanned,
-            int depth)
+            int depth, Func<ReflectionWrapper, ReflectionWrapper, int, bool> mapFunction)
         {
-            var result = new List<MemberMatch>();
             if (this.Value != null && scanned.Contains(this.Value))
             {
-                return result;
+                return;
             }
-
-            if (depth <= 0 && this.ChecksIfImplementsEqual())
+            scanned.Add(this.Value);
+            if (!mapFunction(this, actual, depth))
             {
-                result.Add(new MemberMatch(this, actualFieldDescription));
+                return;
             }
-            else
+
+            if (this.Value == null || actual == null)
             {
-                scanned.Add(this.Value);
-                if (this.Value == null || actualFieldDescription.Value == null)
-                {
-                    result.Add(new MemberMatch(this, actualFieldDescription));
-                }
-                else if (this.IsArray)
-                {
-                    var array = (Array) this.Value;
-                    var actualArray = (Array) actualFieldDescription.Value;
-                    if (actualArray.Length != array.Length)
-                    {
-                        result.Add(new MemberMatch(this, actualFieldDescription));
-                    }
-                    else
-                    {
-                        result.AddRange(
-                            this.ScanFields(
-                                actualFieldDescription,
-                                scanned,
-                                depth - 1));
-                    }
-                }
-                else
-                {
-                    result.AddRange(
-                        this.ScanFields(
-                            actualFieldDescription,
-                            scanned,
-                            depth - 1));
-                }
+                return;
             }
-
-            return result;
-        }
-
-        private IEnumerable<MemberMatch> ScanFields(ReflectionWrapper actual, IList<object> scanned, int depth)
-        {
-            var result = new List<MemberMatch>();
-
+            // we recurse
             foreach (var member in this.GetSubExtendedMemberInfosFields())
             {
-                var actualFieldMatching = actual.FindMember(member);
-
-                // field not found in SUT
-                if (actualFieldMatching == null)
-                {
-                    result.Add(new MemberMatch(member, null));
-                     continue;
-                }
-
-                result.AddRange(member.CompareValue(actualFieldMatching, scanned, depth - 1));
+                member.MapFields(actual.FindMember(member), scanned, depth-1, mapFunction);
             }
-
-            return result;
         }
 
         private IEnumerable<ReflectionWrapper> GetSubExtendedMemberInfosFields()
@@ -198,7 +151,7 @@ namespace NFluent.Helpers
                         var fieldsInfo = currentType.GetFields(this.Criteria.BindingFlags);
                         foreach (var info in fieldsInfo)
                         {
-                            var expectedValue = info.GetValue(this.Value);
+                            var expectedValue = this.Value == null ? null : info.GetValue(this.Value);
                             var extended = BuildFromField(this.MemberLongName, info.Name, info.FieldType, expectedValue,
                                 this.Criteria);
                             result.Add(extended);
@@ -282,15 +235,38 @@ namespace NFluent.Helpers
         public override bool Equals(object obj)
         {
             var other = BuildFromInstance(obj?.GetType() ?? typeof(object), obj, this.Criteria);
-            var scan=this.CompareValue(other, new List<object>(), 0);
-            foreach (var match in scan)
+            var isEqual = true;
+            this.MapFields(other, new List<object>(), 0, (expected, actual, depth) =>
             {
-                if (!match.DoValuesMatches)
+                if (!isEqual)
                 {
                     return false;
                 }
-            }
-            return true;
+
+                if (actual == null || expected.Value == null || actual.Value == null)
+                {
+                    isEqual = actual != null && expected.Value == actual.Value;
+                    return false;
+                }
+
+                if (depth <= 0 && expected.ValueType.ImplementsEquals())
+                {
+                    isEqual = expected.Value.Equals(actual.Value);
+                    return false;
+                }
+
+                if (expected.IsArray)
+                {
+                    if (!actual.IsArray || ((Array) expected.Value).Length != ((Array) actual.Value).Length)
+                    {
+                        isEqual = false;
+                        return false;
+                    }
+                }
+                return true;
+
+            });
+            return isEqual;
         }
 
         /// <inheritdoc />
