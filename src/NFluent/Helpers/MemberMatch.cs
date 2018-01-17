@@ -33,7 +33,7 @@ namespace NFluent.Helpers
             get
             {
                 var comparer = new EqualityHelper.EqualityComparer<object>();
-                return this.ExpectedFieldFound && comparer.Equals(this.actual.Value, this.Expected.Value);
+                return this.ActualFieldFound && this.ExpectedFieldFound && comparer.Equals(this.actual.Value, this.Expected.Value);
             }
         }
 
@@ -43,6 +43,7 @@ namespace NFluent.Helpers
         ///     Gets a actualValue indicating whether the expected field has been found.
         /// </summary>
         internal bool ExpectedFieldFound => this.actual != null;
+        internal bool ActualFieldFound => this.Expected != null;
 
         public FluentMessage BuildMessage<T>(IChecker<T, ICheck<T>> checker, bool negated)
         {
@@ -69,7 +70,14 @@ namespace NFluent.Helpers
                 result = checker.BuildShortMessage(
                         $"The {{0}}'s {this.Expected.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.")
                     .For("value");
-                result.Expected(this.Expected.Value);
+                result.Expected(this.Expected.Value).Label($"The {{0}} {this.Expected.MemberLabel.DoubleCurlyBraces()}:");
+            }
+            else if (!this.ActualFieldFound)
+            {
+                result = checker.BuildShortMessage(
+                        $"The {{1}}'s {this.actual.MemberLabel.DoubleCurlyBraces()} is absent from the {{0}}.")
+                    .For("value");
+                result.On(this.actual.Value).Label($"The {{0}} {this.actual.MemberLabel.DoubleCurlyBraces()}:");
             }
             else
             {

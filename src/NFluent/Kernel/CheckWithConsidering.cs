@@ -19,7 +19,7 @@ namespace NFluent.Kernel
     using Helpers;
     internal class CheckWithConsidering: FluentCheck<ReflectionWrapper>, ICheckPlusAnd, IFieldsOrProperties, IPublicOrNot
     {
-        public CheckWithConsidering(ReflectionWrapper value) : base(value)
+        public CheckWithConsidering(ReflectionWrapper value, bool negated) : base(value, negated)
         {}
         /// <inheritdoc />
         public IFieldsOrProperties Public

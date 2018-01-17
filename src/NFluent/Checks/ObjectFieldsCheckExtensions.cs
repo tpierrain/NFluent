@@ -139,7 +139,7 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> HasFieldsWithSameValues<T, TU>(this ICheck<T> check, TU expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var message = CheckMemberEquality(checker, checker.Value, expected, checker.Negated, FlagsForFields);
+            var message = CheckMemberEquality(checker, checker.Value, expected, checker.Negated, FlagsForFields, true);
 
             if (message != null)
             {
@@ -175,7 +175,7 @@ namespace NFluent
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var negated = !checker.Negated;
 
-            var message = CheckMemberEquality(checker, checker.Value, expected, negated, FlagsForFields);
+            var message = CheckMemberEquality(checker, checker.Value, expected, negated, FlagsForFields, true);
             if (message != null)
             {
                 throw new FluentCheckException(message);
@@ -195,7 +195,8 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var fieldsWrapper = ReflectionWrapper.BuildFromInstance(typeof(T) , checker.Value, new Criteria(BindingFlags.Instance, false));
-            return new CheckWithConsidering(fieldsWrapper);
+            var checkWithConsidering = new CheckWithConsidering(fieldsWrapper, checker.Negated);
+            return checkWithConsidering;
         }
 
         /// <summary>
@@ -210,7 +211,7 @@ namespace NFluent
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var expectedWrapper = ReflectionWrapper.BuildFromInstance(typeof(TU), expected, checker.Value.Criteria);
 
-            var message = CompareMembers(checker, false, expectedWrapper, checker.Value);
+            var message = CompareMembers(checker, false, false, expectedWrapper, checker.Value);
             if (message != null)
             {
                 throw new FluentCheckException(message);
@@ -224,22 +225,28 @@ namespace NFluent
             T value,
             TU expected,
             bool negated,
-            Criteria criteria)
+            Criteria criteria,
+            bool disregardExtra)
         {
-            var expectedValue = ReflectionWrapper.BuildFromInstance(expected?.GetType() ?? typeof(TU), expected,criteria);
-            var actualValue = ReflectionWrapper.BuildFromInstance(value?.GetType() ?? typeof(T), value,criteria);
+            var expectedValue = ReflectionWrapper.BuildFromInstance(expected?.GetType() ?? typeof(TU), expected, criteria);
+            var actualValue = ReflectionWrapper.BuildFromInstance(value?.GetType() ?? typeof(T), value, criteria);
 
-            return CompareMembers(checker, negated, expectedValue, actualValue);
+            return CompareMembers(checker, negated, disregardExtra, expectedValue, actualValue);
         }
 
-        private static string CompareMembers<T>(IChecker<T, ICheck<T>> checker, bool negated,
+        private static string CompareMembers<T>(IChecker<T, ICheck<T>> checker, bool negated, bool disregardExtra,
             ReflectionWrapper expectedValue, ReflectionWrapper actualValue)
         {
 
             var result = new List<MemberMatch>();
             expectedValue.MapFields(actualValue, new List<object>(), 1, (expected, actual, depth) =>
             {
-                if (actual == null || expected.Value == null || actual.Value == null)
+                if (disregardExtra && expected == null)
+                {
+                    return true;
+                }
+
+                if (actual?.Value == null || expected?.Value == null)
                 {
                     result.Add(new MemberMatch(expected, actual));
                     return false;
@@ -251,15 +258,18 @@ namespace NFluent
                     return false;
                 }
 
-                if (expected.IsArray)
+                if (!expected.IsArray)
                 {
-                    if (!actual.IsArray || ((Array) expected.Value).Length != ((Array) actual.Value).Length)
-                    {
-                        result.Add(new MemberMatch(expected, actual));
-                        return false;
-                    }
+                    return true;
                 }
-                return true;
+
+                if (actual.IsArray && ((Array) expected.Value).Length == ((Array) actual.Value).Length)
+                {
+                    return true;
+                }
+
+                result.Add(new MemberMatch(expected, actual));
+                return false;
             });
 
             foreach (var match in result)

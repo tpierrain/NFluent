@@ -46,6 +46,16 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldDetectMissingProperties()
+        {
+            Check.ThatCode(() => Check.That(new SutClass(2, 43)).Considering().NonPublic.Properties.IsEqualTo(new {ThePrivateProperty= (object) null}))
+                .Throws<FluentCheckException>();
+            Check.ThatCode(() =>
+            Check.That(new {ThePrivateProperty=(object)null}).Considering().NonPublic.Properties.IsEqualTo(new SutClass(2, 43)))
+                .Throws<FluentCheckException>();
+        }
+
+        [Test]
         public void ShouldFailForDifferentPublicFields()
         {
             var sut = new SutClass(2, 42);
@@ -105,6 +115,7 @@ namespace NFluent.Tests
         {
             var sut = new SutClass(2, 42);
             Check.That(sut).Considering().Public.Fields.Equals(new SutClass(2, 42));
+            Check.That(sut).Considering().All.Fields.Not.Equals(new SutClass(2, 42));
         }
 
         private class SutClass

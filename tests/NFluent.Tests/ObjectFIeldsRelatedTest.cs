@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System;
     using System.Collections;
+    using ApiChecks;
     using NUnit.Framework;
 
     [TestFixture]
@@ -137,9 +138,9 @@
             var x = new DummyClass();
 
             Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(new DummyHeritance()); })
-                .Throws<FluentCheckException>().WithMessage(
-                    Environment.NewLine + "The checked value's field 'z' is absent from the expected one."
-                    + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[2]");
+                .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
+                    "", "The checked value's field 'z' is absent from the expected one.",
+                    "The expected field 'z':", "\t[2]");
         }
 
         [Test]

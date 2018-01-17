@@ -126,6 +126,14 @@ namespace NFluent.Helpers
             {
                 member.MapFields(actual.FindMember(member), scanned, depth-1, mapFunction);
             }
+            // we deal with missing fields
+            foreach (var actualFields in actual.GetSubExtendedMemberInfosFields())
+            {
+                if (this.FindMember(actualFields) == null)
+                {
+                    mapFunction(null, actualFields, depth);
+                }
+            }
         }
 
         private IEnumerable<ReflectionWrapper> GetSubExtendedMemberInfosFields()
@@ -238,14 +246,9 @@ namespace NFluent.Helpers
             var isEqual = true;
             this.MapFields(other, new List<object>(), 0, (expected, actual, depth) =>
             {
-                if (!isEqual)
+                if (!isEqual || actual == null)
                 {
-                    return false;
-                }
-
-                if (actual == null || expected.Value == null || actual.Value == null)
-                {
-                    isEqual = actual != null && expected.Value == actual.Value;
+                    // we have established this is not equal
                     return false;
                 }
 
@@ -254,17 +257,7 @@ namespace NFluent.Helpers
                     isEqual = expected.Value.Equals(actual.Value);
                     return false;
                 }
-
-                if (expected.IsArray)
-                {
-                    if (!actual.IsArray || ((Array) expected.Value).Length != ((Array) actual.Value).Length)
-                    {
-                        isEqual = false;
-                        return false;
-                    }
-                }
                 return true;
-
             });
             return isEqual;
         }
