@@ -37,7 +37,8 @@ namespace NFluent.Helpers
         private readonly string prefix;
         private readonly string labelPattern;
 
-        private ReflectionWrapper(string nameInSource, string prefix, string labelPattern, Type type, object value, Criteria criteria)
+        private ReflectionWrapper(string nameInSource, string prefix, string labelPattern, Type type, object value,
+            Criteria criteria)
         {
             this.NameInSource = nameInSource;
             this.prefix = prefix;
@@ -66,7 +67,8 @@ namespace NFluent.Helpers
             return new ReflectionWrapper(Empty, Empty, "instance", type, value, criteria);
         }
 
-        internal static ReflectionWrapper BuildFromField(string prefix, string name, Type type, object value, Criteria criteria)
+        internal static ReflectionWrapper BuildFromField(string prefix, string name, Type type, object value,
+            Criteria criteria)
         {
             string labelPattern;
 
@@ -84,22 +86,18 @@ namespace NFluent.Helpers
                 labelPattern = "field '{0}'";
             }
 
-            return new ReflectionWrapper(nameInSource, prefix, labelPattern, value?.GetType()?? type, value, criteria);
-       }
+            return new ReflectionWrapper(nameInSource, prefix, labelPattern, value?.GetType() ?? type, value, criteria);
+        }
 
-        internal static ReflectionWrapper BuildFromProperty(string prefix, string name, Type type, object value, Criteria criteria)
+        internal static ReflectionWrapper BuildFromProperty(string prefix, string name, Type type, object value,
+            Criteria criteria)
         {
-            return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType()?? type, value, criteria);
+            return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria);
         }
 
         internal void SetValue(object obj)
         {
             this.Value = obj;
-        }
-
-        internal bool ChecksIfImplementsEqual()
-        {
-            return this.ValueType.ImplementsEquals();
         }
 
         internal void MapFields(
@@ -111,6 +109,7 @@ namespace NFluent.Helpers
             {
                 return;
             }
+
             scanned.Add(this.Value);
             if (!mapFunction(this, actual, depth))
             {
@@ -121,11 +120,13 @@ namespace NFluent.Helpers
             {
                 return;
             }
+
             // we recurse
             foreach (var member in this.GetSubExtendedMemberInfosFields())
             {
-                member.MapFields(actual.FindMember(member), scanned, depth-1, mapFunction);
+                member.MapFields(actual.FindMember(member), scanned, depth - 1, mapFunction);
             }
+
             // we deal with missing fields
             foreach (var actualFields in actual.GetSubExtendedMemberInfosFields())
             {
@@ -145,7 +146,8 @@ namespace NFluent.Helpers
                 var fieldType = array.GetType().GetElementType();
                 for (var i = 0; i < array.Length; i++)
                 {
-                    var expectedEntryDescription = BuildFromField(this.MemberLongName, $"[{i}]", fieldType, array.GetValue(i), this.Criteria);
+                    var expectedEntryDescription = BuildFromField(this.MemberLongName, $"[{i}]", fieldType,
+                        array.GetValue(i), this.Criteria);
                     result.Add(expectedEntryDescription);
                 }
             }
@@ -165,6 +167,7 @@ namespace NFluent.Helpers
                             result.Add(extended);
                         }
                     }
+
                     if (this.Criteria.WithProperties)
                     {
                         var fieldsInfo = currentType.GetProperties(this.Criteria.BindingFlags);
@@ -176,9 +179,11 @@ namespace NFluent.Helpers
                             result.Add(extended);
                         }
                     }
+
                     currentType = currentType.GetBaseType();
                 }
             }
+
             // scan
             var finalResult = new List<ReflectionWrapper>(result.Count);
             foreach (var member in result)
@@ -188,8 +193,10 @@ namespace NFluent.Helpers
                 {
                     continue;
                 }
+
                 finalResult.Add(member);
             }
+
             return finalResult;
         }
 
@@ -257,6 +264,7 @@ namespace NFluent.Helpers
                     isEqual = expected.Value.Equals(actual.Value);
                     return false;
                 }
+
                 return true;
             });
             return isEqual;

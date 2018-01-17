@@ -92,6 +92,16 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldFailOnNullForAllMembers()
+        {
+            var sut = new SutClass(2, 42, 4, null);
+
+            var expected = new SutClass(2, 42, 4, sut);
+            Check.ThatCode(() => Check.That(sut).Considering().All.Fields.And.All.Properties.IsEqualTo(expected));
+            Check.ThatCode(() => Check.That(expected).Considering().All.Fields.And.All.Properties.IsEqualTo(sut));
+        }
+
+        [Test]
         public void ShouldWorkWithExclusions()
         {
             var sut = new SutClass(2, 42, 3, null);
@@ -116,6 +126,13 @@ namespace NFluent.Tests
             var sut = new SutClass(2, 42);
             Check.That(sut).Considering().Public.Fields.Equals(new SutClass(2, 42));
             Check.That(sut).Considering().All.Fields.Not.Equals(new SutClass(2, 42));
+        }
+
+        [Test]
+        public void ShouldWorkForNull()
+        {
+            var sut = new SutClass(2, 42);
+            Check.ThatCode(() => { Check.That(sut).Considering().Public.Fields.Equals(null); });
         }
 
         private class SutClass

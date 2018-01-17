@@ -12,7 +12,7 @@
     <iconUrl>https://raw.github.com/tpierrain/NFluent/master/Images/Icon.png</iconUrl>
     <description>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).</description>
     <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
-    <releaseNotes>V 2.2.0
+    <releaseNotes>## V 2.2.0
 ---------------
 Flexible property and field based comparison is now available. Examples:
 - Check.That(sut)**.Considering().Public.Properties**.IsEqualTo(expected);
@@ -20,12 +20,16 @@
 - Check.That(sut)**.Considering().Public.Fields.Excluding("coordX", "child.address")**.IsEqualTo(expected);
 Syntax is:
 - Check.That(sut)**.Considering().(Public|NonPublic|All).(Fields.Properties)[.And.(Public|NonPublic|All).(Fields.Properties)][Excluding("fielda", "sub.fieldb")]**.IsEqualTo(expected);
+**Beta fixes**
+- Considering: Add support for negation
 **New feature(s):**
 - **Object**
 - New check **IsInstanceOfType(Type type)** which is equivalent to *IsInstanceOf\&lt;type\&gt;()*, in a non genric form for parameterized tests.
 - **Enum**
 - New check **HasFlag(xxx)** that checks if a flag is present in an enum value.
-V 2.1.1
+**Changes**
+- Improved error messages for missing fields(and properties) for reflection based checks.
+## V 2.1.1
 ---------------
 Bug fix(es):
 * fix issue #215: null reference exception triggered by HasFields... on null interface fields.
