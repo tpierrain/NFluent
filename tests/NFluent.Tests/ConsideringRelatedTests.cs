@@ -15,6 +15,7 @@
 
 namespace NFluent.Tests
 {
+    using System.ComponentModel;
     using NUnit.Framework;
 
     [TestFixture]
@@ -133,6 +134,30 @@ namespace NFluent.Tests
         {
             var sut = new SutClass(2, 42);
             Check.ThatCode(() => { Check.That(sut).Considering().Public.Fields.Equals(null); });
+        }
+
+        [Test]
+        public void ShouldWorkForIsInstanceOf()
+        {
+            var sut = new SutClass(2, 42);
+            var expected = new {TheProperty = 12};
+            Check.That(sut).Considering().Public.Properties.IsInstanceOfType(expected.GetType());
+            Check.That(expected).Considering().Public.Properties.IsInstanceOfType(sut.GetType());
+        }
+
+        [Test]
+        public void ShouldFailWhenMissingMember()
+        {
+            var sut = new SutClass(2, 42);
+            var expected = new {TheProperty = 12, Test = 11};
+            Check.ThatCode(() =>
+            {
+                Check.That(sut).Considering().Public.Properties.IsInstanceOfType(expected.GetType());
+            }).Throws<FluentCheckException>();
+            Check.ThatCode(() =>
+            {
+                Check.That(expected).Considering().Public.Properties.IsInstanceOfType(sut.GetType());
+            }).Throws<FluentCheckException>();
         }
 
         private class SutClass

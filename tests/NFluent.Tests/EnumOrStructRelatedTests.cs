@@ -142,6 +142,12 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void DoesNotHaveFlagWorkAsExpected()
+        {
+            Check.ThatEnum(Flags.Second).DoesNotHaveFlag(Flags.First);
+        }
+
+        [Test]
         public void HasFlagFailsWhenRelevant()
         {
             Check.ThatCode( ()=>  Check.ThatEnum(Flags.Second|Flags.Third).HasFlag(Flags.First))
@@ -152,6 +158,21 @@ namespace NFluent.Tests
                     "The checked enum does not have the expected flag.", 
                     "The checked enum:", 
                     "\t[Second, Third]", 
+                    "The expected enum:", 
+                    "\t[First]");
+        }
+
+        [Test]
+        public void DoesNotHaveFlagFailsWhenRelevant()
+        {
+            Check.ThatCode( ()=>  Check.ThatEnum(Flags.First|Flags.Third).DoesNotHaveFlag(Flags.First))
+                .Throws<FluentCheckException>()
+                .AndWhichMessage()
+                .AsLines()
+                .ContainsExactly("", 
+                    "The checked enum does have the expected flag, whereas it should not.", 
+                    "The checked enum:", 
+                    "\t[First, Third]", 
                     "The expected enum:", 
                     "\t[First]");
         }
@@ -172,6 +193,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void DoesNotHasFlagFailsProperlyWhenNegated()
+        {
+            Check.ThatCode( ()=>  Check.ThatEnum(Flags.Second|Flags.Third).Not.DoesNotHaveFlag(Flags.First))
+                .Throws<FluentCheckException>()
+                .AndWhichMessage()
+                .AsLines()
+                .ContainsExactly("", 
+                    "The checked enum does not have the expected flag.", 
+                    "The checked enum:", 
+                    "\t[Second, Third]", 
+                    "The expected enum:", 
+                    "\t[First]");
+        }
+
+        [Test]
         public void FailsIfNotFlags()
         {
             Check.ThatCode( ()=>  Check.ThatEnum(Nationality.American).HasFlag(Nationality.French))
@@ -187,7 +223,7 @@ namespace NFluent.Tests
         }
  
         [Test]
-        public void FailsIfCHeckOn0()
+        public void FailsIfCheckOn0()
         {
             Check.ThatCode( ()=>  Check.ThatEnum(Flags.First).HasFlag(Flags.None))
                 .Throws<FluentCheckException>()

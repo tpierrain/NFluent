@@ -20,8 +20,6 @@ namespace NFluent.Kernel
 
     using Extensibility;
 
-    using Helpers;
-
     /// <summary>
     /// Provides a mean to execute some checks on a value, taking care of whether it should be negated or not, etc.
     /// This interface is designed for developers that need to add new check (extension) methods.
@@ -139,31 +137,10 @@ namespace NFluent.Kernel
         public ICheckLinkWhich<TC, TSub> ExecuteCheckAndProvideSubItem<TSub>(Func<TSub> checkLambdaAction, string negatedExceptionMessage)
             where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
-            TSub checker;
-            try
-            {
-                // execute test
-                checker = checkLambdaAction();
-            }
-            catch (FluentCheckException)
-            {
-                // exception raised, and this was not expected
-                if (!this.fluentCheckForExtensibility.Negated)
-                {
-                    throw;
-                }
+            TSub checker = null;
+            this.ExecuteNotChainableCheck(() => { checker = checkLambdaAction();}, negatedExceptionMessage);
 
-                // exception was expected
-                return null;
-            }
-
-            if (this.fluentCheckForExtensibility.Negated)
-            {
-                // the expected exception did not occur
-                throw new FluentCheckException(negatedExceptionMessage);
-            }
-
-            return this.BuildLinkWhich(checker);
+            return checker == null ? null : this.BuildLinkWhich(checker);
         }
 
         /// <summary>
@@ -206,7 +183,7 @@ namespace NFluent.Kernel
                 return;
             }
             
-            if (this.fluentCheckForExtensibility.Negated)
+            if (this.Negated)
             {
                 // the expected exception did not occur
                 throw new FluentCheckException(negatedExceptionMessage);

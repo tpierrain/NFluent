@@ -16,6 +16,7 @@
 namespace NFluent
 {
 #if DOTNET_30 || DOTNET_20
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -71,6 +72,7 @@ namespace NFluent
     /// <returns>true if <see paramref="item"/> matches the rule.</returns>
     internal delegate bool Predicate<in T>(T item);
 #endif
+
 
     /// <summary>
     /// Contains various extensions method to provide poly fills on various net framework versions

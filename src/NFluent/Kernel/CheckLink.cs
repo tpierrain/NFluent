@@ -31,23 +31,13 @@ namespace NFluent.Kernel
         /// <param name="previousCheck">The previous fluent check.</param>
         public CheckLink(IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense previousCheck)
         {
-            forkableCheck = previousCheck as IForkableCheck;
-            Debug.Assert(forkableCheck != null, "forkableCheck != null");
+            this.forkableCheck = previousCheck as IForkableCheck;
+            Debug.Assert(this.forkableCheck != null, "forkableCheck != null");
         }
 
-        /// <summary>
-        /// Links a new fluent check to the current one.
-        /// </summary>
-        /// <value>
-        /// The new fluent check instance which has been linked to the previous one.
-        /// </value>
+        /// <inheritdoc />
+
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public T And
-        {
-            get
-            {
-                return forkableCheck.ForkInstance() as T;
-            }
-        }
+        public T And => this.forkableCheck.ForkInstance() as T;
     }
 }

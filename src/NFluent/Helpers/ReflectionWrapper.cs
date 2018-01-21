@@ -33,7 +33,7 @@ namespace NFluent.Helpers
     /// </summary>
     public class ReflectionWrapper
     {
-        internal string NameInSource { get; private set; }
+        internal string NameInSource { get; }
         private readonly string prefix;
         private readonly string labelPattern;
 
@@ -45,7 +45,7 @@ namespace NFluent.Helpers
             this.labelPattern = labelPattern;
             this.Criteria = criteria;
             this.ValueType = type;
-            this.SetValue(value);
+            this.Value = value;
         }
 
         internal string MemberLongName => IsNullOrEmpty(this.prefix)
@@ -56,7 +56,7 @@ namespace NFluent.Helpers
 
         internal string MemberLabel => Format(this.labelPattern, this.MemberLongName);
 
-        internal object Value { get; private set; }
+        internal object Value { get; }
 
         internal Type ValueType { get; set; }
 
@@ -65,6 +65,11 @@ namespace NFluent.Helpers
         internal static ReflectionWrapper BuildFromInstance(Type type, object value, Criteria criteria)
         {
             return new ReflectionWrapper(Empty, Empty, "instance", type, value, criteria);
+        }
+
+        internal static ReflectionWrapper BuildFromType(Type type, Criteria criteria)
+        {
+            return new ReflectionWrapper(Empty, Empty, "instance", type, null, criteria);
         }
 
         internal static ReflectionWrapper BuildFromField(string prefix, string name, Type type, object value,
@@ -95,28 +100,27 @@ namespace NFluent.Helpers
             return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria);
         }
 
-        internal void SetValue(object obj)
-        {
-            this.Value = obj;
-        }
-
-        internal void MapFields(
-            ReflectionWrapper actual,
-            IList<object> scanned,
+        internal void MapFields(ReflectionWrapper other,
             int depth, Func<ReflectionWrapper, ReflectionWrapper, int, bool> mapFunction)
         {
-            if (this.Value != null && scanned.Contains(this.Value))
+            this.MapFields(other, new List<object>(), depth, mapFunction);
+        }
+
+        private void MapFields(
+            ReflectionWrapper actual,
+            ICollection<object> scanned,
+            int depth, Func<ReflectionWrapper, ReflectionWrapper, int, bool> mapFunction)
+        {
+            if (this.Value != null)
             {
-                return;
+                if (scanned.Contains(this.Value))
+                {
+                    return;
+                }
+                scanned.Add(this.Value);
             }
 
-            scanned.Add(this.Value);
             if (!mapFunction(this, actual, depth))
-            {
-                return;
-            }
-
-            if (this.Value == null || actual == null)
             {
                 return;
             }
@@ -140,6 +144,10 @@ namespace NFluent.Helpers
         private IEnumerable<ReflectionWrapper> GetSubExtendedMemberInfosFields()
         {
             var result = new List<ReflectionWrapper>();
+            if (this.ValueType.IsPrimitive())
+            {
+                return result;
+            }
             if (this.IsArray)
             {
                 var array = (Array) this.Value;
@@ -170,10 +178,10 @@ namespace NFluent.Helpers
 
                     if (this.Criteria.WithProperties)
                     {
-                        var fieldsInfo = currentType.GetProperties(this.Criteria.BindingFlags);
-                        foreach (var info in fieldsInfo)
+                        var propertyInfos = currentType.GetProperties(this.Criteria.BindingFlags);
+                        foreach (var info in propertyInfos)
                         {
-                            var expectedValue = info.GetValue(this.Value, null);
+                            var expectedValue = this.Value == null ? null : info.GetValue(this.Value, null);
                             var extended = BuildFromProperty(this.MemberLongName,
                                 info.Name, info.PropertyType, expectedValue, this.Criteria);
                             result.Add(extended);
@@ -273,7 +281,17 @@ namespace NFluent.Helpers
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            if (this.Value == null)
+            {
+                return 1;
+            }
+
+            var hash = this.Value.GetHashCode();
+            foreach (var memberInfosField in this.GetSubExtendedMemberInfosFields())
+            {
+                hash = hash * 23 + memberInfosField.GetHashCode();
+            }
+            return hash;
         }
     }
 }

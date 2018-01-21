@@ -319,6 +319,31 @@ namespace NFluent.Extensions
             return type.BaseType;
 #endif
         }
+        /// <summary>
+        /// Checks if a type is a primitive one.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsPrimitive(this Type type)
+        {
+#if DOTNET_20 || DOTNET_30 || NETSTANDARD1_3
+            var primitives = new []
+            {
+                typeof(bool), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), 
+                typeof(ulong), typeof(int*), typeof(uint*), typeof(long*), typeof(ulong*), typeof(char), typeof(double), typeof(float)
+            };
+            foreach (var primitive in primitives)
+            {
+                if (type == primitive)
+                {
+                    return true;
+                }
+            }
+            return false;
+ #else
+            return type.IsPrimitive;
+#endif
+        }
 
         /// <summary>
         /// Doubles the curly braces in the string.

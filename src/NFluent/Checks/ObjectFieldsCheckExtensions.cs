@@ -1,21 +1,17 @@
-﻿#region File header
-
- // --------------------------------------------------------------------------------------------------------------------
- // <copyright file="ObjectFieldsCheckExtensions.cs" company="">
- //   Copyright 2014 Cyrille DUPUYDAUBY, Thomas PIERRAIN
- //   Licensed under the Apache License, Version 2.0 (the "License");
- //   you may not use this file except in compliance with the License.
- //   You may obtain a copy of the License at
- //       http://www.apache.org/licenses/LICENSE-2.0
- //   Unless required by applicable law or agreed to in writing, software
- //   distributed under the License is distributed on an "AS IS" BASIS,
- //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- //   See the License for the specific language governing permissions and
- //   limitations under the License.
- // </copyright>
- // --------------------------------------------------------------------------------------------------------------------
-
-#endregion
+﻿// --------------------------------------------------------------------------------------------------------------------
+//  <copyright file="ObjectFieldsCheckExtensions.cs" company="NFluent">
+//   Copyright 2018 Thomas PIERRAIN & Cyrille DUPUYDAUBY
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent
 {
@@ -61,7 +57,8 @@ namespace NFluent
     /// </summary>
     public static class ObjectFieldsCheckExtensions
     {
-        private static readonly Criteria FlagsForFields = new Criteria(BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance);
+        private static readonly Criteria FlagsForFields =
+            new Criteria(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
 
 
         /// <summary>
@@ -186,21 +183,20 @@ namespace NFluent
 
 
         /// <summary>
-        /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="check"></param>
         /// <returns></returns>
-        public static  IPublicOrNot Considering<T>(this ICheck<T> check)
+        public static IPublicOrNot Considering<T>(this ICheck<T> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var fieldsWrapper = ReflectionWrapper.BuildFromInstance(typeof(T) , checker.Value, new Criteria(BindingFlags.Instance, false));
+            var fieldsWrapper = ReflectionWrapper.BuildFromInstance(typeof(T), checker.Value,
+                new Criteria(BindingFlags.Instance, false));
             var checkWithConsidering = new CheckWithConsidering(fieldsWrapper, checker.Negated);
             return checkWithConsidering;
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="check"></param>
         /// <param name="expected"></param>
@@ -220,6 +216,46 @@ namespace NFluent
             return checker.BuildChainingObject();
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="check"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static ICheckLink<ICheck<ReflectionWrapper>> IsInstanceOfType(this ICheck<ReflectionWrapper> check,
+            Type type)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            var sut = checker.Value;
+            var expectedWrapper = ReflectionWrapper.BuildFromType(type, checker.Value.Criteria);
+            return checker.ExecuteCheck(() =>
+            {
+                var result = new List<MemberMatch>();
+                expectedWrapper.MapFields(sut, 1, (expected, actual, depth) =>
+                {
+                    if (actual != null && expected != null && actual.ValueType != expected.ValueType)
+                    {
+                        return true;
+                    }
+
+                    if (actual != null && expected != null && expected.ValueType == actual.ValueType)
+                    {
+                        return false;
+                    }
+
+                    result.Add(new MemberMatch(expected, actual));
+                    return false;
+                });
+                foreach (var match in result)
+                {
+                    var message = match.BuildMessage(checker, false);
+                    if (message != null)
+                    {
+                        throw new FluentCheckException(message.ToString());
+                    }
+                }
+            }, "");
+        }
+
         private static string CheckMemberEquality<T, TU>(
             IChecker<T, ICheck<T>> checker,
             T value,
@@ -228,7 +264,8 @@ namespace NFluent
             Criteria criteria,
             bool disregardExtra)
         {
-            var expectedValue = ReflectionWrapper.BuildFromInstance(expected?.GetType() ?? typeof(TU), expected, criteria);
+            var expectedValue =
+                ReflectionWrapper.BuildFromInstance(expected?.GetType() ?? typeof(TU), expected, criteria);
             var actualValue = ReflectionWrapper.BuildFromInstance(value?.GetType() ?? typeof(T), value, criteria);
 
             return CompareMembers(checker, negated, disregardExtra, expectedValue, actualValue);
@@ -237,9 +274,8 @@ namespace NFluent
         private static string CompareMembers<T>(IChecker<T, ICheck<T>> checker, bool negated, bool disregardExtra,
             ReflectionWrapper expectedValue, ReflectionWrapper actualValue)
         {
-
             var result = new List<MemberMatch>();
-            expectedValue.MapFields(actualValue, new List<object>(), 1, (expected, actual, depth) =>
+            expectedValue.MapFields(actualValue, 1, (expected, actual, depth) =>
             {
                 if (disregardExtra && expected == null)
                 {

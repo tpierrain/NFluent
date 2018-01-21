@@ -24,6 +24,21 @@ namespace NFluent
     public static class EnumCheckExtensions
     {
         /// <summary>
+        /// Checks that an enum does not have a flag set
+        /// </summary>
+        /// <typeparam name="T">type of checked enum</typeparam>
+        /// <param name="check">check object</param>
+        /// <param name="flag">flag to check if it is present</param>
+        /// <returns>link object for further checks</returns>
+        public static ICheckLink<IStructCheck<T>> DoesNotHaveFlag<T>(this IStructCheck<T> check, T flag)
+            where T : struct, IConvertible
+        {
+            var checker = ((ICheckForExtensibility<T, IStructCheck<T>>)check).Checker;
+            // TODO: factorize this into a method
+            return checker.Negated ? checker.BuildChainingObject().And.HasFlag(flag) : check.Not.HasFlag(flag);
+        }
+
+        /// <summary>
         /// Checks that an enum does have a flag set
         /// </summary>
         /// <typeparam name="T">type of checked enum</typeparam>
