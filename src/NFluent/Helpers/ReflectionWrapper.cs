@@ -286,10 +286,19 @@ namespace NFluent.Helpers
                 return 1;
             }
 
-            var hash = this.Value.GetHashCode();
-            foreach (var memberInfosField in this.GetSubExtendedMemberInfosFields())
+            var hasSub = false;
+            var subs = this.GetSubExtendedMemberInfosFields();
+            var hash = 0;
+
+            foreach (var memberInfosField in subs)
             {
                 hash = hash * 23 + memberInfosField.GetHashCode();
+                hasSub = true;
+            }
+
+            if (!hasSub)
+            {
+                hash = this.Value.GetHashCode();
             }
             return hash;
         }
