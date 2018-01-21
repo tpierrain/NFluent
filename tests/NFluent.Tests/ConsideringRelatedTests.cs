@@ -15,7 +15,6 @@
 
 namespace NFluent.Tests
 {
-    using System.ComponentModel;
     using NUnit.Framework;
 
     [TestFixture]
@@ -90,6 +89,17 @@ namespace NFluent.Tests
             var sut = new SutClass(2, 42, 4, null);
 
             Check.That(sut).Considering().All.Fields.And.All.Properties.IsEqualTo(new SutClass(2, 42, 4, null));
+        }
+
+        [Test]
+        public void ShouldFailForAllMembers()
+        {
+            var sut = new SutClass(2, 42, 4, null);
+            Check.ThatCode(() =>
+            {
+                Check.That(sut).Considering().All.Fields.And.All.Properties
+                    .IsEqualTo(new SutClass(2, 42, 4, new object()));
+            }).Throws<FluentCheckException>();
         }
 
         [Test]

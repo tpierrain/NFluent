@@ -245,13 +245,10 @@ namespace NFluent
                     result.Add(new MemberMatch(expected, actual));
                     return false;
                 });
-                foreach (var match in result)
+                if (result.Count > 0)
                 {
-                    var message = match.BuildMessage(checker, false);
-                    if (message != null)
-                    {
-                        throw new FluentCheckException(message.ToString());
-                    }
+                    var message = result[0].BuildMessage(checker, false);
+                    throw new FluentCheckException(message.ToString());
                 }
             }, "");
         }
