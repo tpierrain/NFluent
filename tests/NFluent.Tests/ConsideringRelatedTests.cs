@@ -217,5 +217,16 @@ namespace NFluent.Tests
             Check.That(sut).Considering().All.Fields.Excluding("thePrivateField")
                 .IsEqualTo(new SutClass(2, 42, 4, null));
         }
+
+        [Test]
+        public void ShouldFailOnDifferentArray()
+        {
+            var sut = new {arrayOfInts = new int[4]};
+            var expected = new {arrayOfInts = new int[5]};
+            Check.ThatCode(() => { Check.That(sut).Considering().NonPublic.Fields.IsEqualTo(expected); })
+                .Throws<FluentCheckException>();
+            Check.ThatCode(() => { Check.That(new {arraysOfInts =  "INTS"}).Considering().NonPublic.Fields.IsEqualTo(expected); })
+                .Throws<FluentCheckException>();
+        }
     }
 }
