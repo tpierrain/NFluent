@@ -115,11 +115,13 @@ namespace NFluent
                         scanResult.Add(new MemberMatch(expected, actual));
                         return false;
                     });
-                    if (scanResult.Count == 0)
+                    if (scanResult.Count != 0)
                     {
-                        var message = scanResult[0].BuildMessage(checker, false);
-                        throw new FluentCheckException(message.ToString());
+                        return;
                     }
+
+                    var message = IsInstanceHelper.BuildErrorMessage(checker.Value, type, true);
+                    throw new FluentCheckException(message);
                 }, IsInstanceHelper.BuildErrorMessage(checker.Value, type, false));
             }
             else if (typeof(T).IsNullable())

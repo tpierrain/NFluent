@@ -58,6 +58,17 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void NotShouldWFailWhenSame()
+        {
+            var sut = new SutClass(2, 42);
+            var expected = new {TheProperty = 12};
+            Check.ThatCode(() =>
+            {
+                Check.That(sut).Considering().Public.Properties.IsNoInstanceOfType(expected.GetType());
+            }).Throws<FluentCheckException>();
+        }
+
+        [Test]
         public void ShouldDetectMissingProperties()
         {
             Check.ThatCode(() =>
@@ -219,13 +230,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldWorkOnDifferentArray()
+        {
+            var sut = new {arrayOfInts = new int[4]};
+            var expected = new {arrayOfInts = new int[4]};
+             Check.That(sut).Considering().NonPublic.Fields.IsEqualTo(expected);
+        }
+
+        [Test]
         public void ShouldFailOnDifferentArray()
         {
             var sut = new {arrayOfInts = new int[4]};
             var expected = new {arrayOfInts = new int[5]};
             Check.ThatCode(() => { Check.That(sut).Considering().NonPublic.Fields.IsEqualTo(expected); })
                 .Throws<FluentCheckException>();
-            Check.ThatCode(() => { Check.That(new {arraysOfInts =  "INTS"}).Considering().NonPublic.Fields.IsEqualTo(expected); })
+            Check.ThatCode(() => { Check.That(new {arrayOfInts =  "INTS"}).Considering().NonPublic.Fields.IsEqualTo(expected); })
                 .Throws<FluentCheckException>();
         }
     }
