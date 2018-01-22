@@ -216,43 +216,6 @@ namespace NFluent
             return checker.BuildChainingObject();
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="check"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static ICheckLink<ICheck<ReflectionWrapper>> IsInstanceOfType(this ICheck<ReflectionWrapper> check,
-            Type type)
-        {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var sut = checker.Value;
-            var expectedWrapper = ReflectionWrapper.BuildFromType(type, checker.Value.Criteria);
-            return checker.ExecuteCheck(() =>
-            {
-                var result = new List<MemberMatch>();
-                expectedWrapper.MapFields(sut, 1, (expected, actual, depth) =>
-                {
-                    if (actual != null && expected != null && actual.ValueType != expected.ValueType)
-                    {
-                        return true;
-                    }
-
-                    if (actual != null && expected != null && expected.ValueType == actual.ValueType)
-                    {
-                        return false;
-                    }
-
-                    result.Add(new MemberMatch(expected, actual));
-                    return false;
-                });
-                if (result.Count > 0)
-                {
-                    var message = result[0].BuildMessage(checker, false);
-                    throw new FluentCheckException(message.ToString());
-                }
-            }, "");
-        }
-
         private static string CheckMemberEquality<T, TU>(
             IChecker<T, ICheck<T>> checker,
             T value,
