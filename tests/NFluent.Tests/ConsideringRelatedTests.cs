@@ -58,7 +58,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void NotShouldWFailWhenSame()
+        public void NotShouldFailWhenSame()
         {
             var sut = new SutClass(2, 42);
             var expected = new {TheProperty = 12};
@@ -69,7 +69,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldDetectMissingProperties()
+        public void ShouldDetectDifferentProperties()
         {
             Check.ThatCode(() =>
                     Check.That(new SutClass(2, 43)).Considering().NonPublic.Properties
@@ -77,6 +77,19 @@ namespace NFluent.Tests
                 .Throws<FluentCheckException>();
             Check.ThatCode(() =>
                     Check.That(new {ThePrivateProperty = (object) null}).Considering().NonPublic.Properties
+                        .IsEqualTo(new SutClass(2, 43)))
+                .Throws<FluentCheckException>();
+        }
+
+        [Test]
+        public void ShouldDetectMissingProperties()
+        {
+            Check.ThatCode(() =>
+                    Check.That(new SutClass(2, 43)).Considering().All.Properties
+                        .IsEqualTo(new {ThePrivateProperty = (object) null}))
+                .Throws<FluentCheckException>();
+            Check.ThatCode(() =>
+                    Check.That(new {ThePrivateProperty = (object) null}).Considering().All.Properties
                         .IsEqualTo(new SutClass(2, 43)))
                 .Throws<FluentCheckException>();
         }
@@ -208,6 +221,14 @@ namespace NFluent.Tests
             var sut = new SutClass(2, 42, 4, null);
 
             Check.That(sut).Considering().NonPublic.Fields.IsEqualTo(new SutClass(2, 42, 4, null));
+            Check.ThatCode(() =>
+                {
+                    Check.That(sut).Considering().NonPublic.Fields.IsEqualTo(new SutClass(2, 42, 4, sut));})
+                .Throws<FluentCheckException>();
+            Check.ThatCode(() =>
+                {
+                    Check.That(new SutClass(2, 42, 4, sut)).Considering().NonPublic.Fields.IsEqualTo(sut);})
+                .Throws<FluentCheckException>();
         }
 
         [Test]
@@ -247,5 +268,45 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That(new {arrayOfInts =  "INTS"}).Considering().NonPublic.Fields.IsEqualTo(expected); })
                 .Throws<FluentCheckException>();
         }
+
+        // GH #219
+        public class Parent
+        {
+            public virtual string AutoProperty { get; set; }
+        }
+
+        public class Child : Parent
+        {
+            public override string AutoProperty { get; set; }
+        }
+
+        [Test]
+        public void ShouldHandleOverringForFields()
+        {
+            // Arrange
+            var autoPropertyValue = "I am a test.";
+            var childOne = new Child { AutoProperty = autoPropertyValue };
+
+            // Act
+            var childTwo = new Child { AutoProperty = autoPropertyValue };
+
+            // Assert
+            Check.That(childOne).HasFieldsWithSameValues(childTwo);
+        }
+
+        [Test]
+        public void ShouldHandleOverringForProperties()
+        {
+            // Arrange
+            var autoPropertyValue = "I am a test.";
+            var childOne = new Child { AutoProperty = autoPropertyValue };
+
+            // Act
+            var childTwo = new Child { AutoProperty = autoPropertyValue };
+
+            // Assert
+            Check.That(childOne).Considering().Public.Properties.IsEqualTo(childTwo);
+        }
+
     }
 }

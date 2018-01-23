@@ -13,7 +13,34 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        #region GH #219
+        // GH #219
+        public class Parent
+        {
+            public virtual string AutoProperty { get; set; }
+        }
+
+        public class Child : Parent
+        {
+            public override string AutoProperty { get; set; }
+        }
+        [Test]
+        public void TestMethod()
+        {
+            // Arrange
+            var autoPropertyValue = "I am a test.";
+            var childOne = new Child { AutoProperty = autoPropertyValue };
+
+            // Act
+            var childTwo = new Child { AutoProperty = autoPropertyValue };
+
+            // Assert
+            Check.That(childOne).HasFieldsWithSameValues(childTwo);
+        }
+
+        #endregion
         #region issue #215
+        // GH #215
         public class MyClass
         {
             public ISubClass SubClass { get; set; }

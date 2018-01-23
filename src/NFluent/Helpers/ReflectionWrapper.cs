@@ -161,6 +161,7 @@ namespace NFluent.Helpers
             }
             else
             {
+                var memberDico = new Dictionary<string, ReflectionWrapper>();
                 var currentType = this.ValueType;
                 while (currentType != null)
                 {
@@ -169,9 +170,14 @@ namespace NFluent.Helpers
                         var fieldsInfo = currentType.GetFields(this.Criteria.BindingFlags);
                         foreach (var info in fieldsInfo)
                         {
+                            if (memberDico.ContainsKey(info.Name))
+                            {
+                                continue;
+                            }
                             var expectedValue = this.Value == null ? null : info.GetValue(this.Value);
                             var extended = BuildFromField(this.MemberLongName, info.Name, info.FieldType, expectedValue,
                                 this.Criteria);
+                            memberDico[info.Name] = extended;
                             result.Add(extended);
                         }
                     }
@@ -181,9 +187,14 @@ namespace NFluent.Helpers
                         var propertyInfos = currentType.GetProperties(this.Criteria.BindingFlags);
                         foreach (var info in propertyInfos)
                         {
+                            if (memberDico.ContainsKey(info.Name))
+                            {
+                                continue;
+                            }
                             var expectedValue = this.Value == null ? null : info.GetValue(this.Value, null);
                             var extended = BuildFromProperty(this.MemberLongName,
                                 info.Name, info.PropertyType, expectedValue, this.Criteria);
+                            memberDico[info.Name] = extended;
                             result.Add(extended);
                         }
                     }
