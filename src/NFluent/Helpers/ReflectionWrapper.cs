@@ -161,6 +161,7 @@ namespace NFluent.Helpers
             }
             else
             {
+                // TODO: improve support of overloaded fields/properties
                 var memberDico = new Dictionary<string, ReflectionWrapper>();
                 var currentType = this.ValueType;
                 while (currentType != null)
