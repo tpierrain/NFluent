@@ -13,11 +13,18 @@ Syntax is:
 **New feature(s):**
 - **Object**
   - New check **IsInstanceOfType(Type type)** which is equivalent to *IsInstanceOf\&lt;type\&gt;()*, in a non genric form for parameterized tests.
+  - New check **IsNoInstanceOfType(Type type)** which is equivalent to *IsNotInstanceOf\&lt;type\&gt;()*, in a non genric form for parameterized tests.
 - **Enum**
   - New check **HasFlag(xxx)** that checks if a flag is present in an enum value.
 
 **Changes**
 - Improved error messages for missing fields(and properties) for reflection based checks.
+
+**Fixes**
+- Fix issue with overloaded member/properties for HasFieldswithSameValues(...) (#219)
+ 
+*GitHub Issues*
+- #219, #218, #216, #215, #214, #121
 ## V 2.1.1
 ---------------
 Bug fix(es):
