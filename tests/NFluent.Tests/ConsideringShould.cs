@@ -18,7 +18,7 @@ namespace NFluent.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class ConsideringRelatedTests
+    public class ConsideringShould
     {
         private class SutClass
         {
@@ -69,7 +69,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldDetectDifferentProperties()
+        public void DetectDifferentProperties()
         {
             Check.ThatCode(() =>
                     Check.That(new SutClass(2, 43)).Considering().NonPublic.Properties
@@ -82,7 +82,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldDetectMissingProperties()
+        public void DetectMissingProperties()
         {
             Check.ThatCode(() =>
                     Check.That(new SutClass(2, 43)).Considering().All.Properties
@@ -95,7 +95,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldFailForAllMembers()
+        public void FailForAllMembers()
         {
             var sut = new SutClass(2, 42, 4, null);
             Check.ThatCode(() =>
@@ -106,7 +106,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldFailForDifferentPublicFields()
+        public void FailForDifferentPublicFields()
         {
             var sut = new SutClass(2, 42);
 
@@ -116,7 +116,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldFailForDifferentPublicProperties()
+        public void FailForDifferentPublicProperties()
         {
             var sut = new SutClass(2, 42);
 
@@ -126,7 +126,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldFailOnNullForAllMembers()
+        public void FailOnNullForAllMembers()
         {
             var sut = new SutClass(2, 42, 4, null);
 
@@ -136,7 +136,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldFailWhenMissingMember()
+        public void FailWhenMissingMember()
         {
             var sut = new SutClass(2, 42);
             var expected = new {TheProperty = 12, Test = 11};
@@ -151,7 +151,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldWorkForAllMembers()
+        public void WorkForAllMembers()
         {
             var sut = new SutClass(2, 42, 4, null);
 
@@ -159,7 +159,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldWorkForIdenticalPublicFields()
+        public void WorkForIdenticalPublicFields()
         {
             var sut = new SutClass(2, 42);
 
@@ -176,7 +176,7 @@ namespace NFluent.Tests
 
 
         [Test]
-        public void ShouldWorkForIdenticalPublicProperties()
+        public void WorkForIdenticalPublicProperties()
         {
             var sut = new SutClass(2, 42);
 
@@ -184,7 +184,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldWorkForIsInstanceOf()
+        public void WorkForIsInstanceOf()
         {
             var sut = new SutClass(2, 42);
             var expected = new {TheProperty = 12};
@@ -201,14 +201,14 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldWorkForNull()
+        public void WorkForNull()
         {
             var sut = new SutClass(2, 42);
             Check.ThatCode(() => { Check.That(sut).Considering().Public.Fields.Equals(null); });
         }
 
         [Test]
-        public void ShouldWorkForOtherChecks()
+        public void WorkForOtherChecks()
         {
             var sut = new SutClass(2, 42);
             Check.That(sut).Considering().Public.Fields.Equals(new SutClass(2, 42));
@@ -216,7 +216,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldWorkForPrivateFields()
+        public void WorkForPrivateFields()
         {
             var sut = new SutClass(2, 42, 4, null);
 
@@ -232,7 +232,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldWorkWithDeepExclusions()
+        public void WorkWithDeepExclusions()
         {
             var sut = new SutClass(2, 42, 4, new SutClass(1, 2));
 
@@ -242,7 +242,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldWorkWithExclusions()
+        public void WorkWithExclusions()
         {
             var sut = new SutClass(2, 42, 3, null);
 
@@ -251,7 +251,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldWorkOnDifferentArray()
+        public void WorkOnDifferentArray()
         {
             var sut = new {arrayOfInts = new int[4]};
             var expected = new {arrayOfInts = new int[4]};
@@ -259,7 +259,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldFailOnDifferentArray()
+        public void FailOnDifferentArray()
         {
             var sut = new {arrayOfInts = new int[4]};
             var expected = new {arrayOfInts = new int[5]};
@@ -267,6 +267,18 @@ namespace NFluent.Tests
                 .Throws<FluentCheckException>();
             Check.ThatCode(() => { Check.That(new {arrayOfInts =  "INTS"}).Considering().NonPublic.Fields.IsEqualTo(expected); })
                 .Throws<FluentCheckException>();
+        }
+
+        [Test]
+        public void
+        WorkForHasSameValue()
+        {
+            var sut = new SutClass(12, 13);
+            Check.That(sut).Considering().Public.Properties.HasSameValueAs(new SutClass(11, 13));
+            Check.ThatCode(() =>
+                {
+                    return Check.That(sut).Considering().Public.Properties.HasSameValueAs(new SutClass(11, 12));
+                }).Throws<FluentCheckException>();
         }
 
         // GH #219
@@ -281,7 +293,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldHandleOverringForFields()
+        public void HandleOverringForFields()
         {
             // Arrange
             var autoPropertyValue = "I am a test.";
@@ -295,7 +307,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldHandleOverringForProperties()
+        public void HandleOverringForProperties()
         {
             // Arrange
             var autoPropertyValue = "I am a test.";

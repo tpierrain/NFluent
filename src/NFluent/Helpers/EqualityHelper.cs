@@ -239,7 +239,7 @@ namespace NFluent.Helpers
                 BuildErrorMessage(checker, expected, !negated, useOperator));
         }
 
-        private static bool FluentEquals(object instance, object expected)
+        internal static bool FluentEquals(object instance, object expected)
         {
             return FluentEquals(instance, expected, Check.EqualMode);
         }

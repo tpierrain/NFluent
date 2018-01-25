@@ -28,7 +28,7 @@ namespace NFluent.Extensibility
     public class FluentMessage
     {
 
-        internal static readonly string EndOfLine = Environment.NewLine; // TODO: inline it
+        internal static readonly string EndOfLine = Environment.NewLine;
         private readonly EntityNamer checkedNamer;
         private readonly EntityNamer expectedNamer;
         private readonly GenericLabelBlock checkedLabel;

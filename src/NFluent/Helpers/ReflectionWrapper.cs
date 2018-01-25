@@ -281,7 +281,7 @@ namespace NFluent.Helpers
 
                 if (depth <= 0 && expected.ValueType.ImplementsEquals())
                 {
-                    isEqual = expected.Value.Equals(actual.Value);
+                    isEqual =  EqualityHelper.FluentEquals(expected.Value, actual.Value);
                     return false;
                 }
 
