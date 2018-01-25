@@ -277,8 +277,24 @@ namespace NFluent.Tests
             Check.That(sut).Considering().Public.Properties.HasSameValueAs(new SutClass(11, 13));
             Check.ThatCode(() =>
                 {
-                    return Check.That(sut).Considering().Public.Properties.HasSameValueAs(new SutClass(11, 12));
+                    Check.That(sut).Considering().Public.Properties.HasSameValueAs(new SutClass(11, 12));
                 }).Throws<FluentCheckException>();
+        }
+
+        [Test]
+        public void
+        WorkForHasNotSameValue()
+        {
+            var sut = new SutClass(12, 13);
+            Check.That(sut).Considering().Public.Properties.HasDifferentValueThan(new SutClass(11, 12));
+        }
+
+        [Test]
+        public void
+            WorkFor()
+        {
+            var sut = new SutClass(12, 13);
+            Check.That(sut).Considering().Public.Properties.IsOneOf(new {TheProperty = 12}, new {TheProperty = 13});
         }
 
         // GH #219

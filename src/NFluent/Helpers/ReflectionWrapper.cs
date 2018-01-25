@@ -1,8 +1,6 @@
-﻿#region File header
-
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExtendedFileInfo.cs" company="">
-//   Copyright 2014 Cyrille DUPUYDAUBY, Thomas PIERRAIN
+﻿// --------------------------------------------------------------------------------------------------------------------
+//  <copyright file="ReflectionWrapper.cs" company="NFluent">
+//   Copyright 2018 Thomas PIERRAIN & Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -15,27 +13,44 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-#endregion
-
 namespace NFluent.Helpers
 {
-    using System;
-    using System.Collections.Generic;
 #if NETSTANDARD1_3
     using System.Reflection;
 #endif
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
     using System.Text.RegularExpressions;
     using Extensions;
     using static System.String;
 
     /// <summary>
-    /// This class wraps instances for reflection based checks (in NFluent).
+    ///     This class wraps instances for reflection based checks (in NFluent).
     /// </summary>
     public class ReflectionWrapper
     {
-        internal string NameInSource { get; }
-        private readonly string prefix;
+        /// <summary>
+        ///     The anonymous type field mask.
+        /// </summary>
+        private static readonly Regex AnonymousTypeFieldMask;
+
+        /// <summary>
+        ///     The auto property mask.
+        /// </summary>
+        private static readonly Regex AutoPropertyMask;
+
         private readonly string labelPattern;
+        private readonly string prefix;
+
+        /// <summary>
+        ///     Initializes static members of the <see cref="ObjectFieldsCheckExtensions" /> class.
+        /// </summary>
+        static ReflectionWrapper()
+        {
+            AutoPropertyMask = new Regex("^<(.*)>k_");
+            AnonymousTypeFieldMask = new Regex("^<(.*)>(i_|\\z)");
+        }
 
         private ReflectionWrapper(string nameInSource, string prefix, string labelPattern, Type type, object value,
             Criteria criteria)
@@ -47,6 +62,8 @@ namespace NFluent.Helpers
             this.ValueType = type;
             this.Value = value;
         }
+
+        internal string NameInSource { get; }
 
         internal string MemberLongName => IsNullOrEmpty(this.prefix)
             ? this.NameInSource
@@ -117,6 +134,7 @@ namespace NFluent.Helpers
                 {
                     return;
                 }
+
                 scanned.Add(this.Value);
             }
 
@@ -148,6 +166,7 @@ namespace NFluent.Helpers
             {
                 return result;
             }
+
             if (this.IsArray)
             {
                 var array = (Array) this.Value;
@@ -175,6 +194,7 @@ namespace NFluent.Helpers
                             {
                                 continue;
                             }
+
                             var expectedValue = this.Value == null ? null : info.GetValue(this.Value);
                             var extended = BuildFromField(this.MemberLongName, info.Name, info.FieldType, expectedValue,
                                 this.Criteria);
@@ -192,6 +212,7 @@ namespace NFluent.Helpers
                             {
                                 continue;
                             }
+
                             var expectedValue = this.Value == null ? null : info.GetValue(this.Value, null);
                             var extended = BuildFromProperty(this.MemberLongName,
                                 info.Name, info.PropertyType, expectedValue, this.Criteria);
@@ -234,25 +255,6 @@ namespace NFluent.Helpers
             return null;
         }
 
-        /// <summary>
-        ///     The anonymous type field mask.
-        /// </summary>
-        private static readonly Regex AnonymousTypeFieldMask;
-
-        /// <summary>
-        ///     The auto property mask.
-        /// </summary>
-        private static readonly Regex AutoPropertyMask;
-
-        /// <summary>
-        ///     Initializes static members of the <see cref="ObjectFieldsCheckExtensions" /> class.
-        /// </summary>
-        static ReflectionWrapper()
-        {
-            AutoPropertyMask = new Regex("^<(.*)>k_");
-            AnonymousTypeFieldMask = new Regex("^<(.*)>(i_|\\z)");
-        }
-
         private static bool EvaluateCriteria(Regex expression, string name, out string actualFieldName)
         {
             var regTest = expression.Match(name);
@@ -264,6 +266,37 @@ namespace NFluent.Helpers
 
             actualFieldName = Empty;
             return false;
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            if (this.ValueType.IsPrimitive())
+            {
+                return this.Value.ToString();
+            }
+            else
+            {
+                var texte = new StringBuilder(100);
+                texte.Append("{ ");
+                var first = true;
+                foreach (var sub in this.GetSubExtendedMemberInfosFields())
+                {
+                    if (!first)
+                    {
+                        texte.Append(", ");
+                    }
+                    else
+                    {
+                        first = false;
+                    }
+
+                    texte.AppendFormat("{0} = {1}", sub.NameInSource, sub);
+                }
+
+                texte.Append(" }");
+                return texte.ToString();
+            }
         }
 
         /// <inheritdoc />
@@ -281,7 +314,7 @@ namespace NFluent.Helpers
 
                 if (depth <= 0 && expected.ValueType.ImplementsEquals())
                 {
-                    isEqual =  EqualityHelper.FluentEquals(expected.Value, actual.Value);
+                    isEqual = EqualityHelper.FluentEquals(expected.Value, actual.Value);
                     return false;
                 }
 
@@ -312,6 +345,7 @@ namespace NFluent.Helpers
             {
                 hash = this.Value.GetHashCode();
             }
+
             return hash;
         }
     }

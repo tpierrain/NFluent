@@ -196,27 +196,8 @@ namespace NFluent
             return checkWithConsidering;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="check"></param>
-        /// <param name="expected"></param>
-        /// <returns></returns>
-        public static ICheckLink<ICheck<ReflectionWrapper>> IsEqualTo<TU>(this ICheck<ReflectionWrapper> check,
-            TU expected)
-        {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var expectedWrapper = ReflectionWrapper.BuildFromInstance(typeof(TU), expected, checker.Value.Criteria);
 
-            var message = CompareMembers(checker, false, false, expectedWrapper, checker.Value);
-            if (message != null)
-            {
-                throw new FluentCheckException(message);
-            }
-
-            return checker.BuildChainingObject();
-        }
-
-        private static string CheckMemberEquality<T, TU>(
+        internal static string CheckMemberEquality<T, TU>(
             IChecker<T, ICheck<T>> checker,
             T value,
             TU expected,
@@ -231,7 +212,7 @@ namespace NFluent
             return CompareMembers(checker, negated, disregardExtra, expectedValue, actualValue);
         }
 
-        private static string CompareMembers<T>(IChecker<T, ICheck<T>> checker, bool negated, bool disregardExtra,
+        internal static string CompareMembers<T>(IChecker<T, ICheck<T>> checker, bool negated, bool disregardExtra,
             ReflectionWrapper expectedValue, ReflectionWrapper actualValue)
         {
             var result = new List<MemberMatch>();
