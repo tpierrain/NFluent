@@ -52,7 +52,7 @@
                         }
                     }
 
-                    var libel = checker.BuildMessage("The {0} is equal to none of {1} whereas it should.").Expected(values);
+                    var libel = checker.BuildMessage("The {0} is equal to none of the {1} whereas it should.").ExpectedValues(values);
                     throw new FluentCheckException(libel.ToString());
                 }
             , checker.BuildMessage("The {0} is equal to one of {1} whereas it should not.").ToString());
