@@ -68,14 +68,14 @@ namespace NFluent.Helpers
             else if (!this.ExpectedFieldFound)
             {
                 result = checker.BuildShortMessage(
-                        $"The {{0}}'s {this.Expected.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.")
+                        $"The {{1}}'s {this.Expected.MemberLabel.DoubleCurlyBraces()} is absent from the {{0}}.")
                     .For("value");
                 result.Expected(this.Expected.Value).Label($"The {{0}} {this.Expected.MemberLabel.DoubleCurlyBraces()}:");
             }
             else if (!this.ActualFieldFound)
             {
                 result = checker.BuildShortMessage(
-                        $"The {{1}}'s {this.actual.MemberLabel.DoubleCurlyBraces()} is absent from the {{0}}.")
+                        $"The {{0}}'s {this.actual.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.")
                     .For("value");
                 result.On(this.actual.Value).Label($"The {{0}} {this.actual.MemberLabel.DoubleCurlyBraces()}:");
             }

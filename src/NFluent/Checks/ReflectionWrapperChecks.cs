@@ -39,7 +39,7 @@
             params object[] values)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            checker.ExecuteCheck(() =>
+            return checker.ExecuteCheck(() =>
                 {
                     foreach (var expected in values)
                     {
@@ -56,7 +56,6 @@
                     throw new FluentCheckException(libel.ToString());
                 }
             , checker.BuildMessage("The {0} is equal to one of {1} whereas it should not.").ToString());
-            return checker.BuildChainingObject();
         }
 
     }
