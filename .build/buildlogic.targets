@@ -290,7 +290,7 @@ RUN ALL UNIT TESTS
   </Target>
 
  <!-- 5- Then PACKAGE -->
-  <Target Name="Package" DependsOnTargets="">
+  <Target Name="Package" DependsOnTargets="SynchroVersion">
     <Message Importance="high" Text="---------- PACKAGE ---------"/>
     <ItemGroup>
       <FilesForNuget Include="@(ProjectFolder)" Condition="'%(ProjectFolder.Package)'!='' AND '%(ProjectFolder.Fwk)'!='core'">
@@ -310,7 +310,7 @@ RUN ALL UNIT TESTS
       <Message Importance="high" Text="[Print] PackageVersion: '$(NumericalVersion)'" />
       <Message Importance="high" Text="[Print] NuspecFilePath: '$(NuspecFilePath)'" />
 
-    <!-- insert the version number into the nuspec file -->
+     <!-- insert the version number into the nuspec file -->
       <XmlPoke 
         XmlInputPath="$(NuspecFilePath)"
           Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
@@ -336,7 +336,7 @@ RUN ALL UNIT TESTS
         XmlInputPath="$(NuspecFilePath)"
           Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
         Query="x:package/x:metadata/x:releaseNotes"
-        Value="$(ReleaseNoteContent)" />
+        Value="$(ReleaseNoteContent.Replace('&lt;', '&amp;lt;').Replace('&gt;', '&amp;gt;'))" />
 
       <Message Importance="high" Text="
 ---------------------------------------------------------------
