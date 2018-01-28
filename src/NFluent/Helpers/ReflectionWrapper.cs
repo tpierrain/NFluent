@@ -81,6 +81,11 @@ namespace NFluent.Helpers
 
         internal static ReflectionWrapper BuildFromInstance(Type type, object value, Criteria criteria)
         {
+            if (type == typeof(ReflectionWrapper))
+            {
+                return value as ReflectionWrapper;
+            }
+
             return new ReflectionWrapper(Empty, Empty, "instance", type, value, criteria);
         }
 
@@ -121,6 +126,35 @@ namespace NFluent.Helpers
             int depth, Func<ReflectionWrapper, ReflectionWrapper, int, bool> mapFunction)
         {
             this.MapFields(other, new List<object>(), depth, mapFunction);
+        }
+
+        internal void ScanFields(Func<ReflectionWrapper, int, bool> scanField)
+        {
+            this.ScanFields(scanField, 1, new List<object>());
+        }
+
+        private void ScanFields(Func<ReflectionWrapper, int, bool> scanField, int depth, ICollection<object> scanned)
+        {
+            if (this.Value != null)
+            {
+                if (scanned.Contains(this.Value))
+                {
+                    return;
+                }
+
+                scanned.Add(this.Value);
+            }
+
+            if (!scanField(this, depth))
+            {
+                return;
+            }
+
+            // we recurse
+            foreach (var member in this.GetSubExtendedMemberInfosFields())
+            {
+                member.ScanFields(scanField, depth - 1, scanned);
+            }
         }
 
         private void MapFields(
@@ -271,32 +305,47 @@ namespace NFluent.Helpers
         /// <inheritdoc />
         public override string ToString()
         {
+            return this.ToString(new List<object>());
+        }
+
+        private string ToString(ICollection<object> scanned)
+        {
+            if (this.Value == null)
+            {
+                return"null";
+            }
+
+            if (scanned.Contains(this.Value))
+            {
+                return "...";
+            }
+
+            scanned.Add(this.Value);
+
             if (this.ValueType.IsPrimitive())
             {
                 return this.Value.ToString();
             }
-            else
-            {
-                var texte = new StringBuilder(100);
-                texte.Append("{ ");
-                var first = true;
-                foreach (var sub in this.GetSubExtendedMemberInfosFields())
-                {
-                    if (!first)
-                    {
-                        texte.Append(", ");
-                    }
-                    else
-                    {
-                        first = false;
-                    }
 
-                    texte.AppendFormat("{0} = {1}", sub.NameInSource, sub);
+            var texte = new StringBuilder(100);
+            texte.Append("{ ");
+            var first = true;
+            foreach (var sub in this.GetSubExtendedMemberInfosFields())
+            {
+                if (!first)
+                {
+                    texte.Append(", ");
+                }
+                else
+                {
+                    first = false;
                 }
 
-                texte.Append(" }");
-                return texte.ToString();
+                texte.AppendFormat("{0} = {1}", sub.NameInSource, sub.ToString(scanned));
             }
+
+            texte.Append(" }");
+            return texte.ToString();
         }
 
         /// <inheritdoc />

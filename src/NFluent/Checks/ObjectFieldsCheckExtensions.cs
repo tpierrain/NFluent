@@ -196,7 +196,6 @@ namespace NFluent
             return checkWithConsidering;
         }
 
-
         internal static string CheckMemberEquality<T, TU>(
             IChecker<T, ICheck<T>> checker,
             T value,

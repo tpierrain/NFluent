@@ -58,5 +58,51 @@
             , checker.BuildMessage("The {0} is equal to one of {1} whereas it should not.").ToString());
         }
 
+        /// <inheritdoc cref="ObjectCheckExtensions.IsNull{T}(NFluent.ICheck{T})"/>
+        public static ICheckLink<ICheck<ReflectionWrapper>> IsNull(this ICheck<ReflectionWrapper> check)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            return checker.ExecuteCheck(() =>
+                {
+                    checker.Value.ScanFields((scan, depth) =>
+                    {
+                        if (depth <= 0 && scan.Value != null)
+                        {
+                            var message = checker.BuildMessage("The {0} has a non null member, whereas it should not.")
+                                .On(scan);
+                            throw new FluentCheckException(message.ToString());
+                        }
+                        else
+                        {
+                            return scan.Value != null;
+                        }
+
+                    });
+                }, 
+                checker.BuildShortMessage("The {0} has only null member, whereas it should not.").ToString());
+        }
+
+        /// <inheritdoc cref="ObjectCheckExtensions.IsNotNull{T}(NFluent.ICheck{T})"/>
+        public static ICheckLink<ICheck<ReflectionWrapper>> IsNotNull(this ICheck<ReflectionWrapper> check)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            return checker.ExecuteCheck(() =>
+                {
+                    checker.Value.ScanFields((scan, depth) =>
+                    {
+                        if (depth <= 0 && scan.Value == null)
+                        {
+                            var message = checker.BuildShortMessage("The {0} has a null member, whereas it should not.");
+                            throw new FluentCheckException(message.ToString());
+                        }
+                        else
+                        {
+                            return scan.Value != null;
+                        }
+
+                    });
+                }, 
+                checker.BuildMessage("The {0} has no null member, whereas it should.").ToString());
+        }
     }
 }

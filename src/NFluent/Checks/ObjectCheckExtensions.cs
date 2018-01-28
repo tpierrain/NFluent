@@ -323,12 +323,14 @@ namespace NFluent
 
         private static string IsNullImpl(object value, bool negated)
         {
+            var isNull = (value == null);
+ 
             if (!negated)
             {
-                return value == null ? null : "The {0} must be null.";
+                return isNull ? null : "The {0} must be null.";
             }
 
-            return value == null ? "The {0} must not be null." : null;
+            return isNull ? "The {0} must not be null." : null;
         }
 
         /// <summary>

@@ -163,6 +163,14 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void WorkWhenDoubled()
+        {
+            var sut = new SutClass(2, 42, 4, null);
+
+            Check.That(sut).Considering().All.Fields.And.All.Properties.Considering().All.Fields.And.All.Properties.IsEqualTo(new SutClass(2, 42, 4, null));
+        }
+
+        [Test]
         public void WorkForIdenticalPublicFields()
         {
             var sut = new SutClass(2, 42);
@@ -311,6 +319,47 @@ namespace NFluent.Tests
             }).FailsWithMessage("", "The checked value is equal to none of the expected value(s) whereas it should.", "The checked value:", "\t[{ TheProperty = 13 }]", "The expected value(s):", "\t[{ TheProperty = 12 }, { TheProperty = 14 }]");
         }
 
+        [Test]
+        public void
+            WorkForIsNull()
+        {
+            var sut = new SutClass(5, 7);
+            Check.That(sut).Considering().NonPublic.Properties.IsNull();
+            Check.ThatCode(() => { Check.That(sut).Considering().NonPublic.Properties.Not.IsNull(); })
+                .FailsWithMessage("", "The checked value has only null member, whereas it should not.");
+            Check.ThatCode(() => { Check.That(sut).Considering().Public.Properties.IsNull();})
+                .FailsWithMessage("", "The checked value has a non null member, whereas it should not.", "The checked value:", "\t[7]");
+        }
+
+        [Test]
+        public void
+            WorkForIsNotNull()
+        {
+            var sut = new SutClass(5, 7);
+            Check.That(sut).Considering().Public.Properties.IsNotNull();
+            Check.ThatCode(() => { Check.That(sut).Considering().Public.Properties.Not.IsNotNull(); }).
+                FailsWithMessage("", "The checked value has no null member, whereas it should.", "The checked value:", "\t[{ TheProperty = 7 }]");
+            Check.ThatCode(() => { Check.That(sut).Considering().NonPublic.Properties.IsNotNull();})
+                .FailsWithMessage("", "The checked value has a null member, whereas it should not.");
+        }
+
+        [Test]
+        public void
+            WorkForIsNotNullOnRecursive()
+        {
+            Check.That(new Recurse()).Considering().All.Fields.IsNotNull();
+        }
+
+        private class Recurse
+        {
+            private Recurse me;
+            private int x = 2;
+
+            public Recurse()
+            {
+                this.me = this;
+            }
+        }
         // GH #219
         public class Parent
         {
