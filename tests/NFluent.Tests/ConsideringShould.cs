@@ -355,6 +355,13 @@ namespace NFluent.Tests
             WorkForIsSameReference()
         {
             var sharedReference = new object();
+            Check.ThatCode(() =>
+            {
+                Check.That(new {Property = sharedReference, Properties = 2}).Considering().Public.Properties
+                    .IsSameReferenceAs(new {Property = sharedReference});
+            }).FailsWithMessage("", "The checked value's property 'Properties' is absent from the expected one.", "The value property 'Properties':", "\t[2]");
+
+
             Check.That(new {Property = sharedReference}).Considering().Public.Properties
                 .IsSameReferenceAs(new {Property = sharedReference});
             Check.ThatCode(() =>
@@ -362,16 +369,13 @@ namespace NFluent.Tests
                 Check.That(new {Property = sharedReference}).Considering().Public.Properties
                     .IsSameReferenceAs(new {Property = (object) null});
             }).FailsWithMessage("", "The checked value's property 'Property' does not reference the expected instance.", "The checked value:", "\t[{  }]", "The expected value:", "\t[null]");
-            Check.ThatCode(() =>
-            {
-                Check.That(new {Property = sharedReference, Properties = 2}).Considering().Public.Properties
-                    .IsSameReferenceAs(new {Property = sharedReference});
-            }).FailsWithMessage("", "The checked value's property 'Properties' is absent from the expected one.", "The value property 'Properties':", "\t[2]");
+
             Check.ThatCode(() =>
             {
                 Check.That(new {Properties = (object) null}).Considering().Public.Properties
-                    .IsSameReferenceAs(new {Property = sharedReference});
-            }).FailsWithMessage("", "The checked value's property 'Properties' is absent from the expected one.", "The value property 'Properties':", "\t[null]");
+                    .IsSameReferenceAs(new {Property = sharedReference, Properties = (object) null});
+            }).FailsWithMessage("", "The expected one's property 'Property' is absent from the checked value.", "The expected property 'Property':", "\t[System.Object]");
+
         }
 
         private class Recurse

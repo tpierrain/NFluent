@@ -128,7 +128,7 @@ namespace NFluent
                 {
                     var expectedWrapper =
                         ReflectionWrapper.BuildFromInstance(typeof(TU), expected, checker.Value.Criteria);
-                    checker.Value.MapFields(expectedWrapper, 1, (match, scan, depth) =>
+                    expectedWrapper.MapFields(checker.Value, 1, (scan, match, depth) =>
                     {
                         if (depth <= 0)
                         {

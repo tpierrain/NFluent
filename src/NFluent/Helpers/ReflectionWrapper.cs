@@ -188,7 +188,7 @@ namespace NFluent.Helpers
             {
                 if (this.FindMember(actualFields) == null)
                 {
-                    mapFunction(null, actualFields, depth);
+                    mapFunction(null, actualFields, depth - 1);
                 }
             }
         }
