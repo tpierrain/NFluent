@@ -355,13 +355,7 @@ namespace NFluent.Tests
             WorkForIsSameReference()
         {
             var sharedReference = new object();
-            Check.ThatCode(() =>
-            {
-                Check.That(new {Property = sharedReference, Properties = 2}).Considering().Public.Properties
-                    .IsSameReferenceAs(new {Property = sharedReference});
-            }).FailsWithMessage("", "The checked value's property 'Properties' is absent from the expected one.", "The value property 'Properties':", "\t[2]");
-
-
+ 
             Check.That(new {Property = sharedReference}).Considering().Public.Properties
                 .IsSameReferenceAs(new {Property = sharedReference});
             Check.ThatCode(() =>
@@ -376,6 +370,40 @@ namespace NFluent.Tests
                     .IsSameReferenceAs(new {Property = sharedReference, Properties = (object) null});
             }).FailsWithMessage("", "The expected one's property 'Property' is absent from the checked value.", "The expected property 'Property':", "\t[System.Object]");
 
+            Check.ThatCode(() =>
+            {
+                Check.That(new {Property = sharedReference, Properties = 2}).Considering().Public.Properties
+                    .IsSameReferenceAs(new {Property = sharedReference});
+            }).FailsWithMessage("", "The checked value's property 'Properties' is absent from the expected one.", "The value property 'Properties':", "\t[2]");
+
+        }
+
+        [Test]
+        public void
+            WorkForIsDistinct()
+        {
+            var sharedReference = new object();
+
+            Check.That(new {Property = sharedReference}).Considering().Public.Properties
+                .IsDistinctFrom(new {Property = new object()});
+            Check.ThatCode(() =>
+            {
+                Check.That(new {Property = sharedReference}).Considering().Public.Properties
+                    .IsDistinctFrom(new {Property = sharedReference});
+            }).FailsWithMessage(
+                "", "The checked value's property 'Property' does reference the reference instance, whereas it should not.", "The checked value:", "\t[{  }]");
+
+            Check.ThatCode(() =>
+            {
+                Check.That(new {Properties = (object) null}).Considering().Public.Properties
+                    .IsDistinctFrom(new {Property = sharedReference, Properties = (object) null});
+            }).FailsWithMessage("", "The expected one's property 'Property' is absent from the checked value.", "The expected property 'Property':", "\t[System.Object]");
+
+            Check.ThatCode(() =>
+            {
+                Check.That(new {Property = sharedReference, Properties = 2}).Considering().Public.Properties
+                    .IsDistinctFrom(new {Property = new object()});
+            }).FailsWithMessage("", "The checked value's property 'Properties' is absent from the expected one.", "The value property 'Properties':", "\t[2]");
         }
 
         private class Recurse

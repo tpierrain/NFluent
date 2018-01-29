@@ -158,10 +158,54 @@ namespace NFluent
 
                             return scan.Value != null;
                         }
-                        else
+
+                        return true;
+                    });
+                },
+                checker.BuildMessage("The {0} has no null member, whereas it should.").ToString());
+        }
+
+        /// <inheritdoc cref="ObjectCheckExtensions.IsDistinctFrom{T,TU}" />
+        public static ICheckLink<ICheck<ReflectionWrapper>> IsDistinctFrom<TU>(this ICheck<ReflectionWrapper> check,
+            TU expected)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            return checker.ExecuteCheck(() =>
+                {
+                    var expectedWrapper =
+                        ReflectionWrapper.BuildFromInstance(typeof(TU), expected, checker.Value.Criteria);
+                    expectedWrapper.MapFields(checker.Value, 1, (scan, match, depth) =>
+                    {
+                        if (depth <= 0)
                         {
-                            return true;
+                            if (match == null)
+                            {
+                                var result = checker.BuildShortMessage(
+                                        $"The {{1}}'s {scan.MemberLabel.DoubleCurlyBraces()} is absent from the {{0}}.")
+                                    .For("value").Expected(scan.Value).Label($"The {{0}} {scan.MemberLabel.DoubleCurlyBraces()}:");
+                                throw new FluentCheckException(result.ToString());
+                            }
+
+                            if (scan == null)
+                            {
+                                var result = checker.BuildShortMessage(
+                                        $"The {{0}}'s {match.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.")
+                                    .For("value").On(match.Value).Label($"The {{1}} {match.MemberLabel.DoubleCurlyBraces()}:");
+                                throw new FluentCheckException(result.ToString());
+                            }
+                            if (ReferenceEquals(scan.Value, match.Value))
+                            {
+                                var message =
+                                    checker.BuildShortMessage(
+                                            $"The {{0}}'s {match.MemberLabel.DoubleCurlyBraces()} does reference the reference instance, whereas it should not.")
+                                        .For("value").On(match);
+                                throw new FluentCheckException(message.ToString());
+                            }
+
+                            return scan.Value != null;
                         }
+
+                        return true;
                     });
                 },
                 checker.BuildMessage("The {0} has no null member, whereas it should.").ToString());
