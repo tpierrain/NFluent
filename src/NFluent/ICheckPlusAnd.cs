@@ -17,6 +17,7 @@ namespace NFluent
 {
     using Helpers;
 
+    /// <inheritdoc />
     /// <summary>
     /// Allows to select multiple scope using 'And' keyword
     /// </summary>

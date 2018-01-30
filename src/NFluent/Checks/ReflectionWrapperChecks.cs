@@ -114,7 +114,6 @@ namespace NFluent
                         var message =
                             checker.BuildShortMessage("The {0} has a null member, whereas it should not.");
                         throw new FluentCheckException(message.ToString());
-
                     });
                 },
                 checker.BuildMessage("The {0} has no null member, whereas it should.").ToString());
@@ -140,7 +139,8 @@ namespace NFluent
                         {
                             var result = checker.BuildShortMessage(
                                     $"The {{1}}'s {scan.MemberLabel.DoubleCurlyBraces()} is absent from the {{0}}.")
-                                .For("value").Expected(scan.Value).Label($"The {{0}} {scan.MemberLabel.DoubleCurlyBraces()}:");
+                                .For("value").Expected(scan.Value)
+                                .Label($"The {{0}} {scan.MemberLabel.DoubleCurlyBraces()}:");
                             throw new FluentCheckException(result.ToString());
                         }
 
@@ -148,9 +148,11 @@ namespace NFluent
                         {
                             var result = checker.BuildShortMessage(
                                     $"The {{0}}'s {match.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.")
-                                .For("value").On(match.Value).Label($"The {{1}} {match.MemberLabel.DoubleCurlyBraces()}:");
+                                .For("value").On(match.Value)
+                                .Label($"The {{1}} {match.MemberLabel.DoubleCurlyBraces()}:");
                             throw new FluentCheckException(result.ToString());
                         }
+
                         if (!ReferenceEquals(scan.Value, match.Value))
                         {
                             var message =
@@ -161,7 +163,6 @@ namespace NFluent
                         }
 
                         return scan.Value != null;
-
                     });
                 },
                 checker.BuildMessage("The {0} has no null member, whereas it should.").ToString());
@@ -187,7 +188,8 @@ namespace NFluent
                         {
                             var result = checker.BuildShortMessage(
                                     $"The {{1}}'s {scan.MemberLabel.DoubleCurlyBraces()} is absent from the {{0}}.")
-                                .For("value").Expected(scan.Value).Label($"The {{0}} {scan.MemberLabel.DoubleCurlyBraces()}:");
+                                .For("value").Expected(scan.Value)
+                                .Label($"The {{0}} {scan.MemberLabel.DoubleCurlyBraces()}:");
                             throw new FluentCheckException(result.ToString());
                         }
 
@@ -195,9 +197,11 @@ namespace NFluent
                         {
                             var result = checker.BuildShortMessage(
                                     $"The {{0}}'s {match.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.")
-                                .For("value").On(match.Value).Label($"The {{1}} {match.MemberLabel.DoubleCurlyBraces()}:");
+                                .For("value").On(match.Value)
+                                .Label($"The {{1}} {match.MemberLabel.DoubleCurlyBraces()}:");
                             throw new FluentCheckException(result.ToString());
                         }
+
                         if (ReferenceEquals(scan.Value, match.Value))
                         {
                             var message =
@@ -208,7 +212,6 @@ namespace NFluent
                         }
 
                         return scan.Value != null;
-
                     });
                 },
                 checker.BuildMessage("The {0} has no null member, whereas it should.").ToString());
