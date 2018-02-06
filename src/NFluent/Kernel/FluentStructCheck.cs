@@ -46,28 +46,16 @@ namespace NFluent.Kernel
             this.structChecker = new Checker<T, IStructCheck<T>>(this);
         }
 
-        /// <summary>
-        /// Gets the value to be tested (provided for any extension method to be able to test it).
-        /// </summary>
-        /// <value>
-        /// The value to be tested by any fluent check extension method.
-        /// </value>
+        /// <inheritdoc />
+
         public T Value { get; private set; }
 
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="FluentCheck{T}" /> should be negated or not.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if all the methods applying to this check instance should be negated; <c>false</c> otherwise.
-        /// </value>
+        /// <inheritdoc />
+
         public bool Negated { get; private set; }
 
-        /// <summary>
-        /// Negates the next check.
-        /// </summary>
-        /// <value>
-        /// The next check negated.
-        /// </value>
+        /// <inheritdoc />
+
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         public IStructCheck<T> Not
         {

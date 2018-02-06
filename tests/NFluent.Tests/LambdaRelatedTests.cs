@@ -198,7 +198,7 @@ namespace NFluent.Tests
         [Test]
         public void CanCheckForAMessageOnExceptionRaised()
         {
-            Check.ThatCode(() => { throw new LambdaExceptionForTest(123, "my error message"); }).Throws<LambdaExceptionForTest>().WithMessage("Err #123 : my error message").And.WithProperty("ExceptionNumber", 123);
+            Check.ThatCode(() => throw new LambdaExceptionForTest(123, "my error message")).Throws<LambdaExceptionForTest>().WithMessage("Err #123 : my error message").And.WithProperty("ExceptionNumber", 123);
         }
 
         [Test]
@@ -206,7 +206,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatCode(() => { throw new LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaExceptionForTest>().WithMessage("a buggy message");
+                Check.ThatCode(() => throw new LambdaExceptionForTest(321, "my error message")).Throws<LambdaExceptionForTest>().WithMessage("a buggy message");
             })
             .Throws<FluentCheckException>()
             .WithMessage(Environment.NewLine+ "The message of the checked exception is not as expected." + Environment.NewLine + "The checked exception message:" + Environment.NewLine + "\t[\"Err #321 : my error message\"]" + Environment.NewLine + "The expected exception message:" + Environment.NewLine + "\t[\"a buggy message\"]");

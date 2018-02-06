@@ -14,6 +14,7 @@ _IsNotInstanceOf\<type\>()_,  _HasSameValueAs()_, _IsSameReferenceAs(), _IsDisti
 - **Object**
   - New check **IsInstanceOfType(Type type)** which is equivalent to *IsInstanceOf\<type\>()*, in a non genric form for parameterized tests.
   - New check **IsNoInstanceOfType(Type type)** which is equivalent to *IsNotInstanceOf\<type\>()*, in a non genric form for parameterized tests.
+  - New check **InheritsFromType(Type type)** which is equivalent to *InheritsFrom\<type\>()*, in a non genric form for parameterized tests.
 - **Enum**
   - New check **HasFlag(xxx)** that checks if a flag is present in an enum value.
 

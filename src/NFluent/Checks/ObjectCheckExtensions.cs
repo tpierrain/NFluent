@@ -198,19 +198,30 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked expression is not in the inheritance hierarchy of the given kind.</exception>
         public static void InheritsFrom<T>(this ICheck<object> check)
         {
+            check.InheritsFromType(typeof(T));
+        }
+
+        /// <summary>
+        /// Checks that the actual expression is in the inheritance hierarchy of the given kind or of the same kind.
+        /// </summary>
+        /// <typeparam name="T">Type of SUT</typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="parentType">Expected type that should be^part of hierarchy</param>
+        /// <returns>a check link object</returns>
+        public static ICheckLink<ICheck<T>> InheritsFromType<T>(this ICheck<T> check, Type parentType)
+        {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             var instanceType = checker.Value.GetTypeWithoutThrowingException();
-            var expectedBaseType = typeof(T);
 
-            checker.ExecuteNotChainableCheck(
-                () => IsInstanceHelper.InheritsFrom(checker, expectedBaseType),
+            return checker.ExecuteCheck(
+                () => IsInstanceHelper.InheritsFrom(checker, parentType),
                 string.Format(
                     Environment.NewLine + "The checked expression is part of the inheritance hierarchy or of the same type than the specified one."
-                    + Environment.NewLine + "Indeed, checked expression type:" + Environment.NewLine + "\t[{0}]"
-                    + Environment.NewLine + "is a derived type of" + Environment.NewLine + "\t[{1}].",
+                                        + Environment.NewLine + "Indeed, checked expression type:" + Environment.NewLine + "\t[{0}]"
+                                        + Environment.NewLine + "is a derived type of" + Environment.NewLine + "\t[{1}].",
                     instanceType.ToStringProperlyFormatted(),
-                    expectedBaseType.ToStringProperlyFormatted()));
+                    parentType.ToStringProperlyFormatted()));
         }
 
         /// <summary>

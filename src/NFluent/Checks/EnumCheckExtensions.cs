@@ -16,11 +16,13 @@
 namespace NFluent
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using Extensions;
 
     /// <summary>
     /// Hosts Enum specific checks
     /// </summary>
+    [SuppressMessage("ReSharper", "SuspiciousTypeConversion.Global")]
     public static class EnumCheckExtensions
     {
         /// <summary>
@@ -30,10 +32,10 @@ namespace NFluent
         /// <param name="check">check object</param>
         /// <param name="flag">flag to check if it is present</param>
         /// <returns>link object for further checks</returns>
-        public static ICheckLink<IStructCheck<T>> DoesNotHaveFlag<T>(this IStructCheck<T> check, T flag)
+        public static ICheckLink<ICheck<T>> DoesNotHaveFlag<T>(this ICheck<T> check, T flag)
             where T : struct, IConvertible
         {
-            var checker = ((ICheckForExtensibility<T, IStructCheck<T>>)check).Checker;
+            var checker = ((ICheckForExtensibility<T, ICheck<T>>)check).Checker;
             // TODO: factorize this into a method
             return checker.Negated ? checker.BuildChainingObject().And.HasFlag(flag) : check.Not.HasFlag(flag);
         }
@@ -45,10 +47,9 @@ namespace NFluent
         /// <param name="check">check object</param>
         /// <param name="flag">flag to check if it is present</param>
         /// <returns>link object for further checks</returns>
-        public static ICheckLink<IStructCheck<T>> HasFlag<T>(this IStructCheck<T> check, T flag) where T : struct, IConvertible
+        public static ICheckLink<ICheck<T>> HasFlag<T>(this ICheck<T> check, T flag) where T : struct, IConvertible
         {
-            // ReSharper disable once SuspiciousTypeConversion.Global
-            var checker = ((ICheckForExtensibility<T, IStructCheck<T>>)check).Checker;
+            var checker = ((ICheckForExtensibility<T, ICheck<T>>)check).Checker;
             if (!typeof(T).TypeHasAttribute(typeof(FlagsAttribute)))
             {
                 var message  = checker.BuildMessage("The checked enum type is not a set of flags. You must add [Flags] attribute to its declaration.")

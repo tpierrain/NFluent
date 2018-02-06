@@ -138,19 +138,19 @@ namespace NFluent.Tests
         [Test]
         public void HasFlagWorkAsExpected()
         {
-            Check.ThatEnum(Flags.First).HasFlag(Flags.First);
+            Check.That(Flags.First).HasFlag(Flags.First);
         }
 
         [Test]
         public void DoesNotHaveFlagWorkAsExpected()
         {
-            Check.ThatEnum(Flags.Second).DoesNotHaveFlag(Flags.First);
+            Check.That(Flags.Second).DoesNotHaveFlag(Flags.First);
         }
 
         [Test]
         public void HasFlagFailsWhenRelevant()
         {
-            Check.ThatCode( ()=>  Check.ThatEnum(Flags.Second|Flags.Third).HasFlag(Flags.First))
+            Check.ThatCode( ()=>  Check.That(Flags.Second|Flags.Third).HasFlag(Flags.First))
                 .Throws<FluentCheckException>()
                 .AndWhichMessage()
                 .AsLines()
@@ -165,7 +165,7 @@ namespace NFluent.Tests
         [Test]
         public void DoesNotHaveFlagFailsWhenRelevant()
         {
-            Check.ThatCode( ()=>  Check.ThatEnum(Flags.First|Flags.Third).DoesNotHaveFlag(Flags.First))
+            Check.ThatCode( ()=>  Check.That(Flags.First|Flags.Third).DoesNotHaveFlag(Flags.First))
                 .Throws<FluentCheckException>()
                 .AndWhichMessage()
                 .AsLines()
@@ -180,7 +180,7 @@ namespace NFluent.Tests
         [Test]
         public void HasFlagFailsProperlyWhenNegated()
         {
-            Check.ThatCode( ()=>  Check.ThatEnum(Flags.First|Flags.Third).Not.HasFlag(Flags.First))
+            Check.ThatCode( ()=>  Check.That(Flags.First|Flags.Third).Not.HasFlag(Flags.First))
                 .Throws<FluentCheckException>()
                 .AndWhichMessage()
                 .AsLines()
@@ -195,7 +195,7 @@ namespace NFluent.Tests
         [Test]
         public void DoesNotHasFlagFailsProperlyWhenNegated()
         {
-            Check.ThatCode( ()=>  Check.ThatEnum(Flags.Second|Flags.Third).Not.DoesNotHaveFlag(Flags.First))
+            Check.ThatCode( ()=>  Check.That(Flags.Second|Flags.Third).Not.DoesNotHaveFlag(Flags.First))
                 .Throws<FluentCheckException>()
                 .AndWhichMessage()
                 .AsLines()
@@ -210,7 +210,7 @@ namespace NFluent.Tests
         [Test]
         public void FailsIfNotFlags()
         {
-            Check.ThatCode( ()=>  Check.ThatEnum(Nationality.American).HasFlag(Nationality.French))
+            Check.ThatCode( ()=>  Check.That(Nationality.American).HasFlag(Nationality.French))
                 .Throws<FluentCheckException>()
                 .AndWhichMessage()
                 .AsLines()
@@ -225,7 +225,7 @@ namespace NFluent.Tests
         [Test]
         public void FailsIfCheckOn0()
         {
-            Check.ThatCode( ()=>  Check.ThatEnum(Flags.First).HasFlag(Flags.None))
+            Check.ThatCode( ()=>  Check.That(Flags.First).HasFlag(Flags.None))
                 .Throws<FluentCheckException>()
                 .AndWhichMessage()
                 .AsLines()

@@ -21,8 +21,9 @@ namespace NFluent.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class StreamTests
+    public class CheckOnStreamShould
     {
+
         [Test]
         public void HasSameSequenceOfBytesAs_works()
         {

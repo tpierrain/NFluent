@@ -187,7 +187,7 @@ namespace NFluent
         /// <typeparam name="T"></typeparam>
         /// <param name="check"></param>
         /// <returns></returns>
-        public static IPublicOrNot Considering<T>(this ICheck<T> check)
+        public static IPublicOrNot Considering<T>(this ICheck<T> check) where T:class
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var fieldsWrapper = ReflectionWrapper.BuildFromInstance(typeof(T), checker.Value,
