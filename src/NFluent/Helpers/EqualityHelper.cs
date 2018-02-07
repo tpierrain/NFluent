@@ -1,26 +1,26 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="EqualityHelper.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using NFluent.Extensibility;
-using NFluent.Extensions;
+﻿// --------------------------------------------------------------------------------------------------------------------
+//  <copyright file="EqualityHelper.cs" company="NFluent">
+//   Copyright 2018 Thomas PIERRAIN & Cyrille DUPUYDAUBY
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent.Helpers
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using Extensibility;
+    using Extensions;
+
 #if NETSTANDARD1_3
     using System.Reflection;
 #endif
@@ -123,7 +123,9 @@ namespace NFluent.Helpers
         {
             var instance = checker.Value;
             if (FluentEquals(instance, expected))
+            {
                 return;
+            }
 
             // Should throw
             throw new FluentCheckException(BuildErrorMessage(checker, expected, false, false));
@@ -138,7 +140,8 @@ namespace NFluent.Helpers
         /// </typeparam>
         /// <typeparam name="TU">
         ///     Checker type.
-        /// </typeparam>N
+        /// </typeparam>
+        /// N
         /// <param name="checker">The checker.</param>
         /// <param name="expected">The expected instance.</param>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
@@ -164,18 +167,20 @@ namespace NFluent.Helpers
                     }
 
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
-                    var ratio = (expected == 0.0) ? 1.0 : Math.Abs(diff / expected);
+                    var ratio = expected == 0.0 ? 1.0 : Math.Abs(diff / expected);
                     var mainLine = $"The {{0}} is different from the {{1}}";
                     if (ratio < 0.0001)
                     {
                         mainLine += $", with a difference of {diff:G2}";
                     }
+
                     mainLine += ".";
 
                     if (ratio < 0.000000001)
                     {
                         mainLine += " You may consider using IsCloseTo() for comparison.";
                     }
+
                     var message = checker.BuildMessage(mainLine).Expected(checker.Value);
                     throw new FluentCheckException(message.ToString());
                 },
@@ -195,18 +200,20 @@ namespace NFluent.Helpers
                     }
 
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
-                    var ratio = (expected == 0.0) ? 1.0 : Math.Abs(diff / expected);
+                    var ratio = expected == 0.0 ? 1.0 : Math.Abs(diff / expected);
                     var mainLine = $"The {{0}} is different from the {{1}}";
                     if (ratio < 0.001)
                     {
                         mainLine += $", with a difference of {diff:G2}";
                     }
+
                     mainLine += ".";
 
                     if (ratio < 0.00001)
                     {
                         mainLine += " You may consider using IsCloseTo() for comparison.";
                     }
+
                     var message = checker.BuildMessage(mainLine).Expected(checker.Value);
                     throw new FluentCheckException(message.ToString());
                 },
@@ -247,7 +254,7 @@ namespace NFluent.Helpers
         private static bool FluentEquals(object instance, object expected, EqualityMode mode)
         {
             // ReSharper disable once RedundantNameQualifier
-            var ret = object.Equals(instance, expected);
+            var ret = Equals(instance, expected);
             if (mode == EqualityMode.FluentEquals)
             {
                 return ValueDifference(instance, "actual", expected, "expected").Count == 0;
@@ -273,23 +280,8 @@ namespace NFluent.Helpers
 
                 ret = (bool) ope.Invoke(null, new[] {instance, expected});
             }
+
             return ret;
-        }
-
-        internal class EqualityComparer<T>: IEqualityComparer<T>
-        {
-            public bool Equals(T x, T y)
-            {
-                return FluentEquals(x, y, Check.EqualMode);
-            }
-
-            //ncrunch: no coverage start
-            [Obsolete("Not implemented")]
-            public int GetHashCode(T obj)
-            {
-                throw new NotSupportedException();
-            }
-            //ncrunch: no coverage end
         }
 
         internal static IList<DifferenceDetails> ValueDifference(object firstItem, string firstName, object otherItem,
@@ -299,7 +291,8 @@ namespace NFluent.Helpers
                 new List<object>());
         }
 
-        private static IList<DifferenceDetails> ValueDifference(object firstItem, string firstName, object otherItem, string secondName, List<object> firstSeen, List<object> secondSeen)
+        private static IList<DifferenceDetails> ValueDifference(object firstItem, string firstName, object otherItem,
+            string secondName, List<object> firstSeen, List<object> secondSeen)
         {
             var result = new List<DifferenceDetails>();
             if (firstItem == null)
@@ -308,8 +301,10 @@ namespace NFluent.Helpers
                 {
                     result.Add(new DifferenceDetails(firstName, null, secondName, otherItem));
                 }
+
                 return result;
             }
+
             if (firstItem.Equals(otherItem))
             {
                 return result;
@@ -321,6 +316,7 @@ namespace NFluent.Helpers
                 {
                     return ValueDifferenceEnumerable(first, firstName, second, secondName, firstSeen, secondSeen);
                 }
+
                 if (ExtensionsCommonHelpers.IsNumerical(firstItem.GetType()) &&
                     ExtensionsCommonHelpers.IsNumerical(otherItem.GetType()))
                 {
@@ -336,7 +332,8 @@ namespace NFluent.Helpers
             return result;
         }
 
-        private static IList<DifferenceDetails> ValueDifferenceEnumerable(IEnumerable firstItem, string firstName, IEnumerable otherItem,
+        private static IList<DifferenceDetails> ValueDifferenceEnumerable(IEnumerable firstItem, string firstName,
+            IEnumerable otherItem,
             string secondName, List<object> firstSeen, List<object> secondSeen)
         {
             var valueDifferences = new List<DifferenceDetails>();
@@ -359,16 +356,36 @@ namespace NFluent.Helpers
                     valueDifferences.Add(new DifferenceDetails(firstItemName, item, null, null));
                     break;
                 }
+
                 var secondItemName = $"{secondName}[{index}]";
                 valueDifferences.AddRange(ValueDifference(item, firstItemName, scanner.Current,
                     secondItemName, new List<object>(firstSeen), new List<object>(secondSeen)));
                 index++;
             }
+
             if (scanner.MoveNext())
             {
                 valueDifferences.Add(new DifferenceDetails(null, null, $"{secondName}[{index}]", scanner.Current));
             }
+
             return valueDifferences;
+        }
+
+        internal class EqualityComparer<T> : IEqualityComparer<T>
+        {
+            public bool Equals(T x, T y)
+            {
+                return FluentEquals(x, y, Check.EqualMode);
+            }
+
+            //ncrunch: no coverage start
+            [Obsolete("Not implemented")]
+            public int GetHashCode(T obj)
+            {
+                throw new NotSupportedException();
+            }
+
+            //ncrunch: no coverage end
         }
 
         internal class DifferenceDetails
@@ -386,6 +403,5 @@ namespace NFluent.Helpers
             public object FirstValue { get; internal set; }
             public object SecondValue { get; internal set; }
         }
-
     }
 }

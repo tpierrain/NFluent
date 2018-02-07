@@ -48,7 +48,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IsOneOfRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IsOnlyMadeOfTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LambdaDurationTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)LambdaRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CheckThatCodeShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mood.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Nationality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NotRelatedTests.cs" />

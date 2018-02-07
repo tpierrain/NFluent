@@ -1,17 +1,17 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="LambdaRelatedTests.cs" company="">
-// //   Copyright 2016 Cyrille DUPUYDAUBY & Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿ // --------------------------------------------------------------------------------------------------------------------
+ // <copyright file="CheckThatCodeShould.cs" company="">
+ //   Copyright 2016 Cyrille DUPUYDAUBY & Thomas PIERRAIN
+ //   Licensed under the Apache License, Version 2.0 (the "License");
+ //   you may not use this file except in compliance with the License.
+ //   You may obtain a copy of the License at
+ //       http://www.apache.org/licenses/LICENSE-2.0
+ //   Unless required by applicable law or agreed to in writing, software
+ //   distributed under the License is distributed on an "AS IS" BASIS,
+ //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ //   See the License for the specific language governing permissions and
+ //   limitations under the License.
+ // </copyright>
+ // --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent.Tests
 {
@@ -22,12 +22,12 @@ namespace NFluent.Tests
 
     using Helpers;
 
-    using NFluent.ApiChecks;
+    using ApiChecks;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class LambdaRelatedTests
+    public class CheckThatCodeShould
     {
         private CultureSession session;
 
@@ -134,7 +134,7 @@ namespace NFluent.Tests
 #if DOTNET_30 || DOTNET_20
             NFluent.
 #endif
-            Func<bool> sut = () => { throw new Exception(); };
+            Func<bool> sut = () => throw new Exception();
 
             Check.ThatCode(sut).ThrowsAny();
         }
@@ -172,7 +172,7 @@ namespace NFluent.Tests
         [Test]
         public void CanRaiseWhenUsedWithAnonymousActionExpression()
         {
-            Check.ThatCode(() => { throw new Exception(); }).ThrowsAny();
+            Check.ThatCode(() => throw new Exception()).ThrowsAny();
         }
 
         [Test]
@@ -192,7 +192,13 @@ namespace NFluent.Tests
         {
             var sut = new AnObjectThatCanCrashWithPropertyGet(0);
             Check.ThatCode(() => sut.BeastBreaker).Throws<DivideByZeroException>();
+        }
 
+        [Test]
+        public void
+            ThrowsWorkWithAlternateSyntax()
+        {
+            Check.ThatCode(() => throw new DivideByZeroException()).ThrowsType(typeof(DivideByZeroException));
         }
 
         [Test]
@@ -244,7 +250,7 @@ namespace NFluent.Tests
         [Test]
         public void CanCheckForPropertyWithExpression()
         {
-            Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); })
+            Check.ThatCode(() => { throw new CheckThatCodeShould.LambdaExceptionForTest(321, "my error message"); })
                 .Throws<LambdaExceptionForTest>()
                 .WithProperty(ex => ex.ExceptionNumber, 321);
         }
@@ -253,7 +259,7 @@ namespace NFluent.Tests
         [Test]
         public void CanCheckForPropertyWithComplexExpression()
         {
-            Check.ThatCode(() => { throw new LambdaRelatedTests.LambdaExceptionForTest(321, "my error message"); })
+            Check.ThatCode(() => { throw new CheckThatCodeShould.LambdaExceptionForTest(321, "my error message"); })
                 .Throws<LambdaExceptionForTest>()
                 .WithProperty(ex => ex.ExceptionNumber + 0, 321);
         }

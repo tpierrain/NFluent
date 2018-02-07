@@ -16,7 +16,9 @@
 namespace NFluent
 {
     using System;
-
+#if NETSTANDARD1_3
+    using System.Reflection;
+#endif
     using Extensibility;
 
     using Helpers;
@@ -182,34 +184,51 @@ namespace NFluent
             where T : Exception
         {
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
+            CheckException(checker, typeof(T));
+            return new LambdaExceptionCheck<T>((T)checker.Value.RaisedException);
+        }
 
-            checker.ExecuteCheck(
+        /// <summary>
+        /// Checks that the code did throw an exception of a specified type.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="exceptionType">Expected exception type.</param>
+        /// <returns>A check link.</returns>
+        public static ILambdaExceptionCheck<Exception> ThrowsType(this ICodeCheck<RunTrace> check, Type exceptionType)
+        {
+            var checker = ExtensibilityHelper.ExtractCodeChecker(check);
+            CheckException(checker, exceptionType);
+            return new LambdaExceptionCheck<Exception>(checker.Value.RaisedException);
+        }
+
+        private static void CheckException(IChecker<RunTrace, ICodeCheck<RunTrace>> checker, Type exceptionType)
+        {
+            checker.ExecuteNotChainableCheck(
                 () =>
+                {
+                    string message;
+                    if (checker.Value.RaisedException == null)
                     {
-                        string message;
-                        if (checker.Value.RaisedException == null)
-                        {
-                            message = checker
-                                .BuildShortMessage("The {0} did not raise an exception, whereas it must.")
-                                .For(LabelForCode).ExpectedType(typeof(T)).Label("The {0} exception:").ToString();
-                            throw new FluentCheckException(message);
-                        }
-
-                        if (checker.Value.RaisedException is T)
-                        {
-                            return;
-                        }
-
                         message = checker
-                            .BuildShortMessage("The {0} raised an exception of a different type than expected.")
-                            .For(LabelForCode).On(checker.Value.RaisedException).Label("Raised Exception").And
-                            .ExpectedType(typeof(T)).Label("The {0} exception:").ToString();
-
+                            .BuildShortMessage("The {0} did not raise an exception, whereas it must.")
+                            .For(LabelForCode).ExpectedType(exceptionType).Label("The {0} exception:").ToString();
                         throw new FluentCheckException(message);
-                    },
+                    }
+
+                    if (exceptionType.IsInstanceOfType(checker.Value.RaisedException))
+                    {
+                        return;
+                    }
+
+                    message = checker
+                        .BuildShortMessage("The {0} raised an exception of a different type than expected.")
+                        .For(LabelForCode).On(checker.Value.RaisedException).Label("Raised Exception").And
+                        .ExpectedType(exceptionType).Label("The {0} exception:").ToString();
+
+                    throw new FluentCheckException(message);
+                },
                 checker.BuildMessage("The {0} raised an exception of the forbidden type.").For(LabelForCode)
                     .On(checker.Value.RaisedException).Label("Raised Exception").ToString());
-            return new LambdaExceptionCheck<T>((T)checker.Value.RaisedException);
         }
 
         /// <summary>
