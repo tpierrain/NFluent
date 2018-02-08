@@ -11,7 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AndRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AsOperatorTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AsyncRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsyncCodeChecksShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BooleanRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ChainingLogicRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CharTests.cs" />

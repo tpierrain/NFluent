@@ -129,7 +129,10 @@ namespace NFluent.Tests
         public void
             WorkWithEnumerationOfKeyValuePair()
         {
-            var customDic = new List<KeyValuePair<string, int>> {new KeyValuePair<string, int>("key", 12)};
+            var customDic = new List<KeyValuePair<string, int>> {
+                new KeyValuePair<string, int>("otherKey", 12) ,
+                new KeyValuePair<string, int>("key", 12)
+                };
             Check.That(customDic).ContainsKey("key");
             Check.That(customDic).ContainsValue(12);
             Check.That(customDic).ContainsPair("key", 12);

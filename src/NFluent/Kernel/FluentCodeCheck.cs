@@ -20,6 +20,7 @@ namespace NFluent.Kernel
     using System.Diagnostics;
 #endif
     using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
 #if !DOTNET_35 && !DOTNET_30 && !DOTNET_20 && !DOTNET_40
     using System.Threading.Tasks;
 #endif
@@ -134,7 +135,37 @@ namespace NFluent.Kernel
         internal static RunTraceResult<TU> GetTrace<TU>(Func<TU> function)
         {
             var result = new RunTraceResult<TU>();
-            CaptureTrace(() => result.Result = function(), result);
+
+            CaptureTrace(() =>
+            {
+                result.Result = function();
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40 && !PORTABLE
+                if (!(result.Result is Task ta))
+                {
+                    return;
+                }
+
+                // we must check if the method is flagged async
+                foreach (var attribute in function.GetMethodInfo().GetCustomAttributes(false))
+                {
+                    if (!attribute.GetType().Name.StartsWith("AsyncStateMachineAttribute"))
+                    {
+                        continue;
+                    }
+
+                    try
+                    {
+                        ta.Wait();
+                    }
+                    catch (AggregateException exception)
+                    {
+                        result.RaisedException = exception.InnerException;
+                    }
+
+                    break;
+                }
+#endif
+            }, result);
             return result;
         }
 
@@ -174,26 +205,21 @@ namespace NFluent.Kernel
         internal static RunTrace GetAsyncTrace(Func<Task> awaitableMethod)
         {
             var result = new RunTrace();
-            CaptureAsyncTrace(awaitableMethod, result);
-            return result;
-        }
-
-        private static void CaptureAsyncTrace(Func<Task> awaitableMethod, RunTrace result)
-        {
             CaptureTrace(
                 () =>
+                {
+                    try
                     {
-                        try
-                        {
-                            // starts and waits the completion of the awaitable method
-                            awaitableMethod().Wait();
-                        }
-                        catch (AggregateException exception)
-                        {
-                            result.RaisedException = exception.InnerException;
-                        }
-                    },
+                        // starts and waits the completion of the awaitable method
+                        awaitableMethod().Wait();
+                    }
+                    catch (AggregateException exception)
+                    {
+                        result.RaisedException = exception.InnerException;
+                    }
+                },
                 result);
+            return result;
         }
 
         /// <summary>
