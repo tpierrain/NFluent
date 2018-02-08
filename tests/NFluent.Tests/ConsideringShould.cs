@@ -348,6 +348,7 @@ namespace NFluent.Tests
             WorkForIsNotNullOnRecursive()
         {
             Check.That(new Recurse()).Considering().All.Fields.IsNotNull();
+            Check.That(new Recurse().X).IsEqualTo(2);
         }
 
         [Test]
@@ -409,12 +410,14 @@ namespace NFluent.Tests
         private class Recurse
         {
             private Recurse me;
-            private int x = 2;
+            private readonly int x = 2;
 
             public Recurse()
             {
                 this.me = this;
             }
+
+            public int X => this.x;
         }
         // GH #219
         public class Parent

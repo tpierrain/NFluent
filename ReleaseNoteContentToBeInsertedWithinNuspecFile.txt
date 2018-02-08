@@ -1,3 +1,10 @@
+## V 2.3.0
+---------------
+### New features(s)
+  * **IReadOnlyDictionary** (_Net 4.5+_)
+    * **ContainsKey**, **ContainsValue**, **ContainsPair** are supported.
+
+------
 ## V 2.2.0
 ---------------
 Flexible property and field based comparison is now available. Examples:

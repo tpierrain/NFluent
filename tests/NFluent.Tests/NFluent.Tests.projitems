@@ -23,7 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ContainsExactlyTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContainsTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DateTimeRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DictionaryChecksTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DictionaryChecksShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DoubleFloatingPointBinaryRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DurationTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicTests.cs" />
@@ -59,6 +59,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ReverseEngineeringExceptionMessagesHelperTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StreamTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SutClasses\RoDico.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeHelperTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeSpanTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ToEnumeratedStringTests.cs" />

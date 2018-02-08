@@ -19,8 +19,12 @@ namespace NFluent
     using System.Collections;
 #endif
     using System.Collections.Generic;
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40 && !PORTABLE
+    using System.Collections.ObjectModel;
+#endif
 
     using Extensibility;
+    using Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="IDictionary{K,V}"/> value.
@@ -43,21 +47,43 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static ICheckLink<ICheck<IDictionary<TK, TU>>> ContainsKey<TK, TU>(this ICheck<IDictionary<TK, TU>> check, TK key)
+        public static ICheckLink<ICheck<IEnumerable<KeyValuePair<TK, TU>>>> ContainsKey<TK, TU>(this ICheck<IEnumerable<KeyValuePair<TK, TU>>> check, TK key)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
                 {
-                    if (!checker.Value.ContainsKey(key))
+                    var value = checker.Value;
+                    if (value is IDictionary<TK, TU> dico)
                     {
-                        var message = checker.BuildMessage("The {0} does not contain the expected key.").Expected(key).Label("Expected key:").ToString();
-                        throw new FluentCheckException(message);
+                        if (dico.ContainsKey(key))
+                            return;
                     }
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40 && !PORTABLE
+                    else if  (value is IReadOnlyDictionary<TK, TU> roDico)
+                    {
+                        if (roDico.ContainsKey(key))
+                            return;
+                    }
+#endif
+                    else
+                    {
+                        foreach (var keyValuePair in value)
+                        {
+                            if (EqualityHelper.FluentEquals(keyValuePair.Key, key))
+                            {
+                                return;
+                            }
+                        }
+                    }
+
+                    var message = checker.BuildMessage("The {0} does not contain the expected key.").Expected(key).Label("Expected key:").ToString();
+                    throw new FluentCheckException(message);
                 },
                 checker.BuildMessage("The {0} does contain the given key, whereas it must not.").Expected(key).Label("Given key:").ToString());
         }
+
 
         /// <summary>
         /// Checks that the actual <see cref="IDictionary{K,V}"/> contains the expected value.
@@ -77,18 +103,21 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static ICheckLink<ICheck<IDictionary<TK, TU>>> ContainsValue<TK, TU>(this ICheck<IDictionary<TK, TU>> check, TU expectedValue)
+        public static ICheckLink<ICheck<IEnumerable<KeyValuePair<TK, TU>>>> ContainsValue<TK, TU>(this ICheck<IEnumerable<KeyValuePair<TK, TU>>> check, TU expectedValue)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
                 () =>
                 {
-                    if (checker.Value.Values.Contains(expectedValue))
+                    var value = checker.Value;
+                    foreach (var keyValuePair in value)
                     {
-                        return;
+                        if (EqualityHelper.FluentEquals(keyValuePair.Value, expectedValue))
+                        {
+                            return;
+                        }
                     }
-
                     var message = checker.BuildMessage("The {0} does not contain the expected value.").Expected(expectedValue).Label("Expected value:").ToString();
                     throw new FluentCheckException(message);
                 },
@@ -104,8 +133,8 @@ namespace NFluent
         /// <param name="expectedKey">Expected key.</param>
         /// <param name="expectedValue">Expected value.</param>
         /// <returns>A check link.</returns>
-        public static ICheckLink<ICheck<IDictionary<TK, TU>>> ContainsPair<TK, TU>(
-            this ICheck<IDictionary<TK, TU>> check,
+        public static ICheckLink<ICheck<IEnumerable<KeyValuePair<TK, TU>>>> ContainsPair<TK, TU>(
+            this ICheck<IEnumerable<KeyValuePair<TK, TU>>> check,
             TK expectedKey,
             TU expectedValue)
         {
@@ -114,14 +143,41 @@ namespace NFluent
             return checker.ExecuteCheck(
                 () =>
                 {
-                    var checkedDictionary = checker.Value;
-                    if (checkedDictionary.ContainsKey(expectedKey)
-                        && checkedDictionary[expectedKey].Equals(expectedValue))
+                    var value = checker.Value;
+                    var foundValue = default(TU);
+                    var found = false;
+                    if (value is IDictionary<TK, TU> dico)
+                    {
+                        found = dico.TryGetValue(expectedKey, out foundValue);
+                    }
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40 && !PORTABLE
+                    else if  (value is IReadOnlyDictionary<TK, TU> roDico)
+                    {
+                        found = roDico.TryGetValue(expectedKey, out foundValue);
+                    }
+
+#endif
+                    else
+                    {
+                        foreach (var keyValuePair in value)
+                        {
+                            if (!EqualityHelper.FluentEquals(keyValuePair.Key, expectedKey))
+                            {
+                                continue;
+                            }
+
+                            found = true;
+                            foundValue = keyValuePair.Value;
+                            break;
+                        }
+                    }
+                    // check found value
+                    if (found && EqualityHelper.FluentEquals(foundValue, expectedValue))
                     {
                         return;
                     }
 
-                    var message = checker.BuildMessage(!checkedDictionary.ContainsKey(expectedKey) ? "The {0} does not contain the expected key-value pair. The given key was not found." : "The {0} does not contain the expected value for the given key.");
+                    var message = checker.BuildMessage(!found ? "The {0} does not contain the expected key-value pair. The given key was not found." : "The {0} does not contain the expected value for the given key.");
                     message.Expected(new KeyValuePair<TK, TU>(expectedKey, expectedValue))
                         .Label("Expected pair:");
                     throw new FluentCheckException(message.ToString());

@@ -1,34 +1,37 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="DictionaryChecksTests.cs" company="">
-// //   Copyright 2013 Cyrille DUPUYDAUBY
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿ // --------------------------------------------------------------------------------------------------------------------
+ // <copyright file="DictionaryChecksShould.cs" company="">
+ //   Copyright 2013-2018 Cyrille DUPUYDAUBY
+ //   Licensed under the Apache License, Version 2.0 (the "License");
+ //   you may not use this file except in compliance with the License.
+ //   You may obtain a copy of the License at
+ //       http://www.apache.org/licenses/LICENSE-2.0
+ //   Unless required by applicable law or agreed to in writing, software
+ //   distributed under the License is distributed on an "AS IS" BASIS,
+ //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ //   See the License for the specific language governing permissions and
+ //   limitations under the License.
+ // </copyright>
+ // --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent.Tests
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
-
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+    using System.Collections.ObjectModel;
+#endif
     using ApiChecks;
 
     using NUnit.Framework;
+    using SutClasses;
 
     [TestFixture]
-    public class DictionaryChecksTests
+    public class DictionaryChecksShould
     {
         private static readonly Dictionary<string, string> SimpleDico;
 
-        static DictionaryChecksTests()
+        static DictionaryChecksShould()
         {
             SimpleDico = new Dictionary<string, string>();
             SimpleDico["demo"] = "value";
@@ -122,12 +125,35 @@ namespace NFluent.Tests
             Check.That(SimpleDico).ContainsPair("demo", "value");
         }
 
+        [Test]
+        public void
+            WorkWithEnumerationOfKeyValuePair()
+        {
+            var customDic = new List<KeyValuePair<string, int>> {new KeyValuePair<string, int>("key", 12)};
+            Check.That(customDic).ContainsKey("key");
+            Check.That(customDic).ContainsValue(12);
+            Check.That(customDic).ContainsPair("key", 12);
+            Check.ThatCode(() => Check.That(customDic).ContainsKey("missing")).Throws<FluentCheckException>();
+        }
+
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+        // GH #222
+        [Test]
+        public void
+            WorkWithReadonlyDictionary()
+        {
+            IReadOnlyDictionary<string, string> roDico = new RoDico(SimpleDico);
+            Check.That(roDico).ContainsKey("demo");
+            Check.That(roDico).ContainsPair("demo", "value");
+            Check.ThatCode(() => Check.That(roDico).ContainsKey("missing")).Throws<FluentCheckException>();
+        }
+#endif
+
 #if !PORTABLE
         [Test]
         public void CompatibleWithHashtable()
         {
-            Hashtable basic = new Hashtable();
-            basic["foo"] = "bar";
+            var basic = new Hashtable {["foo"] = "bar"};
 
             Check.That(basic).ContainsKey("foo");
             Check.That(basic).ContainsValue("bar");
