@@ -3,6 +3,8 @@
 ### New features(s)
   * **IReadOnlyDictionary** (_Net 4.5+_)
     * **ContainsKey**, **ContainsValue**, **ContainsPair** are supported.
+  * **async method/delegates**
+    * **Check.ThatCode** now supports _async_ methods/delegates transparently
 
 ------
 ## V 2.2.0
