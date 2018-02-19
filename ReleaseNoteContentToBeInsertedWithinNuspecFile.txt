@@ -1,11 +1,16 @@
-## V 2.3.0
+## V 2.2.1
 ---------------
 ### New features(s)
-  * **IReadOnlyDictionary** (_Net 4.5+_)
-    * **ContainsKey**, **ContainsValue**, **ContainsPair** are supported.
-  * **async method/delegates**
-    * **Check.ThatCode** now supports _async_ methods/delegates transparently
-
+* IReadOnlyDictionary** (_Net 4.5+_)
+  * **ContainsKey**, **ContainsValue**, **ContainsPair** are supported.
+* **async method/delegates**
+  * **Check.ThatCode** now supports _async_ methods/delegates transparently
+### Fixes
+ * Check.ThatCode(...).**Not.Throws\<T\>() may throw an InvalidCastException when thrown exception is not T.
+ * Extention checks to **Throw\<\>**, **ThrowType** or **ThrowAny** raise an exception when used with **Not** as it does not make sense.
+### GitHub Issues
+* #228, #227, #222
+* 
 ------
 ## V 2.2.0
 ---------------

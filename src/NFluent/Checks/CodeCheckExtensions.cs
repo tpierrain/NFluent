@@ -30,8 +30,6 @@ namespace NFluent
     /// </summary>
     public static class CodeCheckExtensions
     {
-        #region fields
-
         private const string LabelForExecTime = "execution time";
 
         private const string LabelForCpuTime = "cpu time";
@@ -41,10 +39,6 @@ namespace NFluent
         private const string LabelForMoreThan = "more than";
 
         private const string LabelForCode = "code";
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Checks that the execution time is below a specified threshold.
@@ -77,14 +71,16 @@ namespace NFluent
             checker.ExecuteCheck(
                 () =>
                     {
-                        if (comparand > durationThreshold)
+                        if (comparand <= durationThreshold)
                         {
-                            var message = checker.BuildMessage("The checked code took too much time to execute.")
-                                .For(LabelForExecTime).On(comparand).And.Expected(durationThreshold)
-                                .Comparison(LabelForLessThan).ToString();
-
-                            throw new FluentCheckException(message);
+                            return;
                         }
+
+                        var message = checker.BuildMessage("The checked code took too much time to execute.")
+                            .For(LabelForExecTime).On(comparand).And.Expected(durationThreshold)
+                            .Comparison(LabelForLessThan).ToString();
+
+                        throw new FluentCheckException(message);
                     },
                 checker.BuildMessage("The checked code took too little time to execute.").For(LabelForExecTime)
                     .Expected(durationThreshold).Comparison(LabelForMoreThan).ToString());
@@ -123,14 +119,16 @@ namespace NFluent
             checker.ExecuteCheck(
                 () =>
                     {
-                        if (comparand > durationThreshold)
+                        if (comparand <= durationThreshold)
                         {
-                            var message = checker.BuildMessage("The checked code consumed too much CPU time.")
-                                .For(LabelForCpuTime).Expected(durationThreshold).Comparison(LabelForLessThan)
-                                .ToString();
-
-                            throw new FluentCheckException(message);
+                            return;
                         }
+
+                        var message = checker.BuildMessage("The checked code consumed too much CPU time.")
+                            .For(LabelForCpuTime).Expected(durationThreshold).Comparison(LabelForLessThan)
+                            .ToString();
+
+                        throw new FluentCheckException(message);
                     },
                 checker.BuildMessage("The checked code took too little cpu time to execute.").For(LabelForCpuTime)
                     .Expected(durationThreshold).Comparison(LabelForMoreThan).ToString());
@@ -156,14 +154,16 @@ namespace NFluent
             checker.ExecuteCheck(
                 () =>
                     {
-                        if (checker.Value.RaisedException != null)
+                        if (checker.Value.RaisedException == null)
                         {
-                            var message = checker.BuildMessage("The {0} raised an exception, whereas it must not.")
-                                .For(LabelForCode).On(checker.Value.RaisedException).Label("The raised exception:")
-                                .ToString();
-
-                            throw new FluentCheckException(message);
+                            return;
                         }
+
+                        var message = checker.BuildMessage("The {0} raised an exception, whereas it must not.")
+                            .For(LabelForCode).On(checker.Value.RaisedException).Label("The raised exception:")
+                            .ToString();
+
+                        throw new FluentCheckException(message);
                     },
                 checker.BuildMessage("The {0} did not raise an exception, whereas it must.").For(LabelForCode)
                     .ToString());
@@ -185,7 +185,14 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
             CheckException(checker, typeof(T));
-            return new LambdaExceptionCheck<T>((T)checker.Value.RaisedException);
+            if (checker.Negated)
+            {
+                return new NegatedLambdaExceptionCheck<T>();
+            }
+            else
+            {
+                return new LambdaExceptionCheck<T>((T)checker.Value.RaisedException);
+            }
         }
 
         /// <summary>
@@ -198,7 +205,14 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
             CheckException(checker, exceptionType);
-            return new LambdaExceptionCheck<Exception>(checker.Value.RaisedException);
+            if (checker.Negated)
+            {
+                return new NegatedLambdaExceptionCheck<Exception>();
+            }
+            else
+            {
+                return new LambdaExceptionCheck<Exception>(checker.Value.RaisedException);
+            }
         }
 
         private static void CheckException(IChecker<RunTrace, ICodeCheck<RunTrace>> checker, Type exceptionType)
@@ -247,20 +261,29 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
 
-            checker.ExecuteCheck(
+            checker.ExecuteNotChainableCheck(
                 () =>
                     {
-                        if (checker.Value.RaisedException == null)
+                        if (checker.Value.RaisedException != null)
                         {
-                            var message = checker
-                                .BuildShortMessage("The {0} did not raise an exception, whereas it must.")
-                                .For(LabelForCode).ToString();
-                            throw new FluentCheckException(message);
+                            return;
                         }
+
+                        var message = checker
+                            .BuildShortMessage("The {0} did not raise an exception, whereas it must.")
+                            .For(LabelForCode).ToString();
+                        throw new FluentCheckException(message);
                     },
                 checker.BuildMessage("The {0} raised an exception, whereas it must not.").For(LabelForCode)
                     .On(checker.Value.RaisedException).Label("Raised Exception").ToString());
-            return new LambdaExceptionCheck<Exception>(checker.Value.RaisedException);
+            if (checker.Negated)
+            {
+                return new NegatedLambdaExceptionCheck<Exception>();
+            }
+            else
+            {
+                return new LambdaExceptionCheck<Exception>(checker.Value.RaisedException);
+            }
         }
 
         /// <summary>
@@ -275,6 +298,5 @@ namespace NFluent
             return new FluentCheck<T>(checker.Value.Result);
         }
 
-        #endregion
     }
 }

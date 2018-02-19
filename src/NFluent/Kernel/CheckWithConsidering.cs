@@ -17,16 +17,19 @@ namespace NFluent.Kernel
 {
     using System.Reflection;
     using Helpers;
-    internal class CheckWithConsidering: FluentCheck<ReflectionWrapper>, ICheckPlusAnd, IFieldsOrProperties, IPublicOrNot
+
+    internal class CheckWithConsidering: FluentCheck<ReflectionWrapper>, ICheckPlusAnd, IMembersSelection
     {
         public CheckWithConsidering(ReflectionWrapper value, bool negated) : base(value, negated)
-        {}
+        {
+        }
+
         /// <inheritdoc />
         public IFieldsOrProperties Public
         {
             get
             {
-                this.Value.Criteria.BindingFlags |= BindingFlags.Public;
+                this.Value.Criteria.SetPublic();
                 return this;
             }
         }
@@ -36,7 +39,7 @@ namespace NFluent.Kernel
         {
             get
             {
-                this.Value.Criteria.BindingFlags |= BindingFlags.NonPublic;
+                this.Value.Criteria.SetNonPublic();
                 return this;
             }
         }
@@ -46,13 +49,21 @@ namespace NFluent.Kernel
         {
             get
             {
-                this.Value.Criteria.BindingFlags |= BindingFlags.Public|BindingFlags.NonPublic;
+                this.Value.Criteria.SetNonPublic();
+                this.Value.Criteria.SetPublic();
                 return this;
             }
         }
 
         /// <inheritdoc />
-        public IPublicOrNot And => this;
+        public IPublicOrNot And
+        {
+            get
+            {
+                this.Value.Criteria.Reset();
+                return this;
+            }
+        }
 
         /// <inheritdoc />
         public ICheckPlusAnd Excluding(params string[] field)
@@ -66,6 +77,7 @@ namespace NFluent.Kernel
         {
             get
             {
+                // default to public fields if not specified
                 this.Value.Criteria.WithFields = true;
                 return this;
             }

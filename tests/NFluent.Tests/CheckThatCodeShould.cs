@@ -349,6 +349,37 @@ namespace NFluent.Tests
             .WithMessage(Environment.NewLine+ "The checked exception did not contain an expected inner exception whereas it must." + Environment.NewLine + "The inner exception(s):" + Environment.NewLine + "\t[\"{ System.InvalidCastException } \"whatever mate\"" +Environment.NewLine +"--> { System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values." + Environment.NewLine + "Parameter name: kamoulox\"\"]" + Environment.NewLine + "The expected inner exception:" + Environment.NewLine + "\t[System.Exception]");
         }
 
+        [Test]
+        // GH 228
+        public void
+            ThrowExtensionsFailWhenNegated()
+        {
+            Check.ThatCode(() => 
+                Check.ThatCode(() => throw new InvalidOperationException())
+                .Not.Throws<ArgumentNullException>().WithMessage("any")
+                ).Throws<InvalidOperationException>();
+
+            Check.ThatCode(() => 
+                Check.ThatCode(() => throw new InvalidOperationException())
+                .Not.Throws<ArgumentNullException>().DueTo<Exception>()
+                ).Throws<InvalidOperationException>();            
+
+            Check.ThatCode(() => 
+                Check.ThatCode(() => throw new InvalidOperationException())
+                .Not.Throws<ArgumentNullException>().WithProperty("any", 12)
+                ).Throws<InvalidOperationException>();
+            
+            Check.ThatCode(() => 
+                Check.ThatCode(() => throw new InvalidOperationException())
+                .Not.ThrowsType(typeof(ArgumentNullException)).WithMessage("any")
+                ).Throws<InvalidOperationException>();
+#if !DOTNET_20 && !DOTNET_30
+            Check.ThatCode(() => 
+                Check.ThatCode(() => throw new InvalidOperationException())
+                    .Not.Throws<ArgumentNullException>().WithProperty((x) => x.Message, "")
+            ).Throws<InvalidOperationException>();
+#endif
+        }
 
 #region Lambda related Test Data
 #if !NETCOREAPP1_0 && !NETCOREAPP1_1
@@ -383,7 +414,7 @@ namespace NFluent.Tests
 
             private static string FormatMessage(int exceptionNumber, string message)
             {
-                return string.Format("Err #{0} : {1}", exceptionNumber, message);
+                return $"Err #{exceptionNumber} : {message}";
             }
         }
 
@@ -404,22 +435,12 @@ namespace NFluent.Tests
                 this.devilMathValue = i;
             }
 
-            public int BeastBreaker
-            {
-                get
-                {
-                    return 666 / this.devilMathValue;
-                }
-            }
+            public int BeastBreaker => 666 / this.devilMathValue;
         }
 
         private class AnObjectWithParameterLessMethodThatCanBeInvokedLikeLambdas
         {
             // ReSharper disable once UnusedMember.Local
-            public void AVoidParameterLessMethodThatCrashes()
-            {
-                throw new LambdaExceptionForTest(666, "test");
-            }
 
             public void AVoidParameterLessMethodThatShouldNotCrash()
             {
@@ -427,10 +448,6 @@ namespace NFluent.Tests
             }
 
             // ReSharper disable once UnusedMember.Local
-            public void AScalarParameterLessMethodThatCrashes()
-            {
-                throw new LambdaExceptionForTest(666, "test");
-            }
 
             public object AScalarParameterLessMethodThatShouldNotCrash()
             {

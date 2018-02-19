@@ -24,34 +24,6 @@ namespace NFluent
     using Helpers;
     using Kernel;
 
-    internal class Criteria
-    {
-        private List<string> exclusion;
-
-        internal Criteria(BindingFlags bindingFlags, bool withFields = true, bool withProperties = false)
-        {
-            this.BindingFlags = bindingFlags;
-            this.WithFields = withFields;
-            this.WithProperties = withProperties;
-        }
-
-        public BindingFlags BindingFlags { get; internal set; }
-
-        public bool WithFields { get; internal set; }
-
-        public bool WithProperties { get; internal set; }
-
-        public bool IsNameExcluded(string name)
-        {
-            return this.exclusion?.Contains(name) ?? false;
-        }
-
-        public void SetExclusion(string[] fields)
-        {
-            this.exclusion = new List<string>(fields);
-        }
-    }
-
     /// <summary>
     ///     Provides check methods to be executed on an object instance.
     /// </summary>

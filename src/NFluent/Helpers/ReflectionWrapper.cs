@@ -79,6 +79,8 @@ namespace NFluent.Helpers
 
         internal bool IsArray => this.ValueType.IsArray;
 
+        internal bool IsProperty { get; private set; }
+
         internal static ReflectionWrapper BuildFromInstance(Type type, object value, Criteria criteria)
         {
             if (type == typeof(ReflectionWrapper))
@@ -98,10 +100,11 @@ namespace NFluent.Helpers
             Criteria criteria)
         {
             string labelPattern;
-
+            var isProperty = false;
             if (EvaluateCriteria(AutoPropertyMask, name, out var nameInSource))
             {
                 labelPattern = $"autoproperty '{{0}}' (field '{name}')";
+                isProperty = true;
             }
             else if (EvaluateCriteria(AnonymousTypeFieldMask, name, out nameInSource))
             {
@@ -113,13 +116,17 @@ namespace NFluent.Helpers
                 labelPattern = "field '{0}'";
             }
 
-            return new ReflectionWrapper(nameInSource, prefix, labelPattern, value?.GetType() ?? type, value, criteria);
+            return new ReflectionWrapper(nameInSource, prefix, labelPattern, value?.GetType() ?? type, value,
+                criteria) {IsProperty = isProperty};
         }
 
         internal static ReflectionWrapper BuildFromProperty(string prefix, string name, Type type, object value,
             Criteria criteria)
         {
-            return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria);
+            return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria)
+            {
+                IsProperty = true
+            };
         }
 
         internal void MapFields(ReflectionWrapper other,
@@ -221,7 +228,7 @@ namespace NFluent.Helpers
                 {
                     if (this.Criteria.WithFields)
                     {
-                        var fieldsInfo = currentType.GetFields(this.Criteria.BindingFlags);
+                        var fieldsInfo = currentType.GetFields(this.Criteria.BindingFlagsForFields);
                         foreach (var info in fieldsInfo)
                         {
                             if (memberDico.ContainsKey(info.Name))
@@ -232,6 +239,11 @@ namespace NFluent.Helpers
                             var expectedValue = this.Value == null ? null : info.GetValue(this.Value);
                             var extended = BuildFromField(this.MemberLongName, info.Name, info.FieldType, expectedValue,
                                 this.Criteria);
+                            if (this.Criteria.WithProperties && extended.IsProperty)
+                            {
+                                continue;
+                            }
+
                             memberDico[info.Name] = extended;
                             result.Add(extended);
                         }
@@ -239,7 +251,7 @@ namespace NFluent.Helpers
 
                     if (this.Criteria.WithProperties)
                     {
-                        var propertyInfos = currentType.GetProperties(this.Criteria.BindingFlags);
+                        var propertyInfos = currentType.GetProperties(this.Criteria.BindingFlagsForProperties);
                         foreach (var info in propertyInfos)
                         {
                             if (memberDico.ContainsKey(info.Name))
@@ -312,7 +324,7 @@ namespace NFluent.Helpers
         {
             if (this.Value == null)
             {
-                return"null";
+                return "null";
             }
 
             if (scanned.Contains(this.Value))

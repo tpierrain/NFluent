@@ -39,7 +39,6 @@ namespace NFluent
     public class LambdaExceptionCheck<T> : ILambdaExceptionCheck<T>, IForkableCheck
         where T : Exception
     {
-#region constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LambdaExceptionCheck{T}"/> class.
@@ -51,10 +50,6 @@ namespace NFluent
             this.Value = value;
         }
 
-#endregion
-
-#region fields
-
         /// <summary>
         /// Gets or sets with the parent class that fluently called this one.
         /// </summary>
@@ -63,39 +58,21 @@ namespace NFluent
         /// </actualValue>
         internal T Value { get; set; }
 
-#endregion
-
-        /// <summary>
-        /// Checks that the message of the considered Value is correctly written.
-        /// </summary>
-        /// <param name="exceptionMessage">The expected Value message.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <Value cref="FluentCheckException">The code did not raised an Value of any type.</Value>
+        /// <inheritdoc />
         public ICheckLink<ILambdaExceptionCheck<T>> WithMessage(string exceptionMessage)
         {
-            if (this.Value.Message != exceptionMessage)
+            if (this.Value.Message == exceptionMessage)
             {
-                var message = FluentMessage.BuildMessage("The message of the checked exception is not as expected.")
-                    .For("exception message").Expected(exceptionMessage).And.On(this.Value.Message).ToString();
-
-                throw new FluentCheckException(message);
+                return new CheckLink<ILambdaExceptionCheck<T>>(this);
             }
 
-            return new CheckLink<ILambdaExceptionCheck<T>>(this);
+            var message = FluentMessage.BuildMessage("The message of the checked exception is not as expected.")
+                .For("exception message").Expected(exceptionMessage).And.On(this.Value.Message).ToString();
+
+            throw new FluentCheckException(message);
         }
 
-        /// <summary>
-        /// Checks that a specific property of the considered Value has an expected actualValue.
-        /// </summary>
-        /// <typeparam name="TP"> Expected type of the property.</typeparam>
-        /// <param name="propertyName">The name of the property to check on the considered Value.</param>
-        /// <param name="propertyValue">The expected actualValue for the property to check on the considered Value.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <Value cref="FluentCheckException">The code did not raised an Value of any type.</Value>
+        /// <inheritdoc />
         public ICheckLink<ILambdaExceptionCheck<T>> WithProperty<TP>(string propertyName, TP propertyValue)
         {
             var type = this.Value.GetType();
@@ -110,24 +87,9 @@ namespace NFluent
             var value = property.GetValue(this.Value, null);
             return this.CheckProperty(propertyName, propertyValue, value);
         }
+ 
 #if !DOTNET_30 && !DOTNET_20
-        /// <summary>
-        /// Checks that a specific property of the considered exception has an expected actualValue.
-        /// </summary>
-        /// <typeparam name="TP"> Expected type of the property.
-        /// </typeparam>
-        /// <param name="propertyExpression">
-        ///     The Expression to retrieve the property Name.
-        /// </param>
-        /// <param name="propertyValue">
-        ///     The expected actualValue for the property to check on the considered exception.
-        /// </param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">
-        /// The code did not raised an exception of any type.
-        /// </exception>
+        /// <inheritdoc />
         public ICheckLink<ILambdaExceptionCheck<T>> WithProperty<TP>(Expression<Func<T, TP>> propertyExpression, TP propertyValue)
         {
             var memberExpression = propertyExpression.Body as MemberExpression;
@@ -152,14 +114,7 @@ namespace NFluent
             throw new FluentCheckException(message);
         }
 
-        /// <summary>
-        /// Checks that an inner exception is present within the outer exception stack trace.
-        /// </summary>
-        /// <typeparam name="TE">Exception type.
-        /// </typeparam>
-        /// <returns>
-        /// A check link.
-        /// </returns>
+        /// <inheritdoc />
         public ILambdaExceptionCheck<TE> DueTo<TE>()
             where TE : Exception
         {
@@ -187,16 +142,8 @@ namespace NFluent
             throw new FluentCheckException(message);
         }
 
-        /// <summary>
-        /// Creates a new instance of the same fluent check type, injecting the necessary properties
-        /// (i.e. the system under test), but with a false Negated property in any case.
-        /// </summary>
-        /// <returns>
-        /// A new instance of the same fluent check type, with the same properties (including the Value one).
-        /// </returns>
-        /// <remarks>
-        /// This method is used during the chaining of multiple checks.
-        /// </remarks>
+        /// <inheritdoc />
+
         public object ForkInstance()
         {
             return new LambdaExceptionCheck<T>(this.Value);

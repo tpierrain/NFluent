@@ -8,11 +8,22 @@ using NUnit.Framework;
 
 namespace NFluent.Tests.FromIssues
 {
+    using System;
     using Helpers;
 
     [TestFixture]
     public class UserReportedIssues2
     {
+
+        [Test]
+        // GH #226
+        public void SupportForWildcards()
+        {
+            var actualString = $"Events with validFrom date in the future aren't supported yet by the platform. Overall Save will be discarded due to event(s){Environment.NewLine}[FondsCurrencyChanged: validFrom=2019-02-13-230000000, createdAt=2018-02-14-102858250]";
+
+            Check.That(actualString).Matches($"Events with validFrom date in the future aren't supported yet by the platform. Overall Save will be discarded due to event\\(s\\){Environment.NewLine}\\[FondsCurrencyChanged: validFrom=.*, createdAt=2018-02-14-.*");
+        }
+
         #region GH #219
         // GH #219
         public class Parent

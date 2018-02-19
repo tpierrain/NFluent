@@ -358,19 +358,17 @@ namespace NFluent.Helpers
                 }
             }
 
-            if (type == DifferenceMode.General)
+            switch (type)
             {
-                if (actual.Length == expected.Length)
-                {
-                    type = DifferenceMode.GeneralSameLength;
-                }
+                case DifferenceMode.General:
+                    if (actual.Length == expected.Length)
+                    {
+                        type = DifferenceMode.GeneralSameLength;
+                    }
 
-                return new StringDifference(type, line, position, actual, expected);
-            }
-
-            if (type == DifferenceMode.Spaces && i == actual.Length && j == expected.Length)
-            {
-                return new StringDifference(type, line, position, actual, expected);
+                    return new StringDifference(type, line, position, actual, expected);
+                case DifferenceMode.Spaces when i == actual.Length && j == expected.Length:
+                    return new StringDifference(type, line, position, actual, expected);
             }
 
             // strings are same so far

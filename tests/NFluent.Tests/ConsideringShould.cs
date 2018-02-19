@@ -104,7 +104,7 @@ namespace NFluent.Tests
             {
                 Check.That(sut).Considering().All.Fields.And.All.Properties
                     .IsEqualTo(new SutClass(2, 42, 4, new object()));
-            }).FailsWithMessage("", "The checked value's autoproperty 'ThePrivateProperty' (field '<ThePrivateProperty>k__BackingField') does not have the expected value.", "The checked value:", "\t[null]", "The expected value:", "\t[System.Object] of type: [object]");
+            }).FailsWithMessage("",  "The checked value's property 'ThePrivateProperty' does not have the expected value.", "The checked value:", "\t[null]", "The expected value:", "\t[System.Object] of type: [object]");
         }
 
         [Test]
@@ -134,9 +134,9 @@ namespace NFluent.Tests
 
             var expected = new SutClass(2, 42, 4, sut);
             Check.ThatCode(() => Check.That(sut).Considering().All.Fields.And.All.Properties.IsEqualTo(expected))
-                .FailsWithMessage("", "The checked value's autoproperty 'ThePrivateProperty' (field '<ThePrivateProperty>k__BackingField') does not have the expected value.", "The checked value:", "\t[null]", "The expected value:", "\t[NFluent.Tests.ConsideringShould+SutClass] of type: [NFluent.Tests.ConsideringShould+SutClass]");
+                .FailsWithMessage("", "The checked value's property 'ThePrivateProperty' does not have the expected value.", "The checked value:", "\t[null]", "The expected value:", "\t[NFluent.Tests.ConsideringShould+SutClass] of type: [NFluent.Tests.ConsideringShould+SutClass]");
             Check.ThatCode(() => Check.That(expected).Considering().All.Fields.And.All.Properties.IsEqualTo(sut))
-                .FailsWithMessage("", "The checked value's autoproperty 'ThePrivateProperty' (field '<ThePrivateProperty>k__BackingField') does not have the expected value.", "The checked value:", "\t[NFluent.Tests.ConsideringShould+SutClass]", "The expected value:", "\t[null]");
+                .FailsWithMessage("",  "The checked value's property 'ThePrivateProperty' does not have the expected value.", "The checked value:", "\t[NFluent.Tests.ConsideringShould+SutClass]", "The expected value:", "\t[null]");
         }
 
         [Test]
@@ -240,6 +240,15 @@ namespace NFluent.Tests
                 {
                     Check.That(new SutClass(2, 42, 4, sut)).Considering().NonPublic.Fields.IsEqualTo(sut);})
                 .FailsWithMessage("", "The checked value's autoproperty 'ThePrivateProperty' (field '<ThePrivateProperty>k__BackingField') does not have the expected value.", "The checked value:", "\t[NFluent.Tests.ConsideringShould+SutClass]", "The expected value:", "\t[null]");
+        }
+
+        [Test]
+        public void
+            WorkForScopeCombinations()
+        {
+            var sut = new SutClass(2, 42, 4, null);
+
+            Check.That(sut).Considering().NonPublic.Fields.And.Public.Properties.IsEqualTo(new SutClass(3, 42, 4, sut));
         }
 
         [Test]

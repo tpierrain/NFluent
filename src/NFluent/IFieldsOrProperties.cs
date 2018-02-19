@@ -30,4 +30,11 @@ namespace NFluent
         /// </summary>
         ICheckPlusAnd Properties { get; }
     }
+
+    /// <inheritdoc cref="IFieldsOrProperties"/>
+    /// <inheritdoc cref="IPublicOrNot"/>
+    public interface IMembersSelection : IFieldsOrProperties, IPublicOrNot
+    {
+
+    }
 }
