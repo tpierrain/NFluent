@@ -21,6 +21,7 @@
 * **Check.ThatCode** now supports _async_ methods/delegates transparently
 ### Fixes
 * Check.ThatCode(...).**Not.Throws\&lt;T\&gt;() may throw an InvalidCastException when thrown exception is not T.
+* Extention checks to **Throw\&lt;\&gt;**, **ThrowType** or **ThrowAny** raise an exception when used with **Not** as it does not make sense.
 ### GitHub Issues
 * #228, #227, #222
 *

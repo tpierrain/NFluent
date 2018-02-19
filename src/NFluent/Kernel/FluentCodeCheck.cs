@@ -20,8 +20,8 @@ namespace NFluent.Kernel
     using System.Diagnostics;
 #endif
     using System.Diagnostics.CodeAnalysis;
-    using System.Reflection;
 #if !DOTNET_35 && !DOTNET_30 && !DOTNET_20 && !DOTNET_40
+    using System.Reflection;
     using System.Threading.Tasks;
 #endif
     using Extensibility;
@@ -140,7 +140,8 @@ namespace NFluent.Kernel
             {
                 result.Result = function();
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40 && !PORTABLE
-                if (!(result.Result is Task ta))
+                var ta = result.Result as Task;
+                if (ta == null)
                 {
                     return;
                 }
