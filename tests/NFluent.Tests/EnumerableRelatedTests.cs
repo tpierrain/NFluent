@@ -273,6 +273,7 @@ namespace NFluent.Tests
             var enumerable = new List<int> { 42, 43 };
             Check.That(enumerable).HasFirstElement().Which.IsEqualTo(42);
         }
+
         [Test]
         public void NotHasFirstElementWorks()
         {
@@ -298,6 +299,15 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             Check.That(nullEnumerable).HasFirstElement())
                 .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly("", "The checked enumerable is null, whereas it must have a first element.");
+        }
+
+        [Test]
+        public void
+            NegatedWhichRaisesException()
+        {
+            var enumerable = new List<int> {};
+            Check.ThatCode(() => { Check.That(enumerable).Not.HasFirstElement().Which.IsEqualTo(44); })
+                .Throws<InvalidOperationException>();
         }
 
         #endregion
@@ -354,8 +364,6 @@ namespace NFluent.Tests
         }
 
         #endregion
-
-
 
         #region HasElementNumber
 

@@ -341,7 +341,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 // ReSharper disable once NotResolvedInText
-                Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new InvalidCastException("whatever mate", new ArgumentOutOfRangeException("kamoulox"))); })
+                Check.ThatCode(() => throw new ArgumentException("outerException dummy message", new InvalidCastException("whatever mate", new ArgumentOutOfRangeException("kamoulox"))))
                         .Throws<ArgumentException>()
                         .DueTo<Exception>();
             })

@@ -110,15 +110,7 @@ namespace NFluent.Kernel
             return new CheckLink<TC>(this.fluentCheckForExtensibility);
         }
 
-        /// <summary>
-        /// Gets the check link to return for the next check to be executed (linked with the And operator).
-        /// Also provides a check to evaluate a given element (e.g. an entry in a dictionary).
-        /// This property is only useful for those that doesn't want to implement their check methods with the 
-        /// <see cref="IChecker{T,TC}.ExecuteCheck"/> method.
-        /// </summary>
-        /// <typeparam name="TSub">Type of the secondary checker.</typeparam>
-        /// <param name="itemChecker">Checker for the element to evaluate.</param>
-        /// <returns>An extended check link.</returns>
+        /// <inheritdoc />
         public ICheckLinkWhich<TC, TSub> BuildLinkWhich<TSub>(TSub itemChecker)
             where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
@@ -138,9 +130,12 @@ namespace NFluent.Kernel
             where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
             TSub checker = null;
-            this.ExecuteNotChainableCheck(() => { checker = checkLambdaAction();}, negatedExceptionMessage);
+            this.ExecuteNotChainableCheck(() =>
+            {
+                checker = checkLambdaAction();
+            }, negatedExceptionMessage);
 
-            return checker == null ? null : this.BuildLinkWhich(checker);
+            return this.BuildLinkWhich(checker);
         }
 
         /// <summary>

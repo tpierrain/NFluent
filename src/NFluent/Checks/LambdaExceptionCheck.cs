@@ -143,7 +143,6 @@ namespace NFluent
         }
 
         /// <inheritdoc />
-
         public object ForkInstance()
         {
             return new LambdaExceptionCheck<T>(this.Value);
