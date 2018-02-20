@@ -255,8 +255,7 @@ namespace NFluent
             this ICheck<IEnumerable<T>> check, int index)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> result = null;
-            checker.ExecuteCheck(
+            return checker.ExecuteCheckAndProvideSubItem(
                 () =>
                 {
                     if (checker.Value == null)
@@ -275,10 +274,9 @@ namespace NFluent
                     var itemCheck = Check.That(item);
                     var subChecker = ExtensibilityHelper.ExtractChecker(itemCheck);
                     subChecker.SetSutLabel($"element #{index}");
-                    result = checker.BuildLinkWhich(itemCheck);
+                    return itemCheck;
                 },
                 checker.BuildMessage("The {{0}} does have an element at index {0} whereas it should not.").ToString());
-            return result;
         }
 
         /// <summary>

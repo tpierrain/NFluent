@@ -19,7 +19,7 @@ namespace NFluent.Tests
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-
+    using Helpers;
     using NFluent.ApiChecks;
 
     using NUnit.Framework;
@@ -517,7 +517,7 @@ namespace NFluent.Tests
         {
             IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar", "nope" };
             Check.ThatCode(() => Check.That(randomWords).HasElementAt(3).Which.IsEqualTo("hope"))
-                .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
+                .FailsWithMessage(
                     string.Empty,
                     "The checked [element #3] is different from the expected one but has same length.",
                     "The checked [element #3]:",
@@ -531,11 +531,19 @@ namespace NFluent.Tests
         {
             IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
             Check.ThatCode(() => Check.That(randomWords).HasElementAt(3).Which.IsEqualTo("hope"))
-                .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
+                .FailsWithMessage(
                     string.Empty,
                     "The checked enumerable does not have an element at index 3.",
                     "The checked enumerable:",
                     "\t[\"yes\", \"foo\", \"bar\"]");
+        }
+
+        [Test]
+        public void
+            HasItemShouldHandleNegation()
+        {
+            IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
+            Check.That(randomWords).Not.HasElementAt(3);
         }
 
         // Issue #183b 
