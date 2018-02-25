@@ -23,7 +23,7 @@ namespace NFluent
     using System.Text.RegularExpressions;
 
     using Extensibility;
-
+    using Extensions;
     using Helpers;
 
     using Kernel;
@@ -467,6 +467,30 @@ namespace NFluent
             return IsEmptyImpl(checker, true, false);
         }
 
+        /// <summary>
+        /// Checks that the string is null, empty or only spaces.
+        /// </summary>
+        /// <param name="check">The fluent check.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        public static ICheckLink<ICheck<string>> IsNullOrWhiteSpace(this ICheck<string> check)
+        {
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            var value = checker.Value;
+            return checker.ExecuteCheck(() =>
+            {
+                if (PolyFill.IsNullOrWhiteSpace(value))
+                {
+                    return;
+                }
+
+                var message = checker.BuildMessage("The {0} contains non whitespace characters.").On(value);
+                throw new FluentCheckException(message.ToString());
+            }, (value == null ? checker.BuildMessage("The {0} is null, whereas it should not.") :
+                    value == "" ? checker.BuildMessage("The {0} is empty, whereas it should not.") :
+                checker.BuildMessage("The {0} contains only whitespace characters, whereas it should not.")).ToString());
+        }
         /// <summary>
         /// Checks that the string is not empty.
         /// </summary>
