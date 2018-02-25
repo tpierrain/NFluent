@@ -35,6 +35,5 @@ namespace NFluent
     /// <inheritdoc cref="IPublicOrNot"/>
     public interface IMembersSelection : IFieldsOrProperties, IPublicOrNot
     {
-
     }
 }

@@ -65,7 +65,7 @@ namespace NFluent.Tests
             var expected = new {TheProperty = 12};
             Check.ThatCode(() =>
             {
-                Check.That(sut).Considering().Public.Properties.IsNoInstanceOfType(expected.GetType());
+                Check.That(sut).Considering().Properties.IsNoInstanceOfType(expected.GetType());
             }).FailsWithMessage(
                     "", "The checked value is an instance of [<>f__AnonymousType1<int>] whereas it must not.", "The checked value:", "\t[{ TheProperty = 42 }] of type: [NFluent.Helpers.ReflectionWrapper]", "The expected value: different from", "\tan instance of type: [<>f__AnonymousType1<int>]");
         }

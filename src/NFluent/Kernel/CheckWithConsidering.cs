@@ -56,7 +56,7 @@ namespace NFluent.Kernel
         }
 
         /// <inheritdoc />
-        public IPublicOrNot And
+        public IMembersSelection And
         {
             get
             {

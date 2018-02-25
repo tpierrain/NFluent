@@ -26,7 +26,7 @@ namespace NFluent
         /// <summary>
         /// Link to add another scope
         /// </summary>
-        IPublicOrNot And { get; }
+        IMembersSelection And { get; }
 
         /// <summary>
         /// Lists excluded fields
