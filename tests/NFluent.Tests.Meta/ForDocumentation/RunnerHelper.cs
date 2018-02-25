@@ -1,15 +1,15 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RunnerHelper.cs" company="">
 //   Copyright 2013 Cyrille DUPUYDAUBY
-//   // //   Licensed under the Apache License, Version 2.0 (the "License");
-//   // //   you may not use this file except in compliance with the License.
-//   // //   You may obtain a copy of the License at
-//   // //       http://www.apache.org/licenses/LICENSE-2.0
-//   // //   Unless required by applicable law or agreed to in writing, software
-//   // //   distributed under the License is distributed on an "AS IS" BASIS,
-//   // //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   // //   See the License for the specific language governing permissions and
-//   // //   limitations under the License.
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//        http://www.apache.org/licenses/LICENSE-2.0
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
 // </copyright>
 // <summary>
 //   
@@ -17,8 +17,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 // ReSharper disable once CheckNamespace
-
-using NFluent.Kernel;
 
 namespace NFluent.Tests.ForDocumentation
 {
@@ -28,6 +26,8 @@ namespace NFluent.Tests.ForDocumentation
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
+    using Kernel;
+
     using NUnit.Framework;
 #if NETCOREAPP1_0
     using Microsoft.Extensions.DependencyModel;
@@ -48,7 +48,7 @@ namespace NFluent.Tests.ForDocumentation
                 return;
             }
 
-            Log(string.Format("TestFixture :{0}", type.FullName));
+            Log($"TestFixture :{type.FullName}");
             var constructor = type.GetTypeInfo().GetConstructor(new Type[0]);
             // creates an instance
             var test = constructor?.Invoke(new object[0]);
@@ -135,9 +135,29 @@ namespace NFluent.Tests.ForDocumentation
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         private static void RunMethod(MethodBase specificTest, object test, FullRunDescription report, bool log)
         {
+
+            IList<object[]> parameters = new List<object[]>();
+            var testcases = specificTest.GetCustomAttributes(typeof(TestCaseAttribute));
+            if (testcases.Any())
+            {
+                foreach (var attribute in testcases)
+                {
+                    if (attribute is TestCaseAttribute testCase)
+                    {
+                        parameters.Add(testCase.Arguments);
+                    }
+                }
+            }
+            else
+            {
+                parameters.Add(new object[]{});
+            }
             try
             {
-                specificTest.Invoke(test, new object[] { });
+                foreach (var pars in parameters)
+                {
+                    specificTest.Invoke(test, pars);
+                }
             }
             // ReSharper disable once RedundantCatchClause
             catch (Exception)
@@ -256,7 +276,8 @@ namespace NFluent.Tests.ForDocumentation
                 {
                     // enumerate testmethods with expectedexception attribute with an FluentException type
                     var tests =
-                        type.GetMethods().Where(method => method.GetCustomAttributes(typeof(TestAttribute), false).Any());
+                        type.GetMethods().Where(method => method.GetCustomAttributes(typeof(TestAttribute), false).Any() 
+                                                          || method.GetCustomAttributes(typeof(TestCaseAttribute), false).Any());
                     RunThoseTests(tests, type, null, log);
                 }
             }
@@ -267,19 +288,24 @@ namespace NFluent.Tests.ForDocumentation
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static CheckDescription GetCheckAndType(FluentCheckException fluExc)
+        private static CheckDescription GetCheckAndType(Exception fluExc)
         {
             // identify failing test
             var trace = new StackTrace(fluExc, true);
 
+            var stackFrames = trace.GetFrames();
+            if (stackFrames == null)
+            {
+                return null;
+            }
             // get fluententrypoint stackframe
-            var frameIndex = trace.GetFrames().Count() - 2;
+            var frameIndex = stackFrames.Count() - 2;
             if (frameIndex < 0)
             {
                 frameIndex = 0;
             }
 
-            var frame = trace.GetFrames()?[frameIndex];
+            var frame = stackFrames[frameIndex];
 
             // get method
             // ReSharper disable once PossibleNullReferenceException
@@ -290,7 +316,7 @@ namespace NFluent.Tests.ForDocumentation
 
         private static void RunAllMethodsWithASpecificAttribute(Type type, Type attributeTypeToScan, object test)
         {
-            IEnumerable<MethodInfo> startup =
+            var startup =
                 type.GetMethods().Where(method => method.GetCustomAttributes(attributeTypeToScan, false).Any());
             foreach (var methodInfo in startup)
             {
@@ -300,7 +326,7 @@ namespace NFluent.Tests.ForDocumentation
                 }
                 catch (Exception e)
                 {
-                    Log(string.Format("Error: {0} failed, {1}", methodInfo.Name, e.Message));
+                    Log($"Error: {methodInfo.Name} failed, {e.Message}");
                 }
             }
         }

@@ -36,9 +36,9 @@ namespace NFluent.Tests
         [Test]
         public void ShouldNotUseCheckThatCodeForAsyncMethods()
         {
+            Check.ThatCode(this.BadAsync).DoesNotThrow();
             // Bad way for async methods since it does not catch the proper exception, but 
             // the TPL AggregateException wrapper instead
-            Check.ThatCode(this.BadAsync).DoesNotThrow();
             Check.ThatCode(this.DoSomethingBadAsync().Wait).Throws<AggregateException>();
             // this should work without waiting
             Check.ThatCode(this.DoSomethingBadAsync).Throws<SecurityException>();
@@ -48,7 +48,6 @@ namespace NFluent.Tests
             Check.ThatCode(ReturnTheAnswerAfterAWhileAsync).DoesNotThrow();
         }
 
-        [Obsolete]
         private static Task PseudoAsyncMethod()
         {
             return new Task(() => { });
@@ -97,6 +96,7 @@ namespace NFluent.Tests
                 throw new SecurityException("Freeze motha...");
             }).Throws<SecurityException>();
         }
+
         [Test]
         public void CheckThatAsyncCodeWorksForFunctions()
         {
@@ -108,6 +108,8 @@ namespace NFluent.Tests
 
 #region Methods
 
+        // useless attribute is used to make sure 'async' related attribute is correctly detected when multiple attributes are present
+        [Ignore("this is an arbitrary attribute")]
         private async void BadAsync()
         {
             await Task.Run(() =>
@@ -115,6 +117,7 @@ namespace NFluent.Tests
                 Thread.Sleep(10);
             });
         }
+
         private async Task<int> DoSomethingBadAfterAWhileAndBeforeAnsweringAsync()
         {
             await Task.Run(() =>

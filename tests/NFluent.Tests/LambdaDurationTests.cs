@@ -74,7 +74,7 @@ namespace NFluent.Tests
                             var unused = i * 2;
                         }
                     }
-                }).ConsumesLessThan(10, TimeUnit.Milliseconds);
+                }).ConsumesLessThan(5, TimeUnit.Milliseconds);
             })
             .Throws<FluentCheckException>()
             .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code consumed too much CPU time." + Environment.NewLine + "The checked cpu time:"); // TODO mimic startsWith

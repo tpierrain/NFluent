@@ -1,30 +1,33 @@
-﻿using System.Collections.Generic;
-using NFluent.ApiChecks;
-#if DOTNET_45
-using System;
-using System.Threading.Tasks;
-#endif
-using NUnit.Framework;
+﻿// --------------------------------------------------------------------------------------------------------------------
+//  <copyright file="UserReportedIssues2.cs" company="NFluent">
+//   Copyright 2018 Thomas PIERRAIN & Cyrille DUPUYDAUBY
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent.Tests.FromIssues
 {
     using System;
+    using System.Collections.Generic;
+#if DOTNET_45
+    using System.Threading.Tasks;
+#endif
+
+    using ApiChecks;
     using Helpers;
+    using NUnit.Framework;
 
     [TestFixture]
     public class UserReportedIssues2
     {
-
-        [Test]
-        // GH #226
-        public void SupportForWildcards()
-        {
-            var actualString = $"Events with validFrom date in the future aren't supported yet by the platform. Overall Save will be discarded due to event(s){Environment.NewLine}[FondsCurrencyChanged: validFrom=2019-02-13-230000000, createdAt=2018-02-14-102858250]";
-
-            Check.That(actualString).Matches($"Events with validFrom date in the future aren't supported yet by the platform. Overall Save will be discarded due to event\\(s\\){Environment.NewLine}\\[FondsCurrencyChanged: validFrom=.*, createdAt=2018-02-14-.*");
-        }
-
-        #region GH #219
         // GH #219
         public class Parent
         {
@@ -35,22 +38,7 @@ namespace NFluent.Tests.FromIssues
         {
             public override string AutoProperty { get; set; }
         }
-        [Test]
-        public void TestMethod()
-        {
-            // Arrange
-            var autoPropertyValue = "I am a test.";
-            var childOne = new Child { AutoProperty = autoPropertyValue };
 
-            // Act
-            var childTwo = new Child { AutoProperty = autoPropertyValue };
-
-            // Assert
-            Check.That(childOne).HasFieldsWithSameValues(childTwo);
-        }
-
-        #endregion
-        #region issue #215
         // GH #215
         public class MyClass
         {
@@ -67,6 +55,110 @@ namespace NFluent.Tests.FromIssues
             public int MyProperty { get; set; }
         }
 
+        private double decimalValue => 0.95000000000000006d;
+
+        private class BaseClass
+        {
+            public BaseClass(string id)
+            {
+                this.Id = id;
+            }
+
+            public string Id { get; }
+        }
+
+        private class SomeClass : BaseClass
+        {
+            public SomeClass(string id) : base(id)
+            {
+            }
+
+            public string Salt => Id;
+            public string Other { get; set; }
+            public Dictionary<string, string> Values { get; set; }
+        }
+
+        [Test]
+        public void CollectionTest()
+        {
+            var a = new List<int> {1, 2};
+            var b = new List<int> {3, 4};
+
+            // List contains references to a and b
+            var list1 = new List<List<int>> {a, b};
+            Check.That(list1).ContainsExactly(a, b); // OK
+            Check.That(list1).ContainsExactly(new List<List<int>> {a, b}); // OK
+
+            // List contains new instances of lists same as a and b
+            var list2 = new List<List<int>>
+            {
+                new List<int> {1, 2}, // new instance, same as a
+                new List<int> {3, 4} // new instance, same as b
+            };
+            Check.That(list2).ContainsExactly(a, b); // Fail
+            Check.That(list2).ContainsExactly(new List<List<int>> {a, b}); // Fail
+        }
+
+        [Test(Description = "Issue #212")]
+        public void CollectionWithNumeric()
+        {
+            var expected = new[] {1, 2};
+            var actual = new uint[] {1, 2};
+            Check.That(actual).ContainsExactly(expected);
+        }
+
+        // GH #205 
+        [Test]
+        public void should_generate_correct_error_message_for_double()
+        {
+            using (var session = new CultureSession("en-US"))
+            {
+                Check.ThatCode(() => Check.That(this.decimalValue).IsEqualTo(0.95d)).Throws<FluentCheckException>()
+                    .AndWhichMessage().AsLines()
+                    .ContainsExactly("",
+                        "The checked value is different from the expected one, with a difference of 1.1E-16. You may consider using IsCloseTo() for comparison.",
+                        "The checked value:",
+                        "\t[0.95]",
+                        "The expected value:",
+                        "\t[0.95]");
+
+                Check.ThatCode(() => Check.That(0.9500001f).IsEqualTo(0.95f)).Throws<FluentCheckException>()
+                    .AndWhichMessage().AsLines()
+                    .ContainsExactly("",
+                        "The checked value is different from the expected one, with a difference of 1.2E-07. You may consider using IsCloseTo() for comparison.",
+                        "The checked value:",
+                        "\t[0.9500001]",
+                        "The expected value:",
+                        "\t[0.9500001]");
+            }
+        }
+
+        [Test]
+        public void should_recognize_autoproperty_readonly_values()
+        {
+            var someClass = new SomeClass("Hello")
+            {
+                Other = "world",
+                Values = new Dictionary<string, string> {["key1"] = "value1"}
+            };
+            Check.That(someClass).HasFieldsWithSameValues(new
+            {
+                Other = "world",
+                Values = new Dictionary<string, string> {["key1"] = "value1"}
+            });
+        }
+
+        [Test]
+        // GH #226
+        public void SupportForWildcards()
+        {
+            var actualString =
+                $"Events with validFrom date in the future aren't supported yet by the platform. Overall Save will be discarded due to event(s){Environment.NewLine}[FondsCurrencyChanged: validFrom=2019-02-13-230000000, createdAt=2018-02-14-102858250]";
+
+            Check.That(actualString).Matches(
+                $"Events with validFrom date in the future aren't supported yet by the platform. Overall Save will be discarded due to event\\(s\\){Environment.NewLine}\\[FondsCurrencyChanged: validFrom=.*, createdAt=2018-02-14-.*");
+        }
+
         [Test]
         public void Test()
         {
@@ -75,77 +167,28 @@ namespace NFluent.Tests.FromIssues
 
             Check.That(first).HasFieldsWithSameValues(second);
         }
-        #endregion 
 
         [Test]
-        public void should_recognize_autoproperty_readonly_values()
+        public void TestMethod()
         {
-            var someClass = new SomeClass("Hello"){Other ="world", Values = new Dictionary<string, string>{["key1"] = "value1"}};
-            Check.That(someClass).HasFieldsWithSameValues(new {Other = "world", Values = new Dictionary<string, string> { ["key1"] = "value1" } });
-        }
+            // Arrange
+            var autoPropertyValue = "I am a test.";
+            var childOne = new Child {AutoProperty = autoPropertyValue};
 
-        double decimalValue => 0.95000000000000006d;
+            // Act
+            var childTwo = new Child {AutoProperty = autoPropertyValue};
 
-        // GH #205 
-        [Test]
-        public void should_generate_correct_error_message_for_double()
-        {
-            using (var session = new CultureSession("en-US"))
-            {
-                Check.ThatCode(() => Check.That(this.decimalValue).IsEqualTo(0.95d)).Throws<FluentCheckException>().AndWhichMessage().AsLines()
-                .ContainsExactly("",
-                "The checked value is different from the expected one, with a difference of 1.1E-16. You may consider using IsCloseTo() for comparison.",
-                "The checked value:",
-                "\t[0.95]",
-                "The expected value:",
-                "\t[0.95]");
-
-                Check.ThatCode(() => Check.That(0.9500001f).IsEqualTo(0.95f)).Throws<FluentCheckException>().AndWhichMessage().AsLines()
-                .ContainsExactly("",
-                "The checked value is different from the expected one, with a difference of 1.2E-07. You may consider using IsCloseTo() for comparison.",
-                "The checked value:",
-                "\t[0.9500001]",
-                "The expected value:",
-                "\t[0.9500001]");
-                
-            }
-        }
-
-        [Test]
-        public void CollectionTest()
-        {
-            var a = new List<int> { 1, 2 };
-            var b = new List<int> { 3, 4 };
-
-            // List contains references to a and b
-            var list1 = new List<List<int>> { a, b };
-            Check.That(list1).ContainsExactly(a, b);  // OK
-            Check.That(list1).ContainsExactly(new List<List<int>> { a, b });  // OK
-
-            // List contains new instances of lists same as a and b
-            var list2 = new List<List<int>>
-            {
-                new List<int> {1, 2}, // new instance, same as a
-                new List<int> {3, 4}  // new instance, same as b
-            };
-            Check.That(list2).ContainsExactly(a, b);  // Fail
-            Check.That(list2).ContainsExactly(new List<List<int>> { a, b });  // Fail
-        }
-
-        [Test(Description = "Issue #212")]
-        public void CollectionWithNumeric()
-        {
-            var expected = new int[] { 1, 2 };
-            var actual = new uint[] { 1, 2 };
-            Check.That(actual).ContainsExactly(expected);
+            // Assert
+            Check.That(childOne).HasFieldsWithSameValues(childTwo);
         }
 
 #if DOTNET_45
         [Test]
         public void reproduce_issue_204()
         {
-            Check.ThatAsyncCode(() => Execute(5)).Throws<Exception>();
-            }
+            Check.ThatAsyncCode(() => this.Execute(5)).Throws<Exception>();
+        }
+
         private Task<int> Execute(int i)
         {
             if (i == 5)
@@ -156,26 +199,5 @@ namespace NFluent.Tests.FromIssues
             return Task.FromResult(i);
         }
 #endif
-        private class BaseClass
-        {
-            public string Id { get; }
-
-            public BaseClass(string id)
-            {
-                Id = id;
-            }
-        }
-
-        private class SomeClass: BaseClass
-        {
-            public SomeClass(string id): base(id)
-            {
-            }
-            public string Salt => Id;
-            public string Other { get; set; }
-            public Dictionary<string, string> Values { get; set; }
-        }
     }
-    
-    
 }

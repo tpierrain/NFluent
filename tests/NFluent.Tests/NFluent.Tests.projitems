@@ -58,7 +58,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Person.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ReverseEngineeringExceptionMessagesHelperTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StreamTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)StringRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StringChecksShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SutClasses\RoDico.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeHelperTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeSpanTests.cs" />
