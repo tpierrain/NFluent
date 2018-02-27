@@ -130,6 +130,16 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
+        /// Checks if an object is an instance of a failed assertion exception.
+        /// </summary>
+        /// <param name="exc">Exception to check</param>
+        /// <returns>true if the exception is of a correct type</returns>
+        public static bool IsFailedException(object exc)
+        {
+            return exc!= null && (exc is FluentCheckException || (exc.GetType() == constructors.FailedException.DeclaringType));
+        }
+
+        /// <summary>
         /// Stores adequate constructors.
         /// </summary>
         private class ExceptionConstructor

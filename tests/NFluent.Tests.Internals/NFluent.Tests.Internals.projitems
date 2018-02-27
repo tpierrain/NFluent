@@ -9,6 +9,7 @@
     <Import_RootNamespace>NFluent.Tests</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CheckLogicHelperShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContainsTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomEqualTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FluentMessageTests.cs" />

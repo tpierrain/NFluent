@@ -117,5 +117,12 @@ namespace NFluent.Extensibility
         /// <param name="message">Error message</param>
         /// <returns>An appropriate exceptio,</returns>
         Exception Failure(string message);
+
+        /// <summary>
+        /// Buids an helper object to ease coding of checks.
+        /// </summary>
+        /// <param name="inverted">if true, check logic is inverted (success &lt;=&gt; failure)</param>
+        /// <returns>An instance of <see cref="ICheckLogic{T}"/>.</returns>
+        ICheckLogic<T> BeginCheck(bool inverted = false);
     }
 }

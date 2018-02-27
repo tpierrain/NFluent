@@ -17,6 +17,7 @@ namespace NFluent
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 #if !DOTNET_30 && !DOTNET_20
     using System.Linq;
 #endif
@@ -249,7 +250,9 @@ namespace NFluent
                            : checker.BuildShortMessage("The {0} is null.").For(typeof(string)).ReferenceValues(values).Label("The {0} substring(s):").ToString();
             }
 
-            var items = values.ToList().Where(item => checkedValue.Contains(item) == notContains).ToList();
+            Debug.Assert(values != null, nameof(values) + " != null");
+            var legalValues = values as string[] ?? values.ToArray();
+            var items = legalValues.ToList().Where(item => checkedValue.Contains(item) == notContains).ToList();
 
             if (negated == items.Count > 0)
             {
@@ -258,7 +261,7 @@ namespace NFluent
 
             if (!notContains && negated)
             {
-                items = values.ToList();
+                items = legalValues.ToList();
             }
 
             if (negated != notContains)
@@ -290,37 +293,13 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
-            var result = StartsWithImpl(checker, expectedPrefix, checker.Negated);
-            if (string.IsNullOrEmpty(result))
-            {
-                return checker.BuildChainingObject();
-            }
-
-            throw new FluentCheckException(result);
-        }
-
-        private static string StartsWithImpl(IChecker<string, ICheck<string>> checker, string starts, bool negated)
-        {
-            var checkedValue = checker.Value;
-
-            // special case if checkedvalue is null
-            if (checkedValue == null)
-            {
-                return negated ? null : checker.BuildShortMessage("The {0} is null.").Expected(starts).Comparison("starts with").ToString();
-            }
-
-            if (checkedValue.StartsWith(starts) != negated)
-            {
-                // success
-                return null;
-            }
-
-            if (negated)
-            {
-                return checker.BuildMessage("The {0} starts with {1}, whereas it must not.").Expected(starts).Comparison("does not start with").ToString();
-            }
-
-            return checker.BuildMessage("The {0}'s start is different from the {1}.").Expected(starts).Comparison("starts with").ToString();
+            checker.BeginCheck()
+                .FailsIf((sut) => sut == null, "The {0} is null.", MessageOption.NoCheckedBlock)
+                .FailsIf((sut) => !sut.StartsWith(expectedPrefix), "The {0}'s start is different from the {1}.")
+                .Expecting(expectedPrefix, "starts with", "does not start with")
+                .Negated("The checked string starts with expected one, whereas it must not.")
+                .EndCheck();
+            return checker.BuildChainingObject();
         }
 
         /// <summary>
@@ -335,38 +314,14 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> EndsWith(this ICheck<string> check, string expectedEnd)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
+            checker.BeginCheck()
+                .FailsIf((sut) => sut == null, "The {0} is null.", MessageOption.NoCheckedBlock)
+                .FailsIf((sut) => !sut.EndsWith(expectedEnd), "The {0}'s end is different from the {1}.")
+                .Expecting(expectedEnd, "ends with", "does not end with")
+                .Negated("The checked string ends with expected one, whereas it must not.")
+                .EndCheck();
+            return checker.BuildChainingObject();
 
-            var result = EndsWithImpl(checker, expectedEnd, checker.Negated);
-            if (string.IsNullOrEmpty(result))
-            {
-                return checker.BuildChainingObject();
-            }
-
-            throw new FluentCheckException(result);
-        }
-
-        private static string EndsWithImpl(IChecker<string, ICheck<string>> checker, string ends, bool negated)
-        {
-            var checkedValue = checker.Value;
-
-            // special case if checkedvalue is null
-            if (checkedValue == null)
-            {
-                return negated ? null : checker.BuildShortMessage("The {0} is null.").Expected(ends).Comparison("ends with").ToString();
-            }
-
-            if (checkedValue.EndsWith(ends) != negated)
-            {
-                // success
-                return null;
-            }
-
-            if (negated)
-            {
-                return checker.BuildMessage("The {0} ends with {1}, whereas it must not.").Expected(ends).Comparison("does not end with").ToString();
-            }
-
-            return checker.BuildMessage("The {0}'s end is different from the {1}.").Expected(ends).Comparison("ends with").ToString();
         }
 
         /// <summary>
@@ -478,6 +433,7 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var value = checker.Value;
+
             return checker.ExecuteCheck(() =>
             {
                 if (PolyFill.IsNullOrWhiteSpace(value))
@@ -487,9 +443,10 @@ namespace NFluent
 
                 var message = checker.BuildMessage("The {0} contains non whitespace characters.").On(value);
                 throw new FluentCheckException(message.ToString());
-            }, (value == null ? checker.BuildMessage("The {0} is null, whereas it should not.") :
-                    value == "" ? checker.BuildMessage("The {0} is empty, whereas it should not.") :
-                checker.BuildMessage("The {0} contains only whitespace characters, whereas it should not.")).ToString());
+            }, checker.BuildMessage(
+                value == null ? "The {0} is null, whereas it should not." :
+                    value == "" ? "The {0} is empty, whereas it should not." :
+                "The {0} contains only whitespace characters, whereas it should not.").ToString());
         }
         /// <summary>
         /// Checks that the string is not empty.
@@ -607,7 +564,7 @@ namespace NFluent
                 var newLineLength = Environment.NewLine.Length;
                 while (start < checkedString.Length)
                 {
-                    var indexOf = checkedString.IndexOf(Environment.NewLine, start);
+                    var indexOf = checkedString.IndexOf(Environment.NewLine, start, StringComparison.Ordinal);
                     if (indexOf == -1)
                     {
                         indexOf = checkedString.Length;
@@ -627,4 +584,5 @@ namespace NFluent
             return new FluentCheck<IEnumerable<string>>(next);
         }
     }
+
 }

@@ -191,5 +191,9 @@ namespace NFluent.Kernel
             return new FluentCheckException(message);
         }
 
+        public ICheckLogic<T> BeginCheck(bool inverted)
+        {
+            return new CheckLogic<T, TC>(this, inverted);
+        }
     }
 }

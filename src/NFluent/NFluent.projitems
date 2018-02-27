@@ -27,6 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Checks\NegatedLambdaExceptionCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\ObjectChecksNonGenericVariants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\ReflectionWrapperChecks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensibility\ICheckLogic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\MemberMatch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ReflectionWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\IntCheckExtensions.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ICheckWithConsidering.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IFieldsOrProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IPublicOrNot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\CheckLogic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\CheckWithConsidering.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\ExtractingExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FluentCheckException.cs" />

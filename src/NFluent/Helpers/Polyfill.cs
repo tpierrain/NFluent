@@ -15,6 +15,17 @@
 
 namespace NFluent
 {
+#if DOTNET_35
+    /// <summary>
+    /// Delegates that has a return value and takes one parameter.
+    /// </summary>
+    /// <typeparam name="T">Type of return value.</typeparam>
+    /// <typeparam name="TU">Type of parameter.</typeparam>
+    /// <param name="param">value of the parameter</param>
+    /// <returns>Return value.</returns>
+    public delegate T Func<in TU, out T>(TU param);
+
+#endif
 #if DOTNET_30 || DOTNET_20
     using System;
     using System.Collections;
@@ -24,6 +35,7 @@ namespace NFluent
     /// Delegate that does not return a value and takes no parameter.
     /// </summary>
     public delegate void Action();
+
     /// <summary>
     /// Delegates that has a return value.
     /// </summary>
@@ -70,8 +82,9 @@ namespace NFluent
     /// <typeparam name="T">Type of parameter.</typeparam>
     /// <param name="item">Parameter value.</param>
     /// <returns>true if <see paramref="item"/> matches the rule.</returns>
-    internal delegate bool Predicate<in T>(T item);
-#endif
+    public delegate bool Predicate<in T>(T item);
+
+    #endif
 
 
     /// <summary>
@@ -102,12 +115,34 @@ namespace NFluent
 
         public static long LongCount<T>(this IList<T> list)
         {
-            return list.ToList().Count;
+            return list.Count;
+        }
+
+        public static T[] ToArray<T>(this IEnumerable<T> enumeration)
+        {
+            if (enumeration == null)
+            {
+                return null;
+            }
+
+            var size = enumeration.Count();
+            var result = new T[size];
+            var index = 0;
+            foreach (var item in enumeration)
+            {
+                result[index++] = item;
+            }
+
+            return result;
         }
 
         public static bool Any<T>(this IList<T> list)
         {
-            return list.ToList().Count>0;
+            foreach (var item in list)
+            {
+                return true;
+            }
+            return false;
         }
 
         public static bool Any<T>(this IList<T> list, Predicate<T> predicate)

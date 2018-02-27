@@ -30,21 +30,11 @@ namespace NFluent.Extensibility
     /// </summary>
     public class MessageBlock
     {
-        #region Fields
-
         private readonly GenericLabelBlock block;
-
         private readonly FluentMessage message;
-
         private readonly IValueDescription value;
-
         private string comparisonLabel;
-
         private string customMessage;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageBlock"/> class.
@@ -91,10 +81,6 @@ namespace NFluent.Extensibility
             this.block = label;
         }
 
-        #endregion
-        
-        #region Public Properties
-
         /// <summary>
         /// Gets the Message.
         /// </summary>
@@ -102,10 +88,6 @@ namespace NFluent.Extensibility
         /// The <see cref="FluentMessage"/> holding that block.
         /// </value>
         public FluentMessage And => this.message;
-
-        #endregion
-
-        #region Public Methods and Operators
 
         /// <summary>
         /// Adds a specific comparison message (e.g 'equal to').
@@ -251,6 +233,5 @@ namespace NFluent.Extensibility
             return fullLabel;
         }
 
-        #endregion
     }
 }

@@ -141,20 +141,19 @@ namespace NFluent.Tests
         [Test]
         public void StartWithIsCaseSensitive()
         {
-            Check.ThatCode(() => { Check.That(Alphabet).StartsWith("ABCDEF"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string's start is different from the expected one." +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine +
-                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine +
-                             "The expected string: starts with" + Environment.NewLine + "\t[\"ABCDEF\"]");
+            Check.ThatCode(() => { Check.That(Alphabet).StartsWith("ABCDEF"); }).FailsWithMessage("",
+                 "The checked string's start is different from the expected one.",
+                 "The checked string:" ,
+                 "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
+                 "The expected string: starts with" ,
+                 "\t[\"ABCDEF\"]");
         }
 
         [Test]
         public void StartsWithFailsProperlyOnNullString()
         {
             Check.ThatCode(() => { Check.That((string) null).StartsWith("fails"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is null." + Environment.NewLine +
+                .FailsWithMessage(Environment.NewLine + "The checked string is null." + Environment.NewLine +
                              "The expected string: starts with" + Environment.NewLine + "\t[\"fails\"]");
         }
 
@@ -174,8 +173,7 @@ namespace NFluent.Tests
         public void NegatedStartWithThrowsException()
         {
             Check.ThatCode(() => { Check.That(Alphabet).Not.StartsWith("abcdef"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string starts with expected one, whereas it must not." +
+                .FailsWithMessage(Environment.NewLine + "The checked string starts with expected one, whereas it must not." +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine +
                              "The expected string: does not start with" + Environment.NewLine + "\t[\"abcdef\"]");
@@ -192,8 +190,7 @@ namespace NFluent.Tests
         public void EndsWithIsCaseSensitive()
         {
             Check.ThatCode(() => { Check.That(Alphabet).EndsWith("UWXYZ"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string's end is different from the expected one." +
+                .FailsWithMessage(Environment.NewLine + "The checked string's end is different from the expected one." +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine +
                              "The expected string: ends with" + Environment.NewLine + "\t[\"UWXYZ\"]");
@@ -203,8 +200,7 @@ namespace NFluent.Tests
         public void EndsWithFailsProperlyOnNullString()
         {
             Check.ThatCode(() => { Check.That((string) null).EndsWith("fails"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is null." + Environment.NewLine +
+                .FailsWithMessage(Environment.NewLine + "The checked string is null." + Environment.NewLine +
                              "The expected string: ends with" + Environment.NewLine + "\t[\"fails\"]");
         }
 
@@ -225,8 +221,7 @@ namespace NFluent.Tests
         public void EndsWithIsNegatableFails()
         {
             Check.ThatCode(() => { Check.That(Alphabet).Not.EndsWith("vwxyz"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string ends with expected one, whereas it must not." +
+                .FailsWithMessage(Environment.NewLine + "The checked string ends with expected one, whereas it must not." +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine +
                              "The expected string: does not end with" + Environment.NewLine + "\t[\"vwxyz\"]");

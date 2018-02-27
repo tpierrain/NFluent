@@ -15,7 +15,9 @@
 
 namespace NFluent.Tests.Helpers
 {
+    using System;
     using Extensibility;
+    using NFluent.Helpers;
 
     internal static class FailureHandler
     {
@@ -37,14 +39,22 @@ namespace NFluent.Tests.Helpers
                     throw new FluentCheckException("The check succeed, whereas it should have failed.");
                 }
 
-                if (!(trace.RaisedException is FluentCheckException))
+                if (!ExceptionHelper.IsFailedException(trace.RaisedException))
                 {
                     var message = checker.BuildMessage("The exception raised is not of the expected type")
                         .On(trace.RaisedException).And.Expected(typeof(FluentCheckException));
                     throw new FluentCheckException(message.ToString());
                 }
 
-                Check.That(trace.RaisedException.Message).AsLines().ContainsExactly(lines);
+                var raisedExceptionMessage = trace.RaisedException.Message;
+                if (lines.Length>1)
+                {
+                    Check.That(raisedExceptionMessage).AsLines().ContainsExactly(lines);
+                }
+                else
+                {
+                    Check.That(raisedExceptionMessage).IsEqualTo(lines[0]);
+                }
             }, "This check should have failed.");
         }
     }
