@@ -29,12 +29,15 @@ namespace NFluent.Kernel
         private readonly bool inverted;
         private string lastError;
         private bool failed;
+
         private bool withExpected;
         private object expected;
         private string comparison;
-        private MessageOption options = MessageOption.None;
-        private string negatedError;
         private string negatedComparison;
+        private MessageOption options = MessageOption.None;
+        
+        private bool negatedFailed;
+        private string negatedError;
 
         public CheckLogic(IChecker<T, TC> checker, bool inverted)
         {
@@ -97,9 +100,26 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> Negated(string message)
+        public ICheckLogic<T> Negates(string message)
         {
             this.negatedError = message;
+            this.negatedFailed = true;
+            return this;
+        }
+
+        public ICheckLogic<T> NegatesIf(Func<T, bool> predicate, string error)
+        {
+            if (this.negatedFailed)
+            {
+                return this;
+            }
+
+            if (predicate(this.checker.Value))
+            {
+                this.negatedFailed = true;
+                this.negatedError = error;
+            }
+
             return this;
         }
     }

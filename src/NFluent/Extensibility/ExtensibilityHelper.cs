@@ -79,5 +79,27 @@ namespace NFluent.Extensibility
         {
             return new ExtendableCheckLink<T, TU>(check, value);
         }
+
+        /// <summary>
+        /// Initiates a check logic chain.
+        /// </summary>
+        /// <typeparam name="T">Type of sut</typeparam>
+        /// <param name="check">The fluent check instance to work on.</param>
+        /// <returns>An <see cref="ICheckLogic{T}"/>instance.</returns>
+        public static ICheckLogic<T> BeginCheck<T>(ICheck<T> check)
+        {
+            return ExtractChecker(check).BeginCheck();
+        }
+
+        /// <summary>
+        /// Builds a chainable object.
+        /// </summary>
+        /// <typeparam name="T">Type of sut</typeparam>
+        /// <param name="check">The fluent check instance to work on.</param>
+        /// <returns>An <see cref="ICheckLink{T}"/> instance to add further checks.</returns>
+        public static ICheckLink<ICheck<T>> BuildCheckLink<T>(ICheck<T> check)
+        {
+            return ExtractChecker(check).BuildChainingObject();
+        }
     }
 }

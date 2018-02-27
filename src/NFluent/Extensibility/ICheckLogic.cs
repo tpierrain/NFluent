@@ -15,12 +15,13 @@
 
 namespace NFluent.Extensibility
 {
+#if !DOTNET_35
     using System;
-
+#endif
     /// <summary>
     /// Options for message generation.
     /// </summary>
-    [Flags]
+    [System.Flags]
     public enum MessageOption
     {
         /// <summary>
@@ -39,17 +40,13 @@ namespace NFluent.Extensibility
     public interface ICheckLogic<out T>
     {
         /// <summary>
-        ///     Failing condition
+        /// Failing condition
         /// </summary>
         /// <param name="predicate">Predicate, returns true if test fails.</param>
         /// <param name="error">Error message on failure</param>
         /// <param name="option"></param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> FailsIf(
-#if DOTNET_35
-            NFluent.
-#endif
-             Func<T, bool> predicate, string error, MessageOption option = MessageOption.None);
+        ICheckLogic<T> FailsIf(Func<T, bool> predicate, string error, MessageOption option = MessageOption.None);
 
         /// <summary>
         ///     Ends check.
@@ -72,6 +69,15 @@ namespace NFluent.Extensibility
         /// <param name="message">Message template to use when check succeeds.</param>
         /// <returns></returns>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> Negated(string message);
+        ICheckLogic<T> Negates(string message);
+
+        /// <summary>
+        /// Failing condition on check negation.
+        /// </summary>
+        /// <param name="predicate">Predicate, returns true if test fails.</param>
+        /// <param name="error">Error message on failure</param>
+        /// <returns>Continuation object.</returns>
+        ICheckLogic<T> NegatesIf(Func<T, bool> predicate, string error);
+
     }
 }

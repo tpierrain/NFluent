@@ -24,7 +24,6 @@ namespace NFluent
     using System.Text.RegularExpressions;
 
     using Extensibility;
-    using Extensions;
     using Helpers;
 
     using Kernel;
@@ -297,7 +296,7 @@ namespace NFluent
                 .FailsIf((sut) => sut == null, "The {0} is null.", MessageOption.NoCheckedBlock)
                 .FailsIf((sut) => !sut.StartsWith(expectedPrefix), "The {0}'s start is different from the {1}.")
                 .Expecting(expectedPrefix, "starts with", "does not start with")
-                .Negated("The checked string starts with expected one, whereas it must not.")
+                .Negates("The checked string starts with expected one, whereas it must not.")
                 .EndCheck();
             return checker.BuildChainingObject();
         }
@@ -318,7 +317,7 @@ namespace NFluent
                 .FailsIf((sut) => sut == null, "The {0} is null.", MessageOption.NoCheckedBlock)
                 .FailsIf((sut) => !sut.EndsWith(expectedEnd), "The {0}'s end is different from the {1}.")
                 .Expecting(expectedEnd, "ends with", "does not end with")
-                .Negated("The checked string ends with expected one, whereas it must not.")
+                .Negates("The checked string ends with expected one, whereas it must not.")
                 .EndCheck();
             return checker.BuildChainingObject();
 
@@ -366,7 +365,7 @@ namespace NFluent
                 .Expecting(regExp, "matches", "does not match")
                 .FailsIf((sut)=> sut == null, "The {0} is null.", MessageOption.NoCheckedBlock)
                 .FailsIf((sut)=> new Regex(regExp).IsMatch(sut) == false, "The {0} does not match the {1}.")
-                .Negated("The {0} matches {1}, whereas it must not.")
+                .Negates("The {0} matches {1}, whereas it must not.")
                 .EndCheck();
         }
 
@@ -395,7 +394,6 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsNullOrEmpty(this ICheck<string> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-
             return IsEmptyImpl(checker, true, false);
         }
 
@@ -408,23 +406,16 @@ namespace NFluent
         /// </returns>
         public static ICheckLink<ICheck<string>> IsNullOrWhiteSpace(this ICheck<string> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var value = checker.Value;
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIf((sut) => !PolyFill.IsNullOrWhiteSpace(sut), "The {0} contains non whitespace characters.")
+                .NegatesIf((sut) => sut == null, "The {0} is null, whereas it should not.")
+                .NegatesIf((sut) => sut == string.Empty, "The {0} is empty, whereas it should not.")
+                .Negates("The {0} contains only whitespace characters, whereas it should not.")
+                .EndCheck();
 
-            return checker.ExecuteCheck(() =>
-            {
-                if (PolyFill.IsNullOrWhiteSpace(value))
-                {
-                    return;
-                }
-
-                var message = checker.BuildMessage("The {0} contains non whitespace characters.").On(value);
-                throw new FluentCheckException(message.ToString());
-            }, checker.BuildMessage(
-                value == null ? "The {0} is null, whereas it should not." :
-                    value == "" ? "The {0} is empty, whereas it should not." :
-                "The {0} contains only whitespace characters, whereas it should not.").ToString());
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
+
         /// <summary>
         /// Checks that the string is not empty.
         /// </summary>
