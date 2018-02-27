@@ -337,11 +337,7 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
-            var result = MatchesImpl(checker, regExp, checker.Negated);
-            if (!string.IsNullOrEmpty(result))
-            {
-                throw new FluentCheckException(result);
-            }
+            MatchesImpl(checker, regExp, false);
 
             return checker.BuildChainingObject();
         }
@@ -359,38 +355,19 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
-            var result = MatchesImpl(checker, regExp, !checker.Negated);
-            if (!string.IsNullOrEmpty(result))
-            {
-                throw new FluentCheckException(result);
-            }
+            MatchesImpl(checker, regExp, true);
 
             return checker.BuildChainingObject();
         }
 
-        private static string MatchesImpl(IChecker<string, ICheck<string>> checker, string regExp, bool negated)
+        private static void MatchesImpl(IChecker<string, ICheck<string>> checker, string regExp, bool negated)
         {
-            var checkedValue = checker.Value;
-
-            // special case if checkedvalue is null
-            if (checkedValue == null)
-            {
-                return negated ? null : checker.BuildShortMessage("The {0} is null.").Expected(regExp).Comparison("matches").ToString();
-            }
-
-            var exp = new Regex(regExp);
-            if (exp.IsMatch(checkedValue) != negated)
-            {
-                // success
-                return null;
-            }
-
-            if (negated)
-            {
-                return checker.BuildMessage("The {0} matches {1}, whereas it must not.").Expected(regExp).Comparison("does not match").ToString();
-            }
-
-            return checker.BuildMessage("The {0} does not match the {1}.").Expected(regExp).Comparison("matches").ToString();
+            checker.BeginCheck(negated)
+                .Expecting(regExp, "matches", "does not match")
+                .FailsIf((sut)=> sut == null, "The {0} is null.", MessageOption.NoCheckedBlock)
+                .FailsIf((sut)=> new Regex(regExp).IsMatch(sut) == false, "The {0} does not match the {1}.")
+                .Negated("The {0} matches {1}, whereas it must not.")
+                .EndCheck();
         }
 
         /// <summary>

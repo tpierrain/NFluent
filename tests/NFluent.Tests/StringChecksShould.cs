@@ -392,20 +392,15 @@ namespace NFluent.Tests
         public void StringMatchesFails()
         {
             Check.ThatCode(() => { Check.That("AC 12").Matches("[0-9]. [a-z]*"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string does not match the expected one." +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"AC 12\"]" +
-                             Environment.NewLine + "The expected string: matches" + Environment.NewLine +
-                             "\t[\"[0-9]. [a-z]*\"]");
+                .FailsWithMessage("", "The checked string does not match the expected one.", "The checked string:", "\t[\"AC 12\"]",
+                "The expected string: matches", "\t[\"[0-9]. [a-z]*\"]");
         }
 
         [Test]
         public void StringMatchesFailsProperlyForNull()
         {
             Check.ThatCode(() => { Check.That((string) null).Matches("[0-9]. [a-z]*"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is null." + Environment.NewLine +
-                             "The expected string: matches" + Environment.NewLine + "\t[\"[0-9]. [a-z]*\"]");
+                .FailsWithMessage("", "The checked string is null.", "The expected string: matches", "\t[\"[0-9]. [a-z]*\"]");
         }
 
         [Test]
@@ -419,11 +414,8 @@ namespace NFluent.Tests
         public void NotStringMatchesFails()
         {
             Check.ThatCode(() => { Check.That("12 ac").Not.Matches("[0-9]*. [a-z]*"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string matches expected one, whereas it must not." +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"12 ac\"]" +
-                             Environment.NewLine + "The expected string: does not match" + Environment.NewLine +
-                             "\t[\"[0-9]*. [a-z]*\"]");
+                .FailsWithMessage("", "The checked string matches expected one, whereas it must not.", "The checked string:", "\t[\"12 ac\"]", 
+                    "The expected string: does not match", "\t[\"[0-9]*. [a-z]*\"]");
         }
 
         #endregion
@@ -440,20 +432,15 @@ namespace NFluent.Tests
         public void StringDoesNotMatchFails()
         {
             Check.ThatCode(() => { Check.That("12 AC").DoesNotMatch("[0-9]. [a-z]*"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string matches expected one, whereas it must not." +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"12 AC\"]" +
-                             Environment.NewLine + "The expected string: does not match" + Environment.NewLine +
-                             "\t[\"[0-9]. [a-z]*\"]");
+                .FailsWithMessage("", "The checked string matches expected one, whereas it must not.", "The checked string:", "\t[\"12 AC\"]", 
+                    "The expected string: does not match", "\t[\"[0-9]. [a-z]*\"]");
         }
 
         [Test]
         public void StringDoesNotMatchProperlyForNull()
         {
             Check.ThatCode(() => { Check.That((string) null).Matches("[0-9]. [a-z]*"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is null." + Environment.NewLine +
-                             "The expected string: matches" + Environment.NewLine + "\t[\"[0-9]. [a-z]*\"]");
+                .FailsWithMessage("", "The checked string is null.", "The expected string: matches", "\t[\"[0-9]. [a-z]*\"]");
         }
 
         [Test]
@@ -467,11 +454,8 @@ namespace NFluent.Tests
         public void NotStringDoesNotMatchFails()
         {
             Check.ThatCode(() => { Check.That("12 ac").Not.Matches("[0-9]*. [a-z]*"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string matches expected one, whereas it must not." +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"12 ac\"]" +
-                             Environment.NewLine + "The expected string: does not match" + Environment.NewLine +
-                             "\t[\"[0-9]*. [a-z]*\"]");
+                .FailsWithMessage("", "The checked string matches expected one, whereas it must not.", "The checked string:", "\t[\"12 ac\"]",
+                    "The expected string: does not match", "\t[\"[0-9]*. [a-z]*\"]");
         }
 
         [Test]
