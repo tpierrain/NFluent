@@ -193,7 +193,6 @@ namespace NFluent
             return false;
         }
 #endif
-
         public static bool IsNullOrWhiteSpace(string texte)
         {
 #if DOTNET_20 || DOTNET_30 || DOTNET_35

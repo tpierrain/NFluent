@@ -32,6 +32,7 @@ namespace NFluent.Kernel
 
         private bool withExpected;
         private object expected;
+        private string label;
         private string comparison;
         private string negatedComparison;
         private MessageOption options = MessageOption.None;
@@ -78,12 +79,19 @@ namespace NFluent.Kernel
                 this.checker.BuildShortMessage(this.LastError) : 
                 this.checker.BuildMessage(this.LastError);
 
-            if (this.withExpected)
+            if (this.withExpected && (this.options & MessageOption.NoExpectedBlock) == MessageOption.None)
             {
                 var block = fluentMessage.Expected(this.expected);
                 if (!string.IsNullOrEmpty(this.Comparison))
                 {
                     block.Comparison(this.Comparison);
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(this.label))
+                    {
+                        block.Label(this.label);
+                    }
                 }
             }
 
@@ -91,12 +99,13 @@ namespace NFluent.Kernel
         }
 
         public ICheckLogic<T> Expecting<TU>(TU newExpectedValue, string comparisonMessage = null,
-            string newNegatedComparison = null)
+            string negatedComparison1 = null, string label = null)
         {
             this.comparison = comparisonMessage;
-            this.negatedComparison = newNegatedComparison;
+            this.negatedComparison = negatedComparison1;
             this.withExpected = true;
             this.expected = newExpectedValue;
+            this.label = label;
             return this;
         }
 

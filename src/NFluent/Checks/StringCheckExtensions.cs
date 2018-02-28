@@ -117,6 +117,15 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checker value is NOT one of the elements.</exception>
         public static ICheckLink<ICheck<string>> IsOneOfThese(this ICheck<string> check, params string[] possibleElements)
         {
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIf((sut) => possibleElements == null && sut != null,
+                    "The {0} must be null as there is no other possible value.", MessageOption.NoExpectedBlock)
+                .FailsIf((sut) => possibleElements!=null && !possibleElements.Any((x)=>string.Equals(x, sut)), "The {0} is not one of the possible elements.")
+                .Expecting(possibleElements, label: "The possible elements:")
+                .Negates("The {0} is one of the possible elements whereas it must not.")
+                .EndCheck();
+                
+
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(

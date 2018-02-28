@@ -332,8 +332,7 @@ namespace NFluent.Tests
                 {
                     Check.That("The Black Keys").IsOneOfThese("Paco de Lucia", "Jimi Hendrix", "Baden Powell");
                 })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is not one of the possible elements." +
+                .FailsWithMessage(Environment.NewLine + "The checked string is not one of the possible elements." +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" +
                              Environment.NewLine + "\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]");
@@ -355,10 +354,7 @@ namespace NFluent.Tests
         public void IsOneOfTheseThrowsProperExceptionWithNullAsExpectedValues()
         {
             Check.ThatCode(() => { Check.That("whatever").IsOneOfThese(null); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked value is not one of the possible elements." +
-                             Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"whatever\"]" +
-                             Environment.NewLine + "The possible elements:" + Environment.NewLine + "\t[null]");
+                .FailsWithMessage("", "The checked string must be null as there is no other possible value.", "The checked string:", "\t[\"whatever\"]");
         }
 
         [Test]
@@ -369,8 +365,7 @@ namespace NFluent.Tests
                     Check.That("The Black Keys")
                         .Not.IsOneOfThese("Metronomy", "Sigur Ros", "The Black Keys", "Get Well Soon");
                 })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine +
+                .FailsWithMessage(Environment.NewLine +
                              "The checked string is one of the possible elements whereas it must not." +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" +

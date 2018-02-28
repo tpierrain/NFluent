@@ -29,9 +29,13 @@ namespace NFluent.Extensibility
         /// </summary>
         None = 0,
         /// <summary>
-        /// Removes the description bloc for the checked value or sut
+        /// Removes the description block for the checked value or sut
         /// </summary>
-        NoCheckedBlock = 1
+        NoCheckedBlock = 1,
+        /// <summary>
+        /// Removes the description block for the expected value(s)
+        /// </summary>
+        NoExpectedBlock
     }
 
     /// <summary>
@@ -59,9 +63,10 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="other"></param>
         /// <param name="comparison"></param>
-        /// <param name="newNegatedComparison"></param>
+        /// <param name="negatedComparison"></param>
+        /// <param name="label"></param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> Expecting<TU>(TU other, string comparison = null, string newNegatedComparison = null);
+        ICheckLogic<T> Expecting<TU>(TU other, string comparison = null, string negatedComparison = null, string label = null);
 
         /// <summary>
         /// Error message for negated checks.
