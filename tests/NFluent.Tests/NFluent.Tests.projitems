@@ -51,6 +51,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CheckThatCodeShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mood.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Nationality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NFluentShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NotRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NumbersOfDifferentTypesRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObjectFIeldsRelatedTest.cs" />

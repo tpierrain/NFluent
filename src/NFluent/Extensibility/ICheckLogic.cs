@@ -64,9 +64,9 @@ namespace NFluent.Extensibility
         /// <param name="other"></param>
         /// <param name="comparison"></param>
         /// <param name="negatedComparison"></param>
-        /// <param name="label"></param>
+        /// <param name="expectedLabel"></param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> Expecting<TU>(TU other, string comparison = null, string negatedComparison = null, string label = null);
+        ICheckLogic<T> Expecting<TU>(TU other, string comparison = null, string negatedComparison = null, string expectedLabel = null);
 
         /// <summary>
         /// Error message for negated checks.

@@ -99,13 +99,13 @@ namespace NFluent.Kernel
         }
 
         public ICheckLogic<T> Expecting<TU>(TU newExpectedValue, string comparisonMessage = null,
-            string negatedComparison1 = null, string label = null)
+            string negatedComparison1 = null, string expectedLabel = null)
         {
             this.comparison = comparisonMessage;
             this.negatedComparison = negatedComparison1;
             this.withExpected = true;
             this.expected = newExpectedValue;
-            this.label = label;
+            this.label = expectedLabel;
             return this;
         }
 

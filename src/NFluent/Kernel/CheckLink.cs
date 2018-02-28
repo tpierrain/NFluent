@@ -39,5 +39,10 @@ namespace NFluent.Kernel
 
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         public T And => this.forkableCheck.ForkInstance() as T;
+
+        public override string ToString()
+        {
+            return "Success";
+        }
     }
 }

@@ -121,7 +121,7 @@ namespace NFluent
                 .FailsIf((sut) => possibleElements == null && sut != null,
                     "The {0} must be null as there is no other possible value.", MessageOption.NoExpectedBlock)
                 .FailsIf((sut) => possibleElements!=null && !possibleElements.Any((x)=>string.Equals(x, sut)), "The {0} is not one of the possible elements.")
-                .Expecting(possibleElements, label: "The possible elements:")
+                .Expecting(possibleElements, expectedLabel: "The possible elements:")
                 .Negates("The {0} is one of the possible elements whereas it must not.")
                 .EndCheck();
                 
