@@ -20,6 +20,7 @@ namespace NFluent.Kernel
     using System.Diagnostics;
 #endif
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
 #if !DOTNET_35 && !DOTNET_30 && !DOTNET_20 && !DOTNET_40
     using System.Reflection;
     using System.Threading.Tasks;
@@ -147,13 +148,8 @@ namespace NFluent.Kernel
                 }
 
                 // we must check if the method is flagged async
-                foreach (var attribute in function.GetMethodInfo().GetCustomAttributes(false))
+                if (function.GetMethodInfo().GetCustomAttributes(false).Any(x => x.GetType().Name.StartsWith("AsyncStateMachineAttribute")))
                 {
-                    if (!attribute.GetType().Name.StartsWith("AsyncStateMachineAttribute"))
-                    {
-                        continue;
-                    }
-
                     try
                     {
                         ta.Wait();
@@ -162,8 +158,6 @@ namespace NFluent.Kernel
                     {
                         result.RaisedException = exception.InnerException;
                     }
-
-                    break;
                 }
 #endif
             }, result);

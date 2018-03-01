@@ -185,12 +185,6 @@ namespace NFluent.Kernel
             }
         }
 
-        [DebuggerHidden]
-        public Exception Failure(string message)
-        {
-            return new FluentCheckException(message);
-        }
-
         public ICheckLogic<T> BeginCheck(bool inverted)
         {
             return new CheckLogic<T, TC>(this, inverted);

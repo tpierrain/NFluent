@@ -85,10 +85,11 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <typeparam name="T">Type of sut</typeparam>
         /// <param name="check">The fluent check instance to work on.</param>
+        /// <param name="inverted">set to true to invert checking logic.</param>
         /// <returns>An <see cref="ICheckLogic{T}"/>instance.</returns>
-        public static ICheckLogic<T> BeginCheck<T>(ICheck<T> check)
+        public static ICheckLogic<T> BeginCheck<T>(ICheck<T> check, bool inverted = false)
         {
-            return ExtractChecker(check).BeginCheck();
+            return ExtractChecker(check).BeginCheck(inverted);
         }
 
         /// <summary>

@@ -124,46 +124,8 @@ namespace NFluent
                 .Expecting(possibleElements, expectedLabel: "The possible elements:")
                 .Negates("The {0} is one of the possible elements whereas it must not.")
                 .EndCheck();
-                
 
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                    {
-                        string errorMessage;
-                        if (possibleElements == null)
-                        {
-                            // the rare case where possible elements is null
-                            if (checker.Value == null)
-                            {
-                                return;
-                            }
-                            else
-                            {
-                                errorMessage =
-                                    checker.BuildMessage("The {0} is not one of the possible elements.")
-                                        .On(checker.Value)
-                                        .And.Expected(null/*possibleElements*/)
-                                        .Label("The possible elements:")
-                                        .ToString();
-                                throw new FluentCheckException(errorMessage);
-                            }
-                        }
-
-                        if (possibleElements.Any(possibleElement => string.Equals(possibleElement, checker.Value)))
-                        {
-                            return;
-                        }
-
-                        errorMessage =
-                            checker.BuildMessage("The {0} is not one of the possible elements.")
-                                .Expected(possibleElements)
-                                .Label("The possible elements:")
-                                .ToString();
-                        throw new FluentCheckException(errorMessage);
-                    },
-                checker.BuildMessage("The {0} is one of the possible elements whereas it must not.").Expected(possibleElements).Label("The possible elements:").ToString());
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -247,7 +209,7 @@ namespace NFluent
             return message.ToString();
         }
 
-        private static string ContainsImpl(IChecker<string, ICheck<string>> checker, IEnumerable<string> values, bool negated, bool notContains)
+        private static string ContainsImpl(IChecker<string, ICheck<string>> checker, string[] values, bool negated, bool notContains)
         {
             var checkedValue = checker.Value;
 
@@ -259,7 +221,7 @@ namespace NFluent
             }
 
             Debug.Assert(values != null, nameof(values) + " != null");
-            var legalValues = values as string[] ?? values.ToArray();
+            var legalValues = values;
             var items = legalValues.ToList().Where(item => checkedValue.Contains(item) == notContains).ToList();
 
             if (negated == items.Count > 0)
@@ -379,34 +341,6 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the string is empty.
-        /// </summary>
-        /// <param name="check">The fluent check.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The string is not empty.</exception>
-        public static ICheckLink<ICheck<string>> IsEmpty(this ICheck<string> check)
-        {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return IsEmptyImpl(checker, false, false);
-        }
-
-        /// <summary>
-        /// Checks that the string is empty or null.
-        /// </summary>
-        /// <param name="check">The fluent check.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The string is neither empty or null.</exception>
-        public static ICheckLink<ICheck<string>> IsNullOrEmpty(this ICheck<string> check)
-        {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return IsEmptyImpl(checker, true, false);
-        }
-
-        /// <summary>
         /// Checks that the string is null, empty or only spaces.
         /// </summary>
         /// <param name="check">The fluent check.</param>
@@ -426,6 +360,41 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Checks that the string is empty.
+        /// </summary>
+        /// <param name="check">The fluent check.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The string is not empty.</exception>
+        public static ICheckLink<ICheck<string>> IsEmpty(this ICheck<string> check)
+        {
+            ExtensibilityHelper.BeginCheck(check)
+                .NegatesIf(string.IsNullOrEmpty, "The {0} is empty, whereas it must not.")
+                .FailsIf((sut) => sut == null, "The {0} is null instead of being empty.", MessageOption.NoCheckedBlock)
+                .FailsIf((sut) => sut != string.Empty, "The {0} is not empty.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+        /// <summary>
+        /// Checks that the string is empty or null.
+        /// </summary>
+        /// <param name="check">The fluent check.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The string is neither empty or null.</exception>
+        public static ICheckLink<ICheck<string>> IsNullOrEmpty(this ICheck<string> check)
+        {
+            ExtensibilityHelper.BeginCheck(check)
+                .Negates("The {0} is empty, whereas it must not.")
+                .FailsIf((sut) => !string.IsNullOrEmpty(sut), "The {0} is not empty or null.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+        /// <summary>
         /// Checks that the string is not empty.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
@@ -435,8 +404,13 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string is empty.</exception>
         public static ICheckLink<ICheck<string>> IsNotEmpty(this ICheck<string> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return IsEmptyImpl(checker, false, true);
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIf((sut) => sut == null, "The {0} is null whereas it must have content.", MessageOption.NoCheckedBlock)
+                .FailsIf(string.IsNullOrEmpty, "The {0} is empty, whereas it must not.", MessageOption.NoCheckedBlock)
+                .NegatesIf((sut) => sut == null, "The {0} is null instead of being empty.")
+                .Negates("The {0} is not empty or null.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -449,58 +423,8 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string is empty or null.</exception>
         public static ICheckLink<ICheck<string>> HasContent(this ICheck<string> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return IsEmptyImpl(checker, false, true);
-        }
-
-        private static ICheckLink<ICheck<string>> IsEmptyImpl(IChecker<string, ICheck<string>> checker, bool canBeNull, bool negated)
-        {
-            var checkedValue = checker.Value;
-            return checker.ExecuteCheck(() =>
-                {
-                    // special case if checkedValue is null
-                    if (checkedValue == null)
-                    {
-                        if (canBeNull)
-                        {
-                            return;
-                        }
-
-                        throw new FluentCheckException(
-                            checker.BuildShortMessage(negated
-                                    ? "The {0} is null whereas it must have content."
-                                    : "The {0} is null instead of being empty.")
-                                .For(typeof(string)).ToString());
-                    }
-
-                    if (string.IsNullOrEmpty(checkedValue) != negated)
-                    {
-                        // success
-                        return;
-                    }
-
-                    string message;
-                    if (negated)
-                    {
-                        message = checker.BuildShortMessage("The {0} is empty, whereas it must not.")
-                            .For(typeof(string)).ToString();
-                    }
-                    else
-                    {
-                        message = checker.BuildShortMessage("The {0} is not empty or null.")
-                            .On(checkedValue).ToString();
-                        throw checker.Failure(message);
-                    }
-                    throw checker.Failure(message);
-                },
-                !negated
-                    ? checker.BuildShortMessage(checkedValue == null
-                            ? "The checked string is null instead of being empty."
-                            : "The {0} is empty, whereas it must not.")
-                        .For(typeof(string)).ToString()
-                    : checker.BuildShortMessage("The {0} is not empty or null.")
-                        .On(checkedValue).ToString());
-        }
+            return IsNotEmpty(check);
+        }           
 
         /// <summary>
         /// Checks that the string is equals to another one, disregarding case.

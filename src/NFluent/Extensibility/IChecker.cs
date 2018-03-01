@@ -112,13 +112,6 @@ namespace NFluent.Extensibility
         void SetSutLabel(string sutLabel);
         
         /// <summary>
-        /// Build the adequate exception with an error mesasge.
-        /// </summary>
-        /// <param name="message">Error message</param>
-        /// <returns>An appropriate exceptio,</returns>
-        Exception Failure(string message);
-
-        /// <summary>
         /// Buids an helper object to ease coding of checks.
         /// </summary>
         /// <param name="inverted">if true, check logic is inverted (success &lt;=&gt; failure)</param>

@@ -36,12 +36,12 @@ namespace NFluent.Tests
         [Test]
         public void ShouldNotUseCheckThatCodeForAsyncMethods()
         {
-            Check.ThatCode(this.BadAsync).DoesNotThrow();
+            Check.ThatCode(BadAsync).DoesNotThrow();
             // Bad way for async methods since it does not catch the proper exception, but 
             // the TPL AggregateException wrapper instead
-            Check.ThatCode(this.DoSomethingBadAsync().Wait).Throws<AggregateException>();
+            Check.ThatCode(DoSomethingBadAsync().Wait).Throws<AggregateException>();
             // this should work without waiting
-            Check.ThatCode(this.DoSomethingBadAsync).Throws<SecurityException>();
+            Check.ThatCode(DoSomethingBadAsync).Throws<SecurityException>();
             // pseudo async method
             Check.ThatCode(PseudoAsyncMethod).DoesNotThrow();
 
@@ -57,14 +57,14 @@ namespace NFluent.Tests
         public void CheckThatAsyncCodeOnAsyncFunctionReturnsTheOriginalExceptionType()
         {
             // proper way for async function
-            Check.ThatAsyncCode(this.DoSomethingBadAfterAWhileAndBeforeAnsweringAsync).Throws<SecurityException>();
+            Check.ThatAsyncCode(DoSomethingBadAfterAWhileAndBeforeAnsweringAsync).Throws<SecurityException>();
         }
 
         [Test]
         public void CheckThatAsyncCodeOnAsyncMethodReturnsTheOriginalExceptionType()
         {
             // proper way for async methods
-            Check.ThatAsyncCode(this.DoSomethingBadAsync).Throws<SecurityException>();
+            Check.ThatAsyncCode(DoSomethingBadAsync).Throws<SecurityException>();
         }
 
         [Test]
@@ -82,9 +82,9 @@ namespace NFluent.Tests
         {
             Check.ThatAsyncCode(async () =>
             {
-                                                 await Task.Run(() => Thread.Sleep(150));
-                                                throw new SecurityException("Freeze motha...");
-                                            }).Throws<SecurityException>();
+               await Task.Run(() => Thread.Sleep(150));
+               throw new SecurityException("Freeze motha...");
+             }).Throws<SecurityException>();
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace NFluent.Tests
         public void CheckThatAsyncCodeWorksForFunctions()
         {
             // proper way for async function
-            Check.ThatAsyncCode(this.ReturnTheAnswerAfterAWhileAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
+            Check.ThatAsyncCode(ReturnTheAnswerAfterAWhileAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
         }
 
 #endregion
@@ -110,7 +110,7 @@ namespace NFluent.Tests
 
         // useless attribute is used to make sure 'async' related attribute is correctly detected when multiple attributes are present
         [Ignore("this is an arbitrary attribute")]
-        private async void BadAsync()
+        private static async void BadAsync()
         {
             await Task.Run(() =>
             {
@@ -118,7 +118,7 @@ namespace NFluent.Tests
             });
         }
 
-        private async Task<int> DoSomethingBadAfterAWhileAndBeforeAnsweringAsync()
+        private static async Task<int> DoSomethingBadAfterAWhileAndBeforeAnsweringAsync()
         {
             await Task.Run(() =>
             {
@@ -129,7 +129,7 @@ namespace NFluent.Tests
             return 42;
         }
 
-        private async Task DoSomethingBadAsync()    
+        private static async Task DoSomethingBadAsync()    
         {
             await Task.Run(() =>
             {
@@ -139,7 +139,7 @@ namespace NFluent.Tests
             });
         }
 
-        private async Task<int> ReturnTheAnswerAfterAWhileAsync()
+        private static async Task<int> ReturnTheAnswerAfterAWhileAsync()
         {
             await Task.Run(() => Thread.Sleep(20));
 

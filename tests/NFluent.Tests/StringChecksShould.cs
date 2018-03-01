@@ -466,8 +466,7 @@ namespace NFluent.Tests
         public void IsEmptyFailsIfNotEmpty()
         {
             Check.ThatCode(() => { Check.That("test").IsEmpty(); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is not empty or null." + Environment.NewLine +
+                .FailsWithMessage(Environment.NewLine + "The checked string is not empty." + Environment.NewLine +
                              "The checked string:" + Environment.NewLine + "\t[\"test\"]");
         }
 
@@ -475,16 +474,14 @@ namespace NFluent.Tests
         public void IsEmptyFailsIfNnull()
         {
             Check.ThatCode(() => { Check.That((string) null).IsEmpty(); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is null instead of being empty.");
+                .FailsWithMessage("", "The checked string is null instead of being empty.");
         }
 
         [Test]
         public void NegatedIsNotEmptyFailsIfNotEmpty()
         {
             Check.ThatCode(() => { Check.That("test").Not.IsNotEmpty(); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is not empty or null." + Environment.NewLine +
+                .FailsWithMessage(Environment.NewLine + "The checked string is not empty or null." + Environment.NewLine +
                              "The checked string:" + Environment.NewLine + "\t[\"test\"]");
         }
 
@@ -492,8 +489,7 @@ namespace NFluent.Tests
         public void IsNotEmptyFailsIfEmpty()
         {
             Check.ThatCode(() => { Check.That(string.Empty).IsNotEmpty(); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is empty, whereas it must not.");
+                .FailsWithMessage(Environment.NewLine + "The checked string is empty, whereas it must not.");
         }
 
         [Test]
@@ -507,15 +503,13 @@ namespace NFluent.Tests
         public void IsNullOrEmptyWorks(string sut)
         {
             Check.That(sut).IsNullOrEmpty();
-            Check.That(sut).IsNullOrEmpty();
         }
 
         [Test]
         public void IsNullEmptyFailsIfNotEmpty()
         {
             Check.ThatCode(() => { Check.That("test").IsNullOrEmpty(); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is not empty or null." + Environment.NewLine +
+                .FailsWithMessage(Environment.NewLine + "The checked string is not empty or null." + Environment.NewLine +
                              "The checked string:" + Environment.NewLine + "\t[\"test\"]");
         }
 
@@ -551,16 +545,14 @@ namespace NFluent.Tests
         public void HasContentFailsIfEmpty()
         {
             Check.ThatCode(() => { Check.That(string.Empty).HasContent(); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is empty, whereas it must not.");
+                .FailsWithMessage(Environment.NewLine + "The checked string is empty, whereas it must not.");
         }
 
         [Test]
         public void HasContentFailsIfNull()
         {
             Check.ThatCode(() => { Check.That((string) null).HasContent(); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is null whereas it must have content.");
+                .FailsWithMessage(Environment.NewLine + "The checked string is null whereas it must have content.");
         }
 
         [Test]
