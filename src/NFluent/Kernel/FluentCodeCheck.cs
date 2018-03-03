@@ -20,8 +20,8 @@ namespace NFluent.Kernel
     using System.Diagnostics;
 #endif
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
 #if !DOTNET_35 && !DOTNET_30 && !DOTNET_20 && !DOTNET_40
+    using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
 #endif
