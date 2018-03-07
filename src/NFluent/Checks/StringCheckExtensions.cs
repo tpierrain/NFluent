@@ -17,7 +17,6 @@ namespace NFluent
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 #if !DOTNET_30 && !DOTNET_20
     using System.Linq;
 #endif
@@ -139,24 +138,8 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string  contains all the given strings in any order.</exception>
         public static IExtendableCheckLink<string, string[]> Contains(this ICheck<string> check, params string[] values)
         {
-            Debug.Assert(values != null, nameof(values) + " != null");
-            var legalValues = values;
-            IList<string> missingItems = null;
-            IList<string> presentItems = null;
-            
-            var block = ExtensibilityHelper.BeginCheck(check)
-                .FailsIfNull("The {0} is null.")
-                .Analyze((sut) =>
-                {
-                    missingItems = sut == null ? null : legalValues.ToList().Where(item => !sut.Contains(item)).ToList();
-                    presentItems = sut == null ? null : legalValues.ToList().Where(sut.Contains).ToList();
-                })
-                .FailsIf((sut) => missingItems.Any(), "The {0} does not contain the expected value(s): "+missingItems.ToEnumeratedString())
-                .Expecting(values, expectedLabel:"The {0} substring(s):", negatedLabel:"The unauthorized substring(s):");
-           
-
-            block.Negates("The {0} contains unauthorized value(s): "+presentItems.ToEnumeratedString())
-                .EndCheck();
+            var block = ExtensibilityHelper.BeginCheck(check);
+            ContainsLogic(values, block);
             return ExtensibilityHelper.BuildExtendableCheckLink(check, values);
         }
 
@@ -171,16 +154,35 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string contains at least one of the given strings.</exception>
         public static ICheckLink<ICheck<string>> DoesNotContain(this ICheck<string> check, params string[] values)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
+            var block = ExtensibilityHelper.BeginCheck(check, true);
+            ContainsLogic(values, block);
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
 
-            var result = ContainsImpl(checker, values, checker.Negated, true);
+        private static void  ContainsLogic(string[] values, ICheckLogic<string> block)
+        {
+            var missingItems = new List<string>();
+            var presentItems = new List<string>();
+            block.FailsIfNull()
+                .Analyze((sut) =>
+                {
+                    if (sut == null)
+                    {
+                        return;
+                    }
 
-            if (string.IsNullOrEmpty(result))
-            {
-                return checker.BuildChainingObject();
-            }
+                    foreach (var value in values)
+                    {
+                        (sut.Contains(value) ? presentItems : missingItems).Add(value);
+                    }
+                })
+                .FailsIf((sut) => missingItems.Any(),
+                    "The {0} does not contain the expected value(s): " + missingItems.ToEnumeratedString())
+                .Expecting(values, expectedLabel: "The {0} substring(s):", negatedLabel: "The unauthorized substring(s):");
 
-            throw new FluentCheckException(result);
+
+            block.Negates("The {0} contains unauthorized value(s): " + presentItems.ToEnumeratedString())
+                .EndCheck();
         }
 
         private static string AssessEquals(IChecker<string, ICheck<string>> checker, object expected, bool negated, bool ignoreCase = false)
@@ -216,47 +218,6 @@ namespace NFluent
 
             // we try to refine the difference
             return message.ToString();
-        }
-
-        private static string ContainsImpl(IChecker<string, ICheck<string>> checker, string[] values, bool negated, bool notContains)
-        {
-            var checkedValue = checker.Value;
-
-            if (checkedValue == null)
-            {
-                return negated || notContains
-                           ? null
-                           : checker.BuildShortMessage("The {0} is null.").For(typeof(string)).ReferenceValues(values).Label("The {0} substring(s):").ToString();
-            }
-
-            Debug.Assert(values != null, nameof(values) + " != null");
-            var legalValues = values;
-            var items = legalValues.ToList().Where(item => checkedValue.Contains(item) == notContains).ToList();
-
-            if (negated == items.Count > 0)
-            {
-                return null;
-            }
-
-            if (!notContains && negated)
-            {
-                items = legalValues.ToList();
-            }
-
-            if (negated != notContains)
-            {
-                return
-                    checker.BuildMessage("The {0} contains unauthorized value(s): " + items.ToEnumeratedString())
-                        .ReferenceValues(values)
-                        .Label("The unauthorized substring(s):")
-                        .ToString();
-            }
-
-            return
-                checker.BuildMessage("The {0} does not contains the expected value(s): " + items.ToEnumeratedString())
-                    .ReferenceValues(values)
-                    .Label("The {0} substring(s):")
-                    .ToString();
         }
 
         /// <summary>

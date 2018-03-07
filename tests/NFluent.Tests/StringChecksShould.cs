@@ -91,8 +91,7 @@ namespace NFluent.Tests
         public void DoesNotContainsFailsWhenAppropriate()
         {
             Check.ThatCode(() => { Check.That(Alphabet).DoesNotContain("c", "z", "u"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine +
+                .FailsWithMessage(Environment.NewLine +
                              "The checked string contains unauthorized value(s): \"c\", \"z\", \"u\"" +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine +

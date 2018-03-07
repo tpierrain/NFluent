@@ -101,6 +101,6 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="error">Error message</param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> FailsIfNull(string error);
+        ICheckLogic<T> FailsIfNull(string error = "The {0} is null.");
     }
 }
