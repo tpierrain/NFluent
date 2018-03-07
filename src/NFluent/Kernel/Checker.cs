@@ -16,7 +16,6 @@
 namespace NFluent.Kernel
 {
     using System;
-    using System.Diagnostics;
 
     using Extensibility;
 

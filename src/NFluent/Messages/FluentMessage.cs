@@ -94,7 +94,7 @@ namespace NFluent.Extensibility
             var givenOrExpectedLabel = this.expectedLabel.EntityName() == this.checkedLabel.EntityName() 
                 ? this.expectedLabel.CustomMessage("{0} one") : this.expectedLabel.ToString();
 
-            builder.AppendFormat(this.message ?? "The che", this.checkedLabel, givenOrExpectedLabel);
+            builder.AppendFormat(this.message, this.checkedLabel, givenOrExpectedLabel);
 
             if (this.checkedBlock != null)
             {

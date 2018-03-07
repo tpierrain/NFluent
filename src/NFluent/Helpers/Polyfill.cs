@@ -15,6 +15,8 @@
 
 namespace NFluent
 {
+    using Extensibility;
+
 #if DOTNET_35
     /// <summary>
     /// Delegates that has a return value and takes one parameter.
@@ -225,6 +227,7 @@ namespace NFluent
             return string.IsNullOrWhiteSpace(texte);
 #endif
         }
+
         public static long LongLength<T>(this T[] array)
         {
 #if PORTABLE || NETSTANDARD1_3
