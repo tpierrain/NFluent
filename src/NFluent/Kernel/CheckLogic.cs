@@ -18,7 +18,7 @@ namespace NFluent.Kernel
     using Extensibility;
     using Helpers;
 
-#if !DOTNET_35
+#if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
     using System;
 #endif
 
@@ -33,6 +33,7 @@ namespace NFluent.Kernel
         private bool withExpected;
         private object expected;
         private string label;
+        private string negatedLabel;
         private string comparison;
         private string negatedComparison;
         private MessageOption options = MessageOption.None;
@@ -48,12 +49,13 @@ namespace NFluent.Kernel
 
         private bool IsNegated => this.inverted != this.checker.Negated;
 
-        public string LastError => this.IsNegated ? this.negatedError : this.lastError;
+        public string LastError => (this.IsNegated ? this.negatedError : this.lastError);
+
+        public string Label => (this.IsNegated ? this.negatedLabel : this.label);
 
         public string Comparison => this.IsNegated ? this.negatedComparison: this.comparison;
 
         public ICheckLogic<T> FailsIf(Func<T, bool> predicate, string error, MessageOption noCheckedBlock)
-
         {
             if (this.failed)
             {
@@ -68,11 +70,21 @@ namespace NFluent.Kernel
             return this;
         }
 
+        public ICheckLogic<T> FailsIfNull(string error)
+        {
+            return this.FailsIf((sut) => sut == null, error, MessageOption.NoCheckedBlock | MessageOption.ForceType);
+        }
+
         public void EndCheck()
         {
             if (this.failed == this.IsNegated)
             {
                 return;
+            }
+
+            if (string.IsNullOrEmpty(this.LastError))
+            {
+                throw new System.InvalidOperationException("Error message was not specified.");
             }
 
             var fluentMessage = (this.options & MessageOption.NoCheckedBlock) == MessageOption.NoCheckedBlock ? 
@@ -88,24 +100,30 @@ namespace NFluent.Kernel
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(this.label))
+                    if (!string.IsNullOrEmpty(this.Label))
                     {
-                        block.Label(this.label);
+                        block.Label(this.Label);
                     }
                 }
+            }
+
+            if ((this.options & MessageOption.ForceType) == MessageOption.ForceType)
+            {
+                fluentMessage.For(typeof(T));
             }
 
             throw ExceptionHelper.BuildException(fluentMessage.ToString());
         }
 
         public ICheckLogic<T> Expecting<TU>(TU newExpectedValue, string comparisonMessage = null,
-            string negatedComparison1 = null, string expectedLabel = null)
+            string negatedComparison1 = null, string expectedLabel = null, string negatedLabel = null)
         {
             this.comparison = comparisonMessage;
             this.negatedComparison = negatedComparison1;
             this.withExpected = true;
             this.expected = newExpectedValue;
             this.label = expectedLabel;
+            this.negatedLabel = negatedLabel ?? expectedLabel;
             return this;
         }
 
@@ -129,6 +147,12 @@ namespace NFluent.Kernel
                 this.negatedError = error;
             }
 
+            return this;
+        }
+
+        public ICheckLogic<T> Analyze(Action<T> action)
+        {
+            action(this.checker.Value);
             return this;
         }
     }

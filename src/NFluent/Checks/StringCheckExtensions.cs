@@ -139,16 +139,25 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string  contains all the given strings in any order.</exception>
         public static IExtendableCheckLink<string, string[]> Contains(this ICheck<string> check, params string[] values)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
+            Debug.Assert(values != null, nameof(values) + " != null");
+            var legalValues = values;
+            IList<string> missingItems = null;
+            IList<string> presentItems = null;
+            
+            var block = ExtensibilityHelper.BeginCheck(check)
+                .FailsIfNull("The {0} is null.")
+                .Analyze((sut) =>
+                {
+                    missingItems = sut == null ? null : legalValues.ToList().Where(item => !sut.Contains(item)).ToList();
+                    presentItems = sut == null ? null : legalValues.ToList().Where(sut.Contains).ToList();
+                })
+                .FailsIf((sut) => missingItems.Any(), "The {0} does not contain the expected value(s): "+missingItems.ToEnumeratedString())
+                .Expecting(values, expectedLabel:"The {0} substring(s):", negatedLabel:"The unauthorized substring(s):");
+           
 
-            var result = ContainsImpl(checker, values, checker.Negated, false);
-
-            if (string.IsNullOrEmpty(result))
-            {
-                return ExtensibilityHelper.BuildExtendableCheckLink(check, values);
-            }
-
-            throw new FluentCheckException(result);
+            block.Negates("The {0} contains unauthorized value(s): "+presentItems.ToEnumeratedString())
+                .EndCheck();
+            return ExtensibilityHelper.BuildExtendableCheckLink(check, values);
         }
 
         /// <summary>
@@ -197,7 +206,7 @@ namespace NFluent
             }
 
             if (expected == null)
-            {
+            { 
                 return checker.BuildShortMessage("The {0} is not null whereas it must.").For(typeof(string)).On(value).And.Expected(null).ToString();
             }
 

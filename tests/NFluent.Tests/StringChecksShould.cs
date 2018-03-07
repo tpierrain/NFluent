@@ -48,18 +48,16 @@ namespace NFluent.Tests
         public void ContainsFailsProperlyOnNullString()
         {
             Check.ThatCode(() => { Check.That((string) null).Contains("fails", "anyway"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine + "The checked string is null." + Environment.NewLine +
-                             "The expected substring(s):" + Environment.NewLine + "\t[\"fails\", \"anyway\"]");
+                .FailsWithMessage("", "The checked string is null.",
+                             "The expected substring(s):" ,"\t[\"fails\", \"anyway\"]");
         }
 
         [Test]
         public void ContainsIsCaseSensitive()
         {
             Check.ThatCode(() => { Check.That(Alphabet).Contains("C", "a", "A", "z"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine +
-                             "The checked string does not contains the expected value(s): \"C\", \"A\"" +
+                .FailsWithMessage(Environment.NewLine +
+                             "The checked string does not contain the expected value(s): \"C\", \"A\"" +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine + "The expected substring(s):" +
                              Environment.NewLine + "\t[\"C\", \"a\", \"A\", \"z\"]");
@@ -69,9 +67,8 @@ namespace NFluent.Tests
         public void ContainsThrowsExceptionWhenFails()
         {
             Check.ThatCode(() => { Check.That(Alphabet).Contains("c", "0", "4"); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine +
-                             "The checked string does not contains the expected value(s): \"0\", \"4\"" +
+                .FailsWithMessage(Environment.NewLine +
+                             "The checked string does not contain the expected value(s): \"0\", \"4\"" +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine + "The expected substring(s):" +
                              Environment.NewLine + "\t[\"c\", \"0\", \"4\"]");

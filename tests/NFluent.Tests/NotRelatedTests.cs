@@ -16,6 +16,7 @@ using System;
 
 namespace NFluent.Tests
 {
+    using Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -34,8 +35,12 @@ namespace NFluent.Tests
             {
                 Check.That("Batman and Robin").Not.Contains("Batman");
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string contains unauthorized value(s): \"Batman\"" +Environment.NewLine +"The checked string:" + Environment.NewLine + "\t[\"Batman and Robin\"]" + Environment.NewLine + "The unauthorized substring(s):" + Environment.NewLine + "\t[\"Batman\"]");
+            .FailsWithMessage("", 
+                    "The checked string contains unauthorized value(s): \"Batman\"", 
+                    "The checked string:", 
+                    "\t[\"Batman and Robin\"]",  
+                    "The unauthorized substring(s):", 
+                    "\t[\"Batman\"]");
         }
 
         [Test]
@@ -51,8 +56,7 @@ namespace NFluent.Tests
             {
                 Check.That("Batman and Robin").Not.Contains("Joker").And.StartsWith("Bat").And.Not.Contains("Robin");
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string contains unauthorized value(s): \"Robin\"" +Environment.NewLine +"The checked string:" + Environment.NewLine + "\t[\"Batman and Robin\"]" + Environment.NewLine + "The unauthorized substring(s):" + Environment.NewLine + "\t[\"Robin\"]");
+            .FailsWithMessage(Environment.NewLine+ "The checked string contains unauthorized value(s): \"Robin\"" +Environment.NewLine +"The checked string:" + Environment.NewLine + "\t[\"Batman and Robin\"]" + Environment.NewLine + "The unauthorized substring(s):" + Environment.NewLine + "\t[\"Robin\"]");
         }
 
     }

@@ -15,7 +15,7 @@
 
 namespace NFluent.Extensibility
 {
-#if !DOTNET_35
+#if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
     using System;
 #endif
     /// <summary>
@@ -35,7 +35,11 @@ namespace NFluent.Extensibility
         /// <summary>
         /// Removes the description block for the expected value(s)
         /// </summary>
-        NoExpectedBlock
+        NoExpectedBlock = 2,
+        /// <summary>
+        /// Forces the sut type
+        /// </summary>
+        ForceType = 4
     }
 
     /// <summary>
@@ -65,8 +69,9 @@ namespace NFluent.Extensibility
         /// <param name="comparison"></param>
         /// <param name="negatedComparison"></param>
         /// <param name="expectedLabel"></param>
+        /// <param name="negatedLabel"></param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> Expecting<TU>(TU other, string comparison = null, string negatedComparison = null, string expectedLabel = null);
+        ICheckLogic<T> Expecting<TU>(TU other, string comparison = null, string negatedComparison = null, string expectedLabel = null, string negatedLabel = null);
 
         /// <summary>
         /// Error message for negated checks.
@@ -84,5 +89,18 @@ namespace NFluent.Extensibility
         /// <returns>Continuation object.</returns>
         ICheckLogic<T> NegatesIf(Func<T, bool> predicate, string error);
 
+        /// <summary>
+        /// Executes arbitrary code on the sut.
+        /// </summary>
+        /// <param name="action">Code to be executed</param>
+        /// <returns>Continuation object.</returns>
+        ICheckLogic<T> Analyze(Action<T> action);
+
+        /// <summary>
+        /// Fails the check is the checked value is null,
+        /// </summary>
+        /// <param name="error">Error message</param>
+        /// <returns>Continuation object.</returns>
+        ICheckLogic<T> FailsIfNull(string error);
     }
 }

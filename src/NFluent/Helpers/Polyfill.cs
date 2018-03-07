@@ -25,9 +25,14 @@ namespace NFluent
     /// <returns>Return value.</returns>
     public delegate T Func<in TU, out T>(TU param);
 
+    /// <summary>
+    /// Delegates that takes and parameter and does not return anything.
+    /// </summary>
+    /// <typeparam name="TU">Type of parameter.</typeparam>
+    /// <param name="param">value of the parameter</param>
+    public delegate void Action<in TU>(TU param);
 #endif
 #if DOTNET_30 || DOTNET_20
-    using System;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -35,6 +40,13 @@ namespace NFluent
     /// Delegate that does not return a value and takes no parameter.
     /// </summary>
     public delegate void Action();
+
+    /// <summary>
+    /// Delegates that takes and parameter and does not return anything.
+    /// </summary>
+    /// <typeparam name="TU">Type of parameter.</typeparam>
+    /// <param name="param">value of the parameter</param>
+    public delegate void Action<in TU>(TU param);
 
     /// <summary>
     /// Delegates that has a return value.
