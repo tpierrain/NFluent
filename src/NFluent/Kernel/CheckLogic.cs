@@ -100,10 +100,7 @@ namespace NFluent.Kernel
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(this.Label))
-                    {
-                        block.Label(this.Label);
-                    }
+                    block.Label(this.Label);
                 }
             }
 

@@ -205,17 +205,17 @@ namespace NFluent
             var presentItems = new List<string>();
             block.FailsIfNull()
                 .Analyze(sut =>
-                {
-                    if (sut == null)
                     {
-                        return;
-                    }
+                        if (sut == null)
+                        {
+                            return;
+                        }
 
-                    foreach (var value in values)
-                    {
-                        (sut.Contains(value) ? presentItems : missingItems).Add(value);
-                    }
-                })
+                        foreach (var value in values)
+                        {
+                            (sut.Contains(value) ? presentItems : missingItems).Add(value);
+                        }
+                    })
                 .FailsIf(sut => missingItems.Any(),
                     "The {0} does not contain the expected value(s): " + missingItems.ToEnumeratedString())
                 .Expecting(values, expectedLabel: "The {0} substring(s):",

@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using System;
     using Extensibility;
     using NUnit.Framework;
 
@@ -35,6 +36,13 @@ namespace NFluent.Tests
             var runnableStructCheck = ExtensibilityHelper.ExtractStructChecker(Check.ThatEnum(Nationality.Chinese));
             Check.ThatEnum(runnableStructCheck.Value).IsEqualTo(Nationality.Chinese);
             Check.That(runnableStructCheck.Negated).IsFalse();
+        }
+
+        [Test]
+        public void NewCheckBuilderShouldWhenNegationMessageNotDefined()
+        {
+            var block = ExtensibilityHelper.BeginCheck(Check.That("kamoulox"), true);
+            Check.ThatCode(() => { block.EndCheck(); }).Throws<InvalidOperationException>();
         }
 
     }
