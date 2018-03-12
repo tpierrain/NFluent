@@ -19,7 +19,7 @@ namespace NFluent.Tests
     using System;
     using System.Collections.Generic;
     using ApiChecks;
-
+    using Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -60,6 +60,12 @@ namespace NFluent.Tests
         {
             var first = "Son of a test";
             Check.That(first).IsEqualTo("Son of a test");
+        }
+        [Test]
+        public void IsEqualToWorksWithStringAndObject()
+        {
+            var first = "Son of a test";
+            Check.That(first).IsEqualTo((object)"Son of a test");
         }
 
         [Test]
@@ -152,8 +158,7 @@ namespace NFluent.Tests
             {
                 Check.That(first).IsEqualTo("no way");
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string is different from expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"no way\"]");
+            .FailsWithMessage(Environment.NewLine+ "The checked string is different from expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"no way\"]");
         }
 
         [Test]
@@ -165,8 +170,7 @@ namespace NFluent.Tests
             {
                 Check.That(first).Not.IsEqualTo(first);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string is equal to the expected one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
+            .FailsWithMessage(Environment.NewLine+ "The checked string is equal to the expected one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
         }
 
         [Test]
@@ -192,8 +196,7 @@ namespace NFluent.Tests
             {
                 Check.That(first).IsEqualTo(null);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not null whereas it must." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[null]");
+            .FailsWithMessage(Environment.NewLine+ "The checked value is not null whereas it must." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[null]");
         }
 
         [Test]
@@ -204,8 +207,7 @@ namespace NFluent.Tests
             {
                 Check.That((string)null).IsEqualTo("Kamoulox !");
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string is null whereas it must not." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"Kamoulox !\"]");
+            .FailsWithMessage(Environment.NewLine+ "The checked string is null whereas it must not." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"Kamoulox !\"]");
         }
 
         [Test]
@@ -258,6 +260,13 @@ namespace NFluent.Tests
         {
             var first = "Son of a test";
             Check.That(first).IsNotEqualTo("other text");
+        }
+
+        [Test]
+        public void IsNotEqualToWorksWithStringAndObject()
+        {
+            var first = "Son of a test";
+            Check.That(first).IsNotEqualTo((object)"other text");
         }
 
         [Test]
@@ -315,8 +324,7 @@ namespace NFluent.Tests
             {
                 Check.That(first).IsNotEqualTo(otherReferenceToSameObject);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string is equal to the expected one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
+            .FailsWithMessage(Environment.NewLine+ "The checked string is equal to the expected one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
         }
 
         [Test]
@@ -328,8 +336,7 @@ namespace NFluent.Tests
             {
                 Check.That(first).Not.IsNotEqualTo("what?");
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string is different from expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"what?\"]");
+            .FailsWithMessage(Environment.NewLine+ "The checked string is different from expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"what?\"]");
         }
 
         #endregion

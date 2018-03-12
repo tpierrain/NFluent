@@ -28,6 +28,21 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+
+        // GH #231
+        [Test]
+        public void ShouldNotMixUpCheckedAndExpected()
+        {
+            double d = 1.0d;
+            Check.ThatCode(()=> Check.That(d).IsEqualTo(2.0)).FailsWithMessage(
+                "", 
+                "The checked value is different from the expected one.", 
+                "The checked value:", 
+                "\t[1]", 
+                "The expected value:", 
+                "\t[2]");
+        }
+
         // GH #219
         public class Parent
         {

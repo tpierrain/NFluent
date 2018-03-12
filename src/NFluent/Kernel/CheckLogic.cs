@@ -35,11 +35,12 @@ namespace NFluent.Kernel
         private string label;
         private string negatedLabel;
         private string comparison;
-        private string negatedComparison;
         private MessageOption options = MessageOption.None;
         
+        private string negatedComparison;
         private bool negatedFailed;
         private string negatedError;
+        private MessageOption negatedOption;
 
         public CheckLogic(IChecker<T, TC> checker, bool inverted)
         {
@@ -52,6 +53,8 @@ namespace NFluent.Kernel
         public string LastError => (this.IsNegated ? this.negatedError : this.lastError);
 
         public string Label => (this.IsNegated ? this.negatedLabel : this.label);
+
+        public MessageOption Option => (this.IsNegated ? this.negatedOption : this.options);
 
         public string Comparison => this.IsNegated ? this.negatedComparison: this.comparison;
 
@@ -87,11 +90,11 @@ namespace NFluent.Kernel
                 throw new System.InvalidOperationException("Error message was not specified.");
             }
 
-            var fluentMessage = (this.options & MessageOption.NoCheckedBlock) == MessageOption.NoCheckedBlock ? 
+            var fluentMessage = (this.Option & MessageOption.NoCheckedBlock) == MessageOption.NoCheckedBlock ? 
                 this.checker.BuildShortMessage(this.LastError) : 
                 this.checker.BuildMessage(this.LastError);
 
-            if (this.withExpected && (this.options & MessageOption.NoExpectedBlock) == MessageOption.None)
+            if (this.withExpected && (this.Option & MessageOption.NoExpectedBlock) == MessageOption.None)
             {
                 var block = fluentMessage.Expected(this.expected);
                 if (!string.IsNullOrEmpty(this.Comparison))
@@ -124,10 +127,11 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> Negates(string message)
+        public ICheckLogic<T> Negates(string message, MessageOption option)
         {
             this.negatedError = message;
             this.negatedFailed = true;
+            this.negatedOption = option;
             return this;
         }
 
@@ -149,6 +153,10 @@ namespace NFluent.Kernel
 
         public ICheckLogic<T> Analyze(Action<T> action)
         {
+            if (this.failed)
+            {
+                return this;
+            }
             action(this.checker.Value);
             return this;
         }

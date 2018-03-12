@@ -181,7 +181,7 @@ namespace NFluent.Helpers
                         mainLine += " You may consider using IsCloseTo() for comparison.";
                     }
 
-                    var message = checker.BuildMessage(mainLine).Expected(checker.Value);
+                    var message = checker.BuildMessage(mainLine).Expected(expected);
                     throw new FluentCheckException(message.ToString());
                 },
                 BuildErrorMessage(checker, expected, true, false));

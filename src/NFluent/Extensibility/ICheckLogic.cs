@@ -77,9 +77,10 @@ namespace NFluent.Extensibility
         /// Error message for negated checks.
         /// </summary>
         /// <param name="message">Message template to use when check succeeds.</param>
+        /// <param name="option"></param>
         /// <returns></returns>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> Negates(string message);
+        ICheckLogic<T> Negates(string message, MessageOption option = MessageOption.None);
 
         /// <summary>
         /// Failing condition on check negation.

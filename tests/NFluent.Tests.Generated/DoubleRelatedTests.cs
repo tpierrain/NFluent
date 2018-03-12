@@ -356,7 +356,13 @@ namespace NFluent.Tests
                 {
                     Check.That(Twenty).IsEqualTo(0);
                 })
-                .Throws<FluentCheckException>();
+                .FailsWithMessage(
+                    "", 
+                    "The checked value is different from the expected one.", 
+                    "The checked value:", 
+                    "\t[20]", 
+                    "The expected value:", 
+                    "\t[0]");
         }
 
         [Test]

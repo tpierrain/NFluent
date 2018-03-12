@@ -11,12 +11,13 @@
  * Check.ThatCode(...).Not.Throws\<T\>() may throw an InvalidCastException when thrown exception is not T.
  * Extension checks to Throw\<\>, ThrowType or ThrowAny raise an exception when used with Not as it does not make sense.
  * Which() raises an exception when used on a negated check (Not).
+ * Fixed error messages for double (and float) equality check that reported checked value in place of the expected one.
 
 ### Changes
 * Breaking: removed Failure method from IChecker interface. 
  
 ### GitHub Issues
-* #228, #227, #222, #223, #217, #230
+* #228, #227, #222, #223, #217, #230, #236
 
 ------
 ## V 2.2.0

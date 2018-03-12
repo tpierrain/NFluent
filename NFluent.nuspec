@@ -3,7 +3,7 @@
   <metadata>
     <id>NFluent</id>
     <title>NFluent, smooth your .NET TDD experience!</title>
-    <version>2.3.0-nightly-0000</version>
+    <version>2.3.0-alpha-0000</version>
     <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR</authors>
     <owners>Thomas PIERRAIN</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -25,10 +25,11 @@
 * Check.ThatCode(...).Not.Throws\&lt;T\&gt;() may throw an InvalidCastException when thrown exception is not T.
 * Extension checks to Throw\&lt;\&gt;, ThrowType or ThrowAny raise an exception when used with Not as it does not make sense.
 * Which() raises an exception when used on a negated check (Not).
+* Fixed error messages for double (and float) equality check that reported checked value in place of the expected one.
 ### Changes
 * Breaking: removed Failure method from IChecker interface.
 ### GitHub Issues
-* #228, #227, #222, #223, #217, #230
+* #228, #227, #222, #223, #217, #230, #236
 ------
 ## V 2.2.0
 ---------------

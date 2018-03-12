@@ -26,7 +26,7 @@ namespace NFluent
 #endif
 
     /// <summary>
-    ///     Provides check methods to be executed on a string instance.
+    /// Provides check methods to be executed on a string instance.
     /// </summary>
     public static class StringCheckExtensions
     {
@@ -39,33 +39,11 @@ namespace NFluent
         ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The checker value is not equal to the expected value.</exception>
-        public static ICheckLink<ICheck<string>> IsEqualTo(this ICheck<string> check, object expected)
-        {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.ExecuteCheck(() =>
-                {
-                    var messageText = AssessEquals(checker, expected, false);
-                    if (!string.IsNullOrEmpty(messageText))
-                    {
-                        throw new FluentCheckException(messageText);
-                    }
-                },
-                checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.").Expected(expected)
-                    .Comparison("different from").ToString());
-        }
-
-        /// <summary>
-        ///     Checks that the checker value is equal to another expected value.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected value.</param>
-        /// <returns>
-        ///     A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The checker value is not equal to the expected value.</exception>
         public static ICheckLink<ICheck<string>> IsEqualTo(this ICheck<string> check, string expected)
         {
-            return IsEqualTo(check, (object) expected);
+            var test = ExtensibilityHelper.BeginCheck(check);
+            PerformEqualCheck(expected, test);
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -79,16 +57,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checker value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<string>> IsNotEqualTo(this ICheck<string> check, object expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            var messageText = AssessEquals(checker, expected, !checker.Negated);
-            if (!string.IsNullOrEmpty(messageText))
-            {
-                throw new FluentCheckException(messageText);
-            }
-
-            return checker.BuildChainingObject();
+            return IsNotEqualTo(check, (string) expected);
         }
+
 
         /// <summary>
         ///     Checks that the checker value is not equal to another expected value.
@@ -101,46 +72,58 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checker value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<string>> IsNotEqualTo(this ICheck<string> check, string expected)
         {
-            return IsNotEqualTo(check, (object) expected);
+            var test = ExtensibilityHelper.BeginCheck(check, true);
+            PerformEqualCheck(expected, test);
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
-        private static string AssessEquals(IChecker<string, ICheck<string>> checker, object expected, bool negated,
-            bool ignoreCase = false)
+        /// <summary>
+        /// Checks that the checker value is equal to another expected value.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <returns>
+        ///  A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The checker value is not equal to the expected value.</exception>
+        public static ICheckLink<ICheck<string>> IsEqualTo(this ICheck<string> check, object expected)
         {
-            var value = checker.Value;
+            return IsEqualTo(check, (string) expected);
+        }
 
-            var analysis = StringDifference.Analyze(value, (string) expected, ignoreCase);
+        /// <summary>
+        /// Checks that the string is equals to another one, disregarding case.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="comparand">The string to compare to.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The string is not equal to the comparand.</exception>
+        public static ICheckLink<ICheck<string>> IsEqualIgnoringCase(this ICheck<string> check, string comparand)
+        {
+            var test = ExtensibilityHelper.BeginCheck(check);
+            PerformEqualCheck(comparand, test, true);
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
 
-            if (negated == (analysis != null && analysis.Count > 0))
-            {
-                return null;
-            }
 
-            if (negated)
-            {
-                return
-                    checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.").Expected(expected)
-                        .Comparison("different from").ToString();
-            }
-
-            if (value == null)
-            {
-                return checker.BuildShortMessage("The {0} is null whereas it must not.").For(typeof(string))
-                    .On(null).And.Expected(expected).ToString();
-            }
-
-            if (expected == null)
-            {
-                return checker.BuildShortMessage("The {0} is not null whereas it must.").For(typeof(string)).On(value)
-                    .And.Expected(null).ToString();
-            }
-
-            var summary = StringDifference.Summarize(analysis);
-            var message = checker.BuildShortMessage(string.Empty);
-            analysis[0].FillMessage(message, summary);
-
-            // we try to refine the difference
-            return message.ToString();
+        private static void PerformEqualCheck(object expected, ICheckLogic<string> test, bool ignoreCase = false)
+        {
+            test.Expecting(expected, negatedComparison: "different from")
+                .Negates("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock)
+                .FailsIf((sut) => expected == null && sut != null, "The {0} is not null whereas it must.")
+                .FailsIf((sut) => expected != null && sut == null, "The {0} is null whereas it must not.");
+            test.Analyze((sut) =>
+                {
+                    var details = StringDifference.Analyze(sut, (string) expected, ignoreCase);
+                    if (details != null && details.Count > 0)
+                    {
+                        test
+                            .FailsIf((_) => true, StringDifference.SummaryMessage(details));
+                    }
+                })
+                .EndCheck();
         }
 
         /// <summary>
@@ -206,12 +189,7 @@ namespace NFluent
             block.FailsIfNull()
                 .Analyze(sut =>
                     {
-                        if (sut == null)
-                        {
-                            return;
-                        }
-
-                        foreach (var value in values)
+                       foreach (var value in values)
                         {
                             (sut.Contains(value) ? presentItems : missingItems).Add(value);
                         }
@@ -400,28 +378,6 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> HasContent(this ICheck<string> check)
         {
             return IsNotEmpty(check);
-        }
-
-        /// <summary>
-        ///     Checks that the string is equals to another one, disregarding case.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="comparand">The string to compare to.</param>
-        /// <returns>
-        ///     A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The string is not equal to the comparand.</exception>
-        public static ICheckLink<ICheck<string>> IsEqualIgnoringCase(this ICheck<string> check, string comparand)
-        {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            var result = AssessEquals(checker, comparand, checker.Negated, true);
-            if (!string.IsNullOrEmpty(result))
-            {
-                throw new FluentCheckException(result);
-            }
-
-            return checker.BuildChainingObject();
         }
 
         /// <summary>

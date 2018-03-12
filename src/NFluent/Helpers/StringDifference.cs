@@ -16,9 +16,7 @@ namespace NFluent.Helpers
 {
     using System;
     using System.Collections.Generic;
-
-    using NFluent.Extensibility;
-    using NFluent.Extensions;
+    using Extensions;
 
     /// <summary>
     /// Describes difference between strings.
@@ -91,13 +89,14 @@ namespace NFluent.Helpers
         private const char Separator = '\n';
         private const char CarriageReturn = '\r';
 
-        private StringDifference(DifferenceMode mode, int line, int position, string actual, string expected)
+        private StringDifference(DifferenceMode mode, int line, int position, string actual, string expected, bool isFulltext)
         {
             this.Kind = mode;
             this.Line = line;
             this.Position = position;
             this.Expected = expected;
             this.Actual = actual;
+            this.IsFullText = isFulltext;
         }
 
         public DifferenceMode Kind { get; }
@@ -110,6 +109,8 @@ namespace NFluent.Helpers
 
         public int Position { get; }
 
+        private bool IsFullText { get; }
+
         public static IList<StringDifference> Analyze(string actual, string expected, bool caseInsensitive)
         {
             if (actual == expected)
@@ -120,22 +121,17 @@ namespace NFluent.Helpers
             var result = new List<StringDifference>();
             if (actual == null)
             {
-                result.Add(Build(0, null, expected, caseInsensitive));
-                return result;
-            }
-
-            if (expected == null)
-            {
-                result.Add(Build(0, actual, null, caseInsensitive));
+                result.Add(Build(0, null, expected, caseInsensitive, true));
                 return result;
             }
 
             var actualLines = actual.Split(Separator);
             var expectedLines = expected.Split(Separator);
             var sharedLines = Math.Min(actualLines.Length, expectedLines.Length);
+            var boolSingleLine = actualLines.Length == 1 && expectedLines.Length == 1;
             for (var line = 0; line < sharedLines; line++)
             {
-                var stringDifference = Build(line, actualLines[line], expectedLines[line], caseInsensitive);
+                var stringDifference = Build(line, actualLines[line], expectedLines[line], caseInsensitive, boolSingleLine);
                 if (stringDifference.Kind != DifferenceMode.NoDifference)
                 {
                     result.Add(stringDifference);
@@ -144,11 +140,11 @@ namespace NFluent.Helpers
 
             if (expectedLines.Length > sharedLines)
             {
-                result.Add(Build(sharedLines, null, expectedLines[sharedLines], caseInsensitive));
+                result.Add(Build(sharedLines, null, expectedLines[sharedLines], caseInsensitive, false));
             }
             else if (actualLines.Length > sharedLines)
             {
-                result.Add(Build(sharedLines, actualLines[sharedLines], null, caseInsensitive));
+                result.Add(Build(sharedLines, actualLines[sharedLines], null, caseInsensitive, false));
             }
             else if (sharedLines == 1 && result.Count == 1)
             {
@@ -160,7 +156,7 @@ namespace NFluent.Helpers
                         0,
                         result[0].Position,
                         result[0].Actual,
-                        result[0].Expected);
+                        result[0].Expected, true);
                     result[0] = newDiff;
                 }
                 else if (result[0].Kind == DifferenceMode.ShorterLine)
@@ -171,7 +167,7 @@ namespace NFluent.Helpers
                         0,
                         result[0].Position,
                         result[0].Actual,
-                        result[0].Expected);
+                        result[0].Expected, true);
                     result[0] = newDiff;
                 }
             }
@@ -193,6 +189,7 @@ namespace NFluent.Helpers
         /// </remarks>
         public static DifferenceMode Summarize(IEnumerable<StringDifference> stringDifferences)
         {
+
             var result = DifferenceMode.NoDifference;
             foreach (var stringDifference in stringDifferences)
             {
@@ -210,49 +207,63 @@ namespace NFluent.Helpers
             return result;
         }
 
-        /// <summary>
-        /// Builds a <see cref="FluentMessage"/> instance describing the difference.
-        /// </summary>
-        /// <param name="message">
-        /// The fluent message to fill.
-        /// </param>
-        /// <param name="summary">
-        /// Main difference between strings.
-        /// </param>
-        public void FillMessage(FluentMessage message, DifferenceMode summary)
+        public static string SummaryMessage(IList<StringDifference> differences)
         {
-            var mainText = GetMessage(summary);
-            var actual = this.Actual;
-            var expected = this.Expected;
+            return differences[0].GetErrorMessage(Summarize(differences));
+        }
+
+        /// <summary>
+        /// Transform a string to identify not printabme difference
+        /// </summary>
+        /// <param name="texte"></param>
+        /// <returns></returns>
+        public string HighLightForDifference(string texte)
+        {
             switch (this.Kind)
             {
                 case DifferenceMode.Spaces:
-                    actual = HighlightTabsIfAny(actual);
-                    expected = HighlightTabsIfAny(expected);
+                    texte = HighlightTabsIfAny(texte);
                     break;
                 case DifferenceMode.EndOfLine:
-                    actual = HighlightFirstCrlfOrLfIfAny(actual);
-                    expected = HighlightFirstCrlfOrLfIfAny(expected);
+                    texte = HighlightCrlfOrLfIfAny(texte);
                     break;
                 default:
-                    actual = actual?.TrimEnd('\r');
-                    expected = expected?.TrimEnd('\r');
+                    texte = texte?.TrimEnd('\r');
                     break;
             }
 
-            const int ExtractLength = 20;
-            if (this.Line > 0 || this.Expected.Length > ExtractLength * 2 || this.Actual.Length > ExtractLength * 2)
+            return texte;
+        }
+
+        private string GetErrorMessage(DifferenceMode summary)
+        {
+            var mainText = GetMessage(summary);
+ 
+            const int extractLength = 20;
+            string actual;
+            string expected;
+            if (this.Line > 0 || this.Expected.Length > extractLength * 2 || this.Actual.Length > extractLength * 2)
+            {
+                actual = this.HighLightForDifference(this.Actual.Extract(this.Position, extractLength));
+                expected = this.HighLightForDifference(this.Expected.Extract(this.Position, extractLength));
+            }
+            else
+            {
+                actual = this.HighLightForDifference(this.Actual);
+                expected = this.HighLightForDifference(this.Expected);
+            }
+
+            if (!this.IsFullText || (this.Actual != actual || this.Expected != expected))
             {
                 mainText += string.Format(
                     " At line {0}, col {3}, expected '{1}' was '{2}'.",
                     this.Line + 1,
-                    expected.Extract(this.Position, ExtractLength),
-                    actual.Extract(this.Position, ExtractLength),
+                    expected,
+                    actual,
                     this.Position + 1);
             }
 
-            message.ChangeMessageTo(mainText);
-            message.On(actual).And.Expected(expected);
+            return mainText;
         }
 
         /// <summary>
@@ -260,17 +271,11 @@ namespace NFluent.Helpers
         /// </summary>
         /// <param name="str">The string.</param>
         /// <returns>The same string but with &lt;&lt;CRLF&gt;&gt; inserted before the first CRLF or &lt;&lt;LF&gt;&gt; inserted before the first LF.</returns>
-        private static string HighlightFirstCrlfOrLfIfAny(string str)
+        private static string HighlightCrlfOrLfIfAny(string str)
         {
-            if (str.EndsWith("\r"))
-            {
-                str = str.Substring(0, str.Length - 1) + "<<CRLF>>";
-            }
-            else
-            {
-                str = str + "<<LF>>";
-            }
-
+            str = str.Replace("\r\n", "<<CRLF>>");
+            str = str.Replace("\r", "<<CR>>");
+            str = str.Replace("\n", "<<LF>>");
             return str;
         }
 
@@ -286,16 +291,16 @@ namespace NFluent.Helpers
 
         #region Static Methods
 
-        private static StringDifference Build(int line, string actual, string expected, bool ignoreCase)
+        private static StringDifference Build(int line, string actual, string expected, bool ignoreCase, bool isFullText)
         {
             if (actual == null)
             {
-                return new StringDifference(DifferenceMode.MissingLines, line, 0, null, expected);
+                return new StringDifference(DifferenceMode.MissingLines, line, 0, null, expected, isFullText);
             }
 
             if (expected == null)
             {
-                return new StringDifference(DifferenceMode.ExtraLines, line, 0, actual, null);
+                return new StringDifference(DifferenceMode.ExtraLines, line, 0, actual, null, isFullText);
             }
 
             // check the common part of both strings
@@ -328,7 +333,12 @@ namespace NFluent.Helpers
                     if ((i - actualStart) != (j - expectedStart) || actual.Substring(actualStart, i - actualStart)
                         != expected.Substring(expectedStart, j - expectedStart))
                     {
-                        type = DifferenceMode.Spaces;
+                        if (type != DifferenceMode.Spaces)
+                        {
+                            type = DifferenceMode.Spaces;
+                            position = i;
+                        }
+                        
                     }
                 }
                 else if (actualChar == expectedChar)
@@ -366,9 +376,9 @@ namespace NFluent.Helpers
                         type = DifferenceMode.GeneralSameLength;
                     }
 
-                    return new StringDifference(type, line, position, actual, expected);
+                    return new StringDifference(type, line, position, actual, expected, isFullText);
                 case DifferenceMode.Spaces when i == actual.Length && j == expected.Length:
-                    return new StringDifference(type, line, position, actual, expected);
+                    return new StringDifference(type, line, position, actual, expected, isFullText);
             }
 
             // strings are same so far
@@ -380,7 +390,7 @@ namespace NFluent.Helpers
                     line,
                     i,
                     actual, 
-                    expected);
+                    expected, isFullText);
             }
 
             if (j < expected.Length)
@@ -390,13 +400,18 @@ namespace NFluent.Helpers
                     line,
                     i,
                     actual,
-                    expected);
+                    expected, isFullText);
             }
 
-            return new StringDifference(type, line, position, actual, expected);
+            return new StringDifference(type, line, position, actual, expected, isFullText);
         }
 
-        private static string GetMessage(DifferenceMode summary)
+        /// <summary>
+        /// Get general message
+        /// </summary>
+        /// <param name="summary">Synthetic error</param>
+        /// <returns></returns>
+        public static string GetMessage(DifferenceMode summary)
         {
             string message;
             switch (summary)

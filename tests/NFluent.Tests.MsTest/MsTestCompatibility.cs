@@ -12,7 +12,7 @@
         {
             Check.That("MsTest").IsNotEmpty();
 
-            Check.ThatCode(() => Check.That("MsTest").IsEqualTo("great")).Throws<FluentCheckException>();
+            Check.ThatCode(() => Check.That("MsTest").IsEqualTo("great")).Throws<AssertFailedException>();
         }
 
         [TestMethod]

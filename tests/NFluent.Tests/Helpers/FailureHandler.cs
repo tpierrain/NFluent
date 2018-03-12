@@ -47,13 +47,13 @@ namespace NFluent.Tests.Helpers
                 }
 
                 var raisedExceptionMessage = trace.RaisedException.Message;
-                if (lines.Length>1)
+                if (lines.Length == 1)
                 {
-                    Check.That(raisedExceptionMessage).AsLines().ContainsExactly(lines);
+                    Check.That(raisedExceptionMessage).IsEqualTo(lines[0]);
                 }
                 else
                 {
-                    Check.That(raisedExceptionMessage).IsEqualTo(lines[0]);
+                    Check.That(raisedExceptionMessage).AsLines().ContainsExactly(lines);
                 }
             }, "This check should have failed.");
         }
