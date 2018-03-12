@@ -41,6 +41,7 @@ namespace NFluent.Kernel
         private bool negatedFailed;
         private string negatedError;
         private MessageOption negatedOption;
+        private string sutName;
 
         public CheckLogic(IChecker<T, TC> checker, bool inverted)
         {
@@ -78,6 +79,12 @@ namespace NFluent.Kernel
             return this.FailsIf((sut) => sut == null, error, MessageOption.NoCheckedBlock | MessageOption.ForceType);
         }
 
+        public ICheckLogic<T> SutNameIs(string name)
+        {
+            this.sutName = name;
+            return this;
+        }
+
         public void EndCheck()
         {
             if (this.failed == this.IsNegated)
@@ -93,7 +100,10 @@ namespace NFluent.Kernel
             var fluentMessage = (this.Option & MessageOption.NoCheckedBlock) == MessageOption.NoCheckedBlock ? 
                 this.checker.BuildShortMessage(this.LastError) : 
                 this.checker.BuildMessage(this.LastError);
-
+            if (!string.IsNullOrWhiteSpace(this.sutName))
+            {
+                fluentMessage.For(this.sutName);
+            }
             if (this.withExpected && (this.Option & MessageOption.NoExpectedBlock) == MessageOption.None)
             {
                 var block = fluentMessage.Expected(this.expected);

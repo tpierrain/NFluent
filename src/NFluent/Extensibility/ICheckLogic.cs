@@ -103,5 +103,12 @@ namespace NFluent.Extensibility
         /// <param name="error">Error message</param>
         /// <returns>Continuation object.</returns>
         ICheckLogic<T> FailsIfNull(string error = "The {0} is null.");
+
+        /// <summary>
+        /// Set the name for the observed system.
+        /// </summary>
+        /// <param name="name">Name to use</param>
+        /// <returns>Continuation object</returns>
+        ICheckLogic<T> SutNameIs(string name);
     }
 }
