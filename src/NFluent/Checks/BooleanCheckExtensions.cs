@@ -21,18 +21,6 @@ namespace NFluent
     /// </summary>
     public static class BooleanCheckExtensions
     {
-        #region fields
-
-        // message when the value must be false
-        private const string MustBeFalseMessage = "The {0} is true whereas it must be false.";
-
-        // message when the value must be true
-        private const string MustBeTrueMessage = "The {0} is false whereas it must be true.";
-
-        #endregion
-
-        #region methods
-
         /// <summary>
         /// Checks that the actual value is true.
         /// </summary>
@@ -43,19 +31,8 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not true.</exception>
         public static ICheckLink<ICheck<bool>> IsTrue(this ICheck<bool> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                    {
-                        if (!checker.Value)
-                        {
-                            var message =
-                                checker.BuildMessage(MustBeTrueMessage).ToString();
-                            throw new FluentCheckException(message);
-                        }
-                    },
-                checker.BuildMessage(MustBeFalseMessage).ToString());
+            var test = ExtensibilityHelper.BeginCheck(check, true);
+            return ImplementIsFalseCheck(check, test);
         }
 
         /// <summary>
@@ -68,20 +45,15 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not false.</exception>
         public static ICheckLink<ICheck<bool>> IsFalse(this ICheck<bool> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
+            var test = ExtensibilityHelper.BeginCheck(check);
+            return ImplementIsFalseCheck(check, test);
+        }
 
-            return checker.ExecuteCheck(
-                () =>
-                    {
-                        if (checker.Value)
-                        {
-                            throw new FluentCheckException(
-                                checker.BuildMessage(MustBeFalseMessage).ToString());
-                        }
-                    },
-                checker.BuildMessage(MustBeTrueMessage).ToString());
+        private static ICheckLink<ICheck<bool>> ImplementIsFalseCheck(ICheck<bool> check, ICheckLogic<bool> test)
+        {
+            test.FailsIf((sut) => sut, "The {0} is true whereas it must be false.")
+                .Negates("The {0} is false whereas it must be true.").EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
     }
-
-    #endregion
 }
