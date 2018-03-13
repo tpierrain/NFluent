@@ -100,7 +100,7 @@ namespace NFluent.Kernel
             var fluentMessage = (this.Option & MessageOption.NoCheckedBlock) == MessageOption.NoCheckedBlock ? 
                 this.checker.BuildShortMessage(this.LastError) : 
                 this.checker.BuildMessage(this.LastError);
-            if (!string.IsNullOrWhiteSpace(this.sutName))
+            if (!PolyFill.IsNullOrWhiteSpace(this.sutName))
             {
                 fluentMessage.For(this.sutName);
             }
