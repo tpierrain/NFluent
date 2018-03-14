@@ -22,10 +22,9 @@ namespace NFluent.Kernel
     using System;
 #endif
 
-    internal class CheckLogic<T, TC> : ICheckLogic<T>
-        where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    internal class CheckLogic<T> : ICheckLogic<T>
     {
-        private readonly IChecker<T, TC> checker;
+        private readonly T value;
         private readonly bool inverted;
         private string lastError;
         private bool failed;
@@ -42,14 +41,17 @@ namespace NFluent.Kernel
         private string negatedError;
         private MessageOption negatedOption;
         private string sutName;
+        private string checkedLabel=null;
+        private bool expectedIsAType;
 
-        public CheckLogic(IChecker<T, TC> checker, bool inverted)
+        public CheckLogic(T value, string label, bool inverted)
         {
-            this.checker = checker;
+            this.value = value;
             this.inverted = inverted;
+            this.sutName = label;
         }
 
-        private bool IsNegated => this.inverted != this.checker.Negated;
+        private bool IsNegated => this.inverted;
 
         public string LastError => (this.IsNegated ? this.negatedError : this.lastError);
 
@@ -65,7 +67,7 @@ namespace NFluent.Kernel
             {
                 return this;
             }
-            this.failed =  predicate(this.checker.Value);
+            this.failed =  predicate(this.value);
             if (this.failed && !this.IsNegated)
             {
                 this.lastError = error;
@@ -85,6 +87,14 @@ namespace NFluent.Kernel
             return this;
         }
 
+        // TODO: improve sut naming logic on extraction
+        public ICheckLogic<TU> GetSutProperty<TU>(Func<T, TU> sutExtractor, string newSutLabel)
+        {
+            var result = new CheckLogic<TU>(sutExtractor(this.value), null, this.inverted);
+            result.checkedLabel = newSutLabel;
+            return result;
+        }
+
         public void EndCheck()
         {
             if (this.failed == this.IsNegated)
@@ -97,16 +107,28 @@ namespace NFluent.Kernel
                 throw new System.InvalidOperationException("Error message was not specified.");
             }
 
-            var fluentMessage = (this.Option & MessageOption.NoCheckedBlock) == MessageOption.NoCheckedBlock ? 
-                this.checker.BuildShortMessage(this.LastError) : 
-                this.checker.BuildMessage(this.LastError);
+            var fluentMessage = FluentMessage.BuildMessage(this.LastError);
+            if ((this.Option & MessageOption.NoCheckedBlock) == 0)
+            {
+                var block = fluentMessage.On(this.value);
+                if (!string.IsNullOrEmpty(this.checkedLabel))
+                {
+                    block.Label(this.checkedLabel);
+                }
+            }
+            
             if (!PolyFill.IsNullOrWhiteSpace(this.sutName))
             {
                 fluentMessage.For(this.sutName);
             }
+            else
+            {
+                fluentMessage.For(typeof(T));
+            }
+            
             if (this.withExpected && (this.Option & MessageOption.NoExpectedBlock) == MessageOption.None)
             {
-                var block = fluentMessage.Expected(this.expected);
+                var block = this.expectedIsAType ? fluentMessage.ExpectedType((System.Type)this.expected) : fluentMessage.Expected(this.expected);
                 if (!string.IsNullOrEmpty(this.Comparison))
                 {
                     block.Comparison(this.Comparison);
@@ -137,6 +159,13 @@ namespace NFluent.Kernel
             return this;
         }
 
+        public ICheckLogic<T> ExpectingType(System.Type expectedType, string expectedLabel, string negatedLabel)
+        {
+            this.expectedIsAType = true;
+            return this.Expecting(expectedType, expectedLabel: expectedLabel, negatedLabel: negatedLabel);
+        }
+
+
         public ICheckLogic<T> Negates(string message, MessageOption option)
         {
             this.negatedError = message;
@@ -152,7 +181,7 @@ namespace NFluent.Kernel
                 return this;
             }
 
-            if (predicate(this.checker.Value))
+            if (predicate(this.value))
             {
                 this.negatedFailed = true;
                 this.negatedError = error;
@@ -167,7 +196,7 @@ namespace NFluent.Kernel
             {
                 return this;
             }
-            action(this.checker.Value);
+            action(this.value);
             return this;
         }
     }

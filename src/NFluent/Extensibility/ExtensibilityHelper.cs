@@ -12,7 +12,6 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-// ReSharper disable once CheckNamespace
 namespace NFluent.Extensibility
 {
     using Kernel;
@@ -93,6 +92,18 @@ namespace NFluent.Extensibility
         }
 
         /// <summary>
+        /// Initiates a check logic chain.
+        /// </summary>
+        /// <typeparam name="T">Type of sut</typeparam>
+        /// <param name="check">The fluent check instance to work on.</param>
+        /// <param name="inverted">set to true to invert checking logic.</param>
+        /// <returns>An <see cref="ICheckLogic{T}"/>instance.</returns>
+        public static ICheckLogic<T> BeginCheck<T>(ICodeCheck<T> check, bool inverted = false) where T : RunTrace
+        {
+            return ExtractCodeChecker(check).BeginCheck(inverted);
+        }
+
+        /// <summary>
         /// Builds a chainable object.
         /// </summary>
         /// <typeparam name="T">Type of sut</typeparam>
@@ -101,6 +112,17 @@ namespace NFluent.Extensibility
         public static ICheckLink<ICheck<T>> BuildCheckLink<T>(ICheck<T> check)
         {
             return ExtractChecker(check).BuildChainingObject();
+        }
+
+        /// <summary>
+        /// Builds a chainable object.
+        /// </summary>
+        /// <typeparam name="T">Type of sut</typeparam>
+        /// <param name="check">The fluent check instance to work on.</param>
+        /// <returns>An <see cref="ICheckLink{T}"/> instance to add further checks.</returns>
+        public static ICheckLink<ICodeCheck<T>> BuildCheckLink<T>(ICodeCheck<T> check) where T : RunTrace
+        {
+            return ExtractCodeChecker(check).BuildChainingObject();
         }
     }
 }

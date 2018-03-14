@@ -110,5 +110,22 @@ namespace NFluent.Extensibility
         /// <param name="name">Name to use</param>
         /// <returns>Continuation object</returns>
         ICheckLogic<T> SutNameIs(string name);
+
+        /// <summary>
+        /// Change the value of the sut.
+        /// </summary>
+        /// <param name="sutExtractor">new sut  object.</param>
+        /// <param name="sutLabel">new label</param>
+        /// <returns>Continuation object</returns>
+        ICheckLogic<TU> GetSutProperty<TU>(Func<T, TU> sutExtractor, string sutLabel);
+
+        /// <summary>
+        /// Specify that the expectation is an instance of some type
+        /// </summary>
+        /// <param name="expectedType">expected type</param>
+        /// <param name="expectedLabel">associated label</param>
+        /// <param name="negatedLabel">label when negated</param>
+        /// <returns></returns>
+        ICheckLogic<T> ExpectingType(System.Type expectedType, string expectedLabel, string negatedLabel);
     }
 }

@@ -79,10 +79,7 @@ namespace NFluent.Messages
                 return this.EntityType == typeof(char) ? "char" : DefaultEntityName;
             }
 
-            set
-            {
-                this.forcedEntity = value;
-            }
+            set => this.forcedEntity = value;
         }
 
         public Type EntityType { get; set; }

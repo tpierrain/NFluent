@@ -66,9 +66,9 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatCode(() => { throw new Exception(); }).DoesNotThrow();
+                Check.ThatCode(() => throw new Exception()).DoesNotThrow();
             })
-            .Throws<FluentCheckException>()
+            .ThrowsAny()
             .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code raised an exception, whereas it must not." + Environment.NewLine + "The raised exception:" + Environment.NewLine + "\t[{System.Exception}:"); // TODO: mimic StartsWith
         }
 
@@ -86,8 +86,8 @@ namespace NFluent.Tests
             {
                 Check.ThatCode(() => { throw new Exception(); }).Throws<InvalidOperationException>();
             })
-            .Throws<FluentCheckException>()
-            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code raised an exception of a different type than expected." + Environment.NewLine + "Raised Exception" + Environment.NewLine + "\t[{System.Exception}:"); // TODO: mimic StartsWith
+            .ThrowsAny()
+            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code raised an exception of a different type than expected." + Environment.NewLine + "The raised exception:" + Environment.NewLine + "\t[{System.Exception}:"); // TODO: mimic StartsWith
         }
 
         [Test]
@@ -100,8 +100,7 @@ namespace NFluent.Tests
                     var unused = new object();
                 }).ThrowsAny();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
+            .FailsWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
         }
 
         [Test]
@@ -114,18 +113,14 @@ namespace NFluent.Tests
                     var unused = new object();
                 }).Throws<Exception>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected exception:" + Environment.NewLine + "\tan instance of type: [System.Exception]");
+            .FailsWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected exception:" + Environment.NewLine + "\tan instance of type: [System.Exception]");
         }
 
         [Test]
         public void DidNotRaiseWhenUsedWithValidParameterlessFuncVariable()
         {
-#if DOTNET_30 || DOTNET_20
-            NFluent.
-#endif
-            Func<bool> sut = () => true;
-            Check.ThatCode<bool>(sut).DoesNotThrow();
+            bool Sut() => true;
+            Check.ThatCode<bool>(Sut).DoesNotThrow();
         }
 
         [Test]

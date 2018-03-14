@@ -25,8 +25,6 @@ namespace NFluent
     /// </summary>
     public static class MessageRelatedExtensions
     {
-        #region Public Methods and Operators
-
         /// <summary>
         /// Define a specific name for the system under test.
         /// </summary>
@@ -45,7 +43,5 @@ namespace NFluent
             checker.SetSutLabel(sutLabel);
             return check;
         }
-
-        #endregion
     }
 }

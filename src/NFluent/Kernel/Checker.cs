@@ -186,7 +186,7 @@ namespace NFluent.Kernel
 
         public ICheckLogic<T> BeginCheck(bool inverted)
         {
-            return new CheckLogic<T, TC>(this, inverted);
+            return new CheckLogic<T>(this.Value, this.sutLabel, inverted != this.Negated);
         }
     }
 }

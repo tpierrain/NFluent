@@ -13,13 +13,13 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-using NFluent.ApiChecks;
-
 namespace NFluent.Tests
 {
     using System;
-
+    using Helpers;
     using NUnit.Framework;
+    using ApiChecks;
+
 
     [TestFixture]
     public class ExceptionTests
@@ -35,9 +35,9 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatCode(() => { throw new Exception(); }).DoesNotThrow();
+                Check.ThatCode(() => throw new Exception()).DoesNotThrow();
             })
-            .Throws<FluentCheckException>()
+            .ThrowsAny()
             .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code raised an exception, whereas it must not."); // TODO: reproduce startWith
         }
 
@@ -55,7 +55,7 @@ namespace NFluent.Tests
             {
                 Check.ThatCode(() => { throw new Exception(); }).Throws<InvalidOperationException>();
             })
-            .Throws<FluentCheckException>()
+            .ThrowsAny()
             .AndWhichMessage().Contains(Environment.NewLine+ "The checked code raised an exception of a different type than expected."); // TODO: reproduce Contains
         }
 
@@ -67,8 +67,7 @@ namespace NFluent.Tests
                 // ReSharper disable once ObjectCreationAsStatement
                 Check.ThatCode(() => { new object(); }).ThrowsAny();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
+            .FailsWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
         }
 
         [Test]
@@ -79,8 +78,7 @@ namespace NFluent.Tests
                 // ReSharper disable once ObjectCreationAsStatement
                 Check.ThatCode(() => { new object(); }).Throws<Exception>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected exception:" + Environment.NewLine + "\tan instance of type: [System.Exception]");
+            .FailsWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected exception:" + Environment.NewLine + "\tan instance of type: [System.Exception]");
         }
     }
 }

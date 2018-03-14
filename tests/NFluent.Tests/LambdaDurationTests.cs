@@ -40,7 +40,7 @@ namespace NFluent.Tests
                 {
                     Check.ThatCode(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
                 })
-                .Throws<FluentCheckException>()
+                .ThrowsAny()
                 .AndWhichMessage().StartsWith(
                     Environment.NewLine +
                     "The checked code took too much time to execute." + Environment.NewLine +
@@ -76,7 +76,7 @@ namespace NFluent.Tests
                     }
                 }).ConsumesLessThan(5, TimeUnit.Milliseconds);
             })
-            .Throws<FluentCheckException>()
+            .ThrowsAny()
             .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code consumed too much CPU time." + Environment.NewLine + "The checked cpu time:"); // TODO mimic startsWith
         }
     }
