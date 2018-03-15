@@ -23,7 +23,7 @@ namespace NFluent.Tests
     using Helpers;
 
     using ApiChecks;
-
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -100,7 +100,7 @@ namespace NFluent.Tests
                     var unused = new object();
                 }).ThrowsAny();
             })
-            .FailsWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace NFluent.Tests
                     var unused = new object();
                 }).Throws<Exception>();
             })
-            .FailsWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected exception:" + Environment.NewLine + "\tan instance of type: [System.Exception]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected exception:" + Environment.NewLine + "\tan instance of type: [System.Exception]");
         }
 
         [Test]

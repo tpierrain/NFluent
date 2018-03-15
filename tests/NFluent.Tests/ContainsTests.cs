@@ -18,7 +18,8 @@ namespace NFluent.Tests
     using System;
     using System.Collections;
     using System.Collections.Generic;
-
+    using Helpers;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -63,8 +64,7 @@ namespace NFluent.Tests
             {
                 Check.That(integers).Contains(3, 2, 666, 1974);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[666, 1974]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 666, 1974]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[666, 1974]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 666, 1974]");
         }
 
         [Test]
@@ -83,8 +83,7 @@ namespace NFluent.Tests
             {
                 Check.That(integers).Not.Contains(3, 2, 1);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable contains all the given values whereas it must not." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 1]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable contains all the given values whereas it must not." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 1]");
         }
 
         #endregion
@@ -124,8 +123,7 @@ namespace NFluent.Tests
             {
                 Check.That(emptyList).Contains("what da heck!");
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]");
         }
 
         [Test]
@@ -143,8 +141,7 @@ namespace NFluent.Tests
             {
                 Check.That((List<int>)null).Contains("what da heck!");
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable is null and thus, does not contain the given expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable is null and thus, does not contain the given expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]");
         }
 
         [Test]
@@ -163,8 +160,7 @@ namespace NFluent.Tests
             {
                 Check.That(integers).Contains(expectedNumbers);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[666, 1974]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 666, 1974]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[666, 1974]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 666, 1974]");
         }
 
 #if !NETCOREAPP1_0

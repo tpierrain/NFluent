@@ -16,6 +16,7 @@
 namespace NFluent.Tests
 {
     using Helpers;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -66,7 +67,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(sut).Considering().Properties.IsNoInstanceOfType(expected.GetType());
-            }).FailsWithMessage(
+            }).IsAFaillingCheckWithMessage(
                     "", "The checked value is an instance of [<>f__AnonymousType1<int>] whereas it must not.", "The checked value:", "\t[{ TheProperty = 42 }] of type: [NFluent.Helpers.ReflectionWrapper]", "The expected value: different from", "\tan instance of type: [<>f__AnonymousType1<int>]");
         }
 
@@ -76,11 +77,11 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                     Check.That(new SutClass(2, 43)).Considering().NonPublic.Properties
                         .IsEqualTo(new {ThePrivateProperty = (object) null}))
-                .FailsWithMessage("", "The checked value's property 'ThePrivateProperty' is absent from the expected one.", "The checked property 'ThePrivateProperty':", "\t[null]");
+                .IsAFaillingCheckWithMessage("", "The checked value's property 'ThePrivateProperty' is absent from the expected one.", "The checked property 'ThePrivateProperty':", "\t[null]");
             Check.ThatCode(() =>
                     Check.That(new {ThePrivateProperty = (object) null}).Considering().NonPublic.Properties
                         .IsEqualTo(new SutClass(2, 43)))
-                .FailsWithMessage("", "The expected one's property 'ThePrivateProperty' is absent from the checked value.", "The expected property 'ThePrivateProperty':", "\t[null]");
+                .IsAFaillingCheckWithMessage("", "The expected one's property 'ThePrivateProperty' is absent from the checked value.", "The expected property 'ThePrivateProperty':", "\t[null]");
         }
 
         [Test]
@@ -89,11 +90,11 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                     Check.That(new SutClass(2, 43)).Considering().All.Properties
                         .IsEqualTo(new {ThePrivateProperty = (object) null}))
-                .FailsWithMessage("", "The checked value's property 'TheProperty' is absent from the expected one.", "The checked property 'TheProperty':", "\t[43]");
+                .IsAFaillingCheckWithMessage("", "The checked value's property 'TheProperty' is absent from the expected one.", "The checked property 'TheProperty':", "\t[43]");
             Check.ThatCode(() =>
                     Check.That(new {ThePrivateProperty = (object) null}).Considering().All.Properties
                         .IsEqualTo(new SutClass(2, 43)))
-                .FailsWithMessage("", "The expected one's property 'TheProperty' is absent from the checked value.", "The expected property 'TheProperty':", "\t[43]");
+                .IsAFaillingCheckWithMessage("", "The expected one's property 'TheProperty' is absent from the checked value.", "The expected property 'TheProperty':", "\t[43]");
         }
 
         [Test]
@@ -104,7 +105,7 @@ namespace NFluent.Tests
             {
                 Check.That(sut).Considering().All.Fields.And.All.Properties
                     .IsEqualTo(new SutClass(2, 42, 4, new object()));
-            }).FailsWithMessage("",  "The checked value's property 'ThePrivateProperty' does not have the expected value.", "The checked value:", "\t[null]", "The expected value:", "\t[System.Object] of type: [object]");
+            }).IsAFaillingCheckWithMessage("",  "The checked value's property 'ThePrivateProperty' does not have the expected value.", "The checked value:", "\t[null]", "The expected value:", "\t[System.Object] of type: [object]");
         }
 
         [Test]
@@ -114,7 +115,7 @@ namespace NFluent.Tests
 
             Check.ThatCode(() =>
                     Check.That(sut).Considering().Public.Fields.IsEqualTo(new SutClass(3, 42)))
-                .FailsWithMessage("", "The checked value's field 'TheField' does not have the expected value.", "The checked value:", "\t[2]", "The expected value:", "\t[3]");
+                .IsAFaillingCheckWithMessage("", "The checked value's field 'TheField' does not have the expected value.", "The checked value:", "\t[2]", "The expected value:", "\t[3]");
         }
 
         [Test]
@@ -124,7 +125,7 @@ namespace NFluent.Tests
 
             Check.ThatCode(() =>
                     Check.That(sut).Considering().Public.Properties.IsEqualTo(new SutClass(2, 43)))
-                .FailsWithMessage("", "The checked value's property 'TheProperty' does not have the expected value.", "The checked value:", "\t[42]", "The expected value:", "\t[43]");
+                .IsAFaillingCheckWithMessage("", "The checked value's property 'TheProperty' does not have the expected value.", "The checked value:", "\t[42]", "The expected value:", "\t[43]");
         }
 
         [Test]
@@ -134,9 +135,9 @@ namespace NFluent.Tests
 
             var expected = new SutClass(2, 42, 4, sut);
             Check.ThatCode(() => Check.That(sut).Considering().All.Fields.And.All.Properties.IsEqualTo(expected))
-                .FailsWithMessage("", "The checked value's property 'ThePrivateProperty' does not have the expected value.", "The checked value:", "\t[null]", "The expected value:", "\t[NFluent.Tests.ConsideringShould+SutClass] of type: [NFluent.Tests.ConsideringShould+SutClass]");
+                .IsAFaillingCheckWithMessage("", "The checked value's property 'ThePrivateProperty' does not have the expected value.", "The checked value:", "\t[null]", "The expected value:", "\t[NFluent.Tests.ConsideringShould+SutClass] of type: [NFluent.Tests.ConsideringShould+SutClass]");
             Check.ThatCode(() => Check.That(expected).Considering().All.Fields.And.All.Properties.IsEqualTo(sut))
-                .FailsWithMessage("",  "The checked value's property 'ThePrivateProperty' does not have the expected value.", "The checked value:", "\t[NFluent.Tests.ConsideringShould+SutClass]", "The expected value:", "\t[null]");
+                .IsAFaillingCheckWithMessage("",  "The checked value's property 'ThePrivateProperty' does not have the expected value.", "The checked value:", "\t[NFluent.Tests.ConsideringShould+SutClass]", "The expected value:", "\t[null]");
         }
 
         [Test]
@@ -147,11 +148,11 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(sut).Considering().Public.Properties.IsInstanceOfType(expected.GetType());
-            }).FailsWithMessage("", "The expected one's property 'Test' is absent from the checked value.", "The expected property 'Test':", "\t[null]");
+            }).IsAFaillingCheckWithMessage("", "The expected one's property 'Test' is absent from the checked value.", "The expected property 'Test':", "\t[null]");
             Check.ThatCode(() =>
             {
                 Check.That(expected).Considering().Public.Properties.IsInstanceOfType(sut.GetType());
-            }).FailsWithMessage("", "The checked value's property 'Test' is absent from the expected one.", "The checked property 'Test':", "\t[11]");
+            }).IsAFaillingCheckWithMessage("", "The checked value's property 'Test' is absent from the expected one.", "The checked property 'Test':", "\t[11]");
         }
 
         [Test]
@@ -235,11 +236,11 @@ namespace NFluent.Tests
             Check.That(sut).Considering().NonPublic.Fields.IsEqualTo(new SutClass(2, 42, 4, null));
             Check.ThatCode(() =>
                 {Check.That(sut).Considering().NonPublic.Fields.IsEqualTo(new SutClass(2, 42, 4, sut));})
-                .FailsWithMessage("", "The checked value's autoproperty 'ThePrivateProperty' (field '<ThePrivateProperty>k__BackingField') does not have the expected value.", "The checked value:", "\t[null]", "The expected value:", "\t[NFluent.Tests.ConsideringShould+SutClass] of type: [NFluent.Tests.ConsideringShould+SutClass]");
+                .IsAFaillingCheckWithMessage("", "The checked value's autoproperty 'ThePrivateProperty' (field '<ThePrivateProperty>k__BackingField') does not have the expected value.", "The checked value:", "\t[null]", "The expected value:", "\t[NFluent.Tests.ConsideringShould+SutClass] of type: [NFluent.Tests.ConsideringShould+SutClass]");
             Check.ThatCode(() =>
                 {
                     Check.That(new SutClass(2, 42, 4, sut)).Considering().NonPublic.Fields.IsEqualTo(sut);})
-                .FailsWithMessage("", "The checked value's autoproperty 'ThePrivateProperty' (field '<ThePrivateProperty>k__BackingField') does not have the expected value.", "The checked value:", "\t[NFluent.Tests.ConsideringShould+SutClass]", "The expected value:", "\t[null]");
+                .IsAFaillingCheckWithMessage("", "The checked value's autoproperty 'ThePrivateProperty' (field '<ThePrivateProperty>k__BackingField') does not have the expected value.", "The checked value:", "\t[NFluent.Tests.ConsideringShould+SutClass]", "The expected value:", "\t[null]");
         }
 
         [Test]
@@ -284,9 +285,9 @@ namespace NFluent.Tests
             var sut = new {arrayOfInts = new int[4]};
             var expected = new {arrayOfInts = new int[5]};
             Check.ThatCode(() => { Check.That(sut).Considering().NonPublic.Fields.IsEqualTo(expected); })
-                .FailsWithMessage("", "The checked value's field 'arrayOfInts' does not have the expected value.", "The checked value:", "\t[0, 0, 0, 0]", "The expected value:", "\t[0, 0, 0, 0, 0]");
+                .IsAFaillingCheckWithMessage("", "The checked value's field 'arrayOfInts' does not have the expected value.", "The checked value:", "\t[0, 0, 0, 0]", "The expected value:", "\t[0, 0, 0, 0, 0]");
             Check.ThatCode(() => { Check.That(new {arrayOfInts =  "INTS"}).Considering().NonPublic.Fields.IsEqualTo(expected); })
-                .FailsWithMessage("", "The checked value's field 'arrayOfInts' does not have the expected value.", "The checked value:", "\t[\"INTS\"] of type: [string]", "The expected value:", "\t[0, 0, 0, 0, 0] of type: [int[]]");
+                .IsAFaillingCheckWithMessage("", "The checked value's field 'arrayOfInts' does not have the expected value.", "The checked value:", "\t[\"INTS\"] of type: [string]", "The expected value:", "\t[0, 0, 0, 0, 0] of type: [int[]]");
         }
 
         [Test]
@@ -298,7 +299,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                 {
                     Check.That(sut).Considering().Public.Properties.HasSameValueAs(new SutClass(11, 12));
-                }).FailsWithMessage("", "The checked value is different from the expected one.", "The checked value:", "\t[{ TheProperty = 13 }] of type: [NFluent.Helpers.ReflectionWrapper]", "The expected value: equals to (using operator==)", "\t[NFluent.Tests.ConsideringShould+SutClass] of type: [NFluent.Tests.ConsideringShould+SutClass]");
+                }).IsAFaillingCheckWithMessage("", "The checked value is different from the expected one.", "The checked value:", "\t[{ TheProperty = 13 }] of type: [NFluent.Helpers.ReflectionWrapper]", "The expected value: equals to (using operator==)", "\t[NFluent.Tests.ConsideringShould+SutClass] of type: [NFluent.Tests.ConsideringShould+SutClass]");
         }
 
         [Test]
@@ -325,7 +326,7 @@ namespace NFluent.Tests
             Check.ThatCode(()=>
             {
                Check.That(sut).Considering().Public.Properties.IsOneOf(new {TheProperty = 12}, new {TheProperty = 14});
-            }).FailsWithMessage("", "The checked value is equal to none of the expected value(s) whereas it should.", "The checked value:", "\t[{ TheProperty = 13 }]", "The expected value(s):", "\t[{ TheProperty = 12 }, { TheProperty = 14 }]");
+            }).IsAFaillingCheckWithMessage("", "The checked value is equal to none of the expected value(s) whereas it should.", "The checked value:", "\t[{ TheProperty = 13 }]", "The expected value(s):", "\t[{ TheProperty = 12 }, { TheProperty = 14 }]");
         }
 
         [Test]
@@ -335,9 +336,9 @@ namespace NFluent.Tests
             var sut = new SutClass(5, 7);
             Check.That(sut).Considering().NonPublic.Properties.IsNull();
             Check.ThatCode(() => { Check.That(sut).Considering().NonPublic.Properties.Not.IsNull(); })
-                .FailsWithMessage("", "The checked value has only null member, whereas it should not.");
+                .IsAFaillingCheckWithMessage("", "The checked value has only null member, whereas it should not.");
             Check.ThatCode(() => { Check.That(sut).Considering().Public.Properties.IsNull();})
-                .FailsWithMessage("", "The checked value has a non null member, whereas it should not.", "The checked value:", "\t[7]");
+                .IsAFaillingCheckWithMessage("", "The checked value has a non null member, whereas it should not.", "The checked value:", "\t[7]");
         }
 
         [Test]
@@ -347,9 +348,9 @@ namespace NFluent.Tests
             var sut = new SutClass(5, 7);
             Check.That(sut).Considering().Public.Properties.IsNotNull();
             Check.ThatCode(() => { Check.That(sut).Considering().Public.Properties.Not.IsNotNull(); }).
-                FailsWithMessage("", "The checked value has no null member, whereas it should.", "The checked value:", "\t[{ TheProperty = 7 }]");
+                IsAFaillingCheckWithMessage("", "The checked value has no null member, whereas it should.", "The checked value:", "\t[{ TheProperty = 7 }]");
             Check.ThatCode(() => { Check.That(sut).Considering().NonPublic.Properties.IsNotNull();})
-                .FailsWithMessage("", "The checked value has a null member, whereas it should not.");
+                .IsAFaillingCheckWithMessage("", "The checked value has a null member, whereas it should not.");
         }
 
         [Test]
@@ -372,19 +373,19 @@ namespace NFluent.Tests
             {
                 Check.That(new {Property = sharedReference}).Considering().Public.Properties
                     .IsSameReferenceAs(new {Property = (object) null});
-            }).FailsWithMessage("", "The checked value's property 'Property' does not reference the expected instance.", "The checked value:", "\t[{  }]", "The expected value:", "\t[null]");
+            }).IsAFaillingCheckWithMessage("", "The checked value's property 'Property' does not reference the expected instance.", "The checked value:", "\t[{  }]", "The expected value:", "\t[null]");
 
             Check.ThatCode(() =>
             {
                 Check.That(new {Properties = (object) null}).Considering().Public.Properties
                     .IsSameReferenceAs(new {Property = sharedReference, Properties = (object) null});
-            }).FailsWithMessage("", "The expected one's property 'Property' is absent from the checked value.", "The expected property 'Property':", "\t[System.Object]");
+            }).IsAFaillingCheckWithMessage("", "The expected one's property 'Property' is absent from the checked value.", "The expected property 'Property':", "\t[System.Object]");
 
             Check.ThatCode(() =>
             {
                 Check.That(new {Property = sharedReference, Properties = 2}).Considering().Public.Properties
                     .IsSameReferenceAs(new {Property = sharedReference});
-            }).FailsWithMessage("", "The checked value's property 'Properties' is absent from the expected one.", "The value property 'Properties':", "\t[2]");
+            }).IsAFaillingCheckWithMessage("", "The checked value's property 'Properties' is absent from the expected one.", "The value property 'Properties':", "\t[2]");
 
         }
 
@@ -400,20 +401,20 @@ namespace NFluent.Tests
             {
                 Check.That(new {Property = sharedReference}).Considering().Public.Properties
                     .IsDistinctFrom(new {Property = sharedReference});
-            }).FailsWithMessage(
+            }).IsAFaillingCheckWithMessage(
                 "", "The checked value's property 'Property' does reference the reference instance, whereas it should not.", "The checked value:", "\t[{  }]");
 
             Check.ThatCode(() =>
             {
                 Check.That(new {Properties = (object) null}).Considering().Public.Properties
                     .IsDistinctFrom(new {Property = sharedReference, Properties = (object) null});
-            }).FailsWithMessage("", "The expected one's property 'Property' is absent from the checked value.", "The expected property 'Property':", "\t[System.Object]");
+            }).IsAFaillingCheckWithMessage("", "The expected one's property 'Property' is absent from the checked value.", "The expected property 'Property':", "\t[System.Object]");
 
             Check.ThatCode(() =>
             {
                 Check.That(new {Property = sharedReference, Properties = 2}).Considering().Public.Properties
                     .IsDistinctFrom(new {Property = new object()});
-            }).FailsWithMessage("", "The checked value's property 'Properties' is absent from the expected one.", "The value property 'Properties':", "\t[2]");
+            }).IsAFaillingCheckWithMessage("", "The checked value's property 'Properties' is absent from the expected one.", "The value property 'Properties':", "\t[2]");
         }
 
         private class Recurse

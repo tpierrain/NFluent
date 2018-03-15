@@ -15,6 +15,7 @@
 
 namespace NFluent.Kernel
 {
+    using System.Collections;
     using Extensibility;
     using Helpers;
 
@@ -24,6 +25,13 @@ namespace NFluent.Kernel
 
     internal class CheckLogic<T> : ICheckLogic<T>
     {
+        private enum ValueKind
+        {
+            Value,
+            Type,
+            Values
+        }
+
         private readonly T value;
         private readonly bool inverted;
         private string lastError;
@@ -42,7 +50,7 @@ namespace NFluent.Kernel
         private MessageOption negatedOption;
         private string sutName;
         private string checkedLabel=null;
-        private bool expectedIsAType;
+        private ValueKind expectedKind = ValueKind.Value;
 
         public CheckLogic(T value, string label, bool inverted)
         {
@@ -90,8 +98,7 @@ namespace NFluent.Kernel
         // TODO: improve sut naming logic on extraction
         public ICheckLogic<TU> GetSutProperty<TU>(Func<T, TU> sutExtractor, string newSutLabel)
         {
-            var result = new CheckLogic<TU>(sutExtractor(this.value), null, this.inverted);
-            result.checkedLabel = newSutLabel;
+            var result = new CheckLogic<TU>(sutExtractor(this.value), null, this.inverted) {checkedLabel = newSutLabel};
             return result;
         }
 
@@ -128,7 +135,21 @@ namespace NFluent.Kernel
             
             if (this.withExpected && (this.Option & MessageOption.NoExpectedBlock) == MessageOption.None)
             {
-                var block = this.expectedIsAType ? fluentMessage.ExpectedType((System.Type)this.expected) : fluentMessage.Expected(this.expected);
+                MessageBlock block;
+                switch (expectedKind)
+                {
+                    case ValueKind.Type:
+                        block = fluentMessage.ExpectedType((System.Type) this.expected);
+                        break;
+                    case ValueKind.Value:
+                    default:
+                        block = fluentMessage.Expected(this.expected);
+                        break;
+                    case ValueKind.Values:
+                        block = fluentMessage.ExpectedValues(this.expected);
+                        break;
+                }
+
                 if (!string.IsNullOrEmpty(this.Comparison))
                 {
                     block.Comparison(this.Comparison);
@@ -161,8 +182,14 @@ namespace NFluent.Kernel
 
         public ICheckLogic<T> ExpectingType(System.Type expectedType, string expectedLabel, string negatedLabel)
         {
-            this.expectedIsAType = true;
+            this.expectedKind = ValueKind.Type;
             return this.Expecting(expectedType, expectedLabel: expectedLabel, negatedLabel: negatedLabel);
+        }
+
+        public ICheckLogic<T> ExpectingValues(IEnumerable values)
+        {
+            this.expectedKind = ValueKind.Values;
+            return this.Expecting(values);
         }
 
 

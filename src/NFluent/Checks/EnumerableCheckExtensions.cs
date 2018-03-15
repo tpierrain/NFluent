@@ -65,41 +65,16 @@ namespace NFluent
             this ICheck<IEnumerable> check,
             IEnumerable otherEnumerable)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
 
-            checker.ExecuteCheck(
-                () =>
-                {
-                    if (otherEnumerable == null)
-                    {
-                        return;
-                    }
-
-                    if (checker.Value == null)
-                    {
-                        var message = checker
-                            .BuildMessage("The {0} is null and thus, does not contain the given expected value(s).")
-                            .ExpectedValues(otherEnumerable).ToString();
-                        throw new FluentCheckException(message);
-                    }
-
-                    var notFoundValues = ExtractNotFoundValues(checker.Value, otherEnumerable);
-
-                    if (notFoundValues.Count == 0)
-                    {
-                        return;
-                    }
-                    var message2 = checker
-                        .BuildMessage(
-                            string.Format(
-                                "The {{0}} does not contain the expected value(s):" + Environment.NewLine
-                                + "\t[{0}]",
-                                notFoundValues.ToEnumeratedString().DoubleCurlyBraces()))
-                        .ExpectedValues(otherEnumerable);
-                    throw new FluentCheckException(message2.ToString());
-                },
-                checker.BuildMessage("The {0} contains all the given values whereas it must not.")
-                    .ExpectedValues(otherEnumerable).ToString());
+            IList<object> notFoundValues = null;
+            ExtensibilityHelper.BeginCheck(check).
+                FailsIf((sut) => sut == null && otherEnumerable != null, "The {0} is null and thus, does not contain the given expected value(s).").
+                ExpectingValues(otherEnumerable).
+                Analyze((sut) =>  notFoundValues = ExtractNotFoundValues(sut, otherEnumerable)).
+                FailsIf((_) => notFoundValues.Any(), string.Format(
+                    "The {{0}} does not contain the expected value(s):" + Environment.NewLine + "\t[{0}]", notFoundValues.ToEnumeratedString().DoubleCurlyBraces())).
+                Negates("The {0} contains all the given values whereas it must not.").
+                EndCheck();
 
             return ExtensibilityHelper.BuildExtendableCheckLink(check, otherEnumerable);
         }
@@ -450,11 +425,15 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable has not the expected number of elements.</exception>
         public static ICheckLink<ICheck<IEnumerable>> HasSize(this ICheck<IEnumerable> check, long expectedSize)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
+            long actualSize=0;
+            ExtensibilityHelper.BeginCheck(check).
+                FailsIfNull().
+                Analyze((sut) => actualSize = sut.Count()).
+                FailsIf((_) => actualSize != expectedSize, $"The {{0}} has {BuildElementNumberLiteral(actualSize).DoubleCurlyBraces()} instead of {expectedSize}.").
+                Negates($"The {{0}} has {BuildElementNumberLiteral(expectedSize).DoubleCurlyBraces()} which is unexpected.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
 
-            return checker.ExecuteCheck(
-                () => HasSizeImpl(checker, expectedSize),
-                BuildHasSizeExceptionMessage(checker));
         }
 
         /// <summary>
@@ -638,18 +617,6 @@ namespace NFluent
                 .On(checkedValue).WithEnumerableCount(checkedValue.Count()).ToString();
         }
 
-        private static string BuildHasSizeExceptionMessage(IChecker<IEnumerable, ICheck<IEnumerable>> checker)
-        {
-            var checkedEnumerable = checker.Value;
-            var itemsCount = checkedEnumerable.Cast<object>().LongCount();
-            var foundElementsNumberDescription = BuildElementNumberLiteral(itemsCount);
-
-            return checker
-                .BuildMessage(
-                    $"The {{0}} has {foundElementsNumberDescription.DoubleCurlyBraces()} which is unexpected.")
-                .On(checkedEnumerable).ToString();
-        }
-
         private static string BuildNotExactlyExceptionMessage(
             IChecker<IEnumerable, ICheck<IEnumerable>> checker,
             IEnumerable<object> enumerable,
@@ -706,6 +673,11 @@ namespace NFluent
         /// </returns>
         private static IList<object> ExtractNotFoundValues(IEnumerable enumerable, IEnumerable expectedValues)
         {
+            if (expectedValues == null)
+            {
+                return new List<object>();
+            }
+
             // Prepares the list to return
             var values = expectedValues as IList<object> ?? expectedValues.Cast<object>().ToList();
             var notFoundValues = values.ToList();
@@ -743,24 +715,6 @@ namespace NFluent
             var values = expectedValues.Cast<object>().ToList();
 
             return enumerable.Cast<object>().Where(element => !values.Contains(element, equalityComparer)).ToList();
-        }
-
-        private static void HasSizeImpl(IChecker<IEnumerable, ICheck<IEnumerable>> checker, long expectedSize)
-        {
-            var checkedEnumerable = checker.Value;
-            var itemsCount = checkedEnumerable.Cast<object>().LongCount();
-
-            if (expectedSize == itemsCount)
-            {
-                return;
-            }
-            var foundElementsNumberDescription = BuildElementNumberLiteral(itemsCount);
-
-            var errorMessage = checker
-                .BuildMessage(
-                    $"The {{0}} has {foundElementsNumberDescription.DoubleCurlyBraces()} instead of {expectedSize}.")
-                .On(checkedEnumerable).ToString();
-            throw new FluentCheckException(errorMessage);
         }
 
         private static bool IsAnEnumerableButNotAnEnumerableOfChars<T>(T element)

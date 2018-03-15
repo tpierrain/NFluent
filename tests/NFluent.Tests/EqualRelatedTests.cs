@@ -20,6 +20,7 @@ namespace NFluent.Tests
     using System.Collections.Generic;
     using ApiChecks;
     using Helpers;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -158,7 +159,7 @@ namespace NFluent.Tests
             {
                 Check.That(first).IsEqualTo("no way");
             })
-            .FailsWithMessage(Environment.NewLine+ "The checked string is different from expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"no way\"]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked string is different from expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"no way\"]");
         }
 
         [Test]
@@ -170,7 +171,7 @@ namespace NFluent.Tests
             {
                 Check.That(first).Not.IsEqualTo(first);
             })
-            .FailsWithMessage(Environment.NewLine+ "The checked string is equal to the expected one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked string is equal to the expected one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
         }
 
         [Test]
@@ -196,7 +197,7 @@ namespace NFluent.Tests
             {
                 Check.That(first).IsEqualTo(null);
             })
-            .FailsWithMessage(Environment.NewLine+ "The checked value is not null whereas it must." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[null]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is not null whereas it must." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[null]");
         }
 
         [Test]
@@ -207,7 +208,7 @@ namespace NFluent.Tests
             {
                 Check.That((string)null).IsEqualTo("Kamoulox !");
             })
-            .FailsWithMessage(Environment.NewLine+ "The checked string is null whereas it must not." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"Kamoulox !\"]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked string is null whereas it must not." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"Kamoulox !\"]");
         }
 
         [Test]
@@ -324,7 +325,7 @@ namespace NFluent.Tests
             {
                 Check.That(first).IsNotEqualTo(otherReferenceToSameObject);
             })
-            .FailsWithMessage(Environment.NewLine+ "The checked string is equal to the expected one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked string is equal to the expected one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
         }
 
         [Test]
@@ -336,7 +337,7 @@ namespace NFluent.Tests
             {
                 Check.That(first).Not.IsNotEqualTo("what?");
             })
-            .FailsWithMessage(Environment.NewLine+ "The checked string is different from expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"what?\"]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked string is different from expected one." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"what?\"]");
         }
 
         #endregion

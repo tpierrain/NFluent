@@ -19,9 +19,8 @@ namespace NFluent.Tests
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using Helpers;
-    using NFluent.ApiChecks;
-
+    using ApiChecks;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -87,7 +86,7 @@ namespace NFluent.Tests
         {
             var enumerable = new List<int> { 666 };
 
-            Check.ThatCode(() => { Check.That(enumerable).HasSize(5); }).Throws<FluentCheckException>().WithMessage(
+            Check.ThatCode(() => { Check.That(enumerable).HasSize(5); }).IsAFaillingCheckWithMessage(
                 Environment.NewLine + "The checked enumerable has 1 element instead of 5." + Environment.NewLine
                 + "The checked enumerable:" + Environment.NewLine + "\t[666]");
         }
@@ -105,7 +104,7 @@ namespace NFluent.Tests
         {
             var enumerable = new List<int> { 666 };
 
-            Check.ThatCode(() => { Check.That(enumerable).Not.HasSize(1); }).Throws<FluentCheckException>().WithMessage(
+            Check.ThatCode(() => { Check.That(enumerable).Not.HasSize(1); }).IsAFaillingCheckWithMessage(
                 Environment.NewLine + "The checked enumerable has 1 element which is unexpected." + Environment.NewLine
                 + "The checked enumerable:" + Environment.NewLine + "\t[666]");
         }
@@ -115,7 +114,7 @@ namespace NFluent.Tests
         {
             var enumerable = new List<int> { 45, 43, 54, 666 };
 
-            Check.ThatCode(() => { Check.That(enumerable).HasSize(1); }).Throws<FluentCheckException>().WithMessage(
+            Check.ThatCode(() => { Check.That(enumerable).HasSize(1); }).IsAFaillingCheckWithMessage(
                 Environment.NewLine + "The checked enumerable has 4 elements instead of 1." + Environment.NewLine
                 + "The checked enumerable:" + Environment.NewLine + "\t[45, 43, 54, 666]");
         }
@@ -525,7 +524,7 @@ namespace NFluent.Tests
         {
             IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar", "nope" };
             Check.ThatCode(() => Check.That(randomWords).HasElementAt(3).Which.IsEqualTo("hope"))
-                .FailsWithMessage(
+                .IsAFaillingCheckWithMessage(
                     string.Empty,
                     "The checked [element #3] is different from the expected one but has same length.",
                     "The checked [element #3]:",
@@ -539,7 +538,7 @@ namespace NFluent.Tests
         {
             IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
             Check.ThatCode(() => Check.That(randomWords).HasElementAt(3).Which.IsEqualTo("hope"))
-                .FailsWithMessage(
+                .IsAFaillingCheckWithMessage(
                     string.Empty,
                     "The checked enumerable does not have an element at index 3.",
                     "The checked enumerable:",

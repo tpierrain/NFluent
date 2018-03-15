@@ -17,6 +17,7 @@ namespace NFluent.Tests
     using NUnit.Framework;
     using Helpers;
     using System;
+    using NFluent.Helpers;
 
 
     [TestFixture]
@@ -356,7 +357,7 @@ namespace NFluent.Tests
                 {
                     Check.That(Twenty).IsEqualTo(0);
                 })
-                .FailsWithMessage(
+                .IsAFaillingCheckWithMessage(
                     "", 
                     "The checked value is different from the expected one.", 
                     "The checked value:", 

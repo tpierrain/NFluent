@@ -40,7 +40,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)FromIssues\UserReportedIssues2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HelpersTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CultureSession.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\FailureHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\TestFiles.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IntRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IntSignedNumberRelatedTests.cs" />

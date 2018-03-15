@@ -21,6 +21,7 @@ namespace NFluent.Tests
     using System;
     using System.IO;
     using System.Text;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -48,7 +49,7 @@ namespace NFluent.Tests
         public void ContainsFailsProperlyOnNullString()
         {
             Check.ThatCode(() => { Check.That((string) null).Contains("fails", "anyway"); })
-                .FailsWithMessage("", "The checked string is null.",
+                .IsAFaillingCheckWithMessage("", "The checked string is null.",
                              "The expected substring(s):" ,"\t[\"fails\", \"anyway\"]");
         }
 
@@ -56,7 +57,7 @@ namespace NFluent.Tests
         public void ContainsIsCaseSensitive()
         {
             Check.ThatCode(() => { Check.That(Alphabet).Contains("C", "a", "A", "z"); })
-                .FailsWithMessage(Environment.NewLine +
+                .IsAFaillingCheckWithMessage(Environment.NewLine +
                              "The checked string does not contain the expected value(s): \"C\", \"A\"" +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine + "The expected substring(s):" +
@@ -67,7 +68,7 @@ namespace NFluent.Tests
         public void ContainsThrowsExceptionWhenFails()
         {
             Check.ThatCode(() => { Check.That(Alphabet).Contains("c", "0", "4"); })
-                .FailsWithMessage(Environment.NewLine +
+                .IsAFaillingCheckWithMessage(Environment.NewLine +
                              "The checked string does not contain the expected value(s): \"0\", \"4\"" +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine + "The expected substring(s):" +
@@ -91,7 +92,7 @@ namespace NFluent.Tests
         public void DoesNotContainsFailsWhenAppropriate()
         {
             Check.ThatCode(() => { Check.That(Alphabet).DoesNotContain("c", "z", "u"); })
-                .FailsWithMessage(Environment.NewLine +
+                .IsAFaillingCheckWithMessage(Environment.NewLine +
                              "The checked string contains unauthorized value(s): \"c\", \"z\", \"u\"" +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine +
@@ -137,7 +138,7 @@ namespace NFluent.Tests
         [Test]
         public void StartWithIsCaseSensitive()
         {
-            Check.ThatCode(() => { Check.That(Alphabet).StartsWith("ABCDEF"); }).FailsWithMessage("",
+            Check.ThatCode(() => { Check.That(Alphabet).StartsWith("ABCDEF"); }).IsAFaillingCheckWithMessage("",
                  "The checked string's start is different from the expected one.",
                  "The checked string:" ,
                  "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
@@ -149,7 +150,7 @@ namespace NFluent.Tests
         public void StartsWithFailsProperlyOnNullString()
         {
             Check.ThatCode(() => { Check.That((string) null).StartsWith("fails"); })
-                .FailsWithMessage(Environment.NewLine + "The checked string is null." + Environment.NewLine +
+                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string is null." + Environment.NewLine +
                              "The expected string: starts with" + Environment.NewLine + "\t[\"fails\"]");
         }
 
@@ -169,7 +170,7 @@ namespace NFluent.Tests
         public void NegatedStartWithThrowsException()
         {
             Check.ThatCode(() => { Check.That(Alphabet).Not.StartsWith("abcdef"); })
-                .FailsWithMessage(Environment.NewLine + "The checked string starts with expected one, whereas it must not." +
+                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string starts with expected one, whereas it must not." +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine +
                              "The expected string: does not start with" + Environment.NewLine + "\t[\"abcdef\"]");
@@ -186,7 +187,7 @@ namespace NFluent.Tests
         public void EndsWithIsCaseSensitive()
         {
             Check.ThatCode(() => { Check.That(Alphabet).EndsWith("UWXYZ"); })
-                .FailsWithMessage(Environment.NewLine + "The checked string's end is different from the expected one." +
+                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string's end is different from the expected one." +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine +
                              "The expected string: ends with" + Environment.NewLine + "\t[\"UWXYZ\"]");
@@ -196,7 +197,7 @@ namespace NFluent.Tests
         public void EndsWithFailsProperlyOnNullString()
         {
             Check.ThatCode(() => { Check.That((string) null).EndsWith("fails"); })
-                .FailsWithMessage(Environment.NewLine + "The checked string is null." + Environment.NewLine +
+                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string is null." + Environment.NewLine +
                              "The expected string: ends with" + Environment.NewLine + "\t[\"fails\"]");
         }
 
@@ -217,7 +218,7 @@ namespace NFluent.Tests
         public void EndsWithIsNegatableFails()
         {
             Check.ThatCode(() => { Check.That(Alphabet).Not.EndsWith("vwxyz"); })
-                .FailsWithMessage(Environment.NewLine + "The checked string ends with expected one, whereas it must not." +
+                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string ends with expected one, whereas it must not." +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine +
                              "The expected string: does not end with" + Environment.NewLine + "\t[\"vwxyz\"]");
@@ -236,7 +237,7 @@ namespace NFluent.Tests
             var check = "toto";
 
             Check.ThatCode(() => { Check.That(check).IsEqualTo("tutu"); })
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                              "The checked string is different from the expected one but has same length.",
                              "The checked string:", "\t[\"toto\"]",
                              "The expected string:", "\t[\"tutu\"]");
@@ -248,7 +249,7 @@ namespace NFluent.Tests
             var check = "toto";
 
             Check.ThatCode(() => { Check.That(check).IsEqualTo("TOTO"); })
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                     "The checked string is different in case from the expected one.",
                     "The checked string:", "\t[\"toto\"]",
                     "The expected string:","\t[\"TOTO\"]");
@@ -260,7 +261,7 @@ namespace NFluent.Tests
             var check = "toto";
 
             Check.ThatCode(() => { Check.That(check).IsEqualTo("tititutu"); })
-                .FailsWithMessage("", "The checked string is different from expected one.", 
+                .IsAFaillingCheckWithMessage("", "The checked string is different from expected one.", 
                              "The checked string:", "\t[\"toto\"]", 
                              "The expected string:","\t[\"tititutu\"]");
         }
@@ -271,7 +272,7 @@ namespace NFluent.Tests
             var check = "titi";
 
             Check.ThatCode(() => { Check.That(check).IsEqualTo("tititutu"); })
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                              "The checked string is different from expected one, it is missing the end.",
                              "The checked string:", "\t[\"titi\"]", 
                              "The expected string:", "\t[\"tititutu\"]");
@@ -283,7 +284,7 @@ namespace NFluent.Tests
             var check = "tititutu";
 
             Check.ThatCode(() => { Check.That(check).IsEqualTo("titi"); })
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                              "The checked string is different from expected one, it contains extra text at the end.",
                              "The checked string:", "\t[\"tititutu\"]",
                              "The expected string:", "\t[\"titi\"]");
@@ -324,7 +325,7 @@ namespace NFluent.Tests
                 {
                     Check.That("The Black Keys").IsOneOfThese("Paco de Lucia", "Jimi Hendrix", "Baden Powell");
                 })
-                .FailsWithMessage(Environment.NewLine + "The checked string is not one of the possible elements." +
+                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string is not one of the possible elements." +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" +
                              Environment.NewLine + "\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]");
@@ -346,7 +347,7 @@ namespace NFluent.Tests
         public void IsOneOfTheseThrowsProperExceptionWithNullAsExpectedValues()
         {
             Check.ThatCode(() => { Check.That("whatever").IsOneOfThese(null); })
-                .FailsWithMessage("", "The checked string must be null as there is no other possible value.", "The checked string:", "\t[\"whatever\"]");
+                .IsAFaillingCheckWithMessage("", "The checked string must be null as there is no other possible value.", "The checked string:", "\t[\"whatever\"]");
         }
 
         [Test]
@@ -357,7 +358,7 @@ namespace NFluent.Tests
                     Check.That("The Black Keys")
                         .Not.IsOneOfThese("Metronomy", "Sigur Ros", "The Black Keys", "Get Well Soon");
                 })
-                .FailsWithMessage(Environment.NewLine +
+                .IsAFaillingCheckWithMessage(Environment.NewLine +
                              "The checked string is one of the possible elements whereas it must not." +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" +
@@ -379,7 +380,7 @@ namespace NFluent.Tests
         public void StringMatchesFails()
         {
             Check.ThatCode(() => { Check.That("AC 12").Matches("[0-9]. [a-z]*"); })
-                .FailsWithMessage("", "The checked string does not match the expected one.", "The checked string:", "\t[\"AC 12\"]",
+                .IsAFaillingCheckWithMessage("", "The checked string does not match the expected one.", "The checked string:", "\t[\"AC 12\"]",
                 "The expected string: matches", "\t[\"[0-9]. [a-z]*\"]");
         }
 
@@ -387,7 +388,7 @@ namespace NFluent.Tests
         public void StringMatchesFailsProperlyForNull()
         {
             Check.ThatCode(() => { Check.That((string) null).Matches("[0-9]. [a-z]*"); })
-                .FailsWithMessage("", "The checked string is null.", "The expected string: matches", "\t[\"[0-9]. [a-z]*\"]");
+                .IsAFaillingCheckWithMessage("", "The checked string is null.", "The expected string: matches", "\t[\"[0-9]. [a-z]*\"]");
         }
 
         [Test]
@@ -401,7 +402,7 @@ namespace NFluent.Tests
         public void NotStringMatchesFails()
         {
             Check.ThatCode(() => { Check.That("12 ac").Not.Matches("[0-9]*. [a-z]*"); })
-                .FailsWithMessage("", "The checked string matches expected one, whereas it must not.", "The checked string:", "\t[\"12 ac\"]", 
+                .IsAFaillingCheckWithMessage("", "The checked string matches expected one, whereas it must not.", "The checked string:", "\t[\"12 ac\"]", 
                     "The expected string: does not match", "\t[\"[0-9]*. [a-z]*\"]");
         }
 
@@ -419,7 +420,7 @@ namespace NFluent.Tests
         public void StringDoesNotMatchFails()
         {
             Check.ThatCode(() => { Check.That("12 AC").DoesNotMatch("[0-9]. [a-z]*"); })
-                .FailsWithMessage("", "The checked string matches expected one, whereas it must not.", "The checked string:", "\t[\"12 AC\"]", 
+                .IsAFaillingCheckWithMessage("", "The checked string matches expected one, whereas it must not.", "The checked string:", "\t[\"12 AC\"]", 
                     "The expected string: does not match", "\t[\"[0-9]. [a-z]*\"]");
         }
 
@@ -427,7 +428,7 @@ namespace NFluent.Tests
         public void StringDoesNotMatchProperlyForNull()
         {
             Check.ThatCode(() => { Check.That((string) null).Matches("[0-9]. [a-z]*"); })
-                .FailsWithMessage("", "The checked string is null.", "The expected string: matches", "\t[\"[0-9]. [a-z]*\"]");
+                .IsAFaillingCheckWithMessage("", "The checked string is null.", "The expected string: matches", "\t[\"[0-9]. [a-z]*\"]");
         }
 
         [Test]
@@ -441,7 +442,7 @@ namespace NFluent.Tests
         public void NotStringDoesNotMatchFails()
         {
             Check.ThatCode(() => { Check.That("12 ac").Not.Matches("[0-9]*. [a-z]*"); })
-                .FailsWithMessage("", "The checked string matches expected one, whereas it must not.", "The checked string:", "\t[\"12 ac\"]",
+                .IsAFaillingCheckWithMessage("", "The checked string matches expected one, whereas it must not.", "The checked string:", "\t[\"12 ac\"]",
                     "The expected string: does not match", "\t[\"[0-9]*. [a-z]*\"]");
         }
 
@@ -458,7 +459,7 @@ namespace NFluent.Tests
         public void IsEmptyFailsIfNotEmpty()
         {
             Check.ThatCode(() => { Check.That("test").IsEmpty(); })
-                .FailsWithMessage(Environment.NewLine + "The checked string is not empty." + Environment.NewLine +
+                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string is not empty." + Environment.NewLine +
                              "The checked string:" + Environment.NewLine + "\t[\"test\"]");
         }
 
@@ -466,14 +467,14 @@ namespace NFluent.Tests
         public void IsEmptyFailsIfNnull()
         {
             Check.ThatCode(() => { Check.That((string) null).IsEmpty(); })
-                .FailsWithMessage("", "The checked string is null instead of being empty.");
+                .IsAFaillingCheckWithMessage("", "The checked string is null instead of being empty.");
         }
 
         [Test]
         public void NegatedIsNotEmptyFailsIfNotEmpty()
         {
             Check.ThatCode(() => { Check.That("test").Not.IsNotEmpty(); })
-                .FailsWithMessage(Environment.NewLine + "The checked string is not empty or null." + Environment.NewLine +
+                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string is not empty or null." + Environment.NewLine +
                              "The checked string:" + Environment.NewLine + "\t[\"test\"]");
         }
 
@@ -481,7 +482,7 @@ namespace NFluent.Tests
         public void IsNotEmptyFailsIfEmpty()
         {
             Check.ThatCode(() => { Check.That(string.Empty).IsNotEmpty(); })
-                .FailsWithMessage(Environment.NewLine + "The checked string is empty, whereas it must not.");
+                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string is empty, whereas it must not.");
         }
 
         [Test]
@@ -501,7 +502,7 @@ namespace NFluent.Tests
         public void IsNullEmptyFailsIfNotEmpty()
         {
             Check.ThatCode(() => { Check.That("test").IsNullOrEmpty(); })
-                .FailsWithMessage(Environment.NewLine + "The checked string is not empty or null." + Environment.NewLine +
+                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string is not empty or null." + Environment.NewLine +
                              "The checked string:" + Environment.NewLine + "\t[\"test\"]");
         }
 
@@ -517,7 +518,7 @@ namespace NFluent.Tests
         public void IsNullOrWhiteSpaceFaiplsWhenRelevant()
         {
             Check.ThatCode(() =>
-                Check.That("non empty").IsNullOrWhiteSpace()).FailsWithMessage("", "The checked string contains non whitespace characters.", "The checked string:", "\t[\"non empty\"]");
+                Check.That("non empty").IsNullOrWhiteSpace()).IsAFaillingCheckWithMessage("", "The checked string contains non whitespace characters.", "The checked string:", "\t[\"non empty\"]");
         }
 
         [Test]
@@ -537,14 +538,14 @@ namespace NFluent.Tests
         public void HasContentFailsIfEmpty()
         {
             Check.ThatCode(() => { Check.That(string.Empty).HasContent(); })
-                .FailsWithMessage(Environment.NewLine + "The checked string is empty, whereas it must not.");
+                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string is empty, whereas it must not.");
         }
 
         [Test]
         public void HasContentFailsIfNull()
         {
             Check.ThatCode(() => { Check.That((string) null).HasContent(); })
-                .FailsWithMessage(Environment.NewLine + "The checked string is null whereas it must have content.");
+                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string is null whereas it must have content.");
         }
 
         [Test]
@@ -558,7 +559,7 @@ namespace NFluent.Tests
         public void CompareNoCaseFails()
         {
             Check.ThatCode(() => { Check.That("test").IsEqualIgnoringCase("TOAST"); })
-                .FailsWithMessage("", "The checked string is different from expected one.",
+                .IsAFaillingCheckWithMessage("", "The checked string is different from expected one.",
                              "The checked string:", "\t[\"test\"]",
                              "The expected string:", "\t[\"TOAST\"]");
         }
@@ -567,7 +568,7 @@ namespace NFluent.Tests
         public void CompareNoCaseFailsWithStartOnly()
         {
             Check.ThatCode(() => { Check.That("test").IsEqualIgnoringCase("Te"); })
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                              "The checked string is different from expected one, it contains extra text at the end.",
                              "The checked string:", "\t[\"test\"]", 
                              "The expected string:", "\t[\"Te\"]");
@@ -582,7 +583,7 @@ namespace NFluent.Tests
             var withTab = "Hello\tHow are you?";
 
             Check.ThatCode(() => { Check.That(withTab).IsEqualTo(withWSp); })
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                     "The checked string has different spaces than expected one. At line 1, col 6, expected 'Hello    How are you?' was 'Hello<<tab>>How are you?'.",
                              "The checked string:",
                              "\t[\"Hello\tHow are you?\"]","The expected string:",
@@ -596,7 +597,7 @@ namespace NFluent.Tests
             var withTab = "Hello\tHow are you?\tkiddo";
 
             Check.ThatCode(() => { Check.That(withWSp).IsEqualTo(withTab); })
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                     "The checked string has different spaces than expected one. At line 1, col 9, expected 'Hello<<tab>>How are you?<<tab>>kiddo' was 'Hello    How are you?    kiddo'.",
                     "The checked string:",
                     "\t[\"Hello    How are you?    kiddo\"]", "The expected string:",
@@ -610,7 +611,7 @@ namespace NFluent.Tests
             var withLF = "Hello\nHow are you?";
 
             Check.ThatCode(() => { Check.That(withCRLF).IsEqualTo(withLF); })
-                .FailsWithMessage(Environment.NewLine +
+                .IsAFaillingCheckWithMessage(Environment.NewLine +
                              "The checked string has different end of line markers than expected one. At line 1, col 6, expected 'Hello' was 'Hello<<CR>>'." +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"Hello\r\nHow are you?\"]" + Environment.NewLine + "The expected string:" +
@@ -624,7 +625,7 @@ namespace NFluent.Tests
             var withLF = "Hello\nHow are you?\nAre you kidding?";
 
             Check.ThatCode(() => { Check.That(withLF).IsEqualTo(withCRLF); })
-                .FailsWithMessage(Environment.NewLine +
+                .IsAFaillingCheckWithMessage(Environment.NewLine +
                              "The checked string has different end of line markers than expected one. At line 1, col 6, expected 'Hello<<CR>>' was 'Hello'." +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "	[\"Hello\nHow are you?\nAre you kidding?\"]" + Environment.NewLine +
@@ -639,7 +640,7 @@ namespace NFluent.Tests
             var withLF = "Hello\nHow are you?\nAre you kidding?";
 
             Check.ThatCode(() => { Check.That(withLF).IsEqualTo(withCRLF); })
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                              "The checked string is different from expected one. At line 1, col 6, expected 'Hello<<CR>>' was 'Hello'.",
                             "The checked string:",
                              "\t[\"Hello\nHow are you?\nAre you kidding?\"]",
@@ -654,7 +655,7 @@ namespace NFluent.Tests
             var multileActual = "Hello\nIt has\nfailed";
 
             Check.ThatCode(() => Check.That(multileActual).IsEqualTo(multilineExpected))
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                              "The checked string is different from expected one. At line 2, col 1, expected 'This' was 'It has'.",
                               "The checked string:",
                              "\t[\"Hello\nIt has\nfailed\"]",
@@ -672,7 +673,7 @@ namespace NFluent.Tests
                 {
                     Check.That(checkString).IsEqualTo(expectedString);
                 })
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                     "The checked string is different from the expected one but has same length. At line 1, col 4554, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'.",
                     "The checked string:",
                     "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?><!--  Edited by XMLSpy  --><CATALOG>  <CD>    <TITLE>Empire Burlesque</TITLE>    <ARTIST>Bob Dylan</ARTIST>    ...<<truncated>>...E>    <YEAR>1987</YEAR>  </CD></CATALOG>\"]",
@@ -713,7 +714,7 @@ namespace NFluent.Tests
                 {
                     Check.That("This is one line.\nAnd another.").IsEqualTo("This is one line.");
                 })
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                 "The checked string is different from expected one, it contains extra lines at the end. At line 2, col 1, expected '' was 'And another.'.",
                 "The checked string:",
                 "\t[\"This is one line.\nAnd another.\"]",
@@ -740,7 +741,7 @@ namespace NFluent.Tests
                 {
                     Check.That("This is one line.\nAnd another line.").IsEqualTo("This is one line.\nAnd another");
                 })
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                     "The checked string is different from expected one, one line is longer. At line 2, col 12, expected '...nd another' was '...nd another line.'."
                     , "The checked string:",
                     "\t[\"This is one line.\nAnd another line.\"]",
@@ -755,7 +756,7 @@ namespace NFluent.Tests
                 {
                     Check.That("This is one line.\nAnd another").IsEqualTo("This is one line.\nAnd another line.");
                 })
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                     "The checked string is different from expected one, one line is shorter. At line 2, col 12, expected '...nd another line.' was '...nd another'.",
                     "The checked string:",
                 "\t[\"This is one line.\nAnd another\"]",
@@ -770,7 +771,7 @@ namespace NFluent.Tests
                 {
                     Check.That("This is one line.").IsEqualTo("This is one line.\nAnd another.");
                 })
-                .FailsWithMessage("",
+                .IsAFaillingCheckWithMessage("",
                     "The checked string is different from expected one, it is missing some line(s). At line 2, col 1, expected 'And another.' was ''.",
                     "The checked string:",
                     "\t[\"This is one line.\"]",

@@ -28,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Checks\ObjectChecksNonGenericVariants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\ReflectionWrapperChecks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\ICheckLogic.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\FailureHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\MemberMatch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ReflectionWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\IntCheckExtensions.cs" />

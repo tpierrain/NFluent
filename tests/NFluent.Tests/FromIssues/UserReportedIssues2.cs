@@ -23,6 +23,7 @@ namespace NFluent.Tests.FromIssues
 
     using ApiChecks;
     using Helpers;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -34,7 +35,7 @@ namespace NFluent.Tests.FromIssues
         public void ShouldNotMixUpCheckedAndExpected()
         {
             double d = 1.0d;
-            Check.ThatCode(()=> Check.That(d).IsEqualTo(2.0)).FailsWithMessage(
+            Check.ThatCode(()=> Check.That(d).IsEqualTo(2.0)).IsAFaillingCheckWithMessage(
                 "", 
                 "The checked value is different from the expected one.", 
                 "The checked value:", 

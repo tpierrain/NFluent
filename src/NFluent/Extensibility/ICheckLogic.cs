@@ -15,6 +15,8 @@
 
 namespace NFluent.Extensibility
 {
+    using System.Collections;
+
 #if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
     using System;
 #endif
@@ -125,7 +127,14 @@ namespace NFluent.Extensibility
         /// <param name="expectedType">expected type</param>
         /// <param name="expectedLabel">associated label</param>
         /// <param name="negatedLabel">label when negated</param>
-        /// <returns></returns>
+        /// <returns>Continuation object</returns>
         ICheckLogic<T> ExpectingType(System.Type expectedType, string expectedLabel, string negatedLabel);
+
+        /// <summary>
+        /// Specify that we expect a list of valies
+        /// </summary>
+        /// <param name="values">enumeration of values</param>
+        /// <returns>Continuation object</returns>
+        ICheckLogic<T> ExpectingValues(IEnumerable values);
     }
 }

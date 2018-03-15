@@ -19,6 +19,7 @@ namespace NFluent.Tests
     using Helpers;
     using NUnit.Framework;
     using ApiChecks;
+    using NFluent.Helpers;
 
 
     [TestFixture]
@@ -67,7 +68,7 @@ namespace NFluent.Tests
                 // ReSharper disable once ObjectCreationAsStatement
                 Check.ThatCode(() => { new object(); }).ThrowsAny();
             })
-            .FailsWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
         }
 
         [Test]
@@ -78,7 +79,7 @@ namespace NFluent.Tests
                 // ReSharper disable once ObjectCreationAsStatement
                 Check.ThatCode(() => { new object(); }).Throws<Exception>();
             })
-            .FailsWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected exception:" + Environment.NewLine + "\tan instance of type: [System.Exception]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected exception:" + Environment.NewLine + "\tan instance of type: [System.Exception]");
         }
     }
 }
