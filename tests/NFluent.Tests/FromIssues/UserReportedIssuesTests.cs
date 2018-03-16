@@ -225,7 +225,7 @@ namespace NFluent.Tests
                     "+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros",
                     "Backstagex passes to a TAFKAL80ETC concer", "Conjured Mana Cake"
                 });
-            }).ThrowsAny().WithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). First difference is at index #4." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concert\", \"Conjured Mana Cake\"] (6 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concer\", \"Conjured Mana Cake\"] (6 items)");
+            }).IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). First difference is at index #4." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concert\", \"Conjured Mana Cake\"] (6 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concer\", \"Conjured Mana Cake\"] (6 items)");
         }
 
         [Test]
@@ -358,7 +358,13 @@ namespace NFluent.Tests
                 const string Result = "MaChaine{964}";
                 Check.That(toTest).Contains(Result);
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[\"MaChaine{964}\"]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"MaChaine{94}\"]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"MaChaine{964}\"]");
+            .IsAFaillingCheckWithMessage("", 
+                    "The checked enumerable does not contain the expected value(s):",
+                    "\t[\"MaChaine{964}\"]",
+                    "The checked enumerable:",
+                    "\t[\"MaChaine{94}\"] (1 item)",
+                    "The expected value(s):",
+                    "\t[\"MaChaine{964}\"] (1 item)");
         }
 
         // #issue 115,

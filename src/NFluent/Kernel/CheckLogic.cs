@@ -49,8 +49,10 @@ namespace NFluent.Kernel
         private string negatedError;
         private MessageOption negatedOption;
         private string sutName;
-        private string checkedLabel=null;
+        private string checkedLabel;
         private ValueKind expectedKind = ValueKind.Value;
+        private long expectedCount;
+        private long index;
 
         public CheckLogic(T value, string label, bool inverted)
         {
@@ -81,6 +83,18 @@ namespace NFluent.Kernel
                 this.lastError = error;
                 this.options = this.options | noCheckedBlock;
             }
+            return this;
+        }
+
+        public ICheckLogic<T> Fails(string error, MessageOption noCheckedBlock)
+        {
+            this.failed =  true;
+            if (this.failed && !this.IsNegated)
+            {
+                this.lastError = error;
+                this.options = this.options | noCheckedBlock;
+            }
+
             return this;
         }
 
@@ -117,10 +131,15 @@ namespace NFluent.Kernel
             var fluentMessage = FluentMessage.BuildMessage(this.LastError);
             if ((this.Option & MessageOption.NoCheckedBlock) == 0)
             {
-                var block = fluentMessage.On(this.value);
+                var block = fluentMessage.On(this.value, this.index);
                 if (!string.IsNullOrEmpty(this.checkedLabel))
                 {
                     block.Label(this.checkedLabel);
+                }
+
+                if ((this.expectedKind == ValueKind.Values) && (this.value != null))
+                {
+                    block.WithEnumerableCount(((IEnumerable) this.value).Count());
                 }
             }
             
@@ -136,7 +155,7 @@ namespace NFluent.Kernel
             if (this.withExpected && (this.Option & MessageOption.NoExpectedBlock) == MessageOption.None)
             {
                 MessageBlock block;
-                switch (expectedKind)
+                switch (this.expectedKind)
                 {
                     case ValueKind.Type:
                         block = fluentMessage.ExpectedType((System.Type) this.expected);
@@ -146,7 +165,7 @@ namespace NFluent.Kernel
                         block = fluentMessage.Expected(this.expected);
                         break;
                     case ValueKind.Values:
-                        block = fluentMessage.ExpectedValues(this.expected);
+                        block = fluentMessage.ExpectedValues(this.expected, this.index).WithEnumerableCount(this.expectedCount);
                         break;
                 }
 
@@ -169,29 +188,35 @@ namespace NFluent.Kernel
         }
 
         public ICheckLogic<T> Expecting<TU>(TU newExpectedValue, string comparisonMessage = null,
-            string negatedComparison1 = null, string expectedLabel = null, string negatedLabel = null)
+            string negatedComparison1 = null, string expectedLabel = null, string negatedExpLabel = null)
         {
             this.comparison = comparisonMessage;
             this.negatedComparison = negatedComparison1;
             this.withExpected = true;
             this.expected = newExpectedValue;
             this.label = expectedLabel;
-            this.negatedLabel = negatedLabel ?? expectedLabel;
+            this.negatedLabel = negatedExpLabel ?? expectedLabel;
             return this;
         }
 
-        public ICheckLogic<T> ExpectingType(System.Type expectedType, string expectedLabel, string negatedLabel)
+        public ICheckLogic<T> ExpectingType(System.Type expectedType, string expectedLabel, string negatedExpLabel)
         {
             this.expectedKind = ValueKind.Type;
-            return this.Expecting(expectedType, expectedLabel: expectedLabel, negatedLabel: negatedLabel);
+            return this.Expecting(expectedType, expectedLabel: expectedLabel, negatedExpLabel: negatedExpLabel);
         }
 
-        public ICheckLogic<T> ExpectingValues(IEnumerable values)
+        public ICheckLogic<T> ExpectingValues(IEnumerable values, long count)
         {
             this.expectedKind = ValueKind.Values;
+            this.expectedCount = count;
             return this.Expecting(values);
         }
 
+        public ICheckLogic<T> SetValuesIndex(long index)
+        {
+            this.index = index;
+            return this;
+        }
 
         public ICheckLogic<T> Negates(string message, MessageOption option)
         {

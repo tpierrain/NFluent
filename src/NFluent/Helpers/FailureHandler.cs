@@ -15,7 +15,9 @@
 
 namespace NFluent.Helpers
 {
+    using System;
     using Extensibility;
+    using Extensions;
 
     /// <summary>
     /// Hosts meta checks (checks for checks)
@@ -31,25 +33,36 @@ namespace NFluent.Helpers
         public static ICheckLink<ICodeCheck<RunTrace>> IsAFaillingCheckWithMessage(this ICodeCheck<RunTrace> check,
             params string[] lines)
         {
-            ExtensibilityHelper.BeginCheck(check).
-                GetSutProperty((sut) => sut.RaisedException, "raised exception").
-                SutNameIs("fluent check").
-                FailsIfNull().
-                FailsIf((sut) => !ExceptionHelper.IsFailedException(sut), "The exception raised is not of the expected type").
-                GetSutProperty((sut)=> sut.Message, "error message").
-                SutNameIs("fluent check").
-                Analyze((message) =>
+            var test = ExtensibilityHelper.BeginCheck(check)
+                .GetSutProperty((sut) => sut.RaisedException, "raised exception").SutNameIs("fluent check")
+                .FailsIfNull()
+                .FailsIf((sut) => !ExceptionHelper.IsFailedException(sut),
+                    "The exception raised is not of the expected type")
+                .GetSutProperty((sut) => sut.Message, "error message").SutNameIs("fluent check");
+                test.Analyze((message) =>
                 {
-                    if (lines.Length == 1)
+                    var expectedLines = (lines.Length == 1) ? lines[0].SplitAsLines() : lines;
+                    var messageLines = message.SplitAsLines();
+                    for (var i = 0; i < expectedLines.Count; i++)
                     {
-                        Check.That(message).IsEqualTo(lines[0]);
-                    }
-                    else
-                    {
-                        Check.That(message).AsLines().ContainsExactly(lines);
+                        if (expectedLines[i] == "*")
+                        {
+                            continue;
+                        }
+
+                        if (messageLines.Count <= i)
+                        {
+                            test.Fails($"Lines are missing in the error message starting at #{i}");
+                            break;
+                        }
+                        Check.That(messageLines[i]).As($"line #{i}").IsEqualTo(expectedLines[i]);
                     }
 
-                }).
+                    if (messageLines.Count > expectedLines.Count)
+                    {
+                        test.Fails($"Too many lines in the error message starting at #{expectedLines.Count-1}");
+                    }
+                }).Expecting(lines).
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

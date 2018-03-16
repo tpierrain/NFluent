@@ -62,7 +62,11 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(integers).Contains(3, 2, 666, 1974);
-            }).IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[666, 1974]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 666, 1974]");
+            }).IsAFaillingCheckWithMessage("", 
+                "The checked enumerable does not contain the expected value(s):", 
+                "\t[666, 1974]", "The checked enumerable:","\t[1, 2, 3] (3 items)", 
+                "The expected value(s):",
+                "\t[3, 2, 666, 1974] (4 items)");
         }
 
         [Test]
@@ -80,7 +84,12 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(integers).Not.Contains(3, 2, 1);
-            }).IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable contains all the given values whereas it must not." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 1]");
+            }).IsAFaillingCheckWithMessage("",
+                "The checked enumerable contains all the given values whereas it must not.",
+                "The checked enumerable:",
+                "\t[1, 2, 3] (3 items)",
+                "The expected value(s):",
+                "\t[3, 2, 1] (3 items)");
         }
 
         #endregion
@@ -119,7 +128,13 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(emptyList).Contains("what da heck!");
-            }).IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]");
+            }).IsAFaillingCheckWithMessage("", 
+                "The checked enumerable does not contain the expected value(s):",
+                "\t[\"what da heck!\"]", 
+                "The checked enumerable:", 
+                "\t[] (0 item)", 
+                "The expected value(s):",
+                "\t[\"what da heck!\"] (1 item)");
         }
 
         [Test]
@@ -136,7 +151,12 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That((List<int>) null).Contains("what da heck!");
-            }).IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable is null and thus, does not contain the given expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"what da heck!\"]");
+            }).IsAFaillingCheckWithMessage("", 
+                "The checked enumerable is null and thus, does not contain the given expected value(s).",
+                "The checked enumerable:", 
+                "\t[null]", 
+                "The expected value(s):", 
+                "\t[\"what da heck!\"] (1 item)");
         }
 
         [Test]
@@ -154,7 +174,13 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(integers).Contains(expectedNumbers);
-            }).IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain the expected value(s):" + Environment.NewLine + "\t[666, 1974]" + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[3, 2, 666, 1974]");
+            }).IsAFaillingCheckWithMessage("",
+                "The checked enumerable does not contain the expected value(s):",
+                "\t[666, 1974]",
+                "The checked enumerable:",
+                "\t[1, 2, 3] (3 items)",
+                "The expected value(s):", 
+                "\t[3, 2, 666, 1974] (4 items)");
         }
 
         [Test]

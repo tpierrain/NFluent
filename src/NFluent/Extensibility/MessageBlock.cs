@@ -49,7 +49,7 @@ namespace NFluent.Extensibility
         /// The block attribute.
         /// </param>
         /// <param name="index">The index for enumerable types</param>
-        internal MessageBlock(FluentMessage message, object test, GenericLabelBlock block, int index = 0)
+        internal MessageBlock(FluentMessage message, object test, GenericLabelBlock block, long index = 0)
             : this(message, test.GetTypeWithoutThrowingException(), block)
         {
             if (!(test is string) && (test is IEnumerable))

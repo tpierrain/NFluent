@@ -134,7 +134,23 @@ namespace NFluent.Extensibility
         /// Specify that we expect a list of valies
         /// </summary>
         /// <param name="values">enumeration of values</param>
+        /// <param name="count">number of items</param>
         /// <returns>Continuation object</returns>
-        ICheckLogic<T> ExpectingValues(IEnumerable values);
+        ICheckLogic<T> ExpectingValues(IEnumerable values, long count);
+
+        /// <summary>
+        /// Explicitely fails
+        /// </summary>
+        /// <param name="error">error message</param>
+        /// <param name="options">options</param>
+        /// <returns>Continuation object</returns>
+        ICheckLogic<T> Fails(string error, MessageOption options = MessageOption.None);
+
+        /// <summary>
+        /// Set index of interest
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>Continuation object</returns>
+        ICheckLogic<T> SetValuesIndex(long index);
     }
 }

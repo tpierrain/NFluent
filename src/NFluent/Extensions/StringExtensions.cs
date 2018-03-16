@@ -16,6 +16,7 @@
 namespace NFluent.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using System.Text;
 
 
@@ -42,7 +43,7 @@ namespace NFluent.Extensions
         /// <returns>true if chars are the same.</returns>
         public static bool CompareCharIgnoringCase(char carA, char carB)
         {
-            return string.Compare(carA.ToString(), carB.ToString(), StringComparison.CurrentCultureIgnoreCase) == 0;
+            return String.Compare(carA.ToString(), carB.ToString(), StringComparison.CurrentCultureIgnoreCase) == 0;
         }
 
         /// <summary>
@@ -79,5 +80,39 @@ namespace NFluent.Extensions
             return result.ToString();
         }
 
+        /// <summary>
+        /// Transform a string to an <see cref="IList{T}"/>.
+        /// </summary>
+        /// <param name="checkedString"></param>
+        /// <returns></returns>
+        public static IList<string> SplitAsLines(this string checkedString)
+        {
+            IList<string> next;
+            if (checkedString != null)
+            {
+                var start = 0;
+                var retLines = new List<string>();
+                var newLineLength = Environment.NewLine.Length;
+                while (start < checkedString.Length)
+                {
+                    var indexOf = checkedString.IndexOf(Environment.NewLine, start, StringComparison.Ordinal);
+                    if (indexOf == -1)
+                    {
+                        indexOf = checkedString.Length;
+                    }
+
+                    retLines.Add(checkedString.Substring(start, indexOf - start));
+                    start = indexOf + newLineLength;
+                }
+
+                next = retLines;
+            }
+            else
+            {
+                next = new List<string>();
+            }
+
+            return next;
+        }
     }
 }

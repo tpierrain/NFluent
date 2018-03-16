@@ -15,10 +15,10 @@
 
 namespace NFluent
 {
-    using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using Extensibility;
+    using Extensions;
     using Helpers;
     using Kernel;
 #if !DOTNET_30 && !DOTNET_20
@@ -387,32 +387,9 @@ namespace NFluent
         /// <returns>A checker.</returns>
         public static ICheck<IEnumerable<string>> AsLines(this ICheck<string> check)
         {
-            IEnumerable<string> next;
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var checkedString = checker.Value;
-            if (checkedString != null)
-            {
-                var start = 0;
-                var retLines = new List<string>();
-                var newLineLength = Environment.NewLine.Length;
-                while (start < checkedString.Length)
-                {
-                    var indexOf = checkedString.IndexOf(Environment.NewLine, start, StringComparison.Ordinal);
-                    if (indexOf == -1)
-                    {
-                        indexOf = checkedString.Length;
-                    }
-
-                    retLines.Add(checkedString.Substring(start, indexOf - start));
-                    start = indexOf + newLineLength;
-                }
-
-                next = retLines;
-            }
-            else
-            {
-                next = new List<string>();
-            }
+            IEnumerable<string> next = checkedString.SplitAsLines();
 
             return new FluentCheck<IEnumerable<string>>(next);
         }
