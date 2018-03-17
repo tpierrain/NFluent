@@ -113,14 +113,13 @@ namespace NFluent
             test.Expecting(expected, negatedComparison: "different from")
                 .Negates("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock)
                 .FailsIf((sut) => expected == null && sut != null, "The {0} is not null whereas it must.")
-                .FailsIf((sut) => expected != null && sut == null, "The {0} is null whereas it must not.");
-            test.Analyze((sut) =>
+                .FailsIf((sut) => expected != null && sut == null, "The {0} is null whereas it must not.")
+                .Analyze((sut, runner) =>
                 {
                     var details = StringDifference.Analyze(sut, (string) expected, ignoreCase);
                     if (details != null && details.Count > 0)
                     {
-                        test
-                            .FailsIf((_) => true, StringDifference.SummaryMessage(details));
+                        runner.Fails(StringDifference.SummaryMessage(details));
                     }
                 })
                 .EndCheck();
@@ -187,7 +186,7 @@ namespace NFluent
             var missingItems = new List<string>();
             var presentItems = new List<string>();
             block.FailsIfNull()
-                .Analyze(sut =>
+                .Analyze((sut, _) =>
                     {
                        foreach (var value in values)
                         {

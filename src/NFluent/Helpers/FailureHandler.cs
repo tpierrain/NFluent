@@ -33,13 +33,14 @@ namespace NFluent.Helpers
         public static ICheckLink<ICodeCheck<RunTrace>> IsAFaillingCheckWithMessage(this ICodeCheck<RunTrace> check,
             params string[] lines)
         {
-            var test = ExtensibilityHelper.BeginCheck(check)
+            ExtensibilityHelper.BeginCheck(check)
                 .GetSutProperty((sut) => sut.RaisedException, "raised exception").SutNameIs("fluent check")
                 .FailsIfNull()
                 .FailsIf((sut) => !ExceptionHelper.IsFailedException(sut),
                     "The exception raised is not of the expected type")
-                .GetSutProperty((sut) => sut.Message, "error message").SutNameIs("fluent check");
-                test.Analyze((message) =>
+                .GetSutProperty((sut) => sut.Message, "error message")
+                .SutNameIs("fluent check")
+                .Analyze((message, test) =>
                 {
                     var expectedLines = (lines.Length == 1) ? lines[0].SplitAsLines() : lines;
                     var messageLines = message.SplitAsLines();

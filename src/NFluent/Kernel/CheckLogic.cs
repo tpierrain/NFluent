@@ -242,13 +242,13 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> Analyze(Action<T> action)
+        public ICheckLogic<T> Analyze(Action<T, ICheckLogic<T>> action)
         {
             if (this.failed)
             {
                 return this;
             }
-            action(this.value);
+            action(this.value, this);
             return this;
         }
     }

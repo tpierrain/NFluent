@@ -70,7 +70,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check).
                 FailsIf((sut) => sut == null && otherEnumerable != null, "The {0} is null and thus, does not contain the given expected value(s).").
                 ExpectingValues(otherEnumerable, otherEnumerable.Count()).
-                Analyze((sut) =>  notFoundValues = ExtractNotFoundValues(sut, otherEnumerable)).
+                Analyze((sut, _) =>  notFoundValues = ExtractNotFoundValues(sut, otherEnumerable)).
                 FailsIf((_) => notFoundValues.Any(), string.Format(
                     "The {{0}} does not contain the expected value(s):" + Environment.NewLine + "\t[{0}]", notFoundValues.ToEnumeratedString().DoubleCurlyBraces())).
                 Negates("The {0} contains all the given values whereas it must not.").
@@ -129,7 +129,7 @@ namespace NFluent
                 .FailsIf(sut => sut != null && enumerable == null, "The {0} is not null whereas it should.",
                     MessageOption.NoExpectedBlock)
                 .Negates("The {0} contains exactly the given values whereas it must not.", MessageOption.NoExpectedBlock);
-            test.Analyze(sut =>
+            test.Analyze((sut, runner) =>
             {
                 if (sut == null || otherEnumerable == null)
                 {
@@ -149,11 +149,7 @@ namespace NFluent
                     {
                         if (!second.MoveNext() || !comparer.Equals(first.Current, second.Current))
                         {
-                            if (sutCount < expectedCount && index == sutCount)
-                            {
-                                test.Fails($"The {{0}} does not contain exactly the expected value(s). Elements are missing starting at index #{index}.");
-                            }
-                            else if (sutCount > expectedCount && index == expectedCount)
+                            if (sutCount > expectedCount && index == expectedCount)
                             {
                                 test.Fails($"The {{0}} does not contain exactly the expected value(s). There are extra elements starting at index #{index}.");
                             }
@@ -438,7 +434,7 @@ namespace NFluent
             long actualSize=0;
             ExtensibilityHelper.BeginCheck(check).
                 FailsIfNull().
-                Analyze((sut) => actualSize = sut.Count()).
+                Analyze((sut, _) => actualSize = sut.Count()).
                 FailsIf((_) => actualSize != expectedSize, $"The {{0}} has {BuildElementNumberLiteral(actualSize).DoubleCurlyBraces()} instead of {expectedSize}.").
                 Negates($"The {{0}} has {BuildElementNumberLiteral(expectedSize).DoubleCurlyBraces()} which is unexpected.").
                 EndCheck();

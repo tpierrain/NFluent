@@ -97,7 +97,7 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="action">Code to be executed</param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> Analyze(Action<T> action);
+        ICheckLogic<T> Analyze(Action<T, ICheckLogic<T>> action);
 
         /// <summary>
         /// Fails the check is the checked value is null,
