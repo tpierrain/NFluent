@@ -136,7 +136,7 @@ namespace NFluent.Tests
         {
             var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
 
-            Check.ThatCode(() => { Check.That(persons).IsEmpty(); }).Throws<FluentCheckException>().WithMessage(
+            Check.ThatCode(() => { Check.That(persons).IsEmpty(); }).IsAFaillingCheckWithMessage(
                 Environment.NewLine + "The checked enumerable is not empty." + Environment.NewLine
                 + "The checked enumerable:" + Environment.NewLine + "\t[null, null, Thomas]");
         }
@@ -153,7 +153,7 @@ namespace NFluent.Tests
         {
             var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
 
-            Check.ThatCode(() => { Check.That(persons).IsNullOrEmpty(); }).Throws<FluentCheckException>().WithMessage(
+            Check.ThatCode(() => { Check.That(persons).IsNullOrEmpty(); }).IsAFaillingCheckWithMessage(
                 Environment.NewLine + "The checked enumerable contains elements, whereas it must be null or empty."
                 + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null, null, Thomas]");
         }
@@ -168,8 +168,7 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNullOrEmptyFailsIfEmpty()
         {
-            Check.ThatCode(() => { Check.That(EmptyEnumerable).Not.IsNullOrEmpty(); }).Throws<FluentCheckException>()
-                .WithMessage(
+            Check.ThatCode(() => { Check.That(EmptyEnumerable).Not.IsNullOrEmpty(); }).IsAFaillingCheckWithMessage(
                     Environment.NewLine
                     + "The checked enumerable is empty, where as it must contain at least one element.");
         }
@@ -177,8 +176,7 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNullOrEmptyFailsIfNull()
         {
-            Check.ThatCode(() => { Check.That((IEnumerable)null).Not.IsNullOrEmpty(); }).Throws<FluentCheckException>()
-                .WithMessage(
+            Check.ThatCode(() => { Check.That((IEnumerable)null).Not.IsNullOrEmpty(); }).IsAFaillingCheckWithMessage(
                     Environment.NewLine
                     + "The checked enumerable is null, where as it must contain at least one element.");
         }
@@ -196,7 +194,7 @@ namespace NFluent.Tests
         {
             var persons = new List<Person>();
 
-            Check.ThatCode(() => { Check.That(persons).Not.IsEmpty(); }).Throws<FluentCheckException>().WithMessage(
+            Check.ThatCode(() => { Check.That(persons).Not.IsEmpty(); }).IsAFaillingCheckWithMessage(
                 Environment.NewLine + "The checked enumerable is empty, which is unexpected.");
         }
 
@@ -513,7 +511,10 @@ namespace NFluent.Tests
         {
             IEnumerable<int> list = new List<int> { 4, 5, 8 };
             Check.ThatCode(() => Check.That(list).ContainsOnlyElementsThatMatch(item => item % 2 == 0))
-                .Throws<FluentCheckException>();
+                .IsAFaillingCheckWithMessage("",
+                    "The checked enumerable does contain an element at index #1 that does not match the given predicate: (5).",
+                    "The checked enumerable:" ,
+                    "\t[4, 5, 8]");
         }
 
         #endregion

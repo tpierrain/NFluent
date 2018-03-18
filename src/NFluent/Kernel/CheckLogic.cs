@@ -220,13 +220,18 @@ namespace NFluent.Kernel
 
         public ICheckLogic<T> Negates(string message, MessageOption option)
         {
+            if (this.negatedFailed)
+            {
+                return this;
+            }
+
             this.negatedError = message;
             this.negatedFailed = true;
             this.negatedOption = option;
             return this;
         }
 
-        public ICheckLogic<T> NegatesIf(Func<T, bool> predicate, string error)
+        public ICheckLogic<T> NegatesIf(Func<T, bool> predicate, string error, MessageOption option)
         {
             if (this.negatedFailed)
             {
@@ -237,6 +242,7 @@ namespace NFluent.Kernel
             {
                 this.negatedFailed = true;
                 this.negatedError = error;
+                this.negatedOption = option;
             }
 
             return this;

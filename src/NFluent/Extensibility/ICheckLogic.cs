@@ -90,7 +90,7 @@ namespace NFluent.Extensibility
         /// <param name="predicate">Predicate, returns true if test fails.</param>
         /// <param name="error">Error message on failure</param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> NegatesIf(Func<T, bool> predicate, string error);
+        ICheckLogic<T> NegatesIf(Func<T, bool> predicate, string error, MessageOption option = MessageOption.None);
 
         /// <summary>
         /// Executes arbitrary code on the sut.

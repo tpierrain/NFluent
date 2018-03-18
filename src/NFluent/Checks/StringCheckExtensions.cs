@@ -183,23 +183,25 @@ namespace NFluent
 
         private static void ContainsLogic(string[] values, ICheckLogic<string> block)
         {
-            var missingItems = new List<string>();
-            var presentItems = new List<string>();
             block.FailsIfNull()
-                .Analyze((sut, _) =>
+                .Expecting(values, expectedLabel: "The {0} substring(s):",negatedLabel: "The unauthorized substring(s):")
+                .Analyze((sut, test) =>
                     {
+                       var missingItems = new List<string>();
+                       var presentItems = new List<string>();
                        foreach (var value in values)
                         {
                             (sut.Contains(value) ? presentItems : missingItems).Add(value);
                         }
+
+                        if (missingItems.Any())
+                        {
+                            test.Fails("The {0} does not contain the expected value(s): " +
+                                       missingItems.ToEnumeratedString());
+                        }
+                        test.Negates("The {0} contains unauthorized value(s): " + presentItems.ToEnumeratedString());
+
                     })
-                .FailsIf(sut => missingItems.Any(),
-                    "The {0} does not contain the expected value(s): " + missingItems.ToEnumeratedString())
-                .Expecting(values, expectedLabel: "The {0} substring(s):",
-                    negatedLabel: "The unauthorized substring(s):");
-
-
-            block.Negates("The {0} contains unauthorized value(s): " + presentItems.ToEnumeratedString())
                 .EndCheck();
         }
 

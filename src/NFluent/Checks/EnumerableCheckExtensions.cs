@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="EnumerableCheckExtensions.cs" company="">
-//   Copyright 2013 Thomas PIERRAIN
+//   Copyright 2013 Thomas PIERRAIN, Cyrille Dupuydauby
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -21,7 +21,7 @@ namespace NFluent
     using Extensibility;
     using Extensions;
     using Helpers;
-
+    using Kernel;
 #if !DOTNET_30 && !DOTNET_20
     using System.Linq;
 #endif
@@ -189,33 +189,35 @@ namespace NFluent
             this ICheck<IEnumerable<T>> check,
             Func<T, bool> predicate)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.ExecuteCheckAndProvideSubItem(
-                () =>
+            FluentCheck<T> chk = null;
+            ExtensibilityHelper.BeginCheck(check).
+                FailsIfNull().
+                Analyze((sut, test) =>
                 {
-                    using (var scan = checker.Value.GetEnumerator())
+                    var index = 0;
+                    using (var scan = sut.GetEnumerator())
                     {
                         while (scan.MoveNext())
                         {
                             if (predicate(scan.Current))
                             {
+                                index++;
                                 continue;
                             }
-                            var message =
-                                checker.BuildMessage(
-                                    "The {0} does contain an element that does not match the given predicate.");
-                            throw new FluentCheckException(message.ToString());
+
+                            test.Fails($"The {{0}} does contain an element at index #{index} that does not match the given predicate: ({scan.Current}).");
+                            chk = new FluentCheck<T>(scan.Current);
+                            chk.Checker.SetSutLabel($"element #{index}");
+                            return;
                         }
 
-                        var itemCheck = Check.That(scan.Current);
-                        var subChecker = ExtensibilityHelper.ExtractChecker(itemCheck);
-                        subChecker.SetSutLabel("all elements");
-                        return itemCheck;
+                        chk = new FluentCheck<T>(scan.Current);
+                        chk.Checker.SetSutLabel("all elements");
                     }
-                },
-                checker.BuildMessage(
-                        "The {0} contains only element(s) that match the given predicate, whereas it must not.")
-                    .ToString());
+                }).
+                Negates("The {0} contains only element(s) that match the given predicate, whereas it must not.").
+                EndCheck();
+            return new CheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>>(check, chk);
         }
 
         /// <summary>
@@ -464,20 +466,12 @@ namespace NFluent
         ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> IsEmpty(this ICheck<IEnumerable> check)
+        public static ICheckLink<ICheck<T>> IsEmpty<T>(this ICheck<T> check) where T: IEnumerable
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                {
-                    if (checker.Value.Cast<object>().Any())
-                    {
-                        var errorMessage = checker.BuildMessage("The {0} is not empty.").ToString();
-                        throw new FluentCheckException(errorMessage);
-                    }
-                },
-                checker.BuildShortMessage("The checked enumerable is empty, which is unexpected.").ToString());
+            ExtensibilityHelper.BeginCheck(check).FailsIfNull()
+                .FailsIf((sut) => sut.Cast<object>().Any(), "The {0} is not empty.")
+                .Negates("The checked enumerable is empty, which is unexpected.", MessageOption.NoCheckedBlock).EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -488,42 +482,14 @@ namespace NFluent
         ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> IsNullOrEmpty(this ICheck<IEnumerable> check)
+        public static ICheckLink<ICheck<T>> IsNullOrEmpty<T>(this ICheck<T> check) where T : IEnumerable
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            string message = null;
-
-            if (checker.Value != null && checker.Value.Count() > 0)
-            {
-                if (!checker.Negated)
-                {
-                    message = checker.BuildMessage("The {0} contains elements, whereas it must be null or empty.")
-                        .For(typeof(IEnumerable)).ToString();
-                }
-            }
-            else if (checker.Negated)
-            {
-                if (checker.Value == null)
-                {
-                    message = checker
-                        .BuildShortMessage("The {0} is null, where as it must contain at least one element.")
-                        .For(typeof(IEnumerable)).ToString();
-                }
-                else
-                {
-                    message = checker
-                        .BuildShortMessage("The {0} is empty, where as it must contain at least one element.")
-                        .For(typeof(IEnumerable)).ToString();
-                }
-            }
-
-            if (!string.IsNullOrEmpty(message))
-            {
-                throw new FluentCheckException(message);
-            }
-
-            return checker.BuildChainingObject();
+            ExtensibilityHelper.BeginCheck(check).FailsIf((sut) => sut != null && sut.Count()>0,
+                    "The {0} contains elements, whereas it must be null or empty.")
+                .NegatesIf((sut) => sut == null, "The {0} is null, where as it must contain at least one element.", MessageOption.NoCheckedBlock)
+                .Negates("The {0} is empty, where as it must contain at least one element.", MessageOption.NoCheckedBlock)
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
