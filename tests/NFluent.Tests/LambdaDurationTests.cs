@@ -20,6 +20,7 @@ namespace NFluent.Tests
 {
     using System.Diagnostics;
     using System.Threading;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -76,8 +77,12 @@ namespace NFluent.Tests
                     }
                 }).ConsumesLessThan(5, TimeUnit.Milliseconds);
             })
-            .ThrowsAny()
-            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code consumed too much CPU time." + Environment.NewLine + "The checked cpu time:"); // TODO mimic startsWith
+            .IsAFaillingCheckWithMessage("",
+                    "The checked code consumed too much CPU time.",
+                    "The checked cpu time:", 
+                    "*",
+                    "The expected cpu time: less than",
+                    "*"); 
         }
     }
 }

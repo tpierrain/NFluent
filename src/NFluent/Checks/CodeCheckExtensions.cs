@@ -95,8 +95,10 @@ namespace NFluent
         {
             var durationThreshold = new Duration(threshold, timeUnit);
 
-            ExtensibilityHelper.BeginCheck(check).FailsIf((sut) =>
-                    new Duration(sut.TotalProcessorTime, timeUnit) > durationThreshold, "The checked code consumed too much CPU time.").
+            ExtensibilityHelper.BeginCheck(check).
+                GetSutProperty(sut =>  new Duration(sut.TotalProcessorTime, timeUnit), "The {0} cpu time:").
+                FailsIf((sut) =>
+                    sut > durationThreshold, "The checked code consumed too much CPU time.").
                 Expecting(durationThreshold, "less than", "more than").
                 SutNameIs("cpu time").
                 Negates("The checked code took too little cpu time to execute.").

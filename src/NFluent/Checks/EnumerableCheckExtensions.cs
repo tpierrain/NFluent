@@ -238,6 +238,12 @@ namespace NFluent
         public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasElementAt<T>(
             this ICheck<IEnumerable<T>> check, int index)
         {
+            var item = default(T);
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIfNull($"The {{0}} is null, whereas it must have an element with number {index}.").FailsIf(
+                    (sut) => !TryGetElementByNumber(sut, index, out item),
+                    $"The {{0}} does not have an element at index {index}.");
+           
             var checker = ExtensibilityHelper.ExtractChecker(check);
             return checker.ExecuteCheckAndProvideSubItem(
                 () =>
@@ -249,7 +255,7 @@ namespace NFluent
                             .ToString());
                     }
 
-                    if (!TryGetElementByNumber(checker.Value, index, out var item))
+                    if (!TryGetElementByNumber(checker.Value, index, out item))
                     {
                         throw new FluentCheckException(checker.BuildMessage(
                             $"The {{0}} does not have an element at index {index}.").ToString());

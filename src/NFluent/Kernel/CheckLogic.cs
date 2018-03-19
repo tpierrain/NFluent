@@ -112,7 +112,7 @@ namespace NFluent.Kernel
         // TODO: improve sut naming logic on extraction
         public ICheckLogic<TU> GetSutProperty<TU>(Func<T, TU> sutExtractor, string newSutLabel)
         {
-            var result = new CheckLogic<TU>(sutExtractor(this.value), null, this.inverted) {checkedLabel = newSutLabel};
+            var result = new CheckLogic<TU>(this.value == null ? default(TU) : sutExtractor(this.value), null, this.inverted) {checkedLabel = newSutLabel};
             return result;
         }
 
