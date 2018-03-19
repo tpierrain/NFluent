@@ -80,7 +80,6 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="message">Message template to use when check succeeds.</param>
         /// <param name="option"></param>
-        /// <returns></returns>
         /// <returns>Continuation object.</returns>
         ICheckLogic<T> Negates(string message, MessageOption option = MessageOption.None);
 
@@ -89,6 +88,7 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="predicate">Predicate, returns true if test fails.</param>
         /// <param name="error">Error message on failure</param>
+        /// <param name="option">Options to use on parts of the message</param>
         /// <returns>Continuation object.</returns>
         ICheckLogic<T> NegatesIf(Func<T, bool> predicate, string error, MessageOption option = MessageOption.None);
 
