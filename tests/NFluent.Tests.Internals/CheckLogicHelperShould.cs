@@ -15,6 +15,8 @@
 
 namespace NFluent.Tests
 {
+    using System.Collections.Generic;
+    using Helpers;
     using Kernel;
     using NUnit.Framework;
 
@@ -31,6 +33,23 @@ namespace NFluent.Tests
                 .Expecting("other")
                 .FailsIf((x) => x.Equals("test"), "The {0} should be equal to the {1}.")
                 .EndCheck();
+        }
+
+        class Point
+        {
+            public int x;
+            public int y;
+        }
+        [Test]
+        public void
+            CascadeErrorOnSubProperty()
+        {
+            var fluentChecker = new FluentCheck<Point>(null);
+            var checker = fluentChecker.Checker;
+
+            Check.ThatCode(() =>
+                checker.BeginCheck().FailsIfNull().GetSutProperty(point => point.x, "x coordinate")
+                    .FailsIf(i => i > 0, "Should be positive").EndCheck()).IsAFaillingCheckWithMessage("", "The checked value is null.");
         }
     }
 }
