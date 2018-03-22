@@ -16,6 +16,7 @@
 ### Changes
 * Improved error messages
   * ContainsOnlyElementsThatMatch: now provides the index and value of the first failing value.
+  * IsOnlyMadeOf: improved error messages
 * Breaking: removed Failure method from IChecker interface
  
 ### GitHub Issues

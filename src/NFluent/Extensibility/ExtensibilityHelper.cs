@@ -85,11 +85,10 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <typeparam name="T">Type of sut</typeparam>
         /// <param name="check">The fluent check instance to work on.</param>
-        /// <param name="inverted">set to true to invert checking logic.</param>
         /// <returns>An <see cref="ICheckLogic{T}"/>instance.</returns>
-        public static ICheckLogic<T> BeginCheck<T>(ICheck<T> check, bool inverted = false)
+        public static ICheckLogic<T> BeginCheck<T>(ICheck<T> check)
         {
-            return ExtractChecker(check).BeginCheck(inverted);
+            return ExtractChecker(check).BeginCheck();
         }
 
         /// <summary>
@@ -97,11 +96,10 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <typeparam name="T">Type of sut</typeparam>
         /// <param name="check">The fluent check instance to work on.</param>
-        /// <param name="inverted">set to true to invert checking logic.</param>
         /// <returns>An <see cref="ICheckLogic{T}"/>instance.</returns>
-        public static ICheckLogic<T> BeginCheck<T>(ICodeCheck<T> check, bool inverted = false) where T : RunTrace
+        public static ICheckLogic<T> BeginCheck<T>(ICodeCheck<T> check) where T : RunTrace
         {
-            return ExtractCodeChecker(check).BeginCheck(inverted);
+            return ExtractCodeChecker(check).BeginCheck();
         }
 
         /// <summary>

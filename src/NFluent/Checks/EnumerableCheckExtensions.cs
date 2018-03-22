@@ -26,18 +26,18 @@ namespace NFluent
 #endif
 
     /// <summary>
-    ///     Provides check methods to be executed on an <see cref="IEnumerable" /> value.
+    /// Provides check methods to be executed on an <see cref="IEnumerable" /> value.
     /// </summary>
     public static class EnumerableCheckExtensions
     {
         /// <summary>
-        ///     Checks that the enumerable contains all the given expected values, in any order.
+        /// Checks that the enumerable contains all the given expected values, in any order.
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the enumerable.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <returns>
-        ///     A check link.
+        ///  A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values.</exception>
         public static IExtendableCheckLink<IEnumerable, IEnumerable> Contains<T>(
@@ -49,16 +49,15 @@ namespace NFluent
         }
 
         /// <summary>
-        ///     Checks that the enumerable contains all the values present in another enumerable, in any order.
+        /// Checks that the enumerable contains all the values present in another enumerable, in any order.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="otherEnumerable">The enumerable containing the expected values to be found.</param>
         /// <returns>
-        ///     A check link.
+        /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
-        ///     The enumerable does not contain all the expected values present in the other
-        ///     enumerable.
+        /// The enumerable does not contain all the expected values present in the other enumerable.
         /// </exception>
         public static IExtendableCheckLink<IEnumerable, IEnumerable> Contains(
             this ICheck<IEnumerable> check,
@@ -503,41 +502,7 @@ namespace NFluent
                 Negates("The {0} contains only the given values whereas it must not.").
                 EndCheck();
 
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                {
-                    if (Equals(checker.Value, expectedValues))
-                    {
-                        return;
-                    }
-
-                    if (checker.Value == null && expectedValues != null)
-                    {
-                        var message = checker
-                            .BuildMessage("The {0} is null and thus, does not contain exactly the given value(s).")
-                            .ExpectedValues(expectedValues).ToString();
-                        throw new FluentCheckException(message);
-                    }
-
-                    var unexpectedValuesFound = ExtractUnexpectedValues(checker.Value, expectedValues);
-
-                    if (unexpectedValuesFound.Count <= 0)
-                    {
-                        return;
-                    }
-                        var message2 = checker
-                            .BuildMessage(
-                                string.Format(
-                                    "The {{0}} does not contain only the given value(s)." + Environment.NewLine
-                                    + "It contains also other values:" + Environment.NewLine + "\t[{0}]",
-                                    unexpectedValuesFound.ToEnumeratedString().DoubleCurlyBraces()))
-                            .ExpectedValues(expectedValues).ToString();
-                        throw new FluentCheckException(message2);
-                },
-                checker.BuildMessage("The {0} contains only the given values whereas it must not.")
-                    .ExpectedValues(expectedValues).ToString());
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         private static string BuildElementNumberLiteral(long itemsCount)

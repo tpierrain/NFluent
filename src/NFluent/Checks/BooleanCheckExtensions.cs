@@ -31,8 +31,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not true.</exception>
         public static ICheckLink<ICheck<bool>> IsTrue(this ICheck<bool> check)
         {
-            var test = ExtensibilityHelper.BeginCheck(check, true);
-            return ImplementIsFalseCheck(check, test);
+            return check.Not.IsFalse();
         }
 
         /// <summary>
@@ -45,13 +44,8 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not false.</exception>
         public static ICheckLink<ICheck<bool>> IsFalse(this ICheck<bool> check)
         {
-            var test = ExtensibilityHelper.BeginCheck(check);
-            return ImplementIsFalseCheck(check, test);
-        }
-
-        private static ICheckLink<ICheck<bool>> ImplementIsFalseCheck(ICheck<bool> check, ICheckLogic<bool> test)
-        {
-            test.FailsIf((sut) => sut, "The {0} is true whereas it must be false.")
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIf((sut) => sut, "The {0} is true whereas it must be false.")
                 .Negates("The {0} is false whereas it must be true.").EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

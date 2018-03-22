@@ -41,7 +41,7 @@ namespace NFluent.Tests
         [Test]
         public void NewCheckBuilderShouldWhenNegationMessageNotDefined()
         {
-            var block = ExtensibilityHelper.BeginCheck(Check.That("kamoulox"), true);
+            var block = ExtensibilityHelper.BeginCheck(Check.That("kamoulox").Not);
             Check.ThatCode(() => { block.EndCheck(); }).Throws<InvalidOperationException>();
         }
 

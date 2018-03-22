@@ -72,9 +72,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checker value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<string>> IsNotEqualTo(this ICheck<string> check, string expected)
         {
-            var test = ExtensibilityHelper.BeginCheck(check, true);
-            PerformEqualCheck(expected, test);
-            return ExtensibilityHelper.BuildCheckLink(check);
+            return check.Not.IsEqualTo(expected);
         }
 
         /// <summary>
@@ -176,9 +174,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string contains at least one of the given strings.</exception>
         public static ICheckLink<ICheck<string>> DoesNotContain(this ICheck<string> check, params string[] values)
         {
-            var block = ExtensibilityHelper.BeginCheck(check, true);
-            ContainsLogic(values, block);
-            return ExtensibilityHelper.BuildCheckLink(check);
+            return check.Not.Contains(values);
         }
 
         private static void ContainsLogic(string[] values, ICheckLogic<string> block)
