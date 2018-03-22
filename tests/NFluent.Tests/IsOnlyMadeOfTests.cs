@@ -43,8 +43,6 @@ namespace NFluent.Tests
         }
 
 
-#region IsOnlyMadeOf with arrays
-
         [Test]
         public void IsOnlyMadeOfWithIntArrayWorks()
         {
@@ -84,10 +82,6 @@ namespace NFluent.Tests
                     "The expected value(s): only elements from",
                     "\t[1, 2, 3] (3 items)");
         }
-
-#endregion
-
-#region IsOnlyMadeOf with enumerable
 
         [Test]
         public void IsOnlyMadeOfWithEnumerableWorks()
@@ -157,6 +151,22 @@ namespace NFluent.Tests
         public void IsOnlyMadeOfDoNotThrowIfBothValuesAreNull()
         {
             Check.That((List<int>) null).IsOnlyMadeOf(null).And.IsEqualTo(null);
+        }
+
+        [Test]
+        public void 
+            ShouldFailWhenUsingNull()
+        {
+            var integers = new List<int> { 3, 2, 666, 1974, 1 };
+            Check.ThatCode( () =>
+                Check.That(integers).IsOnlyMadeOf(null)).IsAFaillingCheckWithMessage("",
+            "The checked enumerable does not contain only the given value(s).",
+                "It contains also other values:",
+                "\t[3, 2, 666, 1974, 1]",
+            "The checked enumerable:",
+                "\t[3, 2, 666, 1974, 1] (5 items)",
+                "The expected value(s): only elements from",
+                "\t[null] (0 item)");
         }
 
         [Test]
@@ -280,6 +290,5 @@ namespace NFluent.Tests
             Check.That(variousObjects).IsOnlyMadeOf(expectedVariousObjects);
         }
 
-#endregion
     }
 }

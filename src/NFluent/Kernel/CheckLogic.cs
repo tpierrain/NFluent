@@ -81,18 +81,24 @@ namespace NFluent.Kernel
                 return this;
             }
             this.failed =  predicate(this.value);
-            if (this.failed && !this.IsNegated)
+            if (!this.failed || this.IsNegated)
             {
-                this.lastError = error;
-                this.options = this.options | noCheckedBlock;
+                return this;
             }
+
+            this.lastError = error;
+            this.options = this.options | noCheckedBlock;
             return this;
         }
 
         public ICheckLogic<T> Fails(string error, MessageOption noCheckedBlock)
         {
+            if (this.failed)
+            {
+                return this;
+            }
             this.failed =  true;
-            if (this.failed && !this.IsNegated)
+            if (!this.IsNegated)
             {
                 this.lastError = error;
                 this.options = this.options | noCheckedBlock;
@@ -167,18 +173,18 @@ namespace NFluent.Kernel
             if (this.withExpected && (this.Option & MessageOption.NoExpectedBlock) == MessageOption.None)
             {
                 MessageBlock block;
-                switch (this.expectedKind)
+                if (this.expectedKind == ValueKind.Type)
                 {
-                    case ValueKind.Type:
-                        block = fluentMessage.ExpectedType((System.Type) this.expected);
-                        break;
-                    case ValueKind.Value:
-                    default:
-                        block = fluentMessage.Expected(this.expected);
-                        break;
-                    case ValueKind.Values:
-                        block = fluentMessage.ExpectedValues(this.expected, this.index).WithEnumerableCount(this.expectedCount);
-                        break;
+                    block = fluentMessage.ExpectedType((System.Type) this.expected);
+                }
+                else if (this.expectedKind == ValueKind.Values)
+                {
+                    block = fluentMessage.ExpectedValues(this.expected, this.index)
+                        .WithEnumerableCount(this.expectedCount);
+                }
+                else
+                {
+                    block = fluentMessage.Expected(this.expected);
                 }
 
                 if (!string.IsNullOrEmpty(this.Comparison))
