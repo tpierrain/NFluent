@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Extensibility
 {
+    using System.Collections.Generic;
     using Kernel;
 
     /// <summary>
@@ -123,6 +124,22 @@ namespace NFluent.Extensibility
         public static ICheckLink<ICodeCheck<T>> BuildCheckLink<T>(ICodeCheck<T> check) where T : RunTrace
         {
             return ExtractCodeChecker(check).BuildChainingObject();
+        }
+
+        /// <summary>
+        /// Builds a chainable check with a sub item.
+        /// </summary>
+        /// <param name="check">original check to link to</param>
+        /// <param name="item">sub itme that can be check with wich</param>
+        /// <param name="label">label for the sub item</param>
+        /// <typeparam name="TU">type of the sut</typeparam>
+        /// <typeparam name="T">type of the sub item</typeparam>
+        /// <returns>A chainable link supporting Which</returns>
+        public static ICheckLinkWhich<ICheck<TU>, ICheck<T>> BuildCheckLinkWhich<TU, T>(ICheck<TU> check, T item, string label)
+        {
+            var chk = new FluentCheck<T>(item);
+            chk.Checker.SetSutLabel(label);
+            return new CheckLinkWhich<ICheck<TU>, ICheck<T>>(check, chk);
         }
     }
 }

@@ -21,7 +21,6 @@ namespace NFluent
     using Extensibility;
     using Extensions;
     using Helpers;
-    using Kernel;
 #if !DOTNET_30 && !DOTNET_20
     using System.Linq;
 #endif
@@ -189,7 +188,8 @@ namespace NFluent
             this ICheck<IEnumerable<T>> check,
             Func<T, bool> predicate)
         {
-            FluentCheck<T> chk = null;
+            var item = default(T);
+            var label = string.Empty;
             ExtensibilityHelper.BeginCheck(check).
                 FailsIfNull().
                 Analyze((sut, test) =>
@@ -197,6 +197,7 @@ namespace NFluent
                     var index = 0;
                     using (var scan = sut.GetEnumerator())
                     {
+                        item = scan.Current;
                         while (scan.MoveNext())
                         {
                             if (predicate(scan.Current))
@@ -206,18 +207,16 @@ namespace NFluent
                             }
 
                             test.Fails($"The {{0}} does contain an element at index #{index} that does not match the given predicate: ({scan.Current}).");
-                            chk = new FluentCheck<T>(scan.Current);
-                            chk.Checker.SetSutLabel($"element #{index}");
+                            label = $"element #{index}";
                             return;
                         }
 
-                        chk = new FluentCheck<T>(scan.Current);
-                        chk.Checker.SetSutLabel("all elements");
+                        label = "all element";
                     }
                 }).
                 Negates("The {0} contains only element(s) that match the given predicate, whereas it must not.").
                 EndCheck();
-            return new CheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>>(check, chk);
+            return ExtensibilityHelper.BuildCheckLinkWhich(check, item, label);
         }
 
         /// <summary>
@@ -240,33 +239,13 @@ namespace NFluent
         {
             var item = default(T);
             ExtensibilityHelper.BeginCheck(check)
-                .FailsIfNull($"The {{0}} is null, whereas it must have an element with number {index}.").FailsIf(
-                    (sut) => !TryGetElementByNumber(sut, index, out item),
-                    $"The {{0}} does not have an element at index {index}.");
-           
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.ExecuteCheckAndProvideSubItem(
-                () =>
-                {
-                    if (checker.Value == null)
-                    {
-                        throw new FluentCheckException(checker.BuildShortMessage(
-                                $"The {{0}} is null, whereas it must have an element with number {index}.")
-                            .ToString());
-                    }
-
-                    if (!TryGetElementByNumber(checker.Value, index, out item))
-                    {
-                        throw new FluentCheckException(checker.BuildMessage(
-                            $"The {{0}} does not have an element at index {index}.").ToString());
-                    }
-                    // ReSharper disable once SuspiciousTypeConversion.Global
-                    var itemCheck = Check.That(item);
-                    var subChecker = ExtensibilityHelper.ExtractChecker(itemCheck);
-                    subChecker.SetSutLabel($"element #{index}");
-                    return itemCheck;
-                },
-                checker.BuildMessage("The {{0}} does have an element at index {0} whereas it should not.").ToString());
+                .FailsIfNull($"The {{0}} is null, whereas it must have an element with number {index}.")
+                .FailsIf(sut => !TryGetElementByNumber(sut, index, out item),
+                    $"The {{0}} does not have an element at index {index}.")
+                .Negates($"The {{0}} does have an element at index {index} whereas it should not.")
+                .EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLinkWhich(check, item, $"element #{index}");
         }
 
         /// <summary>
@@ -280,38 +259,39 @@ namespace NFluent
             this ICheck<IEnumerable<T>> check,
             Func<T, bool> predicate)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.ExecuteCheckAndProvideSubItem(
-                () =>
+            var item = default(T);
+            var label = string.Empty;
+            ExtensibilityHelper.BeginCheck(check).
+                FailsIfNull().
+                Analyze((sut, test) =>
                 {
-                    using (var scan = checker.Value.GetEnumerator())
+                    long? index = null;
+                    using (var scan = sut.GetEnumerator())
                     {
-                        int? index = null;
+                        item = scan.Current;
                         for (var i = 0; scan.MoveNext(); i++)
                         {
-                            if (predicate(scan.Current))
+                            if (!predicate(scan.Current))
                             {
-                                index = i;
-                                break;
+                                continue;
                             }
-                        }
 
+                            index = i;
+                            item = scan.Current;
+                            break;
+
+                        }
                         if (!index.HasValue)
                         {
-                            var message =
-                                checker.BuildMessage(
-                                    "The {0} does not contain any element that matches the given predicate.");
-                            throw new FluentCheckException(message.ToString());
+                            test.Fails("The {0} does not contain any element that matches the given predicate.");
+                            return;
                         }
-
-                        var itemCheck = Check.That(scan.Current);
-                        var subChecker = ExtensibilityHelper.ExtractChecker(itemCheck);
-                        subChecker.SetSutLabel($"element #{index}");
-                        return itemCheck;
+                        label = $"element #{index}";
                     }
-                },
-                checker.BuildMessage(
-                    "The {0} contains element(s) that matches the given predicate, whereas it must not.").ToString());
+                }).
+                Negates("The {0} contains element(s) that matches the given predicate, whereas it must not.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLinkWhich(check, item, label);
         }
 
         /// <summary>
@@ -323,30 +303,15 @@ namespace NFluent
         public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasFirstElement<T>(
             this ICheck<IEnumerable<T>> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheckAndProvideSubItem(
-                () =>
-                {
-                    if (checker.Value == null)
-                    {
-                        var errorMessage =
-                            checker.BuildShortMessage("The {0} is null, whereas it must have a first element.");
-                        throw new FluentCheckException(errorMessage.ToString());
-                    }
-
-                    if (!TryGetElementByNumber(checker.Value, 0, out var first))
-                    {
-                        var errorMessage =
-                            checker.BuildShortMessage("The {0} is empty, whereas it must have a first element.");
-                        throw new FluentCheckException(errorMessage.ToString());
-                    }
-
-                    var subChecker = Check.That(first);
-                    ExtensibilityHelper.ExtractChecker(subChecker).SetSutLabel("First item");
-                    return subChecker;
-                },
-                checker.BuildMessage("The {0} has a first element, whereas it should not.").ToString());
+            var item = default(T);
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIfNull("The {0} is null, whereas it must have a first element.")
+                .FailsIf(sut => !TryGetElementByNumber(sut, 0, out item),
+                    "The {0} is empty, whereas it must have a first element.", MessageOption.NoCheckedBlock)
+                .Negates("The {0} has a first element, whereas it must be empty.")
+                .EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLinkWhich(check, item, $"First element");
         }
 
         /// <summary>
@@ -358,29 +323,15 @@ namespace NFluent
         public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasLastElement<T>(
             this ICheck<IEnumerable<T>> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.ExecuteCheckAndProvideSubItem(
-                () =>
-                {
-                    if (checker.Value == null)
-                    {
-                        var nullErrorMessage =
-                            checker.BuildShortMessage("The {0} is null, whereas it must have a last element.");
-                        throw new FluentCheckException(nullErrorMessage.ToString());
-                    }
-
-                    if (!TryGetLastElement(checker.Value, out var last))
-                    {
-                        var emptyErrorMessage =
-                            checker.BuildShortMessage("The {0} is empty, whereas it must have a last element.");
-                        throw new FluentCheckException(emptyErrorMessage.ToString());
-                    }
-
-                    var subChecker = Check.That(last);
-                    ExtensibilityHelper.ExtractChecker(subChecker).SetSutLabel("Last item");
-                    return subChecker;
-                },
-                checker.BuildMessage("The {0} has a last element, whereas it must be empty.").ToString());
+            var item = default(T);
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIfNull("The {0} is null, whereas it must have a last element.")
+                .FailsIf(sut => !TryGetLastElement(sut, out item),
+                    "The {0} is empty, whereas it must have a last element.", MessageOption.NoCheckedBlock)
+                .Negates("The {0} has a last element, whereas it must be empty.")
+                .EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLinkWhich(check, item, $"First element");
         }
 
         /// <summary>
@@ -392,40 +343,32 @@ namespace NFluent
         public static ICheckLinkWhich<ICheck<IEnumerable<T>>, ICheck<T>> HasOneElementOnly<T>(
             this ICheck<IEnumerable<T>> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.ExecuteCheckAndProvideSubItem(
-                () =>
-                {
-                    if (checker.Value == null)
+            var item = default(T);
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIfNull("The {0} is null, whereas it must have one element.")
+                .Analyze((sut, test) =>
                     {
-                        var errorMessage =
-                            checker.BuildShortMessage("The {0} is null, whereas it must have one element.");
-                        throw new FluentCheckException(errorMessage.ToString());
-                    }
-                    using (var enumerator = checker.Value.GetEnumerator())
-                    {
-                        if (!enumerator.MoveNext())
+                        using (var enumerator = sut.GetEnumerator())
                         {
-                            var errorMessage =
-                                checker.BuildMessage("The {0} is empty, whereas it must have one element.");
-                            throw new FluentCheckException(errorMessage.ToString());
+                            if (!enumerator.MoveNext())
+                            {
+                                test.Fails("The {0} is empty, whereas it must have one element.");
+                                return;
+                            }
+
+                            item = enumerator.Current;
+
+                            if (enumerator.MoveNext())
+                            {
+                                test.Fails("The {0} contains more than one element, whereas it must have one element only.");
+                            }
+
                         }
-
-                        var first = enumerator.Current;
-
-                        if (enumerator.MoveNext())
-                        {
-                            var errorMessage = checker.BuildMessage(
-                                "The {0} contains more than one element, whereas it must have one element only.");
-                            throw new FluentCheckException(errorMessage.ToString());
-                        }
-
-                        var subChecker = Check.That(first);
-                        ExtensibilityHelper.ExtractChecker(subChecker).SetSutLabel("single element");
-                        return subChecker;
-                    }
-                },
-                checker.BuildMessage("The {0} has exactly one element, whereas it should not.").ToString());
+                    })
+                .Negates("The {0} has exactly one element, whereas it should not.")
+                .EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLinkWhich(check, item, "single element");
         }
 
         /// <summary>
@@ -443,11 +386,10 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check).
                 FailsIfNull().
                 Analyze((sut, _) => actualSize = sut.Count()).
-                FailsIf((_) => actualSize != expectedSize, $"The {{0}} has {BuildElementNumberLiteral(actualSize).DoubleCurlyBraces()} instead of {expectedSize}.").
+                FailsIf(_ => actualSize != expectedSize, $"The {{0}} has {BuildElementNumberLiteral(actualSize).DoubleCurlyBraces()} instead of {expectedSize}.").
                 Negates($"The {{0}} has {BuildElementNumberLiteral(expectedSize).DoubleCurlyBraces()} which is unexpected.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
-
         }
 
         /// <summary>
@@ -535,6 +477,32 @@ namespace NFluent
             this ICheck<IEnumerable> check,
             IEnumerable expectedValues)
         {
+            ExtensibilityHelper.BeginCheck(check).
+                ExpectingValues(expectedValues, expectedValues.Count(), comparison: "only elements from", negatedComparison:"at least one element different from").
+                FailsIf(sut => sut == null & expectedValues != null, "The {0} is null and thus, does not contain exactly the given value(s).").
+                Analyze((sut, test) =>{
+                    if (sut == null && expectedValues == null)
+                    {
+                        return;
+                    }
+
+                    var unexpectedValuesFound = ExtractUnexpectedValues(sut, expectedValues);
+
+                    if (unexpectedValuesFound.Count <= 0)
+                    {
+                        return;
+                    }
+
+                    test.Fails(
+                        string.Format(
+                            "The {{0}} does not contain only the given value(s)." + Environment.NewLine
+                                                                                  + "It contains also other values:" +
+                                                                                  Environment.NewLine + "\t[{0}]",
+                            unexpectedValuesFound.ToEnumeratedString().DoubleCurlyBraces()));
+                        }).
+                Negates("The {0} contains only the given values whereas it must not.").
+                EndCheck();
+
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return checker.ExecuteCheck(
@@ -601,7 +569,7 @@ namespace NFluent
 
             return properExpectedValues;
         }
-
+ 
         /// <summary>
         ///     Returns all expected values that aren't present in the enumerable.
         /// </summary>
@@ -651,7 +619,7 @@ namespace NFluent
         private static IList<object> ExtractUnexpectedValues(IEnumerable enumerable, IEnumerable expectedValues)
         {
             var equalityComparer = new EqualityHelper.EqualityComparer<object>();
-            var values = expectedValues.Cast<object>().ToList();
+            var values = (expectedValues ?? new List<object>()).Cast<object>().ToList();
 
             return enumerable.Cast<object>().Where(element => !values.Contains(element, equalityComparer)).ToList();
         }

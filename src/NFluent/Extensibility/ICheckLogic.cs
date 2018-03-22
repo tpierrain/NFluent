@@ -135,8 +135,12 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="values">enumeration of values</param>
         /// <param name="count">number of items</param>
+        /// <param name="comparison"></param>
+        /// <param name="negatedComparison"></param>
+        /// <param name="expectedLabel"></param>
+        /// <param name="negatedLabel"></param>
         /// <returns>Continuation object</returns>
-        ICheckLogic<T> ExpectingValues(IEnumerable values, long count);
+        ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparison = null, string negatedComparison = null, string expectedLabel = null, string negatedLabel = null);
 
         /// <summary>
         /// Explicitely fails

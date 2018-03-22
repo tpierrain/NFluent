@@ -199,10 +199,10 @@ namespace NFluent.Kernel
         public ICheckLogic<T> Expecting<TU>(TU newExpectedValue, string comparisonMessage = null,
             string negatedComparison1 = null, string expectedLabel = null, string negatedExpLabel = null)
         {
-            this.comparison = comparisonMessage;
-            this.negatedComparison = negatedComparison1;
             this.withExpected = true;
             this.expected = newExpectedValue;
+            this.comparison = comparisonMessage;
+            this.negatedComparison = negatedComparison1;
             this.label = expectedLabel;
             this.negatedLabel = negatedExpLabel ?? expectedLabel;
             return this;
@@ -214,11 +214,11 @@ namespace NFluent.Kernel
             return this.Expecting(expectedType, expectedLabel: expectedLabel, negatedExpLabel: negatedExpLabel);
         }
 
-        public ICheckLogic<T> ExpectingValues(IEnumerable values, long count)
+        public ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparisonMessage = null, string negatedComparison = null, string expectedLabel = null, string negatedExpLabel = null)
         {
             this.expectedKind = ValueKind.Values;
             this.expectedCount = count;
-            return this.Expecting(values);
+            return this.Expecting(values, comparisonMessage, negatedComparison, expectedLabel, negatedExpLabel);
         }
 
         public ICheckLogic<T> SetValuesIndex(long index)

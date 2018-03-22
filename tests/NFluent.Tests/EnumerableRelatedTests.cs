@@ -283,8 +283,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             Check.That(EmptyEnumerable).HasFirstElement())
-            .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
-                "",
+            .IsAFaillingCheckWithMessage("",
                 "The checked enumerable is empty, whereas it must have a first element.");
         }
 
@@ -295,7 +294,7 @@ namespace NFluent.Tests
             // ReSharper disable once ExpressionIsAlwaysNull
             Check.ThatCode(() =>
             Check.That(nullEnumerable).HasFirstElement())
-                .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly("", "The checked enumerable is null, whereas it must have a first element.");
+                .IsAFaillingCheckWithMessage("", "The checked enumerable is null, whereas it must have a first element.");
         }
 
         [Test]
@@ -303,8 +302,13 @@ namespace NFluent.Tests
             NegatedWhichRaisesException()
         {
             var enumerable = new List<int> {};
-            Check.ThatCode(() => { Check.That(enumerable).Not.HasFirstElement().Which.IsEqualTo(44); })
-                .Throws<InvalidOperationException>();
+            Check.ThatCode(() => { Check.That(enumerable).Not.HasFirstElement().Which.IsEqualTo(44); }).
+                IsAFaillingCheckWithMessage("",
+            "The checked [First element] is different from the expected one.",
+                "The checked [First element]:",
+                "\t[0]",
+            "The expected [First element]:",
+                "\t[44]");
         }
 
         #endregion
@@ -345,7 +349,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
            Check.That(EmptyEnumerable).HasLastElement())
-                .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
+                .IsAFaillingCheckWithMessage(
                 "",
                 "The checked enumerable is empty, whereas it must have a last element.");
         }
@@ -357,7 +361,7 @@ namespace NFluent.Tests
             // ReSharper disable once ExpressionIsAlwaysNull
             Check.ThatCode(() =>
             Check.That(nullEnumerable).HasLastElement())
-                .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly("", "The checked enumerable is null, whereas it must have a last element.");
+                .IsAFaillingCheckWithMessage("", "The checked enumerable is null, whereas it must have a last element.");
         }
 
         #endregion
@@ -393,7 +397,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
                     Check.That(EmptyEnumerable).HasElementAt(0))
-                .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
+                .IsAFaillingCheckWithMessage(
                 "",
                 "The checked enumerable does not have an element at index 0.",
                 "The checked enumerable:",
@@ -414,8 +418,7 @@ namespace NFluent.Tests
         {
             var nullEnumerable = (List<int>)null;
             // ReSharper disable once ExpressionIsAlwaysNull
-            Check.ThatCode(() => Check.That(nullEnumerable).HasElementAt(1)).Throws<FluentCheckException>()
-                .AndWhichMessage().AsLines().ContainsExactly(
+            Check.ThatCode(() => Check.That(nullEnumerable).HasElementAt(1)).IsAFaillingCheckWithMessage(
                     "",
                     "The checked enumerable is null, whereas it must have an element with number 1.");
         }
@@ -426,7 +429,7 @@ namespace NFluent.Tests
             var enumerable = new List<int> { 42, 43 };
             Check.ThatCode(() =>
             Check.That(enumerable).HasElementAt(2))
-                .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
+                .IsAFaillingCheckWithMessage(
                     "",
                     "The checked enumerable does not have an element at index 2.",
                     "The checked enumerable:",
@@ -454,8 +457,7 @@ namespace NFluent.Tests
         [Test]
         public void HasOneElementOnlyThrowsWhenCollectionIsEmpty()
         {
-            Check.ThatCode(() => Check.That(EmptyEnumerable).HasOneElementOnly()).Throws<FluentCheckException>()
-                .AndWhichMessage().AsLines().ContainsExactly(
+            Check.ThatCode(() => Check.That(EmptyEnumerable).HasOneElementOnly()).IsAFaillingCheckWithMessage(
                     "",
                     "The checked enumerable is empty, whereas it must have one element.",
                     "The checked enumerable:",
@@ -468,8 +470,7 @@ namespace NFluent.Tests
             var nullEnumerable = (List<int>)null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
-            Check.ThatCode(() => Check.That(nullEnumerable).HasOneElementOnly()).Throws<FluentCheckException>()
-                .AndWhichMessage().AsLines().ContainsExactly(
+            Check.ThatCode(() => Check.That(nullEnumerable).HasOneElementOnly()).IsAFaillingCheckWithMessage(
                     "",
                     "The checked enumerable is null, whereas it must have one element.");
         }
@@ -480,7 +481,7 @@ namespace NFluent.Tests
             var enumerable = new List<int> { 42, 43, 1000 };
             Check.ThatCode(() =>
                     Check.That(enumerable).HasOneElementOnly())
-                .Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
+                .IsAFaillingCheckWithMessage(
                     "",
                     "The checked enumerable contains more than one element, whereas it must have one element only.",
                     "The checked enumerable:",
@@ -566,8 +567,11 @@ namespace NFluent.Tests
         public void FilterSupportShouldFailWhenRelevant()
         {
             IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
-            Check.ThatCode(() => Check.That(randomWords).HasElementThatMatches((_) => _.StartsWith("to")))
-                .Throws<FluentCheckException>();
+            Check.ThatCode(() => Check.That(randomWords).HasElementThatMatches(item => item.StartsWith("to")))
+                .IsAFaillingCheckWithMessage("",
+            "The checked enumerable does not contain any element that matches the given predicate.",
+                "The checked enumerable:",
+                "\t[\"yes\", \"foo\", \"bar\"]");
         }
 
         [Test]
@@ -582,7 +586,9 @@ namespace NFluent.Tests
         {
             IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
             Check.ThatCode(() => Check.That(randomWords).Not.HasElementThatMatches((_) => _.StartsWith("ye")))
-                .Throws<FluentCheckException>();
+                .IsAFaillingCheckWithMessage("","The checked enumerable contains element(s) that matches the given predicate, whereas it must not.",
+                "The checked enumerable:",
+                "\t[\"yes\", \"foo\", \"bar\"]");
         }
     }
 }
