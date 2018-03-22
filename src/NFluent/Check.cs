@@ -134,45 +134,6 @@ namespace NFluent
             return new FluentCheck<Type>(typeof(T));
         }
 
-        // ncrunch: no coverage start
-        // coverage disabled as this code cannot be executed and is to be removed at a later stage
-
-        /// <summary>
-        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
-        /// </summary>
-        /// <typeparam name="T">Type of the value returned by the <see cref="Func{TResult}"/> to be checked.</typeparam>
-        /// <param name="value">The value to be tested.</param>
-        /// <returns>
-        /// A <see cref="ILambdaCheck" /> instance to use in order to assert things on the given value.
-        /// </returns>
-        /// <remarks>
-        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
-        /// </remarks>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use ThatCode instead.", true)]
-        public static ILambdaCheck That<T>(Func<T> value)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
-        /// </summary>
-        /// <param name="value">The value to be tested.</param>
-        /// <returns>
-        /// A <see cref="ILambdaCheck" /> instance to use in order to assert things on the given value.
-        /// </returns>
-        /// <remarks>
-        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
-        /// </remarks>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use ThatCode instead.", true)]
-        public static ILambdaCheck That(Action value)
-        {
-            return null;
-        }
-
-        // ncrunch: no coverage end
 
         /// <summary>
         /// Returns a <see cref="IStructCheck{T}" /> instance that will provide check methods to be executed on a given enum or struct value.
