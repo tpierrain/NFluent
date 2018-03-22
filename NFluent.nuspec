@@ -3,7 +3,7 @@
   <metadata>
     <id>NFluent</id>
     <title>NFluent, smooth your .NET TDD experience!</title>
-    <version>2.3.0-alpha-0000</version>
+    <version>2.3.0-nightly-0000</version>
     <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR</authors>
     <owners>Thomas PIERRAIN</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -13,244 +13,128 @@
     <description>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).</description>
     <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
     <releaseNotes>## V 2.3.0
-
----------------
-
-### New features(s)
-
-* IsNullOrWhiteSpace: checks if a string is null, empty or contains only white space(s).
-
-* IReadOnlyDictionary (_Net 4.5+_)
-
-* ContainsKey, ContainsValue, ContainsPair are supported.
-
-* async method/delegates
-
-* Check.ThatCode now supports _async_ methods/delegates transparently.
-
-* Check expression now provides the result as a string. I.e Check.That(true).IsTrue().ToString() returns "Success".
-
-### Fixes
-
-* Check.ThatCode(...).Not.Throws\&lt;T\&gt;() may throw an InvalidCastException when thrown exception is not T.
-
-* Extension checks to Throw\&lt;\&gt;, ThrowType or ThrowAny raise an exception when used with Not as it does not make sense.
-
-* Which() raises an exception when used on a negated check (Not).
-
-* Fixed error messages for double (and float) equality check that reported checked value in place of the expected one.
-
-### Changes
-
-* Breaking: removed Failure method from IChecker interface.
-
-### GitHub Issues
-
-* #228, #227, #222, #223, #217, #230, #236
-
-------
-
-## V 2.2.0
-
----------------
-
-Flexible property and field based comparison is now available. Examples:
-
-* Check.That(sut)**.Considering().Public.Properties**.IsEqualTo(expected);
-
-* Check.That(sut)**.Considering().Public.Fields.And.Public.Properties**.IsEqualTo(expected);
-
-* Check.That(sut)**.Considering().Public.Fields.Excluding("coordX", "child.address")**.IsEqualTo(expected);
-
-Syntax is:
-
-* Check.That(sut)**.Considering().(Public|NonPublic|All).(Fields.Properties)[.And.(Public|NonPublic|All).(Fields.Properties)][Excluding("fielda", "sub.fieldb")]**.IsEqualTo(expected);
-
-* **Considering()** is supported by: _IsEqualTo(), IsNotEqualTo(), AsSameValueAs(), HasDifferentValueThan(), IsInstanceOf\&lt;type\&gt;()_ [checks if fields/properties are present],
-
-_IsNotInstanceOf\&lt;type\&gt;()_,  _HasSameValueAs()_, _IsSameReferenceAs(), _IsDistinctFrom()_, _HasDifferentValueThan()_
-
-### New feature(s)
-
-* **Object**
-
-* New check **IsInstanceOfType(Type type)** which is equivalent to *IsInstanceOf\&lt;type\&gt;()*, in a non generic form for parameterized tests.
-
-* New check **IsNoInstanceOfType(Type type)** which is equivalent to *IsNotInstanceOf\&lt;type\&gt;()*, in a non generic form for parameterized tests.
-
-* New check **InheritsFromType(Type type)** which is equivalent to *InheritsFrom\&lt;type\&gt;()*, in a non generic form for parameterized tests.
-
-* **Enum**
-
-- New check **HasFlag(xxx)** that checks if a flag is present in an enum value.
-
-* **Code**
-
-* New check **ThrowsType(Type type)** which is equivalent to *Throws\&lt;type\&gt;*, in a non generic form for parameterized tests.
-
-### Changes
-
-* Improved error messages for missing fields(and properties) for reflection based checks.
-
-### Fixes
-
-* Fix issue with overloaded member/properties for HasFieldswithSameValues(...) (#219)
-
-### GitHub Issues
-
-* #219, #218, #216, #215, #214, #121
-
-## V 2.1.1
-
----------------
-
-Bug fix(es):
-
-* fix issue #215: null reference exception triggered by HasFields... on null interface fields.
-
-V 2.1.0
-
---------------
-
-New feature(s):
-
-- Enumerable:
-
-- Breaking change: equality for Enumerable is now content based (instead of reference based). See issue #209. You can revert adding: Check.EqualMode = EqualityMode.Equals in your test set up code
-
-- New check ContainsOnlyElementsThatMatch which checks that all items verify a given predicate.
-
-- New Check: IsOneOf checks if the value belongs to a list of authorized value. Check.That(sut).IsOneOf(a, b, c, ...) fails if sut is different from all valid values
-
-- Improved error messages for IsEqualTo() on floating point types. Difference is displayed when small, suggestion to use IsCloseTo when difference is really small (#205).
-
-- Initial support for dynamics (issue #85):
-
-- Entry point is: Check.ThatDynamic()
-
-- Available checks are: IsNotNull(), IsEqualTo(...), IsSameReferenceAs(...)
-
-- And keyword is available
-
-- Not keyword is available
-
-- You can specify the maximum size (before truncate) for strings in error messages using **Check.StringTruncationLength** property
-
---------------
-
-Bug Fixe(s):
-
-- Fixed support of array types for HasFielsWithSameValues (issue #200)
-
-- Fixed some stack overflow exceptions (issue #210).
-
-- Fixed confusing examples about array item related checks in the readme
-
-V 2.00
-
---------------
-
-New feature(s):
-
-* Support for NetStandard &gt; 1.3
-
-* Support for Net.Core &gt; 1.0
-
-* Compatible for Net &gt; 2.0
-
-* Built for: 2.0, 3.0, 3.5, 4.0, 4.5, NetStandard 1.3
-
-* All: introduce: HasSameValueAs(x) that perform comparison using 'operator==' instead of 'Equals'.
-
-* All: introduce: HasAValueDifferentFrom(x) that perform comparison using 'operator!=' instead of '!Equals'.
-
-* Streams: introduce HasSameSequenceOfBytesAs() check.
-
-* Numbers: introduce IsPositiveOrZero() check.
-
-* Numbers: introduce IsNegativeOrZero() check.
-
-* FloatingNumbers (float, double): introduce IsCloseTo(expected, within) check for estimated value.
-
-* Exception: introduce the DueTo\&lt;InnerException\&gt; as an extension to Throws\&lt;Exception\&gt;. It verifies that the checked exception was triggered by a specific exception. This is done by scanning the 'innerException' chain until the expected type is identified. Further checking is done on the inner exception.
-
-* Exception: introduce WithProperties( expression, expectedValue) to check the value of any exception members, thanks to a selector expression.
-
-* IEnumerable: introduce HasElementAt(int index) which checks for an item as a specific index. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasElementAt(3).Which.IsEqualTo("foo").
-
-* IEnumerable: introduce HasFirstElement() which checks for the first item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasFirstElement().Which.IsEqualTo("foo").
-
-* IEnumerable: introduce HasLastElement() which checks for the last item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasLastElement().Which.IsEqualTo("foo").
-
-* IEnumerable: introduce HasOneElementOnly() which checks for the first and single item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasOneElementOnly().Which.IsEqualTo("foo").
-
-* IEnumerable: introduce HasElementThatMatches( bool predicate()) which checks that an enumerable has at least on item matching the given predicate. You can use 'Which' to check further this item. E.g.: Check.That(_collection).HasItemThatMatches((_) =&gt; _.StartWith("foo")).Which.IsEqualTo("foobar").
-
-* IDictionary\&lt;K,V\&gt;: now explicitely supported.
-
-* IDictionary\&lt;K,V\&gt;: introduce ContainsEntry\&lt;K, V\&gt;(K key, V value) which checks that a dictionary contains a specific value for a given key.
-
-* Hashtable: now explicitely supported.
-
---------------
-
-Change(s):
-
-* IEnumerable: improved description within error messages: partial dump around first difference for large sets
-
-* IDictionnary: no longer supported. Hashtable is supported instead
-
-* Numbers: introduce IsStrictlyPositive() as a substitute for IsPositive() which is now obsolete.
-
-* Numbers: introduce IsStrictlyNegative() as a substitute for IsNegative() which is now obsolete.
-
-* Numbers: introduce IsStrictlyGreaterThan() as a substitute for IsGreaterThan() which is now obsolete.
-
-* Numbers: introduce IsStrictlyLessThan() as a substitute for IsLessThan() which is now obsolete.
-
-* Floating Numbers: introduce IsCloseTo() to check if a number is close to another one.
-
-* Check.ThatCode(...).Throws\&lt;T\&gt;() now requires T to be an exception. This restriction ensures only Exceptions are proposed in autocompletion.
-
-* Improve error messages (consistency and relevance).
-
-* Strings: generate specific error message using IsEqualTo() when the actual string is empty
-
-* Strings: generate specific error message using IsEqualTo() when the expected string is empty
-
-* Strings: provides part of string where first difference occurs even when strings have different lenghts
-
-* Objects: IsSameReferenceAs supersede IsSameReferenceThan (now flagged as obsolete)
-
-* Objects: Dump hascodes only when NFluent cannot highligth difference.
-
-* Check.That(Action) can no longer be used (error, obsolete)
-
-* Check.That(Func\&lt;T\&gt;) can no longer be used (error, obsolete)
-
-* Simplify the way you can extend NFluent by adding your own checks. Now, you can call: var checker = ExtensibilityHelper.ExtractChecker(check);
-
-at the beginning of your check extension method, and then rely on its ExecuteCheck() or BuildMessage() helper methods to do the job. Note: the Checker is part of the NFluent.Extensibility namespace.
-
-* Reviewing of public elements: Some classes are no longer public. They should never have been in the first case.
-
-* Signature of ILambdaExceptionCheck has been updated to refer the checked exception type (instead of RunTrace). This is a breaking change for edge cases, that will impact your extension method on exceptions, if any; it can also impact your tests if you use the explicit signature.
-
---------------
-
-Bug Fixe(s):
-
-* Fix the inversion between expected and actual error message for the .WithMessage checks on exception.
-
-* Fix the issue with null value on Check.That(...).IsBefore(...)
-
-* HasFieldsWithSameValues now recurse along the hierarchy class (Fix for #141)
-
-* Fix stack overflow triggered by HasFieldsWithSameValues() on object with reference loop (#148)
-
-* Properly escaped strings when generating error messages.
-
-* GitHub issues: #124, #133, #141, #148, #153, #154, #156, #159, #164, #165, #167, #174, #177, #178, #179, #187</releaseNotes>
+---------------
+### New features(s)
+* IsNullOrWhiteSpace: checks if a string is null, empty or contains only white space(s).
+* IReadOnlyDictionary (_Net 4.5+_)
+* ContainsKey, ContainsValue, ContainsPair are supported.
+* async method/delegates
+* Check.ThatCode now supports _async_ methods/delegates transparently.
+* Check expression now provides the result as a string. I.e Check.That(true).IsTrue().ToString() returns "Success".
+### Fixes
+* Check.ThatCode(...).Not.Throws\&lt;T\&gt;() may throw an InvalidCastException when thrown exception is not T.
+* Extension checks to Throw\&lt;\&gt;, ThrowType or ThrowAny raise an exception when used with Not as it does not make sense.
+* Which() raises an exception when used on a negated check (Not).
+* Fixed error messages for double (and float) equality check that reported checked value in place of the expected one.
+### Changes
+* Improved error messages
+* ContainsOnlyElementsThatMatch: now provides the index and value of the first failing value.
+* IsOnlyMadeOf: improved error messages
+* Breaking: removed Failure method from IChecker interface
+### GitHub Issues
+* #228, #227, #222, #223, #217, #230, #236
+------
+## V 2.2.0
+---------------
+Flexible property and field based comparison is now available. Examples:
+* Check.That(sut)**.Considering().Public.Properties**.IsEqualTo(expected);
+* Check.That(sut)**.Considering().Public.Fields.And.Public.Properties**.IsEqualTo(expected);
+* Check.That(sut)**.Considering().Public.Fields.Excluding("coordX", "child.address")**.IsEqualTo(expected);
+Syntax is:
+* Check.That(sut)**.Considering().(Public|NonPublic|All).(Fields.Properties)[.And.(Public|NonPublic|All).(Fields.Properties)][Excluding("fielda", "sub.fieldb")]**.IsEqualTo(expected);
+* **Considering()** is supported by: _IsEqualTo(), IsNotEqualTo(), AsSameValueAs(), HasDifferentValueThan(), IsInstanceOf\&lt;type\&gt;()_ [checks if fields/properties are present],
+_IsNotInstanceOf\&lt;type\&gt;()_,  _HasSameValueAs()_, _IsSameReferenceAs(), _IsDistinctFrom()_, _HasDifferentValueThan()_
+### New feature(s)
+* **Object**
+* New check **IsInstanceOfType(Type type)** which is equivalent to *IsInstanceOf\&lt;type\&gt;()*, in a non generic form for parameterized tests.
+* New check **IsNoInstanceOfType(Type type)** which is equivalent to *IsNotInstanceOf\&lt;type\&gt;()*, in a non generic form for parameterized tests.
+* New check **InheritsFromType(Type type)** which is equivalent to *InheritsFrom\&lt;type\&gt;()*, in a non generic form for parameterized tests.
+* **Enum**
+- New check **HasFlag(xxx)** that checks if a flag is present in an enum value.
+* **Code**
+* New check **ThrowsType(Type type)** which is equivalent to *Throws\&lt;type\&gt;*, in a non generic form for parameterized tests.
+### Changes
+* Improved error messages for missing fields(and properties) for reflection based checks.
+### Fixes
+* Fix issue with overloaded member/properties for HasFieldswithSameValues(...) (#219)
+### GitHub Issues
+* #219, #218, #216, #215, #214, #121
+## V 2.1.1
+---------------
+Bug fix(es):
+* fix issue #215: null reference exception triggered by HasFields... on null interface fields.
+V 2.1.0
+--------------
+New feature(s):
+- Enumerable:
+- Breaking change: equality for Enumerable is now content based (instead of reference based). See issue #209. You can revert adding: Check.EqualMode = EqualityMode.Equals in your test set up code
+- New check ContainsOnlyElementsThatMatch which checks that all items verify a given predicate.
+- New Check: IsOneOf checks if the value belongs to a list of authorized value. Check.That(sut).IsOneOf(a, b, c, ...) fails if sut is different from all valid values
+- Improved error messages for IsEqualTo() on floating point types. Difference is displayed when small, suggestion to use IsCloseTo when difference is really small (#205).
+- Initial support for dynamics (issue #85):
+- Entry point is: Check.ThatDynamic()
+- Available checks are: IsNotNull(), IsEqualTo(...), IsSameReferenceAs(...)
+- And keyword is available
+- Not keyword is available
+- You can specify the maximum size (before truncate) for strings in error messages using **Check.StringTruncationLength** property
+--------------
+Bug Fixe(s):
+- Fixed support of array types for HasFielsWithSameValues (issue #200)
+- Fixed some stack overflow exceptions (issue #210).
+- Fixed confusing examples about array item related checks in the readme
+V 2.00
+--------------
+New feature(s):
+* Support for NetStandard &gt; 1.3
+* Support for Net.Core &gt; 1.0
+* Compatible for Net &gt; 2.0
+* Built for: 2.0, 3.0, 3.5, 4.0, 4.5, NetStandard 1.3
+* All: introduce: HasSameValueAs(x) that perform comparison using 'operator==' instead of 'Equals'.
+* All: introduce: HasAValueDifferentFrom(x) that perform comparison using 'operator!=' instead of '!Equals'.
+* Streams: introduce HasSameSequenceOfBytesAs() check.
+* Numbers: introduce IsPositiveOrZero() check.
+* Numbers: introduce IsNegativeOrZero() check.
+* FloatingNumbers (float, double): introduce IsCloseTo(expected, within) check for estimated value.
+* Exception: introduce the DueTo\&lt;InnerException\&gt; as an extension to Throws\&lt;Exception\&gt;. It verifies that the checked exception was triggered by a specific exception. This is done by scanning the 'innerException' chain until the expected type is identified. Further checking is done on the inner exception.
+* Exception: introduce WithProperties( expression, expectedValue) to check the value of any exception members, thanks to a selector expression.
+* IEnumerable: introduce HasElementAt(int index) which checks for an item as a specific index. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasElementAt(3).Which.IsEqualTo("foo").
+* IEnumerable: introduce HasFirstElement() which checks for the first item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasFirstElement().Which.IsEqualTo("foo").
+* IEnumerable: introduce HasLastElement() which checks for the last item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasLastElement().Which.IsEqualTo("foo").
+* IEnumerable: introduce HasOneElementOnly() which checks for the first and single item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasOneElementOnly().Which.IsEqualTo("foo").
+* IEnumerable: introduce HasElementThatMatches( bool predicate()) which checks that an enumerable has at least on item matching the given predicate. You can use 'Which' to check further this item. E.g.: Check.That(_collection).HasItemThatMatches((_) =&gt; _.StartWith("foo")).Which.IsEqualTo("foobar").
+* IDictionary\&lt;K,V\&gt;: now explicitely supported.
+* IDictionary\&lt;K,V\&gt;: introduce ContainsEntry\&lt;K, V\&gt;(K key, V value) which checks that a dictionary contains a specific value for a given key.
+* Hashtable: now explicitely supported.
+--------------
+Change(s):
+* IEnumerable: improved description within error messages: partial dump around first difference for large sets
+* IDictionnary: no longer supported. Hashtable is supported instead
+* Numbers: introduce IsStrictlyPositive() as a substitute for IsPositive() which is now obsolete.
+* Numbers: introduce IsStrictlyNegative() as a substitute for IsNegative() which is now obsolete.
+* Numbers: introduce IsStrictlyGreaterThan() as a substitute for IsGreaterThan() which is now obsolete.
+* Numbers: introduce IsStrictlyLessThan() as a substitute for IsLessThan() which is now obsolete.
+* Floating Numbers: introduce IsCloseTo() to check if a number is close to another one.
+* Check.ThatCode(...).Throws\&lt;T\&gt;() now requires T to be an exception. This restriction ensures only Exceptions are proposed in autocompletion.
+* Improve error messages (consistency and relevance).
+* Strings: generate specific error message using IsEqualTo() when the actual string is empty
+* Strings: generate specific error message using IsEqualTo() when the expected string is empty
+* Strings: provides part of string where first difference occurs even when strings have different lenghts
+* Objects: IsSameReferenceAs supersede IsSameReferenceThan (now flagged as obsolete)
+* Objects: Dump hascodes only when NFluent cannot highligth difference.
+* Check.That(Action) can no longer be used (error, obsolete)
+* Check.That(Func\&lt;T\&gt;) can no longer be used (error, obsolete)
+* Simplify the way you can extend NFluent by adding your own checks. Now, you can call: var checker = ExtensibilityHelper.ExtractChecker(check);
+at the beginning of your check extension method, and then rely on its ExecuteCheck() or BuildMessage() helper methods to do the job. Note: the Checker is part of the NFluent.Extensibility namespace.
+* Reviewing of public elements: Some classes are no longer public. They should never have been in the first case.
+* Signature of ILambdaExceptionCheck has been updated to refer the checked exception type (instead of RunTrace). This is a breaking change for edge cases, that will impact your extension method on exceptions, if any; it can also impact your tests if you use the explicit signature.
+--------------
+Bug Fixe(s):
+* Fix the inversion between expected and actual error message for the .WithMessage checks on exception.
+* Fix the issue with null value on Check.That(...).IsBefore(...)
+* HasFieldsWithSameValues now recurse along the hierarchy class (Fix for #141)
+* Fix stack overflow triggered by HasFieldsWithSameValues() on object with reference loop (#148)
+* Properly escaped strings when generating error messages.
+* GitHub issues: #124, #133, #141, #148, #153, #154, #156, #159, #164, #165, #167, #174, #177, #178, #179, #187</releaseNotes>
     <copyright>Copyright 2013-2018  Thomas PIERRAIN, Cyrille DUPUYDAUBY</copyright>
     <language>en-US</language>
     <tags>tdd bdd test fluent check checks easy nunit xunit mbunit mstestsucks</tags>

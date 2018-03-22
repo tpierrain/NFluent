@@ -10,7 +10,7 @@
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageId>
     </PackageId>
-    <Version>2.3.0-alpha-0000</Version>
+    <Version>2.3.0-nightly-0000</Version>
     <Authors>Thomas PIERRAIN (thomas@pierrain.net), Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR and Co</Authors>
     <Company>NFluent Team</Company>
     <Product>NFluent</Product>

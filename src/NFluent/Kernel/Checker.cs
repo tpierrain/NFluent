@@ -109,7 +109,10 @@ namespace NFluent.Kernel
             return new CheckLink<TC>(this.fluentCheckForExtensibility);
         }
 
+        // ncrunch: no coverage start
+        // coverage disabled as this code cannot be executed and is to be removed at a later stage
         /// <inheritdoc />
+        [Obsolete("Use ExtensibilityHelper.BuildCheckLinkWhich instead")]
         public ICheckLinkWhich<TC, TSub> BuildLinkWhich<TSub>(TSub itemChecker)
             where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
@@ -125,6 +128,7 @@ namespace NFluent.Kernel
         ///     <see cref="FluentCheckException"/> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
         /// <returns>The <see cref="BuildLinkWhich{TSub}"/> to use for linking.</returns>
+        [Obsolete("Use ExtensibilityHelper instead")]
         public ICheckLinkWhich<TC, TSub> ExecuteCheckAndProvideSubItem<TSub>(Func<TSub> checkLambdaAction, string negatedExceptionMessage)
             where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
@@ -136,6 +140,8 @@ namespace NFluent.Kernel
 
             return this.BuildLinkWhich(checker);
         }
+
+        // ncrunch: no coverage end
 
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
