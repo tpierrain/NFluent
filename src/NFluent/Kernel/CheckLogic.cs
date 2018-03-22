@@ -49,6 +49,7 @@ namespace NFluent.Kernel
         private string negatedError;
         private MessageOption negatedOption;
         private string sutName;
+        private string forcedSutName;
         private string checkedLabel;
         private ValueKind expectedKind = ValueKind.Value;
         private long expectedCount;
@@ -58,7 +59,7 @@ namespace NFluent.Kernel
         {
             this.value = value;
             this.inverted = inverted;
-            this.sutName = label;
+            this.forcedSutName = label;
         }
 
         private bool IsNegated => this.inverted;
@@ -70,6 +71,8 @@ namespace NFluent.Kernel
         public MessageOption Option => (this.IsNegated ? this.negatedOption : this.options);
 
         public string Comparison => this.IsNegated ? this.negatedComparison: this.comparison;
+
+        public string SutName => string.IsNullOrEmpty(this.forcedSutName) ? this.sutName : this.forcedSutName;
 
         public ICheckLogic<T> FailsIf(Func<T, bool> predicate, string error, MessageOption noCheckedBlock)
         {
@@ -152,9 +155,9 @@ namespace NFluent.Kernel
                 }
             }
             
-            if (!PolyFill.IsNullOrWhiteSpace(this.sutName))
+            if (!PolyFill.IsNullOrWhiteSpace(this.SutName))
             {
-                fluentMessage.For(this.sutName);
+                fluentMessage.For(this.SutName);
             }
             else
             {

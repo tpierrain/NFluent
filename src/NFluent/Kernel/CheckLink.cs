@@ -17,10 +17,8 @@ namespace NFluent.Kernel
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
 
-    /// <summary>
-    /// Provides a way to chain two <see cref="IForkableCheck"/> instances. 
-    /// </summary>
-    /// <typeparam name="T">Type of the <see cref="IForkableCheck"/> to be chained.</typeparam>
+    /// <inheritdoc />
+
     internal class CheckLink<T> : ICheckLink<T> where T : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         private readonly IForkableCheck forkableCheck;
