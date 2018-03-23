@@ -3,7 +3,7 @@
   <metadata>
     <id>NFluent</id>
     <title>NFluent, smooth your .NET TDD experience!</title>
-    <version>2.3.0-alpha-0000</version>
+    <version>2.3.0-nightly-0000</version>
     <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR</authors>
     <owners>Thomas PIERRAIN</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -143,6 +143,8 @@
     <!-- Core -->
     <file src="Artifacts\Binaries\netstandard1.3\NFluent.dll" target="lib\netstandard1.3\" />
     <file src="Artifacts\Binaries\netstandard1.3\NFluent.xml" target="lib\netstandard1.3\" />
+    <file src="Artifacts\Binaries\netstandard2.0\NFluent.dll" target="lib\netstandard2.0\" />
+    <file src="Artifacts\Binaries\netstandard2.0\NFluent.xml" target="lib\netstandard2.0\" />
     <!--file src="Artifacts\Binaries\netstandard1.3\NFluent.pdb" target="lib\netstandard1.3\" /-->
     <!-- .NET 4.5 (for dynamics and tasks support) -->
     <file src="Artifacts\Binaries\net45\NFluent.dll" target="lib\net45\" />

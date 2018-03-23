@@ -28,7 +28,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("NFluent for .NET 4.0")]
 #elif DOTNET_45
 [assembly: AssemblyTitle("NFluent for .NET 4.5")]
-#elif !NETSTANDARD1_3
+#elif !NETSTANDARD1_3 && !NETSTANDARD2_0
 [assembly: AssemblyTitle("NFluent")]
 #endif
 

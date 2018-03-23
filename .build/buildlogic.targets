@@ -205,17 +205,17 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
   <!-- 3- Run the TESTS -->
   <Target Name="ListTestProjects">
     <ItemGroup>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Runner)'==''">
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Framework)'!='netstandard2.0' AND '%(TestProjects.Runner)'==''">
         <Runner>"$(TestRunnerPath)"</Runner>
         <Args>%(TestProjects.FullPath) $(NunitOptions) /framework:%(TestProjects.Framework)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'=='netstandard1.3'">
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'=='netstandard1.3' OR '%(TestProjects.Framework)'=='netstandard2.0'">
         <Runner>dotnet.exe</Runner>
         <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Runner)'=='MsTest'">
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Framework)'!='netstandard2.0' AND '%(TestProjects.Runner)'=='MsTest'">
         <Runner>"$(MsTestRunnerPath)$(MsTestRunner)"</Runner>
         <Args>%(TestProjects.Identity)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
