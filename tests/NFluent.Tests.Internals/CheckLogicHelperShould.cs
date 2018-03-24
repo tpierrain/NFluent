@@ -37,7 +37,7 @@ namespace NFluent.Tests
 
         class Point
         {
-            public int x;
+            public int x = 4;
             public int y;
         }
         [Test]

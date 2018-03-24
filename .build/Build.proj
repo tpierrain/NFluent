@@ -147,15 +147,12 @@
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Core.20.Tests.Internals\NFluent.Core.20.Tests.Internals.csproj'>
         <Framework>netstandard2.0</Framework>
-        <Coverage>true</Coverage>
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Core.20.Tests\NFluent.Core.20.Tests.csproj'>
         <Framework>netstandard2.0</Framework>
-        <Coverage>true</Coverage>
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Core.20.Tests.Extensions\NFluent.Core.20.Tests.Extensions.csproj'>
         <Framework>netstandard2.0</Framework>
-        <Coverage>true</Coverage>
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Tests.SelfHosted\bin\$(Configuration)\NFluent.Tests.SelfHosted.exe'>
         <Framework>net-4.5</Framework>

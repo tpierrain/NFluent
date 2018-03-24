@@ -1,10 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>NFluent.Tests</AssemblyName>
     <RootNamespace>NFluent.Tests</RootNamespace>
-    <Version>2.3.0-alpha-0000</Version>
+    <Version>2.3.0-nightly-0000</Version>
     <Authors>Thomas PIERRAIN (thomas@pierrain.net), Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR and Co</Authors>
     <Company>NFluent Team</Company>
     <Product>NFluent</Product>
@@ -16,19 +15,14 @@
     <PackageProjectUrl>http://www.n-fluent.net/</PackageProjectUrl>
     <RootNamespace>NFluent.Tests</RootNamespace>
   </PropertyGroup>
-
   <Import Project="..\NFluent.Tests\NFluent.Tests.projitems" Label="Shared" />
-
   <Import Project="..\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems" Label="Shared" />
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.1" />
     <PackageReference Include="NUnit" Version="3.10.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\NFluent.Standard.20\NFluent.Standard.20.csproj" />
   </ItemGroup>
-
 </Project>

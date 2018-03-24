@@ -30,9 +30,6 @@ namespace NFluent
     /// </summary>
     public static class CodeCheckExtensions
     {
-
-        private const string LabelForCode = "code";
-
         /// <summary>
         /// Checks that the execution time is below a specified threshold.
         /// </summary>
