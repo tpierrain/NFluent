@@ -49,11 +49,12 @@ namespace NFluent.Kernel
         private string negatedError;
         private MessageOption negatedOption;
         private string sutName;
-        private string forcedSutName;
+        private readonly string forcedSutName;
         private string checkedLabel;
         private ValueKind expectedKind = ValueKind.Value;
         private long expectedCount;
         private long index;
+        private bool withGiven;
 
         public CheckLogic(T value, string label, bool inverted)
         {
@@ -196,6 +197,14 @@ namespace NFluent.Kernel
                     block.Label(this.Label);
                 }
             }
+            else if (this.withGiven)
+            {
+                MessageBlock block = fluentMessage.WithGivenValue(this.expected);
+                if (!string.IsNullOrEmpty(this.Comparison))
+                {
+                    block.Comparison(this.Comparison);
+                }
+            }
 
             if ((this.options & MessageOption.ForceType) == MessageOption.ForceType)
             {
@@ -203,6 +212,15 @@ namespace NFluent.Kernel
             }
 
             throw ExceptionHelper.BuildException(fluentMessage.ToString());
+        }
+
+        public ICheckLogic<T> ComparingTo<TU>(TU givenValue, string comparison, string negatedComparison)
+        {
+            this.comparison = comparison;
+            this.negatedComparison = negatedComparison;
+            this.expected = givenValue;
+            this.withGiven = true;
+            return this;
         }
 
         public ICheckLogic<T> Expecting<TU>(TU newExpectedValue, string comparisonMessage = null,

@@ -14,8 +14,6 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
-    using System.Diagnostics.CodeAnalysis;
-
     /// <summary>
     /// Enumerate the available time unit.
     /// </summary>
@@ -54,7 +52,6 @@ namespace NFluent
         /// <summary>
         /// The days.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1632:DocumentationTextMustMeetMinimumCharacterLength", Justification = "Reviewed. Suppression is OK here.")]
         Days, 
 
         /// <summary>

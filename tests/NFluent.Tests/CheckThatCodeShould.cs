@@ -238,7 +238,7 @@ namespace NFluent.Tests
             "The checked exception's property [ExceptionNumber] does not have the expected value." + Environment.NewLine + 
             "The checked exception's property [ExceptionNumber]:" + Environment.NewLine +
             "\t[321]" + Environment.NewLine +
-            "The given exception's property [ExceptionNumber]:" + Environment.NewLine +
+            "The expected exception's property [ExceptionNumber]:" + Environment.NewLine +
             "\t[123]"); // TODO: mimic Contains
         }
 #if !DOTNET_30 && !DOTNET_20
@@ -282,7 +282,7 @@ namespace NFluent.Tests
                 "The checked exception's property [ExceptionNumber] does not have the expected value.",
                 "The checked exception's property [ExceptionNumber]:",
                 "\t[321]",
-                "The given exception's property [ExceptionNumber]:",
+                "The expected exception's property [ExceptionNumber]:",
                 "\t[123]");
         }
 #endif

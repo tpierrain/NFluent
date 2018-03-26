@@ -67,7 +67,7 @@ namespace NFluent.Tests
                                             .On("portna")
                                             .And.WithGivenValue("ouaq").ToString();
 
-            Assert.AreEqual(Environment.NewLine+ "The checked date time is before the given one whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[\"portna\"]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[\"ouaq\"]", message);
+            Assert.AreEqual(Environment.NewLine+ "The checked date time is before the given one whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[\"portna\"]" + Environment.NewLine + "The expected date time:" + Environment.NewLine + "\t[\"ouaq\"]", message);
         }
 
         [Test]

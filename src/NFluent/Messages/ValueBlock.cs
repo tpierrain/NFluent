@@ -1,26 +1,25 @@
 #region File header
 
-// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ValueBlock.cs" company="">
-// //   Copyright 2014 Cyrille Dupuydauby,Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+ // --------------------------------------------------------------------------------------------------------------------
+ // <copyright file="ValueBlock.cs" company="">
+ //   Copyright 2014 Cyrille Dupuydauby,Thomas PIERRAIN
+ //   Licensed under the Apache License, Version 2.0 (the "License");
+ //   you may not use this file except in compliance with the License.
+ //   You may obtain a copy of the License at
+ //       http://www.apache.org/licenses/LICENSE-2.0
+ //   Unless required by applicable law or agreed to in writing, software
+ //   distributed under the License is distributed on an "AS IS" BASIS,
+ //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ //   See the License for the specific language governing permissions and
+ //   limitations under the License.
+ // </copyright>
+ // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
 namespace NFluent.Messages
 {
     using System;
     using System.Text;
-
     using Extensions;
 
     /// <summary>
@@ -28,41 +27,14 @@ namespace NFluent.Messages
     /// </summary>
     internal class ValueBlock : IValueDescription
     {
-        #region Fields
-
-        /// <summary>
-        /// The tested object.
-        /// </summary>
         private readonly object test;
-
-        /// <summary>
-        /// The enumerable count.
-        /// </summary>
         private long? enumerableCount;
 
-        /// <summary>
-        /// The full type name.
-        /// </summary>
         private bool fullTypeName;
 
-        /// <summary>
-        /// The include hash.
-        /// </summary>
         private bool includeHash;
-
-        /// <summary>
-        /// The include type.
-        /// </summary>
         private bool includeType;
-
-        /// <summary>
-        /// The instance type.
-        /// </summary>
         private Type type;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ValueBlock"/> class.
@@ -75,10 +47,6 @@ namespace NFluent.Messages
             this.test = test;
             this.type = test.GetTypeWithoutThrowingException();
         }
-
-        #endregion
-
-        #region Public Methods and Operators
 
         /// <summary>
         /// Gets the message as a string.
@@ -157,10 +125,6 @@ namespace NFluent.Messages
             this.includeType = true;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The description.
         /// </summary>
@@ -173,7 +137,7 @@ namespace NFluent.Messages
             description.AppendFormat("[{0}]", this.test.ToStringProperlyFormatted());
 
             var count = this.enumerableCount.GetValueOrDefault(-1);
-            if (count>1)
+            if (count > 1)
             {
                 description.AppendFormat(" ({0} items)", count);
             }
@@ -184,7 +148,5 @@ namespace NFluent.Messages
 
             return description.ToString();
         }
-
-        #endregion
     }
 }

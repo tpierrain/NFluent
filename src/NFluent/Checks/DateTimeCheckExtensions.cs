@@ -18,12 +18,18 @@ namespace NFluent
 
     using Extensibility;
     using Extensions;
+    using Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on a date time instance. 
     /// </summary>
     public static class DateTimeCheckExtensions
     {
+        private static DateTime Round(this DateTime dt, TimeUnit unit)
+        {
+            return new DateTime(dt.Ticks - (dt.Ticks % TimeHelper.GetInTicks(1, unit)), dt.Kind);
+        }
+
         /// <summary>
         /// Checks that the actual DateTime is strictly before the given one.
         /// </summary>
@@ -35,16 +41,12 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not before the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsBefore(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () => 
-                    {
-                        if (checker.Value < other) return;
-                        var message = checker.BuildMessage("The {0} is not before the {1}.").WithGivenValue(other).ToString();
-                        throw new FluentCheckException(message);
-                    },
-                checker.BuildMessage("The {0} is before the {1} whereas it must not.").WithGivenValue(other).ToString());
+            ExtensibilityHelper.BeginCheck(check).
+                Expecting(other, "before", "after or equal").
+                FailsIf(sut => sut>=other, "The {0} is not before the {1}.").
+                Negates("The {0} is before the {1} whereas it must not.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -58,19 +60,13 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not before or equals to the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsBeforeOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                {
-                    if (checker.Value <= other)
-                    {
-                        return;
-                    }
-                    var message = checker.BuildMessage("The {0} is not before or equals to the {1}.").WithGivenValue(other).ToString();
-                    throw new FluentCheckException(message);
-                },
-                checker.BuildMessage("The {0} is before or equals to the {1} whereas it must not.").WithGivenValue(other).ToString());
+            ExtensibilityHelper.BeginCheck(check).
+                ComparingTo(other, "before or equal", "after").
+                FailsIf(sut => sut > other, "The {0} is not before or equal to the {1}.").
+                NegatesIf(sut => sut == other, "The {0} is equal to the {1} whereas it must not.").
+                Negates("The {0} is before the {1} whereas it must not.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -84,16 +80,12 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not after the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsAfter(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                    {
-                        if (checker.Value > other) return;
-                        var message = checker.BuildMessage("The {0} is not after the {1}.").WithGivenValue(other).ToString();
-                        throw new FluentCheckException(message);
-                    },
-                checker.BuildMessage("The {0} is after the {1} whereas it must not.").WithGivenValue(other).ToString());
+            ExtensibilityHelper.BeginCheck(check).
+                ComparingTo(other, "after", "before or equal").
+                FailsIf(sut => sut <= other, "The {0} is not after the {1}.").
+                Negates("The {0} is after the {1} whereas it must not.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -107,16 +99,13 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not after or equals to the given one.</exception>
         public static ICheckLink<ICheck<DateTime>> IsAfterOrEqualTo(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                    {
-                        if (checker.Value >= other) return;
-                        var message = checker.BuildMessage("The {0} is not after or equals to the {1}.").WithGivenValue(other).ToString();
-                        throw new FluentCheckException(message);
-                    },
-                checker.BuildMessage("The {0} is after or equals to the {1} whereas it must not.").WithGivenValue(other).ToString());
+            ExtensibilityHelper.BeginCheck(check).
+                ComparingTo(other, "after or equal", "before").
+                FailsIf(sut => sut < other, "The {0} is not after or equal to the {1}.").
+                NegatesIf(sut => sut == other, "The {0} is equal to the {1} whereas it must not.").
+                Negates("The {0} is after the {1} whereas it must not.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -147,18 +136,13 @@ namespace NFluent
         /// </remarks>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringMillis(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                    {
-                        if (checker.Value.Year == other.Year && checker.Value.Month == other.Month &&
-                            checker.Value.Day == other.Day && checker.Value.Hour == other.Hour &&
-                            checker.Value.Minute == other.Minute && checker.Value.Second == other.Second) return;
-                        var message = checker.BuildMessage("The {0} is not equal to the {1} (ignoring milliseconds).").WithGivenValue(other).ToString();
-                        throw new FluentCheckException(message);
-                    },
-                checker.BuildMessage("The {0} is equal to the {1} (ignoring milliseconds) whereas it must not.").WithGivenValue(other).ToString());
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIf(sut => sut.Round(TimeUnit.Seconds) != other.Round(TimeUnit.Seconds), "The {0} is not equal to the {1} (ignoring milliseconds).")
+                .ComparingTo(other, "same second", "different second")
+                .Negates("The {0} is equal to the {1} (ignoring milliseconds) whereas it must not.")
+                .EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -189,18 +173,13 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not equal to the given one with second and millisecond fields ignored.</exception>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringSeconds(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                    {
-                        if (checker.Value.Year != other.Year || checker.Value.Month != other.Month || checker.Value.Day != other.Day || checker.Value.Hour != other.Hour || checker.Value.Minute != other.Minute)
-                        {
-                            var message = checker.BuildMessage("The {0} is not equal to the {1} (ignoring seconds).").WithGivenValue(other).ToString();
-                            throw new FluentCheckException(message);
-                        }
-                    },
-                checker.BuildMessage("The {0} is equal to the {1} (ignoring seconds) whereas it must not.").WithGivenValue(other).ToString());
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIf(sut => sut.Round(TimeUnit.Minutes) != other.Round(TimeUnit.Minutes), "The {0} is not equal to the {1} (ignoring seconds).")
+                .ComparingTo(other, "same minute", "different minute")
+                .Negates("The {0} is equal to the {1} (ignoring seconds) whereas it must not.")
+                .EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -231,18 +210,13 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not equal to the given one with minute, second and millisecond fields ignored.</exception>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringMinutes(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                    {
-                        if (checker.Value.Year != other.Year || checker.Value.Month != other.Month || checker.Value.Day != other.Day || checker.Value.Hour != other.Hour)
-                        {
-                            var message = checker.BuildMessage("The {0} is not equal to the {1} (ignoring minutes).").WithGivenValue(other).ToString();
-                            throw new FluentCheckException(message);
-                        }
-                    },
-                checker.BuildMessage("The {0} is equal to the {1} (ignoring minutes) whereas it must not.").WithGivenValue(other).ToString());
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIf(sut => sut.Round(TimeUnit.Minutes) != other.Round(TimeUnit.Hours), "The {0} is not equal to the {1} (ignoring minutes).")
+                .ComparingTo(other, "same hour", "different hour")
+                .Negates("The {0} is equal to the {1} (ignoring minutes) whereas it must not.")
+                .EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -273,18 +247,13 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time is not equal to the given one with hour, minute, second and millisecond fields ignored.</exception>
         public static ICheckLink<ICheck<DateTime>> IsEqualToIgnoringHours(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                    {
-                        if (checker.Value.Year != other.Year || checker.Value.Month != other.Month || checker.Value.Day != other.Day)
-                        {
-                            var message = checker.BuildMessage("The {0} is not equal to the {1} (ignoring hours).").WithGivenValue(other).ToString();
-                            throw new FluentCheckException(message);
-                        }
-                    },
-                checker.BuildMessage("The {0} is equal to the {1} (ignoring hours) whereas it must not.").WithGivenValue(other).ToString());
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIf(sut => sut.Round(TimeUnit.Days) != other.Round(TimeUnit.Days), "The {0} is not equal to the {1} (ignoring hours).")
+                .ComparingTo(other, "same day", "different day")
+                .Negates("The {0} is equal to the {1} (ignoring hours) whereas it must not.")
+                .EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -298,18 +267,20 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time year is not equal to the given year.</exception>
         public static ICheckLink<ICheck<DateTime>> IsInSameYearAs(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                    {
-                        if (checker.Value.Year != other.Year)
-                        {
-                            var message = checker.BuildMessage(string.Format("The {{0}} does not have the same year as the {{1}}." + Environment.NewLine + "Year of the checked date time:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "Year of the given date time:" + Environment.NewLine + "\t[{1}]", checker.Value.Year.ToStringProperlyFormatted(), other.Year.ToStringProperlyFormatted())).WithGivenValue(other).ToString();
-                            throw new FluentCheckException(message);
-                        }
-                    },
-                checker.BuildMessage(string.Format("The {{0}} has the same year as the {{1}} whereas it must not." + Environment.NewLine + "Year of the checked date time:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "Year of the given date time:" + Environment.NewLine + "\t[{1}]", checker.Value.Year.ToStringProperlyFormatted(), other.Year.ToStringProperlyFormatted())).WithGivenValue(other).ToString());
+            ExtensibilityHelper.BeginCheck(check)
+                .Analyze((sut, test) =>
+            {
+                if (sut.Year != other.Year)
+                {
+                    test.Fails(
+                        $"The {{0}} has a different year than the {{1}} (actual: {sut.Year}, expected: {other.Year})");
+                }
+            })
+                .ComparingTo(other, "same year", "different year")
+                .Negates("The {0} has the same year as the {1} whereas it must not.")
+                .EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -323,18 +294,20 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time month is not equal to the given month, whatever the year.</exception>
         public static ICheckLink<ICheck<DateTime>> IsInSameMonthAs(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
+            ExtensibilityHelper.BeginCheck(check)
+                .Analyze((sut, test) =>
+                {
+                    if (sut.Month != other.Month)
                     {
-                        if (checker.Value.Month != other.Month)
-                        {
-                            var message = checker.BuildMessage(string.Format("The {{0}} does not have the same month as the {{1}}." + Environment.NewLine + "Month of the checked date time:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "Month of the given date time:" + Environment.NewLine + "\t[{1}]", checker.Value.Month.ToStringProperlyFormatted(), other.Month.ToStringProperlyFormatted())).WithGivenValue(other).ToString();
-                            throw new FluentCheckException(message);
-                        }
-                    },
-                checker.BuildMessage(string.Format("The {{0}} has the same month as the {{1}} whereas it must not." + Environment.NewLine + "Month of the checked date time:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "Month of the given date time:" + Environment.NewLine + "\t[{1}]", checker.Value.Month.ToStringProperlyFormatted(), other.Month.ToStringProperlyFormatted())).WithGivenValue(other).ToString());
+                        test.Fails(
+                            $"The {{0}} has a different month than the {{1}} (actual: {sut.Month}, expected: {other.Month})");
+                    }
+                })
+                .ComparingTo(other, "same month", "different month")
+                .Negates("The {0} has the same month as the {1} whereas it must not.")
+                .EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -348,18 +321,20 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked date time day is not equal to the given day, whatever the year or the month.</exception>
         public static ICheckLink<ICheck<DateTime>> IsInSameDayAs(this ICheck<DateTime> check, DateTime other)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
+            ExtensibilityHelper.BeginCheck(check)
+                .Analyze((sut, test) =>
+                {
+                    if (sut.Day != other.Day)
                     {
-                        if (checker.Value.Day != other.Day)
-                        {
-                            var message = checker.BuildMessage(string.Format("The {{0}} does not have the same day as the {{1}}." + Environment.NewLine + "Day of the checked date time:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "Day of the given date time:" + Environment.NewLine + "\t[{1}]", checker.Value.Day.ToStringProperlyFormatted(), other.Day.ToStringProperlyFormatted())).WithGivenValue(other).ToString();
-                            throw new FluentCheckException(message);
-                        }
-                    },
-                checker.BuildMessage(string.Format("The {{0}} has the same day as the {{1}} whereas it must not." + Environment.NewLine + "Day of the checked date time:" + Environment.NewLine + "\t[{0}]" + Environment.NewLine + "Day of the given date time:" + Environment.NewLine + "\t[{1}]", checker.Value.Day.ToStringProperlyFormatted(), other.Day.ToStringProperlyFormatted())).WithGivenValue(other).ToString());
+                        test.Fails(
+                            $"The {{0}} has a different day than the {{1}} (actual: {sut.Day}, expected: {other.Day})");
+                    }
+                })
+                .ComparingTo(other, "same day", "different day")
+                .Negates("The {0} has the same day as the {1} whereas it must not.")
+                .EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
     }
 }

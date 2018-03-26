@@ -15,7 +15,7 @@
 namespace NFluent.Tests
 {
     using System;
-
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -59,8 +59,10 @@ namespace NFluent.Tests
             {
                 Check.That(christmas2013).Not.IsBefore(newYearsEve2014);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is before the given one whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked date time is before the expected one whereas it must not.",
+                    "The checked date time:", "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]", 
+                    "The expected date time: after or equal", "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -73,8 +75,22 @@ namespace NFluent.Tests
             {
                 Check.That(christmas2013).Not.IsBeforeOrEqualTo(newYearsEve2014);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is before or equals to the given one whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
+            .IsAFaillingCheckWithMessage(
+                    "", "The checked date time is before the given one whereas it must not.",
+                    "The checked date time:",
+                    "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: after",
+                    "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
+            Check.ThatCode(() =>
+            {
+                Check.That(christmas2013).Not.IsBeforeOrEqualTo(christmas2013);
+            })
+            .IsAFaillingCheckWithMessage(
+                    "", "The checked date time is equal to the given one whereas it must not.",
+                    "The checked date time:",
+                    "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: after",
+                    "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -87,8 +103,12 @@ namespace NFluent.Tests
             {
                 Check.That(newYearsEve2014).IsBefore(christmas2013);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not before the given one." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not before the expected one.",
+                    "The checked date time:",
+                    "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]", 
+                    "The expected date time: before",
+                    "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -101,8 +121,12 @@ namespace NFluent.Tests
             {
                 Check.That(newYearsEve2014).IsBeforeOrEqualTo(christmas2013);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not before or equals to the given one." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not before or equal to the given one.",
+                    "The checked date time:",
+                    "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: before or equal",
+                    "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -136,8 +160,12 @@ namespace NFluent.Tests
             {
                 Check.That(newYearsEve2014).Not.IsAfter(christmas2013);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is after the given one whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked date time is after the given one whereas it must not.",
+                    "The checked date time:",
+                    "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: before or equal",
+                    "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -150,9 +178,13 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(newYearsEve2014).Not.IsAfterOrEqualTo(christmas2013);
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is after or equals to the given one whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]");
+            }).
+            IsAFaillingCheckWithMessage("",
+                    "The checked date time is after the given one whereas it must not.",
+                    "The checked date time:",
+                    "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: before",
+                    "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -165,8 +197,12 @@ namespace NFluent.Tests
             {
                 Check.That(christmas2013).IsAfter(newYearsEve2014);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not after the given one." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not after the given one.",
+                    "The checked date time:",
+                    "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: after",
+                    "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -179,8 +215,12 @@ namespace NFluent.Tests
             {
                 Check.That(christmas2013).IsAfterOrEqualTo(newYearsEve2014);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not after or equals to the given one." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not after or equal to the given one.",
+                    "The checked date time:",
+                    "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: after or equal",
+                    "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -299,8 +339,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringHours(new DateTime(2013, 1, 2));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring hours)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-02T00:00:00.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring hours).",
+                    "The checked date time:",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same day",
+                    "\t[2013-01-02T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -312,8 +356,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringHours(new DateTime(2013, 2, 1));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring hours)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-02-01T00:00:00.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+            "The checked date time is not equal to the given one (ignoring hours).",
+            "The checked date time:",
+            "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]",
+            "The expected date time: same day",
+            "\t[2013-02-01T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -326,8 +374,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringHours(new DateTime(2014, 1, 1));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring hours)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2014-01-01T00:00:00.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring hours).",
+                    "The checked date time:",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same day",
+                    "\t[2014-01-01T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -339,8 +391,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringMinutes(new DateTime(2013, 1, 2, 1, 1, 0, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring minutes)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-02T01:01:00.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring minutes).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same hour",
+                    "\t[2013-01-02T01:01:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -352,8 +408,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringMinutes(new DateTime(2013, 2, 1, 1, 1, 0, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring minutes)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-02-01T01:01:00.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring minutes).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same hour",
+                    "\t[2013-02-01T01:01:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -365,8 +425,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringMinutes(new DateTime(2014, 1, 1, 1, 1, 0, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring minutes)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2014-01-01T01:01:00.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring minutes).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same hour",
+                    "\t[2014-01-01T01:01:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -378,8 +442,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringMinutes(new DateTime(2013, 1, 1, 2, 1, 0, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring minutes)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-01T02:01:00.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring minutes).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same hour",
+                    "\t[2013-01-01T02:01:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -391,8 +459,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringSeconds(new DateTime(2013, 1, 1, 1, 2, 1, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring seconds)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-01T01:02:01.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring seconds).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same minute",
+                    "\t[2013-01-01T01:02:01.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -404,8 +476,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringSeconds(new DateTime(2013, 1, 1, 2, 1, 1, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring seconds)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-01T02:01:01.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring seconds).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same minute",
+                    "\t[2013-01-01T02:01:01.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -417,8 +493,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringSeconds(new DateTime(2013, 1, 2, 1, 1, 1, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring seconds)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-02T01:01:01.0000000, Kind = Unspecified]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring seconds).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same minute",
+                    "\t[2013-01-02T01:01:01.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -430,8 +510,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringSeconds(new DateTime(2013, 2, 1, 1, 1, 1, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring seconds)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-02-01T01:01:01.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring seconds).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same minute",
+                    "\t[2013-02-01T01:01:01.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -443,8 +527,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringSeconds(new DateTime(2014, 1, 1, 1, 1, 1, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring seconds)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2014-01-01T01:01:01.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring seconds).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same minute",
+                    "\t[2014-01-01T01:01:01.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -456,8 +544,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringMillis(new DateTime(2013, 1, 1, 1, 1, 5, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring milliseconds)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-01T01:01:05.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring milliseconds).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same second",
+                    "\t[2013-01-01T01:01:05.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -469,8 +561,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringMillis(new DateTime(2013, 1, 1, 1, 5, 1, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring milliseconds)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-01T01:05:01.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring milliseconds).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same second",
+                    "\t[2013-01-01T01:05:01.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -482,8 +578,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringMillis(new DateTime(2013, 1, 1, 5, 1, 1, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring milliseconds)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-01T05:01:01.0000000, Kind = Unspecified]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring milliseconds).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same second",
+                    "\t[2013-01-01T05:01:01.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -495,8 +595,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringMillis(new DateTime(2013, 1, 5, 1, 1, 1, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring milliseconds)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-05T01:01:01.0000000, Kind = Unspecified]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring milliseconds).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same second",
+                    "\t[2013-01-05T01:01:01.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -508,8 +612,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringMillis(new DateTime(2013, 2, 1, 1, 1, 1, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring milliseconds)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-02-01T01:01:01.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring milliseconds).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same second",
+                    "\t[2013-02-01T01:01:01.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -521,8 +629,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsEqualToIgnoringMillis(new DateTime(2014, 1, 1, 1, 1, 1, 0));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is not equal to the given one (ignoring milliseconds)." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2014-01-01T01:01:01.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not equal to the given one (ignoring milliseconds).",
+                    "The checked date time:",
+                    "\t[2013-01-01T01:01:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same second",
+                    "\t[2014-01-01T01:01:01.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -534,8 +646,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsInSameYearAs(new DateTime(2014, 1, 1));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time does not have the same year as the given one." + Environment.NewLine + "Year of the checked date time:" + Environment.NewLine + "\t[2013]" + Environment.NewLine + "Year of the given date time:" + Environment.NewLine + "\t[2014]" + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2014-01-01T00:00:00.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time has a different year than the given one (actual: 2013, expected: 2014)",
+            "The checked date time:",
+            "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]",
+            "The expected date time: same year",
+                    "\t[2014-01-01T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -547,8 +663,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).Not.IsInSameYearAs(new DateTime(2013, 1, 1));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time has the same year as the given one whereas it must not." + Environment.NewLine + "Year of the checked date time:" + Environment.NewLine + "\t[2013]" + Environment.NewLine + "Year of the given date time:" + Environment.NewLine + "\t[2013]" + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time has the same year as the given one whereas it must not.",
+                    "The checked date time:",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: different year",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -573,9 +693,13 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(actual).IsInSameMonthAs(new DateTime(2014, 2, 1));
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time does not have the same month as the given one." + Environment.NewLine + "Month of the checked date time:" + Environment.NewLine + "\t[12]" + Environment.NewLine + "Month of the given date time:" + Environment.NewLine + "\t[2]" + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-12-01T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2014-02-01T00:00:00.0000000, Kind = Unspecified]");
+            }).
+                IsAFaillingCheckWithMessage("",
+                    "The checked date time has a different month than the given one (actual: 12, expected: 2)",
+                    "The checked date time:",
+                    "\t[2013-12-01T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: same month",
+                    "\t[2014-02-01T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -587,8 +711,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).Not.IsInSameMonthAs(new DateTime(2014, 12, 1));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time has the same month as the given one whereas it must not." + Environment.NewLine + "Month of the checked date time:" + Environment.NewLine + "\t[12]" + Environment.NewLine + "Month of the given date time:" + Environment.NewLine + "\t[12]" + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-12-01T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2014-12-01T00:00:00.0000000, Kind = Unspecified]");
+           .IsAFaillingCheckWithMessage("",
+                    "The checked date time has the same month as the given one whereas it must not.",
+                    "The checked date time:",
+                    "\t[2013-12-01T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: different month",
+                    "\t[2014-12-01T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -617,9 +745,13 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(newYears).IsInSameDayAs(new DateTime(2014, 2, 2));
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time does not have the same day as the given one." + Environment.NewLine + "Day of the checked date time:" + Environment.NewLine + "\t[1]" + Environment.NewLine + "Day of the given date time:" + Environment.NewLine + "\t[2]" + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2014-02-02T00:00:00.0000000, Kind = Unspecified]");
+            }).
+            IsAFaillingCheckWithMessage("",
+                "The checked date time has a different day than the given one (actual: 1, expected: 2)",
+                "The checked date time:",
+                "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]",
+                "The expected date time: same day",
+                "\t[2014-02-02T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -630,9 +762,13 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(newYears).Not.IsInSameDayAs(new DateTime(1905, 2, 1));
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time has the same day as the given one whereas it must not." + Environment.NewLine + "Day of the checked date time:" + Environment.NewLine + "\t[1]" + Environment.NewLine + "Day of the given date time:" + Environment.NewLine + "\t[1]" + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[1905-02-01T00:00:00.0000000, Kind = Unspecified]");
+            }).
+            IsAFaillingCheckWithMessage("",
+                    "The checked date time has the same day as the given one whereas it must not.",
+                    "The checked date time:",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: different day",
+                    "\t[1905-02-01T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -681,8 +817,12 @@ namespace NFluent.Tests
             {
                 Check.That(newYears).Not.IsEqualToIgnoringMillis(newYears);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is equal to the given one (ignoring milliseconds) whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is equal to the given one (ignoring milliseconds) whereas it must not.",
+                    "The checked date time:",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: different second",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -694,8 +834,12 @@ namespace NFluent.Tests
             {
                 Check.That(newYears).Not.IsEqualToIgnoringSeconds(newYears);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is equal to the given one (ignoring seconds) whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is equal to the given one (ignoring seconds) whereas it must not.",
+                    "The checked date time:",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: different minute",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -707,8 +851,12 @@ namespace NFluent.Tests
             {
                 Check.That(newYears).Not.IsEqualToIgnoringMinutes(newYears);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is equal to the given one (ignoring minutes) whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is equal to the given one (ignoring minutes) whereas it must not.",
+                    "The checked date time:",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: different hour",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -720,8 +868,12 @@ namespace NFluent.Tests
             {
                 Check.That(newYears).Not.IsEqualToIgnoringHours(newYears);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is equal to the given one (ignoring hours) whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The given date time:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is equal to the given one (ignoring hours) whereas it must not.",
+                    "The checked date time:",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: different day",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]

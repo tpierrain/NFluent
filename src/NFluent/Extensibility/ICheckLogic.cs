@@ -156,5 +156,15 @@ namespace NFluent.Extensibility
         /// <param name="index"></param>
         /// <returns>Continuation object</returns>
         ICheckLogic<T> SetValuesIndex(long index);
+
+        /// <summary>
+        /// Set values to be given.
+        /// </summary>
+        /// <typeparam name="TU">Type of reference values</typeparam>
+        /// <param name="other"></param>
+        /// <param name="comparison"></param>
+        /// <param name="negatedComparison"></param>
+        /// <returns></returns>
+        ICheckLogic<T> ComparingTo<TU>(TU other, string comparison, string negatedComparison);
     }
 }

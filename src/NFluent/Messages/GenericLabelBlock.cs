@@ -19,15 +19,19 @@ namespace NFluent.Messages
     internal class GenericLabelBlock
     {
         private readonly string adjective;
+        private readonly string adjectiveForMessages;
+        private readonly string template = "The {0} {1}:";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GenericLabelBlock" /> class.
-        /// </summary>
-        /// <param name="adjective">The adjective.</param>
-        /// <param name="namer">The entity naming logic.</param>
         internal GenericLabelBlock(string adjective, EntityNamer namer)
         {
             this.adjective = adjective;
+            this.EntityLogic = namer;
+        }
+
+        internal GenericLabelBlock(string adjective, string adjectiveMessage, EntityNamer namer)
+        {
+            this.adjective = adjective;
+            this.adjectiveForMessages = adjectiveMessage;
             this.EntityLogic = namer;
         }
 
@@ -41,17 +45,17 @@ namespace NFluent.Messages
 
         public static GenericLabelBlock BuildCheckedBlock(EntityNamer namer)
         {
-            return new GenericLabelBlock("checked", namer);
+            return new GenericLabelBlock("checked", "checked", namer);
         }
 
         public static GenericLabelBlock BuildExpectedBlock(EntityNamer namer)
         {
-            return new GenericLabelBlock("expected", namer);
+            return new GenericLabelBlock("expected", "expected", namer);
         }
 
         public static GenericLabelBlock BuildGivenBlock(EntityNamer namer)
         {
-            return new GenericLabelBlock("given", namer);
+            return new GenericLabelBlock("expected", "given", namer);
         }
 
         /// <summary>
@@ -74,7 +78,7 @@ namespace NFluent.Messages
         /// </returns>
         public string CustomMessage(string message)
         {
-            return string.Format(message ?? "The {0} {1}:", this.Adjective(), this.EntityName());
+            return string.Format(message ?? this.template, this.adjectiveForMessages, this.EntityName());
         }
 
         private string Adjective()

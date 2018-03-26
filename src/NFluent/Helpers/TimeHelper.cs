@@ -54,6 +54,16 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
+        /// Get a duration in 'ticks'
+        /// </summary>
+        /// <param name="value">original value</param>
+        /// <param name="unit">time unit</param>
+        /// <returns>Number of ticks</returns>
+        public static long GetInTicks(long value, TimeUnit unit)
+        {
+            return value * GetConversionFactor(unit) / NanoSecondsPerTick;
+        }
+        /// <summary>
         /// Converts a duration in nanoseconds to the desired <see cref="TimeUnit"/>.
         /// </summary>
         /// <param name="duration">
@@ -114,7 +124,7 @@ namespace NFluent.Helpers
         /// </returns>
         public static TimeUnit DiscoverUnit(TimeSpan timeSpan)
         {
-            double nanoseconds = Convert(timeSpan, TimeUnit.Nanoseconds);
+            var nanoseconds = Convert(timeSpan, TimeUnit.Nanoseconds);
 
             // if at least two weeks
             if (nanoseconds >= GetConversionFactor(TimeUnit.Weeks) * MinimumUnitAmount)
@@ -211,7 +221,7 @@ namespace NFluent.Helpers
                 return value;
             }
 
-            throw new InvalidOperationException(string.Format("{0} is not a supported time unit.", unit));
+            throw new InvalidOperationException($"{unit} is not a supported time unit.");
         }
     }
 }
