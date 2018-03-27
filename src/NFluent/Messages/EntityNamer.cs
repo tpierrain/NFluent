@@ -18,6 +18,8 @@ namespace NFluent.Messages
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using Extensions;
+
 #if NETSTANDARD1_3
     using System.Reflection;
 #endif
@@ -62,6 +64,11 @@ namespace NFluent.Messages
                 if (this.EntityType == typeof(DateTime))
                 {
                     return "date time";
+                }
+
+                if (this.EntityType.IsEnum)
+                {
+                    return "enum";
                 }
 
                 var interfaces = new List<Type>(this.EntityType.GetInterfaces()) { this.EntityType };

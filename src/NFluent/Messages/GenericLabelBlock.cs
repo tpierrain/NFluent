@@ -22,13 +22,7 @@ namespace NFluent.Messages
         private readonly string adjectiveForMessages;
         private readonly string template = "The {0} {1}:";
 
-        internal GenericLabelBlock(string adjective, EntityNamer namer)
-        {
-            this.adjective = adjective;
-            this.EntityLogic = namer;
-        }
-
-        internal GenericLabelBlock(string adjective, string adjectiveMessage, EntityNamer namer)
+       internal GenericLabelBlock(string adjective, string adjectiveMessage, EntityNamer namer)
         {
             this.adjective = adjective;
             this.adjectiveForMessages = adjectiveMessage;

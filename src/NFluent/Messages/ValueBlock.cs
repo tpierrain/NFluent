@@ -1,5 +1,3 @@
-#region File header
-
  // --------------------------------------------------------------------------------------------------------------------
  // <copyright file="ValueBlock.cs" company="">
  //   Copyright 2014 Cyrille Dupuydauby,Thomas PIERRAIN
@@ -14,7 +12,6 @@
  //   limitations under the License.
  // </copyright>
  // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace NFluent.Messages
 {

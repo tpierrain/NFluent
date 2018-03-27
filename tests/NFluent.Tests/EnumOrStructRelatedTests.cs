@@ -18,6 +18,7 @@ using System;
 namespace NFluent.Tests
 {
     using ApiChecks;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -41,7 +42,7 @@ namespace NFluent.Tests
                 Check.ThatEnum(FrenchNationality).IsEqualTo(Nationality.American);
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[French]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[American]");
+            .WithMessage(Environment.NewLine+ "The checked enum is different from the expected one." + Environment.NewLine + "The checked enum:" + Environment.NewLine + "\t[French]" + Environment.NewLine + "The expected enum:" + Environment.NewLine + "\t[American]");
         }
 
         [Test]
@@ -58,7 +59,7 @@ namespace NFluent.Tests
                 Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.French);
             })
             .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is equal to the expected one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[French] of type: [NFluent.Tests.Nationality]");
+            .WithMessage(Environment.NewLine+ "The checked enum is equal to the expected one whereas it must not." + Environment.NewLine + "The expected enum: different from" + Environment.NewLine + "\t[French] of type: [NFluent.Tests.Nationality]");
         }
 
         [Test]
@@ -74,8 +75,10 @@ namespace NFluent.Tests
             {
                 Check.ThatEnum(FrenchNationality).Not.IsEqualTo(Nationality.French);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is equal to the expected one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[French] of type: [NFluent.Tests.Nationality]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked enum is equal to the expected one whereas it must not.", 
+                    "The expected enum: different from",
+                    "\t[French] of type: [NFluent.Tests.Nationality]");
         }
 
         [Test]
@@ -151,10 +154,7 @@ namespace NFluent.Tests
         public void HasFlagFailsWhenRelevant()
         {
             Check.ThatCode( ()=>  Check.That(Flags.Second|Flags.Third).HasFlag(Flags.First))
-                .Throws<FluentCheckException>()
-                .AndWhichMessage()
-                .AsLines()
-                .ContainsExactly("", 
+                .IsAFaillingCheckWithMessage("", 
                     "The checked enum does not have the expected flag.", 
                     "The checked enum:", 
                     "\t[Second, Third]", 
@@ -166,10 +166,7 @@ namespace NFluent.Tests
         public void DoesNotHaveFlagFailsWhenRelevant()
         {
             Check.ThatCode( ()=>  Check.That(Flags.First|Flags.Third).DoesNotHaveFlag(Flags.First))
-                .Throws<FluentCheckException>()
-                .AndWhichMessage()
-                .AsLines()
-                .ContainsExactly("", 
+                .IsAFaillingCheckWithMessage("", 
                     "The checked enum does have the expected flag, whereas it should not.", 
                     "The checked enum:", 
                     "\t[First, Third]", 
@@ -181,10 +178,7 @@ namespace NFluent.Tests
         public void HasFlagFailsProperlyWhenNegated()
         {
             Check.ThatCode( ()=>  Check.That(Flags.First|Flags.Third).Not.HasFlag(Flags.First))
-                .Throws<FluentCheckException>()
-                .AndWhichMessage()
-                .AsLines()
-                .ContainsExactly("", 
+                .IsAFaillingCheckWithMessage("", 
                     "The checked enum does have the expected flag, whereas it should not.", 
                     "The checked enum:", 
                     "\t[First, Third]", 
@@ -196,10 +190,7 @@ namespace NFluent.Tests
         public void DoesNotHasFlagFailsProperlyWhenNegated()
         {
             Check.ThatCode( ()=>  Check.That(Flags.Second|Flags.Third).Not.DoesNotHaveFlag(Flags.First))
-                .Throws<FluentCheckException>()
-                .AndWhichMessage()
-                .AsLines()
-                .ContainsExactly("", 
+                .IsAFaillingCheckWithMessage("", 
                     "The checked enum does not have the expected flag.", 
                     "The checked enum:", 
                     "\t[Second, Third]", 
@@ -211,10 +202,7 @@ namespace NFluent.Tests
         public void FailsIfNotFlags()
         {
             Check.ThatCode( ()=>  Check.That(Nationality.American).HasFlag(Nationality.French))
-                .Throws<FluentCheckException>()
-                .AndWhichMessage()
-                .AsLines()
-                .ContainsExactly("", 
+                .IsAFaillingCheckWithMessage("", 
                     "The checked enum type is not a set of flags. You must add [Flags] attribute to its declaration.", 
                     "The checked enum:", 
                     "\t[American]", 
@@ -226,10 +214,7 @@ namespace NFluent.Tests
         public void FailsIfCheckOn0()
         {
             Check.ThatCode( ()=>  Check.That(Flags.First).HasFlag(Flags.None))
-                .Throws<FluentCheckException>()
-                .AndWhichMessage()
-                .AsLines()
-                .ContainsExactly("", 
+                .IsAFaillingCheckWithMessage("", 
                     "Wrong chek: The expected flag is 0. You must use IsEqualTo, or a non zero flag value.", 
                     "The checked enum:", 
                     "\t[First]", 

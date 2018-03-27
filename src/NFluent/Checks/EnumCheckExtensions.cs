@@ -17,6 +17,7 @@ namespace NFluent
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using Extensibility;
     using Extensions;
 
     /// <summary>
@@ -35,9 +36,7 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> DoesNotHaveFlag<T>(this ICheck<T> check, T flag)
             where T : struct, IConvertible
         {
-            var checker = ((ICheckForExtensibility<T, ICheck<T>>)check).Checker;
-            // TODO: factorize this into a method
-            return checker.Negated ? checker.BuildChainingObject().And.HasFlag(flag) : check.Not.HasFlag(flag);
+            return check.Not.HasFlag(flag);
         }
 
         /// <summary>
@@ -49,42 +48,21 @@ namespace NFluent
         /// <returns>link object for further checks</returns>
         public static ICheckLink<ICheck<T>> HasFlag<T>(this ICheck<T> check, T flag) where T : struct, IConvertible
         {
-            var checker = ((ICheckForExtensibility<T, ICheck<T>>)check).Checker;
-            if (!typeof(T).TypeHasAttribute(typeof(FlagsAttribute)))
-            {
-                var message  = checker.BuildMessage("The checked enum type is not a set of flags. You must add [Flags] attribute to its declaration.")
-                    .For("enum")
-                    .On(checker.Value)
-                    .And
-                    .Expected(flag);
-                throw new FluentCheckException(message.ToString());
-            }
-
-            if (Convert.ToInt64(flag) == 0)
-            {
-                var message  = checker.BuildMessage("Wrong chek: The expected flag is 0. You must use IsEqualTo, or a non zero flag value.")
-                        .For("enum")
-                        .On(checker.Value)
-                        .And
-                        .Expected(flag);
-                throw new FluentCheckException(message.ToString());
-            }
-
-            return checker.ExecuteCheck(() =>
+            ExtensibilityHelper.BeginCheck(check)
+                .Expecting(flag)
+                .FailsIf(_ => !typeof(T).TypeHasAttribute(typeof(FlagsAttribute)), 
+                    "The checked enum type is not a set of flags. You must add [Flags] attribute to its declaration.")
+                .FailsIf(_ => Convert.ToInt64(flag) == 0, 
+                    "Wrong chek: The expected flag is 0. You must use IsEqualTo, or a non zero flag value.")
+                .FailsIf(sut =>
                 {
-                    var sutAsInt = Convert.ToInt64(checker.Value);
+                    var sutAsInt = Convert.ToInt64(sut);
                     var exptectedAsInt = Convert.ToInt64(flag);
-                    if ((sutAsInt & exptectedAsInt) == exptectedAsInt)
-                    {
-                        return;
-                    }
-
-                    var message  = checker.BuildMessage("The {0} does not have the expected flag.").For("enum").On(checker.Value).And
-                        .Expected(flag);
-                    throw new FluentCheckException(message.ToString());
-                },
-                checker.BuildMessage("The {0} does have the expected flag, whereas it should not.").For("enum").On(checker.Value).And
-                    .Expected(flag).ToString());
+                    return (sutAsInt & exptectedAsInt) != exptectedAsInt;
+                }, "The checked enum does not have the expected flag.")
+                .Negates("The {0} does have the expected flag, whereas it should not.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
     }
 }

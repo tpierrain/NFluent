@@ -170,7 +170,7 @@ namespace NFluent
             return false;
         }
 
-        public static bool Any<T>(this IList<T> list, Predicate<T> predicate)
+        public static bool Any<T>(this IEnumerable<T> list, Predicate<T> predicate)
         {
             foreach (var item in list)
             {

@@ -67,5 +67,22 @@ namespace NFluent.Helpers
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
+
+        /// <summary>
+        ///     Verify that the code results in a failed NFluent check with a specified message.
+        /// </summary>
+        /// <param name="check"></param>
+        /// <returns>A link check</returns>
+        public static ICheckLink<ICodeCheck<RunTrace>> IsAFaillingCheck(this ICodeCheck<RunTrace> check)
+        {
+            ExtensibilityHelper.BeginCheck(check)
+                .GetSutProperty((sut) => sut.RaisedException, "raised exception").SutNameIs("fluent check")
+                .FailsIfNull()
+                .FailsIf((sut) => !ExceptionHelper.IsFailedException(sut),
+                    "The exception raised is not of the expected type").
+                ExpectingType(ExceptionHelper.BuildException(string.Empty).GetType(), "an instance of:", "an instance of a different type").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
     }
 }
