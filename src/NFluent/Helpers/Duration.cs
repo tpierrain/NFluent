@@ -253,7 +253,7 @@ namespace NFluent.Helpers
         /// </returns>
         public override string ToString()
         {
-            return string.Format("{0} {1}", this.rawDuration, this.timeUnit);
+            return $"{this.rawDuration} {this.timeUnit}";
         }
 
         /// <summary>
@@ -265,6 +265,15 @@ namespace NFluent.Helpers
         {
             var newDuration = TimeHelper.GetInNanoSeconds(this.rawDuration, this.timeUnit);
             return new Duration(TimeHelper.GetFromNanoSeconds(newDuration, newTmeUnit), newTmeUnit);
+        }
+
+        /// <summary>
+        /// Gets the duration as a number of milliseconds
+        /// </summary>
+        /// <returns></returns>
+        public long ToMilliseconds()
+        {
+            return ConvertToMilliseconds(this.RawDuration, this.timeUnit);
         }
     }
 }

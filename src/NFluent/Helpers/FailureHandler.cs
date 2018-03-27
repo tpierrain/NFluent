@@ -35,7 +35,7 @@ namespace NFluent.Helpers
         {
             ExtensibilityHelper.BeginCheck(check)
                 .GetSutProperty((sut) => sut.RaisedException, "raised exception").SutNameIs("fluent check")
-                .FailsIfNull()
+                .FailsIfNull("The check succeeded whereas it should have failed.")
                 .FailsIf((sut) => !ExceptionHelper.IsFailedException(sut),
                     "The exception raised is not of the expected type")
                 .GetSutProperty((sut) => sut.Message, "error message")

@@ -37,19 +37,14 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The event was not set before the given timeout.</exception>
         public static ICheckLink<ICheck<EventWaitHandle>> IsSetWithin(this ICheck<EventWaitHandle> check, double timeOut, TimeUnit timeUnit)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var timeOutInMsec = Duration.ConvertToMilliseconds(timeOut, timeUnit);
-
-            return checker.ExecuteCheck(
-                () =>
-                {
-                    if (!checker.Value.WaitOne(timeOutInMsec))
-                    {
-                        var errorMessage = checker.BuildShortMessage(string.Format("The checked event has not been set before the given timeout." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[{0}]", timeOutInMsec)).ToString();
-                        throw new FluentCheckException(errorMessage);
-                    }
-                },
-                checker.BuildShortMessage(string.Format("The checked event has been set before the given timeout whereas it must not." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[{0}]", timeOutInMsec)).ToString());
+            var duration = new Duration(timeOut, timeUnit);
+            ExtensibilityHelper.BeginCheck(check)
+                .Expecting(duration, expectedLabel: "The given timeout:", negatedLabel: "The minimal wait time:")
+                .FailsIf(sut => !sut.WaitOne((int)duration.ToMilliseconds()), 
+                    "The checked event has not been set before the given timeout whereas it must.", MessageOption.NoCheckedBlock)
+                .Negates("The checked event has been set before the given timeout whereas it must not.", MessageOption.NoCheckedBlock)
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -64,19 +59,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The event was set before the given timeout.</exception>
         public static ICheckLink<ICheck<EventWaitHandle>> IsNotSetWithin(this ICheck<EventWaitHandle> check, double timeOut, TimeUnit timeUnit)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var timeOutInMsec = Duration.ConvertToMilliseconds(timeOut, timeUnit);
-
-            return checker.ExecuteCheck(
-                () =>
-                {
-                    if (checker.Value.WaitOne(timeOutInMsec))
-                    {
-                        var errorMessage = checker.BuildShortMessage(string.Format("The checked event has been set before the given timeout." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[{0}]", timeOutInMsec)).ToString();
-                        throw new FluentCheckException(errorMessage);
-                    }
-                },
-                checker.BuildShortMessage(string.Format("The checked event has not been set before the given timeout whereas it must." + Environment.NewLine + "The given timeout (in msec):" + Environment.NewLine + "\t[{0}]", timeOutInMsec)).ToString());
+            return check.Not.IsSetWithin(timeOut, timeUnit);
         }
     }
 }

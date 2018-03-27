@@ -17,6 +17,7 @@ namespace NFluent.Tests
     using NUnit.Framework;
     using Helpers;
     using System;
+    using NFluent.Helpers;
 
 
     [TestFixture]
@@ -58,9 +59,11 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(Zero).IsNotZero();
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is equal to zero, whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[0]");
+            }).
+            IsAFaillingCheckWithMessage("",
+                    "The checked value is equal to zero whereas it must not.",
+                    "The checked value:",
+                    "\t[0]");
         }
 
         #endregion
@@ -80,8 +83,10 @@ namespace NFluent.Tests
             {
                 Check.That(Zero).Not.IsZero();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is equal to zero whereas it must not.");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is equal to zero whereas it must not.",
+                    "The checked value:",
+                    "\t[0]");
         }
 
         #endregion
@@ -101,8 +106,10 @@ namespace NFluent.Tests
             {
                 Check.That(Two).Not.IsNotZero();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is different from zero." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is different from zero.",
+                    "The checked value:",
+                    "\t[2]");
         }
 
         #endregion
@@ -128,8 +135,12 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).IsBefore(Two);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not before the reference value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[20]" + Environment.NewLine + "The expected value: before" + Environment.NewLine + "\t[2]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is not before the reference value.",
+                    "The checked value:",
+                    "\t[20]",
+                    "The expected value: before",
+                    "\t[2]");
         }
 
         [Test]
@@ -139,8 +150,12 @@ namespace NFluent.Tests
             {
                 Check.That(Two).IsBefore(Two);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not before the reference value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]" + Environment.NewLine + "The expected value: before" + Environment.NewLine + "\t[2]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is not before the reference value.",
+                    "The checked value:",
+                    "\t[2]",
+                    "The expected value: before",
+                    "\t[2]");
         }
 
         [Test]
@@ -150,8 +165,12 @@ namespace NFluent.Tests
             {
                 Check.That(Two).Not.IsBefore(Twenty);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is before the reference value whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]" + Environment.NewLine + "The expected value: after" + Environment.NewLine + "\t[20]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is before the reference value whereas it must not.",
+                    "The checked value:",
+                    "\t[2]",
+                    "The expected value: after",
+                    "\t[20]");
         }
 
         [Test]
@@ -173,8 +192,12 @@ namespace NFluent.Tests
             {
                 Check.That(Two).IsAfter(Two);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not after the reference value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2]" + Environment.NewLine + "The expected value: after" + Environment.NewLine + "\t[2]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is not after the reference value.",
+                    "The checked value:",
+                    "\t[2]",
+                    "The expected value: after",
+                    "\t[2]");
         }
 
         [Test]
@@ -184,8 +207,12 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).Not.IsAfter(Two);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is after the reference value whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[20]" + Environment.NewLine + "The expected value: before" + Environment.NewLine + "\t[2]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is after the reference value whereas it must not.",
+                    "The checked value:",
+                    "\t[20]",
+                    "The expected value: before",
+                    "\t[2]");
         }
 
         #endregion
@@ -212,8 +239,12 @@ namespace NFluent.Tests
             {
                 Check.That(One).Not.IsLessThan(Twenty);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is less than the threshold." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1]" + Environment.NewLine + "The expected value: more than" + Environment.NewLine + "\t[20]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is less than the given one.",
+                    "The checked value:",
+                    "\t[1]",
+                    "The expected value: strictly greater than",
+                    "\t[20]");
         }
 
 #pragma warning restore 618
@@ -240,8 +271,22 @@ namespace NFluent.Tests
             {
                 Check.That(One).IsStrictlyLessThan(One);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not strictly less than the comparand." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1]" + Environment.NewLine + "The expected value: strictly less than" + Environment.NewLine + "\t[1]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is equal to the given one.",
+                    "The checked value:",
+                    "\t[1]",
+                    "The expected value: strictly less than",
+                    "\t[1]");
+            Check.ThatCode(() =>
+            {
+                Check.That(One).IsStrictlyLessThan(Zero);
+            })
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is greater than the given one.",
+                    "The checked value:",
+                    "\t[1]",
+                    "The expected value: strictly less than",
+                    "\t[0]");
         }
 
         [Test]
@@ -251,8 +296,12 @@ namespace NFluent.Tests
             {
                 Check.That(One).Not.IsStrictlyLessThan(Twenty);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is strictly less than the comparand." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1]" + Environment.NewLine + "The expected value: more than" + Environment.NewLine + "\t[20]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is strictly less than the given one.",
+                    "The checked value:",
+                    "\t[1]",
+                    "The expected value: greater than",
+                    "\t[20]");
         }
 
         #endregion
@@ -275,8 +324,13 @@ namespace NFluent.Tests
             {
                 Check.That(One).IsGreaterThan(Twenty);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is less than the threshold." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1]" + Environment.NewLine + "The expected value: more than" + Environment.NewLine + "\t[20]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked value is strictly less than the given one.",
+                    "The checked value:",
+                    "\t[1]",
+                    "The expected value: greater than",
+                    "\t[20]");
+
         }
 
         [Test]
@@ -286,8 +340,12 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).Not.IsGreaterThan(One);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is greater than the threshold." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[20]" + Environment.NewLine + "The expected value: less than" + Environment.NewLine + "\t[1]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is greater than the given one.",
+                    "The checked value:",
+                    "\t[20]",
+                    "The expected value: strictly less than",
+                    "\t[1]");
         }
 
 #pragma warning restore 618
@@ -308,8 +366,12 @@ namespace NFluent.Tests
             {
                 Check.That(One).IsStrictlyGreaterThan(One);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not strictly greater than the comparand." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1]" + Environment.NewLine + "The expected value: more than" + Environment.NewLine + "\t[1]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is equal to the given one.",
+                    "The checked value:",
+                    "\t[1]",
+                    "The expected value: strictly greater than",
+                    "\t[1]");
         }
 
         [Test]
@@ -319,8 +381,12 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).Not.IsStrictlyGreaterThan(One);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is strictly greater than the comparand." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[20]" + Environment.NewLine + "The expected value: less than or equal to" + Environment.NewLine + "\t[1]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is greater than the given one.",
+                    "The checked value:",
+                    "\t[20]",
+                    "The expected value: less than or equal to",
+                    "\t[1]");
         }
 
         #endregion
@@ -439,9 +505,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That((int?) null).HasAValue();
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked nullable has no value, which is unexpected.");
+            }).IsAFaillingCheckWithMessage("","The checked nullable has no value, which is unexpected.");
         }
 
         [Test]
@@ -459,8 +523,10 @@ namespace NFluent.Tests
             {
                 Check.That(one).Not.HasAValue();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked nullable has a value, which is unexpected." + Environment.NewLine + "The checked nullable:" + Environment.NewLine + "\t[1]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked nullable has a value, whereas it must not.",
+                    "The checked nullable:",
+                    "\t[1]");
         }
 
         [Test]
@@ -501,8 +567,10 @@ namespace NFluent.Tests
             {
                 Check.That(one).HasNoValue();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value has a value, whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked nullable has a value, whereas it must not.",
+                    "The checked nullable:", 
+                    "\t[1]");
         }
 
         [Test]
@@ -520,8 +588,8 @@ namespace NFluent.Tests
             {
                 Check.That((int?) null).Not.HasNoValue();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked nullable has no value, which is unexpected.");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked nullable has no value, which is unexpected.");
         }
 
         #endregion

@@ -109,7 +109,7 @@ namespace NFluent
     /// <returns>true if <see paramref="item"/> matches the rule.</returns>
     public delegate bool Predicate<in T>(T item);
 
-    #endif
+#endif
 
 
     /// <summary>

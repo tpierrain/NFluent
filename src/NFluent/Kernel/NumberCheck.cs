@@ -15,6 +15,7 @@
 namespace NFluent.Kernel
 {
     using System;
+    using Extensibility;
 
     /// <summary>
     /// Provides check methods to be executed on a number instance.
@@ -22,6 +23,7 @@ namespace NFluent.Kernel
     /// <typeparam name="TN">Type of the numerical value.</typeparam>
     public class NumberCheck<TN> where TN : IComparable
     {
+        private readonly ICheck<TN> check;
         private const string MustBeZeroMessage = "The {0} is different from zero.";
 
         private readonly Checker<TN, ICheck<TN>> checker;
@@ -32,6 +34,7 @@ namespace NFluent.Kernel
         /// <param name="check">The fluent check.</param>
         public NumberCheck(ICheck<TN> check)
         {
+            this.check = check;
             // ReSharper disable once SuspiciousTypeConversion.Global
             this.checker = new Checker<TN, ICheck<TN>>((ICheckForExtensibility<TN, ICheck<TN>>) check);
         }
@@ -45,39 +48,11 @@ namespace NFluent.Kernel
         /// <exception cref="FluentCheckException">The value is not equal to zero.</exception>
         public ICheckLink<ICheck<TN>> IsZero()
         {
-            return this.checker.ExecuteCheck(
-                () =>
-                    {
-                        var res = InternalIsZero(this.checker.Value);
-
-                        if (!res)
-                        {
-                            throw new FluentCheckException(this.checker.BuildMessage(MustBeZeroMessage).ToString());
-                        }
-                    },
-                this.checker.BuildShortMessage("The {0} is equal to zero whereas it must not.").ToString());
-        }
-
-        /// <summary>
-        /// Checks that the actual value is NOT equal to zero.
-        /// </summary>
-        /// <returns>
-        /// <returns>A check link.</returns>
-        /// </returns>
-        /// <exception cref="FluentCheckException">The value is equal to zero.</exception>
-        public ICheckLink<ICheck<TN>> IsNotZero()
-        {
-            return this.checker.ExecuteCheck(
-                () =>
-                    {
-                        bool res = InternalIsZero(this.checker.Value);
-
-                        if (res)
-                        {
-                            throw new FluentCheckException(this.checker.BuildMessage("The {0} is equal to zero, whereas it must not.").ToString());
-                        }
-                    },
-                this.checker.BuildMessage("The {0} is different from zero.").ToString());
+            ExtensibilityHelper.BeginCheck(this.check)
+                .FailsIf(sut => !InternalIsZero(sut), "The {0} is different from zero.")
+                .Negates("The {0} is equal to zero whereas it must not.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(this.check);
         }
 
         /// <summary>
@@ -168,15 +143,13 @@ namespace NFluent.Kernel
         /// </exception>
         public ICheckLink<ICheck<TN>> IsLessThan(TN comparand)
         {
-            return this.checker.ExecuteCheck(
-                () =>
-                {
-                    if (this.checker.Value.CompareTo(comparand) >= 0)
-                    {
-                        throw new FluentCheckException(this.checker.BuildMessage("The {0} is greater than the threshold.").Expected(comparand).Comparison("less than").ToString());
-                    }
-                },
-                this.checker.BuildMessage("The {0} is less than the threshold.").Expected(comparand).Comparison("more than").ToString());
+            ExtensibilityHelper.BeginCheck(this.check)
+                .ComparingTo(comparand, "less than or equal to", "strictly greater than")
+                .FailsIf(sut => sut.CompareTo(comparand) > 0, "The {0} is greater than the {1}.")
+                .NegatesIf(sut => sut.CompareTo(comparand) == 0, "The {0} is equal to the {1}.")
+                .Negates("The {0} is less than the {1}.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(this.check);
         }
 
         /// <summary>
@@ -193,40 +166,13 @@ namespace NFluent.Kernel
         /// </exception>
         public ICheckLink<ICheck<TN>> IsStrictlyLessThan(TN comparand)
         {
-            return this.checker.ExecuteCheck(
-                () =>
-                {
-                    if (this.checker.Value.CompareTo(comparand) >= 0)
-                    {
-                        throw new FluentCheckException(this.checker.BuildMessage("The {0} is not strictly less than the comparand.").Expected(comparand).Comparison("strictly less than").ToString());
-                    }
-                },
-                this.checker.BuildMessage("The {0} is strictly less than the comparand.").Expected(comparand).Comparison("more than").ToString());
-        }
-
-        /// <summary>
-        /// Checks that the actual value is more than a comparand.
-        /// </summary>
-        /// <param name="comparand">
-        /// Comparand to compare the value to.
-        /// </param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">
-        /// The value is not less than the comparand.
-        /// </exception>
-        public ICheckLink<ICheck<TN>> IsGreaterThan(TN comparand)
-        {
-            return this.checker.ExecuteCheck(
-                () =>
-                    {
-                        if (this.checker.Value.CompareTo(comparand) <= 0)
-                        {
-                            throw new FluentCheckException(this.checker.BuildMessage("The {0} is less than the threshold.").Expected(comparand).Comparison("more than").ToString());
-                        }
-                    },
-                this.checker.BuildMessage("The {0} is greater than the threshold.").Expected(comparand).Comparison("less than").ToString());
+            ExtensibilityHelper.BeginCheck(this.check)
+                .ComparingTo(comparand, "strictly less than", "greater than")
+                .FailsIf(sut => sut.CompareTo(comparand) == 0, "The {0} is equal to the {1}.")
+                .FailsIf(sut => sut.CompareTo(comparand) > 0, "The {0} is greater than the {1}.")
+                .Negates("The {0} is strictly less than the {1}.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(this.check);
         }
 
         /// <summary>
@@ -243,15 +189,13 @@ namespace NFluent.Kernel
         /// </exception>
         public ICheckLink<ICheck<TN>> IsStrictlyGreaterThan(TN comparand)
         {
-            return this.checker.ExecuteCheck(
-                () =>
-                    {
-                        if (this.checker.Value.CompareTo(comparand) <= 0)
-                        {
-                            throw new FluentCheckException(this.checker.BuildMessage("The {0} is not strictly greater than the comparand.").Expected(comparand).Comparison("more than").ToString());
-                        }
-                    },
-                this.checker.BuildMessage("The {0} is strictly greater than the comparand.").Expected(comparand).Comparison("less than or equal to").ToString());
+            ExtensibilityHelper.BeginCheck(this.check)
+                .ComparingTo(comparand, "strictly greater than", "less than or equal to")
+                .FailsIf(sut => sut.CompareTo(comparand) < 0, "The {0} is less than the {1}.")
+                .FailsIf(sut => sut.CompareTo(comparand) == 0, "The {0} is equal to the {1}.")
+                .Negates("The {0} is greater than the {1}.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(this.check);
         }
 
         /// <summary>

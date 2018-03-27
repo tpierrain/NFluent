@@ -36,18 +36,12 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The current value is a number.</exception>
         public static ICheckLink<ICheck<float>> IsNaN(this ICheck<float> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                {
-                    if (!float.IsNaN(checker.Value))
-                    {
-                        var errorMessage = checker.BuildMessage("The {0} is a number whereas it must not.").For("float value").On(checker.Value).ToString();
-                        throw new FluentCheckException(errorMessage);
-                    }
-                },
-                checker.BuildMessage("The {0} is not a number (NaN) whereas it must.").For("float value").On(checker.Value).ToString());
+            ExtensibilityHelper.BeginCheck(check).
+                SutNameIs("float value").
+                FailsIf((sut) => !float.IsNaN(sut), "The {0} is a number whereas it must not.").
+                Negates("The {0} is not a number (NaN) whereas it must.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -60,18 +54,12 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The specified number evaluates to a value that is infinite (i.e. equals to infinity).</exception>
         public static ICheckLink<ICheck<float>> IsFinite(this ICheck<float> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () =>
-                {
-                    if (float.IsInfinity(checker.Value))
-                    {
-                        var errorMessage = checker.BuildMessage("The {0} is an infinite number whereas it must not.").For("float value").On(checker.Value).ToString();
-                        throw new FluentCheckException(errorMessage);
-                    }
-                },
-                checker.BuildMessage("The {0} is a finite number whereas it must not.").For("float value").On(checker.Value).ToString());
+            ExtensibilityHelper.BeginCheck(check).
+                SutNameIs("float value").
+                FailsIf(float.IsInfinity, "The {0} is an infinite number whereas it must not.").
+                Negates("The {0} is a finite number whereas it must not.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -83,18 +71,13 @@ namespace NFluent
         /// <returns>A continuation check.</returns>
         public static ICheckLink<ICheck<float>> IsCloseTo(this ICheck<float> check, Double expected, Double within)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
             var range = new RangeBlock(expected, within);
-            return checker.ExecuteCheck(
-                () =>
-                {
-                    if (!range.IsInRange(checker.Value))
-                    {
-                        var errorMessage = checker.BuildMessage("The {0} is outside the expected value range.").On(checker.Value).And.Expected(range).ToString();
-                        throw new FluentCheckException(errorMessage);
-                    }
-                },
-                checker.BuildMessage("The {0} is within the expected range, whereas it must not.").On(checker.Value).And.Expected(range).ToString());
+            ExtensibilityHelper.BeginCheck(check).
+                FailsIf((sut) => !range.IsInRange(sut), "The {0} is outside the expected value range.").
+                Expecting(range).
+                Negates("The {0} is within the expected range, whereas it must not.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
     }
 }

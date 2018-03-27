@@ -16,6 +16,7 @@ using System;
 
 namespace NFluent.Tests
 {
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -25,8 +26,12 @@ namespace NFluent.Tests
         public void ShouldProvideANameForTheSut()
         {
             Check.ThatCode( () => Check.That(42).As("answer").IsAfter(100))
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine+ "The checked [answer] is not after the reference value." + Environment.NewLine + "The checked [answer]:" + Environment.NewLine + "\t[42]" + Environment.NewLine + "The expected [answer]: after" + Environment.NewLine + "\t[100]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked [answer] is not after the reference value.",
+                    "The checked [answer]:",
+                    "\t[42]",
+                    "The expected [answer]: after",
+                    "\t[100]");
         }
     }
 }

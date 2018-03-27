@@ -18,10 +18,11 @@ namespace NFluent.Messages
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Extensions;
 
-#if NETSTANDARD1_3
+#if NETSTANDARD1_3 || DOTNET_45
     using System.Reflection;
+#else
+    using Extensions;
 #endif
 
     /// <summary>
@@ -66,7 +67,7 @@ namespace NFluent.Messages
                     return "date time";
                 }
 
-                if (this.EntityType.IsEnum)
+                if (this.EntityType.GetTypeInfo().IsEnum)
                 {
                     return "enum";
                 }
