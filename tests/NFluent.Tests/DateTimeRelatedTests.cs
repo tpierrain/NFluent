@@ -297,8 +297,10 @@ namespace NFluent.Tests
             {
                 Check.That(christmas2013).IsNotEqualTo(anotherVersionOfChristmas2013);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is equal to the expected one whereas it must not." + Environment.NewLine + "The expected date time: different from" + Environment.NewLine + "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]");
+            .IsAFaillingCheckWithMessage("",
+                     "The checked date time is equal to the expected one whereas it must not.",
+                    "The expected date time: different from",
+                    "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]");
         }
 
         [Test]

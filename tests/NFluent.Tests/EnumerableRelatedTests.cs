@@ -216,8 +216,7 @@ namespace NFluent.Tests
         {
             IEnumerable enumerable = new List<int> { 45, 43, 54, 666 };
 
-            Check.ThatCode(() => { Check.That(enumerable).Not.IsNotEqualTo(null); }).Throws<FluentCheckException>()
-                .WithMessage(
+            Check.ThatCode(() => { Check.That(enumerable).Not.IsNotEqualTo(null); }).IsAFaillingCheckWithMessage(
                     Environment.NewLine + "The checked value is different from the expected one." + Environment.NewLine
                     + "The checked value:" + Environment.NewLine + "\t[45, 43, 54, 666]" + Environment.NewLine
                     + "The expected value:" + Environment.NewLine + "\t[null]");

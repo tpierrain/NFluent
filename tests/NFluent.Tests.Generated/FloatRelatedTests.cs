@@ -464,8 +464,7 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).Not.Equals(Twenty);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is equal to the expected one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[20] of type: [float]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is equal to the expected one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[20] of type: [float]");
         }
 
         [Test]
@@ -481,8 +480,10 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).IsNotEqualTo(Twenty);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is equal to the expected one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[20] of type: [float]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is equal to the expected one whereas it must not.",
+                    "The expected value: different from",
+                    "\t[20] of type: [float]");
         }
 
         [Test]
@@ -492,8 +493,12 @@ namespace NFluent.Tests
             {
                 Check.That(One).Not.IsNotEqualTo(Twenty);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[20]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is different from the expected one.",
+                    "The checked value:",
+                    "\t[1]",
+                    "The expected value:",
+                    "\t[20]");
         }
 
         #endregion

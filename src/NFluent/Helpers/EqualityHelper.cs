@@ -102,23 +102,21 @@ namespace NFluent.Helpers
         internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(
             ICheck<T> check,
             TE expected,
-            bool useOperator = false,
-            bool negated = false)
+            bool useOperator = false)
         {
             var mode = Check.EqualMode;
 
-            var shouldFail = negated;
             if (useOperator)
             {
-                mode = negated ? EqualityMode.OperatorNeq : EqualityMode.OperatorEq;
+                mode =  EqualityMode.OperatorEq;
             }
             ExtensibilityHelper.BeginCheck(check)
                 .Analyze((sut, test) =>
                 {
-                    test.Expecting(expected, useOperator ? "equals to (using operator==)" : "",
-                        "different from" + (useOperator ? " (using operator!=)" : ""));
+                        test.Expecting(expected, useOperator ? "equals to (using operator==)" : "",
+                            "different from" + (useOperator ? " (using !operator==)" : ""));
 
-                    if (shouldFail != FluentEquals(sut, expected, mode))
+                    if (FluentEquals(sut, expected, mode))
                     {
                         return;
                     }
@@ -139,13 +137,52 @@ namespace NFluent.Helpers
 
                     test.Fails("The {0} is different from the {1}.", options);
                 })
-                .Negates("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock | MessageOption.WithType)
+                .Negates("The {0} is equal to the {1} whereas it must not.", 
+                    MessageOption.NoCheckedBlock | MessageOption.WithType)
                 .EndCheck();
 
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
+        internal static ICheckLink<ICheck<T>> PerformInequalCheck<T, TE>(
+            ICheck<T> check,
+            TE expected,
+            bool useOperator = false)
+        {
+            var mode = Check.EqualMode;
 
+            if (useOperator)
+            {
+                mode = EqualityMode.OperatorNeq;
+            }
+            ExtensibilityHelper.BeginCheck(check)
+                .Expecting(expected, "different from" + (useOperator ? " (using operator!=)" : ""), 
+                    useOperator ? "equals to (using operator==)" : "")
+                .Analyze((sut, test) =>
+                {
+
+                    if ( !FluentEquals(sut, expected, mode))
+                    {
+                        return;
+                    }
+
+                    // shall we display the type as well?
+                    var options = MessageOption.None;
+                    if (expected != null)
+                    {
+                        options |= MessageOption.WithType;
+                    }
+
+                    // shall we display the hash too
+                    test.Fails("The {0} is equal to the {1} whereas it must not.", options|MessageOption.NoCheckedBlock);
+                })
+                .Negates( "The {0} is different from the {1}.")
+                .EndCheck();
+
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+      
         /// <summary>
         ///     Checks that a given instance is considered to be equal to another expected instance. Throws
         ///     <see cref="FluentCheckException" /> otherwise.
@@ -168,14 +205,7 @@ namespace NFluent.Helpers
         public static void IsEqualTo<T, TU>(IChecker<T, TU> checker, object expected)
             where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
-            var instance = checker.Value;
-            if (FluentEquals(instance, expected))
-            {
-                return;
-            }
-
-            // Should throw
-            throw new FluentCheckException(BuildErrorMessage(checker, expected, false, false));
+            PerformEqualCheck(checker, expected);
         }
 
         /// <summary>
@@ -195,10 +225,7 @@ namespace NFluent.Helpers
         public static void IsNotEqualTo<T, TU>(IChecker<T, TU> checker, object expected)
             where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
-            if (FluentEquals(checker.Value, expected))
-            {
-                throw new FluentCheckException(BuildErrorMessage(checker, expected, true, false));
-            }
+            PerformEqualCheck(checker, expected, false, true);
         }
 
         internal static ICheckLink<ICheck<double>> PerformEqualCheck(ICheck<double> check,

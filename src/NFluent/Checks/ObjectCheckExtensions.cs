@@ -165,11 +165,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<T>> IsNotEqualTo<T>(this ICheck<T> check, object expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(
-                () => EqualityHelper.IsNotEqualTo(checker, expected),
-                EqualityHelper.BuildErrorMessage(checker, expected, false, false));
+            return EqualityHelper.PerformInequalCheck(check, expected);
         }
 
         /// <summary>

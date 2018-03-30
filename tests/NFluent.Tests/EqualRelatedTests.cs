@@ -381,8 +381,7 @@ namespace NFluent.Tests
             {
                 Check.That(question).Equals(magicNumber);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked string is different from the expected value." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"What is the question?\"] of type: [string]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[42] of type: [int]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked string is different from the expected value." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"What is the question?\"] of type: [string]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[42] of type: [int]");
         }
 
         #endregion
