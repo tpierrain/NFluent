@@ -15,7 +15,6 @@
 
 namespace NFluent.Helpers
 {
-    using System;
     using Extensibility;
     using Extensions;
 
@@ -56,7 +55,11 @@ namespace NFluent.Helpers
                             test.Fails($"Lines are missing in the error message starting at #{i}");
                             break;
                         }
-                        Check.That(messageLines[i]).As($"line #{i}").IsEqualTo(expectedLines[i]);
+
+                        if (messageLines[i] != expectedLines[i])
+                        {
+                            test.Fails($"Line {i} is different from what is expected");
+                        }
                     }
 
                     if (messageLines.Count > expectedLines.Count)

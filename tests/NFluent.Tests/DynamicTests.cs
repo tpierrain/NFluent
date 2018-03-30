@@ -13,7 +13,7 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-#if PORTABLE || NETCOREAPP1_0 || DOTNET_45
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
 namespace NFluent.Tests
 {
     using NUnit.Framework;

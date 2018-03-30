@@ -43,7 +43,6 @@ namespace NFluent.Tests
             Check.That(departments.ToEnumeratedString("|")).IsEqualTo("93|56|35|75");
         }
 
-#if !NETCOREAPP1_0
         [Test]
         public void HowToEnumeratedStringHandlesNull()
         {
@@ -51,7 +50,6 @@ namespace NFluent.Tests
 
             Check.That(variousStuffs.ToEnumeratedString()).IsEqualTo(@"93, null, ""hell yeah!""");
         }
-#endif
 
         [Test]
         public void HowToEnumeratedStringHandlesNullEnumeration()

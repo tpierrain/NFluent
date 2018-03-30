@@ -15,10 +15,10 @@
 
 namespace NFluent
 {
-    using NFluent.Extensibility;
-    using NFluent.Kernel;
+    using Extensibility;
+    using Kernel;
 
-#if PORTABLE || NETSTANDARD1_3 || DOTNET_45
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
     /// <summary>
     ///     Provides fluent check methods to be executed on a given value.
     /// </summary>
@@ -37,7 +37,7 @@ namespace NFluent
         }
 
         /// <summary>
-        ///     Checks if the given dynamic is null.
+        /// Checks if the given dynamic is null.
         /// </summary>
         public DynamicCheckLink IsNotNull()
         {

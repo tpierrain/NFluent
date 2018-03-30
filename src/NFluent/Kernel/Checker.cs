@@ -75,15 +75,8 @@ namespace NFluent.Kernel
         public FluentMessage BuildShortMessage(string message)
         {
             var result = FluentMessage.BuildMessage(message);
-            if (!string.IsNullOrEmpty(this.sutLabel))
-            {
-                result.For(this.sutLabel);
-            }
-            else
-            {
-                result.For(typeof(T));
-            }
 
+            result.For(typeof(T));
             return result;
         }
 

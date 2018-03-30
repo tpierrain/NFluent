@@ -13,7 +13,7 @@
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
 
-#if PORTABLE || NETSTANDARD1_3 || DOTNET_45
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
 namespace NFluent
 {
     /// <summary>
@@ -38,10 +38,7 @@ namespace NFluent
         /// <value>
         /// The new fluent check instance which has been chained to the previous one.
         /// </value>
-        public FluentDynamicCheck And
-        {
-            get { return (FluentDynamicCheck) this.masterCheck.ForkInstance(); }
-        }
+        public FluentDynamicCheck And => (FluentDynamicCheck) this.masterCheck.ForkInstance();
     }
 }
 #endif

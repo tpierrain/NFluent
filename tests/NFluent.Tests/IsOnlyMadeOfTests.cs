@@ -15,12 +15,10 @@
 
 namespace NFluent.Tests
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
-#if !NETCOREAPP1_0 && !NETCOREAPP1_1
     using System.Collections.Specialized;
-#endif
+
     using Helpers;
     using NFluent.Helpers;
     using NUnit.Framework;
@@ -251,7 +249,6 @@ namespace NFluent.Tests
                     "\t[3, 2, 3, 2, 2, 1] (6 items)");
         }
         
-#if !NETCOREAPP1_0
         [Test]
         public void IsOnlyMadeOfWithStringCollectionWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {
@@ -260,7 +257,6 @@ namespace NFluent.Tests
 
             Check.That(oneTwoThree).IsOnlyMadeOf(expectedValues);
         }
-#endif
 
         [Test]
         public void IsOnlyMadeOfWithEnumerableThrowCaseSensitiveException()

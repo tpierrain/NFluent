@@ -191,7 +191,6 @@ namespace NFluent.Tests
                     "\t[3, 2, 666, 1974] (4 items)");
         }
 
-#if !NETCOREAPP1_0
         [Test]
         public void ContainsWithEnumerableOfVariousObjectsTypesWorks()
         {
@@ -199,7 +198,6 @@ namespace NFluent.Tests
             IEnumerable expectedVariousObjects = new ArrayList { "tres", 45.3F };
             Check.That(variousObjects).Contains(expectedVariousObjects);
         }
-#endif
 
 #endregion
     }

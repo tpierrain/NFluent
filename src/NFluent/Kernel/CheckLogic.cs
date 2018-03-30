@@ -99,10 +99,7 @@ namespace NFluent.Kernel
 
         public ICheckLogic<T> Fails(string error, MessageOption noCheckedBlock)
         {
-            if (this.failed)
-            {
-                return this;
-            }
+
             this.failed =  true;
             if (!this.IsNegated)
             {

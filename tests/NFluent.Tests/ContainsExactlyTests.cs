@@ -316,7 +316,6 @@ namespace NFluent.Tests
                     "\t[\"test\"] (1 item)");
         }
 
-#if !NETCOREAPP1_0
         [Test]
         public void ContainsExactlyWithEnumerableOfVariousObjectsTypesWorks()
         {
@@ -324,7 +323,7 @@ namespace NFluent.Tests
             IEnumerable expectedVariousObjects = new ArrayList { 1, "uno", "tres", 45.3F };
             Check.That(variousObjects).ContainsExactly(expectedVariousObjects);
         }
-#endif
+
         [Test]
         public void ContainsExactlyWorksOnLargeArrays()
         {

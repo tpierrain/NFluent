@@ -182,51 +182,6 @@ namespace NFluent.Helpers
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
-      
-        /// <summary>
-        ///     Checks that a given instance is considered to be equal to another expected instance. Throws
-        ///     <see cref="FluentCheckException" /> otherwise.
-        /// </summary>
-        /// <typeparam name="T">
-        ///     Checked type.
-        /// </typeparam>
-        /// <typeparam name="TU">
-        ///     Checker type.
-        /// </typeparam>
-        /// <param name="checker">
-        ///     The check.
-        /// </param>
-        /// <param name="expected">
-        ///     The expected instance.
-        /// </param>
-        /// <exception cref="FluentCheckException">
-        ///     The actual value is not equal to the expected value.
-        /// </exception>
-        public static void IsEqualTo<T, TU>(IChecker<T, TU> checker, object expected)
-            where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
-        {
-            PerformEqualCheck(checker, expected);
-        }
-
-        /// <summary>
-        ///     Checks that a given instance is not considered to be equal to another expected instance. Throws
-        ///     <see cref="FluentCheckException" /> otherwise.
-        /// </summary>
-        /// <typeparam name="T">
-        ///     Checked type.
-        /// </typeparam>
-        /// <typeparam name="TU">
-        ///     Checker type.
-        /// </typeparam>
-        /// N
-        /// <param name="checker">The check.</param>
-        /// <param name="expected">The expected instance.</param>
-        /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
-        public static void IsNotEqualTo<T, TU>(IChecker<T, TU> checker, object expected)
-            where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
-        {
-            PerformEqualCheck(checker, expected, false, true);
-        }
 
         internal static ICheckLink<ICheck<double>> PerformEqualCheck(ICheck<double> check,
             double expected)
