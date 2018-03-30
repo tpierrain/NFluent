@@ -212,8 +212,7 @@ namespace NFluent.Tests
         {
             var actual = new List<List<int>> {new List<int> {4}};
             var expected = new List<List<int>> {new List<int> {8}};
-            Check.ThatCode(() => { Check.That(actual).IsEqualTo(expected); }).Throws<FluentCheckException>()
-                .AndWhichMessage().AsLines().ContainsExactly(
+            Check.ThatCode(() => { Check.That(actual).IsEqualTo(expected); }).IsAFaillingCheckWithMessage(
                     "",
                     "The checked enumerable is different from the expected one.",
                     "The checked enumerable:",
@@ -227,8 +226,7 @@ namespace NFluent.Tests
         {
             var actual = new List<List<object>> {new List<object> {4}};
             var expected = new List<List<object>> {new List<object> {null}};
-            Check.ThatCode(() => { Check.That(actual).IsEqualTo(expected); }).Throws<FluentCheckException>()
-                .AndWhichMessage().AsLines().ContainsExactly(
+            Check.ThatCode(() => { Check.That(actual).IsEqualTo(expected); }).IsAFaillingCheckWithMessage(
                     "",
                     "The checked enumerable is different from the expected one.",
                     "The checked enumerable:",

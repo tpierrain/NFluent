@@ -75,7 +75,12 @@ namespace NFluent.Kernel
 
         public string SutName => string.IsNullOrEmpty(this.forcedSutName) ? this.sutName : this.forcedSutName;
 
-        public ICheckLogic<T> FailsIf(Func<T, bool> predicate, string error, MessageOption noCheckedBlock)
+        public ICheckLogic<T> FailsIf(Func<T, bool> predicate, string error, MessageOption options)
+        {
+            return this.FailsIf(predicate, (x,y) => error, options);
+        }
+
+        public ICheckLogic<T> FailsIf(Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder, MessageOption noCheckedBlock)
         {
             if (this.failed)
             {
@@ -87,7 +92,7 @@ namespace NFluent.Kernel
                 return this;
             }
 
-            this.lastError = error;
+            this.lastError = errorBuilder(this.value, this);
             this.options = this.options | noCheckedBlock;
             return this;
         }
@@ -156,6 +161,9 @@ namespace NFluent.Kernel
                     block.Label(this.checkedLabel);
                 }
 
+                block.WithType(this.Option.HasFlag(MessageOption.WithType));
+                block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
+
                 if ((this.expectedKind == ValueKind.Values) && (this.value != null))
                 {
                     block.WithEnumerableCount(((IEnumerable) this.value).Count());
@@ -186,6 +194,8 @@ namespace NFluent.Kernel
                 else
                 {
                     block = fluentMessage.Expected(this.expected);
+                    block.WithType(this.Option.HasFlag(MessageOption.WithType));
+                    block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
                 }
 
                 if (!string.IsNullOrEmpty(this.Comparison))

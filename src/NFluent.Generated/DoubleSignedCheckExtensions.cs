@@ -38,8 +38,7 @@ namespace NFluent
         [Obsolete("Use IsStrictlyPositive instead.")]
         public static ICheckLink<ICheck<double>> IsPositive(this ICheck<double> check)
         {
-            var numberCheckStrategy = new NumberCheck<double>(check);
-            return numberCheckStrategy.IsStrictlyPositive();
+            return new NumberCheck<double>(check).IsStrictlyPositive();
         }
 
         /// <summary>
@@ -52,8 +51,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
         public static ICheckLink<ICheck<double>> IsStrictlyPositive(this ICheck<double> check)
         {
-            var numberCheckStrategy = new NumberCheck<double>(check);
-            return numberCheckStrategy.IsStrictlyPositive();
+            return new NumberCheck<double>(check).IsStrictlyPositive();
         }
 
         /// <summary>
@@ -66,8 +64,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is not positive or equal to zero.</exception>
         public static ICheckLink<ICheck<double>> IsPositiveOrZero(this ICheck<double> check)
         {
-            var numberCheckStrategy = new NumberCheck<double>(check);
-            return numberCheckStrategy.IsPositiveOrZero();
+            return new NumberCheck<double>(check).IsPositiveOrZero();
         }
 
         /// <summary>
@@ -81,8 +78,7 @@ namespace NFluent
         [Obsolete("Use IsStrictlyNegative instead.")]
         public static ICheckLink<ICheck<double>> IsNegative(this ICheck<double> check)
         {
-            var numberCheckStrategy = new NumberCheck<double>(check);
-            return numberCheckStrategy.IsStrictlyNegative();
+            return new NumberCheck<double>(check).IsStrictlyNegative();
         }
 
         /// <summary>
@@ -95,8 +91,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is not strictly negative.</exception>
         public static ICheckLink<ICheck<double>> IsStrictlyNegative(this ICheck<double> check)
         {
-            var numberCheckStrategy = new NumberCheck<double>(check);
-            return numberCheckStrategy.IsStrictlyNegative();
+            return new NumberCheck<double>(check).IsStrictlyNegative();
         }
 
         /// <summary>
@@ -109,8 +104,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The value is not negative or equal to zero.</exception>
         public static ICheckLink<ICheck<double>> IsNegativeOrZero(this ICheck<double> check)
         {
-            var numberCheckStrategy = new NumberCheck<double>(check);
-            return numberCheckStrategy.IsNegativeOrZero();
+            return new NumberCheck<double>(check).IsNegativeOrZero();
         }
 
     }

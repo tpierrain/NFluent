@@ -83,7 +83,7 @@ namespace NFluent.Messages
         /// </param>
         public void WithEnumerableCount(long itemsCount)
         {
-            throw new NotSupportedException();
+            throw new NotSupportedException("Cannot use enumeration for generic instance description!");
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace NFluent.Messages
         /// </param>
         public void WithHashCode(bool active = true)
         {
-            throw new NotSupportedException();
+            throw new NotSupportedException("Cannot use hash code for generic instance description!");
         }
 
         /// <summary>

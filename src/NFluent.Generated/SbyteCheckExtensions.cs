@@ -223,9 +223,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<sbyte>> IsEqualTo(this ICheck<sbyte> check, sbyte expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return EqualityHelper.PerformEqualCheck(checker, expected);
+            return EqualityHelper.PerformEqualCheck(check , expected);
         }
     }
 }

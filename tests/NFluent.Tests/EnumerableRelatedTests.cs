@@ -205,11 +205,10 @@ namespace NFluent.Tests
         {
             IEnumerable enumerable = new List<int> { 45, 43, 54, 666 };
 
-            Check.ThatCode(() => { Check.That(enumerable).Not.IsEqualTo(enumerable); }).Throws<FluentCheckException>()
-                .WithMessage(
-                    Environment.NewLine + "The checked enumerable is equal to the expected one whereas it must not."
-                    + Environment.NewLine + "The expected enumerable: different from" + Environment.NewLine
-                    + "\t[45, 43, 54, 666] of type: [System.Collections.Generic.List<int>]");
+            Check.ThatCode(() => { Check.That(enumerable).Not.IsEqualTo(enumerable); }).IsAFaillingCheckWithMessage("",
+                "The checked enumerable is equal to the expected one whereas it must not.",
+                    "The expected enumerable: different from",
+                    "\t[45, 43, 54, 666] of type: [System.Collections.Generic.List<int>]");
         }
 
         [Test]

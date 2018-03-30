@@ -54,15 +54,18 @@ namespace NFluent
                     "The checked enum type is not a set of flags. You must add [Flags] attribute to its declaration.")
                 .FailsIf(_ => Convert.ToInt64(flag) == 0, 
                     "Wrong chek: The expected flag is 0. You must use IsEqualTo, or a non zero flag value.")
-                .FailsIf(sut =>
-                {
-                    var sutAsInt = Convert.ToInt64(sut);
-                    var exptectedAsInt = Convert.ToInt64(flag);
-                    return (sutAsInt & exptectedAsInt) != exptectedAsInt;
-                }, "The checked enum does not have the expected flag.")
+                .FailsIf(sut => !sut.HasFlag(flag), "The checked enum does not have the expected flag.")
                 .Negates("The {0} does have the expected flag, whereas it should not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+        internal static bool HasFlag<T>(this T value, T flag) where T: struct
+
+        {
+            var sutAsInt = Convert.ToInt64(value);
+            var exptectedAsInt = Convert.ToInt64(flag);
+            return (sutAsInt & exptectedAsInt) == exptectedAsInt;
         }
     }
 }

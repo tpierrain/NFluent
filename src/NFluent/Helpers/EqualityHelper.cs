@@ -38,7 +38,7 @@ namespace NFluent.Helpers
         /// </typeparam>
         /// <typeparam name="TU">Checker type.</typeparam>
         /// <param name="checker">
-        ///     The checker.
+        ///     The check.
         /// </param>
         /// <param name="expected">
         ///     The other operand.
@@ -99,6 +99,53 @@ namespace NFluent.Helpers
                 .WithHashCode(withHash);
         }
 
+        internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(
+            ICheck<T> check,
+            TE expected,
+            bool useOperator = false,
+            bool negated = false)
+        {
+            var mode = Check.EqualMode;
+
+            var shouldFail = negated;
+            if (useOperator)
+            {
+                mode = negated ? EqualityMode.OperatorNeq : EqualityMode.OperatorEq;
+            }
+            ExtensibilityHelper.BeginCheck(check)
+                .Analyze((sut, test) =>
+                {
+                    test.Expecting(expected, useOperator ? "equals to (using operator==)" : "",
+                        "different from" + (useOperator ? " (using operator!=)" : ""));
+
+                    if (shouldFail != FluentEquals(sut, expected, mode))
+                    {
+                        return;
+                    }
+
+                    // shall we display the type as well?
+                    var options = MessageOption.None;
+                    if (sut == null || (expected != null && sut.GetType() != expected.GetType()))
+                    {
+                        options |= MessageOption.WithType;
+                    }
+
+                    // shall we display the hash too
+                    if (sut != null && expected != null && sut.GetType() == expected.GetType()
+                        && sut.ToStringProperlyFormatted() == expected.ToStringProperlyFormatted())
+                    {
+                        options |= MessageOption.WithHash;
+                    }
+
+                    test.Fails("The {0} is different from the {1}.", options);
+                })
+                .Negates("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock | MessageOption.WithType)
+                .EndCheck();
+
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+
         /// <summary>
         ///     Checks that a given instance is considered to be equal to another expected instance. Throws
         ///     <see cref="FluentCheckException" /> otherwise.
@@ -110,7 +157,7 @@ namespace NFluent.Helpers
         ///     Checker type.
         /// </typeparam>
         /// <param name="checker">
-        ///     The checker.
+        ///     The check.
         /// </param>
         /// <param name="expected">
         ///     The expected instance.
@@ -142,7 +189,7 @@ namespace NFluent.Helpers
         ///     Checker type.
         /// </typeparam>
         /// N
-        /// <param name="checker">The checker.</param>
+        /// <param name="checker">The check.</param>
         /// <param name="expected">The expected instance.</param>
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static void IsNotEqualTo<T, TU>(IChecker<T, TU> checker, object expected)
@@ -154,18 +201,19 @@ namespace NFluent.Helpers
             }
         }
 
-        internal static ICheckLink<ICheck<double>> PerformEqualCheck(IChecker<double, ICheck<double>> checker,
+        internal static ICheckLink<ICheck<double>> PerformEqualCheck(ICheck<double> check,
             double expected)
         {
-            var diff = Math.Abs(checker.Value - expected);
-            return checker.ExecuteCheck(() =>
+            ExtensibilityHelper.BeginCheck(check)
+                .Expecting(expected, "", "different from")
+                .Analyze((sut, test) =>
                 {
+                    var diff = Math.Abs(sut - expected);
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
                     if (diff == 0.0)
                     {
                         return;
                     }
-
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
                     var ratio = expected == 0.0 ? 1.0 : Math.Abs(diff / expected);
                     var mainLine = $"The {{0}} is different from the {{1}}";
@@ -181,28 +229,30 @@ namespace NFluent.Helpers
                         mainLine += " You may consider using IsCloseTo() for comparison.";
                     }
 
-                    var message = checker.BuildMessage(mainLine).Expected(expected);
-                    throw new FluentCheckException(message.ToString());
-                },
-                BuildErrorMessage(checker, expected, true, false));
+                    test.Fails(mainLine);
+                })
+                .Negates("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock | MessageOption.WithType)
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
-        internal static ICheckLink<ICheck<float>> PerformEqualCheck(IChecker<float, ICheck<float>> checker,
+        internal static ICheckLink<ICheck<float>> PerformEqualCheck(ICheck<float> check,
             float expected)
         {
-            var diff = Math.Abs(checker.Value - expected);
-            return checker.ExecuteCheck(() =>
+            ExtensibilityHelper.BeginCheck(check)
+                .Expecting(expected, "", "different from")
+                .Analyze((sut, test) =>
                 {
+                    var diff = Math.Abs(sut - expected);
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
                     if (diff == 0.0)
                     {
                         return;
                     }
-
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
                     var ratio = expected == 0.0 ? 1.0 : Math.Abs(diff / expected);
                     var mainLine = $"The {{0}} is different from the {{1}}";
-                    if (ratio < 0.001)
+                    if (ratio < 0.0001)
                     {
                         mainLine += $", with a difference of {diff:G2}";
                     }
@@ -214,10 +264,11 @@ namespace NFluent.Helpers
                         mainLine += " You may consider using IsCloseTo() for comparison.";
                     }
 
-                    var message = checker.BuildMessage(mainLine).Expected(checker.Value);
-                    throw new FluentCheckException(message.ToString());
-                },
-                BuildErrorMessage(checker, expected, true, false));
+                    test.Fails(mainLine);
+                })
+                .Negates("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock | MessageOption.WithType)
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         internal static ICheckLink<TU> PerformEqualCheck<T, TU, TE>(
@@ -233,7 +284,6 @@ namespace NFluent.Helpers
             if (useOperator)
             {
                 mode = negated ? EqualityMode.OperatorNeq : EqualityMode.OperatorEq;
-                shouldFail = false;
             }
 
             return checker.ExecuteCheck(() =>
@@ -255,30 +305,29 @@ namespace NFluent.Helpers
         {
             // ReSharper disable once RedundantNameQualifier
             var ret = Equals(instance, expected);
-            if (mode == EqualityMode.FluentEquals)
+            switch (mode)
             {
-                return ValueDifference(instance, "actual", expected, "expected").Count == 0;
-            }
+                case EqualityMode.FluentEquals:
+                    return ValueDifference(instance, "actual", expected, "expected").Count == 0;
+                case EqualityMode.OperatorEq:
+                case EqualityMode.OperatorNeq:
 
-            if (mode == EqualityMode.OperatorEq || mode == EqualityMode.OperatorNeq)
-            {
-                if (mode == EqualityMode.OperatorNeq)
-                {
-                    ret = !ret;
-                }
+                    var actualType = instance.GetTypeWithoutThrowingException();
+                    var expectedType = expected.GetTypeWithoutThrowingException();
+                    var operatorName = mode == EqualityMode.OperatorEq ? "op_Equality" : "op_Inequality";
+                    var ope = actualType
+                                  .GetMethod(operatorName, new[] {actualType, expectedType}) ?? expectedType
+                                  .GetMethod(operatorName, new[] {actualType, expectedType});
+                    if (ope != null)
+                    {
+                        ret = (bool) ope.Invoke(null, new[] {instance, expected});
+                        if (mode == EqualityMode.OperatorNeq)
+                        {
+                            ret = !ret;
+                        }
+                    }
 
-                var actualType = instance.GetTypeWithoutThrowingException();
-                var expectedType = expected.GetTypeWithoutThrowingException();
-                var operatorName = mode == EqualityMode.OperatorEq ? "op_Equality" : "op_Inequality";
-                var ope = actualType
-                              .GetMethod(operatorName, new[] {actualType, expectedType}) ?? expectedType
-                              .GetMethod(operatorName, new[] {actualType, expectedType});
-                if (ope == null)
-                {
-                    return ret;
-                }
-
-                ret = (bool) ope.Invoke(null, new[] {instance, expected});
+                    break;
             }
 
             return ret;

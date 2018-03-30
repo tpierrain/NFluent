@@ -79,8 +79,12 @@ namespace NFluent.Tests
             {
                 Check.That(FirstLetterLowerCase).IsEqualTo('b');
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked char is different from the expected one." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['b']");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked char is different from the expected one.",
+                    "The checked char:",
+                    "\t['a']",
+                    "The expected char:",
+                    "\t['b']");
         }
 
         [Test]
@@ -90,8 +94,11 @@ namespace NFluent.Tests
             {
                 Check.That(FirstLetterLowerCase).IsEqualTo('A');
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked char is different from the expected one." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['A']");
+            .IsAFaillingCheckWithMessage("", "The checked char is different from the expected one.",
+                    "The checked char:",
+                    "\t['a']",
+                    "The expected char:",
+                    "\t['A']");
         }
 
         [Test]
@@ -101,8 +108,11 @@ namespace NFluent.Tests
             {
                 Check.That(FirstLetterLowerCase).IsEqualTo("a");
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked char is different from the expected string." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a'] of type: [char]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"a\"] of type: [string]");
+            .IsAFaillingCheckWithMessage("","The checked char is different from the expected string.",
+                    "The checked char:",
+                    "\t['a'] of type: [char]",
+                    "The expected string:",
+                    "\t[\"a\"] of type: [string]");
         }
 
         [Test]

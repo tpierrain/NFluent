@@ -24,9 +24,6 @@ namespace NFluent.Kernel
     public class NumberCheck<TN> where TN : IComparable
     {
         private readonly ICheck<TN> check;
-        private const string MustBeZeroMessage = "The {0} is different from zero.";
-
-        private readonly Checker<TN, ICheck<TN>> checker;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberCheck{TN}" /> class.
@@ -36,7 +33,7 @@ namespace NFluent.Kernel
         {
             this.check = check;
             // ReSharper disable once SuspiciousTypeConversion.Global
-            this.checker = new Checker<TN, ICheck<TN>>((ICheckForExtensibility<TN, ICheck<TN>>) check);
+            new Checker<TN, ICheck<TN>>((ICheckForExtensibility<TN, ICheck<TN>>) check);
         }
 
         /// <summary>
@@ -62,16 +59,11 @@ namespace NFluent.Kernel
         /// <exception cref="FluentCheckException">The value is not strictly positive (i.e. greater than zero).</exception>
         public ICheckLink<ICheck<TN>> IsStrictlyPositive()
         {
-            return this.checker.ExecuteCheck(
-                () =>
-                    {
-                        if (Convert.ToDouble(this.checker.Value) <= 0)
-                        {
-                            throw new FluentCheckException(
-                                this.checker.BuildMessage("The {0} is not strictly positive (i.e. greater than zero).").ToString());
-                        }
-                    },
-                this.checker.BuildMessage("The {0} is strictly positive (i.e. greater than zero), whereas it must not.").ToString());
+            ExtensibilityHelper.BeginCheck(this.check)
+                .FailsIf(sut => Convert.ToDouble(sut) <=0, "The {0} is not strictly positive (i.e. greater than zero).")
+                .Negates("The {0} is strictly positive (i.e. greater than zero), whereas it must not.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(this.check);
         }
 
         /// <summary>
@@ -81,16 +73,11 @@ namespace NFluent.Kernel
         /// <exception cref="FluentCheckException">The value is not positive or equal to zero.</exception>
         public ICheckLink<ICheck<TN>> IsPositiveOrZero()
         {
-            return this.checker.ExecuteCheck(
-                () =>
-                {
-                    if (Convert.ToDouble(this.checker.Value) < 0)
-                    {
-                        throw new FluentCheckException(
-                            this.checker.BuildMessage("The {0} is not positive or equal to zero.").ToString());
-                    }
-                },
-                this.checker.BuildMessage("The {0} is positive or equal to zero, whereas it must not.").ToString());
+            ExtensibilityHelper.BeginCheck(this.check)
+                .FailsIf(sut => Convert.ToDouble(sut) <0, "The {0} is not positive or equal to zero.")
+                .Negates("The {0} is positive or equal to zero, whereas it must not.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(this.check);
         }
 
         /// <summary>
@@ -100,15 +87,11 @@ namespace NFluent.Kernel
         /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
         public ICheckLink<ICheck<TN>> IsStrictlyNegative()
         {
-            return this.checker.ExecuteCheck(
-                () =>
-                {
-                    if (Convert.ToDouble(this.checker.Value) >= 0)
-                    {
-                        throw new FluentCheckException(this.checker.BuildMessage("The {0} is not strictly negative.").ToString());
-                    }
-                },
-                this.checker.BuildMessage("The {0} is strictly negative, whereas it must not.").ToString());
+            ExtensibilityHelper.BeginCheck(this.check)
+                .FailsIf(sut => Convert.ToDouble(sut) >=0, "The {0} is not strictly negative.")
+                .Negates("The {0} is strictly negative, whereas it must not.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(this.check);
         }
 
         /// <summary>
@@ -118,39 +101,13 @@ namespace NFluent.Kernel
         /// <exception cref="FluentCheckException">The value is not negative or equal to zero.</exception>
         public ICheckLink<ICheck<TN>> IsNegativeOrZero()
         {
-            return this.checker.ExecuteCheck(
-                () =>
-                {
-                    if (Convert.ToDouble(this.checker.Value) > 0)
-                    {
-                        throw new FluentCheckException(this.checker.BuildMessage("The {0} is not negative or equal to zero.").ToString());
-                    }
-                },
-                this.checker.BuildMessage("The {0} is negative or equal to zero, whereas it must not.").ToString());
-        }
-
-        /// <summary>
-        /// Checks that the actual value is less than a comparand.
-        /// </summary>
-        /// <param name="comparand">
-        /// Comparand to compare the value to.
-        /// </param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">
-        /// The value is not less than the comparand.
-        /// </exception>
-        public ICheckLink<ICheck<TN>> IsLessThan(TN comparand)
-        {
             ExtensibilityHelper.BeginCheck(this.check)
-                .ComparingTo(comparand, "less than or equal to", "strictly greater than")
-                .FailsIf(sut => sut.CompareTo(comparand) > 0, "The {0} is greater than the {1}.")
-                .NegatesIf(sut => sut.CompareTo(comparand) == 0, "The {0} is equal to the {1}.")
-                .Negates("The {0} is less than the {1}.")
+                .FailsIf(sut => Convert.ToDouble(sut) >0, "The {0} is not negative or equal to zero.")
+                .Negates("The {0} is negative or equal to zero, whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);
         }
+
 
         /// <summary>
         /// Checks that the checked value is strictly less than the comparand.

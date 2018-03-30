@@ -67,8 +67,8 @@ namespace NFluent.Tests
             var otherRecursive = new List<object> {this.a};
             var interim = new List<object> {recursive};
             otherRecursive.Add(interim);
-            Check.ThatCode(() => Check.That(recursive).IsEqualTo(otherRecursive)).Throws<FluentCheckException>();
-            Check.ThatCode(() => Check.That(new List<object>{this.a, this.a}).IsEqualTo(recursive)).Throws<FluentCheckException>();
+            Check.ThatCode(() => Check.That(recursive).IsEqualTo(otherRecursive)).IsAFaillingCheck();
+            Check.ThatCode(() => Check.That(new List<object>{this.a, this.a}).IsEqualTo(recursive)).IsAFaillingCheck();
         }
     }
 }

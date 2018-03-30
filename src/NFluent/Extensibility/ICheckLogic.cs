@@ -41,7 +41,15 @@ namespace NFluent.Extensibility
         /// <summary>
         /// Forces the sut type
         /// </summary>
-        ForceType = 4
+        ForceType = 4,
+        /// <summary>
+        /// Add type info
+        /// </summary>
+        WithType = 8,
+        /// <summary>
+        /// Add hash for values
+        /// </summary>
+        WithHash = 16
     }
 
     /// <summary>
@@ -58,6 +66,15 @@ namespace NFluent.Extensibility
         /// <returns>Continuation object.</returns>
         ICheckLogic<T> FailsIf(Func<T, bool> predicate, string error, MessageOption option = MessageOption.None);
 
+        /// <summary>
+        /// Failing condition
+        /// </summary>
+        /// <param name="predicate">Predicate, returns true if test fails.</param>
+        /// <param name="errorBuilder">Error message builder function</param>
+        /// <param name="option"></param>
+        /// <returns>Continuation object.</returns>
+        ICheckLogic<T> FailsIf(Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder, MessageOption option = MessageOption.None);
+        
         /// <summary>
         ///     Ends check.
         /// </summary>

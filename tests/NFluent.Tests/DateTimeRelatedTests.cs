@@ -247,8 +247,12 @@ namespace NFluent.Tests
             {
                 Check.That(christmas2013).IsEqualTo(newYearsEve2014);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is different from the expected one." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]" + Environment.NewLine + "The expected date time:" + Environment.NewLine + "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked date time is different from the expected one.",
+                    "The checked date time:",
+                    "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time:",
+                    "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
         }
 
         [Test]
@@ -260,8 +264,12 @@ namespace NFluent.Tests
             {
                 Check.That(christmas2013).IsEqualTo("Batman");
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is different from the expected string." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]" + Environment.NewLine + "The expected string:" + Environment.NewLine + "\t[\"Batman\"] of type: [string]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked date time is different from the expected string.",
+                    "The checked date time:",
+                    "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]",
+                    "The expected string:",
+                    "\t[\"Batman\"] of type: [string]");
         }
 
         [Test]
@@ -273,8 +281,10 @@ namespace NFluent.Tests
             {
                 Check.That(christmas2013).Not.IsEqualTo(christmas2013);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked date time is equal to the expected one whereas it must not." + Environment.NewLine + "The expected date time: different from" + Environment.NewLine + "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked date time is equal to the expected one whereas it must not.",
+                    "The expected date time: different from",
+                    "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]");
         }
 
         [Test]

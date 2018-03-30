@@ -38,7 +38,7 @@ namespace NFluent.Tests
 
             var currentMode = Check.EqualMode;
             Check.EqualMode = EqualityMode.Equals;
-            Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).Throws<FluentCheckException>();
+            Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).IsAFaillingCheck();
             Check.EqualMode = currentMode;
         }
 
@@ -106,8 +106,10 @@ namespace NFluent.Tests
             {
                 Check.That(heroe).Not.IsEqualTo(otherReference);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is equal to the expected one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[Gandhi] of type: [NFluent.Tests.Person]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is equal to the expected one whereas it must not.",
+                    "The expected value: different from",
+                    "\t[Gandhi] of type: [NFluent.Tests.Person]");
         }
 
         [Test]
@@ -147,7 +149,7 @@ namespace NFluent.Tests
             {
                 Check.That(array).IsEqualTo(otherSimilarButNotEqualArray);
             })
-            .Throws<FluentCheckException>();
+            .IsAFaillingCheck();
         }
 
         [Test]
@@ -184,8 +186,12 @@ namespace NFluent.Tests
             {
                 Check.That(heroe).IsEqualTo(bastard);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[Gandhi]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[PolPot]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is different from the expected one.",
+                    "The checked value:",
+                    "\t[Gandhi]",
+                    "The expected value:",
+                    "\t[PolPot]");
         }
 
         [Test]
@@ -221,8 +227,12 @@ namespace NFluent.Tests
             {
                 Check.That(son).IsEqualTo(dad);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[John] of type: [NFluent.Tests.Child]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[John] of type: [NFluent.Tests.Person]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is different from the expected one.",
+                    "The checked value:",
+                    "\t[John] of type: [NFluent.Tests.Child]",
+                    "The expected value:",
+                    "\t[John] of type: [NFluent.Tests.Person]");
         }
 
         [Test]
@@ -235,7 +245,7 @@ namespace NFluent.Tests
             {
                 Check.That(uncle).IsEqualTo(dad);
             })
-            .Throws<FluentCheckException>().AndWhichMessage().Matches(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\\t\\[John\\] with HashCode: \\[.*\\]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\\t\\[John\\] with HashCode: \\[.*\\]");
+            .ThrowsAny().AndWhichMessage().Matches(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\\t\\[John\\] with HashCode: \\[.*\\]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\\t\\[John\\] with HashCode: \\[.*\\]");
         }
 
         #endregion

@@ -411,11 +411,13 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualFailsWhenRelevant()
         {
-            Check.ThatCode(() =>
-                {
-                    Check.That(Twenty).IsEqualTo(0);
-                })
-                .Throws<FluentCheckException>();
+            Check.ThatCode(() => { Check.That(Twenty).IsEqualTo(0); })
+                .IsAFaillingCheckWithMessage("",
+            "The checked value is different from the expected one.",
+                "The checked value:",
+                "\t[20]",
+            "The expected value:",
+                "\t[0]");
         }
 
         [Test]
@@ -442,8 +444,10 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).Not.IsEqualTo(Twenty);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is equal to the expected one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[20] of type: [int]");
+           .IsAFaillingCheckWithMessage("",
+                    "The checked value is equal to the expected one whereas it must not.",
+                    "The expected value: different from",
+                    "\t[20] of type: [int]");
         }
 
         [Test]
