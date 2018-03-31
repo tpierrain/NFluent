@@ -85,8 +85,8 @@ namespace NFluent.Tests
             var enumerable = new List<int> { 666 };
 
             Check.ThatCode(() => { Check.That(enumerable).HasSize(5); }).IsAFaillingCheckWithMessage(
-                Environment.NewLine + "The checked enumerable has 1 element instead of 5." + Environment.NewLine
-                + "The checked enumerable:" + Environment.NewLine + "\t[666]");
+                "", "The checked enumerable has 1 element instead of 5.",
+                "The checked enumerable:", "\t[666] (1 item)");
         }
 
         [Test]
@@ -103,8 +103,10 @@ namespace NFluent.Tests
             var enumerable = new List<int> { 666 };
 
             Check.ThatCode(() => { Check.That(enumerable).Not.HasSize(1); }).IsAFaillingCheckWithMessage(
-                Environment.NewLine + "The checked enumerable has 1 element which is unexpected." + Environment.NewLine
-                + "The checked enumerable:" + Environment.NewLine + "\t[666]");
+                "",
+            "The checked enumerable has 1 element which is unexpected.",
+            "The checked enumerable:",
+                "\t[666] (1 item)");
         }
 
         [Test]
@@ -113,8 +115,10 @@ namespace NFluent.Tests
             var enumerable = new List<int> { 45, 43, 54, 666 };
 
             Check.ThatCode(() => { Check.That(enumerable).HasSize(1); }).IsAFaillingCheckWithMessage(
-                Environment.NewLine + "The checked enumerable has 4 elements instead of 1." + Environment.NewLine
-                + "The checked enumerable:" + Environment.NewLine + "\t[45, 43, 54, 666]");
+                "",
+                "The checked enumerable has 4 elements instead of 1.",
+                "The checked enumerable:",
+                "\t[45, 43, 54, 666] (4 items)");
         }
 
         #endregion
@@ -135,8 +139,9 @@ namespace NFluent.Tests
             var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
 
             Check.ThatCode(() => { Check.That(persons).IsEmpty(); }).IsAFaillingCheckWithMessage(
-                Environment.NewLine + "The checked enumerable is not empty." + Environment.NewLine
-                + "The checked enumerable:" + Environment.NewLine + "\t[null, null, Thomas]");
+                "", "The checked enumerable is not empty.",
+                "The checked enumerable:",
+                "\t[null, null, Thomas] (3 items)");
         }
 
         [Test]
@@ -152,8 +157,8 @@ namespace NFluent.Tests
             var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
 
             Check.ThatCode(() => { Check.That(persons).IsNullOrEmpty(); }).IsAFaillingCheckWithMessage(
-                Environment.NewLine + "The checked enumerable contains elements, whereas it must be null or empty."
-                + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[null, null, Thomas]");
+                "", "The checked enumerable contains elements, whereas it must be null or empty."
+                ,"The checked enumerable:", "\t[null, null, Thomas] (3 items)");
         }
 
         [Test]
@@ -167,16 +172,14 @@ namespace NFluent.Tests
         public void NotIsNullOrEmptyFailsIfEmpty()
         {
             Check.ThatCode(() => { Check.That(EmptyEnumerable).Not.IsNullOrEmpty(); }).IsAFaillingCheckWithMessage(
-                    Environment.NewLine
-                    + "The checked enumerable is empty, where as it must contain at least one element.");
+                    "", "The checked enumerable is empty, where as it must contain at least one element.");
         }
 
         [Test]
         public void NotIsNullOrEmptyFailsIfNull()
         {
             Check.ThatCode(() => { Check.That((IEnumerable)null).Not.IsNullOrEmpty(); }).IsAFaillingCheckWithMessage(
-                    Environment.NewLine
-                    + "The checked enumerable is null, where as it must contain at least one element.");
+                    "", "The checked enumerable is null, where as it must contain at least one element.");
         }
 
         [Test]
@@ -193,7 +196,7 @@ namespace NFluent.Tests
             var persons = new List<Person>();
 
             Check.ThatCode(() => { Check.That(persons).Not.IsEmpty(); }).IsAFaillingCheckWithMessage(
-                Environment.NewLine + "The checked enumerable is empty, which is unexpected.");
+                "", "The checked enumerable is empty, which is unexpected.");
         }
 
         #endregion
@@ -215,9 +218,12 @@ namespace NFluent.Tests
             IEnumerable enumerable = new List<int> { 45, 43, 54, 666 };
 
             Check.ThatCode(() => { Check.That(enumerable).Not.IsNotEqualTo(null); }).IsAFaillingCheckWithMessage(
-                    Environment.NewLine + "The checked value is different from the expected one." + Environment.NewLine
-                    + "The checked value:" + Environment.NewLine + "\t[45, 43, 54, 666]" + Environment.NewLine
-                    + "The expected value:" + Environment.NewLine + "\t[null]");
+                    "",
+                    "The checked value is different from the expected one.",
+                    "The checked value:",
+                    "\t[45, 43, 54, 666] (4 items)",
+                    "The expected value:",
+                    "\t[null]");
         }
 
         [Test]
@@ -397,7 +403,7 @@ namespace NFluent.Tests
                 "",
                 "The checked enumerable does not have an element at index 0.",
                 "The checked enumerable:",
-                "\t[]");
+                "\t[] (0 item)");
         }
 
         [TestCase(-1)]
@@ -429,7 +435,7 @@ namespace NFluent.Tests
                     "",
                     "The checked enumerable does not have an element at index 2.",
                     "The checked enumerable:",
-                    "\t[42, 43]");
+                    "\t[42, 43] (2 items)");
         }
 
         #endregion
@@ -457,7 +463,7 @@ namespace NFluent.Tests
                     "",
                     "The checked enumerable is empty, whereas it must have one element.",
                     "The checked enumerable:",
-                    "\t[]");
+                    "\t[] (0 item)");
         }
 
         [Test]
@@ -481,7 +487,7 @@ namespace NFluent.Tests
                     "",
                     "The checked enumerable contains more than one element, whereas it must have one element only.",
                     "The checked enumerable:",
-                    "\t[42, 43, 1000]");
+                    "\t[42, 43, 1000] (3 items)");
 
         }
 
@@ -511,7 +517,7 @@ namespace NFluent.Tests
                 .IsAFaillingCheckWithMessage("",
                     "The checked enumerable does contain an element at index #1 that does not match the given predicate: (5).",
                     "The checked enumerable:" ,
-                    "\t[4, 5, 8]");
+                    "\t[4, 5, 8] (3 items)");
         }
 
         #endregion
@@ -540,7 +546,7 @@ namespace NFluent.Tests
                     string.Empty,
                     "The checked enumerable does not have an element at index 3.",
                     "The checked enumerable:",
-                    "\t[\"yes\", \"foo\", \"bar\"]");
+                    "\t[\"yes\", \"foo\", \"bar\"] (3 items)");
         }
 
         [Test]
@@ -567,7 +573,7 @@ namespace NFluent.Tests
                 .IsAFaillingCheckWithMessage("",
             "The checked enumerable does not contain any element that matches the given predicate.",
                 "The checked enumerable:",
-                "\t[\"yes\", \"foo\", \"bar\"]");
+                "\t[\"yes\", \"foo\", \"bar\"] (3 items)");
         }
 
         [Test]
@@ -584,7 +590,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(randomWords).Not.HasElementThatMatches((_) => _.StartsWith("ye")))
                 .IsAFaillingCheckWithMessage("","The checked enumerable contains element(s) that matches the given predicate, whereas it must not.",
                 "The checked enumerable:",
-                "\t[\"yes\", \"foo\", \"bar\"]");
+                "\t[\"yes\", \"foo\", \"bar\"] (3 items)");
         }
     }
 }

@@ -216,7 +216,7 @@ namespace NFluent.Tests
                     "",
                     "The checked enumerable is different from the expected one.",
                     "The checked enumerable:",
-                    "\t[4]",
+                    "\t[4] (1 item)",
                     "The expected enumerable:",
                     "\t[8]");
         }
@@ -230,7 +230,7 @@ namespace NFluent.Tests
                     "",
                     "The checked enumerable is different from the expected one.",
                     "The checked enumerable:",
-                    "\t[4]",
+                    "\t[4] (1 item)",
                     "The expected enumerable:",
                     "\t[null]");
         }

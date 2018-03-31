@@ -161,9 +161,9 @@ namespace NFluent.Kernel
                 block.WithType(this.Option.HasFlag(MessageOption.WithType));
                 block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
 
-                if ((this.expectedKind == ValueKind.Values) && (this.value != null))
+                if (this.value is IEnumerable list && !(this.value is string))
                 {
-                    block.WithEnumerableCount(((IEnumerable) this.value).Count());
+                    block.WithEnumerableCount(list.Count());
                 }
             }
             

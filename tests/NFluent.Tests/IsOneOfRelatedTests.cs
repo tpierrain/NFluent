@@ -16,6 +16,7 @@
 namespace NFluent.Tests
 {
     using ApiChecks;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -41,12 +42,12 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
             {
                 Check.That("fu").IsOneOf("foo", "bar", "foobar");
-            }).Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly("",
+            }).IsAFaillingCheckWithMessage("",
                 "The checked string is not one of the expected value(s).", 
             "The checked string:", 
             "\t[\"fu\"]",
-            "The expected value(s):", 
-            "\t[\"foo\", \"bar\", \"foobar\"]");
+            "The expected value(s): one of", 
+            "\t[\"foo\", \"bar\", \"foobar\"] (3 items)");
         }
 
         [Test]
@@ -55,12 +56,12 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
             {
                 Check.That("foo").Not.IsOneOf("foo", "bar", "foobar");
-            }).Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly("",
+            }).IsAFaillingCheckWithMessage("",
                 "The checked string should not be one of the expected value(s).", 
             "The checked string:", 
             "\t[\"foo\"]",
-            "The expected value(s):", 
-            "\t[\"foo\", \"bar\", \"foobar\"]");
+            "The expected value(s): none of", 
+            "\t[\"foo\", \"bar\", \"foobar\"] (3 items)");
         }
     }
 }

@@ -66,7 +66,7 @@ namespace NFluent.Tests
                 .IsAFaillingCheckWithMessage("",
                     "The checked dictionary does not contain the expected key.",
                     "The checked dictionary:",
-                    "\t[[demo, value]]",
+                    "\t[[demo, value]] (1 item)",
                     "Expected key:",
                     "\t[\"value\"]");
         }
@@ -87,7 +87,7 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
                     "The checked dictionary does contain the given key, whereas it must not.",
                     "The checked dictionary:",
-                    "\t[[demo, value]]",
+                    "\t[[demo, value]] (1 item)",
                     "Forbidden key:",
                     "\t[\"demo\"]");        }
 
@@ -107,7 +107,7 @@ namespace NFluent.Tests
                 .IsAFaillingCheckWithMessage("",
                     "The checked dictionary does not contain the expected value.",
                     "The checked dictionary:",
-                    "\t[[demo, value]]",
+                    "\t[[demo, value]] (1 item)",
                     "Expected value:",
                     "\t[\"demo\"]");
         }
@@ -128,7 +128,7 @@ namespace NFluent.Tests
                 .IsAFaillingCheckWithMessage("",
                     "The checked dictionary does contain the given value, whereas it must not.",
                     "The checked dictionary:",
-                    "\t[[demo, value]]",
+                    "\t[[demo, value]] (1 item)",
                     "Forbidden value:",
                     "\t[\"value\"]");
         }
@@ -153,7 +153,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(customDic).ContainsKey("missing")).IsAFaillingCheckWithMessage("",
                 "The checked enumerable does not contain the expected key.",
                 "The checked enumerable:",
-                "\t[[otherKey, 12], [key, 12]]",
+                "\t[[otherKey, 12], [key, 12]] (2 items)",
                 "Expected key:",
                 "\t[\"missing\"]");
 
@@ -171,7 +171,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(roDico).ContainsKey("missing")).IsAFaillingCheckWithMessage("",
             "The checked enumerable does not contain the expected key.",
                 "The checked enumerable:",
-                "\t[[demo, value]]",
+                "\t[[demo, value]] (1 item)",
            "Expected key:",
                 "\t[\"missing\"]");
         }
@@ -203,7 +203,7 @@ namespace NFluent.Tests
                 "",
                 "The checked dictionary does not contain the expected value for the given key.",
                 "The checked dictionary:",
-                "\t[[demo, value]]",
+                "\t[[demo, value]] (1 item)",
                 "Expected pair:",
                 "\t[[demo, 1]]");
 
@@ -214,7 +214,7 @@ namespace NFluent.Tests
                 "",
                 "The checked dictionary does not contain the expected key-value pair. The given key was not found.",
                 "The checked dictionary:",
-                "\t[[demo, value]]",
+                "\t[[demo, value]] (1 item)",
                 "Expected pair:",
                 "\t[[demo2, 1]]");
         }

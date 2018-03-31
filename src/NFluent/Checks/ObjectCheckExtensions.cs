@@ -23,6 +23,7 @@ namespace NFluent
     using Extensibility;
     using Extensions;
     using Helpers;
+    using Kernel;
 
     /// <summary>
     /// Provides check methods to be executed on an object instance.
@@ -72,7 +73,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, object expected)
         {
-            return EqualityHelper.PerformEqualCheck(check, expected, false);
+            return EqualityHelper.PerformEqualCheck(check, expected);
         }
 
         /// <summary>
@@ -84,20 +85,13 @@ namespace NFluent
         /// <returns>A check link</returns>
         public static ICheckLink<ICheck<T>> IsOneOf<T>(this ICheck<T> check, params T[] values)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return checker.ExecuteCheck(() =>
-                {
-                    var comparer = new EqualityHelper.EqualityComparer<T>();
-                    if (values.Any(value => comparer.Equals(checker.Value, value)))
-                    {
-                        return;
-                    }
-                    var message = checker.BuildMessage("The {0} is not one of the {1}.").ExpectedValues(values);
-                    throw new FluentCheckException(message.ToString());
-                }, 
-                checker.BuildMessage("The {0} should not be one of the {1}.").ExpectedValues(values).ToString()
-            );
+            var comparer = new EqualityHelper.EqualityComparer<T>();
+            ExtensibilityHelper.BeginCheck(check)
+                .ExpectingValues(values, values.Length, "one of", "none of")
+                .FailsIf(sut => !values.Any(value => comparer.Equals(sut, value)), "The {0} is not one of the {1}.")
+                .Negates("The {0} should not be one of the {1}.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>

@@ -23,9 +23,6 @@ namespace NFluent.Extensions
     using System.Linq;
 #endif
 
-    using NFluent.Extensibility;
-    using NFluent.Extensions;
-
     internal static class ObjectExtensions
     {
         /// <summary>
