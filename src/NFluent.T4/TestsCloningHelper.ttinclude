@@ -42,7 +42,7 @@ public static class TestsCloningHelper
 			// the file is reached.
 			while ((line = sr.ReadLine()) != null) 
 			{
-				line = line.Replace("// DoNotChangeOrRemoveThisLine", "#pragma warning disable 169\n\n        //// ---------------------- WARNING ----------------------\n        //// AUTO-GENERATED FILE WHICH SHOULD NOT BE MODIFIED!\n        //// To change this class, change the one that is used\n        //// as the golden source/model for this autogeneration\n        //// (i.e. the one dedicated to the integer values).\n        //// -----------------------------------------------------");
+				line = line.Replace("// DoNotChangeOrRemoveThisLine", "#pragma warning disable 169\r\n\r\n        //// ---------------------- WARNING ----------------------\r\n        //// AUTO-GENERATED FILE WHICH SHOULD NOT BE MODIFIED!\n        //// To change this class, change the one that is used\n        //// as the golden source/model for this autogeneration\r\n        //// (i.e. the one dedicated to the integer values).\r\n        //// -----------------------------------------------------");
 				line = line.Replace(originalSourceClassName, checkClassName);
 				line = line.Replace("<int>", "<" + config.TypeName + ">");
 				line = line.Replace("int ", config.TypeName + " ");
