@@ -72,13 +72,7 @@ namespace NFluent.Kernel
         /// <value>
         /// The runner to use for checking something on a given type.
         /// </value>
-        public IChecker<T, IStructCheck<T>> Checker
-        {
-            get
-            {
-                return this.structChecker;
-            }
-        }
+        public IChecker<T, IStructCheck<T>> Checker => this.structChecker;
 
         /// <summary>
         /// Creates a new instance of the same fluent check type, injecting the same Value property

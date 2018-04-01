@@ -89,22 +89,15 @@ namespace NFluent.Helpers
         /// <param name="checker">The instance to be checked.</param>
         /// <param name="expectedBaseType">The Type which is expected to be a base Type of the instance.</param>
         /// <exception cref="FluentCheckException">The instance is not in the inheritance hierarchy of the specified type.</exception>
-        public static void InheritsFrom<T>(IChecker<T, ICheck<T>> checker, Type expectedBaseType)
+        public static void InheritsFrom<T>(ICheck<T> checker, Type expectedBaseType)
         {
-            var instanceType = checker.Value.GetTypeWithoutThrowingException();
-            if (expectedBaseType.IsAssignableFrom(instanceType))
-            {
-                return;
-            }
-
-            var message =
-                checker.BuildMessage("The {0} does not have the expected inheritance.")
-                    .For("expression type")
-                    .On(instanceType)
-                    .And.Expected(expectedBaseType)
-                    .Comparison("inherits from");
-            
-            throw new FluentCheckException(message.ToString());
+            ExtensibilityHelper.BeginCheck(checker)
+                .SutNameIs("expression type")
+                .GetSutProperty(sut => sut.GetTypeWithoutThrowingException(), null)
+                .Expecting(expectedBaseType, "inherits from", "does not inherits from")
+                .FailsIf(sut => !expectedBaseType.IsAssignableFrom(sut), "The {0} does not have the expected inheritance.")
+                .Negates("The {0} does inherits from the {1} where as it must not")
+                .EndCheck();
         }
 
         /// <summary>

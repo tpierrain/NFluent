@@ -115,9 +115,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<T>> HasSameValueAs<T, TU>(this ICheck<T> check, TU expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            return EqualityHelper.PerformEqualCheck(checker, expected, true);
+            return EqualityHelper.PerformEqualCheck(check, expected, true);
         }
 
         /// <summary>
@@ -141,8 +139,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<T>> HasDifferentValueThan<T, TU>(this ICheck<T> check, TU expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return EqualityHelper.PerformEqualCheck(checker, expected, true, true);
+            return EqualityHelper.PerformInequalCheck(check, expected, true);
         }
 
         /// <summary>
@@ -199,18 +196,8 @@ namespace NFluent
         /// <returns>a check link object</returns>
         public static ICheckLink<ICheck<T>> InheritsFromType<T>(this ICheck<T> check, Type parentType)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-
-            var instanceType = checker.Value.GetTypeWithoutThrowingException();
-
-            return checker.ExecuteCheck(
-                () => IsInstanceHelper.InheritsFrom(checker, parentType),
-                string.Format(
-                    Environment.NewLine + "The checked expression is part of the inheritance hierarchy or of the same type than the specified one."
-                                        + Environment.NewLine + "Indeed, checked expression type:" + Environment.NewLine + "\t[{0}]"
-                                        + Environment.NewLine + "is a derived type of" + Environment.NewLine + "\t[{1}].",
-                    instanceType.ToStringProperlyFormatted(),
-                    parentType.ToStringProperlyFormatted()));
+            IsInstanceHelper.InheritsFrom(check, parentType);
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>

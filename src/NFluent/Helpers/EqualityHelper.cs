@@ -183,8 +183,7 @@ namespace NFluent.Helpers
         }
 
 
-        internal static ICheckLink<ICheck<double>> PerformEqualCheck(ICheck<double> check,
-            double expected)
+        internal static ICheckLink<ICheck<double>> PerformEqualCheck(ICheck<double> check, double expected)
         {
             ExtensibilityHelper.BeginCheck(check)
                 .Expecting(expected, "", "different from")

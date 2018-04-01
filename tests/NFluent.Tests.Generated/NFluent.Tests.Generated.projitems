@@ -9,9 +9,6 @@
     <Import_RootNamespace>NFluent.Tests.Generated</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)NumberTestsGenerator.txt4" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ByteRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DecimalRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DecimalSignedNumberRelatedTests.cs" />
@@ -29,5 +26,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)UintRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UlongRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UshortRelatedTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)NumberTestsGenerator.txt4" />
   </ItemGroup>
 </Project>

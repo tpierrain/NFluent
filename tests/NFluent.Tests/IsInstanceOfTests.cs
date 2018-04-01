@@ -16,7 +16,7 @@ namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
-
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -392,8 +392,7 @@ namespace NFluent.Tests
             {
                 Check.That(father).InheritsFrom<Child>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked expression type does not have the expected inheritance." + Environment.NewLine + "The checked expression type:" + Environment.NewLine + "\t[NFluent.Tests.Person]" + Environment.NewLine + "The expected expression type: inherits from" + Environment.NewLine + "\t[NFluent.Tests.Child]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked expression type does not have the expected inheritance." + Environment.NewLine + "The checked expression type:" + Environment.NewLine + "\t[NFluent.Tests.Person]" + Environment.NewLine + "The expected expression type: inherits from" + Environment.NewLine + "\t[NFluent.Tests.Child]");
         }
 
         [Test]
@@ -412,8 +411,12 @@ namespace NFluent.Tests
             {
                 Check.That(father).Not.InheritsFrom<Person>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked expression is part of the inheritance hierarchy or of the same type than the specified one." + Environment.NewLine + "Indeed, checked expression type:" + Environment.NewLine + "\t[NFluent.Tests.Person]" + Environment.NewLine + "is a derived type of" + Environment.NewLine + "\t[NFluent.Tests.Person].");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked expression type does inherits from the expected one where as it must not",
+                    "The checked expression type:",
+                    "\t[NFluent.Tests.Person]", 
+                    "The expected expression type: does not inherits from",
+                    "\t[NFluent.Tests.Person]");
         }
     }
 }

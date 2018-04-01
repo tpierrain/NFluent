@@ -125,6 +125,7 @@ namespace NFluent.Kernel
         public ICheckLogic<TU> GetSutProperty<TU>(Func<T, TU> sutExtractor, string newSutLabel)
         {
             var result = new CheckLogic<TU>(this.value == null ? default(TU) : sutExtractor(this.value), null, this.inverted) {checkedLabel = newSutLabel};
+            result.SutNameIs(this.sutName);
             if (this.failed != this.IsNegated)
             {
                 result.failed = this.failed;

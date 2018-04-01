@@ -37,12 +37,11 @@ namespace NFluent.Helpers
                 .FailsIfNull("The check succeeded whereas it should have failed.")
                 .FailsIf((sut) => !ExceptionHelper.IsFailedException(sut),
                     "The exception raised is not of the expected type")
-                .GetSutProperty((sut) => sut.Message, "error message")
+                .GetSutProperty((sut) => sut.Message.SplitAsLines(), "error message")
                 .SutNameIs("fluent check")
-                .Analyze((message, test) =>
+                .Analyze((messageLines, test) =>
                 {
                     var expectedLines = (lines.Length == 1) ? lines[0].SplitAsLines() : lines;
-                    var messageLines = message.SplitAsLines();
                     for (var i = 0; i < expectedLines.Count; i++)
                     {
                         if (expectedLines[i] == "*")
@@ -64,7 +63,7 @@ namespace NFluent.Helpers
 
                     if (messageLines.Count > expectedLines.Count)
                     {
-                        test.Fails($"Too many lines in the error message starting at #{expectedLines.Count-1}");
+                        test.Fails($"Too many lines in the error message starting at #{expectedLines.Count}");
                     }
                 }).Expecting(lines).
                 EndCheck();
