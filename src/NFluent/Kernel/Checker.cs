@@ -126,10 +126,12 @@ namespace NFluent.Kernel
             where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
             TSub checker = null;
-            this.ExecuteNotChainableCheck(() =>
+            void Caller()
             {
                 checker = checkLambdaAction();
-            }, negatedExceptionMessage);
+            }
+
+            this.ExecuteNotChainableCheck(Caller, negatedExceptionMessage);
 
             return this.BuildLinkWhich(checker);
         }

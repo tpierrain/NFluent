@@ -21,9 +21,7 @@ namespace NFluent
     using System.Linq;
 #endif
     using Extensibility;
-    using Extensions;
     using Helpers;
-    using Kernel;
 
     /// <summary>
     /// Provides check methods to be executed on an object instance.
@@ -213,17 +211,12 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked value is not null.</exception>
         public static ICheckLink<ICheck<T>> IsNull<T>(this ICheck<T> check) where T : class
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var negated = checker.Negated;
-            var value = checker.Value;
-
-            var message = IsNullImpl(value, negated);
-            if (!string.IsNullOrEmpty(message))
-            {
-                throw new FluentCheckException(checker.BuildMessage(message).For("object").ToString());
-            }
-
-            return checker.BuildChainingObject();
+            ExtensibilityHelper.BeginCheck(check)
+                .SutNameIs("object")
+                .FailsIf(sut => sut!= null, "The {0} must be null.")
+                .Negates("The {0} must not be null.", MessageOption.NoCheckedBlock)
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -239,19 +232,12 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked value is not null.</exception>
         public static ICheckLink<ICheck<T?>> IsNull<T>(this ICheck<T?> check) where T : struct
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.ExecuteCheck(
-                () =>
-                {
-                    if (checker.Value == null)
-                    {
-                        return;
-                    }
-
-                    var message = checker.BuildMessage("The checked nullable value must be null.").ToString();
-                    throw new FluentCheckException(message);
-                },
-                checker.BuildShortMessage("The checked nullable value is null whereas it must not.").ToString());
+            ExtensibilityHelper.BeginCheck(check)
+                .SutNameIs("nullable value")
+                .FailsIf(sut => sut!= null, "The {0} must be null.")
+                .Negates("The {0} is null whereas it must not.", MessageOption.NoCheckedBlock)
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -267,19 +253,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checked value is null.</exception>
         public static ICheckLink<ICheck<T?>> IsNotNull<T>(this ICheck<T?> check) where T : struct
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.ExecuteCheck(
-                () =>
-                {
-                    if (checker.Value != null)
-                    {
-                        return;
-                    }
-
-                    var message = checker.BuildShortMessage("The checked nullable value is null whereas it must not.").ToString();
-                    throw new FluentCheckException(message);
-                },
-                checker.BuildMessage("The checked nullable value must be null.").ToString());
+            return check.Not.IsNull();
         }
 
         /// <summary>
@@ -295,29 +269,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">Is the value is null.</exception>
         public static ICheckLink<ICheck<T>> IsNotNull<T>(this ICheck<T> check) where T : class
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var negated = checker.Negated;
-            var value = checker.Value;
-
-            var message = IsNullImpl(value, !negated);
-            if (!string.IsNullOrEmpty(message))
-            {
-                throw new FluentCheckException(checker.BuildMessage(message).For("object").On(value).ToString());
-            }
-
-            return checker.BuildChainingObject();
-        }
-
-        private static string IsNullImpl(object value, bool negated)
-        {
-            var isNull = (value == null);
- 
-            if (!negated)
-            {
-                return isNull ? null : "The {0} must be null.";
-            }
-
-            return isNull ? "The {0} must not be null." : null;
+            return check.Not.IsNull();
         }
 
         /// <summary>
@@ -356,45 +308,13 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not the same reference than the expected value.</exception>
         public static ICheckLink<ICheck<T>> IsSameReferenceAs<T, TU>(this ICheck<T> check, TU expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var negated = checker.Negated;
-            var value = checker.Value;
-
-            var message = SameReferenceImpl(expected, value, negated, out var comparison);
-            if (!string.IsNullOrEmpty(message))
-            {
-                throw new FluentCheckException(checker.BuildMessage(message)
-                                                             .For("object")
-                                                             .Expected(expected)
-                                                             .Comparison(comparison)
-                                                             .ToString());
-            }
-
-            return checker.BuildChainingObject();
-        }
-
-        private static string SameReferenceImpl(object expected, object value, bool negated, out string comparison)
-        {
-            string message;
-            comparison = null;
-
-            if (ReferenceEquals(value, expected) != negated)
-            {
-                return null;
-            }
-
-            if (negated)
-            {
-                message = "The {0} must have be an instance distinct from {1}.";
-                comparison = "distinct from";
-            }
-            else
-            {
-                message = "The {0} must be the same instance than {1}.";
-                comparison = "same instance than";
-            }
-
-            return message;
+            ExtensibilityHelper.BeginCheck(check)
+                .SutNameIs("object")
+                .ComparingTo(expected, "same instance as", "distinct from")
+                .FailsIf(sut => !ReferenceEquals(sut, expected), "The {0} must be the same instance as the {1}.")
+                .Negates("The {0} must be an instance distinct from the {1}.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -412,21 +332,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is the same instance than the comparand.</exception>
         public static ICheckLink<ICheck<T>> IsDistinctFrom<T, TU>(this ICheck<T> check, TU comparand)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var negated = !checker.Negated;
-            var value = checker.Value;
-
-            var message = SameReferenceImpl(comparand, value, negated, out var comparison);
-            if (!string.IsNullOrEmpty(message))
-            {
-                throw new FluentCheckException(checker.BuildMessage(message)
-                                                             .For("object")
-                                                             .Expected(comparand)
-                                                             .Comparison(comparison)
-                                                             .ToString());
-            }
-
-            return checker.BuildChainingObject();
+            return check.Not.IsSameReferenceAs(comparand);
         }
     }
 }

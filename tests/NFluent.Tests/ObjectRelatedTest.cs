@@ -17,7 +17,7 @@ using System;
 
 namespace NFluent.Tests
 {
-
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -53,8 +53,12 @@ namespace NFluent.Tests
             {
                 Check.That(new object()).IsSameReferenceAs(new object());
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked object must be the same instance than expected one." + Environment.NewLine + "The checked object:" + Environment.NewLine + "\t[System.Object]" + Environment.NewLine + "The expected object: same instance than" + Environment.NewLine + "\t[System.Object]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked object must be the same instance as the given one.",
+                    "The checked object:",
+                    "\t[System.Object]",
+                    "The expected object: same instance as",
+                    "\t[System.Object]");
         }
 
         [Test]
@@ -104,8 +108,8 @@ namespace NFluent.Tests
             {
                 Check.That((Mood?)null).IsNotNull();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked nullable value is null whereas it must not.");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked nullable value is null whereas it must not.");
         }
 
         [Test]
@@ -137,8 +141,10 @@ namespace NFluent.Tests
             {
                 Check.That(goodMood).Not.IsNotNull();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked nullable value must be null." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[NFluent.Tests.Mood]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked nullable value must be null.",
+                    "The checked nullable value:",
+                    "\t[NFluent.Tests.Mood]");
         }
         
         [Test]
@@ -148,8 +154,7 @@ namespace NFluent.Tests
             {
                 Check.That((Mood?)null).Not.IsNull();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked nullable value is null whereas it must not.");
+            .IsAFaillingCheckWithMessage("", "The checked nullable value is null whereas it must not.");
         }
 
         [Test]
@@ -159,8 +164,10 @@ namespace NFluent.Tests
             {
                 Check.That(new object()).IsNull();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked object must be null." + Environment.NewLine + "The checked object:" + Environment.NewLine + "\t[System.Object]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked object must be null.",
+                    "The checked object:",
+                    "\t[System.Object]");
         }
 
         [Test]
@@ -176,8 +183,8 @@ namespace NFluent.Tests
             {
                 Check.That((object)null).IsNotNull();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked object must not be null." + Environment.NewLine + "The checked object:" + Environment.NewLine + "\t[null]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked object must not be null.");
         }
 
         [Test]
@@ -189,8 +196,12 @@ namespace NFluent.Tests
             {
                 Check.That(test).IsDistinctFrom(test);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked object must have be an instance distinct from expected one." + Environment.NewLine + "The checked object:" + Environment.NewLine + "\t[System.Object]" + Environment.NewLine + "The expected object: distinct from" + Environment.NewLine + "\t[System.Object]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked object must be an instance distinct from the given one.",
+                    "The checked object:",
+                    "\t[System.Object]",
+                    "The expected object: distinct from",
+                    "\t[System.Object]");
         }
 
         [Test]
