@@ -7,6 +7,7 @@
 * async method/delegates
   * Check.ThatCode now supports _async_ methods/delegates transparently.
 * Check expression now provides the result as a string. I.e Check.That(true).IsTrue().ToString() returns "Success".
+
 ### Fixes
  * Check.ThatCode(...).Not.Throws\<T\>() may throw an InvalidCastException when thrown exception is not T.
  * Extension checks to Throw\<\>, ThrowType or ThrowAny raise an exception when used with Not as it does not make sense.
@@ -19,6 +20,7 @@
   * IsOnlyMadeOf: improved error messages
   * DateTime checks: revamped all messages
   * Enum: error message on enum types now use 'enum' instead of 'value'.
+  * IsInstanceOf: be more specific regarding types
 * Breaking: removed Failure method from IChecker interface
  
 ### GitHub Issues

@@ -638,8 +638,12 @@ namespace NFluent.Tests
             {
                 Check.That(one).Not.IsInstanceOf<sbyte?>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [sbyte?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1] of type: [sbyte?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [sbyte?]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [sbyte?] whereas it must not.",
+                    "The checked value:",
+                    "\t[1] of type: [sbyte?]",
+                    "The expected value: different from",
+                    "\tan instance of type: [sbyte?]");
         }
 
         [Test]
@@ -655,8 +659,12 @@ namespace NFluent.Tests
             {
                 Check.That((sbyte?) null).Not.IsInstanceOf<sbyte?>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [sbyte?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [sbyte?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [sbyte?]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [sbyte?] whereas it must not.",
+                    "The checked value:",
+                    "\t[null] of type: [sbyte?]",
+                    "The expected value: different from",
+                    "\tan instance of type: [sbyte?]");
         }
 
         [Test]
@@ -666,8 +674,12 @@ namespace NFluent.Tests
             {
                 Check.That((sbyte?) null).IsInstanceOf<string>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not an instance of [string]." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [sbyte?]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [string]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is not an instance of [string].",
+                    "The checked value:",
+                    "\t[null] of type: [sbyte?]",
+                    "The expected value:",
+                    "\tan instance of type: [string]");
         }
 
         #endregion
@@ -691,8 +703,12 @@ namespace NFluent.Tests
             {
                 Check.That(one).IsNotInstanceOf<sbyte?>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [sbyte?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1] of type: [sbyte?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [sbyte?]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [sbyte?] whereas it must not.",
+                    "The checked value:",
+                    "\t[1] of type: [sbyte?]",
+                    "The expected value: different from",
+                    "\tan instance of type: [sbyte?]");
         }
 
         [Test]
@@ -702,8 +718,12 @@ namespace NFluent.Tests
             {
                 Check.That((sbyte?) null).IsNotInstanceOf<sbyte?>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [sbyte?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [sbyte?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [sbyte?]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [sbyte?] whereas it must not.",
+                    "The checked value:",
+                    "\t[null] of type: [sbyte?]",
+                    "The expected value: different from",
+                    "\tan instance of type: [sbyte?]");
         }
 
         #endregion

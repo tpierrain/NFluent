@@ -69,14 +69,14 @@ namespace NFluent.Tests
                 Check.ThatCode(() => throw new Exception()).DoesNotThrow();
             })
             .ThrowsAny()
-            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code raised an exception, whereas it must not." + Environment.NewLine + "The raised exception:" + Environment.NewLine + "\t[{System.Exception}:"); // TODO: mimic StartsWith
+            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code raised an exception, whereas it must not." + Environment.NewLine + "The checked code: raised" + Environment.NewLine + "\t[{System.Exception}:"); // TODO: mimic StartsWith
         }
 
         [Test]
         public void ExpectedExceptionRaised()
         {
-            Check.ThatCode(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
-            Check.ThatCode(() => { throw new Exception(); }).ThrowsAny();
+            Check.ThatCode(() => throw new InvalidOperationException()).Throws<InvalidOperationException>();
+            Check.ThatCode(() => throw new Exception()).ThrowsAny();
         }
 
         [Test]
@@ -84,10 +84,14 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatCode(() => { throw new Exception(); }).Throws<InvalidOperationException>();
+                Check.ThatCode(() => throw new Exception()).Throws<InvalidOperationException>();
             })
-            .ThrowsAny()
-            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code raised an exception of a different type than expected." + Environment.NewLine + "The raised exception:" + Environment.NewLine + "\t[{System.Exception}:"); // TODO: mimic StartsWith
+            .IsAFaillingCheckWithMessage("",
+                    "The checked code raised an exception of a different type than expected.",
+                    "The checked code: raised exception",
+                    "*",
+                    "The expected code: raised", 
+                    "\tan instance of type: [System.InvalidOperationException]");
         }
 
         [Test]
@@ -113,7 +117,7 @@ namespace NFluent.Tests
                     var unused = new object();
                 }).Throws<Exception>();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected exception:" + Environment.NewLine + "\tan instance of type: [System.Exception]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected code: raised" + Environment.NewLine + "\tan instance of type: [System.Exception]");
         }
 
         [Test]

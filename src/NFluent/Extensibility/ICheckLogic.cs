@@ -53,9 +53,27 @@ namespace NFluent.Extensibility
     }
 
     /// <summary>
+    /// Minimal interface
+    /// </summary>
+    public interface ICheckLogicBase
+    {
+        /// <summary>
+        ///     Ends check.
+        /// </summary>
+        /// <remarks>At this point, exception is thrown.</remarks>
+        /// <returns>true if succesfull</returns>
+        bool EndCheck();
+
+        /// <summary>
+        /// Gets the failed status.
+        /// </summary>
+        bool Failed { get; }
+    }
+
+    /// <summary>
     ///     Provides method to ease coding of checks.
     /// </summary>
-    public interface ICheckLogic<out T>
+    public interface ICheckLogic<out T> : ICheckLogicBase
     {
         /// <summary>
         /// Failing condition
@@ -74,12 +92,6 @@ namespace NFluent.Extensibility
         /// <param name="option"></param>
         /// <returns>Continuation object.</returns>
         ICheckLogic<T> FailsIf(Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder, MessageOption option = MessageOption.None);
-        
-        /// <summary>
-        ///     Ends check.
-        /// </summary>
-        /// <remarks>At this point, exception is thrown.</remarks>
-        void EndCheck();
 
         /// <summary>
         ///     Specify expected value.

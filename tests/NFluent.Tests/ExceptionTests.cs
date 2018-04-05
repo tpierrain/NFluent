@@ -79,7 +79,10 @@ namespace NFluent.Tests
                 // ReSharper disable once ObjectCreationAsStatement
                 Check.ThatCode(() => { new object(); }).Throws<Exception>();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected exception:" + Environment.NewLine + "\tan instance of type: [System.Exception]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked code did not raise an exception, whereas it must.",
+                    "The expected code: raised",
+                    "\tan instance of type: [System.Exception]");
         }
     }
 }

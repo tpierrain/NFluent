@@ -638,8 +638,12 @@ namespace NFluent.Tests
             {
                 Check.That(one).Not.IsInstanceOf<byte?>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [byte?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1] of type: [byte?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [byte?]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [byte?] whereas it must not.",
+                    "The checked value:",
+                    "\t[1] of type: [byte?]",
+                    "The expected value: different from",
+                    "\tan instance of type: [byte?]");
         }
 
         [Test]
@@ -655,8 +659,12 @@ namespace NFluent.Tests
             {
                 Check.That((byte?) null).Not.IsInstanceOf<byte?>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [byte?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [byte?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [byte?]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [byte?] whereas it must not.",
+                    "The checked value:",
+                    "\t[null] of type: [byte?]",
+                    "The expected value: different from",
+                    "\tan instance of type: [byte?]");
         }
 
         [Test]
@@ -666,8 +674,12 @@ namespace NFluent.Tests
             {
                 Check.That((byte?) null).IsInstanceOf<string>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not an instance of [string]." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [byte?]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [string]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is not an instance of [string].",
+                    "The checked value:",
+                    "\t[null] of type: [byte?]",
+                    "The expected value:",
+                    "\tan instance of type: [string]");
         }
 
         #endregion
@@ -691,8 +703,12 @@ namespace NFluent.Tests
             {
                 Check.That(one).IsNotInstanceOf<byte?>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [byte?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1] of type: [byte?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [byte?]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [byte?] whereas it must not.",
+                    "The checked value:",
+                    "\t[1] of type: [byte?]",
+                    "The expected value: different from",
+                    "\tan instance of type: [byte?]");
         }
 
         [Test]
@@ -702,8 +718,12 @@ namespace NFluent.Tests
             {
                 Check.That((byte?) null).IsNotInstanceOf<byte?>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [byte?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [byte?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [byte?]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [byte?] whereas it must not.",
+                    "The checked value:",
+                    "\t[null] of type: [byte?]",
+                    "The expected value: different from",
+                    "\tan instance of type: [byte?]");
         }
 
         #endregion

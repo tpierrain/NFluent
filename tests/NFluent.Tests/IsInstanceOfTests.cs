@@ -94,8 +94,12 @@ namespace NFluent.Tests
             {
                 Check.That((object) null).IsInstanceOf<object>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not an instance of the expected type." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [object]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is not an instance of [object].",
+                    "The checked value:",
+                    "\t[null] of type: [object]",
+                    "The expected value:",
+                    "\tan instance of type: [object]");
         }
 
         [Test]
@@ -153,8 +157,12 @@ namespace NFluent.Tests
             {
                 Check.That(child).IsInstanceOf<Person>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not an instance of the expected type." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[Telemachus] of type: [NFluent.Tests.Child]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [NFluent.Tests.Person]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is not an instance of [NFluent.Tests.Person].",
+                    "The checked value:",
+                    "\t[Telemachus] of type: [NFluent.Tests.Child]",
+                    "The expected value:", 
+                    "\tan instance of type: [NFluent.Tests.Person]");
         }
 
         [Test]
@@ -166,8 +174,12 @@ namespace NFluent.Tests
             {
                 Check.That(oneHour).IsInstanceOf<string>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not an instance of the expected type." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[01:00:00] of type: [System.TimeSpan]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [string]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is not an instance of [string].",
+                    "The checked value:",
+                    "\t[01:00:00] of type: [System.TimeSpan]",
+                    "The expected value:",
+                    "\tan instance of type: [string]");
         }
 
         [Test]
@@ -177,8 +189,7 @@ namespace NFluent.Tests
             {
                 Check.That(IntObj).IsInstanceOf<Person>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not an instance of the expected type." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[23] of type: [int]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [NFluent.Tests.Person]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is not an instance of [NFluent.Tests.Person]." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[23] of type: [int]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [NFluent.Tests.Person]");
         }
 
         [Test]
@@ -188,8 +199,7 @@ namespace NFluent.Tests
             {
                 Check.That(StringObj).IsInstanceOf<Person>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not an instance of the expected type." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"for unit testing\"] of type: [string]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [NFluent.Tests.Person]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is not an instance of [NFluent.Tests.Person]." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"for unit testing\"] of type: [string]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [NFluent.Tests.Person]");
         }
 
         #endregion
@@ -249,8 +259,12 @@ namespace NFluent.Tests
             {
                 Check.That((int?) null).IsNotInstanceOf<int?>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [int?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [int?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [int?]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [int?] whereas it must not.",
+                    "The checked value:",
+                    "\t[null] of type: [int?]",
+                    "The expected value: different from",
+                    "\tan instance of type: [int?]");
         }
 
         [Test]
@@ -302,8 +316,12 @@ namespace NFluent.Tests
             {
                 Check.That(intObject).IsNotInstanceOf<int>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [int] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[23] of type: [int]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [int]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [int] whereas it must not.",
+                    "The checked value:",
+                    "\t[23] of type: [int]",
+                    "The expected value: different from",
+                    "\tan instance of type: [int]");
         }
 
         [Test]
@@ -315,8 +333,12 @@ namespace NFluent.Tests
             {
                 Check.That(statement).IsNotInstanceOf<string>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [string] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).\"] of type: [string]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [string]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [string] whereas it must not.",
+                    "The checked value:",
+                    "\t[\"If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).\"] of type: [string]",
+                    "The expected value: different from",
+                    "\tan instance of type: [string]");
         }
 
         [Test]
@@ -326,8 +348,12 @@ namespace NFluent.Tests
             {
                 Check.That(this.emptyIntegerArray).Not.IsInstanceOf<int[]>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [int[]] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] of type: [int[]]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [int[]]");
+            .IsAFaillingCheckWithMessage("",
+            "The checked value is an instance of [int[]] whereas it must not.",
+                    "The checked value:",
+                    "\t[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] (10 items) of type: [int[]]",
+                    "The expected value: different from",
+                    "\tan instance of type: [int[]]");
         }
 
         [Test]
@@ -337,8 +363,12 @@ namespace NFluent.Tests
             {
                 Check.That(this.emptyIntegerArray).Not.IsNotInstanceOf<int>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not an instance of the expected type." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] of type: [int[]]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [int]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is not an instance of [int].",
+                    "The checked value:",
+                    "\t[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] (10 items) of type: [int[]]",
+                    "The expected value:",
+                    "\tan instance of type: [int]");
         }
 
         [Test]
@@ -350,8 +380,12 @@ namespace NFluent.Tests
             {
                 Check.That(oneHour).IsNotInstanceOf<TimeSpan>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [System.TimeSpan] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[01:00:00] of type: [System.TimeSpan]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [System.TimeSpan]");
+            .IsAFaillingCheckWithMessage("",
+            "The checked value is an instance of [System.TimeSpan] whereas it must not.",
+                    "The checked value:",
+                    "\t[01:00:00] of type: [System.TimeSpan]",
+                    "The expected value: different from",
+                    "\tan instance of type: [System.TimeSpan]");
         }
 
         [Test]
@@ -363,8 +397,12 @@ namespace NFluent.Tests
             {
                 Check.That(oneHour).Not.IsInstanceOf<TimeSpan>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [System.TimeSpan] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[01:00:00] of type: [System.TimeSpan]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [System.TimeSpan]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [System.TimeSpan] whereas it must not.", 
+                    "The checked value:",
+                    "\t[01:00:00] of type: [System.TimeSpan]",
+                    "The expected value: different from",
+                    "\tan instance of type: [System.TimeSpan]");
         }
 
         #endregion

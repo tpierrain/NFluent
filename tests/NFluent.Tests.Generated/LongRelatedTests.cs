@@ -638,8 +638,12 @@ namespace NFluent.Tests
             {
                 Check.That(one).Not.IsInstanceOf<long?>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [long?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1] of type: [long?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [long?]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [long?] whereas it must not.",
+                    "The checked value:",
+                    "\t[1] of type: [long?]",
+                    "The expected value: different from",
+                    "\tan instance of type: [long?]");
         }
 
         [Test]
@@ -655,8 +659,12 @@ namespace NFluent.Tests
             {
                 Check.That((long?) null).Not.IsInstanceOf<long?>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [long?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [long?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [long?]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [long?] whereas it must not.",
+                    "The checked value:",
+                    "\t[null] of type: [long?]",
+                    "The expected value: different from",
+                    "\tan instance of type: [long?]");
         }
 
         [Test]
@@ -666,8 +674,12 @@ namespace NFluent.Tests
             {
                 Check.That((long?) null).IsInstanceOf<string>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not an instance of [string]." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [long?]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [string]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is not an instance of [string].",
+                    "The checked value:",
+                    "\t[null] of type: [long?]",
+                    "The expected value:",
+                    "\tan instance of type: [string]");
         }
 
         #endregion
@@ -691,8 +703,12 @@ namespace NFluent.Tests
             {
                 Check.That(one).IsNotInstanceOf<long?>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [long?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[1] of type: [long?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [long?]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [long?] whereas it must not.",
+                    "The checked value:",
+                    "\t[1] of type: [long?]",
+                    "The expected value: different from",
+                    "\tan instance of type: [long?]");
         }
 
         [Test]
@@ -702,8 +718,12 @@ namespace NFluent.Tests
             {
                 Check.That((long?) null).IsNotInstanceOf<long?>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [long?] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[null] of type: [long?]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [long?]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [long?] whereas it must not.",
+                    "The checked value:",
+                    "\t[null] of type: [long?]",
+                    "The expected value: different from",
+                    "\tan instance of type: [long?]");
         }
 
         #endregion

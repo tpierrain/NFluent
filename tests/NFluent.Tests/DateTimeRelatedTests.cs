@@ -312,8 +312,12 @@ namespace NFluent.Tests
             {
                 Check.That(christmas2013).IsInstanceOf<string>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not an instance of the expected type." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [string]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is not an instance of [string].",
+                    "The checked value:",
+                     "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]",
+                    "The expected value:",
+                    "\tan instance of type: [string]");
         }
 
         [Test]
@@ -325,8 +329,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).IsNotInstanceOf<DateTime>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [System.DateTime] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [System.DateTime]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [System.DateTime] whereas it must not.",
+                    "The checked value:",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]",
+                    "The expected value: different from",
+                    "\tan instance of type: [System.DateTime]");
         }
 
         [Test]
@@ -338,8 +346,12 @@ namespace NFluent.Tests
             {
                 Check.That(actual).Not.IsNotInstanceOf<string>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not an instance of the expected type." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [string]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is not an instance of [string].",
+                    "The checked value:",
+                    "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]",
+                    "The expected value:",
+                    "\tan instance of type: [string]");
         }
 
         [Test]

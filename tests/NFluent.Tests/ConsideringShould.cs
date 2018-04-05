@@ -148,11 +148,26 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(sut).Considering().Public.Properties.IsInstanceOfType(expected.GetType());
-            }).IsAFaillingCheckWithMessage("", "The expected one's property 'Test' is absent from the checked value.", "The expected property 'Test':", "\t[null]");
+            }).IsAFaillingCheckWithMessage("", "The expected one's property 'Test' is absent from the checked value.", "The expected value: property 'Test'", "\t[null]");
             Check.ThatCode(() =>
             {
                 Check.That(expected).Considering().Public.Properties.IsInstanceOfType(sut.GetType());
-            }).IsAFaillingCheckWithMessage("", "The checked value's property 'Test' is absent from the expected one.", "The checked property 'Test':", "\t[11]");
+            }).IsAFaillingCheckWithMessage("", "The checked value's property 'Test' is absent from the expected one.", "The checked value: property 'Test'", "\t[11]");
+        }
+
+        [Test]
+        public void FailWhenDifferentType()
+        {
+            var sut = new SutClass(2, 42);
+            var expected = new {TheProperty = "toto"};
+            Check.ThatCode(() =>
+            {
+                Check.That(sut).Considering().Public.Properties.IsInstanceOfType(expected.GetType());
+            }).IsAFaillingCheckWithMessage("",  "The checked value's property 'TheProperty' is of a different type than the expected one.",  
+                "The checked value: property 'TheProperty'",  
+                "\t[42] of type: [int]", 
+                "The expected value: property 'TheProperty'", 
+                "\tan instance of type: [string]");
         }
 
         [Test]

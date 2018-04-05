@@ -49,8 +49,12 @@ namespace NFluent.Tests
         public void NotIsInstanceOfThrows()
         {
             Check.ThatCode(() => Check.That(FirstLetterLowerCase).Not.IsInstanceOf<char>())
-                    .Throws<FluentCheckException>()
-                    .WithMessage(Environment.NewLine+ "The checked value is an instance of [char] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t['a'] of type: [char]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [char]");
+                    .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [char] whereas it must not.",
+                    "The checked value:",
+                    "\t['a'] of type: [char]",
+                    "The expected value: different from",
+                    "\tan instance of type: [char]");
 
         }
 
@@ -58,8 +62,12 @@ namespace NFluent.Tests
         public void IsNotInstanceOfThrows()
         {
             Check.ThatCode(() => Check.That(FirstLetterLowerCase).IsNotInstanceOf<char>())
-                    .Throws<FluentCheckException>()
-                    .WithMessage(Environment.NewLine+ "The checked value is an instance of [char] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t['a'] of type: [char]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [char]");
+                    .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [char] whereas it must not.",
+                    "The checked value:",
+                    "\t['a'] of type: [char]",
+                    "The expected value: different from",
+                    "\tan instance of type: [char]");
         }
 
         #endregion

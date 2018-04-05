@@ -27,33 +27,6 @@ namespace NFluent.Helpers
     /// </summary>
     internal static class IsInstanceHelper
     {
-        /// <summary>
-        /// Checks that a type is the same as the expected one.
-        /// </summary>
-        /// <param name="instanceType">The type of the instance to be checked.</param>
-        /// <param name="expectedType">The expected type for the instance to be checked.</param>
-        /// <param name="value">The value of the instance to be checked (may be a nullable instance).</param>
-        public static void IsSameType(Type instanceType, Type expectedType, object value)
-        {
-            if (instanceType != expectedType || (value == null && !instanceType.IsNullable()))
-            {
-                throw new FluentCheckException(BuildErrorMessageForNullable(instanceType, expectedType, value, false));
-            }
-        }
-
-        /// <summary>
-        /// Checks that a type is not the expected one.
-        /// </summary>
-        /// <param name="instanceType">The type of the instance to be checked.</param>
-        /// <param name="expectedType">The expected type for the instance to be checked.</param>
-        /// <param name="value">The value of the instance to be checked (may be a nullable instance).</param>
-        public static void IsDifferentType(Type instanceType, Type expectedType, object value)
-        {
-            if (instanceType == expectedType)
-            {
-                throw new FluentCheckException(BuildErrorMessageForNullable(instanceType, expectedType, value, true));
-            }
-        }
 
         /// <summary>
         /// Checks that an instance is of the given expected type.
@@ -147,30 +120,5 @@ namespace NFluent.Helpers
             return message.ToString();
         }
 
-        public static string BuildErrorMessageForNullable(Type instanceType, Type expectedType, object value, bool isSameType)
-        {
-            MessageBlock message;
-            if (isSameType)
-            {
-                message = FluentMessage.BuildMessage(
-                        $"The {{0}} is an instance of [{expectedType.ToStringProperlyFormatted()}] whereas it must not.")
-                    .For("value")
-                    .On(value)
-                    .OfType(instanceType)
-                    .And.ExpectedType(expectedType)
-                    .Comparison("different from").WithType();
-            }
-            else
-            {
-                message = FluentMessage.BuildMessage(
-                        $"The {{0}} is not an instance of [{expectedType.ToStringProperlyFormatted()}].")
-                    .For("value")
-                    .On(value)
-                    .OfType(instanceType)
-                    .And.ExpectedType(expectedType).WithType();
-            }
-
-            return message.ToString();
-        }
     }
 }

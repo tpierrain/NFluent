@@ -93,7 +93,7 @@ namespace NFluent
             var durationThreshold = new Duration(threshold, timeUnit);
 
             ExtensibilityHelper.BeginCheck(check).
-                GetSutProperty(sut =>  new Duration(sut.TotalProcessorTime, timeUnit), "The {0} cpu time:").
+                GetSutProperty(sut =>  new Duration(sut.TotalProcessorTime, timeUnit), "").
                 FailsIf((sut) =>
                     sut > durationThreshold, "The checked code consumed too much CPU time.").
                 Expecting(durationThreshold, "less than", "more than").
@@ -118,7 +118,7 @@ namespace NFluent
             where T : RunTrace
         {
             ExtensibilityHelper.BeginCheck(check).
-                GetSutProperty((sut) => sut.RaisedException, "The raised exception:").
+                GetSutProperty((sut) => sut.RaisedException, "raised").
                 SutNameIs("code").
                 FailsIf((sut)=> sut != null, "The {0} raised an exception, whereas it must not.").
                 Negates("The {0} did not raise an exception, whereas it must.").
@@ -149,9 +149,9 @@ namespace NFluent
 
         private static void CheckExceptionType(ICodeCheck<RunTrace> check, Type expecting)
         {
-            ExtensibilityHelper.BeginCheck(check).GetSutProperty((sut) => sut.RaisedException, "The raised exception:")
+            ExtensibilityHelper.BeginCheck(check).GetSutProperty((sut) => sut.RaisedException, "raised exception")
                 .SutNameIs("code")
-                .ExpectingType(expecting, expectedLabel: "The expected exception:", negatedLabel: "The forbidden exception:")
+                .ExpectingType(expecting, expectedLabel: "raised", negatedLabel: "should not raise")
                 .FailsIfNull("The {0} did not raise an exception, whereas it must.")
                 .FailsIf((sut) => !expecting.IsInstanceOfType(sut),
                     "The {0} raised an exception of a different type than expected.")
@@ -188,7 +188,7 @@ namespace NFluent
         /// </exception>
         public static ILambdaExceptionCheck<Exception> ThrowsAny(this ICodeCheck<RunTrace> check)
         {
-            ExtensibilityHelper.BeginCheck(check).GetSutProperty((sut) => sut.RaisedException, "The raised exception:")
+            ExtensibilityHelper.BeginCheck(check).GetSutProperty((sut) => sut.RaisedException, "raised exception:")
                 .SutNameIs("code")
                 .FailsIfNull("The {0} did not raise an exception, whereas it must.")
                 .Negates("The {0} raised an exception, whereas it must not.").EndCheck();

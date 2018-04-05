@@ -17,6 +17,7 @@ namespace NFluent.Kernel
 {
     using System.Collections;
     using Extensibility;
+    using Extensions;
     using Helpers;
 
 #if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
@@ -50,11 +51,12 @@ namespace NFluent.Kernel
         private MessageOption negatedOption;
         private string sutName;
         private readonly string forcedSutName;
-        private string checkedLabel;
         private ValueKind expectedKind = ValueKind.Value;
         private long expectedCount;
         private long index;
         private bool withGiven;
+        private string sutProperty;
+        private ICheckLogicBase child;
 
         public CheckLogic(T value, string label, bool inverted)
         {
@@ -74,6 +76,8 @@ namespace NFluent.Kernel
         public string Comparison => this.IsNegated ? this.negatedComparison: this.comparison;
 
         public string SutName => string.IsNullOrEmpty(this.forcedSutName) ? this.sutName : this.forcedSutName;
+
+        public bool Failed => this.failed || (this.child!= null && this.child.Failed);
 
         public ICheckLogic<T> FailsIf(Func<T, bool> predicate, string error, MessageOption options)
         {
@@ -124,7 +128,7 @@ namespace NFluent.Kernel
         // TODO: improve sut naming logic on extraction
         public ICheckLogic<TU> GetSutProperty<TU>(Func<T, TU> sutExtractor, string newSutLabel)
         {
-            var result = new CheckLogic<TU>(this.value == null ? default(TU) : sutExtractor(this.value), null, this.inverted) {checkedLabel = newSutLabel};
+            var result = new CheckLogic<TU>(this.value == null ? default(TU) : sutExtractor(this.value), null, this.inverted) {sutProperty = newSutLabel};
             result.SutNameIs(this.sutName);
             if (this.failed != this.IsNegated)
             {
@@ -135,16 +139,19 @@ namespace NFluent.Kernel
                 result.negatedOption = this.negatedOption;
                 result.options = this.options;
             }
+            this.child = result;
             return result;
         }
 
-        public void EndCheck()
+        public bool EndCheck()
         {
-            if (this.failed == this.IsNegated)
-            {
-                return;
-            }
+            this.child?.EndCheck();
 
+            if (this.Failed == this.IsNegated)
+            {
+                return true;
+            }
+            
             if (string.IsNullOrEmpty(this.LastError))
             {
                 throw new System.InvalidOperationException("Error message was not specified.");
@@ -154,13 +161,21 @@ namespace NFluent.Kernel
             if ((this.Option & MessageOption.NoCheckedBlock) == 0)
             {
                 var block = fluentMessage.On(this.value, this.index);
-                if (!string.IsNullOrEmpty(this.checkedLabel))
-                {
-                    block.Label(this.checkedLabel);
-                }
 
-                block.WithType(this.Option.HasFlag(MessageOption.WithType));
+                if (this.Option.HasFlag(MessageOption.WithType))
+                {
+                    block.WithType();
+                    if (this.value == null || typeof(T).IsNullable())
+                    {
+                        block.OfType(typeof(T));
+                    }
+                }
                 block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
+
+                if (!string.IsNullOrEmpty(this.sutProperty))
+                {
+                    block.Comparison(this.sutProperty);
+                }
 
                 if (this.value is IEnumerable list && !(this.value is string))
                 {
@@ -246,7 +261,8 @@ namespace NFluent.Kernel
         public ICheckLogic<T> ExpectingType(System.Type expectedType, string expectedLabel, string negatedExpLabel)
         {
             this.expectedKind = ValueKind.Type;
-            return this.Expecting(expectedType, expectedLabel: expectedLabel, negatedExpLabel: negatedExpLabel);
+            this.options |= MessageOption.WithType;
+            return this.Expecting(expectedType, comparisonMessage: expectedLabel, negatedComparison1: negatedExpLabel);
         }
 
         public ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparisonMessage = null, string negatedComparison = null, string expectedLabel = null, string negatedExpLabel = null)

@@ -16,7 +16,6 @@
 namespace NFluent
 {
     using System;
-    using System.Collections.Generic;
     using Extensibility;
     using Extensions;
     using Helpers;
@@ -35,50 +34,62 @@ namespace NFluent
         /// <returns>A check link</returns>
         public static ICheckLink<ICheck<T>> IsInstanceOfType<T>(this ICheck<T> check, Type type)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            ICheckLink<ICheck<T>> result;
-            if (typeof(T) == typeof(ReflectionWrapper))
-            {
-                var checkerWrapper = ExtensibilityHelper.ExtractChecker((ICheck<ReflectionWrapper>) check);
-                var sut = checkerWrapper.Value;
-                var expectedWrapper = ReflectionWrapper.BuildFromType(type, checkerWrapper.Value.Criteria);
-                result = checker.ExecuteCheck(() =>
+            ExtensibilityHelper.BeginCheck(check)
+                .Analyze((sut, test) =>
                 {
-                    var scanResult = new List<MemberMatch>();
-                    expectedWrapper.MapFields(sut, 1, (expected, actual, depth) =>
+                    var reflectionSut = sut as ReflectionWrapper;
+                    if (reflectionSut != null)
                     {
-                        if (actual != null && expected != null && actual.ValueType != expected.ValueType)
+                        var expectedWrapper = ReflectionWrapper.BuildFromType(type, reflectionSut.Criteria);
+                        expectedWrapper.MapFields(reflectionSut, 1, (expected, actual, depth) =>
                         {
-                            return true;
-                        }
+                            if (actual != null && expected != null && actual.ValueType != expected.ValueType)
+                            {
+                                if (actual.ValueType.IsPrimitive() || expected.ValueType.IsPrimitive())
+                                {
+                                    test.GetSutProperty(_ => actual.Value, actual.MemberLabel)
+                                        .Fails($"The {{0}}'s {actual.MemberLabel.DoubleCurlyBraces()} is of a different type than the {{1}}.")
+                                        .ExpectingType(expected.ValueType, actual.MemberLabel, actual.MemberLabel);
+                                    return false;
+                                }
 
-                        if (actual != null && expected != null && expected.ValueType == actual.ValueType)
-                        {
+                                return true;
+                            }
+
+                            if (actual != null && expected != null && expected.ValueType == actual.ValueType)
+                            {
+                                return false;
+                            }
+
+                            if (actual == null)
+                            {
+                                test.GetSutProperty(_ => expectedWrapper.Value, expected.MemberLabel.DoubleCurlyBraces())
+                                    .Expecting(expected, expected.MemberLabel)
+                                    .Fails($"The {{1}}'s {expected.MemberLabel.DoubleCurlyBraces()} is absent from the {{0}}.", MessageOption.NoCheckedBlock);
+                            }
+                            else if (expected == null)
+                            {
+                                test.GetSutProperty(_ => actual, actual.MemberLabel.DoubleCurlyBraces())
+                                    .Fails($"The {{0}}'s {actual.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.");
+                            }
                             return false;
-                        }
-
-                        scanResult.Add(new MemberMatch(expected, actual));
-                        return false;
-                    });
-                    if (scanResult.Count > 0)
-                    {
-                        var message = scanResult[0].BuildMessage(checker, false);
-                        throw new FluentCheckException(message.ToString());
+                        });
                     }
-                }, IsInstanceHelper.BuildErrorMessage(checker.Value, type, true));
-            }
-            else if (typeof(T).IsNullable())
-            {
-                result = checker.ExecuteCheck(
-                    () => IsInstanceHelper.IsSameType(typeof(T), type, checker.Value), 
-                    IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), type, checker.Value, true));
-            }
-            else
-            {
-                    result = checker.ExecuteCheck(() => IsInstanceHelper.IsInstanceOf(checker.Value, type),
-                        IsInstanceHelper.BuildErrorMessage(checker.Value, type, true));
-            }
-            return result;
+                    else if (typeof(T).IsNullable())
+                    {
+                        test.FailsIf(sut2 => typeof(T)!= type || (sut2 == null && !typeof(T).IsNullable()),
+                            $"The {{0}} is not an instance of [{type.ToStringProperlyFormatted()}].", MessageOption.WithType);
+                    }
+                    else
+                    {
+                        test.FailsIf(sut2 => sut2.GetTypeWithoutThrowingException() != type,
+                            $"The {{0}} is not an instance of [{type.ToStringProperlyFormatted()}].", sut != null ? MessageOption.WithType : MessageOption.None);
+                    }
+                })
+                .ExpectingType(type, "", "different from")
+                .Negates($"The {{0}} is an instance of [{type.ToStringProperlyFormatted()}] whereas it must not.", MessageOption.WithType)
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -90,53 +101,7 @@ namespace NFluent
         /// <returns>A check link</returns>
         public static ICheckLink<ICheck<T>> IsNoInstanceOfType<T>(this ICheck<T> check, Type type)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            ICheckLink<ICheck<T>> result;
-            if (typeof(T) == typeof(ReflectionWrapper))
-            {
-                var checkerWrapper = ExtensibilityHelper.ExtractChecker((ICheck<ReflectionWrapper>) check);
-                var sut = checkerWrapper.Value;
-                var expectedWrapper = ReflectionWrapper.BuildFromType(type, checkerWrapper.Value.Criteria);
-                result = checker.ExecuteCheck(() =>
-                {
-                    var scanResult = new List<MemberMatch>();
-                    expectedWrapper.MapFields(sut, 1, (expected, actual, depth) =>
-                    {
-                        if (actual != null && expected != null && actual.ValueType != expected.ValueType)
-                        {
-                            return true;
-                        }
-
-                        if (actual != null && expected != null && expected.ValueType == actual.ValueType)
-                        {
-                            return false;
-                        }
-
-                        scanResult.Add(new MemberMatch(expected, actual));
-                        return false;
-                    });
-                    if (scanResult.Count != 0)
-                    {
-                        return;
-                    }
-
-                    var message = IsInstanceHelper.BuildErrorMessage(checker.Value, type, true);
-                    throw new FluentCheckException(message);
-                }, IsInstanceHelper.BuildErrorMessage(checker.Value, type, false));
-            }
-            else if (typeof(T).IsNullable())
-            {
-                result = checker.ExecuteCheck(
-                    () => IsInstanceHelper.IsDifferentType(typeof(T), type, checker.Value),
-                    IsInstanceHelper.BuildErrorMessageForNullable(typeof(T), type, checker.Value, false));
-            }
-            else
-            {
-                result = checker.ExecuteCheck(
-                        () => IsInstanceHelper.IsNotInstanceOf(checker.Value, type),
-                        IsInstanceHelper.BuildErrorMessage(checker.Value, type, false));
-            }
-            return result;
+            return check.Not.IsInstanceOfType(type);
         }
     }
 }
