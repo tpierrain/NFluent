@@ -15,6 +15,8 @@
 
 namespace NFluent
 {
+    using System;
+    using System.Collections.Generic;
     using Extensibility;
     using Extensions;
     using Helpers;
@@ -27,21 +29,63 @@ namespace NFluent
         /// <summary>
         /// </summary>
         /// <param name="check"></param>
-        /// <param name="expected"></param>
+        /// <param name="expectedValue"></param>
         /// <returns></returns>
         public static ICheckLink<ICheck<ReflectionWrapper>> IsEqualTo<TU>(this ICheck<ReflectionWrapper> check,
-            TU expected)
+            TU expectedValue)
         {
+            bool disregardExtra = false;
+            ExtensibilityHelper.BeginCheck(check)
+                .Analyze((sut, test) =>
+                {
+                    var expectedWrapped = ReflectionWrapper.BuildFromInstance(typeof(TU), expectedValue, sut.Criteria);
+
+                    var result = new List<MemberMatch>();
+                    expectedWrapped.MapFields(sut, 1, (expected, actual, depth) =>
+                    {
+                        if (disregardExtra && expected == null)
+                        {
+                            return true;
+                        }
+
+                        if (actual?.Value == null || expected?.Value == null)
+                        {
+                            result.Add(new MemberMatch(expected, actual));
+                            return false;
+                        }
+
+                        if (depth <= 0 && expected.ValueType.ImplementsEquals())
+                        {
+                            result.Add(new MemberMatch(expected, actual));
+                            return false;
+                        }
+
+                        if (!expected.IsArray)
+                        {
+                            return true;
+                        }
+
+                        if (actual.IsArray && ((Array) expected.Value).Length == ((Array) actual.Value).Length)
+                        {
+                            return true;
+                        }
+
+                        result.Add(new MemberMatch(expected, actual));
+                        return false;
+                    });
+
+                    foreach (var match in result)
+                    {
+                        if (!match.DoValuesMatches)
+                        {
+                            match.Check(test);
+                        }
+                    }
+
+
+                }).EndCheck();
+
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var expectedWrapper = ReflectionWrapper.BuildFromInstance(typeof(TU), expected, checker.Value.Criteria);
-
-            var message =
-                ObjectFieldsCheckExtensions.CompareMembers(checker, false, false, expectedWrapper, checker.Value);
-            if (message != null)
-            {
-                throw new FluentCheckException(message);
-            }
-
             return checker.BuildChainingObject();
         }
 

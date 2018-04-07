@@ -50,7 +50,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => { Check.That((string) null).Contains("fails", "anyway"); })
                 .IsAFaillingCheckWithMessage("", "The checked string is null.",
-                             "The expected substring(s):" ,"\t[\"fails\", \"anyway\"]");
+                             "The expected substring(s):" ,"\t[\"fails\", \"anyway\"] (2 items)");
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace NFluent.Tests
                              "The checked string does not contain the expected value(s): \"C\", \"A\"" +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine + "The expected substring(s):" +
-                             Environment.NewLine + "\t[\"C\", \"a\", \"A\", \"z\"]");
+                             Environment.NewLine + "\t[\"C\", \"a\", \"A\", \"z\"] (4 items)");
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace NFluent.Tests
                              "The checked string does not contain the expected value(s): \"0\", \"4\"" +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine + "The expected substring(s):" +
-                             Environment.NewLine + "\t[\"c\", \"0\", \"4\"]");
+                             Environment.NewLine + "\t[\"c\", \"0\", \"4\"] (3 items)");
         }
 
         [Test]
@@ -96,7 +96,7 @@ namespace NFluent.Tests
                              "The checked string contains unauthorized value(s): \"c\", \"z\", \"u\"" +
                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine +
-                             "The unauthorized substring(s):" + Environment.NewLine + "\t[\"c\", \"z\", \"u\"]");
+                             "The unauthorized substring(s):" + Environment.NewLine + "\t[\"c\", \"z\", \"u\"] (3 items)");
         }
 
         [Test]

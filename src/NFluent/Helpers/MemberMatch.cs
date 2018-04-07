@@ -94,5 +94,41 @@ namespace NFluent.Helpers
 
             return result;
         }
+
+        public void Check(ICheckLogic<ReflectionWrapper> checkLogic)
+        {
+            if (this.DoValuesMatches)
+            {
+                return;
+            }
+
+            if (!this.ExpectedFieldFound)
+            {
+                var expectedLabel = this.Expected.MemberLabel.DoubleCurlyBraces();
+                checkLogic
+                    .Fails($"The {{1}}'s {expectedLabel} is absent from the {{0}}.", MessageOption.NoCheckedBlock|MessageOption.WithType)
+                    .Expecting(this.Expected.Value, expectedLabel, expectedLabel);
+            }
+            else if (!this.ActualFieldFound)
+            {
+                checkLogic
+                    .GetSutProperty(_ => this.actual.Value, this.actual.MemberLabel)
+                    .Fails($"The {{0}}'s {this.actual.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.", MessageOption.WithType);
+            }
+            else
+            {
+                var expectedLabel = this.Expected.MemberLabel.DoubleCurlyBraces();
+                var withType = this.actual.Value.GetTypeWithoutThrowingException() != this.Expected.Value.GetTypeWithoutThrowingException();
+                var withHash = !withType && this.actual?.Value != null && this.Expected?.Value != null &&
+                               this.actual.Value.ToString() == this.Expected.Value.ToString();
+                var mode = (withType ? MessageOption.WithType :
+                    MessageOption.None) | (withHash ? MessageOption.WithHash : MessageOption.None);
+                checkLogic
+                    .GetSutProperty(_=>this.actual.Value, this.actual.MemberLabel)
+                    .Fails($"The {{0}}'s {expectedLabel} does not have the expected value.", mode)
+                    .Expecting(this.Expected.Value);
+                
+            }
+        }
     }
 }

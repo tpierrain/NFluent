@@ -180,7 +180,7 @@ namespace NFluent
         private static void ContainsLogic(string[] values, ICheckLogic<string> block)
         {
             block.FailsIfNull()
-                .Expecting(values, expectedLabel: "The {0} substring(s):",negatedLabel: "The unauthorized substring(s):")
+                .ExpectingValues(values, expectedLabel: "The {0} substring(s):",negatedLabel: "The unauthorized substring(s):", count: values.Length)
                 .Analyze((sut, test) =>
                     {
                        var missingItems = new List<string>();

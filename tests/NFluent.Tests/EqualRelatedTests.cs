@@ -203,7 +203,12 @@ namespace NFluent.Tests
             {
                 Check.That(first).IsEqualTo(null);
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is not null whereas it must." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"Son of a test\"]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[null]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked string is not null whereas it must.",
+                    "The checked string:",
+                    "\t[\"Son of a test\"]",
+                    "The expected value:",
+                    "\t[null]");
         }
 
         [Test]

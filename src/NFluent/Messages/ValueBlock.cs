@@ -119,7 +119,6 @@ namespace NFluent.Messages
         public void WithType(Type forcedType)
         {
             this.type = forcedType;
-            this.includeType = true;
         }
 
         /// <summary>

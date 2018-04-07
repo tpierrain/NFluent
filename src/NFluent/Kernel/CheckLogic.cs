@@ -19,78 +19,73 @@ namespace NFluent.Kernel
     using Extensibility;
     using Extensions;
     using Helpers;
-
 #if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
     using System;
 #endif
 
     internal class CheckLogic<T> : ICheckLogic<T>
     {
-        private enum ValueKind
-        {
-            Value,
-            Type,
-            Values
-        }
+        private readonly string forcedSutName;
 
         private readonly T value;
-        private readonly bool inverted;
-        private string lastError;
+        private ICheckLogicBase child;
+        private string comparison;
+        private object expected;
+        private long expectedCount;
+        private ValueKind expectedKind = ValueKind.Value;
+        private System.Type expectedType;
         private bool failed;
+        private long index;
+        private string label;
+        private string lastError;
+
+        private string negatedComparison;
+        private string negatedError;
+        private bool negatedFailed;
+        private string negatedLabel;
+        private MessageOption negatedOption;
+        private MessageOption options = MessageOption.None;
+        private string sutName;
+        private string sutProperty;
 
         private bool withExpected;
-        private object expected;
-        private string label;
-        private string negatedLabel;
-        private string comparison;
-        private MessageOption options = MessageOption.None;
-        
-        private string negatedComparison;
-        private bool negatedFailed;
-        private string negatedError;
-        private MessageOption negatedOption;
-        private string sutName;
-        private readonly string forcedSutName;
-        private ValueKind expectedKind = ValueKind.Value;
-        private long expectedCount;
-        private long index;
         private bool withGiven;
-        private string sutProperty;
-        private ICheckLogicBase child;
 
         public CheckLogic(T value, string label, bool inverted)
         {
             this.value = value;
-            this.inverted = inverted;
+            this.IsNegated = inverted;
             this.forcedSutName = label;
         }
 
-        private bool IsNegated => this.inverted;
+        private bool IsNegated { get; }
 
-        public string LastError => (this.IsNegated ? this.negatedError : this.lastError);
+        public string LastError => this.IsNegated ? this.negatedError : this.lastError;
 
-        public string Label => (this.IsNegated ? this.negatedLabel : this.label);
+        public string Label => this.IsNegated ? this.negatedLabel : this.label;
 
-        public MessageOption Option => (this.IsNegated ? this.negatedOption : this.options);
+        public MessageOption Option => this.IsNegated ? this.negatedOption : this.options;
 
-        public string Comparison => this.IsNegated ? this.negatedComparison: this.comparison;
+        public string Comparison => this.IsNegated ? this.negatedComparison : this.comparison;
 
         public string SutName => string.IsNullOrEmpty(this.forcedSutName) ? this.sutName : this.forcedSutName;
 
-        public bool Failed => this.failed || (this.child!= null && this.child.Failed);
+        public bool Failed => this.failed || this.child != null && this.child.Failed;
 
         public ICheckLogic<T> FailsIf(Func<T, bool> predicate, string error, MessageOption options)
         {
-            return this.FailsIf(predicate, (x,y) => error, options);
+            return this.FailsIf(predicate, (x, y) => error, options);
         }
 
-        public ICheckLogic<T> FailsIf(Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder, MessageOption noCheckedBlock)
+        public ICheckLogic<T> FailsIf(Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder,
+            MessageOption noCheckedBlock)
         {
             if (this.failed)
             {
                 return this;
             }
-            this.failed =  predicate(this.value);
+
+            this.failed = predicate(this.value);
             if (!this.failed || this.IsNegated)
             {
                 return this;
@@ -103,8 +98,7 @@ namespace NFluent.Kernel
 
         public ICheckLogic<T> Fails(string error, MessageOption noCheckedBlock)
         {
-
-            this.failed =  true;
+            this.failed = true;
             if (!this.IsNegated)
             {
                 this.lastError = error;
@@ -116,7 +110,7 @@ namespace NFluent.Kernel
 
         public ICheckLogic<T> FailsIfNull(string error)
         {
-            return this.FailsIf((sut) => sut == null, error, MessageOption.NoCheckedBlock | MessageOption.ForceType);
+            return this.FailsIf(sut => sut == null, error, MessageOption.NoCheckedBlock);
         }
 
         public ICheckLogic<T> SutNameIs(string name)
@@ -128,7 +122,11 @@ namespace NFluent.Kernel
         // TODO: improve sut naming logic on extraction
         public ICheckLogic<TU> GetSutProperty<TU>(Func<T, TU> sutExtractor, string newSutLabel)
         {
-            var result = new CheckLogic<TU>(this.value == null ? default(TU) : sutExtractor(this.value), null, this.inverted) {sutProperty = newSutLabel};
+            var result =
+                new CheckLogic<TU>(this.value == null ? default(TU) : sutExtractor(this.value), null, this.IsNegated)
+                {
+                    sutProperty = newSutLabel
+                };
             result.SutNameIs(this.sutName);
             if (this.failed != this.IsNegated)
             {
@@ -139,6 +137,7 @@ namespace NFluent.Kernel
                 result.negatedOption = this.negatedOption;
                 result.options = this.options;
             }
+
             this.child = result;
             return result;
         }
@@ -151,7 +150,7 @@ namespace NFluent.Kernel
             {
                 return true;
             }
-            
+
             if (string.IsNullOrEmpty(this.LastError))
             {
                 throw new System.InvalidOperationException("Error message was not specified.");
@@ -165,11 +164,14 @@ namespace NFluent.Kernel
                 if (this.Option.HasFlag(MessageOption.WithType))
                 {
                     block.WithType();
-                    if (this.value == null || typeof(T).IsNullable())
-                    {
-                        block.OfType(typeof(T));
-                    }
                 }
+
+                if (this.value == null || typeof(T).IsNullable())
+                {
+                    block.OfType(typeof(T));
+                    fluentMessage.For(typeof(T));
+                }
+
                 block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
 
                 if (!string.IsNullOrEmpty(this.sutProperty))
@@ -182,16 +184,11 @@ namespace NFluent.Kernel
                     block.WithEnumerableCount(list.Count());
                 }
             }
-            
-            if (!PolyFill.IsNullOrWhiteSpace(this.SutName))
-            {
-                fluentMessage.For(this.SutName);
-            }
             else
             {
                 fluentMessage.For(typeof(T));
             }
-            
+
             if (this.withExpected && (this.Option & MessageOption.NoExpectedBlock) == MessageOption.None)
             {
                 MessageBlock block;
@@ -211,6 +208,12 @@ namespace NFluent.Kernel
                     block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
                 }
 
+                if (this.expected == null)
+                {
+                    block.OfType(this.expectedType);
+                    fluentMessage.For(this.expectedType);
+                }
+
                 if (!string.IsNullOrEmpty(this.Comparison))
                 {
                     block.Comparison(this.Comparison);
@@ -222,16 +225,16 @@ namespace NFluent.Kernel
             }
             else if (this.withGiven)
             {
-                MessageBlock block = fluentMessage.WithGivenValue(this.expected);
+                var block = fluentMessage.WithGivenValue(this.expected);
                 if (!string.IsNullOrEmpty(this.Comparison))
                 {
                     block.Comparison(this.Comparison);
                 }
             }
 
-            if ((this.options & MessageOption.ForceType) == MessageOption.ForceType)
+            if (!PolyFill.IsNullOrWhiteSpace(this.SutName))
             {
-                fluentMessage.For(typeof(T));
+                fluentMessage.For(this.SutName);
             }
 
             throw ExceptionHelper.BuildException(fluentMessage.ToString());
@@ -249,6 +252,7 @@ namespace NFluent.Kernel
         public ICheckLogic<T> Expecting<TU>(TU newExpectedValue, string comparisonMessage = null,
             string negatedComparison1 = null, string expectedLabel = null, string negatedExpLabel = null)
         {
+            this.expectedType = newExpectedValue == null ? typeof(TU) : newExpectedValue.GetType();
             this.withExpected = true;
             this.expected = newExpectedValue;
             this.comparison = comparisonMessage;
@@ -262,10 +266,11 @@ namespace NFluent.Kernel
         {
             this.expectedKind = ValueKind.Type;
             this.options |= MessageOption.WithType;
-            return this.Expecting(expectedType, comparisonMessage: expectedLabel, negatedComparison1: negatedExpLabel);
+            return this.Expecting(expectedType, expectedLabel, negatedExpLabel);
         }
 
-        public ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparisonMessage = null, string negatedComparison = null, string expectedLabel = null, string negatedExpLabel = null)
+        public ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparisonMessage = null,
+            string negatedComparison = null, string expectedLabel = null, string negatedExpLabel = null)
         {
             this.expectedKind = ValueKind.Values;
             this.expectedCount = count;
@@ -314,8 +319,16 @@ namespace NFluent.Kernel
             {
                 return this;
             }
+
             action(this.value, this);
             return this;
+        }
+
+        private enum ValueKind
+        {
+            Value,
+            Type,
+            Values
         }
     }
 }
