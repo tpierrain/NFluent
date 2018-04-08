@@ -48,8 +48,8 @@ namespace NFluent
                                 if (actual.ValueType.IsPrimitive() || expected.ValueType.IsPrimitive())
                                 {
                                     test.GetSutProperty(_ => actual.Value, actual.MemberLabel)
-                                        .Fails($"The {{0}}'s {actual.MemberLabel.DoubleCurlyBraces()} is of a different type than the {{1}}.")
-                                        .ExpectingType(expected.ValueType, actual.MemberLabel, actual.MemberLabel);
+                                        .Fails("The {0} is of a different type than the {1}.")
+                                        .ExpectingType(expected.ValueType, "", "");
                                     return false;
                                 }
 
@@ -63,14 +63,14 @@ namespace NFluent
 
                             if (actual == null)
                             {
-                                test.GetSutProperty(_ => expectedWrapper.Value, expected.MemberLabel.DoubleCurlyBraces())
-                                    .Expecting(expected, expected.MemberLabel)
-                                    .Fails($"The {{1}}'s {expected.MemberLabel.DoubleCurlyBraces()} is absent from the {{0}}.", MessageOption.NoCheckedBlock);
+                                test.GetSutProperty(_ => expectedWrapper.Value, expected.MemberLabel)
+                                    .Expecting(expected)
+                                    .Fails("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock);
                             }
                             else if (expected == null)
                             {
                                 test.GetSutProperty(_ => actual, actual.MemberLabel.DoubleCurlyBraces())
-                                    .Fails($"The {{0}}'s {actual.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.");
+                                    .Fails("The {0} is absent from the {1}.");
                             }
                             return false;
                         });

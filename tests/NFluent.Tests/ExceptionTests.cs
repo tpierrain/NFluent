@@ -53,11 +53,15 @@ namespace NFluent.Tests
         public void DidNotRaiseExpected()
         {
             Check.ThatCode(() =>
-            {
-                Check.ThatCode(() => { throw new Exception(); }).Throws<InvalidOperationException>();
-            })
-            .ThrowsAny()
-            .AndWhichMessage().Contains(Environment.NewLine+ "The checked code raised an exception of a different type than expected."); // TODO: reproduce Contains
+                {
+                    Check.ThatCode(() => { throw new Exception(); }).Throws<InvalidOperationException>();
+                })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked code's raised exception is of a different type than expected.",
+                    "The checked code's raised exception:",
+                    "*",
+                    "The expected code's raised exception:",
+                    "\tan instance of type: [System.InvalidOperationException]");
         }
 
         [Test]
@@ -81,7 +85,7 @@ namespace NFluent.Tests
             })
             .IsAFaillingCheckWithMessage("",
                     "The checked code did not raise an exception, whereas it must.",
-                    "The expected code: raised",
+                    "The expected code's raised exception:",
                     "\tan instance of type: [System.Exception]");
         }
     }

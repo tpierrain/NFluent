@@ -106,14 +106,15 @@ namespace NFluent.Helpers
             {
                 var expectedLabel = this.Expected.MemberLabel.DoubleCurlyBraces();
                 checkLogic
-                    .Fails($"The {{1}}'s {expectedLabel} is absent from the {{0}}.", MessageOption.NoCheckedBlock|MessageOption.WithType)
-                    .Expecting(this.Expected.Value, expectedLabel, expectedLabel);
+                    .GetSutProperty(_ => this.Expected.Value, this.Expected.MemberLabel)
+                    .Fails("The {1}'s is absent from the {0}.", MessageOption.NoCheckedBlock|MessageOption.WithType)
+                    .Expecting(this.Expected.Value);
             }
             else if (!this.ActualFieldFound)
             {
                 checkLogic
                     .GetSutProperty(_ => this.actual.Value, this.actual.MemberLabel)
-                    .Fails($"The {{0}}'s {this.actual.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.", MessageOption.WithType);
+                    .Fails("The {0} is absent from the {1}.", MessageOption.WithType);
             }
             else
             {
@@ -125,7 +126,7 @@ namespace NFluent.Helpers
                     MessageOption.None) | (withHash ? MessageOption.WithHash : MessageOption.None);
                 checkLogic
                     .GetSutProperty(_=>this.actual.Value, this.actual.MemberLabel)
-                    .Fails($"The {{0}}'s {expectedLabel} does not have the expected value.", mode)
+                    .Fails("The {0} does not have the expected value.", mode)
                     .Expecting(this.Expected.Value);
                 
             }

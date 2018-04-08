@@ -149,13 +149,14 @@ namespace NFluent
 
         private static void CheckExceptionType(ICodeCheck<RunTrace> check, Type expecting)
         {
-            ExtensibilityHelper.BeginCheck(check).GetSutProperty((sut) => sut.RaisedException, "raised exception")
-                .SutNameIs("code")
-                .ExpectingType(expecting, expectedLabel: "raised", negatedLabel: "should not raise")
-                .FailsIfNull("The {0} did not raise an exception, whereas it must.")
+            ExtensibilityHelper.BeginCheck(check).SutNameIs("code")
+               .GetSutProperty((sut) => sut.RaisedException, "raised exception")
+                .ExpectingType(expecting, expectedLabel: "", negatedLabel: "should not be")
+                .FailsIfNull("The checked code did not raise an exception, whereas it must.")
                 .FailsIf((sut) => !expecting.IsInstanceOfType(sut),
-                    "The {0} raised an exception of a different type than expected.")
-                .Negates("The {0} raised an exception of the forbidden type.").EndCheck();
+                    "The {0} is of a different type than expected.")
+                .Negates("The {0} raised an exception of the forbidden type.")
+                .EndCheck();
         }
 
         /// <summary>
@@ -188,11 +189,12 @@ namespace NFluent
         /// </exception>
         public static ILambdaExceptionCheck<Exception> ThrowsAny(this ICodeCheck<RunTrace> check)
         {
-            ExtensibilityHelper.BeginCheck(check).GetSutProperty((sut) => sut.RaisedException, "raised exception:")
+            ExtensibilityHelper.BeginCheck(check)
+                .Negates("The checked code raised an exception, whereas it must not.")
                 .SutNameIs("code")
-                .FailsIfNull("The {0} did not raise an exception, whereas it must.")
-                .Negates("The {0} raised an exception, whereas it must not.").EndCheck();
-
+                .GetSutProperty((sut) => sut.RaisedException, "raised exception")
+                .FailsIfNull("The checked code did not raise an exception, whereas it must.")
+                .EndCheck();
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
 
             if (checker.Negated)

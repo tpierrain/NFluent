@@ -49,7 +49,7 @@ namespace NFluent.Tests
 
             Check.ThatCode(() =>
                 checker.BeginCheck().FailsIfNull().GetSutProperty(point => point.x, "x coordinate")
-                    .FailsIf(i => i > 0, "Should be positive").EndCheck()).IsAFaillingCheckWithMessage("", "The checked value is null.");
+                    .FailsIf(i => i > 0, "Should be positive").EndCheck()).IsAFaillingCheckWithMessage("", "The checked value's x coordinate is null.");
         }
     }
 }

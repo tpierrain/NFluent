@@ -125,9 +125,11 @@ namespace NFluent.Kernel
             var result =
                 new CheckLogic<TU>(this.value == null ? default(TU) : sutExtractor(this.value), null, this.IsNegated)
                 {
-                    sutProperty = newSutLabel
+                    sutProperty =$""
                 };
-            result.SutNameIs(this.sutName);
+
+            var sutname = string.IsNullOrEmpty(this.sutName) ? "value" : this.sutName;
+            result.SutNameIs($"{sutname}'s {newSutLabel}");
             if (this.failed != this.IsNegated)
             {
                 result.failed = this.failed;

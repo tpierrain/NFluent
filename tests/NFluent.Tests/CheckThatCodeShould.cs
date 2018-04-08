@@ -68,8 +68,11 @@ namespace NFluent.Tests
             {
                 Check.ThatCode(() => throw new Exception()).DoesNotThrow();
             })
-            .ThrowsAny()
-            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code raised an exception, whereas it must not." + Environment.NewLine + "The checked code: raised" + Environment.NewLine + "\t[{System.Exception}:"); // TODO: mimic StartsWith
+            .IsAFaillingCheckWithMessage("",
+                    "The checked code raised an exception, whereas it must not.",
+                    "The checked code's raised exception:", 
+                    "*"
+                    ); // TODO: mimic StartsWith
         }
 
         [Test]
@@ -87,10 +90,10 @@ namespace NFluent.Tests
                 Check.ThatCode(() => throw new Exception()).Throws<InvalidOperationException>();
             })
             .IsAFaillingCheckWithMessage("",
-                    "The checked code raised an exception of a different type than expected.",
-                    "The checked code: raised exception",
+                    "The checked code's raised exception is of a different type than expected.",
+                    "The checked code's raised exception:",
                     "*",
-                    "The expected code: raised", 
+                    "The expected code's raised exception:", 
                     "\tan instance of type: [System.InvalidOperationException]");
         }
 
@@ -117,7 +120,10 @@ namespace NFluent.Tests
                     var unused = new object();
                 }).Throws<Exception>();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must." + Environment.NewLine + "The expected code: raised" + Environment.NewLine + "\tan instance of type: [System.Exception]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked code did not raise an exception, whereas it must.",
+                    "The expected code's raised exception:",
+                    "\tan instance of type: [System.Exception]");
         }
 
         [Test]
