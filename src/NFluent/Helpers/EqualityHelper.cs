@@ -66,15 +66,7 @@ namespace NFluent.Helpers
         public static void FillEqualityErrorMessage(FluentMessage msg, object instance, object expected, bool negated,
             bool usingOperator)
         {
-            string operatorText;
-            if (usingOperator)
-            {
-                operatorText = negated ? "different from (using operator!=)" : "equals to (using operator==)";
-            }
-            else
-            {
-                operatorText = negated ? "different from" : string.Empty;
-            }
+            var operatorText = negated ? "different from" : string.Empty;
 
             if (negated)
             {
@@ -262,11 +254,6 @@ namespace NFluent.Helpers
             var mode = Check.EqualMode;
 
             var shouldFail = negated;
-            if (useOperator)
-            {
-                mode = negated ? EqualityMode.OperatorNeq : EqualityMode.OperatorEq;
-            }
-
             return checker.ExecuteCheck(() =>
                 {
                     if (shouldFail == FluentEquals(checker.Value, expected, mode))

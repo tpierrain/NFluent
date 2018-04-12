@@ -66,6 +66,16 @@ namespace NFluent.Kernel
         }
 
         /// <inheritdoc />
+        public ICheckPlusAnd IgnoreExtra
+        {
+            get
+            {
+                this.Value.Criteria.IgnoreExtra = true;
+                return this;
+            }
+        }
+
+        /// <inheritdoc />
         public ICheckPlusAnd Excluding(params string[] field)
         {
             this.Value.Criteria.SetExclusion(field);

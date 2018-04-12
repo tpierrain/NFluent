@@ -83,6 +83,8 @@ namespace NFluent
 
         public BindingFlags BindingFlagsForProperties => this.bindingFlagsForProperties;
 
+        public bool IgnoreExtra { get; set; }
+
         public bool IsNameExcluded(string name)
         {
             return this.exclusion?.Contains(name) ?? false;

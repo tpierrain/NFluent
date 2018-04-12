@@ -19,7 +19,6 @@ namespace NFluent.Tests
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
-    using Helpers;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -42,16 +41,12 @@ namespace NFluent.Tests
                                 };
             var instance2 = new FakeClass();
 
-            try
+            Check.ThatCode(()=>
             {
                 Check.That(instance2).HasFieldsWithSameValues(instance1); // throws NullReferenceException
                 Check.That(instance1).HasFieldsWithSameValues(instance2); // throws FluentCheckException
                 throw new Exception("Checks should fail.");
-            }
-            catch (FluentCheckException)
-            {
-                
-            }
+            }).IsAFaillingCheck();
 
         }
 
@@ -337,7 +332,7 @@ namespace NFluent.Tests
 
                 Check.That(modelA).HasFieldsWithSameValues(modelB);
             })
-            .Throws<FluentCheckException>();
+            .IsAFaillingCheck();
         }
 
         // Issue #111
@@ -377,8 +372,12 @@ namespace NFluent.Tests
 
                 Check.That(args).HasFieldsWithSameValues(new { Price = 100, Quantity = 150, Way = Way.Sell });
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value's field 'Price' does not have the expected value." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[100] of type: [decimal]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[100] of type: [int]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value's autoproperty 'Price' (field '<Price>k__BackingField') does not have the expected value.",
+                    "The checked value's autoproperty 'Price' (field '<Price>k__BackingField'):",
+                    "\t[100] of type: [decimal]",
+                    "The expected value's autoproperty 'Price' (field '<Price>k__BackingField'):",
+                    "\t[100] of type: [int]");
         }
 
         // issue #127, request for byte array support

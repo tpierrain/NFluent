@@ -15,6 +15,7 @@
 
 namespace NFluent.Helpers
 {
+    using System;
     using Extensibility;
     using Extensions;
 
@@ -58,7 +59,10 @@ namespace NFluent.Helpers
 
                         if (messageLines[i] != expectedLines[i])
                         {
-                            test.Fails($"Line {i} is different from what is expected");
+                            test.Fails($"Line {i} is different from what is expected"+Environment.NewLine+
+                                       "Exp:"+expectedLines[i].DoubleCurlyBraces()+Environment.NewLine+
+                                       "Act:"+messageLines[i].DoubleCurlyBraces());
+                            break;
                         }
                     }
 
@@ -79,7 +83,8 @@ namespace NFluent.Helpers
         public static ICheckLink<ICodeCheck<RunTrace>> IsAFaillingCheck(this ICodeCheck<RunTrace> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .GetSutProperty((sut) => sut.RaisedException, "raised exception").SutNameIs("fluent check")
+                .GetSutProperty((sut) => sut.RaisedException, "raised exception")
+                .SutNameIs("fluent check")
                 .FailsIfNull()
                 .FailsIf((sut) => !ExceptionHelper.IsFailedException(sut),
                     "The exception raised is not of the expected type").

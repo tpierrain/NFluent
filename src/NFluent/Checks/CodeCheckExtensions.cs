@@ -119,8 +119,8 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check).
                 SutNameIs("code").
-                GetSutProperty((sut) => sut.RaisedException, "raised exception").
-                FailsIf((sut)=> sut != null, "The checked code raised an exception, whereas it must not.").
+                GetSutProperty(sut => sut.RaisedException, "raised exception").
+                FailsIf(sut=> sut != null, "The checked code raised an exception, whereas it must not.").
                 Negates("The checked code did not raise an exception, whereas it must.", MessageOption.NoCheckedBlock).
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

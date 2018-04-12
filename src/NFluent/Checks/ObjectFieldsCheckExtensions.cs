@@ -16,11 +16,9 @@
 namespace NFluent
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Reflection;
     using Extensibility;
-    using Extensions;
     using Helpers;
     using Kernel;
 
@@ -29,10 +27,6 @@ namespace NFluent
     /// </summary>
     public static class ObjectFieldsCheckExtensions
     {
-        private static readonly Criteria FlagsForFields =
-            new Criteria(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-
-
         /// <summary>
         ///     Checks that the actual actualValue has fields equals to the expected actualValue ones.
         /// </summary>
@@ -107,15 +101,8 @@ namespace NFluent
         /// </remarks>
         public static ICheckLink<ICheck<T>> HasFieldsWithSameValues<T, TU>(this ICheck<T> check, TU expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var message = CheckMemberEquality(checker, checker.Value, expected, checker.Negated, FlagsForFields, true);
-
-            if (message != null)
-            {
-                throw new FluentCheckException(message);
-            }
-
-            return checker.BuildChainingObject();
+            check.Considering().All.Fields.IgnoreExtra.IsEqualTo(expected);
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -142,94 +129,25 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> HasNotFieldsWithSameValues<T>(this ICheck<T> check, object expected)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var negated = !checker.Negated;
-
-            var message = CheckMemberEquality(checker, checker.Value, expected, negated, FlagsForFields, true);
-            if (message != null)
-            {
-                throw new FluentCheckException(message);
-            }
-
-            return checker.BuildChainingObject();
+            var fieldsWrapper = ReflectionWrapper.BuildFromInstance(typeof(T), checker.Value,
+                new Criteria(BindingFlags.Instance));
+            var checkWithConsidering = new CheckWithConsidering(fieldsWrapper, checker.Negated).All.Fields;
+            ReflectionWrapperChecks.FieldEqualTest(checkWithConsidering, expected, false);
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
-
 
         /// <summary>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="check"></param>
         /// <returns></returns>
-        public static IMembersSelection Considering<T>(this ICheck<T> check) where T:class
+        public static IMembersSelection Considering<T>(this ICheck<T> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var fieldsWrapper = ReflectionWrapper.BuildFromInstance(typeof(T), checker.Value,
+            var fieldsWrapper = ReflectionWrapper.BuildFromInstance(checker.Value?.GetType()??typeof(T), checker.Value,
                 new Criteria(BindingFlags.Instance, false));
             var checkWithConsidering = new CheckWithConsidering(fieldsWrapper, checker.Negated);
             return checkWithConsidering;
-        }
-
-        internal static string CheckMemberEquality<T, TU>(
-            IChecker<T, ICheck<T>> checker,
-            T value,
-            TU expected,
-            bool negated,
-            Criteria criteria,
-            bool disregardExtra)
-        {
-            var expectedValue =
-                ReflectionWrapper.BuildFromInstance(expected?.GetType() ?? typeof(TU), expected, criteria);
-            var actualValue = ReflectionWrapper.BuildFromInstance(value?.GetType() ?? typeof(T), value, criteria);
-
-            return CompareMembers(checker, negated, disregardExtra, expectedValue, actualValue);
-        }
-
-        internal static string CompareMembers<T>(IChecker<T, ICheck<T>> checker, bool negated, bool disregardExtra,
-            ReflectionWrapper expectedValue, ReflectionWrapper actualValue)
-        {
-            var result = new List<MemberMatch>();
-            expectedValue.MapFields(actualValue, 1, (expected, actual, depth) =>
-            {
-                if (disregardExtra && expected == null)
-                {
-                    return true;
-                }
-
-                if (actual?.Value == null || expected?.Value == null)
-                {
-                    result.Add(new MemberMatch(expected, actual));
-                    return false;
-                }
-
-                if (depth <= 0 && expected.ValueType.ImplementsEquals())
-                {
-                    result.Add(new MemberMatch(expected, actual));
-                    return false;
-                }
-
-                if (!expected.IsArray)
-                {
-                    return true;
-                }
-
-                if (actual.IsArray && ((Array) expected.Value).Length == ((Array) actual.Value).Length)
-                {
-                    return true;
-                }
-
-                result.Add(new MemberMatch(expected, actual));
-                return false;
-            });
-
-            foreach (var match in result)
-            {
-                var message = match.BuildMessage(checker, negated);
-                if (message != null)
-                {
-                    return message.ToString();
-                }
-            }
-
-            return null;
         }
     }
 }

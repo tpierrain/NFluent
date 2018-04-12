@@ -28,6 +28,11 @@ namespace NFluent
         /// </summary>
         IMembersSelection And { get; }
 
+       /// <summary>
+       /// Exclude fields that are not present in sut.
+       /// </summary>
+        ICheckPlusAnd IgnoreExtra { get; }
+
         /// <summary>
         /// Lists excluded fields
         /// </summary>

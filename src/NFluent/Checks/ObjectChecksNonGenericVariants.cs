@@ -67,7 +67,7 @@ namespace NFluent
                                     .Expecting(expected)
                                     .Fails("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock);
                             }
-                            else if (expected == null)
+                            else
                             {
                                 test.GetSutProperty(_ => actual, actual.MemberLabel.DoubleCurlyBraces())
                                     .Fails("The {0} is absent from the {1}.");

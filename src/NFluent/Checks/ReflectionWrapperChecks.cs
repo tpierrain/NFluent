@@ -15,8 +15,6 @@
 
 namespace NFluent
 {
-    using System;
-    using System.Collections.Generic;
     using Extensibility;
     using Extensions;
     using Helpers;
@@ -34,59 +32,25 @@ namespace NFluent
         public static ICheckLink<ICheck<ReflectionWrapper>> IsEqualTo<TU>(this ICheck<ReflectionWrapper> check,
             TU expectedValue)
         {
-            bool disregardExtra = false;
+            FieldEqualTest(check, expectedValue, true);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            return checker.BuildChainingObject();
+        }
+
+        internal static void FieldEqualTest<TU>(ICheck<ReflectionWrapper> check, TU expectedValue, bool mustMatch)
+        {
             ExtensibilityHelper.BeginCheck(check)
                 .Analyze((sut, test) =>
                 {
-                    var expectedWrapped = ReflectionWrapper.BuildFromInstance(typeof(TU), expectedValue, sut.Criteria);
-
-                    var result = new List<MemberMatch>();
-                    expectedWrapped.MapFields(sut, 1, (expected, actual, depth) =>
+                    foreach (var match in sut.MemberMatches(expectedValue))
                     {
-                        if (disregardExtra && expected == null)
-                        {
-                            return true;
-                        }
-
-                        if (actual?.Value == null || expected?.Value == null)
-                        {
-                            result.Add(new MemberMatch(expected, actual));
-                            return false;
-                        }
-
-                        if (depth <= 0 && expected.ValueType.ImplementsEquals())
-                        {
-                            result.Add(new MemberMatch(expected, actual));
-                            return false;
-                        }
-
-                        if (!expected.IsArray)
-                        {
-                            return true;
-                        }
-
-                        if (actual.IsArray && ((Array) expected.Value).Length == ((Array) actual.Value).Length)
-                        {
-                            return true;
-                        }
-
-                        result.Add(new MemberMatch(expected, actual));
-                        return false;
-                    });
-
-                    foreach (var match in result)
-                    {
-                        if (!match.DoValuesMatches)
+                        if (match.DoValuesMatches != mustMatch)
                         {
                             match.Check(test);
                         }
                     }
-
-
-                }).EndCheck();
-
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.BuildChainingObject();
+                }).Negates("The {0} is equal to one of {1} whereas it should not.")
+                .EndCheck();
         }
 
         /// <summary>
@@ -98,27 +62,34 @@ namespace NFluent
         public static ICheckLink<ICheck<ReflectionWrapper>> IsOneOf(this ICheck<ReflectionWrapper> check,
             params object[] values)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.ExecuteCheck(() =>
+            ExtensibilityHelper.BeginCheck(check)
+                .ExpectingValues(values, values.Length, "one of", "none of")
+                .Analyze((sut, test) =>
                 {
-                    foreach (var expected in values)
+                    bool match = false;
+                    foreach (var value in values)
                     {
-                        var expectedWrapper = ReflectionWrapper.BuildFromInstance(
-                            expected.GetTypeWithoutThrowingException(), expected, checker.Value.Criteria);
-
-                        var message = ObjectFieldsCheckExtensions.CompareMembers(checker, false, false, expectedWrapper,
-                            checker.Value);
-                        if (message == null)
+                        match = true;
+                        foreach (var memberMatch in sut.MemberMatches(value))
                         {
-                            return;
+                            if (!memberMatch.DoValuesMatches)
+                            {
+                                match = false;
+                                break;
+                            }
+
+                        }
+
+                        if (match)
+                        {
+                            break;
                         }
                     }
 
-                    var libel = checker.BuildMessage("The {0} is equal to none of the {1} whereas it should.")
-                        .ExpectedValues(values);
-                    throw new FluentCheckException(libel.ToString());
-                }
-                , checker.BuildMessage("The {0} is equal to one of {1} whereas it should not.").ToString());
+                    test.FailsIf(_ => !match, "The {0} is equal to none of the {1} whereas it should.");
+                }).Negates("The {0} is equal to one of {1} whereas it should not.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <inheritdoc cref="ObjectCheckExtensions.IsNull{T}(NFluent.ICheck{T})" />

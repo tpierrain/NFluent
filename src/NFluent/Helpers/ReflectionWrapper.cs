@@ -191,11 +191,14 @@ namespace NFluent.Helpers
             }
 
             // we deal with missing fields
-            foreach (var actualFields in actual.GetSubExtendedMemberInfosFields())
+            if (!this.Criteria.IgnoreExtra)
             {
-                if (this.FindMember(actualFields) == null)
+                foreach (var actualFields in actual.GetSubExtendedMemberInfosFields())
                 {
-                    mapFunction(null, actualFields, depth - 1);
+                    if (this.FindMember(actualFields) == null)
+                    {
+                        mapFunction(null, actualFields, depth - 1);
+                    }
                 }
             }
         }
@@ -408,6 +411,42 @@ namespace NFluent.Helpers
             }
 
             return hash;
+        }
+
+        internal List<MemberMatch> MemberMatches<TU>(TU expectedValue)
+        {
+            var expectedWrapped =
+                ReflectionWrapper.BuildFromInstance(expectedValue?.GetType() ?? typeof(TU), expectedValue, this.Criteria);
+
+            var result = new List<MemberMatch>();
+            expectedWrapped.MapFields(this, 1, (expected, actual, depth) =>
+            {
+                if (actual?.Value == null || expected?.Value == null)
+                {
+                    result.Add(new MemberMatch(expected, actual));
+                    return false;
+                }
+
+                if (depth <= 0 && expected.ValueType.ImplementsEquals())
+                {
+                    result.Add(new MemberMatch(expected, actual));
+                    return false;
+                }
+
+                if (!expected.IsArray)
+                {
+                    return true;
+                }
+
+                if (actual.IsArray && ((Array) expected.Value).Length == ((Array) actual.Value).Length)
+                {
+                    return true;
+                }
+
+                result.Add(new MemberMatch(expected, actual));
+                return false;
+            });
+            return result;
         }
     }
 }

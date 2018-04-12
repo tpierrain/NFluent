@@ -136,7 +136,7 @@ namespace NFluent.Helpers
         /// <returns>true if the exception is of a correct type</returns>
         public static bool IsFailedException(object exc)
         {
-            return exc!= null && (exc is FluentCheckException || (exc.GetType() == constructors.FailedException.DeclaringType));
+            return exc!= null && (exc is FluentCheckException || (exc.GetType() == Constructors.FailedException.DeclaringType));
         }
 
         /// <summary>

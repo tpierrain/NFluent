@@ -45,66 +45,10 @@ namespace NFluent.Helpers
         internal bool ExpectedFieldFound => this.actual != null;
         internal bool ActualFieldFound => this.Expected != null;
 
-        public FluentMessage BuildMessage<T>(IChecker<T, ICheck<T>> checker, bool negated)
-        {
-            FluentMessage result;
-            if (this.DoValuesMatches != negated)
-            {
-                return null;
-            }
-
-            if (negated)
-            {
-                result = checker.BuildShortMessage(
-                        $"The {{0}}'s {this.Expected.MemberLabel.DoubleCurlyBraces()} has the same value in the comparand, whereas it must not.")
-                    .For("value");
-                EqualityHelper.FillEqualityErrorMessage(
-                    result,
-                    this.actual.Value,
-                    this.Expected.Value,
-                    true,
-                    false);
-            }
-            else if (!this.ExpectedFieldFound)
-            {
-                result = checker.BuildShortMessage(
-                        $"The {{1}}'s {this.Expected.MemberLabel.DoubleCurlyBraces()} is absent from the {{0}}.")
-                    .For("value");
-                result.Expected(this.Expected.Value).Label($"The {{0}} {this.Expected.MemberLabel.DoubleCurlyBraces()}:");
-            }
-            else if (!this.ActualFieldFound)
-            {
-                result = checker.BuildShortMessage(
-                        $"The {{0}}'s {this.actual.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.")
-                    .For("value");
-                result.On(this.actual.Value).Label($"The {{0}} {this.actual.MemberLabel.DoubleCurlyBraces()}:");
-            }
-            else
-            {
-                result = checker.BuildShortMessage(
-                        $"The {{0}}'s {this.Expected.MemberLabel.DoubleCurlyBraces()} does not have the expected value.")
-                    .For("value");
-                EqualityHelper.FillEqualityErrorMessage(
-                    result,
-                    this.actual.Value,
-                    this.Expected.Value,
-                    false,
-                    false);
-            }
-
-            return result;
-        }
-
         public void Check(ICheckLogic<ReflectionWrapper> checkLogic)
         {
-            if (this.DoValuesMatches)
-            {
-                return;
-            }
-
             if (!this.ExpectedFieldFound)
             {
-                var expectedLabel = this.Expected.MemberLabel.DoubleCurlyBraces();
                 checkLogic
                     .GetSutProperty(_ => this.Expected.Value, this.Expected.MemberLabel)
                     .Fails("The {1}'s is absent from the {0}.", MessageOption.NoCheckedBlock|MessageOption.WithType)
@@ -118,17 +62,25 @@ namespace NFluent.Helpers
             }
             else
             {
-                var expectedLabel = this.Expected.MemberLabel.DoubleCurlyBraces();
                 var withType = this.actual.Value.GetTypeWithoutThrowingException() != this.Expected.Value.GetTypeWithoutThrowingException();
                 var withHash = !withType && this.actual?.Value != null && this.Expected?.Value != null &&
                                this.actual.Value.ToString() == this.Expected.Value.ToString();
                 var mode = (withType ? MessageOption.WithType :
                     MessageOption.None) | (withHash ? MessageOption.WithHash : MessageOption.None);
-                checkLogic
-                    .GetSutProperty(_=>this.actual.Value, this.actual.MemberLabel)
-                    .Fails("The {0} does not have the expected value.", mode)
-                    .Expecting(this.Expected.Value);
-                
+                if (this.DoValuesMatches)
+                {
+                    checkLogic
+                        .GetSutProperty(_=>this.actual.Value, this.actual.MemberLabel)
+                        .Fails("The {0} has the same value than the given one, whereas it should not.", MessageOption.NoCheckedBlock)
+                        .ComparingTo(this.Expected.Value, "different from", "");
+                }
+                else
+                {
+                    checkLogic
+                        .GetSutProperty(_=>this.actual.Value, this.actual.MemberLabel)
+                        .Fails("The {0} does not have the expected value.", mode)
+                        .Expecting(this.Expected.Value);
+                }
             }
         }
     }

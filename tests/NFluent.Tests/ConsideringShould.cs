@@ -403,7 +403,11 @@ namespace NFluent.Tests
             Check.ThatCode(()=>
             {
                Check.That(sut).Considering().Public.Properties.IsOneOf(new {TheProperty = 12}, new {TheProperty = 14});
-            }).IsAFaillingCheckWithMessage("", "The checked value is equal to none of the expected value(s) whereas it should.", "The checked value:", "\t[{ TheProperty = 13 }]", "The expected value(s):", "\t[{ TheProperty = 12 }, { TheProperty = 14 }]");
+            }).IsAFaillingCheckWithMessage("", 
+                "The checked value is equal to none of the expected value(s) whereas it should.", 
+                "The checked value:", "\t[{ TheProperty = 13 }]", 
+                "The expected value(s): one of", 
+                "\t[{ TheProperty = 12 }, { TheProperty = 14 }] (2 items)");
         }
 
         [Test]

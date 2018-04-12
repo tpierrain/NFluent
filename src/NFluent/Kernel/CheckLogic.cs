@@ -46,7 +46,6 @@ namespace NFluent.Kernel
         private MessageOption negatedOption;
         private MessageOption options = MessageOption.None;
         private string sutName;
-        private string sutProperty;
 
         private bool withExpected;
         private bool withGiven;
@@ -123,10 +122,7 @@ namespace NFluent.Kernel
         public ICheckLogic<TU> GetSutProperty<TU>(Func<T, TU> sutExtractor, string newSutLabel)
         {
             var result =
-                new CheckLogic<TU>(this.value == null ? default(TU) : sutExtractor(this.value), null, this.IsNegated)
-                {
-                    sutProperty =$""
-                };
+                new CheckLogic<TU>(this.value == null ? default(TU) : sutExtractor(this.value), null, this.IsNegated);
 
             var sutname = string.IsNullOrEmpty(this.sutName) ? "value" : this.sutName;
             result.SutNameIs($"{sutname}'s {newSutLabel}");
@@ -176,11 +172,6 @@ namespace NFluent.Kernel
 
                 block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
 
-                if (!string.IsNullOrEmpty(this.sutProperty))
-                {
-                    block.Comparison(this.sutProperty);
-                }
-
                 if (this.value is IEnumerable list && !(this.value is string))
                 {
                     block.WithEnumerableCount(list.Count());
@@ -227,11 +218,7 @@ namespace NFluent.Kernel
             }
             else if (this.withGiven)
             {
-                var block = fluentMessage.WithGivenValue(this.expected);
-                if (!string.IsNullOrEmpty(this.Comparison))
-                {
-                    block.Comparison(this.Comparison);
-                }
+                fluentMessage.WithGivenValue(this.expected).Comparison(this.Comparison);
             }
 
             if (!PolyFill.IsNullOrWhiteSpace(this.SutName))
