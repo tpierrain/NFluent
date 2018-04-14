@@ -15,7 +15,7 @@
 namespace NFluent.Tests
 {
     using System;
-
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -36,8 +36,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(500)).IsLessThan(100, TimeUnit.Milliseconds);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[500 Milliseconds]" + Environment.NewLine + "The expected value: less than" + Environment.NewLine + "\t[100 Milliseconds]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[500 Milliseconds]" + Environment.NewLine + "The expected value: less than" + Environment.NewLine + "\t[100 Milliseconds]");
         }
 
         [Test]
@@ -47,8 +46,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(100)).Not.IsLessThan(600, TimeUnit.Milliseconds);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[100 Milliseconds]" + Environment.NewLine + "The expected value: more than or equal to" + Environment.NewLine + "\t[600 Milliseconds]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is not more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[100 Milliseconds]" + Environment.NewLine + "The expected value: more than or equal to" + Environment.NewLine + "\t[600 Milliseconds]");
         }
 
         [Test]
@@ -58,8 +56,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(500)).IsLessThan(TimeSpan.FromMilliseconds(100));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[500 Milliseconds]" + Environment.NewLine + "The expected value: less than" + Environment.NewLine + "\t[100 Milliseconds]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[500 Milliseconds]" + Environment.NewLine + "The expected value: less than" + Environment.NewLine + "\t[100 Milliseconds]");
         }
 
         [Test]
@@ -69,8 +66,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(100)).Not.IsLessThan(TimeSpan.FromMilliseconds(600));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[100 Milliseconds]" + Environment.NewLine + "The expected value: more than or equal to" + Environment.NewLine + "\t[600 Milliseconds]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is not more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[100 Milliseconds]" + Environment.NewLine + "The expected value: more than or equal to" + Environment.NewLine + "\t[600 Milliseconds]");
         }
 
         [Test]
@@ -85,11 +81,15 @@ namespace NFluent.Tests
         public void IsGreaterThanThrowsExceptionWhenFailing()
         {
             Check.ThatCode(() =>
-            {
-                Check.That(TimeSpan.FromMilliseconds(50)).IsGreaterThan(100, TimeUnit.Milliseconds);
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[50 Milliseconds]" + Environment.NewLine + "The expected value: less than or equal to" + Environment.NewLine + "\t[100 Milliseconds]");
+                {
+                    Check.That(TimeSpan.FromMilliseconds(50)).IsGreaterThan(100, TimeUnit.Milliseconds);
+                })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked value is not more than the limit.",
+                    "The checked value:",
+                    "\t[50 Milliseconds]",
+                    "The expected value: more than",
+                    "\t[100 Milliseconds]");
         }
 
         [Test]
@@ -99,8 +99,12 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(100)).Not.IsGreaterThan(50, TimeUnit.Milliseconds);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[100 Milliseconds]" + Environment.NewLine + "The expected value: more than" + Environment.NewLine + "\t[50 Milliseconds]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is more than the limit.",
+                    "The checked value:",
+                    "\t[100 Milliseconds]",
+                    "The expected value: less than or equal to",
+                    "\t[50 Milliseconds]");
         }
 
         [Test]
@@ -110,8 +114,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(50)).IsGreaterThan(TimeSpan.FromMilliseconds(100));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[50 Milliseconds]" + Environment.NewLine + "The expected value: more than" + Environment.NewLine + "\t[100 Milliseconds]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is not more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[50 Milliseconds]" + Environment.NewLine + "The expected value: more than" + Environment.NewLine + "\t[100 Milliseconds]");
         }
 
         [Test]
@@ -121,8 +124,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(100)).Not.IsGreaterThan(TimeSpan.FromMilliseconds(50));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[100 Milliseconds]" + Environment.NewLine + "The expected value: less than or equal to" + Environment.NewLine + "\t[50 Milliseconds]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is more than the limit." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[100 Milliseconds]" + Environment.NewLine + "The expected value: less than or equal to" + Environment.NewLine + "\t[50 Milliseconds]");
         }
 
         [Test]

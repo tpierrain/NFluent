@@ -68,7 +68,7 @@ namespace NFluent.Helpers
         {
 #if !(PORTABLE) && !(NETSTANDARD1_3)
             var foundExceptions = 0;
-           var result = new ExceptionConstructor();
+            var result = new ExceptionConstructor();
             var defaultSignature = new[] { typeof(string) };
             foreach (
                 var assembly in 

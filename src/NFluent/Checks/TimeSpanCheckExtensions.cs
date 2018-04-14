@@ -34,27 +34,14 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not less than the provided duration.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, double providedDuration, TimeUnit unit)
          {
-             var checker = ExtensibilityHelper.ExtractChecker(check);
-
-             var testedDuration = new Duration(checker.Value, unit);
              var expected = new Duration(providedDuration, unit);
-             var notMessage = checker.BuildMessage("The {0} is not more than the limit.")
-                                            .On(testedDuration)
-                                            .And.Expected(expected)
-                                            .Comparison("more than or equal to");
-             var message = checker.BuildMessage("The {0} is more than the limit.")
-                                        .On(testedDuration)
-                                        .And.Expected(expected).Comparison("less than");
-
-             return checker.ExecuteCheck(
-                    () =>
-                        {
-                            if (testedDuration >= expected)
-                            {
-                                throw new FluentCheckException(message.ToString());
-                            }
-                        }, 
-                    notMessage.ToString());
+             ExtensibilityHelper.BeginCheck(check)
+                 .GetSutProperty( sut => new Duration(sut, unit), "")
+                 .FailsIf(sut => sut >= expected, "The {0} is more than the limit.")
+                 .Negates("The {0} is not more than the limit.")
+                 .ComparingTo(expected, "less than", "more than or equal to")
+                 .EndCheck();
+             return ExtensibilityHelper.BuildCheckLink(check);
          }
 
          /// <summary>
@@ -66,32 +53,8 @@ namespace NFluent
          /// <exception cref="FluentCheckException">The actual value is not less than the provided comparand.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
-             var checker = ExtensibilityHelper.ExtractChecker(check);
-
-             var unit = TimeHelper.DiscoverUnit(comparand);
-
-             var testedDuration = new Duration(checker.Value, unit);
-             var expected = new Duration(comparand, unit);
-
-             var notMessage =
-                 checker.BuildMessage("The {0} is not more than the limit.")
-                                .On(testedDuration)
-                                .And.Expected(expected)
-                                .Comparison("more than or equal to");
-             var message =
-                 checker.BuildMessage("The {0} is more than the limit.")
-                                .On(testedDuration)
-                                .And.Expected(expected).Comparison("less than");
-
-             return checker.ExecuteCheck(
-                 () =>
-                 {
-                     if (testedDuration >= expected)
-                     {
-                         throw new FluentCheckException(message.ToString());
-                     }
-                 }, 
-                 notMessage.ToString());
+            var unit = TimeHelper.DiscoverUnit(comparand);
+            return check.IsLessThan(TimeHelper.Convert(comparand, unit), unit);
          }
 
          /// <summary>
@@ -104,29 +67,14 @@ namespace NFluent
          /// <exception cref="FluentCheckException">The actual value is not greater than the provided comparand.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, double providedDuration, TimeUnit unit)
          {
-             var checker = ExtensibilityHelper.ExtractChecker(check);
-
-             var testedDuration = new Duration(checker.Value, unit);
              var expected = new Duration(providedDuration, unit);
-             var message =
-                 checker.BuildMessage("The {0} is not more than the limit.")
-                                .On(testedDuration)
-                                .And.Expected(expected)
-                                .Comparison("less than or equal to");
-             var notMessage =
-                 checker.BuildMessage("The {0} is more than the limit.")
-                                .On(testedDuration)
-                                .And.Expected(expected).Comparison("more than");
-
-             return checker.ExecuteCheck(
-                 () =>
-                     {
-                         if (testedDuration <= expected)
-                         {
-                             throw new FluentCheckException(message.ToString());
-                         }
-                     }, 
-                 notMessage.ToString());
+             ExtensibilityHelper.BeginCheck(check)
+                 .GetSutProperty( sut => new Duration(sut, unit), "")
+                 .FailsIf(sut => sut <= expected, "The {0} is not more than the limit.")
+                 .Negates("The {0} is more than the limit.")
+                 .ComparingTo(expected, "more than", "less than or equal to")
+                 .EndCheck();
+             return ExtensibilityHelper.BuildCheckLink(check);
          }
 
          /// <summary>
@@ -138,31 +86,8 @@ namespace NFluent
          /// <exception cref="FluentCheckException">The actual value is not greater than the provided comparand.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
-             var checker = ExtensibilityHelper.ExtractChecker(check);
-             
-             TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
-             var testedDuration = new Duration(checker.Value, unit);
-             var expected = new Duration(comparand, unit);
-
-             var message =
-             checker.BuildMessage("The {0} is not more than the limit.")
-                            .On(testedDuration)
-                            .And.Expected(expected)
-                            .Comparison("more than");
-             var notMessage =
-                 checker.BuildMessage("The {0} is more than the limit.")
-                                .On(testedDuration)
-                                .And.Expected(expected).Comparison("less than or equal to");
-
-             return checker.ExecuteCheck(
-                 () =>
-                 {
-                     if (testedDuration <= expected)
-                     {
-                         throw new FluentCheckException(message.ToString());
-                     }
-                 }, 
-                 notMessage.ToString());
+             var unit = TimeHelper.DiscoverUnit(comparand);
+             return check.IsGreaterThan(TimeHelper.Convert(comparand, unit), unit);
          }
 
          /// <summary>

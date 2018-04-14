@@ -23,8 +23,8 @@ namespace NFluent
     using System.Linq;
 #endif
 
-    using NFluent.Extensibility;
-    using NFluent.Extensions;
+    using Extensibility;
+    using Extensions;
     
     /// <summary>
     /// This class hosts Type related checks.
@@ -39,17 +39,14 @@ namespace NFluent
         /// <returns>A check to link checks.</returns>
         public static ICheckLink<ICheck<Type>> HasAttribute<T>(this ICheck<Type> check) where T : Attribute
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var found = checker.Value.GetTypeInfo().GetCustomAttributes(false).Any(customAttribute => customAttribute.GetType() == typeof(T));
-            return checker.ExecuteCheck(
-                () =>
-                    {
-                        if (!found)
-                        {
-                            throw new FluentCheckException(checker.BuildMessage("The {0} does not have an attribute of the expected type.").ToString());
-                        }
-                    },
-                checker.BuildMessage("The {0} does have an attribute of type {1} where as it should not.").ToString());
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIfNull()
+                .FailsIf(
+                    sut => sut.GetTypeInfo().GetCustomAttributes(false).All(customAttribute => customAttribute.GetType() != typeof(T)),
+                    "The {0} does not have an attribute of the expected type.")
+                .Negates("The {0} does have an attribute of type {1} where as it should not.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
     }
 }
