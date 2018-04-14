@@ -17,7 +17,6 @@ using System;
 
 namespace NFluent.Tests
 {
-    using ApiChecks;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -37,12 +36,42 @@ namespace NFluent.Tests
         public void IsEqualToThrowsExceptionWhenFailingWithEnum()
         {
 
-            Check.ThatCode(() =>
+            Check.ThatCode(() => { Check.ThatEnum(FrenchNationality).IsEqualTo(Nationality.American); })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked enum is different from the expected one.",
+                    "The checked enum:",
+                    "\t[French]",
+                    "The expected enum:",
+                    "\t[American]");
+        }
+
+        private struct Basic
+        {
+            public int x;
+            public int y;
+
+            public Basic(int x, int y)
             {
-                Check.ThatEnum(FrenchNationality).IsEqualTo(Nationality.American);
-            })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enum is different from the expected one." + Environment.NewLine + "The checked enum:" + Environment.NewLine + "\t[French]" + Environment.NewLine + "The expected enum:" + Environment.NewLine + "\t[American]");
+                this.x = x;
+                this.y = y;
+            }
+
+            public override int GetHashCode()
+            {
+                return this.x + this.y;
+            }
+        }
+
+        [Test]
+        public void ShouldFailWithHashesWhenSimilar()
+        {
+            Check.ThatCode(() => { Check.ThatEnum(new Basic(1,2)).IsEqualTo(new Basic(1, 3)); })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked struct is different from the expected one.",
+                    "The checked struct:",
+                    "\t[NFluent.Tests.EnumOrStructRelatedTests+Basic] with HashCode: [3]",
+                    "The expected struct:",
+                    "\t[NFluent.Tests.EnumOrStructRelatedTests+Basic] with HashCode: [4]");
         }
 
         [Test]
@@ -58,8 +87,10 @@ namespace NFluent.Tests
             {
                 Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.French);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enum is equal to the expected one whereas it must not." + Environment.NewLine + "The expected enum: different from" + Environment.NewLine + "\t[French] of type: [NFluent.Tests.Nationality]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked enum is equal to the expected one whereas it must not.",
+                    "The expected enum: different from",
+                    "\t[French] of type: [NFluent.Tests.Nationality]");
         }
 
         [Test]

@@ -61,7 +61,7 @@ namespace NFluent
                                 return false;
                             }
 
-                            if (actual == null)
+                            if (actual == null) 
                             {
                                 test.GetSutProperty(_ => expectedWrapper.Value, expected.MemberLabel)
                                     .Expecting(expected)

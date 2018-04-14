@@ -34,9 +34,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is not equal to the expected value.</exception>
         public static ICheckLink<IStructCheck<T>> IsEqualTo<T>(this IStructCheck<T> check, T expected) where T : struct
         {
-            var checker = ExtensibilityHelper.ExtractStructChecker(check);
-
-            return EqualityHelper.PerformEqualCheck(checker, expected, false);
+            return EqualityHelper.PerformEqualCheck(check, expected);
         }
 
         /// <summary>
@@ -51,9 +49,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<IStructCheck<T>> IsNotEqualTo<T>(this IStructCheck<T> check, object expected) where T : struct
         {
-            var runnableStructCheck = ExtensibilityHelper.ExtractStructChecker(check);
-
-            return EqualityHelper.PerformEqualCheck(runnableStructCheck, expected, false, true);
-         }
+            return EqualityHelper.PerformEqualCheck(check.Not, expected);
+        }
     }
 }

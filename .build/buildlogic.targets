@@ -60,7 +60,7 @@
   </Choose>
 
   <Target Name="RunAll" DependsOnTargets="Build; RunTests; CoverageReport; Package" />
-  <Target Name="CI" DependsOnTargets="Build; CoverageReport; Package;" />
+  <Target Name="CI" DependsOnTargets="Build; RunTests; CoverageReport; Package;" />
   <Target Name="Push" DependsOnTargets="RunAll; Publish"/>
   <Target Name="Beta" DependsOnTargets="SetBeta; Push" />
   <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll"/>
@@ -165,22 +165,10 @@
 
   <!-- 1- Restore dependencies -->
   <Target Name="NugetRestore" DependsOnTargets="SynchroVersion">
-    <ItemGroup>
-    <!--  <Prj Include="ProjectFolder" Condition="'%(ProjectFolder.Fwk)'=='core'">
-        <Title>%(ProjectFolder.FileName)</Title>
-        <RestoreCommand>nuget restore %(ProjectFolder.FullPath)\%(ProjectFolder.CsProj) -verbosity quiet</RestoreCommand>
-      </Prj>
-      <Prj>
-        <Title>$(SolutionRoot)\$(SolutionName)</Title>
-        <RestoreCommand>"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages" -verbosity quiet</RestoreCommand>
-      </Prj> -->
-    </ItemGroup>
 
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
     <Message Importance="high" Text="Restoring $(SolutionRoot)\$(SolutionName)"/>
     <Exec Command='"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages" -verbosity quiet'/>
-    <!-- <Message Importance="high" Text="Restoring %(Prj.Title)"/>
-    <Exec Command='%(Prj.RestoreCommand)'/> -->
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
   </Target>
   

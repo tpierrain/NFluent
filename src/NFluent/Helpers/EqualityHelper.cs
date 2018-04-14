@@ -29,68 +29,6 @@ namespace NFluent.Helpers
     /// </summary>
     internal static class EqualityHelper
     {
-        /// <summary>
-        ///     Builds the error message related to the Equality verification. This should be called only if the test failed (no
-        ///     matter it is negated or not).
-        /// </summary>
-        /// <typeparam name="T">
-        ///     Checked type.
-        /// </typeparam>
-        /// <typeparam name="TU">Checker type.</typeparam>
-        /// <param name="checker">
-        ///     The check.
-        /// </param>
-        /// <param name="expected">
-        ///     The other operand.
-        /// </param>
-        /// <param name="isEqual">
-        ///     A value indicating whether the two values are equal or not. <c>true</c> if they are equal; <c>false</c> otherwise.
-        /// </param>
-        /// <param name="usingOperator">true if comparison is done using operator</param>
-        /// <returns>
-        ///     The error message related to the Equality verification.
-        /// </returns>
-        public static string BuildErrorMessage<T, TU>(IChecker<T, TU> checker, object expected, bool isEqual,
-            bool usingOperator)
-            where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
-        {
-            var msg = isEqual
-                ? checker.BuildShortMessage("The {0} is equal to the {1} whereas it must not.")
-                : checker.BuildShortMessage("The {0} is different from the {1}.");
-
-            FillEqualityErrorMessage(msg, checker.Value, expected, isEqual, usingOperator);
-
-            return msg.ToString();
-        }
-
-        public static void FillEqualityErrorMessage(FluentMessage msg, object instance, object expected, bool negated,
-            bool usingOperator)
-        {
-            var operatorText = negated ? "different from" : string.Empty;
-
-            if (negated)
-            {
-                msg.Expected(expected).Comparison(operatorText).WithType();
-                return;
-            }
-
-            // shall we display the type as well?
-            var withType = instance != null && expected != null && instance.GetType() != expected.GetType()
-                           || instance == null;
-
-            // shall we display the hash too
-            var withHash = instance != null && expected != null && instance.GetType() == expected.GetType()
-                           && instance.ToStringProperlyFormatted() == expected.ToStringProperlyFormatted();
-
-            msg.On(instance)
-                .WithType(withType)
-                .WithHashCode(withHash)
-                .And.Expected(expected)
-                .WithType(withType)
-                .Comparison(operatorText)
-                .WithHashCode(withHash);
-        }
-
         internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(
             ICheck<T> check,
             TE expected,
@@ -122,6 +60,41 @@ namespace NFluent.Helpers
 
                     // shall we display the hash too
                     if (sut != null && expected != null && sut.GetType() == expected.GetType()
+                        && sut.ToStringProperlyFormatted() == expected.ToStringProperlyFormatted())
+                    {
+                        options |= MessageOption.WithHash;
+                    }
+
+                    test.Fails("The {0} is different from the {1}.", options);
+                })
+                .Negates("The {0} is equal to the {1} whereas it must not.", 
+                    MessageOption.NoCheckedBlock | MessageOption.WithType)
+                .EndCheck();
+
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+        internal static ICheckLink<IStructCheck<T>> PerformEqualCheck<T, TE>(
+            IStructCheck<T> check,
+            TE expected) where T : struct
+        {
+            var mode = Check.EqualMode;
+
+            ExtensibilityHelper.BeginCheck(check)
+                .Analyze((sut, test) =>
+                {
+                        test.Expecting(expected, "", "different from");
+
+                    if (FluentEquals(sut, expected, mode))
+                    {
+                        return;
+                    }
+
+                    // shall we display the type as well?
+                    var options = MessageOption.None;
+
+                    // shall we display the hash too
+                    if (expected != null && sut.GetType() == expected.GetType()
                         && sut.ToStringProperlyFormatted() == expected.ToStringProperlyFormatted())
                     {
                         options |= MessageOption.WithHash;
@@ -242,26 +215,6 @@ namespace NFluent.Helpers
                 .Negates("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock | MessageOption.WithType)
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
-        }
-
-        internal static ICheckLink<TU> PerformEqualCheck<T, TU, TE>(
-            IChecker<T, TU> checker,
-            TE expected,
-            bool useOperator = false,
-            bool negated = false)
-            where TU : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
-        {
-            var mode = Check.EqualMode;
-
-            var shouldFail = negated;
-            return checker.ExecuteCheck(() =>
-                {
-                    if (shouldFail == FluentEquals(checker.Value, expected, mode))
-                    {
-                        throw new FluentCheckException(BuildErrorMessage(checker, expected, negated, useOperator));
-                    }
-                },
-                BuildErrorMessage(checker, expected, !negated, useOperator));
         }
 
         internal static bool FluentEquals(object instance, object expected)

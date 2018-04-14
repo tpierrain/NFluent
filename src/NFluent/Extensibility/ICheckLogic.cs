@@ -71,7 +71,7 @@ namespace NFluent.Extensibility
     }
 
     /// <summary>
-    ///     Provides method to ease coding of checks.
+    /// Provides method to ease coding of checks.
     /// </summary>
     public interface ICheckLogic<out T> : ICheckLogicBase
     {

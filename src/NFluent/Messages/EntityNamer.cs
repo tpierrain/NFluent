@@ -18,11 +18,10 @@ namespace NFluent.Messages
     using System;
     using System.Collections;
     using System.Collections.Generic;
-
+    using Extensions;
+    using Helpers;
 #if NETSTANDARD1_3 || DOTNET_45
     using System.Reflection;
-#else
-    using Extensions;
 #endif
 
     /// <summary>
@@ -72,6 +71,21 @@ namespace NFluent.Messages
                     return "enum";
                 }
 
+                if (this.EntityType == typeof(char))
+                {
+                    return "char";
+                }
+
+                if (this.EntityType.IsNumerical())
+                {
+                    return "value";
+                }
+
+                if (this.EntityType == typeof(Duration))
+                {
+                    return "value";
+                }
+
                 var interfaces = new List<Type>(this.EntityType.GetInterfaces()) { this.EntityType };
 
                 if (interfaces.Contains(typeof(IDictionary)))
@@ -84,7 +98,12 @@ namespace NFluent.Messages
                     return "enumerable";
                 }
 
-                return this.EntityType == typeof(char) ? "char" : DefaultEntityName;
+                if (this.EntityType.GetTypeInfo().IsValueType)
+                {
+                    return "struct";
+                }
+
+                return DefaultEntityName;
             }
 
             set => this.forcedEntity = value;

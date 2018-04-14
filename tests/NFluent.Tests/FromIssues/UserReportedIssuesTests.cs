@@ -362,24 +362,6 @@ namespace NFluent.Tests
                     "\t[\"MaChaine{964}\"] (1 item)");
         }
 
-        // #issue 115,
-        [Test]
-        public void FailingTestForDemo()
-        {
-            Check.ThatCode(() =>
-            {
-                var args = new OrderExecutedEventArgs(100M, 150, Way.Sell);
-
-                Check.That(args).HasFieldsWithSameValues(new { Price = 100, Quantity = 150, Way = Way.Sell });
-            })
-            .IsAFaillingCheckWithMessage("",
-                    "The checked value's autoproperty 'Price' (field '<Price>k__BackingField') does not have the expected value.",
-                    "The checked value's autoproperty 'Price' (field '<Price>k__BackingField'):",
-                    "\t[100] of type: [decimal]",
-                    "The expected value's autoproperty 'Price' (field '<Price>k__BackingField'):",
-                    "\t[100] of type: [int]");
-        }
-
         // issue #127, request for byte array support
         // actual issues unclear as it just works.
         [Test]

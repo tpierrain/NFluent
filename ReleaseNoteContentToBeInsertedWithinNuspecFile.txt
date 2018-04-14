@@ -21,7 +21,9 @@
   * DateTime checks: revamped all messages
   * Enum: error message on enum types now use 'enum' instead of 'value'.
   * IsInstanceOf: be more specific regarding types
-* Breaking: removed Failure method from IChecker interface
+* Breaking
+  * Added automatic conversion between decimal and other numerical types. Check.That(100M).IsEqualTo(100) no longer fails.
+  * Removed Failure method from IChecker interface
  
 ### GitHub Issues
 * #228, #227, #222, #223, #217, #230, #236

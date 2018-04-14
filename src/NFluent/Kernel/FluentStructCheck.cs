@@ -61,7 +61,7 @@ namespace NFluent.Kernel
         {
             get
             {
-                bool negated = CheckContext.DefaulNegated;
+                bool negated = !this.Negated;
                 return new FluentStructCheck<T>(this.Value, negated);
             }
         }

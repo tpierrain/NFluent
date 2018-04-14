@@ -14,7 +14,6 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Extensibility
 {
-    using System.Collections.Generic;
     using Kernel;
 
     /// <summary>
@@ -103,6 +102,17 @@ namespace NFluent.Extensibility
         }
 
         /// <summary>
+        /// Initiates a check logic chain.
+        /// </summary>
+        /// <typeparam name="T">Type of sut</typeparam>
+        /// <param name="check">The fluent check instance to work on.</param>
+        /// <returns>An <see cref="ICheckLogic{T}"/>instance.</returns>
+        public static ICheckLogic<T> BeginCheck<T>(IStructCheck<T> check) where T : struct
+        {
+            return ExtractStructChecker(check).BeginCheck();
+        }
+
+        /// <summary>
         /// Builds a chainable object.
         /// </summary>
         /// <typeparam name="T">Type of sut</typeparam>
@@ -122,6 +132,17 @@ namespace NFluent.Extensibility
         public static ICheckLink<ICodeCheck<T>> BuildCheckLink<T>(ICodeCheck<T> check) where T : RunTrace
         {
             return ExtractCodeChecker(check).BuildChainingObject();
+        }
+
+        /// <summary>
+        /// Builds a chainable object.
+        /// </summary>
+        /// <typeparam name="T">Type of sut</typeparam>
+        /// <param name="check">The fluent check instance to work on.</param>
+        /// <returns>An <see cref="ICheckLink{T}"/> instance to add further checks.</returns>
+        public static ICheckLink<IStructCheck<T>> BuildCheckLink<T>(IStructCheck<T> check) where T : struct
+        {
+            return ExtractStructChecker(check).BuildChainingObject();
         }
 
         /// <summary>
