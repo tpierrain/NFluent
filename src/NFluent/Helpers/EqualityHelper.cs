@@ -81,10 +81,9 @@ namespace NFluent.Helpers
             var mode = Check.EqualMode;
 
             ExtensibilityHelper.BeginCheck(check)
+                .Expecting(expected, "", "different from")
                 .Analyze((sut, test) =>
                 {
-                        test.Expecting(expected, "", "different from");
-
                     if (FluentEquals(sut, expected, mode))
                     {
                         return;

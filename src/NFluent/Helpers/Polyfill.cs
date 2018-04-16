@@ -181,6 +181,18 @@ namespace NFluent
             return false;
         }
 
+        public static bool All<T>(this IList<T> list, Predicate<T> predicate)
+        {
+            foreach (var item in list)
+            {
+                if (!predicate(item))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public static bool Any<T>(this IEnumerable<T> list, Predicate<T> predicate)
         {
             foreach (var item in list)
