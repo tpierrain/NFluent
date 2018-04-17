@@ -19,7 +19,8 @@ namespace NFluent
     using System.Collections;
     using System.Collections.Generic;
     using System.Reflection;
-#if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
+    using Extensibility;
+#if !DOTNET_30 && !DOTNET_20
     using System.Linq;
 #endif
 
@@ -102,7 +103,6 @@ namespace NFluent
             return Extracting(array, propertyName);
         }
 
-#if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
         /// <summary>
         /// Extract all the values of a given property given its getter lambda, from an enumerable collection of objects holding that property.
         /// </summary>
@@ -133,6 +133,5 @@ namespace NFluent
             var enumerableArray = array as IEnumerable<T>;
             return enumerableArray.Extracting(getter);
         }
-#endif
     }
 }
