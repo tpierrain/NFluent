@@ -63,14 +63,18 @@ namespace NFluent.Kernel
         {
             get
             {
-                var checkForExtensibility = ExtensibilityHelper.ExtractChecker(this.previousCheck);
-
-                if (!checkForExtensibility.Value.HasValue)
-                {
-                    throw new FluentCheckException(checkForExtensibility.BuildShortMessage("The checked nullable has no value to be checked.").ToString());
-                }
-
-                return new FluentCheck<TN>(checkForExtensibility.Value.Value);            
+                TN val = default(TN);
+                ExtensibilityHelper.BeginCheck(this.And)
+                    .FailsIf(sut =>
+                    {
+                        if (sut.HasValue)
+                        {
+                            val = sut.Value;
+                        }
+                        return !sut.HasValue;
+                    }, "The checked nullable has no value to be checked.", MessageOption.NoCheckedBlock)
+                    .EndCheck();
+                return new FluentCheck<TN>(val);            
             }
         }
     }

@@ -141,8 +141,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(50)).IsEqualTo(40, TimeUnit.Milliseconds);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[50 Milliseconds]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[40 Milliseconds]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[50 Milliseconds]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[40 Milliseconds]");
         }
 
         [Test]
@@ -152,8 +151,12 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(50)).Not.IsEqualTo(50, TimeUnit.Milliseconds);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is the same than expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[50 Milliseconds]" + Environment.NewLine + "The expected value: different than" + Environment.NewLine + "\t[50 Milliseconds]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is the same than expected one, whereas it must not.",
+                    "The checked value:",
+                    "\t[50 Milliseconds]",
+                    "The expected value: different from",
+                    "\t[50 Milliseconds]");
         }
 
         [Test]
@@ -163,8 +166,12 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(50)).IsEqualTo(TimeSpan.FromMilliseconds(40));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[50 Milliseconds]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[40 Milliseconds]");
+            .IsAFaillingCheckWithMessage("",
+                                         "The checked value is different from the expected one.",
+                    "The checked value:",
+                    "\t[50 Milliseconds]",
+                    "The expected value:",
+                    "\t[40 Milliseconds]");
         }
 
         [Test]
@@ -174,8 +181,12 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(50)).Not.IsEqualTo(TimeSpan.FromMilliseconds(50));
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is the same than expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[50 Milliseconds]" + Environment.NewLine + "The expected value: different than" + Environment.NewLine + "\t[50 Milliseconds]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is the same than expected one, whereas it must not.",
+                    "The checked value:",
+                    "\t[50 Milliseconds]",
+                    "The expected value: different from",
+                    "\t[50 Milliseconds]");
         }
     }
 }

@@ -560,8 +560,8 @@ namespace NFluent.Tests
             {
                 Check.That((decimal?) null).Not.HasAValue().Which.IsAfter(Zero);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked nullable has no value to be checked.");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked nullable has no value to be checked.");
         }
 
         #endregion

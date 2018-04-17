@@ -20,6 +20,7 @@ namespace NFluent.Extensions
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
+    using System.IO;
     using System.Reflection;
     using System.Text;
 
@@ -140,6 +141,10 @@ namespace NFluent.Extensions
                 return $"{{{exc.GetType().FullName}}}: '{exc.Message}'";
             }
 
+            if (theObject is Stream stream)
+            {
+                return $"{stream} (Length: {stream.Length})";
+            }
             var result = theObject.ToString();
 
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse

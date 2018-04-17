@@ -18,6 +18,7 @@ namespace NFluent.Tests
 {
     using System.IO;
     using System.Text;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -66,8 +67,12 @@ namespace NFluent.Tests
                     }
                 }
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked stream has the same content as the other one, whereas it must not." + Environment.NewLine + "The checked stream: (Length: 13)" + Environment.NewLine + "\t[System.IO.MemoryStream]" + Environment.NewLine + "The expected stream: (Length: 13)" + Environment.NewLine + "\t[System.IO.MemoryStream]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked stream has the same content as the other one, whereas it must not.",
+                    "The checked stream:",
+                    "\t[System.IO.MemoryStream (Length: 13)]",
+                    "The expected stream:",
+                    "\t[System.IO.MemoryStream (Length: 13)]");
             
         }
 
@@ -123,8 +128,12 @@ namespace NFluent.Tests
                     }
                 }
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value doesn't have the same content as the expected one. They don't even have the same Length!" + Environment.NewLine + "The checked value: (Length: 18)" + Environment.NewLine + "\t[System.IO.MemoryStream]" + Environment.NewLine + "The expected value: (Length: 11)" + Environment.NewLine + "\t[System.IO.MemoryStream]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked stream doesn't have the same content as the expected one. They don't even have the same Length!",
+                    "The checked stream:",
+                    "\t[System.IO.MemoryStream (Length: 18)]",
+                    "The expected stream:",
+                    "\t[System.IO.MemoryStream (Length: 11)]");
         }
 
         [Test]
@@ -148,8 +157,12 @@ namespace NFluent.Tests
                     }
                 }
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value doesn't have the same content as the expected one (despite the fact that they have the same Length: 12)." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[System.IO.MemoryStream]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[System.IO.MemoryStream]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked stream doesn't have the same content as the expected one (despite the fact that they have the same Length: 12).",
+                    "The checked stream:",
+                    "\t[System.IO.MemoryStream (Length: 12)]",
+                    "The expected stream:",
+                    "\t[System.IO.MemoryStream (Length: 12)]");
         }
 
         [Test]

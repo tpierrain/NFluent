@@ -16,6 +16,7 @@ namespace NFluent.Kernel
 {
     using System.Diagnostics.CodeAnalysis;
     using Extensibility;
+    using Extensions;
     using Helpers;
 
     /// <summary>
@@ -98,9 +99,14 @@ namespace NFluent.Kernel
         /// <exception cref="FluentCheckException">The specified value is not of the given type.</exception>
         public ICheckLink<IStructCheck<T>> IsInstanceOf<TU>() where TU : struct
         {
-            return this.structChecker.ExecuteCheck(
-                () => IsInstanceHelper.IsInstanceOf(this.Value, typeof(TU)), 
-                IsInstanceHelper.BuildErrorMessage(this.Value, typeof(TU), true));
+            ExtensibilityHelper.BeginCheck(this)
+                .FailsIf(sut => sut.GetTypeWithoutThrowingException() != typeof(TU),
+                    "The {0} is not an instance of the expected type.")
+                .Negates(
+                    $"The {{0}} is an instance of [{typeof(TU).ToStringProperlyFormatted()}] whereas it must not.", MessageOption.WithType)
+                .ExpectingType(typeof(TU), "", "different from")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(this);
         }
 
         /// <summary>
@@ -111,9 +117,7 @@ namespace NFluent.Kernel
         /// <exception cref="FluentCheckException">The specified value is of the given type.</exception>
         public ICheckLink<IStructCheck<T>> IsNotInstanceOf<TU>() where TU : struct
         {
-            return this.structChecker.ExecuteCheck(
-                () => IsInstanceHelper.IsNotInstanceOf(this.Value, typeof(TU)),
-                IsInstanceHelper.BuildErrorMessage(this.Value, typeof(TU), false));
+            return this.Not.IsInstanceOf<TU>();
         }
     }
 }

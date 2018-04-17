@@ -22,8 +22,6 @@ namespace NFluent
     /// </summary>
     public static class StreamCheckExtensions
     {
-        #region HasSameSequenceOfBytesAs
-
         /// <summary>
         /// Checks that the actual stream has the same content as another one.
         /// </summary>
@@ -32,76 +30,40 @@ namespace NFluent
         /// <returns>A check link</returns>
         public static ICheckLink<ICheck<Stream>> HasSameSequenceOfBytesAs(this ICheck<Stream> check, Stream expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            var value = checker.Value;
-
-            return checker.ExecuteCheck(
-                () =>
-                    {
-                        if (value.Length != expected.Length)
-                        {
-                            var message = GenerateMessageWhenFullyDistinct(expected, checker, value);
-                            throw new FluentCheckException(message.ToString());
-                        }
-
-                        // Keeps initial positions to be able to restore them after the check
-                        var valueInitialPosition = value.Position;
-                        var otherInitialPosition = expected.Position;
-
-                        value.Seek(0, SeekOrigin.Begin);
-                        expected.Seek(0, SeekOrigin.Begin);
-                        while (value.Position < value.Length)
-                        {
-                            if (value.ReadByte() != expected.ReadByte())
-                            {
-                                var message = GenerateMessageWhenSameLenghtButDiffContent(expected, checker, value);
-                                throw new FluentCheckException(message.ToString());
-                            }
-                        }
-
-                        // Side-effect free. Restore initial positions of streams
-                        value.Position = valueInitialPosition;
-                        expected.Position = otherInitialPosition;
-                    },
-                BuildNegatedMessage(expected, value).ToString());
-        }
-
-        private static MessageBlock GenerateMessageWhenSameLenghtButDiffContent(Stream expected, IChecker<Stream, ICheck<Stream>> checker, Stream value)
-        {
-            var message =
-                checker.BuildMessage(
-                        "The {0} doesn't have the same content as the expected one (despite the fact that they have the same Length: " +
-                        value.Length + ").")
-                    .On(value)
-                    .And.Expected(expected);
-            return message;
-        }
-
-        private static MessageBlock GenerateMessageWhenFullyDistinct(Stream expected, IChecker<Stream, ICheck<Stream>> checker, Stream value)
-        {
-            var message =
-                checker.BuildMessage(
+            ExtensibilityHelper.BeginCheck(check)
+                .FailsIfNull()
+                .SutNameIs("stream")
+                .FailsIf(sut => sut.Length != expected.Length,
+                    (sut, test) =>
                         "The {0} doesn't have the same content as the expected one. They don't even have the same Length!")
-                    .On(value)
-                    .Comparison(string.Format("(Length: {0})", value.Length))
-                    .And.Expected(expected)
-                    .Comparison(string.Format("(Length: {0})", expected.Length));
-            return message;
+                .Expecting(expected)
+                .Analyze((sut, test) =>
+                {
+                    // Keeps initial positions to be able to restore them after the check
+                    var valueInitialPosition = sut.Position;
+                    var otherInitialPosition = expected.Position;
+
+                    sut.Seek(0, SeekOrigin.Begin);
+                    expected.Seek(0, SeekOrigin.Begin);
+                    while (sut.Position < sut.Length)
+                    {
+                        if (sut.ReadByte() == expected.ReadByte())
+                        {
+                            continue;
+                        }
+
+                        test.Fails(
+                            $"The {{0}} doesn't have the same content as the expected one (despite the fact that they have the same Length: {sut.Length}).");
+                        break;
+                    }
+
+                    // Side-effect free. Restore initial positions of streams
+                    sut.Position = valueInitialPosition;
+                    expected.Position = otherInitialPosition;
+                })
+                .Negates("The {0} has the same content as the other one, whereas it must not.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
-
-        private static MessageBlock BuildNegatedMessage(Stream expected, Stream value)
-        {
-            var negatedMessage =
-                FluentMessage.BuildMessage("The {0} has the same content as the other one, whereas it must not.")
-                    .For("stream")
-                    .On(value)
-                    .Comparison(string.Format("(Length: {0})", value.Length))
-                    .And.Expected(expected)
-                    .Comparison(string.Format("(Length: {0})", expected.Length));
-            return negatedMessage;
-        }
-
-        #endregion
-
     }
 }

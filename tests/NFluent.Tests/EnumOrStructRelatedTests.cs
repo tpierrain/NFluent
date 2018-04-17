@@ -145,8 +145,12 @@ namespace NFluent.Tests
             {
                 Check.ThatEnum(FrenchNationality).IsInstanceOf<int>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is not an instance of the expected type." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[French] of type: [NFluent.Tests.Nationality]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [int]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is not an instance of the expected type.",
+                    "The checked value:",
+                    "\t[French] of type: [NFluent.Tests.Nationality]",
+                    "The expected value:",
+                    "\tan instance of type: [int]");
         }
 
         [Test]
@@ -156,8 +160,12 @@ namespace NFluent.Tests
             {
                 Check.ThatEnum(FrenchNationality).IsNotInstanceOf<Nationality>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked value is an instance of [NFluent.Tests.Nationality] whereas it must not." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[French] of type: [NFluent.Tests.Nationality]" + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\tan instance of type: [NFluent.Tests.Nationality]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is an instance of [NFluent.Tests.Nationality] whereas it must not.",
+                    "The checked value:",
+                    "\t[French] of type: [NFluent.Tests.Nationality]",
+                    "The expected value: different from",
+                    "\tan instance of type: [NFluent.Tests.Nationality]");
         }
 
         [Flags]

@@ -34,25 +34,21 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<string, string[]> Once(this IExtendableCheckLink<string, string[]> chainedCheckLink)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
-            var value = checker.Value;
-            var comparand = chainedCheckLink.OriginalComparand;
-            foreach (var text in comparand)
-            {
-                var firstIndex = value.IndexOf(text, StringComparison.Ordinal);
-                var lastIndexOf = value.LastIndexOf(text, StringComparison.Ordinal);
-                if (firstIndex != lastIndexOf)
+            ExtensibilityHelper.BeginCheck(chainedCheckLink.And)
+                .Analyze((sut, test) =>
                 {
-                    // failed 
-                    var message =
-                        checker.BuildMessage(string.Format("The {{0}} contains {0} at {1} and {2}, where as it must contains it once.", text.ToStringProperlyFormatted().DoubleCurlyBraces(), firstIndex, lastIndexOf))
-                                     .For("string")
-                                     .On(value)
-                                     .And.Expected(comparand).Comparison("one");
-                    throw new FluentCheckException(message.ToString());
-                }
-            }
-
+                    foreach (var content in chainedCheckLink.OriginalComparand)
+                    {
+                        var firstIndex = sut.IndexOf(content, StringComparison.Ordinal);
+                        var lastIndexOf = sut.LastIndexOf(content, StringComparison.Ordinal);
+                        if (firstIndex != lastIndexOf)
+                        {
+                            test.Fails(
+                                $"The {{0}} contains {content.ToStringProperlyFormatted().DoubleCurlyBraces()} at {firstIndex} and {lastIndexOf}, where as it must contains it once.");
+                            return;
+                        }
+                    }
+                }).ExpectingValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, "once", "").EndCheck();
             return chainedCheckLink;
         }
 
@@ -67,27 +63,22 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<string, string[]> InThatOrder(this IExtendableCheckLink<string, string[]> chainedCheckLink)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
-            var value = checker.Value;
-            var comparand = chainedCheckLink.OriginalComparand;
-            var lastIndex = 0;
-            foreach (var text in comparand)
-            {
-                lastIndex = value.IndexOf(text, lastIndex, StringComparison.Ordinal);
-                if (lastIndex < 0)
+            ExtensibilityHelper.BeginCheck(chainedCheckLink.And)
+                .Analyze((sut, test) =>
                 {
-                    // failed 
-                    var message =
-                        checker.BuildMessage(
-                            "The {0} does not contain the expected strings in the correct order.")
-                                     .For("string")
-                                     .On(value)
-                                     .And.Expected(comparand)
-                                     .Label("Expected content: ");
-                    throw new FluentCheckException(message.ToString());
-                }
-            }
-
+                    var lastIndex = 0;
+                    foreach (var content in chainedCheckLink.OriginalComparand)
+                    {
+                        lastIndex = sut.IndexOf(content, lastIndex, StringComparison.Ordinal);
+                        if (lastIndex < 0)
+                        {
+                            test.Fails("The {0} does not contain the expected strings in the correct order.");
+                            return;
+                        }
+                    }
+                }).ExpectingValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, 
+                    expectedLabel:"The expected content:", 
+                    negatedLabel:"The expected content:").EndCheck();
             return chainedCheckLink;
         }
     }

@@ -100,30 +100,14 @@ namespace NFluent
          /// <exception cref="FluentCheckException">The actual value is not equal to the target duration.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, double duration, TimeUnit unit)
          {
-             var checker = ExtensibilityHelper.ExtractChecker(check);
-
-             var testedDuration = new Duration(checker.Value, unit);
              var expected = new Duration(duration, unit);
-
-             var message =
-             checker.BuildMessage("The {0} is different from the {1}.")
-                            .On(testedDuration)
-                            .And.Expected(expected);
-             var notMessage =
-                 checker.BuildMessage("The {0} is the same than {1}.")
-                                .On(testedDuration)
-                                .And.Expected(expected)
-                                .Comparison("different than");
-
-             return checker.ExecuteCheck(
-                 () =>
-                 {
-                     if (testedDuration != expected)
-                     {
-                         throw new FluentCheckException(message.ToString());
-                     }
-                 }, 
-                 notMessage.ToString());
+             ExtensibilityHelper.BeginCheck(check)
+                 .GetSutProperty( sut => new Duration(sut, unit), "")
+                 .FailsIf(sut => sut != expected, "The {0} is different from the {1}.")
+                 .Negates("The {0} is the same than {1}, whereas it must not.")
+                 .Expecting(expected, "", "different from")
+                 .EndCheck();
+             return ExtensibilityHelper.BuildCheckLink(check);
          }
 
          /// <summary>
@@ -135,31 +119,8 @@ namespace NFluent
          /// /// <exception cref="FluentCheckException">The actual value is not equal to the target duration.</exception>
          public static ICheckLink<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
-             var checker = ExtensibilityHelper.ExtractChecker(check);
-
-             TimeUnit unit = TimeHelper.DiscoverUnit(comparand);
-             var testedDuration = new Duration(checker.Value, unit);
-             var expected = new Duration(comparand, unit);
-
-             var message =
-             checker.BuildMessage("The {0} is different from the {1}.")
-                            .On(testedDuration)
-                            .And.Expected(expected);
-             var notMessage =
-                 checker.BuildMessage("The {0} is the same than {1}.")
-                                .On(testedDuration)
-                                .And.Expected(expected)
-                                .Comparison("different than");
-
-             return checker.ExecuteCheck(
-                 () =>
-                     {
-                         if (checker.Value != comparand)
-                         {
-                             throw new FluentCheckException(message.ToString());
-                         }
-                     }, 
-                 notMessage.ToString());
+             var unit = TimeHelper.DiscoverUnit(comparand);
+             return check.IsEqualTo(TimeHelper.Convert(comparand, unit), unit);
          }
     }
 }

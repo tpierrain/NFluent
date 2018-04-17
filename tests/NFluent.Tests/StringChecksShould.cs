@@ -109,12 +109,12 @@ namespace NFluent.Tests
         public void ContainsOnceFailsProperly()
         {
             Check.ThatCode(() => { Check.That("abcdefghijklmnopqrstuvwxylmnopz").Contains("lmnop").Once(); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine +
-                             "The checked string contains \"lmnop\" at 11 and 25, where as it must contains it once." +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine +
-                             "\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]" + Environment.NewLine +
-                             "The expected string: one" + Environment.NewLine + "\t[\"lmnop\"]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked string contains \"lmnop\" at 11 and 25, where as it must contains it once.",
+                    "The checked string:",
+                    "\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]",
+                    "The expected value(s): once",
+                    "\t[\"lmnop\"] (1 item)");
         }
 
         [Test]
@@ -127,12 +127,12 @@ namespace NFluent.Tests
         public void ContainsInThatOrderFailsProperly()
         {
             Check.ThatCode(() => { Check.That(Alphabet).Contains("cd", "ab").InThatOrder(); })
-                .Throws<FluentCheckException>()
-                .WithMessage(Environment.NewLine +
-                             "The checked string does not contain the expected strings in the correct order." +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine +
-                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine + "Expected content: " +
-                             Environment.NewLine + "\t[\"cd\", \"ab\"]");
+                .IsAFaillingCheckWithMessage("",
+                            "The checked string does not contain the expected strings in the correct order.",
+                            "The checked string:",
+                            "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
+                            "The expected content:",
+                            "\t[\"cd\", \"ab\"] (2 items)");
         }
 
         [Test]

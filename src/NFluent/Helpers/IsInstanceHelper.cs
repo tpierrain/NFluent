@@ -29,34 +29,6 @@ namespace NFluent.Helpers
     {
 
         /// <summary>
-        /// Checks that an instance is of the given expected type.
-        /// </summary>
-        /// <param name="instance">The instance to be checked.</param>
-        /// <param name="expectedType">The expected type.</param>
-        /// <exception cref="FluentCheckException">The instance is not of the expected type.</exception>
-        public static void IsInstanceOf(object instance, Type expectedType)
-        {
-            if (instance.GetTypeWithoutThrowingException() != expectedType)
-            {
-                throw new FluentCheckException(BuildErrorMessage(instance, expectedType, false));
-            }
-        }
-
-        /// <summary>
-        /// Checks that an instance is not of the given expected type.
-        /// </summary>
-        /// <param name="instance">The instance to be checked.</param>
-        /// <param name="typeNotExpected">The type not expected.</param>
-        /// <exception cref="FluentCheckException">The instance is of the type not expected.</exception>
-        public static void IsNotInstanceOf(object instance, Type typeNotExpected)
-        {
-            if (instance.GetTypeWithoutThrowingException() == typeNotExpected)
-            {
-                throw new FluentCheckException(BuildErrorMessage(instance, typeNotExpected, true));
-            }
-        }
-
-        /// <summary>
         /// Checks that an instance is in the inheritance hierarchy of a specified type.
         /// </summary>
         /// <param name="checker">The instance to be checked.</param>
@@ -70,53 +42,6 @@ namespace NFluent.Helpers
                 .FailsIf(sut => !expectedBaseType.IsAssignableFrom(sut), "The {0} does not have the expected inheritance.")
                 .Negates("The {0} does inherits from the {1} where as it must not")
                 .EndCheck();
-        }
-
-        /// <summary>
-        /// Builds the error message related to the type comparison. This should be called only if the test failed (no matter it is negated or not).
-        /// Warning: Should not call this method with nullable types. Indeed, the Nullable types are treated specially by CLR and it is impossible to have a boxed instance of a nullable type.
-        /// Instead, boxing a nullable type will result in a null reference (if HasValue is false), or the boxed value (if there is a value).
-        /// </summary>
-        /// <param name="value">The checked value.</param>
-        /// <param name="typeOperand">The other type operand.</param>
-        /// <param name="isSameType">A value indicating whether the two types are identical or not. <c>true</c> if they are equal; <c>false</c> otherwise.</param>
-        /// <returns>
-        /// The error message related to the type comparison.
-        /// </returns>
-        public static string BuildErrorMessage(object value, Type typeOperand, bool isSameType)
-        {
-            MessageBlock message;
-            if (isSameType)
-            {
-                message = FluentMessage.BuildMessage(
-                        $"The {{0}} is an instance of [{typeOperand.ToStringProperlyFormatted()}] whereas it must not.")
-                                       .For("value")
-                                       .On(value)
-                                       .WithType()
-                                       .And.ExpectedType(typeOperand)
-                                       .WithType()
-                                       .Comparison("different from");
-            }
-            else if (value != null && value.GetType().FullName == typeOperand.FullName)
-            {
-                // cannot discriminate from type name
-                message = FluentMessage.BuildMessage("The {0} .")
-                                       .On(value)
-                                       .WithType(true, true)
-                                       .And.ExpectedType(typeOperand)
-                                       .WithType(true, true);
-            }
-            else
-            {
-                message =
-                    FluentMessage.BuildMessage("The {0} is not an instance of the expected type.")
-                                 .On(value)
-                                 .WithType()
-                                 .And.ExpectedType(typeOperand)
-                                 .WithType();
-            }
-        
-            return message.ToString();
         }
 
     }
