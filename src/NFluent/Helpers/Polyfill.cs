@@ -240,6 +240,15 @@ namespace NFluent
             }
             return false;
         }
+    
+        public static IEnumerable<TR> Select<T, TR>(this IEnumerable<T> list, Func<T, TR> selector) {
+            var result = new List<TR>();
+            foreach (var item in list)
+            {
+                result.Add(selector.Invoke(item));
+            }
+            return result;
+        } 
 #endif
         public static bool IsNullOrWhiteSpace(string texte)
         {

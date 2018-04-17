@@ -48,7 +48,6 @@ namespace NFluent.Tests
             // assertThat(inn.getItems()).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
         }
 
-#if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
         [Test]
         public void LambdaExtractingWorksWithEnumerable()
         {
@@ -64,7 +63,6 @@ namespace NFluent.Tests
             Check.That(persons.Extracting(p => p.Age)).ContainsExactly(38, 10, 7, 7);
             Check.That(persons.Extracting(p => p.Nationality)).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
         }
-#endif
 
         [Test]
         public void ExtractingThrowInvalidOperationExceptionIfPropertyDoesNotExist()
@@ -117,7 +115,6 @@ namespace NFluent.Tests
             Check.That(persons.Extracting("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
         }
 
-#if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
         [Test]
         public void LambdaExtractingWorksWithArray()
         {
@@ -133,7 +130,6 @@ namespace NFluent.Tests
             Check.That(persons.Extracting(p => p.Age)).ContainsExactly(38, 10, 7, 7);
             Check.That(persons.Extracting(p => p.Nationality)).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
         }
-#endif
 
 #pragma warning disable 618
         [Test]
