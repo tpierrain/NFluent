@@ -19,6 +19,9 @@ namespace NFluent
     using System.Collections;
     using System.Collections.Generic;
     using System.Reflection;
+#if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
+    using System.Linq;
+#endif
 
     /// <summary>
     /// Extension methods for exploiting enumerable content in a fluent manner (i.e. with auto completion support and in an english readable way).
@@ -98,5 +101,38 @@ namespace NFluent
         {
             return Extracting(array, propertyName);
         }
+
+#if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
+        /// <summary>
+        /// Extract all the values of a given property given its getter lambda, from an enumerable collection of objects holding that property.
+        /// </summary>
+        /// <param name="enumerable">The enumerable collection of objects.</param>
+        /// <param name="getter">Lambda to extract value of the property from for every object of the collection.</param>
+        /// <typeparam name="T">Type of the objects belonging to the initial enumerable collection.</typeparam>
+        /// <typeparam name="TP">Type of the extracted values.</typeparam>
+        /// <returns>
+        /// An enumerable of all the property values typed <typeparamref name="TP"/> for every <typeparamref name="T"/> objects in the <paramref name="enumerable"/>.
+        /// </returns>
+        public static IEnumerable<TP> Extracting<T, TP>(this IEnumerable<T> enumerable, Func<T, TP> getter)
+        {
+            return enumerable.Select(getter.Invoke);
+        }
+        
+        /// <summary>
+        /// Extract all the values of a given property given its getter lambda, from an enumerable collection of objects holding that property.
+        /// </summary>
+        /// <param name="array">The array of <typeparamref name="T"/>.</param>
+        /// <param name="getter">Lambda to extract value of the property from for every object of the collection.</param>
+        /// <typeparam name="T">Type of the objects belonging to the initial enumerable collection.</typeparam>
+        /// <typeparam name="TP">Type of the extracted values.</typeparam>
+        /// <returns>
+        /// An enumerable of all the property values typed <typeparamref name="TP"/> for every <typeparamref name="T"/> objects in the <see cref="Array"/>.
+        /// </returns>
+        public static IEnumerable<TP> Extracting<T, TP>(this T[] array, Func<T, TP> getter)
+        {
+            var enumerableArray = array as IEnumerable<T>;
+            return enumerableArray.Extracting(getter);
+        }
+#endif
     }
 }
