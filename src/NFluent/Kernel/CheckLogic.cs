@@ -29,6 +29,7 @@ namespace NFluent.Kernel
 
         private readonly T value;
         private ICheckLogicBase child;
+        private bool isRoot;
         private string comparison;
         private object expected;
         private long expectedCount;
@@ -55,6 +56,7 @@ namespace NFluent.Kernel
             this.value = value;
             this.IsNegated = inverted;
             this.forcedSutName = label;
+            this.isRoot = true;
         }
 
         private bool IsNegated { get; }
@@ -123,6 +125,7 @@ namespace NFluent.Kernel
         {
             var result =
                 new CheckLogic<TU>(this.value == null ? default(TU) : sutExtractor(this.value), null, this.IsNegated);
+            result.isRoot = false;
 
             var sutname = string.IsNullOrEmpty(this.sutName) ? "value" : this.sutName;
             if (!string.IsNullOrEmpty(newSutLabel))
@@ -154,6 +157,10 @@ namespace NFluent.Kernel
 
             if (string.IsNullOrEmpty(this.LastError))
             {
+                if (!this.isRoot)
+                {
+                    return false;
+                }
                 throw new System.InvalidOperationException("Error message was not specified.");
             }
 

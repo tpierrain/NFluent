@@ -26,6 +26,7 @@
 * Extension checks to Throw\&lt;\&gt;, ThrowType or ThrowAny raise an exception when used with Not as it does not make sense.
 * Which() raises an exception when used on a negated check (Not).
 * Fixed error messages for double (and float) equality check that reported checked value in place of the expected one.
+* Fixed error messages for Check.That(TimeSpan).IsGreaterThan
 ### Changes
 * Improved error messages
 * ContainsOnlyElementsThatMatch: now provides the index and value of the first failing value.
@@ -33,7 +34,10 @@
 * DateTime checks: revamped all messages
 * Enum: error message on enum types now use 'enum' instead of 'value'.
 * IsInstanceOf: be more specific regarding types
-* Breaking: removed Failure method from IChecker interface
+* Considering()...IsNull/IsNotNull: error messages specify member triggering the failure.
+* Breaking
+* Added automatic conversion between decimal and other numerical types. Check.That(100M).IsEqualTo(100) no longer fails.
+* Removed Failure method from IChecker interface
 ### GitHub Issues
 * #228, #227, #222, #223, #217, #230, #236
 ------

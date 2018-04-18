@@ -20,11 +20,11 @@ namespace NFluent.Helpers
 
     internal class MemberMatch
     {
-        private readonly ReflectionWrapper actual;
+        internal readonly ReflectionWrapper Actual;
 
         public MemberMatch(ReflectionWrapper expected, ReflectionWrapper actual)
         {
-            this.actual = actual;
+            this.Actual = actual;
             this.Expected = expected;
         }
 
@@ -33,16 +33,16 @@ namespace NFluent.Helpers
             get
             {
                 var comparer = new EqualityHelper.EqualityComparer<object>();
-                return this.ActualFieldFound && this.ExpectedFieldFound && comparer.Equals(this.actual.Value, this.Expected.Value);
+                return this.ActualFieldFound && this.ExpectedFieldFound && comparer.Equals(this.Actual.Value, this.Expected.Value);
             }
         }
 
-        private ReflectionWrapper Expected { get; }
+        internal ReflectionWrapper Expected { get; }
 
         /// <summary>
         ///     Gets a actualValue indicating whether the expected field has been found.
         /// </summary>
-        internal bool ExpectedFieldFound => this.actual != null;
+        internal bool ExpectedFieldFound => this.Actual != null;
         internal bool ActualFieldFound => this.Expected != null;
 
         public void Check(ICheckLogic<ReflectionWrapper> checkLogic)
@@ -57,27 +57,27 @@ namespace NFluent.Helpers
             else if (!this.ActualFieldFound)
             {
                 checkLogic
-                    .GetSutProperty(_ => this.actual.Value, this.actual.MemberLabel)
+                    .GetSutProperty(_ => this.Actual.Value, this.Actual.MemberLabel)
                     .Fails("The {0} is absent from the {1}.", MessageOption.WithType);
             }
             else
             {
-                var withType = this.actual.Value.GetTypeWithoutThrowingException() != this.Expected.Value.GetTypeWithoutThrowingException();
-                var withHash = !withType && this.actual?.Value != null && this.Expected?.Value != null &&
-                               this.actual.Value.ToString() == this.Expected.Value.ToString();
+                var withType = this.Actual.Value.GetTypeWithoutThrowingException() != this.Expected.Value.GetTypeWithoutThrowingException();
+                var withHash = !withType && this.Actual?.Value != null && this.Expected?.Value != null &&
+                               this.Actual.Value.ToString() == this.Expected.Value.ToString();
                 var mode = (withType ? MessageOption.WithType :
                     MessageOption.None) | (withHash ? MessageOption.WithHash : MessageOption.None);
                 if (this.DoValuesMatches)
                 {
                     checkLogic
-                        .GetSutProperty(_=>this.actual.Value, this.actual.MemberLabel)
+                        .GetSutProperty(_=>this.Actual.Value, this.Actual.MemberLabel)
                         .Fails("The {0} has the same value than the given one, whereas it should not.", MessageOption.NoCheckedBlock)
                         .ComparingTo(this.Expected.Value, "different from", "");
                 }
                 else
                 {
                     checkLogic
-                        .GetSutProperty(_=>this.actual.Value, this.actual.MemberLabel)
+                        .GetSutProperty(_=>this.Actual.Value, this.Actual.MemberLabel)
                         .Fails("The {0} does not have the expected value.", mode)
                         .Expecting(this.Expected.Value);
                 }

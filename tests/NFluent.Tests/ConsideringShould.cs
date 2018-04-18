@@ -419,7 +419,10 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That(sut).Considering().NonPublic.Properties.Not.IsNull(); })
                 .IsAFaillingCheckWithMessage("", "The checked value has only null member, whereas it should not.");
             Check.ThatCode(() => { Check.That(sut).Considering().Public.Properties.IsNull();})
-                .IsAFaillingCheckWithMessage("", "The checked value has a non null member, whereas it should not.", "The checked value:", "\t[7]");
+                .IsAFaillingCheckWithMessage("", 
+                    "The checked value's property 'TheProperty' is non null, whereas it should be.", 
+                    "The checked value's property 'TheProperty':",
+                    "\t[7]");
         }
 
         [Test]
@@ -429,9 +432,9 @@ namespace NFluent.Tests
             var sut = new SutClass(5, 7);
             Check.That(sut).Considering().Public.Properties.IsNotNull();
             Check.ThatCode(() => { Check.That(sut).Considering().Public.Properties.Not.IsNotNull(); }).
-                IsAFaillingCheckWithMessage("", "The checked value has no null member, whereas it should.", "The checked value:", "\t[{ TheProperty = 7 }]");
+                IsAFaillingCheckWithMessage("", "The checked value has a non null member, whereas it should not.", "The checked value:", "\t[{ TheProperty = 7 }]");
             Check.ThatCode(() => { Check.That(sut).Considering().NonPublic.Properties.IsNotNull();})
-                .IsAFaillingCheckWithMessage("", "The checked value has a null member, whereas it should not.");
+                .IsAFaillingCheckWithMessage("",  "The checked value's property 'ThePrivateProperty' is null, whereas it should not.");
         }
 
         [Test]
@@ -454,19 +457,30 @@ namespace NFluent.Tests
             {
                 Check.That(new {Property = sharedReference}).Considering().Public.Properties
                     .IsSameReferenceAs(new {Property = (object) null});
-            }).IsAFaillingCheckWithMessage("", "The checked value's property 'Property' does not reference the expected instance.", "The checked value:", "\t[{  }]", "The expected value:", "\t[null]");
+            }).IsAFaillingCheckWithMessage("", 
+                "The checked value's property 'Property' does not reference the expected one.", 
+                "The checked value's property 'Property':", 
+                "\t[System.Object]", 
+                "The expected value's property 'Property':",
+                "\t[null]");
 
             Check.ThatCode(() =>
             {
                 Check.That(new {Properties = (object) null}).Considering().Public.Properties
                     .IsSameReferenceAs(new {Property = sharedReference, Properties = (object) null});
-            }).IsAFaillingCheckWithMessage("", "The expected one's property 'Property' is absent from the checked value.", "The expected property 'Property':", "\t[System.Object]");
+            }).IsAFaillingCheckWithMessage("", 
+                "The expected one is absent from the checked value's property 'Property'.", 
+                "The expected value's property 'Property':", 
+                "\t[System.Object]");
 
             Check.ThatCode(() =>
             {
                 Check.That(new {Property = sharedReference, Properties = 2}).Considering().Public.Properties
                     .IsSameReferenceAs(new {Property = sharedReference});
-            }).IsAFaillingCheckWithMessage("", "The checked value's property 'Properties' is absent from the expected one.", "The value property 'Properties':", "\t[2]");
+            }).IsAFaillingCheckWithMessage("", 
+                "The checked value's property 'Properties' is absent from the expected one.", 
+                "The checked value's property 'Properties':", 
+                "\t[2]");
 
         }
 
@@ -483,19 +497,28 @@ namespace NFluent.Tests
                 Check.That(new {Property = sharedReference}).Considering().Public.Properties
                     .IsDistinctFrom(new {Property = sharedReference});
             }).IsAFaillingCheckWithMessage(
-                "", "The checked value's property 'Property' does reference the reference instance, whereas it should not.", "The checked value:", "\t[{  }]");
+                "", 
+                "The checked value's property 'Property' does reference the given one, wheras it should not.", 
+                "The expected value's property 'Property': different instance than", 
+                "\t[System.Object]");
 
             Check.ThatCode(() =>
             {
                 Check.That(new {Properties = (object) null}).Considering().Public.Properties
                     .IsDistinctFrom(new {Property = sharedReference, Properties = (object) null});
-            }).IsAFaillingCheckWithMessage("", "The expected one's property 'Property' is absent from the checked value.", "The expected property 'Property':", "\t[System.Object]");
+            }).IsAFaillingCheckWithMessage("", 
+                "The expected one is absent from the checked value's property 'Property'.",
+                "The expected value's property 'Property':",
+                "\t[System.Object]");
 
             Check.ThatCode(() =>
             {
                 Check.That(new {Property = sharedReference, Properties = 2}).Considering().Public.Properties
                     .IsDistinctFrom(new {Property = new object()});
-            }).IsAFaillingCheckWithMessage("", "The checked value's property 'Properties' is absent from the expected one.", "The value property 'Properties':", "\t[2]");
+            }).IsAFaillingCheckWithMessage("", 
+                "The checked value's property 'Properties' is absent from the expected one.", 
+                "The checked value's property 'Properties':", 
+                "\t[2]");
         }
 
         private class Recurse

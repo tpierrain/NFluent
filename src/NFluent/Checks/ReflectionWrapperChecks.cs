@@ -95,141 +95,115 @@ namespace NFluent
         /// <inheritdoc cref="ObjectCheckExtensions.IsNull{T}(NFluent.ICheck{T})" />
         public static ICheckLink<ICheck<ReflectionWrapper>> IsNull(this ICheck<ReflectionWrapper> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.ExecuteCheck(() =>
+            ExtensibilityHelper.BeginCheck(check)
+                .Analyze((sut, test) =>
                 {
-                    checker.Value.ScanFields((scan, depth) =>
+                    sut.ScanFields((scan, depth) =>
                     {
-                        if (depth <= 0 && scan.Value != null)
-                        {
-                            var message = checker.BuildMessage("The {0} has a non null member, whereas it should not.")
-                                .On(scan);
-                            throw new FluentCheckException(message.ToString());
-                        }
-
-                        return scan.Value != null;
+                        test.GetSutProperty(_ => scan.Value, scan.MemberLabel)
+                            .FailsIf(val => depth <= 0 && val != null,
+                                "The {0} is non null, whereas it should be.");
+                        return !test.Failed && scan.Value != null;
                     });
-                },
-                checker.BuildShortMessage("The {0} has only null member, whereas it should not.").ToString());
+                })
+                .Negates("The {0} has only null member, whereas it should not.", MessageOption.NoCheckedBlock)
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <inheritdoc cref="ObjectCheckExtensions.IsNotNull{T}(NFluent.ICheck{T})" />
         public static ICheckLink<ICheck<ReflectionWrapper>> IsNotNull(this ICheck<ReflectionWrapper> check)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.ExecuteCheck(() =>
+            ExtensibilityHelper.BeginCheck(check)
+                .Analyze((sut, test) =>
                 {
-                    checker.Value.ScanFields((scan, depth) =>
+                    sut.ScanFields((scan, depth) =>
                     {
-                        if (depth > 0 || scan.Value != null)
-                        {
-                            return scan.Value != null;
-                        }
-
-                        var message =
-                            checker.BuildShortMessage("The {0} has a null member, whereas it should not.");
-                        throw new FluentCheckException(message.ToString());
+                        test.GetSutProperty(_ => scan.Value, scan.MemberLabel)
+                            .FailsIf(val => depth <= 0 && val == null,
+                                "The {0} is null, whereas it should not.", MessageOption.NoCheckedBlock);
+                        return !test.Failed && scan.Value != null;
                     });
-                },
-                checker.BuildMessage("The {0} has no null member, whereas it should.").ToString());
+                })
+                .Negates("The {0} has a non null member, whereas it should not.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <inheritdoc cref="ObjectCheckExtensions.IsSameReferenceAs{T,TU}" />
         public static ICheckLink<ICheck<ReflectionWrapper>> IsSameReferenceAs<TU>(this ICheck<ReflectionWrapper> check,
             TU expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.ExecuteCheck(() =>
+            ExtensibilityHelper.BeginCheck(check)
+                .Analyze((sut, test) =>
                 {
-                    var expectedWrapper =
-                        ReflectionWrapper.BuildFromInstance(typeof(TU), expected, checker.Value.Criteria);
-                    expectedWrapper.MapFields(checker.Value, 1, (scan, match, depth) =>
+                    sut.MemberMatches(expected);
+                    foreach (var match in sut.MemberMatches(expected))
                     {
-                        if (depth > 0)
+                        if (!match.ExpectedFieldFound)
                         {
-                            return true;
+                            test.GetSutProperty(_ => match.Expected.Value, match.Expected.MemberLabel)
+                                .Fails("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock)
+                                .Expecting(match.Expected.Value);
+                            break;
                         }
 
-                        if (match == null)
+                        if (!match.ActualFieldFound)
                         {
-                            var result = checker.BuildShortMessage(
-                                    $"The {{1}}'s {scan.MemberLabel.DoubleCurlyBraces()} is absent from the {{0}}.")
-                                .For("value").Expected(scan.Value)
-                                .Label($"The {{0}} {scan.MemberLabel.DoubleCurlyBraces()}:");
-                            throw new FluentCheckException(result.ToString());
+                            test.GetSutProperty(_ => match.Actual.Value, match.Actual.MemberLabel)
+                                .Fails("The {0} is absent from the {1}.");
+                            break;
                         }
-
-                        if (scan == null)
+                        if (!ReferenceEquals(match.Actual.Value, match.Expected.Value))
                         {
-                            var result = checker.BuildShortMessage(
-                                    $"The {{0}}'s {match.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.")
-                                .For("value").On(match.Value)
-                                .Label($"The {{1}} {match.MemberLabel.DoubleCurlyBraces()}:");
-                            throw new FluentCheckException(result.ToString());
+                            test.GetSutProperty(_ => match.Actual.Value, match.Actual.MemberLabel)
+                                .Fails("The {0} does not reference the {1}.")
+                                .Expecting(match.Expected.Value);
+                            break;
                         }
-
-                        if (!ReferenceEquals(scan.Value, match.Value))
-                        {
-                            var message =
-                                checker.BuildShortMessage(
-                                        $"The {{0}}'s {match.MemberLabel.DoubleCurlyBraces()} does not reference the expected instance.")
-                                    .For("value").On(match).And.Expected(scan);
-                            throw new FluentCheckException(message.ToString());
-                        }
-
-                        return scan.Value != null;
-                    });
-                },
-                checker.BuildMessage("The {0} has no null member, whereas it should.").ToString());
+                    }
+                })
+                .Negates("The {0} contains the same reference than the {1}, whereas it should not.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <inheritdoc cref="ObjectCheckExtensions.IsDistinctFrom{T,TU}" />
         public static ICheckLink<ICheck<ReflectionWrapper>> IsDistinctFrom<TU>(this ICheck<ReflectionWrapper> check,
             TU expected)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.ExecuteCheck(() =>
+            ExtensibilityHelper.BeginCheck(check)
+                .Analyze((sut, test) =>
                 {
-                    var expectedWrapper =
-                        ReflectionWrapper.BuildFromInstance(typeof(TU), expected, checker.Value.Criteria);
-                    expectedWrapper.MapFields(checker.Value, 1, (scan, match, depth) =>
+                    sut.MemberMatches(expected);
+                    foreach (var match in sut.MemberMatches(expected))
                     {
-                        if (depth > 0)
+                        if (!match.ExpectedFieldFound)
                         {
-                            return true;
+                            test.GetSutProperty(_ => match.Expected.Value, match.Expected.MemberLabel)
+                                .Fails("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock)
+                                .Expecting(match.Expected.Value);
+                            break;
                         }
 
-                        if (match == null)
+                        if (!match.ActualFieldFound)
                         {
-                            var result = checker.BuildShortMessage(
-                                    $"The {{1}}'s {scan.MemberLabel.DoubleCurlyBraces()} is absent from the {{0}}.")
-                                .For("value").Expected(scan.Value)
-                                .Label($"The {{0}} {scan.MemberLabel.DoubleCurlyBraces()}:");
-                            throw new FluentCheckException(result.ToString());
+                            test.GetSutProperty(_ => match.Actual.Value, match.Actual.MemberLabel)
+                                .Fails("The {0} is absent from the {1}.");
+                            break;
                         }
-
-                        if (scan == null)
+                        if (ReferenceEquals(match.Actual.Value, match.Expected.Value))
                         {
-                            var result = checker.BuildShortMessage(
-                                    $"The {{0}}'s {match.MemberLabel.DoubleCurlyBraces()} is absent from the {{1}}.")
-                                .For("value").On(match.Value)
-                                .Label($"The {{1}} {match.MemberLabel.DoubleCurlyBraces()}:");
-                            throw new FluentCheckException(result.ToString());
+                            test.GetSutProperty(_ => match.Actual.Value, match.Actual.MemberLabel)
+                                .Fails("The {0} does reference the {1}, wheras it should not.", MessageOption.NoCheckedBlock)
+                                .ComparingTo(match.Expected.Value, "different instance than", "same instance than");
+                            break;
                         }
-
-                        if (ReferenceEquals(scan.Value, match.Value))
-                        {
-                            var message =
-                                checker.BuildShortMessage(
-                                        $"The {{0}}'s {match.MemberLabel.DoubleCurlyBraces()} does reference the reference instance, whereas it should not.")
-                                    .For("value").On(match);
-                            throw new FluentCheckException(message.ToString());
-                        }
-
-                        return scan.Value != null;
-                    });
-                },
-                checker.BuildMessage("The {0} has no null member, whereas it should.").ToString());
+                    }
+                })
+                .Negates("The {0} contains the same reference than the {1}, whereas it should not.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
     }
 }
