@@ -51,9 +51,13 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                     {
                         Check.That(tresAmigosAndMore).Contains(this.tresAmigos).InThatOrder();
-                    })
-                    .Throws<FluentCheckException>()
-                    .WithMessage(Environment.NewLine+ "The checked enumerable does not follow to the expected order. Item [\"un\"] appears too late in the list, at index '2'." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"un\", \"dos\", \"un\", \"tres\"]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"un\", \"dos\", \"tres\"]");
+                    }).
+                    IsAFaillingCheckWithMessage("",
+                    "The checked enumerable does not follow to the expected order. Item [\"un\"] appears too late in the list, at index '2'.",
+                    "The checked enumerable:",
+                    "\t[\"un\", \"dos\", \"un\", \"tres\"] (4 items)",
+                    "The expected enumerable: in that order",
+                    "\t[\"un\", \"dos\", \"tres\"]");
         }
 
         [Test]
@@ -63,8 +67,12 @@ namespace NFluent.Tests
             {
                 Check.That(this.tresAmigos).Contains("dos", "un", "tres").InThatOrder();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable does not follow to the expected order. Item [\"dos\"] appears too late in the list, at index '1'." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"un\", \"dos\", \"tres\"]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"dos\", \"un\", \"tres\"]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked enumerable does not follow to the expected order. Item [\"dos\"] appears too late in the list, at index '1'.",
+                    "The checked enumerable:",
+                    "\t[\"un\", \"dos\", \"tres\"] (3 items)",
+                    "The expected enumerable: in that order",
+                    "\t[\"dos\", \"un\", \"tres\"]");
         }
 
         [Test]
@@ -74,8 +82,13 @@ namespace NFluent.Tests
             {
                 Check.That(this.tresAmigos).Contains("un", "tres", "dos").InThatOrder();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked enumerable does not follow to the expected order. Item [\"dos\"] appears too early in the list, at index '1'." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"un\", \"dos\", \"tres\"]" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"un\", \"tres\", \"dos\"]");
+            .IsAFaillingCheckWithMessage(
+                    "",
+                    "The checked enumerable does not follow to the expected order. Item [\"dos\"] appears too early in the list, at index '1'.",
+                    "The checked enumerable:",
+                    "\t[\"un\", \"dos\", \"tres\"] (3 items)",
+                    "The expected enumerable: in that order",
+                    "\t[\"un\", \"tres\", \"dos\"]");
         }
 
         [Test]

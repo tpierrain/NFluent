@@ -95,71 +95,63 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<IEnumerable, IEnumerable> InThatOrder(this IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
-            var orderedList = ToNewList(chainedCheckLink);
-
-            var failingIndex = 0;
-            var scanIndex = 0;
-            Debug.Assert(checker != null, "checker != null");
-            foreach (var item in checker.Value)
-            {
-                if (item != orderedList[scanIndex])
+            ExtensibilityHelper.BeginCheck(chainedCheckLink.And).ComparingTo(chainedCheckLink.OriginalComparand,
+                    "in that order", "in another order")
+                .Analyze((sut, test) => 
                 {
-                    var failed = false;
+                    var orderedList = ToNewList(chainedCheckLink);
 
-                    // if current item is part of current list, check order
-                    var index = orderedList.IndexOf(item, scanIndex);
-                    if (index < 0)
+                    var failingIndex = 0;
+                    var scanIndex = 0;
+                    foreach (var item in sut)
                     {
-                        // if not found at the end of the list, try the full list
-                        index = orderedList.IndexOf(item);
-                        if (index >= 0)
+                        if (item != orderedList[scanIndex])
                         {
-                            failed = true;
-                        }
-                    }
-                    else
-                    {
-                        var currentReference = orderedList[scanIndex];
-                        
-                        // skip all similar entries in the expected list (tolerance: the checked enumerables may not contains as many instances of one item as expected
-                        while (currentReference == orderedList[++scanIndex] 
-                            && scanIndex < orderedList.Count)
-                        {
-                        }
+                            var failed = false;
 
-                        // check if skipped only similar items
-                        if (scanIndex < index)
-                        {
-                            failed = true;
-                        }
-                    }
+                            // if current item is part of current list, check order
+                            var index = orderedList.IndexOf(item, scanIndex);
+                            if (index < 0)
+                            {
+                                // if not found at the end of the list, try the full list
+                                index = orderedList.IndexOf(item);
+                                if (index >= 0)
+                                {
+                                    failed = true;
+                                }
+                            }
+                            else
+                            {
+                                var currentReference = orderedList[scanIndex];
+                                
+                                // skip all similar entries in the expected list (tolerance: the checked enumerables may not contains as many instances of one item as expected
+                                while (currentReference == orderedList[++scanIndex] 
+                                    && scanIndex < orderedList.Count)
+                                {
+                                }
 
-                    if (failed)
-                    {
-                        // check failed. Now we have to refine the issue type.
-                        // we assume that Contains was executed (imposed by chaining syntax)
-                        // the item violating the order is the previous one!
-                        var message = checker.BuildMessage(
-                            string.Format(
+                                // check if skipped only similar items
+                                if (scanIndex < index)
+                                {
+                                    failed = true;
+                                }
+                            }
+
+                            test.FailsIf(_ => failed, string.Format(
                                 "The {{0}} does not follow to the expected order. Item [{0}] appears too {2} in the list, at index '{1}'.",
                                 item.ToStringProperlyFormatted().DoubleCurlyBraces(),
                                 failingIndex,
-                                index > scanIndex ? "early" : "late"))
-                                         .ExpectedValues(chainedCheckLink.OriginalComparand);
+                                index > scanIndex ? "early" : "late"));
 
-                        throw new FluentCheckException(message.ToString());
+                            if (index >= 0)
+                            {
+                                scanIndex = index;
+                            }
+                        }
+
+                        failingIndex++;
                     }
-
-                    if (index >= 0)
-                    {
-                        scanIndex = index;
-                    }
-                }
-
-                failingIndex++;
-            }
-
+                }).EndCheck();
             return chainedCheckLink;
         }
 
