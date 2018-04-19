@@ -286,8 +286,8 @@ namespace NFluent.Helpers
                     return ValueDifferenceEnumerable(first, firstName, second, secondName, firstSeen, secondSeen);
                 }
 
-                if (ExtensionsCommonHelpers.IsNumerical(firstItem.GetType()) &&
-                    ExtensionsCommonHelpers.IsNumerical(otherItem.GetType()))
+                if (firstItem.GetType().IsNumerical() &&
+                    otherItem.GetType().IsNumerical())
                 {
                     var changeType = Convert.ChangeType(firstItem, otherItem.GetType(), null);
                     if (otherItem.Equals(changeType))

@@ -55,34 +55,31 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<IEnumerable, IEnumerable> Once(this IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
-            var itemIndex = 0;
-            var expectedList = ConvertToList(chainedCheckLink);
-            var listedItems = new List<object>();
-            Debug.Assert(checker != null, "checker != null");
-            foreach (var item in checker.Value)
-            {
-                if (expectedList.Contains(item))
+            ExtensibilityHelper.BeginCheck(chainedCheckLink.And)
+                .ComparingTo(chainedCheckLink.OriginalComparand, "once of", "")
+                .Analyze((sut, test) =>
                 {
-                    listedItems.Add(item);
-                    expectedList.Remove(item);
-                }
-                else if (listedItems.Contains(item))
-                {
-                    // failure, we found one extra occurrence of one item
-                    var message =
-                        checker.BuildMessage(
-                            string.Format(
-                                            "The {{0}} has extra occurrences of the expected items. Item [{0}] at position {1} is redundant.",
-                                item.ToStringProperlyFormatted().DoubleCurlyBraces(),
-                                            itemIndex))
-                                       .ExpectedValues(chainedCheckLink.OriginalComparand);
+                    var itemIndex = 0;
+                    var expectedList = ToNewList(chainedCheckLink);
+                    var listedItems = new List<object>();
+                    foreach (var item in sut)
+                    {
+                        if (expectedList.Contains(item))
+                        {
+                            listedItems.Add(item);
+                            expectedList.Remove(item);
+                        }
+                        else if (listedItems.Contains(item))
+                        {
+                            test.Fails(
+                                $"The {{0}} has extra occurrences of the expected items. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] at position {itemIndex} is redundant.");
+                            return;
+                        }
 
-                    throw new FluentCheckException(message.ToString());
-                }
+                        itemIndex++;
+                    }
 
-                itemIndex++;
-            }
+                }).EndCheck();
 
             return chainedCheckLink;
         }
@@ -99,7 +96,7 @@ namespace NFluent
         public static IExtendableCheckLink<IEnumerable, IEnumerable> InThatOrder(this IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
         {
             var checker = ExtensibilityHelper.ExtractChecker(chainedCheckLink.And);
-            var orderedList = ConvertToList(chainedCheckLink);
+            var orderedList = ToNewList(chainedCheckLink);
 
             var failingIndex = 0;
             var scanIndex = 0;
@@ -166,7 +163,7 @@ namespace NFluent
             return chainedCheckLink;
         }
 
-        private static List<object> ConvertToList(IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
+        private static List<object> ToNewList(IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
         {
             var orderedList = new List<object>();
             foreach (var item in chainedCheckLink.OriginalComparand)
