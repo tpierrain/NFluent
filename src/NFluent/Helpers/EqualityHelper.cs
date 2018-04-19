@@ -232,8 +232,8 @@ namespace NFluent.Helpers
                 case EqualityMode.OperatorEq:
                 case EqualityMode.OperatorNeq:
 
-                    var actualType = instance.GetTypeWithoutThrowingException();
-                    var expectedType = expected.GetTypeWithoutThrowingException();
+                    var actualType = instance.GetTypeWithoutThrowingException() ?? typeof(object);
+                    var expectedType = expected.GetTypeWithoutThrowingException() ?? typeof(object);
                     var operatorName = mode == EqualityMode.OperatorEq ? "op_Equality" : "op_Inequality";
                     var ope = actualType
                                   .GetMethod(operatorName, new[] {actualType, expectedType}) ?? expectedType

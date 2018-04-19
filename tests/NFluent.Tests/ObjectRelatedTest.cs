@@ -232,12 +232,20 @@ namespace NFluent.Tests
             var myClone = new PersonEx() { Name = "dupdob" };
 
             Check.ThatCode(() => {
+                    Check.That((object)null).HasDifferentValueThan((object)null);
+                })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked value is equal to the expected one whereas it must not.",
+                    "The expected value: different from (using operator!=)",
+                    "\t[null]");
+
+            Check.ThatCode(() => {
                 Check.That(myClone).HasDifferentValueThan(mySelf);
             })
-                .ThrowsAny()
-                .WithMessage(
-                    Environment.NewLine+ "The checked value is equal to the expected one whereas it must not." + Environment.NewLine + "The expected value: different from (using operator!=)" + Environment.NewLine + "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
-
+                .IsAFaillingCheckWithMessage("",
+                    "The checked value is equal to the expected one whereas it must not.",
+                    "The expected value: different from (using operator!=)",
+                    "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
         }
 
         private class Person
