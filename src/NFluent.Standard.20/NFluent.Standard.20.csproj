@@ -24,6 +24,10 @@
   <Import Project="..\NFluent.Generated\NFluent.Generated.projitems" Label="Shared" />
 
   <ItemGroup>
+    <None Remove="NFluent.Standard.20.v3.ncrunchproject" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\..\NFluent.snk" Link="NFluent.snk" />
   </ItemGroup>
 

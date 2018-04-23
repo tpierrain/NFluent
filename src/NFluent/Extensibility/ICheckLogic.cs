@@ -136,6 +136,14 @@ namespace NFluent.Extensibility
         ICheckLogic<T> FailsIfNull(string error = "The {0} is null.");
 
         /// <summary>
+        /// Raises an InvalidOperationException if predicte returns true. 
+        /// </summary>
+        /// <param name="predicate">predicate function</param>
+        /// <param name="error">error message in exception</param>
+        /// <returns>Continuation object.</returns>
+        ICheckLogic<T> InvalidIf(Func<T, bool> predicate, string error);
+        
+        /// <summary>
         /// Set the name for the observed system.
         /// </summary>
         /// <param name="name">Name to use</param>

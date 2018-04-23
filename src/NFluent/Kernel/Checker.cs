@@ -31,16 +31,17 @@ namespace NFluent.Kernel
         where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         private readonly ICheckForExtensibility<T, TC> fluentCheckForExtensibility;
-
-        private string sutLabel;
+        private readonly FluentSut<T> fluentSut;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Checker{T,TC}" /> class.
         /// </summary>
         /// <param name="fluentCheckForExtensibility">The runnable fluent check.</param>
-        public Checker(ICheckForExtensibility<T, TC> fluentCheckForExtensibility)
+        /// <param name="fluentSut"></param>
+        public Checker(ICheckForExtensibility<T, TC> fluentCheckForExtensibility, FluentSut<T> fluentSut)
         {
             this.fluentCheckForExtensibility = fluentCheckForExtensibility;
+            this.fluentSut = fluentSut;
         }
 
         /// <inheritdoc />
@@ -86,7 +87,7 @@ namespace NFluent.Kernel
         /// <param name="newLabel">The label for the SUT.</param>
         public void SetSutLabel(string newLabel)
         {
-            this.sutLabel = $"[{newLabel}]";
+            this.fluentSut.SutName = $"[{newLabel}]";
         }
 
         /// <summary>
@@ -185,9 +186,9 @@ namespace NFluent.Kernel
             }
         }
 
-        public ICheckLogic<T> BeginCheck(bool inverted)
+        public ICheckLogic<T> BeginCheck()
         {
-            return new CheckLogic<T>(this.Value, this.sutLabel, inverted != this.Negated);
+            return new CheckLogic<T>(this.fluentSut);
         }
     }
 }

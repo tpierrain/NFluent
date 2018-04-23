@@ -17,13 +17,12 @@ namespace NFluent.Kernel
     using System.Diagnostics.CodeAnalysis;
     using Extensibility;
     using Extensions;
-    using Helpers;
 
     /// <summary>
     /// Provides check methods to be executed on a given struct value.
     /// </summary>
     /// <typeparam name="T">Type of the struct value to assert on.</typeparam>
-    internal sealed class FluentStructCheck<T> : IForkableCheck, IStructCheck<T>, ICheckForExtensibility<T, IStructCheck<T>> where T : struct
+    internal sealed class FluentStructCheck<T> : FluentSut<T>, IForkableCheck, IStructCheck<T>, ICheckForExtensibility<T, IStructCheck<T>> where T : struct
     {
         private readonly Checker<T, IStructCheck<T>> structChecker;
 
@@ -40,32 +39,14 @@ namespace NFluent.Kernel
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="negated">A boolean value indicating whether the check should be negated or not.</param>
-        private FluentStructCheck(T value, bool negated)
+        private FluentStructCheck(T value, bool negated) : base(value, negated)
         {
-            this.Value = value;
-            this.Negated = negated;
-            this.structChecker = new Checker<T, IStructCheck<T>>(this);
+            this.structChecker = new Checker<T, IStructCheck<T>>(this, this);
         }
 
         /// <inheritdoc />
-
-        public T Value { get; private set; }
-
-        /// <inheritdoc />
-
-        public bool Negated { get; private set; }
-
-        /// <inheritdoc />
-
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public IStructCheck<T> Not
-        {
-            get
-            {
-                bool negated = !this.Negated;
-                return new FluentStructCheck<T>(this.Value, negated);
-            }
-        }
+        public IStructCheck<T> Not => new FluentStructCheck<T>(this.Value, !this.Negated);
 
         /// <summary>
         /// Gets the runner to use for checking something on a given type.
@@ -99,7 +80,7 @@ namespace NFluent.Kernel
         /// <exception cref="FluentCheckException">The specified value is not of the given type.</exception>
         public ICheckLink<IStructCheck<T>> IsInstanceOf<TU>() where TU : struct
         {
-            ExtensibilityHelper.BeginCheck(this)
+            ExtensibilityHelper.BeginCheck((FluentSut<T>) this)
                 .FailsIf(sut => sut.GetTypeWithoutThrowingException() != typeof(TU),
                     "The {0} is not an instance of the expected type.")
                 .Negates(

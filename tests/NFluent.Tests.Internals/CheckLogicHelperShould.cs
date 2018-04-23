@@ -16,6 +16,7 @@
 namespace NFluent.Tests
 {
     using System.Collections.Generic;
+    using Extensibility;
     using Helpers;
     using Kernel;
     using NUnit.Framework;
@@ -27,9 +28,9 @@ namespace NFluent.Tests
             BeEasyForBasicChecks()
         {
             var fluentChecker = new FluentCheck<string>("test");
-            var checker = fluentChecker.Checker;
+            var checker = ExtensibilityHelper.ExtractChecker(fluentChecker.Not);
 
-            checker.BeginCheck(true)
+            checker.BeginCheck()
                 .Expecting("other")
                 .FailsIf((x) => x.Equals("test"), "The {0} should be equal to the {1}.")
                 .EndCheck();

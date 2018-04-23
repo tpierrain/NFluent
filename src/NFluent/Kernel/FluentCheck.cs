@@ -16,7 +16,6 @@ namespace NFluent.Kernel
 {
     using System.Diagnostics.CodeAnalysis;
     using Extensibility;
-    using Helpers;
 
     /// <summary>
     /// Provides fluent check methods to be executed on a given value.
@@ -24,7 +23,7 @@ namespace NFluent.Kernel
     /// <typeparam name="T">
     /// Type of the value to assert on.
     /// </typeparam>
-    internal class FluentCheck<T> : IForkableCheck, ICheck<T>, ICheckForExtensibility<T, ICheck<T>>
+    internal class FluentCheck<T> : FluentSut<T>, IForkableCheck, ICheck<T>, ICheckForExtensibility<T, ICheck<T>>
     {
         #region Fields
 
@@ -56,11 +55,9 @@ namespace NFluent.Kernel
         /// <param name="negated">
         /// A boolean value indicating whether the check should be negated or not.
         /// </param>
-        protected FluentCheck(T value, bool negated)
+        protected FluentCheck(T value, bool negated) : base(value, negated)
         {
-            this.Value = value;
-            this.Negated = negated;
-            this.checker = new Checker<T, ICheck<T>>(this);
+            this.checker = new Checker<T, ICheck<T>>(this, this);
         }
 
         #endregion
@@ -68,14 +65,8 @@ namespace NFluent.Kernel
         #region Public Properties
 
         /// <inheritdoc />
-        public bool Negated { get; private set; }
-
-        /// <inheritdoc />
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         public ICheck<T> Not => new FluentCheck<T>(this.Value, !this.Negated);
-
-        /// <inheritdoc />
-        public T Value { get; }
 
         /// <inheritdoc />
         public IChecker<T, ICheck<T>> Checker => this.checker;

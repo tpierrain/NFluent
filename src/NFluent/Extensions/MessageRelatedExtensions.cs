@@ -1,6 +1,4 @@
-﻿#region File header
-
-//  --------------------------------------------------------------------------------------------------------------------
+﻿//  --------------------------------------------------------------------------------------------------------------------
 //  <copyright file="MessageRelatedExtensions.cs" company="">
 //    Copyright 2014 Thomas PIERRAIN, Cyrille DUPUYDAUBY
 //    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +12,6 @@
 //    limitations under the License.
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace NFluent
 {

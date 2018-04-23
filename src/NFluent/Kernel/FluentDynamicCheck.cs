@@ -51,6 +51,7 @@ namespace NFluent
                     : "The {0} is null whereas it must not.")
                 .For("dynamic")
                 .On(this.value);
+
             throw new FluentCheckException(message.ToString());
         }
 

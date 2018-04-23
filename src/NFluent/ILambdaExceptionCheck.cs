@@ -16,71 +16,30 @@
 namespace NFluent
 {
     using System;
-#if !DOTNET_30 && !DOTNET_20
-    using System.Linq.Expressions;
-#endif
 
     /// <summary>
     /// Provides check methods to be executed on the exception raised by a given lambda/action.
     /// </summary>
     /// <typeparam name="TException">The type of the exception.</typeparam>
-    public interface ILambdaExceptionCheck<TException> : IHasParentCheck<TException>,
+    public interface ILambdaExceptionCheck<out TException> : IHasParentCheck<TException>,
         IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         where TException : Exception
     {
-        /// <summary>
-        /// Checks that the message of the considered exception is correctly written.
-        /// </summary>
-        /// <param name="exceptionMessage">The expected exception message.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
-        ICheckLink<ILambdaExceptionCheck<TException>> WithMessage(string exceptionMessage);
 
         /// <summary>
-        /// Checks that a specific property of the considered exception has an expected value.
+        /// Gets or sets with the parent class that fluently called this one.
         /// </summary>
-        /// <typeparam name="TP"> Expected type of the property.
-        /// </typeparam>
-        /// <param name="propertyName">The name of the property to check on the considered exception.</param>
-        /// <param name="propertyValue">The expected value for the property to check on the considered exception.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The code did not raised an exception of any type.</exception>
-        ICheckLink<ILambdaExceptionCheck<TException>> WithProperty<TP>(string propertyName, TP propertyValue);
+        /// <actualValue>
+        /// The actualValue.
+        /// </actualValue>
+        TException Value { get; }
 
-#if !DOTNET_30 && !DOTNET_20
         /// <summary>
-        /// Checks that a specific property of the considered exception has an expected value.
+        /// Checks if the exception wwas due to an (inner) exception of a specified type.
         /// </summary>
-        /// <typeparam name="TP"> Expected type of the property.
-        /// </typeparam>
-        /// <param name="propertyExpression">
-        /// The Expression to retrieve the property Name.
-        /// </param>
-        /// <param name="propertyValue">
-        /// The expected value for the property to check on the considered exception.
-        /// </param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">
-        /// The code did not raised an exception of any type.
-        /// </exception>
-        ICheckLink<ILambdaExceptionCheck<TException>> WithProperty<TP>(Expression<Func<TException, TP>> propertyExpression, TP propertyValue);
-#endif
-        /// <summary>
-        /// Checks that an inner exception is present within the outer exception stack trace.
-        /// </summary>
-        /// <typeparam name="T">
-        /// Exception type.
-        /// </typeparam>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        ILambdaExceptionCheck<T> DueTo<T>()
-            where T : Exception;
+        /// <typeparam name="TE">Expected inner exception type</typeparam>
+        /// <returns>A chainable link</returns>
+        ILambdaExceptionCheck<TE> DueTo<TE>()
+            where TE : Exception;
     }
 }

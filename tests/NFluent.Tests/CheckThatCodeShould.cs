@@ -209,7 +209,8 @@ namespace NFluent.Tests
         [Test]
         public void CanCheckForAMessageOnExceptionRaised()
         {
-            Check.ThatCode(() => throw new LambdaExceptionForTest(123, "my error message")).Throws<LambdaExceptionForTest>().WithMessage("Err #123 : my error message").And.WithProperty("ExceptionNumber", 123);
+            Check.ThatCode(() => throw new LambdaExceptionForTest(123, "my error message")).
+                Throws<LambdaExceptionForTest>().WithMessage("Err #123 : my error message").And.WithProperty("ExceptionNumber", 123);
         }
 
         [Test]
@@ -219,8 +220,12 @@ namespace NFluent.Tests
             {
                 Check.ThatCode(() => throw new LambdaExceptionForTest(321, "my error message")).Throws<LambdaExceptionForTest>().WithMessage("a buggy message");
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The message of the checked exception is not as expected." + Environment.NewLine + "The checked exception message:" + Environment.NewLine + "\t[\"Err #321 : my error message\"]" + Environment.NewLine + "The expected exception message:" + Environment.NewLine + "\t[\"a buggy message\"]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked exception's message is not as expected.",
+                    "The checked exception's message:",
+                    "\t[\"Err #321 : my error message\"]",
+                    "The expected exception's message:",
+                    "\t[\"a buggy message\"]");
         }
 
         [Test]
@@ -228,10 +233,14 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatCode(() => { throw new LambdaExceptionForTest(321, "my error message"); }).Throws<LambdaExceptionForTest>().WithProperty("inexistingProperty", 123);
+                Check.ThatCode(() => { throw new LambdaExceptionForTest(321, "my error message"); }).
+                    Throws<LambdaExceptionForTest>().
+                    WithProperty("inexistingProperty", 123);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine + "There is no property [inexistingProperty] on exception type [LambdaExceptionForTest]."); // TODO: mimic Contains
+            .IsAFaillingCheckWithMessage("", 
+                    "There is no property [inexistingProperty] on exception type [LambdaExceptionForTest].",
+                    "The expected exception's property [inexistingProperty]:", 
+                    "\t[123]"); // TODO: mimic Contains
         }
 
         [Test]
@@ -243,12 +252,11 @@ namespace NFluent.Tests
                 .Throws<LambdaExceptionForTest>()
                 .WithProperty("ExceptionNumber", 123);
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine + 
-            "The checked exception's property [ExceptionNumber] does not have the expected value." + Environment.NewLine + 
-            "The checked exception's property [ExceptionNumber]:" + Environment.NewLine +
-            "\t[321]" + Environment.NewLine +
-            "The expected exception's property [ExceptionNumber]:" + Environment.NewLine +
+            .IsAFaillingCheckWithMessage("", 
+            "The checked exception's property [ExceptionNumber] does not have the expected value.", 
+            "The checked exception's property [ExceptionNumber]:",
+            "\t[321]",
+            "The expected exception's property [ExceptionNumber]:",
             "\t[123]"); // TODO: mimic Contains
         }
 #if !DOTNET_30 && !DOTNET_20
@@ -287,7 +295,8 @@ namespace NFluent.Tests
                                 () => { throw new LambdaExceptionForTest(321, "my error message"); })
                             .Throws<LambdaExceptionForTest>()
                             .WithProperty(ex => ex.ExceptionNumber, 123);
-                    }).Throws<FluentCheckException>().AndWhichMessage().AsLines().ContainsExactly(
+                    })
+                .IsAFaillingCheckWithMessage(
                 string.Empty,
                 "The checked exception's property [ExceptionNumber] does not have the expected value.",
                 "The checked exception's property [ExceptionNumber]:",
@@ -336,8 +345,14 @@ namespace NFluent.Tests
                         .Throws<ArgumentException>()
                         .DueTo<Exception>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked exception did not contain an expected inner exception whereas it must." + Environment.NewLine + "The inner exception(s):" + Environment.NewLine + "\t[\"{ System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values." + Environment.NewLine + "Parameter name: kamoulox\"\"]" + Environment.NewLine + "The expected inner exception:" + Environment.NewLine + "\t[System.Exception]");
+            .IsAFaillingCheckWithMessage(
+                    "",
+                    "The checked value's inner exception is not of the expected type.",
+                    "The checked value's inner exception:",
+                    "\t[{System.ArgumentOutOfRangeException}: 'Specified argument was out of the range of valid values.",
+                    "Parameter name: kamoulox'] of type: [System.ArgumentOutOfRangeException]",
+                    "The expected value's inner exception:",
+                    "\tan instance of type: [System.Exception]");
         }
 
         [Test]
@@ -350,8 +365,12 @@ namespace NFluent.Tests
                         .Throws<ArgumentException>()
                         .DueTo<Exception>();
             })
-            .Throws<FluentCheckException>()
-            .WithMessage(Environment.NewLine+ "The checked exception did not contain an expected inner exception whereas it must." + Environment.NewLine + "The inner exception(s):" + Environment.NewLine + "\t[\"{ System.InvalidCastException } \"whatever mate\"" +Environment.NewLine +"--> { System.ArgumentOutOfRangeException } \"Specified argument was out of the range of valid values." + Environment.NewLine + "Parameter name: kamoulox\"\"]" + Environment.NewLine + "The expected inner exception:" + Environment.NewLine + "\t[System.Exception]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value's inner exception is not of the expected type.",
+                    "The checked value's inner exception:",
+                    "\t[{System.InvalidCastException}: \'whatever mate\'] of type: [System.InvalidCastException]",
+                    "The expected value's inner exception:",
+                    "\tan instance of type: [System.Exception]");
         }
 
         [Test]

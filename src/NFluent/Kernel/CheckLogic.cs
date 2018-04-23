@@ -25,9 +25,7 @@ namespace NFluent.Kernel
 
     internal class CheckLogic<T> : ICheckLogic<T>
     {
-        private readonly string forcedSutName;
-
-        private readonly T value;
+        private readonly FluentSut<T> fluentSut;
         private ICheckLogicBase child;
         private bool isRoot;
         private string comparison;
@@ -51,15 +49,13 @@ namespace NFluent.Kernel
         private bool withExpected;
         private bool withGiven;
 
-        public CheckLogic(T value, string label, bool inverted)
+        public CheckLogic(FluentSut<T> fluentSut)
         {
-            this.value = value;
-            this.IsNegated = inverted;
-            this.forcedSutName = label;
+            this.fluentSut = fluentSut;
             this.isRoot = true;
         }
 
-        private bool IsNegated { get; }
+        private bool IsNegated { get => this.fluentSut.Negated; }
 
         public string LastError => this.IsNegated ? this.negatedError : this.lastError;
 
@@ -67,9 +63,9 @@ namespace NFluent.Kernel
 
         public MessageOption Option => this.IsNegated ? this.negatedOption : this.options;
 
-        public string Comparison => this.IsNegated ? this.negatedComparison : this.comparison;
+        public string SutName => string.IsNullOrEmpty(this.fluentSut.SutName) ? this.sutName : this.fluentSut.SutName;
 
-        public string SutName => string.IsNullOrEmpty(this.forcedSutName) ? this.sutName : this.forcedSutName;
+        public string Comparison => this.IsNegated ? this.negatedComparison : this.comparison;
 
         public bool Failed => this.failed || this.child != null && this.child.Failed;
 
@@ -86,13 +82,13 @@ namespace NFluent.Kernel
                 return this;
             }
 
-            this.failed = predicate(this.value);
+            this.failed = predicate(this.fluentSut.Value);
             if (!this.failed || this.IsNegated)
             {
                 return this;
             }
 
-            this.lastError = errorBuilder(this.value, this);
+            this.lastError = errorBuilder(this.fluentSut.Value, this);
             this.options = this.options | noCheckedBlock;
             return this;
         }
@@ -114,6 +110,15 @@ namespace NFluent.Kernel
             return this.FailsIf(sut => sut == null, error, MessageOption.NoCheckedBlock);
         }
 
+        public ICheckLogic<T> InvalidIf(Func<T, bool> predicate, string error)
+        {
+            if (predicate(this.fluentSut.Value))
+            {
+                throw new System.InvalidOperationException(error);
+            }
+            return this;
+        }
+
         public ICheckLogic<T> SutNameIs(string name)
         {
             this.sutName = name;
@@ -123,11 +128,12 @@ namespace NFluent.Kernel
         // TODO: improve sut naming logic on extraction
         public ICheckLogic<TU> GetSutProperty<TU>(Func<T, TU> sutExtractor, string newSutLabel)
         {
+            var value = this.fluentSut.Value;
             var result =
-                new CheckLogic<TU>(this.value == null ? default(TU) : sutExtractor(this.value), null, this.IsNegated);
-            result.isRoot = false;
+                new CheckLogic<TU>(new FluentSut<TU>(value == null ? default(TU) : sutExtractor(value),
+                    this.IsNegated)) {isRoot = false};
 
-            var sutname = string.IsNullOrEmpty(this.sutName) ? "value" : this.sutName;
+            var sutname = string.IsNullOrEmpty(this.sutName) ? (this.fluentSut.SutName??"value") : this.sutName;
             if (!string.IsNullOrEmpty(newSutLabel))
             {
                 result.SutNameIs($"{sutname}'s {newSutLabel}");
@@ -167,14 +173,14 @@ namespace NFluent.Kernel
             var fluentMessage = FluentMessage.BuildMessage(this.LastError);
             if ((this.Option & MessageOption.NoCheckedBlock) == 0)
             {
-                var block = fluentMessage.On(this.value, this.index);
+                var block = fluentMessage.On(this.fluentSut.Value, this.index);
 
                 if (this.Option.HasFlag(MessageOption.WithType))
                 {
                     block.WithType();
                 }
 
-                if (this.value == null || typeof(T).IsNullable())
+                if (this.fluentSut.Value == null || typeof(T).IsNullable())
                 {
                     block.OfType(typeof(T));
                     fluentMessage.For(typeof(T));
@@ -182,7 +188,7 @@ namespace NFluent.Kernel
 
                 block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
 
-                if (this.value is IEnumerable list && !(this.value is string))
+                if (this.fluentSut.Value is IEnumerable list && !(this.fluentSut.Value is string))
                 {
                     block.WithEnumerableCount(list.Count());
                 }
@@ -302,7 +308,7 @@ namespace NFluent.Kernel
                 return this;
             }
 
-            if (predicate(this.value))
+            if (predicate(this.fluentSut.Value))
             {
                 this.negatedFailed = true;
                 this.negatedError = error;
@@ -319,7 +325,7 @@ namespace NFluent.Kernel
                 return this;
             }
 
-            action(this.value, this);
+            action(this.fluentSut.Value, this);
             return this;
         }
 

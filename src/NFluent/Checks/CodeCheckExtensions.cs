@@ -139,24 +139,31 @@ namespace NFluent
         public static ILambdaExceptionCheck<T> Throws<T>(this ICodeCheck<RunTrace> check)
             where T : Exception
         {
-            CheckExceptionType(check, typeof(T));
+            var exc = CheckExceptionType(check, typeof(T));
 
-            var checker = ExtensibilityHelper.ExtractCodeChecker(check);
-            return checker.Negated
-                ? (ILambdaExceptionCheck<T>) new NegatedLambdaExceptionCheck<T>()
-                : new LambdaExceptionCheck<T>((T) checker.Value.RaisedException);
+            return new LambdaExceptionCheck<T>((T) exc);
         }
 
-        private static void CheckExceptionType(ICodeCheck<RunTrace> check, Type expecting)
+        private static Exception CheckExceptionType(ICodeCheck<RunTrace> check, Type expecting)
         {
+            Exception result = null;
             ExtensibilityHelper.BeginCheck(check).SutNameIs("code")
-               .GetSutProperty((sut) => sut.RaisedException, "raised exception")
-                .ExpectingType(expecting, expectedLabel: "", negatedLabel: "should not be")
+               .GetSutProperty(sut =>
+                {
+                    result = sut.RaisedException;
+                    return result;
+                }, "raised exception")
+                .ExpectingType(expecting, "", "should not be")
                 .FailsIfNull("The checked code did not raise an exception, whereas it must.")
-                .FailsIf((sut) => !expecting.IsInstanceOfType(sut),
+                .FailsIf(sut => !expecting.IsInstanceOfType(sut),
                     "The {0} is of a different type than expected.")
                 .Negates("The {0} raised an exception of the forbidden type.")
                 .EndCheck();
+            if (!expecting.IsInstanceOfType(result))
+            {
+                result = null;
+            }
+            return result;
         }
 
         /// <summary>
@@ -167,12 +174,9 @@ namespace NFluent
         /// <returns>A check link.</returns>
         public static ILambdaExceptionCheck<Exception> ThrowsType(this ICodeCheck<RunTrace> check, Type exceptionType)
         {
-            CheckExceptionType(check, exceptionType);
+            var exc = CheckExceptionType(check, exceptionType);
 
-            var checker = ExtensibilityHelper.ExtractCodeChecker(check);
-            return checker.Negated
-                ? (ILambdaExceptionCheck<Exception>) new NegatedLambdaExceptionCheck<Exception>()
-                : new LambdaExceptionCheck<Exception>(checker.Value.RaisedException);
+            return new LambdaExceptionCheck<Exception>(exc);
         }
 
         /// <summary>
@@ -197,14 +201,7 @@ namespace NFluent
                 .EndCheck();
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
 
-            if (checker.Negated)
-            {
-                return new NegatedLambdaExceptionCheck<Exception>();
-            }
-            else
-            {
-                return new LambdaExceptionCheck<Exception>(checker.Value.RaisedException);
-            }
+            return new LambdaExceptionCheck<Exception>(checker.Value.RaisedException);
         }
 
         /// <summary>

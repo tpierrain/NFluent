@@ -14,6 +14,7 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Extensibility
 {
+    using System;
     using Kernel;
 
     /// <summary>
@@ -110,6 +111,17 @@ namespace NFluent.Extensibility
         public static ICheckLogic<T> BeginCheck<T>(IStructCheck<T> check) where T : struct
         {
             return ExtractStructChecker(check).BeginCheck();
+        }
+
+        /// <summary>
+        /// Initiates a check logic chain.
+        /// </summary>
+        /// <typeparam name="T">Type of sut</typeparam>
+        /// <param name="sut">The fluent check instance to work on.</param>
+        /// <returns>An <see cref="ICheckLogic{T}"/>instance.</returns>
+        public static ICheckLogic<T> BeginCheck<T>(FluentSut<T> sut)
+        {
+            return new CheckLogic<T>(sut);
         }
 
         /// <summary>

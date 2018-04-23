@@ -20,9 +20,6 @@ namespace NFluent
     using System.Linq.Expressions;
 #endif
     using Extensibility;
-
-    using Extensions;
-
     using Helpers;
 
     using Kernel;
@@ -36,7 +33,7 @@ namespace NFluent
     /// </summary>
     /// <typeparam name="T">Code checker type./>.
     /// </typeparam>
-    public class LambdaExceptionCheck<T> : ILambdaExceptionCheck<T>, IForkableCheck
+    public class LambdaExceptionCheck<T> : FluentSut<T>, ILambdaExceptionCheck<T>, IForkableCheck
         where T : Exception
     {
 
@@ -45,101 +42,37 @@ namespace NFluent
         /// This check can only be fluently called after a lambda check.
         /// </summary>
         /// <param name="value">The Value.</param>
-        public LambdaExceptionCheck(T value)
+        public LambdaExceptionCheck(T value): base(value)
         {
-            this.Value = value;
-        }
-
-        /// <summary>
-        /// Gets or sets with the parent class that fluently called this one.
-        /// </summary>
-        /// <actualValue>
-        /// The actualValue.
-        /// </actualValue>
-        internal T Value { get; set; }
-
-        /// <inheritdoc />
-        public ICheckLink<ILambdaExceptionCheck<T>> WithMessage(string exceptionMessage)
-        {
-            if (this.Value.Message == exceptionMessage)
-            {
-                return new CheckLink<ILambdaExceptionCheck<T>>(this);
-            }
-
-            var message = FluentMessage.BuildMessage("The message of the checked exception is not as expected.")
-                .For("exception message").Expected(exceptionMessage).And.On(this.Value.Message).ToString();
-
-            throw new FluentCheckException(message);
-        }
-
-        /// <inheritdoc />
-        public ICheckLink<ILambdaExceptionCheck<T>> WithProperty<TP>(string propertyName, TP propertyValue)
-        {
-            var type = this.Value.GetType();
-            var property = type.GetProperty(propertyName);
-            if (property == null)
-            {
-                var message = FluentMessage.BuildMessage(
-                    $"There is no property [{propertyName}] on exception type [{type.Name}].").ToString();
-                throw new FluentCheckException(message);
-            }
-
-            var value = property.GetValue(this.Value, null);
-            return this.CheckProperty(propertyName, propertyValue, value);
-        }
- 
-#if !DOTNET_30 && !DOTNET_20
-        /// <inheritdoc />
-        public ICheckLink<ILambdaExceptionCheck<T>> WithProperty<TP>(Expression<Func<T, TP>> propertyExpression, TP propertyValue)
-        {
-            var memberExpression = propertyExpression.Body as MemberExpression;
-
-            var name = memberExpression?.Member.Name ?? propertyExpression.ToString();
-
-            return this.CheckProperty(name, propertyValue, propertyExpression.Compile().Invoke(this.Value));
-        }
-#endif
-
-        private ICheckLink<ILambdaExceptionCheck<T>> CheckProperty<TP>(string propertyName, TP expectedValue, TP actualValue)
-        {
-            if (actualValue.Equals(expectedValue))
-            {
-                return new CheckLink<ILambdaExceptionCheck<T>>(this);
-            }
-
-            var message = FluentMessage.BuildMessage("The {0} does not have the expected value.").
-                For($"exception's property [{propertyName.DoubleCurlyBraces()}]").
-                On(actualValue).And.WithGivenValue(expectedValue).ToString();
-
-            throw new FluentCheckException(message);
         }
 
         /// <inheritdoc />
         public ILambdaExceptionCheck<TE> DueTo<TE>()
             where TE : Exception
         {
-            var innerException = this.Value.InnerException;
-            while (innerException != null)
-            {
-                if (innerException.GetType() == typeof(TE))
+            Exception resultException = null;
+            ExtensibilityHelper.BeginCheck(this)
+                .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
+                .GetSutProperty(sut => sut.InnerException, "inner exception")
+                .FailsIfNull("There is no inner exception.")
+                .Analyze((sut, test) =>
                 {
-                    break;
-                }
+                    resultException = sut;
+                    while (resultException != null)
+                    {
+                        if (resultException.GetType() == typeof(TE))
+                        {
+                            break;
+                        }
 
-                innerException = innerException.InnerException;
-            }
-
-            if (innerException != null)
-            {
-                return new LambdaExceptionCheck<TE>((TE)innerException);
-            }
-
-            var message = FluentMessage
-                .BuildMessage("The {0} did not contain an expected inner exception whereas it must.").For("exception")
-                .On(ExceptionHelper.DumpInnerExceptionStackTrace(this.Value)).Label("The inner exception(s):").And
-                .Expected(typeof(TE)).Label("The expected inner exception:").ToString();
-
-            throw new FluentCheckException(message);
+                        resultException = resultException.InnerException;
+                    }
+                    test.FailsIf(_ => resultException == null,
+                        "The {0} is not of the expected type.");
+                })
+                .ExpectingType(typeof(TE), "", "")
+                .EndCheck();
+            return new LambdaExceptionCheck<TE>((TE)resultException);
         }
 
         /// <inheritdoc />
@@ -147,5 +80,101 @@ namespace NFluent
         {
             return new LambdaExceptionCheck<T>(this.Value);
         }
+
+        /// <inheritdoc />
+        public new T Value => base.Value;
+    }
+
+    /// <summary>
+    /// Hosts Exception related checks
+    /// </summary>
+    public static class ExceptionChecks
+    {
+
+        /// <summary>
+        /// Checks if the exception has a specific message.
+        /// </summary>
+        /// <param name="checker">Syntax helper</param>
+        /// <param name="exceptionMessage">Exptected message</param>
+        /// <typeparam name="T">Exception type</typeparam>
+        /// <returns>A chainable check.</returns>
+        /// <exception cref="FluentCheckException"></exception>
+        public static ICheckLink<ILambdaExceptionCheck<T>> WithMessage<T>(this ILambdaExceptionCheck<T> checker, string exceptionMessage) where T : Exception
+        {
+            ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
+                .InvalidIf(sut=>sut == null, "No exception. Can't be used when negated.")
+                .SutNameIs("exception")
+                .GetSutProperty(sut =>  sut.Message, "message")
+                .FailsIf(sut => sut != exceptionMessage, "The {0} is not as expected.")
+                .Expecting(exceptionMessage)
+                .EndCheck();
+
+            return new CheckLink<ILambdaExceptionCheck<T>>(checker);
+        }
+
+        /// <summary>
+        /// Checks if the exception has a specific property having a specific value.
+        /// </summary>
+        /// <typeparam name="T">Exception type</typeparam>
+        /// <typeparam name="TP">Property type</typeparam>
+        /// <param name="checker">Syntax helper</param>
+        /// <param name="propertyName">Name of property</param>
+        /// <param name="propertyValue">Expected valued of property</param>
+        /// <returns>A chainable check.</returns>
+        public static ICheckLink<ILambdaExceptionCheck<T>> WithProperty<T,TP>(this ILambdaExceptionCheck<T> checker, string propertyName, TP propertyValue) where T : Exception
+        {
+            var found = false;
+            ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
+                .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
+                .SutNameIs("exception")
+                .GetSutProperty(sut =>
+                {
+                    var type = sut.GetType();
+                    var property = type.GetProperty(propertyName);
+                    if (property == null)
+                    {
+                        return null;
+                    }
+
+                    found = true;
+                    return property.GetValue(sut, null);
+                }, $"property [{propertyName}]")
+                .FailsIf(_=> !found, $"There is no property [{propertyName}] on exception type [{typeof(T).Name}].", MessageOption.NoCheckedBlock)
+                .FailsIf(sut => !EqualityHelper.FluentEquals(sut, propertyValue),
+                    "The {0} does not have the expected value.")
+                .Expecting(propertyValue)
+                .EndCheck();
+ 
+            return new CheckLink<ILambdaExceptionCheck<T>>(checker);
+        }
+ 
+#if !DOTNET_30 && !DOTNET_20
+        /// <summary>
+        /// Checks if the exception has a specific property having a specific value.
+        /// </summary>
+        /// <typeparam name="T">Exception type</typeparam>
+        /// <typeparam name="TP">Property type</typeparam>
+        /// <param name="checker">Syntax helper</param>
+        /// <param name="propertyExpression">Extracting expression</param>
+        /// <param name="propertyValue">Expected valued of property</param>
+        /// <returns>A chainable check.</returns>
+        public static ICheckLink<ILambdaExceptionCheck<T>> WithProperty<T, TP>(this ILambdaExceptionCheck<T> checker, Expression<Func<T, TP>> propertyExpression, TP propertyValue)
+            where T:Exception
+        {
+            var memberExpression = propertyExpression.Body as MemberExpression;
+
+            var propertyName = memberExpression?.Member.Name ?? propertyExpression.ToString();
+            ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
+                .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
+                .SutNameIs("exception")
+                .GetSutProperty(sut => propertyExpression.Compile().Invoke(sut), $"property [{propertyName}]")
+                .FailsIf(sut => !EqualityHelper.FluentEquals(sut, propertyValue),
+                    "The {0} does not have the expected value.")
+                .Expecting(propertyValue)
+                .EndCheck();
+            
+            return new CheckLink<ILambdaExceptionCheck<T>>(checker);
+        }
+#endif
     }
 }

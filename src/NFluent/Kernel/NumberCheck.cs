@@ -33,7 +33,7 @@ namespace NFluent.Kernel
         {
             this.check = check;
             // ReSharper disable once SuspiciousTypeConversion.Global
-            new Checker<TN, ICheck<TN>>((ICheckForExtensibility<TN, ICheck<TN>>) check);
+            new Checker<TN, ICheck<TN>>((ICheckForExtensibility<TN, ICheck<TN>>) check, check as FluentSut<TN>);
         }
 
         /// <summary>

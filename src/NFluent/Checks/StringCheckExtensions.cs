@@ -257,7 +257,7 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
-            MatchesImpl(checker, regExp, false);
+            MatchesImpl(checker, regExp);
 
             return checker.BuildChainingObject();
         }
@@ -273,16 +273,12 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
         public static ICheckLink<ICheck<string>> DoesNotMatch(this ICheck<string> check, string regExp)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
+            return check.Not.Matches(regExp);
+         }
 
-            MatchesImpl(checker, regExp, true);
-
-            return checker.BuildChainingObject();
-        }
-
-        private static void MatchesImpl(IChecker<string, ICheck<string>> checker, string regExp, bool negated)
+        private static void MatchesImpl(IChecker<string, ICheck<string>> checker, string regExp)
         {
-            checker.BeginCheck(negated)
+            checker.BeginCheck()
                 .Expecting(regExp, "matches", "does not match")
                 .FailsIfNull()
                 .FailsIf(sut => new Regex(regExp).IsMatch(sut) == false, "The {0} does not match the {1}.")
