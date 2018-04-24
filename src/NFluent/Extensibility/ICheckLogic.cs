@@ -62,7 +62,7 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <remarks>At this point, exception is thrown.</remarks>
         /// <returns>true if succesfull</returns>
-        bool EndCheck();
+        void EndCheck();
 
         /// <summary>
         /// Gets the failed status.

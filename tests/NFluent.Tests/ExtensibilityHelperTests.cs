@@ -16,6 +16,7 @@ namespace NFluent.Tests
 {
     using System;
     using Extensibility;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -45,5 +46,27 @@ namespace NFluent.Tests
             Check.ThatCode(() => { block.EndCheck(); }).Throws<InvalidOperationException>();
         }
 
+
+        [Test]
+        public void IsAFaillingCheckReportsProperError()
+        {
+            Check.ThatCode(() =>
+                // check with an incomplete error message
+                Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"))
+                    .IsAFaillingCheckWithMessage("oups", "and more")
+            ).IsAFaillingCheck();            
+            
+            Check.ThatCode(() =>
+                // check with an incorrect error message
+                Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"))
+                    .IsAFaillingCheckWithMessage("oupsla")
+            ).IsAFaillingCheck();
+
+            Check.ThatCode(() =>
+                // check with a error message that is too long
+                Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"+Environment.NewLine+"and more"))
+                    .IsAFaillingCheckWithMessage("oupsla")
+            ).IsAFaillingCheck();
+        }
     }
 }

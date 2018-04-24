@@ -17,6 +17,7 @@
 namespace NFluent.Tests.Internals
 {
     using System.Reflection;
+    using Kernel;
     using NFluent.Helpers;
     using NUnit.Framework;
 

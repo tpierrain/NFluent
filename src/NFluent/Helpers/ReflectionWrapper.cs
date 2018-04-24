@@ -23,6 +23,7 @@ namespace NFluent.Helpers
     using System.Text;
     using System.Text.RegularExpressions;
     using Extensions;
+    using Kernel;
     using static System.String;
 
     /// <summary>

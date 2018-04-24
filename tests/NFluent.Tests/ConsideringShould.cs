@@ -447,6 +447,17 @@ namespace NFluent.Tests
 
         [Test]
         public void
+            SupportsRecursiveStructureInErrorMessages()
+        {
+            Check.ThatCode(() => { Check.That(new Recurse()).Considering().All.Fields.Not.IsEqualTo(new Recurse()); }
+            ).IsAFaillingCheckWithMessage("",
+                "The checked value is equal to one of expected one whereas it should not.",
+                "The checked value:",
+                "	[{ me = ..., x = 2 }]");
+        }
+
+        [Test]
+        public void
             WorkForIsSameReference()
         {
             var sharedReference = new object();
@@ -529,6 +540,12 @@ namespace NFluent.Tests
             public Recurse()
             {
                 this.me = this;
+            }
+
+            public Recurse(int x)
+            {
+                this.me = this;
+                this.x = x;
             }
 
             public int X => this.x;

@@ -152,20 +152,20 @@ namespace NFluent.Kernel
             return result;
         }
 
-        public bool EndCheck()
+        public void EndCheck()
         {
             this.child?.EndCheck();
 
             if (this.Failed == this.IsNegated)
             {
-                return true;
+                return;
             }
 
             if (string.IsNullOrEmpty(this.LastError))
             {
                 if (!this.isRoot)
                 {
-                    return false;
+                    return ;
                 }
                 throw new System.InvalidOperationException("Error message was not specified.");
             }

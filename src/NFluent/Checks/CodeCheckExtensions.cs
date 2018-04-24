@@ -212,8 +212,7 @@ namespace NFluent
         /// <returns>A check object for the result.</returns>
         public static ICheck<T> WhichResult<T>(this ICodeCheck<RunTraceResult<T>> check)
         {
-            var checker = ExtensibilityHelper.ExtractCodeChecker(check);
-            return new FluentCheck<T>(checker.Value.Result);
+            return ExtensibilityHelper.BuildCheck(check, sut => sut.Result);
         }
 
     }

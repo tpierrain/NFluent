@@ -139,5 +139,13 @@ namespace NFluent.Tests
             })
             .Throws<NotSupportedException>();
         }
+
+        [Test]
+        public void InstanceBlockWorksWhenTypeRequested()
+        {
+            var blk = new InstanceBlock(typeof(string));
+            blk.WithType();
+            Check.That(blk.GetMessage()).IsEqualTo("an instance of type: [string]");
+        }
     }
 }

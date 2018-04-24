@@ -13,7 +13,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NFluent
+namespace NFluent.Kernel
 {
     using System.Collections.Generic;
     using System.Reflection;

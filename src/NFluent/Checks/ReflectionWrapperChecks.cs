@@ -16,7 +16,6 @@
 namespace NFluent
 {
     using Extensibility;
-    using Extensions;
     using Helpers;
 
     /// <summary>
@@ -33,8 +32,7 @@ namespace NFluent
             TU expectedValue)
         {
             FieldEqualTest(check, expectedValue, true);
-            var checker = ExtensibilityHelper.ExtractChecker(check);
-            return checker.BuildChainingObject();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         internal static void FieldEqualTest<TU>(ICheck<ReflectionWrapper> check, TU expectedValue, bool mustMatch)

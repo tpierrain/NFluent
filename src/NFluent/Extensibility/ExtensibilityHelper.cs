@@ -172,5 +172,18 @@ namespace NFluent.Extensibility
             chk.Checker.SetSutLabel(label);
             return new CheckLinkWhich<ICheck<TU>, ICheck<T>>(check, chk);
         }
+
+        /// <summary>
+        /// Builds a check 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TV"></typeparam>
+        /// <param name="check"></param>
+        /// <param name="extractor"></param>
+        /// <returns></returns>
+        public static ICheck<TV> BuildCheck<T, TV>(ICodeCheck<T> check, Func<T, TV> extractor) where T: RunTrace
+        {
+            return Check.That(extractor(ExtractCodeChecker(check).Value));
+        }
     }
 }

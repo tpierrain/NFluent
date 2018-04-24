@@ -16,7 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Checks\CharCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\CodeCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\ComparableCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Checks\Criteria.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\Criteria.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DateTimeCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DictionaryCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DoubleSpecificCheckExtensions.cs" />

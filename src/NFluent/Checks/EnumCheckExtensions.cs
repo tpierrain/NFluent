@@ -61,7 +61,6 @@ namespace NFluent
         }
 
         internal static bool HasFlag<T>(this T value, T flag) where T: struct
-
         {
             var sutAsInt = Convert.ToInt64(value);
             var exptectedAsInt = Convert.ToInt64(flag);
