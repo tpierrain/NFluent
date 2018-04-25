@@ -11,15 +11,9 @@
 
         public Nationality Nationality { get; set; }
 
+        public int HashCode {get; set; }
         // ReSharper disable UnusedMember.Local
-        private string PrivateHesitation
-        {
-            // ReSharper restore UnusedMember.Local
-            get
-            {
-                return "Kamoulox !";
-            }
-        }
+        private string PrivateHesitation => "Kamoulox !";
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -30,6 +24,11 @@
         public override string ToString()
         {
             return this.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.HashCode;
         }
     }
 }

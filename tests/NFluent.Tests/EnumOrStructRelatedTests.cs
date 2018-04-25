@@ -75,6 +75,18 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsNorEqualShouldWorkOnDifferentType()
+        {
+            Check.ThatEnum(new Basic(1,2)).IsNotEqualTo(4);
+        }
+
+        [Test]
+        public void EqualShouldFailWithNull()
+        {
+           Check.ThatEnum(new Basic(1,2)).IsNotEqualTo(null);
+        }
+
+        [Test]
         public void IsNotEqualToWorksWithEnum()
         {
             Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.Korean);

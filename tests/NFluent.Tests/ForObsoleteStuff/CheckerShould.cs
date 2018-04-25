@@ -42,6 +42,8 @@
         {
             var check = Check.That(2);
 
+            ExtensibilityHelper.ExtractChecker(check).ExecuteNotChainableCheck(() => { return; }, "should have succeedeed");
+
             var checker = ExtensibilityHelper.ExtractChecker(check.Not);
             
             checker.ExecuteNotChainableCheck(()=> throw ExceptionHelper.BuildException("oups"), "should have failed");

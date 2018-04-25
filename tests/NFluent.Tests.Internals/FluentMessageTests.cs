@@ -217,5 +217,6 @@ namespace NFluent.Tests
 
 //            Assert.AreEqual(Environment.NewLine+ "The checked enumerable is not one of the possible elements." + Environment.NewLine + "The checked enumrable:" + Environment.NewLine + "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" + Environment.NewLine + "\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
         }
+
     }
 }

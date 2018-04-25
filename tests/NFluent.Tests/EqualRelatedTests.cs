@@ -18,8 +18,6 @@ namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
-    using ApiChecks;
-    using Helpers;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -40,6 +38,20 @@ namespace NFluent.Tests
             Check.EqualMode = EqualityMode.Equals;
             Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).IsAFaillingCheck();
             Check.EqualMode = currentMode;
+        }
+
+        [Test]
+        public void WorkForNullValue()
+        {
+            Check.ThatCode(() =>
+                    Check.That((object) null).IsEqualTo(new object())
+                )
+                .IsAFaillingCheckWithMessage("",
+                    "The checked value is different from the expected one.", 
+                    "The checked value:", 
+                    "\t[null] of type: [object]", 
+                    "The expected value:", 
+                    "\t[System.Object] of type: [object]");
         }
 
         [Test]
@@ -115,8 +127,8 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualWorksWithIntNumbers()
         {
-            int firstInt = 23;
-            int secondButIdenticalInt = 23;
+            var firstInt = 23;
+            var secondButIdenticalInt = 23;
 
             Check.That(secondButIdenticalInt).IsEqualTo(firstInt);
         }
@@ -225,8 +237,8 @@ namespace NFluent.Tests
         [Test]
         public void WeCanSeeTheDifferenceBewteenTwoDifferentObjectsThatHaveTheSameToString()
         {
-            Person dad = new Person { Name = "John" };
-            Person son = new Child { Name = "John" };
+            var dad = new Person { Name = "John" };
+            var son = new Child { Name = "John" };
 
             Check.ThatCode(() =>
             {
@@ -243,14 +255,37 @@ namespace NFluent.Tests
         [Test]
         public void WeCanAlsoSeeTheDifferenceBetweenTwoDifferentInstancesOfTheSameTypeWhithIdenticalToString()
         {
-            Person dad = new Person { Name = "John" };
-            Person uncle = new Person { Name = "John" };
+            Person dad = new Person { Name = "John", HashCode = 2};
+            Person uncle = new Person { Name = "John", HashCode = 3};
 
             Check.ThatCode(() =>
             {
                 Check.That(uncle).IsEqualTo(dad);
             })
-            .ThrowsAny().AndWhichMessage().Matches(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\\t\\[John\\] with HashCode: \\[.*\\]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\\t\\[John\\] with HashCode: \\[.*\\]");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked value is different from the expected one.",
+                    "The checked value:",
+                    "\t[John] with HashCode: [3]",
+                    "The expected value:",
+                    "\t[John] with HashCode: [2]");
+        }
+
+        [Test]
+        public void WeCanAlsoSeeTheDifferenceBetweenTwoDifferentInstancesWhithIdenticalToString()
+        {
+            Person dad = new Person { Name = "John", HashCode = 2};
+
+            Check.ThatCode(() =>
+                {
+                    Check.That("John").IsEqualTo(dad);
+                })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked string is different from the expected value.",
+                    "The checked string:",
+                    "\t[\"John\"] of type: [string]",
+                    "The expected value:",
+                "\t[John] of type: [NFluent.Tests.Person]");
+
         }
 
         #endregion
@@ -370,8 +405,8 @@ namespace NFluent.Tests
         [Test]
         public void NotEqualsWorksToo()
         {
-            object obj = new object();
-            object other = new object();
+            var obj = new object();
+            var other = new object();
 
             Check.That(obj).Not.Equals(other);
         }
@@ -379,8 +414,8 @@ namespace NFluent.Tests
         [Test]
         public void EqualsThrowsExceptionWhenFailing()
         {
-            string question = "What is the question?";
-            int magicNumber = 42;
+            var question = "What is the question?";
+            var magicNumber = 42;
 
             Check.ThatCode(() =>
             {
@@ -394,13 +429,13 @@ namespace NFluent.Tests
         [Test]
         public void IsSameTypeWorks()
         {
- //           Check.That((IEnumerable<object>)new []{new object()}).IsInstanceOf<IEnumerable<object>>();
+           // Check.That((IEnumerable<object>)new []{new object()}).IsInstanceOf<IEnumerable<object>>();
         }
 
         [Test]
         public void AndOperatorCanChainMultipleAssertionsForDoubleNumber()
         {
-            double doubleNumber = 37.2D;
+            var doubleNumber = 37.2D;
             
             Check.That(doubleNumber).IsEqualTo(37.2D).And.IsNotEqualTo(40.0D).And.IsNotZero().And.IsStrictlyPositive();
             Check.That(doubleNumber).IsNotEqualTo(40.0D).And.IsEqualTo(37.2D);

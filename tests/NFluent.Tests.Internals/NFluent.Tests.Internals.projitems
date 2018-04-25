@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)NUnitSpecific.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ReflectionWrapperTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringDifferenceAnalyzerTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StringHelperShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ValueBlockTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)XamarinSpecificTests.cs" />
   </ItemGroup>

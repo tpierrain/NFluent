@@ -28,6 +28,7 @@ namespace NFluent
     /// </summary>
     public static class ObjectCheckExtensions
     {
+        /*
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
@@ -50,7 +51,7 @@ namespace NFluent
         {
             return IsEqualTo(check, (object)expected);
         }
-
+        */
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>

@@ -86,7 +86,14 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The checker value is not equal to the expected value.</exception>
         public static ICheckLink<ICheck<string>> IsEqualTo(this ICheck<string> check, object expected)
         {
-            return IsEqualTo(check, (string) expected);
+            if (expected is string s)
+            {
+                return IsEqualTo(check, s);
+            }
+            else
+            {
+                return EqualityHelper.PerformEqualCheck(check, expected);
+            }
         }
 
         /// <summary>
