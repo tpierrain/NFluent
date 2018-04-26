@@ -439,6 +439,23 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void InheritsFromFailsWithForcedSutName()
+        {
+            var father = new Person { Name = "Odysseus" };
+
+            Check.ThatCode(() =>
+            {
+                Check.That(father).As("dada").InheritsFrom<Child>();
+            })
+            .IsAFaillingCheckWithMessage("",
+                    "The checked [dada]'s type does not have the expected inheritance.",
+                    "The checked [dada]'s type:",
+                    "\t[NFluent.Tests.Person]",
+                    "The expected [dada]'s type: inherits from",
+                    "\t[NFluent.Tests.Child]");
+        }
+
+        [Test]
         public void NotInheritsFromWorks()
         {
             var hero = new Person { Name = "Arjuna" };

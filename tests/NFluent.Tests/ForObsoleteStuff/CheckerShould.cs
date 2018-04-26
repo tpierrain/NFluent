@@ -41,15 +41,42 @@
         public void HandleProperlyNegationOnFailing()
         {
             var check = Check.That(2);
-
-            ExtensibilityHelper.ExtractChecker(check).ExecuteNotChainableCheck(() => { return; }, "should have succeedeed");
-
             var checker = ExtensibilityHelper.ExtractChecker(check.Not);
             
             checker.ExecuteNotChainableCheck(()=> throw ExceptionHelper.BuildException("oups"), "should have failed");
             Check.ThatCode(() =>
                 checker.ExecuteNotChainableCheck(() => { return; }, "should have failed"))
                 .IsAFaillingCheck();
+        }
+
+        [Test]
+        public void HandleProperlyNonFailingChecksOnNonChainable()
+        {
+            var check = Check.That(2);
+
+            ExtensibilityHelper.ExtractChecker(check).ExecuteNotChainableCheck(() => { return; }, "should have succeedeed");
+        }
+
+        [Test]
+        public void LetUnknownExceptionGetThrough()
+        {
+            var check = Check.That(2);
+            Check.ThatCode(() =>
+                    ExtensibilityHelper.ExtractChecker(check)
+                        .ExecuteNotChainableCheck(() => throw new ArgumentException(), "should fails"))
+                .Throws<ArgumentException>();
+        }
+
+        [Test]
+        public void SupportExecuteAndProvideSubItem()
+        {
+            var check = Check.That(2);
+
+            Check.That(
+                ExtensibilityHelper.ExtractChecker(check)
+                    .ExecuteCheckAndProvideSubItem(() => Check.That(2), "on negation")).
+                InheritsFrom<ICheckLinkWhich<ICheck<int>, ICheck<int>>>();
+
         }
     }
 }

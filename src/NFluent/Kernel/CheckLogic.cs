@@ -126,17 +126,17 @@ namespace NFluent.Kernel
         }
 
         // TODO: improve sut naming logic on extraction
-        public ICheckLogic<TU> GetSutProperty<TU>(Func<T, TU> sutExtractor, string newSutLabel)
+        public ICheckLogic<TU> GetSutProperty<TU>(Func<T, TU> sutExtractor, string propertyName)
         {
             var value = this.fluentSut.Value;
             var result =
                 new CheckLogic<TU>(new FluentSut<TU>(value == null ? default(TU) : sutExtractor(value),
                     this.IsNegated)) {isRoot = false};
 
-            var sutname = string.IsNullOrEmpty(this.sutName) ? (this.fluentSut.SutName??"value") : this.sutName;
-            if (!string.IsNullOrEmpty(newSutLabel))
+            var sutname = string.IsNullOrEmpty(this.sutName) ? (this.fluentSut.SutName ?? "value") : this.sutName;
+            if (!string.IsNullOrEmpty(propertyName))
             {
-                result.SutNameIs($"{sutname}'s {newSutLabel}");
+                result.SutNameIs($"{sutname}'s {propertyName}");
             }
             if (this.failed != this.IsNegated)
             {

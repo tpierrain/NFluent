@@ -15,7 +15,6 @@
 
 namespace NFluent.Tests
 {
-    using System.Collections.Generic;
     using Extensibility;
     using Helpers;
     using Kernel;
@@ -39,7 +38,6 @@ namespace NFluent.Tests
         class Point
         {
             public int x = 4;
-            public int y;
         }
         [Test]
         public void

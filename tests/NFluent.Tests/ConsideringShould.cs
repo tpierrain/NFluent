@@ -157,6 +157,21 @@ namespace NFluent.Tests
                     "\t[42]", 
                     "The expected value's property 'TheProperty':", 
                     "\t[43]");
+
+        }
+        [Test]
+        public void FailForDifferentNonPublicProperties()
+        {
+            var sut = new SutClass(2, 42, 1, 3);
+
+            Check.ThatCode(() =>
+                    Check.That(sut).Considering().NonPublic.Properties.IsEqualTo(new SutClass(2, 43, 1, null)))
+                .IsAFaillingCheckWithMessage("", 
+                    "The checked value's property 'ThePrivateProperty' does not have the expected value.", 
+                    "The checked value's property 'ThePrivateProperty':",
+                    "\t[3] of type: [int]", 
+                    "The expected value's property 'ThePrivateProperty':", 
+                    "\t[null] of type: [object]");
         }
 
         [Test]

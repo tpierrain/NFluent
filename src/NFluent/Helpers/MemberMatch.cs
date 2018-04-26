@@ -63,8 +63,8 @@ namespace NFluent.Helpers
             else
             {
                 var withType = this.Actual.Value.GetTypeWithoutThrowingException() != this.Expected.Value.GetTypeWithoutThrowingException();
-                var withHash = !withType && this.Actual?.Value != null && this.Expected?.Value != null &&
-                               this.Actual.Value.ToString() == this.Expected.Value.ToString();
+                var withHash = !withType &&
+                               this.Actual.Value.ToStringProperlyFormatted() == this.Expected.Value.ToStringProperlyFormatted();
                 var mode = (withType ? MessageOption.WithType :
                     MessageOption.None) | (withHash ? MessageOption.WithHash : MessageOption.None);
                 if (this.DoValuesMatches)
