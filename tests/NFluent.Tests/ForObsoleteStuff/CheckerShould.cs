@@ -45,7 +45,7 @@
             
             checker.ExecuteNotChainableCheck(()=> throw ExceptionHelper.BuildException("oups"), "should have failed");
             Check.ThatCode(() =>
-                checker.ExecuteNotChainableCheck(() => { return; }, "should have failed"))
+                checker.ExecuteNotChainableCheck(() => { }, "should have failed"))
                 .IsAFaillingCheck();
         }
 
@@ -54,7 +54,9 @@
         {
             var check = Check.That(2);
 
-            ExtensibilityHelper.ExtractChecker(check).ExecuteNotChainableCheck(() => { return; }, "should have succeedeed");
+            ExtensibilityHelper.ExtractChecker(check).ExecuteNotChainableCheck(() => { }, "should have succeedeed");
+            Check.ThatCode(() => ExtensibilityHelper.ExtractChecker(check).ExecuteNotChainableCheck(
+                () => throw ExceptionHelper.BuildException("failed"), "should fail")).IsAFaillingCheck();
         }
 
         [Test]

@@ -168,8 +168,12 @@ namespace NFluent.Kernel
                 // execute test
                 action();
             }
-            catch (Exception e) when (ExceptionHelper.IsFailedException(e) && this.fluentCheckForExtensibility.Negated)
+            catch (Exception e)// when (ExceptionHelper.IsFailedException(e) && this.fluentCheckForExtensibility.Negated)
             {
+                if (!ExceptionHelper.IsFailedException(e) || !this.fluentCheckForExtensibility.Negated)
+                {
+                    throw;
+                }
                 // exception was expected
                 return;
             }
