@@ -46,10 +46,6 @@ namespace NFluent.Tests.FromIssues
                 a.Items.Add(1);
                 a.Items.Add(2);
                 a.Items.Add(3);
-                a.Items.Add(4);
-                a.Items.Add(5);
-                a.Items.Remove(4);
-                a.Items.Remove(3);
 
                 b.Items.Add(1);
                 b.Items.Add(2);
