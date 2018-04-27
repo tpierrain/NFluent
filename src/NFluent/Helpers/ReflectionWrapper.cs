@@ -258,7 +258,7 @@ namespace NFluent.Helpers
                         var propertyInfos = currentType.GetProperties(this.Criteria.BindingFlagsForProperties);
                         foreach (var info in propertyInfos)
                         {
-                            if (memberDico.ContainsKey(info.Name))
+                            if (memberDico.ContainsKey(info.Name) || info.GetMethod.GetParameters().Length>0)
                             {
                                 continue;
                             }

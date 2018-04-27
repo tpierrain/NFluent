@@ -94,7 +94,7 @@ namespace NFluent.Extensibility
         ICheckLogic<T> FailsIf(Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder, MessageOption option = MessageOption.None);
 
         /// <summary>
-        ///     Specify expected value.
+        /// Specify expected value.
         /// </summary>
         /// <param name="other"></param>
         /// <param name="comparison"></param>

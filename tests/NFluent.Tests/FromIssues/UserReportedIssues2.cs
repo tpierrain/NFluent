@@ -29,6 +29,36 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        // GH #238
+        public class NTest
+        {
+            private class TestCase
+            {
+                public List<int> Items { get; set; } = new List<int>();
+            }
+
+            [Test]
+            public void Test()
+            {
+                TestCase a = new TestCase();
+                TestCase b = new TestCase();
+
+                a.Items.Add(1);
+                a.Items.Add(2);
+                a.Items.Add(3);
+                a.Items.Add(4);
+                a.Items.Add(5);
+                a.Items.Remove(4);
+                a.Items.Remove(3);
+
+                b.Items.Add(1);
+                b.Items.Add(2);
+                b.Items.Add(3);
+
+                Check.That(a).Considering().Public.Properties.IsEqualTo(b);
+            }
+        }
+
 
         // GH #231
         [Test]

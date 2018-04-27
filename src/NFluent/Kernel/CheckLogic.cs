@@ -55,7 +55,7 @@ namespace NFluent.Kernel
             this.isRoot = true;
         }
 
-        private bool IsNegated { get => this.fluentSut.Negated; }
+        private bool IsNegated => this.fluentSut.Negated;
 
         public string LastError => this.IsNegated ? this.negatedError : this.lastError;
 
