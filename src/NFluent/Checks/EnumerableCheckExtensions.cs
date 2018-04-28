@@ -34,15 +34,16 @@ namespace NFluent
         /// Checks that the enumerable contains all the given expected values, in any order.
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the enumerable.</typeparam>
+        /// <typeparam name="TU">Type of enumeration</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <returns>
         ///  A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values.</exception>
-        public static IExtendableCheckLink<IEnumerable, IEnumerable> Contains<T>(
-            this ICheck<IEnumerable> check,
-            params T[] expectedValues)
+        public static IExtendableCheckLink<TU, IEnumerable> Contains<TU, T>(
+            this ICheck<TU> check,
+            params T[] expectedValues) where TU: class, IEnumerable
         {
             var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             return check.Contains(properExpectedValues);
@@ -59,9 +60,9 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The enumerable does not contain all the expected values present in the other enumerable.
         /// </exception>
-        public static IExtendableCheckLink<IEnumerable, IEnumerable> Contains(
-            this ICheck<IEnumerable> check,
-            IEnumerable otherEnumerable)
+        public static IExtendableCheckLink<TU, IEnumerable> Contains<TU>(
+            this ICheck<TU> check,
+            IEnumerable otherEnumerable) where TU:IEnumerable
         {
 
             IList<object> notFoundValues = null;
@@ -83,6 +84,7 @@ namespace NFluent
         ///     (i.e. don't use it with Hashtable, prefer <see cref="IsOnlyMadeOf{T}" /> in that case).
         /// </summary>
         /// <typeparam name="T">Type of the elements to be found.</typeparam>
+        /// <typeparam name="TU"></typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <returns>
@@ -92,9 +94,9 @@ namespace NFluent
         ///     The enumerable does not contains only the exact given values and nothing else,
         ///     in order.
         /// </exception>
-        public static ICheckLink<ICheck<IEnumerable>> ContainsExactly<T>(
-            this ICheck<IEnumerable> check,
-            params T[] expectedValues)
+        public static ICheckLink<ICheck<TU>> ContainsExactly<TU,T>(
+            this ICheck<TU> check,
+            params T[] expectedValues) where TU: IEnumerable
         {
             var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
 
@@ -115,9 +117,9 @@ namespace NFluent
         ///     The enumerable does not contains only the exact given values and nothing else,
         ///     in order.
         /// </exception>
-        public static ICheckLink<ICheck<IEnumerable>> ContainsExactly(
-            this ICheck<IEnumerable> check,
-            IEnumerable otherEnumerable)
+        public static ICheckLink<ICheck<TU>> ContainsExactly<TU>(
+            this ICheck<TU> check,
+            IEnumerable otherEnumerable) where TU: IEnumerable
         {
 
             var enumerable =  otherEnumerable== null ? null : otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();

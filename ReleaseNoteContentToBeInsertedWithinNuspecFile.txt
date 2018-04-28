@@ -12,7 +12,9 @@
  * Check.ThatCode(...).Not.Throws\<T\>() may throw an InvalidCastException when thrown exception is not T.
  * Extension checks to Throw\<\>, ThrowType or ThrowAny raise an exception when used with Not as it does not make sense.
  * Which() raises an exception when used on a negated check (Not).
- * Fixed error messages for double (and float) equality check that reported checked value in place of the expected one.
+ * Fix exception when using Considering and indexed properties.
+ * Fix loss of type when using Contains and ContainsExactly. This restores fluentness for IEnumerable<T> types.
+ Fixed error messages for double (and float) equality check that reported checked value in place of the expected one.
  * Fixed error messages for Check.That(TimeSpan).IsGreaterThan
 
 ### Changes
@@ -28,7 +30,7 @@
   * Removed Failure method from IChecker interface
  
 ### GitHub Issues
-* #228, #227, #222, #223, #217, #230, #236
+* #228, #227, #222, #223, #217, #230, #232, #236, #238
 
 ------
 ## V 2.2.0

@@ -417,7 +417,7 @@ namespace NFluent.Helpers
         internal List<MemberMatch> MemberMatches<TU>(TU expectedValue)
         {
             var expectedWrapped =
-                ReflectionWrapper.BuildFromInstance(expectedValue?.GetType() ?? typeof(TU), expectedValue, this.Criteria);
+                BuildFromInstance(expectedValue?.GetType() ?? typeof(TU), expectedValue, this.Criteria);
 
             var result = new List<MemberMatch>();
             expectedWrapped.MapFields(this, 1, (expected, actual, depth) =>
