@@ -39,7 +39,7 @@ namespace NFluent.Kernel
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="negated">A boolean value indicating whether the check should be negated or not.</param>
-        private FluentStructCheck(T value, bool negated) : base(value, negated)
+        private FluentStructCheck(T value, bool negated) : base(value, FluentCheck<T>.DefaultReporter, negated)
         {
             this.structChecker = new Checker<T, IStructCheck<T>>(this, this);
         }

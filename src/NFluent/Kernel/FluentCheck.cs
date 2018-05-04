@@ -25,16 +25,14 @@ namespace NFluent.Kernel
     /// </typeparam>
     internal class FluentCheck<T> : FluentSut<T>, IForkableCheck, ICheck<T>, ICheckForExtensibility<T, ICheck<T>>
     {
-        #region Fields
 
         /// <summary>
         /// The check runner.
         /// </summary>
         private readonly Checker<T, ICheck<T>> checker;
 
-        #endregion
+        private static readonly IErrorReporter reporter = new ExceptionReporter();
 
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FluentCheck{T}"/> class.
@@ -55,14 +53,10 @@ namespace NFluent.Kernel
         /// <param name="negated">
         /// A boolean value indicating whether the check should be negated or not.
         /// </param>
-        protected FluentCheck(T value, bool negated) : base(value, negated)
+        protected FluentCheck(T value, bool negated) : base(value, reporter, negated)
         {
             this.checker = new Checker<T, ICheck<T>>(this, this);
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// <inheritdoc />
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
@@ -71,7 +65,7 @@ namespace NFluent.Kernel
         /// <inheritdoc />
         public IChecker<T, ICheck<T>> Checker => this.checker;
 
-        #endregion
+        public static IErrorReporter DefaultReporter => reporter;
 
         #region Public Methods and Operators
 

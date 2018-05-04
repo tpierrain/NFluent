@@ -209,9 +209,9 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <typeparam name="TU">Type of reference values</typeparam>
         /// <param name="other"></param>
-        /// <param name="comparison"></param>
-        /// <param name="negatedComparison"></param>
+        /// <param name="comparisonInfo"></param>
+        /// <param name="negatedComparisonInfo"></param>
         /// <returns></returns>
-        ICheckLogic<T> ComparingTo<TU>(TU other, string comparison, string negatedComparison);
+        ICheckLogic<T> ComparingTo<TU>(TU other, string comparisonInfo, string negatedComparisonInfo);
     }
 }

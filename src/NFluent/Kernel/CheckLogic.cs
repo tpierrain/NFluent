@@ -20,6 +20,7 @@ namespace NFluent.Kernel
     using Extensions;
     using Helpers;
 
+// the system namespace is not imported for older Net version. This allows to overload the deifnition of delefate type. 
 #if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
     using System;
 #endif
@@ -69,9 +70,9 @@ namespace NFluent.Kernel
 
         public bool Failed => this.failed || this.child != null && this.child.Failed;
 
-        public ICheckLogic<T> FailWhen(Func<T, bool> predicate, string error, MessageOption options)
+        public ICheckLogic<T> FailWhen(Func<T, bool> predicate, string error, MessageOption newOptions)
         {
-            return this.FailWhen(predicate, (x, y) => error, options);
+            return this.FailWhen(predicate, (x, y) => error, newOptions);
         }
 
         public ICheckLogic<T> FailWhen(Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder,
@@ -136,7 +137,8 @@ namespace NFluent.Kernel
         {
             var value = this.fluentSut.Value;
             var result =
-                new CheckLogic<TU>(new FluentSut<TU>(value == null ? default(TU) : sutExtractor(value),
+                new CheckLogic<TU>(new FluentSut<TU>(value == null ? default(TU) : sutExtractor(value), 
+                    this.fluentSut.Reporter,
                     this.IsNegated)) {isRoot = false};
 
             var sutname = string.IsNullOrEmpty(this.sutName) ? (this.fluentSut.SutName ?? "value") : this.sutName;
@@ -248,13 +250,18 @@ namespace NFluent.Kernel
                 fluentMessage.For(this.SutName);
             }
 
-            throw ExceptionHelper.BuildException(fluentMessage.ToString());
+            this.ReportError(fluentMessage);
         }
 
-        public ICheckLogic<T> ComparingTo<TU>(TU givenValue, string comparison, string negatedComparison)
+        private void ReportError(FluentMessage fluentMessage)
         {
-            this.comparison = comparison;
-            this.negatedComparison = negatedComparison;
+            this.fluentSut.Reporter.ReportError(fluentMessage.ToString());
+        }
+
+        public ICheckLogic<T> ComparingTo<TU>(TU givenValue, string comparisonInfo, string negatedComparisonInfo)
+        {
+            this.comparison = comparisonInfo;
+            this.negatedComparison = negatedComparisonInfo;
             this.expected = givenValue;
             this.withGiven = true;
             return this;
@@ -283,11 +290,11 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> ExpectingType(System.Type expectedType, string expectedLabel, string negatedExpLabel)
+        public ICheckLogic<T> ExpectingType(System.Type expected, string expectedLabel, string negatedExpLabel)
         {
             this.expectedKind = ValueKind.Type;
             this.options |= MessageOption.WithType;
-            return this.Expecting(expectedType, expectedLabel, negatedExpLabel);
+            return this.Expecting(expected, expectedLabel, negatedExpLabel);
         }
 
         public ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparisonMessage = null,
@@ -298,9 +305,9 @@ namespace NFluent.Kernel
             return this.Expecting(values, comparisonMessage, newNegatedComparison, expectedLabel, negatedExpLabel);
         }
 
-        public ICheckLogic<T> SetValuesIndex(long index)
+        public ICheckLogic<T> SetValuesIndex(long indexInEnum)
         {
-            this.index = index;
+            this.index = indexInEnum;
             return this;
         }
 

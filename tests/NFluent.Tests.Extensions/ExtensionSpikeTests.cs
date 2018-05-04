@@ -72,7 +72,7 @@ namespace NFluent.Tests.Extensions
         [Test]
         public void GeneralExtensibility()
         {
-                var sut = new FluentSut<int>(12);
+                var sut = new FluentSut<int>(12, null);
 
                 ExtensibilityHelper.BeginCheck(sut)
                     .FailsIfNull()

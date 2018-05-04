@@ -43,7 +43,7 @@ namespace NFluent
         /// This check can only be fluently called after a lambda check.
         /// </summary>
         /// <param name="value">The Value.</param>
-        public LambdaExceptionCheck(T value): base(value)
+        public LambdaExceptionCheck(T value) : base(value, FluentCheck<T>.DefaultReporter)
         {
         }
 

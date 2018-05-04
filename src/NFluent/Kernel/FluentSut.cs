@@ -15,17 +15,22 @@
 
 namespace NFluent.Kernel
 {
+    using Extensibility;
+
     /// <summary>
     /// Base class that store check context.
     /// </summary>
     /// <typeparam name="T">Type of the SUT</typeparam>
     public class FluentSut<T>: IWithValue<T>, INegated
     {
+        private readonly IErrorReporter reporter;
+
         /// <summary>
         /// Builds a new <see cref="FluentSut{T}"/> instance.
         /// </summary>
         /// <param name="value">Value to examine.</param>
-        public FluentSut(T value) : this(value, !CheckContext.DefaulNegated)
+        /// <param name="reporter">Error reporter</param>
+        public FluentSut(T value, IErrorReporter reporter) : this(value, reporter, !CheckContext.DefaulNegated)
         {
         }
 
@@ -33,9 +38,11 @@ namespace NFluent.Kernel
         /// Builds a new <see cref="FluentSut{T}"/> instance.
         /// </summary>
         /// <param name="value">Value to examine.</param>
+        /// <param name="reporter">Error reporter to use</param>
         /// <param name="negated">true if the check logic must be negated.</param>
-        public FluentSut(T value, bool negated)
+        public FluentSut(T value, IErrorReporter reporter, bool negated)
         {
+            this.reporter = reporter;
             this.Value = value;
             this.Negated = negated;
         }
@@ -54,5 +61,10 @@ namespace NFluent.Kernel
         /// Name for the sut.
         /// </summary>
         public string SutName {get; set; }
+
+        /// <summary>
+        /// Gets the error reporter
+        /// </summary>
+        public IErrorReporter Reporter => this.reporter;
     }
 }

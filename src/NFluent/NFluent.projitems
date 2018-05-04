@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Checks\CharCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\CodeCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\ComparableCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensibility\IErrorReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\Criteria.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DateTimeCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DictionaryCheckExtensions.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IPublicOrNot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\CheckLogic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\CheckWithConsidering.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\ExceptionReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\ExtractingExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FluentCheckException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\EqualityMode.cs" />
