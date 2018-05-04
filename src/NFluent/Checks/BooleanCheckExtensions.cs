@@ -45,7 +45,7 @@ namespace NFluent
         public static ICheckLink<ICheck<bool>> IsFalse(this ICheck<bool> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .FailsIf(sut => sut, "The {0} is true whereas it must be false.")
+                .FailWhen(sut => sut, "The {0} is true whereas it must be false.")
                 .Negates("The {0} is false whereas it must be true.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

@@ -82,7 +82,7 @@ namespace NFluent.Extensibility
         /// <param name="error">Error message on failure</param>
         /// <param name="option"></param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> FailsIf(Func<T, bool> predicate, string error, MessageOption option = MessageOption.None);
+        ICheckLogic<T> FailWhen(Func<T, bool> predicate, string error, MessageOption option = MessageOption.None);
 
         /// <summary>
         /// Failing condition
@@ -91,7 +91,7 @@ namespace NFluent.Extensibility
         /// <param name="errorBuilder">Error message builder function</param>
         /// <param name="option"></param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> FailsIf(Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder, MessageOption option = MessageOption.None);
+        ICheckLogic<T> FailWhen(Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder, MessageOption option = MessageOption.None);
 
         /// <summary>
         /// Specify expected value.
@@ -102,7 +102,17 @@ namespace NFluent.Extensibility
         /// <param name="expectedLabel"></param>
         /// <param name="negatedLabel"></param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> Expecting<TU>(TU other, string comparison = null, string negatedComparison = null, string expectedLabel = null, string negatedLabel = null);
+        ICheckLogic<T> Expecting<TU>(TU other, string comparison = null, string negatedComparison = "different from", string expectedLabel = null, string negatedLabel = null);
+
+        /// <summary>
+        /// Specify the expected results, with full control on error labels.
+        /// </summary>
+        /// <typeparam name="TU">Expected result type.</typeparam>
+        /// <param name="resultValue">Expected result</param>
+        /// <param name="labelForExpected">Label for expected result</param>
+        /// <param name="negationForExpected">Label for result when check is negated</param>
+        /// <returns>Continuation object.</returns>
+        ICheckLogic<T> ExpectedResult<TU>(TU resultValue, string labelForExpected, string negationForExpected);
 
         /// <summary>
         /// Error message for negated checks.
@@ -156,7 +166,7 @@ namespace NFluent.Extensibility
         /// <param name="sutExtractor">new sut  object.</param>
         /// <param name="sutLabel">new label</param>
         /// <returns>Continuation object</returns>
-        ICheckLogic<TU> GetSutProperty<TU>(Func<T, TU> sutExtractor, string sutLabel);
+        ICheckLogic<TU> CheckSutAttributes<TU>(Func<T, TU> sutExtractor, string sutLabel);
 
         /// <summary>
         /// Specify that the expectation is an instance of some type
@@ -177,7 +187,7 @@ namespace NFluent.Extensibility
         /// <param name="expectedLabel"></param>
         /// <param name="negatedLabel"></param>
         /// <returns>Continuation object</returns>
-        ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparison = null, string negatedComparison = null, string expectedLabel = null, string negatedLabel = null);
+        ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparison = null, string negatedComparison = "different from", string expectedLabel = null, string negatedLabel = null);
 
         /// <summary>
         /// Explicitely fails

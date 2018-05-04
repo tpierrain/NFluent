@@ -31,7 +31,7 @@ namespace NFluent.Tests
 
             checker.BeginCheck()
                 .Expecting("other")
-                .FailsIf((x) => x.Equals("test"), "The {0} should be equal to the {1}.")
+                .FailWhen((x) => x.Equals("test"), "The {0} should be equal to the {1}.")
                 .EndCheck();
         }
 
@@ -39,6 +39,7 @@ namespace NFluent.Tests
         {
             public int x = 4;
         }
+
         [Test]
         public void
             CascadeErrorOnSubProperty()
@@ -47,8 +48,8 @@ namespace NFluent.Tests
             var checker = fluentChecker.Checker;
 
             Check.ThatCode(() =>
-                checker.BeginCheck().FailsIfNull().GetSutProperty(point => point.x, "x coordinate")
-                    .FailsIf(i => i > 0, "Should be positive").EndCheck()).IsAFaillingCheckWithMessage("", "The checked value's x coordinate is null.");
+                checker.BeginCheck().FailsIfNull().CheckSutAttributes(point => point.x, "x coordinate")
+                    .FailWhen(i => i > 0, "Should be positive").EndCheck()).IsAFaillingCheckWithMessage("", "The checked value's x coordinate is null.");
         }
     }
 }

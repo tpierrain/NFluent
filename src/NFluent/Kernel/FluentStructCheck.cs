@@ -81,7 +81,7 @@ namespace NFluent.Kernel
         public ICheckLink<IStructCheck<T>> IsInstanceOf<TU>() where TU : struct
         {
             ExtensibilityHelper.BeginCheck((FluentSut<T>) this)
-                .FailsIf(sut => sut.GetTypeWithoutThrowingException() != typeof(TU),
+                .FailWhen(sut => sut.GetTypeWithoutThrowingException() != typeof(TU),
                     "The {0} is not an instance of the expected type.")
                 .Negates(
                     $"The {{0}} is an instance of [{typeof(TU).ToStringProperlyFormatted()}] whereas it must not.", MessageOption.WithType)

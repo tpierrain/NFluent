@@ -72,7 +72,7 @@ namespace NFluent.Tests
                     "The checked code raised an exception, whereas it must not.",
                     "The checked code's raised exception:", 
                     "*"
-                    ); // TODO: mimic StartsWith
+                    );
         }
 
         [Test]
@@ -240,7 +240,8 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("", 
                     "There is no property [inexistingProperty] on exception type [LambdaExceptionForTest].",
                     "The expected exception's property [inexistingProperty]:", 
-                    "\t[123]"); // TODO: mimic Contains
+                    "\t[123]");
+
         }
 
         [Test]
@@ -257,7 +258,7 @@ namespace NFluent.Tests
             "The checked exception's property [ExceptionNumber]:",
             "\t[321]",
             "The expected exception's property [ExceptionNumber]:",
-            "\t[123]"); // TODO: mimic Contains
+            "\t[123]"); 
         }
 #if !DOTNET_30 && !DOTNET_20
         [Test]

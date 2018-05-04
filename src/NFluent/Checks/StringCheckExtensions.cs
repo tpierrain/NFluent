@@ -115,10 +115,10 @@ namespace NFluent
 
         private static void PerformEqualCheck(object expected, ICheckLogic<string> test, bool ignoreCase = false)
         {
-            test.Expecting(expected, negatedComparison: "different from")
+            test.Expecting(expected)
                 .Negates("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock)
-                .FailsIf((sut) => expected == null && sut != null, "The {0} is not null whereas it must.")
-                .FailsIf((sut) => expected != null && sut == null, "The {0} is null whereas it must not.")
+                .FailWhen((sut) => expected == null && sut != null, "The {0} is not null whereas it must.")
+                .FailWhen((sut) => expected != null && sut == null, "The {0} is null whereas it must not.")
                 .Analyze((sut, runner) =>
                 {
                     var details = StringDifference.Analyze(sut, (string) expected, ignoreCase);
@@ -143,9 +143,9 @@ namespace NFluent
             params string[] possibleElements)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .FailsIf(sut => possibleElements == null && sut != null,
+                .FailWhen(sut => possibleElements == null && sut != null,
                     "The {0} must be null as there is no other possible value.", MessageOption.NoExpectedBlock)
-                .FailsIf(sut => possibleElements != null && !possibleElements.Any(x => string.Equals(x, sut)),
+                .FailWhen(sut => possibleElements != null && !possibleElements.Any(x => string.Equals(x, sut)),
                     "The {0} is not one of the possible elements.")
                 .Expecting(possibleElements, expectedLabel: "The possible elements:")
                 .Negates("The {0} is one of the possible elements whereas it must not.")
@@ -223,7 +223,7 @@ namespace NFluent
 
             checker.BeginCheck()
                 .FailsIfNull()
-                .FailsIf(sut => !sut.StartsWith(expectedPrefix), "The {0}'s start is different from the {1}.")
+                .FailWhen(sut => !sut.StartsWith(expectedPrefix), "The {0}'s start is different from the {1}.")
                 .Expecting(expectedPrefix, "starts with", "does not start with")
                 .Negates("The {0} starts with {1}, whereas it must not.")
                 .EndCheck();
@@ -244,7 +244,7 @@ namespace NFluent
             var checker = ExtensibilityHelper.ExtractChecker(check);
             checker.BeginCheck()
                 .FailsIfNull()
-                .FailsIf(sut => !sut.EndsWith(expectedEnd), "The {0}'s end is different from the {1}.")
+                .FailWhen(sut => !sut.EndsWith(expectedEnd), "The {0}'s end is different from the {1}.")
                 .Expecting(expectedEnd, "ends with", "does not end with")
                 .Negates("The {0} ends with {1}, whereas it must not.")
                 .EndCheck();
@@ -288,7 +288,7 @@ namespace NFluent
             checker.BeginCheck()
                 .Expecting(regExp, "matches", "does not match")
                 .FailsIfNull()
-                .FailsIf(sut => new Regex(regExp).IsMatch(sut) == false, "The {0} does not match the {1}.")
+                .FailWhen(sut => new Regex(regExp).IsMatch(sut) == false, "The {0} does not match the {1}.")
                 .Negates("The {0} matches {1}, whereas it must not.")
                 .EndCheck();
         }
@@ -303,7 +303,7 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsNullOrWhiteSpace(this ICheck<string> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .FailsIf(sut => !PolyFill.IsNullOrWhiteSpace(sut), "The {0} contains non whitespace characters.")
+                .FailWhen(sut => !PolyFill.IsNullOrWhiteSpace(sut), "The {0} contains non whitespace characters.")
                 .NegatesIf(sut => sut == null, "The {0} is null, whereas it should not.")
                 .NegatesIf(sut => sut == string.Empty, "The {0} is empty, whereas it should not.")
                 .Negates("The {0} contains only whitespace characters, whereas it should not.")
@@ -324,8 +324,8 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .NegatesIf(string.IsNullOrEmpty, "The {0} is empty, whereas it must not.")
-                .FailsIf(sut => sut == null, "The {0} is null instead of being empty.", MessageOption.NoCheckedBlock)
-                .FailsIf(sut => sut != string.Empty, "The {0} is not empty.")
+                .FailWhen(sut => sut == null, "The {0} is null instead of being empty.", MessageOption.NoCheckedBlock)
+                .FailWhen(sut => sut != string.Empty, "The {0} is not empty.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -342,7 +342,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .Negates("The {0} is empty, whereas it must not.")
-                .FailsIf(sut => !string.IsNullOrEmpty(sut), "The {0} is not empty or null.")
+                .FailWhen(sut => !string.IsNullOrEmpty(sut), "The {0} is not empty or null.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -358,9 +358,9 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsNotEmpty(this ICheck<string> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .FailsIf(sut => sut == null, "The {0} is null whereas it must have content.",
+                .FailWhen(sut => sut == null, "The {0} is null whereas it must have content.",
                     MessageOption.NoCheckedBlock)
-                .FailsIf(string.IsNullOrEmpty, "The {0} is empty, whereas it must not.", MessageOption.NoCheckedBlock)
+                .FailWhen(string.IsNullOrEmpty, "The {0} is empty, whereas it must not.", MessageOption.NoCheckedBlock)
                 .NegatesIf(sut => sut == null, "The {0} is null instead of being empty.")
                 .Negates("The {0} is not empty or null.")
                 .EndCheck();

@@ -202,26 +202,26 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void HasFlagFailsWhenRelevant()
+        public void HasFlagFailWhenRelevant()
         {
             Check.ThatCode( ()=>  Check.That(Flags.Second|Flags.Third).HasFlag(Flags.First))
                 .IsAFaillingCheckWithMessage("", 
                     "The checked enum does not have the expected flag.", 
                     "The checked enum:", 
                     "\t[Second, Third]", 
-                    "The expected enum:", 
+                    "The expected enum: having flag", 
                     "\t[First]");
         }
 
         [Test]
-        public void DoesNotHaveFlagFailsWhenRelevant()
+        public void DoesNotHaveFlagFailWhenRelevant()
         {
             Check.ThatCode( ()=>  Check.That(Flags.First|Flags.Third).DoesNotHaveFlag(Flags.First))
                 .IsAFaillingCheckWithMessage("", 
                     "The checked enum does have the expected flag, whereas it should not.", 
                     "The checked enum:", 
                     "\t[First, Third]", 
-                    "The expected enum:", 
+                    "The expected enum: not having flag", 
                     "\t[First]");
         }
         
@@ -233,7 +233,7 @@ namespace NFluent.Tests
                     "The checked enum does have the expected flag, whereas it should not.", 
                     "The checked enum:", 
                     "\t[First, Third]", 
-                    "The expected enum:", 
+                    "The expected enum: not having flag", 
                     "\t[First]");
         }
 
@@ -245,7 +245,7 @@ namespace NFluent.Tests
                     "The checked enum does not have the expected flag.", 
                     "The checked enum:", 
                     "\t[Second, Third]", 
-                    "The expected enum:", 
+                    "The expected enum: having flag", 
                     "\t[First]");
         }
 
@@ -257,7 +257,7 @@ namespace NFluent.Tests
                     "The checked enum type is not a set of flags. You must add [Flags] attribute to its declaration.", 
                     "The checked enum:", 
                     "\t[American]", 
-                    "The expected enum:", 
+                    "The expected enum: having flag", 
                     "\t[French]");
         }
  
@@ -269,7 +269,7 @@ namespace NFluent.Tests
                     "Wrong chek: The expected flag is 0. You must use IsEqualTo, or a non zero flag value.", 
                     "The checked enum:", 
                     "\t[First]", 
-                    "The expected enum:", 
+                    "The expected enum: having flag", 
                     "\t[None]");
         }
     }

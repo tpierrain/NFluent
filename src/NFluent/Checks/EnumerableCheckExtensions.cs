@@ -67,10 +67,10 @@ namespace NFluent
 
             IList<object> notFoundValues = null;
             ExtensibilityHelper.BeginCheck(check).
-                FailsIf((sut) => sut == null && otherEnumerable != null, "The {0} is null and thus, does not contain the given expected value(s).").
+                FailWhen((sut) => sut == null && otherEnumerable != null, "The {0} is null and thus, does not contain the given expected value(s).").
                 ExpectingValues(otherEnumerable, otherEnumerable.Count()).
                 Analyze((sut, _) =>  notFoundValues = ExtractNotFoundValues(sut, otherEnumerable)).
-                FailsIf((_) => notFoundValues.Any(), string.Format(
+                FailWhen((_) => notFoundValues.Any(), string.Format(
                     "The {{0}} does not contain the expected value(s):" + Environment.NewLine + "\t[{0}]", notFoundValues.ToEnumeratedString().DoubleCurlyBraces())).
                 Negates("The {0} contains all the given values whereas it must not.").
                 EndCheck();
@@ -121,12 +121,11 @@ namespace NFluent
             this ICheck<TU> check,
             IEnumerable otherEnumerable) where TU: IEnumerable
         {
-
             var enumerable =  otherEnumerable== null ? null : otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
             var test = ExtensibilityHelper.BeginCheck(check).ExpectingValues(enumerable, enumerable?.Count ?? 0)
-                .FailsIf(sut => sut == null && enumerable != null,
+                .FailWhen(sut => sut == null && enumerable != null,
                     "The {0} is null and thus does not contain exactly the {1}.", MessageOption.NoCheckedBlock)
-                .FailsIf(sut => sut != null && enumerable == null, "The {0} is not null whereas it should.",
+                .FailWhen(sut => sut != null && enumerable == null, "The {0} is not null whereas it should.",
                     MessageOption.NoExpectedBlock)
                 .Negates("The {0} contains exactly the given values whereas it must not.", MessageOption.NoExpectedBlock);
             test.Analyze((sut, runner) =>
@@ -241,7 +240,7 @@ namespace NFluent
             var item = default(T);
             ExtensibilityHelper.BeginCheck(check)
                 .FailsIfNull($"The {{0}} is null, whereas it must have an element with number {index}.")
-                .FailsIf(sut => !TryGetElementByNumber(sut, index, out item),
+                .FailWhen(sut => !TryGetElementByNumber(sut, index, out item),
                     $"The {{0}} does not have an element at index {index}.")
                 .Negates($"The {{0}} does have an element at index {index} whereas it should not.")
                 .EndCheck();
@@ -307,7 +306,7 @@ namespace NFluent
             var item = default(T);
             ExtensibilityHelper.BeginCheck(check)
                 .FailsIfNull("The {0} is null, whereas it must have a first element.")
-                .FailsIf(sut => !TryGetElementByNumber(sut, 0, out item),
+                .FailWhen(sut => !TryGetElementByNumber(sut, 0, out item),
                     "The {0} is empty, whereas it must have a first element.", MessageOption.NoCheckedBlock)
                 .Negates("The {0} has a first element, whereas it must be empty.")
                 .EndCheck();
@@ -327,7 +326,7 @@ namespace NFluent
             var item = default(T);
             ExtensibilityHelper.BeginCheck(check)
                 .FailsIfNull("The {0} is null, whereas it must have a last element.")
-                .FailsIf(sut => !TryGetLastElement(sut, out item),
+                .FailWhen(sut => !TryGetLastElement(sut, out item),
                     "The {0} is empty, whereas it must have a last element.", MessageOption.NoCheckedBlock)
                 .Negates("The {0} has a last element, whereas it must be empty.")
                 .EndCheck();
@@ -387,7 +386,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check).
                 FailsIfNull().
                 Analyze((sut, _) => actualSize = sut.Count()).
-                FailsIf(_ => actualSize != expectedSize, $"The {{0}} has {BuildElementNumberLiteral(actualSize).DoubleCurlyBraces()} instead of {expectedSize}.").
+                FailWhen(_ => actualSize != expectedSize, $"The {{0}} has {BuildElementNumberLiteral(actualSize).DoubleCurlyBraces()} instead of {expectedSize}.").
                 Negates($"The {{0}} has {BuildElementNumberLiteral(expectedSize).DoubleCurlyBraces()} which is unexpected.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -418,7 +417,7 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> IsEmpty<T>(this ICheck<T> check) where T: IEnumerable
         {
             ExtensibilityHelper.BeginCheck(check).FailsIfNull()
-                .FailsIf((sut) => sut.Cast<object>().Any(), "The {0} is not empty.")
+                .FailWhen((sut) => sut.Cast<object>().Any(), "The {0} is not empty.")
                 .Negates("The checked enumerable is empty, which is unexpected.", MessageOption.NoCheckedBlock).EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -433,7 +432,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
         public static ICheckLink<ICheck<T>> IsNullOrEmpty<T>(this ICheck<T> check) where T : IEnumerable
         {
-            ExtensibilityHelper.BeginCheck(check).FailsIf((sut) => sut != null && sut.Count()>0,
+            ExtensibilityHelper.BeginCheck(check).FailWhen((sut) => sut != null && sut.Count()>0,
                     "The {0} contains elements, whereas it must be null or empty.")
                 .NegatesIf((sut) => sut == null, "The {0} is null, where as it must contain at least one element.", MessageOption.NoCheckedBlock)
                 .Negates("The {0} is empty, where as it must contain at least one element.", MessageOption.NoCheckedBlock)
@@ -480,7 +479,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check).
                 ExpectingValues(expectedValues, expectedValues.Count(), comparison: "only elements from", negatedComparison:"at least one element different from").
-                FailsIf(sut => sut == null & expectedValues != null, "The {0} is null and thus, does not contain exactly the given value(s).").
+                FailWhen(sut => sut == null & expectedValues != null, "The {0} is null and thus, does not contain exactly the given value(s).").
                 Analyze((sut, test) =>{
                     if (sut == null && expectedValues == null)
                     {

@@ -13,6 +13,7 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable once CheckNamespace
 namespace NFluent
 {
     using System;
@@ -53,7 +54,7 @@ namespace NFluent
             Exception resultException = null;
             ExtensibilityHelper.BeginCheck(this)
                 .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
-                .GetSutProperty(sut => sut.InnerException, "inner exception")
+                .CheckSutAttributes(sut => sut.InnerException, "inner exception")
                 .FailsIfNull("There is no inner exception.")
                 .Analyze((sut, test) =>
                 {
@@ -67,7 +68,7 @@ namespace NFluent
 
                         resultException = resultException.InnerException;
                     }
-                    test.FailsIf(_ => resultException == null,
+                    test.FailWhen(_ => resultException == null,
                         "The {0} is not of the expected type.");
                 })
                 .ExpectingType(typeof(TE), "", "")
@@ -104,8 +105,8 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
                 .InvalidIf(sut=>sut == null, "No exception. Can't be used when negated.")
                 .SutNameIs("exception")
-                .GetSutProperty(sut =>  sut.Message, "message")
-                .FailsIf(sut => sut != exceptionMessage, "The {0} is not as expected.")
+                .CheckSutAttributes(sut =>  sut.Message, "message")
+                .FailWhen(sut => sut != exceptionMessage, "The {0} is not as expected.")
                 .Expecting(exceptionMessage)
                 .EndCheck();
 
@@ -127,7 +128,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
                 .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
                 .SutNameIs("exception")
-                .GetSutProperty(sut =>
+                .CheckSutAttributes(sut =>
                 {
                     var type = sut.GetType();
                     var property = type.GetProperty(propertyName);
@@ -139,8 +140,8 @@ namespace NFluent
                     found = true;
                     return property.GetValue(sut, null);
                 }, $"property [{propertyName}]")
-                .FailsIf(_=> !found, $"There is no property [{propertyName}] on exception type [{typeof(T).Name}].", MessageOption.NoCheckedBlock)
-                .FailsIf(sut => !EqualityHelper.FluentEquals(sut, propertyValue),
+                .FailWhen(_=> !found, $"There is no property [{propertyName}] on exception type [{typeof(T).Name}].", MessageOption.NoCheckedBlock)
+                .FailWhen(sut => !EqualityHelper.FluentEquals(sut, propertyValue),
                     "The {0} does not have the expected value.")
                 .Expecting(propertyValue)
                 .EndCheck();
@@ -167,8 +168,8 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
                 .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
                 .SutNameIs("exception")
-                .GetSutProperty(sut => propertyExpression.Compile().Invoke(sut), $"property [{propertyName}]")
-                .FailsIf(sut => !EqualityHelper.FluentEquals(sut, propertyValue),
+                .CheckSutAttributes(sut => propertyExpression.Compile().Invoke(sut), $"property [{propertyName}]")
+                .FailWhen(sut => !EqualityHelper.FluentEquals(sut, propertyValue),
                     "The {0} does not have the expected value.")
                 .Expecting(propertyValue)
                 .EndCheck();

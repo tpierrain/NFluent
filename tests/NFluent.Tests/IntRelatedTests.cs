@@ -409,7 +409,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsEqualFailsWhenRelevant()
+        public void IsEqualFailWhenRelevant()
         {
             Check.ThatCode(() => { Check.That(Twenty).IsEqualTo(0); })
                 .IsAFaillingCheckWithMessage("",

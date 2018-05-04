@@ -81,7 +81,7 @@ namespace NFluent.Helpers
             var mode = Check.EqualMode;
 
             ExtensibilityHelper.BeginCheck(check)
-                .Expecting(expected, "", "different from")
+                .Expecting(expected)
                 .Analyze((sut, test) =>
                 {
                     if (FluentEquals(sut, expected, mode))
@@ -150,7 +150,7 @@ namespace NFluent.Helpers
         internal static ICheckLink<ICheck<double>> PerformEqualCheck(ICheck<double> check, double expected)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .Expecting(expected, "", "different from")
+                .Expecting(expected)
                 .Analyze((sut, test) =>
                 {
                     var diff = Math.Abs(sut - expected);
@@ -185,7 +185,7 @@ namespace NFluent.Helpers
             float expected)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .Expecting(expected, "", "different from")
+                .Expecting(expected)
                 .Analyze((sut, test) =>
                 {
                     var diff = Math.Abs(sut - expected);

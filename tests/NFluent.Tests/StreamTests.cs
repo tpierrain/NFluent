@@ -71,7 +71,7 @@ namespace NFluent.Tests
                     "The checked stream has the same content as the other one, whereas it must not.",
                     "The checked stream:",
                     "\t[System.IO.MemoryStream (Length: 13)]",
-                    "The expected stream:",
+                    "The expected stream: different from",
                     "\t[System.IO.MemoryStream (Length: 13)]");
             
         }

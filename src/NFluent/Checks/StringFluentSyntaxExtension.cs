@@ -70,11 +70,13 @@ namespace NFluent
                     foreach (var content in chainedCheckLink.OriginalComparand)
                     {
                         lastIndex = sut.IndexOf(content, lastIndex, StringComparison.Ordinal);
-                        if (lastIndex < 0)
+                        if (lastIndex >= 0)
                         {
-                            test.Fails("The {0} does not contain the expected strings in the correct order.");
-                            return;
+                            continue;
                         }
+
+                        test.Fails("The {0} does not contain the expected strings in the correct order.");
+                        return;
                     }
                 }).ExpectingValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, 
                     expectedLabel:"The expected content:", 

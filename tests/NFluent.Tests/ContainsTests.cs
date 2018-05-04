@@ -93,7 +93,7 @@ namespace NFluent.Tests
                     "The checked enumerable contains all the given values whereas it must not.", 
                     "The checked enumerable:",
                     "\t[1, 2, 3] (3 items)", 
-                    "The expected value(s):",
+                    "The expected value(s): different from",
                     "\t[3, 2, 1] (3 items)");
         }
 

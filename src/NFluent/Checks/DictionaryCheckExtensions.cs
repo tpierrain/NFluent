@@ -69,16 +69,13 @@ namespace NFluent
                             return;
                     }
 #endif
-                    else
+                    else if (sut.Any(keyValuePair => EqualityHelper.FluentEquals(keyValuePair.Key, key)))
                     {
-                        if (sut.Any(keyValuePair => EqualityHelper.FluentEquals(keyValuePair.Key, key)))
-                        {
-                            return;
-                        }
+                        return;
                     }
 
                     test.Fails("The {0} does not contain the expected key.");
-                }).Expecting(key, expectedLabel: "Expected key:", negatedLabel: "Forbidden key:")
+                }).ExpectedResult(key, "Expected key:", "Forbidden key:")
                 .Negates("The {0} does contain the given key, whereas it must not.").EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -112,7 +109,7 @@ namespace NFluent
                     }
 
                     test.Fails("The {0} does not contain the expected value.");
-                }).Expecting(expectedValue, expectedLabel: "Expected value:", negatedLabel: "Forbidden value:")
+                }).ExpectedResult(expectedValue, "Expected value:", "Forbidden value:")
                 .Negates("The {0} does contain the given value, whereas it must not.").EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -171,7 +168,7 @@ namespace NFluent
                         !found
                             ? "The {0} does not contain the expected key-value pair. The given key was not found."
                             : "The {0} does not contain the expected value for the given key.");
-                }).Expecting(new KeyValuePair<TK, TU>(expectedKey, expectedValue), expectedLabel: "Expected pair:", negatedLabel: "Forbidden pair:")
+                }).ExpectedResult(new KeyValuePair<TK, TU>(expectedKey, expectedValue), "Expected pair:", "Forbidden pair:")
                 .Negates("The {0} does contain the given key-value pair, whereas it must not.").EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -200,7 +197,7 @@ namespace NFluent
                     }
 
                     test.Fails("The {0} does not contain the expected key.");
-                }).Expecting(key, expectedLabel: "Expected key:", negatedLabel: "Forbidden key:")
+                }).ExpectedResult(key, "Expected key:", "Forbidden key:")
                 .Negates("The {0} does contain the given key, whereas it must not.").EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -231,7 +228,7 @@ namespace NFluent
                     }
 
                     test.Fails("The {0} does not contain the expected value.");
-                }).Expecting(expectedValue, expectedLabel: "Expected value:", negatedLabel: "Forbidden value:")
+                }).ExpectedResult(expectedValue, "Expected value:", "Forbidden value:")
                 .Negates("The {0} does contain the given value, whereas it must not.").EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -249,9 +246,9 @@ namespace NFluent
             object expectedValue)
         {
             ExtensibilityHelper.BeginCheck(check)
-               .FailsIf(sut => !sut.ContainsKey(expectedKey), "The {0} does not contain the expected key-value pair. The given key was not found.")
-                .FailsIf( sut => !EqualityHelper.FluentEquals(sut[expectedKey], expectedValue), "The {0} does not contain the expected value for the given key.")
-                .Expecting(new KeyValuePair<object, object>(expectedKey, expectedValue), expectedLabel: "Expected pair:", negatedLabel: "Forbidden pair:")
+               .FailWhen(sut => !sut.ContainsKey(expectedKey), "The {0} does not contain the expected key-value pair. The given key was not found.")
+                .FailWhen( sut => !EqualityHelper.FluentEquals(sut[expectedKey], expectedValue), "The {0} does not contain the expected value for the given key.")
+                .ExpectedResult(new KeyValuePair<object, object>(expectedKey, expectedValue), "Expected pair:", "Forbidden pair:")
                 .Negates("The {0} does contain the given key-value pair, whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

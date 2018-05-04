@@ -46,7 +46,7 @@ namespace NFluent.Kernel
         public ICheckLink<ICheck<TN>> IsZero()
         {
             ExtensibilityHelper.BeginCheck(this.check)
-                .FailsIf(sut => !InternalIsZero(sut), "The {0} is different from zero.")
+                .FailWhen(sut => !InternalIsZero(sut), "The {0} is different from zero.")
                 .Negates("The {0} is equal to zero whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);
@@ -60,7 +60,7 @@ namespace NFluent.Kernel
         public ICheckLink<ICheck<TN>> IsStrictlyPositive()
         {
             ExtensibilityHelper.BeginCheck(this.check)
-                .FailsIf(sut => Convert.ToDouble(sut) <=0, "The {0} is not strictly positive (i.e. greater than zero).")
+                .FailWhen(sut => Convert.ToDouble(sut) <=0, "The {0} is not strictly positive (i.e. greater than zero).")
                 .Negates("The {0} is strictly positive (i.e. greater than zero), whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);
@@ -74,7 +74,7 @@ namespace NFluent.Kernel
         public ICheckLink<ICheck<TN>> IsPositiveOrZero()
         {
             ExtensibilityHelper.BeginCheck(this.check)
-                .FailsIf(sut => Convert.ToDouble(sut) <0, "The {0} is not positive or equal to zero.")
+                .FailWhen(sut => Convert.ToDouble(sut) <0, "The {0} is not positive or equal to zero.")
                 .Negates("The {0} is positive or equal to zero, whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);
@@ -88,7 +88,7 @@ namespace NFluent.Kernel
         public ICheckLink<ICheck<TN>> IsStrictlyNegative()
         {
             ExtensibilityHelper.BeginCheck(this.check)
-                .FailsIf(sut => Convert.ToDouble(sut) >=0, "The {0} is not strictly negative.")
+                .FailWhen(sut => Convert.ToDouble(sut) >=0, "The {0} is not strictly negative.")
                 .Negates("The {0} is strictly negative, whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);
@@ -102,7 +102,7 @@ namespace NFluent.Kernel
         public ICheckLink<ICheck<TN>> IsNegativeOrZero()
         {
             ExtensibilityHelper.BeginCheck(this.check)
-                .FailsIf(sut => Convert.ToDouble(sut) >0, "The {0} is not negative or equal to zero.")
+                .FailWhen(sut => Convert.ToDouble(sut) >0, "The {0} is not negative or equal to zero.")
                 .Negates("The {0} is negative or equal to zero, whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);
@@ -125,8 +125,8 @@ namespace NFluent.Kernel
         {
             ExtensibilityHelper.BeginCheck(this.check)
                 .ComparingTo(comparand, "strictly less than", "greater than")
-                .FailsIf(sut => sut.CompareTo(comparand) == 0, "The {0} is equal to the {1}.")
-                .FailsIf(sut => sut.CompareTo(comparand) > 0, "The {0} is greater than the {1}.")
+                .FailWhen(sut => sut.CompareTo(comparand) == 0, "The {0} is equal to the {1}.")
+                .FailWhen(sut => sut.CompareTo(comparand) > 0, "The {0} is greater than the {1}.")
                 .Negates("The {0} is strictly less than the {1}.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);
@@ -148,8 +148,8 @@ namespace NFluent.Kernel
         {
             ExtensibilityHelper.BeginCheck(this.check)
                 .ComparingTo(comparand, "strictly greater than", "less than or equal to")
-                .FailsIf(sut => sut.CompareTo(comparand) < 0, "The {0} is less than the {1}.")
-                .FailsIf(sut => sut.CompareTo(comparand) == 0, "The {0} is equal to the {1}.")
+                .FailWhen(sut => sut.CompareTo(comparand) < 0, "The {0} is less than the {1}.")
+                .FailWhen(sut => sut.CompareTo(comparand) == 0, "The {0} is equal to the {1}.")
                 .Negates("The {0} is greater than the {1}.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);

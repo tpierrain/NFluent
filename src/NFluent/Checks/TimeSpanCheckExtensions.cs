@@ -36,8 +36,8 @@ namespace NFluent
          {
              var expected = new Duration(providedDuration, unit);
              ExtensibilityHelper.BeginCheck(check)
-                 .GetSutProperty( sut => new Duration(sut, unit), "")
-                 .FailsIf(sut => sut >= expected, "The {0} is more than the limit.")
+                 .CheckSutAttributes( sut => new Duration(sut, unit), "")
+                 .FailWhen(sut => sut >= expected, "The {0} is more than the limit.")
                  .Negates("The {0} is not more than the limit.")
                  .ComparingTo(expected, "less than", "more than or equal to")
                  .EndCheck();
@@ -69,8 +69,8 @@ namespace NFluent
          {
              var expected = new Duration(providedDuration, unit);
              ExtensibilityHelper.BeginCheck(check)
-                 .GetSutProperty( sut => new Duration(sut, unit), "")
-                 .FailsIf(sut => sut <= expected, "The {0} is not more than the limit.")
+                 .CheckSutAttributes( sut => new Duration(sut, unit), "")
+                 .FailWhen(sut => sut <= expected, "The {0} is not more than the limit.")
                  .Negates("The {0} is more than the limit.")
                  .ComparingTo(expected, "more than", "less than or equal to")
                  .EndCheck();
@@ -102,10 +102,10 @@ namespace NFluent
          {
              var expected = new Duration(duration, unit);
              ExtensibilityHelper.BeginCheck(check)
-                 .GetSutProperty( sut => new Duration(sut, unit), "")
-                 .FailsIf(sut => sut != expected, "The {0} is different from the {1}.")
+                 .CheckSutAttributes( sut => new Duration(sut, unit), "")
+                 .FailWhen(sut => sut != expected, "The {0} is different from the {1}.")
                  .Negates("The {0} is the same than {1}, whereas it must not.")
-                 .Expecting(expected, "", "different from")
+                 .Expecting(expected)
                  .EndCheck();
              return ExtensibilityHelper.BuildCheckLink(check);
          }

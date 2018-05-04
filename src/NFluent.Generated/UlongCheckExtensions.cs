@@ -45,7 +45,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .ComparingTo(givenValue, "before", "after")
-                .FailsIf(sut => sut.CompareTo(givenValue) >= 0, "The {0} is not before the reference value.")
+                .FailWhen(sut => sut.CompareTo(givenValue) >= 0, "The {0} is not before the reference value.")
                 .Negates("The {0} is before the reference value whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -64,7 +64,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .ComparingTo(givenValue, "after", "before")
-                .FailsIf(sut => sut.CompareTo(givenValue) <= 0, "The {0} is not after the reference value.")
+                .FailWhen(sut => sut.CompareTo(givenValue) <= 0, "The {0} is not after the reference value.")
                 .Negates("The {0} is after the reference value whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

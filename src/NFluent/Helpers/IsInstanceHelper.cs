@@ -37,9 +37,9 @@ namespace NFluent.Helpers
         public static void InheritsFrom<T>(ICheck<T> checker, Type expectedBaseType)
         {
             ExtensibilityHelper.BeginCheck(checker)
-                .GetSutProperty(sut => sut.GetTypeWithoutThrowingException(), "type")
+                .CheckSutAttributes(sut => sut.GetTypeWithoutThrowingException(), "type")
                 .Expecting(expectedBaseType, "inherits from", "does not inherits from")
-                .FailsIf(sut => !expectedBaseType.IsAssignableFrom(sut), "The {0} does not have the expected inheritance.")
+                .FailWhen(sut => !expectedBaseType.IsAssignableFrom(sut), "The {0} does not have the expected inheritance.")
                 .Negates("The {0} does inherits from the {1} where as it must not")
                 .EndCheck();
         }

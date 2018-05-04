@@ -89,7 +89,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void DoesNotContainsFailsWhenAppropriate()
+        public void DoesNotContainsFailWhenAppropriate()
         {
             Check.ThatCode(() => { Check.That(Alphabet).DoesNotContain("c", "z", "u"); })
                 .IsAFaillingCheckWithMessage(Environment.NewLine +

@@ -87,7 +87,7 @@ namespace NFluent
             var comparer = new EqualityHelper.EqualityComparer<T>();
             ExtensibilityHelper.BeginCheck(check)
                 .ExpectingValues(values, values.Length, "one of", "none of")
-                .FailsIf(sut => !values.Any(value => comparer.Equals(sut, value)), "The {0} is not one of the {1}.")
+                .FailWhen(sut => !values.Any(value => comparer.Equals(sut, value)), "The {0} is not one of the {1}.")
                 .Negates("The {0} should not be one of the {1}.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -214,7 +214,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .SutNameIs("object")
-                .FailsIf(sut => sut!= null, "The {0} must be null.")
+                .FailWhen(sut => sut!= null, "The {0} must be null.")
                 .Negates("The {0} must not be null.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -235,7 +235,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .SutNameIs("nullable value")
-                .FailsIf(sut => sut!= null, "The {0} must be null.")
+                .FailWhen(sut => sut!= null, "The {0} must be null.")
                 .Negates("The {0} is null whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -312,7 +312,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .SutNameIs("object")
                 .ComparingTo(expected, "same instance as", "distinct from")
-                .FailsIf(sut => !ReferenceEquals(sut, expected), "The {0} must be the same instance as the {1}.")
+                .FailWhen(sut => !ReferenceEquals(sut, expected), "The {0} must be the same instance as the {1}.")
                 .Negates("The {0} must be an instance distinct from the {1}.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

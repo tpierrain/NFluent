@@ -16,7 +16,6 @@ using System;
 
 namespace NFluent.Tests
 {
-    using Helpers;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -152,7 +151,12 @@ namespace NFluent.Tests
             {
                 Check.That('A').Not.IsSameLetterButWithDifferentCaseAs('a');
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked char is the same letter as the expected one with different case, whereas it must not." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['A']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['a']");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked char is the same letter as the expected one with different case, whereas it must not.",
+                    "The checked char:",
+                    "\t['A']",
+                    "The expected char: different from",
+                    "\t['a']");
         }
 
         [Test]
@@ -247,7 +251,12 @@ namespace NFluent.Tests
             {
                 Check.That(FirstLetterLowerCase).Not.IsSameLetterAs('A');
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked char is the same letter as the expected one (whatever the case), whereas it must not." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['A']");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked char is the same letter as the expected one (whatever the case), whereas it must not.",
+                    "The checked char:",
+                    "\t['a']",
+                    "The expected char: different from",
+                    "\t['A']");
         }
 
         #endregion

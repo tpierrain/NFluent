@@ -13,6 +13,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable once CheckNamespace
 namespace NFluent
 {
     using System;
@@ -47,7 +48,7 @@ namespace NFluent
                             {
                                 if (actual.ValueType.IsPrimitive() || expected.ValueType.IsPrimitive())
                                 {
-                                    test.GetSutProperty(_ => actual.Value, actual.MemberLabel)
+                                    test.CheckSutAttributes(_ => actual.Value, actual.MemberLabel)
                                         .Fails("The {0} is of a different type than the {1}.")
                                         .ExpectingType(expected.ValueType, "", "");
                                     return false;
@@ -63,13 +64,13 @@ namespace NFluent
 
                             if (actual == null) 
                             {
-                                test.GetSutProperty(_ => expectedWrapper.Value, expected.MemberLabel)
+                                test.CheckSutAttributes(_ => expectedWrapper.Value, expected.MemberLabel)
                                     .Expecting(expected)
                                     .Fails("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock);
                             }
                             else
                             {
-                                test.GetSutProperty(_ => actual, actual.MemberLabel.DoubleCurlyBraces())
+                                test.CheckSutAttributes(_ => actual, actual.MemberLabel.DoubleCurlyBraces())
                                     .Fails("The {0} is absent from the {1}.");
                             }
                             return false;
@@ -77,12 +78,12 @@ namespace NFluent
                     }
                     else if (typeof(T).IsNullable())
                     {
-                        test.FailsIf(sut2 => typeof(T)!= type || (sut2 == null && !typeof(T).IsNullable()),
+                        test.FailWhen(sut2 => typeof(T)!= type || (sut2 == null && !typeof(T).IsNullable()),
                             $"The {{0}} is not an instance of [{type.ToStringProperlyFormatted()}].", MessageOption.WithType);
                     }
                     else
                     {
-                        test.FailsIf(sut2 => sut2.GetTypeWithoutThrowingException() != type,
+                        test.FailWhen(sut2 => sut2.GetTypeWithoutThrowingException() != type,
                             $"The {{0}} is not an instance of [{type.ToStringProperlyFormatted()}].", sut != null ? MessageOption.WithType : MessageOption.None);
                     }
                 })

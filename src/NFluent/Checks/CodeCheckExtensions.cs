@@ -13,6 +13,7 @@
  // </copyright>
  // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable once CheckNamespace
 namespace NFluent
 {
     using System;
@@ -22,8 +23,6 @@ namespace NFluent
     using Extensibility;
 
     using Helpers;
-
-    using Kernel;
 
     /// <summary>
     /// Static class hosting extension methods in relation with checks for code.
@@ -56,7 +55,7 @@ namespace NFluent
         {
             var durationThreshold = new Duration(threshold, timeUnit);
 
-            ExtensibilityHelper.BeginCheck(check).FailsIf((sut) =>
+            ExtensibilityHelper.BeginCheck(check).FailWhen((sut) =>
                 new Duration(sut.ExecutionTime, timeUnit) > durationThreshold, "The checked code took too much time to execute.").
                 Expecting(durationThreshold, "less than", "more than").
                 SutNameIs("execution time").
@@ -93,8 +92,8 @@ namespace NFluent
             var durationThreshold = new Duration(threshold, timeUnit);
 
             ExtensibilityHelper.BeginCheck(check).
-                GetSutProperty(sut =>  new Duration(sut.TotalProcessorTime, timeUnit), "").
-                FailsIf((sut) =>
+                CheckSutAttributes(sut =>  new Duration(sut.TotalProcessorTime, timeUnit), "").
+                FailWhen((sut) =>
                     sut > durationThreshold, "The checked code consumed too much CPU time.").
                 Expecting(durationThreshold, "less than", "more than").
                 SutNameIs("cpu time").
@@ -119,8 +118,8 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check).
                 SutNameIs("code").
-                GetSutProperty(sut => sut.RaisedException, "raised exception").
-                FailsIf(sut=> sut != null, "The checked code raised an exception, whereas it must not.").
+                CheckSutAttributes(sut => sut.RaisedException, "raised exception").
+                FailWhen(sut=> sut != null, "The checked code raised an exception, whereas it must not.").
                 Negates("The checked code did not raise an exception, whereas it must.", MessageOption.NoCheckedBlock).
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -148,14 +147,14 @@ namespace NFluent
         {
             Exception result = null;
             ExtensibilityHelper.BeginCheck(check).SutNameIs("code")
-               .GetSutProperty(sut =>
+               .CheckSutAttributes(sut =>
                 {
                     result = sut.RaisedException;
                     return result;
                 }, "raised exception")
                 .ExpectingType(expecting, "", "should not be")
                 .FailsIfNull("The checked code did not raise an exception, whereas it must.")
-                .FailsIf(sut => !expecting.IsInstanceOfType(sut),
+                .FailWhen(sut => !expecting.IsInstanceOfType(sut),
                     "The {0} is of a different type than expected.")
                 .Negates("The {0} raised an exception of the forbidden type.")
                 .EndCheck();
@@ -196,7 +195,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .Negates("The checked code raised an exception, whereas it must not.")
                 .SutNameIs("code")
-                .GetSutProperty((sut) => sut.RaisedException, "raised exception")
+                .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
                 .FailsIfNull("The checked code did not raise an exception, whereas it must.")
                 .EndCheck();
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);

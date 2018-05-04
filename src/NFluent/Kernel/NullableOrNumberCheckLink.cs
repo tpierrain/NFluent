@@ -65,7 +65,7 @@ namespace NFluent.Kernel
             {
                 TN val = default(TN);
                 ExtensibilityHelper.BeginCheck(this.And)
-                    .FailsIf(sut =>
+                    .FailWhen(sut =>
                     {
                         if (sut.HasValue)
                         {

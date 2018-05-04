@@ -39,7 +39,7 @@ namespace NFluent
             var duration = new Duration(timeOut, timeUnit);
             ExtensibilityHelper.BeginCheck(check)
                 .Expecting(duration, expectedLabel: "The given timeout:", negatedLabel: "The minimal wait time:")
-                .FailsIf(sut => !sut.WaitOne((int)duration.ToMilliseconds()), 
+                .FailWhen(sut => !sut.WaitOne((int)duration.ToMilliseconds()), 
                     "The checked event has not been set before the given timeout whereas it must.", MessageOption.NoCheckedBlock)
                 .Negates("The checked event has been set before the given timeout whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();

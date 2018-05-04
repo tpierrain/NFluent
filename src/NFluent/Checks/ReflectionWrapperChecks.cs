@@ -84,7 +84,7 @@ namespace NFluent
                         }
                     }
 
-                    test.FailsIf(_ => !match, "The {0} is equal to none of the {1} whereas it should.");
+                    test.FailWhen(_ => !match, "The {0} is equal to none of the {1} whereas it should.");
                 }).Negates("The {0} is equal to one of {1} whereas it should not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -98,8 +98,8 @@ namespace NFluent
                 {
                     sut.ScanFields((scan, depth) =>
                     {
-                        test.GetSutProperty(_ => scan.Value, scan.MemberLabel)
-                            .FailsIf(val => depth <= 0 && val != null,
+                        test.CheckSutAttributes(_ => scan.Value, scan.MemberLabel)
+                            .FailWhen(val => depth <= 0 && val != null,
                                 "The {0} is non null, whereas it should be.");
                         return !test.Failed && scan.Value != null;
                     });
@@ -117,8 +117,8 @@ namespace NFluent
                 {
                     sut.ScanFields((scan, depth) =>
                     {
-                        test.GetSutProperty(_ => scan.Value, scan.MemberLabel)
-                            .FailsIf(val => depth <= 0 && val == null,
+                        test.CheckSutAttributes(_ => scan.Value, scan.MemberLabel)
+                            .FailWhen(val => depth <= 0 && val == null,
                                 "The {0} is null, whereas it should not.", MessageOption.NoCheckedBlock);
                         return !test.Failed && scan.Value != null;
                     });
@@ -140,7 +140,7 @@ namespace NFluent
                     {
                         if (!match.ExpectedFieldFound)
                         {
-                            test.GetSutProperty(_ => match.Expected.Value, match.Expected.MemberLabel)
+                            test.CheckSutAttributes(_ => match.Expected.Value, match.Expected.MemberLabel)
                                 .Fails("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock)
                                 .Expecting(match.Expected.Value);
                             break;
@@ -148,13 +148,13 @@ namespace NFluent
 
                         if (!match.ActualFieldFound)
                         {
-                            test.GetSutProperty(_ => match.Actual.Value, match.Actual.MemberLabel)
+                            test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
                                 .Fails("The {0} is absent from the {1}.");
                             break;
                         }
                         if (!ReferenceEquals(match.Actual.Value, match.Expected.Value))
                         {
-                            test.GetSutProperty(_ => match.Actual.Value, match.Actual.MemberLabel)
+                            test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
                                 .Fails("The {0} does not reference the {1}.")
                                 .Expecting(match.Expected.Value);
                             break;
@@ -178,7 +178,7 @@ namespace NFluent
                     {
                         if (!match.ExpectedFieldFound)
                         {
-                            test.GetSutProperty(_ => match.Expected.Value, match.Expected.MemberLabel)
+                            test.CheckSutAttributes(_ => match.Expected.Value, match.Expected.MemberLabel)
                                 .Fails("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock)
                                 .Expecting(match.Expected.Value);
                             break;
@@ -186,13 +186,13 @@ namespace NFluent
 
                         if (!match.ActualFieldFound)
                         {
-                            test.GetSutProperty(_ => match.Actual.Value, match.Actual.MemberLabel)
+                            test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
                                 .Fails("The {0} is absent from the {1}.");
                             break;
                         }
                         if (ReferenceEquals(match.Actual.Value, match.Expected.Value))
                         {
-                            test.GetSutProperty(_ => match.Actual.Value, match.Actual.MemberLabel)
+                            test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
                                 .Fails("The {0} does reference the {1}, wheras it should not.", MessageOption.NoCheckedBlock)
                                 .ComparingTo(match.Expected.Value, "different instance than", "same instance than");
                             break;

@@ -34,12 +34,12 @@ namespace NFluent.Helpers
             params string[] lines)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .GetSutProperty((sut) => sut.RaisedException, "raised exception")
+                .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
                 .SutNameIs("fluent check")
                 .FailsIfNull("The check succeeded whereas it should have failed.")
-                .FailsIf((sut) => !ExceptionHelper.IsFailedException(sut),
+                .FailWhen((sut) => !ExceptionHelper.IsFailedException(sut),
                     "The exception raised is not of the expected type")
-                .GetSutProperty((sut) => sut.Message.SplitAsLines(), "error message")
+                .CheckSutAttributes((sut) => sut.Message.SplitAsLines(), "error message")
                 .SutNameIs("fluent check")
                 .Analyze((messageLines, test) =>
                 {
@@ -83,10 +83,10 @@ namespace NFluent.Helpers
         public static ICheckLink<ICodeCheck<RunTrace>> IsAFaillingCheck(this ICodeCheck<RunTrace> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .GetSutProperty((sut) => sut.RaisedException, "raised exception")
+                .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
                 .SutNameIs("fluent check")
                 .FailsIfNull()
-                .FailsIf((sut) => !ExceptionHelper.IsFailedException(sut),
+                .FailWhen((sut) => !ExceptionHelper.IsFailedException(sut),
                     "The exception raised is not of the expected type").
                 ExpectingType(ExceptionHelper.BuildException(string.Empty).GetType(), "an instance of:", "an instance of a different type").
                 EndCheck();

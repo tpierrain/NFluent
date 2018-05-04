@@ -135,7 +135,7 @@ namespace NFluent
                                 }
                             }
 
-                            test.FailsIf(_ => failed, string.Format(
+                            test.FailWhen(_ => failed, string.Format(
                                 "The {{0}} does not follow to the expected order. Item [{0}] appears too {2} in the list, at index '{1}'.",
                                 item.ToStringProperlyFormatted().DoubleCurlyBraces(),
                                 failingIndex,

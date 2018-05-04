@@ -19,10 +19,10 @@ namespace NFluent.Kernel
     using Extensibility;
     using Extensions;
     using Helpers;
+
 #if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
     using System;
 #endif
-
     internal class CheckLogic<T> : ICheckLogic<T>
     {
         private readonly FluentSut<T> fluentSut;
@@ -69,45 +69,52 @@ namespace NFluent.Kernel
 
         public bool Failed => this.failed || this.child != null && this.child.Failed;
 
-        public ICheckLogic<T> FailsIf(Func<T, bool> predicate, string error, MessageOption options)
+        public ICheckLogic<T> FailWhen(Func<T, bool> predicate, string error, MessageOption options)
         {
-            return this.FailsIf(predicate, (x, y) => error, options);
+            return this.FailWhen(predicate, (x, y) => error, options);
         }
 
-        public ICheckLogic<T> FailsIf(Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder,
+        public ICheckLogic<T> FailWhen(Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder,
             MessageOption noCheckedBlock)
+        {
+            return this.Analyze((sut2, test) =>
+            {
+                if (predicate(sut2))
+                {
+                    test.Fails(errorBuilder(sut2, test), noCheckedBlock);
+                }
+               
+            });
+        }
+
+        public ICheckLogic<T> FailsIfNull(string error)
+        {
+            return this.FailWhen(sut => sut == null, error, MessageOption.NoCheckedBlock);
+        }
+
+        public ICheckLogic<T> Analyze(Action<T, ICheckLogic<T>> action)
         {
             if (this.failed)
             {
                 return this;
             }
 
-            this.failed = predicate(this.fluentSut.Value);
-            if (!this.failed || this.IsNegated)
-            {
-                return this;
-            }
-
-            this.lastError = errorBuilder(this.fluentSut.Value, this);
-            this.options = this.options | noCheckedBlock;
+            action(this.fluentSut.Value, this);
             return this;
         }
 
         public ICheckLogic<T> Fails(string error, MessageOption noCheckedBlock)
         {
             this.failed = true;
-            if (!this.IsNegated)
+            if (this.IsNegated)
             {
-                this.lastError = error;
-                this.options = this.options | noCheckedBlock;
+                return this;
             }
 
-            return this;
-        }
+            this.lastError = error;
+            this.options = this.options | noCheckedBlock;
 
-        public ICheckLogic<T> FailsIfNull(string error)
-        {
-            return this.FailsIf(sut => sut == null, error, MessageOption.NoCheckedBlock);
+            return this;
         }
 
         public ICheckLogic<T> InvalidIf(Func<T, bool> predicate, string error)
@@ -125,8 +132,7 @@ namespace NFluent.Kernel
             return this;
         }
 
-        // TODO: improve sut naming logic on extraction
-        public ICheckLogic<TU> GetSutProperty<TU>(Func<T, TU> sutExtractor, string propertyName)
+        public ICheckLogic<TU> CheckSutAttributes<TU>(Func<T, TU> sutExtractor, string propertyName)
         {
             var value = this.fluentSut.Value;
             var result =
@@ -223,13 +229,13 @@ namespace NFluent.Kernel
                     fluentMessage.For(this.expectedType);
                 }
 
-                if (!string.IsNullOrEmpty(this.Comparison))
-                {
-                    block.Comparison(this.Comparison);
-                }
-                else
+                if (!string.IsNullOrEmpty(this.Label))
                 {
                     block.Label(this.Label);
+                }
+                else if (!string.IsNullOrEmpty(this.Comparison))
+                {
+                    block.Comparison(this.Comparison);
                 }
             }
             else if (this.withGiven)
@@ -254,6 +260,16 @@ namespace NFluent.Kernel
             return this;
         }
 
+        public ICheckLogic<T> ExpectedResult<TU>(TU resultValue, string labelForExpected, string negationForExpected)
+        {
+            this.expectedType = resultValue == null ? typeof(TU) : resultValue.GetType();
+            this.withExpected = true;
+            this.expected = resultValue;
+            this.label = labelForExpected;
+            this.negatedLabel = negationForExpected;
+            return this;
+        }
+
         public ICheckLogic<T> Expecting<TU>(TU newExpectedValue, string comparisonMessage = null,
             string negatedComparison1 = null, string expectedLabel = null, string negatedExpLabel = null)
         {
@@ -275,11 +291,11 @@ namespace NFluent.Kernel
         }
 
         public ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparisonMessage = null,
-            string negatedComparison = null, string expectedLabel = null, string negatedExpLabel = null)
+            string newNegatedComparison = null, string expectedLabel = null, string negatedExpLabel = null)
         {
             this.expectedKind = ValueKind.Values;
             this.expectedCount = count;
-            return this.Expecting(values, comparisonMessage, negatedComparison, expectedLabel, negatedExpLabel);
+            return this.Expecting(values, comparisonMessage, newNegatedComparison, expectedLabel, negatedExpLabel);
         }
 
         public ICheckLogic<T> SetValuesIndex(long index)
@@ -315,17 +331,6 @@ namespace NFluent.Kernel
                 this.negatedOption = option;
             }
 
-            return this;
-        }
-
-        public ICheckLogic<T> Analyze(Action<T, ICheckLogic<T>> action)
-        {
-            if (this.failed)
-            {
-                return this;
-            }
-
-            action(this.fluentSut.Value, this);
             return this;
         }
 
