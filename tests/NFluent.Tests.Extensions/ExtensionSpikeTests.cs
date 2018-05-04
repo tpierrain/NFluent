@@ -17,6 +17,8 @@ namespace NFluent.Tests.Extensions
 {
     using System;
     using System.Collections.Generic;
+    using Extensibility;
+    using Kernel;
     using NUnit.Framework;
 
     [TestFixture]
@@ -65,6 +67,16 @@ namespace NFluent.Tests.Extensions
 
             Check.That(eternalSunshineOfTheSpotlessMind).IsDirectedBy("Michel GONDRY");
             Check.That(eternalSunshineOfTheSpotlessMind).IsAfGreatMovie();
+        }
+
+        [Test]
+        public void GeneralExtensibility()
+        {
+                var sut = new FluentSut<int>(12);
+
+                ExtensibilityHelper.BeginCheck(sut)
+                    .FailsIfNull()
+                    .EndCheck();
         }
     }
 }

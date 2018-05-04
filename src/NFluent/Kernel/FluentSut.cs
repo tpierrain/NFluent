@@ -21,11 +21,20 @@ namespace NFluent.Kernel
     /// <typeparam name="T">Type of the SUT</typeparam>
     public class FluentSut<T>: IWithValue<T>, INegated
     {
-        internal FluentSut(T value) : this(value, !CheckContext.DefaulNegated)
+        /// <summary>
+        /// Builds a new <see cref="FluentSut{T}"/> instance.
+        /// </summary>
+        /// <param name="value">Value to examine.</param>
+        public FluentSut(T value) : this(value, !CheckContext.DefaulNegated)
         {
         }
 
-        internal FluentSut(T value, bool negated)
+        /// <summary>
+        /// Builds a new <see cref="FluentSut{T}"/> instance.
+        /// </summary>
+        /// <param name="value">Value to examine.</param>
+        /// <param name="negated">true if the check logic must be negated.</param>
+        public FluentSut(T value, bool negated)
         {
             this.Value = value;
             this.Negated = negated;
