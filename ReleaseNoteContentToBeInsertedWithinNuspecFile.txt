@@ -1,6 +1,14 @@
 ## V 2.3.0
 ---------------
-### New features(s)
+### Main feature: redesigned extensibility
+One of the fundamental features of NFluent is that you can add your own checks.
+Articles explained how to do that, but syntax was still too cumbersome 
+for our taste. This version brings major improvements detailed here:
+* Customization of error reporting: by default, any check failure is reported
+by raising an exception. You can now provide your own reporting system. You need to provide an implementation
+of IErrorReporter interface, and specify you want to use it by setting the Check.Reporter interface.
+
+### Other New features(s)
 * IsNullOrWhiteSpace: checks if a string is null, empty or contains only white space(s).
 * IReadOnlyDictionary (_Net 4.5+_)
   * ContainsKey, ContainsValue, ContainsPair are supported.

@@ -16,6 +16,7 @@
 namespace NFluent
 {
     using System;
+    using Extensibility;
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
     using System.Threading.Tasks;
 #endif
@@ -155,6 +156,11 @@ namespace NFluent
         /// Gets/sets how equality comparison are done.
         /// </summary>
         public static EqualityMode EqualMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default error report
+        /// </summary>
+        public static IErrorReporter Reporter { get; set; } = new ExceptionReporter();
 
         /// <summary>
         /// Gets/Sets the truncation length for long string.

@@ -171,11 +171,11 @@ namespace NFluent.Extensibility
         /// <summary>
         /// Specify that the expectation is an instance of some type
         /// </summary>
-        /// <param name="expectedType">expected type</param>
+        /// <param name="expectedInstanteType">expected type</param>
         /// <param name="expectedLabel">associated label</param>
         /// <param name="negatedLabel">label when negated</param>
         /// <returns>Continuation object</returns>
-        ICheckLogic<T> ExpectingType(System.Type expectedType, string expectedLabel, string negatedLabel);
+        ICheckLogic<T> ExpectingType(System.Type expectedInstanteType, string expectedLabel, string negatedLabel);
 
         /// <summary>
         /// Specify that we expect a list of valies

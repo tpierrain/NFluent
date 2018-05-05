@@ -50,7 +50,7 @@ namespace NFluent.Kernel
         /// </param>
         /// <param name="negated">True if test must be negated.
         /// </param>
-        private FluentCodeCheck(T value, bool negated) : base(value, FluentCheck<T>.DefaultReporter, negated)
+        private FluentCodeCheck(T value, bool negated) : base(value, Check.Reporter, negated)
         {
             this.Checker = new Checker<T, ICodeCheck<T>>(this, this);
         }

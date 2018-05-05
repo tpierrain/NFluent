@@ -31,9 +31,6 @@ namespace NFluent.Kernel
         /// </summary>
         private readonly Checker<T, ICheck<T>> checker;
 
-        private static readonly IErrorReporter reporter = new ExceptionReporter();
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FluentCheck{T}"/> class.
         /// </summary>
@@ -53,7 +50,7 @@ namespace NFluent.Kernel
         /// <param name="negated">
         /// A boolean value indicating whether the check should be negated or not.
         /// </param>
-        protected FluentCheck(T value, bool negated) : base(value, reporter, negated)
+        protected FluentCheck(T value, bool negated) : base(value, Check.Reporter, negated)
         {
             this.checker = new Checker<T, ICheck<T>>(this, this);
         }
@@ -64,8 +61,6 @@ namespace NFluent.Kernel
 
         /// <inheritdoc />
         public IChecker<T, ICheck<T>> Checker => this.checker;
-
-        public static IErrorReporter DefaultReporter => reporter;
 
         #region Public Methods and Operators
 

@@ -18,7 +18,6 @@ namespace NFluent.Kernel
     using System.Collections;
     using Extensibility;
     using Extensions;
-    using Helpers;
 
 // the system namespace is not imported for older Net version. This allows to overload the deifnition of delefate type. 
 #if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
@@ -290,11 +289,11 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> ExpectingType(System.Type expected, string expectedLabel, string negatedExpLabel)
+        public ICheckLogic<T> ExpectingType(System.Type expectedInstanteType, string expectedLabel, string negatedExpLabel)
         {
             this.expectedKind = ValueKind.Type;
             this.options |= MessageOption.WithType;
-            return this.Expecting(expected, expectedLabel, negatedExpLabel);
+            return this.Expecting(expectedInstanteType, expectedLabel, negatedExpLabel);
         }
 
         public ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparisonMessage = null,
