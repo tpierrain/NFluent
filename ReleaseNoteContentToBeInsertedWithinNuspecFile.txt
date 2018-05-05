@@ -38,7 +38,7 @@ of IErrorReporter interface, and specify you want to use it by setting the Check
   * Removed Failure method from IChecker interface
  
 ### GitHub Issues
-* #228, #227, #222, #223, #217, #230, #232, #236, #238
+* #228, #227, #222, #223, #217, #230, #232, #236, #238, #242, #243
 
 ------
 ## V 2.2.0
