@@ -363,6 +363,20 @@ namespace NFluent.Extensions
         }
 
         /// <summary>
+        /// Checks if a type is class
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsClass(this Type type)
+        {
+#if NETSTANDARD1_3
+           return type.GetTypeInfo().IsClass;
+#else
+            return type.IsClass;
+#endif
+        }
+
+        /// <summary>
         /// Doubles the curly braces in the string.
         /// </summary>
         /// <returns>The string having curly braces doubled.</returns>

@@ -20,8 +20,6 @@ namespace NFluent.Tests.FromIssues
 #if DOTNET_45
     using System.Threading.Tasks;
 #endif
-
-    using ApiChecks;
     using Helpers;
     using NFluent.Helpers;
     using NUnit.Framework;
@@ -29,7 +27,42 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
-        // GH #238
+        // GH #244
+
+        [Test]
+        public void Test_Enum_That_Should_Be_In_Error_But_Is_Not()
+        {
+            var testClass1 = new TestClass
+            {
+                IntProperty = 10,
+                TestEnumProperty = TestEnum.Test2
+            };
+
+            var testClass2 = new TestClass
+            {
+                IntProperty = 10,
+                TestEnumProperty = TestEnum.Test3
+            };
+            Check.ThatCode(() =>
+                Check.That(testClass2).HasFieldsWithSameValues(testClass1)).IsAFaillingCheck();
+        }
+
+        public class TestClass
+        {
+            public int IntProperty { get; set; }
+
+            public TestEnum TestEnumProperty { get; set; }
+        }
+
+        public enum TestEnum
+        {
+            Test1,
+            Test2,
+            Test3,
+            Test4
+        }
+
+    // GH #238
         public class NTest
         {
             private class TestCase
