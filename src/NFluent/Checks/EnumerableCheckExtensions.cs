@@ -434,7 +434,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check).FailWhen((sut) => sut != null && sut.Count()>0,
                     "The {0} contains elements, whereas it must be null or empty.")
-                .NegatesIf((sut) => sut == null, "The {0} is null, where as it must contain at least one element.", MessageOption.NoCheckedBlock)
+                .NegatesWhen((sut) => sut == null, "The {0} is null, where as it must contain at least one element.", MessageOption.NoCheckedBlock)
                 .Negates("The {0} is empty, where as it must contain at least one element.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

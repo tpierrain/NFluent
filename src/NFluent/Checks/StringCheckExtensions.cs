@@ -304,8 +304,8 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => !PolyFill.IsNullOrWhiteSpace(sut), "The {0} contains non whitespace characters.")
-                .NegatesIf(sut => sut == null, "The {0} is null, whereas it should not.")
-                .NegatesIf(sut => sut == string.Empty, "The {0} is empty, whereas it should not.")
+                .NegatesWhen(sut => sut == null, "The {0} is null, whereas it should not.")
+                .NegatesWhen(sut => sut == string.Empty, "The {0} is empty, whereas it should not.")
                 .Negates("The {0} contains only whitespace characters, whereas it should not.")
                 .EndCheck();
 
@@ -323,7 +323,7 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsEmpty(this ICheck<string> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .NegatesIf(string.IsNullOrEmpty, "The {0} is empty, whereas it must not.")
+                .NegatesWhen(string.IsNullOrEmpty, "The {0} is empty, whereas it must not.")
                 .FailWhen(sut => sut == null, "The {0} is null instead of being empty.", MessageOption.NoCheckedBlock)
                 .FailWhen(sut => sut != string.Empty, "The {0} is not empty.")
                 .EndCheck();
@@ -361,7 +361,7 @@ namespace NFluent
                 .FailWhen(sut => sut == null, "The {0} is null whereas it must have content.",
                     MessageOption.NoCheckedBlock)
                 .FailWhen(string.IsNullOrEmpty, "The {0} is empty, whereas it must not.", MessageOption.NoCheckedBlock)
-                .NegatesIf(sut => sut == null, "The {0} is null instead of being empty.")
+                .NegatesWhen(sut => sut == null, "The {0} is null instead of being empty.")
                 .Negates("The {0} is not empty or null.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

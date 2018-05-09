@@ -76,24 +76,6 @@ namespace NFluent.Extensibility
     public interface ICheckLogic<out T> : ICheckLogicBase
     {
         /// <summary>
-        /// Failing condition
-        /// </summary>
-        /// <param name="predicate">Predicate, returns true if test fails.</param>
-        /// <param name="error">Error message on failure</param>
-        /// <param name="option"></param>
-        /// <returns>Continuation object.</returns>
-        ICheckLogic<T> FailWhen(Func<T, bool> predicate, string error, MessageOption option = MessageOption.None);
-
-        /// <summary>
-        /// Failing condition
-        /// </summary>
-        /// <param name="predicate">Predicate, returns true if test fails.</param>
-        /// <param name="errorBuilder">Error message builder function</param>
-        /// <param name="option"></param>
-        /// <returns>Continuation object.</returns>
-        ICheckLogic<T> FailWhen(Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder, MessageOption option = MessageOption.None);
-
-        /// <summary>
         /// Specify expected value.
         /// </summary>
         /// <param name="other"></param>
@@ -115,21 +97,13 @@ namespace NFluent.Extensibility
         ICheckLogic<T> ExpectedResult<TU>(TU resultValue, string labelForExpected, string negationForExpected);
 
         /// <summary>
-        /// Error message for negated checks.
-        /// </summary>
-        /// <param name="message">Message template to use when check succeeds.</param>
-        /// <param name="option"></param>
-        /// <returns>Continuation object.</returns>
-        ICheckLogic<T> Negates(string message, MessageOption option = MessageOption.None);
-
-        /// <summary>
         /// Failing condition on check negation.
         /// </summary>
         /// <param name="predicate">Predicate, returns true if test fails.</param>
         /// <param name="error">Error message on failure</param>
         /// <param name="option">Options to use on parts of the message</param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> NegatesIf(Func<T, bool> predicate, string error, MessageOption option = MessageOption.None);
+        ICheckLogic<T> NegatesWhen(Func<T, bool> predicate, string error, MessageOption option = MessageOption.None);
 
         /// <summary>
         /// Executes arbitrary code on the sut.
@@ -137,13 +111,6 @@ namespace NFluent.Extensibility
         /// <param name="action">Code to be executed</param>
         /// <returns>Continuation object.</returns>
         ICheckLogic<T> Analyze(Action<T, ICheckLogic<T>> action);
-
-        /// <summary>
-        /// Fails the check is the checked value is null,
-        /// </summary>
-        /// <param name="error">Error message</param>
-        /// <returns>Continuation object.</returns>
-        ICheckLogic<T> FailsIfNull(string error = "The {0} is null.");
 
         /// <summary>
         /// Raises an InvalidOperationException if predicte returns true. 

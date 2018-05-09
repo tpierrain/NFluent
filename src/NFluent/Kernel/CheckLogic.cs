@@ -69,29 +69,6 @@ namespace NFluent.Kernel
 
         public bool Failed => this.failed || this.child != null && this.child.Failed;
 
-        public ICheckLogic<T> FailWhen(Func<T, bool> predicate, string error, MessageOption newOptions)
-        {
-            return this.FailWhen(predicate, (x, y) => error, newOptions);
-        }
-
-        public ICheckLogic<T> FailWhen(Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder,
-            MessageOption noCheckedBlock)
-        {
-            return this.Analyze((sut2, test) =>
-            {
-                if (predicate(sut2))
-                {
-                    test.Fails(errorBuilder(sut2, test), noCheckedBlock);
-                }
-               
-            });
-        }
-
-        public ICheckLogic<T> FailsIfNull(string error)
-        {
-            return this.FailWhen(sut => sut == null, error, MessageOption.NoCheckedBlock);
-        }
-
         public ICheckLogic<T> Analyze(Action<T, ICheckLogic<T>> action)
         {
             if (this.failed)
@@ -310,20 +287,7 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> Negates(string message, MessageOption option)
-        {
-            if (this.negatedFailed)
-            {
-                return this;
-            }
-
-            this.negatedError = message;
-            this.negatedFailed = true;
-            this.negatedOption = option;
-            return this;
-        }
-
-        public ICheckLogic<T> NegatesIf(Func<T, bool> predicate, string error, MessageOption option)
+        public ICheckLogic<T> NegatesWhen(Func<T, bool> predicate, string error, MessageOption option)
         {
             if (this.negatedFailed)
             {
