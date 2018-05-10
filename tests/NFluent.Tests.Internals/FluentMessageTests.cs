@@ -45,6 +45,22 @@ namespace NFluent.Tests
         }
         
         [Test]
+        public void PlaceHolderShouldBeRecognized()
+        {
+            var message = FluentMessage.BuildMessage("The {checked} is ok.").ToString();
+
+            Assert.AreEqual(NewLine + "The checked value is ok.", message);
+
+            message = FluentMessage.BuildMessage("The {expected} is ok.").ToString();
+
+            Assert.AreEqual(NewLine + "The expected value is ok.", message);
+
+            message = FluentMessage.BuildMessage("The {given} is ok.").ToString();
+
+            Assert.AreEqual(NewLine + "The expected value is ok.", message);
+        }
+
+        [Test]
         public void CheckedBlockTest()
         {
             var test = DateTime.Today;

@@ -91,10 +91,30 @@ namespace NFluent.Extensibility
                 this.expectedNamer.EntityName = this.entity;
             }
 
-            var givenOrExpectedLabel = this.expectedLabel.EntityName() == this.checkedLabel.EntityName() 
-                ? this.expectedLabel.CustomMessage("{0} one") : this.expectedLabel.ToString();
+            var format = this.message;
+            format = format.Replace("{checked}", "{0}");
+            format = format.Replace("{expected}", "{1}");
+            format = format.Replace("{given}", "{1}");
 
-            builder.AppendFormat(this.message, this.checkedLabel, givenOrExpectedLabel);
+            var givenOrExpectedLabel = this.expectedLabel.ToString();
+            var checkedlabel = this.checkedLabel.ToString();
+            // analyse structure of sentence
+            if ((this.expectedLabel.EntityName() == this.checkedLabel.EntityName()))
+            {
+                var checkedPos = format.IndexOf("{0}", StringComparison.Ordinal);
+                var expectedPos = format.IndexOf("{1}", StringComparison.Ordinal);
+
+                if (checkedPos >= 0 && expectedPos > checkedPos)
+                {
+                    givenOrExpectedLabel = this.expectedLabel.CustomMessage("{0} one");
+                }
+                else if (expectedPos >= 0 && checkedPos > expectedPos)
+                {
+                    checkedlabel = this.checkedLabel.CustomMessage("{0} one");
+                }
+            }
+
+            builder.AppendFormat(format, checkedlabel, givenOrExpectedLabel);
 
             if (this.checkedBlock != null)
             {

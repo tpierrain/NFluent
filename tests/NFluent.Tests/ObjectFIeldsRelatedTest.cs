@@ -144,7 +144,10 @@
             var x = new DummyClass();
 
             Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(new DummyHeritance()); })
-                .IsAFaillingCheckWithMessage("", "The expected one's is absent from the checked value's field 'z'.", "The expected value's field 'z':", "\t[2] of type: [int]");
+                .IsAFaillingCheckWithMessage("", 
+                    "The expected value's field 'z''s is absent from the checked one.", 
+                    "The expected value's field 'z':", 
+                    "\t[2] of type: [int]");
         }
 
         [Test]
