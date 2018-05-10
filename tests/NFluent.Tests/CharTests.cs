@@ -152,7 +152,7 @@ namespace NFluent.Tests
                 Check.That('A').Not.IsSameLetterButWithDifferentCaseAs('a');
             })
             .IsAFaillingCheckWithMessage("",
-                    "The checked char is the same letter as the expected one with different case, whereas it must not.",
+                    "The checked char is the same letter as the given one with different case, whereas it must not.",
                     "The checked char:",
                     "\t['A']",
                     "The expected char: different from",
@@ -252,7 +252,7 @@ namespace NFluent.Tests
                 Check.That(FirstLetterLowerCase).Not.IsSameLetterAs('A');
             })
             .IsAFaillingCheckWithMessage("",
-                    "The checked char is the same letter as the expected one (whatever the case), whereas it must not.",
+                    "The checked char is the same letter as the given one (whatever the case), whereas it must not.",
                     "The checked char:",
                     "\t['a']",
                     "The expected char: different from",

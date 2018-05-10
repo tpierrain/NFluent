@@ -170,10 +170,12 @@ namespace NFluent.Tests
         public void NegatedStartWithThrowsException()
         {
             Check.ThatCode(() => { Check.That(Alphabet).Not.StartsWith("abcdef"); })
-                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string starts with expected one, whereas it must not." +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine +
-                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine +
-                             "The expected string: does not start with" + Environment.NewLine + "\t[\"abcdef\"]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked string starts with given one, whereas it must not.",
+                             "The checked string:",
+                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
+                             "The expected string: does not start with",
+                    "\t[\"abcdef\"]");
         }
 
         [Test]
@@ -218,10 +220,12 @@ namespace NFluent.Tests
         public void EndsWithIsNegatableFails()
         {
             Check.ThatCode(() => { Check.That(Alphabet).Not.EndsWith("vwxyz"); })
-                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string ends with expected one, whereas it must not." +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine +
-                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine +
-                             "The expected string: does not end with" + Environment.NewLine + "\t[\"vwxyz\"]");
+                .IsAFaillingCheckWithMessage("",
+                    "The checked string ends with given one, whereas it must not.",
+                    "The checked string:",
+                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
+                             "The expected string: does not end with",
+                    "\t[\"vwxyz\"]");
         }
 
         [Test]
@@ -402,7 +406,7 @@ namespace NFluent.Tests
         public void NotStringMatchesFails()
         {
             Check.ThatCode(() => { Check.That("12 ac").Not.Matches("[0-9]*. [a-z]*"); })
-                .IsAFaillingCheckWithMessage("", "The checked string matches expected one, whereas it must not.", "The checked string:", "\t[\"12 ac\"]", 
+                .IsAFaillingCheckWithMessage("", "The checked string matches the given one, whereas it must not.", "The checked string:", "\t[\"12 ac\"]", 
                     "The expected string: does not match", "\t[\"[0-9]*. [a-z]*\"]");
         }
 
@@ -420,7 +424,7 @@ namespace NFluent.Tests
         public void StringDoesNotMatchFails()
         {
             Check.ThatCode(() => { Check.That("12 AC").DoesNotMatch("[0-9]. [a-z]*"); })
-                .IsAFaillingCheckWithMessage("", "The checked string matches expected one, whereas it must not.", "The checked string:", "\t[\"12 AC\"]", 
+                .IsAFaillingCheckWithMessage("", "The checked string matches the given one, whereas it must not.", "The checked string:", "\t[\"12 AC\"]", 
                     "The expected string: does not match", "\t[\"[0-9]. [a-z]*\"]");
         }
 
@@ -442,7 +446,7 @@ namespace NFluent.Tests
         public void NotStringDoesNotMatchFails()
         {
             Check.ThatCode(() => { Check.That("12 ac").Not.Matches("[0-9]*. [a-z]*"); })
-                .IsAFaillingCheckWithMessage("", "The checked string matches expected one, whereas it must not.", "The checked string:", "\t[\"12 ac\"]",
+                .IsAFaillingCheckWithMessage("", "The checked string matches the given one, whereas it must not.", "The checked string:", "\t[\"12 ac\"]",
                     "The expected string: does not match", "\t[\"[0-9]*. [a-z]*\"]");
         }
 

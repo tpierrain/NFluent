@@ -472,7 +472,7 @@ namespace NFluent.Tests
                 Check.That(father).Not.InheritsFrom<Person>();
             })
             .IsAFaillingCheckWithMessage("",
-                    "The checked value's type does inherits from the expected one where as it must not",
+                    "The checked value's type does inherits from the given one where as it must not",
                     "The checked value's type:",
                     "\t[NFluent.Tests.Person]", 
                     "The expected value's type: does not inherits from",

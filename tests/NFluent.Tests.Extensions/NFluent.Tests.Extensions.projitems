@@ -20,5 +20,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Person.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PersonExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ReadmeRelatedTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WikiExample.cs" />
   </ItemGroup>
 </Project>

@@ -119,7 +119,7 @@ namespace NFluent.Tests
                 Check.That(heroe).Not.IsEqualTo(otherReference);
             })
             .IsAFaillingCheckWithMessage("",
-                    "The checked value is equal to the expected one whereas it must not.",
+                    "The checked value is equal to the given one whereas it must not.",
                     "The expected value: different from",
                     "\t[Gandhi] of type: [NFluent.Tests.Person]");
         }
@@ -185,7 +185,7 @@ namespace NFluent.Tests
             {
                 Check.That(first).Not.IsEqualTo(first);
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked string is equal to the expected one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked string is equal to the given one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
         }
 
         [Test]
@@ -375,7 +375,7 @@ namespace NFluent.Tests
             {
                 Check.That(first).IsNotEqualTo(otherReferenceToSameObject);
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked string is equal to the expected one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked string is equal to the given one whereas it must not." + Environment.NewLine + "The expected string: different from" + Environment.NewLine + "\t[\"Son of a test\"]");
         }
 
         [Test]

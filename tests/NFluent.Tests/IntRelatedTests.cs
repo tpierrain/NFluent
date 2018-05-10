@@ -445,7 +445,7 @@ namespace NFluent.Tests
                 Check.That(Twenty).Not.IsEqualTo(Twenty);
             })
            .IsAFaillingCheckWithMessage("",
-                    "The checked value is equal to the expected one whereas it must not.",
+                    "The checked value is equal to the given one whereas it must not.",
                     "The expected value: different from",
                     "\t[20] of type: [int]");
         }
@@ -457,7 +457,7 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).Not.Equals(Twenty);
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is equal to the expected one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[20] of type: [int]");
+            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is equal to the given one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[20] of type: [int]");
         }
 
         [Test]
@@ -487,7 +487,7 @@ namespace NFluent.Tests
                 Check.That(One).Not.IsNotEqualTo(Twenty);
             })
             .IsAFaillingCheckWithMessage("",
-                    "The checked value is different from the expected one.",
+                    "The checked value is different from the given one.",
                     "The checked value:",
                     "\t[1]",
                     "The expected value:",

@@ -152,7 +152,7 @@ namespace NFluent.Tests
                 Check.That(TimeSpan.FromMilliseconds(50)).Not.IsEqualTo(50, TimeUnit.Milliseconds);
             })
             .IsAFaillingCheckWithMessage("",
-                    "The checked value is the same than expected one, whereas it must not.",
+                    "The checked value is the same than given one, whereas it must not.",
                     "The checked value:",
                     "\t[50 Milliseconds]",
                     "The expected value: different from",
@@ -182,7 +182,7 @@ namespace NFluent.Tests
                 Check.That(TimeSpan.FromMilliseconds(50)).Not.IsEqualTo(TimeSpan.FromMilliseconds(50));
             })
             .IsAFaillingCheckWithMessage("",
-                    "The checked value is the same than expected one, whereas it must not.",
+                    "The checked value is the same than given one, whereas it must not.",
                     "The checked value:",
                     "\t[50 Milliseconds]",
                     "The expected value: different from",

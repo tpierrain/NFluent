@@ -289,7 +289,7 @@ namespace NFluent
                 .Expecting(regExp, "matches", "does not match")
                 .FailsIfNull()
                 .FailWhen(sut => new Regex(regExp).IsMatch(sut) == false, "The {0} does not match the {1}.")
-                .Negates("The {0} matches {1}, whereas it must not.")
+                .Negates("The {0} matches the {1}, whereas it must not.")
                 .EndCheck();
         }
 

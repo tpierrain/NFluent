@@ -100,7 +100,7 @@ namespace NFluent.Tests
                 Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.French);
             })
             .IsAFaillingCheckWithMessage("",
-                    "The checked enum is equal to the expected one whereas it must not.",
+                    "The checked enum is equal to the given one whereas it must not.",
                     "The expected enum: different from",
                     "\t[French] of type: [NFluent.Tests.Nationality]");
         }
@@ -119,7 +119,7 @@ namespace NFluent.Tests
                 Check.ThatEnum(FrenchNationality).Not.IsEqualTo(Nationality.French);
             })
             .IsAFaillingCheckWithMessage("",
-                    "The checked enum is equal to the expected one whereas it must not.", 
+                    "The checked enum is equal to the given one whereas it must not.", 
                     "The expected enum: different from",
                     "\t[French] of type: [NFluent.Tests.Nationality]");
         }

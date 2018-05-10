@@ -196,7 +196,14 @@ namespace NFluent.Kernel
                 }
                 else
                 {
-                    block = fluentMessage.Expected(this.expected);
+                    if (this.IsNegated)
+                    {
+                        block = fluentMessage.WithGivenValue(this.expected);
+                    }
+                    else
+                    {
+                        block = fluentMessage.Expected(this.expected);
+                    }
                     block.WithType(this.Option.HasFlag(MessageOption.WithType));
                     block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
                 }
