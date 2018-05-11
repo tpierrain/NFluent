@@ -139,19 +139,22 @@ namespace NFluent.Kernel
         public void EndCheck()
         {
             this.child?.EndCheck();
+            if (this.isRoot)
+            {
+                if (string.IsNullOrEmpty(this.negatedError))
+                {
+                    throw new System.InvalidOperationException("Negated error message was not specified. Use 'Negates' method to specify one.");
+                }
+            }
 
             if (this.Failed == this.IsNegated)
             {
                 return;
             }
 
-            if (string.IsNullOrEmpty(this.LastError))
+            if (!this.isRoot && string.IsNullOrEmpty(this.LastError))
             {
-                if (!this.isRoot)
-                {
-                    return ;
-                }
-                throw new System.InvalidOperationException("Error message was not specified.");
+                return ;
             }
 
             var fluentMessage = FluentMessage.BuildMessage(this.LastError);

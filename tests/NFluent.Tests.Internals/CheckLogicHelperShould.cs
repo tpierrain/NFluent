@@ -32,6 +32,7 @@ namespace NFluent.Tests
             checker.BeginCheck()
                 .Expecting("other")
                 .FailWhen((x) => x.Equals("test"), "The {0} should be equal to the {1}.")
+                .Negates("No need")
                 .EndCheck();
         }
 

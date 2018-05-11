@@ -34,8 +34,9 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<string, string[]> Once(this IExtendableCheckLink<string, string[]> chainedCheckLink)
         {
-            ExtensibilityHelper.BeginCheck(chainedCheckLink.And)
-                .Analyze((sut, test) =>
+            ExtensibilityHelper.BeginCheck(chainedCheckLink.And).
+                CantBeNegated().
+                Analyze((sut, test) =>
                 {
                     foreach (var content in chainedCheckLink.OriginalComparand)
                     {
@@ -48,7 +49,8 @@ namespace NFluent
                             return;
                         }
                     }
-                }).ExpectingValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, "once", "").EndCheck();
+                }).
+                ExpectingValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, "once", "").EndCheck();
             return chainedCheckLink;
         }
 
@@ -63,8 +65,9 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<string, string[]> InThatOrder(this IExtendableCheckLink<string, string[]> chainedCheckLink)
         {
-            ExtensibilityHelper.BeginCheck(chainedCheckLink.And)
-                .Analyze((sut, test) =>
+            ExtensibilityHelper.BeginCheck(chainedCheckLink.And).
+                CantBeNegated().
+                Analyze((sut, test) =>
                 {
                     var lastIndex = 0;
                     foreach (var content in chainedCheckLink.OriginalComparand)
@@ -78,7 +81,8 @@ namespace NFluent
                         test.Fails("The {0} does not contain the expected strings in the correct order.");
                         return;
                     }
-                }).ExpectingValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, 
+                }).
+                ExpectingValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, 
                     expectedLabel:"The expected content:", 
                     negatedLabel:"The expected content:").EndCheck();
             return chainedCheckLink;

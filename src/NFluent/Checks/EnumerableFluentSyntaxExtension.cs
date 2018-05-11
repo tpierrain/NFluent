@@ -53,9 +53,10 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<IEnumerable, IEnumerable> Once(this IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
         {
-            ExtensibilityHelper.BeginCheck(chainedCheckLink.And)
-                .ComparingTo(chainedCheckLink.OriginalComparand, "once of", "")
-                .Analyze((sut, test) =>
+            ExtensibilityHelper.BeginCheck(chainedCheckLink.And).
+                ComparingTo(chainedCheckLink.OriginalComparand, "once of", "").
+                CantBeNegated().
+                Analyze((sut, test) =>
                 {
                     var itemIndex = 0;
                     var expectedList = ToNewList(chainedCheckLink);
@@ -93,9 +94,10 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<IEnumerable, IEnumerable> InThatOrder(this IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
         {
-            ExtensibilityHelper.BeginCheck(chainedCheckLink.And).ComparingTo(chainedCheckLink.OriginalComparand,
-                    "in that order", "in another order")
-                .Analyze((sut, test) => 
+            ExtensibilityHelper.BeginCheck(chainedCheckLink.And).
+                ComparingTo(chainedCheckLink.OriginalComparand, "in that order", "in another order").
+                CantBeNegated().
+                Analyze((sut, test) => 
                 {
                     var orderedList = ToNewList(chainedCheckLink);
 

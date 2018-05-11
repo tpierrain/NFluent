@@ -184,15 +184,17 @@ namespace NFluent
             return check.Not.Contains(values);
         }
 
-        private static void ContainsLogic(string[] values, ICheckLogic<string> block)
+        private static void ContainsLogic(ICollection<string> values, ICheckLogic<string> block)
         {
-            block.FailsIfNull()
-                .ExpectingValues(values, expectedLabel: "The {0} substring(s):",negatedLabel: "The unauthorized substring(s):", count: values.Length)
-                .Analyze((sut, test) =>
+            block.
+                FailsIfNull().
+                ExpectingValues(values, expectedLabel: "The {0} substring(s):",negatedLabel: "The unauthorized substring(s):", count: values.Count).
+                Analyze((sut, test) =>
                     {
-                       var missingItems = new List<string>();
-                       var presentItems = new List<string>();
-                       foreach (var value in values)
+                        var missingItems = new List<string>();
+                        var presentItems = new List<string>();
+
+                        foreach (var value in values)
                         {
                             (sut.Contains(value) ? presentItems : missingItems).Add(value);
                         }
@@ -204,8 +206,9 @@ namespace NFluent
                         }
                         test.Negates("The {0} contains unauthorized value(s): " + presentItems.ToEnumeratedString());
 
-                    })
-                .EndCheck();
+                    }).
+                CantBeNegated().
+                EndCheck();
         }
 
         /// <summary>
@@ -323,7 +326,7 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsEmpty(this ICheck<string> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .NegatesWhen(string.IsNullOrEmpty, "The {0} is empty, whereas it must not.")
+                .Negates("The {0} is empty, whereas it must not.")
                 .FailWhen(sut => sut == null, "The {0} is null instead of being empty.", MessageOption.NoCheckedBlock)
                 .FailWhen(sut => sut != string.Empty, "The {0} is not empty.")
                 .EndCheck();

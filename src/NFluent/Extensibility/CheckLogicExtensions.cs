@@ -61,6 +61,7 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="logic"></param>
         /// <param name="error">Error message</param>
+        /// <typeparam name="T">type of the checked object</typeparam>
         /// <returns>Continuation object.</returns>
         public static ICheckLogic<T> FailsIfNull<T>(this ICheckLogic<T> logic, string error = "The {0} is null.")
         {
@@ -70,13 +71,25 @@ namespace NFluent.Extensibility
         /// <summary>
         /// Error message for negated checks.
         /// </summary>
-        /// <param name="logic"></param>
+        /// <param name="logic">check</param>
         /// <param name="message">Message template to use when check succeeds.</param>
         /// <param name="option"></param>
+        /// <typeparam name="T">type of the checked object</typeparam>
         /// <returns>Continuation object.</returns>
         public static ICheckLogic<T> Negates<T>(this ICheckLogic<T> logic, string message, MessageOption option = MessageOption.None)
         {
             return logic.NegatesWhen(_ => true, message, option);
+        }
+
+        /// <summary>
+        /// Generate an error message stating that this check cannot be used with <see cref="ICheck{T}.Not"/>
+        /// </summary>
+        /// <typeparam name="T">type of the checked object</typeparam>
+        /// <param name="logic">check</param>
+        /// <returns></returns>
+        public static ICheckLogic<T> CantBeNegated<T>(this ICheckLogic<T> logic)
+        {
+            return logic.Negates("Can't be used when negated");
         }
     }
 }

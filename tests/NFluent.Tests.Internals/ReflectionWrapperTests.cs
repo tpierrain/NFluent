@@ -17,7 +17,7 @@ namespace NFluent.Tests
 {
     using System.Reflection;
     using Kernel;
-    using NFluent.Helpers;
+    using Helpers;
     using NUnit.Framework;
 
     [TestFixture]
