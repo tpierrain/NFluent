@@ -82,7 +82,7 @@ namespace NFluent.Extensibility
         }
 
         /// <summary>
-        /// Generate an error message stating that this check cannot be used with <see cref="ICheck{T}.Not"/>
+        /// Generate an error message stating that this check cannot be used with <see cref="INegateableCheck{T}.Not"/>
         /// </summary>
         /// <typeparam name="T">type of the checked object</typeparam>
         /// <param name="logic">check</param>
