@@ -147,7 +147,7 @@ namespace NFluent
                     "The {0} must be null as there is no other possible value.", MessageOption.NoExpectedBlock)
                 .FailWhen(sut => possibleElements != null && !possibleElements.Any(x => string.Equals(x, sut)),
                     "The {0} is not one of the possible elements.")
-                .Expecting(possibleElements, expectedLabel: "The possible elements:")
+                .Expecting(possibleElements, "one of these", "none of these")
                 .Negates("The {0} is one of the possible elements whereas it must not.")
                 .EndCheck();
 
@@ -188,7 +188,7 @@ namespace NFluent
         {
             block.
                 FailsIfNull().
-                ExpectingValues(values, expectedLabel: "The {0} substring(s):",negatedLabel: "The unauthorized substring(s):", count: values.Count).
+                ExpectingValues(values, values.Count, "contains", "does not contain").
                 Analyze((sut, test) =>
                     {
                         var missingItems = new List<string>();

@@ -34,13 +34,12 @@ namespace NFluent.Helpers
             params string[] lines)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
                 .SutNameIs("fluent check")
+                .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
                 .FailsIfNull("The check succeeded whereas it should have failed.")
                 .FailWhen((sut) => !ExceptionHelper.IsFailedException(sut),
                     "The exception raised is not of the expected type")
                 .CheckSutAttributes((sut) => sut.Message.SplitAsLines(), "error message")
-                .SutNameIs("fluent check")
                 .Analyze((messageLines, test) =>
                 {
                     var expectedLines = (lines.Length == 1) ? lines[0].SplitAsLines() : lines;

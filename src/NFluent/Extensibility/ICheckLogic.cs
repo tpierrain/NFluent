@@ -81,10 +81,8 @@ namespace NFluent.Extensibility
         /// <param name="other"></param>
         /// <param name="comparison"></param>
         /// <param name="negatedComparison"></param>
-        /// <param name="expectedLabel"></param>
-        /// <param name="negatedLabel"></param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> Expecting<TU>(TU other, string comparison = null, string negatedComparison = "different from", string expectedLabel = null, string negatedLabel = null);
+        ICheckLogic<T> Expecting<TU>(TU other, string comparison = null, string negatedComparison = "different from");
 
         /// <summary>
         /// Specify the expected results, with full control on error labels.
@@ -151,10 +149,8 @@ namespace NFluent.Extensibility
         /// <param name="count">number of items</param>
         /// <param name="comparison"></param>
         /// <param name="negatedComparison"></param>
-        /// <param name="expectedLabel"></param>
-        /// <param name="negatedLabel"></param>
         /// <returns>Continuation object</returns>
-        ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparison = null, string negatedComparison = "different from", string expectedLabel = null, string negatedLabel = null);
+        ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparison = null, string negatedComparison = "different from");
 
         /// <summary>
         /// Explicitely fails

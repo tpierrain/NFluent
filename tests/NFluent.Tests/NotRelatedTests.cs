@@ -40,7 +40,7 @@ namespace NFluent.Tests
                     "The checked string contains unauthorized value(s): \"Batman\"", 
                     "The checked string:", 
                     "\t[\"Batman and Robin\"]",  
-                    "The unauthorized substring(s):", 
+                    "The expected value(s): does not contain", 
                     "\t[\"Batman\"] (1 item)");
         }
 
@@ -57,7 +57,12 @@ namespace NFluent.Tests
             {
                 Check.That("Batman and Robin").Not.Contains("Joker").And.StartsWith("Bat").And.Not.Contains("Robin");
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked string contains unauthorized value(s): \"Robin\"" +Environment.NewLine +"The checked string:" + Environment.NewLine + "\t[\"Batman and Robin\"]" + Environment.NewLine + "The unauthorized substring(s):" + Environment.NewLine + "\t[\"Robin\"] (1 item)");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked string contains unauthorized value(s): \"Robin\"",
+                    "The checked string:",
+                    "\t[\"Batman and Robin\"]",
+                    "The expected value(s): does not contain",
+                    "\t[\"Robin\"] (1 item)");
         }
 
     }

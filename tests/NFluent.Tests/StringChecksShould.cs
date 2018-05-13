@@ -49,30 +49,34 @@ namespace NFluent.Tests
         public void ContainsFailsProperlyOnNullString()
         {
             Check.ThatCode(() => { Check.That((string) null).Contains("fails", "anyway"); })
-                .IsAFaillingCheckWithMessage("", "The checked string is null.",
-                             "The expected substring(s):" ,"\t[\"fails\", \"anyway\"] (2 items)");
+                .IsAFaillingCheckWithMessage("", 
+                    "The checked string is null.",
+                             "The expected value(s): contains",
+                    "\t[\"fails\", \"anyway\"] (2 items)");
         }
 
         [Test]
         public void ContainsIsCaseSensitive()
         {
             Check.ThatCode(() => { Check.That(Alphabet).Contains("C", "a", "A", "z"); })
-                .IsAFaillingCheckWithMessage(Environment.NewLine +
-                             "The checked string does not contain the expected value(s): \"C\", \"A\"" +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine +
-                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine + "The expected substring(s):" +
-                             Environment.NewLine + "\t[\"C\", \"a\", \"A\", \"z\"] (4 items)");
+                .IsAFaillingCheckWithMessage("",
+                             "The checked string does not contain the expected value(s): \"C\", \"A\"",
+                              "The checked string:",
+                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]" ,
+                    "The expected value(s): contains",
+                    "\t[\"C\", \"a\", \"A\", \"z\"] (4 items)");
         }
 
         [Test]
         public void ContainsThrowsExceptionWhenFails()
         {
             Check.ThatCode(() => { Check.That(Alphabet).Contains("c", "0", "4"); })
-                .IsAFaillingCheckWithMessage(Environment.NewLine +
-                             "The checked string does not contain the expected value(s): \"0\", \"4\"" +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine +
-                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine + "The expected substring(s):" +
-                             Environment.NewLine + "\t[\"c\", \"0\", \"4\"] (3 items)");
+                .IsAFaillingCheckWithMessage("",
+                             "The checked string does not contain the expected value(s): \"0\", \"4\"", 
+                             "The checked string:",
+                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
+                    "The expected value(s): contains",
+                    "\t[\"c\", \"0\", \"4\"] (3 items)");
         }
 
         [Test]
@@ -92,11 +96,12 @@ namespace NFluent.Tests
         public void DoesNotContainsFailWhenAppropriate()
         {
             Check.ThatCode(() => { Check.That(Alphabet).DoesNotContain("c", "z", "u"); })
-                .IsAFaillingCheckWithMessage(Environment.NewLine +
-                             "The checked string contains unauthorized value(s): \"c\", \"z\", \"u\"" +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine +
-                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]" + Environment.NewLine +
-                             "The unauthorized substring(s):" + Environment.NewLine + "\t[\"c\", \"z\", \"u\"] (3 items)");
+                .IsAFaillingCheckWithMessage("",
+                             "The checked string contains unauthorized value(s): \"c\", \"z\", \"u\"",
+                    "The checked string:",
+                    "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
+                             "The expected value(s): does not contain",
+                    "\t[\"c\", \"z\", \"u\"] (3 items)");
         }
 
         [Test]
@@ -131,7 +136,7 @@ namespace NFluent.Tests
                             "The checked string does not contain the expected strings in the correct order.",
                             "The checked string:",
                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
-                            "The expected content:",
+                            "The expected value(s): in this order",
                             "\t[\"cd\", \"ab\"] (2 items)");
         }
 
@@ -329,10 +334,12 @@ namespace NFluent.Tests
                 {
                     Check.That("The Black Keys").IsOneOfThese("Paco de Lucia", "Jimi Hendrix", "Baden Powell");
                 })
-                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string is not one of the possible elements." +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine +
-                             "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" +
-                             Environment.NewLine + "\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]");
+                .IsAFaillingCheckWithMessage("",
+            "The checked string is not one of the possible elements.",
+            "The checked string:",
+            "\t[\"The Black Keys\"]",
+            "The expected enumerable: one of these",
+            "\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]");
         }
 
         [Test]
@@ -362,12 +369,12 @@ namespace NFluent.Tests
                     Check.That("The Black Keys")
                         .Not.IsOneOfThese("Metronomy", "Sigur Ros", "The Black Keys", "Get Well Soon");
                 })
-                .IsAFaillingCheckWithMessage(Environment.NewLine +
-                             "The checked string is one of the possible elements whereas it must not." +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine +
-                             "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" +
-                             Environment.NewLine +
-                             "\t[\"Metronomy\", \"Sigur Ros\", \"The Black Keys\", \"Get Well Soon\"]");
+                .IsAFaillingCheckWithMessage("",
+                             "The checked string is one of the possible elements whereas it must not.",
+                    "The checked string:",
+                    "\t[\"The Black Keys\"]",
+                    "The expected string: none of these",
+                    "\t[\"Metronomy\", \"Sigur Ros\", \"The Black Keys\", \"Get Well Soon\"]");
         }
 
         #endregion

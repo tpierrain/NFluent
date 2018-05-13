@@ -18,6 +18,7 @@ namespace NFluent.Messages
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Threading;
     using Extensions;
     using Helpers;
 #if NETSTANDARD1_3 || DOTNET_45
@@ -37,6 +38,84 @@ namespace NFluent.Messages
 
         private string forcedEntity;
 
+        private static readonly Dictionary<Type, string> namingCache = new Dictionary<Type, string>();
+
+        private static string GetDefaultName(Type type)
+        {
+            if (type == null)
+            {
+                return DefaultEntityName;
+            }
+            
+            if (!namingCache.ContainsKey(type))
+            {
+                namingCache[type] = BuildTypeLabel(type);
+            }
+            return namingCache[type];
+        }
+
+        private static string BuildTypeLabel(Type type)
+        {
+            if (type == typeof(bool))
+            {
+                return "boolean";
+            }
+
+            if (type == typeof(string))
+            {
+                return "string";
+            }
+
+            if (type == typeof(DateTime))
+            {
+                return "date time";
+            }
+
+            if (type.GetTypeInfo().IsEnum)
+            {
+                return "enum";
+            }
+
+            if (type == typeof(char))
+            {
+                return "char";
+            }
+
+            if (type.IsNumerical())
+            {
+                return "value";
+            }
+
+            if (type == typeof(Duration))
+            {
+                return "duration";
+            }
+
+            if (typeof(EventWaitHandle).IsAssignableFrom(type))
+            {
+                return "event";
+            }
+
+            var interfaces = new List<Type>(type.GetInterfaces()) { type };
+
+            if (interfaces.Contains(typeof(IDictionary)))
+            {
+                return "dictionary";
+            }
+
+            if (interfaces.Contains(typeof(IEnumerable)))
+            {
+                return "enumerable";
+            }
+
+            if (type.GetTypeInfo().IsValueType)
+            {
+                return "struct";
+            }
+
+            return DefaultEntityName;
+        }
+
         public string EntityName
         {
             get
@@ -46,64 +125,7 @@ namespace NFluent.Messages
                     return this.forcedEntity;
                 }
 
-                if (this.EntityType == null)
-                {
-                    return DefaultEntityName;
-                }
-                
-                if (this.EntityType == typeof(bool))
-                {
-                    return "boolean";
-                }
-
-                if (this.EntityType == typeof(string))
-                {
-                    return "string";
-                }
-
-                if (this.EntityType == typeof(DateTime))
-                {
-                    return "date time";
-                }
-
-                if (this.EntityType.GetTypeInfo().IsEnum)
-                {
-                    return "enum";
-                }
-
-                if (this.EntityType == typeof(char))
-                {
-                    return "char";
-                }
-
-                if (this.EntityType.IsNumerical())
-                {
-                    return "value";
-                }
-
-                if (this.EntityType == typeof(Duration))
-                {
-                    return "value";
-                }
-
-                var interfaces = new List<Type>(this.EntityType.GetInterfaces()) { this.EntityType };
-
-                if (interfaces.Contains(typeof(IDictionary)))
-                {
-                    return "dictionary";
-                }
-
-                if (interfaces.Contains(typeof(IEnumerable)))
-                {
-                    return "enumerable";
-                }
-
-                if (this.EntityType.GetTypeInfo().IsValueType)
-                {
-                    return "struct";
-                }
-
-                return DefaultEntityName;
+                return GetDefaultName(this.EntityType);
             }
 
             set => this.forcedEntity = value;
