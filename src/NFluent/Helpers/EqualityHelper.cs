@@ -43,7 +43,7 @@ namespace NFluent.Helpers
             ExtensibilityHelper.BeginCheck(check)
                 .Analyze((sut, test) =>
                 {
-                        test.Expecting(expected, useOperator ? "equals to (using operator==)" : "",
+                        test.DefineExpected(expected, useOperator ? "equals to (using operator==)" : "",
                             "different from" + (useOperator ? " (using !operator==)" : ""));
 
                     if (FluentEquals(sut, expected, mode))
@@ -65,7 +65,7 @@ namespace NFluent.Helpers
                         options |= MessageOption.WithHash;
                     }
 
-                    test.Fails("The {0} is different from the {1}.", options);
+                    test.Fail("The {0} is different from the {1}.", options);
                 })
                 .Negates("The {0} is equal to the {1} whereas it must not.", 
                     MessageOption.NoCheckedBlock | MessageOption.WithType)
@@ -81,7 +81,7 @@ namespace NFluent.Helpers
             var mode = Check.EqualMode;
 
             ExtensibilityHelper.BeginCheck(check)
-                .Expecting(expected)
+                .DefineExpected(expected)
                 .Analyze((sut, test) =>
                 {
                     if (FluentEquals(sut, expected, mode))
@@ -99,7 +99,7 @@ namespace NFluent.Helpers
                         options |= MessageOption.WithHash;
                     }
 
-                    test.Fails("The {0} is different from the {1}.", options);
+                    test.Fail("The {0} is different from the {1}.", options);
                 })
                 .Negates("The {0} is equal to the {1} whereas it must not.", 
                     MessageOption.NoCheckedBlock | MessageOption.WithType)
@@ -120,7 +120,7 @@ namespace NFluent.Helpers
                 mode = EqualityMode.OperatorNeq;
             }
             ExtensibilityHelper.BeginCheck(check)
-                .Expecting(expected, "different from" + (useOperator ? " (using operator!=)" : ""), 
+                .DefineExpected(expected, "different from" + (useOperator ? " (using operator!=)" : ""), 
                     useOperator ? "equals to (using operator==)" : "")
                 .Analyze((sut, test) =>
                 {
@@ -138,7 +138,7 @@ namespace NFluent.Helpers
                     }
 
                     // shall we display the hash too
-                    test.Fails("The {0} is equal to the {1} whereas it must not.", options|MessageOption.NoCheckedBlock);
+                    test.Fail("The {0} is equal to the {1} whereas it must not.", options|MessageOption.NoCheckedBlock);
                 })
                 .Negates( "The {0} is different from the {1}.")
                 .EndCheck();
@@ -150,7 +150,7 @@ namespace NFluent.Helpers
         internal static ICheckLink<ICheck<double>> PerformEqualCheck(ICheck<double> check, double expected)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .Expecting(expected)
+                .DefineExpected(expected)
                 .Analyze((sut, test) =>
                 {
                     var diff = Math.Abs(sut - expected);
@@ -174,7 +174,7 @@ namespace NFluent.Helpers
                         mainLine += " You may consider using IsCloseTo() for comparison.";
                     }
 
-                    test.Fails(mainLine);
+                    test.Fail(mainLine);
                 })
                 .Negates("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock | MessageOption.WithType)
                 .EndCheck();
@@ -185,7 +185,7 @@ namespace NFluent.Helpers
             float expected)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .Expecting(expected)
+                .DefineExpected(expected)
                 .Analyze((sut, test) =>
                 {
                     var diff = Math.Abs(sut - expected);
@@ -209,7 +209,7 @@ namespace NFluent.Helpers
                         mainLine += " You may consider using IsCloseTo() for comparison.";
                     }
 
-                    test.Fails(mainLine);
+                    test.Fail(mainLine);
                 })
                 .Negates("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock | MessageOption.WithType)
                 .EndCheck();

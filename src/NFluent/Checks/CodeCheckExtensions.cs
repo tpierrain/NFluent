@@ -57,7 +57,7 @@ namespace NFluent
 
             ExtensibilityHelper.BeginCheck(check).FailWhen((sut) =>
                 new Duration(sut.ExecutionTime, timeUnit) > durationThreshold, "The checked code took too much time to execute.").
-                Expecting(durationThreshold, "less than", "more than").
+                DefineExpected(durationThreshold, "less than", "more than").
                 SutNameIs("execution time").
                 Negates("The checked code took too little time to execute.").
                 EndCheck();
@@ -95,7 +95,7 @@ namespace NFluent
                 CheckSutAttributes(sut =>  new Duration(sut.TotalProcessorTime, timeUnit), "").
                 FailWhen((sut) =>
                     sut > durationThreshold, "The checked code consumed too much CPU time.").
-                Expecting(durationThreshold, "less than", "more than").
+                DefineExpected(durationThreshold, "less than", "more than").
                 SutNameIs("cpu time").
                 Negates("The checked code took too little cpu time to execute.").
                 EndCheck();
@@ -153,7 +153,7 @@ namespace NFluent
                     return result;
                 }, "raised exception")
                 .ExpectingType(expecting, "", "should not be")
-                .FailsIfNull("The checked code did not raise an exception, whereas it must.")
+                .FailIfNull("The checked code did not raise an exception, whereas it must.")
                 .FailWhen(sut => !expecting.IsInstanceOfType(sut),
                     "The {0} is of a different type than expected.")
                 .Negates("The {0} raised an exception of the forbidden type.")
@@ -196,7 +196,7 @@ namespace NFluent
                 .Negates("The checked code raised an exception, whereas it must not.")
                 .SutNameIs("code")
                 .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
-                .FailsIfNull("The checked code did not raise an exception, whereas it must.")
+                .FailIfNull("The checked code did not raise an exception, whereas it must.")
                 .EndCheck();
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
 

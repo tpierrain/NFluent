@@ -50,7 +50,7 @@ namespace NFluent.Extensibility
             {
                 if (predicate(sut2))
                 {
-                    test.Fails(errorBuilder(sut2, test), options);
+                    test.Fail(errorBuilder(sut2, test), options);
                 }
                
             });
@@ -63,7 +63,7 @@ namespace NFluent.Extensibility
         /// <param name="error">Error message</param>
         /// <typeparam name="T">type of the checked object</typeparam>
         /// <returns>Continuation object.</returns>
-        public static ICheckLogic<T> FailsIfNull<T>(this ICheckLogic<T> logic, string error = "The {0} is null.")
+        public static ICheckLogic<T> FailIfNull<T>(this ICheckLogic<T> logic, string error = "The {0} is null.")
         {
             return logic.FailWhen(sut => sut == null, error, MessageOption.NoCheckedBlock);
         }
@@ -78,7 +78,7 @@ namespace NFluent.Extensibility
         /// <returns>Continuation object.</returns>
         public static ICheckLogic<T> Negates<T>(this ICheckLogic<T> logic, string message, MessageOption option = MessageOption.None)
         {
-            return logic.NegatesWhen(_ => true, message, option);
+            return logic.NegateWhen(_ => true, message, option);
         }
 
         /// <summary>

@@ -115,7 +115,7 @@ namespace NFluent
 
         private static void PerformEqualCheck(object expected, ICheckLogic<string> test, bool ignoreCase = false)
         {
-            test.Expecting(expected)
+            test.DefineExpected(expected)
                 .Negates("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock)
                 .FailWhen((sut) => expected == null && sut != null, "The {0} is not null whereas it must.")
                 .FailWhen((sut) => expected != null && sut == null, "The {0} is null whereas it must not.")
@@ -124,7 +124,7 @@ namespace NFluent
                     var details = StringDifference.Analyze(sut, (string) expected, ignoreCase);
                     if (details != null && details.Count > 0)
                     {
-                        runner.Fails(StringDifference.SummaryMessage(details));
+                        runner.Fail(StringDifference.SummaryMessage(details));
                     }
                 })
                 .EndCheck();
@@ -147,7 +147,7 @@ namespace NFluent
                     "The {0} must be null as there is no other possible value.", MessageOption.NoExpectedBlock)
                 .FailWhen(sut => possibleElements != null && !possibleElements.Any(x => string.Equals(x, sut)),
                     "The {0} is not one of the possible elements.")
-                .Expecting(possibleElements, "one of these", "none of these")
+                .DefineExpected(possibleElements, "one of these", "none of these")
                 .Negates("The {0} is one of the possible elements whereas it must not.")
                 .EndCheck();
 
@@ -187,7 +187,7 @@ namespace NFluent
         private static void ContainsLogic(ICollection<string> values, ICheckLogic<string> block)
         {
             block.
-                FailsIfNull().
+                FailIfNull().
                 ExpectingValues(values, values.Count, "contains", "does not contain").
                 Analyze((sut, test) =>
                     {
@@ -201,7 +201,7 @@ namespace NFluent
 
                         if (missingItems.Any())
                         {
-                            test.Fails("The {0} does not contain the expected value(s): " +
+                            test.Fail("The {0} does not contain the expected value(s): " +
                                        missingItems.ToEnumeratedString());
                         }
                         test.Negates("The {0} contains unauthorized value(s): " + presentItems.ToEnumeratedString());
@@ -225,9 +225,9 @@ namespace NFluent
             var checker = ExtensibilityHelper.ExtractChecker(check);
 
             checker.BeginCheck()
-                .FailsIfNull()
+                .FailIfNull()
                 .FailWhen(sut => !sut.StartsWith(expectedPrefix), "The {0}'s start is different from the {1}.")
-                .Expecting(expectedPrefix, "starts with", "does not start with")
+                .DefineExpected(expectedPrefix, "starts with", "does not start with")
                 .Negates("The {0} starts with {1}, whereas it must not.")
                 .EndCheck();
             return checker.BuildChainingObject();
@@ -246,9 +246,9 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             checker.BeginCheck()
-                .FailsIfNull()
+                .FailIfNull()
                 .FailWhen(sut => !sut.EndsWith(expectedEnd), "The {0}'s end is different from the {1}.")
-                .Expecting(expectedEnd, "ends with", "does not end with")
+                .DefineExpected(expectedEnd, "ends with", "does not end with")
                 .Negates("The {0} ends with {1}, whereas it must not.")
                 .EndCheck();
             return checker.BuildChainingObject();
@@ -289,8 +289,8 @@ namespace NFluent
         private static void MatchesImpl(IChecker<string, ICheck<string>> checker, string regExp)
         {
             checker.BeginCheck()
-                .Expecting(regExp, "matches", "does not match")
-                .FailsIfNull()
+                .DefineExpected(regExp, "matches", "does not match")
+                .FailIfNull()
                 .FailWhen(sut => new Regex(regExp).IsMatch(sut) == false, "The {0} does not match the {1}.")
                 .Negates("The {0} matches the {1}, whereas it must not.")
                 .EndCheck();
@@ -307,8 +307,8 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => !PolyFill.IsNullOrWhiteSpace(sut), "The {0} contains non whitespace characters.")
-                .NegatesWhen(sut => sut == null, "The {0} is null, whereas it should not.")
-                .NegatesWhen(sut => sut == string.Empty, "The {0} is empty, whereas it should not.")
+                .NegateWhen(sut => sut == null, "The {0} is null, whereas it should not.")
+                .NegateWhen(sut => sut == string.Empty, "The {0} is empty, whereas it should not.")
                 .Negates("The {0} contains only whitespace characters, whereas it should not.")
                 .EndCheck();
 
@@ -364,7 +364,7 @@ namespace NFluent
                 .FailWhen(sut => sut == null, "The {0} is null whereas it must have content.",
                     MessageOption.NoCheckedBlock)
                 .FailWhen(string.IsNullOrEmpty, "The {0} is empty, whereas it must not.", MessageOption.NoCheckedBlock)
-                .NegatesWhen(sut => sut == null, "The {0} is null instead of being empty.")
+                .NegateWhen(sut => sut == null, "The {0} is null instead of being empty.")
                 .Negates("The {0} is not empty or null.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

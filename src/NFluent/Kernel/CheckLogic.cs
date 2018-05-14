@@ -80,7 +80,7 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> Fails(string error, MessageOption noCheckedBlock)
+        public ICheckLogic<T> Fail(string error, MessageOption noCheckedBlock)
         {
             this.failed = true;
             if (this.IsNegated)
@@ -263,7 +263,7 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> Expecting<TU>(TU newExpectedValue, string comparisonMessage = null,
+        public ICheckLogic<T> DefineExpected<TU>(TU newExpectedValue, string comparisonMessage = null,
             string negatedComparison1 = null)
         {
             this.expectedType = newExpectedValue == null ? typeof(TU) : newExpectedValue.GetType();
@@ -279,7 +279,7 @@ namespace NFluent.Kernel
         {
             this.expectedKind = ValueKind.Type;
             this.options |= MessageOption.WithType;
-            return this.Expecting(expectedInstanteType, expectedLabel, negatedExpLabel);
+            return this.DefineExpected(expectedInstanteType, expectedLabel, negatedExpLabel);
         }
 
         public ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparisonMessage = null,
@@ -287,7 +287,7 @@ namespace NFluent.Kernel
         {
             this.expectedKind = ValueKind.Values;
             this.expectedCount = count;
-            return this.Expecting(values, comparisonMessage, newNegatedComparison);
+            return this.DefineExpected(values, comparisonMessage, newNegatedComparison);
         }
 
         public ICheckLogic<T> SetValuesIndex(long indexInEnum)
@@ -296,7 +296,7 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> NegatesWhen(Func<T, bool> predicate, string error, MessageOption option)
+        public ICheckLogic<T> NegateWhen(Func<T, bool> predicate, string error, MessageOption option)
         {
             if (this.negatedFailed)
             {

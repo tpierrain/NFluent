@@ -27,8 +27,19 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
-        // GH #244
+        // GH #143
+        [Test]
+        public void ThrowShouldCaptureTypeParameters()
+        {
+            Check.ThatCode(() => throw new MyException<InvalidOperationException>())
+                .Throws<MyException<InvalidOperationException>>();
+        }
 
+        private class MyException<TU> : Exception where TU : Exception
+        {
+
+        }
+        // GH #244
         [Test]
         public void Test_Enum_That_Should_Be_In_Error_But_Is_Not()
         {

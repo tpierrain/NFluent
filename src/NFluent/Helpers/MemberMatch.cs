@@ -51,14 +51,14 @@ namespace NFluent.Helpers
             {
                 checkLogic
                     .CheckSutAttributes(_ => this.Expected.Value, this.Expected.MemberLabel)
-                    .Fails("The {1}'s is absent from the {0}.", MessageOption.NoCheckedBlock|MessageOption.WithType)
-                    .Expecting(this.Expected.Value);
+                    .Fail("The {1}'s is absent from the {0}.", MessageOption.NoCheckedBlock|MessageOption.WithType)
+                    .DefineExpected(this.Expected.Value);
             }
             else if (!this.ActualFieldFound)
             {
                 checkLogic
                     .CheckSutAttributes(_ => this.Actual.Value, this.Actual.MemberLabel)
-                    .Fails("The {0} is absent from the {1}.", MessageOption.WithType);
+                    .Fail("The {0} is absent from the {1}.", MessageOption.WithType);
             }
             else
             {
@@ -71,15 +71,15 @@ namespace NFluent.Helpers
                 {
                     checkLogic
                         .CheckSutAttributes(_=>this.Actual.Value, this.Actual.MemberLabel)
-                        .Fails("The {0} has the same value than the given one, whereas it should not.", MessageOption.NoCheckedBlock)
+                        .Fail("The {0} has the same value than the given one, whereas it should not.", MessageOption.NoCheckedBlock)
                         .ComparingTo(this.Expected.Value, "different from", "");
                 }
                 else
                 {
                     checkLogic
                         .CheckSutAttributes(_=>this.Actual.Value, this.Actual.MemberLabel)
-                        .Fails("The {0} does not have the expected value.", mode)
-                        .Expecting(this.Expected.Value);
+                        .Fail("The {0} does not have the expected value.", mode)
+                        .DefineExpected(this.Expected.Value);
                 }
             }
         }

@@ -40,7 +40,7 @@ namespace NFluent
         public static ICheckLink<ICheck<Type>> HasAttribute<T>(this ICheck<Type> check) where T : Attribute
         {
             ExtensibilityHelper.BeginCheck(check)
-                .FailsIfNull()
+                .FailIfNull()
                 .FailWhen(
                     sut => sut.GetTypeInfo().GetCustomAttributes(false).All(customAttribute => customAttribute.GetType() != typeof(T)),
                     "The {0} does not have an attribute of the expected type.")

@@ -49,7 +49,7 @@ namespace NFluent
                                 if (actual.ValueType.IsPrimitive() || expected.ValueType.IsPrimitive())
                                 {
                                     test.CheckSutAttributes(_ => actual.Value, actual.MemberLabel)
-                                        .Fails("The {0} is of a different type than the {1}.")
+                                        .Fail("The {0} is of a different type than the {1}.")
                                         .ExpectingType(expected.ValueType, "", "");
                                     return false;
                                 }
@@ -65,13 +65,13 @@ namespace NFluent
                             if (actual == null) 
                             {
                                 test.CheckSutAttributes(_ => expectedWrapper.Value, expected.MemberLabel)
-                                    .Expecting(expected)
-                                    .Fails("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock);
+                                    .DefineExpected(expected)
+                                    .Fail("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock);
                             }
                             else
                             {
                                 test.CheckSutAttributes(_ => actual, actual.MemberLabel.DoubleCurlyBraces())
-                                    .Fails("The {0} is absent from the {1}.");
+                                    .Fail("The {0} is absent from the {1}.");
                             }
                             return false;
                         });

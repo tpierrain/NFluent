@@ -141,22 +141,22 @@ namespace NFluent
                         if (!match.ExpectedFieldFound)
                         {
                             test.CheckSutAttributes(_ => match.Expected.Value, match.Expected.MemberLabel)
-                                .Fails("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock)
-                                .Expecting(match.Expected.Value);
+                                .Fail("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock)
+                                .DefineExpected(match.Expected.Value);
                             break;
                         }
 
                         if (!match.ActualFieldFound)
                         {
                             test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
-                                .Fails("The {0} is absent from the {1}.");
+                                .Fail("The {0} is absent from the {1}.");
                             break;
                         }
                         if (!ReferenceEquals(match.Actual.Value, match.Expected.Value))
                         {
                             test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
-                                .Fails("The {0} does not reference the {1}.")
-                                .Expecting(match.Expected.Value);
+                                .Fail("The {0} does not reference the {1}.")
+                                .DefineExpected(match.Expected.Value);
                             break;
                         }
                     }
@@ -179,21 +179,21 @@ namespace NFluent
                         if (!match.ExpectedFieldFound)
                         {
                             test.CheckSutAttributes(_ => match.Expected.Value, match.Expected.MemberLabel)
-                                .Fails("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock)
-                                .Expecting(match.Expected.Value);
+                                .Fail("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock)
+                                .DefineExpected(match.Expected.Value);
                             break;
                         }
 
                         if (!match.ActualFieldFound)
                         {
                             test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
-                                .Fails("The {0} is absent from the {1}.");
+                                .Fail("The {0} is absent from the {1}.");
                             break;
                         }
                         if (ReferenceEquals(match.Actual.Value, match.Expected.Value))
                         {
                             test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
-                                .Fails("The {0} does reference the {1}, wheras it should not.", MessageOption.NoCheckedBlock)
+                                .Fail("The {0} does reference the {1}, wheras it should not.", MessageOption.NoCheckedBlock)
                                 .ComparingTo(match.Expected.Value, "different instance than", "same instance than");
                             break;
                         }

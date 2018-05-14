@@ -70,7 +70,7 @@ namespace NFluent
                         }
                         else if (listedItems.Contains(item))
                         {
-                            test.Fails(
+                            test.Fail(
                                 $"The {{0}} has extra occurrences of the expected items. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] at position {itemIndex} is redundant.");
                             return;
                         }

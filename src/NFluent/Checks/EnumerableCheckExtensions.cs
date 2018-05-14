@@ -150,11 +150,11 @@ namespace NFluent
                         {
                             if (sutCount > expectedCount && index == expectedCount)
                             {
-                                test.Fails($"The {{0}} does not contain exactly the expected value(s). There are extra elements starting at index #{index}.");
+                                test.Fail($"The {{0}} does not contain exactly the expected value(s). There are extra elements starting at index #{index}.");
                             }
                             else
                             {
-                                test.Fails($"The {{0}} does not contain exactly the expected value(s). First difference is at index #{index}.");
+                                test.Fail($"The {{0}} does not contain exactly the expected value(s). First difference is at index #{index}.");
                             }
 
                             test.SetValuesIndex(index);
@@ -167,7 +167,7 @@ namespace NFluent
 
                     if (second.MoveNext() && !failed)
                     {
-                        test.Fails($"The {{0}} does not contain exactly the expected value(s). Elements are missing starting at index #{index}.");
+                        test.Fail($"The {{0}} does not contain exactly the expected value(s). Elements are missing starting at index #{index}.");
                         test.SetValuesIndex(index);
                     }
                     
@@ -191,7 +191,7 @@ namespace NFluent
             var item = default(T);
             var label = string.Empty;
             ExtensibilityHelper.BeginCheck(check).
-                FailsIfNull().
+                FailIfNull().
                 Analyze((sut, test) =>
                 {
                     var index = 0;
@@ -206,7 +206,7 @@ namespace NFluent
                                 continue;
                             }
 
-                            test.Fails($"The {{0}} does contain an element at index #{index} that does not match the given predicate: ({scan.Current}).");
+                            test.Fail($"The {{0}} does contain an element at index #{index} that does not match the given predicate: ({scan.Current}).");
                             label = $"element #{index}";
                             return;
                         }
@@ -239,7 +239,7 @@ namespace NFluent
         {
             var item = default(T);
             ExtensibilityHelper.BeginCheck(check)
-                .FailsIfNull($"The {{0}} is null, whereas it must have an element with number {index}.")
+                .FailIfNull($"The {{0}} is null, whereas it must have an element with number {index}.")
                 .FailWhen(sut => !TryGetElementByNumber(sut, index, out item),
                     $"The {{0}} does not have an element at index {index}.")
                 .Negates($"The {{0}} does have an element at index {index} whereas it should not.")
@@ -262,7 +262,7 @@ namespace NFluent
             var item = default(T);
             var label = string.Empty;
             ExtensibilityHelper.BeginCheck(check).
-                FailsIfNull().
+                FailIfNull().
                 Analyze((sut, test) =>
                 {
                     long? index = null;
@@ -283,7 +283,7 @@ namespace NFluent
                         }
                         if (!index.HasValue)
                         {
-                            test.Fails("The {0} does not contain any element that matches the given predicate.");
+                            test.Fail("The {0} does not contain any element that matches the given predicate.");
                             return;
                         }
                         label = $"element #{index}";
@@ -305,7 +305,7 @@ namespace NFluent
         {
             var item = default(T);
             ExtensibilityHelper.BeginCheck(check)
-                .FailsIfNull("The {0} is null, whereas it must have a first element.")
+                .FailIfNull("The {0} is null, whereas it must have a first element.")
                 .FailWhen(sut => !TryGetElementByNumber(sut, 0, out item),
                     "The {0} is empty, whereas it must have a first element.", MessageOption.NoCheckedBlock)
                 .Negates("The {0} has a first element, whereas it must be empty.")
@@ -325,7 +325,7 @@ namespace NFluent
         {
             var item = default(T);
             ExtensibilityHelper.BeginCheck(check)
-                .FailsIfNull("The {0} is null, whereas it must have a last element.")
+                .FailIfNull("The {0} is null, whereas it must have a last element.")
                 .FailWhen(sut => !TryGetLastElement(sut, out item),
                     "The {0} is empty, whereas it must have a last element.", MessageOption.NoCheckedBlock)
                 .Negates("The {0} has a last element, whereas it must be empty.")
@@ -345,14 +345,14 @@ namespace NFluent
         {
             var item = default(T);
             ExtensibilityHelper.BeginCheck(check)
-                .FailsIfNull("The {0} is null, whereas it must have one element.")
+                .FailIfNull("The {0} is null, whereas it must have one element.")
                 .Analyze((sut, test) =>
                     {
                         using (var enumerator = sut.GetEnumerator())
                         {
                             if (!enumerator.MoveNext())
                             {
-                                test.Fails("The {0} is empty, whereas it must have one element.");
+                                test.Fail("The {0} is empty, whereas it must have one element.");
                                 return;
                             }
 
@@ -360,7 +360,7 @@ namespace NFluent
 
                             if (enumerator.MoveNext())
                             {
-                                test.Fails("The {0} contains more than one element, whereas it must have one element only.");
+                                test.Fail("The {0} contains more than one element, whereas it must have one element only.");
                             }
 
                         }
@@ -384,7 +384,7 @@ namespace NFluent
         {
             long actualSize=0;
             ExtensibilityHelper.BeginCheck(check).
-                FailsIfNull().
+                FailIfNull().
                 Analyze((sut, _) => actualSize = sut.Count()).
                 FailWhen(_ => actualSize != expectedSize, $"The {{0}} has {BuildElementNumberLiteral(actualSize).DoubleCurlyBraces()} instead of {expectedSize}.").
                 Negates($"The {{0}} has {BuildElementNumberLiteral(expectedSize).DoubleCurlyBraces()} which is unexpected.").
@@ -416,7 +416,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The enumerable is not empty.</exception>
         public static ICheckLink<ICheck<T>> IsEmpty<T>(this ICheck<T> check) where T: IEnumerable
         {
-            ExtensibilityHelper.BeginCheck(check).FailsIfNull()
+            ExtensibilityHelper.BeginCheck(check).FailIfNull()
                 .FailWhen((sut) => sut.Cast<object>().Any(), "The {0} is not empty.")
                 .Negates("The checked enumerable is empty, which is unexpected.", MessageOption.NoCheckedBlock).EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -434,7 +434,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check).FailWhen((sut) => sut != null && sut.Count()>0,
                     "The {0} contains elements, whereas it must be null or empty.")
-                .NegatesWhen((sut) => sut == null, "The {0} is null, where as it must contain at least one element.", MessageOption.NoCheckedBlock)
+                .NegateWhen((sut) => sut == null, "The {0} is null, where as it must contain at least one element.", MessageOption.NoCheckedBlock)
                 .Negates("The {0} is empty, where as it must contain at least one element.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -493,7 +493,7 @@ namespace NFluent
                         return;
                     }
 
-                    test.Fails(
+                    test.Fail(
                         string.Format(
                             "The {{0}} does not contain only the given value(s)." + Environment.NewLine
                                                                                   + "It contains also other values:" +

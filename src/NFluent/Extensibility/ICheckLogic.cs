@@ -82,7 +82,7 @@ namespace NFluent.Extensibility
         /// <param name="comparison"></param>
         /// <param name="negatedComparison"></param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> Expecting<TU>(TU other, string comparison = null, string negatedComparison = "different from");
+        ICheckLogic<T> DefineExpected<TU>(TU other, string comparison = null, string negatedComparison = "different from");
 
         /// <summary>
         /// Specify the expected results, with full control on error labels.
@@ -101,7 +101,7 @@ namespace NFluent.Extensibility
         /// <param name="error">Error message on failure</param>
         /// <param name="option">Options to use on parts of the message</param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> NegatesWhen(Func<T, bool> predicate, string error, MessageOption option = MessageOption.None);
+        ICheckLogic<T> NegateWhen(Func<T, bool> predicate, string error, MessageOption option = MessageOption.None);
 
         /// <summary>
         /// Executes arbitrary code on the sut.
@@ -158,7 +158,7 @@ namespace NFluent.Extensibility
         /// <param name="error">error message</param>
         /// <param name="options">options</param>
         /// <returns>Continuation object</returns>
-        ICheckLogic<T> Fails(string error, MessageOption options = MessageOption.None);
+        ICheckLogic<T> Fail(string error, MessageOption options = MessageOption.None);
 
         /// <summary>
         /// Set index of interest

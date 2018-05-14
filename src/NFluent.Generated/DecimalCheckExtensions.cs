@@ -93,7 +93,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .SutNameIs("nullable")
-                .FailsIfNull("The {0} has no value, which is unexpected.")
+                .FailIfNull("The {0} has no value, which is unexpected.")
                 .Negates("The {0} has a value, whereas it must not.")
                 .EndCheck();
 

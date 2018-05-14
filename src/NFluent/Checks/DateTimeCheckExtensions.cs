@@ -41,7 +41,7 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsBefore(this ICheck<DateTime> check, DateTime other)
         {
             ExtensibilityHelper.BeginCheck(check).
-                Expecting(other, "before", "after or equal").
+                DefineExpected(other, "before", "after or equal").
                 FailWhen(sut => sut>=other, "The {0} is not before the {1}.").
                 Negates("The {0} is before the {1} whereas it must not.").
                 EndCheck();
@@ -62,7 +62,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check).
                 ComparingTo(other, "before or equal", "after").
                 FailWhen(sut => sut > other, "The {0} is not before or equal to the {1}.").
-                NegatesWhen(sut => sut == other, "The {0} is equal to the {1} whereas it must not.").
+                NegateWhen(sut => sut == other, "The {0} is equal to the {1} whereas it must not.").
                 Negates("The {0} is before the {1} whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -101,7 +101,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check).
                 ComparingTo(other, "after or equal", "before").
                 FailWhen(sut => sut < other, "The {0} is not after or equal to the {1}.").
-                NegatesWhen(sut => sut == other, "The {0} is equal to the {1} whereas it must not.").
+                NegateWhen(sut => sut == other, "The {0} is equal to the {1} whereas it must not.").
                 Negates("The {0} is after the {1} whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -271,7 +271,7 @@ namespace NFluent
             {
                 if (sut.Year != other.Year)
                 {
-                    test.Fails(
+                    test.Fail(
                         $"The {{0}} has a different year than the {{1}} (actual: {sut.Year}, expected: {other.Year})");
                 }
             })
@@ -298,7 +298,7 @@ namespace NFluent
                 {
                     if (sut.Month != other.Month)
                     {
-                        test.Fails(
+                        test.Fail(
                             $"The {{0}} has a different month than the {{1}} (actual: {sut.Month}, expected: {other.Month})");
                     }
                 })
@@ -325,7 +325,7 @@ namespace NFluent
                 {
                     if (sut.Day != other.Day)
                     {
-                        test.Fails(
+                        test.Fail(
                             $"The {{0}} has a different day than the {{1}} (actual: {sut.Day}, expected: {other.Day})");
                     }
                 })

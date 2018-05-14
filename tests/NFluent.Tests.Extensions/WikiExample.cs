@@ -24,9 +24,9 @@ namespace NFluent.Tests
         public static ICheckLink<ICheck<string>> IsThisNumber(this ICheck<string> check, int expected)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .FailsIfNull()
+                .FailIfNull()
                 .FailWhen( sut => sut != expected.ToString(), "The {0} does not contain the {1}.")
-                .Expecting(expected)
+                .DefineExpected(expected)
                 .Negates("The {0} contains the {1} whereas it should not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

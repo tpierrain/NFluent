@@ -74,7 +74,7 @@ namespace NFluent
             var range = new RangeBlock(expected, within);
             ExtensibilityHelper.BeginCheck(check).
                 FailWhen((sut) => !range.IsInRange(sut), "The {0} is outside the expected value range.").
-                Expecting(range).
+                DefineExpected(range).
                 Negates("The {0} is within the expected range, whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

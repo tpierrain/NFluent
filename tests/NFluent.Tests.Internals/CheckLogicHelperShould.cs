@@ -30,7 +30,7 @@ namespace NFluent.Tests
             var checker = ExtensibilityHelper.ExtractChecker(fluentChecker.Not);
 
             checker.BeginCheck()
-                .Expecting("other")
+                .DefineExpected("other")
                 .FailWhen((x) => x.Equals("test"), "The {0} should be equal to the {1}.")
                 .Negates("No need")
                 .EndCheck();
@@ -49,7 +49,7 @@ namespace NFluent.Tests
             var checker = fluentChecker.Checker;
 
             Check.ThatCode(() =>
-                checker.BeginCheck().FailsIfNull().CheckSutAttributes(point => point.x, "x coordinate")
+                checker.BeginCheck().FailIfNull().CheckSutAttributes(point => point.x, "x coordinate")
                     .FailWhen(i => i > 0, "Should be positive").EndCheck()).IsAFaillingCheckWithMessage("", "The checked value's x coordinate is null.");
         }
     }

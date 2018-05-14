@@ -31,12 +31,12 @@ namespace NFluent
         public static ICheckLink<ICheck<Stream>> HasSameSequenceOfBytesAs(this ICheck<Stream> check, Stream expected)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .FailsIfNull()
+                .FailIfNull()
                 .SutNameIs("stream")
                 .FailWhen(sut => sut.Length != expected.Length,
                     (sut, test) =>
                         "The {0} doesn't have the same content as the expected one. They don't even have the same Length!")
-                .Expecting(expected)
+                .DefineExpected(expected)
                 .Analyze((sut, test) =>
                 {
                     // Keeps initial positions to be able to restore them after the check
@@ -52,7 +52,7 @@ namespace NFluent
                             continue;
                         }
 
-                        test.Fails(
+                        test.Fail(
                             $"The {{0}} doesn't have the same content as the expected one (despite the fact that they have the same Length: {sut.Length}).");
                         break;
                     }

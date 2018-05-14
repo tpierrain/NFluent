@@ -49,7 +49,7 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> HasFlag<T>(this ICheck<T> check, T flag) where T : struct, IConvertible
         {
             ExtensibilityHelper.BeginCheck(check)
-                .Expecting(flag, "having flag", "not having flag")
+                .DefineExpected(flag, "having flag", "not having flag")
                 .FailWhen(_ => !typeof(T).TypeHasAttribute(typeof(FlagsAttribute)), 
                     "The checked enum type is not a set of flags. You must add [Flags] attribute to its declaration.")
                 .FailWhen(_ => Convert.ToInt64(flag) == 0, 
@@ -63,8 +63,8 @@ namespace NFluent
         internal static bool HasFlag<T>(this T value, T flag) where T: struct
         {
             var sutAsInt = Convert.ToInt64(value);
-            var exptectedAsInt = Convert.ToInt64(flag);
-            return (sutAsInt & exptectedAsInt) == exptectedAsInt;
+            var expectedAsInt = Convert.ToInt64(flag);
+            return (sutAsInt & expectedAsInt) == expectedAsInt;
         }
     }
 }

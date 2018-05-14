@@ -105,7 +105,7 @@ namespace NFluent
                  .CheckSutAttributes( sut => new Duration(sut, unit), "")
                  .FailWhen(sut => sut != expected, "The {0} is different from the {1}.")
                  .Negates("The {0} is the same than {1}, whereas it must not.")
-                 .Expecting(expected)
+                 .DefineExpected(expected)
                  .EndCheck();
              return ExtensibilityHelper.BuildCheckLink(check);
          }

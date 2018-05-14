@@ -44,7 +44,7 @@ namespace NFluent
                         var lastIndexOf = sut.LastIndexOf(content, StringComparison.Ordinal);
                         if (firstIndex != lastIndexOf)
                         {
-                            test.Fails(
+                            test.Fail(
                                 $"The {{0}} contains {content.ToStringProperlyFormatted().DoubleCurlyBraces()} at {firstIndex} and {lastIndexOf}, where as it must contains it once.");
                             return;
                         }
@@ -78,7 +78,7 @@ namespace NFluent
                             continue;
                         }
 
-                        test.Fails("The {0} does not contain the expected strings in the correct order.");
+                        test.Fail("The {0} does not contain the expected strings in the correct order.");
                         return;
                     }
                 }).

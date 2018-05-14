@@ -75,7 +75,7 @@ namespace NFluent.Tests.Extensions
                 var sut = new FluentSut<int>(12, null);
 
                 ExtensibilityHelper.BeginCheck(sut)
-                    .FailsIfNull()
+                    .FailIfNull()
                     .Negates("It must be null.")
                     .EndCheck();
         }

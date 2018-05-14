@@ -55,7 +55,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(this)
                 .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
                 .CheckSutAttributes(sut => sut.InnerException, "inner exception")
-                .FailsIfNull("There is no inner exception.")
+                .FailIfNull("There is no inner exception.")
                 .Analyze((sut, test) =>
                 {
                     resultException = sut;
@@ -107,7 +107,7 @@ namespace NFluent
                 .SutNameIs("exception")
                 .CheckSutAttributes(sut =>  sut.Message, "message")
                 .FailWhen(sut => sut != exceptionMessage, "The {0} is not as expected.")
-                .Expecting(exceptionMessage)
+                .DefineExpected(exceptionMessage)
                 .EndCheck();
 
             return new CheckLink<ILambdaExceptionCheck<T>>(checker);
@@ -143,7 +143,7 @@ namespace NFluent
                 .FailWhen(_=> !found, $"There is no property [{propertyName}] on exception type [{typeof(T).Name}].", MessageOption.NoCheckedBlock)
                 .FailWhen(sut => !EqualityHelper.FluentEquals(sut, propertyValue),
                     "The {0} does not have the expected value.")
-                .Expecting(propertyValue)
+                .DefineExpected(propertyValue)
                 .EndCheck();
  
             return new CheckLink<ILambdaExceptionCheck<T>>(checker);
@@ -171,7 +171,7 @@ namespace NFluent
                 .CheckSutAttributes(sut => propertyExpression.Compile().Invoke(sut), $"property [{propertyName}]")
                 .FailWhen(sut => !EqualityHelper.FluentEquals(sut, propertyValue),
                     "The {0} does not have the expected value.")
-                .Expecting(propertyValue)
+                .DefineExpected(propertyValue)
                 .EndCheck();
             
             return new CheckLink<ILambdaExceptionCheck<T>>(checker);

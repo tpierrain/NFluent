@@ -74,7 +74,7 @@ namespace NFluent
                         return;
                     }
 
-                    test.Fails("The {0} does not contain the expected key.");
+                    test.Fail("The {0} does not contain the expected key.");
                 }).ExpectedResult(key, "Expected key:", "Forbidden key:")
                 .Negates("The {0} does contain the given key, whereas it must not.").EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -108,7 +108,7 @@ namespace NFluent
                         return;
                     }
 
-                    test.Fails("The {0} does not contain the expected value.");
+                    test.Fail("The {0} does not contain the expected value.");
                 }).ExpectedResult(expectedValue, "Expected value:", "Forbidden value:")
                 .Negates("The {0} does contain the given value, whereas it must not.").EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -164,7 +164,7 @@ namespace NFluent
                         return;
                     }
 
-                    test.Fails(
+                    test.Fail(
                         !found
                             ? "The {0} does not contain the expected key-value pair. The given key was not found."
                             : "The {0} does not contain the expected value for the given key.");
@@ -196,7 +196,7 @@ namespace NFluent
                         return;
                     }
 
-                    test.Fails("The {0} does not contain the expected key.");
+                    test.Fail("The {0} does not contain the expected key.");
                 }).ExpectedResult(key, "Expected key:", "Forbidden key:")
                 .Negates("The {0} does contain the given key, whereas it must not.").EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -227,7 +227,7 @@ namespace NFluent
                         }
                     }
 
-                    test.Fails("The {0} does not contain the expected value.");
+                    test.Fail("The {0} does not contain the expected value.");
                 }).ExpectedResult(expectedValue, "Expected value:", "Forbidden value:")
                 .Negates("The {0} does contain the given value, whereas it must not.").EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

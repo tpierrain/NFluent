@@ -35,7 +35,7 @@ namespace NFluent
         public static ICheckLink<ICheck<IComparable>> IsBefore(this ICheck<IComparable> check, IComparable givenValue)
         {
             ExtensibilityHelper.BeginCheck(check).
-                Expecting(givenValue, "before", "after").
+                DefineExpected(givenValue, "before", "after").
                 FailWhen(sut => sut != null && sut.CompareTo(givenValue) >=0, "The {0} is not before the reference value.").
                 Negates("The {0} is before the reference value whereas it must not.").
                 EndCheck();
@@ -54,8 +54,8 @@ namespace NFluent
         public static ICheckLink<ICheck<IComparable>> IsAfter(this ICheck<IComparable> check, IComparable givenValue)
         {
             ExtensibilityHelper.BeginCheck(check).
-                Expecting(givenValue, "after", "before").
-                FailsIfNull("The checked value is null so not after the reference value.").
+                DefineExpected(givenValue, "after", "before").
+                FailIfNull("The checked value is null so not after the reference value.").
                 FailWhen(sut => sut.CompareTo(givenValue) <=0, "The {0} is not after the reference value.").
                 Negates("The {0} is after the reference value whereas it must not.").
                 EndCheck();

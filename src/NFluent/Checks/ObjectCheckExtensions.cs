@@ -53,19 +53,19 @@ namespace NFluent
         }
 
         /// <summary>
-        /// 
+        /// Check if sut is the default value.
         /// </summary>
         /// <typeparam name="T">Type of the checked value.</typeparam>
-        /// <param name="context"></param>
-        /// <returns></returns>
+        /// <param name="context">Context of check (as built by s<see cref="Check.That{T}(T)"/>.</param>
+        /// <returns>A check link.</returns>
         public static ICheckLink<ICheck<T>> IsDefaultValue<T>(this ICheck<T> context)
         {
             ExtensibilityHelper.BeginCheck(context).
                 FailWhen(sut => !object.Equals(sut, default(T)), "The {checked} is not the default value for its type.").
-                Expecting(default(T)).
+                DefineExpected(default(T)).
                 Negates("The {checked} is the default value for its type, whereas it should not.").
                 EndCheck();
-            return ExtensibilityHelper.BuildCheckLink(context);
+            return ExtensibilityHelper.BuildCheckLink(context); 
         }
 
         /// <summary>
