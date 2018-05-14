@@ -14,7 +14,16 @@
     <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
     <releaseNotes>## V 2.3.0
 ---------------
-### New features(s)
+### Main feature: redesigned extensibility
+One of the fundamental features of NFluent is that you can add your own checks.
+Articles explained how to do that, but syntax was still too cumbersome
+for our taste. This version brings major improvements detailed here:
+* Simplified support for creating custom checks thanks to new helper methods
+and classes (see https://github.com/tpierrain/NFluent/wiki/Extensibility)
+* Customization of error reporting: by default, any check failure is reported
+by raising an exception. You can now provide your own reporting system. You need to provide an implementation
+of IErrorReporter interface, and specify you want to use it by setting the Check.Reporter interface.
+### Other New features(s)
 * IsNullOrWhiteSpace: checks if a string is null, empty or contains only white space(s).
 * IReadOnlyDictionary (_Net 4.5+_)
 * ContainsKey, ContainsValue, ContainsPair are supported.
@@ -25,8 +34,11 @@
 * Check.ThatCode(...).Not.Throws\&lt;T\&gt;() may throw an InvalidCastException when thrown exception is not T.
 * Extension checks to Throw\&lt;\&gt;, ThrowType or ThrowAny raise an exception when used with Not as it does not make sense.
 * Which() raises an exception when used on a negated check (Not).
-* Fixed error messages for double (and float) equality check that reported checked value in place of the expected one.
+* Fix exception when using Considering and indexed properties.
+* Fix loss of type when using Contains and ContainsExactly. This restores fluentness for IEnumerable&lt;T&gt; types.
+Fixed error messages for double (and float) equality check that reported checked value in place of the expected one.
 * Fixed error messages for Check.That(TimeSpan).IsGreaterThan
+* False positive whith Considering() or HasFieldsWithSameValues when haing ints and enum attributes with the same value.
 ### Changes
 * Improved error messages
 * ContainsOnlyElementsThatMatch: now provides the index and value of the first failing value.
@@ -39,7 +51,8 @@
 * Added automatic conversion between decimal and other numerical types. Check.That(100M).IsEqualTo(100) no longer fails.
 * Removed Failure method from IChecker interface
 ### GitHub Issues
-* #228, #227, #222, #223, #217, #230, #236
+* #228, #227, #222, #223, #217, #230, #232,
+* #236, #238, #242, #243, #244, #245
 ------
 ## V 2.2.0
 ---------------

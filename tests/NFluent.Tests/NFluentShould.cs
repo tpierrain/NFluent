@@ -15,15 +15,46 @@
 
 namespace NFluent.Tests
 {
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     public class NFluentShould
     {
         [Test]
         public void
-            ShouldProvideMeaningfulStringRepresentation()
+            ProvideMeaningfulStringRepresentation()
         {
             Check.That(Check.That(1).IsEqualTo(1).ToString()).IsEqualTo("Success");
+        }
+
+        [Test]
+        public void
+            CheckIfAValueIsDefaulted()
+        {
+            Check.That(0).IsDefaultValue();
+
+            Check.That((object) null).IsDefaultValue();
+        }
+
+        [Test]
+        public void
+            CheckIfAValueIsDefaultedAndFailsIfNot()
+        {
+            Check.ThatCode(() =>
+                Check.That(1).IsDefaultValue()).IsAFaillingCheckWithMessage("",
+                "The checked value is not the default value for its type.",
+                "The checked value:",
+                "\t[1]",
+                "The expected value:", 
+                "\t[0]");
+
+            Check.ThatCode(() =>
+                Check.That("test").IsDefaultValue()).IsAFaillingCheckWithMessage("",
+                "The checked string is not the default value for its type.",
+                "The checked string:",
+                "\t[\"test\"]",
+                "The expected string:", 
+                "\t[null]");
         }
     }
 }
