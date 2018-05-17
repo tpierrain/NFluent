@@ -115,8 +115,8 @@ namespace NFluent
 
         private static void PerformEqualCheck(object expected, ICheckLogic<string> test, bool ignoreCase = false)
         {
-            test.DefineExpected(expected)
-                .Negates("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock)
+            test.DefineExpectedValue(expected)
+                .OnNegate("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock)
                 .FailWhen((sut) => expected == null && sut != null, "The {0} is not null whereas it must.")
                 .FailWhen((sut) => expected != null && sut == null, "The {0} is null whereas it must not.")
                 .Analyze((sut, runner) =>
@@ -147,8 +147,8 @@ namespace NFluent
                     "The {0} must be null as there is no other possible value.", MessageOption.NoExpectedBlock)
                 .FailWhen(sut => possibleElements != null && !possibleElements.Any(x => string.Equals(x, sut)),
                     "The {0} is not one of the possible elements.")
-                .DefineExpected(possibleElements, "one of these", "none of these")
-                .Negates("The {0} is one of the possible elements whereas it must not.")
+                .DefineExpectedValue(possibleElements, "one of these", "none of these")
+                .OnNegate("The {0} is one of the possible elements whereas it must not.")
                 .EndCheck();
 
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -188,7 +188,7 @@ namespace NFluent
         {
             block.
                 FailIfNull().
-                ExpectingValues(values, values.Count, "contains", "does not contain").
+                DefineExpectedValues(values, values.Count, "contains", "does not contain").
                 Analyze((sut, test) =>
                     {
                         var missingItems = new List<string>();
@@ -204,7 +204,7 @@ namespace NFluent
                             test.Fail("The {0} does not contain the expected value(s): " +
                                        missingItems.ToEnumeratedString());
                         }
-                        test.Negates("The {0} contains unauthorized value(s): " + presentItems.ToEnumeratedString());
+                        test.OnNegate("The {0} contains unauthorized value(s): " + presentItems.ToEnumeratedString());
 
                     }).
                 CantBeNegated().
@@ -227,8 +227,8 @@ namespace NFluent
             checker.BeginCheck()
                 .FailIfNull()
                 .FailWhen(sut => !sut.StartsWith(expectedPrefix), "The {0}'s start is different from the {1}.")
-                .DefineExpected(expectedPrefix, "starts with", "does not start with")
-                .Negates("The {0} starts with {1}, whereas it must not.")
+                .DefineExpectedValue(expectedPrefix, "starts with", "does not start with")
+                .OnNegate("The {0} starts with {1}, whereas it must not.")
                 .EndCheck();
             return checker.BuildChainingObject();
         }
@@ -248,8 +248,8 @@ namespace NFluent
             checker.BeginCheck()
                 .FailIfNull()
                 .FailWhen(sut => !sut.EndsWith(expectedEnd), "The {0}'s end is different from the {1}.")
-                .DefineExpected(expectedEnd, "ends with", "does not end with")
-                .Negates("The {0} ends with {1}, whereas it must not.")
+                .DefineExpectedValue(expectedEnd, "ends with", "does not end with")
+                .OnNegate("The {0} ends with {1}, whereas it must not.")
                 .EndCheck();
             return checker.BuildChainingObject();
         }
@@ -289,10 +289,10 @@ namespace NFluent
         private static void MatchesImpl(IChecker<string, ICheck<string>> checker, string regExp)
         {
             checker.BeginCheck()
-                .DefineExpected(regExp, "matches", "does not match")
+                .DefineExpectedValue(regExp, "matches", "does not match")
                 .FailIfNull()
                 .FailWhen(sut => new Regex(regExp).IsMatch(sut) == false, "The {0} does not match the {1}.")
-                .Negates("The {0} matches the {1}, whereas it must not.")
+                .OnNegate("The {0} matches the {1}, whereas it must not.")
                 .EndCheck();
         }
 
@@ -309,7 +309,7 @@ namespace NFluent
                 .FailWhen(sut => !PolyFill.IsNullOrWhiteSpace(sut), "The {0} contains non whitespace characters.")
                 .NegateWhen(sut => sut == null, "The {0} is null, whereas it should not.")
                 .NegateWhen(sut => sut == string.Empty, "The {0} is empty, whereas it should not.")
-                .Negates("The {0} contains only whitespace characters, whereas it should not.")
+                .OnNegate("The {0} contains only whitespace characters, whereas it should not.")
                 .EndCheck();
 
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -326,7 +326,7 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsEmpty(this ICheck<string> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .Negates("The {0} is empty, whereas it must not.")
+                .OnNegate("The {0} is empty, whereas it must not.")
                 .FailWhen(sut => sut == null, "The {0} is null instead of being empty.", MessageOption.NoCheckedBlock)
                 .FailWhen(sut => sut != string.Empty, "The {0} is not empty.")
                 .EndCheck();
@@ -344,7 +344,7 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsNullOrEmpty(this ICheck<string> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .Negates("The {0} is empty, whereas it must not.")
+                .OnNegate("The {0} is empty, whereas it must not.")
                 .FailWhen(sut => !string.IsNullOrEmpty(sut), "The {0} is not empty or null.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -365,7 +365,7 @@ namespace NFluent
                     MessageOption.NoCheckedBlock)
                 .FailWhen(string.IsNullOrEmpty, "The {0} is empty, whereas it must not.", MessageOption.NoCheckedBlock)
                 .NegateWhen(sut => sut == null, "The {0} is null instead of being empty.")
-                .Negates("The {0} is not empty or null.")
+                .OnNegate("The {0} is not empty or null.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

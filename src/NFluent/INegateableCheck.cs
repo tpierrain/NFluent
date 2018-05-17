@@ -23,7 +23,7 @@ namespace NFluent
     public interface INegateableCheck<out T> 
     {
         /// <summary>
-        /// Negates the next check, and the next check only.
+        /// OnNegate the next check, and the next check only.
         /// </summary>
         /// <value>
         /// The next check negated.

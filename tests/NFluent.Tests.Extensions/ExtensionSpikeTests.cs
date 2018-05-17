@@ -76,7 +76,7 @@ namespace NFluent.Tests.Extensions
 
                 ExtensibilityHelper.BeginCheck(sut)
                     .FailIfNull()
-                    .Negates("It must be null.")
+                    .OnNegate("It must be null.")
                     .EndCheck();
         }
 

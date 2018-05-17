@@ -50,7 +50,7 @@ namespace NFluent
                         }
                     }
                 }).
-                ExpectingValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, "once", "").EndCheck();
+                DefineExpectedValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, "once", "").EndCheck();
             return chainedCheckLink;
         }
 
@@ -82,7 +82,7 @@ namespace NFluent
                         return;
                     }
                 }).
-                ExpectingValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, "in this order", "in another order")
+                DefineExpectedValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, "in this order", "in another order")
                 .EndCheck();
             return chainedCheckLink;
         }

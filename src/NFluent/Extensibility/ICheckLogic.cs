@@ -76,13 +76,21 @@ namespace NFluent.Extensibility
     public interface ICheckLogic<out T> : ICheckLogicBase
     {
         /// <summary>
+        /// Explicitely fails
+        /// </summary>
+        /// <param name="error">error message</param>
+        /// <param name="options">options</param>
+        /// <returns>Continuation object</returns>
+        ICheckLogic<T> Fail(string error, MessageOption options = MessageOption.None);
+
+        /// <summary>
         /// Specify expected value.
         /// </summary>
         /// <param name="other"></param>
         /// <param name="comparison"></param>
         /// <param name="negatedComparison"></param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> DefineExpected<TU>(TU other, string comparison = null, string negatedComparison = "different from");
+        ICheckLogic<T> DefineExpectedValue<TU>(TU other, string comparison = null, string negatedComparison = "different from");
 
         /// <summary>
         /// Specify the expected results, with full control on error labels.
@@ -92,7 +100,26 @@ namespace NFluent.Extensibility
         /// <param name="labelForExpected">Label for expected result</param>
         /// <param name="negationForExpected">Label for result when check is negated</param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> ExpectedResult<TU>(TU resultValue, string labelForExpected, string negationForExpected);
+        ICheckLogic<T> DefineExpectedResult<TU>(TU resultValue, string labelForExpected, string negationForExpected);
+
+        /// <summary>
+        /// Specify that we expect a list of valies
+        /// </summary>
+        /// <param name="values">enumeration of values</param>
+        /// <param name="count">number of items</param>
+        /// <param name="comparison"></param>
+        /// <param name="negatedComparison"></param>
+        /// <returns>Continuation object</returns>
+        ICheckLogic<T> DefineExpectedValues(IEnumerable values, long count, string comparison = null, string negatedComparison = "different from");
+
+        /// <summary>
+        /// Specify that the expectation is an instance of some type
+        /// </summary>
+        /// <param name="expectedInstanteType">expected type</param>
+        /// <param name="expectedLabel">associated label</param>
+        /// <param name="negatedLabel">label when negated</param>
+        /// <returns>Continuation object</returns>
+        ICheckLogic<T> DefineExpectedType(System.Type expectedInstanteType, string expectedLabel, string negatedLabel);
 
         /// <summary>
         /// Failing condition on check negation.
@@ -117,13 +144,14 @@ namespace NFluent.Extensibility
         /// <param name="error">error message in exception</param>
         /// <returns>Continuation object.</returns>
         ICheckLogic<T> InvalidIf(Func<T, bool> predicate, string error);
-        
+
         /// <summary>
         /// Set the name for the observed system.
         /// </summary>
         /// <param name="name">Name to use</param>
         /// <returns>Continuation object</returns>
-        ICheckLogic<T> SutNameIs(string name);
+        ICheckLogic<T> SetSutName(string name);
+
 
         /// <summary>
         /// Change the value of the sut.
@@ -132,33 +160,6 @@ namespace NFluent.Extensibility
         /// <param name="sutLabel">new label</param>
         /// <returns>Continuation object</returns>
         ICheckLogic<TU> CheckSutAttributes<TU>(Func<T, TU> sutExtractor, string sutLabel);
-
-        /// <summary>
-        /// Specify that the expectation is an instance of some type
-        /// </summary>
-        /// <param name="expectedInstanteType">expected type</param>
-        /// <param name="expectedLabel">associated label</param>
-        /// <param name="negatedLabel">label when negated</param>
-        /// <returns>Continuation object</returns>
-        ICheckLogic<T> ExpectingType(System.Type expectedInstanteType, string expectedLabel, string negatedLabel);
-
-        /// <summary>
-        /// Specify that we expect a list of valies
-        /// </summary>
-        /// <param name="values">enumeration of values</param>
-        /// <param name="count">number of items</param>
-        /// <param name="comparison"></param>
-        /// <param name="negatedComparison"></param>
-        /// <returns>Continuation object</returns>
-        ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparison = null, string negatedComparison = "different from");
-
-        /// <summary>
-        /// Explicitely fails
-        /// </summary>
-        /// <param name="error">error message</param>
-        /// <param name="options">options</param>
-        /// <returns>Continuation object</returns>
-        ICheckLogic<T> Fail(string error, MessageOption options = MessageOption.None);
 
         /// <summary>
         /// Set index of interest

@@ -73,7 +73,7 @@ namespace NFluent.Kernel
                         }
                         return !sut.HasValue;
                     }, "The checked nullable has no value to be checked.", MessageOption.NoCheckedBlock)
-                    .Negates("Can't be used when negated")
+                    .OnNegate("Can't be used when negated")
                     .EndCheck();
                 return new FluentCheck<TN>(val);            
             }

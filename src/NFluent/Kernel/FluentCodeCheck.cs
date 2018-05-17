@@ -56,7 +56,7 @@ namespace NFluent.Kernel
         }
 
         /// <summary>
-        /// Negates the next check.
+        /// OnNegate the next check.
         /// </summary>
         /// <value>
         /// The next check negated.

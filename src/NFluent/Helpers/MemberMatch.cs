@@ -52,7 +52,7 @@ namespace NFluent.Helpers
                 checkLogic
                     .CheckSutAttributes(_ => this.Expected.Value, this.Expected.MemberLabel)
                     .Fail("The {1}'s is absent from the {0}.", MessageOption.NoCheckedBlock|MessageOption.WithType)
-                    .DefineExpected(this.Expected.Value);
+                    .DefineExpectedValue(this.Expected.Value);
             }
             else if (!this.ActualFieldFound)
             {
@@ -79,7 +79,7 @@ namespace NFluent.Helpers
                     checkLogic
                         .CheckSutAttributes(_=>this.Actual.Value, this.Actual.MemberLabel)
                         .Fail("The {0} does not have the expected value.", mode)
-                        .DefineExpected(this.Expected.Value);
+                        .DefineExpectedValue(this.Expected.Value);
                 }
             }
         }

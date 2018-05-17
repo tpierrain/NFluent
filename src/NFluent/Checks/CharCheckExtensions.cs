@@ -33,7 +33,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check).
                 FailWhen(sut => !IsALetter(sut), "The {0} is not a letter.").
-                Negates("The {0} is a letter whereas it must not.").
+                OnNegate("The {0} is a letter whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -48,7 +48,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check).
                 FailWhen(sut => !char.IsDigit(sut), "The {0} is not a decimal digit.").
-                Negates("The {0} is a decimal digit whereas it must not.").
+                OnNegate("The {0} is a decimal digit whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -63,7 +63,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check).
                 FailWhen(sut => !char.IsPunctuation(sut), "The {0} is not a punctuation mark.").
-                Negates("The {0} is a punctuation mark whereas it must not.").
+                OnNegate("The {0} is a punctuation mark whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -81,10 +81,10 @@ namespace NFluent
         public static ICheckLink<ICheck<char>> IsSameLetterAs(this ICheck<char> check, char otherChar)
         {
             ExtensibilityHelper.BeginCheck(check).
-                DefineExpected(otherChar).
+                DefineExpectedValue(otherChar).
                 FailWhen(sut => !IsALetter(sut), "The {0} is not the same letter as the {1} (whatever the case)."+ Environment.NewLine + "The {0} is not even a letter!").
                 FailWhen(sut => !IsSameCharCaseInsensitive(sut, otherChar), "The {0} is not the same letter as the {1} (whatever the case).").
-                Negates("The {0} is the same letter as the {1} (whatever the case), whereas it must not.").
+                OnNegate("The {0} is the same letter as the {1} (whatever the case), whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -104,11 +104,11 @@ namespace NFluent
             char otherChar)
         {
             ExtensibilityHelper.BeginCheck(check).
-                DefineExpected(otherChar).
+                DefineExpectedValue(otherChar).
                 FailWhen(sut => !IsALetter(sut), "The {0} is not a letter, where as it must.").
                 FailWhen(sut => !IsSameCharCaseInsensitive(sut, otherChar), "The {0} is different from the expected letter.").
                 FailWhen(sut => HaveSameCase(sut, otherChar), "The {0} is the same letter, but must have different case than the {1}.").
-                Negates("The {0} is the same letter as the {1} with different case, whereas it must not.").
+                OnNegate("The {0} is the same letter as the {1} with different case, whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

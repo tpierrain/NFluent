@@ -32,11 +32,11 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .FailIfNull()
-                .SutNameIs("stream")
+                .SetSutName("stream")
                 .FailWhen(sut => sut.Length != expected.Length,
                     (sut, test) =>
                         "The {0} doesn't have the same content as the expected one. They don't even have the same Length!")
-                .DefineExpected(expected)
+                .DefineExpectedValue(expected)
                 .Analyze((sut, test) =>
                 {
                     // Keeps initial positions to be able to restore them after the check
@@ -61,7 +61,7 @@ namespace NFluent
                     sut.Position = valueInitialPosition;
                     expected.Position = otherInitialPosition;
                 })
-                .Negates("The {0} has the same content as the other one, whereas it must not.")
+                .OnNegate("The {0} has the same content as the other one, whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

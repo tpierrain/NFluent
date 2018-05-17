@@ -76,7 +76,7 @@ namespace NFluent.Extensibility
         /// <param name="option"></param>
         /// <typeparam name="T">type of the checked object</typeparam>
         /// <returns>Continuation object.</returns>
-        public static ICheckLogic<T> Negates<T>(this ICheckLogic<T> logic, string message, MessageOption option = MessageOption.None)
+        public static ICheckLogic<T> OnNegate<T>(this ICheckLogic<T> logic, string message, MessageOption option = MessageOption.None)
         {
             return logic.NegateWhen(_ => true, message, option);
         }
@@ -89,7 +89,7 @@ namespace NFluent.Extensibility
         /// <returns></returns>
         public static ICheckLogic<T> CantBeNegated<T>(this ICheckLogic<T> logic)
         {
-            return logic.Negates("Can't be used when negated");
+            return logic.OnNegate("Can't be used when negated");
         }
     }
 }

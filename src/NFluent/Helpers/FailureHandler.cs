@@ -34,7 +34,7 @@ namespace NFluent.Helpers
             params string[] lines)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .SutNameIs("fluent check")
+                .SetSutName("fluent check")
                 .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
                 .FailIfNull("The check succeeded whereas it should have failed.")
                 .FailWhen((sut) => !ExceptionHelper.IsFailedException(sut),
@@ -70,7 +70,7 @@ namespace NFluent.Helpers
                     {
                         test.Fail($"Too many lines in the error message starting at #{expectedLines.Count}");
                     }
-                }).DefineExpected(lines).
+                }).DefineExpectedValue(lines).
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -84,11 +84,11 @@ namespace NFluent.Helpers
         {
             ExtensibilityHelper.BeginCheck(check)
                 .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
-                .SutNameIs("fluent check")
+                .SetSutName("fluent check")
                 .FailIfNull()
                 .FailWhen((sut) => !ExceptionHelper.IsFailedException(sut),
                     "The exception raised is not of the expected type").
-                ExpectingType(ExceptionHelper.BuildException(string.Empty).GetType(), "an instance of:", "an instance of a different type").
+                DefineExpectedType(ExceptionHelper.BuildException(string.Empty).GetType(), "an instance of:", "an instance of a different type").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

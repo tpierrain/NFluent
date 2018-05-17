@@ -75,8 +75,11 @@ namespace NFluent
                     }
 
                     test.Fail("The {0} does not contain the expected key.");
-                }).ExpectedResult(key, "Expected key:", "Forbidden key:")
-                .Negates("The {0} does contain the given key, whereas it must not.").EndCheck();
+                }).
+//                DefineExpectedValue(key, "contains this key", "does not contain this key").
+                DefineExpectedResult(key, "Expected key:", "Forbidden key:").
+                OnNegate("The {0} does contain the given key, whereas it must not.").
+                EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
@@ -101,16 +104,10 @@ namespace NFluent
         public static ICheckLink<ICheck<IEnumerable<KeyValuePair<TK, TU>>>> ContainsValue<TK, TU>(this ICheck<IEnumerable<KeyValuePair<TK, TU>>> check, TU expectedValue)
         {
             ExtensibilityHelper.BeginCheck(check).
-                Analyze((sut, test) =>
-                {
-                    if (sut.Any(keyValuePair => EqualityHelper.FluentEquals(keyValuePair.Value, expectedValue)))
-                    {
-                        return;
-                    }
-
-                    test.Fail("The {0} does not contain the expected value.");
-                }).ExpectedResult(expectedValue, "Expected value:", "Forbidden value:")
-                .Negates("The {0} does contain the given value, whereas it must not.").EndCheck();
+                FailWhen(sut => !sut.Any(keyValuePair => EqualityHelper.FluentEquals(keyValuePair.Value, expectedValue)), "The {0} does not contain the expected value.").
+                DefineExpectedResult(expectedValue, "Expected value:", "Forbidden value:").
+                OnNegate("The {0} does contain the given value, whereas it must not.").
+                EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
@@ -168,8 +165,10 @@ namespace NFluent
                         !found
                             ? "The {0} does not contain the expected key-value pair. The given key was not found."
                             : "The {0} does not contain the expected value for the given key.");
-                }).ExpectedResult(new KeyValuePair<TK, TU>(expectedKey, expectedValue), "Expected pair:", "Forbidden pair:")
-                .Negates("The {0} does contain the given key-value pair, whereas it must not.").EndCheck();
+                }).
+                DefineExpectedResult(new KeyValuePair<TK, TU>(expectedKey, expectedValue), "Expected pair:", "Forbidden pair:").
+                OnNegate("The {0} does contain the given key-value pair, whereas it must not.").
+                EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
@@ -189,16 +188,10 @@ namespace NFluent
         public static ICheckLink<ICheck<Hashtable>> ContainsKey(this ICheck<Hashtable> check, object key)
         {
             ExtensibilityHelper.BeginCheck(check).
-                Analyze((sut, test) =>
-                {
-                    if (sut.ContainsKey(key))
-                    {
-                        return;
-                    }
-
-                    test.Fail("The {0} does not contain the expected key.");
-                }).ExpectedResult(key, "Expected key:", "Forbidden key:")
-                .Negates("The {0} does contain the given key, whereas it must not.").EndCheck();
+                FailWhen(sut => ! sut.ContainsKey(key), "The {0} does not contain the expected key.").
+                DefineExpectedResult(key, "Expected key:", "Forbidden key:").
+                OnNegate("The {0} does contain the given key, whereas it must not.").
+                EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
@@ -217,19 +210,22 @@ namespace NFluent
         public static ICheckLink<ICheck<Hashtable>> ContainsValue(this ICheck<Hashtable> check, object expectedValue)
         {
             ExtensibilityHelper.BeginCheck(check).
-                Analyze((sut, test) =>
+                FailWhen(sut =>
                 {
                     foreach (DictionaryEntry entry in sut)
                     {
                         if (EqualityHelper.FluentEquals(entry.Value, expectedValue))
                         {
-                            return;
+                            return false;
                         }
                     }
 
-                    test.Fail("The {0} does not contain the expected value.");
-                }).ExpectedResult(expectedValue, "Expected value:", "Forbidden value:")
-                .Negates("The {0} does contain the given value, whereas it must not.").EndCheck();
+                    return true;
+                }, "The {0} does not contain the expected value.").
+
+                DefineExpectedResult(expectedValue, "Expected value:", "Forbidden value:").
+                OnNegate("The {0} does contain the given value, whereas it must not.").
+                EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
@@ -246,10 +242,10 @@ namespace NFluent
             object expectedValue)
         {
             ExtensibilityHelper.BeginCheck(check)
-               .FailWhen(sut => !sut.ContainsKey(expectedKey), "The {0} does not contain the expected key-value pair. The given key was not found.")
+                .FailWhen(sut => !sut.ContainsKey(expectedKey), "The {0} does not contain the expected key-value pair. The given key was not found.")
                 .FailWhen( sut => !EqualityHelper.FluentEquals(sut[expectedKey], expectedValue), "The {0} does not contain the expected value for the given key.")
-                .ExpectedResult(new KeyValuePair<object, object>(expectedKey, expectedValue), "Expected pair:", "Forbidden pair:")
-                .Negates("The {0} does contain the given key-value pair, whereas it must not.")
+                .DefineExpectedResult(new KeyValuePair<object, object>(expectedKey, expectedValue), "Expected pair:", "Forbidden pair:")
+                .OnNegate("The {0} does contain the given key-value pair, whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

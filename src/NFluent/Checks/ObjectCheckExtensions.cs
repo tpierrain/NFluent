@@ -62,8 +62,8 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(context).
                 FailWhen(sut => !object.Equals(sut, default(T)), "The {checked} is not the default value for its type.").
-                DefineExpected(default(T)).
-                Negates("The {checked} is the default value for its type, whereas it should not.").
+                DefineExpectedValue(default(T)).
+                OnNegate("The {checked} is the default value for its type, whereas it should not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(context); 
         }
@@ -79,9 +79,9 @@ namespace NFluent
         {
             var comparer = new EqualityHelper.EqualityComparer<T>();
             ExtensibilityHelper.BeginCheck(check)
-                .ExpectingValues(values, values.Length, "one of", "none of")
+                .DefineExpectedValues(values, values.Length, "one of", "none of")
                 .FailWhen(sut => !values.Any(value => comparer.Equals(sut, value)), "The {0} is not one of the {1}.")
-                .Negates("The {0} should not be one of the {1}.").
+                .OnNegate("The {0} should not be one of the {1}.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -206,9 +206,9 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> IsNull<T>(this ICheck<T> check) where T : class
         {
             ExtensibilityHelper.BeginCheck(check)
-                .SutNameIs("object")
+                .SetSutName("object")
                 .FailWhen(sut => sut!= null, "The {0} must be null.")
-                .Negates("The {0} must not be null.", MessageOption.NoCheckedBlock)
+                .OnNegate("The {0} must not be null.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -227,9 +227,9 @@ namespace NFluent
         public static ICheckLink<ICheck<T?>> IsNull<T>(this ICheck<T?> check) where T : struct
         {
             ExtensibilityHelper.BeginCheck(check)
-                .SutNameIs("nullable value")
+                .SetSutName("nullable value")
                 .FailWhen(sut => sut!= null, "The {0} must be null.")
-                .Negates("The {0} is null whereas it must not.", MessageOption.NoCheckedBlock)
+                .OnNegate("The {0} is null whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -303,10 +303,10 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> IsSameReferenceAs<T, TU>(this ICheck<T> check, TU expected)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .SutNameIs("object")
+                .SetSutName("object")
                 .ComparingTo(expected, "same instance as", "distinct from")
                 .FailWhen(sut => !ReferenceEquals(sut, expected), "The {0} must be the same instance as the {1}.")
-                .Negates("The {0} must be an instance distinct from the {1}.")
+                .OnNegate("The {0} must be an instance distinct from the {1}.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

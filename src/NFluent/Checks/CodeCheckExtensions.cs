@@ -57,9 +57,9 @@ namespace NFluent
 
             ExtensibilityHelper.BeginCheck(check).FailWhen((sut) =>
                 new Duration(sut.ExecutionTime, timeUnit) > durationThreshold, "The checked code took too much time to execute.").
-                DefineExpected(durationThreshold, "less than", "more than").
-                SutNameIs("execution time").
-                Negates("The checked code took too little time to execute.").
+                DefineExpectedValue(durationThreshold, "less than", "more than").
+                SetSutName("execution time").
+                OnNegate("The checked code took too little time to execute.").
                 EndCheck();
 
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -95,9 +95,9 @@ namespace NFluent
                 CheckSutAttributes(sut =>  new Duration(sut.TotalProcessorTime, timeUnit), "").
                 FailWhen((sut) =>
                     sut > durationThreshold, "The checked code consumed too much CPU time.").
-                DefineExpected(durationThreshold, "less than", "more than").
-                SutNameIs("cpu time").
-                Negates("The checked code took too little cpu time to execute.").
+                DefineExpectedValue(durationThreshold, "less than", "more than").
+                SetSutName("cpu time").
+                OnNegate("The checked code took too little cpu time to execute.").
                 EndCheck();
 
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -117,10 +117,10 @@ namespace NFluent
             where T : RunTrace
         {
             ExtensibilityHelper.BeginCheck(check).
-                SutNameIs("code").
+                SetSutName("code").
                 CheckSutAttributes(sut => sut.RaisedException, "raised exception").
                 FailWhen(sut=> sut != null, "The checked code raised an exception, whereas it must not.").
-                Negates("The checked code did not raise an exception, whereas it must.", MessageOption.NoCheckedBlock).
+                OnNegate("The checked code did not raise an exception, whereas it must.", MessageOption.NoCheckedBlock).
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -146,17 +146,17 @@ namespace NFluent
         private static Exception CheckExceptionType(ICodeCheck<RunTrace> check, Type expecting)
         {
             Exception result = null;
-            ExtensibilityHelper.BeginCheck(check).SutNameIs("code")
+            ExtensibilityHelper.BeginCheck(check).SetSutName("code")
                .CheckSutAttributes(sut =>
                 {
                     result = sut.RaisedException;
                     return result;
                 }, "raised exception")
-                .ExpectingType(expecting, "", "should not be")
+                .DefineExpectedType(expecting, "", "should not be")
                 .FailIfNull("The checked code did not raise an exception, whereas it must.")
                 .FailWhen(sut => !expecting.IsInstanceOfType(sut),
                     "The {0} is of a different type than expected.")
-                .Negates("The {0} raised an exception of the forbidden type.")
+                .OnNegate("The {0} raised an exception of the forbidden type.")
                 .EndCheck();
             if (!expecting.IsInstanceOfType(result))
             {
@@ -193,8 +193,8 @@ namespace NFluent
         public static ILambdaExceptionCheck<Exception> ThrowsAny(this ICodeCheck<RunTrace> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .Negates("The checked code raised an exception, whereas it must not.")
-                .SutNameIs("code")
+                .OnNegate("The checked code raised an exception, whereas it must not.")
+                .SetSutName("code")
                 .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
                 .FailIfNull("The checked code did not raise an exception, whereas it must.")
                 .EndCheck();

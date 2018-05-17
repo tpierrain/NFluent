@@ -38,7 +38,7 @@ namespace NFluent
              ExtensibilityHelper.BeginCheck(check)
                  .CheckSutAttributes( sut => new Duration(sut, unit), "")
                  .FailWhen(sut => sut >= expected, "The {0} is more than the limit.")
-                 .Negates("The {0} is not more than the limit.")
+                 .OnNegate("The {0} is not more than the limit.")
                  .ComparingTo(expected, "less than", "more than or equal to")
                  .EndCheck();
              return ExtensibilityHelper.BuildCheckLink(check);
@@ -71,7 +71,7 @@ namespace NFluent
              ExtensibilityHelper.BeginCheck(check)
                  .CheckSutAttributes( sut => new Duration(sut, unit), "")
                  .FailWhen(sut => sut <= expected, "The {0} is not more than the limit.")
-                 .Negates("The {0} is more than the limit.")
+                 .OnNegate("The {0} is more than the limit.")
                  .ComparingTo(expected, "more than", "less than or equal to")
                  .EndCheck();
              return ExtensibilityHelper.BuildCheckLink(check);
@@ -104,8 +104,8 @@ namespace NFluent
              ExtensibilityHelper.BeginCheck(check)
                  .CheckSutAttributes( sut => new Duration(sut, unit), "")
                  .FailWhen(sut => sut != expected, "The {0} is different from the {1}.")
-                 .Negates("The {0} is the same than {1}, whereas it must not.")
-                 .DefineExpected(expected)
+                 .OnNegate("The {0} is the same than {1}, whereas it must not.")
+                 .DefineExpectedValue(expected)
                  .EndCheck();
              return ExtensibilityHelper.BuildCheckLink(check);
          }

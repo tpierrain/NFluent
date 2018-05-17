@@ -103,7 +103,7 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> SutNameIs(string name)
+        public ICheckLogic<T> SetSutName(string name)
         {
             this.sutName = name;
             return this;
@@ -120,7 +120,7 @@ namespace NFluent.Kernel
             var sutname = string.IsNullOrEmpty(this.sutName) ? (this.fluentSut.SutName ?? "value") : this.sutName;
             if (!string.IsNullOrEmpty(propertyName))
             {
-                result.SutNameIs($"{sutname}'s {propertyName}");
+                result.SetSutName($"{sutname}'s {propertyName}");
             }
             if (this.failed != this.IsNegated)
             {
@@ -143,7 +143,7 @@ namespace NFluent.Kernel
             {
                 if (string.IsNullOrEmpty(this.negatedError))
                 {
-                    throw new System.InvalidOperationException("Negated error message was not specified. Use 'Negates' method to specify one.");
+                    throw new System.InvalidOperationException("Negated error message was not specified. Use 'OnNegate' method to specify one.");
                 }
             }
 
@@ -253,7 +253,7 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> ExpectedResult<TU>(TU resultValue, string labelForExpected, string negationForExpected)
+        public ICheckLogic<T> DefineExpectedResult<TU>(TU resultValue, string labelForExpected, string negationForExpected)
         {
             this.expectedType = resultValue == null ? typeof(TU) : resultValue.GetType();
             this.withExpected = true;
@@ -263,7 +263,7 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> DefineExpected<TU>(TU newExpectedValue, string comparisonMessage = null,
+        public ICheckLogic<T> DefineExpectedValue<TU>(TU newExpectedValue, string comparisonMessage = null,
             string negatedComparison1 = null)
         {
             this.expectedType = newExpectedValue == null ? typeof(TU) : newExpectedValue.GetType();
@@ -275,19 +275,19 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> ExpectingType(System.Type expectedInstanteType, string expectedLabel, string negatedExpLabel)
+        public ICheckLogic<T> DefineExpectedType(System.Type expectedInstanteType, string expectedLabel, string negatedExpLabel)
         {
             this.expectedKind = ValueKind.Type;
             this.options |= MessageOption.WithType;
-            return this.DefineExpected(expectedInstanteType, expectedLabel, negatedExpLabel);
+            return this.DefineExpectedValue(expectedInstanteType, expectedLabel, negatedExpLabel);
         }
 
-        public ICheckLogic<T> ExpectingValues(IEnumerable values, long count, string comparisonMessage = null,
+        public ICheckLogic<T> DefineExpectedValues(IEnumerable values, long count, string comparisonMessage = null,
             string newNegatedComparison = null)
         {
             this.expectedKind = ValueKind.Values;
             this.expectedCount = count;
-            return this.DefineExpected(values, comparisonMessage, newNegatedComparison);
+            return this.DefineExpectedValue(values, comparisonMessage, newNegatedComparison);
         }
 
         public ICheckLogic<T> SetValuesIndex(long indexInEnum)

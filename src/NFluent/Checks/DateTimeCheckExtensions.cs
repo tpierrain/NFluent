@@ -41,9 +41,9 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsBefore(this ICheck<DateTime> check, DateTime other)
         {
             ExtensibilityHelper.BeginCheck(check).
-                DefineExpected(other, "before", "after or equal").
+                DefineExpectedValue(other, "before", "after or equal").
                 FailWhen(sut => sut>=other, "The {0} is not before the {1}.").
-                Negates("The {0} is before the {1} whereas it must not.").
+                OnNegate("The {0} is before the {1} whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -63,7 +63,7 @@ namespace NFluent
                 ComparingTo(other, "before or equal", "after").
                 FailWhen(sut => sut > other, "The {0} is not before or equal to the {1}.").
                 NegateWhen(sut => sut == other, "The {0} is equal to the {1} whereas it must not.").
-                Negates("The {0} is before the {1} whereas it must not.").
+                OnNegate("The {0} is before the {1} whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -82,7 +82,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check).
                 ComparingTo(other, "after", "before or equal").
                 FailWhen(sut => sut <= other, "The {0} is not after the {1}.").
-                Negates("The {0} is after the {1} whereas it must not.").
+                OnNegate("The {0} is after the {1} whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -102,7 +102,7 @@ namespace NFluent
                 ComparingTo(other, "after or equal", "before").
                 FailWhen(sut => sut < other, "The {0} is not after or equal to the {1}.").
                 NegateWhen(sut => sut == other, "The {0} is equal to the {1} whereas it must not.").
-                Negates("The {0} is after the {1} whereas it must not.").
+                OnNegate("The {0} is after the {1} whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -138,7 +138,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut.Round(TimeUnit.Seconds) != other.Round(TimeUnit.Seconds), "The {0} is not equal to the {1} (ignoring milliseconds).")
                 .ComparingTo(other, "same second", "different second")
-                .Negates("The {0} is equal to the {1} (ignoring milliseconds) whereas it must not.")
+                .OnNegate("The {0} is equal to the {1} (ignoring milliseconds) whereas it must not.")
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -175,7 +175,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut.Round(TimeUnit.Minutes) != other.Round(TimeUnit.Minutes), "The {0} is not equal to the {1} (ignoring seconds).")
                 .ComparingTo(other, "same minute", "different minute")
-                .Negates("The {0} is equal to the {1} (ignoring seconds) whereas it must not.")
+                .OnNegate("The {0} is equal to the {1} (ignoring seconds) whereas it must not.")
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -212,7 +212,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut.Round(TimeUnit.Minutes) != other.Round(TimeUnit.Hours), "The {0} is not equal to the {1} (ignoring minutes).")
                 .ComparingTo(other, "same hour", "different hour")
-                .Negates("The {0} is equal to the {1} (ignoring minutes) whereas it must not.")
+                .OnNegate("The {0} is equal to the {1} (ignoring minutes) whereas it must not.")
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -249,7 +249,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut.Round(TimeUnit.Days) != other.Round(TimeUnit.Days), "The {0} is not equal to the {1} (ignoring hours).")
                 .ComparingTo(other, "same day", "different day")
-                .Negates("The {0} is equal to the {1} (ignoring hours) whereas it must not.")
+                .OnNegate("The {0} is equal to the {1} (ignoring hours) whereas it must not.")
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -276,7 +276,7 @@ namespace NFluent
                 }
             })
                 .ComparingTo(other, "same year", "different year")
-                .Negates("The {0} has the same year as the {1} whereas it must not.")
+                .OnNegate("The {0} has the same year as the {1} whereas it must not.")
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -303,7 +303,7 @@ namespace NFluent
                     }
                 })
                 .ComparingTo(other, "same month", "different month")
-                .Negates("The {0} has the same month as the {1} whereas it must not.")
+                .OnNegate("The {0} has the same month as the {1} whereas it must not.")
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -330,7 +330,7 @@ namespace NFluent
                     }
                 })
                 .ComparingTo(other, "same day", "different day")
-                .Negates("The {0} has the same day as the {1} whereas it must not.")
+                .OnNegate("The {0} has the same day as the {1} whereas it must not.")
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);

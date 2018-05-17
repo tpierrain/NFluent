@@ -26,8 +26,8 @@ namespace NFluent.Tests
             ExtensibilityHelper.BeginCheck(check)
                 .FailIfNull()
                 .FailWhen( sut => sut != expected.ToString(), "The {0} does not contain the {1}.")
-                .DefineExpected(expected)
-                .Negates("The {0} contains the {1} whereas it should not.")
+                .DefineExpectedValue(expected)
+                .OnNegate("The {0} contains the {1} whereas it should not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

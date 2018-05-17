@@ -46,7 +46,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut, "The {0} is true whereas it must be false.")
-                .Negates("The {0} is false whereas it must be true.").
+                .OnNegate("The {0} is false whereas it must be true.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

@@ -38,9 +38,9 @@ namespace NFluent.Helpers
         {
             ExtensibilityHelper.BeginCheck(checker)
                 .CheckSutAttributes(sut => sut.GetTypeWithoutThrowingException(), "type")
-                .DefineExpected(expectedBaseType, "inherits from", "does not inherits from")
+                .DefineExpectedValue(expectedBaseType, "inherits from", "does not inherits from")
                 .FailWhen(sut => !expectedBaseType.IsAssignableFrom(sut), "The {0} does not have the expected inheritance.")
-                .Negates("The {0} does inherits from the {1} where as it must not")
+                .OnNegate("The {0} does inherits from the {1} where as it must not")
                 .EndCheck();
         }
 

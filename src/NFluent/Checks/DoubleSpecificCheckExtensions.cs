@@ -37,9 +37,9 @@ namespace NFluent
         public static ICheckLink<ICheck<double>> IsNaN(this ICheck<double> check)
         {
             ExtensibilityHelper.BeginCheck(check).
-                SutNameIs("double value").
+                SetSutName("double value").
                 FailWhen((sut) => !double.IsNaN(sut), "The {0} is a number whereas it must not.").
-                Negates("The {0} is not a number (NaN) whereas it must.").
+                OnNegate("The {0} is not a number (NaN) whereas it must.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -55,9 +55,9 @@ namespace NFluent
         public static ICheckLink<ICheck<double>> IsFinite(this ICheck<double> check)
         {
             ExtensibilityHelper.BeginCheck(check).
-                SutNameIs("double value").
+                SetSutName("double value").
                 FailWhen(double.IsInfinity, "The {0} is an infinite number whereas it must not.").
-                Negates("The {0} is a finite number whereas it must not.").
+                OnNegate("The {0} is a finite number whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -74,8 +74,8 @@ namespace NFluent
             var range = new RangeBlock(expected, within);
             ExtensibilityHelper.BeginCheck(check).
                 FailWhen((sut) => !range.IsInRange(sut), "The {0} is outside the expected value range.").
-                DefineExpected(range).
-                Negates("The {0} is within the expected range, whereas it must not.").
+                DefineExpectedValue(range).
+                OnNegate("The {0} is within the expected range, whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

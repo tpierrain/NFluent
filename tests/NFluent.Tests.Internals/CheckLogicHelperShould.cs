@@ -30,13 +30,14 @@ namespace NFluent.Tests
             var checker = ExtensibilityHelper.ExtractChecker(fluentChecker.Not);
 
             checker.BeginCheck()
-                .DefineExpected("other")
+                .DefineExpectedValue("other")
                 .FailWhen((x) => x.Equals("test"), "The {0} should be equal to the {1}.")
-                .Negates("No need")
+                .OnNegate("No need")
                 .EndCheck();
         }
 
-        class Point
+        // ReSharper disable once ClassNeverInstantiated.Local
+        private class Point
         {
             public int x = 4;
         }

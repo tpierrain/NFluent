@@ -49,13 +49,13 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> HasFlag<T>(this ICheck<T> check, T flag) where T : struct, IConvertible
         {
             ExtensibilityHelper.BeginCheck(check)
-                .DefineExpected(flag, "having flag", "not having flag")
+                .DefineExpectedValue(flag, "having flag", "not having flag")
                 .FailWhen(_ => !typeof(T).TypeHasAttribute(typeof(FlagsAttribute)), 
                     "The checked enum type is not a set of flags. You must add [Flags] attribute to its declaration.")
                 .FailWhen(_ => Convert.ToInt64(flag) == 0, 
                     "Wrong chek: The expected flag is 0. You must use IsEqualTo, or a non zero flag value.")
                 .FailWhen(sut => !sut.HasFlag(flag), "The checked enum does not have the expected flag.")
-                .Negates("The {0} does have the expected flag, whereas it should not.")
+                .OnNegate("The {0} does have the expected flag, whereas it should not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

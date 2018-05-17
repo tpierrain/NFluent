@@ -40,7 +40,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => !sut.WaitOne((int)duration.ToMilliseconds()), 
                     $"The {{checked}} has not been set before the given timeout ({duration}) whereas it must be.", MessageOption.NoCheckedBlock)
-                .Negates($"The {{checked}} has been set before the given timeout ({duration}) whereas it must not.", MessageOption.NoCheckedBlock)
+                .OnNegate($"The {{checked}} has been set before the given timeout ({duration}) whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

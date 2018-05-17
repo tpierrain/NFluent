@@ -44,7 +44,7 @@ namespace NFluent
                 .FailWhen(
                     sut => sut.GetTypeInfo().GetCustomAttributes(false).All(customAttribute => customAttribute.GetType() != typeof(T)),
                     "The {0} does not have an attribute of the expected type.")
-                .Negates("The {0} does have an attribute of type {1} where as it should not.")
+                .OnNegate("The {0} does have an attribute of type {1} where as it should not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

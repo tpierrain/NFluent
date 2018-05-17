@@ -46,7 +46,7 @@ namespace NFluent.Kernel
 
         /// <inheritdoc />
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public IStructCheck<T> Not => new FluentStructCheck<T>(this.Value, !this.Negated);
+        public IStructCheck<T> Not => new FluentStructCheck<T>(Value, !Negated);
 
         /// <summary>
         /// Gets the runner to use for checking something on a given type.
@@ -68,7 +68,7 @@ namespace NFluent.Kernel
         /// </remarks>
         object IForkableCheck.ForkInstance()
         {
-            this.Negated = !CheckContext.DefaulNegated;
+            Negated = !CheckContext.DefaulNegated;
             return this;
         }
 
@@ -83,9 +83,9 @@ namespace NFluent.Kernel
             ExtensibilityHelper.BeginCheck((FluentSut<T>) this)
                 .FailWhen(sut => sut.GetTypeWithoutThrowingException() != typeof(TU),
                     "The {0} is not an instance of the expected type.")
-                .Negates(
+                .OnNegate(
                     $"The {{0}} is an instance of [{typeof(TU).ToStringProperlyFormatted()}] whereas it must not.", MessageOption.WithType)
-                .ExpectingType(typeof(TU), "", "different from")
+                .DefineExpectedType(typeof(TU), "", "different from")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this);
         }

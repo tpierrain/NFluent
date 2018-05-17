@@ -47,7 +47,7 @@ namespace NFluent
                             match.Check(test);
                         }
                     }
-                }).Negates("The {0} is equal to one of {1} whereas it should not.")
+                }).OnNegate("The {0} is equal to one of {1} whereas it should not.")
                 .EndCheck();
         }
 
@@ -61,7 +61,7 @@ namespace NFluent
             params object[] values)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .ExpectingValues(values, values.Length, "one of", "none of")
+                .DefineExpectedValues(values, values.Length, "one of", "none of")
                 .Analyze((sut, test) =>
                 {
                     bool match = false;
@@ -85,7 +85,7 @@ namespace NFluent
                     }
 
                     test.FailWhen(_ => !match, "The {0} is equal to none of the {1} whereas it should.");
-                }).Negates("The {0} is equal to one of {1} whereas it should not.")
+                }).OnNegate("The {0} is equal to one of {1} whereas it should not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -104,7 +104,7 @@ namespace NFluent
                         return !test.Failed && scan.Value != null;
                     });
                 })
-                .Negates("The {0} has only null member, whereas it should not.", MessageOption.NoCheckedBlock)
+                .OnNegate("The {0} has only null member, whereas it should not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -123,7 +123,7 @@ namespace NFluent
                         return !test.Failed && scan.Value != null;
                     });
                 })
-                .Negates("The {0} has a non null member, whereas it should not.")
+                .OnNegate("The {0} has a non null member, whereas it should not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -142,7 +142,7 @@ namespace NFluent
                         {
                             test.CheckSutAttributes(_ => match.Expected.Value, match.Expected.MemberLabel)
                                 .Fail("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock)
-                                .DefineExpected(match.Expected.Value);
+                                .DefineExpectedValue(match.Expected.Value);
                             break;
                         }
 
@@ -156,12 +156,12 @@ namespace NFluent
                         {
                             test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
                                 .Fail("The {0} does not reference the {1}.")
-                                .DefineExpected(match.Expected.Value);
+                                .DefineExpectedValue(match.Expected.Value);
                             break;
                         }
                     }
                 })
-                .Negates("The {0} contains the same reference than the {1}, whereas it should not.")
+                .OnNegate("The {0} contains the same reference than the {1}, whereas it should not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -180,7 +180,7 @@ namespace NFluent
                         {
                             test.CheckSutAttributes(_ => match.Expected.Value, match.Expected.MemberLabel)
                                 .Fail("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock)
-                                .DefineExpected(match.Expected.Value);
+                                .DefineExpectedValue(match.Expected.Value);
                             break;
                         }
 
@@ -199,7 +199,7 @@ namespace NFluent
                         }
                     }
                 })
-                .Negates("The {0} contains the same reference than the {1}, whereas it should not.")
+                .OnNegate("The {0} contains the same reference than the {1}, whereas it should not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

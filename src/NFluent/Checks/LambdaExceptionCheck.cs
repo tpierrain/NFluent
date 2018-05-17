@@ -71,7 +71,7 @@ namespace NFluent
                     test.FailWhen(_ => resultException == null,
                         "The {0} is not of the expected type.");
                 })
-                .ExpectingType(typeof(TE), "", "")
+                .DefineExpectedType(typeof(TE), "", "")
                 .EndCheck();
             return new LambdaExceptionCheck<TE>((TE)resultException);
         }
@@ -104,10 +104,10 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
                 .InvalidIf(sut=>sut == null, "No exception. Can't be used when negated.")
-                .SutNameIs("exception")
+                .SetSutName("exception")
                 .CheckSutAttributes(sut =>  sut.Message, "message")
                 .FailWhen(sut => sut != exceptionMessage, "The {0} is not as expected.")
-                .DefineExpected(exceptionMessage)
+                .DefineExpectedValue(exceptionMessage)
                 .EndCheck();
 
             return new CheckLink<ILambdaExceptionCheck<T>>(checker);
@@ -127,7 +127,7 @@ namespace NFluent
             var found = false;
             ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
                 .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
-                .SutNameIs("exception")
+                .SetSutName("exception")
                 .CheckSutAttributes(sut =>
                 {
                     var type = sut.GetType();
@@ -143,7 +143,7 @@ namespace NFluent
                 .FailWhen(_=> !found, $"There is no property [{propertyName}] on exception type [{typeof(T).Name}].", MessageOption.NoCheckedBlock)
                 .FailWhen(sut => !EqualityHelper.FluentEquals(sut, propertyValue),
                     "The {0} does not have the expected value.")
-                .DefineExpected(propertyValue)
+                .DefineExpectedValue(propertyValue)
                 .EndCheck();
  
             return new CheckLink<ILambdaExceptionCheck<T>>(checker);
@@ -167,11 +167,11 @@ namespace NFluent
             var propertyName = memberExpression?.Member.Name ?? propertyExpression.ToString();
             ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
                 .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
-                .SutNameIs("exception")
+                .SetSutName("exception")
                 .CheckSutAttributes(sut => propertyExpression.Compile().Invoke(sut), $"property [{propertyName}]")
                 .FailWhen(sut => !EqualityHelper.FluentEquals(sut, propertyValue),
                     "The {0} does not have the expected value.")
-                .DefineExpected(propertyValue)
+                .DefineExpectedValue(propertyValue)
                 .EndCheck();
             
             return new CheckLink<ILambdaExceptionCheck<T>>(checker);

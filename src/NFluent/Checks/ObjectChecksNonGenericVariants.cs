@@ -50,7 +50,7 @@ namespace NFluent
                                 {
                                     test.CheckSutAttributes(_ => actual.Value, actual.MemberLabel)
                                         .Fail("The {0} is of a different type than the {1}.")
-                                        .ExpectingType(expected.ValueType, "", "");
+                                        .DefineExpectedType(expected.ValueType, "", "");
                                     return false;
                                 }
 
@@ -65,7 +65,7 @@ namespace NFluent
                             if (actual == null) 
                             {
                                 test.CheckSutAttributes(_ => expectedWrapper.Value, expected.MemberLabel)
-                                    .DefineExpected(expected)
+                                    .DefineExpectedValue(expected)
                                     .Fail("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock);
                             }
                             else
@@ -87,8 +87,8 @@ namespace NFluent
                             $"The {{0}} is not an instance of [{type.ToStringProperlyFormatted()}].", sut != null ? MessageOption.WithType : MessageOption.None);
                     }
                 })
-                .ExpectingType(type, "", "different from")
-                .Negates($"The {{0}} is an instance of [{type.ToStringProperlyFormatted()}] whereas it must not.", MessageOption.WithType)
+                .DefineExpectedType(type, "", "different from")
+                .OnNegate($"The {{0}} is an instance of [{type.ToStringProperlyFormatted()}] whereas it must not.", MessageOption.WithType)
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

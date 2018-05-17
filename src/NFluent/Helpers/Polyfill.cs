@@ -279,5 +279,6 @@ namespace NFluent
             return array.LongLength;
 #endif
         }
+
     }
 }
