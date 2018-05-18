@@ -14,6 +14,7 @@
  // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using System.Collections.Generic;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -72,6 +73,34 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(new [] {"test", "another"}).Not.DoesNotContainNull()).
                 IsAFaillingCheckWithMessage("",
                     "The checked enumerable should contain at least one null entry.",
+                    "The checked enumerable:",
+                    "\t[\"test\", \"another\"] (2 items)");
+        }
+
+        [Test]
+        public void
+            CheckForPresenceOfWrongType()
+        {
+            var array = new [] {"test", "another"};
+            Check.That(array).ContainsOnlyInstanceOf(typeof(string));
+
+            Check.ThatCode(() => Check.That(new List<object>() {"test", "another", 4}).ContainsOnlyInstanceOf(typeof(string))).
+                IsAFaillingCheckWithMessage("",
+                    "The checked enumerable contains an entry of a type different from String at position 2.",
+                    "The checked enumerable:",
+                    "\t[\"test\", \"another\", 4] (3 items)");
+        }
+        
+        [Test]
+        public void
+            CheckForAbsencefWrongType()
+        {
+            var array = new List<object> {"test", "another", 4};
+            Check.That(array).Not.ContainsOnlyInstanceOf(typeof(string));
+
+            Check.ThatCode(() => Check.That(new List<object> {"test", "another"}).Not.ContainsOnlyInstanceOf(typeof(string))).
+                IsAFaillingCheckWithMessage("",
+                    "The checked enumerable should contain at least one entry of a type different from String.",
                     "The checked enumerable:",
                     "\t[\"test\", \"another\"] (2 items)");
         }

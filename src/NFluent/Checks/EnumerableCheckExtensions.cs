@@ -517,7 +517,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(context).
                 Analyze((sut, test) =>
                 {
-                    var store  = new ArrayList();
+                    var store  = new List<object>();
                     foreach (var entry in sut)
                     {
                         if (store.Contains(entry))
@@ -558,6 +558,35 @@ namespace NFluent
                     }
                 }).
                 OnNegate("The {checked} should contain at least one null entry.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(context);
+        }
+
+        /// <summary>
+        /// Checks that all items in an enumeration are non null.
+        /// </summary>
+        /// <param name="context">Context for the check</param>
+        /// <param name="type">Expected type</param>
+        /// <typeparam name="T">Type of enumeration</typeparam>
+        /// <returns>A context link.</returns>
+        public static ICheckLink<ICheck<T>> ContainsOnlyInstanceOf<T>(this ICheck<T> context, Type type) where T : IEnumerable
+        {
+            ExtensibilityHelper.BeginCheck(context).
+                Analyze((sut, test) =>
+                {
+                    var index = 0;
+                    foreach (var entry in sut)
+                    {
+                        if (!type.IsInstanceOfType(entry))
+                        {
+                            test.Fail($"The {{checked}} contains an entry of a type different from {type.Name} at position {index}.");
+                            return;
+                        }
+
+                        index++;
+                    }
+                }).
+                OnNegate($"The {{checked}} should contain at least one entry of a type different from {type.Name}.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(context);
         }

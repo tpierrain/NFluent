@@ -16,6 +16,10 @@
 namespace NFluent
 {
     using Extensibility;
+    using Extensions;
+#if NETSTANDARD1_3
+    using System.Reflection;
+#endif
 
 #if DOTNET_35
     /// <summary>
@@ -279,6 +283,13 @@ namespace NFluent
             return array.LongLength;
 #endif
         }
+
+#if NETSTANDARD1_3
+        public static bool IsInstanceOfType(this System.Type type, object instance)
+        {
+            return instance == null ? false : type.GetTypeInfo().IsAssignableFrom(instance.GetType().GetTypeInfo());
+        }
+#endif
 
     }
 }
