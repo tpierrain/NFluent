@@ -32,27 +32,12 @@ namespace NFluent.Extensibility
         /// <returns>Continuation object.</returns>
         public static ICheckLogic<T> FailWhen<T>(this ICheckLogic<T> logic, Func<T, bool> predicate, string error, MessageOption newOptions = MessageOption.None)
         {
-            return logic.FailWhen(predicate, (x, y) => error, newOptions);
-        }
-
-        /// <summary>
-        /// Failing condition
-        /// </summary>
-        /// <param name="logic"></param>
-        /// <param name="predicate">Predicate, returns true if test fails.</param>
-        /// <param name="errorBuilder">Error message builder function</param>
-        /// <param name="options"></param>
-        /// <returns>Continuation object.</returns>
-        public static ICheckLogic<T> FailWhen<T>(this ICheckLogic<T> logic, Func<T, bool> predicate, Func<T, ICheckLogic<T>, string> errorBuilder,
-            MessageOption options = MessageOption.None)
-        {
             return logic.Analyze((sut2, test) =>
             {
                 if (predicate(sut2))
                 {
-                    test.Fail(errorBuilder(sut2, test), options);
+                    test.Fail(error, newOptions);
                 }
-               
             });
         }
 

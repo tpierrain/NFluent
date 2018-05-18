@@ -33,9 +33,8 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailIfNull()
                 .SetSutName("stream")
-                .FailWhen(sut => sut.Length != expected.Length,
-                    (sut, test) =>
-                        "The {0} doesn't have the same content as the expected one. They don't even have the same Length!")
+                .FailWhen(sut => sut.Length != expected.Length, 
+                    "The {0} doesn't have the same content as the expected one. They don't even have the same Length!")
                 .DefineExpectedValue(expected)
                 .Analyze((sut, test) =>
                 {

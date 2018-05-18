@@ -506,6 +506,62 @@ namespace NFluent
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
+        /// <summary>
+        /// Checks that all items in an enumeration are unique.
+        /// </summary>
+        /// <param name="context">Context for the check</param>
+        /// <typeparam name="T">Type of enumeration</typeparam>
+        /// <returns>A context link.</returns>
+        public static ICheckLink<ICheck<T>> ContainsNoDuplicateItem<T>(this ICheck<T> context) where T : IEnumerable
+        {
+            ExtensibilityHelper.BeginCheck(context).
+                Analyze((sut, test) =>
+                {
+                    var store  = new ArrayList();
+                    foreach (var entry in sut)
+                    {
+                        if (store.Contains(entry))
+                        {
+                            test.Fail($"The {{checked}} contains a duplicate item at position {store.Count}: [{entry}].");
+                            return;
+                        }
+
+                        store.Add(entry);
+                    }
+                }).
+                OnNegate("The {checked} should contain duplicates.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(context);
+        }
+        
+        /// <summary>
+        /// Checks that all items in an enumeration are non null.
+        /// </summary>
+        /// <param name="context">Context for the check</param>
+        /// <typeparam name="T">Type of enumeration</typeparam>
+        /// <returns>A context link.</returns>
+        public static ICheckLink<ICheck<T>> DoesNotContainNull<T>(this ICheck<T> context) where T : IEnumerable
+        {
+            ExtensibilityHelper.BeginCheck(context).
+                Analyze((sut, test) =>
+                {
+                    var index = 0;
+                    foreach (var entry in sut)
+                    {
+                        if (entry == null)
+                        {
+                            test.Fail($"The {{checked}} contains a null item at position {index}.");
+                            return;
+                        }
+
+                        index++;
+                    }
+                }).
+                OnNegate("The {checked} should contain at least one null entry.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(context);
+        }
+
         private static string BuildElementNumberLiteral(long itemsCount)
         {
             var foundElementsNumberDescription = itemsCount.ToString();

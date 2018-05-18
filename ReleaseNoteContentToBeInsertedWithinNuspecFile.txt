@@ -20,6 +20,8 @@ of IErrorReporter interface, and specify you want to use it by setting the Check
   * Check.ThatCode now supports _async_ methods/delegates transparently.
 * Check expression now provides the result as a string. I.e Check.That(true).IsTrue().ToString() returns "Success".
 * New check: IsDefaultValue, which fails if the sut is not the default value for its type: null for ref types, 0 for value types.
+* New check: ContainsNoDuplicateItem for enumerable, that fails of it contains a dupe.
+* New check: DoesNotContainNull for enumerable, that fails if an entry is null.
 
 ### Fixes
  * Check.ThatCode(...).Not.Throws\<T\>() may throw an InvalidCastException when thrown exception is not T.
@@ -45,7 +47,8 @@ of IErrorReporter interface, and specify you want to use it by setting the Check
  
 ### GitHub Issues
 * #228, #227, #222, #223, #217, #230, #232, 
-* #236, #238, #242, #243, #244, #245, #246
+* #236, #238, #242, #243, #244, #245, #246,
+* #21
 
 ------
 ## V 2.2.0

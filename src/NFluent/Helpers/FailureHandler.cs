@@ -83,9 +83,9 @@ namespace NFluent.Helpers
         public static ICheckLink<ICodeCheck<RunTrace>> IsAFaillingCheck(this ICodeCheck<RunTrace> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
                 .SetSutName("fluent check")
-                .FailIfNull()
+                .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
+                .FailIfNull("The fluent check did not raise an exception, where as it must.")
                 .FailWhen((sut) => !ExceptionHelper.IsFailedException(sut),
                     "The exception raised is not of the expected type").
                 DefineExpectedType(ExceptionHelper.BuildException(string.Empty).GetType(), "an instance of:", "an instance of a different type").
