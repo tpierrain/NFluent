@@ -336,7 +336,7 @@ CREATING NUGET PACKAGE IN:
             "  />
       <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
       <Delete Files="$(PackagesPath)\*.*"/>
-      <Exec Command='"$(NuGetExePath)" pack "$(NuspecFilePath)" -o "$(PackagesPath)"' LogStandardErrorAsError="true" />
+      <Exec Command='"$(NuGetExePath)" pack "$(NuspecFilePath)" -OutputDirectory "$(PackagesPath)"' LogStandardErrorAsError="true" />
 
         <Message Importance="high" Text="--------- End of PACKAGE ---------"/>
   </Target>
