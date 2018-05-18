@@ -540,7 +540,7 @@ namespace NFluent
         /// <param name="context">Context for the check</param>
         /// <typeparam name="T">Type of enumeration</typeparam>
         /// <returns>A context link.</returns>
-        public static ICheckLink<ICheck<T>> DoesNotContainNull<T>(this ICheck<T> context) where T : IEnumerable
+        public static ICheckLink<ICheck<T>> ContainsNoNull<T>(this ICheck<T> context) where T : IEnumerable
         {
             ExtensibilityHelper.BeginCheck(context).
                 Analyze((sut, test) =>
@@ -569,7 +569,7 @@ namespace NFluent
         /// <param name="type">Expected type</param>
         /// <typeparam name="T">Type of enumeration</typeparam>
         /// <returns>A context link.</returns>
-        public static ICheckLink<ICheck<T>> ContainsOnlyInstanceOf<T>(this ICheck<T> context, Type type) where T : IEnumerable
+        public static ICheckLink<ICheck<T>> ContainsOnlyInstanceOfType<T>(this ICheck<T> context, Type type) where T : IEnumerable
         {
             ExtensibilityHelper.BeginCheck(context).
                 Analyze((sut, test) =>

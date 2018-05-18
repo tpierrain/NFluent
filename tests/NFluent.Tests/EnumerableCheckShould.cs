@@ -54,9 +54,9 @@ namespace NFluent.Tests
             CheckForPresenceOfNull()
         {
             var array = new [] {"test", "another"};
-            Check.That(array).DoesNotContainNull();
+            Check.That(array).ContainsNoNull();
 
-            Check.ThatCode(() => Check.That(new [] {"test", "another", null}).DoesNotContainNull()).
+            Check.ThatCode(() => Check.That(new [] {"test", "another", null}).ContainsNoNull()).
                 IsAFaillingCheckWithMessage("",
                     "The checked enumerable contains a null item at position 2.",
                     "The checked enumerable:",
@@ -68,9 +68,9 @@ namespace NFluent.Tests
             CheckForAbsenceOfNull()
         {
             var array = new [] {"test", "another", null};
-            Check.That(array).Not.DoesNotContainNull();
+            Check.That(array).Not.ContainsNoNull();
 
-            Check.ThatCode(() => Check.That(new [] {"test", "another"}).Not.DoesNotContainNull()).
+            Check.ThatCode(() => Check.That(new [] {"test", "another"}).Not.ContainsNoNull()).
                 IsAFaillingCheckWithMessage("",
                     "The checked enumerable should contain at least one null entry.",
                     "The checked enumerable:",
@@ -82,9 +82,9 @@ namespace NFluent.Tests
             CheckForPresenceOfWrongType()
         {
             var array = new [] {"test", "another"};
-            Check.That(array).ContainsOnlyInstanceOf(typeof(string));
+            Check.That(array).ContainsOnlyInstanceOfType(typeof(string));
 
-            Check.ThatCode(() => Check.That(new List<object>() {"test", "another", 4}).ContainsOnlyInstanceOf(typeof(string))).
+            Check.ThatCode(() => Check.That(new List<object>() {"test", "another", 4}).ContainsOnlyInstanceOfType(typeof(string))).
                 IsAFaillingCheckWithMessage("",
                     "The checked enumerable contains an entry of a type different from String at position 2.",
                     "The checked enumerable:",
@@ -96,9 +96,9 @@ namespace NFluent.Tests
             CheckForAbsencefWrongType()
         {
             var array = new List<object> {"test", "another", 4};
-            Check.That(array).Not.ContainsOnlyInstanceOf(typeof(string));
+            Check.That(array).Not.ContainsOnlyInstanceOfType(typeof(string));
 
-            Check.ThatCode(() => Check.That(new List<object> {"test", "another"}).Not.ContainsOnlyInstanceOf(typeof(string))).
+            Check.ThatCode(() => Check.That(new List<object> {"test", "another"}).Not.ContainsOnlyInstanceOfType(typeof(string))).
                 IsAFaillingCheckWithMessage("",
                     "The checked enumerable should contain at least one entry of a type different from String.",
                     "The checked enumerable:",
