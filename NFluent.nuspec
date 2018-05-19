@@ -30,6 +30,9 @@
 * async method/delegates
 * Check.ThatCode now supports _async_ methods/delegates transparently.
 * Check expression now provides the result as a string. I.e Check.That(true).IsTrue().ToString() returns "Success".
+* New check: IsDefaultValue, which fails if the sut is not the default value for its type: null for ref types, 0 for value types.
+* New check: ContainsNoDuplicateItem for enumerable, that fails of it contains a dupe.
+* New check: DoesNotContainNull for enumerable, that fails if an entry is null.
 ### Fixes
 * Check.ThatCode(...).Not.Throws\&lt;T\&gt;() may throw an InvalidCastException when thrown exception is not T.
 * Extension checks to Throw\&lt;\&gt;, ThrowType or ThrowAny raise an exception when used with Not as it does not make sense.
@@ -52,7 +55,8 @@
 * Removed Failure method from IChecker interface
 ### GitHub Issues
 * #228, #227, #222, #223, #217, #230, #232,
-* #236, #238, #242, #243, #244, #245
+* #236, #238, #242, #243, #244, #245, #246,
+* #21
 ------
 ## V 2.2.0
 ---------------

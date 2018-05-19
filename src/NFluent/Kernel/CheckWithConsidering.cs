@@ -15,7 +15,6 @@
 
 namespace NFluent.Kernel
 {
-    using System.Reflection;
     using Helpers;
 
     internal class CheckWithConsidering: FluentCheck<ReflectionWrapper>, ICheckPlusAnd, IMembersSelection

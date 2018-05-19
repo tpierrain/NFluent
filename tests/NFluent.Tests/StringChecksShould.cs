@@ -377,10 +377,6 @@ namespace NFluent.Tests
                     "\t[\"Metronomy\", \"Sigur Ros\", \"The Black Keys\", \"Get Well Soon\"]");
         }
 
-        #endregion
-
-        #region Match
-
         [Test]
         public void StringMatchesWorks()
         {
@@ -393,6 +389,22 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That("AC 12").Matches("[0-9]. [a-z]*"); })
                 .IsAFaillingCheckWithMessage("", "The checked string does not match the expected one.", "The checked string:", "\t[\"AC 12\"]",
                 "The expected string: matches", "\t[\"[0-9]. [a-z]*\"]");
+        }
+
+        [Test]
+        public void StringMatchesWildcardWorks()
+        {
+            Check.That("12 ac").MatchesWildcards("1*c");
+        }
+
+        [Test]
+        public void StringMatchesWildcardFails()
+        {
+            Check.ThatCode(() => { Check.That("AC 12").MatchesWildcards("1*c"); })
+                .IsAFaillingCheckWithMessage("", 
+                    "The checked string does not match the expected one.", 
+                    "The checked string:", "\t[\"AC 12\"]",
+                "The expected string: matches", "\t[\"1*c\"]");
         }
 
         [Test]

@@ -23,7 +23,7 @@ namespace NFluent.Kernel
     /// <typeparam name="T">Type of the SUT</typeparam>
     public class FluentSut<T>: IWithValue<T>, INegated
     {
-        private readonly IErrorReporter reporter;
+        private readonly T value;
 
         /// <summary>
         /// Builds a new <see cref="FluentSut{T}"/> instance.
@@ -42,8 +42,8 @@ namespace NFluent.Kernel
         /// <param name="negated">true if the check logic must be negated.</param>
         public FluentSut(T value, IErrorReporter reporter, bool negated)
         {
-            this.reporter = reporter;
-            this.Value = value;
+            this.Reporter = reporter;
+            this.value = value;
             this.Negated = negated;
         }
 
@@ -55,7 +55,7 @@ namespace NFluent.Kernel
         /// <summary>
         ///     Sut
         /// </summary>
-        public T Value { get; }
+        public T Value => this.value;
 
         /// <summary>
         /// Name for the sut.
@@ -65,6 +65,6 @@ namespace NFluent.Kernel
         /// <summary>
         /// Gets the error reporter
         /// </summary>
-        public IErrorReporter Reporter => this.reporter;
+        public IErrorReporter Reporter { get; }
     }
 }

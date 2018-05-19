@@ -255,21 +255,46 @@ namespace NFluent
         }
 
         /// <summary>
-        ///     Checks that the string matches a given regular expression.
+        /// Checks that the string matches a given regular expression.
         /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="context">The fluent check to be extended.</param>
         /// <param name="regExp">The regular expression.</param>
         /// <returns>
         ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
-        public static ICheckLink<ICheck<string>> Matches(this ICheck<string> check, string regExp)
+        public static ICheckLink<ICheck<string>> Matches(this ICheck<string> context, string regExp)
         {
-            var checker = ExtensibilityHelper.ExtractChecker(check);
+            ExtensibilityHelper.BeginCheck(context)
+                .DefineExpectedValue(regExp, "matches", "does not match")
+                .FailIfNull()
+                .FailWhen(sut => new Regex(regExp).IsMatch(sut) == false, "The {0} does not match the {1}.")
+                .OnNegate("The {0} matches the {1}, whereas it must not.")
+                .EndCheck();
 
-            MatchesImpl(checker, regExp);
+            return ExtensibilityHelper.BuildCheckLink(context);
+        }
 
-            return checker.BuildChainingObject();
+        /// <summary>
+        /// Checks that the string matches a given expression with wildcard.
+        /// </summary>
+        /// <param name="context">The fluent check to be extended.</param>
+        /// <param name="expression">The regular expression.</param>
+        /// <returns>
+        ///     A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The string does not end with the expected prefix.</exception>
+        public static ICheckLink<ICheck<string>> MatchesWildcards(this ICheck<string> context, string expression)
+        {
+            var regExp = "^"+Regex.Escape(expression).Replace("\\*", ".*").Replace("\\?", ".")+"$";
+            ExtensibilityHelper.BeginCheck(context)
+                .DefineExpectedValue(expression, "matches", "does not match")
+                .FailIfNull()
+                .FailWhen(sut => new Regex(regExp).IsMatch(sut) == false, "The {0} does not match the {1}.")
+                .OnNegate("The {0} matches the {1}, whereas it must not.")
+                .EndCheck();
+
+            return ExtensibilityHelper.BuildCheckLink(context);
         }
 
         /// <summary>
@@ -286,15 +311,6 @@ namespace NFluent
             return check.Not.Matches(regExp);
          }
 
-        private static void MatchesImpl(IChecker<string, ICheck<string>> checker, string regExp)
-        {
-            checker.BeginCheck()
-                .DefineExpectedValue(regExp, "matches", "does not match")
-                .FailIfNull()
-                .FailWhen(sut => new Regex(regExp).IsMatch(sut) == false, "The {0} does not match the {1}.")
-                .OnNegate("The {0} matches the {1}, whereas it must not.")
-                .EndCheck();
-        }
 
         /// <summary>
         ///     Checks that the string is null, empty or only spaces.
