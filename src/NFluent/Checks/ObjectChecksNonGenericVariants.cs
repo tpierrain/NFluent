@@ -13,7 +13,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable once CheckNamespace
 namespace NFluent
 {
     using System;
@@ -46,15 +45,16 @@ namespace NFluent
                         {
                             if (actual != null && expected != null && actual.ValueType != expected.ValueType)
                             {
-                                if (actual.ValueType.IsPrimitive() || expected.ValueType.IsPrimitive())
+                                if (!actual.ValueType.IsPrimitive() && !expected.ValueType.IsPrimitive())
                                 {
-                                    test.CheckSutAttributes(_ => actual.Value, actual.MemberLabel)
-                                        .Fail("The {0} is of a different type than the {1}.")
-                                        .DefineExpectedType(expected.ValueType, "", "");
-                                    return false;
+                                    return true;
                                 }
 
-                                return true;
+                                test.CheckSutAttributes(_ => actual.Value, actual.MemberLabel)
+                                    .Fail("The {0} is of a different type than the {1}.")
+                                    .DefineExpectedType(expected.ValueType, "", "");
+                                return false;
+
                             }
 
                             if (actual != null && expected != null && expected.ValueType == actual.ValueType)
@@ -78,7 +78,7 @@ namespace NFluent
                     }
                     else if (typeof(T).IsNullable())
                     {
-                        test.FailWhen(sut2 => typeof(T)!= type || (sut2 == null && !typeof(T).IsNullable()),
+                        test.FailWhen(sut2 => typeof(T)!= type,
                             $"The {{0}} is not an instance of [{type.ToStringProperlyFormatted()}].", MessageOption.WithType);
                     }
                     else
@@ -91,6 +91,54 @@ namespace NFluent
                 .OnNegate($"The {{0}} is an instance of [{type.ToStringProperlyFormatted()}] whereas it must not.", MessageOption.WithType)
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+        /// <summary>
+        /// Checks that the sut's type is not one of forbidden types types.
+        /// </summary>
+        /// <param name="context">check context</param>
+        /// <param name="types">possible types</param>
+        /// <typeparam name="T">type of the SUT</typeparam>
+        /// <returns>check link</returns>
+        public static ICheckLink<ICheck<T>> IsNotAnInstanceOfThese<T>(this ICheck<T> context, params Type[] types)
+        {
+            if (types.Length == 1)
+            {
+                return IsInstanceOfType<T>(context.Not, types[0]);
+            }
+            
+            ExtensibilityHelper.BeginCheck(context)
+                .CheckSutAttributes( sut => sut.GetTypeWithoutThrowingException<T>(), "type")
+                .Analyze((sut, test) =>
+                {
+                        foreach (var type in types)
+                        {
+                            if (sut == type)
+                            {
+                                test.Fail(
+                                    $"The {{0}} is [{type.ToStringProperlyFormatted()}] where as it must not.");
+                                break;
+                            }
+                        }
+                })
+                .DefineExpectedValue(types, "anything but", "one of those")
+                .OnNegate($"The {{0}} is not one of the expected types.")
+                .EndCheck();
+                
+            return ExtensibilityHelper.BuildCheckLink(context);
+        }
+
+
+        /// <summary>
+        /// Checks that the sut's type is one of several possible types.
+        /// </summary>
+        /// <param name="context">check context</param>
+        /// <param name="types">possible types</param>
+        /// <typeparam name="T">type of the SUT</typeparam>
+        /// <returns>check link</returns>
+        public static ICheckLink<ICheck<T>> IsAnInstanceOfOneOf<T>(this ICheck<T> context, params Type[] types)
+        {
+            return context.Not.IsNotAnInstanceOfThese(types);
         }
 
         /// <summary>

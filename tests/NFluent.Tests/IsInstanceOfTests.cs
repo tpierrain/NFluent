@@ -478,5 +478,83 @@ namespace NFluent.Tests
                     "The expected value's type: does not inherits from",
                     "\t[NFluent.Tests.Person]");
         }
+
+        [Test]
+        public void
+            IsNoInstanceOfAny()
+        {
+            var father = new Person {Name = "Odysseus"};
+
+            Check.That(father).IsNotAnInstanceOfThese(typeof(int), typeof(string), typeof(Version));
+            int? val = 12;
+
+            Check.That(val).IsNotAnInstanceOfThese(typeof(int), typeof(string), typeof(Version));
+        }
+
+        [Test]
+        public void IsNotAnInstanceOfTheseFailsWithProperMessage()
+        {
+            var father = new Person {Name = "Odysseus"};
+            Check.ThatCode(()=>
+                    Check.That(father).IsNotAnInstanceOfThese(typeof(int), typeof(string), typeof(Person))).
+                IsAFaillingCheckWithMessage("",
+                    "The checked value's type is [NFluent.Tests.Person] where as it must not.",
+                    "The checked value's type:",
+                    "\t[NFluent.Tests.Person]",
+                    "The expected value's type: anything but",
+                    "\t[int, string, NFluent.Tests.Person]");
+            int? val = 12;
+            Check.ThatCode(() => Check.That(val).IsNotAnInstanceOfThese(typeof(int?), typeof(string), typeof(Person)))
+                .IsAFaillingCheckWithMessage("",
+                    "The checked value's type is [int?] where as it must not.",
+                    "The checked value's type:",
+                    "\t[int?]", 
+                    "The expected value's type: anything but", 
+                    "\t[int?, string, NFluent.Tests.Person]");
+        }
+
+        [Test]
+        public void
+            IsAnInstanceOfAny()
+        {
+            var father = new Person {Name = "Odysseus"};
+
+            Check.That(father).IsAnInstanceOfOneOf(typeof(int?), typeof(string), typeof(Person));
+            int? val = 12;
+
+            Check.That(val).IsAnInstanceOfOneOf(typeof(int?), typeof(string), typeof(Version));
+        }
+
+        [Test]
+        public void IsAnInstanceOfAnyFailsWithProperMessage()
+        {
+            var father = new Person {Name = "Odysseus"};
+            Check.ThatCode(()=>
+                    Check.That(father).IsAnInstanceOfOneOf(typeof(int), typeof(string), typeof(Version))).
+                IsAFaillingCheckWithMessage("",
+                    "The checked value's type is not one of the expected types.",
+                    "The checked value's type:",
+                    "\t[NFluent.Tests.Person]",
+                    "The expected value's type: one of those",
+                    "\t[int, string, System.Version]");
+            int? val = 12;
+            Check.ThatCode(() => Check.That(val).IsAnInstanceOfOneOf(typeof(int), typeof(string), typeof(Person)))
+                .IsAFaillingCheckWithMessage("",
+                    "The checked value's type is not one of the expected types.",
+                    "The checked value's type:",
+                    "\t[int?]", 
+                    "The expected value's type: one of those", 
+                    "\t[int, string, NFluent.Tests.Person]");
+
+            // check for specific case when only one type
+            Check.ThatCode(() => Check.That(val).IsAnInstanceOfOneOf(typeof(int)))
+                .IsAFaillingCheckWithMessage("",
+                    "The checked value is not an instance of [int].",
+                    "The checked value:",
+                    "\t[12] of type: [int?]", 
+                    "The expected value:", 
+                    "\tan instance of type: [int]");
+        }
+
     }
 }

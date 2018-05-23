@@ -16,6 +16,7 @@
 namespace NFluent.Kernel
 {
     using System.Collections;
+    using System.Diagnostics;
     using Extensibility;
     using Extensions;
 
@@ -23,6 +24,7 @@ namespace NFluent.Kernel
 #if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
     using System;
 #endif
+    [DebuggerNonUserCode]
     internal class CheckLogic<T> : ICheckLogic<T>
     {
         private readonly FluentSut<T> fluentSut;
