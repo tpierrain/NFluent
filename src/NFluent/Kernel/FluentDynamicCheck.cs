@@ -50,7 +50,7 @@ namespace NFluent
                     ? "The {0} is not null whereas it must."
                     : "The {0} is null whereas it must not.")
                 .For("dynamic")
-                .On(this.value);
+                .On<object>(this.value);
 
             throw new FluentCheckException(message.ToString());
         }
@@ -70,7 +70,7 @@ namespace NFluent
                 .BuildMessage(this.negated
                     ? "The {0} is  the expected reference whereas it must not."
                     : "The {0} is not the expected reference.").For("dynamic")
-                .Expected(expected).And.On(this.value);
+                .Expected(expected).And.On<object>(this.value);
             throw new FluentCheckException(message.ToString());
         }
 
@@ -90,7 +90,7 @@ namespace NFluent
                 .BuildMessage(this.negated
                     ? "The {0} is equal to the {1} whereas it must not."
                     : "The {0} is not equal to the {1}.").For("dynamic")
-                .Expected(expected).And.On(this.value);
+                .Expected(expected).And.On((object)this.value);
             throw new FluentCheckException(message.ToString());
         }
 

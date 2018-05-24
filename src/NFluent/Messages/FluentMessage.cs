@@ -174,7 +174,7 @@ namespace NFluent.Extensibility
         /// <returns>
         /// A <see cref="FluentMessage"/> to continue build the message.
         /// </returns>
-        public MessageBlock On(object test, long index = 0)
+        public MessageBlock On<T>(T test, long index = 0)
         {
             this.checkedBlock = new MessageBlock(this, test, this.checkedLabel, index);
             if (this.referenceType == null)

@@ -124,9 +124,9 @@ namespace NFluent.Tests
             }).IsAFaillingCheckWithMessage("",  
                 "The checked value's property 'ThePrivateProperty' does not have the expected value.", 
                 "The checked value's property 'ThePrivateProperty':", 
-                "\t[null] of type: [object]", 
+                "\t[null]", 
                 "The expected value's property 'ThePrivateProperty':", 
-                "\t[System.Object] of type: [object]");
+                "\t[System.Object]");
         }
 
         [Test]

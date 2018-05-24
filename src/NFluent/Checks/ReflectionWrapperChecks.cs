@@ -64,17 +64,19 @@ namespace NFluent
                 .DefineExpectedValues(values, values.Length, "one of", "none of")
                 .Analyze((sut, test) =>
                 {
-                    bool match = false;
+                    var match = false;
                     foreach (var value in values)
                     {
                         match = true;
                         foreach (var memberMatch in sut.MemberMatches(value))
                         {
-                            if (!memberMatch.DoValuesMatches)
+                            if (memberMatch.DoValuesMatches)
                             {
-                                match = false;
-                                break;
+                                continue;
                             }
+
+                            match = false;
+                            break;
 
                         }
 

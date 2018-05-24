@@ -34,8 +34,9 @@ namespace NFluent
         /// <returns>A check link</returns>
         public static ICheckLink<ICheck<T>> IsInstanceOfType<T>(this ICheck<T> check, Type type)
         {
-            ExtensibilityHelper.BeginCheck(check)
-                .Analyze((sut, test) =>
+            ExtensibilityHelper.BeginCheck(check).
+                FailWhen(sut => sut== null && !typeof(T).IsNullable(), $"The {{checked}} is not an instance of [{type.ToStringProperlyFormatted()}].").
+                Analyze((sut, test) =>
                 {
                     var reflectionSut = sut as ReflectionWrapper;
                     if (reflectionSut != null)
@@ -84,7 +85,8 @@ namespace NFluent
                     else
                     {
                         test.FailWhen(sut2 => sut2.GetTypeWithoutThrowingException() != type,
-                            $"The {{0}} is not an instance of [{type.ToStringProperlyFormatted()}].", sut != null ? MessageOption.WithType : MessageOption.None);
+                            $"The {{0}} is not an instance of [{type.ToStringProperlyFormatted()}].", 
+                             MessageOption.WithType);
                     }
                 })
                 .DefineExpectedType(type, "", "different from")
@@ -104,11 +106,12 @@ namespace NFluent
         {
             if (types.Length == 1)
             {
-                return IsInstanceOfType<T>(context.Not, types[0]);
+                return IsInstanceOfType(context.Not, types[0]);
             }
-            
+                
             ExtensibilityHelper.BeginCheck(context)
-                .CheckSutAttributes( sut => sut.GetTypeWithoutThrowingException<T>(), "type")
+                .NegateWhen(sut => sut== null, "The {checked} is null.")
+                .CheckSutAttributes( sut => sut.GetTypeWithoutThrowingException(), "type")
                 .Analyze((sut, test) =>
                 {
                         foreach (var type in types)

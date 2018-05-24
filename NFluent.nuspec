@@ -33,6 +33,7 @@
 * New check: IsDefaultValue, which fails if the sut is not the default value for its type: null for ref types, 0 for value types.
 * New check: ContainsNoDuplicateItem for enumerable, that fails of it contains a dupe.
 * New check: DoesNotContainNull for enumerable, that fails if an entry is null.
+* New check: IsAnInstanceOfOneOf that checks if the sut is of one of exptected types.
 ### Fixes
 * Check.ThatCode(...).Not.Throws\&lt;T\&gt;() may throw an InvalidCastException when thrown exception is not T.
 * Extension checks to Throw\&lt;\&gt;, ThrowType or ThrowAny raise an exception when used with Not as it does not make sense.
@@ -56,7 +57,7 @@
 ### GitHub Issues
 * #228, #227, #222, #223, #217, #230, #232,
 * #236, #238, #242, #243, #244, #245, #246,
-* #21
+* #231, #247
 ------
 ## V 2.2.0
 ---------------
@@ -82,83 +83,7 @@
 ### Fixes
 * Fix issue with overloaded member/properties for HasFieldswithSameValues(...) (#219)
 ### GitHub Issues
-* #219, #218, #216, #215, #214, #121
-## V 2.1.1
----------------
-Bug fix(es):
-* fix issue #215: null reference exception triggered by HasFields... on null interface fields.
-V 2.1.0
---------------
-New feature(s):
-- Enumerable:
-- Breaking change: equality for Enumerable is now content based (instead of reference based). See issue #209. You can revert adding: Check.EqualMode = EqualityMode.Equals in your test set up code
-- New check ContainsOnlyElementsThatMatch which checks that all items verify a given predicate.
-- New Check: IsOneOf checks if the value belongs to a list of authorized value. Check.That(sut).IsOneOf(a, b, c, ...) fails if sut is different from all valid values
-- Improved error messages for IsEqualTo() on floating point types. Difference is displayed when small, suggestion to use IsCloseTo when difference is really small (#205).
-- Initial support for dynamics (issue #85):
-- Entry point is: Check.ThatDynamic()
-- Available checks are: IsNotNull(), IsEqualTo(...), IsSameReferenceAs(...)
-- And keyword is available
-- Not keyword is available
-- You can specify the maximum size (before truncate) for strings in error messages using **Check.StringTruncationLength** property
---------------
-Bug Fixe(s):
-- Fixed support of array types for HasFielsWithSameValues (issue #200)
-- Fixed some stack overflow exceptions (issue #210).
-- Fixed confusing examples about array item related checks in the readme
-V 2.00
---------------
-New feature(s):
-* Support for NetStandard &gt; 1.3
-* Support for Net.Core &gt; 1.0
-* Compatible for Net &gt; 2.0
-* Built for: 2.0, 3.0, 3.5, 4.0, 4.5, NetStandard 1.3
-* All: introduce: HasSameValueAs(x) that perform comparison using 'operator==' instead of 'Equals'.
-* All: introduce: HasAValueDifferentFrom(x) that perform comparison using 'operator!=' instead of '!Equals'.
-* Streams: introduce HasSameSequenceOfBytesAs() check.
-* Numbers: introduce IsPositiveOrZero() check.
-* Numbers: introduce IsNegativeOrZero() check.
-* FloatingNumbers (float, double): introduce IsCloseTo(expected, within) check for estimated value.
-* Exception: introduce the DueTo\&lt;InnerException\&gt; as an extension to Throws\&lt;Exception\&gt;. It verifies that the checked exception was triggered by a specific exception. This is done by scanning the 'innerException' chain until the expected type is identified. Further checking is done on the inner exception.
-* Exception: introduce WithProperties( expression, expectedValue) to check the value of any exception members, thanks to a selector expression.
-* IEnumerable: introduce HasElementAt(int index) which checks for an item as a specific index. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasElementAt(3).Which.IsEqualTo("foo").
-* IEnumerable: introduce HasFirstElement() which checks for the first item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasFirstElement().Which.IsEqualTo("foo").
-* IEnumerable: introduce HasLastElement() which checks for the last item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasLastElement().Which.IsEqualTo("foo").
-* IEnumerable: introduce HasOneElementOnly() which checks for the first and single item. Furthermore, this item can be checked as well thanks to 'Which'. E.g: Check.That(_collection).HasOneElementOnly().Which.IsEqualTo("foo").
-* IEnumerable: introduce HasElementThatMatches( bool predicate()) which checks that an enumerable has at least on item matching the given predicate. You can use 'Which' to check further this item. E.g.: Check.That(_collection).HasItemThatMatches((_) =&gt; _.StartWith("foo")).Which.IsEqualTo("foobar").
-* IDictionary\&lt;K,V\&gt;: now explicitely supported.
-* IDictionary\&lt;K,V\&gt;: introduce ContainsEntry\&lt;K, V\&gt;(K key, V value) which checks that a dictionary contains a specific value for a given key.
-* Hashtable: now explicitely supported.
---------------
-Change(s):
-* IEnumerable: improved description within error messages: partial dump around first difference for large sets
-* IDictionnary: no longer supported. Hashtable is supported instead
-* Numbers: introduce IsStrictlyPositive() as a substitute for IsPositive() which is now obsolete.
-* Numbers: introduce IsStrictlyNegative() as a substitute for IsNegative() which is now obsolete.
-* Numbers: introduce IsStrictlyGreaterThan() as a substitute for IsGreaterThan() which is now obsolete.
-* Numbers: introduce IsStrictlyLessThan() as a substitute for IsLessThan() which is now obsolete.
-* Floating Numbers: introduce IsCloseTo() to check if a number is close to another one.
-* Check.ThatCode(...).Throws\&lt;T\&gt;() now requires T to be an exception. This restriction ensures only Exceptions are proposed in autocompletion.
-* Improve error messages (consistency and relevance).
-* Strings: generate specific error message using IsEqualTo() when the actual string is empty
-* Strings: generate specific error message using IsEqualTo() when the expected string is empty
-* Strings: provides part of string where first difference occurs even when strings have different lenghts
-* Objects: IsSameReferenceAs supersede IsSameReferenceThan (now flagged as obsolete)
-* Objects: Dump hascodes only when NFluent cannot highligth difference.
-* Check.That(Action) can no longer be used (error, obsolete)
-* Check.That(Func\&lt;T\&gt;) can no longer be used (error, obsolete)
-* Simplify the way you can extend NFluent by adding your own checks. Now, you can call: var checker = ExtensibilityHelper.ExtractChecker(check);
-at the beginning of your check extension method, and then rely on its ExecuteCheck() or BuildMessage() helper methods to do the job. Note: the Checker is part of the NFluent.Extensibility namespace.
-* Reviewing of public elements: Some classes are no longer public. They should never have been in the first case.
-* Signature of ILambdaExceptionCheck has been updated to refer the checked exception type (instead of RunTrace). This is a breaking change for edge cases, that will impact your extension method on exceptions, if any; it can also impact your tests if you use the explicit signature.
---------------
-Bug Fixe(s):
-* Fix the inversion between expected and actual error message for the .WithMessage checks on exception.
-* Fix the issue with null value on Check.That(...).IsBefore(...)
-* HasFieldsWithSameValues now recurse along the hierarchy class (Fix for #141)
-* Fix stack overflow triggered by HasFieldsWithSameValues() on object with reference loop (#148)
-* Properly escaped strings when generating error messages.
-* GitHub issues: #124, #133, #141, #148, #153, #154, #156, #159, #164, #165, #167, #174, #177, #178, #179, #187</releaseNotes>
+* #219, #218, #216, #215, #214, #121</releaseNotes>
     <copyright>Copyright 2013-2018  Thomas PIERRAIN, Cyrille DUPUYDAUBY</copyright>
     <language>en-US</language>
     <tags>tdd bdd test fluent check checks easy nunit xunit mbunit mstestsucks</tags>
