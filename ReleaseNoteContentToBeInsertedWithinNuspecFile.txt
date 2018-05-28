@@ -24,6 +24,7 @@ of IErrorReporter interface, and specify you want to use it by setting the Check
 * New check: DoesNotContainNull for enumerable, that fails if an entry is null.
 * New check: IsAnInstanceOfOneOf that checks if the sut is of one of exptected types.
 * New check: IsNotAnInstanceOfThese that checks if the sut type is different from a list of forbidden types.
+* New check: DueToAnyFrom(...) that checks that an exception has been triggered by another exception from a list of possible types.
 
 ### Fixes
  * Check.ThatCode(...).Not.Throws\<T\>() may throw an InvalidCastException when thrown exception is not T.
@@ -50,7 +51,7 @@ of IErrorReporter interface, and specify you want to use it by setting the Check
 ### GitHub Issues
 * #228, #227, #222, #223, #217, #230, #232, 
 * #236, #238, #242, #243, #244, #245, #246,
-* #231, #247
+* #231, #247, #161
 
 ------
 ## V 2.2.0

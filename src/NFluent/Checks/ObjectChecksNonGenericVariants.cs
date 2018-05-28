@@ -77,11 +77,6 @@ namespace NFluent
                             return false;
                         });
                     }
-                    else if (typeof(T).IsNullable())
-                    {
-                        test.FailWhen(sut2 => typeof(T)!= type,
-                            $"The {{0}} is not an instance of [{type.ToStringProperlyFormatted()}].", MessageOption.WithType);
-                    }
                     else
                     {
                         test.FailWhen(sut2 => sut2.GetTypeWithoutThrowingException() != type,
@@ -106,6 +101,7 @@ namespace NFluent
         {
             if (types.Length == 1)
             {
+                // switch to single type check to provide error messages
                 return IsInstanceOfType(context.Not, types[0]);
             }
                 

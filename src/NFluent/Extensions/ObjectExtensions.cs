@@ -25,17 +25,6 @@ namespace NFluent.Extensions
 
     internal static class ObjectExtensions
     {
-/*        /// <summary>
-        /// Gets the type of the specified reference, or null if it is null.
-        /// </summary>
-        /// <param name="reference">The reference we interested in retrieving the type (may be null).</param>
-        /// <returns>
-        /// The type of the specified reference, or null if the reference is null.
-        /// </returns>
-        public static Type GetTypeWithoutThrowingException(this object reference)
-        {
-            return reference?.GetType();
-        }*/
 
         /// <summary>
         /// Gets the type of the specified reference, or null if it is null.

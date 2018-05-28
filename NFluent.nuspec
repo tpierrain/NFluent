@@ -34,6 +34,7 @@
 * New check: ContainsNoDuplicateItem for enumerable, that fails of it contains a dupe.
 * New check: DoesNotContainNull for enumerable, that fails if an entry is null.
 * New check: IsAnInstanceOfOneOf that checks if the sut is of one of exptected types.
+* New check: IsNotAnInstanceOfThese that checks if the sut type is different from a list of forbidden types.
 ### Fixes
 * Check.ThatCode(...).Not.Throws\&lt;T\&gt;() may throw an InvalidCastException when thrown exception is not T.
 * Extension checks to Throw\&lt;\&gt;, ThrowType or ThrowAny raise an exception when used with Not as it does not make sense.

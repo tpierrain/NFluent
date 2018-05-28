@@ -13,16 +13,15 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable once CheckNamespace
 namespace NFluent
 {
     using System;
+    using System.Collections.Generic;
 #if !DOTNET_30 && !DOTNET_20
     using System.Linq.Expressions;
 #endif
     using Extensibility;
     using Helpers;
-
     using Kernel;
 
 #if NETSTANDARD1_3
@@ -91,7 +90,6 @@ namespace NFluent
     /// </summary>
     public static class ExceptionChecks
     {
-
         /// <summary>
         /// Checks if the exception has a specific message.
         /// </summary>
@@ -148,7 +146,42 @@ namespace NFluent
  
             return new CheckLink<ILambdaExceptionCheck<T>>(checker);
         }
- 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="types"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static ICheckLink<ILambdaExceptionCheck<T>> DueToAnyFrom<T>(this ILambdaExceptionCheck<T> context,
+            params Type[] types) where T: Exception
+        {
+            Exception resultException = null;
+            var listOfTypes = new List<Type>(types);
+            ExtensibilityHelper.BeginCheck(context as FluentSut<T>)
+                .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
+                .CheckSutAttributes(sut => sut.InnerException, "inner exception")
+                .FailIfNull("There is no inner exception.")
+                .Analyze((sut, test) =>
+                {
+                    resultException = sut;
+                    while (resultException != null)
+                    {
+                        if ( listOfTypes.Contains(resultException.GetType()))
+                        {
+                            break;
+                        }
+
+                        resultException = resultException.InnerException;
+                    }
+                    test.FailWhen(_ => resultException == null,
+                        "The {0} is not of one of the expected types.", MessageOption.WithType);
+                })
+                .DefineExpectedValues(types, types.Length, "an instance of any", "an instance of anything but")
+                .EndCheck();            return new CheckLink<ILambdaExceptionCheck<T>>(context);
+        }
+
 #if !DOTNET_30 && !DOTNET_20
         /// <summary>
         /// Checks if the exception has a specific property having a specific value.

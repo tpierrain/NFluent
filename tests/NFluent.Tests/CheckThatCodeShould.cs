@@ -357,6 +357,47 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void Should_raise_when_expected_DueToAny_exception_is_not_found_somewhere_within_the_inner_exception()
+        {
+            Check.ThatCode(() =>
+            {
+                // ReSharper disable once NotResolvedInText
+                Check.ThatCode(() => throw new ArgumentException("outerException dummy message", new ArgumentOutOfRangeException("kamoulox")))
+                        .Throws<ArgumentException>()
+                        .DueToAnyFrom(typeof(Exception), typeof(ArgumentException));
+            })
+            .IsAFaillingCheckWithMessage(
+                    "",
+                    "The checked value's inner exception is not of one of the expected types.",
+                    "The checked value's inner exception:",
+                    "\t[{System.ArgumentOutOfRangeException}: 'Specified argument was out of the range of valid values.",
+                    "Parameter name: kamoulox'] of type: [System.ArgumentOutOfRangeException]",
+                    "The expected value(s): an instance of any",
+                    "\t[System.Exception, System.ArgumentException] (2 items)");
+            Check.ThatCode(() =>
+            {
+                // ReSharper disable once NotResolvedInText
+                Check.ThatCode(() => throw new ArgumentException("outerException dummy message"))
+                        .Throws<ArgumentException>()
+                        .DueToAnyFrom(typeof(Exception), typeof(ArgumentException));
+            })
+            .IsAFaillingCheckWithMessage(
+                    "",
+                    "There is no inner exception.",
+                    "The expected value(s): an instance of any",
+                    "\t[System.Exception, System.ArgumentException] (2 items)");
+        }
+
+        [Test]
+        public void Shouldsuceed_when_expected_DueToAny_exception_is_found_somewhere_within_the_inner_exception()
+        {
+                // ReSharper disable once NotResolvedInText
+                Check.ThatCode(() => throw new ArgumentException("outerException dummy message", new ArgumentOutOfRangeException("kamoulox")))
+                        .Throws<ArgumentException>()
+                        .DueToAnyFrom(typeof(ArgumentOutOfRangeException), typeof(ArgumentException));
+        }
+
+        [Test]
         public void Should_raise_with_the_complete_stack_of_InnerExceptions_details_when_expected_DueTo_exception_is_not_found_somewhere_within_the_inner_exception()
         {
             Check.ThatCode(() =>
