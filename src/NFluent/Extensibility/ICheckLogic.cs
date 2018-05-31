@@ -116,19 +116,17 @@ namespace NFluent.Extensibility
         /// Specify that the expectation is an instance of some type
         /// </summary>
         /// <param name="expectedInstanteType">expected type</param>
-        /// <param name="expectedLabel">associated label</param>
-        /// <param name="negatedLabel">label when negated</param>
         /// <returns>Continuation object</returns>
-        ICheckLogic<T> DefineExpectedType(System.Type expectedInstanteType, string expectedLabel, string negatedLabel);
+        ICheckLogic<T> DefineExpectedType(System.Type expectedInstanteType);
 
         /// <summary>
         /// Failing condition on check negation.
         /// </summary>
         /// <param name="predicate">Predicate, returns true if test fails.</param>
         /// <param name="error">Error message on failure</param>
-        /// <param name="option">Options to use on parts of the message</param>
+        /// <param name="options">Options to use on parts of the message</param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> NegateWhen(Func<T, bool> predicate, string error, MessageOption option = MessageOption.None);
+        ICheckLogic<T> OnNegateWhen(Func<T, bool> predicate, string error, MessageOption options = MessageOption.None);
 
         /// <summary>
         /// Executes arbitrary code on the sut.

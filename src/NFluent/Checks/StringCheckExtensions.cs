@@ -323,8 +323,8 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => !PolyFill.IsNullOrWhiteSpace(sut), "The {0} contains non whitespace characters.")
-                .NegateWhen(sut => sut == null, "The {0} is null, whereas it should not.")
-                .NegateWhen(sut => sut == string.Empty, "The {0} is empty, whereas it should not.")
+                .OnNegateWhen(sut => sut == null, "The {0} is null, whereas it should not.")
+                .OnNegateWhen(sut => sut == string.Empty, "The {0} is empty, whereas it should not.")
                 .OnNegate("The {0} contains only whitespace characters, whereas it should not.")
                 .EndCheck();
 
@@ -380,7 +380,7 @@ namespace NFluent
                 .FailWhen(sut => sut == null, "The {0} is null whereas it must have content.",
                     MessageOption.NoCheckedBlock)
                 .FailWhen(string.IsNullOrEmpty, "The {0} is empty, whereas it must not.", MessageOption.NoCheckedBlock)
-                .NegateWhen(sut => sut == null, "The {0} is null instead of being empty.")
+                .OnNegateWhen(sut => sut == null, "The {0} is null instead of being empty.")
                 .OnNegate("The {0} is not empty or null.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

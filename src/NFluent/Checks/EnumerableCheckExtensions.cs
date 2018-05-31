@@ -122,12 +122,13 @@ namespace NFluent
             IEnumerable otherEnumerable) where TU: IEnumerable
         {
             var enumerable =  otherEnumerable== null ? null : otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
-            var test = ExtensibilityHelper.BeginCheck(check).DefineExpectedValues(enumerable, enumerable?.Count ?? 0)
-                .FailWhen(sut => sut == null && enumerable != null,
-                    "The {0} is null and thus does not contain exactly the {1}.", MessageOption.NoCheckedBlock)
-                .FailWhen(sut => sut != null && enumerable == null, "The {0} is not null whereas it should.",
-                    MessageOption.NoExpectedBlock)
-                .OnNegate("The {0} contains exactly the given values whereas it must not.", MessageOption.NoExpectedBlock);
+            var test = ExtensibilityHelper.BeginCheck(check).
+                DefineExpectedValues(enumerable, enumerable?.Count ?? 0).
+                FailWhen(sut => sut == null && enumerable != null,
+                    "The {0} is null and thus does not contain exactly the {1}.", MessageOption.NoCheckedBlock).
+                FailWhen(sut => sut != null && enumerable == null, "The {0} is not null whereas it should.",
+                    MessageOption.NoExpectedBlock).
+                OnNegate("The {0} contains exactly the given values whereas it must not.", MessageOption.NoExpectedBlock);
             test.Analyze((sut, runner) =>
             {
                 if (sut == null || otherEnumerable == null)
@@ -434,7 +435,7 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check).FailWhen((sut) => sut != null && sut.Count()>0,
                     "The {0} contains elements, whereas it must be null or empty.")
-                .NegateWhen((sut) => sut == null, "The {0} is null, where as it must contain at least one element.", MessageOption.NoCheckedBlock)
+                .OnNegateWhen((sut) => sut == null, "The {0} is null, where as it must contain at least one element.", MessageOption.NoCheckedBlock)
                 .OnNegate("The {0} is empty, where as it must contain at least one element.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

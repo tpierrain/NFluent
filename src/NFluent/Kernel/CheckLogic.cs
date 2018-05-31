@@ -277,11 +277,11 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> DefineExpectedType(System.Type expectedInstanteType, string expectedLabel, string negatedExpLabel)
+        public ICheckLogic<T> DefineExpectedType(System.Type expectedInstanteType)
         {
             this.expectedKind = ValueKind.Type;
             this.options |= MessageOption.WithType;
-            return this.DefineExpectedValue(expectedInstanteType, expectedLabel, negatedExpLabel);
+            return this.DefineExpectedValue(expectedInstanteType, string.Empty, "different from");
         }
 
         public ICheckLogic<T> DefineExpectedValues(IEnumerable values, long count, string comparisonMessage = null,
@@ -298,7 +298,7 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> NegateWhen(Func<T, bool> predicate, string error, MessageOption option)
+        public ICheckLogic<T> OnNegateWhen(Func<T, bool> predicate, string error, MessageOption options)
         {
             if (this.negatedFailed)
             {
@@ -309,7 +309,7 @@ namespace NFluent.Kernel
             {
                 this.negatedFailed = true;
                 this.negatedError = error;
-                this.negatedOption = option;
+                this.negatedOption = options;
             }
 
             return this;

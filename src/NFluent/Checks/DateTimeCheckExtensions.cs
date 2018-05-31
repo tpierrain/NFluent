@@ -62,7 +62,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check).
                 ComparingTo(other, "before or equal", "after").
                 FailWhen(sut => sut > other, "The {0} is not before or equal to the {1}.").
-                NegateWhen(sut => sut == other, "The {0} is equal to the {1} whereas it must not.").
+                OnNegateWhen(sut => sut == other, "The {0} is equal to the {1} whereas it must not.").
                 OnNegate("The {0} is before the {1} whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -101,7 +101,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check).
                 ComparingTo(other, "after or equal", "before").
                 FailWhen(sut => sut < other, "The {0} is not after or equal to the {1}.").
-                NegateWhen(sut => sut == other, "The {0} is equal to the {1} whereas it must not.").
+                OnNegateWhen(sut => sut == other, "The {0} is equal to the {1} whereas it must not.").
                 OnNegate("The {0} is after the {1} whereas it must not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);

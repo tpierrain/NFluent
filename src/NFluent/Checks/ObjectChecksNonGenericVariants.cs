@@ -53,7 +53,7 @@ namespace NFluent
 
                                 test.CheckSutAttributes(_ => actual.Value, actual.MemberLabel)
                                     .Fail("The {0} is of a different type than the {1}.")
-                                    .DefineExpectedType(expected.ValueType, "", "");
+                                    .DefineExpectedType(expected.ValueType);
                                 return false;
 
                             }
@@ -84,7 +84,7 @@ namespace NFluent
                              MessageOption.WithType);
                     }
                 })
-                .DefineExpectedType(type, "", "different from")
+                .DefineExpectedType(type)
                 .OnNegate($"The {{0}} is an instance of [{type.ToStringProperlyFormatted()}] whereas it must not.", MessageOption.WithType)
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -106,7 +106,7 @@ namespace NFluent
             }
                 
             ExtensibilityHelper.BeginCheck(context)
-                .NegateWhen(sut => sut== null, "The {checked} is null.")
+                .OnNegateWhen(sut => sut== null, "The {checked} is null.")
                 .CheckSutAttributes( sut => sut.GetTypeWithoutThrowingException(), "type")
                 .Analyze((sut, test) =>
                 {

@@ -63,7 +63,7 @@ namespace NFluent.Extensibility
         /// <returns>Continuation object.</returns>
         public static ICheckLogic<T> OnNegate<T>(this ICheckLogic<T> logic, string message, MessageOption option = MessageOption.None)
         {
-            return logic.NegateWhen(_ => true, message, option);
+            return logic.OnNegateWhen(_ => true, message, option);
         }
 
         /// <summary>

@@ -88,7 +88,7 @@ namespace NFluent.Helpers
                 .FailIfNull("The fluent check did not raise an exception, where as it must.")
                 .FailWhen((sut) => !ExceptionHelper.IsFailedException(sut),
                     "The exception raised is not of the expected type").
-                DefineExpectedType(ExceptionHelper.BuildException(string.Empty).GetType(), "an instance of:", "an instance of a different type").
+                DefineExpectedType(ExceptionHelper.BuildException(string.Empty).GetType()).
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

@@ -152,7 +152,7 @@ namespace NFluent
                     result = sut.RaisedException;
                     return result;
                 }, "raised exception")
-                .DefineExpectedType(expecting, "", "should not be")
+                .DefineExpectedType(expecting)
                 .FailIfNull("The checked code did not raise an exception, whereas it must.")
                 .FailWhen(sut => !expecting.IsInstanceOfType(sut),
                     "The {0} is of a different type than expected.")

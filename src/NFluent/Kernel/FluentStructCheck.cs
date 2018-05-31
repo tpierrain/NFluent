@@ -85,7 +85,7 @@ namespace NFluent.Kernel
                     "The {0} is not an instance of the expected type.")
                 .OnNegate(
                     $"The {{0}} is an instance of [{typeof(TU).ToStringProperlyFormatted()}] whereas it must not.", MessageOption.WithType)
-                .DefineExpectedType(typeof(TU), "", "different from")
+                .DefineExpectedType(typeof(TU))
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this);
         }

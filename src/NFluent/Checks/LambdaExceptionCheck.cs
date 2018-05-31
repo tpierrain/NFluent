@@ -70,7 +70,7 @@ namespace NFluent
                     test.FailWhen(_ => resultException == null,
                         "The {0} is not of the expected type.");
                 })
-                .DefineExpectedType(typeof(TE), "", "")
+                .DefineExpectedType(typeof(TE))
                 .EndCheck();
             return new LambdaExceptionCheck<TE>((TE)resultException);
         }
