@@ -35,6 +35,7 @@
 * New check: DoesNotContainNull for enumerable, that fails if an entry is null.
 * New check: IsAnInstanceOfOneOf that checks if the sut is of one of exptected types.
 * New check: IsNotAnInstanceOfThese that checks if the sut type is different from a list of forbidden types.
+* New check: DueToAnyFrom(...) that checks that an exception has been triggered by another exception from a list of possible types.
 ### Fixes
 * Check.ThatCode(...).Not.Throws\&lt;T\&gt;() may throw an InvalidCastException when thrown exception is not T.
 * Extension checks to Throw\&lt;\&gt;, ThrowType or ThrowAny raise an exception when used with Not as it does not make sense.
@@ -58,7 +59,7 @@
 ### GitHub Issues
 * #228, #227, #222, #223, #217, #230, #232,
 * #236, #238, #242, #243, #244, #245, #246,
-* #231, #247
+* #231, #247, #161
 ------
 ## V 2.2.0
 ---------------

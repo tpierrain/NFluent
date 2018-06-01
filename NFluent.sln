@@ -12,7 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		Backlog.md = Backlog.md
 		build.cmd = build.cmd
 		.build\Build.proj = .build\Build.proj
-		.build\Build.tasks = .build\Build.tasks
 		.build\buildlogic.targets = .build\buildlogic.targets
 		CI.cmd = CI.cmd
 		CONTRIBUTING.md = CONTRIBUTING.md
@@ -330,5 +329,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9A6ED20-537A-4D69-82C7-53AF50CEAEE8}
 	EndGlobalSection
-
 EndGlobal
