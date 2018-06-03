@@ -5,6 +5,8 @@
   <PropertyGroup>
     <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
     <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
+    
+    <CoverageDataFile>$(SolutionRoot)\$(SolutionName)-coverage.xml</CoverageDataFile>
 
     <PackageStream>alpha</PackageStream>
     <ArtifactsPath>$(SolutionRoot)\Artifacts</ArtifactsPath>
@@ -14,9 +16,9 @@
     <NuGetToolsPath>$(SolutionRoot)\Packages</NuGetToolsPath>
     <NuGetExePath>nuget.exe</NuGetExePath>
     <MsTestRunner>vstest.console.exe</MsTestRunner>
-    <opencoverVersion>4.6.519</opencoverVersion>
-    <reportGeneratorVersion>3.1.2</reportGeneratorVersion>
-    <nunitConsoleVersion>3.7.0</nunitConsoleVersion>
+    <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.6.519</opencoverVersion>
+    <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">3.1.2</reportGeneratorVersion>
+    <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.8.0</nunitConsoleVersion>
     <TestRunnerPath>$(NuGetToolsPath)\NUnit.ConsoleRunner.$(nunitConsoleVersion)\tools\nunit3-console.exe</TestRunnerPath>
     <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
   </PropertyGroup>
@@ -235,45 +237,46 @@ RUN ALL UNIT TESTS
   <!-- 4- Tests coverage -->
   <Target Name="Coverage" DependsOnTargets="ListTestProjects">
     <Message Importance="high" Text="--------- Coverage ---------"/>
-    <Delete Files="$(SolutionRoot)\$(SolutionName)-coverage.xml"/>
+    <Delete Files="$(CoverageDataFile)"/>
     <PropertyGroup>
       <CoverToolPath>$(NuGetToolsPath)\OpenCover.$(opencoverVersion)\tools</CoverToolPath>
     </PropertyGroup>
     <Exec Command='"$(NuGetExePath)" install opencover -o "$(NuGetToolsPath)" -version $(opencoverVersion)'/>
-    <Message Importance="normal" Text="Cover for %(TestProjects.Identity) : $(SolutionRoot)\$(SolutionName)-coverage.xml -mergeoutput " Condition="'%(TestProjects.Coverage)'=='true'"/>
-    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]* -[*]NUnit.*" -excludebyattribute:*.Obsolete*  -output:"$(SolutionRoot)\$(SolutionName)-coverage.xml" -mergeoutput -mergebyhash -targetargs:"%(TestRun.Args)"'
+    <Message Importance="normal" Text="Cover for %(TestProjects.Identity) : $(CoverageDataFile) -mergeoutput " Condition="'%(TestProjects.Coverage)'=='true'"/>
+    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]* -[*]NUnit.*" -excludebyattribute:*.Obsolete*  -output:"$(CoverageDataFile)" -mergeoutput -mergebyhash -targetargs:"%(TestRun.Args)"'
           Condition="'%(TestRun.Coverage)'=='true'"/>
     <Message Importance="high" Text="--------- end of Coverage ---------"/>
   </Target>
   
   <!-- 5- Tests coverage report-->
-  <Target Name="CheckCoverage" DependsOnTargets="">
+  <Target Name="CheckCoverage" DependsOnTargets="Coverage">
     <!--Scan result for partial coverage-->
-    <XmlPeek XmlInputPath='$(SolutionRoot)\$(SolutionName)-coverage.xml'
-             Query="//Class[Summary/@sequenceCoverage&lt;100 and Summary/@numSequencePoints>0]/FullName/text()">
+    <XmlPeek XmlInputPath='$(CoverageDataFile)'
+             Query="//Class[Summary/@sequenceCoverage&lt;100 and Summary/@numSequencePoints>0]/FullName/text()" Condition="Exists($(CoverageDataFile))">
       <Output TaskParameter="Result" ItemName="Peeked" />
     </XmlPeek>
-    <XmlPeek XmlInputPath='$(SolutionRoot)\$(SolutionName)-coverage.xml'
-             Query="//Class[Summary/@branchCoverage&lt;100 and Summary/@numBranchPoints>0]/FullName/text()">
+    <XmlPeek XmlInputPath='$(CoverageDataFile)'
+             Query="//Class[Summary/@branchCoverage&lt;100 and Summary/@numBranchPoints>0]/FullName/text()" Condition="Exists($(CoverageDataFile))">
       <Output TaskParameter="Result" ItemName="BranchPeeked" />
     </XmlPeek>
-    <Warning Text="Insufficient line coverage on @(Peeked) "/>
-    <Warning Text="Insufficient branch coverage on @(BranchPeeked) "/>
+    <Warning Text="Insufficient line coverage on @(Peeked)" Condition="'@(Peeked)'!=''"/>
+    <Warning Text="Insufficient branch coverage on @(BranchPeeked)" Condition="'@(BranchPeeked)'!=''"/>
+    <Warning Text="No coverage data generated" Condition="!Exists($(CoverageDataFile))"/>
   </Target>
 
   <Target Name="CoverageReport" DependsOnTargets="Coverage;CheckCoverage">
     <PropertyGroup>
       <CoverReportToolPath>$(NuGetToolsPath)\ReportGenerator.$(reportGeneratorVersion)\tools</CoverReportToolPath>
     </PropertyGroup>
-    <Exec Command='"$(NuGetExePath)" install reportgenerator -o "$(NuGetToolsPath)" -version $(reportGeneratorVersion)'/>
+    <Exec Command='"$(NuGetExePath)" install reportgenerator -o "$(NuGetToolsPath)" -version $(reportGeneratorVersion)' />
 
     <Message Importance="high" Text="--------- Publish Coverage ---------"/>
     <Message Importance="high" Text="Get Tools"/>
 
-    <Exec Command ='"$(CoverReportToolPath)\ReportGenerator.exe" -reports:$(SolutionRoot)\$(SolutionName)-coverage.xml -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="'$(APPVEYOR)'!='True'"/>
+    <Exec Command ='"$(CoverReportToolPath)\ReportGenerator.exe" -reports:$(CoverageDataFile) -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="('$(APPVEYOR)'!='True') and (Exists($(CoverageDataFile)))"/>
 
     <Exec Command="pip install codecov"/>
-    <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(SolutionRoot)\$(SolutionName)-coverage.xml" -t $(CodeCovKey) -X gcov -n $(SolutionName)'
+    <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(CoverageDataFile)" -t $(CodeCovKey) -X gcov -n $(SolutionName)'
            Condition="('$(CodeCovKey)'!='') AND ('$(APPVEYOR)'=='True')"/>
    <Message Importance="high" Text="--------- end of Publish Coverage ---------"/>
   </Target>
