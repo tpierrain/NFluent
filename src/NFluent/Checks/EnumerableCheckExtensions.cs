@@ -179,7 +179,62 @@ namespace NFluent
         }
 
         /// <summary>
-        ///     Checks that the given enumerable does contain all items matching a predicate.
+        /// Checks if the sut contains the same element than a given list.
+        /// </summary>
+        /// <param name="context">Context for the check</param>
+        /// <param name="content">Expected content</param>
+        /// <typeparam name="T">Type of enumerable content</typeparam>
+        /// <returns>A chainable link.</returns>
+        // GH #249
+        public static ICheckLink<ICheck<IEnumerable<T>>> IsEquivalentTo<T>(this ICheck<IEnumerable<T>> context,
+            IEnumerable<T> content)
+        {
+            var length = 0;
+            ExtensibilityHelper.BeginCheck(context).
+                FailWhen(sut => sut == null && content != null, "The {checked} is null whereas it should not.").
+                FailWhen(sut => sut != null && content == null, "The {checked} must be null.").
+                Analyze((sut, test) =>
+                {
+                    if (sut == null && content == null)
+                    {
+                        return;
+                    }
+
+                    var expectedContent = new List<T>(content);
+                    length = expectedContent.Count;
+                    var isOk = true;
+                    foreach (var item in sut)
+                    {
+                        if (!expectedContent.Remove(item))
+                        {
+                            test.Fail(
+                                $"The {{checked}} does contain [{item.ToStringProperlyFormatted()}] whereas it should not.");
+                            isOk = false;
+                        }
+                    }
+
+                    if (isOk && expectedContent.Count > 0)
+                    {
+                        if (expectedContent.Count == 1)
+                        {
+                            test.Fail(
+                                $"The {{checked}} is missing: [{expectedContent.ToStringProperlyFormatted()}].");
+                        }
+                        else
+                        {
+                            test.Fail(
+                            $"The {{checked}} is missing {expectedContent.Count} items: [{expectedContent.ToStringProperlyFormatted()}].");
+                        }
+                    }
+                }).
+                DefineExpectedValues(content, length).
+                OnNegate("The {checked} is equivalent to the {expected} whereas it should not.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(context);
+        }
+        
+        /// <summary>
+        /// Checks that the given enumerable does contain all items matching a predicate.
         /// </summary>
         /// <typeparam name="T">Type of items.</typeparam>
         /// <param name="check">Check item.</param>

@@ -104,5 +104,55 @@ namespace NFluent.Tests
                     "The checked enumerable:",
                     "\t[\"test\", \"another\"] (2 items)");
         }
+
+        [Test]
+        public void
+            CheckForEquivalency()
+        {
+            var array = new[] {1, 2, 3};
+
+            Check.That(array).IsEquivalentTo(new[] {3, 2, 1});
+
+            Check.That<IEnumerable<int>>(null).IsEquivalentTo(null);
+
+            Check.ThatCode(() => Check.That(array).IsEquivalentTo(new[] {1, 2, 4})).IsAFaillingCheck();
+        }
+        
+        [Test]
+        public void
+            CheckForEquivalencyFailsWithProperMessage()
+        {
+            var array = new[] {1, 2, 3};
+
+            Check.ThatCode(() => Check.That(array).IsEquivalentTo(new[] {1, 2, 4})).IsAFaillingCheckWithMessage("", 
+                "The checked enumerable does contain [3] whereas it should not.", 
+                "The checked enumerable:",
+                "\t[1, 2, 3] (3 items)", 
+                "The expected value(s):", 
+                "\t[1, 2, 4] (3 items)");
+
+            Check.ThatCode(() => Check.That(array).IsEquivalentTo(new[] {1, 2, 3, 4})).IsAFaillingCheckWithMessage("", 
+                "The checked enumerable is missing: [4].", 
+                "The checked enumerable:",
+                "\t[1, 2, 3] (3 items)", 
+                "The expected value(s):", 
+                "\t[1, 2, 3, 4] (4 items)");
+
+            Check.ThatCode(() => Check.That(array).IsEquivalentTo(new[] {1, 2, 3, 4, 5})).IsAFaillingCheckWithMessage("", 
+                "The checked enumerable is missing 2 items: [4, 5].", 
+                "The checked enumerable:",
+                "\t[1, 2, 3] (3 items)", 
+                "The expected value(s):", 
+                "\t[1, 2, 3, 4, 5] (5 items)");
+
+            Check.ThatCode(() => Check.That(array).IsEquivalentTo(new[] {1, 2})).IsAFaillingCheckWithMessage("", 
+                "The checked enumerable does contain [3] whereas it should not.", 
+                "The checked enumerable:",
+                "\t[1, 2, 3] (3 items)", 
+                "The expected value(s):", 
+                "\t[1, 2] (2 items)");
+
+            Check.ThatCode(() => Check.That<IEnumerable<int>>(null).IsEquivalentTo(new[] {1})).IsAFaillingCheck();
+        }
     }
 }
