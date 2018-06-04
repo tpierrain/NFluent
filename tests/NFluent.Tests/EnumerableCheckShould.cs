@@ -111,11 +111,14 @@ namespace NFluent.Tests
         {
             var array = new[] {1, 2, 3};
 
-            Check.That(array).IsEquivalentTo(new[] {3, 2, 1});
+            Check.That(array).IsEquivalentTo(3, 2, 1);
 
             Check.That<IEnumerable<int>>(null).IsEquivalentTo(null);
 
-            Check.ThatCode(() => Check.That(array).IsEquivalentTo(new[] {1, 2, 4})).IsAFaillingCheck();
+            Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 4)).IsAFaillingCheck();
+
+            var otherArray = new List<int>(new []{3, 2, 1});
+            Check.That(array).IsEquivalentTo(otherArray);
         }
         
         [Test]

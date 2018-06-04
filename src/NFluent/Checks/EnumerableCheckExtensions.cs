@@ -182,12 +182,11 @@ namespace NFluent
         /// Checks if the sut contains the same element than a given list.
         /// </summary>
         /// <param name="context">Context for the check</param>
-        /// <param name="content">Expected content</param>
+        /// <param name="content"></param>
         /// <typeparam name="T">Type of enumerable content</typeparam>
         /// <returns>A chainable link.</returns>
-        // GH #249
         public static ICheckLink<ICheck<IEnumerable<T>>> IsEquivalentTo<T>(this ICheck<IEnumerable<T>> context,
-            IEnumerable<T> content)
+            params T[] content)
         {
             var length = 0;
             ExtensibilityHelper.BeginCheck(context).
@@ -223,7 +222,7 @@ namespace NFluent
                         else
                         {
                             test.Fail(
-                            $"The {{checked}} is missing {expectedContent.Count} items: [{expectedContent.ToStringProperlyFormatted()}].");
+                                $"The {{checked}} is missing {expectedContent.Count} items: [{expectedContent.ToStringProperlyFormatted()}].");
                         }
                     }
                 }).
@@ -231,6 +230,19 @@ namespace NFluent
                 OnNegate("The {checked} is equivalent to the {expected} whereas it should not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(context);
+        }
+        /// <summary>
+        /// Checks if the sut contains the same element than a given list.
+        /// </summary>
+        /// <param name="context">Context for the check</param>
+        /// <param name="content">Expected content</param>
+        /// <typeparam name="T">Type of enumerable content</typeparam>
+        /// <returns>A chainable link.</returns>
+        // GH #249
+        public static ICheckLink<ICheck<IEnumerable<T>>> IsEquivalentTo<T>(this ICheck<IEnumerable<T>> context,
+            IEnumerable<T> content)
+        {
+            return IsEquivalentTo(context, content?.ToArray());
         }
         
         /// <summary>
