@@ -133,7 +133,11 @@
         <Runner>MsTest</Runner>
         <Coverage>true</Coverage>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj'>
+     <TestProjects Include='$(TestsPath)\NFluent.Tests.xUnit\bin\$(Configuration)\NFluent.Tests.xUnit.dll'>
+       <Runner>xUnit</Runner>
+       <Coverage>true</Coverage>
+     </TestProjects>      
+     <TestProjects Include='$(TestsPath)\NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj'>
         <Framework>netstandard1.3</Framework>
         <Coverage>true</Coverage>
       </TestProjects>

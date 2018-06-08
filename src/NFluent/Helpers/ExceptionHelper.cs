@@ -55,7 +55,8 @@ namespace NFluent.Helpers
 
                 // look for MSTest
                 var resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException")
-                                 ?? ExceptionScanner( "nunit", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException");
+                                 ?? ExceptionScanner( "nunit", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException")
+                                 ?? ExceptionScanner("xunit.assert", "Xunit.Sdk", "XunitException", null, null);
 
                 result = resultScan ?? result;
                 constructors = result;
@@ -67,9 +68,18 @@ namespace NFluent.Helpers
         private static ExceptionConstructor ExceptionScanner(string assemblyMarker, string nameSpace, string assertionExceptionName, string ignoreExceptionName, string inconclusiveExceptionName)
         {
 #if !(PORTABLE) && !(NETSTANDARD1_3)
-            var foundExceptions = 0;
+            var missingExceptions = 3;
             var result = new ExceptionConstructor();
             var defaultSignature = new[] { typeof(string) };
+            if (string.IsNullOrEmpty(ignoreExceptionName))
+            {
+                missingExceptions--;
+            }
+
+            if (string.IsNullOrEmpty(inconclusiveExceptionName))
+            {
+                missingExceptions--;
+            }
             foreach (
                 var assembly in 
                     AppDomain.CurrentDomain.GetAssemblies()
@@ -85,30 +95,29 @@ namespace NFluent.Helpers
                         {
                             var info = type.GetConstructor(defaultSignature);
                             result.FailedException = info;
-                            foundExceptions++;
+                            missingExceptions--;
                         }
                         else if (type.Name == ignoreExceptionName)
                         {
                             var info = type.GetConstructor(defaultSignature);
                             result.IgnoreException = info;
-                            foundExceptions++;
+                            missingExceptions--;
                         }
                         else if (type.Name == inconclusiveExceptionName)
                         {
                             var info = type.GetConstructor(defaultSignature);
                             result.InconclusiveException = info;
-                            foundExceptions++;
+                            missingExceptions--;
                             if (string.IsNullOrEmpty(ignoreExceptionName))
                             {
                                 // if we do not expect a ignore exception, we remap inconclusive
                                 result.IgnoreException = info;
-                                foundExceptions++;
                             }
                        }
                     }
 
                     // stop search if we found everything
-                    if (foundExceptions == 3)
+                    if (missingExceptions == 0)
                     {
                         return result;
                     }

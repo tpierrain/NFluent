@@ -19,7 +19,9 @@
     <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.6.519</opencoverVersion>
     <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">3.1.2</reportGeneratorVersion>
     <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.8.0</nunitConsoleVersion>
+    <xunitConsoleVersion Condition="'$(xunitConsoleVersion)' == ''">2.3.1</xunitConsoleVersion>
     <TestRunnerPath>$(NuGetToolsPath)\NUnit.ConsoleRunner.$(nunitConsoleVersion)\tools\nunit3-console.exe</TestRunnerPath>
+    <xUnitTestRunnerPath>$(NuGetToolsPath)\XUnit.runner.console.$(xunitConsoleVersion)\tools\net452\xunit.console.exe</xUnitTestRunnerPath>
     <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
   </PropertyGroup>
 
@@ -168,6 +170,8 @@
   <Target Name="NugetRestore" DependsOnTargets="SynchroVersion">
 
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
+    <Exec Command='"$(NuGetExePath)" sources remove -Name extraSource' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/>
+    <Exec Command='"$(NuGetExePath)" sources add -Name extraSource -Source $(NugetSource)' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/>
     <Message Importance="high" Text="Restoring $(SolutionRoot)\$(SolutionName)"/>
     <Exec Command='"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages" -verbosity quiet'/>
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
@@ -204,7 +208,11 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
         <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Framework)'!='netstandard2.0' AND '%(TestProjects.Runner)'=='MsTest'">
+      <TestRun Include="@(TestProjects)"  Condition="'%(TestProjects.Runner)'=='xUnit'">
+        <Runner>"$(xUnitTestRunnerPath)"</Runner>
+        <Args>%(TestProjects.FullPath)</Args>
+        <Coverage>%(TestProjects.Coverage)</Coverage>
+      </TestRun>      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Framework)'!='netstandard2.0' AND '%(TestProjects.Runner)'=='MsTest'">
         <Runner>"$(MsTestRunnerPath)$(MsTestRunner)"</Runner>
         <Args>%(TestProjects.Identity)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>

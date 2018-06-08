@@ -588,7 +588,7 @@ namespace NFluent
                     var store  = new List<object>();
                     foreach (var entry in sut)
                     {
-                        if (store.Contains(entry))
+                        if (store.Contains(entry, new EqualityHelper.EqualityComparer<object>()))
                         {
                             test.Fail($"The {{checked}} contains a duplicate item at position {store.Count}: [{entry}].");
                             return;
