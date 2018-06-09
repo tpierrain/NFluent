@@ -207,7 +207,7 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
         <Runner>dotnet.exe</Runner>
         <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
-      </TestRun>&
+      </TestRun>
       <TestRun Include="@(TestProjects)"  Condition="'%(TestProjects.Runner)'=='xUnit'">
         <Runner>"$(xUnitTestRunnerPath)"</Runner>
         <Args>%(TestProjects.FullPath)</Args>
