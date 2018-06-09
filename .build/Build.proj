@@ -18,7 +18,7 @@
     <TestsPath>$(SolutionRoot)\tests\</TestsPath>
 
     <NuspecFilePath>$(SolutionRoot)\$(SolutionName).nuspec</NuspecFilePath>
-    <ReleaseNoteFile>$(SolutionRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.txt</ReleaseNoteFile>
+    <ReleaseNoteFile>$(SolutionRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.md</ReleaseNoteFile>
     <AppVeyorFile>$(SolutionRoot)\appveyor.yml</AppVeyorFile>
   </PropertyGroup>
   

@@ -1,3 +1,16 @@
+## V 2.3.1
+---------------
+### Main feature: redesigned extensibility
+
+### Other New features(s)
+
+### Fixes
+
+### Changes
+
+### GitHub Issues
+
+------
 ## V 2.3.0
 ---------------
 ### Main feature: redesigned extensibility
@@ -53,35 +66,4 @@ of IErrorReporter interface, and specify you want to use it by setting the Check
 * #228, #227, #222, #223, #217, #230, #232, 
 * #236, #238, #242, #243, #244, #245, #246,
 * #231, #247, #161, #249
-
 ------
-## V 2.2.0
----------------
-Flexible property and field based comparison is now available. Examples:
-* Check.That(sut)**.Considering().Public.Properties**.IsEqualTo(expected);
-* Check.That(sut)**.Considering().Public.Fields.And.Public.Properties**.IsEqualTo(expected);
-* Check.That(sut)**.Considering().Public.Fields.Excluding("coordX", "child.address")**.IsEqualTo(expected);
-Syntax is:
-* Check.That(sut)**.Considering().(Public|NonPublic|All).(Fields.Properties)[.And.(Public|NonPublic|All).(Fields.Properties)][Excluding("fielda", "sub.fieldb")]**.IsEqualTo(expected);
-* **Considering()** is supported by: _IsEqualTo(), IsNotEqualTo(), AsSameValueAs(), HasDifferentValueThan(), IsInstanceOf\<type\>()_ [checks if fields/properties are present],
-_IsNotInstanceOf\<type\>()_,  _HasSameValueAs()_, _IsSameReferenceAs(), _IsDistinctFrom()_, _HasDifferentValueThan()_
-
-
-### New feature(s)
-* **Object**
-  * New check **IsInstanceOfType(Type type)** which is equivalent to *IsInstanceOf\<type\>()*, in a non generic form for parameterized tests.
-  * New check **IsNoInstanceOfType(Type type)** which is equivalent to *IsNotInstanceOf\<type\>()*, in a non generic form for parameterized tests.
-  * New check **InheritsFromType(Type type)** which is equivalent to *InheritsFrom\<type\>()*, in a non generic form for parameterized tests.
-* **Enum**
-  - New check **HasFlag(xxx)** that checks if a flag is present in an enum value.
-* **Code**
-  * New check **ThrowsType(Type type)** which is equivalent to *Throws\<type\>*, in a non generic form for parameterized tests.
-
-### Changes
-* Improved error messages for missing fields(and properties) for reflection based checks.
-
-### Fixes
-* Fix issue with overloaded member/properties for HasFieldswithSameValues(...) (#219)
- 
-### GitHub Issues
-* #219, #218, #216, #215, #214, #121
