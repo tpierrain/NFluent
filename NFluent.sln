@@ -117,6 +117,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.20.Tests.Exten
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.xUnit", "tests\NFluent.Tests.xUnit\NFluent.Tests.xUnit.csproj", "{C9DBF0DB-FC05-4687-8A92-A6C1AA12BF9C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Tests.xUnitCore", "xUnitCoreTests\NFluent.Tests.xUnitCore.csproj", "{FFD0A49F-A7AD-47D5-BD24-28A3D4029A3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.Fuzzing", "tests\NFluent.Tests.Fuzzing\NFluent.Tests.Fuzzing.csproj", "{F20CA3F3-263E-4FEF-B1E0-40797999B050}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{0014c223-a481-4b87-a480-3d4792a9b276}*SharedItemsImports = 4
@@ -285,6 +289,14 @@ Global
 		{C9DBF0DB-FC05-4687-8A92-A6C1AA12BF9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9DBF0DB-FC05-4687-8A92-A6C1AA12BF9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9DBF0DB-FC05-4687-8A92-A6C1AA12BF9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFD0A49F-A7AD-47D5-BD24-28A3D4029A3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFD0A49F-A7AD-47D5-BD24-28A3D4029A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFD0A49F-A7AD-47D5-BD24-28A3D4029A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFD0A49F-A7AD-47D5-BD24-28A3D4029A3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F20CA3F3-263E-4FEF-B1E0-40797999B050}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F20CA3F3-263E-4FEF-B1E0-40797999B050}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F20CA3F3-263E-4FEF-B1E0-40797999B050}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F20CA3F3-263E-4FEF-B1E0-40797999B050}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -332,6 +344,8 @@ Global
 		{477B64E4-CBB3-4E2A-A4B1-580517C2D43F} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
 		{F63EDD21-D306-4371-A7FF-23DDDE420266} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
 		{C9DBF0DB-FC05-4687-8A92-A6C1AA12BF9C} = {16966B1C-3F81-4587-97B2-0B06C7F0F9E2}
+		{FFD0A49F-A7AD-47D5-BD24-28A3D4029A3D} = {16966B1C-3F81-4587-97B2-0B06C7F0F9E2}
+		{F20CA3F3-263E-4FEF-B1E0-40797999B050} = {16966B1C-3F81-4587-97B2-0B06C7F0F9E2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9A6ED20-537A-4D69-82C7-53AF50CEAEE8}

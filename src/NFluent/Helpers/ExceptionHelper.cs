@@ -80,6 +80,7 @@ namespace NFluent.Helpers
             {
                 missingExceptions--;
             }
+
             foreach (
                 var assembly in 
                     AppDomain.CurrentDomain.GetAssemblies()
@@ -88,7 +89,11 @@ namespace NFluent.Helpers
                 var exportedTypes = assembly.GetExportedTypes();
                 foreach (var type in exportedTypes)
                 {
-                    Debug.Assert(type.Namespace != null, "type.Namespace != null");
+                    if (type.Namespace == null)
+                    {
+                        continue;
+                    }
+
                     if (type.Namespace.StartsWith(nameSpace))
                     {
                         if (type.Name == assertionExceptionName)
@@ -164,11 +169,11 @@ namespace NFluent.Helpers
 
         // ncrunch: no coverage end
 
-                    /// <summary>
-                    /// Return a string containing the complete stack trace of the InnerExceptions for the given Exception.
-                    /// </summary>
-                    /// <param name="exception">The exception.</param>
-                    /// <returns>A string containing the complete stack trace of the InnerExceptions for the given Exception.</returns>
+        /// <summary>
+        /// Return a string containing the complete stack trace of the InnerExceptions for the given Exception.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <returns>A string containing the complete stack trace of the InnerExceptions for the given Exception.</returns>
         public static string DumpInnerExceptionStackTrace(Exception exception)
         {
             var result = new StringBuilder();

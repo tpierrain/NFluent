@@ -70,6 +70,10 @@
       <Project>{CF1D857F-658F-4E1F-8487-CD751F189E6A}</Project>
       <Name>NFluent.45</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NFluent.Tests.Fuzzing\NFluent.Tests.Fuzzing.csproj">
+      <Project>{f20ca3f3-263e-4fef-b1e0-40797999b050}</Project>
+      <Name>NFluent.Tests.Fuzzing</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

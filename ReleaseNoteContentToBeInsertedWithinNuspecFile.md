@@ -3,6 +3,8 @@
 ### Main feature: redesigned extensibility
 
 ### Other New features(s)
+- add PDB files to ease bug fixing
+
 
 ### Fixes
 

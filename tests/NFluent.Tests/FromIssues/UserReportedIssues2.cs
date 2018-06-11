@@ -12,7 +12,6 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace NFluent.Tests.FromIssues
 {
     using System;
