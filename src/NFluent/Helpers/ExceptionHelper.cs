@@ -84,9 +84,13 @@ namespace NFluent.Helpers
             foreach (
                 var assembly in 
                     AppDomain.CurrentDomain.GetAssemblies()
-                             .Where(ass => ass.FullName.ToLowerInvariant().Contains(assemblyMarker)))
+                             .Where(ass => ass.FullName != null && ass.FullName.ToLowerInvariant().Contains(assemblyMarker)))
             {
                 var exportedTypes = assembly.GetExportedTypes();
+                if (exportedTypes == null)
+                {
+                    continue;
+                }
                 foreach (var type in exportedTypes)
                 {
                     if (type.Namespace == null)
