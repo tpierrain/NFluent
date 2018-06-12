@@ -119,7 +119,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.xUnit", "test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Tests.xUnitCore", "xUnitCoreTests\NFluent.Tests.xUnitCore.csproj", "{FFD0A49F-A7AD-47D5-BD24-28A3D4029A3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.Fuzzing", "tests\NFluent.Tests.Fuzzing\NFluent.Tests.Fuzzing.csproj", "{F20CA3F3-263E-4FEF-B1E0-40797999B050}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Tests.Fuzzing", "tests\NFluent.Tests.Fuzzing\NFluent.Tests.Fuzzing.csproj", "{F20CA3F3-263E-4FEF-B1E0-40797999B050}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
