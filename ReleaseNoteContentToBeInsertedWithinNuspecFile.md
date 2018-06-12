@@ -1,17 +1,10 @@
 ## V 2.3.1
 ---------------
-### Main feature: redesigned extensibility
-
-### Other New features(s)
-- add PDB files to ease bug fixing
-
-
 ### Fixes
-
-### Changes
+* NullReferenceException on failed check using xUnit and NetCore
 
 ### GitHub Issues
-
+* #251
 ------
 ## V 2.3.0
 ---------------

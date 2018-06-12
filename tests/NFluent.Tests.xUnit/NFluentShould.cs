@@ -25,7 +25,7 @@ namespace NFluent.Tests.xUnit
         public void ExceptionScanTest()
         {
             // inject a type from the fuzzing assembly to check for some degenerative case
-            var marker = new NoNameSpaceType();
+            var temp = new NoNameSpaceType();
             Check.That(ExceptionHelper.BuildException("Test")).IsInstanceOf<XunitException>();
         }
 

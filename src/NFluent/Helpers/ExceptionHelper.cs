@@ -81,8 +81,7 @@ namespace NFluent.Helpers
                 missingExceptions--;
             }
 
-            foreach (
-                var assembly in 
+            foreach (var assembly in
                     AppDomain.CurrentDomain.GetAssemblies()
                              .Where(ass => ass.FullName.ToLowerInvariant().Contains(assemblyMarker)))
             {
