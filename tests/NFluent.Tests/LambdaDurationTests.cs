@@ -70,7 +70,7 @@ namespace NFluent.Tests
                     timer.Start();
                     while (timer.ElapsedMilliseconds < 40)
                     {
-                        for (var i = 0; i < 1000000; i++)
+                        for (var i = 0; i < 100000; i++)
                         {
                             var unused = i * 2;
                         }

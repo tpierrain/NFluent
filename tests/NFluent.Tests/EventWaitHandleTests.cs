@@ -12,7 +12,6 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
-using System;
 // ReSharper disable AccessToDisposedClosure
 
 namespace NFluent.Tests
@@ -81,7 +80,7 @@ namespace NFluent.Tests
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                Check.That(myEvent).IsNotSetWithin(1, TimeUnit.Seconds);
+                Check.That(myEvent).IsNotSetWithin(10, TimeUnit.Milliseconds);
             }
         }
 

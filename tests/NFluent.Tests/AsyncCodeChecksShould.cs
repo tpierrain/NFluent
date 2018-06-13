@@ -148,7 +148,7 @@ namespace NFluent.Tests
 
         private async Task SideEffectAsync()
         {
-            await Task.Run(() => Thread.Sleep(500));
+            await Task.Run(() => Thread.Sleep(100));
 
             this.sideEffectAchieved = true;
         }

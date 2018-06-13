@@ -27,14 +27,11 @@ namespace NFluent.Tests.xUnit
             // inject a type from the fuzzing assembly to check for some degenerative case
             var temp = new NoNameSpaceType();
             Check.That(ExceptionHelper.BuildException("Test")).IsInstanceOf<XunitException>();
-        }
-
-        [Fact]
-        public void WorkWithXunit()
-        {
             Check.That(2).IsEqualTo(2);
 
             Check.ThatCode(() => Check.That(2).IsEqualTo(0)).IsAFaillingCheck();
+
         }
+
     }
 }
