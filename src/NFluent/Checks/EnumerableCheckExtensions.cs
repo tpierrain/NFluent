@@ -820,5 +820,103 @@ namespace NFluent
             last = default(T);
             return false;
         }
+
+        private class BasicComparer : IComparer
+        {
+            public int Compare(object x, object y)
+            {
+                var comparable = x as IComparable;
+                return comparable?.CompareTo(y) ?? (y == null ? 0 : -1);
+            }
+        }
+        /// <summary>
+        /// Checks if the IEnumerable is naturally sorted
+        /// </summary>
+        /// <param name="context">context for the check</param>
+        /// <param name="comparer">optional comparer</param>
+        /// <typeparam name="T">enumerable type</typeparam>
+        /// <returns>A check link</returns>
+        public static ICheckLink<ICheck<T>> IsInAscendingOrder<T>(this ICheck<T> context, IComparer comparer = null) where T : IEnumerable
+        {
+            if (comparer == null)
+            {
+                comparer = new BasicComparer();
+            }
+
+            ExtensibilityHelper.BeginCheck(context).
+                FailIfNull().
+                Analyze((sut, test) =>
+                {
+                    object previous = null;
+                    var index = 0;
+                    var first = true;
+                    foreach (var current in sut)
+                    {
+                        if (!first)
+                        {
+                            if (comparer.Compare(previous, current) > 0)
+                            {
+                                test.Fail($"The {{checked}} is not in ascending order, whereas it should.{Environment.NewLine}At #{index}: [{previous.ToStringProperlyFormatted()}] comes after [{current.ToStringProperlyFormatted()}].");
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            first = false;
+                        }
+
+                        previous = current;
+                        index++;
+                    }
+                }).
+                OnNegate("The {checked} is in ascending order whereas it should not.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(context);
+        }
+
+        /// <summary>
+        /// Checks if the IEnumerable is naturally sorted
+        /// </summary>
+        /// <param name="context">context for the check</param>
+        /// <param name="comparer">optional comparer</param>
+        /// <typeparam name="T">enumerable type</typeparam>
+        /// <returns>A check link</returns>
+        public static ICheckLink<ICheck<T>> IsInDescendingOrder<T>(this ICheck<T> context, IComparer comparer = null) where T : IEnumerable
+        {
+            if (comparer == null)
+            {
+                comparer = new BasicComparer();
+            }
+
+            ExtensibilityHelper.BeginCheck(context).
+                FailIfNull().
+                Analyze((sut, test) =>
+                {
+                    IComparable previous = null;
+                    var index = 0;
+                    var first = true;
+                    foreach (IComparable current in sut)
+                    {
+                        if (!first)
+                        {
+                            if (comparer.Compare(previous, current) < 0)
+                            {
+                                test.Fail($"The {{checked}} is not in descending order, whereas it should.{Environment.NewLine}At #{index}: [{previous.ToStringProperlyFormatted()}] comes before [{current.ToStringProperlyFormatted()}].");
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            first = false;
+                        }
+
+                        previous = current;
+                        index++;
+                    }
+                }).
+                OnNegate("The {checked} is in ascending order whereas it should not.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(context);
+        }
     }
 }

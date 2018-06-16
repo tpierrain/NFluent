@@ -25,7 +25,7 @@ namespace NFluent.Kernel
     using System.Reflection;
     using System.Threading.Tasks;
 #endif
-    using Extensibility;
+    using Extensibility;    
 
     /// <summary>
     /// This class stores all required information to check code.

@@ -1,5 +1,9 @@
 ## V 2.3.2
 ---------------
+### New checks
+* IsInAscendingOrder: checks if an IEnumerable is sorted in ascending orders, it accepts an optional comparer instance
+* IsInDescendingOrder:  checks if an IEnumerable is sorted in descending orders, it accepts an optional comparer instance
+
 ### Fixes
 
 ### GitHub Issues

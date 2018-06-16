@@ -15,6 +15,7 @@
 namespace NFluent.Tests
 {
     using System.Collections.Generic;
+    using Extensibility;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -155,7 +156,46 @@ namespace NFluent.Tests
                 "The expected value(s):", 
                 "\t[1, 2] (2 items)");
 
-            Check.ThatCode(() => Check.That<IEnumerable<int>>(null).IsEquivalentTo(new[] {1})).IsAFaillingCheck();
+            Check.ThatCode(() => Check.That<IEnumerable<int>>(null).IsEquivalentTo(1)).IsAFaillingCheck();
+        }
+
+        [Test]
+        public void
+            VerifyAscendingOrder()
+        {
+            Check.That(new int?[] {0, 1, 2, 3, 5}).IsInAscendingOrder();
+            Check.That(new int?[] {null, 1, 2, 3, 5}).IsInAscendingOrder();
+            Check.ThatCode(() => Check.That(new int?[] {null, 1, 2, 3, 5, null, 5}).IsInAscendingOrder()).IsAFaillingCheckWithMessage(
+                "",
+                "The checked enumerable is not in ascending order, whereas it should.",
+                "At #5: [5] comes after [null].", 
+                "The checked enumerable:", 
+                "\t[null, 1, 2, 3, 5, null, 5] (7 items)");
+            Check.ThatCode(() => Check.That(new int?[] {4, 1, 2, 3, 5, null, 5}).IsInAscendingOrder()).IsAFaillingCheckWithMessage(
+                "",
+                "The checked enumerable is not in ascending order, whereas it should.",
+                "At #1: [4] comes after [1].", "The checked enumerable:",
+                "\t[4, 1, 2, 3, 5, null, 5] (7 items)");
+        }
+
+        [Test]
+        public void
+            VerifyDescendingOrder()
+        {
+            Check.That(new[] {5, 4, 3, 2, 1, 0}).IsInDescendingOrder();
+            Check.That(new int?[] {5, 4, 3, 2, 1, null}).IsInDescendingOrder();
+            Check.ThatCode(() => Check.That(new int?[] {null, 1, 2, 3, 5, null, 5}).IsInDescendingOrder()).IsAFaillingCheckWithMessage(
+                "",
+                "The checked enumerable is not in descending order, whereas it should.",
+                "At #1: [null] comes before [1].", 
+                "The checked enumerable:", 
+                "\t[null, 1, 2, 3, 5, null, 5] (7 items)");
+            Check.ThatCode(() => Check.That(new int?[] {4, 1, 2, 3, 5, null, 5}).IsInDescendingOrder()).IsAFaillingCheckWithMessage(
+                "",
+                "The checked enumerable is not in descending order, whereas it should.",
+                "At #2: [1] comes before [2].",
+                "The checked enumerable:",
+                "\t[4, 1, 2, 3, 5, null, 5] (7 items)");
         }
     }
 }
