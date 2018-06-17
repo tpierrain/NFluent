@@ -14,6 +14,8 @@
  // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
+    using System;
+    using System.Collections;
     using System.Collections.Generic;
     using Extensibility;
     using NFluent.Helpers;
@@ -113,8 +115,8 @@ namespace NFluent.Tests
             var array = new[] {1, 2, 3};
 
             Check.That(array).IsEquivalentTo(3, 2, 1);
-
-            Check.That<IEnumerable<int>>(null).IsEquivalentTo(null);
+            IEnumerable<int> nullArray = null;
+            Check.That<IEnumerable<int>>(null).IsEquivalentTo(nullArray);
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 4)).IsAFaillingCheck();
 
@@ -176,6 +178,45 @@ namespace NFluent.Tests
                 "The checked enumerable is not in ascending order, whereas it should.",
                 "At #1: [4] comes after [1].", "The checked enumerable:",
                 "\t[4, 1, 2, 3, 5, null, 5] (7 items)");
+        }
+
+        [Test]
+        public void AscendingSupportCustomComparer()
+        {
+            var custom = new HardComparer(-1);
+            Check.That(new [] {0, 1, 2, 4, 3, 5}).IsInAscendingOrder(custom);
+            Check.That(new [] {5, 4, 3, 2, 1, 0}).IsInAscendingOrder(custom);
+        }
+
+        [Test]
+        public void DescendingSupportCustomComparer()
+        {
+            var custom = new HardComparer(1);
+            Check.That(new [] {0, 1, 2, 4, 3, 5}).IsInDescendingOrder(custom);
+            Check.That(new [] {5, 4, 3, 2, 1, 0}).IsInDescendingOrder(custom);
+        }
+
+        class HardComparer: IComparer
+        {
+            private readonly int result;
+
+            public HardComparer(int result)
+            {
+                this.result = result;
+            }
+
+            public int Compare(object x, object y)
+            {
+                return this.result;
+            }
+        }
+
+        [Test]
+        public void
+            AscendingOrderSupportEdgeCases()
+        {
+            Check.That(new[] {new object(), new object()}).IsInAscendingOrder();
+            Check.That(new[] {new object(), null}).IsInAscendingOrder();
         }
 
         [Test]
