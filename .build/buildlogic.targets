@@ -36,7 +36,7 @@
         <TestRunnerPath>nunit3-console.exe</TestRunnerPath>
         <xUnitTestRunnerPath>$(xunit20)\xunit.console.x86.exe</xUnitTestRunnerPath>
         <xunitOptions>-appveyor</xunitOptions>
-        <MsTestRunnerPath>vstest.console.exe</MsTestRunnerPath>
+        <MsTestRunnerPath></MsTestRunnerPath>
         <MsTestOptions>/logger:Appveyor</MsTestOptions>
         <In>$(APPVEYOR_BUILD_VERSION)</In>
         <Pattern>(?&lt;Major&gt;\d+)\.(?&lt;Minor&gt;\d+)\.(?&lt;Patch&gt;[\d]+)\.(?&lt;PreReleaseInfo&gt;[\d]+)?</Pattern>
