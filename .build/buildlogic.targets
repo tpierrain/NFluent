@@ -19,10 +19,13 @@
     <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.6.519</opencoverVersion>
     <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">3.1.2</reportGeneratorVersion>
     <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.8.0</nunitConsoleVersion>
-    <xunitConsoleVersion Condition="'$(xunitConsoleVersion)' == ''">2.3.1</xunitConsoleVersion>
+    <NunitOptions>--result="$(SolutionRoot)\TestResults.xml"</NunitOptions>
     <TestRunnerPath>$(NuGetToolsPath)\NUnit.ConsoleRunner.$(nunitConsoleVersion)\tools\nunit3-console.exe</TestRunnerPath>
+    <xunitConsoleVersion Condition="'$(xunitConsoleVersion)' == ''">2.3.1</xunitConsoleVersion>
+    <xunitOptions />
     <xUnitTestRunnerPath>$(NuGetToolsPath)\XUnit.runner.console.$(xunitConsoleVersion)\tools\net452\xunit.console.exe</xUnitTestRunnerPath>
     <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
+    <MsTestOptions/>
   </PropertyGroup>
 
   <!-- Specifics for appveyor: use env provided nunit runner for result publication-->
@@ -31,7 +34,10 @@
       <PropertyGroup>
         <NunitOptions>--result="$(SolutionRoot)\TestResults.xml";format=AppVeyor</NunitOptions>
         <TestRunnerPath>nunit3-console.exe</TestRunnerPath>
-        <MsTestRunnerPath></MsTestRunnerPath>
+        <xunitConsoleVersion>xunit.console.exe</xunitConsoleVersion>
+        <xunitOptions>/appveyor</xunitOptions>
+        <MsTestRunnerPath>vstest.console.exe</MsTestRunnerPath>
+        <MsTestOptions>/logger:Appveyor</MsTestOptions>
         <In>$(APPVEYOR_BUILD_VERSION)</In>
         <Pattern>(?&lt;Major&gt;\d+)\.(?&lt;Minor&gt;\d+)\.(?&lt;Patch&gt;[\d]+)\.(?&lt;PreReleaseInfo&gt;[\d]+)?</Pattern>
         <AssemblyVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Major"].Value)</AssemblyVersionMajor>
@@ -210,11 +216,12 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
       </TestRun>
       <TestRun Include="@(TestProjects)"  Condition="'%(TestProjects.Runner)'=='xUnit'">
         <Runner>"$(xUnitTestRunnerPath)"</Runner>
-        <Args>%(TestProjects.FullPath)</Args>
+        <Args>%(TestProjects.FullPath) $(xunitOptions)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
-      </TestRun>      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Framework)'!='netstandard2.0' AND '%(TestProjects.Runner)'=='MsTest'">
+      </TestRun>
+      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Framework)'!='netstandard2.0' AND '%(TestProjects.Runner)'=='MsTest'">
         <Runner>"$(MsTestRunnerPath)$(MsTestRunner)"</Runner>
-        <Args>%(TestProjects.Identity)</Args>
+        <Args>$(MsTestOptions) %(TestProjects.Identity)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Runner)'=='Self'">
@@ -232,10 +239,9 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
 RUN ALL UNIT TESTS
 ---------------------------------------------------------------
           "  />
-    <PropertyGroup>
-      <CoverToolPath>$(NuGetToolsPath)\NUnit.Console.$(opencoverVersion)\tools</CoverToolPath>
-    </PropertyGroup>
-    <Exec Command='"$(NuGetExePath)" install nunit.console -o "$(NuGetToolsPath)" -version $(nunitConsoleVersion)'/>
+    <Exec Command='"$(NuGetExePath)" install nunit.console -o "$(NuGetToolsPath)" -version $(nunitConsoleVersion)' Condition='!Exists($(TestRunnerPath))'/>
+
+    <Exec Command='"$(NuGetExePath)" install XUnit.runner.console -o "$(NuGetToolsPath)" -version $(xunitConsoleVersion)' Condition='!Exists($(xUnitTestRunnerPath))'/>
 
     <Message Importance="high" Text="--------- RUN TESTS ---------"/>
     <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="$(SolutionRoot)"/>
@@ -250,8 +256,9 @@ RUN ALL UNIT TESTS
       <CoverToolPath>$(NuGetToolsPath)\OpenCover.$(opencoverVersion)\tools</CoverToolPath>
     </PropertyGroup>
     <Exec Command='"$(NuGetExePath)" install opencover -o "$(NuGetToolsPath)" -version $(opencoverVersion)'/>
-    <Message Importance="normal" Text="Cover for %(TestProjects.Identity) : $(CoverageDataFile) -mergeoutput " Condition="'%(TestProjects.Coverage)'=='true'"/>
-    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -register:user -filter:"+[*]* -[*.Tests*]* -[*]NUnit.*" -excludebyattribute:*.Obsolete*  -output:"$(CoverageDataFile)" -mergeoutput -mergebyhash -targetargs:"%(TestRun.Args)"'
+
+    <Message Importance="normal" Text="Cover for %(TestRun.Identity) : $(CoverageDataFile) -mergeoutput " Condition="'%(TestRun.Coverage)'=='true'"/>
+    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -searchdirs:%(TestRun.RelativeDir) -register:user -filter:"+[*]* -[*.Tests*]* -[*]NUnit.*" -excludebyattribute:*.Obsolete*  -output:"$(CoverageDataFile)" -mergeoutput -mergebyhash -"targetargs:%(TestRun.Args)"'
           Condition="'%(TestRun.Coverage)'=='true'"/>
     <Message Importance="high" Text="--------- end of Coverage ---------"/>
   </Target>
