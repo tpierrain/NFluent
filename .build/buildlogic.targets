@@ -34,8 +34,8 @@
       <PropertyGroup>
         <NunitOptions>--result="$(SolutionRoot)\TestResults.xml";format=AppVeyor</NunitOptions>
         <TestRunnerPath>nunit3-console.exe</TestRunnerPath>
-        <xUnitTestRunnerPath>$(xunit20)\xunit.console.x86</xUnitTestRunnerPath>
-        <xunitOptions>/appveyor</xunitOptions>
+        <xUnitTestRunnerPath>$(xunit20)\xunit.console.x86.exe</xUnitTestRunnerPath>
+        <xunitOptions>-appveyor</xunitOptions>
         <MsTestRunnerPath>vstest.console.exe</MsTestRunnerPath>
         <MsTestOptions>/logger:Appveyor</MsTestOptions>
         <In>$(APPVEYOR_BUILD_VERSION)</In>
