@@ -216,7 +216,7 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
       </TestRun>
       <TestRun Include="@(TestProjects)"  Condition="'%(TestProjects.Runner)'=='xUnit'">
         <Runner>"$(xUnitTestRunnerPath)"</Runner>
-        <Args>%(TestProjects.FullPath) $(xunitOptions)</Args>
+        <Args>"%(TestProjects.FullPath)" $(xunitOptions)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Framework)'!='netstandard2.0' AND '%(TestProjects.Runner)'=='MsTest'">
