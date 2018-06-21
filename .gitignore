@@ -281,3 +281,4 @@ NFluent.userprefs
 .vs/restore.dg
 *.ncrunch*
 *.orig
+/TestResults.xml

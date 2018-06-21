@@ -16,6 +16,7 @@
     <NuGetToolsPath>$(SolutionRoot)\Packages</NuGetToolsPath>
     <NuGetExePath>nuget.exe</NuGetExePath>
     <MsTestRunner>vstest.console.exe</MsTestRunner>
+
     <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.6.519</opencoverVersion>
     <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">3.1.2</reportGeneratorVersion>
     <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.8.0</nunitConsoleVersion>
@@ -206,7 +207,8 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
     <ItemGroup>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Framework)'!='netstandard2.0' AND '%(TestProjects.Runner)'==''">
         <Runner>"$(TestRunnerPath)"</Runner>
-        <Args>%(TestProjects.FullPath) $(NunitOptions) /framework:%(TestProjects.Framework)</Args>
+        <Args Condition="'%(TestProjects.DontReport)'!='true'">%(TestProjects.FullPath) $(NunitOptions) /framework:%(TestProjects.Framework)</Args>
+        <Args Condition="'%(TestProjects.DontReport)'=='true'">%(TestProjects.FullPath) /framework:%(TestProjects.Framework)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'=='netstandard1.3' OR '%(TestProjects.Framework)'=='netstandard2.0'">
@@ -216,7 +218,8 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
       </TestRun>
       <TestRun Include="@(TestProjects)"  Condition="'%(TestProjects.Runner)'=='xUnit'">
         <Runner>"$(xUnitTestRunnerPath)"</Runner>
-        <Args>"%(TestProjects.FullPath)" $(xunitOptions)</Args>
+        <Args Condition="'%(TestProjects.DontReport)'!='true'">"%(TestProjects.FullPath)" $(xunitOptions)</Args>
+        <Args Condition="'%(TestProjects.DontReport)'=='true'">"%(TestProjects.FullPath)"</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Framework)'!='netstandard2.0' AND '%(TestProjects.Runner)'=='MsTest'">
