@@ -28,7 +28,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)DurationTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumerableCheckShould.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ExtraFluentSyntaxShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ForObsoleteStuff\CheckerShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FromIssues\EdgeCasesTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumerableRelatedTests.cs" />

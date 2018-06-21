@@ -18,7 +18,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Checks\ComparableCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\CheckLogicExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\IErrorReporter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ExtraFluent\ExtraFluent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\Criteria.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DateTimeCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DictionaryCheckExtensions.cs" />
