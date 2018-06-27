@@ -5,8 +5,11 @@
 * IsInDescendingOrder:  checks if an IEnumerable is sorted in descending orders, it accepts an optional comparer instance
 
 ### Fixes
+* Exception when using HasElementThatMatches or ContainsOnlyElementsThatMatch on arrays, and possibly
+other enumerable types.
 
 ### GitHub Issues
+* #255
 
 
 ## V 2.3.1
