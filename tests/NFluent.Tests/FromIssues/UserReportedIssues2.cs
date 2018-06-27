@@ -28,11 +28,18 @@ namespace NFluent.Tests.FromIssues
     {
         // GH #254
         [Test]
-        public void ShouldHandleArrays()
+        public void HasElementThatMatchesShouldHandleArrays()
         {
             IEnumerable<string> randomWords = new [] { "yes", "foo", "bar" };
             Check.That(randomWords).HasElementThatMatches((_) => _.StartsWith("ye"));
-        }
+        }        
+
+        [Test]
+        public void ContainsOnlyElementsThatMatchShouldHandleArrays()
+        {
+            IEnumerable<int> positiveNumbers = new [] { 4, 8, 7 };
+            Check.That(positiveNumbers).ContainsOnlyElementsThatMatch((_) => _ >= 0);
+        }     
 
         // GH #143
         [Test]
