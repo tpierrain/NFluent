@@ -336,7 +336,6 @@ namespace NFluent
                     long? index = null;
                     using (var scan = sut.GetEnumerator())
                     {
-                        item = scan.Current;
                         for (var i = 0; scan.MoveNext(); i++)
                         {
                             if (!predicate(scan.Current))

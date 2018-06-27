@@ -26,6 +26,14 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        // GH #254
+        [Test]
+        public void ShouldHandleArrays()
+        {
+            IEnumerable<string> randomWords = new [] { "yes", "foo", "bar" };
+            Check.That(randomWords).HasElementThatMatches((_) => _.StartsWith("ye"));
+        }
+
         // GH #143
         [Test]
         public void ThrowShouldCaptureTypeParameters()
