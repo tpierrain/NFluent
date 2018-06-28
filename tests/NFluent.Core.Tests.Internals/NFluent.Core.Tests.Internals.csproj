@@ -10,13 +10,13 @@
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageId>
     </PackageId>
-    <Version>2.3.2-alpha-0000</Version>
+    <Version>2.4.0-alpha-0000</Version>
     <Authors>Thomas PIERRAIN (thomas@pierrain.net), Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR and Co</Authors>
     <Company>NFluent Team</Company>
     <Product>NFluent</Product>
     <Description>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).</Description>
-    <AssemblyVersion>2.3.2.0</AssemblyVersion>
-    <FileVersion>2.3.2.0</FileVersion>
+    <AssemblyVersion>2.4.0.0</AssemblyVersion>
+    <FileVersion>2.4.0.0</FileVersion>
     <Copyright>Copyright © 2017- 2014. Licensed under the Apache License, Version 2.0.</Copyright>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>http://www.n-fluent.net/</PackageProjectUrl>
