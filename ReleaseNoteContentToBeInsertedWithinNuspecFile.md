@@ -3,13 +3,14 @@
 ### New checks
 * IsInAscendingOrder: checks if an IEnumerable is sorted in ascending orders, it accepts an optional comparer instance
 * IsInDescendingOrder:  checks if an IEnumerable is sorted in descending orders, it accepts an optional comparer instance
+* IsASubSetOf: checks if an IEnumerable is a subset of another collection.
 
 ### Fixes
 * Exception when using HasElementThatMatches or ContainsOnlyElementsThatMatch on arrays, and possibly
 other enumerable types.
 
 ### GitHub Issues
-* #255
+* #255, #38
 
 
 ## V 2.3.1

@@ -592,5 +592,29 @@ namespace NFluent.Tests
                 "The checked enumerable:",
                 "\t[\"yes\", \"foo\", \"bar\"] (3 items)");
         }
+
+        [Test]
+        public void IsSubSetOfWorksWhenExpected()
+        {
+            IEnumerable<string> randomWords = new List<string> { "yes", "foo"};
+            IEnumerable<string> expectedWords = new List<string> { "yes", "foo", "bar" };
+
+            Check.That(randomWords).IsSubSetOf(expectedWords);
+        }
+
+        [Test]
+        public void IsSubSetOfFailssWhenExpected()
+        {
+            IEnumerable<string> randomWords = new List<string> { "yes", "foo"};
+            IEnumerable<string> expectedWords = new List<string> { "yes", "foo", "bar" };
+            Check.ThatCode(() =>
+                Check.That(expectedWords).IsSubSetOf(randomWords)).
+                IsAFaillingCheckWithMessage("", 
+                    "The checked enumerable contains \"bar\" which is absent from expected value(s).", 
+                    "The checked enumerable:", 
+                    "\t[\"yes\", \"foo\", \"bar\"] (3 items)", 
+            "The expected value(s):", 
+            "\t[\"yes\", \"foo\"] (2 items)");
+        }
     }
 }

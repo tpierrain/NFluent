@@ -141,6 +141,7 @@ namespace NFluent
                 var comparer = new EqualityHelper.EqualityComparer<object>();
 
                 var sutCount = sut.Count();
+                // ReSharper disable once PossibleNullReferenceException
                 var expectedCount = enumerable.Count;
                 var failed = false;
                 using (var second = enumerable.GetEnumerator())
@@ -231,6 +232,38 @@ namespace NFluent
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(context);
         }
+
+        /// <summary>
+        /// Checks if the sut is a sub set of another collection
+        /// </summary>
+        /// <param name="context">Check context</param>
+        /// <param name="expectedSuperset">Expected superset</param>
+        /// <typeparam name="T">Type of items in the colleciton</typeparam>
+        /// <returns>A chainable link.</returns>
+        public static ICheckLink<ICheck<IEnumerable<T>>> IsSubSetOf<T>(this ICheck<IEnumerable<T>> context,
+            IEnumerable<T> expectedSuperset)
+        {
+            var superSet = new List<T>(expectedSuperset);
+            ExtensibilityHelper.BeginCheck(context).
+                FailIfNull().
+                DefineExpectedValues(expectedSuperset, superSet.Count).
+                Analyze((sut, test) =>
+                {
+                    foreach (var item in sut)
+                    {
+                        if (!superSet.Remove(item))
+                        {
+                            test.Fail(
+                                $"The {{checked}} contains {item.ToStringProperlyFormatted()} which is absent from {{expected}}.");
+                            break;
+                        }
+                    }
+                }).
+                OnNegate("The {checked} is a subset of {expected} whereas it should not.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(context);
+        }
+
         /// <summary>
         /// Checks if the sut contains the same element than a given list.
         /// </summary>
