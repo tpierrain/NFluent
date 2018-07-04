@@ -152,6 +152,16 @@ namespace NFluent
             return new FluentStructCheck<T>(value);
         }
 
+
+        /// <summary>
+        /// Defines a custom error message on error.
+        /// </summary>
+        /// <param name="message">custom error message.</param>
+        public static void WithCustomMessage(string message)
+        {
+
+        }
+
         /// <summary>
         /// Gets/sets how equality comparison are done.
         /// </summary>
