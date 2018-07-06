@@ -66,5 +66,10 @@ namespace NFluent.Kernel
         /// Gets the error reporter
         /// </summary>
         public IErrorReporter Reporter { get; }
+
+        /// <summary>
+        /// Gets/Sets a custom error message.
+        /// </summary>
+        public string CustomMessage { get; set; }
     }
 }

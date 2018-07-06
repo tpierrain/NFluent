@@ -16,6 +16,7 @@
 namespace NFluent
 {
     using System;
+    using System.Net;
     using Extensibility;
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
     using System.Threading.Tasks;
@@ -157,9 +158,9 @@ namespace NFluent
         /// Defines a custom error message on error.
         /// </summary>
         /// <param name="message">custom error message.</param>
-        public static void WithCustomMessage(string message)
+        public static NFluentEntryPoint WithCustomMessage(string message)
         {
-
+            return new NFluentEntryPoint(message);
         }
 
         /// <summary>
@@ -179,6 +180,42 @@ namespace NFluent
         {
             get => Extensions.ExtensionsCommonHelpers.StringTruncationLength;
             set => Extensions.ExtensionsCommonHelpers.StringTruncationLength = value;
+        }
+    }
+
+    /// <summary>
+    /// Provides NFluent entry points through an instance.
+    /// </summary>
+    /// <remarks>This is an helper class.</remarks>
+    public class NFluentEntryPoint
+    {
+        private string message;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        public NFluentEntryPoint(string message)
+        {
+            this.message = message;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
+        /// </summary>
+        /// <typeparam name="T">Type of the value to be tested.</typeparam>
+        /// <param name="sut">The value to be tested.</param>
+        /// <returns>
+        /// A <see cref="ICheck{T}" /> instance to use in order to check things on the given value.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
+        /// </remarks>
+        public ICheck<T> That<T>(T sut)
+        {
+            var result = new FluentCheck<T>(sut);
+            result.CustomMessage = this.message;
+            return result;
         }
     }
 }

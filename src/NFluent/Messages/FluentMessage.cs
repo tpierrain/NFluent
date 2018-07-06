@@ -39,6 +39,7 @@ namespace NFluent.Extensibility
         private string entity;
         private Type referenceType;
         private Type checkedType;
+        private string customAddOn;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FluentMessage"/> class.
@@ -78,7 +79,8 @@ namespace NFluent.Extensibility
         /// </returns>
         public override string ToString()
         {
-            var builder = new StringBuilder(EndOfLine);
+            var builder = new StringBuilder(this.customAddOn);
+            builder.Append(EndOfLine);
             if (this.referenceType != null)
             {
                 this.expectedNamer.EntityType = this.referenceType;
@@ -258,5 +260,13 @@ namespace NFluent.Extensibility
             return this.expectedBlock;
         }
 
+        /// <summary>
+        /// Adds a fully custom add on error message (first line).
+        /// </summary>
+        /// <param name="customAddOnMessage"></param>
+        public void AddCustomMessage(string customAddOnMessage)
+        {
+            this.customAddOn = customAddOnMessage;
+        }
     }
 }

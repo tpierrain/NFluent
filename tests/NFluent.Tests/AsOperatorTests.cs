@@ -34,14 +34,13 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [Ignore("WIP")]
         public void
             ShouldOfferCustomMessage()
         {
             Check.ThatCode(() =>
             {
-             //   Check.WithCustomMessage("Custom message.").That(1).IsEqualTo(2); 
-            }).IsAFaillingCheckWithMessage("Custom message.",
+                Check.WithCustomMessage("We should get 2.").That(1).IsEqualTo(2); 
+            }).IsAFaillingCheckWithMessage("We should get 2.",
                 "The checked value is different from the expected one.", 
                 "The checked value:", 
                 "\t[1]", 

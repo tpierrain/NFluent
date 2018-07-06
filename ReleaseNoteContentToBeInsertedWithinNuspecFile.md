@@ -1,5 +1,12 @@
-## V 2.4.0
+## V 2.4.0 (beta)
 ---------------
+### Main feature: Custom explicit error message
+You can now provides explicit error messages for each check, thanks to **WithCustomMessage**. E.g:
+Check.WithCustomMessage("Ticket must be valid at this stage").That(ticket.Status).IsEqualTo(Status.Valid);
+This feature has often been requested, we are happy to finaly deliver it, but please keep on properly
+naming your test methods.
+Feature is alpha at this stage, final naming may change.
+
 ### New checks
 * IsInAscendingOrder: checks if an IEnumerable is sorted in ascending orders, it accepts an optional comparer instance
 * IsInDescendingOrder:  checks if an IEnumerable is sorted in descending orders, it accepts an optional comparer instance
@@ -10,7 +17,7 @@
 other enumerable types.
 
 ### GitHub Issues
-* #255, #38
+* #255, #38, #166
 
 
 ## V 2.3.1

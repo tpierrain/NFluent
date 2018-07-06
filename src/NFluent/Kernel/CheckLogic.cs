@@ -160,6 +160,10 @@ namespace NFluent.Kernel
             }
 
             var fluentMessage = FluentMessage.BuildMessage(this.LastError);
+            if (!string.IsNullOrWhiteSpace(this.fluentSut.CustomMessage))
+            {
+                fluentMessage.AddCustomMessage(this.fluentSut.CustomMessage);
+            }
             if ((this.Option & MessageOption.NoCheckedBlock) == 0)
             {
                 var block = fluentMessage.On(this.fluentSut.Value, this.index);
