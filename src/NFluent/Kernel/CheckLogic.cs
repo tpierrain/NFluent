@@ -160,7 +160,7 @@ namespace NFluent.Kernel
             }
 
             var fluentMessage = FluentMessage.BuildMessage(this.LastError);
-            if (!string.IsNullOrWhiteSpace(this.fluentSut.CustomMessage))
+            if (!  string.IsNullOrEmpty(this.fluentSut.CustomMessage))
             {
                 fluentMessage.AddCustomMessage(this.fluentSut.CustomMessage);
             }
