@@ -603,6 +603,16 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsSubSetOfWorksOnEdgeCase()
+        {
+            IEnumerable<string> expectedWords = new List<string> { "yes", "foo", "bar" };
+
+            Check.That(new List<string>()).IsSubSetOf(expectedWords);
+            Check.That(new List<string>()).IsSubSetOf(new List<string>());
+            Check.That(expectedWords).IsSubSetOf(expectedWords);
+        }
+
+        [Test]
         public void IsSubSetOfFailssWhenExpected()
         {
             IEnumerable<string> randomWords = new List<string> { "yes", "foo"};

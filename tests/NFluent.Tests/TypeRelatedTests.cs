@@ -1,6 +1,5 @@
 ﻿namespace NFluent.Tests
 {
-    using NFluent.ApiChecks;
     using NFluent.Helpers;
     using NUnit.Framework;
 

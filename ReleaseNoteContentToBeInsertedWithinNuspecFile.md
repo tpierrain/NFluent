@@ -10,7 +10,7 @@ Feature is alpha at this stage, final naming may change.
 ### New checks
 * IsInAscendingOrder: checks if an IEnumerable is sorted in ascending orders, it accepts an optional comparer instance
 * IsInDescendingOrder:  checks if an IEnumerable is sorted in descending orders, it accepts an optional comparer instance
-* IsASubSetOf: checks if an IEnumerable is a subset of another collection.
+* IsSubSetOf: checks if an IEnumerable is a subset of another collection.
 
 ### Fixes
 * Exception when using HasElementThatMatches or ContainsOnlyElementsThatMatch on arrays, and possibly
