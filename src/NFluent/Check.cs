@@ -16,7 +16,6 @@
 namespace NFluent
 {
     using System;
-    using System.Net;
     using Extensibility;
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
     using System.Threading.Tasks;

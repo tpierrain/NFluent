@@ -218,11 +218,34 @@ namespace NFluent.Helpers
             {
                 var array = (Array) this.Value;
                 var fieldType = array.GetType().GetElementType();
-                for (var i = 0; i < array.Length; i++)
+                if (array.Rank == 1)
                 {
-                    var expectedEntryDescription = BuildFromField(this.MemberLongName, $"[{i}]", fieldType,
-                        array.GetValue(i), this.Criteria);
-                    result.Add(expectedEntryDescription);
+                    for (var i = 0; i < array.Length; i++)
+                    {
+                        var expectedEntryDescription = BuildFromField(this.MemberLongName, $"[{i}]", fieldType,
+                            array.GetValue(i), this.Criteria);
+                        result.Add(expectedEntryDescription);
+                    }
+                }
+                else
+                {
+                    var indices = new int[array.Rank];
+                    for (var i = 0; i < array.Length; i++)
+                    {
+                        var temp = i;
+                        var label = new StringBuilder("[");
+                        for (var j = 0; j < array.Rank; j++)
+                        {
+                            var currentIndex = temp % (array.GetUpperBound(j)+1);
+                            label.Append(currentIndex.ToString());
+                            label.Append(j < array.Rank - 1 ? "," : "]");
+                            indices[j] = currentIndex;
+                            temp /= array.GetUpperBound(j);
+                        }
+                        var expectedEntryDescription = BuildFromField(this.MemberLongName,label.ToString(), fieldType,
+                            array.GetValue(indices), this.Criteria);
+                        result.Add(expectedEntryDescription);
+                    }
                 }
             }
             else
@@ -436,12 +459,7 @@ namespace NFluent.Helpers
                     return false;
                 }
 
-                if (!expected.IsArray)
-                {
-                    return true;
-                }
-
-                if (actual.IsArray && ((Array) expected.Value).Length == ((Array) actual.Value).Length)
+                if (!expected.IsArray ||  (actual.IsArray && (((Array) expected.Value).Length == ((Array) actual.Value).Length)))
                 {
                     return true;
                 }
