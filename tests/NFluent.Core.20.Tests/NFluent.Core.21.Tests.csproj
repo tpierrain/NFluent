@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>NFluent.Tests</AssemblyName>
     <RootNamespace>NFluent.Tests</RootNamespace>
     <Version>2.4.0-alpha-0000</Version>

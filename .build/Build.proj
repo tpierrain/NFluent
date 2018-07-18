@@ -36,15 +36,15 @@
       <Fwk>core</Fwk>
     </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)NFluent.Core.20.Tests.Internals">
-      <CSProj>NFluent.Core.20.Tests.Internals.csproj</CSProj>
+      <CSProj>NFluent.Core.21.Tests.Internals.csproj</CSProj>
       <Fwk>core</Fwk>
     </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)NFluent.Core.20.Tests">
-      <CSProj>NFluent.Core.20.Tests.csproj</CSProj>
+      <CSProj>NFluent.Core.21.Tests.csproj</CSProj>
       <Fwk>core</Fwk>
     </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)NFluent.Core.20.Tests.Extensions">
-      <CSProj>NFluent.Core.20.Tests.Extensions.csproj</CSProj>
+      <CSProj>NFluent.Core.21.Tests.Extensions.csproj</CSProj>
       <Fwk>core</Fwk>
     </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)NFluent.Core.Tests.Internals">
@@ -157,13 +157,13 @@
         <Framework>netstandard1.3</Framework>
         <Coverage>true</Coverage>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Core.20.Tests.Internals\NFluent.Core.20.Tests.Internals.csproj'>
+      <TestProjects Include='$(TestsPath)\NFluent.Core.20.Tests.Internals\NFluent.Core.21.Tests.Internals.csproj'>
         <Framework>netstandard2.0</Framework>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Core.20.Tests\NFluent.Core.20.Tests.csproj'>
+      <TestProjects Include='$(TestsPath)\NFluent.Core.20.Tests\NFluent.Core.21.Tests.csproj'>
         <Framework>netstandard2.0</Framework>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Core.20.Tests.Extensions\NFluent.Core.20.Tests.Extensions.csproj'>
+      <TestProjects Include='$(TestsPath)\NFluent.Core.20.Tests.Extensions\NFluent.Core.21.Tests.Extensions.csproj'>
         <Framework>netstandard2.0</Framework>
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Tests.SelfHosted\bin\$(Configuration)\NFluent.Tests.SelfHosted.exe'>

@@ -109,11 +109,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.45.Tests.Meta", "te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Standard.20", "src\NFluent.Standard.20\NFluent.Standard.20.csproj", "{C90111A0-3AB2-40ED-B665-C0DDB8DEB26E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.20.Tests", "tests\NFluent.Core.20.Tests\NFluent.Core.20.Tests.csproj", "{DDC4E247-CD3A-4BBB-A762-335F796ECC1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.21.Tests", "tests\NFluent.Core.20.Tests\NFluent.Core.21.Tests.csproj", "{DDC4E247-CD3A-4BBB-A762-335F796ECC1D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.20.Tests.Internals", "tests\NFluent.Core.20.Tests.Internals\NFluent.Core.20.Tests.Internals.csproj", "{477B64E4-CBB3-4E2A-A4B1-580517C2D43F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.21.Tests.Internals", "tests\NFluent.Core.20.Tests.Internals\NFluent.Core.21.Tests.Internals.csproj", "{477B64E4-CBB3-4E2A-A4B1-580517C2D43F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.20.Tests.Extensions", "tests\NFluent.Core.20.Tests.Extensions\NFluent.Core.20.Tests.Extensions.csproj", "{F63EDD21-D306-4371-A7FF-23DDDE420266}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Core.21.Tests.Extensions", "tests\NFluent.Core.20.Tests.Extensions\NFluent.Core.21.Tests.Extensions.csproj", "{F63EDD21-D306-4371-A7FF-23DDDE420266}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.xUnit", "tests\NFluent.Tests.xUnit\NFluent.Tests.xUnit.csproj", "{C9DBF0DB-FC05-4687-8A92-A6C1AA12BF9C}"
 EndProject

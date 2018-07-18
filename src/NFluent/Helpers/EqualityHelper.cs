@@ -18,6 +18,7 @@ namespace NFluent.Helpers
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Text;
     using Extensibility;
     using Extensions;
 
@@ -281,6 +282,11 @@ namespace NFluent.Helpers
 
             if (otherItem != null)
             {
+                if (firstItem.GetType().IsArray && otherItem.GetType().IsArray)
+                {
+                    return ValueDifferenceArray(firstItem as Array, firstName, otherItem as Array, secondName,
+                        firstSeen, secondSeen);
+                }
                 if (firstItem is IEnumerable first && otherItem is IEnumerable second)
                 {
                     return ValueDifferenceEnumerable(first, firstName, second, secondName, firstSeen, secondSeen);
@@ -299,6 +305,47 @@ namespace NFluent.Helpers
 
             result.Add(new DifferenceDetails(firstName, firstItem, secondName, otherItem));
             return result;
+        }
+
+        private static IList<DifferenceDetails> ValueDifferenceArray(Array firstArray, string firstName, Array secondArray, string secondName, List<object> firstSeen, List<object> secondSeen)
+        {
+            var valueDifferences = new List<DifferenceDetails>();
+
+            if (firstArray.Rank != secondArray.Rank)
+            {
+                valueDifferences.Add(new DifferenceDetails(firstName+".Rank", firstArray, secondName+".Rank", secondArray));
+                return valueDifferences;
+            }
+
+            for (var i = 0; i < firstArray.Rank; i++)
+            {
+                if (firstArray.GetUpperBound(i) != secondArray.GetUpperBound(i))
+                {
+                    valueDifferences.Add(new DifferenceDetails($"{firstName}.Dimension({i})", firstArray, $"{secondName}.Dimension({i})", secondArray));
+                    return valueDifferences;
+                }
+            }
+
+            var indices = new int[firstArray.Rank];
+            for (var i = 0; i < firstArray.Length; i++)
+            {
+                var temp = i;
+                var label = new StringBuilder("[");
+                for (var j = 0; j < firstArray.Rank; j++)
+                {
+                    var currentIndex = temp % (firstArray.GetUpperBound(j) + 1);
+                    label.Append(currentIndex.ToString());
+                    label.Append(j < firstArray.Rank - 1 ? "," : "]");
+                    indices[j] = currentIndex;
+                    temp /= firstArray.GetUpperBound(j);
+                }
+
+                var firstEntry = firstArray.GetValue(indices);
+                var secondEntry = secondArray.GetValue(indices);
+                valueDifferences.AddRange(ValueDifference(firstEntry, firstName+label, secondEntry, secondName+label, firstSeen, secondSeen));
+            }
+
+            return valueDifferences;
         }
 
         private static IList<DifferenceDetails> ValueDifferenceEnumerable(IEnumerable firstItem, string firstName,

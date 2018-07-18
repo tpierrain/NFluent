@@ -44,6 +44,7 @@ namespace NFluent.Tests.FromIssues
                 "\t[4]",
                 "The expected value's field 'Property.[1,1]':",
                 "\t[5]");
+
         }
 
         class MyType{
