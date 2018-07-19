@@ -15,9 +15,6 @@
 
 namespace NFluent.Helpers
 {
-#if NETSTANDARD1_3
-    using System.Reflection;
-#endif
     using System;
     using System.Collections.Generic;
     using System.Reflection;
