@@ -15,6 +15,7 @@
 
 namespace NFluent
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Text;
@@ -36,6 +37,17 @@ namespace NFluent
         public static long Count(this IEnumerable enumerable)
         {
             return enumerable?.Cast<object>().LongCount() ?? 0;
+        }
+
+        /// <summary>
+        /// Returns the dimension of the array along one of its axes
+        /// </summary>
+        /// <param name="array">array</param>
+        /// <param name="dimension">axes numer</param>
+        /// <returns>the size of the requested dimension</returns>
+        public static int SizeOfDimension(this Array array, int dimension)
+        {
+            return array.GetUpperBound(dimension) - array.GetLowerBound(dimension) + 1;
         }
 
         /// <summary>

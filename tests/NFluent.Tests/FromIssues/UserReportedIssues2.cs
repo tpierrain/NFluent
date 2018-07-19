@@ -32,11 +32,11 @@ namespace NFluent.Tests.FromIssues
             ShouldSupportMultidimensionalArray()
         {
             var myClass = new MyType();
-            myClass.Property = new int[4,2];
+            myClass.Property = new int[4, 2];
             myClass.Property[1, 1] = 4;
             Check.That(myClass).HasFieldsWithSameValues(myClass);
             var myOther = new MyType();
-            myOther.Property = new int[4,2];
+            myOther.Property = new int[4, 2];
             myOther.Property[1, 1] = 5;
             Check.ThatCode(() => Check.That(myClass).HasFieldsWithSameValues(myOther)).IsAFaillingCheckWithMessage("", 
                 "The checked value's field 'Property.[1,1]' does not have the expected value.", 

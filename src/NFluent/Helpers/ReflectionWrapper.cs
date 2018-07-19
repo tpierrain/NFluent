@@ -20,6 +20,7 @@ namespace NFluent.Helpers
 #endif
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using Extensions;
@@ -194,14 +195,16 @@ namespace NFluent.Helpers
             }
 
             // we deal with missing fields
-            if (!this.Criteria.IgnoreExtra)
+            if (this.Criteria.IgnoreExtra)
             {
-                foreach (var actualFields in actual.GetSubExtendedMemberInfosFields())
+                return;
+            }
+
+            foreach (var actualFields in actual.GetSubExtendedMemberInfosFields())
+            {
+                if (this.FindMember(actualFields) == null)
                 {
-                    if (this.FindMember(actualFields) == null)
-                    {
-                        mapFunction(null, actualFields, depth - 1);
-                    }
+                    mapFunction(null, actualFields, depth - 1);
                 }
             }
         }
@@ -217,36 +220,7 @@ namespace NFluent.Helpers
             if (this.IsArray)
             {
                 var array = (Array) this.Value;
-                var fieldType = array.GetType().GetElementType();
-                if (array.Rank == 1)
-                {
-                    for (var i = 0; i < array.Length; i++)
-                    {
-                        var expectedEntryDescription = BuildFromField(this.MemberLongName, $"[{i}]", fieldType,
-                            array.GetValue(i), this.Criteria);
-                        result.Add(expectedEntryDescription);
-                    }
-                }
-                else
-                {
-                    var indices = new int[array.Rank];
-                    for (var i = 0; i < array.Length; i++)
-                    {
-                        var temp = i;
-                        var label = new StringBuilder("[");
-                        for (var j = 0; j < array.Rank; j++)
-                        {
-                            var currentIndex = temp % (array.GetUpperBound(j)+1);
-                            label.Append(currentIndex.ToString());
-                            label.Append(j < array.Rank - 1 ? "," : "]");
-                            indices[j] = currentIndex;
-                            temp /= array.GetUpperBound(j);
-                        }
-                        var expectedEntryDescription = BuildFromField(this.MemberLongName,label.ToString(), fieldType,
-                            array.GetValue(indices), this.Criteria);
-                        result.Add(expectedEntryDescription);
-                    }
-                }
+                result.AddRange(this.GetSubArrayExtendedInfo(array));
             }
             else
             {
@@ -258,42 +232,13 @@ namespace NFluent.Helpers
                     if (this.Criteria.WithFields)
                     {
                         var fieldsInfo = currentType.GetFields(this.Criteria.BindingFlagsForFields);
-                        foreach (var info in fieldsInfo)
-                        {
-                            if (memberDico.ContainsKey(info.Name))
-                            {
-                                continue;
-                            }
-
-                            var expectedValue = this.Value == null ? null : info.GetValue(this.Value);
-                            var extended = BuildFromField(this.MemberLongName, info.Name, info.FieldType, expectedValue,
-                                this.Criteria);
-                            if (this.Criteria.WithProperties && extended.IsProperty)
-                            {
-                                continue;
-                            }
-
-                            memberDico[info.Name] = extended;
-                            result.Add(extended);
-                        }
+                        result.AddRange(this.ExtractFields(fieldsInfo, memberDico));
                     }
 
                     if (this.Criteria.WithProperties)
                     {
                         var propertyInfos = currentType.GetProperties(this.Criteria.BindingFlagsForProperties);
-                        foreach (var info in propertyInfos)
-                        {
-                            if (memberDico.ContainsKey(info.Name) || info.GetIndexParameters().Length>0)
-                            {
-                                continue;
-                            }
-
-                            var expectedValue = this.Value == null ? null : info.GetValue(this.Value, null);
-                            var extended = BuildFromProperty(this.MemberLongName,
-                                info.Name, info.PropertyType, expectedValue, this.Criteria);
-                            memberDico[info.Name] = extended;
-                            result.Add(extended);
-                        }
+                        result.AddRange(this.ExtractProperties(propertyInfos, memberDico));
                     }
 
                     currentType = currentType.GetBaseType();
@@ -314,6 +259,89 @@ namespace NFluent.Helpers
             }
 
             return finalResult;
+        }
+
+        private IEnumerable<ReflectionWrapper> ExtractProperties(PropertyInfo[] propertyInfos, Dictionary<string, ReflectionWrapper> memberDico)
+        {
+            var result = new List<ReflectionWrapper>();
+            foreach (var info in propertyInfos)
+            {
+                if (memberDico.ContainsKey(info.Name) || info.GetIndexParameters().Length > 0)
+                {
+                    continue;
+                }
+
+                var expectedValue = this.Value == null ? null : info.GetValue(this.Value, null);
+                var extended = BuildFromProperty(this.MemberLongName,
+                    info.Name, info.PropertyType, expectedValue, this.Criteria);
+                memberDico[info.Name] = extended;
+                result.Add(extended);
+            }
+
+            return result;
+        }
+
+        private IEnumerable<ReflectionWrapper> ExtractFields(FieldInfo[] fieldsInfo, Dictionary<string, ReflectionWrapper> memberDico)
+        {
+            var result = new List<ReflectionWrapper>();
+            foreach (var info in fieldsInfo)
+            {
+                if (memberDico.ContainsKey(info.Name))
+                {
+                    continue;
+                }
+
+                var expectedValue = this.Value == null ? null : info.GetValue(this.Value);
+                var extended = BuildFromField(this.MemberLongName, info.Name, info.FieldType, expectedValue,
+                    this.Criteria);
+                if (this.Criteria.WithProperties && extended.IsProperty)
+                {
+                    continue;
+                }
+
+                memberDico[info.Name] = extended;
+                result.Add(extended);
+            }
+
+            return result;
+        }
+
+        private IEnumerable<ReflectionWrapper> GetSubArrayExtendedInfo(Array array)
+        {
+            var result = new List<ReflectionWrapper>();
+            var fieldType = array.GetType().GetElementType();
+            if (array.Rank == 1)
+            {
+                for (var i = array.GetLowerBound(0); i < array.GetUpperBound(0); i++)
+                {
+                    var expectedEntryDescription = BuildFromField(this.MemberLongName, $"[{i}]", fieldType,
+                        array.GetValue(i), this.Criteria);
+                    result.Add(expectedEntryDescription);
+                }
+            }
+            else
+            {
+                var indices = new int[array.Rank];
+                for (var i = 0; i < array.Length; i++)
+                {
+                    var temp = i;
+                    var label = new StringBuilder("[");
+                    for (var j = 0; j < array.Rank; j++)
+                    {
+                        var currentIndex = temp % array.SizeOfDimension(j);
+                        label.Append(currentIndex.ToString());
+                        label.Append(j < array.Rank - 1 ? "," : "]");
+                        indices[j] = currentIndex + array.GetLowerBound(j);
+                        temp /= array.SizeOfDimension(j);
+                    }
+
+                    var expectedEntryDescription = BuildFromField(this.MemberLongName, label.ToString(), fieldType,
+                        array.GetValue(indices), this.Criteria);
+                    result.Add(expectedEntryDescription);
+                }
+            }
+
+            return result;
         }
 
         private ReflectionWrapper FindMember(ReflectionWrapper other)

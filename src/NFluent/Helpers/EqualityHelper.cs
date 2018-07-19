@@ -224,7 +224,6 @@ namespace NFluent.Helpers
 
         private static bool FluentEquals(object instance, object expected, EqualityMode mode)
         {
-            // ReSharper disable once RedundantNameQualifier
             var ret = Equals(instance, expected);
             switch (mode)
             {
@@ -316,32 +315,32 @@ namespace NFluent.Helpers
                 valueDifferences.Add(new DifferenceDetails(firstName+".Rank", firstArray, secondName+".Rank", secondArray));
                 return valueDifferences;
             }
-
             for (var i = 0; i < firstArray.Rank; i++)
             {
-                if (firstArray.GetUpperBound(i) != secondArray.GetUpperBound(i))
+                if (firstArray.SizeOfDimension(i) != secondArray.SizeOfDimension(i))
                 {
                     valueDifferences.Add(new DifferenceDetails($"{firstName}.Dimension({i})", firstArray, $"{secondName}.Dimension({i})", secondArray));
                     return valueDifferences;
                 }
             }
-
             var indices = new int[firstArray.Rank];
+            var secondIndices = new int[secondArray.Rank];
             for (var i = 0; i < firstArray.Length; i++)
             {
                 var temp = i;
                 var label = new StringBuilder("[");
                 for (var j = 0; j < firstArray.Rank; j++)
                 {
-                    var currentIndex = temp % (firstArray.GetUpperBound(j) + 1);
+                    var currentIndex = temp % firstArray.SizeOfDimension(j);
                     label.Append(currentIndex.ToString());
                     label.Append(j < firstArray.Rank - 1 ? "," : "]");
-                    indices[j] = currentIndex;
-                    temp /= firstArray.GetUpperBound(j);
+                    indices[j] = currentIndex + firstArray.GetLowerBound(j);
+                    secondIndices[j] = currentIndex + secondArray.GetLowerBound(j);
+                    temp /= firstArray.SizeOfDimension(j);
                 }
 
                 var firstEntry = firstArray.GetValue(indices);
-                var secondEntry = secondArray.GetValue(indices);
+                var secondEntry = secondArray.GetValue(secondIndices);
                 valueDifferences.AddRange(ValueDifference(firstEntry, firstName+label, secondEntry, secondName+label, firstSeen, secondSeen));
             }
 
