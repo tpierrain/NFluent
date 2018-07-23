@@ -43,7 +43,7 @@ namespace NFluent.Extensions
         /// <returns>true if chars are the same.</returns>
         public static bool CompareCharIgnoringCase(char carA, char carB)
         {
-            return String.Compare(carA.ToString(), carB.ToString(), StringComparison.CurrentCultureIgnoreCase) == 0;
+            return string.Compare(carA.ToString(), carB.ToString(), StringComparison.CurrentCultureIgnoreCase) == 0;
         }
 
         /// <summary>

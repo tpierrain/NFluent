@@ -126,6 +126,11 @@ namespace NFluent.Extensions
                 return ToStringProperlyFormatted(f);
             }
 
+            if (theObject is Array array)
+            {
+                return ArrayToStringProperlyFormatted(array);
+            }
+
             if (theObject is IEnumerable enumerable)
             {
                 return enumerable.ToEnumeratedString();
@@ -261,6 +266,58 @@ namespace NFluent.Extensions
 #else
             return value.ToString();
 #endif
+        }
+
+        private static string ArrayToStringProperlyFormatted(Array array)
+        {
+            var result = new StringBuilder();
+            var indices = new int[array.Rank];
+            for (var i = 0; i < array.Length; i++)
+            {
+                var temp = i;
+                var zeroesStrike = true;
+                var closingStrikes = true;
+                var closing = string.Empty;
+                for (var j = 0; j < array.Rank; j++)
+                {
+                    var currentIndex = temp % array.SizeOfDimension(j);
+                    if (currentIndex == 0 && zeroesStrike)
+                    {
+                        if (j > 0)
+                        {
+                            result.Append('{');
+                        }
+                    }
+                    else
+                    {
+                        zeroesStrike = false;
+                    }
+
+                    if (currentIndex == array.SizeOfDimension(j) - 1 && closingStrikes)
+                    {
+                        if (j > 0)
+                        {
+                            closing += '}';
+                        }
+                    }
+                    else
+                    {
+                        closingStrikes = false;
+                    }
+
+                    indices[j] = currentIndex + array.GetLowerBound(j);
+                    temp /= array.SizeOfDimension(j);
+                }
+
+                result.Append(ToStringProperlyFormatted(array.GetValue(indices)));
+                result.Append(closing);
+                if (i != array.Length - 1)
+                {
+                    result.Append(", ");
+                }
+            }
+
+            return result.ToString();
         }
 
         /// <summary>
