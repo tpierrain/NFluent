@@ -278,7 +278,7 @@ namespace NFluent.Extensions
                 var zeroesStrike = true;
                 var closingStrikes = true;
                 var closing = string.Empty;
-                for (var j = 0; j < array.Rank; j++)
+                for (var j = array.Rank-1; j >= 0; j--)
                 {
                     var currentIndex = temp % array.SizeOfDimension(j);
                     if (currentIndex == 0 && zeroesStrike)

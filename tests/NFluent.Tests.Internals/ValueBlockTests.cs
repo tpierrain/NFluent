@@ -44,6 +44,7 @@ namespace NFluent.Tests
         [Test]
         public void ShouldWorkForEnumeration()
         {
+ 
             var list = new []{ "a", "b", "c" };
             var blk = new ValueBlock(list);
 
@@ -56,6 +57,16 @@ namespace NFluent.Tests
             blk.WithEnumerableCount(1);
             Assert.AreEqual("[\"A\"] (1 item)", blk.GetMessage());
         }
+
+        [Test]
+        public void ShouldWorkForMatrices()
+        {
+
+            var matrix = new int[,] {{1, 2, 3}, {4, 5, 6}};
+            var blk = new ValueBlock(matrix);
+            Assert.AreEqual("[{1, 2, 3}, {4, 5, 6}]", blk.GetMessage());
+        }
+
 
         [Test]
         public void ShouldTruncateLongEnumeration()
