@@ -26,6 +26,17 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        // GH 258
+        [Test]
+        public void IsNotNullShouldSupportAs()
+        {
+            Check.ThatCode(() =>
+                Check.That((string) null)
+                    .As($"foo")
+                    .IsNotNull()).IsAFaillingCheckWithMessage("", 
+                "The checked [foo] must not be null.");
+        }
+
         // GH 257
         [Test]
         public void

@@ -57,10 +57,21 @@ namespace NFluent.Kernel
 
         /// <inheritdoc />
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public ICheck<T> Not => new FluentCheck<T>(this.Value, !this.Negated);
+        public ICheck<T> Not
+        {
+            get
+            {
+                var fluentCheck = new FluentCheck<T>(this.Value, !this.Negated);
+                fluentCheck.SutName = this.SutName;
+                return fluentCheck;
+            }
+        }
 
         /// <inheritdoc />
-        public IChecker<T, ICheck<T>> Checker => this.checker;
+        public IChecker<T, ICheck<T>> Checker
+        {
+            get { return this.checker; }
+        }
 
         #region Public Methods and Operators
 

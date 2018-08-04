@@ -27,12 +27,13 @@
 ### Improvements
 * Multidimensional arrays are properly reported in error messages, respecting index structure.
 ### Fixes
+* As now works with Not (and vice versa).
 * Exception when using HasElementThatMatches or ContainsOnlyElementsThatMatch on arrays, and possibly
 other enumerable types.
 * Exception when using multidimensional arrays (such as  int[2,5]) with Considering/HasFiedsWithSameValueAs.
 * false Negative when comparing multimensionnal arrays, e.g.: int[3,5] was equal to int[5,3] and with int[15].
 ### GitHub Issues
-* #255, #38, #166
+* #255, #38, #166, #258, #259
 ## V 2.3.1
 ---------------
 ### Fixes

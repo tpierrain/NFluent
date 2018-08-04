@@ -66,7 +66,15 @@ namespace NFluent.Kernel
             "SA1623:PropertySummaryDocumentationMustMatchAccessors",
             Justification =
                 "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public ICodeCheck<T> Not => new FluentCodeCheck<T>(this.Value, CheckContext.DefaulNegated);
+        public ICodeCheck<T> Not
+        {
+            get
+            {
+                var fluentCodeCheck = new FluentCodeCheck<T>(this.Value, CheckContext.DefaulNegated);
+                fluentCodeCheck.SutName = SutName;
+                return fluentCodeCheck ;
+            }
+        }
 
         /// <summary>
         /// Gets the runnable check to use for checking something on a value of a given type.

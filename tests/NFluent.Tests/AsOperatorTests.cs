@@ -34,6 +34,19 @@ namespace NFluent.Tests
         }
 
         [Test]
+        // GH #259 As must support not
+        public void ShouldProvideANameForTheSutAndWorkWithNot()
+        {
+            Check.ThatCode( () => Check.That(42).As("answer").Not.IsBefore(100))
+                .IsAFaillingCheckWithMessage("",
+                    "The checked [answer] is before the reference value whereas it must not.",
+                    "The checked [answer]:",
+                    "\t[42]",
+                    "The expected [answer]: after",
+                    "\t[100]");
+        }
+
+        [Test]
         public void
             ShouldOfferCustomMessage()
         {
