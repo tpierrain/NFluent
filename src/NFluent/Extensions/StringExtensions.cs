@@ -23,18 +23,19 @@ namespace NFluent.Extensions
     /// <summary>
     ///     Hosts all string related extensions used by NFluent
     /// </summary>
-    internal static class StringExtensions
+    public static class StringExtensions
     {
-        /// <summary>
-        ///     Generates an espaced copy of a chain for use in format (e.G. { replaced by {{).
-        /// </summary>
-        /// <param name="toEscape">String to be escaped</param>
-        /// <returns>Escaped version of the string.</returns>
-        public static string Escaped(this string toEscape)
-        {
-            return toEscape.Replace("{", "{{").Replace("}", "}}");
-        }
 
+        /// <summary>
+        /// Doubles the curly braces in the string.
+        /// </summary>
+        /// <returns>The string having curly braces doubled.</returns>
+        /// <param name="value">String to correct.</param>
+        public static string DoubleCurlyBraces(this string value)
+        {
+            return value.Replace("{", "{{").Replace("}", "}}");
+        }
+        
         /// <summary>
         /// Compare char in a case sensitive or insensitive way.
         /// </summary>
@@ -72,7 +73,7 @@ namespace NFluent.Extensions
             {
                 len = texte.Length - middle;
             }
-            result.Append(texte.Substring(middle, len).Escaped());
+            result.Append(texte.Substring(middle, len).DoubleCurlyBraces());
             if (middle + len < texte.Length)
             {
                 result.Append("...");

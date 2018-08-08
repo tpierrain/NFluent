@@ -26,18 +26,27 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
-        // GH 258
+        // GH #261 issues with strings with brackets
+        [Test]
+        public void TestBrackets() {
+            const string haystack = "Hello, {LeMonde}";
+            const string needle = "{World}";
+            Check.ThatCode(()=>
+            Check.That(haystack).Contains(needle)).IsAFaillingCheck(); // This will intensionally fail
+        }
+
+        // GH #258
         [Test]
         public void IsNotNullShouldSupportAs()
         {
             Check.ThatCode(() =>
                 Check.That((string) null)
-                    .As($"foo")
+                    .As("foo")
                     .IsNotNull()).IsAFaillingCheckWithMessage("", 
                 "The checked [foo] must not be null.");
         }
 
-        // GH 257
+        // GH #257
         [Test]
         public void
             ShouldSupportMultidimensionalArray()

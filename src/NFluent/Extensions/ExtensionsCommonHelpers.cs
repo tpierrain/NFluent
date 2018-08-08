@@ -433,14 +433,5 @@ namespace NFluent.Extensions
 #endif
         }
 
-        /// <summary>
-        /// Doubles the curly braces in the string.
-        /// </summary>
-        /// <returns>The string having curly braces doubled.</returns>
-        /// <param name="value">String to correct.</param>
-        public static string DoubleCurlyBraces(this string value)
-        {
-            return value.Replace("{", "{{").Replace("}", "}}");
-        }
     }
 }

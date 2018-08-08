@@ -22,9 +22,10 @@ Feature is alpha at this stage, final naming may change.
 other enumerable types.
 * Exception when using multidimensional arrays (such as  int[2,5]) with Considering/HasFiedsWithSameValueAs.
 * false Negative when comparing multimensionnal arrays, e.g.: int[3,5] was equal to int[5,3] and with int[15].
+* Exception when reporting strings containing braces.
 
 ### GitHub Issues
-* #255, #38, #166, #258, #259
+* #255, #38, #166, #258, #259, #260
 
 
 ## V 2.3.1

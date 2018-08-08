@@ -67,11 +67,13 @@ namespace NFluent
 
             IList<object> notFoundValues = null;
             ExtensibilityHelper.BeginCheck(check).
-                FailWhen((sut) => sut == null && otherEnumerable != null, "The {0} is null and thus, does not contain the given expected value(s).").
+                FailWhen((sut) => sut == null && otherEnumerable != null, 
+                    "The {0} is null and thus, does not contain the given expected value(s).").
                 DefineExpectedValues(otherEnumerable, otherEnumerable.Count()).
                 Analyze((sut, _) =>  notFoundValues = ExtractNotFoundValues(sut, otherEnumerable)).
                 FailWhen((_) => notFoundValues.Any(), string.Format(
-                    "The {{0}} does not contain the expected value(s):" + Environment.NewLine + "\t[{0}]", notFoundValues.ToEnumeratedString().DoubleCurlyBraces())).
+                    "The {{0}} does not contain the expected value(s):" + Environment.NewLine + "\t[{0}]", 
+                    notFoundValues.ToEnumeratedString().DoubleCurlyBraces())).
                 OnNegate("The {0} contains all the given values whereas it must not.").
                 EndCheck();
 
@@ -208,7 +210,7 @@ namespace NFluent
                         if (!expectedContent.Remove(item))
                         {
                             test.Fail(
-                                $"The {{checked}} does contain [{item.ToStringProperlyFormatted()}] whereas it should not.");
+                                $"The {{checked}} does contain [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] whereas it should not.");
                             isOk = false;
                         }
                     }
@@ -218,12 +220,12 @@ namespace NFluent
                         if (expectedContent.Count == 1)
                         {
                             test.Fail(
-                                $"The {{checked}} is missing: [{expectedContent.ToStringProperlyFormatted()}].");
+                                $"The {{checked}} is missing: [{expectedContent.ToStringProperlyFormatted().DoubleCurlyBraces()}].");
                         }
                         else
                         {
                             test.Fail(
-                                $"The {{checked}} is missing {expectedContent.Count} items: [{expectedContent.ToStringProperlyFormatted()}].");
+                                $"The {{checked}} is missing {expectedContent.Count} items: [{expectedContent.ToStringProperlyFormatted().DoubleCurlyBraces()}].");
                         }
                     }
                 }).
@@ -254,7 +256,7 @@ namespace NFluent
                         if (!superSet.Remove(item))
                         {
                             test.Fail(
-                                $"The {{checked}} contains {item.ToStringProperlyFormatted()} which is absent from {{expected}}.");
+                                $"The {{checked}} contains {item.ToStringProperlyFormatted().DoubleCurlyBraces()} which is absent from {{expected}}.");
                             break;
                         }
                     }
@@ -306,7 +308,7 @@ namespace NFluent
                                 continue;
                             }
 
-                            test.Fail($"The {{0}} does contain an element at index #{index} that does not match the given predicate: ({scan.Current}).");
+                            test.Fail($"The {{0}} does contain an element at index #{index} that does not match the given predicate: ({scan.Current.ToStringProperlyFormatted().DoubleCurlyBraces()}).");
                             label = $"element #{index}";
                             return;
                         }
@@ -887,7 +889,7 @@ namespace NFluent
                         {
                             if (comparer.Compare(previous, current) > 0)
                             {
-                                test.Fail($"The {{checked}} is not in ascending order, whereas it should.{Environment.NewLine}At #{index}: [{previous.ToStringProperlyFormatted()}] comes after [{current.ToStringProperlyFormatted()}].");
+                                test.Fail($"The {{checked}} is not in ascending order, whereas it should.{Environment.NewLine}At #{index}: [{previous.ToStringProperlyFormatted().DoubleCurlyBraces()}] comes after [{current.ToStringProperlyFormatted().DoubleCurlyBraces()}].");
                                 return;
                             }
                         }
@@ -932,7 +934,7 @@ namespace NFluent
                         {
                             if (comparer.Compare(previous, current) < 0)
                             {
-                                test.Fail($"The {{checked}} is not in descending order, whereas it should.{Environment.NewLine}At #{index}: [{previous.ToStringProperlyFormatted()}] comes before [{current.ToStringProperlyFormatted()}].");
+                                test.Fail($"The {{checked}} is not in descending order, whereas it should.{Environment.NewLine}At #{index}: [{previous.ToStringProperlyFormatted().DoubleCurlyBraces()}] comes before [{current.ToStringProperlyFormatted().DoubleCurlyBraces()}].");
                                 return;
                             }
                         }

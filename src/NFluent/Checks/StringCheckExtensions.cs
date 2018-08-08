@@ -201,10 +201,10 @@ namespace NFluent
 
                         if (missingItems.Any())
                         {
-                            test.Fail("The {0} does not contain the expected value(s): " +
-                                       missingItems.ToEnumeratedString());
+                            test.Fail($"The {{0}} does not contain the expected value(s): " +
+                                      $"{missingItems.ToEnumeratedString().DoubleCurlyBraces()}");
                         }
-                        test.OnNegate("The {0} contains unauthorized value(s): " + presentItems.ToEnumeratedString());
+                        test.OnNegate($"The {{0}} contains unauthorized value(s): {presentItems.ToEnumeratedString().DoubleCurlyBraces()}");
 
                     }).
                 CantBeNegated().
