@@ -36,7 +36,7 @@ namespace NFluent
         /// <typeparam name="TU">The given type to check the checked value against.</typeparam>
         /// <returns>A chainable check.</returns>
         /// <exception cref="FluentCheckException">The specified value is null (and not of the same nullable type) or not of the given type.</exception>
-        ICheckLink<ICheck<T>> IsInstanceOf<TU>();
+        ICheckLinkWhich<ICheck<T>, ICheck<TU>> IsInstanceOf<TU>();
 
         /// <summary>
         /// Checks whether if the checked value is different from the given type.

@@ -29,7 +29,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>latest</LangVersion>
     <DocumentationFile>bin\Debug\netstandard1.3\NFluent.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

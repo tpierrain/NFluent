@@ -202,6 +202,14 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is not an instance of [NFluent.Tests.Person]." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"for unit testing\"] of type: [string]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [NFluent.Tests.Person]");
         }
 
+        [Test]
+        public void CanBeUseWithWhich()
+        {
+            object castedString = "abcd";
+            Check.That(castedString).IsInstanceOf<string>().Which.IsEqualIgnoringCase("ABCD");
+        }
+        
+        
         #endregion
 
         #region IsNotInstanceOf tests
@@ -374,7 +382,7 @@ namespace NFluent.Tests
         [Test]
         public void IsNotInstanceOfThrowsExceptionWhenFailingWithTimeSpan()
         {
-            TimeSpan oneHour = TimeSpan.FromMinutes(60);
+            var oneHour = TimeSpan.FromMinutes(60);
 
             Check.ThatCode(() =>
             {

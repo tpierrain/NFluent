@@ -12,6 +12,7 @@ Feature is alpha at this stage, final naming may change.
 * IsInAscendingOrder: checks if an IEnumerable is sorted in ascending orders, it accepts an optional comparer instance
 * IsInDescendingOrder:  checks if an IEnumerable is sorted in descending orders, it accepts an optional comparer instance
 * IsSubSetOf: checks if an IEnumerable is a subset of another collection.
+* IsInstanceOf<Type>(): now supports the Which() keyword so you may use checks specific to the asserted type.
 
 ### Improvements
 * Multidimensional arrays are properly reported in error messages, respecting index structure.
@@ -25,7 +26,7 @@ other enumerable types.
 * Exception when reporting strings containing braces.
 
 ### GitHub Issues
-* #255, #38, #166, #258, #259, #260
+* #255, #38, #166, #258, #259, #260, #261, #262
 
 
 ## V 2.3.1

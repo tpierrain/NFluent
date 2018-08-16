@@ -61,17 +61,13 @@ namespace NFluent.Kernel
         {
             get
             {
-                var fluentCheck = new FluentCheck<T>(this.Value, !this.Negated);
-                fluentCheck.SutName = this.SutName;
+                var fluentCheck = new FluentCheck<T>(Value, !Negated) {SutName = SutName};
                 return fluentCheck;
             }
         }
 
         /// <inheritdoc />
-        public IChecker<T, ICheck<T>> Checker
-        {
-            get { return this.checker; }
-        }
+        public IChecker<T, ICheck<T>> Checker => this.checker;
 
         #region Public Methods and Operators
 
@@ -95,9 +91,13 @@ namespace NFluent.Kernel
         }
 
         /// <inheritdoc />
-        public ICheckLink<ICheck<T>> IsInstanceOf<TU>()
+        public ICheckLinkWhich<ICheck<T>, ICheck<TU>> IsInstanceOf<TU>()
         {
-            return this.IsInstanceOfType(typeof(TU));
+            this.IsInstanceOfType(typeof(TU));
+
+            if (Value is TU converted)
+                return ExtensibilityHelper.BuildCheckLinkWhich(this, converted, "");
+            return ExtensibilityHelper.BuildCheckLinkWhich(this, default(TU), "");
         }
 
         /// <inheritdoc />
@@ -113,7 +113,7 @@ namespace NFluent.Kernel
         /// <inheritdoc />
         object IForkableCheck.ForkInstance()
         {
-            this.Negated = !CheckContext.DefaulNegated;
+            Negated = !CheckContext.DefaulNegated;
             return this; 
         }
 
