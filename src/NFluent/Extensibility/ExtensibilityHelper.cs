@@ -169,7 +169,10 @@ namespace NFluent.Extensibility
         public static ICheckLinkWhich<ICheck<TU>, ICheck<T>> BuildCheckLinkWhich<TU, T>(ICheck<TU> check, T item, string label)
         {
             var chk = new FluentCheck<T>(item);
-            chk.Checker.SetSutLabel(label);
+            if (!string.IsNullOrEmpty(label))
+            {
+                chk.Checker.SetSutLabel(label);
+            }
             return new CheckLinkWhich<ICheck<TU>, ICheck<T>>(check, chk);
         }
 

@@ -207,6 +207,15 @@ namespace NFluent.Tests
         {
             object castedString = "abcd";
             Check.That(castedString).IsInstanceOf<string>().Which.IsEqualIgnoringCase("ABCD");
+            
+            // check error message
+            Check.ThatCode(() => Check.That(castedString).IsInstanceOf<string>().Which.IsEqualIgnoringCase("ABCED"))
+                .IsAFaillingCheckWithMessage("",
+                    "The checked string is different from expected one.",
+                    "The checked string:", 
+                    "\t[\"abcd\"]", 
+                    "The expected string:", 
+                    "\t[\"ABCED\"]");
         }
         
         

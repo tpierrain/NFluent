@@ -96,8 +96,8 @@ namespace NFluent.Kernel
             this.IsInstanceOfType(typeof(TU));
 
             if (Value is TU converted)
-                return ExtensibilityHelper.BuildCheckLinkWhich(this, converted, "");
-            return ExtensibilityHelper.BuildCheckLinkWhich(this, default(TU), "");
+                return ExtensibilityHelper.BuildCheckLinkWhich(this, converted, SutName);
+            return ExtensibilityHelper.BuildCheckLinkWhich(this, default(TU), SutName);
         }
 
         /// <inheritdoc />
