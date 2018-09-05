@@ -30,18 +30,8 @@
   <Import Project="..\NFluent.Generated\NFluent.Generated.projitems" Label="Shared" />
 
   <ItemGroup>
-    <None Remove="NFluent.Core21.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <None Remove="NFluent.xml" />
     <None Include="..\..\NFluent.snk" Link="NFluent.snk" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="SourceLink.Create.GitHub" Version="2.8.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
 </Project>
