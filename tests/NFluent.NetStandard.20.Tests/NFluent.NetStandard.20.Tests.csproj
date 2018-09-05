@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>NFluent.NetStandard._20.Tests</RootNamespace>
+    <AssemblyName>NFluent.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <Import Project="..\NFluent.Tests\NFluent.Tests.projitems" Label="Shared" />
+
+  <Import Project="..\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.10.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NFluent.Standard.20\NFluent.Standard.20.csproj" />
+  </ItemGroup>
+
+</Project>

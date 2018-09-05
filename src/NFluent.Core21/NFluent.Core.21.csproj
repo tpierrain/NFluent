@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>NFluent</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\NFluent.snk</AssemblyOriginatorKeyFile>
+    <PackageId>NFluent</PackageId>
+    <Product>NFluent</Product>
+    <Company>NFluent</Company>
+    <Authors>NFluent</Authors>
+    <AssemblyName>NFluent</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Users\dupdo\source\repos\NFluent\src\NFluent.Core21\NFluent.xml</DocumentationFile>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\dupdo\source\repos\NFluent\src\NFluent.Core21\NFluent.xml</DocumentationFile>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <Import Project="..\NFluent\NFluent.projitems" Label="Shared" />
+
+  <Import Project="..\NFluent.Generated\NFluent.Generated.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <None Remove="NFluent.Core21.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\NFluent.snk" Link="NFluent.snk" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SourceLink.Create.GitHub" Version="2.8.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

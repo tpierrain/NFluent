@@ -49,15 +49,15 @@ namespace NFluent.Extensions
 
         /// <summary>
         /// Extracts a sub string based on a middle position and a length.
-        /// If truncation was needeed, three dots are added were appropriate.
+        /// If truncation was needed, three dots are added were appropriate.
         /// </summary>
-        /// <param name="texte">Texte to extract from</param>
+        /// <param name="text">Text to extract from</param>
         /// <param name="middle">Middle position</param>
         /// <param name="len">Length of the extract</param>
         /// <returns>the desired substring.</returns>
-        public static string Extract(this string texte, int middle, int len)
+        public static string Extract(this string text, int middle, int len)
         {
-            if (texte == null)
+            if (text == null)
                 return null;
             var result = new StringBuilder(len);
             middle -= len / 2;
@@ -69,12 +69,12 @@ namespace NFluent.Extensions
             {
                 middle = 0;
             }
-            if (middle + len >= texte.Length)
+            if (middle + len >= text.Length)
             {
-                len = texte.Length - middle;
+                len = text.Length - middle;
             }
-            result.Append(texte.Substring(middle, len).DoubleCurlyBraces());
-            if (middle + len < texte.Length)
+            result.Append(text.Substring(middle, len).DoubleCurlyBraces());
+            if (middle + len < text.Length)
             {
                 result.Append("...");
             }

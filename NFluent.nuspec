@@ -99,6 +99,9 @@
   </metadata>
   <files>
     <!-- Core -->
+    <file src="Artifacts\Binaries\netcoreapp2.1\NFluent.dll" target="lib\netcoreapp2.1\" />
+    <file src="Artifacts\Binaries\netcoreapp2.1\NFluent.xml" target="lib\netcoreapp2.1\" />
+    <file src="Artifacts\Binaries\netcoreapp2.1\NFluent.pdb" target="lib\netcoreapp2.1\" />
     <file src="Artifacts\Binaries\netstandard1.3\NFluent.dll" target="lib\netstandard1.3\" />
     <file src="Artifacts\Binaries\netstandard1.3\NFluent.xml" target="lib\netstandard1.3\" />
     <!--file src="Artifacts\Binaries\netstandard1.3\NFluent.pdb" target="lib\netstandard1.3\" /-->

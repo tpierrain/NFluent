@@ -1,17 +1,18 @@
-﻿// // --------------------------------  ------------------------------------------------------------------------------------
-// // <copyright file="DateTimeCheckExtensions.cs" company="">
-// //   Copyright 2013 Marc-Antoine LATOUR, Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿ // --------------------------------  ------------------------------------------------------------------------------------
+ // <copyright file="DateTimeCheckExtensions.cs" company="">
+ //   Copyright 2013 Marc-Antoine LATOUR, Thomas PIERRAIN
+ //   2017 Cyrille DUPUYDAUBY
+ //   Licensed under the Apache License, Version 2.0 (the "License");
+ //   you may not use this file except in compliance with the License.
+ //   You may obtain a copy of the License at
+ //       http://www.apache.org/licenses/LICENSE-2.0
+ //   Unless required by applicable law or agreed to in writing, software
+ //   distributed under the License is distributed on an "AS IS" BASIS,
+ //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ //   See the License for the specific language governing permissions and
+ //   limitations under the License.
+ // </copyright>
+ // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
     using System;
@@ -112,7 +113,7 @@ namespace NFluent
         /// (millisecond fields are ignored in comparison).
         /// Code example :
         /// <code>
-        ///     // successfull checks
+        ///     // successful checks
         ///     DateTime dateTime1 = new DateTime(2000, 1, 1, 0, 0, 1, 0);
         ///     DateTime dateTime2 = new DateTime(2000, 1, 1, 0, 0, 1, 456);
         ///     Check.That(dateTime1).IsEqualToIgnoringMillis(dateTime2);
@@ -154,7 +155,7 @@ namespace NFluent
         /// </code>
         /// Code example :
         /// <code>
-        ///     // successfull checks
+        ///     // successful checks
         ///     DateTime dateTime1 = new DateTime(2000, 1, 1, 23, 50, 0, 0);
         ///     DateTime dateTime2 = new DateTime(2000, 1, 1, 23, 50, 10, 456);
         ///     Check.That(dateTime1).IsEqualToIgnoringSeconds(dateTime2);
@@ -191,7 +192,7 @@ namespace NFluent
         /// </code>
         /// Code example :
         /// <code>
-        ///     // successfull checks
+        ///     // successful checks
         ///     DateTime dateTime1 = new DateTime(2000, 1, 1, 23, 50, 0, 0);
         ///     DateTime dateTime2 = new DateTime(2000, 1, 1, 23, 00, 2, 7);
         ///     Check.That(dateTime1).IsEqualToIgnoringMinutes(dateTime2);
@@ -228,7 +229,7 @@ namespace NFluent
         /// </code>
         /// Code example :
         /// <code>
-        ///     // successfull checks
+        ///     // successful checks
         ///     DateTime dateTime1 = new DateTime(2000, 1, 1, 23, 59, 59, 999);
         ///     DateTime dateTime2 = new DateTime(2000, 1, 1, 00, 00, 00, 000);
         ///     CheckThat(dateTime1).IsEqualToIgnoringHours(dateTime2);

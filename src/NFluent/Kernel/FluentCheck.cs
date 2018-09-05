@@ -95,7 +95,7 @@ namespace NFluent.Kernel
         {
             this.IsInstanceOfType(typeof(TU));
 
-            // TODO: respore pattern matching version when appveyor is upgraded
+            // TODO: restore pattern matching version when appveyor is upgraded
 //            if (Value is TU converted)
             if (Value is TU )
                 return ExtensibilityHelper.BuildCheckLinkWhich(this, (TU) (object) Value, SutName);

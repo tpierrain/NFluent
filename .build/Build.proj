@@ -25,6 +25,11 @@
   <Import Project="buildlogic.targets"/>
 
   <ItemGroup>
+    <ProjectFolder Include="$(SourcePath)NFluent.Core21">
+      <CSproj>NFluent.Core.21.csproj</CSproj>
+      <Package>netcoreapp2.1</Package>
+      <Fwk>core</Fwk>
+    </ProjectFolder>
     <ProjectFolder Include="$(SourcePath)NFluent.Standard.13">
       <CSproj>NFluent.Standard.13.csproj</CSproj>
       <Package>netstandard1.3</Package>
@@ -49,6 +54,14 @@
     </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)NFluent.Core.Tests.Internals">
       <CSProj>NFluent.Core.Tests.Internals.csproj</CSProj>
+      <Fwk>core</Fwk>
+    </ProjectFolder>
+    <ProjectFolder Include="$(TestsPath)NFluent.NetStandard.20.Tests">
+      <CSProj>NFluent.NetStandard.20.Tests.csproj</CSProj>
+      <Fwk>core</Fwk>
+    </ProjectFolder>
+    <ProjectFolder Include="$(TestsPath)NFluent.NetStandard.20.Tests.Extensions">
+      <CSProj>NFluent.NetStandard.20.Tests.Extensions.csproj</CSProj>
       <Fwk>core</Fwk>
     </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)NFluent.Core.Tests">
