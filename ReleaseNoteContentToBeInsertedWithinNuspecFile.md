@@ -16,6 +16,7 @@ Feature is alpha at this stage, final naming may change.
 
 ### Improvements
 * Multidimensional arrays are properly reported in error messages, respecting index structure.
+* Sourcelink (Net Core 2.1+): you can debug through NFluent code using Sourlink on Core 2.1 projects
 
 ### Fixes
 * As now works with Not (and vice versa).
@@ -26,7 +27,7 @@ other enumerable types.
 * Exception when reporting strings containing braces.
 
 ### GitHub Issues
-* #255, #38, #166, #258, #259, #260, #261, #262
+* #255, #38, #166, #258, #259, #260, #261, #262, #264, #265
 
 
 ## V 2.3.1
