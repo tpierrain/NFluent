@@ -26,6 +26,14 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        // GH #266 Error using ContainsOnlyElementsThatMatch
+        [Test]
+        public void IssuesWithEnumerables()
+        {
+            var integers = new[] { 2, 6 };
+// those checks succeed (at least one even entry)
+            Check.That(integers).ContainsOnlyElementsThatMatch(x => x % 2 == 0);
+        }
         // GH #261 issues with strings with brackets
         [Test]
         public void TestBrackets() {

@@ -27,6 +27,7 @@
 * IsInstanceOf&lt;Type&gt;(): now supports the Which() keyword so you may use checks specific to the asserted type.
 ### Improvements
 * Multidimensional arrays are properly reported in error messages, respecting index structure.
+* Sourcelink (Net Core 2.1+ and Net Standard 2.0): you can debug through NFluent code using Sourlink on Core 2.1 projects
 ### Fixes
 * As now works with Not (and vice versa).
 * Exception when using HasElementThatMatches or ContainsOnlyElementsThatMatch on arrays, and possibly
@@ -35,7 +36,7 @@
 * false Negative when comparing multimensionnal arrays, e.g.: int[3,5] was equal to int[5,3] and with int[15].
 * Exception when reporting strings containing braces.
 ### GitHub Issues
-* #255, #38, #166, #258, #259, #260, #261, #262
+* #255, #38, #166, #258, #259, #260, #261, #262, #264, #265
 ## V 2.3.1
 ---------------
 ### Fixes

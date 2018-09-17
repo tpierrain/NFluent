@@ -31,6 +31,7 @@ namespace NFluent.Helpers
     public static class ExceptionHelper
     {
         private static ExceptionConstructor constructors;
+        private static readonly string exceptionSeparator = Environment.NewLine + "--> ";
 
         private static ExceptionConstructor Constructors
         {
@@ -182,9 +183,7 @@ namespace NFluent.Helpers
             {
                 if (!firstRow)
                 {
-                    // TODO: parametrized this line sep part
-                    result.Append(Environment.NewLine + "--> ");
-
+                    result.Append(exceptionSeparator);
                 }
                 result.AppendFormat("{{ {0} }} \"{1}\"", innerException.GetType(), innerException.Message);
                 

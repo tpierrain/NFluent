@@ -16,7 +16,7 @@ Feature is alpha at this stage, final naming may change.
 
 ### Improvements
 * Multidimensional arrays are properly reported in error messages, respecting index structure.
-* Sourcelink (Net Core 2.1+): you can debug through NFluent code using Sourlink on Core 2.1 projects
+* Sourcelink (Net Core 2.1+ and Net Standard 2.0): you can debug through NFluent code using Sourlink on Core 2.1 projects
 
 ### Fixes
 * As now works with Not (and vice versa).
