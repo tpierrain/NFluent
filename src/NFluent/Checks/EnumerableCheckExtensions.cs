@@ -819,7 +819,7 @@ namespace NFluent
                 }
             }
 
-            element = default;
+            element = default(T);
             return false;
         }
 
@@ -850,7 +850,7 @@ namespace NFluent
                 }
             }
 
-            last = default;
+            last = default(T);
             return false;
         }
 
