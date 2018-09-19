@@ -25,11 +25,6 @@
   <Import Project="buildlogic.targets"/>
 
   <ItemGroup>
-    <ProjectFolder Include="$(SourcePath)NFluent.Core21">
-      <CSproj>NFluent.Core.21.csproj</CSproj>
-      <Package>netcoreapp2.1</Package>
-      <Fwk>core</Fwk>
-    </ProjectFolder>
     <ProjectFolder Include="$(SourcePath)NFluent.Standard.13">
       <CSproj>NFluent.Standard.13.csproj</CSproj>
       <Package>netstandard1.3</Package>
@@ -169,15 +164,6 @@
       <TestProjects Include='$(TestsPath)\NFluent.Core.Tests.Extensions\NFluent.Core.Tests.Extensions.csproj'>
         <Framework>netstandard1.3</Framework>
         <Coverage>true</Coverage>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Core.20.Tests.Internals\NFluent.Core.21.Tests.Internals.csproj'>
-        <Framework>netstandard2.0</Framework>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Core.20.Tests\NFluent.Core.21.Tests.csproj'>
-        <Framework>netstandard2.0</Framework>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Core.20.Tests.Extensions\NFluent.Core.21.Tests.Extensions.csproj'>
-        <Framework>netstandard2.0</Framework>
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Tests.SelfHosted\bin\$(Configuration)\NFluent.Tests.SelfHosted.exe'>
         <Framework>net-4.5</Framework>
