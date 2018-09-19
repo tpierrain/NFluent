@@ -35,18 +35,7 @@
       <Package>netstandard2.0</Package>
       <Fwk>core</Fwk>
     </ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)NFluent.Core.20.Tests.Internals">
-      <CSProj>NFluent.Core.21.Tests.Internals.csproj</CSProj>
-      <Fwk>core</Fwk>
-    </ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)NFluent.Core.20.Tests">
-      <CSProj>NFluent.Core.21.Tests.csproj</CSProj>
-      <Fwk>core</Fwk>
-    </ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)NFluent.Core.20.Tests.Extensions">
-      <CSProj>NFluent.Core.21.Tests.Extensions.csproj</CSProj>
-      <Fwk>core</Fwk>
-    </ProjectFolder>
+
     <ProjectFolder Include="$(TestsPath)NFluent.Core.Tests.Internals">
       <CSProj>NFluent.Core.Tests.Internals.csproj</CSProj>
       <Fwk>core</Fwk>
