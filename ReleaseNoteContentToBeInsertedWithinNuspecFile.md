@@ -1,11 +1,11 @@
-## V 2.4.0 (beta)
+## V 2.4.0
 ---------------
 ### Main feature: Custom explicit error message
 You can now provides explicit error messages for each check, thanks to **WithCustomMessage**. E.g:
 Check.WithCustomMessage("Ticket must be valid at this stage").That(ticket.Status).IsEqualTo(Status.Valid);
-This feature has often been requested, we are happy to finaly deliver it, but please keep on properly
-naming your test methods.
-Feature is alpha at this stage, final naming may change.
+This feature has often been requested  and we are happy to finaly deliver it, but please keep on
+naming your test methods properly.
+Custom error messages are not avaible for dynamic types.
 
 
 ### New checks

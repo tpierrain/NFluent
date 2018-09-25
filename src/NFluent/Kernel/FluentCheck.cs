@@ -62,6 +62,7 @@ namespace NFluent.Kernel
             get
             {
                 var fluentCheck = new FluentCheck<T>(Value, !Negated) {SutName = SutName};
+                fluentCheck.CustomMessage = CustomMessage;
                 return fluentCheck;
             }
         }

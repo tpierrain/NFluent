@@ -12,14 +12,14 @@
     <iconUrl>https://raw.github.com/tpierrain/NFluent/master/Images/Icon.png</iconUrl>
     <description>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).</description>
     <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
-    <releaseNotes>## V 2.4.0 (beta)
+    <releaseNotes>## V 2.4.0
 ---------------
 ### Main feature: Custom explicit error message
 You can now provides explicit error messages for each check, thanks to **WithCustomMessage**. E.g:
 Check.WithCustomMessage("Ticket must be valid at this stage").That(ticket.Status).IsEqualTo(Status.Valid);
-This feature has often been requested, we are happy to finaly deliver it, but please keep on properly
-naming your test methods.
-Feature is alpha at this stage, final naming may change.
+This feature has often been requested  and we are happy to finaly deliver it, but please keep on
+naming your test methods properly.
+Custom error messages are not avaible for dynamic types.
 ### New checks
 * IsInAscendingOrder: checks if an IEnumerable is sorted in ascending orders, it accepts an optional comparer instance
 * IsInDescendingOrder:  checks if an IEnumerable is sorted in descending orders, it accepts an optional comparer instance

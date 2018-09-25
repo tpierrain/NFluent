@@ -114,15 +114,16 @@ namespace NFluent.Kernel
         public ICheckLogic<TU> CheckSutAttributes<TU>(Func<T, TU> sutExtractor, string propertyName)
         {
             var value = this.fluentSut.Value;
+            var sutWrapper = new FluentSut<TU>(value == null ? default(TU) : sutExtractor(value),
+                this.fluentSut.Reporter,
+                this.IsNegated) {CustomMessage = this.fluentSut.CustomMessage};
             var result =
-                new CheckLogic<TU>(new FluentSut<TU>(value == null ? default(TU) : sutExtractor(value), 
-                    this.fluentSut.Reporter,
-                    this.IsNegated)) {isRoot = false};
+                new CheckLogic<TU>(sutWrapper) {isRoot = false};
 
-            var sutname = string.IsNullOrEmpty(this.sutName) ? (this.fluentSut.SutName ?? "value") : this.sutName;
+            var sutName = string.IsNullOrEmpty(this.sutName) ? (this.fluentSut.SutName ?? "value") : this.sutName;
             if (!string.IsNullOrEmpty(propertyName))
             {
-                result.SetSutName($"{sutname}'s {propertyName}");
+                result.SetSutName($"{sutName}'s {propertyName}");
             }
             if (this.failed != this.IsNegated)
             {
@@ -160,7 +161,7 @@ namespace NFluent.Kernel
             }
 
             var fluentMessage = FluentMessage.BuildMessage(this.LastError);
-            if (!  string.IsNullOrEmpty(this.fluentSut.CustomMessage))
+            if (!string.IsNullOrEmpty(this.fluentSut.CustomMessage))
             {
                 fluentMessage.AddCustomMessage(this.fluentSut.CustomMessage);
             }

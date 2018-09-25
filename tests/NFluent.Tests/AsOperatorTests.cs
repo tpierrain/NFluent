@@ -15,6 +15,7 @@
 
 namespace NFluent.Tests
 {
+    using System;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -54,6 +55,48 @@ namespace NFluent.Tests
             {
                 Check.WithCustomMessage("We should get 2.").That(1).IsEqualTo(2); 
             }).IsAFaillingCheckWithMessage("We should get 2.",
+                "The checked value is different from the expected one.", 
+                "The checked value:", 
+                "\t[1]", 
+                "The expected value:", 
+                "\t[2]");
+        }
+        [Test]
+        public void
+            ShouldOfferCustomMessageForEnum()
+        {
+            Check.ThatCode(() =>
+            {
+                Check.WithCustomMessage("We should get 2.").ThatEnum(1).IsEqualTo(2); 
+            }).IsAFaillingCheckWithMessage("We should get 2.",
+                "The checked value is different from the expected one.", 
+                "The checked value:", 
+                "\t[1]", 
+                "The expected value:", 
+                "\t[2]");
+        }
+
+        [Test]
+        public void
+            ShouldOfferCustomMessageForActions()
+        {
+            Check.ThatCode(() =>
+            {
+                Check.WithCustomMessage("This should work.").ThatCode(() => throw new Exception()).DoesNotThrow(); 
+            }).IsAFaillingCheckWithMessage("This should work.",
+                "The checked code raised an exception, whereas it must not.",
+                "The checked code's raised exception:", 
+                "*");
+        }
+
+        [Test]
+        public void
+            ShouldOfferCustomMessageForFunctions()
+        {
+            Check.ThatCode(() =>
+                {
+                    Check.WithCustomMessage("We should get 2.").ThatCode(() => 1).WhichResult().IsEqualTo(2);
+                }).IsAFaillingCheckWithMessage("We should get 2.",
                 "The checked value is different from the expected one.", 
                 "The checked value:", 
                 "\t[1]", 

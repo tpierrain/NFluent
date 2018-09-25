@@ -186,7 +186,9 @@ namespace NFluent.Extensibility
         /// <returns></returns>
         public static ICheck<TV> BuildCheck<T, TV>(ICodeCheck<T> check, Func<T, TV> extractor) where T: RunTrace
         {
-            return Check.That(extractor(ExtractCodeChecker(check).Value));
+            var extract = (FluentSut<T>) check;
+            var value = extractor(ExtractCodeChecker(check).Value);
+            return !string.IsNullOrEmpty(extract.CustomMessage) ? Check.WithCustomMessage(extract.CustomMessage).That(value) : Check.That(value);
         }
     }
 }

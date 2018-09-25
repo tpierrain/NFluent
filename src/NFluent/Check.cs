@@ -16,6 +16,7 @@
 namespace NFluent
 {
     using System;
+    using System.Runtime.CompilerServices;
     using Extensibility;
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
     using System.Threading.Tasks;
@@ -216,5 +217,60 @@ namespace NFluent
             result.CustomMessage = this.message;
             return result;
         }
+
+        /// <summary>
+        /// Returns a <see cref="IStructCheck{T}" /> instance that will provide check methods to be executed on a given enum or struct value.
+        /// </summary>
+        /// <typeparam name="T">Type of the enum or structure value to be tested.</typeparam>
+        /// <param name="value">The value to be tested.</param>
+        /// <returns>
+        /// A <see cref="IStructCheck{T}" /> instance to use in order to assert things on the given enum or struct value.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="IStructCheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
+        /// </remarks>
+        public  IStructCheck<T> ThatEnum<T>(T value)
+            where T : struct
+        {
+            var result = new FluentStructCheck<T>(value);
+            result.CustomMessage = this.message;
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
+        /// </summary>
+        /// <param name="value">The code to be tested.</param>
+        /// <returns>
+        /// A <see cref="ICheck{RunTrace}" /> instance to use in order to assert things on the given value.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
+        /// </remarks>
+        public ICodeCheck<RunTrace> ThatCode(Action value)
+        {
+            var result = new FluentCodeCheck<RunTrace>(FluentCodeCheck<RunTraceResult<Action>>.GetTrace(value));
+            result.CustomMessage = this.message;
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a lambda.
+        /// </summary>
+        /// <typeparam name="TU">Result type of the function.</typeparam>
+        /// <param name="value">The code to be tested.</param>
+        /// <returns>
+        /// A <see cref="ICheck{RunTrace}" /> instance to use in order to assert things on the lambda.
+        /// </returns>
+        /// <remarks>
+        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
+        /// </remarks>
+        public ICodeCheck<RunTraceResult<TU>> ThatCode<TU>(Func<TU> value)
+        {
+            var result = new FluentCodeCheck<RunTraceResult<TU>>(FluentCodeCheck<RunTraceResult<TU>>.GetTrace(value));
+            result.CustomMessage = this.message;
+            return result;
+        }
+
     }
 }

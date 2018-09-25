@@ -70,8 +70,10 @@ namespace NFluent.Kernel
         {
             get
             {
-                var fluentCodeCheck = new FluentCodeCheck<T>(this.Value, CheckContext.DefaulNegated);
-                fluentCodeCheck.SutName = SutName;
+                var fluentCodeCheck = new FluentCodeCheck<T>(this.Value, CheckContext.DefaulNegated)
+                {
+                    SutName = SutName, CustomMessage = CustomMessage
+                };
                 return fluentCodeCheck ;
             }
         }
