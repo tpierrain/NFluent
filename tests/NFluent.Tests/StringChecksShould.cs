@@ -687,6 +687,7 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [Ignore("Disabled as long as default truncate length is beng discussed.")]
         public void LongStringErrorMessageIsProperlyTruncated()
         {
             var checkString = File.ReadAllText(TestFiles.CheckedFile, Encoding.UTF8).Replace("\r\n", "");
@@ -703,6 +704,15 @@ namespace NFluent.Tests
                     "The expected string:",
                     "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?><!--  Edited by XMLSpy  --><CATALOG>  <CD>    <TITLE>Empire Burlesque</TITLE>    <ARTIST>Bob Dylan</ARTIST>    ...<<truncated>>...E>    <YEAR>1987</YEAR>  </CD></CATALOG>\"]"
                     );
+        }
+
+        [Test]
+        [Explicit("Use to demo long error messages. Fails on purpose")]
+        public void LongStringErrorMessageDemo()
+        {
+            var checkString = File.ReadAllText(TestFiles.CheckedFile, Encoding.UTF8).Replace("\r\n", "");
+            var expectedString = File.ReadAllText(TestFiles.ExpectedFile, Encoding.UTF8).Replace("\r\n", "");
+            Check.That(checkString).IsEqualTo(expectedString);
         }
 
         [Test]

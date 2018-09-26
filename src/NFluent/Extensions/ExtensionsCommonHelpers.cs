@@ -30,9 +30,9 @@ namespace NFluent.Extensions
     public static class ExtensionsCommonHelpers
     {
         private const string NullText = "null";
-        private static int maximumSizeBeforeTruncation = 197;
-        private static int startingLengthForLongString = 150;
-        private static int endingLengthForLongString = 40;
+        private static int maximumSizeBeforeTruncation;
+        private static int startingLengthForLongString;
+        private static int endingLengthForLongString;
         private const string TruncationMarkerText = "...<<truncated>>...";
 
         private static readonly Dictionary<Type, string> TypeToString = new Dictionary<Type, string>
@@ -57,6 +57,11 @@ namespace NFluent.Extensions
             typeof(decimal)
         };
 
+        static ExtensionsCommonHelpers()
+        {
+            StringTruncationLength = 20*1048;
+        }
+
         internal static int StringTruncationLength
         {
             get => maximumSizeBeforeTruncation;
@@ -67,7 +72,7 @@ namespace NFluent.Extensions
                     throw new ArgumentException();
                 }
                 maximumSizeBeforeTruncation = value;
-                value -= 7;
+                value -= TruncationMarkerText.Length;
                 startingLengthForLongString = (value * 15) / 19;
                 endingLengthForLongString = value - startingLengthForLongString;
             }

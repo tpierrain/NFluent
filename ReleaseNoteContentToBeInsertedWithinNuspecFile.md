@@ -15,6 +15,8 @@ Custom error messages are not avaible for dynamic types.
 * IsInstanceOf<Type>(): now supports the Which() keyword so you may use checks specific to the asserted type.
 
 ### Improvements
+* Truncation default lenght for message is now 20Ko as an experiment. Please bring feedback. You can still adjust 
+* default truncation with the Check.StringTruncationLength property
 * Multidimensional arrays are properly reported in error messages, respecting index structure.
 * Sourcelink (Net Core 2.1+ and Net Standard 2.0): you can debug through NFluent code using Sourlink on Core 2.1 projects
 
