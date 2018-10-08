@@ -707,15 +707,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [Explicit("Use to demo long error messages. Fails on purpose")]
-        public void LongStringErrorMessageDemo()
-        {
-            var checkString = File.ReadAllText(TestFiles.CheckedFile, Encoding.UTF8).Replace("\r\n", "");
-            var expectedString = File.ReadAllText(TestFiles.ExpectedFile, Encoding.UTF8).Replace("\r\n", "");
-            Check.That(checkString).IsEqualTo(expectedString);
-        }
-
-        [Test]
         public void UserCanControlTruncationLength()
         {
             var curLen = Check.StringTruncationLength;
