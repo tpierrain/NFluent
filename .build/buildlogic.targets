@@ -25,7 +25,13 @@
     <xunitConsoleVersion Condition="'$(xunitConsoleVersion)' == ''">2.3.1</xunitConsoleVersion>
     <xunitOptions />
     <xUnitTestRunnerPath>$(NuGetToolsPath)\XUnit.runner.console.$(xunitConsoleVersion)\tools\net452\xunit.console.exe</xUnitTestRunnerPath>
-    <MsTestRunnerPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
+
+    <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\</VsPath>
+    <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Professional\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Professional\</VsPath>
+    <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Enterprise\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Enterprise\</VsPath>
+    <VsPath Condition="'$(VsPath)'==''">false</VsPath>
+
+    <MsTestRunnerPath>$(VsPath)\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
     <MsTestOptions/>
   </PropertyGroup>
 
