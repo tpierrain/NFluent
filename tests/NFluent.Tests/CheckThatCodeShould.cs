@@ -31,13 +31,13 @@ namespace NFluent.Tests
     {
         private CultureSession session;
 
-        [SetUp]
+        [OneTimeSetUp]
         public void ForceCulture()
         {
             this.session = new CultureSession("en-US");
         }
 
-        [TearDown]
+        [OneTimeTearDown]
         public void RestoreCulture()
         {
             this.session.Dispose();

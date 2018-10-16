@@ -16,8 +16,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable once CheckNamespace
-
 namespace NFluent.Tests.ForDocumentation
 {
     using System;
@@ -67,7 +65,7 @@ namespace NFluent.Tests.ForDocumentation
 
                     try
                     {
-                        // we have to caputre eceptions
+                        // we have to capture exceptions
                         RunMethod(specificTest, test, report, log);
                     }
                     finally
@@ -122,7 +120,7 @@ namespace NFluent.Tests.ForDocumentation
         }
 
         /// <summary>
-        /// Polyfill for GetMthodInfo
+        /// Polyfill for GetMethodInfo
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
@@ -137,10 +135,11 @@ namespace NFluent.Tests.ForDocumentation
         {
 
             IList<object[]> parameters = new List<object[]>();
-            var testcases = specificTest.GetCustomAttributes(typeof(TestCaseAttribute));
-            if (testcases.Any())
+            var testCases = specificTest.GetCustomAttributes(typeof(TestCaseAttribute));
+            var attributes = testCases.ToList();
+            if (attributes.Any())
             {
-                foreach (var attribute in testcases)
+                foreach (var attribute in attributes)
                 {
                     if (attribute is TestCaseAttribute testCase)
                     {
@@ -159,7 +158,6 @@ namespace NFluent.Tests.ForDocumentation
                     specificTest.Invoke(test, pars);
                 }
             }
-            // ReSharper disable once RedundantCatchClause
             catch (Exception)
             {
 
@@ -308,7 +306,6 @@ namespace NFluent.Tests.ForDocumentation
             var frame = stackFrames[frameIndex];
 
             // get method
-            // ReSharper disable once PossibleNullReferenceException
             var method = frame.GetMethod();
 
             return CheckDescription.AnalyzeSignature(method);
