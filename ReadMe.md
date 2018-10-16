@@ -164,7 +164,7 @@ Nfluent __backlog is now available as github issues__
 
 New feature to be added?
 ------------------------
-+ If you want to join the project and contribute: __[check this out before](./CONTRIBUTING.md)__ before, but be our guest.
++ If you want to join the project and contribute: __[check this out before](./CONTRIBUTING.md)__, but be our guest.
 + If you don't want to contribute to the library, but you need a feature not yet implemented, don't hesitate to request it on the __[NFluent-Discuss google group](https://groups.google.com/forum/#!forum/nfluent-discuss)__.
 __In any case: you are welcome!__
 
