@@ -23,7 +23,7 @@ namespace NFluent.Helpers
     {
         #region fields
 
-        private readonly double rawDuration;
+        private readonly TimeSpan duration;
 
         private readonly TimeUnit timeUnit;
 
@@ -40,7 +40,35 @@ namespace NFluent.Helpers
         /// </param>
         public Duration(double rawDuration, TimeUnit timeUnit)
         {
-            this.rawDuration = rawDuration;
+            switch (timeUnit)
+            {
+                case TimeUnit.Nanoseconds:
+                    this.duration = TimeSpan.FromTicks((long)rawDuration/100);
+                    break;
+                case TimeUnit.Microseconds:
+                    this.duration = TimeSpan.FromTicks((long)rawDuration*10);
+                    break;
+                case TimeUnit.Milliseconds:
+                    this.duration = TimeSpan.FromMilliseconds(rawDuration);
+                    break;
+                case TimeUnit.Seconds:
+                    this.duration = TimeSpan.FromSeconds(rawDuration);
+                    break;
+                case TimeUnit.Minutes:
+                    this.duration = TimeSpan.FromMinutes(rawDuration);
+                    break;
+                case TimeUnit.Hours:
+                    this.duration = TimeSpan.FromHours(rawDuration);
+                    break;
+                case TimeUnit.Days:
+                    this.duration = TimeSpan.FromDays(rawDuration);
+                    break;
+                case TimeUnit.Weeks:
+                    this.duration = TimeSpan.FromDays(rawDuration*7);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(timeUnit));
+            }
             this.timeUnit = timeUnit;
         }
 
@@ -51,8 +79,7 @@ namespace NFluent.Helpers
         /// <param name="unit">The time unit.</param>
         public Duration(TimeSpan timeSpan, TimeUnit unit)
         {
-            this.rawDuration = timeSpan.TotalMilliseconds * TimeHelper.GetConversionFactor(TimeUnit.Milliseconds)
-                               / TimeHelper.GetConversionFactor(unit);
+            this.duration = timeSpan;
             this.timeUnit = unit;
         }
 
@@ -66,7 +93,25 @@ namespace NFluent.Helpers
         {
             get
             {
-                return this.rawDuration;
+                switch (this.timeUnit)
+                {
+                    case TimeUnit.Microseconds:
+                        return this.duration.Ticks/10.0;
+                    case TimeUnit.Milliseconds:
+                        return this.duration.TotalMilliseconds;
+                    case TimeUnit.Seconds:
+                        return this.duration.TotalSeconds;
+                    case TimeUnit.Minutes:
+                        return this.duration.TotalMinutes;
+                    case TimeUnit.Hours:
+                        return this.duration.TotalHours;
+                    case TimeUnit.Days:
+                        return this.duration.TotalDays;
+                    case TimeUnit.Weeks:
+                        return this.duration.TotalDays / 7;
+                }
+
+                return this.duration.Ticks * 100;
             }
         }
 
@@ -76,13 +121,7 @@ namespace NFluent.Helpers
         /// <value>
         /// The unit used for the duration.
         /// </value>
-        public TimeUnit Unit
-        {
-            get
-            {
-                return this.timeUnit;
-            }
-        }
+        public TimeUnit Unit => this.timeUnit;
 
         /// <summary>
         /// Converts a given duration to a number of milliseconds.
@@ -111,9 +150,7 @@ namespace NFluent.Helpers
         /// </returns>
         public static bool operator <(Duration a, Duration b)
         {
-            var firstFactor = TimeHelper.GetConversionFactor(a.Unit);
-            var secondFactor = TimeHelper.GetConversionFactor(b.Unit);
-            return a.RawDuration < (b.RawDuration / firstFactor * secondFactor);
+            return a.duration < b.duration;
         }
 
         /// <summary>
@@ -130,9 +167,7 @@ namespace NFluent.Helpers
         /// </returns>
         public static bool operator >=(Duration a, Duration b)
         {
-            var firstFactor = TimeHelper.GetConversionFactor(a.Unit);
-            var secondFactor = TimeHelper.GetConversionFactor(b.Unit);
-            return a.RawDuration >= (b.RawDuration / firstFactor * secondFactor);            
+            return a.duration >= b.duration;            
         }
 
         /// <summary>
@@ -149,9 +184,7 @@ namespace NFluent.Helpers
         /// </returns>
         public static bool operator <=(Duration a, Duration b)
         {
-            var firstFactor = TimeHelper.GetConversionFactor(a.Unit);
-            var secondFactor = TimeHelper.GetConversionFactor(b.Unit);
-            return a.RawDuration <= (b.RawDuration / firstFactor * secondFactor);
+            return a.duration <= b.duration;            
         }
 
         /// <summary>
@@ -168,9 +201,7 @@ namespace NFluent.Helpers
         /// </returns>
         public static bool operator >(Duration a, Duration b)
         {
-            var firstFactor = TimeHelper.GetConversionFactor(a.Unit);
-            var secondFactor = TimeHelper.GetConversionFactor(b.Unit);
-            return a.RawDuration > (b.RawDuration / firstFactor * secondFactor);
+            return a.duration > b.duration;            
         }
 
         /// <summary>
@@ -214,9 +245,7 @@ namespace NFluent.Helpers
         /// <returns>True if both Durations represents the same duration.</returns>
         public bool Equals(Duration other)
         {
-            var firstFactor = TimeHelper.GetConversionFactor(this.Unit);
-            var secondFactor = TimeHelper.GetConversionFactor(other.Unit);
-            return Math.Abs(this.RawDuration - (other.RawDuration / firstFactor * secondFactor)) < 0.001;
+            return this.duration == other.duration;
         }
 
         /// <summary>
@@ -242,7 +271,7 @@ namespace NFluent.Helpers
         /// </returns>
         public override int GetHashCode()
         {
-            return this.rawDuration.GetHashCode() + this.timeUnit.GetHashCode();
+            return this.duration.GetHashCode() + this.timeUnit.GetHashCode();
         }
 
         /// <summary>
@@ -253,7 +282,7 @@ namespace NFluent.Helpers
         /// </returns>
         public override string ToString()
         {
-            return $"{this.rawDuration} {this.timeUnit}";
+            return $"{this.RawDuration} {this.timeUnit}";
         }
 
         /// <summary>
@@ -263,7 +292,7 @@ namespace NFluent.Helpers
         /// <returns>The new <see cref="Duration"/>.</returns>
         public Duration ConvertTo(TimeUnit newTmeUnit)
         {
-            var newDuration = TimeHelper.GetInNanoSeconds(this.rawDuration, this.timeUnit);
+            var newDuration = TimeHelper.GetInNanoSeconds(this.RawDuration, this.timeUnit);
             return new Duration(TimeHelper.GetFromNanoSeconds(newDuration, newTmeUnit), newTmeUnit);
         }
 

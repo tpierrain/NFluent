@@ -26,6 +26,14 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        // GH #269 error sor some timespan
+        [Test]
+        public void IssueWithTimeSpanMinVal()
+        {
+            Check.That(TimeSpan.MinValue).IsEqualTo(TimeSpan.MinValue); // Ok with NFluent 2.2 but Fails with NFluent 2.3 !
+            Check.That(TimeSpan.MinValue).IsLessThan(TimeSpan.MinValue + TimeSpan.FromTicks(1));
+        }
+
         // GH #266 Error using ContainsOnlyElementsThatMatch
         [Test]
         public void IssuesWithEnumerables()

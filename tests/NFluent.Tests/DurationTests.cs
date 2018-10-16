@@ -29,6 +29,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldSupportVariousUnits()
+        {
+            Check.That(new Duration(100, TimeUnit.Nanoseconds).RawDuration).IsEqualTo(100);
+            Check.That(new Duration(100, TimeUnit.Microseconds).RawDuration).IsEqualTo(100);
+            Check.That(new Duration(100, TimeUnit.Hours).RawDuration).IsEqualTo(100);
+            Check.That(new Duration(5, TimeUnit.Weeks).RawDuration).IsEqualTo(5);
+        }
+
+        [Test]
+        public void ShouldThrowOnInvalidUnit()
+        {
+            Check.ThatCode(() => { new Duration(100, (TimeUnit) (- 1));}).Throws<ArgumentException>();
+        }
+
+        [Test]
         public void ConvertToMillisecondsWorksWith2Seconds()
         {
             int durationInMsec = Duration.ConvertToMilliseconds(2, TimeUnit.Seconds);
