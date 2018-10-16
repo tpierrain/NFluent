@@ -67,7 +67,7 @@ namespace NFluent.Helpers
                     this.duration = TimeSpan.FromDays(rawDuration*7);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(timeUnit));
+                    throw new ArgumentException(nameof(timeUnit));
             }
             this.timeUnit = timeUnit;
         }

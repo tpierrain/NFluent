@@ -27,9 +27,14 @@ namespace NFluent.Tests.Helpers
 
         public CultureSession(string culture)
         {
+#if NETCOREAPP1_0 || NETCOREAPP1_1
             this.savedCulture = CultureInfo.CurrentUICulture;
             this.savedUiCulture = CultureInfo.CurrentUICulture;
-            var newCulture = new CultureInfo(culture);
+#else
+            this.savedUiCulture = Thread.CurrentThread.CurrentUICulture;
+            this.savedCulture = Thread.CurrentThread.CurrentCulture;
+#endif
+            var newCulture = string.IsNullOrEmpty(culture) ? CultureInfo.InvariantCulture :  new CultureInfo(culture);
 
             SetCulture(newCulture, newCulture);
         }
