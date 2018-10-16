@@ -37,13 +37,32 @@ namespace NFluent
              var expected = new Duration(providedDuration, unit);
              ExtensibilityHelper.BeginCheck(check)
                  .CheckSutAttributes( sut => new Duration(sut, unit), "")
-                 .FailWhen(sut => sut >= expected, "The {0} is more than the limit.")
-                 .OnNegate("The {0} is not more than the limit.")
-                 .ComparingTo(expected, "less than", "more than or equal to")
-                 .EndCheck();
+                 .PerformLessThan(expected);
              return ExtensibilityHelper.BuildCheckLink(check);
          }
 
+        /// <summary>
+        /// Checks that the actual duration is less (strictly) than a comparand.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="providedDuration">The duration to compare to.</param>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">The actual value is not less than the provided duration.</exception>
+        public static ICheckLink<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, Duration providedDuration)
+        {
+            ExtensibilityHelper.BeginCheck(check)
+                .CheckSutAttributes( sut => new Duration(sut, providedDuration.Unit), "")
+                .PerformLessThan(providedDuration);
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+        private static void PerformLessThan(this ICheckLogic<Duration> check, Duration providedDuration)
+        {
+            check.FailWhen(sut => sut >= providedDuration, "The {0} is more than the limit.")
+                .OnNegate("The {0} is not more than the limit.")
+                .ComparingTo(providedDuration, "less than", "more than or equal to")
+                .EndCheck();
+        }
          /// <summary>
          /// Checks that the actual duration is less (strictly) than a comparand.
          /// </summary>
@@ -54,7 +73,7 @@ namespace NFluent
          public static ICheckLink<ICheck<TimeSpan>> IsLessThan(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
             var unit = TimeHelper.DiscoverUnit(comparand);
-            return check.IsLessThan(TimeHelper.Convert(comparand, unit), unit);
+            return check.IsLessThan(new Duration(comparand, unit));
          }
 
          /// <summary>
@@ -103,13 +122,32 @@ namespace NFluent
              var expected = new Duration(duration, unit);
              ExtensibilityHelper.BeginCheck(check)
                  .CheckSutAttributes( sut => new Duration(sut, unit), "")
-                 .FailWhen(sut => sut != expected, "The {0} is different from the {1}.")
-                 .OnNegate("The {0} is the same than {1}, whereas it must not.")
-                 .DefineExpectedValue(expected)
-                 .EndCheck();
+                 .PerformEqual(expected);
              return ExtensibilityHelper.BuildCheckLink(check);
          }
 
+        /// <summary>
+        /// Checks that the actual duration is equal to a target duration.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The duration to be compared to.</param>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">The actual value is not equal to the target duration.</exception>
+        public static ICheckLink<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, Duration expected)
+        {
+            ExtensibilityHelper.BeginCheck(check)
+                .CheckSutAttributes( sut => new Duration(sut, expected.Unit), "")
+                .PerformEqual(expected);
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+        private static void PerformEqual(this ICheckLogic<Duration> check, Duration expected)
+        {
+                check.FailWhen(sut => sut != expected, "The {0} is different from the {1}.")
+                .OnNegate("The {0} is the same than {1}, whereas it must not.")
+                .DefineExpectedValue(expected)
+                .EndCheck();
+        }
          /// <summary>
          /// Checks that the actual duration is equal to a target duration.
          /// </summary>
@@ -120,7 +158,7 @@ namespace NFluent
          public static ICheckLink<ICheck<TimeSpan>> IsEqualTo(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
              var unit = TimeHelper.DiscoverUnit(comparand);
-             return check.IsEqualTo(TimeHelper.Convert(comparand, unit), unit);
+             return check.IsEqualTo(new Duration(comparand, unit));
          }
     }
 }
