@@ -32,6 +32,7 @@ namespace NFluent.Tests.FromIssues
         {
             Check.That(TimeSpan.MinValue).IsEqualTo(TimeSpan.MinValue); // Ok with NFluent 2.2 but Fails with NFluent 2.3 !
             Check.That(TimeSpan.MinValue).IsLessThan(TimeSpan.MinValue + TimeSpan.FromTicks(1));
+            Check.That(TimeSpan.MaxValue).IsGreaterThan(TimeSpan.MaxValue - TimeSpan.FromTicks(1));
         }
 
         // GH #266 Error using ContainsOnlyElementsThatMatch

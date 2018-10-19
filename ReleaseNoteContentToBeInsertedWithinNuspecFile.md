@@ -1,5 +1,20 @@
-## V 2.4.0
+## V 2.4.1
+### Main feature: 
+
+
+### New checks
+
+### Improvements
+* Stabilize Assembly Version to reduce friction due to strong naming (assembly version is still V2.4.0)
+
+### Fixes
+* Fix false positive with TimeSpan due linked to precision loss. It concerns: IsEqualTo(TimeSpan), IsLessThan(TimeSpan), IsGreaterThan(TimeSpan)
+
+### GitHub Issues
+* #269
+
 ---------------
+## V 2.4.0
 ### Main feature: Custom explicit error message
 You can now provides explicit error messages for each check, thanks to **WithCustomMessage**. E.g:
 Check.WithCustomMessage("Ticket must be valid at this stage").That(ticket.Status).IsEqualTo(Status.Valid);

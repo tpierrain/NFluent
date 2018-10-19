@@ -89,12 +89,32 @@ namespace NFluent
              var expected = new Duration(providedDuration, unit);
              ExtensibilityHelper.BeginCheck(check)
                  .CheckSutAttributes( sut => new Duration(sut, unit), "")
-                 .FailWhen(sut => sut <= expected, "The {0} is not more than the limit.")
-                 .OnNegate("The {0} is more than the limit.")
-                 .ComparingTo(expected, "more than", "less than or equal to")
-                 .EndCheck();
+                 .PerformGreaterThan(expected);
              return ExtensibilityHelper.BuildCheckLink(check);
          }
+
+        /// <summary>
+        /// Checks that the actual duration is less (strictly) than a comparand.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="providedDuration">The duration to compare to.</param>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">The actual value is not less than the provided duration.</exception>
+        public static ICheckLink<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, Duration providedDuration)
+        {
+            ExtensibilityHelper.BeginCheck(check)
+                .CheckSutAttributes( sut => new Duration(sut, providedDuration.Unit), "")
+                .PerformGreaterThan(providedDuration);
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+        private static void PerformGreaterThan(this ICheckLogic<Duration> check, Duration providedDuration)
+        {
+            check.FailWhen(sut => sut <= providedDuration, "The {0} is not more than the limit.")
+                .OnNegate("The {0} is more than the limit.")
+                .ComparingTo(providedDuration, "more than", "less than or equal to")
+                .EndCheck();
+        }
 
          /// <summary>
          /// Checks that the actual duration is greater (strictly) than a comparand.
@@ -106,7 +126,7 @@ namespace NFluent
          public static ICheckLink<ICheck<TimeSpan>> IsGreaterThan(this ICheck<TimeSpan> check, TimeSpan comparand)
          {
              var unit = TimeHelper.DiscoverUnit(comparand);
-             return check.IsGreaterThan(TimeHelper.Convert(comparand, unit), unit);
+             return check.IsGreaterThan(new Duration(comparand, unit));
          }
 
          /// <summary>

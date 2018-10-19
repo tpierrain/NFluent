@@ -66,7 +66,7 @@
     <Otherwise>    
       <PropertyGroup>
         <In>$([System.IO.File]::ReadAllText('$(AttributeVersionFile)'))</In>
-        <Pattern>\[assembly: AssemblyVersion\("(?&lt;Major&gt;\d+)\.(?&lt;Minor&gt;\d+)\.(?&lt;Patch&gt;[\d]+)\.(?&lt;PreReleaseInfo&gt;[0-9A-Za-z-.]+)?</Pattern>
+        <Pattern>\[assembly: AssemblyFileVersion\("(?&lt;Major&gt;\d+)\.(?&lt;Minor&gt;\d+)\.(?&lt;Patch&gt;[\d]+)\.(?&lt;PreReleaseInfo&gt;[0-9A-Za-z-.]+)?</Pattern>
         <AssemblyVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Major"].Value)</AssemblyVersionMajor>
         <AssemblyVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Minor"].Value)</AssemblyVersionMinor>
         <AssemblyVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Patch"].Value)</AssemblyVersionPatch>
@@ -132,21 +132,28 @@
     <!-- Capture version number -->
     <PropertyGroup>
       <NumericalVersion>$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)</NumericalVersion>
-
+      <StableNumericalVersion>$(AssemblyVersionMajor).$(AssemblyVersionMinor).0.0</StableNumericalVersion>
     </PropertyGroup>
     <VersionBuilding version ="$(NumericalVersion)" stream="$(PackageStream)">
       <Output PropertyName="PrettyVersion" TaskParameter="fullVersion" />
     </VersionBuilding>
-    <Message Importance="high" Text="Pretty Version= $(PrettyVersion)" />
 
+    <Message Importance="high" Text="--------- VERSION NUMBER SYNCHRO  -------------------------------------"/>
+    <Message Importance="high" Text="APIVersion       : $(StableNumericalVersion)"/>
+    <Message Importance="high" Text="Version          : $(NumericalVersion)"/>
+    <Message Importance="high" Text="Informal Version : $(PrettyVersion)"/>
     <ItemGroup>
       <RegexTransform Include="$(AttributeVersionFile)">
-        <Find>(?&lt;major&gt;\d+)\.(?&lt;minor&gt;\d+)\.\d+\.(?&lt;revision&gt;\d+)</Find>
-        <ReplaceWith>$(NumericalVersion)</ReplaceWith>
+        <Find>AssemblyFileVersion\("(?&lt;major&gt;\d+)\.(?&lt;minor&gt;\d+)\.\d+\.(?&lt;revision&gt;\d+)</Find>
+        <ReplaceWith>AssemblyFileVersion("$(NumericalVersion)</ReplaceWith>
       </RegexTransform>
       <RegexTransform Include="$(AttributeVersionFile)">
         <Find>InformationalVersion\("(?&lt;major&gt;\d+)\.(?&lt;minor&gt;\d+)\.\d+[\.-](?&lt;revision&gt;[^)"]*)</Find>
         <ReplaceWith>InformationalVersion("$(PrettyVersion)</ReplaceWith>
+      </RegexTransform>
+      <RegexTransform Include="$(AttributeVersionFile)">
+        <Find>AssemblyVersion\("(?&lt;major&gt;\d+)\.(?&lt;minor&gt;\d+)\.\d+[\.-](?&lt;revision&gt;[^)"]*)</Find>
+        <ReplaceWith>AssemblyVersion("$(StableNumericalVersion)</ReplaceWith>
       </RegexTransform>
     </ItemGroup>
     <RegexTransform Items="@(RegexTransform)" />
@@ -156,14 +163,11 @@
         <FullName>%(ProjectFolder.FullPath)\%(ProjectFolder.CsProj)</FullName>
       </CSProjToPatch>
     </ItemGroup>
-    <Message Importance="high" Text="--------- VERSION NUMBER SYNCHRO  -------------------------------------"/>
-    <Message Text="Version : $(NumericalVersion)"/>
-    <Message Text="Informal Version : $(PrettyVersion)"/>
     <Message Importance="high" Text="Patching versions in %(CSProjToPatch.FullName) to $(PrettyVersion)"/>
     <XmlPoke
       XmlInputPath="%(CSProjToPatch.FullName)"
       Query="//AssemblyVersion" 
-      Value="$(NumericalVersion)" />
+      Value="$(StableNumericalVersion)" />
     <XmlPoke
       XmlInputPath="%(CSProjToPatch.FullName)"
       Query="//FileVersion" 
