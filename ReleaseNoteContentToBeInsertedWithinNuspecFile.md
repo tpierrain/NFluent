@@ -6,6 +6,7 @@
 
 ### Improvements
 * Stabilize Assembly Version to reduce friction due to strong naming (assembly version is still V2.4.0)
+* Align to Microsoft guidelines for OSS libraries (https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/)
 
 ### Fixes
 * Fix false positive with TimeSpan due linked to precision loss. It concerns: IsEqualTo(TimeSpan), IsLessThan(TimeSpan), IsGreaterThan(TimeSpan)

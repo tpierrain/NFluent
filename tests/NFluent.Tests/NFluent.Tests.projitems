@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ComparableRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConfigurationTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConsideringShould.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConsoleCaptureShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContainsChainedSyntaxTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContainsExactlyTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContainsTests.cs" />

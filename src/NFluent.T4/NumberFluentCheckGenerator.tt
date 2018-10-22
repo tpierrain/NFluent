@@ -64,11 +64,11 @@
 		System.Globalization.TextInfo textInfo = new System.Globalization.CultureInfo("en-US", false).TextInfo;
 		string properlyCasedTypeName = textInfo.ToTitleCase(typeName);
 		string checkClassName =  properlyCasedTypeName + "SignedCheckExtensions"; // FloatCheckExtensions
-		
+
 		manager.StartNewFile(checkClassName + ".cs", project, folder);
-		
+
 		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
-		
+
 		Write(sourceCode);
     }
 

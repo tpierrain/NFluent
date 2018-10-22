@@ -16,6 +16,7 @@
 ### Main feature:
 ### New checks
 ### Improvements
+* Stabilize Assembly Version to reduce friction due to strong naming (assembly version is still V2.4.0)
 ### Fixes
 * Fix false positive with TimeSpan due linked to precision loss. It concerns: IsEqualTo(TimeSpan), IsLessThan(TimeSpan), IsGreaterThan(TimeSpan)
 ### GitHub Issues
@@ -136,9 +137,5 @@
     <file src="Artifacts\Binaries\net20\NFluent.dll" target="lib\net20\" />
     <file src="Artifacts\Binaries\net20\NFluent.xml" target="lib\net20\" />
     <file src="Artifacts\Binaries\net20\NFluent.pdb" target="lib\net20\" />
-    <!-- PCL -->
-    <file src="Artifacts\Binaries\PCL\NFluent.dll" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\" />
-    <file src="Artifacts\Binaries\PCL\NFluent.xml" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\" />
-    <file src="Artifacts\Binaries\PCL\NFluent.pdb" target="lib\portable-net45+sl5+netcore45+MonoAndroid1+MonoTouch1\" />
   </files>
 </package>

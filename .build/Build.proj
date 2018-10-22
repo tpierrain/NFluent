@@ -80,9 +80,6 @@
     </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)\NFluent.20.Tests"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.Tests.MsTest"/>
-    <ProjectFolder Include="$(SourcePath)\NFluent.PCL">
-      <Package>PCL</Package>
-    </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)\Nugget"/>
     <ProjectFolder Include="$(TestsPath)\SelfHosted"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.T4"/>

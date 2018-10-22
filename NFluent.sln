@@ -47,8 +47,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40.Tests.Extensions
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests", "tests\NFluent.35.Tests\NFluent.35.Tests.csproj", "{6B88C45A-D45E-40FB-8635-D0E0EF0454E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.PCL", "src\NFluent.PCL\NFluent.PCL.csproj", "{4797A166-0410-451E-8DAB-DA7113D77062}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.40.Tests.Internals", "tests\NFluent.40.Tests.Internals\NFluent.40.Tests.Internals.csproj", "{A7C2F427-3D13-4C9B-8663-1CE1E0734608}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests.Internals", "tests\NFluent.35.Tests.Internals\NFluent.35.Tests.Internals.csproj", "{9E500148-4F6C-424A-AA09-801DB1749677}"
@@ -132,8 +130,6 @@ Global
 		src\NFluent.Generated\NFluent.Generated.projitems*{37fdae31-560d-40b8-8fa7-7def8a53b370}*SharedItemsImports = 13
 		src\NFluent.Generated\NFluent.Generated.projitems*{3a474510-f384-41ce-9270-539b1e51da7e}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{3a474510-f384-41ce-9270-539b1e51da7e}*SharedItemsImports = 4
-		src\NFluent.Generated\NFluent.Generated.projitems*{4797a166-0410-451e-8dab-da7113d77062}*SharedItemsImports = 4
-		src\NFluent\NFluent.projitems*{4797a166-0410-451e-8dab-da7113d77062}*SharedItemsImports = 4
 		tests\NFluent.Tests.Meta\NFluent.Tests.Meta.projitems*{61d00587-a426-41de-970b-8cdf5c7a0e67}*SharedItemsImports = 13
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{6b88c45a-d45e-40fb-8635-d0e0ef0454e9}*SharedItemsImports = 4
 		tests\NFluent.Tests\NFluent.Tests.projitems*{6b88c45a-d45e-40fb-8635-d0e0ef0454e9}*SharedItemsImports = 4
@@ -186,10 +182,6 @@ Global
 		{6B88C45A-D45E-40FB-8635-D0E0EF0454E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B88C45A-D45E-40FB-8635-D0E0EF0454E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B88C45A-D45E-40FB-8635-D0E0EF0454E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4797A166-0410-451E-8DAB-DA7113D77062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4797A166-0410-451E-8DAB-DA7113D77062}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4797A166-0410-451E-8DAB-DA7113D77062}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4797A166-0410-451E-8DAB-DA7113D77062}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A7C2F427-3D13-4C9B-8663-1CE1E0734608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A7C2F427-3D13-4C9B-8663-1CE1E0734608}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7C2F427-3D13-4C9B-8663-1CE1E0734608}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -297,7 +289,6 @@ Global
 		{BDAA4D22-45A1-470E-A142-70E1F194EE3F} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
 		{1BAA72CB-3A46-4711-9A5B-F96CF20D465E} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
 		{6B88C45A-D45E-40FB-8635-D0E0EF0454E9} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
-		{4797A166-0410-451E-8DAB-DA7113D77062} = {6A12E9B8-849A-4421-AEB3-B768E78EDC8A}
 		{A7C2F427-3D13-4C9B-8663-1CE1E0734608} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
 		{9E500148-4F6C-424A-AA09-801DB1749677} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
 		{50136517-047A-4081-AC30-878560F108DF} = {E3F40977-9951-4FCE-AA2C-9D3D804D836C}
