@@ -14,7 +14,9 @@
 // // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using Extensibility;
     using Helpers;
+    using Kernel;
 
     /// <summary>
     /// Provides check methods to be executed on an struct instance.
@@ -49,6 +51,34 @@ namespace NFluent
         public static ICheckLink<IStructCheck<T>> IsNotEqualTo<T>(this IStructCheck<T> check, object expected) where T : struct
         {
             return EqualityHelper.PerformEqualCheck(check.Not, expected);
+        }
+
+        /// <summary>
+        /// Checks that the actual nullable value has a value and thus, is not null.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <returns>A check link.</returns>
+        /// <exception cref="FluentCheckException">The value is null.</exception>
+        public static INullableOrNumberCheckLink<T> HasAValue<T>(this ICheck<T?> check) where T : struct
+        {
+            ExtensibilityHelper.BeginCheck(check)
+                .SetSutName("nullable")
+                .FailIfNull("The {0} has no value, which is unexpected.")
+                .OnNegate("The {0} has a value, whereas it must not.")
+                .EndCheck();
+
+            return new NullableOrNumberCheckLink<T>(check);
+        }
+
+        /// <summary>
+        /// Checks that the actual nullable value has no value and thus, is null. 
+        /// Note: this method does not return A check link since the nullable is null.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <exception cref="FluentCheckException">The value is not null.</exception>
+        public static void HasNoValue<T>(this ICheck<T?> check) where T : struct
+        {
+            check.Not.HasAValue();
         }
     }
 }
