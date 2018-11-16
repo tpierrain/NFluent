@@ -11,9 +11,10 @@
 
 ### Fixes
 * Fix false positive with TimeSpan due linked to precision loss. It concerns: IsEqualTo(TimeSpan), IsLessThan(TimeSpan), IsGreaterThan(TimeSpan)
+* Fix random FileNotFound exceptions on the first failing assertion while using XUnit in some specific setup.
 
 ### GitHub Issues
-* #269
+* #269, #274, #270
 
 ---------------
 ## V 2.4.0

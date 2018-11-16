@@ -19,6 +19,7 @@ namespace NFluent.Helpers
 {
     using System;
     using System.Diagnostics;
+    using System.IO;
 #if !PORTABLE && !NETSTANDARD1_3 && !DOTNET_30 && !DOTNET_20
     using System.Linq;
 #endif
@@ -86,7 +87,17 @@ namespace NFluent.Helpers
                     AppDomain.CurrentDomain.GetAssemblies()
                              .Where(ass => ass.FullName.ToLowerInvariant().Contains(assemblyMarker)))
             {
-                var exportedTypes = assembly.GetExportedTypes();
+                
+                Type[] exportedTypes;
+                try
+                {
+                    exportedTypes = assembly.GetExportedTypes();
+                }
+                catch (FileNotFoundException e)
+                {
+                    exportedTypes = new Type[0];
+                }
+
                 foreach (var type in exportedTypes)
                 {
                     if (type.Namespace == null)
