@@ -93,7 +93,7 @@ namespace NFluent.Helpers
                 {
                     exportedTypes = assembly.GetExportedTypes();
                 }
-                catch (FileNotFoundException e)
+                catch (FileNotFoundException)
                 {
                     exportedTypes = new Type[0];
                 }
