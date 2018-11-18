@@ -3,7 +3,7 @@
 
   <!--Configuration informations-->
   <PropertyGroup>
-    <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
+    <Configuration Condition="$(Configuration) == ''">Release</Configuration>
     <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
     
     <CoverageDataFile>$(SolutionRoot)\$(SolutionName)-coverage.xml</CoverageDataFile>

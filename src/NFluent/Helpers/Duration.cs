@@ -40,9 +40,10 @@ namespace NFluent.Helpers
         /// </param>
         public Duration(double rawDuration, TimeUnit timeUnit)
         {
+            this.duration = new TimeSpan();
             switch (timeUnit)
             {
-                case TimeUnit.Nanoseconds:
+                default:
                     this.duration = TimeSpan.FromTicks((long)rawDuration/100);
                     break;
                 case TimeUnit.Microseconds:
@@ -66,8 +67,10 @@ namespace NFluent.Helpers
                 case TimeUnit.Weeks:
                     this.duration = TimeSpan.FromDays(rawDuration*7);
                     break;
-                default:
-                    throw new ArgumentException(nameof(timeUnit));
+            }
+            if (!Enum.IsDefined(typeof(TimeUnit), timeUnit))
+            {
+                throw new ArgumentException();
             }
             this.timeUnit = timeUnit;
         }
@@ -109,9 +112,11 @@ namespace NFluent.Helpers
                         return this.duration.TotalDays;
                     case TimeUnit.Weeks:
                         return this.duration.TotalDays / 7;
+                    case TimeUnit.Nanoseconds:
+                        return this.duration.Ticks * 100;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
-
-                return this.duration.Ticks * 100;
             }
         }
 
@@ -255,7 +260,7 @@ namespace NFluent.Helpers
         /// <returns>True if both Durations represents the same duration.</returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (object.ReferenceEquals(null, obj))
             {
                 return false;
             }

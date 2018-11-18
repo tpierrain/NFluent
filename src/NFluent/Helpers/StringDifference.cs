@@ -213,26 +213,26 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
-        /// Transform a string to identify not printabme difference
+        /// Transform a string to identify not printable difference
         /// </summary>
-        /// <param name="texte"></param>
+        /// <param name="textToScan"></param>
         /// <returns></returns>
-        public string HighLightForDifference(string texte)
+        public string HighLightForDifference(string textToScan)
         {
             switch (this.Kind)
             {
                 case DifferenceMode.Spaces:
-                    texte = HighlightTabsIfAny(texte);
+                    textToScan = HighlightTabsIfAny(textToScan);
                     break;
                 case DifferenceMode.EndOfLine:
-                    texte = HighlightCrlfOrLfIfAny(texte);
+                    textToScan = HighlightCrlfOrLfIfAny(textToScan);
                     break;
                 default:
-                    texte = texte?.TrimEnd('\r');
+                    textToScan = textToScan?.TrimEnd('\r');
                     break;
             }
 
-            return texte;
+            return textToScan;
         }
 
         private string GetErrorMessage(DifferenceMode summary)

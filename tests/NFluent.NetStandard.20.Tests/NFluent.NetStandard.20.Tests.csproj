@@ -1,9 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>NFluent.NetStandard._20.Tests</RootNamespace>
     <AssemblyName>NFluent.Tests</AssemblyName>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
   <Import Project="..\NFluent.Tests\NFluent.Tests.projitems" Label="Shared" />
@@ -11,8 +14,15 @@
   <Import Project="..\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems" Label="Shared" />
 
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="NUnit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
+    <DotNetCliToolReference Include="StrykerMutator.DotNetCoreCli" Version="*" />
   </ItemGroup>
+
+  <Target Name="PrintReferences" DependsOnTargets="ResolveProjectReferences;ResolveAssemblyReferences">
+    <Message Text="@(_ResolveAssemblyReferenceResolvedFiles)" Importance="high" />
+  </Target>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\NFluent.Standard.20\NFluent.Standard.20.csproj" />

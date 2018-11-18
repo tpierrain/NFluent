@@ -124,7 +124,7 @@ namespace NFluent
                             {
                                 var currentReference = orderedList[scanIndex];
                                 
-                                // skip all similar entries in the expected list (tolerance: the checked enumerables may not contains as many instances of one item as expected
+                                // skip all similar entries in the expected list (tolerance: the checked enumerables may not contains as many instances of one item as expected)
                                 while (currentReference == orderedList[++scanIndex] 
                                     && scanIndex < orderedList.Count)
                                 {

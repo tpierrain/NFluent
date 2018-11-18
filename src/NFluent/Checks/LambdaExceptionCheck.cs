@@ -179,7 +179,8 @@ namespace NFluent
                         "The {0} is not of one of the expected types.", MessageOption.WithType);
                 })
                 .DefineExpectedValues(types, types.Length, "an instance of any", "an instance of anything but")
-                .EndCheck();            return new CheckLink<ILambdaExceptionCheck<T>>(context);
+                .EndCheck();            
+            return new CheckLink<ILambdaExceptionCheck<T>>(context);
         }
 
 #if !DOTNET_30 && !DOTNET_20

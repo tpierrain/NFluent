@@ -100,7 +100,8 @@ namespace NFluent.Helpers
         {
             string labelPattern;
             var isProperty = false;
-            if (EvaluateCriteria(AutoPropertyMask, name, out var nameInSource))
+            string nameInSource;
+            if (EvaluateCriteria(AutoPropertyMask, name, out nameInSource))
             {
                 labelPattern = $"autoproperty '{{0}}' (field '{name}')";
                 isProperty = true;

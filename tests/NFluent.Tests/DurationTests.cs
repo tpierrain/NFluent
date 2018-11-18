@@ -40,7 +40,8 @@ namespace NFluent.Tests
         [Test]
         public void ShouldThrowOnInvalidUnit()
         {
-            Check.ThatCode(() => { new Duration(100, (TimeUnit) (- 1));}).Throws<ArgumentException>();
+            Check.ThatCode(() => { new Duration(100, (TimeUnit) (100));}).Throws<ArgumentException>();
+            Check.ThatCode(() => { new Duration(100, (TimeUnit) (-1));}).Throws<ArgumentException>();
         }
 
         [Test]

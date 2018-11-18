@@ -687,23 +687,31 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [Ignore("Disabled as long as default truncate length is beng discussed.")]
         public void LongStringErrorMessageIsProperlyTruncated()
         {
-            var checkString = File.ReadAllText(TestFiles.CheckedFile, Encoding.UTF8).Replace("\r\n", "");
-            var expectedString = File.ReadAllText(TestFiles.ExpectedFile, Encoding.UTF8).Replace("\r\n", "");
+            var curLen = Check.StringTruncationLength;
+            try
+            {
+                Check.StringTruncationLength = 209;
+                var checkString = File.ReadAllText(TestFiles.CheckedFile, Encoding.UTF8).Replace("\r\n", "");
+                var expectedString = File.ReadAllText(TestFiles.ExpectedFile, Encoding.UTF8).Replace("\r\n", "");
 
-            Check.ThatCode(() =>
-                {
-                    Check.That(checkString).IsEqualTo(expectedString);
-                })
-                .IsAFaillingCheckWithMessage("",
-                    "The checked string is different from the expected one but has same length. At line 1, col 4554, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'.",
-                    "The checked string:",
-                    "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?><!--  Edited by XMLSpy  --><CATALOG>  <CD>    <TITLE>Empire Burlesque</TITLE>    <ARTIST>Bob Dylan</ARTIST>    ...<<truncated>>...E>    <YEAR>1987</YEAR>  </CD></CATALOG>\"]",
-                    "The expected string:",
-                    "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?><!--  Edited by XMLSpy  --><CATALOG>  <CD>    <TITLE>Empire Burlesque</TITLE>    <ARTIST>Bob Dylan</ARTIST>    ...<<truncated>>...E>    <YEAR>1987</YEAR>  </CD></CATALOG>\"]"
-                    );
+                Check.ThatCode(() =>
+                    {
+                        Check.That(checkString).IsEqualTo(expectedString);
+                    })
+                    .IsAFaillingCheckWithMessage("",
+                        "The checked string is different from the expected one but has same length. At line 1, col 4554, expected '...IST>Joe Cooker</ARTI...' was '...IST>Joe Cocker</ARTI...'.",
+                        "The checked string:",
+                        "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?><!--  Edited by XMLSpy  --><CATALOG>  <CD>    <TITLE>Empire Burlesque</TITLE>    <ARTIST>Bob Dylan</ARTIST>    ...<<truncated>>...E>    <YEAR>1987</YEAR>  </CD></CATALOG>\"]",
+                        "The expected string:",
+                        "\t[\"<?xml version=\"1.0\" encoding=\"utf-8\" ?><!--  Edited by XMLSpy  --><CATALOG>  <CD>    <TITLE>Empire Burlesque</TITLE>    <ARTIST>Bob Dylan</ARTIST>    ...<<truncated>>...E>    <YEAR>1987</YEAR>  </CD></CATALOG>\"]"
+                        );
+            }
+            finally
+            {
+                Check.StringTruncationLength = curLen;
+            }
         }
 
         [Test]

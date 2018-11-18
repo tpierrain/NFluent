@@ -16,6 +16,7 @@
 
 namespace NFluent.Tests
 {
+    using System;
     using System.Threading;
     using NFluent.Helpers;
     using NUnit.Framework;
@@ -75,7 +76,7 @@ namespace NFluent.Tests
         }
 
 
-            [Test]
+        [Test]
         public void IsNotSetWithinWorksForAutoResetEvent()
         {
             using (var myEvent = new AutoResetEvent(false))
@@ -139,10 +140,17 @@ namespace NFluent.Tests
                     Monitor.PulseAll(signal);
                 }
                 Thread.Sleep(delayBeforeEventIsSetInMilliseconds);
-                myEvent.Set();
+                try
+                {
+                    myEvent.Set();
+                }
+                catch (ObjectDisposedException)
+                {
+                    // test failed somehow
+                }
             });
             otherThread.Start();
-            // we wait for the thread to be actualy started to reduce risk of false negative due to CPU contention
+            // we wait for the thread to be actually started to reduce risk of false negative due to CPU contention
             lock (signal)
             {
                 if (!started)

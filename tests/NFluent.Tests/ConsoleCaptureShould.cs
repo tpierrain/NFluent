@@ -21,8 +21,8 @@ namespace NFluent.Tests
 
     internal sealed class CaptureConsole : IDisposable
     {
-        private TextWriter OldOut;
-        private StringWriter NewOut;
+        private readonly TextWriter OldOut;
+        private readonly StringWriter NewOut;
 
         public CaptureConsole()
         {
