@@ -28,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Checks\CharCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\CodeCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\ComparableCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\DateTimeOffsetCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\CheckLogicExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\IErrorReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\Criteria.cs" />

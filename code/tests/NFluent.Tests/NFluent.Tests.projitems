@@ -30,6 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ContainsChainedSyntaxTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContainsExactlyTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContainsTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DateTimeOffsetRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DateTimeRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DictionaryChecksShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DoubleFloatingPointBinaryRelatedTests.cs" />
