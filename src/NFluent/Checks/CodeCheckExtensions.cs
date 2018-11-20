@@ -196,7 +196,7 @@ namespace NFluent
                 .OnNegate("The {checked} raised an exception, whereas it must not.")
                 .SetSutName("code")
                 .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
-                .FailIfNull("The {checked} did not raise an exception, whereas it must.")
+                .FailIfNull("The checked code did not raise an exception, whereas it must.")
                 .EndCheck();
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
 

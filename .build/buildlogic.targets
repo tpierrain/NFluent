@@ -301,7 +301,7 @@ RUN ALL UNIT TESTS
     <Message Importance="high" Text="--------- Publish Coverage ---------"/>
     <Message Importance="high" Text="Get Tools"/>
 
-    <Exec Command ='"$(CoverReportToolPath)\netcoreapp2.0\dotnet exec ReportGenerator" -reports:$(CoverageDataFile) -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="('$(APPVEYOR)'!='True') and (Exists($(CoverageDataFile)))"/>
+    <Exec Command ='dotnet exec "$(CoverReportToolPath)\netcoreapp2.0\ReportGenerator.dll" -reports:$(CoverageDataFile) -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="('$(APPVEYOR)'!='True') and (Exists($(CoverageDataFile)))"/>
 
     <Exec Command="pip install codecov"/>
     <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(CoverageDataFile)" -t $(CodeCovKey) -X gcov -n $(SolutionName)'

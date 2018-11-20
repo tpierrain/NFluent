@@ -120,10 +120,10 @@ namespace NFluent.Kernel
             var result =
                 new CheckLogic<TU>(sutWrapper) {isRoot = false};
 
-            var sutName = string.IsNullOrEmpty(this.sutName) ? (this.fluentSut.SutName ?? "value") : this.sutName;
+            var finalSutName = string.IsNullOrEmpty(this.sutName) ? (this.fluentSut.SutName ?? "value") : this.sutName;
             if (!string.IsNullOrEmpty(propertyName))
             {
-                result.SetSutName($"{sutName}'s {propertyName}");
+                result.SetSutName($"{finalSutName}'s {propertyName}");
             }
             if (this.failed != this.IsNegated)
             {

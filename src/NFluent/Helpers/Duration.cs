@@ -25,9 +25,8 @@ namespace NFluent.Helpers
 
         private readonly TimeSpan duration;
 
-        private readonly TimeUnit timeUnit;
-
         #endregion
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Duration"/> struct. 
@@ -41,38 +40,44 @@ namespace NFluent.Helpers
         public Duration(double rawDuration, TimeUnit timeUnit)
         {
             this.duration = new TimeSpan();
-            switch (timeUnit)
+            if (timeUnit == TimeUnit.Microseconds)
             {
-                default:
-                    this.duration = TimeSpan.FromTicks((long)rawDuration/100);
-                    break;
-                case TimeUnit.Microseconds:
-                    this.duration = TimeSpan.FromTicks((long)rawDuration*10);
-                    break;
-                case TimeUnit.Milliseconds:
-                    this.duration = TimeSpan.FromMilliseconds(rawDuration);
-                    break;
-                case TimeUnit.Seconds:
-                    this.duration = TimeSpan.FromSeconds(rawDuration);
-                    break;
-                case TimeUnit.Minutes:
-                    this.duration = TimeSpan.FromMinutes(rawDuration);
-                    break;
-                case TimeUnit.Hours:
-                    this.duration = TimeSpan.FromHours(rawDuration);
-                    break;
-                case TimeUnit.Days:
-                    this.duration = TimeSpan.FromDays(rawDuration);
-                    break;
-                case TimeUnit.Weeks:
-                    this.duration = TimeSpan.FromDays(rawDuration*7);
-                    break;
+                this.duration = TimeSpan.FromTicks((long) rawDuration * 10);
             }
+            else if (timeUnit == TimeUnit.Milliseconds)
+            {
+                this.duration = TimeSpan.FromMilliseconds(rawDuration);
+            }
+            else if (timeUnit == TimeUnit.Seconds)
+            {
+                this.duration = TimeSpan.FromSeconds(rawDuration);
+            }
+            else if (timeUnit == TimeUnit.Minutes)
+            {
+                this.duration = TimeSpan.FromMinutes(rawDuration);
+            }
+            else if (timeUnit == TimeUnit.Hours)
+            {
+                this.duration = TimeSpan.FromHours(rawDuration);
+            }
+            else if (timeUnit == TimeUnit.Days)
+            {
+                this.duration = TimeSpan.FromDays(rawDuration);
+            }
+            else if (timeUnit == TimeUnit.Weeks)
+            {
+                this.duration = TimeSpan.FromDays(rawDuration * 7);
+            }
+            else
+            {
+                this.duration = TimeSpan.FromTicks((long) rawDuration / 100);
+            }
+
             if (!Enum.IsDefined(typeof(TimeUnit), timeUnit))
             {
                 throw new ArgumentException();
             }
-            this.timeUnit = timeUnit;
+            this.Unit = timeUnit;
         }
 
         /// <summary>
@@ -83,39 +88,50 @@ namespace NFluent.Helpers
         public Duration(TimeSpan timeSpan, TimeUnit unit)
         {
             this.duration = timeSpan;
-            this.timeUnit = unit;
+            this.Unit = unit;
         }
 
         /// <summary>
-        /// Gets the duration quantity expressed in the proper <see cref="TimeUnit"/>.
+        /// Gets the duration quantity expressed in the proper <see cref="NFluent.TimeUnit"/>.
         /// </summary>
         /// <value>
-        /// The duration quantity expressed in the proper <see cref="TimeUnit"/>.
+        /// The duration quantity expressed in the proper <see cref="NFluent.TimeUnit"/>.
         /// </value>
         public double RawDuration
         {
             get
             {
-                switch (this.timeUnit)
+                if (this.Unit == TimeUnit.Microseconds)
                 {
-                    case TimeUnit.Microseconds:
-                        return this.duration.Ticks/10.0;
-                    case TimeUnit.Milliseconds:
-                        return this.duration.TotalMilliseconds;
-                    case TimeUnit.Seconds:
-                        return this.duration.TotalSeconds;
-                    case TimeUnit.Minutes:
-                        return this.duration.TotalMinutes;
-                    case TimeUnit.Hours:
-                        return this.duration.TotalHours;
-                    case TimeUnit.Days:
-                        return this.duration.TotalDays;
-                    case TimeUnit.Weeks:
-                        return this.duration.TotalDays / 7;
-                    case TimeUnit.Nanoseconds:
-                        return this.duration.Ticks * 100;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    return this.duration.Ticks / 10.0;
+                }
+                else if (this.Unit == TimeUnit.Milliseconds)
+                {
+                    return this.duration.TotalMilliseconds;
+                }
+                else if (this.Unit == TimeUnit.Seconds)
+                {
+                    return this.duration.TotalSeconds;
+                }
+                else if (this.Unit == TimeUnit.Minutes)
+                {
+                    return this.duration.TotalMinutes;
+                }
+                else if (this.Unit == TimeUnit.Hours)
+                {
+                    return this.duration.TotalHours;
+                }
+                else if (this.Unit == TimeUnit.Days)
+                {
+                    return this.duration.TotalDays;
+                }
+                else if (this.Unit == TimeUnit.Weeks)
+                {
+                    return this.duration.TotalDays / 7;
+                }
+                else
+                {
+                    return this.duration.Ticks * 100;
                 }
             }
         }
@@ -126,7 +142,16 @@ namespace NFluent.Helpers
         /// <value>
         /// The unit used for the duration.
         /// </value>
-        public TimeUnit Unit => this.timeUnit;
+
+        /* Unmerged change from project 'NFluent.Standard.20'
+        Before:
+                public TimeUnit Unit => this.timeUnit;
+        After:
+                public TimeUnit Unit => this.TimeUnit;
+
+                public TimeUnit TimeUnit => timeUnit;
+        */
+        public TimeUnit Unit { get; }
 
         /// <summary>
         /// Converts a given duration to a number of milliseconds.
@@ -276,7 +301,7 @@ namespace NFluent.Helpers
         /// </returns>
         public override int GetHashCode()
         {
-            return this.duration.GetHashCode() + this.timeUnit.GetHashCode();
+            return this.duration.GetHashCode() + this.Unit.GetHashCode();
         }
 
         /// <summary>
@@ -287,17 +312,17 @@ namespace NFluent.Helpers
         /// </returns>
         public override string ToString()
         {
-            return $"{this.RawDuration} {this.timeUnit}";
+            return $"{this.RawDuration} {this.Unit}";
         }
 
         /// <summary>
-        /// Gets a new instance for the same duration expressed in another <see cref="TimeUnit"/>
+        /// Gets a new instance for the same duration expressed in another <see cref="NFluent.TimeUnit"/>
         /// </summary>
         /// <param name="newTmeUnit">The target time unit.</param>
         /// <returns>The new <see cref="Duration"/>.</returns>
         public Duration ConvertTo(TimeUnit newTmeUnit)
         {
-            var newDuration = TimeHelper.GetInNanoSeconds(this.RawDuration, this.timeUnit);
+            var newDuration = TimeHelper.GetInNanoSeconds(this.RawDuration, this.Unit);
             return new Duration(TimeHelper.GetFromNanoSeconds(newDuration, newTmeUnit), newTmeUnit);
         }
 
@@ -307,7 +332,7 @@ namespace NFluent.Helpers
         /// <returns></returns>
         public long ToMilliseconds()
         {
-            return ConvertToMilliseconds(this.RawDuration, this.timeUnit);
+            return ConvertToMilliseconds(this.RawDuration, this.Unit);
         }
     }
 }

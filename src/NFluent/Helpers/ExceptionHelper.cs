@@ -32,7 +32,7 @@ namespace NFluent.Helpers
     public static class ExceptionHelper
     {
         private static ExceptionConstructor constructors;
-        private static readonly string exceptionSeparator = Environment.NewLine + "--> ";
+        private static readonly string ExceptionSeparator = Environment.NewLine + "--> ";
 
         private static ExceptionConstructor Constructors
         {
@@ -56,8 +56,8 @@ namespace NFluent.Helpers
                 Debug.Assert(defaultConstructor != null, "NFluent exception must provide a constructor accepting a single string as parameter!");
 
                 // look for MSTest
-                var resultScan = ExceptionScanner("visualstudio", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException")
-                                 ?? ExceptionScanner( "nunit", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException")
+                var resultScan = ExceptionScanner("microsoft.visualstudio.testplatform.testframework", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException")
+                                 ?? ExceptionScanner( "nunit.framework", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException")
                                  ?? ExceptionScanner("xunit.assert", "Xunit.Sdk", "XunitException", null, null);
 
                 result = resultScan ?? result;
@@ -89,21 +89,10 @@ namespace NFluent.Helpers
             {
                 
                 Type[] exportedTypes;
-                try
-                {
                     exportedTypes = assembly.GetExportedTypes();
-                }
-                catch (FileNotFoundException)
-                {
-                    exportedTypes = new Type[0];
-                }
 
                 foreach (var type in exportedTypes)
                 {
-                    if (type.Namespace == null)
-                    {
-                        continue;
-                    }
 
                     if (type.Namespace.StartsWith(nameSpace))
                     {
@@ -194,7 +183,7 @@ namespace NFluent.Helpers
             {
                 if (!firstRow)
                 {
-                    result.Append(exceptionSeparator);
+                    result.Append(ExceptionSeparator);
                 }
                 result.AppendFormat("{{ {0} }} \"{1}\"", innerException.GetType(), innerException.Message);
                 
