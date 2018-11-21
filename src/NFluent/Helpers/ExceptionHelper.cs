@@ -129,7 +129,6 @@ namespace NFluent.Helpers
                 }
             }
 #endif
-
             return null;
         }
 

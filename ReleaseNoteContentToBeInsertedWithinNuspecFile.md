@@ -1,7 +1,20 @@
-## V 2.4.1
+## V 2.5.0
 ### Main feature: 
+* **CaptureConsole class** mocks the system console. Using it you can inject/simulate
+user input (with **Input** and **InputLine** methods) and read/review what the code has put on the
+console (with the **Output** property). The class is disposable: nnormal behavior
+is restored on Dispose.
+Example
 
-
+      using (var console = new CaptureConsole)
+      {
+          console.InputLine("12+13");
+          // the code I need to check (a calculator here)
+          Calculator.Process();
+          // perform the check
+          Check.That(console.Output).IsEqualTo("25");
+       }
+ 
 ### New checks
 
 ### Improvements

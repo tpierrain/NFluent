@@ -1,9 +1,10 @@
 ﻿using NUnit.Framework;
 
+
 namespace NFluent.Tests
 {
     using System;
-    using System.IO;
+    using Mocks;
 
     [TestFixture]
     class ConsoleCaptureShould
@@ -17,26 +18,18 @@ namespace NFluent.Tests
                 Check.That(session.Output).IsEqualTo("hello");
             }
         }
-    }
 
-    internal sealed class CaptureConsole : IDisposable
-    {
-        private readonly TextWriter OldOut;
-        private readonly StringWriter NewOut;
-
-        public CaptureConsole()
+        [Test]
+        public void SimulateInput()
         {
-            this.NewOut = new StringWriter();
-            this.OldOut = Console.Out;
-            Console.SetOut(this.NewOut);
+            using (var session = new CaptureConsole())
+            {
+                session.InputLine("hello");
+                Check.That(Console.ReadLine()).IsEqualTo("hello");
+                session.Input("AB");
+                Check.That(Console.Read()).IsEqualTo('A');
+            }
         }
-
-        public void Dispose()
-        {
-            Console.SetOut(this.OldOut);
-        }
-
-        public string Output => this.NewOut.ToString();
     }
 }
     

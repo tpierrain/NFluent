@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ApiChecks\ExceptionChecks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\CaptureConsole.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Check.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\BooleanCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\CharCheckExtensions.cs" />
@@ -111,5 +112,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)RunTrace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RunTraceResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeUnit.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Mocks\" />
   </ItemGroup>
 </Project>
