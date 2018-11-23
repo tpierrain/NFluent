@@ -67,6 +67,9 @@ namespace NFluent.Tests
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"+Environment.NewLine+"and more"))
                     .IsAFaillingCheckWithMessage("oupsla")
             ).IsAFaillingCheck();
+            // can use regular expression.
+            Check.ThatCode(() => throw ExceptionHelper.BuildException("oups")).
+                IsAFaillingCheckWithMessage("#[pous]+");
         }
     }
 }

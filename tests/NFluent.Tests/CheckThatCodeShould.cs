@@ -76,6 +76,20 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void DoesNotThrowSucceedWhenExceptionRaisedAndNegated()
+        {
+            Check.ThatCode(() => throw new Exception()).Not.DoesNotThrow();
+        }
+
+        [Test]
+        public void DoesNotThrowFailsWhenNoExceptionRaisedAndNegated()
+        {
+            Check.ThatCode(()=>
+            Check.ThatCode(() => 1).Not.DoesNotThrow()).IsAFaillingCheckWithMessage("",
+                "The checked code did not raise an exception, whereas it must.");
+        }
+
+        [Test]
         public void ExpectedExceptionRaised()
         {
             Check.ThatCode(() => throw new InvalidOperationException()).Throws<InvalidOperationException>();
@@ -98,6 +112,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ThrowsFailsWhenNegatedIfImproperExceptionRaised()
+        {
+            Check.ThatCode(() =>
+                {
+                    Check.ThatCode(() => throw new Exception()).Not.Throws<Exception>();
+                })
+                .IsAFaillingCheckWithMessage("", 
+                    "The checked code's raised exception raised an exception of the forbidden type.",
+                    "The checked code's raised exception:",
+                    "\t[{System.Exception}: 'Exception of type 'System.Exception' was thrown.']",
+                    "The expected code's raised exception: different from",
+                    "\tan instance of type: [System.Exception]");
+        }
+
+        [Test]
         public void DidNotRaiseAny()
         {
             Check.ThatCode(() =>
@@ -110,6 +139,27 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
         }
 
+        [Test]
+        public void ThrowsAnySucceedWhenNegatedAndNoException()
+        {   
+            Check.ThatCode(() =>
+            {
+                var unused = new object();
+            }).Not.ThrowsAny();
+        }
+
+        [Test]
+        public void ThrowsAnyFailsWhenNegatedAndExceptionRaised()
+        {
+            Check.ThatCode(() =>
+                {
+                    Check.ThatCode(() => { throw new Exception(); }).Not.ThrowsAny();
+                })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked code raised an exception, whereas it must not.",
+                    "The checked code's raised exception:",
+                    "\t[{System.Exception}: 'Exception of type 'System.Exception' was thrown.']");
+        }
         [Test]
         public void DidNotRaiseAnyTypedCheck()
         {

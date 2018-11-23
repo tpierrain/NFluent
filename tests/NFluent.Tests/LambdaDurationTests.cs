@@ -42,7 +42,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             Check.ThatCode(() => Thread.Sleep(0)).Not.LastsLessThan(100, TimeUnit.Milliseconds)).
                 IsAFaillingCheckWithMessage("", 
-                    "The checked code took too little time to execute.", 
+                    "The checked code dit not take enough time to execute.", 
                     "The checked execution time:", 
                     "#\\[.+ Milliseconds\\]",
                     "The expected execution time: more than",
@@ -96,9 +96,28 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
                     "The checked code consumed too much CPU time.",
                     "The checked cpu time:", 
-                    "*",
+                    "#\\[.+ Milliseconds\\]",
                     "The expected cpu time: less than",
-                    "*"); 
+                    "\t[5 Milliseconds]"); 
+        }
+ 
+        [Test]
+        public void ConsumedTestFailsProperlyWhenNegated()
+        {
+            Check.ThatCode(() =>
+                {
+                    Check.ThatCode(
+                        () =>
+                        {
+
+                        }).Not.ConsumesLessThan(5, TimeUnit.Milliseconds);
+                })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked code did not consume enough cpu time to execute.",
+                    "The checked cpu time:", 
+                    "#\\[.+ Milliseconds\\]",
+                    "The expected cpu time: more than",
+                    "\t[5 Milliseconds]"); 
         }
     }
 }

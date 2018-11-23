@@ -61,7 +61,7 @@ namespace NFluent
                 sut > durationThreshold, "The checked code took too much time to execute.").
                 DefineExpectedValue(durationThreshold, "less than", "more than").
                 SetSutName("execution time").
-                OnNegate("The checked code took too little time to execute.").
+                OnNegate("The checked code dit not take enough time to execute.").
                 EndCheck();
 
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -99,7 +99,7 @@ namespace NFluent
                     sut > durationThreshold, "The checked code consumed too much CPU time.").
                 DefineExpectedValue(durationThreshold, "less than", "more than").
                 SetSutName("cpu time").
-                OnNegate("The checked code took too little cpu time to execute.").
+                OnNegate("The checked code did not consume enough cpu time to execute.").
                 EndCheck();
 
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -195,7 +195,7 @@ namespace NFluent
         public static ILambdaExceptionCheck<Exception> ThrowsAny(this ICodeCheck<RunTrace> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .OnNegate("The {checked} raised an exception, whereas it must not.")
+                .OnNegate("The checked code raised an exception, whereas it must not.")
                 .SetSutName("code")
                 .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
                 .FailIfNull("The checked code did not raise an exception, whereas it must.")
