@@ -55,8 +55,10 @@ namespace NFluent
         {
             var durationThreshold = new Duration(threshold, timeUnit);
 
-            ExtensibilityHelper.BeginCheck(check).FailWhen((sut) =>
-                new Duration(sut.ExecutionTime, timeUnit) > durationThreshold, "The checked code took too much time to execute.").
+            ExtensibilityHelper.BeginCheck(check).
+                CheckSutAttributes(sut =>  new Duration(sut.ExecutionTime, timeUnit), "").
+                FailWhen((sut) =>
+                sut > durationThreshold, "The checked code took too much time to execute.").
                 DefineExpectedValue(durationThreshold, "less than", "more than").
                 SetSutName("execution time").
                 OnNegate("The checked code took too little time to execute.").

@@ -16,6 +16,7 @@
 namespace NFluent.Helpers
 {
     using System;
+    using System.Text.RegularExpressions;
     using Extensibility;
     using Extensions;
 
@@ -47,6 +48,7 @@ namespace NFluent.Helpers
                     {
                         if (expectedLines[i] == "*")
                         {
+                            //any line
                             continue;
                         }
 
@@ -56,7 +58,18 @@ namespace NFluent.Helpers
                             break;
                         }
 
-                        if (messageLines[i] != expectedLines[i])
+                        if (expectedLines[i].StartsWith("#"))
+                        {
+                            if (!Regex.IsMatch(messageLines[i], expectedLines[i].Substring(1)))
+                            {
+                                test.Fail($"Line {i} is different from what is expected"+Environment.NewLine+
+                                          "Act:"+messageLines[i].DoubleCurlyBraces()+Environment.NewLine+
+                                          "Exp (regex):"+expectedLines[i].DoubleCurlyBraces()
+                                );
+                                break;
+                            }
+                        }
+                        else if (messageLines[i] != expectedLines[i])
                         {
                             test.Fail($"Line {i} is different from what is expected"+Environment.NewLine+
                                        "Act:"+messageLines[i].DoubleCurlyBraces()+Environment.NewLine+

@@ -35,17 +35,33 @@ namespace NFluent.Tests
         }
 
         [Test]
+        // GH #275
+        public void WithNot()
+        {
+            Check.ThatCode(() => Thread.Sleep(20)).Not.LastsLessThan(1, TimeUnit.Milliseconds);
+            Check.ThatCode(() =>
+            Check.ThatCode(() => Thread.Sleep(0)).Not.LastsLessThan(100, TimeUnit.Milliseconds)).
+                IsAFaillingCheckWithMessage("", 
+                    "The checked code took too little time to execute.", 
+                    "The checked execution time:", 
+                    "#\\[.+ Milliseconds\\]",
+                    "The expected execution time: more than",
+                    "\t[100 Milliseconds]");
+        }
+       
+        [Test]
         public void FailDurationTest()
         {
             Check.ThatCode(() =>
                 {
                     Check.ThatCode(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
                 })
-                .ThrowsAny()
-                .AndWhichMessage().StartsWith(
-                    Environment.NewLine +
-                    "The checked code took too much time to execute." + Environment.NewLine +
-                    "The checked execution time:");
+                .IsAFaillingCheckWithMessage("", 
+                "The checked code took too much time to execute.", 
+                "The checked execution time:", 
+                "#\\[.+ Milliseconds\\]",
+                "The expected execution time: less than",
+                "\t[0 Milliseconds]");
         }
 
         [Test]
