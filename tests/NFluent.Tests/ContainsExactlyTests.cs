@@ -22,8 +22,6 @@ namespace NFluent.Tests
     using System.Diagnostics.CodeAnalysis;
     using Helpers;
     using System.IO;
-
-    using ApiChecks;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -67,7 +65,12 @@ namespace NFluent.Tests
             {
                 Check.That(heroes).ContainsExactly("Luke", "Yoda");
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). There are extra elements starting at index #2." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"Luke\", \"Yoda\"] (2 items)");
+            .IsAFaillingCheckWithMessage("",
+                    "The checked enumerable does not contain exactly the expected value(s). There are extra elements starting at index #2.",
+                    "The checked enumerable:",
+                    "\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)",
+                    "The expected value(s):",
+                    "\t[\"Luke\", \"Yoda\"] (2 items)");
         }
         
         [Test]

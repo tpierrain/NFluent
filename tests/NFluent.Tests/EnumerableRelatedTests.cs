@@ -274,6 +274,20 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void HasFirstElementWorksWithWhich()
+        {
+            var enumerable = new List<int> { 42, 43 };
+            Check.ThatCode(() => 
+            Check.That(enumerable).HasFirstElement().Which.IsEqualTo(43)).
+                IsAFaillingCheckWithMessage("", 
+                    "The checked [First element] is different from the expected one.", 
+                    "The checked [First element]:", 
+                    "\t[42]", 
+                    "The expected [First element]:", 
+                    "\t[43]");
+        }
+
+        [Test]
         public void NotHasFirstElementWorks()
         {
             var enumerable = new List<int> { };
@@ -344,6 +358,20 @@ namespace NFluent.Tests
             var enumerable = new List<int> { 4, 3, 1, 2 }.OrderBy(_ => _);
 
             Check.That(enumerable).HasLastElement().Which.IsEqualTo(4);
+        }
+
+        [Test]
+        public void HasLastElementWorksWithWhich()
+        {
+            var enumerable = new List<int> { 42, 43 };
+            Check.ThatCode(() => 
+                    Check.That(enumerable).HasLastElement().Which.IsEqualTo(42)).
+                IsAFaillingCheckWithMessage("", 
+                    "The checked [Last element] is different from the expected one.", 
+                    "The checked [Last element]:", 
+                    "\t[43]", 
+                    "The expected [Last element]:", 
+                    "\t[42]");
         }
 
         [Test]
@@ -450,6 +478,19 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void HasOneElementOnlyWorksWithWhich()
+        {
+            var enumerable = new List<int> { 42 };
+            Check.ThatCode(() =>
+            Check.That(enumerable).HasOneElementOnly().Which.IsEqualTo(43)).IsAFaillingCheckWithMessage("", 
+                "The checked [single element] is different from the expected one.", 
+                "The checked [single element]:", 
+                "\t[42]", 
+                "The expected [single element]:", 
+                "\t[43]");
+        }
+
+        [Test]
         public void NotHasOneElementOnlyWorks()
         {
             var enumerable = new List<int> { };
@@ -520,6 +561,19 @@ namespace NFluent.Tests
                     "\t[4, 5, 8] (3 items)");
         }
 
+        [Test]
+        public void ContainsOnlyElementAndWhich()
+        {
+            IEnumerable<int> list = new List<int> { 4, 6, 8 };
+            Check.ThatCode(() => Check.That(list).ContainsOnlyElementsThatMatch(item => item % 2 == 0).Which.IsEqualTo(2))
+                .IsAFaillingCheckWithMessage("",
+                    "The checked [default element] is different from the expected one.", 
+                    "The checked [default element]:", 
+                    "\t[0]", 
+                    "The expected [default element]:", 
+                    "\t[2]");
+        }
+
         #endregion
 
         // item #183
@@ -547,6 +601,14 @@ namespace NFluent.Tests
                     "The checked enumerable does not have an element at index 3.",
                     "The checked enumerable:",
                     "\t[\"yes\", \"foo\", \"bar\"] (3 items)");
+            Check.ThatCode(() => Check.That(randomWords).HasElementAt(2).Which.IsEqualTo("hope"))
+                .IsAFaillingCheckWithMessage(
+                "", 
+                "The checked [element #2] is different from expected one.", 
+                "The checked [element #2]:", 
+                "\t[\"bar\"]", 
+                "The expected [element #2]:", 
+                "\t[\"hope\"]");
         }
 
         [Test]
@@ -557,13 +619,29 @@ namespace NFluent.Tests
             Check.That(randomWords).Not.HasElementAt(3);
         }
 
-        // Issue #183b 
+        // GH #183 
         [Test]
         public void ShouldProvideFilterSupport()
         {
             IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
             Check.That(randomWords).HasElementThatMatches((_) => _.StartsWith("ye"));
         }
+        
+        [Test]
+        public void FilterShouldSupportWhich()
+        {
+            IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
+            Check.ThatCode(()=>
+            Check.That(randomWords).HasElementThatMatches((_) => _.StartsWith("ye")).Which.IsEqualTo("foo")).
+                IsAFaillingCheckWithMessage("", 
+                    "The checked [element #0] is different from the expected one but has same length.", 
+                    "The checked [element #0]:", 
+                    "\t[\"yes\"]", 
+                    "The expected [element #0]:", 
+                    "\t[\"foo\"]");
+        }
+
+
 
         [Test]
         public void FilterSupportShouldFailWhenRelevant()

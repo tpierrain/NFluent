@@ -133,7 +133,7 @@ namespace NFluent
                 OnNegate("The {0} contains exactly the given values whereas it must not.", MessageOption.NoExpectedBlock);
             test.Analyze((sut, runner) =>
             {
-                if (sut == null || otherEnumerable == null)
+                if (sut == null)
                 {
                     return;
                 }
@@ -142,7 +142,6 @@ namespace NFluent
                 var first = sut.GetEnumerator();
                 var comparer = new EqualityHelper.EqualityComparer<object>();
 
-                var sutCount = sut.Count();
                 // ReSharper disable once PossibleNullReferenceException
                 var expectedCount = enumerable.Count;
                 var failed = false;
@@ -152,7 +151,7 @@ namespace NFluent
                     {
                         if (!second.MoveNext() || !comparer.Equals(first.Current, second.Current))
                         {
-                            if (sutCount > expectedCount && index == expectedCount)
+                            if (index == expectedCount)
                             {
                                 test.Fail($"The {{0}} does not contain exactly the expected value(s). There are extra elements starting at index #{index}.");
                             }
@@ -191,19 +190,26 @@ namespace NFluent
         public static ICheckLink<ICheck<IEnumerable<T>>> IsEquivalentTo<T>(this ICheck<IEnumerable<T>> context,
             params T[] content)
         {
-            var length = 0;
+            var length = content?.Length ?? 0;
             ExtensibilityHelper.BeginCheck(context).
-                FailWhen(sut => sut == null && content != null, "The {checked} is null whereas it should not.").
-                FailWhen(sut => sut != null && content == null, "The {checked} must be null.").
                 Analyze((sut, test) =>
                 {
-                    if (sut == null && content == null)
+                    if (sut == null)
                     {
+                        if (content != null)
+                        {
+                            test.Fail("The {checked} is null whereas it should not.");
+                        }
+                        return;
+                    }
+
+                    if(content == null)
+                    {
+                        test.Fail("The {checked} must be null.");
                         return;
                     }
 
                     var expectedContent = new List<T>(content);
-                    length = expectedContent.Count;
                     var isOk = true;
                     foreach (var item in sut)
                     {
@@ -313,7 +319,7 @@ namespace NFluent
                             return;
                         }
 
-                        label = "all element";
+                        label = "default element";
                     }
                 }).
                 OnNegate("The {0} contains only element(s) that match the given predicate, whereas it must not.").
@@ -412,7 +418,7 @@ namespace NFluent
                 .OnNegate("The {0} has a first element, whereas it must be empty.")
                 .EndCheck();
             
-            return ExtensibilityHelper.BuildCheckLinkWhich(check, item, $"First element");
+            return ExtensibilityHelper.BuildCheckLinkWhich(check, item, "First element");
         }
 
         /// <summary>
@@ -432,7 +438,7 @@ namespace NFluent
                 .OnNegate("The {0} has a last element, whereas it must be empty.")
                 .EndCheck();
             
-            return ExtensibilityHelper.BuildCheckLinkWhich(check, item, $"First element");
+            return ExtensibilityHelper.BuildCheckLinkWhich(check, item, "Last element");
         }
 
         /// <summary>
@@ -463,7 +469,6 @@ namespace NFluent
                             {
                                 test.Fail("The {0} contains more than one element, whereas it must have one element only.");
                             }
-
                         }
                     })
                 .OnNegate("The {0} has exactly one element, whereas it should not.")
