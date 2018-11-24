@@ -27,9 +27,10 @@ Example
 * Fix random FileNotFound exceptions on the first failing assertion while using XUnit in some specific setup.
 * Error message for Check.ThatCode().LastsLessThan did not report the actual time.
 * Error message for Not.ThrowsAny() was wrong.
+* Hashtable not properly reported in error messages.
 
 ### GitHub Issues
-* #269, #274, #270, #275
+* #269, #274, #270, #275, #276
 
 ---------------
 ## V 2.4.0

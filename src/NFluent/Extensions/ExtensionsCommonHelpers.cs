@@ -155,6 +155,11 @@ namespace NFluent.Extensions
             {
                 return $"{stream} (Length: {stream.Length})";
             }
+
+            if (theObject is DictionaryEntry entry)
+            {
+                return $"[{entry.Key}, {entry.Value}]";
+            }
             var result = theObject.ToString();
 
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse

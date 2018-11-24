@@ -34,6 +34,19 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsBeforeFailsWhenEqual()
+        {
+            var v1 = new Version(1, 0);
+            Check.ThatCode(() => { Check.That(v1).IsBefore(v1); }).IsAFaillingCheckWithMessage(
+                "",
+                "The checked value is not before the reference value.",
+                "The checked value:",
+                "\t[1.0]",
+                "The expected value: before",
+                "\t[1.0]");
+        }
+
+        [Test]
         public void IsBeforeThrowsExceptionWhenFailing()
         {
             var v1 = new Version(1, 0);
@@ -137,6 +150,19 @@ namespace NFluent.Tests
             var v1 = new Version(1, 0);
             Check.ThatCode(() => Check.That((Version) null).IsAfter(v1))
                     .IsAFaillingCheckWithMessage("", "The checked value is null so not after the reference value.", "The expected value: after", "\t[1.0]");
+        }
+
+        [Test]
+        public void IsAfterFailsWhenEqual()
+        {
+            var v1 = new Version(1, 0);
+            Check.ThatCode(() => { Check.That(v1).IsAfter(v1); }).IsAFaillingCheckWithMessage(
+                "",
+                "The checked value is not after the reference value.",
+                "The checked value:",
+                "\t[1.0]",
+                "The expected value: after",
+                "\t[1.0]");
         }
 
         #endregion

@@ -112,6 +112,23 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsBeforeThrowsExceptionWhenSame()
+        {
+            var newYearsEve2014 = new DateTime(2013, 12, 31);
+
+            Check.ThatCode(() =>
+                {
+                    Check.That(newYearsEve2014).IsBefore(newYearsEve2014);
+                })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not before the expected one.",
+                    "The checked date time:",
+                    "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]", 
+                    "The expected date time: before",
+                    "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
+        }
+
+        [Test]
         public void IsBeforeOrEqualThrowsExceptionWhenNotBeforeOrEqual()
         {
             var christmas2013 = new DateTime(2013, 12, 25);
@@ -201,6 +218,23 @@ namespace NFluent.Tests
                     "The checked date time is not after the given one.",
                     "The checked date time:",
                     "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified]",
+                    "The expected date time: after",
+                    "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
+        }
+
+        [Test]
+        public void IsAfterThrowsExceptionWhenSame()
+        {
+            var newYearsEve2014 = new DateTime(2013, 12, 31);
+
+            Check.ThatCode(() =>
+                {
+                    Check.That(newYearsEve2014).IsAfter(newYearsEve2014);
+                })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked date time is not after the given one.",
+                    "The checked date time:",
+                    "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]",
                     "The expected date time: after",
                     "\t[2013-12-31T00:00:00.0000000, Kind = Unspecified]");
         }
