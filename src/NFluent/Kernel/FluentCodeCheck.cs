@@ -39,7 +39,7 @@ namespace NFluent.Kernel
         /// </summary>
         /// <param name="getTrace">The execution trace.</param>
         public FluentCodeCheck(T getTrace)
-            : this(getTrace, !CheckContext.DefaulNegated)
+            : this(getTrace, !CheckContext.DefaultNegated)
         {
         }
 
@@ -70,7 +70,7 @@ namespace NFluent.Kernel
         {
             get
             {
-                var fluentCodeCheck = new FluentCodeCheck<T>(this.Value, CheckContext.DefaulNegated)
+                var fluentCodeCheck = new FluentCodeCheck<T>(this.Value, CheckContext.DefaultNegated)
                 {
                     SutName = SutName, CustomMessage = CustomMessage
                 };
@@ -94,7 +94,7 @@ namespace NFluent.Kernel
         /// <returns>A new instance of the same fluent check type, with the same Value property.</returns>
         public object ForkInstance()
         {
-            this.Negated = !CheckContext.DefaulNegated;
+            this.Negated = !CheckContext.DefaultNegated;
             return this;
         }
 

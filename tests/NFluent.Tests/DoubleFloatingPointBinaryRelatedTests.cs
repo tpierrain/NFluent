@@ -106,6 +106,7 @@ namespace NFluent.Tests
         public void IsAroundWorks()
         {
             Check.That(Twenty).IsCloseTo(20.1, 0.2);
+            Check.That(Twenty).IsCloseTo(21, 1);
         }
 
         [Test]

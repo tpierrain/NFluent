@@ -30,7 +30,7 @@ namespace NFluent.Kernel
         /// </summary>
         /// <param name="value">Value to examine.</param>
         /// <param name="reporter">Error reporter</param>
-        public FluentSut(T value, IErrorReporter reporter) : this(value, reporter, !CheckContext.DefaulNegated)
+        public FluentSut(T value, IErrorReporter reporter) : this(value, reporter, !CheckContext.DefaultNegated)
         {
         }
 

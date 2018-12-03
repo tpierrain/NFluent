@@ -13,7 +13,6 @@
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable once CheckNamespace
 namespace NFluent.Tests
 {
     using System;
@@ -44,7 +43,6 @@ namespace NFluent.Tests
         [Test]
         public void ShouldWorkForEnumeration()
         {
- 
             var list = new []{ "a", "b", "c" };
             var blk = new ValueBlock(list);
 
@@ -61,8 +59,7 @@ namespace NFluent.Tests
         [Test]
         public void ShouldWorkForMatrices()
         {
-
-            var matrix = new int[,] {{1, 2, 3}, {4, 5, 6}};
+            var matrix = new[,] {{1, 2, 3}, {4, 5, 6}};
             var blk = new ValueBlock(matrix);
             Assert.AreEqual("[{1, 2, 3}, {4, 5, 6}]", blk.GetMessage());
         }

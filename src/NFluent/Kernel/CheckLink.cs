@@ -15,9 +15,6 @@
 namespace NFluent.Kernel
 {
     using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
-
-    /// <inheritdoc />
 
     internal class CheckLink<T> : ICheckLink<T> where T : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
@@ -34,7 +31,6 @@ namespace NFluent.Kernel
         }
 
         /// <inheritdoc />
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         public T And => this.forkableCheck.ForkInstance() as T;
 
         /// <inheritdoc />

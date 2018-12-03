@@ -25,9 +25,10 @@ namespace NFluent.Kernel
     /// Type managed by this extension.
     /// </typeparam>
     /// <typeparam name="TU">Type of the reference comparand.</typeparam>
-    internal class ExtendableCheckLink<T, TU> : CheckLink<ICheck<T>>, IExtendableCheckLink<T, TU>
+    internal class ExtendableCheckLink<T, TU> : CheckLink<T>, IExtendableCheckLink<T, TU> where T: class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         private readonly TU originalComparand;
+        private readonly T previousCheck;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtendableCheckLink{T,U}"/> class. 
@@ -38,9 +39,10 @@ namespace NFluent.Kernel
         /// <param name="originalComparand">
         /// Comparand used for the first check.
         /// </param>
-        public ExtendableCheckLink(IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense previousCheck, TU originalComparand) : base(previousCheck)
+        public ExtendableCheckLink(T previousCheck, TU originalComparand) : base(previousCheck)
         {
             this.originalComparand = originalComparand;
+            this.previousCheck = previousCheck;
         }
 
         /// <summary>
@@ -49,12 +51,8 @@ namespace NFluent.Kernel
         /// <value>
         /// Initial list that was used in Contains.
         /// </value>
-        public TU OriginalComparand
-        {
-            get
-            {
-                return this.originalComparand;
-            }
-        }
+        TU IExtendableCheckLink<T, TU>.OriginalComparand => this.originalComparand;
+
+        T IExtendableCheckLink<T, TU>.AccessCheck => this.previousCheck;
     }
 }

@@ -93,6 +93,12 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void DoesNotPropagateNot()
+        {
+            Check.ThatEnum(FrenchNationality).Not.IsEqualTo(Nationality.Korean).And.IsEqualTo(Nationality.French);
+        }
+
+        [Test]
         public void IsNotEqualToThrowsExceptionWhenFailingWithEnum()
         {
             Check.ThatCode(() =>

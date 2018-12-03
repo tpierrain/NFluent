@@ -36,9 +36,9 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<IEnumerable, IEnumerable> Only(this IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
+        public static IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> Only(this IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> chainedCheckLink)
         {
-            chainedCheckLink.And.IsOnlyMadeOf(chainedCheckLink.OriginalComparand);
+            chainedCheckLink.AccessCheck.IsOnlyMadeOf(chainedCheckLink.OriginalComparand);
             return chainedCheckLink;
         }
 
@@ -51,11 +51,10 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<IEnumerable, IEnumerable> Once(this IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
+        public static IExtendableCheckLink<ICheck<T>, IEnumerable> Once<T>(this IExtendableCheckLink<ICheck<T>, IEnumerable> chainedCheckLink) where T: IEnumerable
         {
-            ExtensibilityHelper.BeginCheck(chainedCheckLink.And).
+            ExtensibilityHelper.BeginCheck(chainedCheckLink.AccessCheck).CantBeNegated("Once").
                 ComparingTo(chainedCheckLink.OriginalComparand, "once of", "").
-                CantBeNegated().
                 Analyze((sut, test) =>
                 {
                     var itemIndex = 0;
@@ -77,8 +76,8 @@ namespace NFluent
 
                         itemIndex++;
                     }
-
-                }).EndCheck();
+                }).
+                EndCheck();
 
             return chainedCheckLink;
         }
@@ -92,11 +91,10 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<IEnumerable, IEnumerable> InThatOrder(this IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
+        public static IExtendableCheckLink<ICheck<T>, IEnumerable> InThatOrder<T>(this IExtendableCheckLink<ICheck<T>, IEnumerable> chainedCheckLink) where T: IEnumerable
         {
-            ExtensibilityHelper.BeginCheck(chainedCheckLink.And).
-                ComparingTo(chainedCheckLink.OriginalComparand, "in that order", "in another order").
-                CantBeNegated().
+            ExtensibilityHelper.BeginCheck(chainedCheckLink.AccessCheck).CantBeNegated("InThatOrder").
+                ComparingTo(chainedCheckLink.OriginalComparand, "in that order", "").
                 Analyze((sut, test) => 
                 {
                     var orderedList = ToNewList(chainedCheckLink);
@@ -107,8 +105,6 @@ namespace NFluent
                     {
                         if (item != orderedList[scanIndex])
                         {
-                            var failed = false;
-
                             // if current item is part of current list, check order
                             var index = orderedList.IndexOf(item, scanIndex);
                             if (index < 0)
@@ -117,31 +113,28 @@ namespace NFluent
                                 index = orderedList.IndexOf(item);
                                 if (index >= 0)
                                 {
-                                    failed = true;
+                                    test.Fail(
+                                        $"The {{0}} does not follow to the expected order. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] appears too late in the list, at index '{failingIndex}'.");
+                                    break;
                                 }
                             }
                             else
                             {
                                 var currentReference = orderedList[scanIndex];
                                 
-                                // skip all similar entries in the expected list (tolerance: the checked enumerables may not contains as many instances of one item as expected)
-                                while (currentReference == orderedList[++scanIndex] 
-                                    && scanIndex < orderedList.Count)
-                                {
-                                }
+                                // skip all similar entries in the expected list (tolerance: the checked enumerable may contain as many instances of one item as expected)
+                                while (currentReference == orderedList[++scanIndex])
+                                {}
 
                                 // check if skipped only similar items
                                 if (scanIndex < index)
                                 {
-                                    failed = true;
+                                    test.Fail(
+                                        $"The {{0}} does not follow to the expected order. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] appears too early in the list, at index '{failingIndex}'.");
+                                    break;
+
                                 }
                             }
-
-                            test.FailWhen(_ => failed, string.Format(
-                                "The {{0}} does not follow to the expected order. Item [{0}] appears too {2} in the list, at index '{1}'.",
-                                item.ToStringProperlyFormatted().DoubleCurlyBraces(),
-                                failingIndex,
-                                index > scanIndex ? "early" : "late"));
 
                             if (index >= 0)
                             {
@@ -155,7 +148,7 @@ namespace NFluent
             return chainedCheckLink;
         }
 
-        private static List<object> ToNewList(IExtendableCheckLink<IEnumerable, IEnumerable> chainedCheckLink)
+        private static List<object> ToNewList<T>(IExtendableCheckLink<ICheck<T>, IEnumerable> chainedCheckLink)
         {
             var orderedList = new List<object>();
             foreach (var item in chainedCheckLink.OriginalComparand)

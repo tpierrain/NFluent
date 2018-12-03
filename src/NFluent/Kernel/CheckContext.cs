@@ -27,6 +27,6 @@ namespace NFluent.Kernel
         /// Gets/Sets the default negation status
         /// </summary>
         /// <remarks>This property is used for NFluent checking.</remarks>
-        public static bool DefaulNegated { get; set; } = true;
+        public static bool DefaultNegated { get; set; } = true;
     }
 }

@@ -99,8 +99,8 @@ namespace NFluent.Extensibility
             format = format.Replace("{given}", "{1}");
 
             var givenOrExpectedLabel = this.expectedLabel.ToString();
-            var checkedlabel = this.checkedLabel.ToString();
-            // analyse structure of sentence
+            var localLabel = this.checkedLabel.ToString();
+            // analyze structure of sentence
             if ((this.expectedLabel.EntityName() == this.checkedLabel.EntityName()))
             {
                 var checkedPos = format.IndexOf("{0}", StringComparison.Ordinal);
@@ -112,11 +112,11 @@ namespace NFluent.Extensibility
                 }
                 else if (expectedPos >= 0 && checkedPos > expectedPos)
                 {
-                    checkedlabel = this.checkedLabel.CustomMessage("{0} one");
+                    localLabel = this.checkedLabel.CustomMessage("{0} one");
                 }
             }
 
-            builder.AppendFormat(format, checkedlabel, givenOrExpectedLabel);
+            builder.AppendFormat(format, localLabel, givenOrExpectedLabel);
 
             if (this.checkedBlock != null)
             {

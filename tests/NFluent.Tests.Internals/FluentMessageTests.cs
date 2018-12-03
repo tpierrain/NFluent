@@ -75,7 +75,7 @@ namespace NFluent.Tests
         {
             var message = FluentMessage.BuildMessage("test");
             const int x = 4;
-            var block = new MessageBlock(message, x, GenericLabelBlock.BuildCheckedBlock(null));
+            var block = new MessageBlock(message, x, GenericLabelBlock.BuildCheckedBlock(new EntityNamer()));
 
             Assert.AreEqual("The checked value:" + NewLine + "\t[4]", block.GetMessage());
 
@@ -181,7 +181,7 @@ namespace NFluent.Tests
         [Test]
         public void ShouldCreateExpectedLabel()
         {
-            var label = GenericLabelBlock.BuildExpectedBlock(null);
+            var label = GenericLabelBlock.BuildExpectedBlock(new EntityNamer());
 
             Assert.AreEqual("The expected value:", label.CustomMessage(null));
         }

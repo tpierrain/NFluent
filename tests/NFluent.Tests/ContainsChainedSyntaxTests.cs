@@ -37,8 +37,8 @@ namespace NFluent.Tests
         [Test]
         public void ContainsInThatOrderSucessTest()
         {
-            Check.That(this.tresAmigos).Contains("un", "dos").InThatOrder();
             Check.That(this.tresAmigos).Contains("un", "dos", "tres").InThatOrder();
+            Check.That(this.tresAmigos).Contains("un", "dos").InThatOrder();
             Check.That(this.tresAmigos).Contains("un", "un", "dos", "tres").InThatOrder();
             Check.That(this.tresAmigos).Contains("dos", "tres").InThatOrder();
         }
@@ -60,7 +60,7 @@ namespace NFluent.Tests
                     "\t[\"un\", \"dos\", \"tres\"]");
         }
 
-        [Test]
+       [Test]
         public void ContainsInThatOrderFails2()
         {
             Check.ThatCode(() =>
@@ -95,6 +95,20 @@ namespace NFluent.Tests
         public void ContainsOnceSucceeds()
         {
             Check.That(this.tresAmigos).Contains(this.tresAmigos).Once();
+        }
+
+        [Test]
+        public void ContainsOnceCantBeNegated()
+        {
+            Check.ThatCode(() => Check.That(this.tresAmigos).Not.Contains("toto").Once())
+                .Throws<InvalidOperationException>().WithMessage("Once can't be used when negated");
+        }
+
+        [Test]
+        public void ContainsInThatOrderCantBeNegated()
+        {
+            Check.ThatCode(() => Check.That(this.tresAmigos).Not.Contains("toto").InThatOrder())
+                .Throws<InvalidOperationException>().WithMessage("InThatOrder can't be used when negated");
         }
 
         [Test]

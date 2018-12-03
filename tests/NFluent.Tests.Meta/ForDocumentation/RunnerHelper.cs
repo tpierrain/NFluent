@@ -161,7 +161,7 @@ namespace NFluent.Tests.ForDocumentation
             catch (Exception)
             {
 
-                if (CheckContext.DefaulNegated == false)
+                if (CheckContext.DefaultNegated == false)
                 {
                     return;
                 }
@@ -198,7 +198,7 @@ namespace NFluent.Tests.ForDocumentation
                 //                report.AddEntry(desc);
                 //            }
 
-                //            if (CheckContext.DefaulNegated == false)
+                //            if (CheckContext.DefaultNegated == false)
                 //            {
                 //                Log(string.Format("(Forced) Negated test '{0}' should have succeeded, but it failed (method {1}).", specificTest.Name, desc.Signature));
                 //            }
@@ -235,7 +235,7 @@ namespace NFluent.Tests.ForDocumentation
                 //        throw;
                 //    }
             }
-            if (CheckContext.DefaulNegated == false)
+            if (CheckContext.DefaultNegated == false)
             {
                 throw new ApplicationException($"{specificTest} should have failed when negated.");
             }

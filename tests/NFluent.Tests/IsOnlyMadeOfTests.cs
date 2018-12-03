@@ -165,6 +165,15 @@ namespace NFluent.Tests
                 "\t[3, 2, 666, 1974, 1] (5 items)",
                 "The expected value(s): only elements from",
                 "\t[null] (0 item)");
+            Check.ThatCode( () =>
+                Check.That(new []{1}).IsOnlyMadeOf(null)).IsAFaillingCheckWithMessage("",
+                "The checked enumerable does not contain only the given value(s).",
+                "It contains also other values:",
+                "\t[1]",
+                "The checked enumerable:",
+                "\t[1] (1 item)",
+                "The expected value(s): only elements from",
+                "\t[null] (0 item)");
         }
 
         [Test]

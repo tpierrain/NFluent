@@ -25,7 +25,6 @@ namespace NFluent.Kernel
     /// </typeparam>
     internal class FluentCheck<T> : FluentSut<T>, IForkableCheck, ICheck<T>, ICheckForExtensibility<T, ICheck<T>>
     {
-
         /// <summary>
         /// The check runner.
         /// </summary>
@@ -37,7 +36,7 @@ namespace NFluent.Kernel
         /// <param name="value">
         /// The value.
         /// </param>
-        public FluentCheck(T value) : this(value, !CheckContext.DefaulNegated)
+        public FluentCheck(T value) : this(value, !CheckContext.DefaultNegated)
         {
         }
 
@@ -116,7 +115,7 @@ namespace NFluent.Kernel
         /// <inheritdoc />
         object IForkableCheck.ForkInstance()
         {
-            Negated = !CheckContext.DefaulNegated;
+            Negated = !CheckContext.DefaultNegated;
             return this; 
         }
 

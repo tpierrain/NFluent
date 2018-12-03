@@ -27,18 +27,18 @@ namespace NFluent.Tests
         [Test]
         public void CheckContextWorks()
         {
-            if (!CheckContext.DefaulNegated)
+            if (!CheckContext.DefaultNegated)
             {
                return;
             }
-            CheckContext.DefaulNegated = false;
+            CheckContext.DefaultNegated = false;
             try
             {
-               Assert.IsFalse(CheckContext.DefaulNegated);
+               Assert.IsFalse(CheckContext.DefaultNegated);
             }
             finally
             {
-                CheckContext.DefaulNegated = true;
+                CheckContext.DefaultNegated = true;
             }
         }
 
@@ -46,12 +46,12 @@ namespace NFluent.Tests
         [Ignore("Test no longer works for tests which are expected to fail due to double negation. Need to be fixed.")]
         public void ForceNegationOnAllTest()
         {
-            if (!CheckContext.DefaulNegated)
+            if (!CheckContext.DefaultNegated)
             {
                 return;
             }
 
-            CheckContext.DefaulNegated = false;
+            CheckContext.DefaultNegated = false;
             try
             {
                 var assembly = typeof(ObjectRelatedTest).GetTypeInfo().Assembly;
@@ -59,7 +59,7 @@ namespace NFluent.Tests
             }
             finally
             {
-                CheckContext.DefaulNegated = true;
+                CheckContext.DefaultNegated = true;
             }
         }
     }

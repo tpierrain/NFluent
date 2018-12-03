@@ -30,7 +30,7 @@ namespace NFluent.Kernel
         /// Initializes a new instance of the <see cref="FluentStructCheck{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
-        public FluentStructCheck(T value) : this(value, !CheckContext.DefaulNegated)
+        public FluentStructCheck(T value) : this(value, !CheckContext.DefaultNegated)
         {
         }
 
@@ -76,7 +76,7 @@ namespace NFluent.Kernel
         /// </remarks>
         object IForkableCheck.ForkInstance()
         {
-            Negated = !CheckContext.DefaulNegated;
+            Negated = !CheckContext.DefaultNegated;
             return this;
         }
 

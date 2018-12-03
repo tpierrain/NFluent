@@ -1,17 +1,17 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ExtensibilityHelper.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ExtensibilityHelper.cs" company="">
+//   Copyright 2013 Thomas PIERRAIN
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Extensibility
 {
     using System;
@@ -23,7 +23,7 @@ namespace NFluent.Extensibility
     public static class ExtensibilityHelper
     {
         /// <summary>
-        /// Extracts the checker to be used in order to check things on the value contained within
+        /// Extracts the checker to be used to check things on the value contained within
         /// the given fluent check.
         /// </summary>
         /// <typeparam name="T">The type of checked value.</typeparam>
@@ -75,7 +75,7 @@ namespace NFluent.Extensibility
         /// <typeparam name="T">type of checked value</typeparam>
         /// <typeparam name="TU">Type of comparand for previous check</typeparam>
         /// <returns>An <see cref="IExtendableCheckLink{T,TU}"/>implementation.</returns>
-        public static IExtendableCheckLink<T, TU> BuildExtendableCheckLink<T, TU>(ICheck<T> check, TU value)
+        public static IExtendableCheckLink<T, TU> BuildExtendableCheckLink<T, TU>(T check, TU value) where T: class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
             return new ExtendableCheckLink<T, TU>(check, value);
         }

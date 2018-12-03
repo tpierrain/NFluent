@@ -57,7 +57,7 @@ namespace NFluent.Kernel
             this.isRoot = true;
         }
 
-        private bool IsNegated => this.fluentSut.Negated;
+        public bool IsNegated => this.fluentSut.Negated;
 
         public string LastError => this.IsNegated ? this.negatedError : this.lastError;
 
@@ -278,7 +278,6 @@ namespace NFluent.Kernel
             this.expected = newExpectedValue;
             this.comparison = comparisonMessage;
             this.negatedComparison = negatedComparison1;
-
             return this;
         }
 

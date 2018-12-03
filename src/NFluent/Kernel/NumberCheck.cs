@@ -123,8 +123,8 @@ namespace NFluent.Kernel
         {
             ExtensibilityHelper.BeginCheck(this.check)
                 .ComparingTo(comparand, "strictly less than", "greater than")
-                .FailWhen(sut => sut.CompareTo(comparand) == 0, "The {0} is equal to the {1}.")
                 .FailWhen(sut => sut.CompareTo(comparand) > 0, "The {0} is greater than the {1}.")
+                .FailWhen(sut => sut.CompareTo(comparand) == 0, "The {0} is equal to the {1}.")
                 .OnNegate("The {0} is strictly less than the {1}.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);

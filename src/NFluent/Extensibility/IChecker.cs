@@ -16,6 +16,21 @@ namespace NFluent.Extensibility
 {
     using System;
 
+    public interface IChecker<out T> : IWithValue<T>
+    {
+        /// <summary>
+        /// Sets an optional label for the SUT to be used instead of the default one for message generation.
+        /// </summary>
+        /// <param name="sutLabel">The label for the SUT.</param>
+        void SetSutLabel(string sutLabel);
+
+        /// <summary>
+        /// Builds an helper object to ease coding of checks.
+        /// </summary>
+        /// <returns>An instance of <see cref="ICheckLogic{T}"/>.</returns>
+        ICheckLogic<T> BeginCheck();
+    }
+
     /// <summary>
     /// Provides a mean to execute some checks on a value, taking care of whether it should be negated or not, etc.
     /// This interface is designed for developers that need to add new check (extension) methods.
@@ -27,8 +42,7 @@ namespace NFluent.Extensibility
     /// </typeparam>
     /// <typeparam name="TC">Interface for the check.
     /// </typeparam>
-    public interface IChecker<out T, out TC> : IWithValue<T>, INegated
-        where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    public interface IChecker<out T, out TC> : INegated, IChecker<T> where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         /// <summary>
         /// Gets the check link to return for the next check to be executed (linked with the And operator).
@@ -104,17 +118,5 @@ namespace NFluent.Extensibility
         /// <param name="message">The message.</param>
         /// <returns>A <see cref="FluentMessage"/> instance.</returns>
         FluentMessage BuildShortMessage(string message);
-
-        /// <summary>
-        /// Sets an optional label for the SUT to be used instead of the default one for message generation.
-        /// </summary>
-        /// <param name="sutLabel">The label for the SUT.</param>
-        void SetSutLabel(string sutLabel);
-        
-        /// <summary>
-        /// Buids an helper object to ease coding of checks.
-        /// </summary>
-        /// <returns>An instance of <see cref="ICheckLogic{T}"/>.</returns>
-        ICheckLogic<T> BeginCheck();
     }
 }

@@ -75,8 +75,10 @@ namespace NFluent.Extensibility
     /// </summary>
     public interface ICheckLogic<out T> : ICheckLogicBase
     {
+        bool IsNegated { get; }
+
         /// <summary>
-        /// Explicitely fails
+        /// Explicitly fails
         /// </summary>
         /// <param name="error">error message</param>
         /// <param name="options">options</param>
@@ -149,7 +151,6 @@ namespace NFluent.Extensibility
         /// <param name="name">Name to use</param>
         /// <returns>Continuation object</returns>
         ICheckLogic<T> SetSutName(string name);
-
 
         /// <summary>
         /// Change the value of the sut.

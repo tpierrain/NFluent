@@ -32,10 +32,10 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<string, string[]> Once(this IExtendableCheckLink<string, string[]> chainedCheckLink)
+        public static IExtendableCheckLink<ICheck<string>, string[]> Once(this IExtendableCheckLink<ICheck<string>, string[]> chainedCheckLink)
         {
             ExtensibilityHelper.BeginCheck(chainedCheckLink.And).
-                CantBeNegated().
+                CantBeNegated("Once").
                 Analyze((sut, test) =>
                 {
                     foreach (var content in chainedCheckLink.OriginalComparand)
@@ -63,10 +63,10 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<string, string[]> InThatOrder(this IExtendableCheckLink<string, string[]> chainedCheckLink)
+        public static IExtendableCheckLink<ICheck<string>, string[]> InThatOrder(this IExtendableCheckLink<ICheck<string>, string[]> chainedCheckLink)
         {
             ExtensibilityHelper.BeginCheck(chainedCheckLink.And).
-                CantBeNegated().
+                CantBeNegated("InThatOrder").
                 Analyze((sut, test) =>
                 {
                     var lastIndex = 0;

@@ -41,7 +41,7 @@ namespace NFluent
         ///  A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values.</exception>
-        public static IExtendableCheckLink<TU, IEnumerable> Contains<TU, T>(
+        public static IExtendableCheckLink<ICheck<TU>, IEnumerable> Contains<TU, T>(
             this ICheck<TU> check,
             params T[] expectedValues) where TU: class, IEnumerable
         {
@@ -60,7 +60,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The enumerable does not contain all the expected values present in the other enumerable.
         /// </exception>
-        public static IExtendableCheckLink<TU, IEnumerable> Contains<TU>(
+        public static IExtendableCheckLink<ICheck<TU>, IEnumerable> Contains<TU>(
             this ICheck<TU> check,
             IEnumerable otherEnumerable) where TU:IEnumerable
         {
@@ -246,7 +246,7 @@ namespace NFluent
         /// </summary>
         /// <param name="context">Check context</param>
         /// <param name="expectedSuperset">Expected superset</param>
-        /// <typeparam name="T">Type of items in the colleciton</typeparam>
+        /// <typeparam name="T">Type of items in the collection</typeparam>
         /// <returns>A chainable link.</returns>
         public static ICheckLink<ICheck<IEnumerable<T>>> IsSubSetOf<T>(this ICheck<IEnumerable<T>> context,
             IEnumerable<T> expectedSuperset)
@@ -267,7 +267,7 @@ namespace NFluent
                         }
                     }
                 }).
-                OnNegate("The {checked} is a subset of {expected} whereas it should not.").
+                OnNegate("The {checked} is a subset of {given} whereas it should not.").
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(context);
         }
@@ -313,7 +313,6 @@ namespace NFluent
                                 index++;
                                 continue;
                             }
-
                             test.Fail($"The {{0}} does contain an element at index #{index} that does not match the given predicate: ({scan.Current.ToStringProperlyFormatted().DoubleCurlyBraces()}).");
                             label = $"element #{index}";
                             return;

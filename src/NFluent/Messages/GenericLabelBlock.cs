@@ -35,7 +35,7 @@ namespace NFluent.Messages
         /// <value>
         /// The entity logic.
         /// </value>
-        private EntityNamer EntityLogic { get; set; }
+        private EntityNamer EntityLogic { get; }
 
         public static GenericLabelBlock BuildCheckedBlock(EntityNamer namer)
         {
@@ -82,7 +82,7 @@ namespace NFluent.Messages
 
         public string EntityName()
         {
-            return this.EntityLogic == null ? "value" : this.EntityLogic.EntityName;
+            return this.EntityLogic.EntityName;
         }
     }
 }
