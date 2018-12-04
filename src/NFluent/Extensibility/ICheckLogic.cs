@@ -75,6 +75,9 @@ namespace NFluent.Extensibility
     /// </summary>
     public interface ICheckLogic<out T> : ICheckLogicBase
     {
+        /// <summary>
+        /// true if testing logic must be inverted
+        /// </summary>
         bool IsNegated { get; }
 
         /// <summary>

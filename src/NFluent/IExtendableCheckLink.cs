@@ -29,6 +29,9 @@ namespace NFluent
         /// </value>
         TU OriginalComparand { get; }
 
+        /// <summary>
+        /// Access check object
+        /// </summary>
         T AccessCheck { get; }
     }
 }

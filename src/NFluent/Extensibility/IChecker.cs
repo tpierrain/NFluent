@@ -16,7 +16,18 @@ namespace NFluent.Extensibility
 {
     using System;
 
-    public interface IChecker<out T> : IWithValue<T>
+    /// <summary>
+    /// Provides a mean to execute some checks on a value, taking care of whether it should be negated or not, etc.
+    /// This interface is designed for developers that need to add new check (extension) methods.
+    /// Thus, it should not be exposed via Intellisense to developers that are using NFluent to write 
+    /// checks statements.
+    /// </summary>
+    /// <typeparam name="T">
+    /// Type of the value to assert on.
+    /// </typeparam>
+    /// <typeparam name="TC">Interface for the check.
+    /// </typeparam>
+    public interface IChecker<out T, out TC> : INegated, IWithValue<T> where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
     {
         /// <summary>
         /// Sets an optional label for the SUT to be used instead of the default one for message generation.
@@ -29,21 +40,7 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <returns>An instance of <see cref="ICheckLogic{T}"/>.</returns>
         ICheckLogic<T> BeginCheck();
-    }
 
-    /// <summary>
-    /// Provides a mean to execute some checks on a value, taking care of whether it should be negated or not, etc.
-    /// This interface is designed for developers that need to add new check (extension) methods.
-    /// Thus, it should not be exposed via Intellisense to developers that are using NFluent to write 
-    /// checks statements.
-    /// </summary>
-    /// <typeparam name="T">
-    /// Type of the value to assert on.
-    /// </typeparam>
-    /// <typeparam name="TC">Interface for the check.
-    /// </typeparam>
-    public interface IChecker<out T, out TC> : INegated, IChecker<T> where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
-    {
         /// <summary>
         /// Gets the check link to return for the next check to be executed (linked with the And operator).
         /// This property is only useful for those that doesn't want to implement their check methods with the 

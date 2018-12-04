@@ -79,7 +79,7 @@ namespace NFluent.Extensibility
         {
             var message = string.Format(CanTBeUsedWhenNegated, checkName);
             if (logic.IsNegated)
-                throw  new InvalidOperationException(message);
+                throw  new System.InvalidOperationException(message);
             logic.OnNegate(message);
             return logic;
         }
