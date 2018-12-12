@@ -23,6 +23,7 @@ namespace NFluent
     using Extensibility;
 
     using Helpers;
+    using Kernel;
 
     /// <summary>
     /// Static class hosting extension methods in relation with checks for code.
@@ -56,12 +57,11 @@ namespace NFluent
             var durationThreshold = new Duration(threshold, timeUnit);
 
             ExtensibilityHelper.BeginCheck(check).
-                CheckSutAttributes(sut =>  new Duration(sut.ExecutionTime, timeUnit), "").
-                FailWhen((sut) =>
-                sut > durationThreshold, "The checked code took too much time to execute.").
+                SetSutName("code").
+                CheckSutAttributes(sut =>  new Duration(sut.ExecutionTime, timeUnit), "execution time").
+                FailWhen((sut) => sut > durationThreshold, "The {checked} was too high.").
                 DefineExpectedValue(durationThreshold, "less than", "more than").
-                SetSutName("execution time").
-                OnNegate("The checked code dit not take enough time to execute.").
+                OnNegate("The {checked} was too low.").
                 EndCheck();
 
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -94,12 +94,11 @@ namespace NFluent
             var durationThreshold = new Duration(threshold, timeUnit);
 
             ExtensibilityHelper.BeginCheck(check).
-                CheckSutAttributes(sut =>  new Duration(sut.TotalProcessorTime, timeUnit), "").
-                FailWhen((sut) =>
-                    sut > durationThreshold, "The checked code consumed too much CPU time.").
+                SetSutName("code").
+                CheckSutAttributes(sut =>  new Duration(sut.TotalProcessorTime, timeUnit), "cpu consumption").
+                FailWhen((sut) => sut > durationThreshold, "The {checked} was too high.").
                 DefineExpectedValue(durationThreshold, "less than", "more than").
-                SetSutName("cpu time").
-                OnNegate("The checked code did not consume enough cpu time to execute.").
+                OnNegate("The {checked} was too low.").
                 EndCheck();
 
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -142,7 +141,7 @@ namespace NFluent
         {
             var exc = CheckExceptionType(check, typeof(T));
 
-            return new LambdaExceptionCheck<T>((T) exc);
+            return new LambdaExceptionCheck<T>((T) exc, ((INegated) check).Negated);
         }
 
         private static Exception CheckExceptionType(ICodeCheck<RunTrace> check, Type expecting)
@@ -176,8 +175,7 @@ namespace NFluent
         public static ILambdaExceptionCheck<Exception> ThrowsType(this ICodeCheck<RunTrace> check, Type exceptionType)
         {
             var exc = CheckExceptionType(check, exceptionType);
-
-            return new LambdaExceptionCheck<Exception>(exc);
+            return new LambdaExceptionCheck<Exception>(exc, ((INegated) check).Negated);
         }
 
         /// <summary>
@@ -202,7 +200,7 @@ namespace NFluent
                 .EndCheck();
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);
 
-            return new LambdaExceptionCheck<Exception>(checker.Value.RaisedException);
+            return new LambdaExceptionCheck<Exception>(checker.Value.RaisedException, ((INegated) check).Negated);
         }
 
         /// <summary>

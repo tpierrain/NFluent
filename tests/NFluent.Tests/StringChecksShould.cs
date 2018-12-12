@@ -394,7 +394,10 @@ namespace NFluent.Tests
         [Test]
         public void StringMatchesWildcardWorks()
         {
+            // * works
             Check.That("12 ac").MatchesWildcards("1*c");
+            // ? works
+            Check.That("12 ac").MatchesWildcards("12??c");
         }
 
         [Test]
@@ -405,6 +408,30 @@ namespace NFluent.Tests
                     "The checked string does not match the expected one.", 
                     "The checked string:", "\t[\"AC 12\"]",
                 "The expected string: matches", "\t[\"1*c\"]");
+            // must match from first char
+            Check.ThatCode(() => { Check.That(" AC 12").MatchesWildcards("AC*"); })
+                .IsAFaillingCheckWithMessage("", 
+                    "The checked string does not match the expected one.", 
+                    "The checked string:", "\t[\" AC 12\"]",
+                    "The expected string: matches", "\t[\"AC*\"]");
+            // ... to last char
+            Check.ThatCode(() => { Check.That("AC 12 ").MatchesWildcards("AC??2"); })
+                .IsAFaillingCheckWithMessage("", 
+                    "The checked string does not match the expected one.", 
+                    "The checked string:", "\t[\"AC 12 \"]",
+                    "The expected string: matches", "\t[\"AC??2\"]");
+        }
+
+        [Test]
+        public void MatchesWildcardFailsWhenNegated()
+        {
+            Check.ThatCode(() => { Check.That("12 ac").Not.MatchesWildcards("1*c"); })
+                .IsAFaillingCheckWithMessage("", 
+                    "The checked string matches the given one, whereas it must not.", 
+                    "The checked string:", 
+                    "\t[\"12 ac\"]",
+                    "The expected string: does not match", 
+                    "\t[\"1*c\"]");
         }
 
         [Test]
@@ -538,7 +565,30 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNullOrWhiteSpaceFaiplsWhenRelevant()
+        public void IsNullOrWhiteSpacesFailsWhenNegated()
+        {
+            Check.ThatCode(()=>
+            Check.That("    ").Not.IsNullOrWhiteSpace()).IsAFaillingCheckWithMessage(
+                "", 
+                "The checked string contains only whitespace characters, whereas it should not.", 
+                "The checked string:", 
+                "\t[\"    \"]");
+            Check.ThatCode(()=>
+                Check.That("").Not.IsNullOrWhiteSpace()).IsAFaillingCheckWithMessage(
+                "", 
+                "The checked string is empty, whereas it should not.", 
+                "The checked string:", 
+                "\t[\"\"]");
+            Check.ThatCode(()=>
+                Check.That((string)null).Not.IsNullOrWhiteSpace()).IsAFaillingCheckWithMessage(
+                "", 
+                "The checked string is null, whereas it should not.", 
+                "The checked string:", 
+                "\t[null]");
+        }
+
+        [Test]
+        public void IsNullOrWhiteSpaceFailsWhenRelevant()
         {
             Check.ThatCode(() =>
                 Check.That("non empty").IsNullOrWhiteSpace()).IsAFaillingCheckWithMessage("", "The checked string contains non whitespace characters.", "The checked string:", "\t[\"non empty\"]");

@@ -314,6 +314,7 @@ namespace NFluent
                                 continue;
                             }
                             test.Fail($"The {{0}} does contain an element at index #{index} that does not match the given predicate: ({scan.Current.ToStringProperlyFormatted().DoubleCurlyBraces()}).");
+                            item = scan.Current;
                             label = $"element #{index}";
                             return;
                         }

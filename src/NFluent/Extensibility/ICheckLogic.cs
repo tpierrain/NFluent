@@ -81,6 +81,14 @@ namespace NFluent.Extensibility
         bool IsNegated { get; }
 
         /// <summary>
+        /// Generate an error message stating that this check cannot be used with <see cref="INegateableCheck{T}.Not"/>
+        /// </summary>
+        /// <typeparam name="T">type of the checked object</typeparam>
+        /// <param name="checkName">name of the source check</param>
+        /// <returns>Continuation object.</returns>
+        ICheckLogic<T> CantBeNegated(string checkName);
+        
+        /// <summary>
         /// Explicitly fails
         /// </summary>
         /// <param name="error">error message</param>
@@ -139,14 +147,6 @@ namespace NFluent.Extensibility
         /// <param name="action">Code to be executed</param>
         /// <returns>Continuation object.</returns>
         ICheckLogic<T> Analyze(Action<T, ICheckLogic<T>> action);
-
-        /// <summary>
-        /// Raises an InvalidOperationException if predicte returns true. 
-        /// </summary>
-        /// <param name="predicate">predicate function</param>
-        /// <param name="error">error message in exception</param>
-        /// <returns>Continuation object.</returns>
-        ICheckLogic<T> InvalidIf(Func<T, bool> predicate, string error);
 
         /// <summary>
         /// Set the name for the observed system.

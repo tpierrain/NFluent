@@ -170,7 +170,14 @@ namespace NFluent.Tests
                 "\t[[otherKey, 15], [key, 12]] (2 items)",
                 "Expected key:",
                 "\t[\"missing\"]");
-
+            // test with empty array
+            Check.ThatCode(()=>
+            Check.That(new List<KeyValuePair<string, int>>()).ContainsPair("key", 12)).IsAFaillingCheckWithMessage("",
+                "The checked enumerable does not contain the expected key-value pair. The given key was not found.",
+                "The checked enumerable:",
+                "\t[] (0 item)",
+                "Expected pair:",
+                "\t[[key, 12]]");
         }
 
         [Test]

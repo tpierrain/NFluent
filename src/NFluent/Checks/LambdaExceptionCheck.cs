@@ -42,7 +42,8 @@ namespace NFluent
         /// This check can only be fluently called after a lambda check.
         /// </summary>
         /// <param name="value">The Value.</param>
-        public LambdaExceptionCheck(T value) : base(value, Check.Reporter)
+        /// <param name="negated">Set to true to invert logic</param>
+        public LambdaExceptionCheck(T value, bool negated) : base(value, Check.Reporter, negated)
         {
         }
 
@@ -52,7 +53,7 @@ namespace NFluent
         {
             Exception resultException = null;
             ExtensibilityHelper.BeginCheck(this)
-                .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
+                .CantBeNegated("DueTo")
                 .CheckSutAttributes(sut => sut.InnerException, "inner exception")
                 .FailIfNull("There is no inner exception.")
                 .Analyze((sut, test) =>
@@ -72,13 +73,13 @@ namespace NFluent
                 })
                 .DefineExpectedType(typeof(TE))
                 .EndCheck();
-            return new LambdaExceptionCheck<TE>((TE)resultException);
+            return new LambdaExceptionCheck<TE>((TE)resultException, Negated);
         }
 
         /// <inheritdoc />
         public object ForkInstance()
         {
-            return new LambdaExceptionCheck<T>(this.Value);
+            return new LambdaExceptionCheck<T>(this.Value, false);
         }
 
         /// <inheritdoc />
@@ -94,14 +95,14 @@ namespace NFluent
         /// Checks if the exception has a specific message.
         /// </summary>
         /// <param name="checker">Syntax helper</param>
-        /// <param name="exceptionMessage">Exptected message</param>
+        /// <param name="exceptionMessage">Expected message</param>
         /// <typeparam name="T">Exception type</typeparam>
         /// <returns>A chainable check.</returns>
         /// <exception cref="FluentCheckException"></exception>
         public static ICheckLink<ILambdaExceptionCheck<T>> WithMessage<T>(this ILambdaExceptionCheck<T> checker, string exceptionMessage) where T : Exception
         {
             ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
-                .InvalidIf(sut=>sut == null, "No exception. Can't be used when negated.")
+                .CantBeNegated("WithMessage")
                 .SetSutName("exception")
                 .CheckSutAttributes(sut =>  sut.Message, "message")
                 .FailWhen(sut => sut != exceptionMessage, "The {0} is not as expected.")
@@ -124,7 +125,7 @@ namespace NFluent
         {
             var found = false;
             ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
-                .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
+                .CantBeNegated("WithProperty")
                 .SetSutName("exception")
                 .CheckSutAttributes(sut =>
                 {
@@ -157,10 +158,10 @@ namespace NFluent
         public static ICheckLink<ILambdaExceptionCheck<T>> DueToAnyFrom<T>(this ILambdaExceptionCheck<T> context,
             params Type[] types) where T: Exception
         {
-            Exception resultException = null;
+            Exception resultException;
             var listOfTypes = new List<Type>(types);
             ExtensibilityHelper.BeginCheck(context as FluentSut<T>)
-                .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
+                .CantBeNegated("DueToAnyFrom")
                 .CheckSutAttributes(sut => sut.InnerException, "inner exception")
                 .FailIfNull("There is no inner exception.")
                 .Analyze((sut, test) =>
@@ -178,7 +179,7 @@ namespace NFluent
                     test.FailWhen(_ => resultException == null,
                         "The {0} is not of one of the expected types.", MessageOption.WithType);
                 })
-                .DefineExpectedValues(types, types.Length, "an instance of any", "an instance of anything but")
+                .DefineExpectedValues(types, types.Length, "an instance of any", "")
                 .EndCheck();            
             return new CheckLink<ILambdaExceptionCheck<T>>(context);
         }
@@ -200,7 +201,7 @@ namespace NFluent
 
             var propertyName = memberExpression?.Member.Name ?? propertyExpression.ToString();
             ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
-                .InvalidIf(sut => sut == null, "No exception. Can't be used when negated.")
+                .CantBeNegated("WithProperty")
                 .SetSutName("exception")
                 .CheckSutAttributes(sut => propertyExpression.Compile().Invoke(sut), $"property [{propertyName}]")
                 .FailWhen(sut => !EqualityHelper.FluentEquals(sut, propertyValue),

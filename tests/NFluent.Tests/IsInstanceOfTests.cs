@@ -563,6 +563,7 @@ namespace NFluent.Tests
                     "The expected value's type: one of those", 
                     "\t[int, string, NFluent.Tests.Person]");
 
+
             // check for specific case when only one type
             Check.ThatCode(() => Check.That(val).IsAnInstanceOfOneOf(typeof(int)))
                 .IsAFaillingCheckWithMessage("",
@@ -571,7 +572,15 @@ namespace NFluent.Tests
                     "\t[12] of type: [int?]", 
                     "The expected value:", 
                     "\tan instance of type: [int]");
-        }
 
+            val = null;
+            Check.ThatCode(() => Check.That(val).IsAnInstanceOfOneOf(typeof(int), typeof(string), typeof(Person)))
+                .IsAFaillingCheckWithMessage("",
+                    "The checked object is null.",
+                    "The checked value's type:",
+                    "\t[null]", 
+                    "The expected value's type: one of those", 
+                    "\t[int, string, NFluent.Tests.Person]");
+        }
     }
 }

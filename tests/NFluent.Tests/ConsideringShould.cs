@@ -429,6 +429,29 @@ namespace NFluent.Tests
                 "The checked value:", "\t[{ TheProperty = 13 }]", 
                 "The expected value(s): one of", 
                 "\t[{ TheProperty = 12 }, { TheProperty = 14 }] (2 items)");
+            Check.ThatCode(()=>
+            {
+                Check.That(sut).Considering().Public.Properties.IsOneOf();
+            }).IsAFaillingCheckWithMessage("", 
+                "The checked value is equal to none of the expected value(s) whereas it should.", 
+                "The checked value:", "\t[{ TheProperty = 13 }]", 
+                "The expected value(s): one of", 
+                "\t[] (0 item)");
+        }
+
+        [Test]
+        public void
+            FailIfNegatedOf()
+        {
+            var sut = new SutClass(12, 13);
+            Check.ThatCode(()=>
+            {
+                Check.That(sut).Considering().Public.Properties.Not.IsOneOf(new {TheProperty = 12}, new {TheProperty = 13});
+            }).IsAFaillingCheckWithMessage("", 
+                "The checked value is equal to one of the given value(s) whereas it should not.", 
+                "The checked value:", "\t[{ TheProperty = 13 }]", 
+                "The expected value(s): none of", 
+                "\t[{ TheProperty = 12 }, { TheProperty = 13 }] (2 items)");
         }
 
         [Test]
@@ -551,6 +574,26 @@ namespace NFluent.Tests
                 "The checked value's property 'Properties' is absent from the expected one.", 
                 "The checked value's property 'Properties':", 
                 "\t[2]");
+        }
+
+        [Test]
+        public void WorkWithNegatedIsDistinct()
+        {
+            var sharedReference = new object();
+
+            Check.That(new {Property = sharedReference}).Considering().Public.Properties
+                .Not.IsDistinctFrom(new {Property = sharedReference});
+            Check.ThatCode(() =>
+            {
+                Check.That(new {Property = sharedReference}).Considering().Public.Properties
+                    .Not.IsDistinctFrom(new {Property = new object()});
+            }).IsAFaillingCheckWithMessage(
+                "", 
+                "The checked value contains the same reference than the expected one, whereas it should not.", 
+                "The checked value:", 
+                "\t[{ Property = {  } }]");
+
+
         }
 
         private class Recurse

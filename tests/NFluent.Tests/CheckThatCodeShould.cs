@@ -387,6 +387,22 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void Should_not_raise_when_expected_DueTo_exception_is_null()
+        {
+            Check.ThatCode(()=>
+            Check.ThatCode(
+                () =>
+                {
+                    throw new ArgumentException(
+                        "outerException dummy message",
+                        (Exception) null);
+                }).ThrowsAny().DueTo<Exception>()).IsAFaillingCheckWithMessage("",
+                "There is no inner exception.", 
+                "The expected value's inner exception:", 
+                "\tan instance of type: [System.Exception]");
+        }
+
+        [Test]
         public void Should_raise_when_expected_DueTo_exception_is_not_found_somewhere_within_the_inner_exception()
         {
             Check.ThatCode(() =>
@@ -439,6 +455,14 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldRaiseWhenUsingDueToOnANegatedCheck()
+        {
+            Check.ThatCode(() =>
+                    Check.ThatCode(() => { }).Not.ThrowsAny().DueToAnyFrom(typeof(Exception)))
+                .Throws<InvalidOperationException>().WithMessage("DueToAnyFrom can't be used when negated");
+        }
+
+        [Test]
         public void Shouldsuceed_when_expected_DueToAny_exception_is_found_somewhere_within_the_inner_exception()
         {
                 // ReSharper disable once NotResolvedInText
@@ -473,27 +497,27 @@ namespace NFluent.Tests
             Check.ThatCode(() => 
                 Check.ThatCode(() => throw new InvalidOperationException())
                 .Not.Throws<ArgumentNullException>().WithMessage("any")
-                ).Throws<InvalidOperationException>();
+                ).Throws<InvalidOperationException>().WithMessage("WithMessage can't be used when negated");
 
             Check.ThatCode(() => 
                 Check.ThatCode(() => throw new InvalidOperationException())
                 .Not.Throws<ArgumentNullException>().DueTo<Exception>()
-                ).Throws<InvalidOperationException>();            
+                ).Throws<InvalidOperationException>().WithMessage("DueTo can't be used when negated");            
 
             Check.ThatCode(() => 
                 Check.ThatCode(() => throw new InvalidOperationException())
                 .Not.Throws<ArgumentNullException>().WithProperty("any", 12)
-                ).Throws<InvalidOperationException>();
+                ).Throws<InvalidOperationException>().WithMessage("WithProperty can't be used when negated");
             
             Check.ThatCode(() => 
                 Check.ThatCode(() => throw new InvalidOperationException())
                 .Not.ThrowsType(typeof(ArgumentNullException)).WithMessage("any")
-                ).Throws<InvalidOperationException>();
+                ).Throws<InvalidOperationException>().WithMessage("WithMessage can't be used when negated");
 #if !DOTNET_20 && !DOTNET_30
             Check.ThatCode(() => 
                 Check.ThatCode(() => throw new InvalidOperationException())
                     .Not.Throws<ArgumentNullException>().WithProperty((x) => x.Message, "")
-            ).Throws<InvalidOperationException>();
+            ).Throws<InvalidOperationException>().WithMessage("WithProperty can't be used when negated");
 #endif
         }
 

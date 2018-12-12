@@ -26,10 +26,15 @@ namespace NFluent.Mocks
     {
         private readonly TextWriter oldOut;
         private readonly TextReader oldIn;
-        private readonly StringWriter newOut;
+
+        private readonly TextWriter newOut;
+        private readonly Stream outputStream;
+
         private readonly TextReader newIn;
         private readonly Stream inputStream;
         private readonly StreamWriter inputSimulator;
+        private readonly StreamReader outputCapture;
+        private long readCursor;
 
         /// <summary>
         /// Creates a new instance.
@@ -38,7 +43,9 @@ namespace NFluent.Mocks
         {
             this.inputStream = new MemoryStream();
             this.inputSimulator = new StreamWriter(this.inputStream);
-            this.newOut = new StringWriter();
+            this.outputStream = new MemoryStream();
+            this.outputCapture = new StreamReader(this.outputStream);
+            this.newOut = new StreamWriter(this.outputStream);
             this.newIn = new StreamReader(this.inputStream);
             this.oldOut = Console.Out;
             this.oldIn = Console.In;
@@ -51,6 +58,8 @@ namespace NFluent.Mocks
         {
             Console.SetOut(this.oldOut);
             Console.SetIn(this.oldIn);
+            this.outputStream.Dispose();
+            this.outputCapture.Dispose();
             this.inputStream.Dispose();
             this.newIn.Dispose();
         }
@@ -58,7 +67,18 @@ namespace NFluent.Mocks
         /// <summary>
         /// Gets the text output to the console as a single string.
         /// </summary>
-        public string Output => this.newOut.ToString();
+        public string Output
+        {
+            get
+            {
+                this.newOut.Flush();
+                var cursor = this.outputStream.Position;
+                this.outputStream.Position = 0;
+                var text = this.outputCapture.ReadToEnd();
+                this.outputStream.Position = cursor;
+                return text;
+            }
+        }
 
         /// <summary>
         /// Simulates a textual input.
@@ -85,7 +105,22 @@ namespace NFluent.Mocks
             this.inputStream.Seek(0, SeekOrigin.End);
             writer(this.inputSimulator);
             this.inputSimulator.Flush();
-            this.inputStream.Seek(pos, SeekOrigin.Begin);
+            this.inputStream.Position = pos;
+        }
+
+        /// <summary>
+        /// Gets a single line from the output stream.
+        /// </summary>
+        /// <returns>A single line from the output stream.</returns>
+        public string ReadLine()
+        {
+            this.newOut.Flush();
+            var pos = this.outputStream.Position;
+            this.outputStream.Position = this.readCursor;
+            var text = this.outputCapture.ReadLine();
+            this.readCursor = this.outputStream.Position;
+            this.outputStream.Position = pos;
+            return text;
         }
     }
 }

@@ -106,7 +106,7 @@ namespace NFluent
             }
                 
             ExtensibilityHelper.BeginCheck(context)
-                .OnNegateWhen(sut => sut== null, "The {checked} is null.")
+                .OnNegateWhen(sut => sut== null, "The checked object is null.")
                 .CheckSutAttributes( sut => sut.GetTypeWithoutThrowingException(), "type")
                 .Analyze((sut, test) =>
                 {

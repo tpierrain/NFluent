@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RootNamespace>NFluent.NetStandard._20.Tests</RootNamespace>
+    <RootNamespace>NFluent.Tests</RootNamespace>
     <AssemblyName>NFluent.Tests</AssemblyName>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
@@ -17,7 +17,8 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="NUnit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
-    <DotNetCliToolReference Include="StrykerMutator.DotNetCoreCli" Version="*" />
+    <PackageReference Include="StrykerMutator.DotNetCoreCli" Version="0.7.0" />
+    <DotNetCliToolReference Include="StrykerMutator.DotNetCoreCli" Version="0.7.0" />
   </ItemGroup>
 
   <Target Name="PrintReferences" DependsOnTargets="ResolveProjectReferences;ResolveAssemblyReferences">

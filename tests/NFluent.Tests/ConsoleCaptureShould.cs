@@ -30,6 +30,21 @@ namespace NFluent.Tests
                 Check.That(Console.Read()).IsEqualTo('A');
             }
         }
+
+        [Test]
+        public void PermitStreamedOutputConsumption()
+        {
+            using (var session = new CaptureConsole())
+            {
+                Console.WriteLine("hello");
+                Console.WriteLine("world");
+                Check.That(session.ReadLine()).IsEqualTo("hello");
+                Check.That(session.ReadLine()).IsEqualTo("world");
+                Console.Write("so ");
+                Console.Write("great");
+                Check.That(session.ReadLine()).IsEqualTo("so great");
+            }
+        }
     }
 }
     

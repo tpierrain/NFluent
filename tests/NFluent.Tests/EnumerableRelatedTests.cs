@@ -562,6 +562,19 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ContainsOnlyElementShouldWorkWhenNegated()
+        {
+            IEnumerable<int> list = new List<int> { 4, 5, 8 };
+            Check.ThatCode(() => Check.That(list).Not.ContainsOnlyElementsThatMatch(item => item % 2 == 0).Which.IsEqualTo(2))
+                .IsAFaillingCheckWithMessage("", 
+                    "The checked [element #1] is different from the expected one.", 
+                    "The checked [element #1]:", 
+                    "\t[5]", 
+                    "The expected [element #1]:", 
+                    "\t[2]");
+        }
+
+        [Test]
         public void ContainsOnlyElementAndWhich()
         {
             IEnumerable<int> list = new List<int> { 4, 6, 8 };
@@ -632,16 +645,14 @@ namespace NFluent.Tests
         {
             IEnumerable<string> randomWords = new List<string> { "yes", "foo", "bar" };
             Check.ThatCode(()=>
-            Check.That(randomWords).HasElementThatMatches((_) => _.StartsWith("ye")).Which.IsEqualTo("foo")).
+            Check.That(randomWords).HasElementThatMatches((_) => _.StartsWith("fo")).Which.IsEqualTo("yes")).
                 IsAFaillingCheckWithMessage("", 
-                    "The checked [element #0] is different from the expected one but has same length.", 
-                    "The checked [element #0]:", 
-                    "\t[\"yes\"]", 
-                    "The expected [element #0]:", 
-                    "\t[\"foo\"]");
+                    "The checked [element #1] is different from the expected one but has same length.", 
+                    "The checked [element #1]:", 
+                    "\t[\"foo\"]", 
+                    "The expected [element #1]:", 
+                    "\t[\"yes\"]");
         }
-
-
 
         [Test]
         public void FilterSupportShouldFailWhenRelevant()

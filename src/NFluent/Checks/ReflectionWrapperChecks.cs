@@ -77,7 +77,6 @@ namespace NFluent
 
                             match = false;
                             break;
-
                         }
 
                         if (match)
@@ -87,7 +86,7 @@ namespace NFluent
                     }
 
                     test.FailWhen(_ => !match, "The {0} is equal to none of the {1} whereas it should.");
-                }).OnNegate("The {0} is equal to one of {1} whereas it should not.")
+                }).OnNegate("The {0} is equal to one of the given value(s) whereas it should not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

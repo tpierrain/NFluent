@@ -22,8 +22,6 @@ namespace NFluent.Extensibility
     /// </summary>
     public static class CheckLogicExtensions
     {
-        private const string CanTBeUsedWhenNegated = "{0} can't be used when negated";
-
         /// <summary>
         /// Failing condition
         /// </summary>
@@ -66,22 +64,6 @@ namespace NFluent.Extensibility
         public static ICheckLogic<T> OnNegate<T>(this ICheckLogic<T> logic, string message, MessageOption option = MessageOption.None)
         {
             return logic.OnNegateWhen(_ => true, message, option);
-        }
-
-        /// <summary>
-        /// Generate an error message stating that this check cannot be used with <see cref="INegateableCheck{T}.Not"/>
-        /// </summary>
-        /// <typeparam name="T">type of the checked object</typeparam>
-        /// <param name="logic">check</param>
-        /// <param name="checkName">name of the source check</param>
-        /// <returns>Continuation object.</returns>
-        public static ICheckLogic<T> CantBeNegated<T>(this ICheckLogic<T> logic, string checkName)
-        {
-            var message = string.Format(CanTBeUsedWhenNegated, checkName);
-            if (logic.IsNegated)
-                throw  new System.InvalidOperationException(message);
-            logic.OnNegate(message);
-            return logic;
         }
     }
 }

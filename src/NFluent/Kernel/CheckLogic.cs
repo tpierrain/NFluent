@@ -27,6 +27,8 @@ namespace NFluent.Kernel
     [DebuggerNonUserCode]
     internal class CheckLogic<T> : ICheckLogic<T>
     {
+        private const string CanTBeUsedWhenNegated = "{0} can't be used when negated";
+
         private readonly FluentSut<T> fluentSut;
         private ICheckLogicBase child;
         private bool isRoot;
@@ -43,6 +45,7 @@ namespace NFluent.Kernel
         private string negatedComparison;
         private string negatedError;
         private bool negatedFailed;
+        private bool cantBeNegated;
         private string negatedLabel;
         private MessageOption negatedOption;
         private MessageOption options = MessageOption.None;
@@ -71,6 +74,15 @@ namespace NFluent.Kernel
 
         public bool Failed => this.failed || this.child != null && this.child.Failed;
 
+        public  ICheckLogic<T> CantBeNegated(string checkName)
+        {
+            var message = string.Format(CanTBeUsedWhenNegated, checkName);
+            if (this.IsNegated)
+                throw  new System.InvalidOperationException(message);
+            this.OnNegateWhen(_ => true, message, MessageOption.NoCheckedBlock);
+            return this;
+        }
+
         public ICheckLogic<T> Analyze(Action<T, ICheckLogic<T>> action)
         {
             if (this.failed)
@@ -93,15 +105,6 @@ namespace NFluent.Kernel
             this.lastError = error;
             this.options = this.options | noCheckedBlock;
 
-            return this;
-        }
-
-        public ICheckLogic<T> InvalidIf(Func<T, bool> predicate, string error)
-        {
-            if (predicate(this.fluentSut.Value))
-            {
-                throw new System.InvalidOperationException(error);
-            }
             return this;
         }
 
@@ -277,6 +280,10 @@ namespace NFluent.Kernel
             this.withExpected = true;
             this.expected = newExpectedValue;
             this.comparison = comparisonMessage;
+            if (this.cantBeNegated && !string.IsNullOrEmpty(negatedComparison1))
+            {
+                throw new InvalidOperationException(CanTBeUsedWhenNegated);
+            }
             this.negatedComparison = negatedComparison1;
             return this;
         }
