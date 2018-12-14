@@ -41,18 +41,7 @@ namespace NFluent.Extensibility
             });
         }
 
-        /// <summary>
-        /// Fails the check is the checked value is null,
-        /// </summary>
-        /// <param name="logic"></param>
-        /// <param name="error">Error message</param>
-        /// <typeparam name="T">type of the checked object</typeparam>
-        /// <returns>Continuation object.</returns>
-        public static ICheckLogic<T> FailIfNull<T>(this ICheckLogic<T> logic, string error = "The {0} is null.")
-        {
-            return logic.FailWhen(sut => sut == null, error, MessageOption.NoCheckedBlock);
-        }
-
+ 
         /// <summary>
         /// Error message for negated checks.
         /// </summary>

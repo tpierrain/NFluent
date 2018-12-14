@@ -207,7 +207,7 @@ namespace NFluent
                         test.OnNegate($"The {{0}} contains unauthorized value(s): {presentItems.ToEnumeratedString().DoubleCurlyBraces()}");
 
                     }).
-                OnNegate("Can't be negated").
+                //OnNegate("Can't be negated").
                 EndCheck();
         }
 

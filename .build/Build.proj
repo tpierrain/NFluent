@@ -5,6 +5,7 @@
 
   <PropertyGroup>
     <SolutionName>NFluent</SolutionName>
+    <APIVersion>2.4.0.0</APIVersion>
     <SolutionRoot>$(MSBuildProjectDirectory)\..</SolutionRoot>
     <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
     <CodeCovURL>https://codecov.io/gh/dupdob/$(SolutionName)</CodeCovURL>

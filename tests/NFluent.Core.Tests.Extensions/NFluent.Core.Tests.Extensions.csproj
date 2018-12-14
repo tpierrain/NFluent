@@ -7,7 +7,7 @@
     <StartupObject />
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\NFluent.snk</AssemblyOriginatorKeyFile>
-    <AssemblyVersion>2.5.0.0</AssemblyVersion>
+    <AssemblyVersion>2.4.0.0</AssemblyVersion>
     <FileVersion>2.5.0.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

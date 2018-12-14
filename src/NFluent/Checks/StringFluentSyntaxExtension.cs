@@ -82,8 +82,8 @@ namespace NFluent
                         return;
                     }
                 }).
-                DefineExpectedValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, "in this order", "in another order")
-                .EndCheck();
+                DefineExpectedValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, "in this order", "")
+                .EndCheck();    
             return chainedCheckLink;
         }
     }

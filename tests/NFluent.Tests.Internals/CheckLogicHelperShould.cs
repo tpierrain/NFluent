@@ -15,6 +15,7 @@
 
 namespace NFluent.Tests
 {
+    using System;
     using Extensibility;
     using Helpers;
     using Kernel;
@@ -52,6 +53,19 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                 checker.BeginCheck().FailIfNull().CheckSutAttributes(point => point.x, "x coordinate")
                     .FailWhen(i => i > 0, "Should be positive").EndCheck()).IsAFaillingCheckWithMessage("", "The checked value's x coordinate is null.");
+        }
+
+
+        [Test]
+        public void
+            FailOnIllegalNegation()
+        {
+            var fluentChecker = new FluentCheck<Point>(null);
+            var checker = fluentChecker.Checker;
+
+            Check.ThatCode(() =>
+                    checker.BeginCheck().CantBeNegated("this").DefineExpectedValue(12, "Dummy").EndCheck())
+                .Throws<InvalidOperationException>();
         }
     }
 }

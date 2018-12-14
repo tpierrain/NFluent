@@ -132,7 +132,7 @@
     <!-- Capture version number -->
     <PropertyGroup>
       <NumericalVersion>$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)</NumericalVersion>
-      <StableNumericalVersion>$(AssemblyVersionMajor).$(AssemblyVersionMinor).0.0</StableNumericalVersion>
+      <APIVersion Condition="$(APIVersion)==''">$(AssemblyVersionMajor).$(AssemblyVersionMinor).0.0</APIVersion>
     </PropertyGroup>
     <VersionBuilding version ="$(NumericalVersion)" stream="$(PackageStream)">
       <Output PropertyName="PrettyVersion" TaskParameter="fullVersion" />
@@ -153,7 +153,7 @@
       </RegexTransform>
       <RegexTransform Include="$(AttributeVersionFile)">
         <Find>AssemblyVersion\("(?&lt;major&gt;\d+)\.(?&lt;minor&gt;\d+)\.\d+[\.-](?&lt;revision&gt;[^)"]*)</Find>
-        <ReplaceWith>AssemblyVersion("$(StableNumericalVersion)</ReplaceWith>
+        <ReplaceWith>AssemblyVersion("$(APIVersion)</ReplaceWith>
       </RegexTransform>
     </ItemGroup>
     <RegexTransform Items="@(RegexTransform)" />
@@ -167,7 +167,7 @@
     <XmlPoke
       XmlInputPath="%(CSProjToPatch.FullName)"
       Query="//AssemblyVersion" 
-      Value="$(StableNumericalVersion)" />
+      Value="$(APIVersion)" />
     <XmlPoke
       XmlInputPath="%(CSProjToPatch.FullName)"
       Query="//FileVersion" 

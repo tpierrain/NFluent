@@ -20,13 +20,14 @@ namespace NFluent.Kernel
     using Extensibility;
     using Extensions;
 
-// the system namespace is not imported for older Net version. This allows to overload the deifnition of delefate type. 
+// the system namespace is not imported for older Net version. This allows to overload the definition of delegate types. 
 #if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
     using System;
 #endif
     [DebuggerNonUserCode]
     internal class CheckLogic<T> : ICheckLogic<T>
     {
+        // TODO: Refactor
         private const string CanTBeUsedWhenNegated = "{0} can't be used when negated";
 
         private readonly FluentSut<T> fluentSut;
@@ -45,7 +46,8 @@ namespace NFluent.Kernel
         private string negatedComparison;
         private string negatedError;
         private bool negatedFailed;
-        private bool cantBeNegated;
+        private bool doNotNeedNegatedMessage;
+        private bool cannotBetNegated;
         private string negatedLabel;
         private MessageOption negatedOption;
         private MessageOption options = MessageOption.None;
@@ -77,9 +79,32 @@ namespace NFluent.Kernel
         public  ICheckLogic<T> CantBeNegated(string checkName)
         {
             var message = string.Format(CanTBeUsedWhenNegated, checkName);
+            this.DoNotNeedNegatedMessage();
+            cannotBetNegated = true;
             if (this.IsNegated)
-                throw  new System.InvalidOperationException(message);
+            {
+                throw new System.InvalidOperationException(message);
+            }
             this.OnNegateWhen(_ => true, message, MessageOption.NoCheckedBlock);
+            return this;
+        }
+
+        public ICheckLogic<T> FailIfNull(string error = "The {0} is null.")
+        {
+            if (this.fluentSut.Value != null)
+            {
+                return this;
+            }
+
+            this.Fail(error, MessageOption.NoCheckedBlock);
+            this.DoNotNeedNegatedMessage();
+            return this;
+        }
+
+
+        public ICheckLogic<T> DoNotNeedNegatedMessage()
+        {
+            this.doNotNeedNegatedMessage = true;
             return this;
         }
 
@@ -147,7 +172,7 @@ namespace NFluent.Kernel
             this.child?.EndCheck();
             if (this.isRoot)
             {
-                if (string.IsNullOrEmpty(this.negatedError))
+                if (string.IsNullOrEmpty(this.negatedError) && !this.doNotNeedNegatedMessage)
                 {
                     throw new System.InvalidOperationException("Negated error message was not specified. Use 'OnNegate' method to specify one.");
                 }
@@ -280,9 +305,9 @@ namespace NFluent.Kernel
             this.withExpected = true;
             this.expected = newExpectedValue;
             this.comparison = comparisonMessage;
-            if (this.cantBeNegated && !string.IsNullOrEmpty(negatedComparison1))
+            if (this.cannotBetNegated && !string.IsNullOrEmpty(negatedComparison1))
             {
-                throw new InvalidOperationException(CanTBeUsedWhenNegated);
+                throw new System.InvalidOperationException(this.negatedError);
             }
             this.negatedComparison = negatedComparison1;
             return this;

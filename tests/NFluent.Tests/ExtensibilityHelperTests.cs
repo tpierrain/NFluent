@@ -70,6 +70,11 @@ namespace NFluent.Tests
             // can use regular expression.
             Check.ThatCode(() => throw ExceptionHelper.BuildException("oups")).
                 IsAFaillingCheckWithMessage("#[pous]+");
+            Check.ThatCode(() =>
+                // check with a error message that is too long
+                Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"+Environment.NewLine+"and more"))
+                    .IsAFaillingCheckWithMessage("#[pous]+")
+            ).IsAFaillingCheck();
         }
     }
 }

@@ -83,11 +83,17 @@ namespace NFluent.Extensibility
         /// <summary>
         /// Generate an error message stating that this check cannot be used with <see cref="INegateableCheck{T}.Not"/>
         /// </summary>
-        /// <typeparam name="T">type of the checked object</typeparam>
         /// <param name="checkName">name of the source check</param>
         /// <returns>Continuation object.</returns>
         ICheckLogic<T> CantBeNegated(string checkName);
-        
+
+        /// <summary>
+        /// Fails the check if the checked value is null,
+        /// </summary>
+        /// <param name="error">Error message</param>
+        /// <returns>Continuation object.</returns>
+        ICheckLogic<T> FailIfNull(string error = "The {0} is null.");
+
         /// <summary>
         /// Explicitly fails
         /// </summary>
