@@ -376,16 +376,16 @@ namespace NFluent.Tests
                 "",
                 "The checked value's field 'arrayOfInts' does not have the expected value.",
                 "The checked value's field 'arrayOfInts':",
-                "\t[0, 0, 0, 0] (4 items)", 
+                "\t{0, 0, 0, 0} (4 items)", 
                 "The expected value's field 'arrayOfInts':",
-                 "\t[0, 0, 0, 0, 0]");
+                 "\t{0, 0, 0, 0, 0}");
             Check.ThatCode(() => { Check.That(new {arrayOfInts =  "INTS"}).Considering().NonPublic.Fields.IsEqualTo(expected); })
                 .IsAFaillingCheckWithMessage("", 
                     "The checked value's field 'arrayOfInts' does not have the expected value.", 
                     "The checked value's field 'arrayOfInts':", 
                     "\t[\"INTS\"] of type: [string]", 
                     "The expected value's field 'arrayOfInts':", 
-                    "\t[0, 0, 0, 0, 0] of type: [int[]]");
+                    "\t{0, 0, 0, 0, 0} of type: [int[]]");
         }
 
         [Test]
@@ -426,9 +426,10 @@ namespace NFluent.Tests
                Check.That(sut).Considering().Public.Properties.IsOneOf(new {TheProperty = 12}, new {TheProperty = 14});
             }).IsAFaillingCheckWithMessage("", 
                 "The checked value is equal to none of the expected value(s) whereas it should.", 
-                "The checked value:", "\t[{ TheProperty = 13 }]", 
+                "The checked value:", 
+                "\t[{ TheProperty = 13 }]", 
                 "The expected value(s): one of", 
-                "\t[{ TheProperty = 12 }, { TheProperty = 14 }] (2 items)");
+                "\t{{ TheProperty = 12 }, { TheProperty = 14 }} (2 items)");
             Check.ThatCode(()=>
             {
                 Check.That(sut).Considering().Public.Properties.IsOneOf();
@@ -436,7 +437,7 @@ namespace NFluent.Tests
                 "The checked value is equal to none of the expected value(s) whereas it should.", 
                 "The checked value:", "\t[{ TheProperty = 13 }]", 
                 "The expected value(s): one of", 
-                "\t[] (0 item)");
+                "\t{} (0 item)");
         }
 
         [Test]
@@ -451,7 +452,7 @@ namespace NFluent.Tests
                 "The checked value is equal to one of the given value(s) whereas it should not.", 
                 "The checked value:", "\t[{ TheProperty = 13 }]", 
                 "The expected value(s): none of", 
-                "\t[{ TheProperty = 12 }, { TheProperty = 13 }] (2 items)");
+                "\t{{ TheProperty = 12 }, { TheProperty = 13 }} (2 items)");
         }
 
         [Test]
@@ -553,7 +554,7 @@ namespace NFluent.Tests
                     .IsDistinctFrom(new {Property = sharedReference});
             }).IsAFaillingCheckWithMessage(
                 "", 
-                "The checked value's property 'Property' does reference the given one, wheras it should not.", 
+                "The checked value's property 'Property' does reference the given one, whereas it should not.", 
                 "The expected value's property 'Property': different instance than", 
                 "\t[System.Object]");
 

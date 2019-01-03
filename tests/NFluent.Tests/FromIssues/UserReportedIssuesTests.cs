@@ -1,17 +1,17 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="UserReportedIssuesTests.cs" company="">
-// //   Copyright 2014 Cyrille DUPUYDAUBY
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="UserReportedIssuesTests.cs" company="">
+//   Copyright 2014 Cyrille DUPUYDAUBY
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent.Tests
 {
@@ -220,7 +220,12 @@ namespace NFluent.Tests
                     "+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros",
                     "Backstagex passes to a TAFKAL80ETC concer", "Conjured Mana Cake"
                 });
-            }).IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). First difference is at index #4." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concert\", \"Conjured Mana Cake\"] (6 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concer\", \"Conjured Mana Cake\"] (6 items)");
+            }).IsAFaillingCheckWithMessage("", 
+                "The checked enumerable does not contain exactly the expected value(s). First difference is at index #4.",
+                "The checked enumerable:",
+                "\t{\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concert\", \"Conjured Mana Cake\"} (6 items)",
+                "The expected value(s):",
+                "\t{\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concer\", \"Conjured Mana Cake\"} (6 items)");
         }
 
         [Test]
@@ -355,11 +360,11 @@ namespace NFluent.Tests
             })
             .IsAFaillingCheckWithMessage("", 
                     "The checked enumerable does not contain the expected value(s):",
-                    "\t[\"MaChaine{964}\"]",
+                    "\t{\"MaChaine{964}\"}",
                     "The checked enumerable:",
-                    "\t[\"MaChaine{94}\"] (1 item)",
+                    "\t{\"MaChaine{94}\"} (1 item)",
                     "The expected value(s):",
-                    "\t[\"MaChaine{964}\"] (1 item)");
+                    "\t{\"MaChaine{964}\"} (1 item)");
         }
 
         // issue #127, request for byte array support

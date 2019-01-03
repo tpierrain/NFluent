@@ -25,14 +25,14 @@ namespace NFluent.Tests
         public void ToEnumeratedStringParticularBehaviourWithStrings()
         {
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
-            Check.That(guitarHeroes.ToEnumeratedString()).IsEqualTo(@"""Hendrix"", ""Paco de Lucia"", ""Django Reinhardt"", ""Baden Powell""");
+            Check.That(guitarHeroes.ToEnumeratedString()).IsEqualTo(@"{""Hendrix"", ""Paco de Lucia"", ""Django Reinhardt"", ""Baden Powell""}");
         }
 
         [Test]
         public void ToEnumeratedStringWorksFineWithStrings()
         {
             var departments = new[] { 93, 56, 35, 75 };
-            Check.That(departments.ToEnumeratedString()).IsEqualTo("93, 56, 35, 75");
+            Check.That(departments.ToEnumeratedString()).IsEqualTo("{93, 56, 35, 75}");
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace NFluent.Tests
         {
             var departments = new[] { 93, 56, 35, 75 };
 
-            Check.That(departments.ToEnumeratedString("|")).IsEqualTo("93|56|35|75");
+            Check.That(departments.ToEnumeratedString("|")).IsEqualTo("{93|56|35|75}");
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace NFluent.Tests
         {
             var variousStuffs = new ArrayList { 93, null, "hell yeah!" };
 
-            Check.That(variousStuffs.ToEnumeratedString()).IsEqualTo(@"93, null, ""hell yeah!""");
+            Check.That(variousStuffs.ToEnumeratedString()).IsEqualTo(@"{93, null, ""hell yeah!""}");
         }
 
         [Test]

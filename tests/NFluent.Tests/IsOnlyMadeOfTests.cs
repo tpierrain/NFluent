@@ -1,17 +1,17 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="IsOnlyMadeOfTests.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IsOnlyMadeOfTests.cs" company="">
+//   Copyright 2013 Thomas PIERRAIN
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent.Tests
 {
@@ -74,11 +74,11 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
                     "The checked enumerable does not contain only the given value(s).",
                     "It contains also other values:",
-                    "\t[666, 1974]",
+                    "\t{666, 1974}",
                     "The checked enumerable:",
-                    "\t[3, 2, 666, 1974, 1] (5 items)",
+                    "\t{3, 2, 666, 1974, 1} (5 items)",
                     "The expected value(s): only elements from",
-                    "\t[1, 2, 3] (3 items)");
+                    "\t{1, 2, 3} (3 items)");
         }
 
         [Test]
@@ -142,7 +142,7 @@ namespace NFluent.Tests
                     "The checked enumerable:", 
                     "\t[null]", 
                     "The expected value(s): only elements from",
-                    "\t[\"what da heck!\"] (1 item)");
+                    "\t{\"what da heck!\"} (1 item)");
         }
 
         [Test]
@@ -160,18 +160,18 @@ namespace NFluent.Tests
                 Check.That(integers).IsOnlyMadeOf(null)).IsAFaillingCheckWithMessage("",
             "The checked enumerable does not contain only the given value(s).",
                 "It contains also other values:",
-                "\t[3, 2, 666, 1974, 1]",
+                "\t{3, 2, 666, 1974, 1}",
             "The checked enumerable:",
-                "\t[3, 2, 666, 1974, 1] (5 items)",
+                "\t{3, 2, 666, 1974, 1} (5 items)",
                 "The expected value(s): only elements from",
                 "\t[null] (0 item)");
             Check.ThatCode( () =>
                 Check.That(new []{1}).IsOnlyMadeOf(null)).IsAFaillingCheckWithMessage("",
                 "The checked enumerable does not contain only the given value(s).",
                 "It contains also other values:",
-                "\t[1]",
+                "\t{1}",
                 "The checked enumerable:",
-                "\t[1] (1 item)",
+                "\t{1} (1 item)",
                 "The expected value(s): only elements from",
                 "\t[null] (0 item)");
         }
@@ -189,11 +189,11 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
                     "The checked enumerable does not contain only the given value(s).",
                     "It contains also other values:",
-                    "\t[666, 1974]",
+                    "\t{666, 1974}",
                     "The checked enumerable:",
-                    "\t[3, 2, 666, 1974, 1] (5 items)",
+                    "\t{3, 2, 666, 1974, 1} (5 items)",
                     "The expected value(s): only elements from" ,
-                    "\t[1, 2, 3] (3 items)");
+                    "\t{1, 2, 3} (3 items)");
         }
 
         [Test]
@@ -216,9 +216,9 @@ namespace NFluent.Tests
             })
             .IsAFaillingCheckWithMessage("","The checked enumerable contains only the given values whereas it must not.",
                     "The checked enumerable:", 
-                    "\t[3, 2, 666, 1974, 1] (5 items)",
+                    "\t{3, 2, 666, 1974, 1} (5 items)",
                     "The expected value(s): at least one element different from",
-                    "\t[1, 2, 3, 666, 1974] (5 items)");
+                    "\t{1, 2, 3, 666, 1974} (5 items)");
         }
 
         [Test]
@@ -253,9 +253,9 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
                     "The checked enumerable contains only the given values whereas it must not.",
                     "The checked enumerable:",
-                    "\t[1, 2, 3] (3 items)",
+                    "\t{1, 2, 3} (3 items)",
                     "The expected value(s): at least one element different from",
-                    "\t[3, 2, 3, 2, 2, 1] (6 items)");
+                    "\t{3, 2, 3, 2, 2, 1} (6 items)");
         }
         
         [Test]
@@ -280,11 +280,11 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("", 
                     "The checked enumerable does not contain only the given value(s).",
                     "It contains also other values:",
-                    "\t[\"uno\", \"tres\"]",
+                    "\t{\"uno\", \"tres\"}",
                     "The checked enumerable:",
-                    "\t[1, \"uno\", \"tres\", 45.3] (4 items)",
+                    "\t{1, \"uno\", \"tres\", 45.3} (4 items)",
                     "The expected value(s): only elements from",
-                    "\t[1, \"Tres\", 45.3] (3 items)");
+                    "\t{1, \"Tres\", 45.3} (3 items)");
         }
 
         [Test]

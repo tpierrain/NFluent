@@ -86,7 +86,7 @@ namespace NFluent.Tests
 
             Check.ThatCode(() => { Check.That(enumerable).HasSize(5); }).IsAFaillingCheckWithMessage(
                 "", "The checked enumerable has 1 element instead of 5.",
-                "The checked enumerable:", "\t[666] (1 item)");
+                "The checked enumerable:", "\t{666} (1 item)");
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace NFluent.Tests
                 "",
             "The checked enumerable has 1 element which is unexpected.",
             "The checked enumerable:",
-                "\t[666] (1 item)");
+                "\t{666} (1 item)");
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace NFluent.Tests
                 "",
                 "The checked enumerable has 4 elements instead of 1.",
                 "The checked enumerable:",
-                "\t[45, 43, 54, 666] (4 items)");
+                "\t{45, 43, 54, 666} (4 items)");
         }
 
         #endregion
@@ -141,7 +141,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That(persons).IsEmpty(); }).IsAFaillingCheckWithMessage(
                 "", "The checked enumerable is not empty.",
                 "The checked enumerable:",
-                "\t[null, null, Thomas] (3 items)");
+                "\t{null, null, Thomas} (3 items)");
         }
 
         [Test]
@@ -157,8 +157,10 @@ namespace NFluent.Tests
             var persons = new List<Person> { null, null, new Person { Name = "Thomas" } };
 
             Check.ThatCode(() => { Check.That(persons).IsNullOrEmpty(); }).IsAFaillingCheckWithMessage(
-                "", "The checked enumerable contains elements, whereas it must be null or empty."
-                ,"The checked enumerable:", "\t[null, null, Thomas] (3 items)");
+                "", 
+                "The checked enumerable contains elements, whereas it must be null or empty."
+                ,"The checked enumerable:", 
+                "\t{null, null, Thomas} (3 items)");
         }
 
         [Test]
@@ -209,7 +211,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That(enumerable).Not.IsEqualTo(enumerable); }).IsAFaillingCheckWithMessage("",
                 "The checked enumerable is equal to the given one whereas it must not.",
                     "The expected enumerable: different from",
-                    "\t[45, 43, 54, 666] of type: [System.Collections.Generic.List<int>]");
+                    "\t{45, 43, 54, 666} of type: [System.Collections.Generic.List<int>]");
         }
 
         [Test]
@@ -221,7 +223,7 @@ namespace NFluent.Tests
                     "",
                     "The checked enumerable is different from the given one.",
                     "The checked enumerable:",
-                    "\t[45, 43, 54, 666] (4 items)",
+                    "\t{45, 43, 54, 666} (4 items)",
                     "The expected enumerable:",
                     "\t[null]");
         }
@@ -431,7 +433,7 @@ namespace NFluent.Tests
                 "",
                 "The checked enumerable does not have an element at index 0.",
                 "The checked enumerable:",
-                "\t[] (0 item)");
+                "\t{} (0 item)");
         }
 
         [TestCase(-1)]
@@ -463,7 +465,7 @@ namespace NFluent.Tests
                     "",
                     "The checked enumerable does not have an element at index 2.",
                     "The checked enumerable:",
-                    "\t[42, 43] (2 items)");
+                    "\t{42, 43} (2 items)");
         }
 
         #endregion
@@ -504,7 +506,7 @@ namespace NFluent.Tests
                     "",
                     "The checked enumerable is empty, whereas it must have one element.",
                     "The checked enumerable:",
-                    "\t[] (0 item)");
+                    "\t{} (0 item)");
         }
 
         [Test]
@@ -528,7 +530,7 @@ namespace NFluent.Tests
                     "",
                     "The checked enumerable contains more than one element, whereas it must have one element only.",
                     "The checked enumerable:",
-                    "\t[42, 43, 1000] (3 items)");
+                    "\t{42, 43, 1000} (3 items)");
 
         }
 
@@ -558,7 +560,7 @@ namespace NFluent.Tests
                 .IsAFaillingCheckWithMessage("",
                     "The checked enumerable does contain an element at index #1 that does not match the given predicate: (5).",
                     "The checked enumerable:" ,
-                    "\t[4, 5, 8] (3 items)");
+                    "\t{4, 5, 8} (3 items)");
         }
 
         [Test]
@@ -613,7 +615,7 @@ namespace NFluent.Tests
                     string.Empty,
                     "The checked enumerable does not have an element at index 3.",
                     "The checked enumerable:",
-                    "\t[\"yes\", \"foo\", \"bar\"] (3 items)");
+                    "\t{\"yes\", \"foo\", \"bar\"} (3 items)");
             Check.ThatCode(() => Check.That(randomWords).HasElementAt(2).Which.IsEqualTo("hope"))
                 .IsAFaillingCheckWithMessage(
                 "", 
@@ -662,7 +664,7 @@ namespace NFluent.Tests
                 .IsAFaillingCheckWithMessage("",
             "The checked enumerable does not contain any element that matches the given predicate.",
                 "The checked enumerable:",
-                "\t[\"yes\", \"foo\", \"bar\"] (3 items)");
+                "\t{\"yes\", \"foo\", \"bar\"} (3 items)");
         }
 
         [Test]
@@ -679,7 +681,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(randomWords).Not.HasElementThatMatches((_) => _.StartsWith("ye")))
                 .IsAFaillingCheckWithMessage("","The checked enumerable contains element(s) that matches the given predicate, whereas it must not.",
                 "The checked enumerable:",
-                "\t[\"yes\", \"foo\", \"bar\"] (3 items)");
+                "\t{\"yes\", \"foo\", \"bar\"} (3 items)");
         }
 
         [Test]
@@ -702,7 +704,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsSubSetOfFailssWhenExpected()
+        public void IsSubSetOfFailsWhenExpected()
         {
             IEnumerable<string> randomWords = new List<string> { "yes", "foo"};
             IEnumerable<string> expectedWords = new List<string> { "yes", "foo", "bar" };
@@ -711,9 +713,9 @@ namespace NFluent.Tests
                 IsAFaillingCheckWithMessage("", 
                     "The checked enumerable contains \"bar\" which is absent from expected value(s).", 
                     "The checked enumerable:", 
-                    "\t[\"yes\", \"foo\", \"bar\"] (3 items)", 
+                    "\t{\"yes\", \"foo\", \"bar\"} (3 items)", 
             "The expected value(s):", 
-            "\t[\"yes\", \"foo\"] (2 items)");
+            "\t{\"yes\", \"foo\"} (2 items)");
         }
     }
 }

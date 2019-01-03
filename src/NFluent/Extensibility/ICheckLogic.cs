@@ -16,7 +16,7 @@
 namespace NFluent.Extensibility
 {
     using System.Collections;
-
+    using System.Collections.Generic;
 #if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
     using System;
 #endif
@@ -119,7 +119,7 @@ namespace NFluent.Extensibility
         /// <param name="labelForExpected">Label for expected result</param>
         /// <param name="negationForExpected">Label for result when check is negated</param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> DefineExpectedResult<TU>(TU resultValue, string labelForExpected, string negationForExpected);
+        ICheckLogic<T> DefineExpectedResult<TU>(TU resultValue, string labelForExpected, string negationForExpected = "different from");
 
         /// <summary>
         /// Specify that we expect a list of valies
@@ -132,11 +132,21 @@ namespace NFluent.Extensibility
         ICheckLogic<T> DefineExpectedValues(IEnumerable values, long count, string comparison = null, string negatedComparison = "different from");
 
         /// <summary>
+        /// Specify that we expect a list of valies
+        /// </summary>
+        /// <param name="values">enumeration of values</param>
+        /// <param name="comparison"></param>
+        /// <param name="negatedComparison"></param>
+        /// <typeparam name="U">Type of values in the list.</typeparam>
+        /// <returns>Continuation object</returns>
+        ICheckLogic<T> DefinePossibleValues<U>(IEnumerable<U> values, string comparison = "one of", string negatedComparison = "none of");
+
+        /// <summary>
         /// Specify that the expectation is an instance of some type
         /// </summary>
-        /// <param name="expectedInstanteType">expected type</param>
+        /// <param name="expectedInstanceType">expected type</param>
         /// <returns>Continuation object</returns>
-        ICheckLogic<T> DefineExpectedType(System.Type expectedInstanteType);
+        ICheckLogic<T> DefineExpectedType(System.Type expectedInstanceType);
 
         /// <summary>
         /// Failing condition on check negation.

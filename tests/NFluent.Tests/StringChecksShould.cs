@@ -52,7 +52,7 @@ namespace NFluent.Tests
                 .IsAFaillingCheckWithMessage("", 
                     "The checked string is null.",
                              "The expected value(s): contains",
-                    "\t[\"fails\", \"anyway\"] (2 items)");
+                    "\t{\"fails\", \"anyway\"} (2 items)");
         }
 
         [Test]
@@ -60,11 +60,11 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => { Check.That(Alphabet).Contains("C", "a", "A", "z"); })
                 .IsAFaillingCheckWithMessage("",
-                             "The checked string does not contain the expected value(s): \"C\", \"A\"",
+                             "The checked string does not contain the expected value(s): {\"C\", \"A\"}",
                               "The checked string:",
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" ,
                     "The expected value(s): contains",
-                    "\t[\"C\", \"a\", \"A\", \"z\"] (4 items)");
+                    "\t{\"C\", \"a\", \"A\", \"z\"} (4 items)");
         }
 
         [Test]
@@ -72,11 +72,11 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => { Check.That(Alphabet).Contains("c", "0", "4"); })
                 .IsAFaillingCheckWithMessage("",
-                             "The checked string does not contain the expected value(s): \"0\", \"4\"", 
+                             "The checked string does not contain the expected value(s): {\"0\", \"4\"}", 
                              "The checked string:",
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
                     "The expected value(s): contains",
-                    "\t[\"c\", \"0\", \"4\"] (3 items)");
+                    "\t{\"c\", \"0\", \"4\"} (3 items)");
         }
 
         [Test]
@@ -97,11 +97,11 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => { Check.That(Alphabet).DoesNotContain("c", "z", "u"); })
                 .IsAFaillingCheckWithMessage("",
-                             "The checked string contains unauthorized value(s): \"c\", \"z\", \"u\"",
+                             "The checked string contains unauthorized value(s): {\"c\", \"z\", \"u\"}",
                     "The checked string:",
                     "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
                              "The expected value(s): does not contain",
-                    "\t[\"c\", \"z\", \"u\"] (3 items)");
+                    "\t{\"c\", \"z\", \"u\"} (3 items)");
         }
 
         [Test]
@@ -119,7 +119,15 @@ namespace NFluent.Tests
                     "The checked string:",
                     "\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]",
                     "The expected value(s): once",
-                    "\t[\"lmnop\"] (1 item)");
+                    "\t{\"lmnop\"} (1 item)");
+        }
+
+        [Test]
+        public void ContainsOnceFailsWhenNegated()
+        {
+            Check.ThatCode(()=>
+            Check.That(Alphabet).Not.Contains("lmnop12").Once()).
+                Throws<InvalidOperationException>().WithMessage("Once can't be used when negated");
         }
 
         [Test]
@@ -137,7 +145,15 @@ namespace NFluent.Tests
                             "The checked string:",
                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
                             "The expected value(s): in this order",
-                            "\t[\"cd\", \"ab\"] (2 items)");
+                            "\t{\"cd\", \"ab\"} (2 items)");
+        }
+
+        [Test]
+        public void ContainsInThatOrderFailsWhenNegated()
+        {
+            Check.ThatCode(()=>
+                    Check.That(Alphabet).Not.Contains("lmnop12").InThatOrder()).
+                Throws<InvalidOperationException>().WithMessage("InThatOrder can't be used when negated");
         }
 
         [Test]
@@ -338,8 +354,8 @@ namespace NFluent.Tests
             "The checked string is not one of the possible elements.",
             "The checked string:",
             "\t[\"The Black Keys\"]",
-            "The expected enumerable: one of these",
-            "\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]");
+            "The expected string: one of these",
+            "\t{\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"}");
         }
 
         [Test]
@@ -374,7 +390,7 @@ namespace NFluent.Tests
                     "The checked string:",
                     "\t[\"The Black Keys\"]",
                     "The expected string: none of these",
-                    "\t[\"Metronomy\", \"Sigur Ros\", \"The Black Keys\", \"Get Well Soon\"]");
+                    "\t{\"Metronomy\", \"Sigur Ros\", \"The Black Keys\", \"Get Well Soon\"}");
         }
 
         [Test]
@@ -387,8 +403,12 @@ namespace NFluent.Tests
         public void StringMatchesFails()
         {
             Check.ThatCode(() => { Check.That("AC 12").Matches("[0-9]. [a-z]*"); })
-                .IsAFaillingCheckWithMessage("", "The checked string does not match the expected one.", "The checked string:", "\t[\"AC 12\"]",
-                "The expected string: matches", "\t[\"[0-9]. [a-z]*\"]");
+                .IsAFaillingCheckWithMessage("", 
+                    "The checked string does not match the expected one.", 
+                    "The checked string:", 
+                    "\t[\"AC 12\"]",
+                "The expected string: matches", 
+                    "\t[\"[0-9]. [a-z]*\"]");
         }
 
         [Test]
@@ -595,13 +615,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void
-            IsNullOrWhiteSpaceWorksWhenNegated()
-        {
-
-        }
-
-        [Test]
         public void HasContentWorks()
         {
             Check.That("test").HasContent();
@@ -770,6 +783,7 @@ namespace NFluent.Tests
             var curLen = Check.StringTruncationLength;
             try
             {
+                // large truncation
                 Check.StringTruncationLength = 10000;
                 var checkString = File.ReadAllText(TestFiles.CheckedFile, Encoding.UTF8).Replace("\r\n", "");
                 var expectedString = File.ReadAllText(TestFiles.ExpectedFile, Encoding.UTF8).Replace("\r\n", "");
@@ -781,6 +795,19 @@ namespace NFluent.Tests
                     .ThrowsAny()
                     .AndWhichMessage()
                     .AsLines().HasElementAt(3).Which.HasSize(4684);
+
+                // small truncation
+                Check.StringTruncationLength = 25;
+                Check.ThatCode(() =>
+                    {
+                        Check.That("abcdefghijklmnopqrstuvwxyz").IsEqualTo("abcdefghijklmnopqrstuvwxy");
+                    })
+                    .IsAFaillingCheckWithMessage("",
+                        "The checked string is different from expected one, it contains extra text at the end.", 
+                        "The checked string:",
+                        "\t[\"abcd...<<truncated>>...yz\"]", 
+                        "The expected string:", 
+                        "\t[\"abcdefghijklmnopqrstuvwxy\"]");
             }
             finally
             {

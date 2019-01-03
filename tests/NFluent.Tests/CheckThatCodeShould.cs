@@ -391,12 +391,9 @@ namespace NFluent.Tests
         {
             Check.ThatCode(()=>
             Check.ThatCode(
-                () =>
-                {
-                    throw new ArgumentException(
-                        "outerException dummy message",
-                        (Exception) null);
-                }).ThrowsAny().DueTo<Exception>()).IsAFaillingCheckWithMessage("",
+                () => throw new ArgumentException(
+                    "outerException dummy message",
+                    (Exception) null)).ThrowsAny().DueTo<Exception>()).IsAFaillingCheckWithMessage("",
                 "There is no inner exception.", 
                 "The expected value's inner exception:", 
                 "\tan instance of type: [System.Exception]");
@@ -408,7 +405,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 // ReSharper disable once NotResolvedInText
-                Check.ThatCode(() => { throw new ArgumentException("outerException dummy message", new ArgumentOutOfRangeException("kamoulox")); })
+                Check.ThatCode(() => throw new ArgumentException("outerException dummy message", new ArgumentOutOfRangeException("kamoulox")))
                         .Throws<ArgumentException>()
                         .DueTo<Exception>();
             })
@@ -439,7 +436,7 @@ namespace NFluent.Tests
                     "\t[{System.ArgumentOutOfRangeException}: 'Specified argument was out of the range of valid values.",
                     "Parameter name: kamoulox'] of type: [System.ArgumentOutOfRangeException]",
                     "The expected value(s): an instance of any",
-                    "\t[System.Exception, System.ArgumentException] (2 items)");
+                    "\t{System.Exception, System.ArgumentException} (2 items)");
             Check.ThatCode(() =>
             {
                 // ReSharper disable once NotResolvedInText
@@ -451,7 +448,7 @@ namespace NFluent.Tests
                     "",
                     "There is no inner exception.",
                     "The expected value(s): an instance of any",
-                    "\t[System.Exception, System.ArgumentException] (2 items)");
+                    "\t{System.Exception, System.ArgumentException} (2 items)");
         }
 
         [Test]
@@ -463,7 +460,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void Shouldsuceed_when_expected_DueToAny_exception_is_found_somewhere_within_the_inner_exception()
+        public void ShouldSucceed_when_expected_DueToAny_exception_is_found_somewhere_within_the_inner_exception()
         {
                 // ReSharper disable once NotResolvedInText
                 Check.ThatCode(() => throw new ArgumentException("outerException dummy message", new ArgumentOutOfRangeException("kamoulox")))

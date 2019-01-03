@@ -42,7 +42,7 @@ namespace NFluent.Tests
         {
             public int x = 4;
         }
-
+       
         [Test]
         public void
             CascadeErrorOnSubProperty()

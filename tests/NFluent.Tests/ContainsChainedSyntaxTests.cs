@@ -55,9 +55,9 @@ namespace NFluent.Tests
                     IsAFaillingCheckWithMessage("",
                     "The checked enumerable does not follow to the expected order. Item [\"un\"] appears too late in the list, at index '2'.",
                     "The checked enumerable:",
-                    "\t[\"un\", \"dos\", \"un\", \"tres\"] (4 items)",
+                    "\t{\"un\", \"dos\", \"un\", \"tres\"} (4 items)",
                     "The expected enumerable: in that order",
-                    "\t[\"un\", \"dos\", \"tres\"]");
+                    "\t{\"un\", \"dos\", \"tres\"}");
         }
 
        [Test]
@@ -70,9 +70,9 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
                     "The checked enumerable does not follow to the expected order. Item [\"dos\"] appears too late in the list, at index '1'.",
                     "The checked enumerable:",
-                    "\t[\"un\", \"dos\", \"tres\"] (3 items)",
+                    "\t{\"un\", \"dos\", \"tres\"} (3 items)",
                     "The expected enumerable: in that order",
-                    "\t[\"dos\", \"un\", \"tres\"]");
+                    "\t{\"dos\", \"un\", \"tres\"}");
         }
 
         [Test]
@@ -86,9 +86,9 @@ namespace NFluent.Tests
                     "",
                     "The checked enumerable does not follow to the expected order. Item [\"dos\"] appears too early in the list, at index '1'.",
                     "The checked enumerable:",
-                    "\t[\"un\", \"dos\", \"tres\"] (3 items)",
+                    "\t{\"un\", \"dos\", \"tres\"} (3 items)",
                     "The expected enumerable: in that order",
-                    "\t[\"un\", \"tres\", \"dos\"]");
+                    "\t{\"un\", \"tres\", \"dos\"}");
         }
 
         [Test]
@@ -136,9 +136,9 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
                     "The checked enumerable has extra occurrences of the expected items. Item [\"tres\"] at position 3 is redundant.",
                     "The checked enumerable:",
-                    "\t[\"un\", \"dos\", \"tres\", \"tres\"] (4 items)",
+                    "\t{\"un\", \"dos\", \"tres\", \"tres\"} (4 items)",
                     "The expected enumerable: once of",
-                    "\t[\"un\", \"dos\", \"tres\"]");
+                    "\t{\"un\", \"dos\", \"tres\"}");
         }
     }
 }

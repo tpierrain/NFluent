@@ -171,52 +171,10 @@ namespace NFluent.Messages
         /// </returns>
         private string Description()
         {
-            if (this.test == null)
-            {
-                return "[null]";
-            }
+            var description = new StringBuilder();
+            description.Append(this.test.ToEnumeratedString(this.referenceIndex, NumberOfItemsToList));
 
-            var description = new StringBuilder("[");
-            var iterator = this.test.GetEnumerator();
-
-            // we skip the first items
-            var firstIndex = Math.Max(0, this.referenceIndex - (NumberOfItemsToList / 2));
-            if (firstIndex > 0)
-            {
-                for (var i = 0; i < firstIndex; i++)
-                {
-                    iterator.MoveNext();
-                }
-
-                description.Append("...");
-            }
-
-            // items to display
-            for (var i = firstIndex; i < firstIndex + NumberOfItemsToList; i++)
-            {
-                if (!iterator.MoveNext())
-                {
-                    // end of enumeration
-                    break;
-                }
-
-                if (i != 0)
-                {
-                    // add comma
-                    description.Append(", ");
-                }
-
-                description.Append(iterator.Current.ToStringProperlyFormatted());
-                
-                if (i == firstIndex + NumberOfItemsToList - 1)
-                {
-                    description.Append("...");
-                }
-            }
-
-            description.AppendFormat("]");
-
-            if (this.enumerableCount.HasValue)
+            if (this.enumerableCount.HasValue && this.test != null)
             {
                 description.AppendFormat(
                     " ({0} {1})",

@@ -135,7 +135,7 @@ namespace NFluent.Extensions
             {
                 return ArrayToStringProperlyFormatted(array);
             }
-
+            
             if (theObject is IEnumerable enumerable)
             {
                 return enumerable.ToEnumeratedString();

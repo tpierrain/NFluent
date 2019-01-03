@@ -34,7 +34,7 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<ICheck<string>, string[]> Once(this IExtendableCheckLink<ICheck<string>, string[]> chainedCheckLink)
         {
-            ExtensibilityHelper.BeginCheck(chainedCheckLink.And).
+            ExtensibilityHelper.BeginCheck(chainedCheckLink.AccessCheck).
                 CantBeNegated("Once").
                 Analyze((sut, test) =>
                 {
@@ -65,7 +65,7 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<ICheck<string>, string[]> InThatOrder(this IExtendableCheckLink<ICheck<string>, string[]> chainedCheckLink)
         {
-            ExtensibilityHelper.BeginCheck(chainedCheckLink.And).
+            ExtensibilityHelper.BeginCheck(chainedCheckLink.AccessCheck).
                 CantBeNegated("InThatOrder").
                 Analyze((sut, test) =>
                 {

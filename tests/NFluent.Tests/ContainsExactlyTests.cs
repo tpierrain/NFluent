@@ -53,7 +53,12 @@ namespace NFluent.Tests
             {
                 Check.That(heroes).ContainsExactly("Luke", "Yoda", "Chewie", "Vader");
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). Elements are missing starting at index #3." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"] (4 items)");
+            .IsAFaillingCheckWithMessage("",
+                "The checked enumerable does not contain exactly the expected value(s). Elements are missing starting at index #3.",
+                "The checked enumerable:", 
+                "\t{\"Luke\", \"Yoda\", \"Chewie\"} (3 items)",
+                "The expected value(s):",
+                "\t{\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"} (4 items)");
         }
 
         [Test]
@@ -68,9 +73,9 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
                     "The checked enumerable does not contain exactly the expected value(s). There are extra elements starting at index #2.",
                     "The checked enumerable:",
-                    "\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)",
+                    "\t{\"Luke\", \"Yoda\", \"Chewie\"} (3 items)",
                     "The expected value(s):",
-                    "\t[\"Luke\", \"Yoda\"] (2 items)");
+                    "\t{\"Luke\", \"Yoda\"} (2 items)");
         }
         
         [Test]
@@ -82,7 +87,12 @@ namespace NFluent.Tests
             {
                 Check.That(integers).ContainsExactly(666, 3, 1, 2, 4, 5);
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). First difference is at index #0." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3, 4, 5, 666] (6 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[666, 3, 1, 2, 4, 5] (6 items)");
+            .IsAFaillingCheckWithMessage("",
+                "The checked enumerable does not contain exactly the expected value(s). First difference is at index #0.", 
+                "The checked enumerable:",
+                "\t{1, 2, 3, 4, 5, 666} (6 items)",
+                "The expected value(s):",
+                "\t{666, 3, 1, 2, 4, 5} (6 items)");
 
         }
 
@@ -95,7 +105,12 @@ namespace NFluent.Tests
             {
                 Check.That(integers).ContainsExactly(42, 42, 42);
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). First difference is at index #0." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[1, 2, 3, 4, 5, 666] (6 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[42, 42, 42] (3 items)");
+            .IsAFaillingCheckWithMessage("",
+                                         "The checked enumerable does not contain exactly the expected value(s). First difference is at index #0.",
+                                         "The checked enumerable:",
+                                         "\t{1, 2, 3, 4, 5, 666} (6 items)",
+                                         "The expected value(s):",
+                                         "\t{42, 42, 42} (3 items)");
 
         }
 
@@ -103,12 +118,18 @@ namespace NFluent.Tests
         public void ContainsExactlyWithArraysThrowsExceptionWithClearStatusWhenFailsWithStrings()
         {
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
-            
+
             Check.ThatCode(() =>
-            {
-                Check.That(guitarHeroes).ContainsExactly("Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell");
-            })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). First difference is at index #0." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Hendrix\", \"Paco de Lucia\", \"Django Reinhardt\", \"Baden Powell\"] (4 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell\"] (1 item)");
+                {
+                    Check.That(guitarHeroes)
+                        .ContainsExactly("Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell");
+                })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked enumerable does not contain exactly the expected value(s). First difference is at index #0.",
+                    "The checked enumerable:",
+                    "\t{\"Hendrix\", \"Paco de Lucia\", \"Django Reinhardt\", \"Baden Powell\"} (4 items)",
+                    "The expected value(s):",
+                    "\t{\"Hendrix, Paco de Lucia, Django Reinhardt, Baden Powell\"} (1 item)");
 
         }
 
@@ -134,9 +155,9 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("", 
                     "The checked enumerable does not contain exactly the expected value(s). Elements are missing starting at index #0.",
                      "The checked enumerable:", 
-                    "\t[] (0 item)",
+                    "\t{} (0 item)",
                     "The expected value(s):",
-                    "\t[\"what da heck!\"] (1 item)");
+                    "\t{\"what da heck!\"} (1 item)");
         }
 
         [Test]
@@ -157,7 +178,7 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
                     "The checked enumerable is null and thus does not contain exactly the expected value(s).",
                     "The expected value(s):",
-                    "\t[\"what da heck!\"] (1 item)");
+                    "\t{\"what da heck!\"} (1 item)");
 
         }
 
@@ -180,9 +201,9 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
             "The checked enumerable does not contain exactly the expected value(s). First difference is at index #1.",
             "The checked enumerable:",
-            "\t[1, 2, 3, 4, 5, 666] (6 items)",
+            "\t{1, 2, 3, 4, 5, 666} (6 items)",
             "The expected value(s):",
-            "\t[1, 3, 666, 2, 4, 5] (6 items)");
+            "\t{1, 3, 666, 2, 4, 5} (6 items)");
         }
 
         [Test]
@@ -205,9 +226,9 @@ namespace NFluent.Tests
                 "",
                 "The checked enumerable does not contain exactly the expected value(s). First difference is at index #25.",
                 "The checked enumerable:",
-                "\t[..., 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 666, 26, 27, 28, 29, 30, 31, 32, 33, 34...] (40 items)",
+                "\t{..., 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 666, 26, 27, 28, 29, 30, 31, 32, 33, 34...} (40 items)",
                 "The expected value(s):",
-                "\t[..., 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34...] (40 items)");
+                "\t{..., 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34...} (40 items)");
         }
 
         [Test]
@@ -219,9 +240,9 @@ namespace NFluent.Tests
                     "",
                     "The checked enumerable is different from the expected one.",
                     "The checked enumerable:",
-                    "\t[4] (1 item)",
+                    "\t{{4}} (1 item)",
                     "The expected enumerable:",
-                    "\t[8]");
+                    "\t{{8}}");
         }
 
         [Test]
@@ -233,9 +254,9 @@ namespace NFluent.Tests
                     "",
                     "The checked enumerable is different from the expected one.",
                     "The checked enumerable:",
-                    "\t[4] (1 item)",
+                    "\t{{4}} (1 item)",
                     "The expected enumerable:",
-                    "\t[null]");
+                    "\t{{null}}");
         }
 
         [Test]
@@ -251,9 +272,9 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
                     "The checked enumerable does not contain exactly the expected value(s). First difference is at index #0.",
                     "The checked enumerable:",
-                    "\t[1, 2, 3, 4, 5, 666] (6 items)",
+                    "\t{1, 2, 3, 4, 5, 666} (6 items)",
                     "The expected value(s):",
-                    "\t[666, 3, 1, 2, 4, 5] (6 items)");
+                    "\t{666, 3, 1, 2, 4, 5} (6 items)");
         }
 
         [Test]
@@ -265,7 +286,12 @@ namespace NFluent.Tests
             {
                 Check.That(InstantiateDirectors().Extracting("Name")).ContainsExactly(writersNames);
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s). First difference is at index #0." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Michel Gondry\", \"Joon-ho Bong\", \"Darren Aronofsky\"] (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"Steve Tesich\", \"Albert Camus\", \"Eiji Yoshikawa\", \"Friedrich Nietzsche\"] (4 items)");
+            .IsAFaillingCheckWithMessage("",
+                "The checked enumerable does not contain exactly the expected value(s). First difference is at index #0.",
+                "The checked enumerable:",
+                "\t{\"Michel Gondry\", \"Joon-ho Bong\", \"Darren Aronofsky\"} (3 items)",
+                "The expected value(s):",
+                "\t{\"Steve Tesich\", \"Albert Camus\", \"Eiji Yoshikawa\", \"Friedrich Nietzsche\"} (4 items)");
         }
 
         [Test]
@@ -290,7 +316,7 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("", 
                     "The checked enumerable contains exactly the given values whereas it must not.",
                     "The checked enumerable:",
-                    "\t[\"Steve Tesich\", \"Albert Camus\", \"Eiji Yoshikawa\", \"Friedrich Nietzsche\"] (4 items)");
+                    "\t{\"Steve Tesich\", \"Albert Camus\", \"Eiji Yoshikawa\", \"Friedrich Nietzsche\"} (4 items)");
         }
 
         [Test]
@@ -303,7 +329,7 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
                     "The checked enumerable is not null whereas it should.",
                     "The checked enumerable:", 
-                    "\t[\"Michel Gondry\", \"Joon-ho Bong\", \"Darren Aronofsky\"] (3 items)");
+                    "\t{\"Michel Gondry\", \"Joon-ho Bong\", \"Darren Aronofsky\"} (3 items)");
         }
         
         [Test]
@@ -316,7 +342,7 @@ namespace NFluent.Tests
                 .IsAFaillingCheckWithMessage("",  
                     "The checked enumerable is not null whereas it should.", 
                     "The checked enumerable:", 
-                    "\t[\"test\"] (1 item)");
+                    "\t{\"test\"} (1 item)");
         }
 
         [Test]

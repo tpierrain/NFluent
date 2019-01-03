@@ -72,7 +72,7 @@ namespace NFluent
                 DefineExpectedValues(otherEnumerable, otherEnumerable.Count()).
                 Analyze((sut, _) =>  notFoundValues = ExtractNotFoundValues(sut, otherEnumerable)).
                 FailWhen((_) => notFoundValues.Any(), string.Format(
-                    "The {{0}} does not contain the expected value(s):" + Environment.NewLine + "\t[{0}]", 
+                    "The {{0}} does not contain the expected value(s):" + Environment.NewLine + "\t{0}", 
                     notFoundValues.ToEnumeratedString().DoubleCurlyBraces())).
                 OnNegate("The {0} contains all the given values whereas it must not.").
                 EndCheck();
@@ -226,12 +226,12 @@ namespace NFluent
                         if (expectedContent.Count == 1)
                         {
                             test.Fail(
-                                $"The {{checked}} is missing: [{expectedContent.ToStringProperlyFormatted().DoubleCurlyBraces()}].");
+                                $"The {{checked}} is missing: [{expectedContent[0].ToStringProperlyFormatted().DoubleCurlyBraces()}].");
                         }
                         else
                         {
                             test.Fail(
-                                $"The {{checked}} is missing {expectedContent.Count} items: [{expectedContent.ToStringProperlyFormatted().DoubleCurlyBraces()}].");
+                                $"The {{checked}} is missing {expectedContent.Count} items: {expectedContent.ToStringProperlyFormatted().DoubleCurlyBraces()}.");
                         }
                     }
                 }).
@@ -603,7 +603,7 @@ namespace NFluent
                         string.Format(
                             "The {{0}} does not contain only the given value(s)." + Environment.NewLine
                                                                                   + "It contains also other values:" +
-                                                                                  Environment.NewLine + "\t[{0}]",
+                                                                                  Environment.NewLine + "\t{0}",
                             unexpectedValuesFound.ToEnumeratedString().DoubleCurlyBraces()));
                         }).
                 OnNegate("The {0} contains only the given values whereas it must not.").

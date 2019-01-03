@@ -1,17 +1,17 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ContainsTests.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ContainsTests.cs" company="">
+//   Copyright 2013 Thomas PIERRAIN
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent.Tests
 {
@@ -66,11 +66,11 @@ namespace NFluent.Tests
             })
             .IsAFaillingCheckWithMessage("",
                     "The checked enumerable does not contain the expected value(s):", 
-                    "\t[666, 1974]", 
+                    "\t{666, 1974}", 
                     "The checked enumerable:", 
-                    "\t[1, 2, 3] (3 items)", 
+                    "\t{1, 2, 3} (3 items)", 
                     "The expected value(s):", 
-                    "\t[3, 2, 666, 1974] (4 items)");
+                    "\t{3, 2, 666, 1974} (4 items)");
         }
 
         [Test]
@@ -92,9 +92,9 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("", 
                     "The checked enumerable contains all the given values whereas it must not.", 
                     "The checked enumerable:",
-                    "\t[1, 2, 3] (3 items)", 
+                    "\t{1, 2, 3} (3 items)", 
                     "The expected value(s): different from",
-                    "\t[3, 2, 1] (3 items)");
+                    "\t{3, 2, 1} (3 items)");
         }
 
         #endregion
@@ -136,11 +136,11 @@ namespace NFluent.Tests
             })
             .IsAFaillingCheckWithMessage("",
                     "The checked enumerable does not contain the expected value(s):",
-                    "\t[\"what da heck!\"]",
+                    "\t{\"what da heck!\"}",
                     "The checked enumerable:",
-                    "\t[] (0 item)",
+                    "\t{} (0 item)",
                     "The expected value(s):",
-                    "\t[\"what da heck!\"] (1 item)");
+                    "\t{\"what da heck!\"} (1 item)");
         }
 
         [Test]
@@ -163,7 +163,7 @@ namespace NFluent.Tests
                     "The checked enumerable:",
                     "\t[null]",
                     "The expected value(s):",
-                    "\t[\"what da heck!\"] (1 item)");
+                    "\t{\"what da heck!\"} (1 item)");
         }
 
         [Test]
@@ -184,11 +184,11 @@ namespace NFluent.Tests
             })
             .IsAFaillingCheckWithMessage("",
                     "The checked enumerable does not contain the expected value(s):",
-                    "\t[666, 1974]", 
+                    "\t{666, 1974}", 
                     "The checked enumerable:",
-                    "\t[1, 2, 3] (3 items)",
+                    "\t{1, 2, 3} (3 items)",
                     "The expected value(s):", 
-                    "\t[3, 2, 666, 1974] (4 items)");
+                    "\t{3, 2, 666, 1974} (4 items)");
         }
 
         [Test]

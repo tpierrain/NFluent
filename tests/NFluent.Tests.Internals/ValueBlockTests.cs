@@ -72,21 +72,21 @@ namespace NFluent.Tests
             var blk = new EnumerationBlock(list, 0);
 
             blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("[\'t\', \'h\', \'i\', \'s\', \' \', \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\'...] (53 items)", blk.GetMessage());
+            Assert.AreEqual("{\'t\', \'h\', \'i\', \'s\', \' \', \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\'...} (53 items)", blk.GetMessage());
         }
        
         [Test]
-        public void ShouldForEdgeEnumerations()
+        public void ShouldWorkForEdgeEnumerations()
         {
             var list = string.Empty.ToCharArray();
             var blk = new EnumerationBlock(list, 0);
 
             blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("[] (0 item)", blk.GetMessage());
+            Assert.AreEqual("{} (0 item)", blk.GetMessage());
             blk = new EnumerationBlock(null, 0);
 
             blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("[null]", blk.GetMessage());
+            Assert.AreEqual("null", blk.GetMessage());
         }
 
         [Test]
@@ -97,9 +97,9 @@ namespace NFluent.Tests
 
             blk.WithEnumerableCount(list.GetLength(0));
             blk.WithType();
-            Assert.AreEqual("[] (0 item) of type: [char[]]", blk.GetMessage());
+            Assert.AreEqual("{} (0 item) of type: [char[]]", blk.GetMessage());
             blk.WithType(typeof(string));
-            Assert.AreEqual("[] (0 item) of type: [string]", blk.GetMessage());
+            Assert.AreEqual("{} (0 item) of type: [string]", blk.GetMessage());
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace NFluent.Tests
             var blk = new EnumerationBlock(list, 15);
 
             blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("[..., \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\', \'g\', \' \', \'t\', \'o\', \' \'...] (53 items)", blk.GetMessage());
+            Assert.AreEqual("{..., \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\', \'g\', \' \', \'t\', \'o\', \' \'...} (53 items)", blk.GetMessage());
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void InstanceBlockShouldThrowOnhashcode()
+        public void InstanceBlockShouldThrowOnHashcode()
         {
             Check.ThatCode(() =>
             {

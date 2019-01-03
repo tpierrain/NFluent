@@ -35,7 +35,7 @@ namespace NFluent.Tests
                 IsAFaillingCheckWithMessage("", 
                     "The checked enumerable contains a duplicate item at position 1: [1].", 
                     "The checked enumerable:", 
-                    "\t[1, 1, 2, 3] (4 items)");
+                    "\t{1, 1, 2, 3} (4 items)");
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace NFluent.Tests
                 IsAFaillingCheckWithMessage("",
                     "The checked enumerable should contain duplicates.",
                     "The checked enumerable:",
-                    "\t[1, 2, 3, 4] (4 items)");
+                    "\t{1, 2, 3, 4} (4 items)");
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace NFluent.Tests
                 IsAFaillingCheckWithMessage("",
                     "The checked enumerable contains a null item at position 2.",
                     "The checked enumerable:",
-                    "\t[\"test\", \"another\", null] (3 items)");
+                    "\t{\"test\", \"another\", null} (3 items)");
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace NFluent.Tests
                 IsAFaillingCheckWithMessage("",
                     "The checked enumerable should contain at least one null entry.",
                     "The checked enumerable:",
-                    "\t[\"test\", \"another\"] (2 items)");
+                    "\t{\"test\", \"another\"} (2 items)");
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace NFluent.Tests
                 IsAFaillingCheckWithMessage("",
                     "The checked enumerable contains an entry of a type different from String at position 2.",
                     "The checked enumerable:",
-                    "\t[\"test\", \"another\", 4] (3 items)");
+                    "\t{\"test\", \"another\", 4} (3 items)");
         }
         
         [Test]
@@ -105,7 +105,7 @@ namespace NFluent.Tests
                 IsAFaillingCheckWithMessage("",
                     "The checked enumerable should contain at least one entry of a type different from String.",
                     "The checked enumerable:",
-                    "\t[\"test\", \"another\"] (2 items)");
+                    "\t{\"test\", \"another\"} (2 items)");
         }
 
         [Test]
@@ -133,42 +133,42 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 4)).IsAFaillingCheckWithMessage("", 
                 "The checked enumerable does contain [3] whereas it should not.", 
                 "The checked enumerable:",
-                "\t[1, 2, 3] (3 items)", 
+                "\t{1, 2, 3} (3 items)", 
                 "The expected value(s):", 
-                "\t[1, 2, 4] (3 items)");
+                "\t{1, 2, 4} (3 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4)).IsAFaillingCheckWithMessage("", 
                 "The checked enumerable is missing: [4].", 
                 "The checked enumerable:",
-                "\t[1, 2, 3] (3 items)", 
+                "\t{1, 2, 3} (3 items)", 
                 "The expected value(s):", 
-                "\t[1, 2, 3, 4] (4 items)");
+                "\t{1, 2, 3, 4} (4 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4, 5)).IsAFaillingCheckWithMessage("", 
-                "The checked enumerable is missing 2 items: [4, 5].", 
+                "The checked enumerable is missing 2 items: {4, 5}.", 
                 "The checked enumerable:",
-                "\t[1, 2, 3] (3 items)", 
+                "\t{1, 2, 3} (3 items)", 
                 "The expected value(s):", 
-                "\t[1, 2, 3, 4, 5] (5 items)");
+                "\t{1, 2, 3, 4, 5} (5 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2)).IsAFaillingCheckWithMessage("", 
                 "The checked enumerable does contain [3] whereas it should not.", 
                 "The checked enumerable:",
-                "\t[1, 2, 3] (3 items)", 
+                "\t{1, 2, 3} (3 items)", 
                 "The expected value(s):", 
-                "\t[1, 2] (2 items)");
+                "\t{1, 2} (2 items)");
 
             Check.ThatCode(() => Check.That<IEnumerable<int>>(null).IsEquivalentTo(1)).IsAFaillingCheckWithMessage("",
                 "The checked enumerable is null whereas it should not.", 
                 "The checked enumerable:", 
                 "\t[null]", 
                 "The expected value(s):", 
-                "\t[1] (1 item)");
+                "\t{1} (1 item)");
 
             Check.ThatCode(() => Check.That<IEnumerable<int>>(new[]{1}).IsEquivalentTo(null)).IsAFaillingCheckWithMessage("",
                 "The checked enumerable must be null.", 
                 "The checked enumerable:", 
-                "\t[1] (1 item)", 
+                "\t{1} (1 item)", 
                 "The expected value(s):", 
                 "\t[null] (0 item)");
         }
@@ -180,9 +180,9 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(array).Not.IsEquivalentTo(1, 2, 3)).IsAFaillingCheckWithMessage("", 
                 "The checked enumerable is equivalent to the expected value(s) whereas it should not.", 
                 "The checked enumerable:",
-                "\t[1, 2, 3] (3 items)", 
+                "\t{1, 2, 3} (3 items)", 
                 "The expected value(s): different from", 
-                "\t[1, 2, 3] (3 items)");
+                "\t{1, 2, 3} (3 items)");
         }
 
         [Test]
@@ -196,12 +196,12 @@ namespace NFluent.Tests
                 "The checked enumerable is not in ascending order, whereas it should.",
                 "At #5: [5] comes after [null].", 
                 "The checked enumerable:", 
-                "\t[null, 1, 2, 3, 5, null, 5] (7 items)");
+                "\t{null, 1, 2, 3, 5, null, 5} (7 items)");
             Check.ThatCode(() => Check.That(new int?[] {4, 1, 2, 3, 5, null, 5}).IsInAscendingOrder()).IsAFaillingCheckWithMessage(
                 "",
                 "The checked enumerable is not in ascending order, whereas it should.",
                 "At #1: [4] comes after [1].", "The checked enumerable:",
-                "\t[4, 1, 2, 3, 5, null, 5] (7 items)");
+                "\t{4, 1, 2, 3, 5, null, 5} (7 items)");
         }
 
         class ComparerWithNullAtTheEnd: IComparer{
@@ -271,13 +271,13 @@ namespace NFluent.Tests
                 "The checked enumerable is not in descending order, whereas it should.",
                 "At #1: [null] comes before [1].", 
                 "The checked enumerable:", 
-                "\t[null, 1, 2, 3, 5, null, 5] (7 items)");
+                "\t{null, 1, 2, 3, 5, null, 5} (7 items)");
             Check.ThatCode(() => Check.That(new int?[] {4, 1, 2, 3, 5, null, 5}).IsInDescendingOrder()).IsAFaillingCheckWithMessage(
                 "",
                 "The checked enumerable is not in descending order, whereas it should.",
                 "At #2: [1] comes before [2].",
                 "The checked enumerable:",
-                "\t[4, 1, 2, 3, 5, null, 5] (7 items)");
+                "\t{4, 1, 2, 3, 5, null, 5} (7 items)");
         }
     }
 }

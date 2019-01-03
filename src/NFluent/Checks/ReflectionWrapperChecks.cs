@@ -194,7 +194,7 @@ namespace NFluent
                         if (ReferenceEquals(match.Actual.Value, match.Expected.Value))
                         {
                             test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
-                                .Fail("The {0} does reference the {1}, wheras it should not.", MessageOption.NoCheckedBlock)
+                                .Fail("The {0} does reference the {1}, whereas it should not.", MessageOption.NoCheckedBlock)
                                 .ComparingTo(match.Expected.Value, "different instance than", "same instance than");
                             break;
                         }

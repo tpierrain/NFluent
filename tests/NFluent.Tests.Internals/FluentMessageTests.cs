@@ -129,7 +129,7 @@ namespace NFluent.Tests
                                             .WithEnumerableCount(givenValues.Count())
                                             .ToString();
 
-            Assert.AreEqual(NewLine+ "The checked enumerable does not contain exactly the expected value(s)." + NewLine + "The checked enumerable:" + NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)" + NewLine + "The expected value(s):" + NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"] (4 items)", message);
+            Assert.AreEqual(NewLine+ "The checked enumerable does not contain exactly the expected value(s)." + NewLine + "The checked enumerable:" + NewLine + "\t{\"Luke\", \"Yoda\", \"Chewie\"} (3 items)" + NewLine + "The expected value(s):" + NewLine + "\t{\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"} (4 items)", message);
         }
 
         [Test]
@@ -143,7 +143,7 @@ namespace NFluent.Tests
                                             .And.ReferenceValues(possibleElements).Label("The possible elements:")
                                             .ToString();
 
-            Assert.AreEqual(NewLine+ "The checked string is not one of the possible elements." + NewLine + "The checked string:" + NewLine + "\t[\"The Black Keys\"]" + NewLine + "The possible elements:" + NewLine + "\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
+            Assert.AreEqual(NewLine+ "The checked string is not one of the possible elements." + NewLine + "The checked string:" + NewLine + "\t[\"The Black Keys\"]" + NewLine + "The possible elements:" + NewLine + "\t{\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"}", errorMessage);
         }
 
         [Test]
@@ -223,7 +223,7 @@ namespace NFluent.Tests
         [Test]
         public void ShouldBlockWorksOnLongEnumeration()
         {
-            var possibleElements = "We need to test the message block methods with a long enumeration. A string convterted to a char array should be enough.";
+            var possibleElements = "We need to test the message block methods with a long enumeration. A string converted to a char array should be enough.";
             const string checkedValue = "The Black Keys";
 
             var unused = FluentMessage.BuildMessage("The {0} is not one of the possible elements.")
@@ -231,7 +231,13 @@ namespace NFluent.Tests
                                             .And.ReferenceValues(possibleElements.ToCharArray()).Label("The possible elements:")
                                             .ToString();
 
-//            Assert.AreEqual(Environment.NewLine+ "The checked enumerable is not one of the possible elements." + Environment.NewLine + "The checked enumrable:" + Environment.NewLine + "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" + Environment.NewLine + "\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
+            Assert.AreEqual(@"
+The checked enumerable is not one of the possible elements.
+The checked enumerable:
+	{'T', 'h', 'e', ' ', 'B', 'l', 'a', 'c', 'k', ' ', 'K', 'e', 'y', 's'}
+The possible elements:
+	{'W', 'e', ' ', 'n', 'e', 'e', 'd', ' ', 't', 'o', ' ', 't', 'e', 's', 't', ' ', 't', 'h', 'e', ' '...}", 
+                unused);
         }
 
     }

@@ -16,6 +16,7 @@
 namespace NFluent.Kernel
 {
     using System.Collections;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using Extensibility;
     using Extensions;
@@ -24,7 +25,7 @@ namespace NFluent.Kernel
 #if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
     using System;
 #endif
-    [DebuggerNonUserCode]
+//    [DebuggerNonUserCode]
     internal class CheckLogic<T> : ICheckLogic<T>
     {
         // TODO: Refactor
@@ -38,6 +39,7 @@ namespace NFluent.Kernel
         private long expectedCount;
         private ValueKind expectedKind = ValueKind.Value;
         private System.Type expectedType;
+        private bool enforceExpectedType;
         private bool failed;
         private long index;
         private string label;
@@ -79,14 +81,19 @@ namespace NFluent.Kernel
         public  ICheckLogic<T> CantBeNegated(string checkName)
         {
             var message = string.Format(CanTBeUsedWhenNegated, checkName);
+            SetNotNegatable(message);
+            return this;
+        }
+
+        private void SetNotNegatable(string message)
+        {
             this.DoNotNeedNegatedMessage();
-            cannotBetNegated = true;
+            this.cannotBetNegated = true;
             if (this.IsNegated)
             {
                 throw new System.InvalidOperationException(message);
             }
             this.OnNegateWhen(_ => true, message, MessageOption.NoCheckedBlock);
-            return this;
         }
 
         public ICheckLogic<T> FailIfNull(string error = "The {0} is null.")
@@ -145,9 +152,15 @@ namespace NFluent.Kernel
             var sutWrapper = new FluentSut<TU>(value == null ? default(TU) : sutExtractor(value),
                 this.fluentSut.Reporter,
                 this.IsNegated) {CustomMessage = this.fluentSut.CustomMessage};
+
             var result =
                 new CheckLogic<TU>(sutWrapper) {isRoot = false};
 
+            if (this.cannotBetNegated)
+            {
+                result.SetNotNegatable(this.negatedError);
+            }
+            
             var finalSutName = string.IsNullOrEmpty(this.sutName) ? (this.fluentSut.SutName ?? "value") : this.sutName;
             if (!string.IsNullOrEmpty(propertyName))
             {
@@ -193,7 +206,7 @@ namespace NFluent.Kernel
             {
                 fluentMessage.AddCustomMessage(this.fluentSut.CustomMessage);
             }
-            if ((this.Option & MessageOption.NoCheckedBlock) == 0)
+            if (!this.Option.HasFlag(MessageOption.NoCheckedBlock))
             {
                 var block = fluentMessage.On(this.fluentSut.Value, this.index);
 
@@ -220,7 +233,7 @@ namespace NFluent.Kernel
                 fluentMessage.For(typeof(T));
             }
 
-            if (this.withExpected && (this.Option & MessageOption.NoExpectedBlock) == MessageOption.None)
+            if (this.withExpected && !this.Option.HasFlag(MessageOption.NoExpectedBlock))
             {
                 MessageBlock block;
                 if (this.expectedKind == ValueKind.Type)
@@ -234,14 +247,7 @@ namespace NFluent.Kernel
                 }
                 else
                 {
-                    if (this.IsNegated)
-                    {
-                        block = fluentMessage.WithGivenValue(this.expected);
-                    }
-                    else
-                    {
-                        block = fluentMessage.Expected(this.expected);
-                    }
+                    block = this.IsNegated ? fluentMessage.WithGivenValue(this.expected) : fluentMessage.Expected(this.expected);
                     block.WithType(this.Option.HasFlag(MessageOption.WithType));
                     block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
                 }
@@ -250,6 +256,13 @@ namespace NFluent.Kernel
                 {
                     block.OfType(this.expectedType);
                     fluentMessage.For(this.expectedType);
+                }
+                else
+                {
+                    if (this.enforceExpectedType)
+                    {
+                        fluentMessage.For(this.expectedType);
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(this.Label))
@@ -282,6 +295,11 @@ namespace NFluent.Kernel
         public ICheckLogic<T> ComparingTo<TU>(TU givenValue, string comparisonInfo, string negatedComparisonInfo)
         {
             this.comparison = comparisonInfo;
+            if (this.cannotBetNegated && !string.IsNullOrEmpty(negatedComparisonInfo))
+            {
+                throw new System.InvalidOperationException(this.negatedError);
+            }
+
             this.negatedComparison = negatedComparisonInfo;
             this.expected = givenValue;
             this.withGiven = true;
@@ -294,12 +312,17 @@ namespace NFluent.Kernel
             this.withExpected = true;
             this.expected = resultValue;
             this.label = labelForExpected;
+            if (this.cannotBetNegated && !string.IsNullOrEmpty(negationForExpected))
+            {
+                throw new System.InvalidOperationException(this.negatedError);
+            }
+
             this.negatedLabel = negationForExpected;
             return this;
         }
 
-        public ICheckLogic<T> DefineExpectedValue<TU>(TU newExpectedValue, string comparisonMessage = null,
-            string negatedComparison1 = null)
+        public ICheckLogic<T> DefineExpectedValue<TU>(TU newExpectedValue, string comparisonMessage,
+            string negatedComparison1)
         {
             this.expectedType = newExpectedValue == null ? typeof(TU) : newExpectedValue.GetType();
             this.withExpected = true;
@@ -309,15 +332,16 @@ namespace NFluent.Kernel
             {
                 throw new System.InvalidOperationException(this.negatedError);
             }
+
             this.negatedComparison = negatedComparison1;
             return this;
         }
 
-        public ICheckLogic<T> DefineExpectedType(System.Type expectedInstanteType)
+        public ICheckLogic<T> DefineExpectedType(System.Type expectedInstanceType)
         {
             this.expectedKind = ValueKind.Type;
             this.options |= MessageOption.WithType;
-            return this.DefineExpectedValue(expectedInstanteType, string.Empty, "different from");
+            return this.DefineExpectedValue(expectedInstanceType, string.Empty, this.doNotNeedNegatedMessage ? "":"different from");
         }
 
         public ICheckLogic<T> DefineExpectedValues(IEnumerable values, long count, string comparisonMessage = null,
@@ -327,6 +351,25 @@ namespace NFluent.Kernel
             this.expectedCount = count;
             return this.DefineExpectedValue(values, comparisonMessage, newNegatedComparison);
         }
+
+
+        public ICheckLogic<T> DefinePossibleValues<U>(IEnumerable<U> values, string comparisonMessage = "one of", string negatedComparison1 = "none of")
+        {
+            this.expectedType = typeof(U);
+            this.enforceExpectedType = true;
+            this.withExpected = true;
+            this.expected = values;
+           
+            this.comparison = comparisonMessage;
+            if (this.cannotBetNegated && !string.IsNullOrEmpty(negatedComparison1))
+            {
+                throw new System.InvalidOperationException(this.negatedError);
+            }
+
+            this.negatedComparison = negatedComparison1;
+            return this;
+        }
+
 
         public ICheckLogic<T> SetValuesIndex(long indexInEnum)
         {

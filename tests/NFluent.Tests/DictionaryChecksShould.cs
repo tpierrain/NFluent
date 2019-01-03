@@ -66,7 +66,7 @@ namespace NFluent.Tests
                 .IsAFaillingCheckWithMessage("",
                     "The checked dictionary does not contain the expected key.",
                     "The checked dictionary:",
-                    "\t[[demo, value], [other, test]] (2 items)",
+                    "\t{[demo, value], [other, test]} (2 items)",
                     "Expected key:",
                     "\t[\"value\"]");
         }
@@ -87,7 +87,7 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
                     "The checked dictionary does contain the given key, whereas it must not.",
                     "The checked dictionary:",
-                    "\t[[demo, value], [other, test]] (2 items)",
+                    "\t{[demo, value], [other, test]} (2 items)",
                     "Forbidden key:",
                     "\t[\"demo\"]");
         }
@@ -108,7 +108,7 @@ namespace NFluent.Tests
                 .IsAFaillingCheckWithMessage("",
                     "The checked dictionary does not contain the expected value.",
                     "The checked dictionary:",
-                    "\t[[demo, value], [other, test]] (2 items)",
+                    "\t{[demo, value], [other, test]} (2 items)",
                     "Expected value:",
                     "\t[\"demo\"]");
         }
@@ -129,7 +129,7 @@ namespace NFluent.Tests
                 .IsAFaillingCheckWithMessage("",
                     "The checked dictionary does contain the given value, whereas it must not.",
                     "The checked dictionary:",
-                    "\t[[demo, value], [other, test]] (2 items)",
+                    "\t{[demo, value], [other, test]} (2 items)",
                     "Forbidden value:",
                     "\t[\"value\"]");
         }
@@ -148,7 +148,7 @@ namespace NFluent.Tests
                 .IsAFaillingCheckWithMessage("",
                     "The checked dictionary does contain the given key-value pair, whereas it must not.",
                     "The checked dictionary:",
-                    "\t[[demo, value], [other, test]] (2 items)",
+                    "\t{[demo, value], [other, test]} (2 items)",
                     "Forbidden pair:", 
                     "\t[[demo, value]]");
         }
@@ -167,7 +167,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(customDic).ContainsKey("missing")).IsAFaillingCheckWithMessage("",
                 "The checked enumerable does not contain the expected key.",
                 "The checked enumerable:",
-                "\t[[otherKey, 15], [key, 12]] (2 items)",
+                "\t{[otherKey, 15], [key, 12]} (2 items)",
                 "Expected key:",
                 "\t[\"missing\"]");
             // test with empty array
@@ -175,7 +175,7 @@ namespace NFluent.Tests
             Check.That(new List<KeyValuePair<string, int>>()).ContainsPair("key", 12)).IsAFaillingCheckWithMessage("",
                 "The checked enumerable does not contain the expected key-value pair. The given key was not found.",
                 "The checked enumerable:",
-                "\t[] (0 item)",
+                "\t{} (0 item)",
                 "Expected pair:",
                 "\t[[key, 12]]");
         }
@@ -188,7 +188,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(customDic).ContainsKey("missing")).IsAFaillingCheckWithMessage("",
                 "The checked enumerable does not contain the expected key.",
                 "The checked enumerable:",
-                "\t[] (0 item)",
+                "\t{} (0 item)",
                 "Expected key:",
                 "\t[\"missing\"]");
         }
@@ -205,7 +205,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(roDico).ContainsKey("missing")).IsAFaillingCheckWithMessage("",
             "The checked enumerable does not contain the expected key.",
                 "The checked enumerable:",
-                "\t[[demo, value], [other, test]] (2 items)",
+                "\t{[demo, value], [other, test]} (2 items)",
            "Expected key:",
                 "\t[\"missing\"]");
         }
@@ -235,28 +235,28 @@ namespace NFluent.Tests
             Check.That(basic).ContainsKey("bar")).IsAFaillingCheckWithMessage("",
                 "The checked dictionary does not contain the expected key.",
                 "The checked dictionary:",
-                "\t[[foo, bar]] (1 item)",
+                "\t{[foo, bar]} (1 item)",
                 "Expected key:",
                 "\t[\"bar\"]");
             Check.ThatCode(()=>
             Check.That(basic).ContainsValue("foo")).IsAFaillingCheckWithMessage("",
                 "The checked dictionary does not contain the expected value.",
                 "The checked dictionary:", 
-                "\t[[foo, bar]] (1 item)", 
+                "\t{[foo, bar]} (1 item)", 
                 "Expected value:", 
                 "\t[\"foo\"]");
             Check.ThatCode(()=>
             Check.That(basic).ContainsPair("bar", "foo")).IsAFaillingCheckWithMessage("",
                 "The checked dictionary does not contain the expected key-value pair. The given key was not found.",
                 "The checked dictionary:", 
-                "\t[[foo, bar]] (1 item)", 
+                "\t{[foo, bar]} (1 item)", 
                 "Expected pair:", 
                 "\t[[bar, foo]]");
             Check.ThatCode(()=>
                 Check.That(basic).ContainsPair("foo", "foo")).IsAFaillingCheckWithMessage("",
                 "The checked dictionary does not contain the expected value for the given key.",
                 "The checked dictionary:", 
-                "\t[[foo, bar]] (1 item)", 
+                "\t{[foo, bar]} (1 item)", 
                 "Expected pair:", 
                 "\t[[foo, foo]]");
         }
@@ -269,21 +269,21 @@ namespace NFluent.Tests
             Check.That(basic).Not.ContainsKey("foo")).IsAFaillingCheckWithMessage("",
                 "The checked dictionary does contain the given key, whereas it must not.",
                 "The checked dictionary:",
-                "\t[[foo, bar]] (1 item)", 
+                "\t{[foo, bar]} (1 item)", 
                 "Forbidden key:",
                 "\t[\"foo\"]");
             Check.ThatCode(()=>
             Check.That(basic).Not.ContainsValue("bar")).IsAFaillingCheckWithMessage("",
                 "The checked dictionary does contain the given value, whereas it must not.",
                 "The checked dictionary:", 
-                "\t[[foo, bar]] (1 item)", 
+                "\t{[foo, bar]} (1 item)", 
                 "Forbidden value:", 
                 "\t[\"bar\"]");
             Check.ThatCode(()=>
                 Check.That(basic).Not.ContainsPair("foo", "bar")).IsAFaillingCheckWithMessage("",
                 "The checked dictionary does contain the given key-value pair, whereas it must not.",
                 "The checked dictionary:", 
-                "\t[[foo, bar]] (1 item)", 
+                "\t{[foo, bar]} (1 item)", 
                 "Forbidden pair:", 
                 "\t[[foo, bar]]");       }
 #endif
@@ -297,7 +297,7 @@ namespace NFluent.Tests
                 "",
                 "The checked dictionary does not contain the expected value for the given key.",
                 "The checked dictionary:",
-                "\t[[demo, value], [other, test]] (2 items)",
+                "\t{[demo, value], [other, test]} (2 items)",
                 "Expected pair:",
                 "\t[[demo, 1]]");
 
@@ -308,7 +308,7 @@ namespace NFluent.Tests
                 "",
                 "The checked dictionary does not contain the expected key-value pair. The given key was not found.",
                 "The checked dictionary:",
-                "\t[[demo, value], [other, test]] (2 items)",
+                "\t{[demo, value], [other, test]} (2 items)",
                 "Expected pair:",
                 "\t[[demo2, 1]]");
         }

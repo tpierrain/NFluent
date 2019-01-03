@@ -368,7 +368,7 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
             "The checked value is an instance of [int[]] whereas it must not.",
                     "The checked value:",
-                    "\t[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] (10 items) of type: [int[]]",
+                    "\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 0} (10 items) of type: [int[]]",
                     "The expected value: different from",
                     "\tan instance of type: [int[]]");
         }
@@ -383,7 +383,7 @@ namespace NFluent.Tests
             .IsAFaillingCheckWithMessage("",
                     "The checked value is not an instance of [int].",
                     "The checked value:",
-                    "\t[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] (10 items) of type: [int[]]",
+                    "\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 0} (10 items) of type: [int[]]",
                     "The expected value:",
                     "\tan instance of type: [int]");
         }
@@ -519,7 +519,7 @@ namespace NFluent.Tests
                     "The checked value's type:",
                     "\t[NFluent.Tests.Person]",
                     "The expected value's type: anything but",
-                    "\t[int, string, NFluent.Tests.Person]");
+                    "\t{int, string, NFluent.Tests.Person}");
             int? val = 12;
             Check.ThatCode(() => Check.That(val).IsNotAnInstanceOfThese(typeof(int?), typeof(string), typeof(Person)))
                 .IsAFaillingCheckWithMessage("",
@@ -527,7 +527,7 @@ namespace NFluent.Tests
                     "The checked value's type:",
                     "\t[int?]", 
                     "The expected value's type: anything but", 
-                    "\t[int?, string, NFluent.Tests.Person]");
+                    "\t{int?, string, NFluent.Tests.Person}");
         }
 
         [Test]
@@ -553,7 +553,7 @@ namespace NFluent.Tests
                     "The checked value's type:",
                     "\t[NFluent.Tests.Person]",
                     "The expected value's type: one of those",
-                    "\t[int, string, System.Version]");
+                    "\t{int, string, System.Version}");
             int? val = 12;
             Check.ThatCode(() => Check.That(val).IsAnInstanceOfOneOf(typeof(int), typeof(string), typeof(Person)))
                 .IsAFaillingCheckWithMessage("",
@@ -561,7 +561,7 @@ namespace NFluent.Tests
                     "The checked value's type:",
                     "\t[int?]", 
                     "The expected value's type: one of those", 
-                    "\t[int, string, NFluent.Tests.Person]");
+                    "\t{int, string, NFluent.Tests.Person}");
 
 
             // check for specific case when only one type
@@ -580,7 +580,7 @@ namespace NFluent.Tests
                     "The checked value's type:",
                     "\t[null]", 
                     "The expected value's type: one of those", 
-                    "\t[int, string, NFluent.Tests.Person]");
+                    "\t{int, string, NFluent.Tests.Person}");
         }
     }
 }

@@ -53,7 +53,8 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<ICheck<T>, IEnumerable> Once<T>(this IExtendableCheckLink<ICheck<T>, IEnumerable> chainedCheckLink) where T: IEnumerable
         {
-            ExtensibilityHelper.BeginCheck(chainedCheckLink.AccessCheck).CantBeNegated("Once").
+            ExtensibilityHelper.BeginCheck(chainedCheckLink.AccessCheck).
+                CantBeNegated("Once").
                 ComparingTo(chainedCheckLink.OriginalComparand, "once of", "").
                 Analyze((sut, test) =>
                 {

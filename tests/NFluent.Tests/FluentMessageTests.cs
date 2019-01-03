@@ -1,17 +1,17 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="FluentMessageTests.cs" company="">
-// //   Copyright 2013 Cyrille DUPUYDAUBY, Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FluentMessageTests.cs" company="">
+//   Copyright 2013 Cyrille DUPUYDAUBY, Thomas PIERRAIN
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent.Tests
 {
@@ -35,7 +35,7 @@ namespace NFluent.Tests
 
             // override entity
             message = FluentMessage.BuildMessage("The {0} is ok.").For("string").ToString();
-            Assert.AreEqual(Environment.NewLine+ "The checked string is ok.", message);
+            Assert.AreEqual(Environment.NewLine+"The checked string is ok.", message);
         }
         
  
@@ -67,7 +67,8 @@ namespace NFluent.Tests
                                             .On("portna")
                                             .And.WithGivenValue("ouaq").ToString();
 
-            Assert.AreEqual(Environment.NewLine+ "The checked date time is before the given one whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[\"portna\"]" + Environment.NewLine + "The expected date time:" + Environment.NewLine + "\t[\"ouaq\"]", message);
+            Assert.AreEqual(Environment.NewLine+
+                "The checked date time is before the given one whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[\"portna\"]" + Environment.NewLine + "The expected date time:" + Environment.NewLine + "\t[\"ouaq\"]", message);
         }
 
         [Test]
@@ -83,7 +84,7 @@ namespace NFluent.Tests
                                             .WithEnumerableCount(givenValues.Count())
                                             .ToString();
 
-            Assert.AreEqual(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\"] (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t[\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"] (4 items)", message);
+            Assert.AreEqual(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t{\"Luke\", \"Yoda\", \"Chewie\"} (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t{\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"} (4 items)", message);
         }
 
         [Test]
@@ -97,7 +98,7 @@ namespace NFluent.Tests
                                             .And.ReferenceValues(possibleElements).Label("The possible elements:")
                                             .ToString();
 
-            Assert.AreEqual(Environment.NewLine+ "The checked string is not one of the possible elements." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" + Environment.NewLine + "\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
+            Assert.AreEqual(Environment.NewLine+ "The checked string is not one of the possible elements." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" + Environment.NewLine + "\t{\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"}", errorMessage);
         }
 
         [Test]

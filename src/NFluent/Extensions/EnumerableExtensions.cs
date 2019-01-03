@@ -29,6 +29,8 @@ namespace NFluent
     /// </summary>
     public static class EnumerableExtensions
     {
+        private const string ellipsis = "...";
+
         /// <summary>
         ///     Returns the number of items present within the specified enumerable (returns 0 if the enumerable is null).
         /// </summary>
@@ -43,7 +45,7 @@ namespace NFluent
         /// Returns the dimension of the array along one of its axes
         /// </summary>
         /// <param name="array">array</param>
-        /// <param name="dimension">axes numer</param>
+        /// <param name="dimension">axes number</param>
         /// <returns>the size of the requested dimension</returns>
         public static int SizeOfDimension(this Array array, int dimension)
         {
@@ -59,36 +61,9 @@ namespace NFluent
         /// </returns>
         public static string ToEnumeratedString(this IEnumerable enumerable)
         {
-            return ToEnumeratedString(enumerable, out _);
+            return ToEnumeratedString(enumerable, ", ");
         }
 
-        /// <summary>
-        ///     Return a string containing all the elements of an <see cref="IEnumerable" />, separated by a given separator.
-        /// </summary>
-        /// <param name="enumerable">The enumerable to transform into a string.</param>
-        /// <param name="itemsCount">The number of items within the <see cref="IEnumerable" />.</param>
-        /// <param name="separator">The separator.</param>
-        /// <returns>
-        ///     A string containing all the <see cref="IEnumerable" /> elements, separated by a separator.
-        /// </returns>
-        public static string ToEnumeratedString(this IEnumerable enumerable, out long itemsCount, string separator)
-        {
-            return SafeRecursedEnumeratedString(enumerable, out itemsCount, separator, new List<object>());
-        }
-
-        /// <summary>
-        ///     Return a string containing all the elements of an <see cref="IEnumerable" />, separated by a comma.
-        /// </summary>
-        /// <param name="enumerable">The enumerable to transform into a string.</param>
-        /// <param name="itemsCount">The number of items within the <see cref="IEnumerable" />.</param>
-        /// <returns>
-        ///     A string containing all the <see cref="IEnumerable" /> elements, separated by a comma.
-        /// </returns>
-        public static string ToEnumeratedString(this IEnumerable enumerable, out long itemsCount)
-        {
-            const string separator = ", ";
-            return ToEnumeratedString(enumerable, out itemsCount, separator);
-        }
 
         /// <summary>
         ///     Return a string containing all the elements of an <see cref="IEnumerable" />, separated by a given separator.
@@ -96,45 +71,90 @@ namespace NFluent
         /// <param name="enumerable">The enumerable to transform into a string.</param>
         /// <param name="separator">The separator.</param>
         /// <returns>A string containing all the <see cref="IEnumerable" /> elements, separated by the given separator.</returns>
-        /// A string containing all the
-        /// <see cref="IEnumerable" />
-        /// elements, separated by the given separator.
         public static string ToEnumeratedString(this IEnumerable enumerable, string separator)
         {
-            return ToEnumeratedString(enumerable, out _, separator);
+            return enumerable.ToEnumeratedStringAdvanced(separator, 0, -1, new List<object>());
         }
 
-        private static string SafeRecursedEnumeratedString(this IEnumerable enumerable, out long itemsCount,
-            string separator, List<object> stack)
+        /// <summary>
+        ///     Return a string containing all the elements of an <see cref="IEnumerable" />, separated by a given separator.
+        /// </summary>
+        /// <param name="enumerable"></param>
+        /// <param name="fromIndex"></param>
+        /// <param name="len"></param>
+        /// <returns>A string containing all the <see cref="IEnumerable" /> elements, separated by the given separator.</returns>
+        public static string ToEnumeratedString(this IEnumerable enumerable, long fromIndex, long len)
         {
-            var firstTime = true;
-            var sb = new StringBuilder();
-            itemsCount = 0;
+            return enumerable.ToEnumeratedStringAdvanced(", ", fromIndex, len, new List<object>());
+        }
+
+        private static string ToEnumeratedStringAdvanced(this IEnumerable enumerable, string separator,
+            long referenceIndex, long numberOfItems, IList<object> seen)
+        {
             if (enumerable == null)
-                return "null";
-            var copy = new List<object>(stack) {enumerable};
-            foreach (var obj in enumerable)
             {
-                if (!firstTime)
+                return "null";
+            }
+
+            var sb = new StringBuilder();
+            sb.Append('{');
+            if (seen.Contains(enumerable))
+            {
+                sb.Append('{');
+                sb.Append(ellipsis);
+                sb.Append("}}");
+                return sb.ToString();
+            }
+            var iterator = enumerable.GetEnumerator();
+            var copy = new List<object>(seen) {enumerable};
+            // we skip the first items
+            var firstIndex = Math.Max(0, referenceIndex - (numberOfItems / 2));
+            var lastItem = numberOfItems <= 0 ? int.MaxValue : firstIndex + numberOfItems;
+            if (firstIndex > 0)
+            {
+                for (var i = 0; i < firstIndex; i++)
+                {
+                    iterator.MoveNext();
+                }
+                sb.Append(ellipsis);
+            }
+
+            // items to display
+            for (var i = firstIndex; i < lastItem; i++)
+            {
+                if (!iterator.MoveNext())
+                {
+                    // end of enumeration
+                    break;
+                }
+
+                if (i != 0)
+                {
+                    // add comma
                     sb.Append(separator);
-                switch (obj)
+                }
+
+                var item = iterator.Current;
+                switch (item)
                 {
                     case string s:
                         sb.Append(s.ToStringProperlyFormatted());
                         break;
                     case IEnumerable sub:
-                        sb.Append(copy.Contains(sub)
-                            ? "(...)"
-                            : sub.SafeRecursedEnumeratedString(out _, separator, copy));
+                        sb.Append(sub.ToEnumeratedStringAdvanced(separator, referenceIndex, numberOfItems, copy));
                         break;
                     default:
-                        sb.Append(obj.ToStringProperlyFormatted());
+                        sb.Append(item.ToStringProperlyFormatted());
                         break;
                 }
 
-                firstTime = false;
-                itemsCount++;
+                if (i == lastItem-1)
+                {
+                    sb.Append(ellipsis);
+                }
             }
+
+            sb.Append('}');
 
             return sb.ToString();
         }

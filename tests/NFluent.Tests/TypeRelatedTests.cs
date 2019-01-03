@@ -4,6 +4,7 @@
     using NUnit.Framework;
 
     [TestFixture]
+    [Category("Type")]
     class TypeRelatedTests
     {
 
@@ -23,5 +24,20 @@
                 "The checked value:",
                 "\t[NFluent.Tests.TypeRelatedTests]");
         }
+
+        [Test]
+        public void ShouldFailWhenAttributesOnParent()
+        {
+            Check.ThatCode(() => { Check.That<Child>().HasAttribute<TestFixtureAttribute>(); })
+                .IsAFaillingCheckWithMessage(
+                    string.Empty,
+                    "The checked value does not have an attribute of the expected type.",
+                    "The checked value:",
+                    "\t[NFluent.Tests.TypeRelatedTests+Child]");
+
+        }
+
+        private class Child: TypeRelatedTests
+        {}
     }
 }
