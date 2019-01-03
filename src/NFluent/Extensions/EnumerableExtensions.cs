@@ -158,7 +158,7 @@ namespace NFluent
             result.Append('{');
             
             var firstIndex = Math.Max(0, referenceIndex - (numberOfItems / 2));
-            var lastItem = numberOfItems <= 0 ? array.Length-firstIndex : Math.Min(firstIndex + numberOfItems, array.Length-firstIndex);
+            var lastItem = numberOfItems <= 0 ? array.Length-firstIndex : Math.Min(firstIndex + numberOfItems, array.LongLength()-firstIndex);
             if (firstIndex > 0)
             {
                 result.Append(Ellipsis);
@@ -182,6 +182,9 @@ namespace NFluent
                     }
                     else
                     {
+                        
+                    }
+                    {
                         zeroesStrike = false;
                     }
 
@@ -198,7 +201,7 @@ namespace NFluent
                     }
 
                     indices[j] = currentIndex + array.GetLowerBound(j);
-                    temp /= array.SizeOfDimension(j);
+                    temp /= array.GetLongLength(j);
                 }
 
                 result.Append(array.GetValue(indices).ToStringProperlyFormatted());

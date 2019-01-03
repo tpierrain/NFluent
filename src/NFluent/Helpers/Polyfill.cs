@@ -15,6 +15,7 @@
 
 namespace NFluent
 {
+    using System;
     using Extensibility;
     using Extensions;
 #if NETSTANDARD1_3
@@ -283,8 +284,33 @@ namespace NFluent
             return array.LongLength;
 #endif
         }
+        public static long LongLength(this System.Array array)
+        {
+#if PORTABLE || NETSTANDARD1_3
+            return array.Length;
+#else
+            return array.LongLength;
+#endif
+        }
+
 
 #if NETSTANDARD1_3
+        public static long GetLongLength(this System.Array array, int index)
+        {
+            return array.GetLength(index);
+        }
+
+        public static object GetValue(this System.Array array, long[] indices)
+        {
+            var shorterIndices = new int[indices.Length];
+            for (var i = 0; i < indices.Length; i++)
+            {
+                shorterIndices[i] = (int) indices[i];
+            }
+
+            return array.GetValue(shorterIndices);
+        }
+
         public static bool IsInstanceOfType(this System.Type type, object instance)
         {
             return instance == null ? false : type.GetTypeInfo().IsAssignableFrom(instance.GetType().GetTypeInfo());
