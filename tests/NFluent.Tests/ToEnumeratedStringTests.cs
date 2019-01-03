@@ -36,14 +36,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ToEnumeratedStringWorksWithAnotherSeparator()
-        {
-            var departments = new[] { 93, 56, 35, 75 };
-
-            Check.That(departments.ToEnumeratedString("|")).IsEqualTo("{93|56|35|75}");
-        }
-
-        [Test]
         public void HowToEnumeratedStringHandlesNull()
         {
             var variousStuffs = new ArrayList { 93, null, "hell yeah!" };

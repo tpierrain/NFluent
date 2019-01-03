@@ -46,14 +46,14 @@ namespace NFluent.Tests
             var list = new []{ "a", "b", "c" };
             var blk = new ValueBlock(list);
 
-            Assert.AreEqual("[\"a\", \"b\", \"c\"]", blk.GetMessage());
+            Assert.AreEqual("[{\"a\", \"b\", \"c\"}]", blk.GetMessage());
 
             blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("[\"a\", \"b\", \"c\"] (3 items)", blk.GetMessage());
+            Assert.AreEqual("[{\"a\", \"b\", \"c\"}] (3 items)", blk.GetMessage());
 
             blk = new ValueBlock(new[] {"A"});
             blk.WithEnumerableCount(1);
-            Assert.AreEqual("[\"A\"] (1 item)", blk.GetMessage());
+            Assert.AreEqual("[{\"A\"}] (1 item)", blk.GetMessage());
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace NFluent.Tests
         {
             var matrix = new[,] {{1, 2, 3}, {4, 5, 6}};
             var blk = new ValueBlock(matrix);
-            Assert.AreEqual("[{1, 2, 3}, {4, 5, 6}]", blk.GetMessage());
+            Assert.AreEqual("[{{1, 2, 3}, {4, 5, 6}}]", blk.GetMessage());
         }
 
 
@@ -72,7 +72,7 @@ namespace NFluent.Tests
             var blk = new EnumerationBlock(list, 0);
 
             blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("{\'t\', \'h\', \'i\', \'s\', \' \', \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\'...} (53 items)", blk.GetMessage());
+            Assert.AreEqual("{\'t\', \'h\', \'i\', \'s\', \' \', \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\', ...} (53 items)", blk.GetMessage());
         }
        
         [Test]
@@ -109,7 +109,7 @@ namespace NFluent.Tests
             var blk = new EnumerationBlock(list, 15);
 
             blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("{..., \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\', \'g\', \' \', \'t\', \'o\', \' \'...} (53 items)", blk.GetMessage());
+            Assert.AreEqual("{..., \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\', \'g\', \' \', \'t\', \'o\', \' \', ...} (53 items)", blk.GetMessage());
         }
 
         [Test]

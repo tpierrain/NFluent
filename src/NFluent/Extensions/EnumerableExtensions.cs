@@ -29,7 +29,7 @@ namespace NFluent
     /// </summary>
     public static class EnumerableExtensions
     {
-        private const string ellipsis = "...";
+        private const string Ellipsis = "...";
 
         /// <summary>
         ///     Returns the number of items present within the specified enumerable (returns 0 if the enumerable is null).
@@ -61,19 +61,7 @@ namespace NFluent
         /// </returns>
         public static string ToEnumeratedString(this IEnumerable enumerable)
         {
-            return ToEnumeratedString(enumerable, ", ");
-        }
-
-
-        /// <summary>
-        ///     Return a string containing all the elements of an <see cref="IEnumerable" />, separated by a given separator.
-        /// </summary>
-        /// <param name="enumerable">The enumerable to transform into a string.</param>
-        /// <param name="separator">The separator.</param>
-        /// <returns>A string containing all the <see cref="IEnumerable" /> elements, separated by the given separator.</returns>
-        public static string ToEnumeratedString(this IEnumerable enumerable, string separator)
-        {
-            return enumerable.ToEnumeratedStringAdvanced(separator, 0, -1, new List<object>());
+            return ToEnumeratedString(enumerable, 0, -1);
         }
 
         /// <summary>
@@ -85,6 +73,10 @@ namespace NFluent
         /// <returns>A string containing all the <see cref="IEnumerable" /> elements, separated by the given separator.</returns>
         public static string ToEnumeratedString(this IEnumerable enumerable, long fromIndex, long len)
         {
+            if (enumerable is Array)
+            {
+                return ((Array) enumerable).ArrayToStringProperlyFormatted(", ", fromIndex, len);
+            }
             return enumerable.ToEnumeratedStringAdvanced(", ", fromIndex, len, new List<object>());
         }
 
@@ -101,7 +93,7 @@ namespace NFluent
             if (seen.Contains(enumerable))
             {
                 sb.Append('{');
-                sb.Append(ellipsis);
+                sb.Append(Ellipsis);
                 sb.Append("}}");
                 return sb.ToString();
             }
@@ -116,7 +108,7 @@ namespace NFluent
                 {
                     iterator.MoveNext();
                 }
-                sb.Append(ellipsis);
+                sb.Append(Ellipsis);
             }
 
             // items to display
@@ -150,7 +142,7 @@ namespace NFluent
 
                 if (i == lastItem-1)
                 {
-                    sb.Append(ellipsis);
+                    sb.Append(Ellipsis);
                 }
             }
 
@@ -158,5 +150,72 @@ namespace NFluent
 
             return sb.ToString();
         }
+
+        private static string ArrayToStringProperlyFormatted(this Array array, string separator, long referenceIndex, long numberOfItems)
+        {
+            var result = new StringBuilder();
+            var indices = new long[array.Rank];
+            result.Append('{');
+            
+            var firstIndex = Math.Max(0, referenceIndex - (numberOfItems / 2));
+            var lastItem = numberOfItems <= 0 ? array.Length-firstIndex : Math.Min(firstIndex + numberOfItems, array.Length-firstIndex);
+            if (firstIndex > 0)
+            {
+                result.Append(Ellipsis);
+                result.Append(separator);
+            }
+            for (var i = firstIndex; i < lastItem; i++)
+            {
+                var temp = i;
+                var zeroesStrike = true;
+                var closingStrikes = true;
+                var closing = string.Empty;
+                for (var j = array.Rank-1; j >= 0; j--)
+                {
+                    var currentIndex = temp % array.SizeOfDimension(j);
+                    if (currentIndex == 0 && zeroesStrike)
+                    {
+                        if (j > 0)
+                        {
+                            result.Append('{');
+                        }
+                    }
+                    else
+                    {
+                        zeroesStrike = false;
+                    }
+
+                    if (currentIndex == array.SizeOfDimension(j) - 1 && closingStrikes)
+                    {
+                        if (j > 0)
+                        {
+                            closing += '}';
+                        }
+                    }
+                    else
+                    {
+                        closingStrikes = false;
+                    }
+
+                    indices[j] = currentIndex + array.GetLowerBound(j);
+                    temp /= array.SizeOfDimension(j);
+                }
+
+                result.Append(array.GetValue(indices).ToStringProperlyFormatted());
+                result.Append(closing);
+                if (i != array.Length - 1)
+                {
+                    result.Append(separator);
+                }
+            }
+
+            if (lastItem < array.Length)
+            {
+                result.Append(Ellipsis);
+            }
+            result.Append('}');
+            return result.ToString();
+        }
+
     }
 }
