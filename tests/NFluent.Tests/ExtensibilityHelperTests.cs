@@ -1,17 +1,17 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="ExtensibilityHelperTests.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ExtensibilityHelperTests.cs" company="">
+//   Copyright 2013 Thomas PIERRAIN
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Tests
 {
     using System;
@@ -23,7 +23,7 @@ namespace NFluent.Tests
     public class ExtensibilityHelperTests
     {
         [Test]
-        public void ExtractcheckerWorks()
+        public void ExtractCheckerWorks()
         {
             var checker = ExtensibilityHelper.ExtractChecker(Check.That("kamoulox"));
             Check.That(checker).IsNotNull();
@@ -48,7 +48,7 @@ namespace NFluent.Tests
 
 
         [Test]
-        public void IsAFaillingCheckReportsProperError()
+        public void IsAFailingCheckReportsProperError()
         {
             Check.ThatCode(() =>
                 // check with an incomplete error message
@@ -74,6 +74,11 @@ namespace NFluent.Tests
                 // check with a error message that is too long
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"+Environment.NewLine+"and more"))
                     .IsAFaillingCheckWithMessage("#[pous]+")
+            ).IsAFaillingCheck();
+            Check.ThatCode(() =>
+                // check with a error message that does not match regex
+                Check.ThatCode(() => throw ExceptionHelper.BuildException("oupsla"))
+                    .IsAFaillingCheckWithMessage("#[pous]+$")
             ).IsAFaillingCheck();
         }
     }

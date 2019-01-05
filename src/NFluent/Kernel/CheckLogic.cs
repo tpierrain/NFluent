@@ -294,29 +294,14 @@ namespace NFluent.Kernel
 
         public ICheckLogic<T> ComparingTo<TU>(TU givenValue, string comparisonInfo, string negatedComparisonInfo)
         {
-            this.comparison = comparisonInfo;
-            if (this.cannotBetNegated && !string.IsNullOrEmpty(negatedComparisonInfo))
-            {
-                throw new System.InvalidOperationException(this.negatedError);
-            }
-
-            this.negatedComparison = negatedComparisonInfo;
-            this.expected = givenValue;
-            this.withGiven = true;
+            this.DefineExpectations(givenValue, true, comparisonInfo, negatedComparisonInfo);
             return this;
         }
 
         public ICheckLogic<T> DefineExpectedResult<TU>(TU resultValue, string labelForExpected, string negationForExpected)
         {
-            this.expectedType = resultValue == null ? typeof(TU) : resultValue.GetType();
-            this.withExpected = true;
-            this.expected = resultValue;
+            this.DefineExpectations(resultValue, false, labelForExpected, negationForExpected);
             this.label = labelForExpected;
-            if (this.cannotBetNegated && !string.IsNullOrEmpty(negationForExpected))
-            {
-                throw new System.InvalidOperationException(this.negatedError);
-            }
-
             this.negatedLabel = negationForExpected;
             return this;
         }
@@ -324,17 +309,28 @@ namespace NFluent.Kernel
         public ICheckLogic<T> DefineExpectedValue<TU>(TU newExpectedValue, string comparisonMessage,
             string negatedComparison1)
         {
-            this.expectedType = newExpectedValue == null ? typeof(TU) : newExpectedValue.GetType();
-            this.withExpected = true;
-            this.expected = newExpectedValue;
-            this.comparison = comparisonMessage;
+            this.DefineExpectations(newExpectedValue, false, comparisonMessage, negatedComparison1);
+            return this;
+        }
+
+        private void DefineExpectations<TU>(TU newExpectedValue, bool isCompare, string comparisonMessage, string negatedComparison1, System.Type forceType = null)
+        {
             if (this.cannotBetNegated && !string.IsNullOrEmpty(negatedComparison1))
             {
                 throw new System.InvalidOperationException(this.negatedError);
             }
-
+            this.expectedType = forceType ?? (newExpectedValue == null ? typeof(TU) : newExpectedValue.GetType());
+            this.expected = newExpectedValue;
+            if (isCompare)
+            {
+                this.withGiven = true;
+            }
+            else
+            {
+                this.withExpected = true;
+            }
+            this.comparison = comparisonMessage;
             this.negatedComparison = negatedComparison1;
-            return this;
         }
 
         public ICheckLogic<T> DefineExpectedType(System.Type expectedInstanceType)
@@ -347,26 +343,17 @@ namespace NFluent.Kernel
         public ICheckLogic<T> DefineExpectedValues(IEnumerable values, long count, string comparisonMessage = null,
             string newNegatedComparison = null)
         {
+            this.DefineExpectations(values, false, comparisonMessage, newNegatedComparison, typeof(T));
             this.expectedKind = ValueKind.Values;
             this.expectedCount = count;
-            return this.DefineExpectedValue(values, comparisonMessage, newNegatedComparison);
+            return this;
         }
 
-
-        public ICheckLogic<T> DefinePossibleValues<U>(IEnumerable<U> values, string comparisonMessage = "one of", string negatedComparison1 = "none of")
+        public ICheckLogic<T> DefinePossibleValues<TU>(IEnumerable<TU> values, string comparisonMessage = "one of", string negatedComparison1 = "none of")
         {
-            this.expectedType = typeof(U);
+            this.DefineExpectations(values, false, comparisonMessage, negatedComparison1, typeof(TU));
+            this.expectedType = typeof(TU);
             this.enforceExpectedType = true;
-            this.withExpected = true;
-            this.expected = values;
-           
-            this.comparison = comparisonMessage;
-            if (this.cannotBetNegated && !string.IsNullOrEmpty(negatedComparison1))
-            {
-                throw new System.InvalidOperationException(this.negatedError);
-            }
-
-            this.negatedComparison = negatedComparison1;
             return this;
         }
 

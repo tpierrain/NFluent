@@ -24,7 +24,7 @@ namespace NFluent.Tests
         [Test]
         public void LessThanWorks()
         {
-            TimeSpan testValue = TimeSpan.FromMilliseconds(500);
+            var testValue = TimeSpan.FromMilliseconds(500);
             Check.That(testValue).IsLessThan(600, TimeUnit.Milliseconds);
             Check.That(testValue).IsLessThan(TimeSpan.FromMilliseconds(600));
         }
@@ -40,6 +40,16 @@ namespace NFluent.Tests
                     "The checked duration is more than the limit.",
                     "The checked duration:",
                     "\t[500 Milliseconds]",
+                    "The expected duration: less than",
+                    "\t[100 Milliseconds]");
+            Check.ThatCode(() =>
+                {
+                    Check.That(TimeSpan.FromMilliseconds(100)).IsLessThan(100, TimeUnit.Milliseconds);
+                })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked duration is more than the limit.",
+                    "The checked duration:",
+                    "\t[100 Milliseconds]",
                     "The expected duration: less than",
                     "\t[100 Milliseconds]");
         }
@@ -109,6 +119,16 @@ namespace NFluent.Tests
                     "The checked duration is not more than the limit.",
                     "The checked duration:",
                     "\t[50 Milliseconds]",
+                    "The expected duration: more than",
+                    "\t[100 Milliseconds]");
+            Check.ThatCode(() =>
+                {
+                    Check.That(TimeSpan.FromMilliseconds(100)).IsGreaterThan(100, TimeUnit.Milliseconds);
+                })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked duration is not more than the limit.",
+                    "The checked duration:",
+                    "\t[100 Milliseconds]",
                     "The expected duration: more than",
                     "\t[100 Milliseconds]");
         }

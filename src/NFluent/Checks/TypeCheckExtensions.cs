@@ -16,13 +16,6 @@
 namespace NFluent
 {
     using System;
-#if DOTNET_45 || NETSTANDARD1_3
-    using System.Reflection;
-#endif
-#if !DOTNET_30 && !DOTNET_20
-    using System.Linq;
-#endif
-
     using Extensibility;
     using Extensions;
     
@@ -42,7 +35,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailIfNull()
                 .FailWhen(
-                    sut => sut.GetTypeInfo().GetCustomAttributes(false).All(customAttribute => customAttribute.GetType() != typeof(T)),
+                    sut => !sut.TypeHasAttribute(typeof(T)),
                     "The {0} does not have an attribute of the expected type.")
                 .OnNegate("The {0} does have an attribute of type {1} where as it should not.")
                 .EndCheck();

@@ -738,9 +738,9 @@ namespace NFluent.Tests
         public void ShouldDisplayFullLineIfItIsShort()
         {
             var multilineExpected = "Hello\nThis\nwill fail.";
-            var multileActual = "Hello\nIt has\nfailed";
+            var multilineActual = "Hello\nIt has\nfailed";
 
-            Check.ThatCode(() => Check.That(multileActual).IsEqualTo(multilineExpected))
+            Check.ThatCode(() => Check.That(multilineActual).IsEqualTo(multilineExpected))
                 .IsAFaillingCheckWithMessage("",
                              "The checked string is different from expected one. At line 2, col 1, expected 'This' was 'It has'.",
                               "The checked string:",
