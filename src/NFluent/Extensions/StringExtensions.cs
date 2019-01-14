@@ -94,12 +94,14 @@ namespace NFluent.Extensions
                 var start = 0;
                 var retLines = new List<string>();
                 var newLineLength = Environment.NewLine.Length;
-                while (start < checkedString.Length)
+                var oneOtherLine = true;
+                while (oneOtherLine)
                 {
                     var indexOf = checkedString.IndexOf(Environment.NewLine, start, StringComparison.Ordinal);
                     if (indexOf == -1)
                     {
                         indexOf = checkedString.Length;
+                        oneOtherLine = false;
                     }
 
                     retLines.Add(checkedString.Substring(start, indexOf - start));

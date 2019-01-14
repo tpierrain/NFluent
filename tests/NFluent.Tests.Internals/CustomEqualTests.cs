@@ -73,23 +73,5 @@ namespace NFluent.Tests
             result = EqualityHelper.ValueDifference(this.list, "a", new List<List<int>> {this.a}, "b");
             Check.That(result[0].FirstName).IsEqualTo("a[1]");
         }
-
-        [Test]
-        public void HandleRecursion()
-        {
-            var recursive = new List<object> {this.a};
-            recursive.Add(recursive);
-            var otherRecursive = new List<object> {this.a};
-            var interim = new List<object> {recursive};
-            otherRecursive.Add(interim);
-            Check.ThatCode(() => Check.That(recursive).IsEqualTo(otherRecursive)).IsAFaillingCheck();
-            Check.ThatCode(() => Check.That(new List<object> {this.a, this.a}).IsEqualTo(recursive)).
-                IsAFaillingCheckWithMessage("", 
-                    "The checked enumerable is different from the expected one.", 
-                    "The checked enumerable:", 
-                    "\t{{1, 2}, {1, 2}} (2 items)", 
-                    "The expected enumerable:", 
-                    "\t{{1, 2}, {{...}}}");
-        }
     }
 }

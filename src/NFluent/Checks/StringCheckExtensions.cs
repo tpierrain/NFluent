@@ -227,7 +227,7 @@ namespace NFluent
                 .FailIfNull()
                 .FailWhen(sut => !sut.StartsWith(expectedPrefix), "The {0}'s start is different from the {1}.")
                 .DefineExpectedValue(expectedPrefix, "starts with", "does not start with")
-                .OnNegate("The {0} starts with {1}, whereas it must not.")
+                .OnNegate("The {0} starts with the {1}, whereas it must not.")
                 .EndCheck();
             return checker.BuildChainingObject();
         }

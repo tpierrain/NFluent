@@ -192,7 +192,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => { Check.That(Alphabet).Not.StartsWith("abcdef"); })
                 .IsAFaillingCheckWithMessage("",
-                    "The checked string starts with given one, whereas it must not.",
+                    "The checked string starts with the given one, whereas it must not.",
                              "The checked string:",
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
                              "The expected string: does not start with",
@@ -272,7 +272,6 @@ namespace NFluent.Tests
         public void EqualFailsWithDiffCase()
         {
             var check = "toto";
-
             Check.ThatCode(() => { Check.That(check).IsEqualTo("TOTO"); })
                 .IsAFaillingCheckWithMessage("",
                     "The checked string is different in case from the expected one.",
@@ -295,7 +294,6 @@ namespace NFluent.Tests
         public void EqualFailshWhenShorter()
         {
             var check = "titi";
-
             Check.ThatCode(() => { Check.That(check).IsEqualTo("tititutu"); })
                 .IsAFaillingCheckWithMessage("",
                              "The checked string is different from expected one, it is missing the end.",

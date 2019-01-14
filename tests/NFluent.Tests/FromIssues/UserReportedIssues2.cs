@@ -274,19 +274,19 @@ namespace NFluent.Tests.FromIssues
         {
             using (var session = new CultureSession("en-US"))
             {
-                Check.ThatCode(() => Check.That(this.decimalValue).IsEqualTo(0.95d)).IsAFaillingCheckWithMessage("",
-                        "The checked value is different from the expected one, with a difference of 1.1E-16. You may consider using IsCloseTo() for comparison.",
+                Check.ThatCode(() => Check.That(this.decimalValue*(1<<16)).IsEqualTo(0.95d*(1<<16))).IsAFaillingCheckWithMessage("",
+                        "The checked value is different from the expected one, with a difference of 7.3E-12. You may consider using IsCloseTo() for comparison.",
                         "The checked value:",
-                        "\t[0.95]",
+                        "\t[62259.2]",
                         "The expected value:",
-                        "\t[0.95]");
+                        "\t[62259.2]");
 
-                Check.ThatCode(() => Check.That(0.9500001f).IsEqualTo(0.95f)).IsAFaillingCheckWithMessage("",
-                        "The checked value is different from the expected one, with a difference of 1.2E-07. You may consider using IsCloseTo() for comparison.",
+                Check.ThatCode(() => Check.That(0.9500001f*(1<<16)).IsEqualTo(0.95f*(1<<16))).IsAFaillingCheckWithMessage("",
+                        "The checked value is different from the expected one, with a difference of 0.0078. You may consider using IsCloseTo() for comparison.",
                         "The checked value:",
-                        "\t[0.9500001]",
+                        "\t[62259.21]",
                         "The expected value:",
-                        "\t[0.95]");
+                        "\t[62259.2]");
             }
         }
 

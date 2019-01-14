@@ -223,6 +223,13 @@ namespace NFluent.Tests
                 .ThrowsAny()
                 .WithMessage(
                     Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[NFluent.Tests.ObjectRelatedTest+PersonEx] of type: [NFluent.Tests.ObjectRelatedTest+PersonEx]" + Environment.NewLine + "The expected value: equals to (using operator==)" + Environment.NewLine + "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
+            Check.ThatCode(() => {
+                    Check.That(myClone).Not.HasSameValueAs(new Person() { Name = "tpierrain"});
+                })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked value is equal to the given one whereas it must not.",
+                    "The expected value: different from (using !operator==)",
+                    "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
         }
 
         [Test]
@@ -246,6 +253,16 @@ namespace NFluent.Tests
                     "The checked value is equal to the expected one whereas it must not.",
                     "The expected value: different from (using operator!=)",
                     "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
+           
+            Check.ThatCode(value: () => {
+                    Check.That(myClone).Not.HasDifferentValueThan(new Person() {Name = "test"});
+                })
+                .IsAFaillingCheckWithMessage("",
+                    "The checked value is different from the given one.",
+                    "The checked value:",
+                    "\t[NFluent.Tests.ObjectRelatedTest+PersonEx]", 
+                    "The expected value: equals to (using operator==)",
+                    "\t[NFluent.Tests.ObjectRelatedTest+Person]");
         }
 
         private class Person

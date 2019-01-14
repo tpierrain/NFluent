@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AsOperatorTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AsyncCodeChecksShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageShould.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NUnitTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StructRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BooleanRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ChainingLogicRelatedTests.cs" />

@@ -87,7 +87,7 @@ namespace NFluent.Kernel
         {
             this.IsEqualTo(obj);
  
-            return true;
+            return false;
         }
 
         /// <inheritdoc />

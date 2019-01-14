@@ -39,6 +39,7 @@ namespace NFluent.Tests
         public void WithNot()
         {
             Check.ThatCode(() => Thread.Sleep(20)).Not.LastsLessThan(1, TimeUnit.Milliseconds);
+            
             Check.ThatCode(() =>
             Check.ThatCode(() => Thread.Sleep(0)).Not.LastsLessThan(1000, TimeUnit.Milliseconds)).
                 IsAFaillingCheckWithMessage("", 

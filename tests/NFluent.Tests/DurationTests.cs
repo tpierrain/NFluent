@@ -75,12 +75,17 @@ namespace NFluent.Tests
         public void TestDurationClass()
         {
             var firstDuration = new Duration(200, TimeUnit.Minutes);
+            var secondDuration = new Duration(200, TimeUnit.Minutes);
             
             Check.That(firstDuration.RawDuration).IsEqualTo(200);
             Check.That(firstDuration.Unit).IsEqualTo(TimeUnit.Minutes);
             Check.That(firstDuration.ToString()).IsEqualTo("200 Minutes");
             Check.That(firstDuration > new Duration(100, TimeUnit.Seconds)).IsTrue();
             Check.That(firstDuration < new Duration(100, TimeUnit.Hours)).IsTrue();
+            Check.That(firstDuration < secondDuration).IsFalse();
+            Check.That(firstDuration <= secondDuration).IsTrue();
+            Check.That(firstDuration > secondDuration).IsFalse();
+            Check.That(firstDuration >= secondDuration).IsTrue();
 
             var anotherDurationWithSameValue = new Duration(200, TimeUnit.Minutes);
 
@@ -93,6 +98,8 @@ namespace NFluent.Tests
             // ReSharper disable once SuspiciousTypeConversion.Global
             Check.That(anotherDurationWithSameValue.Equals(20)).IsFalse();
             Check.That(anotherDurationWithSameValue.Equals((object)firstDuration)).IsTrue();
+
+            Check.That(firstDuration.GetHashCode()).IsEqualTo(-259084257);
         }
 
         [Test]

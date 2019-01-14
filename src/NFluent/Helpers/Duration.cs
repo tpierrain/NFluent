@@ -143,14 +143,6 @@ namespace NFluent.Helpers
         /// The unit used for the duration.
         /// </value>
 
-        /* Unmerged change from project 'NFluent.Standard.20'
-        Before:
-                public TimeUnit Unit => this.timeUnit;
-        After:
-                public TimeUnit Unit => this.TimeUnit;
-
-                public TimeUnit TimeUnit => timeUnit;
-        */
         public TimeUnit Unit { get; }
 
         /// <summary>

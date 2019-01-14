@@ -253,7 +253,7 @@ namespace NFluent.Tests
         {
             var sut = new SutClass(2, 42);
 
-            Check.That(sut).Considering().Public.Fields.IsEqualTo(new SutClass(2, 42));
+            Check.That(sut).Considering().Public.Fields.And.NonPublic.Properties.IsEqualTo(new SutClass(2, 42));
         }
 
         [Test]

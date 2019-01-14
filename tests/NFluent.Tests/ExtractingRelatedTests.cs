@@ -80,7 +80,7 @@ namespace NFluent.Tests
                 {
                 }
             })  
-            .Throws<InvalidOperationException>();
+            .Throws<InvalidOperationException>().WithMessage("Objects of expectedType NFluent.Tests.Person don't have property with name 'Portnaouaq'");
         }
 
         [Test]

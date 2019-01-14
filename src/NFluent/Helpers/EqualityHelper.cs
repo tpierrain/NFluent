@@ -327,7 +327,7 @@ namespace NFluent.Helpers
             var secondIndices = new int[secondArray.Rank];
             for (var i = 0; i < firstArray.Length; i++)
             {
-                var temp = i;
+                var temp = i;       
                 var label = new StringBuilder("[");
                 for (var j = 0; j < firstArray.Rank; j++)
                 {

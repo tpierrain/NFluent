@@ -1,17 +1,17 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="EqualRelatedTests.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN, Cyrille DUPUYDAUBY
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="EqualRelatedTests.cs" company="">
+//   Copyright 2013 Thomas PIERRAIN, Cyrille DUPUYDAUBY
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 
 namespace NFluent.Tests
@@ -399,6 +399,8 @@ namespace NFluent.Tests
             var obj = new object();
 
             Check.That(obj).Equals(obj);
+
+            Check.That(Check.That(obj).Equals(obj)).IsFalse();
         }
 
         [Test]
@@ -459,6 +461,25 @@ namespace NFluent.Tests
 
             Check.That(camus).IsNotEqualTo(sartre).And.IsInstanceOf<string>();
             Check.That(sartre).IsEqualTo(sartre).And.IsInstanceOf<string>();
+        }
+        
+        [Test]
+        public void HandleRecursion()
+        {
+            List<int> a = new List<int> {1, 2};
+            var recursive = new List<object> {a};
+            recursive.Add(recursive);
+            var otherRecursive = new List<object> {a};
+            var interim = new List<object> {recursive};
+            otherRecursive.Add(interim);
+            Check.ThatCode(() => Check.That(recursive).IsEqualTo(otherRecursive)).IsAFaillingCheck();
+            Check.ThatCode(() => Check.That(new List<object> {a, a}).IsEqualTo(recursive)).
+                IsAFaillingCheckWithMessage("", 
+                    "The checked enumerable is different from the expected one.", 
+                    "The checked enumerable:", 
+                    "\t{{1, 2}, {1, 2}} (2 items)", 
+                    "The expected enumerable:", 
+                    "\t{{1, 2}, {{...}}}");
         }
     }
 }

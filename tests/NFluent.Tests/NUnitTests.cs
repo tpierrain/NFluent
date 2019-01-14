@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="MsTestCompatibility.cs" company="NFluent">
+//  <copyright file="NUnitTests.cs" company="NFluent">
 //   Copyright 2019 Thomas PIERRAIN & Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -13,26 +13,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NFluent.Tests.MsTest
+namespace NFluent.Tests
 {
-    using Helpers;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
-    public class MsTestCompatibility
+    internal class NUnitTests
     {
-        [TestMethod]
+        #if !NETCOREAPP1_0 && !NETCOREAPP1_1
+        [Test]
         public void BasicTest()
         {
-            Check.That("MsTest").IsNotEmpty();
+            Check.That("Unit").IsNotEmpty();
 
-            Check.ThatCode(() => Check.That("MsTest").IsEqualTo("great")).Throws<AssertFailedException>();
+            Check.ThatCode(() => Check.That("Unit").IsEqualTo("great")).Throws<AssertionException>();
         }
-
-        [TestMethod]
-        public void ExceptionScanTest()
-        {
-            Check.That(ExceptionHelper.BuildException("Test")).IsInstanceOf<AssertFailedException>();
-        }
+        #endif
     }
 }
