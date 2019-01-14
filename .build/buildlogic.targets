@@ -223,7 +223,7 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
       </TestRun>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'=='netstandard1.3' OR '%(TestProjects.Framework)'=='netstandard2.0'">
         <Runner>dotnet.exe</Runner>
-        <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
+        <Args>test %(TestProjects.FullPath) -c $(Configuration) --no-build</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
       <TestRun Include="@(TestProjects)"  Condition="'%(TestProjects.Runner)'=='xUnit'">
