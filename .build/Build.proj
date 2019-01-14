@@ -153,6 +153,14 @@
         <Framework>netstandard1.3</Framework>
         <Coverage>true</Coverage>
       </TestProjects>
+     <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests\NFluent.NetStandard.20.Tests.csproj'>
+       <Framework>netstandard1.3</Framework>
+       <Coverage>true</Coverage>
+     </TestProjects>
+     <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests.Extensions\NFluent.NetStandard.20.Tests.Extensions.csproj'>
+       <Framework>netstandard1.3</Framework>
+       <Coverage>true</Coverage>
+     </TestProjects>
      <TestProjects Include='$(TestsPath)\NFluent.Tests.Core.xUnit\NFluent.Tests.Core.xUnit.csproj'>
        <Framework>netstandard1.3</Framework>
        <Coverage>true</Coverage>

@@ -3,6 +3,11 @@
 
   <!--Configuration informations-->
   <PropertyGroup>
+    <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.6.519</opencoverVersion>
+    <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">4.0.5</reportGeneratorVersion>
+    <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.9.0</nunitConsoleVersion>
+    <xunitConsoleVersion Condition="'$(xunitConsoleVersion)' == ''">2.4.1</xunitConsoleVersion>
+
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>
     <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
     
@@ -17,12 +22,8 @@
     <NuGetExePath>nuget.exe</NuGetExePath>
     <MsTestRunner>vstest.console.exe</MsTestRunner>
 
-    <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.6.519</opencoverVersion>
-    <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">4.0.4</reportGeneratorVersion>
-    <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.9.0</nunitConsoleVersion>
     <NunitOptions>--result="$(SolutionRoot)\TestResults.xml"</NunitOptions>
     <TestRunnerPath>$(NuGetToolsPath)\NUnit.ConsoleRunner.$(nunitConsoleVersion)\tools\nunit3-console.exe</TestRunnerPath>
-    <xunitConsoleVersion Condition="'$(xunitConsoleVersion)' == ''">2.4.1</xunitConsoleVersion>
     <xunitOptions />
     <xUnitTestRunnerPath>$(NuGetToolsPath)\XUnit.runner.console.$(xunitConsoleVersion)\tools\net452\xunit.console.exe</xUnitTestRunnerPath>
 
