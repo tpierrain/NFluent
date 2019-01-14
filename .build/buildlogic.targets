@@ -224,7 +224,7 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
       </TestRun>
       <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'=='netstandard1.3' OR '%(TestProjects.Framework)'=='netstandard2.0'">
         <Runner>dotnet.exe</Runner>
-        <Args>test %(TestProjects.FullPath) -c $(Configuration) --no-build</Args>
+        <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
       <TestRun Include="@(TestProjects)"  Condition="'%(TestProjects.Runner)'=='xUnit'">
@@ -258,7 +258,6 @@ RUN ALL UNIT TESTS
     <Exec Command='"$(NuGetExePath)" install XUnit.runner.console -o "$(NuGetToolsPath)" -version $(xunitConsoleVersion)' Condition='!Exists($(xUnitTestRunnerPath))'/>
 
     <Message Importance="high" Text="--------- RUN TESTS ---------"/>
-    <Message Importance ="high" Text =" '%(TestRun.Runner) %(TestRun.Args)"/>
     <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="$(SolutionRoot)"/>
     <Message Importance="high" Text="--------- end of RUN TESTS ---------"/>
   </Target>
