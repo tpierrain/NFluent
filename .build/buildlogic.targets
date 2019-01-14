@@ -257,6 +257,7 @@ RUN ALL UNIT TESTS
     <Exec Command='"$(NuGetExePath)" install XUnit.runner.console -o "$(NuGetToolsPath)" -version $(xunitConsoleVersion)' Condition='!Exists($(xUnitTestRunnerPath))'/>
 
     <Message Importance="high" Text="--------- RUN TESTS ---------"/>
+    <Message Importance ="high" Text =" '%(TestRun.Runner) %(TestRun.Args)"/>
     <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="$(SolutionRoot)"/>
     <Message Importance="high" Text="--------- end of RUN TESTS ---------"/>
   </Target>

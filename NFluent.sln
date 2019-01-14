@@ -115,7 +115,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.NetStandard.20.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.NetStandard.20.Tests.Extensions", "tests\NFluent.NetStandard.20.Tests.Extensions\NFluent.NetStandard.20.Tests.Extensions.csproj", "{6954E791-41C2-4D1F-B6E6-BA77C2784311}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.Core.xUnit", "tests\NFluent.Tests.Core.xUnit\NFluent.Tests.Core.xUnit.csproj", "{68BEC16B-E721-42AC-968D-D285BDBEF262}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Tests.Core.xUnit", "tests\NFluent.Tests.Core.xUnit\NFluent.Tests.Core.xUnit.csproj", "{68BEC16B-E721-42AC-968D-D285BDBEF262}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -243,6 +243,7 @@ Global
 		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{308A72A3-462B-4C4E-ABAE-9D9D49D251E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{308A72A3-462B-4C4E-ABAE-9D9D49D251E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{308A72A3-462B-4C4E-ABAE-9D9D49D251E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
