@@ -25,7 +25,6 @@ namespace NFluent.Messages
     internal class ValueBlock : IValueDescription
     {
         private readonly object test;
-        private long? enumerableCount;
 
         private bool fullTypeName;
 
@@ -78,7 +77,7 @@ namespace NFluent.Messages
         /// </param>
         public void WithEnumerableCount(long itemsCount)
         {
-            this.enumerableCount = itemsCount;
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -131,17 +130,6 @@ namespace NFluent.Messages
         {
             var description = new StringBuilder();
             description.AppendFormat("[{0}]", this.test.ToStringProperlyFormatted());
-
-            var count = this.enumerableCount.GetValueOrDefault(-1);
-            if (count > 1)
-            {
-                description.AppendFormat(" ({0} items)", count);
-            }
-            else if (count >= 0)
-            {
-                description.AppendFormat(" ({0} item)", count);
-            }
-
             return description.ToString();
         }
     }

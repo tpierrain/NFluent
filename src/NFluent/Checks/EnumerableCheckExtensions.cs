@@ -601,9 +601,10 @@ namespace NFluent
 
                     test.Fail(
                         string.Format(
-                            "The {{0}} does not contain only the given value(s)." + Environment.NewLine
-                                                                                  + "It contains also other values:" +
-                                                                                  Environment.NewLine + "\t{0}",
+                            "The {{0}} does not contain only the given value(s)." 
+                            + Environment.NewLine
+                            + "It contains also other values:" 
+                            + Environment.NewLine + "\t{0}",
                             unexpectedValuesFound.ToEnumeratedString().DoubleCurlyBraces()));
                         }).
                 OnNegate("The {0} contains only the given values whereas it must not.").

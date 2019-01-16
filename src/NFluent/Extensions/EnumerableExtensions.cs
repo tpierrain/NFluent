@@ -81,7 +81,7 @@ namespace NFluent
         }
 
         private static string ToEnumeratedStringAdvanced(this IEnumerable enumerable, string separator,
-            long referenceIndex, long numberOfItems, IList<object> seen)
+            long referenceIndex, long numberOfItems, ICollection<object> seen)
         {
             if (enumerable == null)
             {
@@ -101,7 +101,7 @@ namespace NFluent
             var copy = new List<object>(seen) {enumerable};
             // we skip the first items
             var firstIndex = Math.Max(0, referenceIndex - (numberOfItems / 2));
-            var lastItem = numberOfItems <= 0 ? int.MaxValue : firstIndex + numberOfItems;
+            var lastItem = numberOfItems < 1 ? int.MaxValue : firstIndex + numberOfItems;
             if (firstIndex > 0)
             {
                 for (var i = 0; i < firstIndex; i++)

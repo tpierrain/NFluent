@@ -36,7 +36,6 @@
       <Package>netstandard2.0</Package>
       <Fwk>core</Fwk>
     </ProjectFolder>
-
     <ProjectFolder Include="$(TestsPath)NFluent.Core.Tests.Internals">
       <CSProj>NFluent.Core.Tests.Internals.csproj</CSProj>
       <Fwk>core</Fwk>
@@ -154,11 +153,11 @@
         <Coverage>true</Coverage>
       </TestProjects>
      <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests\NFluent.NetStandard.20.Tests.csproj'>
-       <Framework>netstandard1.3</Framework>
+       <Framework>netstandard2.0</Framework>
        <Coverage>true</Coverage>
      </TestProjects>
      <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests.Extensions\NFluent.NetStandard.20.Tests.Extensions.csproj'>
-       <Framework>netstandard1.3</Framework>
+       <Framework>netstandard2.0</Framework>
        <Coverage>true</Coverage>
      </TestProjects>
      <TestProjects Include='$(TestsPath)\NFluent.Tests.Core.xUnit\NFluent.Tests.Core.xUnit.csproj'>

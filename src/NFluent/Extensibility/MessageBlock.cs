@@ -48,11 +48,12 @@ namespace NFluent.Extensibility
         /// <param name="block">
         /// The block attribute.
         /// </param>
+        /// <param name="forceArray">test is an enumeration.</param>>
         /// <param name="index">The index for enumerable types</param>
-        internal MessageBlock(FluentMessage message, object test, GenericLabelBlock block, long index = 0)
+        internal MessageBlock(FluentMessage message, object test, GenericLabelBlock block, long index = 0, bool forceArray = false)
             : this(message, test.GetTypeWithoutThrowingException(), block)
         {
-            if (!(test is string) && (test is IEnumerable))
+            if (!(test is string) && (forceArray || (test is IEnumerable)))
             {
                 this.value = new EnumerationBlock((IEnumerable)test, index);
             }

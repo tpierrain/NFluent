@@ -170,7 +170,7 @@ namespace NFluent.Tests
                 "The checked enumerable:", 
                 "\t{1} (1 item)", 
                 "The expected value(s):", 
-                "\t[null] (0 item)");
+                "\tnull of type: [System.Collections.Generic.IEnumerable<int>]");
         }
 
         [Test]

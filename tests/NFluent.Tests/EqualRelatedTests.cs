@@ -156,7 +156,12 @@ namespace NFluent.Tests
             var otherSimilarButNotEqualArray = new[] {45, 43, 54, 667};
 
             Check.ThatCode(() => { Check.That(array).IsEqualTo(otherSimilarButNotEqualArray); })
-                .IsAFaillingCheck();
+                .IsAFaillingCheckWithMessage("", 
+                    "The checked enumerable is different from the expected one.", 
+                    "The checked enumerable:", 
+                    "\t{45, 43, 54, 666} (4 items)", 
+                    "The expected enumerable:", 
+                    "\t{45, 43, 54, 667}");
         }
 
         [Test]
@@ -166,7 +171,12 @@ namespace NFluent.Tests
             var otherSimilarButNotEqualArray = new int[6];
 
             Check.ThatCode(() => { Check.That(array).IsEqualTo(otherSimilarButNotEqualArray); })
-                .IsAFaillingCheck();
+                .IsAFaillingCheckWithMessage("", 
+                    "The checked enumerable is different from the expected one.", 
+                    "The checked enumerable:", 
+                    "\t{{0, 0, 0}, {0, 0, 0}} (6 items) of type: [int[]]", 
+                    "The expected enumerable:", 
+                    "\t{0, 0, 0, 0, 0, 0} of type: [int[]]");
         }
 
         [Test]

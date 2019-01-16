@@ -48,12 +48,7 @@ namespace NFluent.Tests
 
             Assert.AreEqual("[{\"a\", \"b\", \"c\"}]", blk.GetMessage());
 
-            blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("[{\"a\", \"b\", \"c\"}] (3 items)", blk.GetMessage());
-
-            blk = new ValueBlock(new[] {"A"});
-            blk.WithEnumerableCount(1);
-            Assert.AreEqual("[{\"A\"}] (1 item)", blk.GetMessage());
+            Assert.Throws<NotImplementedException>(() => blk.WithEnumerableCount(list.GetLength(0)));
         }
 
         [Test]

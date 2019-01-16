@@ -243,7 +243,7 @@ namespace NFluent.Extensibility
         public MessageBlock ExpectedValues(object expectedValues, long index = 0)
         {
             this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(new EntityNamer { EntityName = "value(s)" });
-            this.expectedBlock = new MessageBlock(this, expectedValues, this.expectedLabel, index);
+            this.expectedBlock = new MessageBlock(this, expectedValues, this.expectedLabel, index, true);
             return this.expectedBlock;
         }
 
