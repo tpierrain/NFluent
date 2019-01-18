@@ -99,12 +99,12 @@ with NFluent, you can also write checks like this:
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
 
-    Check.That(persons.Extracting("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
-    Check.That(persons.Extracting("Age")).ContainsExactly(38, 10, 7, 7);
-    Check.That(persons.Extracting("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+    Check.That(persons.Extracting(nameof(Person.Name))).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
+    Check.That(persons.Extracting(nameof(Person.Age))).ContainsExactly(38, 10, 7, 7);
+    Check.That(persons.Extracting(nameof(Person.Nationality))).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
 
     // more fluent than the following classical NUnit way, isn't it?
-    // CollectionAssert.AreEquivalent(persons.Properties("Age"), new[] { 38, 10, 7, 7 });
+    // CollectionAssert.AreEquivalent(persons.Properties(nameof(Person.Age)), new[] { 38, 10, 7, 7 });
 
     // it's maybe even more fluent than the java versions
 	// FEST fluent assert v 2.x:
