@@ -73,7 +73,7 @@ namespace NFluent.Tests
                 "The checked dynamic is the expected reference whereas it must not.",
                 "The checked dynamic:",
                 "\t[\"test\"]",
-                "The expected dynamic:",
+                "The expected dynamic: different from",
                 "\t[\"test\"]");
         }
 
@@ -144,13 +144,36 @@ namespace NFluent.Tests
 
             Check.ThatDynamic(cmd.Subject).Not.IsNotNull();
             // this check fails
-            Check.ThatCode(() => { Check.ThatDynamic(sut).Not.IsNotNull(); }).Throws<FluentCheckException>();
+            AssertCheckFails(
+                () => Check.ThatDynamic(sut).Not.IsNotNull(), 
+                "",
+                "The checked dynamic is not null whereas it must.",
+                "The checked dynamic:",
+                "\t[\"test\"]"
+                );
 
             Check.ThatDynamic(sut).Not.IsEqualTo("tes");
-            Check.ThatCode(() => { Check.ThatDynamic(sut).Not.IsEqualTo(sut); }).Throws<FluentCheckException>();
+            AssertCheckFails(
+                () => Check.ThatDynamic(sut).Not.IsEqualTo(sut), 
+                "",
+                "The checked dynamic is equal to the expected one whereas it must not.",
+                "The checked dynamic:",
+                "\t[\"test\"]",
+                "The expected dynamic: different from",
+                "\t[\"test\"]"
+                );
 
             Check.ThatDynamic(sut).Not.IsSameReferenceAs("tes");
-            Check.ThatCode(() => { Check.ThatDynamic(sut).Not.IsSameReferenceAs(sut); }).Throws<FluentCheckException>();
+
+            AssertCheckFails(
+                () => Check.ThatDynamic(sut).Not.IsSameReferenceAs(sut), 
+                "",
+                "The checked dynamic is the expected reference whereas it must not.",
+                "The checked dynamic:",
+                "\t[\"test\"]",
+                "The expected dynamic: different from",
+                "\t[\"test\"]"
+                );
         }
 
     }
