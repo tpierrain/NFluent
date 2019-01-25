@@ -49,6 +49,7 @@ namespace NFluent
             var message = FluentMessage.BuildMessage(this.negated
                     ? "The {0} is not null whereas it must."
                     : "The {0} is null whereas it must not.")
+                .AddCustomMessage(this.CustomMessage)
                 .For("dynamic")
                 .On<object>(this.value);
 
@@ -68,8 +69,9 @@ namespace NFluent
 
             var message = FluentMessage
                 .BuildMessage(this.negated
-                    ? "The {0} is  the expected reference whereas it must not."
+                    ? "The {0} is the expected reference whereas it must not."
                     : "The {0} is not the expected reference.").For("dynamic")
+                .AddCustomMessage(this.CustomMessage)
                 .Expected(expected).And.On<object>(this.value);
             throw new FluentCheckException(message.ToString());
         }
@@ -90,6 +92,7 @@ namespace NFluent
                 .BuildMessage(this.negated
                     ? "The {0} is equal to the {1} whereas it must not."
                     : "The {0} is not equal to the {1}.").For("dynamic")
+                .AddCustomMessage(this.CustomMessage)
                 .Expected(expected).And.On((object)this.value);
             throw new FluentCheckException(message.ToString());
         }
@@ -110,11 +113,14 @@ namespace NFluent
             {
                 var ret = new FluentDynamicCheck(this.value)
                 {
-                    negated = !this.negated
+                    negated = !this.negated,
+                    CustomMessage = this.CustomMessage
                 };
                 return ret;
             }
         }
+
+        internal string CustomMessage { get; set; }
     }
 #endif
 }

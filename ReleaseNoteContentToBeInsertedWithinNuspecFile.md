@@ -18,9 +18,10 @@ Example
 ### New checks
 
 ### Improvements
-* Stabilize Assembly Version to reduce friction due to strong naming (assembly version is still V2.4.0)
+* Stabilize Assembly Version to reduce friction induced by strong naming (assembly version is still V2.4.0)
 * Align to Microsoft guidelines for OSS libraries (https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/)
-* HasAvalue() and HasNoValue is available on all nullable types
+* HasAvalue() and HasNoValue() are available on all nullable types
+* Add support for WithCustomMessage for dynamics.
 
 ### Fixes
 * Fix false positive with TimeSpan due linked to precision loss. It concerns: IsEqualTo(TimeSpan), IsLessThan(TimeSpan), IsGreaterThan(TimeSpan)
@@ -30,7 +31,7 @@ Example
 * Hashtable not properly reported in error messages.
 
 ### GitHub Issues
-* #269, #274, #270, #275, #276
+* #269, #274, #270, #275, #276, #280
 
 ---------------
 ## V 2.4.0

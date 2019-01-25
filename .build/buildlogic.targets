@@ -140,7 +140,7 @@
     </VersionBuilding>
 
     <Message Importance="high" Text="--------- VERSION NUMBER SYNCHRO  -------------------------------------"/>
-    <Message Importance="high" Text="APIVersion       : $(StableNumericalVersion)"/>
+    <Message Importance="high" Text="APIVersion       : $(APIVersion)"/>
     <Message Importance="high" Text="Version          : $(NumericalVersion)"/>
     <Message Importance="high" Text="Informal Version : $(PrettyVersion)"/>
     <ItemGroup>

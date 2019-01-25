@@ -188,7 +188,7 @@ namespace NFluent
     /// <remarks>This is an helper class.</remarks>
     public class NFluentEntryPoint
     {
-        private string message;
+        private readonly string message;
 
         /// <summary>
         /// 
@@ -253,6 +253,17 @@ namespace NFluent
             return result;
         }
 
+        #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public FluentDynamicCheck ThatDynamic(dynamic value)
+        {
+            return new FluentDynamicCheck(value) {CustomMessage = this.message};
+        }
+        #endif
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a lambda.
         /// </summary>

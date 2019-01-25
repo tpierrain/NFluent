@@ -37,6 +37,75 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.ThatDynamic(cmd.Subject).IsNotNull(); }).Throws<FluentCheckException>();
         }
 
+          // see GH #280
+        [Test]
+        public void SupportWithCustomMessage()
+        {
+            var cmd = new Command();
+            dynamic sut = "test";
+
+            AssertCheckFails(
+                ()=>Check.WithCustomMessage("cool").ThatDynamic(cmd.Subject).IsNotNull(), 
+                "cool",
+                "The checked dynamic is null whereas it must not.",
+                "The checked dynamic:",
+                "\t[null]");
+            // this check fails
+            AssertCheckFails(
+                ()=>Check.WithCustomMessage("cool").ThatDynamic(cmd.Subject).IsSameReferenceAs("tes"), 
+                "cool",
+                "The checked dynamic is not the expected reference.",
+                "The checked dynamic:",
+                "\t[null]",
+                "The expected dynamic:",
+                "\t[\"tes\"]");
+            AssertCheckFails(
+                ()=>Check.WithCustomMessage("cool").ThatDynamic(sut).IsEqualTo("tes"), 
+                "cool",
+                "The checked dynamic is not equal to the expected one.",
+                "The checked dynamic:",
+                "\t[\"test\"]",
+                "The expected dynamic:",
+                "\t[\"tes\"]");
+            AssertCheckFails(
+                ()=>Check.WithCustomMessage("cool").ThatDynamic(sut).Not.IsSameReferenceAs(sut), 
+                "cool",
+                "The checked dynamic is the expected reference whereas it must not.",
+                "The checked dynamic:",
+                "\t[\"test\"]",
+                "The expected dynamic:",
+                "\t[\"test\"]");
+        }
+
+        static public void AssertCheckFails(System.Action test, params string[] message)
+        {
+            try
+            {
+                test();
+                Assert.Fail("Assertion should have been raised!");
+            }
+            catch(FluentCheckException e)
+            {
+                if (message.Length==1)
+                {
+                    Assert.AreEqual(message[0], e.Message);
+                }
+                else
+                {
+                    var builder = new System.Text.StringBuilder();
+                    for(var i=0; i<message.Length; i++)
+                    {
+                        if  (i>0)
+                        {
+                            builder.Append(System.Environment.NewLine);
+                        }
+                        builder.Append(message[i]);
+                    }
+                    Assert.AreEqual(builder.ToString(), e.Message);
+                }
+            }
+        }
+
         [Test]
         public void AndWorks()
         {

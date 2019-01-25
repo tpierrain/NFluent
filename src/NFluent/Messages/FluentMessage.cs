@@ -264,9 +264,10 @@ namespace NFluent.Extensibility
         /// Adds a fully custom add on error message (first line).
         /// </summary>
         /// <param name="customAddOnMessage"></param>
-        public void AddCustomMessage(string customAddOnMessage)
+        public FluentMessage AddCustomMessage(string customAddOnMessage)
         {
             this.customAddOn = customAddOnMessage;
+            return this;
         }
     }
 }
