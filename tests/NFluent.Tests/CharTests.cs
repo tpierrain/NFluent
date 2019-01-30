@@ -48,7 +48,7 @@ namespace NFluent.Tests
         public void NotIsInstanceOfThrows()
         {
             Check.ThatCode(() => Check.That(FirstLetterLowerCase).Not.IsInstanceOf<char>())
-                    .IsAFaillingCheckWithMessage("",
+                    .IsAFailingCheckWithMessage("",
                     "The checked value is an instance of [char] whereas it must not.",
                     "The checked value:",
                     "\t['a'] of type: [char]",
@@ -61,7 +61,7 @@ namespace NFluent.Tests
         public void IsNotInstanceOfThrows()
         {
             Check.ThatCode(() => Check.That(FirstLetterLowerCase).IsNotInstanceOf<char>())
-                    .IsAFaillingCheckWithMessage("",
+                    .IsAFailingCheckWithMessage("",
                     "The checked value is an instance of [char] whereas it must not.",
                     "The checked value:",
                     "\t['a'] of type: [char]",
@@ -86,7 +86,7 @@ namespace NFluent.Tests
             {
                 Check.That(FirstLetterLowerCase).IsEqualTo('b');
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked char is different from the expected one.",
                     "The checked char:",
                     "\t['a']",
@@ -101,7 +101,7 @@ namespace NFluent.Tests
             {
                 Check.That(FirstLetterLowerCase).IsEqualTo('A');
             })
-            .IsAFaillingCheckWithMessage("", "The checked char is different from the expected one.",
+            .IsAFailingCheckWithMessage("", "The checked char is different from the expected one.",
                     "The checked char:",
                     "\t['a']",
                     "The expected char:",
@@ -115,7 +115,7 @@ namespace NFluent.Tests
             {
                 Check.That(FirstLetterLowerCase).IsEqualTo("a");
             })
-            .IsAFaillingCheckWithMessage("","The checked char is different from the expected string.",
+            .IsAFailingCheckWithMessage("","The checked char is different from the expected string.",
                     "The checked char:",
                     "\t['a'] of type: [char]",
                     "The expected string:",
@@ -151,7 +151,7 @@ namespace NFluent.Tests
             {
                 Check.That('A').Not.IsSameLetterButWithDifferentCaseAs('a');
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked char is the same letter as the given one with different case, whereas it must not.",
                     "The checked char:",
                     "\t['A']",
@@ -180,7 +180,7 @@ namespace NFluent.Tests
             {
                 Check.That(FirstLetterLowerCase).IsSameLetterButWithDifferentCaseAs('a');
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked char is the same letter, but must have different case than the expected one." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['a']");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked char is the same letter, but must have different case than the expected one." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['a']");
         }
 
         [Test]
@@ -190,7 +190,7 @@ namespace NFluent.Tests
             {
                 Check.That(FirstLetterLowerCase).IsSameLetterButWithDifferentCaseAs('b');
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked char is different from the expected letter." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['b']");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked char is different from the expected letter." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['b']");
         }
 
         [Test]
@@ -200,7 +200,7 @@ namespace NFluent.Tests
             {
                 Check.That('.').IsSameLetterButWithDifferentCaseAs('B');
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked char is not a letter, where as it must." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['.']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['B']");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked char is not a letter, where as it must." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['.']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['B']");
         }
 
         #endregion
@@ -231,7 +231,7 @@ namespace NFluent.Tests
             {
                 Check.That(FirstLetterLowerCase).IsSameLetterAs('z');
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked char is not the same letter as the expected one (whatever the case)." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['z']");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked char is not the same letter as the expected one (whatever the case)." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['z']");
         }
 
         [Test]
@@ -241,7 +241,7 @@ namespace NFluent.Tests
             {
                 Check.That('/').IsSameLetterAs('/');
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked char is not the same letter as the expected one (whatever the case)." + Environment.NewLine + "The checked char is not even a letter!" + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['/']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['/']");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked char is not the same letter as the expected one (whatever the case)." + Environment.NewLine + "The checked char is not even a letter!" + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['/']" + Environment.NewLine + "The expected char:" + Environment.NewLine + "\t['/']");
         }
 
         [Test]
@@ -251,7 +251,7 @@ namespace NFluent.Tests
             {
                 Check.That(FirstLetterLowerCase).Not.IsSameLetterAs('A');
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked char is the same letter as the given one (whatever the case), whereas it must not.",
                     "The checked char:",
                     "\t['a']",
@@ -276,7 +276,7 @@ namespace NFluent.Tests
             {
                 Check.That('/').IsALetter();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked char is not a letter." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['/']");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked char is not a letter." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['/']");
         }
 
         [Test]
@@ -294,7 +294,7 @@ namespace NFluent.Tests
             {
                 Check.That(FirstLetterLowerCase).Not.IsALetter();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked char is a letter whereas it must not." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked char is a letter whereas it must not." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']");
         }
 
         #endregion
@@ -325,7 +325,7 @@ namespace NFluent.Tests
             {
                 Check.That('Z').IsADigit();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked char is not a decimal digit." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['Z']");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked char is not a decimal digit." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['Z']");
         }
 
         [Test]
@@ -335,7 +335,7 @@ namespace NFluent.Tests
             {
                 Check.That('2').Not.IsADigit();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked char is a decimal digit whereas it must not." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['2']");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked char is a decimal digit whereas it must not." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['2']");
         }
 
         #endregion
@@ -367,7 +367,7 @@ namespace NFluent.Tests
             {
                 Check.That('2').IsAPunctuationMark();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked char is not a punctuation mark." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['2']");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked char is not a punctuation mark." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['2']");
         }
 
         [Test]
@@ -377,7 +377,7 @@ namespace NFluent.Tests
             {
                 Check.That('-').Not.IsAPunctuationMark();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked char is a punctuation mark whereas it must not." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['-']");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked char is a punctuation mark whereas it must not." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['-']");
         }
 
         #endregion

@@ -94,7 +94,7 @@ namespace NFluent.Tests
             {
                 Check.That((object) null).IsInstanceOf<object>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not an instance of [object].",
                     "The checked value:",
                     "\t[null] of type: [object]",
@@ -157,7 +157,7 @@ namespace NFluent.Tests
             {
                 Check.That(child).IsInstanceOf<Person>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not an instance of [NFluent.Tests.Person].",
                     "The checked value:",
                     "\t[Telemachus] of type: [NFluent.Tests.Child]",
@@ -174,7 +174,7 @@ namespace NFluent.Tests
             {
                 Check.That(oneHour).IsInstanceOf<string>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not an instance of [string].",
                     "The checked value:",
                     "\t[01:00:00] of type: [System.TimeSpan]",
@@ -189,7 +189,7 @@ namespace NFluent.Tests
             {
                 Check.That(IntObj).IsInstanceOf<Person>();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is not an instance of [NFluent.Tests.Person]." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[23] of type: [int]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [NFluent.Tests.Person]");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked value is not an instance of [NFluent.Tests.Person]." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[23] of type: [int]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [NFluent.Tests.Person]");
         }
 
         [Test]
@@ -199,7 +199,7 @@ namespace NFluent.Tests
             {
                 Check.That(StringObj).IsInstanceOf<Person>();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is not an instance of [NFluent.Tests.Person]." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"for unit testing\"] of type: [string]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [NFluent.Tests.Person]");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked value is not an instance of [NFluent.Tests.Person]." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[\"for unit testing\"] of type: [string]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [NFluent.Tests.Person]");
         }
 
         [Test]
@@ -210,7 +210,7 @@ namespace NFluent.Tests
             
             // check error message
             Check.ThatCode(() => Check.That(castedString).IsInstanceOf<string>().Which.IsEqualIgnoringCase("ABCED"))
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked string is different from expected one.",
                     "The checked string:", 
                     "\t[\"abcd\"]", 
@@ -276,7 +276,7 @@ namespace NFluent.Tests
             {
                 Check.That((int?) null).IsNotInstanceOf<int?>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is an instance of [int?] whereas it must not.",
                     "The checked value:",
                     "\t[null] of type: [int?]",
@@ -333,7 +333,7 @@ namespace NFluent.Tests
             {
                 Check.That(intObject).IsNotInstanceOf<int>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is an instance of [int] whereas it must not.",
                     "The checked value:",
                     "\t[23] of type: [int]",
@@ -350,7 +350,7 @@ namespace NFluent.Tests
             {
                 Check.That(statement).IsNotInstanceOf<string>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is an instance of [string] whereas it must not.",
                     "The checked value:",
                     "\t[\"If you don’t want to slip up tomorrow, speak the truth today (Bruce Lee).\"] of type: [string]",
@@ -365,7 +365,7 @@ namespace NFluent.Tests
             {
                 Check.That(this.emptyIntegerArray).Not.IsInstanceOf<int[]>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
             "The checked value is an instance of [int[]] whereas it must not.",
                     "The checked value:",
                     "\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 0} (10 items) of type: [int[]]",
@@ -380,7 +380,7 @@ namespace NFluent.Tests
             {
                 Check.That(this.emptyIntegerArray).Not.IsNotInstanceOf<int>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not an instance of [int].",
                     "The checked value:",
                     "\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 0} (10 items) of type: [int[]]",
@@ -397,7 +397,7 @@ namespace NFluent.Tests
             {
                 Check.That(oneHour).IsNotInstanceOf<TimeSpan>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
             "The checked value is an instance of [System.TimeSpan] whereas it must not.",
                     "The checked value:",
                     "\t[01:00:00] of type: [System.TimeSpan]",
@@ -414,7 +414,7 @@ namespace NFluent.Tests
             {
                 Check.That(oneHour).Not.IsInstanceOf<TimeSpan>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is an instance of [System.TimeSpan] whereas it must not.", 
                     "The checked value:",
                     "\t[01:00:00] of type: [System.TimeSpan]",
@@ -447,7 +447,7 @@ namespace NFluent.Tests
             {
                 Check.That(father).InheritsFrom<Child>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value's type does not have the expected inheritance.",
                     "The checked value's type:",
                     "\t[NFluent.Tests.Person]",
@@ -464,7 +464,7 @@ namespace NFluent.Tests
             {
                 Check.That(father).As("dada").InheritsFrom<Child>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked [dada]'s type does not have the expected inheritance.",
                     "The checked [dada]'s type:",
                     "\t[NFluent.Tests.Person]",
@@ -488,7 +488,7 @@ namespace NFluent.Tests
             {
                 Check.That(father).Not.InheritsFrom<Person>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value's type does inherits from the given one where as it must not",
                     "The checked value's type:",
                     "\t[NFluent.Tests.Person]", 
@@ -514,7 +514,7 @@ namespace NFluent.Tests
             var father = new Person {Name = "Odysseus"};
             Check.ThatCode(()=>
                     Check.That(father).IsNotAnInstanceOfThese(typeof(int), typeof(string), typeof(Person))).
-                IsAFaillingCheckWithMessage("",
+                IsAFailingCheckWithMessage("",
                     "The checked value's type is [NFluent.Tests.Person] where as it must not.",
                     "The checked value's type:",
                     "\t[NFluent.Tests.Person]",
@@ -522,7 +522,7 @@ namespace NFluent.Tests
                     "\t{int, string, NFluent.Tests.Person}");
             int? val = 12;
             Check.ThatCode(() => Check.That(val).IsNotAnInstanceOfThese(typeof(int?), typeof(string), typeof(Person)))
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked value's type is [int?] where as it must not.",
                     "The checked value's type:",
                     "\t[int?]", 
@@ -548,7 +548,7 @@ namespace NFluent.Tests
             var father = new Person {Name = "Odysseus"};
             Check.ThatCode(()=>
                     Check.That(father).IsAnInstanceOfOneOf(typeof(int), typeof(string), typeof(Version))).
-                IsAFaillingCheckWithMessage("",
+                IsAFailingCheckWithMessage("",
                     "The checked value's type is not one of the expected types.",
                     "The checked value's type:",
                     "\t[NFluent.Tests.Person]",
@@ -556,7 +556,7 @@ namespace NFluent.Tests
                     "\t{int, string, System.Version}");
             int? val = 12;
             Check.ThatCode(() => Check.That(val).IsAnInstanceOfOneOf(typeof(int), typeof(string), typeof(Person)))
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked value's type is not one of the expected types.",
                     "The checked value's type:",
                     "\t[int?]", 
@@ -566,7 +566,7 @@ namespace NFluent.Tests
 
             // check for specific case when only one type
             Check.ThatCode(() => Check.That(val).IsAnInstanceOfOneOf(typeof(int)))
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked value is not an instance of [int].",
                     "The checked value:",
                     "\t[12] of type: [int?]", 
@@ -575,7 +575,7 @@ namespace NFluent.Tests
 
             val = null;
             Check.ThatCode(() => Check.That(val).IsAnInstanceOfOneOf(typeof(int), typeof(string), typeof(Person)))
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked object is null.",
                     "The checked value's type:",
                     "\t[null]", 

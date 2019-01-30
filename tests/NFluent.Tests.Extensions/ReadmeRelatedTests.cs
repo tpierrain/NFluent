@@ -40,7 +40,7 @@ namespace NFluent.Tests
         #endregion
 
         /// <summary>
-        /// Methods to screenshot and copy and paste the NFluent motto.
+        /// Methods to screenShot and copy and paste the NFluent motto.
         /// </summary>
         public void NFluentMotto()
         {

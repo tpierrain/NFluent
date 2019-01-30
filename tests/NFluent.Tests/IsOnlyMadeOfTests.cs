@@ -71,7 +71,7 @@ namespace NFluent.Tests
             {
                 Check.That(integers).IsOnlyMadeOf(1, 2, 3);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked enumerable does not contain only the given value(s).",
                     "It contains also other values:",
                     "\t{666, 1974}",
@@ -137,7 +137,7 @@ namespace NFluent.Tests
             {
                 Check.That((List<int>) null).IsOnlyMadeOf("what da heck!");
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked enumerable is null and thus, does not contain exactly the given value(s).",
                     "The checked enumerable:", 
                     "\t[null]", 
@@ -157,7 +157,7 @@ namespace NFluent.Tests
         {
             var integers = new List<int> { 3, 2, 666, 1974, 1 };
             Check.ThatCode( () =>
-                Check.That(integers).IsOnlyMadeOf(null)).IsAFaillingCheckWithMessage("",
+                Check.That(integers).IsOnlyMadeOf(null)).IsAFailingCheckWithMessage("",
             "The checked enumerable does not contain only the given value(s).",
                 "It contains also other values:",
                 "\t{3, 2, 666, 1974, 1}",
@@ -166,7 +166,7 @@ namespace NFluent.Tests
                 "The expected value(s): only elements from",
                 "\tnull of type: [System.Collections.Generic.List<int>]");
             Check.ThatCode( () =>
-                Check.That(new []{1}).IsOnlyMadeOf(null)).IsAFaillingCheckWithMessage("",
+                Check.That(new []{1}).IsOnlyMadeOf(null)).IsAFailingCheckWithMessage("",
                 "The checked enumerable does not contain only the given value(s).",
                 "It contains also other values:",
                 "\t{1}",
@@ -186,7 +186,7 @@ namespace NFluent.Tests
             {
                 Check.That(integers).IsOnlyMadeOf(expectedValues);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked enumerable does not contain only the given value(s).",
                     "It contains also other values:",
                     "\t{666, 1974}",
@@ -214,7 +214,7 @@ namespace NFluent.Tests
             {
                 Check.That(integers).Not.IsOnlyMadeOf(expectedValues);
             })
-            .IsAFaillingCheckWithMessage("","The checked enumerable contains only the given values whereas it must not.",
+            .IsAFailingCheckWithMessage("","The checked enumerable contains only the given values whereas it must not.",
                     "The checked enumerable:", 
                     "\t{3, 2, 666, 1974, 1} (5 items)",
                     "The expected value(s): at least one element different from",
@@ -250,7 +250,7 @@ namespace NFluent.Tests
             {
                 Check.That(integers).Not.IsOnlyMadeOf(expectedValues);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked enumerable contains only the given values whereas it must not.",
                     "The checked enumerable:",
                     "\t{1, 2, 3} (3 items)",
@@ -277,7 +277,7 @@ namespace NFluent.Tests
             {
                 Check.That(variousObjects).IsOnlyMadeOf(expectedVariousObjectsWithBadCase);
             })
-            .IsAFaillingCheckWithMessage("", 
+            .IsAFailingCheckWithMessage("", 
                     "The checked enumerable does not contain only the given value(s).",
                     "It contains also other values:",
                     "\t{\"uno\", \"tres\"}",

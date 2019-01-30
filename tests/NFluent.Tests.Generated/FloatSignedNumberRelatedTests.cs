@@ -65,7 +65,7 @@ namespace NFluent.Tests
             {
                 Check.That(Zero).IsPositive();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not strictly positive (i.e. greater than zero).",  
                      "The checked value:",
                     "\t[0]");
@@ -78,7 +78,7 @@ namespace NFluent.Tests
             {
                 Check.That(Two).Not.IsPositive();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is strictly positive (i.e. greater than zero), whereas it must not.",
                     "The checked value:",
                     "\t[2]");
@@ -91,7 +91,7 @@ namespace NFluent.Tests
             {
                 Check.That(MinusFifty).IsPositive();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not strictly positive (i.e. greater than zero).",
                     "The checked value:",
                     "\t[-50]");
@@ -120,7 +120,7 @@ namespace NFluent.Tests
             {
                 Check.That(Zero).IsNegative();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not strictly negative.",
                     "The checked value:", 
                     "\t[0]");
@@ -133,7 +133,7 @@ namespace NFluent.Tests
             {
                 Check.That(MinusFifty).Not.IsNegative();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is strictly negative, whereas it must not.",
                     "The checked value:",
                     "\t[-50]");
@@ -146,7 +146,7 @@ namespace NFluent.Tests
             {
                 Check.That(Two).IsNegative();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not strictly negative.",
                     "The checked value:",
                     "\t[2]");
@@ -176,7 +176,7 @@ namespace NFluent.Tests
             {
                 Check.That(Zero).IsStrictlyPositive();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not strictly positive (i.e. greater than zero).",
                     "The checked value:",
                     "\t[0]");
@@ -189,7 +189,7 @@ namespace NFluent.Tests
             {
                 Check.That(Two).Not.IsStrictlyPositive();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is strictly positive (i.e. greater than zero), whereas it must not.",
                     "The checked value:",
                     "\t[2]");
@@ -202,7 +202,7 @@ namespace NFluent.Tests
             {
                 Check.That(MinusFifty).IsStrictlyPositive();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not strictly positive (i.e. greater than zero).",
                     "The checked value:",
                     "\t[-50]");
@@ -232,7 +232,7 @@ namespace NFluent.Tests
             {
                 Check.That(Zero).Not.IsPositiveOrZero();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is positive or equal to zero, whereas it must not.",
                     "The checked value:",
                     "\t[0]");
@@ -245,7 +245,7 @@ namespace NFluent.Tests
             {
                 Check.That(MinusFifty).IsPositiveOrZero();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not positive or equal to zero.",
                     "The checked value:",
                     "\t[-50]");
@@ -274,7 +274,7 @@ namespace NFluent.Tests
             {
                 Check.That(Zero).IsStrictlyNegative();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not strictly negative.",
                     "The checked value:",
                     "\t[0]");
@@ -287,7 +287,7 @@ namespace NFluent.Tests
             {
                 Check.That(MinusFifty).Not.IsStrictlyNegative();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is strictly negative, whereas it must not.",
                     "The checked value:",
                     "\t[-50]");
@@ -300,7 +300,7 @@ namespace NFluent.Tests
             {
                 Check.That(Two).IsStrictlyNegative();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not strictly negative.",
                     "The checked value:",
                     "\t[2]");
@@ -328,7 +328,7 @@ namespace NFluent.Tests
         public void NotIsNegativeOrZeroThrowsExceptionWhenFailing()
         {
             Check.ThatCode(() => { Check.That(MinusFifty).Not.IsNegativeOrZero(); })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked value is negative or equal to zero, whereas it must not.",
                     "The checked value:",
                     "\t[-50]");
@@ -341,7 +341,7 @@ namespace NFluent.Tests
             {
                 Check.That(Two).IsNegativeOrZero();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not negative or equal to zero.",
                     "The checked value:",
                     "\t[2]");

@@ -41,7 +41,7 @@ namespace NFluent.Tests
             CheckIfAValueIsDefaultedAndFailsIfNot()
         {
             Check.ThatCode(() =>
-                Check.That(1).IsDefaultValue()).IsAFaillingCheckWithMessage("",
+                Check.That(1).IsDefaultValue()).IsAFailingCheckWithMessage("",
                 "The checked value is not the default value for its type.",
                 "The checked value:",
                 "\t[1]",
@@ -49,7 +49,7 @@ namespace NFluent.Tests
                 "\t[0]");
 
             Check.ThatCode(() =>
-                Check.That("test").IsDefaultValue()).IsAFaillingCheckWithMessage("",
+                Check.That("test").IsDefaultValue()).IsAFailingCheckWithMessage("",
                 "The checked string is not the default value for its type.",
                 "The checked string:",
                 "\t[\"test\"]",

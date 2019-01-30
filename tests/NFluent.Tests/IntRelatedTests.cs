@@ -60,7 +60,7 @@ namespace NFluent.Tests
             {
                 Check.That(Zero).IsNotZero();
             }).
-            IsAFaillingCheckWithMessage("",
+            IsAFailingCheckWithMessage("",
                     "The checked value is equal to zero whereas it must not.",
                     "The checked value:",
                     "\t[0]");
@@ -83,7 +83,7 @@ namespace NFluent.Tests
             {
                 Check.That(Zero).Not.IsZero();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is equal to zero whereas it must not.",
                     "The checked value:",
                     "\t[0]");
@@ -106,7 +106,7 @@ namespace NFluent.Tests
             {
                 Check.That(Two).Not.IsNotZero();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is different from zero.",
                     "The checked value:",
                     "\t[2]");
@@ -135,7 +135,7 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).IsBefore(Two);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not before the reference value.",
                     "The checked value:",
                     "\t[20]",
@@ -150,7 +150,7 @@ namespace NFluent.Tests
             {
                 Check.That(Two).IsBefore(Two);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not before the reference value.",
                     "The checked value:",
                     "\t[2]",
@@ -165,7 +165,7 @@ namespace NFluent.Tests
             {
                 Check.That(Two).Not.IsBefore(Twenty);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is before the reference value whereas it must not.",
                     "The checked value:",
                     "\t[2]",
@@ -192,7 +192,7 @@ namespace NFluent.Tests
             {
                 Check.That(Two).IsAfter(Two);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not after the reference value.",
                     "The checked value:",
                     "\t[2]",
@@ -207,7 +207,7 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).Not.IsAfter(Two);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is after the reference value whereas it must not.",
                     "The checked value:",
                     "\t[20]",
@@ -239,7 +239,7 @@ namespace NFluent.Tests
             {
                 Check.That(One).Not.IsLessThan(Twenty);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is less than the given one.",
                     "The checked value:",
                     "\t[1]",
@@ -271,7 +271,7 @@ namespace NFluent.Tests
             {
                 Check.That(One).IsStrictlyLessThan(One);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is equal to the given one.",
                     "The checked value:",
                     "\t[1]",
@@ -281,7 +281,7 @@ namespace NFluent.Tests
             {
                 Check.That(One).IsStrictlyLessThan(Zero);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is greater than the given one.",
                     "The checked value:",
                     "\t[1]",
@@ -296,7 +296,7 @@ namespace NFluent.Tests
             {
                 Check.That(One).Not.IsStrictlyLessThan(Twenty);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is strictly less than the given one.",
                     "The checked value:",
                     "\t[1]",
@@ -324,7 +324,7 @@ namespace NFluent.Tests
             {
                 Check.That(One).IsGreaterThan(Twenty);
             })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked value is strictly less than the given one.",
                     "The checked value:",
                     "\t[1]",
@@ -340,7 +340,7 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).Not.IsGreaterThan(One);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is greater than the given one.",
                     "The checked value:",
                     "\t[20]",
@@ -366,7 +366,7 @@ namespace NFluent.Tests
             {
                 Check.That(One).IsStrictlyGreaterThan(One);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is equal to the given one.",
                     "The checked value:",
                     "\t[1]",
@@ -381,7 +381,7 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).Not.IsStrictlyGreaterThan(One);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is greater than the given one.",
                     "The checked value:",
                     "\t[20]",
@@ -412,7 +412,7 @@ namespace NFluent.Tests
         public void IsEqualFailWhenRelevant()
         {
             Check.ThatCode(() => { Check.That(Twenty).IsEqualTo(0); })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
             "The checked value is different from the expected one.",
                 "The checked value:",
                 "\t[20]",
@@ -444,7 +444,7 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).Not.IsEqualTo(Twenty);
             })
-           .IsAFaillingCheckWithMessage("",
+           .IsAFailingCheckWithMessage("",
                     "The checked value is equal to the given one whereas it must not.",
                     "The expected value: different from",
                     "\t[20] of type: [int]");
@@ -457,7 +457,7 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).Not.Equals(Twenty);
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is equal to the given one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[20] of type: [int]");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked value is equal to the given one whereas it must not." + Environment.NewLine + "The expected value: different from" + Environment.NewLine + "\t[20] of type: [int]");
         }
 
         [Test]
@@ -473,7 +473,7 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).IsNotEqualTo(Twenty);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is equal to the expected one whereas it must not.",
                     "The expected value: different from",
                     "\t[20] of type: [int]");
@@ -486,7 +486,7 @@ namespace NFluent.Tests
             {
                 Check.That(One).Not.IsNotEqualTo(Twenty);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is different from the given one.",
                     "The checked value:",
                     "\t[1]",
@@ -514,7 +514,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That((int?) null).HasAValue();
-            }).IsAFaillingCheckWithMessage("","The checked nullable has no value, which is unexpected.");
+            }).IsAFailingCheckWithMessage("","The checked nullable has no value, which is unexpected.");
         }
 
         [Test]
@@ -532,7 +532,7 @@ namespace NFluent.Tests
             {
                 Check.That(one).Not.HasAValue();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked nullable has a value, whereas it must not.",
                     "The checked nullable:",
                     "\t[1]");
@@ -553,7 +553,7 @@ namespace NFluent.Tests
             {
                 Check.That((int?) null).Not.HasAValue().Which.IsAfter(Zero);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked nullable has no value to be checked.");
         }
 
@@ -576,7 +576,7 @@ namespace NFluent.Tests
             {
                 Check.That(one).HasNoValue();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked nullable has a value, whereas it must not.",
                     "The checked nullable:", 
                     "\t[1]");
@@ -597,7 +597,7 @@ namespace NFluent.Tests
             {
                 Check.That((int?) null).Not.HasNoValue();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked nullable has no value, which is unexpected.");
         }
 
@@ -631,7 +631,7 @@ namespace NFluent.Tests
             {
                 Check.That(one).Not.IsInstanceOf<int?>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is an instance of [int?] whereas it must not.",
                     "The checked value:",
                     "\t[1] of type: [int?]",
@@ -652,7 +652,7 @@ namespace NFluent.Tests
             {
                 Check.That((int?) null).Not.IsInstanceOf<int?>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is an instance of [int?] whereas it must not.",
                     "The checked value:",
                     "\t[null] of type: [int?]",
@@ -667,7 +667,7 @@ namespace NFluent.Tests
             {
                 Check.That((int?) null).IsInstanceOf<string>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is not an instance of [string].",
                     "The checked value:",
                     "\t[null] of type: [int?]",
@@ -696,7 +696,7 @@ namespace NFluent.Tests
             {
                 Check.That(one).IsNotInstanceOf<int?>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is an instance of [int?] whereas it must not.",
                     "The checked value:",
                     "\t[1] of type: [int?]",
@@ -711,7 +711,7 @@ namespace NFluent.Tests
             {
                 Check.That((int?) null).IsNotInstanceOf<int?>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value is an instance of [int?] whereas it must not.",
                     "The checked value:",
                     "\t[null] of type: [int?]",

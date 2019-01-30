@@ -46,7 +46,7 @@ namespace NFluent.Tests
                 {
                     Check.That(myEvent).IsSetWithin(10, TimeUnit.Milliseconds);
                 })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                         "The checked event has not been set before the given timeout (10 Milliseconds) whereas it must be.");
             }
         }
@@ -70,7 +70,7 @@ namespace NFluent.Tests
                         SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
                         Check.That(myEvent).Not.IsSetWithin(500, TimeUnit.Milliseconds);
                     })
-                    .IsAFaillingCheckWithMessage("",
+                    .IsAFailingCheckWithMessage("",
                         "The checked event has been set before the given timeout (500 Milliseconds) whereas it must not.");
             }
         }
@@ -95,7 +95,7 @@ namespace NFluent.Tests
                     SetTheEventFromAnotherThreadAfterADelay(myEvent, 0);
                     Check.That(myEvent).IsNotSetWithin(200, TimeUnit.Milliseconds);
                 })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                         "The checked event has been set before the given timeout (200 Milliseconds) whereas it must not.");
             }
         }
@@ -119,7 +119,7 @@ namespace NFluent.Tests
                 {
                     Check.That(myEvent).Not.IsNotSetWithin(10, TimeUnit.Milliseconds);
                 })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                         "The checked event has not been set before the given timeout (10 Milliseconds) whereas it must be.");
             }
         }

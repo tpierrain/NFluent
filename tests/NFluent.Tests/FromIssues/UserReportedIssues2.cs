@@ -59,7 +59,7 @@ namespace NFluent.Tests.FromIssues
             Check.ThatCode(() =>
                 Check.That((string) null)
                     .As("foo")
-                    .IsNotNull()).IsAFaillingCheckWithMessage("", 
+                    .IsNotNull()).IsAFailingCheckWithMessage("", 
                 "The checked [foo] must not be null.");
         }
 
@@ -75,7 +75,7 @@ namespace NFluent.Tests.FromIssues
             var myOther = new MyType();
             myOther.Property = new int[4, 2];
             myOther.Property[1, 1] = 5;
-            Check.ThatCode(() => Check.That(myClass).HasFieldsWithSameValues(myOther)).IsAFaillingCheckWithMessage("", 
+            Check.ThatCode(() => Check.That(myClass).HasFieldsWithSameValues(myOther)).IsAFailingCheckWithMessage("", 
                 "The checked value's field 'Property.[1,1]' does not have the expected value.", 
                 "The checked value's field 'Property.[1,1]':",
                 "\t[4]",
@@ -180,7 +180,7 @@ namespace NFluent.Tests.FromIssues
         public void ShouldNotMixUpCheckedAndExpected()
         {
             double d = 1.0d;
-            Check.ThatCode(()=> Check.That(d).IsEqualTo(2.0)).IsAFaillingCheckWithMessage(
+            Check.ThatCode(()=> Check.That(d).IsEqualTo(2.0)).IsAFailingCheckWithMessage(
                 "", 
                 "The checked value is different from the expected one.", 
                 "The checked value:", 
@@ -274,14 +274,14 @@ namespace NFluent.Tests.FromIssues
         {
             using (var session = new CultureSession("en-US"))
             {
-                Check.ThatCode(() => Check.That(this.decimalValue*(1<<16)).IsEqualTo(0.95d*(1<<16))).IsAFaillingCheckWithMessage("",
+                Check.ThatCode(() => Check.That(this.decimalValue*(1<<16)).IsEqualTo(0.95d*(1<<16))).IsAFailingCheckWithMessage("",
                         "The checked value is different from the expected one, with a difference of 7.3E-12. You may consider using IsCloseTo() for comparison.",
                         "The checked value:",
                         "\t[62259.2]",
                         "The expected value:",
                         "\t[62259.2]");
 
-                Check.ThatCode(() => Check.That(0.9500001f*(1<<16)).IsEqualTo(0.95f*(1<<16))).IsAFaillingCheckWithMessage("",
+                Check.ThatCode(() => Check.That(0.9500001f*(1<<16)).IsEqualTo(0.95f*(1<<16))).IsAFailingCheckWithMessage("",
                         "The checked value is different from the expected one, with a difference of 0.0078. You may consider using IsCloseTo() for comparison.",
                         "The checked value:",
                         "\t[62259.21]",

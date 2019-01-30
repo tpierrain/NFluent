@@ -17,7 +17,6 @@ namespace NFluent.Tests
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Extensibility;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -28,11 +27,11 @@ namespace NFluent.Tests
         public void
             FindDuplicates()
         {
-            var array = new int [] {1, 2, 3, 4};
+            var array = new[] {1, 2, 3, 4};
             Check.That(array).ContainsNoDuplicateItem();
 
             Check.ThatCode(() => Check.That(new[] {1, 1, 2, 3}).ContainsNoDuplicateItem()).
-                IsAFaillingCheckWithMessage("", 
+                IsAFailingCheckWithMessage("", 
                     "The checked enumerable contains a duplicate item at position 1: [1].", 
                     "The checked enumerable:", 
                     "\t{1, 1, 2, 3} (4 items)");
@@ -46,7 +45,7 @@ namespace NFluent.Tests
             Check.That(array).Not.ContainsNoDuplicateItem();
 
             Check.ThatCode(() => Check.That(new[] {1, 2, 3, 4}).Not.ContainsNoDuplicateItem()).
-                IsAFaillingCheckWithMessage("",
+                IsAFailingCheckWithMessage("",
                     "The checked enumerable should contain duplicates.",
                     "The checked enumerable:",
                     "\t{1, 2, 3, 4} (4 items)");
@@ -60,7 +59,7 @@ namespace NFluent.Tests
             Check.That(array).ContainsNoNull();
 
             Check.ThatCode(() => Check.That(new [] {"test", "another", null}).ContainsNoNull()).
-                IsAFaillingCheckWithMessage("",
+                IsAFailingCheckWithMessage("",
                     "The checked enumerable contains a null item at position 2.",
                     "The checked enumerable:",
                     "\t{\"test\", \"another\", null} (3 items)");
@@ -74,7 +73,7 @@ namespace NFluent.Tests
             Check.That(array).Not.ContainsNoNull();
 
             Check.ThatCode(() => Check.That(new [] {"test", "another"}).Not.ContainsNoNull()).
-                IsAFaillingCheckWithMessage("",
+                IsAFailingCheckWithMessage("",
                     "The checked enumerable should contain at least one null entry.",
                     "The checked enumerable:",
                     "\t{\"test\", \"another\"} (2 items)");
@@ -88,7 +87,7 @@ namespace NFluent.Tests
             Check.That(array).ContainsOnlyInstanceOfType(typeof(string));
 
             Check.ThatCode(() => Check.That(new List<object>() {"test", "another", 4}).ContainsOnlyInstanceOfType(typeof(string))).
-                IsAFaillingCheckWithMessage("",
+                IsAFailingCheckWithMessage("",
                     "The checked enumerable contains an entry of a type different from String at position 2.",
                     "The checked enumerable:",
                     "\t{\"test\", \"another\", 4} (3 items)");
@@ -102,7 +101,7 @@ namespace NFluent.Tests
             Check.That(array).Not.ContainsOnlyInstanceOfType(typeof(string));
 
             Check.ThatCode(() => Check.That(new List<object> {"test", "another"}).Not.ContainsOnlyInstanceOfType(typeof(string))).
-                IsAFaillingCheckWithMessage("",
+                IsAFailingCheckWithMessage("",
                     "The checked enumerable should contain at least one entry of a type different from String.",
                     "The checked enumerable:",
                     "\t{\"test\", \"another\"} (2 items)");
@@ -115,13 +114,19 @@ namespace NFluent.Tests
             var array = new[] {1, 2, 3};
 
             Check.That(array).IsEquivalentTo(3, 2, 1);
-            IEnumerable<int> nullArray = null;
-            Check.That<IEnumerable<int>>(null).IsEquivalentTo(nullArray);
+            Check.That<IEnumerable<int>>(null).IsEquivalentTo((IEnumerable<int>) null);
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 4)).IsAFaillingCheck();
 
             var otherArray = new List<int>(new []{3, 2, 1});
             Check.That(array).IsEquivalentTo(otherArray);
+        }
+
+        [Test]
+        public void CheckIsEquivalentOnPlainEnumerable()
+        {
+            var array = new[] {1, 2, 3};
+            Check.That((IEnumerable)array).IsEquivalentTo(3, 2, 1);
         }
         
         [Test]
@@ -130,42 +135,42 @@ namespace NFluent.Tests
         {
             var array = new[] {1, 2, 3};
 
-            Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 4)).IsAFaillingCheckWithMessage("", 
+            Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 4)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable does contain [3] whereas it should not.", 
                 "The checked enumerable:",
                 "\t{1, 2, 3} (3 items)", 
                 "The expected value(s):", 
                 "\t{1, 2, 4} (3 items)");
 
-            Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4)).IsAFaillingCheckWithMessage("", 
+            Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is missing: [4].", 
                 "The checked enumerable:",
                 "\t{1, 2, 3} (3 items)", 
                 "The expected value(s):", 
                 "\t{1, 2, 3, 4} (4 items)");
 
-            Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4, 5)).IsAFaillingCheckWithMessage("", 
+            Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4, 5)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is missing 2 items: {4, 5}.", 
                 "The checked enumerable:",
                 "\t{1, 2, 3} (3 items)", 
                 "The expected value(s):", 
                 "\t{1, 2, 3, 4, 5} (5 items)");
 
-            Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2)).IsAFaillingCheckWithMessage("", 
+            Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable does contain [3] whereas it should not.", 
                 "The checked enumerable:",
                 "\t{1, 2, 3} (3 items)", 
                 "The expected value(s):", 
                 "\t{1, 2} (2 items)");
 
-            Check.ThatCode(() => Check.That<IEnumerable<int>>(null).IsEquivalentTo(1)).IsAFaillingCheckWithMessage("",
+            Check.ThatCode(() => Check.That<IEnumerable<int>>(null).IsEquivalentTo(1)).IsAFailingCheckWithMessage("",
                 "The checked enumerable is null whereas it should not.", 
                 "The checked enumerable:", 
                 "\t[null]", 
                 "The expected value(s):", 
                 "\t{1} (1 item)");
 
-            Check.ThatCode(() => Check.That<IEnumerable<int>>(new[]{1}).IsEquivalentTo(null)).IsAFaillingCheckWithMessage("",
+            Check.ThatCode(() => Check.That<IEnumerable<int>>(new[]{1}).IsEquivalentTo(null)).IsAFailingCheckWithMessage("",
                 "The checked enumerable must be null.", 
                 "The checked enumerable:", 
                 "\t{1} (1 item)", 
@@ -177,7 +182,7 @@ namespace NFluent.Tests
         public void FailsWithProperMessageWhenNegated()
         {
             var array = new[] {1, 2, 3};
-            Check.ThatCode(() => Check.That(array).Not.IsEquivalentTo(1, 2, 3)).IsAFaillingCheckWithMessage("", 
+            Check.ThatCode(() => Check.That(array).Not.IsEquivalentTo(1, 2, 3)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is equivalent to the expected value(s) whereas it should not.", 
                 "The checked enumerable:",
                 "\t{1, 2, 3} (3 items)", 
@@ -191,13 +196,13 @@ namespace NFluent.Tests
         {
             Check.That(new int?[] {0, 1, 2, 3, 5}).IsInAscendingOrder();
             Check.That(new int?[] {null, 1, 2, 3, 5}).IsInAscendingOrder();
-            Check.ThatCode(() => Check.That(new int?[] {null, 1, 2, 3, 5, null, 5}).IsInAscendingOrder()).IsAFaillingCheckWithMessage(
+            Check.ThatCode(() => Check.That(new int?[] {null, 1, 2, 3, 5, null, 5}).IsInAscendingOrder()).IsAFailingCheckWithMessage(
                 "",
                 "The checked enumerable is not in ascending order, whereas it should.",
                 "At #5: [5] comes after [null].", 
                 "The checked enumerable:", 
                 "\t{null, 1, 2, 3, 5, null, 5} (7 items)");
-            Check.ThatCode(() => Check.That(new int?[] {4, 1, 2, 3, 5, null, 5}).IsInAscendingOrder()).IsAFaillingCheckWithMessage(
+            Check.ThatCode(() => Check.That(new int?[] {4, 1, 2, 3, 5, null, 5}).IsInAscendingOrder()).IsAFailingCheckWithMessage(
                 "",
                 "The checked enumerable is not in ascending order, whereas it should.",
                 "At #1: [4] comes after [1].", "The checked enumerable:",
@@ -266,13 +271,13 @@ namespace NFluent.Tests
             Check.That(new[] {5, 4, 3, 2, 1, 0}).IsInDescendingOrder();
             Check.That(new[] {5, 4, 3, 2, 1, 1}).IsInDescendingOrder();
             Check.That(new int?[] {5, 4, 3, 2, 1, null}).IsInDescendingOrder();
-            Check.ThatCode(() => Check.That(new int?[] {null, 1, 2, 3, 5, null, 5}).IsInDescendingOrder()).IsAFaillingCheckWithMessage(
+            Check.ThatCode(() => Check.That(new int?[] {null, 1, 2, 3, 5, null, 5}).IsInDescendingOrder()).IsAFailingCheckWithMessage(
                 "",
                 "The checked enumerable is not in descending order, whereas it should.",
                 "At #1: [null] comes before [1].", 
                 "The checked enumerable:", 
                 "\t{null, 1, 2, 3, 5, null, 5} (7 items)");
-            Check.ThatCode(() => Check.That(new int?[] {4, 1, 2, 3, 5, null, 5}).IsInDescendingOrder()).IsAFaillingCheckWithMessage(
+            Check.ThatCode(() => Check.That(new int?[] {4, 1, 2, 3, 5, null, 5}).IsInDescendingOrder()).IsAFailingCheckWithMessage(
                 "",
                 "The checked enumerable is not in descending order, whereas it should.",
                 "At #2: [1] comes before [2].",

@@ -42,7 +42,7 @@ namespace NFluent.Tests
             
             Check.ThatCode(() =>
             Check.ThatCode(() => Thread.Sleep(0)).Not.LastsLessThan(1000, TimeUnit.Milliseconds)).
-                IsAFaillingCheckWithMessage("", 
+                IsAFailingCheckWithMessage("", 
                     "The checked code's execution time was too low.", 
                     "The checked code's execution time:", 
                     "#\\[.+ Milliseconds\\]",
@@ -57,7 +57,7 @@ namespace NFluent.Tests
                 {
                     Check.ThatCode(() => Thread.Sleep(0)).LastsLessThan(0, TimeUnit.Milliseconds);
                 })
-                .IsAFaillingCheckWithMessage("", 
+                .IsAFailingCheckWithMessage("", 
                     "The checked code's execution time was too high.", 
                     "The checked code's execution time:", 
                     "#\\[.+ Milliseconds\\]",
@@ -94,7 +94,7 @@ namespace NFluent.Tests
                     }
                 }).ConsumesLessThan(5, TimeUnit.Milliseconds);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked code's cpu consumption was too high.",
                     "The checked code's cpu consumption:", 
                     "#\\[.+ Milliseconds\\]",
@@ -113,7 +113,7 @@ namespace NFluent.Tests
 
                         }).Not.ConsumesLessThan(50, TimeUnit.Milliseconds);
                 })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked code's cpu consumption was too low.",
                     "The checked code's cpu consumption:", 
                     "#\\[.+ Milliseconds\\]",

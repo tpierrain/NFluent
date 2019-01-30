@@ -220,7 +220,7 @@ namespace NFluent.Tests
                     "+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros",
                     "Backstagex passes to a TAFKAL80ETC concer", "Conjured Mana Cake"
                 });
-            }).IsAFaillingCheckWithMessage("", 
+            }).IsAFailingCheckWithMessage("", 
                 "The checked enumerable does not contain exactly the expected value(s). First difference is at index #4.",
                 "The checked enumerable:",
                 "\t{\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concert\", \"Conjured Mana Cake\"} (6 items)",
@@ -358,7 +358,7 @@ namespace NFluent.Tests
                 const string Result = "MaChaine{964}";
                 Check.That(toTest).Contains(Result);
             })
-            .IsAFaillingCheckWithMessage("", 
+            .IsAFailingCheckWithMessage("", 
                     "The checked enumerable does not contain the expected value(s):",
                     "\t{\"MaChaine{964}\"}",
                     "The checked enumerable:",

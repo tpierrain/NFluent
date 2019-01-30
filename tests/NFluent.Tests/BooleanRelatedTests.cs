@@ -59,7 +59,7 @@ namespace NFluent.Tests
             const bool tddSucks = false;
             
             Check.ThatCode( () => Check.That(tddSucks).Not.IsFalse())
-                    .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked boolean is false whereas it must be true." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[False]");
+                    .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked boolean is false whereas it must be true." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[False]");
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace NFluent.Tests
             const bool nFluentRocks = false;
 
             Check.ThatCode(() => Check.That(nFluentRocks).IsTrue())
-                    .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked boolean is false whereas it must be true." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[False]");
+                    .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked boolean is false whereas it must be true." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[False]");
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace NFluent.Tests
             const bool nFluentRocks = true;
 
             Check.ThatCode(() => Check.That(nFluentRocks).Not.IsTrue())
-                    .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked boolean is true whereas it must be false." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[True]");
+                    .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked boolean is true whereas it must be false." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[True]");
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace NFluent.Tests
             const bool tddSucks = false;
 
             Check.ThatCode(() => Check.That(nFluentRocks).IsEqualTo(tddSucks))
-                    .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked boolean is different from the expected one." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[True]" + Environment.NewLine + "The expected boolean:" + Environment.NewLine + "\t[False]");
+                    .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked boolean is different from the expected one." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[True]" + Environment.NewLine + "The expected boolean:" + Environment.NewLine + "\t[False]");
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace NFluent.Tests
             const bool winterNotNFluentRocks = true;
 
             Check.ThatCode(() => Check.That(nFluentRocks).IsNotEqualTo(winterNotNFluentRocks))
-                    .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked boolean is equal to the expected one whereas it must not." + Environment.NewLine + "The expected boolean: different from" + Environment.NewLine + "\t[True] of type: [bool]");
+                    .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked boolean is equal to the expected one whereas it must not." + Environment.NewLine + "The expected boolean: different from" + Environment.NewLine + "\t[True] of type: [bool]");
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace NFluent.Tests
             const bool nFluentRocks = true;
 
             Check.ThatCode(() => Check.That(nFluentRocks).IsFalse())
-                    .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked boolean is true whereas it must be false." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[True]");
+                    .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked boolean is true whereas it must be false." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[True]");
         }
     }
 }

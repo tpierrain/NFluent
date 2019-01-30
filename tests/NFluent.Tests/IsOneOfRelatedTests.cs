@@ -41,7 +41,7 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
             {
                 Check.That("fu").IsOneOf("foo", "bar", "foobar");
-            }).IsAFaillingCheckWithMessage("",
+            }).IsAFailingCheckWithMessage("",
                 "The checked string is not one of the expected value(s).", 
             "The checked string:", 
             "\t[\"fu\"]",
@@ -55,7 +55,7 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
             {
                 Check.That("foo").Not.IsOneOf("foo", "bar", "foobar");
-            }).IsAFaillingCheckWithMessage("",
+            }).IsAFailingCheckWithMessage("",
                 "The checked string should not be one of the expected value(s).", 
             "The checked string:", 
             "\t[\"foo\"]",

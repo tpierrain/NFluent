@@ -39,8 +39,9 @@
 * Error message for Check.ThatCode().LastsLessThan did not report the actual time.
 * Error message for Not.ThrowsAny() was wrong.
 * Hashtable not properly reported in error messages.
+* Fixed error messages for negated checks on dynamics
 ### GitHub Issues
-* #269, #274, #270, #275, #276, #280
+* #269, #274, #270, #275, #276, #280, #28
 ---------------
 ## V 2.4.0
 ### Main feature: Custom explicit error message

@@ -16,6 +16,7 @@ namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
@@ -109,10 +110,12 @@ namespace NFluent.Tests
                                      new Person { Name = "Anton", Age = 7, Nationality = Nationality.French }, 
                                      new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
                                  };
-
+            
             Check.That(persons.Extracting("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
             Check.That(persons.Extracting("Age")).ContainsExactly(38, 10, 7, 7);
             Check.That(persons.Extracting("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+
+            Check.That(persons.Extracting("Age")).IsEquivalentTo(7, 7, 10, 38);
         }
 
         [Test]

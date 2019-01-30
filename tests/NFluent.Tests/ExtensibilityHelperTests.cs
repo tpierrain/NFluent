@@ -53,32 +53,32 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                 // check with an incomplete error message
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"))
-                    .IsAFaillingCheckWithMessage("oups", "and more")
+                    .IsAFailingCheckWithMessage("oups", "and more")
             ).IsAFaillingCheck();            
             
             Check.ThatCode(() =>
                 // check with an incorrect error message
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"))
-                    .IsAFaillingCheckWithMessage("oupsla")
+                    .IsAFailingCheckWithMessage("oupsla")
             ).IsAFaillingCheck();
 
             Check.ThatCode(() =>
                 // check with a error message that is too long
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"+Environment.NewLine+"and more"))
-                    .IsAFaillingCheckWithMessage("oupsla")
+                    .IsAFailingCheckWithMessage("oupsla")
             ).IsAFaillingCheck();
             // can use regular expression.
             Check.ThatCode(() => throw ExceptionHelper.BuildException("oups")).
-                IsAFaillingCheckWithMessage("#[pous]+");
+                IsAFailingCheckWithMessage("#[pous]+");
             Check.ThatCode(() =>
                 // check with a error message that is too long
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"+Environment.NewLine+"and more"))
-                    .IsAFaillingCheckWithMessage("#[pous]+")
+                    .IsAFailingCheckWithMessage("#[pous]+")
             ).IsAFaillingCheck();
             Check.ThatCode(() =>
                 // check with a error message that does not match regex
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oupsla"))
-                    .IsAFaillingCheckWithMessage("#[pous]+$")
+                    .IsAFailingCheckWithMessage("#[pous]+$")
             ).IsAFaillingCheck();
         }
     }

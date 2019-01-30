@@ -68,7 +68,7 @@ namespace NFluent.Tests
             {
                 Check.ThatCode(() => throw new Exception()).DoesNotThrow();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked code raised an exception, whereas it must not.",
                     "The checked code's raised exception:", 
                     "*"
@@ -85,7 +85,7 @@ namespace NFluent.Tests
         public void DoesNotThrowFailsWhenNoExceptionRaisedAndNegated()
         {
             Check.ThatCode(()=>
-            Check.ThatCode(() => 1).Not.DoesNotThrow()).IsAFaillingCheckWithMessage("",
+            Check.ThatCode(() => 1).Not.DoesNotThrow()).IsAFailingCheckWithMessage("",
                 "The checked code did not raise an exception, whereas it must.");
         }
 
@@ -103,7 +103,7 @@ namespace NFluent.Tests
             {
                 Check.ThatCode(() => throw new Exception()).Throws<InvalidOperationException>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked code's raised exception is of a different type than expected.",
                     "The checked code's raised exception:",
                     "*",
@@ -118,7 +118,7 @@ namespace NFluent.Tests
                 {
                     Check.ThatCode(() => throw new Exception()).Not.Throws<Exception>();
                 })
-                .IsAFaillingCheckWithMessage("", 
+                .IsAFailingCheckWithMessage("", 
                     "The checked code's raised exception raised an exception of the forbidden type.",
                     "The checked code's raised exception:",
                     "\t[{System.Exception}: 'Exception of type 'System.Exception' was thrown.']",
@@ -136,7 +136,7 @@ namespace NFluent.Tests
                     var unused = new object();
                 }).ThrowsAny();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace NFluent.Tests
                 {
                     Check.ThatCode(() => { throw new Exception(); }).Not.ThrowsAny();
                 })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked code raised an exception, whereas it must not.",
                     "The checked code's raised exception:",
                     "\t[{System.Exception}: 'Exception of type 'System.Exception' was thrown.']");
@@ -170,7 +170,7 @@ namespace NFluent.Tests
                     var unused = new object();
                 }).Throws<Exception>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked code did not raise an exception, whereas it must.",
                     "The expected code's raised exception:",
                     "\tan instance of type: [System.Exception]");
@@ -270,7 +270,7 @@ namespace NFluent.Tests
             {
                 Check.ThatCode(() => throw new LambdaExceptionForTest(321, "my error message")).Throws<LambdaExceptionForTest>().WithMessage("a buggy message");
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked exception's message is not as expected.",
                     "The checked exception's message:",
                     "\t[\"Err #321 : my error message\"]",
@@ -287,7 +287,7 @@ namespace NFluent.Tests
                     Throws<LambdaExceptionForTest>().
                     WithProperty("inexistingProperty", 123);
             })
-            .IsAFaillingCheckWithMessage("", 
+            .IsAFailingCheckWithMessage("", 
                     "There is no property [inexistingProperty] on exception type [LambdaExceptionForTest].",
                     "The expected exception's property [inexistingProperty]:", 
                     "\t[123]");
@@ -303,7 +303,7 @@ namespace NFluent.Tests
                 .Throws<LambdaExceptionForTest>()
                 .WithProperty("ExceptionNumber", 123);
             })
-            .IsAFaillingCheckWithMessage("", 
+            .IsAFailingCheckWithMessage("", 
             "The checked exception's property [ExceptionNumber] does not have the expected value.", 
             "The checked exception's property [ExceptionNumber]:",
             "\t[321]",
@@ -347,7 +347,7 @@ namespace NFluent.Tests
                             .Throws<LambdaExceptionForTest>()
                             .WithProperty(ex => ex.ExceptionNumber, 123);
                     })
-                .IsAFaillingCheckWithMessage(
+                .IsAFailingCheckWithMessage(
                 string.Empty,
                 "The checked exception's property [ExceptionNumber] does not have the expected value.",
                 "The checked exception's property [ExceptionNumber]:",
@@ -393,7 +393,7 @@ namespace NFluent.Tests
             Check.ThatCode(
                 () => throw new ArgumentException(
                     "outerException dummy message",
-                    (Exception) null)).ThrowsAny().DueTo<Exception>()).IsAFaillingCheckWithMessage("",
+                    (Exception) null)).ThrowsAny().DueTo<Exception>()).IsAFailingCheckWithMessage("",
                 "There is no inner exception.", 
                 "The expected value's inner exception:", 
                 "\tan instance of type: [System.Exception]");
@@ -409,7 +409,7 @@ namespace NFluent.Tests
                         .Throws<ArgumentException>()
                         .DueTo<Exception>();
             })
-            .IsAFaillingCheckWithMessage(
+            .IsAFailingCheckWithMessage(
                     "",
                     "The checked value's inner exception is not of the expected type.",
                     "The checked value's inner exception:",
@@ -429,7 +429,7 @@ namespace NFluent.Tests
                         .Throws<ArgumentException>()
                         .DueToAnyFrom(typeof(Exception), typeof(ArgumentException));
             })
-            .IsAFaillingCheckWithMessage(
+            .IsAFailingCheckWithMessage(
                     "",
                     "The checked value's inner exception is not of one of the expected types.",
                     "The checked value's inner exception:",
@@ -444,7 +444,7 @@ namespace NFluent.Tests
                         .Throws<ArgumentException>()
                         .DueToAnyFrom(typeof(Exception), typeof(ArgumentException));
             })
-            .IsAFaillingCheckWithMessage(
+            .IsAFailingCheckWithMessage(
                     "",
                     "There is no inner exception.",
                     "The expected value(s): an instance of any",
@@ -478,7 +478,7 @@ namespace NFluent.Tests
                         .Throws<ArgumentException>()
                         .DueTo<Exception>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked value's inner exception is not of the expected type.",
                     "The checked value's inner exception:",
                     "\t[{System.InvalidCastException}: \'whatever mate\'] of type: [System.InvalidCastException]",

@@ -64,7 +64,7 @@ namespace NFluent.Tests
             {
                 Check.That(integers).Contains(3, 2, 666, 1974);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked enumerable does not contain the expected value(s):", 
                     "\t{666, 1974}", 
                     "The checked enumerable:", 
@@ -89,7 +89,7 @@ namespace NFluent.Tests
             {
                 Check.That(integers).Not.Contains(3, 2, 1);
             })
-            .IsAFaillingCheckWithMessage("", 
+            .IsAFailingCheckWithMessage("", 
                     "The checked enumerable contains all the given values whereas it must not.", 
                     "The checked enumerable:",
                     "\t{1, 2, 3} (3 items)", 
@@ -134,7 +134,7 @@ namespace NFluent.Tests
             {
                 Check.That(emptyList).Contains("what da heck!");
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked enumerable does not contain the expected value(s):",
                     "\t{\"what da heck!\"}",
                     "The checked enumerable:",
@@ -158,7 +158,7 @@ namespace NFluent.Tests
             {
                 Check.That((List<int>)null).Contains("what da heck!");
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked enumerable is null and thus, does not contain the given expected value(s).",
                     "The checked enumerable:",
                     "\t[null]",
@@ -182,7 +182,7 @@ namespace NFluent.Tests
             {
                 Check.That(integers).Contains(expectedNumbers);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked enumerable does not contain the expected value(s):",
                     "\t{666, 1974}", 
                     "The checked enumerable:",

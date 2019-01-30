@@ -105,7 +105,7 @@
             var x = new DummyClass(2, 2);
 
             Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(new DummyClass(1, 2)); })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked value's field 'x' does not have the expected value.",
                     "The checked value's field 'x':",
                     "\t[2]",
@@ -119,7 +119,7 @@
             var x = new DummyHeritance(2, 3);
 
             Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(new DummyHeritance(2, 1)); })
-                .IsAFaillingCheckWithMessage(
+                .IsAFailingCheckWithMessage(
                     "", "The checked value\'s field \'y\' does not have the expected value.",
                     "The checked value's field 'y':",
                     "\t[3]",
@@ -131,7 +131,7 @@
         public void HasNotFieldsWithSameValuesFailsIfSame()
         {
             Check.ThatCode(() => { Check.That(new DummyClass()).HasNotFieldsWithSameValues(new DummyClass(2,2)); })
-                .IsAFaillingCheckWithMessage(
+                .IsAFailingCheckWithMessage(
                     "",
                     "The checked value's field 'x' has the same value than the given one, whereas it should not.",
                     "The expected value's field 'x': different from",
@@ -144,7 +144,7 @@
             var x = new DummyClass();
 
             Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(new DummyHeritance()); })
-                .IsAFaillingCheckWithMessage("", 
+                .IsAFailingCheckWithMessage("", 
                     "The expected value's field 'z''s is absent from the checked one.", 
                     "The expected value's field 'z':", 
                     "\t[2] of type: [int]");
@@ -211,7 +211,7 @@
             var x = new DummyWithAutoProperty();
 
             Check.ThatCode(() => { Check.That(x).HasNotFieldsWithSameValues(new DummyWithAutoProperty()); })
-                .IsAFaillingCheckWithMessage(
+                .IsAFailingCheckWithMessage(
                     "",
                     "The checked value's autoproperty 'Application' (field '<Application>k__BackingField') has the same value than the given one, whereas it should not.",
                     "The expected value's autoproperty 'Application' (field '<Application>k__BackingField'): different from",
@@ -224,7 +224,7 @@
             var x = new DummyWithAutoProperty { Application = "check" };
 
             Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(new DummyWithAutoProperty()); })
-                .IsAFaillingCheckWithMessage(
+                .IsAFailingCheckWithMessage(
                     "",
                     "The checked value's autoproperty 'Application' (field '<Application>k__BackingField') does not have the expected value.",
                     "The checked value's autoproperty 'Application' (field '<Application>k__BackingField'):",
@@ -240,7 +240,7 @@
             var y = new DummyWithAutoProperty();
             x.Application = "check";
 
-            Check.ThatCode(() => { Check.That(y).HasFieldsWithSameValues(x); }).IsAFaillingCheckWithMessage(
+            Check.ThatCode(() => { Check.That(y).HasFieldsWithSameValues(x); }).IsAFailingCheckWithMessage(
                     "",
                     "The checked value's autoproperty 'Application' (field '<Application>k__BackingField') does not have the expected value.",
                     "The checked value's autoproperty 'Application' (field '<Application>k__BackingField'):",
@@ -263,7 +263,7 @@
             var x = new { x = new DummyClass(2, 3), text = "thePrivateField" };
             var y = new { x = new DummyClass(2, 4), text = "thePrivateField" };
 
-            Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(y); }).IsAFaillingCheckWithMessage(
+            Check.ThatCode(() => { Check.That(x).HasFieldsWithSameValues(y); }).IsAFailingCheckWithMessage(
                     Environment.NewLine + "The checked value's field 'x.y' does not have the expected value."
                     + Environment.NewLine + "The checked value's field 'x.y':" + Environment.NewLine + "\t[3]" + Environment.NewLine
                     + "The expected value's field 'x.y':" + Environment.NewLine + "\t[4]");

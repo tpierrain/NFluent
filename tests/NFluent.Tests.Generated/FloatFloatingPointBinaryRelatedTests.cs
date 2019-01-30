@@ -54,7 +54,7 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).IsNaN();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked float value is a number whereas it must not." + Environment.NewLine + "The checked float value:" + Environment.NewLine + "\t[20]");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked float value is a number whereas it must not." + Environment.NewLine + "The checked float value:" + Environment.NewLine + "\t[20]");
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace NFluent.Tests
             {
                 Check.That(NotANumber).Not.IsNaN();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked float value is not a number (NaN) whereas it must." + Environment.NewLine + "The checked float value:" + Environment.NewLine + "\t[NaN]");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked float value is not a number (NaN) whereas it must." + Environment.NewLine + "The checked float value:" + Environment.NewLine + "\t[NaN]");
         }
 
         #endregion
@@ -90,7 +90,7 @@ namespace NFluent.Tests
             {
                 Check.That(InfiniteNumber).IsFinite();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked float value is an infinite number whereas it must not." + Environment.NewLine + "The checked float value:" + Environment.NewLine + "\t[Infinity]");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked float value is an infinite number whereas it must not." + Environment.NewLine + "The checked float value:" + Environment.NewLine + "\t[Infinity]");
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace NFluent.Tests
             {
                 Check.That(Twenty).Not.IsFinite();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked float value is a finite number whereas it must not." + Environment.NewLine + "The checked float value:" + Environment.NewLine + "\t[20]");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked float value is a finite number whereas it must not." + Environment.NewLine + "The checked float value:" + Environment.NewLine + "\t[20]");
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace NFluent.Tests
             {
                 Check.ThatCode(() => {
                     Check.That(TwentyF).IsCloseTo(20.1, 0.01);
-                }).IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked value is outside the expected value range." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[20]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[20.1 (+/- 0.01)]");
+                }).IsAFailingCheckWithMessage(Environment.NewLine+ "The checked value is outside the expected value range." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[20]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[20.1 (+/- 0.01)]");
             }
         }
 

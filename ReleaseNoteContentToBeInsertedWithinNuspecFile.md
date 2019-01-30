@@ -33,7 +33,7 @@ Example
 * Fixed error messages for negated checks on dynamics
 
 ### GitHub Issues
-* #269, #274, #270, #275, #276, #280, #28
+* #269, #274, #270, #275, #276, #280, #283, #184
 
 ---------------
 ## V 2.4.0

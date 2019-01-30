@@ -63,7 +63,7 @@ namespace NFluent.Tests
             {
                 Check.That(SimpleDico).ContainsKey("value");
             })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked dictionary does not contain the expected key.",
                     "The checked dictionary:",
                     "\t{[demo, value], [other, test]} (2 items)",
@@ -84,7 +84,7 @@ namespace NFluent.Tests
             {
                 Check.That(SimpleDico).Not.ContainsKey("demo");
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked dictionary does contain the given key, whereas it must not.",
                     "The checked dictionary:",
                     "\t{[demo, value], [other, test]} (2 items)",
@@ -105,7 +105,7 @@ namespace NFluent.Tests
             {
                 Check.That(SimpleDico).ContainsValue("demo");
             })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked dictionary does not contain the expected value.",
                     "The checked dictionary:",
                     "\t{[demo, value], [other, test]} (2 items)",
@@ -126,7 +126,7 @@ namespace NFluent.Tests
             {
                 Check.That(SimpleDico).Not.ContainsValue("value");
             })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked dictionary does contain the given value, whereas it must not.",
                     "The checked dictionary:",
                     "\t{[demo, value], [other, test]} (2 items)",
@@ -145,7 +145,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
                     Check.That(SimpleDico).Not.ContainsPair("demo", "value"))
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked dictionary does contain the given key-value pair, whereas it must not.",
                     "The checked dictionary:",
                     "\t{[demo, value], [other, test]} (2 items)",
@@ -164,7 +164,7 @@ namespace NFluent.Tests
             Check.That(customDic).ContainsKey("key");
             Check.That(customDic).ContainsValue(12);
             Check.That(customDic).ContainsPair("key", 12);
-            Check.ThatCode(() => Check.That(customDic).ContainsKey("missing")).IsAFaillingCheckWithMessage("",
+            Check.ThatCode(() => Check.That(customDic).ContainsKey("missing")).IsAFailingCheckWithMessage("",
                 "The checked enumerable does not contain the expected key.",
                 "The checked enumerable:",
                 "\t{[otherKey, 15], [key, 12]} (2 items)",
@@ -172,7 +172,7 @@ namespace NFluent.Tests
                 "\t[\"missing\"]");
             // test with empty array
             Check.ThatCode(()=>
-            Check.That(new List<KeyValuePair<string, int>>()).ContainsPair("key", 12)).IsAFaillingCheckWithMessage("",
+            Check.That(new List<KeyValuePair<string, int>>()).ContainsPair("key", 12)).IsAFailingCheckWithMessage("",
                 "The checked enumerable does not contain the expected key-value pair. The given key was not found.",
                 "The checked enumerable:",
                 "\t{} (0 item)",
@@ -185,7 +185,7 @@ namespace NFluent.Tests
             WorkWithEmptyEnumerationOfKeyValuePair()
         {
             var customDic = new List<KeyValuePair<string, int>>();
-            Check.ThatCode(() => Check.That(customDic).ContainsKey("missing")).IsAFaillingCheckWithMessage("",
+            Check.ThatCode(() => Check.That(customDic).ContainsKey("missing")).IsAFailingCheckWithMessage("",
                 "The checked enumerable does not contain the expected key.",
                 "The checked enumerable:",
                 "\t{} (0 item)",
@@ -202,7 +202,7 @@ namespace NFluent.Tests
             IReadOnlyDictionary<string, string> roDico = new RoDico(SimpleDico);
             Check.That(roDico).ContainsKey("demo");
             Check.That(roDico).ContainsPair("demo", "value");
-            Check.ThatCode(() => Check.That(roDico).ContainsKey("missing")).IsAFaillingCheckWithMessage("",
+            Check.ThatCode(() => Check.That(roDico).ContainsKey("missing")).IsAFailingCheckWithMessage("",
             "The checked enumerable does not contain the expected key.",
                 "The checked enumerable:",
                 "\t{[demo, value], [other, test]} (2 items)",
@@ -232,28 +232,28 @@ namespace NFluent.Tests
         {
             var basic = new Hashtable {["foo"] = "bar"};
             Check.ThatCode(()=>
-            Check.That(basic).ContainsKey("bar")).IsAFaillingCheckWithMessage("",
+            Check.That(basic).ContainsKey("bar")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does not contain the expected key.",
                 "The checked dictionary:",
                 "\t{[foo, bar]} (1 item)",
                 "Expected key:",
                 "\t[\"bar\"]");
             Check.ThatCode(()=>
-            Check.That(basic).ContainsValue("foo")).IsAFaillingCheckWithMessage("",
+            Check.That(basic).ContainsValue("foo")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does not contain the expected value.",
                 "The checked dictionary:", 
                 "\t{[foo, bar]} (1 item)", 
                 "Expected value:", 
                 "\t[\"foo\"]");
             Check.ThatCode(()=>
-            Check.That(basic).ContainsPair("bar", "foo")).IsAFaillingCheckWithMessage("",
+            Check.That(basic).ContainsPair("bar", "foo")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does not contain the expected key-value pair. The given key was not found.",
                 "The checked dictionary:", 
                 "\t{[foo, bar]} (1 item)", 
                 "Expected pair:", 
                 "\t[[bar, foo]]");
             Check.ThatCode(()=>
-                Check.That(basic).ContainsPair("foo", "foo")).IsAFaillingCheckWithMessage("",
+                Check.That(basic).ContainsPair("foo", "foo")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does not contain the expected value for the given key.",
                 "The checked dictionary:", 
                 "\t{[foo, bar]} (1 item)", 
@@ -266,21 +266,21 @@ namespace NFluent.Tests
         {
             var basic = new Hashtable {["foo"] = "bar"};
             Check.ThatCode(()=>
-            Check.That(basic).Not.ContainsKey("foo")).IsAFaillingCheckWithMessage("",
+            Check.That(basic).Not.ContainsKey("foo")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does contain the given key, whereas it must not.",
                 "The checked dictionary:",
                 "\t{[foo, bar]} (1 item)", 
                 "Forbidden key:",
                 "\t[\"foo\"]");
             Check.ThatCode(()=>
-            Check.That(basic).Not.ContainsValue("bar")).IsAFaillingCheckWithMessage("",
+            Check.That(basic).Not.ContainsValue("bar")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does contain the given value, whereas it must not.",
                 "The checked dictionary:", 
                 "\t{[foo, bar]} (1 item)", 
                 "Forbidden value:", 
                 "\t[\"bar\"]");
             Check.ThatCode(()=>
-                Check.That(basic).Not.ContainsPair("foo", "bar")).IsAFaillingCheckWithMessage("",
+                Check.That(basic).Not.ContainsPair("foo", "bar")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does contain the given key-value pair, whereas it must not.",
                 "The checked dictionary:", 
                 "\t{[foo, bar]} (1 item)", 
@@ -293,7 +293,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                     Check.That(SimpleDico).ContainsPair("demo", "1")
                 )
-                .IsAFaillingCheckWithMessage(
+                .IsAFailingCheckWithMessage(
                 "",
                 "The checked dictionary does not contain the expected value for the given key.",
                 "The checked dictionary:",
@@ -304,7 +304,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                     Check.That(SimpleDico).ContainsPair("demo2", "1")
                 )
-                .IsAFaillingCheckWithMessage(
+                .IsAFailingCheckWithMessage(
                 "",
                 "The checked dictionary does not contain the expected key-value pair. The given key was not found.",
                 "The checked dictionary:",

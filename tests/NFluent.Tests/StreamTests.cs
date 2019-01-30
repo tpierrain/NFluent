@@ -67,7 +67,7 @@ namespace NFluent.Tests
                     }
                 }
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked stream has the same content as the other one, whereas it must not.",
                     "The checked stream:",
                     "\t[System.IO.MemoryStream (Length: 13)]",
@@ -128,7 +128,7 @@ namespace NFluent.Tests
                     }
                 }
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked stream doesn't have the same content as the expected one. They don't even have the same Length!",
                     "The checked stream:",
                     "\t[System.IO.MemoryStream (Length: 18)]",
@@ -157,7 +157,7 @@ namespace NFluent.Tests
                     }
                 }
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked stream doesn't have the same content as the expected one (despite the fact that they have the same Length: 12).",
                     "The checked stream:",
                     "\t[System.IO.MemoryStream (Length: 12)]",

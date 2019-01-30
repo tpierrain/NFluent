@@ -46,7 +46,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                     Check.That((object) null).IsEqualTo(new object())
                 )
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked value is different from the expected one.",
                     "The checked value:",
                     "\t[null] of type: [object]",
@@ -116,7 +116,7 @@ namespace NFluent.Tests
             var otherReference = heroe;
 
             Check.ThatCode(() => { Check.That(heroe).Not.IsEqualTo(otherReference); })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked value is equal to the given one whereas it must not.",
                     "The expected value: different from",
                     "\t[Gandhi] of type: [NFluent.Tests.Person]");
@@ -156,7 +156,7 @@ namespace NFluent.Tests
             var otherSimilarButNotEqualArray = new[] {45, 43, 54, 667};
 
             Check.ThatCode(() => { Check.That(array).IsEqualTo(otherSimilarButNotEqualArray); })
-                .IsAFaillingCheckWithMessage("", 
+                .IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one.", 
                     "The checked enumerable:", 
                     "\t{45, 43, 54, 666} (4 items)", 
@@ -171,7 +171,7 @@ namespace NFluent.Tests
             var otherSimilarButNotEqualArray = new int[6];
 
             Check.ThatCode(() => { Check.That(array).IsEqualTo(otherSimilarButNotEqualArray); })
-                .IsAFaillingCheckWithMessage("", 
+                .IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one.", 
                     "The checked enumerable:", 
                     "\t{{0, 0, 0}, {0, 0, 0}} (6 items) of type: [int[]]", 
@@ -194,7 +194,7 @@ namespace NFluent.Tests
             var first = "Son of a test";
 
             Check.ThatCode(() => { Check.That(first).IsEqualTo("no way"); })
-                .IsAFaillingCheckWithMessage(Environment.NewLine +
+                .IsAFailingCheckWithMessage(Environment.NewLine +
                                              "The checked string is different from expected one." +
                                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                                              "\t[\"Son of a test\"]" + Environment.NewLine + "The expected string:" +
@@ -207,7 +207,7 @@ namespace NFluent.Tests
             var first = "Son of a test";
 
             Check.ThatCode(() => { Check.That(first).Not.IsEqualTo(first); })
-                .IsAFaillingCheckWithMessage(Environment.NewLine +
+                .IsAFailingCheckWithMessage(Environment.NewLine +
                                              "The checked string is equal to the given one whereas it must not." +
                                              Environment.NewLine + "The expected string: different from" +
                                              Environment.NewLine + "\t[\"Son of a test\"]");
@@ -220,7 +220,7 @@ namespace NFluent.Tests
             var bastard = new Person {Name = "PolPot"};
 
             Check.ThatCode(() => { Check.That(heroe).IsEqualTo(bastard); })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked value is different from the expected one.",
                     "The checked value:",
                     "\t[Gandhi]",
@@ -234,7 +234,7 @@ namespace NFluent.Tests
             var first = "Son of a test";
 
             Check.ThatCode(() => { Check.That(first).IsEqualTo(null); })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked string is not null whereas it must.",
                     "The checked string:",
                     "\t[\"Son of a test\"]",
@@ -246,7 +246,7 @@ namespace NFluent.Tests
         public void IsEqualToThrowsProperExceptionEvenWithNullAsValue()
         {
             Check.ThatCode(() => { Check.That((string) null).IsEqualTo("Kamoulox !"); })
-                .IsAFaillingCheckWithMessage(Environment.NewLine + "The checked string is null whereas it must not." +
+                .IsAFailingCheckWithMessage(Environment.NewLine + "The checked string is null whereas it must not." +
                                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                                              "\t[null]" + Environment.NewLine + "The expected string:" +
                                              Environment.NewLine + "\t[\"Kamoulox !\"]");
@@ -259,7 +259,7 @@ namespace NFluent.Tests
             var son = new Child {Name = "John"};
 
             Check.ThatCode(() => { Check.That(son).IsEqualTo(dad); })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked value is different from the expected one.",
                     "The checked value:",
                     "\t[John] of type: [NFluent.Tests.Child]",
@@ -274,7 +274,7 @@ namespace NFluent.Tests
             Person uncle = new Person {Name = "John", HashCode = 3};
 
             Check.ThatCode(() => { Check.That(uncle).IsEqualTo(dad); })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked value is different from the expected one.",
                     "The checked value:",
                     "\t[John] with HashCode: [3]",
@@ -288,7 +288,7 @@ namespace NFluent.Tests
             Person dad = new Person {Name = "John", HashCode = 2};
 
             Check.ThatCode(() => { Check.That("John").IsEqualTo(dad); })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked string is different from the expected value.",
                     "The checked string:",
                     "\t[\"John\"] of type: [string]",
@@ -380,7 +380,7 @@ namespace NFluent.Tests
             var otherReferenceToSameObject = first;
 
             Check.ThatCode(() => { Check.That(first).IsNotEqualTo(otherReferenceToSameObject); })
-                .IsAFaillingCheckWithMessage(Environment.NewLine +
+                .IsAFailingCheckWithMessage(Environment.NewLine +
                                              "The checked string is equal to the given one whereas it must not." +
                                              Environment.NewLine + "The expected string: different from" +
                                              Environment.NewLine + "\t[\"Son of a test\"]");
@@ -392,7 +392,7 @@ namespace NFluent.Tests
             var first = "Son of a test";
 
             Check.ThatCode(() => { Check.That(first).Not.IsNotEqualTo("what?"); })
-                .IsAFaillingCheckWithMessage(Environment.NewLine +
+                .IsAFailingCheckWithMessage(Environment.NewLine +
                                              "The checked string is different from expected one." +
                                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                                              "\t[\"Son of a test\"]" + Environment.NewLine + "The expected string:" +
@@ -429,7 +429,7 @@ namespace NFluent.Tests
             var magicNumber = 42;
 
             Check.ThatCode(() => { Check.That(question).Equals(magicNumber); })
-                .IsAFaillingCheckWithMessage(Environment.NewLine +
+                .IsAFailingCheckWithMessage(Environment.NewLine +
                                              "The checked string is different from the expected value." +
                                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                                              "\t[\"What is the question?\"] of type: [string]" + Environment.NewLine +
@@ -484,7 +484,7 @@ namespace NFluent.Tests
             otherRecursive.Add(interim);
             Check.ThatCode(() => Check.That(recursive).IsEqualTo(otherRecursive)).IsAFaillingCheck();
             Check.ThatCode(() => Check.That(new List<object> {a, a}).IsEqualTo(recursive)).
-                IsAFaillingCheckWithMessage("", 
+                IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one.", 
                     "The checked enumerable:", 
                     "\t{{1, 2}, {1, 2}} (2 items)", 

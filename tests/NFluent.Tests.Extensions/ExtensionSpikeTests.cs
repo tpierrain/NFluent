@@ -12,7 +12,7 @@
  //   limitations under the License.
  // </copyright>
  // --------------------------------------------------------------------------------------------------------------------
-// ReSharper disable once CheckNamespace
+
 namespace NFluent.Tests.Extensions
 {
     using System;
@@ -41,9 +41,9 @@ namespace NFluent.Tests.Extensions
             // here: 
             // the interface referenced as the type parameter of the fluent check: IComparable
             // and the sut type: System.Version
-            Version v1 = new Version(1, 0);
-            Version v2 = new Version(2, 0);
-            Version v3 = new Version(3, 0);
+            var v1 = new Version(1, 0);
+            var v2 = new Version(2, 0);
+            var v3 = new Version(3, 0);
 
             Check.That(v1).IsBefore(v2).And.IsBefore(v3);
         }
@@ -56,7 +56,6 @@ namespace NFluent.Tests.Extensions
 
             Check.That(pi).IsInstanceOf<decimal>().And.IsNotZero().And.IsStrictlyPositive();
 
-            // TODO make the next line to build
              Check.That(one).IsBefore(pi);
         }
 
@@ -102,7 +101,7 @@ namespace NFluent.Tests.Extensions
                 "\t[12] of type: [int]");
         }
 
-        class StringReporting : IErrorReporter
+        private class StringReporting : IErrorReporter
         {
             public string Error { get; private set; }
             public void ReportError(string message)

@@ -18,7 +18,7 @@
         public void ShouldFailWhenAttributeNotFound()
         {
             Check.ThatCode(() => { Check.That<TypeRelatedTests>().HasAttribute<OneTimeSetUpAttribute>(); })
-                .IsAFaillingCheckWithMessage(
+                .IsAFailingCheckWithMessage(
                 string.Empty,
                 "The checked value does not have an attribute of the expected type.",
                 "The checked value:",
@@ -29,7 +29,7 @@
         public void ShouldFailWhenAttributesOnParent()
         {
             Check.ThatCode(() => { Check.That<Child>().HasAttribute<TestFixtureAttribute>(); })
-                .IsAFaillingCheckWithMessage(
+                .IsAFailingCheckWithMessage(
                     string.Empty,
                     "The checked value does not have an attribute of the expected type.",
                     "The checked value:",

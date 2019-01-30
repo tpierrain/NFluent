@@ -36,7 +36,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(500)).IsLessThan(100, TimeUnit.Milliseconds);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked duration is more than the limit.",
                     "The checked duration:",
                     "\t[500 Milliseconds]",
@@ -46,7 +46,7 @@ namespace NFluent.Tests
                 {
                     Check.That(TimeSpan.FromMilliseconds(100)).IsLessThan(100, TimeUnit.Milliseconds);
                 })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked duration is more than the limit.",
                     "The checked duration:",
                     "\t[100 Milliseconds]",
@@ -61,7 +61,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(100)).Not.IsLessThan(600, TimeUnit.Milliseconds);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked duration is not more than the limit.",
                     "The checked duration:",
                     "\t[100 Milliseconds]",
@@ -76,7 +76,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(500)).IsLessThan(TimeSpan.FromMilliseconds(100));
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked duration is more than the limit.",
                     "The checked duration:",
                     "\t[500 Milliseconds]",
@@ -91,7 +91,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(100)).Not.IsLessThan(TimeSpan.FromMilliseconds(600));
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked duration is not more than the limit.",
                     "The checked duration:",
                     "\t[100 Milliseconds]", 
@@ -115,7 +115,7 @@ namespace NFluent.Tests
                 {
                     Check.That(TimeSpan.FromMilliseconds(50)).IsGreaterThan(100, TimeUnit.Milliseconds);
                 })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked duration is not more than the limit.",
                     "The checked duration:",
                     "\t[50 Milliseconds]",
@@ -125,7 +125,7 @@ namespace NFluent.Tests
                 {
                     Check.That(TimeSpan.FromMilliseconds(100)).IsGreaterThan(100, TimeUnit.Milliseconds);
                 })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked duration is not more than the limit.",
                     "The checked duration:",
                     "\t[100 Milliseconds]",
@@ -140,7 +140,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(100)).Not.IsGreaterThan(50, TimeUnit.Milliseconds);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked duration is more than the limit.",
                     "The checked duration:",
                     "\t[100 Milliseconds]",
@@ -155,7 +155,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(50)).IsGreaterThan(TimeSpan.FromMilliseconds(100));
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked duration is not more than the limit.",
                     "The checked duration:",
                     "\t[50 Milliseconds]",
@@ -170,7 +170,7 @@ namespace NFluent.Tests
                 {
                     Check.That(TimeSpan.FromMilliseconds(100)).Not.IsGreaterThan(TimeSpan.FromMilliseconds(50));
                 })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked duration is more than the limit.",
                     "The checked duration:",
                     "\t[100 Milliseconds]",
@@ -192,7 +192,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(50)).IsEqualTo(40, TimeUnit.Milliseconds);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked duration is different from the expected one.",
                     "The checked duration:", 
                     "\t[50 Milliseconds]",
@@ -207,7 +207,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(50)).Not.IsEqualTo(50, TimeUnit.Milliseconds);
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked duration is the same than given one, whereas it must not.",
                     "The checked duration:",
                     "\t[50 Milliseconds]",
@@ -222,7 +222,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(50)).IsEqualTo(TimeSpan.FromMilliseconds(40));
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                                          "The checked duration is different from the expected one.",
                     "The checked duration:",
                     "\t[50 Milliseconds]",
@@ -237,7 +237,7 @@ namespace NFluent.Tests
             {
                 Check.That(TimeSpan.FromMilliseconds(50)).Not.IsEqualTo(TimeSpan.FromMilliseconds(50));
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked duration is the same than given one, whereas it must not.",
                     "The checked duration:",
                     "\t[50 Milliseconds]",

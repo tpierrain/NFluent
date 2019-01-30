@@ -52,7 +52,7 @@ namespace NFluent.Tests
 
             Check.ThatCode(() =>
                 checker.BeginCheck().FailIfNull().CheckSutAttributes(point => point.x, "x coordinate")
-                    .FailWhen(i => i > 0, "Should be positive").EndCheck()).IsAFaillingCheckWithMessage("", "The checked value's x coordinate is null.");
+                    .FailWhen(i => i > 0, "Should be positive").EndCheck()).IsAFailingCheckWithMessage("", "The checked value's x coordinate is null.");
         }
 
 

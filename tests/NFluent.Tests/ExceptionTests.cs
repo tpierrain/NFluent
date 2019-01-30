@@ -56,7 +56,7 @@ namespace NFluent.Tests
                 {
                     Check.ThatCode(() => { throw new Exception(); }).Throws<InvalidOperationException>();
                 })
-                .IsAFaillingCheckWithMessage("",
+                .IsAFailingCheckWithMessage("",
                     "The checked code's raised exception is of a different type than expected.",
                     "The checked code's raised exception:",
                     "*",
@@ -72,7 +72,7 @@ namespace NFluent.Tests
                 // ReSharper disable once ObjectCreationAsStatement
                 Check.ThatCode(() => { new object(); }).ThrowsAny();
             })
-            .IsAFaillingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
+            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace NFluent.Tests
                 // ReSharper disable once ObjectCreationAsStatement
                 Check.ThatCode(() => { new object(); }).Throws<Exception>();
             })
-            .IsAFaillingCheckWithMessage("",
+            .IsAFailingCheckWithMessage("",
                     "The checked code did not raise an exception, whereas it must.",
                     "The expected code's raised exception:",
                     "\tan instance of type: [System.Exception]");

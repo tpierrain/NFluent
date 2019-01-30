@@ -25,13 +25,21 @@ namespace NFluent.Helpers
     /// </summary>
     public static class FailureHandler
     {
+        /// <inheritdoc cref="IsAFailingCheckWithMessage"/>
+        [Obsolete("Use IsAFailingCheckWithMessage instead (typo)")]
+        public static ICheckLink<ICodeCheck<RunTrace>> IsAFaillingCheckWithMessage(this ICodeCheck<RunTrace> check,
+            params string[] lines)
+        {
+            return check.IsAFailingCheckWithMessage(lines);
+        }
+
         /// <summary>
         ///     Verify that the code results in a failed NFluent check with a specified message.
         /// </summary>
         /// <param name="check"></param>
         /// <param name="lines"></param>
         /// <returns>A link check</returns>
-        public static ICheckLink<ICodeCheck<RunTrace>> IsAFaillingCheckWithMessage(this ICodeCheck<RunTrace> check,
+        public static ICheckLink<ICodeCheck<RunTrace>> IsAFailingCheckWithMessage(this ICodeCheck<RunTrace> check,
             params string[] lines)
         {
             ExtensibilityHelper.BeginCheck(check)
@@ -39,7 +47,7 @@ namespace NFluent.Helpers
                 .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
                 .FailIfNull("The check succeeded whereas it should have failed.")
                 .FailWhen((sut) => !ExceptionHelper.IsFailedException(sut),
-                    "The exception raised is not of the expected type")
+                    $"The exception raised is not of the expected type.")
                 .CheckSutAttributes((sut) => sut.Message.SplitAsLines(), "error message")
                 .Analyze((messageLines, test) =>
                 {
