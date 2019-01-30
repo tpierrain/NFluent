@@ -12,7 +12,7 @@
 //    limitations under the License.
 // </copyright>
 // <summary>
-//   Implements fluent chaine syntax for IEnumerables.
+//   Implements fluent chained syntax for IEnumerables.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
@@ -36,7 +36,7 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> Only(this IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> chainedCheckLink)
+        public static IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> Only<T>(this IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> chainedCheckLink)
         {
             chainedCheckLink.AccessCheck.IsOnlyMadeOf(chainedCheckLink.OriginalComparand);
             return chainedCheckLink;

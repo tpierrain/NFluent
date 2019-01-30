@@ -95,6 +95,26 @@ namespace NFluent.Extensibility
         /// Initiates a check logic chain.
         /// </summary>
         /// <typeparam name="T">Type of sut</typeparam>
+        /// <typeparam name="TU">Target type</typeparam>
+        /// <param name="check">The fluent check instance to work on.</param>
+        /// <param name="converter">Conversion method </param>
+        /// <returns>An <see cref="ICheckLogic{T}"/>instance.</returns>
+        public static ICheckLogic<TU> BeginCheckAs<T, TU>(ICheck<T> check, Func<T, TU> converter) where TU: class
+        {
+            var toConvert = ExtractChecker(check).Value;
+            ICheck<TU> altCheck = new FluentCheck<TU>(toConvert == null ? null : converter(toConvert));
+            if (ExtractChecker(check).Negated)
+            {
+                altCheck = altCheck.Not;
+            }
+            return ExtractChecker(altCheck).BeginCheck();
+        }
+
+
+        /// <summary>
+        /// Initiates a check logic chain.
+        /// </summary>
+        /// <typeparam name="T">Type of sut</typeparam>
         /// <param name="check">The fluent check instance to work on.</param>
         /// <returns>An <see cref="ICheckLogic{T}"/>instance.</returns>
         public static ICheckLogic<T> BeginCheck<T>(ICodeCheck<T> check) where T : RunTrace

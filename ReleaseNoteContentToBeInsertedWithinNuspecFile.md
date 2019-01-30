@@ -22,6 +22,7 @@ Example
 * Align to Microsoft guidelines for OSS libraries (https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/)
 * HasAvalue() and HasNoValue() are available on all nullable types
 * Add support for WithCustomMessage for dynamics.
+* Revised signature for enumerable checks to reduce type erasure (loss of type information when chaining checks)
 
 ### Fixes
 * Fix false positive with TimeSpan due linked to precision loss. It concerns: IsEqualTo(TimeSpan), IsLessThan(TimeSpan), IsGreaterThan(TimeSpan)

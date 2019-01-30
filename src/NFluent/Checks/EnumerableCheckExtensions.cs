@@ -34,19 +34,37 @@ namespace NFluent
         /// Checks that the enumerable contains all the given expected values, in any order.
         /// </summary>
         /// <typeparam name="T">Type of the elements contained in the enumerable.</typeparam>
-        /// <typeparam name="TU">Type of enumeration</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <returns>
         ///  A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values.</exception>
-        public static IExtendableCheckLink<ICheck<TU>, IEnumerable> Contains<TU, T>(
-            this ICheck<TU> check,
-            params T[] expectedValues) where TU: class, IEnumerable
+        public static IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> Contains<T>(
+            this ICheck<IEnumerable<T>> check,
+            params T[] expectedValues) 
         {
             var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
-            return check.Contains(properExpectedValues);
+            ImplementContains(ExtensibilityHelper.BeginCheck(check), properExpectedValues);
+            return ExtensibilityHelper.BuildExtendableCheckLink(check, properExpectedValues);
+        }
+
+        /// <summary>
+        /// Checks that the enumerable contains all the given expected values, in any order.
+        /// </summary>
+        /// <typeparam name="T">Type of the elements contained in the enumerable.</typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expectedValues">The expected values to be found.</param>
+        /// <returns>
+        ///  A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values.</exception>
+        public static IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> Contains<T>(
+            this ICheck<IEnumerable<T>> check,
+            IEnumerable<T> expectedValues) 
+        {
+            ImplementContains(ExtensibilityHelper.BeginCheck(check), expectedValues);
+            return ExtensibilityHelper.BuildExtendableCheckLink(check, expectedValues);
         }
 
         /// <summary>
@@ -60,33 +78,35 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The enumerable does not contain all the expected values present in the other enumerable.
         /// </exception>
-        public static IExtendableCheckLink<ICheck<TU>, IEnumerable> Contains<TU>(
-            this ICheck<TU> check,
-            IEnumerable otherEnumerable) where TU:IEnumerable
+        public static IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> Contains(
+            this ICheck<IEnumerable> check, params object[] otherEnumerable)
         {
+            var properExpectedValues = ExtractEnumerableValueFromSingleEntry(otherEnumerable).Cast<object>();
+            var checker = ExtensibilityHelper.BeginCheckAs(check, enumerable => enumerable.Cast<object>());
+            ImplementContains(checker, properExpectedValues);
 
-            IList<object> notFoundValues = null;
-            ExtensibilityHelper.BeginCheck(check).
-                FailWhen((sut) => sut == null && otherEnumerable != null, 
-                    "The {0} is null and thus, does not contain the given expected value(s).").
-                DefineExpectedValues(otherEnumerable, otherEnumerable.Count()).
-                Analyze((sut, _) =>  notFoundValues = ExtractNotFoundValues(sut, otherEnumerable)).
-                FailWhen((_) => notFoundValues.Any(), string.Format(
-                    "The {{0}} does not contain the expected value(s):" + Environment.NewLine + "\t{0}", 
-                    notFoundValues.ToEnumeratedString().DoubleCurlyBraces())).
-                OnNegate("The {0} contains all the given values whereas it must not.").
-                EndCheck();
-
-            return ExtensibilityHelper.BuildExtendableCheckLink(check, otherEnumerable);
+            return ExtensibilityHelper.BuildExtendableCheckLink(check, properExpectedValues);
         }
 
+        private static void ImplementContains<T>(ICheckLogic<IEnumerable<T>> checker, IEnumerable<T> otherEnumerable)
+        {
+            IList<object> notFoundValues = null;
+            checker.FailWhen((sut) => sut == null && otherEnumerable != null,
+                    "The {0} is null and thus, does not contain the given expected value(s).")
+                .DefineExpectedValues(otherEnumerable, otherEnumerable.Count())
+                .Analyze((sut, _) => notFoundValues = ExtractNotFoundValues(sut, otherEnumerable)).FailWhen(
+                    (_) => notFoundValues.Any(), string.Format(
+                        "The {{0}} does not contain the expected value(s):" + Environment.NewLine + "\t{0}",
+                        notFoundValues.ToEnumeratedString().DoubleCurlyBraces()))
+                .OnNegate("The {0} contains all the given values whereas it must not.").EndCheck();
+        }
+        
         /// <summary>
         ///     Checks that the enumerable contains only the given expected values and nothing else, in order.
         ///     This check should only be used with IEnumerable that have a consistent iteration order
-        ///     (i.e. don't use it with Hashtable, prefer <see cref="IsOnlyMadeOf{T}" /> in that case).
+        ///     (i.e. don't use it with Hashtable, prefer <see cref="IsOnlyMadeOf" /> in that case).
         /// </summary>
         /// <typeparam name="T">Type of the elements to be found.</typeparam>
-        /// <typeparam name="TU"></typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expectedValues">The expected values to be found.</param>
         /// <returns>
@@ -96,19 +116,38 @@ namespace NFluent
         ///     The enumerable does not contains only the exact given values and nothing else,
         ///     in order.
         /// </exception>
-        public static ICheckLink<ICheck<TU>> ContainsExactly<TU,T>(
-            this ICheck<TU> check,
-            params T[] expectedValues) where TU: IEnumerable
+        public static ICheckLink<ICheck<IEnumerable<T>>> ContainsExactly<T>(this ICheck<IEnumerable<T>> check, IEnumerable<T> expectedValues)
+        {
+            ImplementContainsExactly(ExtensibilityHelper.BeginCheck(check), expectedValues);
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+     
+        /// <summary>
+        ///     Checks that the enumerable contains only the given expected values and nothing else, in order.
+        ///     This check should only be used with IEnumerable that have a consistent iteration order
+        ///     (i.e. don't use it with Hashtable, prefer <see cref="IsOnlyMadeOf" /> in that case).
+        /// </summary>
+        /// <typeparam name="T">Type of the elements to be found.</typeparam>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expectedValues">The expected values to be found.</param>
+        /// <returns>
+        ///     A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        ///     The enumerable does not contains only the exact given values and nothing else,
+        ///     in order.
+        /// </exception>
+        public static ICheckLink<ICheck<IEnumerable<T>>> ContainsExactly<T>(this ICheck<IEnumerable<T>> check, params T[] expectedValues) 
         {
             var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
-
-            return check.ContainsExactly(properExpectedValues);
+            ImplementContainsExactly(ExtensibilityHelper.BeginCheck(check), properExpectedValues);
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
         ///     Checks that the enumerable contains only the values of another enumerable and nothing else, in order.
         ///     This check should only be used with IEnumerable that have a consistent iteration order
-        ///     (i.e. don't use it with Hashtable, prefer <see cref="IsOnlyMadeOf{T}" /> in that case).
+        ///     (i.e. don't use it with Hashtable, prefer <see cref="IsOnlyMadeOf" /> in that case).
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="otherEnumerable">The other enumerable containing the exact expected values to be found.</param>
@@ -119,18 +158,23 @@ namespace NFluent
         ///     The enumerable does not contains only the exact given values and nothing else,
         ///     in order.
         /// </exception>
-        public static ICheckLink<ICheck<TU>> ContainsExactly<TU>(
-            this ICheck<TU> check,
-            IEnumerable otherEnumerable) where TU: IEnumerable
+        public static ICheckLink<ICheck<IEnumerable>> ContainsExactly(
+            this ICheck<IEnumerable> check, params object[] otherEnumerable)
         {
-            var enumerable =  otherEnumerable== null ? null : otherEnumerable as IList<object> ?? otherEnumerable.Cast<object>().ToList();
-            var test = ExtensibilityHelper.BeginCheck(check).
-                DefineExpectedValues(enumerable, enumerable?.Count ?? 0).
-                FailWhen(sut => sut == null && enumerable != null,
-                    "The {0} is null and thus does not contain exactly the {1}.", MessageOption.NoCheckedBlock).
-                FailWhen(sut => sut != null && enumerable == null, "The {0} is not null whereas it should.",
-                    MessageOption.NoExpectedBlock).
-                OnNegate("The {0} contains exactly the given values whereas it must not.", MessageOption.NoExpectedBlock);
+            var properExpectedValues = ExtractEnumerableValueFromSingleEntry(otherEnumerable).Cast<object>();
+
+            ImplementContainsExactly(ExtensibilityHelper.BeginCheckAs(check, u => u.Cast<object>()), properExpectedValues);
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+        private static void ImplementContainsExactly<T, TU>(ICheckLogic<T> test, IEnumerable<TU> enumerable) where T:IEnumerable<TU>
+        {
+            var count = enumerable?.Count() ?? 0;
+            test.DefineExpectedValues(enumerable, count).FailWhen(sut => sut == null && enumerable != null,
+                "The {0} is null and thus does not contain exactly the {1}.", MessageOption.NoCheckedBlock).FailWhen(
+                sut => sut != null && enumerable == null, "The {0} is not null whereas it should.",
+                MessageOption.NoExpectedBlock).OnNegate("The {0} contains exactly the given values whereas it must not.",
+                MessageOption.NoExpectedBlock);
             test.Analyze((sut, runner) =>
             {
                 if (sut == null)
@@ -143,7 +187,7 @@ namespace NFluent
                 var comparer = new EqualityHelper.EqualityComparer<object>();
 
                 // ReSharper disable once PossibleNullReferenceException
-                var expectedCount = enumerable.Count;
+                var expectedCount = count;
                 var failed = false;
                 using (var second = enumerable.GetEnumerator())
                 {
@@ -151,14 +195,10 @@ namespace NFluent
                     {
                         if (!second.MoveNext() || !comparer.Equals(first.Current, second.Current))
                         {
-                            if (index == expectedCount)
-                            {
-                                test.Fail($"The {{0}} does not contain exactly the expected value(s). There are extra elements starting at index #{index}.");
-                            }
-                            else
-                            {
-                                test.Fail($"The {{0}} does not contain exactly the expected value(s). First difference is at index #{index}.");
-                            }
+                            test.Fail(
+                                index == expectedCount
+                                    ? $"The {{0}} does not contain exactly the expected value(s). There are extra elements starting at index #{index}."
+                                    : $"The {{0}} does not contain exactly the expected value(s). First difference is at index #{index}.");
 
                             test.SetValuesIndex(index);
                             failed = true;
@@ -170,14 +210,27 @@ namespace NFluent
 
                     if (second.MoveNext() && !failed)
                     {
-                        test.Fail($"The {{0}} does not contain exactly the expected value(s). Elements are missing starting at index #{index}.");
+                        test.Fail(
+                            $"The {{0}} does not contain exactly the expected value(s). Elements are missing starting at index #{index}.");
                         test.SetValuesIndex(index);
                     }
-                    
                 }
             });
             test.EndCheck();
-            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+
+        /// <summary>
+        /// Checks if the sut contains the same element than a given list.
+        /// </summary>
+        /// <param name="context">Context for the check</param>
+        /// <param name="content"></param>
+        /// <returns>A chainable link.</returns>
+        public static ICheckLink<ICheck<IEnumerable>> IsEquivalentTo(this ICheck<IEnumerable> context,
+            params object[] content)
+        {
+            ImplementEquivalentTo(ExtensibilityHelper.BeginCheckAs(context, enumerable => enumerable.Cast<object>()), content);
+            return ExtensibilityHelper.BuildCheckLink(context);
         }
 
         /// <summary>
@@ -190,9 +243,29 @@ namespace NFluent
         public static ICheckLink<ICheck<IEnumerable<T>>> IsEquivalentTo<T>(this ICheck<IEnumerable<T>> context,
             params T[] content)
         {
-            var length = content?.Length ?? 0;
-            ExtensibilityHelper.BeginCheck(context).
-                Analyze((sut, test) =>
+            var checker = ExtensibilityHelper.BeginCheck(context);
+                ImplementEquivalentTo(checker, content);
+            return ExtensibilityHelper.BuildCheckLink(context);
+        }
+
+        /// <summary>
+        /// Checks if the sut contains the same element than a given list.
+        /// </summary>
+        /// <param name="context">Context for the check</param>
+        /// <param name="content">Expected content</param>
+        /// <typeparam name="T">Type of enumerable content</typeparam>
+        /// <returns>A chainable link.</returns>
+        // GH #249
+        public static ICheckLink<ICheck<IEnumerable<T>>> IsEquivalentTo<T>(this ICheck<IEnumerable<T>> context,
+            IEnumerable<T> content)
+        {
+            return IsEquivalentTo(context, content?.ToArray());
+        }
+
+        private static void ImplementEquivalentTo<T>(ICheckLogic<IEnumerable<T>> checker, ICollection<T> content)
+        {
+            var length = content?.Count ?? 0;
+            checker.Analyze((sut, test) =>
                 {
                     if (sut == null)
                     {
@@ -200,10 +273,11 @@ namespace NFluent
                         {
                             test.Fail("The {checked} is null whereas it should not.");
                         }
+
                         return;
                     }
 
-                    if(content == null)
+                    if (content == null)
                     {
                         test.Fail("The {checked} must be null.");
                         return;
@@ -234,11 +308,8 @@ namespace NFluent
                                 $"The {{checked}} is missing {expectedContent.Count} items: {expectedContent.ToStringProperlyFormatted().DoubleCurlyBraces()}.");
                         }
                     }
-                }).
-                DefineExpectedValues(content, length).
-                OnNegate("The {checked} is equivalent to the {expected} whereas it should not.").
-                EndCheck();
-            return ExtensibilityHelper.BuildCheckLink(context);
+                }).DefineExpectedValues(content, length)
+                .OnNegate("The {checked} is equivalent to the {expected} whereas it should not.").EndCheck();
         }
 
         /// <summary>
@@ -272,20 +343,6 @@ namespace NFluent
             return ExtensibilityHelper.BuildCheckLink(context);
         }
 
-        /// <summary>
-        /// Checks if the sut contains the same element than a given list.
-        /// </summary>
-        /// <param name="context">Context for the check</param>
-        /// <param name="content">Expected content</param>
-        /// <typeparam name="T">Type of enumerable content</typeparam>
-        /// <returns>A chainable link.</returns>
-        // GH #249
-        public static ICheckLink<ICheck<IEnumerable<T>>> IsEquivalentTo<T>(this ICheck<IEnumerable<T>> context,
-            IEnumerable<T> content)
-        {
-            return IsEquivalentTo(context, content?.ToArray());
-        }
-        
         /// <summary>
         /// Checks that the given enumerable does contain all items matching a predicate.
         /// </summary>
@@ -402,7 +459,7 @@ namespace NFluent
         }
 
         /// <summary>
-        ///     Checks that the enumerable has a first element, and returns a check on that element.
+        /// Checks that the enumerable has a first element, and returns a check on that element.
         /// </summary>
         /// <typeparam name="T">The element type of the collection.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
@@ -422,7 +479,7 @@ namespace NFluent
         }
 
         /// <summary>
-        ///     Checks that the enumerable has a last element, and returns a check on that element.
+        ///  Checks that the enumerable has a last element, and returns a check on that element.
         /// </summary>
         /// <typeparam name="T">The element type of the collection.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
@@ -486,6 +543,27 @@ namespace NFluent
         ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable has not the expected number of elements.</exception>
+        public static ICheckLink<ICheck<IEnumerable<T>>> HasSize<T>(this ICheck<IEnumerable<T>> check, long expectedSize)
+        {
+            long actualSize=0;
+            ExtensibilityHelper.BeginCheck(check).
+                FailIfNull().
+                Analyze((sut, _) => actualSize = sut.Count()).
+                FailWhen(_ => actualSize != expectedSize, $"The {{0}} has {BuildElementNumberLiteral(actualSize).DoubleCurlyBraces()} instead of {expectedSize}.").
+                OnNegate($"The {{0}} has {BuildElementNumberLiteral(expectedSize).DoubleCurlyBraces()} which is unexpected.").
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+        /// <summary>
+        ///     Checks that the enumerable has the proper number of elements.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expectedSize">The expected size to be found.</param>
+        /// <returns>
+        ///     A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The enumerable has not the expected number of elements.</exception>
         public static ICheckLink<ICheck<IEnumerable>> HasSize(this ICheck<IEnumerable> check, long expectedSize)
         {
             long actualSize=0;
@@ -507,10 +585,12 @@ namespace NFluent
         ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable has not the expected number of elements.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> CountIs(this ICheck<IEnumerable> check, long expectedCount)
+        
+        public static ICheckLink<ICheck<IEnumerable<T>>> CountIs<T>(this ICheck<IEnumerable<T>> check, long expectedCount)
         {
             return HasSize(check, expectedCount);
         }
+        
 
         /// <summary>
         ///     Checks that the enumerable is empty.
@@ -557,13 +637,33 @@ namespace NFluent
         ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values provided.</exception>
-        public static ICheckLink<ICheck<IEnumerable>> IsOnlyMadeOf<T>(
-            this ICheck<IEnumerable> check,
+        public static ICheckLink<ICheck<IEnumerable<T>>> IsOnlyMadeOf<T>(
+            this ICheck<IEnumerable<T>> check,
             params T[] expectedValues)
         {
             var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
 
             return check.IsOnlyMadeOf(properExpectedValues);
+        }
+
+        /// <summary>
+        ///     Checks that the enumerable contains only the given values and nothing else, in any order.
+        ///     Note: this check succeeded with empty value.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expectedValues">The expected values to be found.</param>
+        /// <returns>
+        ///     A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The enumerable does not contain only the expected values provided.</exception>
+        public static ICheckLink<ICheck<IEnumerable>> IsOnlyMadeOf(
+            this ICheck<IEnumerable> check,
+            params object[] expectedValues)
+        {
+            var properExpectedValues = ExtractEnumerableValueFromSingleEntry(expectedValues);
+            ImplementIsOnlyMadeOf(ExtensibilityHelper.BeginCheckAs(check, enumerable => enumerable?.Cast<object>()), properExpectedValues);
+           
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
@@ -579,38 +679,40 @@ namespace NFluent
         ///     The enumerable does not contain only the expected values present in the other
         ///     enumerable.
         /// </exception>
-        public static ICheckLink<ICheck<IEnumerable>> IsOnlyMadeOf(
-            this ICheck<IEnumerable> check,
-            IEnumerable expectedValues)
+        public static ICheckLink<ICheck<IEnumerable<T>>> IsOnlyMadeOf<T>(
+            this ICheck<IEnumerable<T>> check,
+            IEnumerable<T> expectedValues)
         {
-            ExtensibilityHelper.BeginCheck(check).
-                DefineExpectedValues(expectedValues, expectedValues.Count(), comparison: "only elements from", negatedComparison:"at least one element different from").
-                FailWhen(sut => sut == null & expectedValues != null, "The {0} is null and thus, does not contain exactly the given value(s).").
-                Analyze((sut, test) =>{
-                    if (sut == null && expectedValues == null)
-                    {
-                        return;
-                    }
-
-                    var unexpectedValuesFound = ExtractUnexpectedValues(sut, expectedValues);
-
-                    if (unexpectedValuesFound.Count <= 0)
-                    {
-                        return;
-                    }
-
-                    test.Fail(
-                        string.Format(
-                            "The {{0}} does not contain only the given value(s)." 
-                            + Environment.NewLine
-                            + "It contains also other values:" 
-                            + Environment.NewLine + "\t{0}",
-                            unexpectedValuesFound.ToEnumeratedString().DoubleCurlyBraces()));
-                        }).
-                OnNegate("The {0} contains only the given values whereas it must not.").
-                EndCheck();
-
+            ImplementIsOnlyMadeOf(ExtensibilityHelper.BeginCheck(check), expectedValues);
             return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+        private static void ImplementIsOnlyMadeOf<T>(ICheckLogic<IEnumerable<T>> checker, IEnumerable expectedValues)
+        {
+            checker.DefineExpectedValues(expectedValues, expectedValues.Count(), comparison: "only elements from",
+                negatedComparison: "at least one element different from").FailWhen(sut => sut == null & expectedValues != null,
+                "The {0} is null and thus, does not contain exactly the given value(s).").Analyze((sut, test) =>
+            {
+                if (sut == null && expectedValues == null)
+                {
+                    return;
+                }
+
+                var unexpectedValuesFound = ExtractUnexpectedValues(sut, expectedValues);
+
+                if (unexpectedValuesFound.Count <= 0)
+                {
+                    return;
+                }
+
+                test.Fail(
+                    string.Format(
+                        "The {{0}} does not contain only the given value(s)."
+                        + Environment.NewLine
+                        + "It contains also other values:"
+                        + Environment.NewLine + "\t{0}",
+                        unexpectedValuesFound.ToEnumeratedString().DoubleCurlyBraces()));
+            }).OnNegate("The {0} contains only the given values whereas it must not.").EndCheck();
         }
 
         /// <summary>
@@ -713,7 +815,22 @@ namespace NFluent
             return foundElementsNumberDescription;
         }
 
-        private static IEnumerable ExtractEnumerableValueFromPossibleOneValueArray<T>(T[] expectedValues)
+        private static IEnumerable<T> ExtractEnumerableValueFromPossibleOneValueArray<T>(T[] expectedValues)
+        {
+            IEnumerable<T> properExpectedValues;
+            if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
+            {
+                properExpectedValues = expectedValues[0] as IEnumerable<T>;
+            }
+            else
+            {
+                properExpectedValues = expectedValues;
+            }
+
+            return properExpectedValues;
+        }
+
+        private static IEnumerable ExtractEnumerableValueFromSingleEntry<T>(T[] expectedValues)
         {
             IEnumerable properExpectedValues;
             if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
@@ -727,7 +844,7 @@ namespace NFluent
 
             return properExpectedValues;
         }
- 
+
         /// <summary>
         ///     Returns all expected values that aren't present in the enumerable.
         /// </summary>

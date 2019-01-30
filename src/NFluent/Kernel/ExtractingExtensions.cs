@@ -16,10 +16,9 @@
 namespace NFluent
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Reflection;
-    using Extensibility;
+
 #if !DOTNET_30 && !DOTNET_20
     using System.Linq;
 #endif
@@ -39,7 +38,7 @@ namespace NFluent
         /// An enumerable of all the property values for every <typeparamref name="T"/> objects in the <paramref name="enumerable"/>.
         /// </returns>
         /// <exception cref="System.InvalidOperationException">The object of type <typeparamref name="T"/> don't have a property with the given property name.</exception>
-        public static IEnumerable Extracting<T>(this IEnumerable<T> enumerable, string propertyName)
+        public static IEnumerable<object> Extracting<T>(this IEnumerable<T> enumerable, string propertyName)
         {
             var type = typeof(T);
             var getter = type.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
@@ -68,7 +67,7 @@ namespace NFluent
         /// </returns>
         /// <exception cref="System.InvalidOperationException">The object of type <typeparamref name="T"/> don't have a property with the given property name.</exception>
         [Obsolete("Use Extracting instead.")]
-        public static IEnumerable Properties<T>(this IEnumerable<T> enumerable, string propertyName)
+        public static IEnumerable<object> Properties<T>(this IEnumerable<T> enumerable, string propertyName)
         {
             return Extracting(enumerable, propertyName);
         }
@@ -82,7 +81,7 @@ namespace NFluent
         /// <returns>
         /// An enumerable of all the property values for every <typeparamref name="T"/> objects in the <see cref="Array"/>.
         /// </returns>
-        public static IEnumerable Extracting<T>(this T[] array, string propertyName)
+        public static IEnumerable<object> Extracting<T>(this T[] array, string propertyName)
         {
             var enumerableArray = array as IEnumerable<T>;
             return enumerableArray.Extracting(propertyName);
@@ -98,7 +97,7 @@ namespace NFluent
         /// An enumerable of all the property values for every <typeparamref name="T"/> objects in the <see cref="Array"/>.
         /// </returns>
         [Obsolete("Use Extracting instead.")]
-        public static IEnumerable Properties<T>(this T[] array, string propertyName)
+        public static IEnumerable<object> Properties<T>(this T[] array, string propertyName)
         {
             return Extracting(array, propertyName);
         }

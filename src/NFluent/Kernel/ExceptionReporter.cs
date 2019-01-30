@@ -15,9 +15,10 @@
 
 namespace NFluent.Kernel
 {
+    using System.Diagnostics;
     using Extensibility;
     using Helpers;
-
+    [DebuggerNonUserCode]
     internal class ExceptionReporter : IErrorReporter
     {
         public void ReportError(string message)
