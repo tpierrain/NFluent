@@ -1,5 +1,5 @@
 ## V 2.5.0
-### Main feature: 
+### Main feature
 * **CaptureConsole class** mocks the system console. Using it you can inject/simulate
 user input (with **Input** and **InputLine** methods) and read/review what the code has put on the
 console (with the **Output** property). The class is disposable: nnormal behavior
@@ -16,13 +16,16 @@ Example
        }
  
 ### New checks
+* Console related checks (see above)
 
 ### Improvements
 * Stabilize Assembly Version to reduce friction induced by strong naming (assembly version is still V2.4.0)
 * Align to Microsoft guidelines for OSS libraries (https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/)
 * HasAvalue() and HasNoValue() are available on all nullable types
 * Add support for WithCustomMessage for dynamics.
-* Revised signature for enumerable checks to reduce type erasure (loss of type information when chaining checks)
+* Revised signature for enumerable checks to reduce type erasure (loss of type information when chaining checks). Regression tests have been added regarding non generic IEnumerable support, but as the changes
+are significant, please revert to us if you face issues.
+
 
 ### Fixes
 * Fix false positive with TimeSpan due linked to precision loss. It concerns: IsEqualTo(TimeSpan), IsLessThan(TimeSpan), IsGreaterThan(TimeSpan)
