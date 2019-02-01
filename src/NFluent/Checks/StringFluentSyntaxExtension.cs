@@ -17,6 +17,7 @@ namespace NFluent
     using System;
     using Extensibility;
     using Extensions;
+    using Kernel;
 
     /// <summary>
     /// Provides extension method on a ICheckLink for IEnumerable types.
@@ -32,13 +33,14 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<ICheck<string>, string[]> Once(this IExtendableCheckLink<ICheck<string>, string[]> chainedCheckLink)
+        public static ExtendableCheckLink<ICheck<string>, string[]> Once(this ExtendableCheckLink<ICheck<string>, string[]> chainedCheckLink)
         {
-            ExtensibilityHelper.BeginCheck(chainedCheckLink.AccessCheck).
+            IExtendableCheckLink<ICheck<string>, string[]> context = chainedCheckLink;
+            ExtensibilityHelper.BeginCheck(context.AccessCheck).
                 CantBeNegated("Once").
                 Analyze((sut, test) =>
                 {
-                    foreach (var content in chainedCheckLink.OriginalComparand)
+                    foreach (var content in context.OriginalComparand)
                     {
                         var firstIndex = sut.IndexOf(content, StringComparison.Ordinal);
                         var lastIndexOf = sut.LastIndexOf(content, StringComparison.Ordinal);
@@ -50,7 +52,7 @@ namespace NFluent
                         }
                     }
                 }).
-                DefineExpectedValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, "once", "").EndCheck();
+                DefineExpectedValues(context.OriginalComparand, context.OriginalComparand.Length, "once", "").EndCheck();
             return chainedCheckLink;
         }
 
@@ -63,14 +65,15 @@ namespace NFluent
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<ICheck<string>, string[]> InThatOrder(this IExtendableCheckLink<ICheck<string>, string[]> chainedCheckLink)
+        public static IExtendableCheckLink<ICheck<string>, string[]> InThatOrder(this ExtendableCheckLink<ICheck<string>, string[]> chainedCheckLink)
         {
-            ExtensibilityHelper.BeginCheck(chainedCheckLink.AccessCheck).
+            IExtendableCheckLink<ICheck<string>, string[]> context = chainedCheckLink;
+            ExtensibilityHelper.BeginCheck(context.AccessCheck).
                 CantBeNegated("InThatOrder").
                 Analyze((sut, test) =>
                 {
                     var lastIndex = 0;
-                    foreach (var content in chainedCheckLink.OriginalComparand)
+                    foreach (var content in context.OriginalComparand)
                     {
                         lastIndex = sut.IndexOf(content, lastIndex, StringComparison.Ordinal);
                         if (lastIndex >= 0)
@@ -82,7 +85,7 @@ namespace NFluent
                         return;
                     }
                 }).
-                DefineExpectedValues(chainedCheckLink.OriginalComparand, chainedCheckLink.OriginalComparand.Length, "in this order", "")
+                DefineExpectedValues(context.OriginalComparand, context.OriginalComparand.Length, "in this order", "")
                 .EndCheck();    
             return chainedCheckLink;
         }

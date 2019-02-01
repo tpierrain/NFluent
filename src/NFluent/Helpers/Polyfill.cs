@@ -149,6 +149,21 @@ namespace NFluent
             return result;
         }
 
+        public static IList<T> Cast<T, TU>(this IEnumerable<TU> list)
+            where T: class
+        {
+            if (list is IList<T> list1)
+            {
+                return list1;
+            }
+            var result = new List<T>();
+            foreach (var u in list)
+            {
+                result.Add(u as T);
+            }
+            return result;
+        }
+
         public static IList<T> ToList<T>(this IEnumerable<T> list)
         {
             return new List<T>(list);

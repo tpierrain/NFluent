@@ -21,6 +21,8 @@ namespace NFluent
     using Extensibility;
     using Extensions;
     using Helpers;
+    using Kernel;
+
 #if !DOTNET_30 && !DOTNET_20
     using System.Linq;
 #endif
@@ -40,7 +42,7 @@ namespace NFluent
         ///  A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values.</exception>
-        public static IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> Contains<T>(
+        public static ExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> Contains<T>(
             this ICheck<IEnumerable<T>> check,
             params T[] expectedValues) 
         {
@@ -59,7 +61,7 @@ namespace NFluent
         ///  A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The enumerable does not contain all the expected values.</exception>
-        public static IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> Contains<T>(
+        public static ExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> Contains<T>(
             this ICheck<IEnumerable<T>> check,
             IEnumerable<T> expectedValues) 
         {
@@ -78,14 +80,14 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The enumerable does not contain all the expected values present in the other enumerable.
         /// </exception>
-        public static IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> Contains(
+        public static ExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> Contains(
             this ICheck<IEnumerable> check, params object[] otherEnumerable)
         {
             var properExpectedValues = ExtractEnumerableValueFromSingleEntry(otherEnumerable).Cast<object>();
             var checker = ExtensibilityHelper.BeginCheckAs(check, enumerable => enumerable.Cast<object>());
             ImplementContains(checker, properExpectedValues);
 
-            return ExtensibilityHelper.BuildExtendableCheckLink(check, properExpectedValues);
+            return ExtensibilityHelper.BuildExtendableCheckLink(check,(IEnumerable) properExpectedValues);
         }
 
         private static void ImplementContains<T>(ICheckLogic<IEnumerable<T>> checker, IEnumerable<T> otherEnumerable)
@@ -97,7 +99,7 @@ namespace NFluent
                 .Analyze((sut, _) => notFoundValues = ExtractNotFoundValues(sut, otherEnumerable)).FailWhen(
                     (_) => notFoundValues.Any(), string.Format(
                         "The {{0}} does not contain the expected value(s):" + Environment.NewLine + "\t{0}",
-                        notFoundValues.ToEnumeratedString().DoubleCurlyBraces()))
+                        notFoundValues.ToStringProperlyFormatted().DoubleCurlyBraces()))
                 .OnNegate("The {0} contains all the given values whereas it must not.").EndCheck();
         }
         
@@ -642,7 +644,6 @@ namespace NFluent
             params T[] expectedValues)
         {
             var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
-
             return check.IsOnlyMadeOf(properExpectedValues);
         }
 
@@ -661,7 +662,7 @@ namespace NFluent
             params object[] expectedValues)
         {
             var properExpectedValues = ExtractEnumerableValueFromSingleEntry(expectedValues);
-            ImplementIsOnlyMadeOf(ExtensibilityHelper.BeginCheckAs(check, enumerable => enumerable?.Cast<object>()), properExpectedValues);
+            ImplementIsOnlyMadeOf(ExtensibilityHelper.BeginCheckAs(check, enumerable => enumerable.Cast<object>()), properExpectedValues);
            
             return ExtensibilityHelper.BuildCheckLink(check);
         }
@@ -711,7 +712,7 @@ namespace NFluent
                         + Environment.NewLine
                         + "It contains also other values:"
                         + Environment.NewLine + "\t{0}",
-                        unexpectedValuesFound.ToEnumeratedString().DoubleCurlyBraces()));
+                        unexpectedValuesFound.ToStringProperlyFormatted().DoubleCurlyBraces()));
             }).OnNegate("The {0} contains only the given values whereas it must not.").EndCheck();
         }
 

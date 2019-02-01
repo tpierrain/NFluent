@@ -162,7 +162,7 @@ namespace NFluent
         ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The string  contains all the given strings in any order.</exception>
-        public static IExtendableCheckLink<ICheck<string>, string[]> Contains(this ICheck<string> check, params string[] values)
+        public static ExtendableCheckLink<ICheck<string>, string[]> Contains(this ICheck<string> check, params string[] values)
         {
             var block = ExtensibilityHelper.BeginCheck(check);
             ContainsLogic(values, block);
@@ -201,9 +201,9 @@ namespace NFluent
                         if (missingItems.Any())
                         {
                             test.Fail($"The {{0}} does not contain the expected value(s): " +
-                                      $"{missingItems.ToEnumeratedString().DoubleCurlyBraces()}");
+                                      $"{missingItems.ToStringProperlyFormatted().DoubleCurlyBraces()}");
                         }
-                        test.OnNegate($"The {{0}} contains unauthorized value(s): {presentItems.ToEnumeratedString().DoubleCurlyBraces()}");
+                        test.OnNegate($"The {{0}} contains unauthorized value(s): {presentItems.ToStringProperlyFormatted().DoubleCurlyBraces()}");
 
                     }).
                 //OnNegate("Can't be negated").

@@ -16,6 +16,7 @@
 namespace NFluent.Extensions
 {
     using System;
+    using System.CodeDom;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -299,7 +300,6 @@ namespace NFluent.Extensions
         /// </returns>
         public static bool IsNullable(this Type type)
         {
-            // return Nullable.GetUnderlyingType(type) != null;
 #if NETSTANDARD1_3
             if (!type.GetTypeInfo().IsGenericType)
 #else
@@ -354,19 +354,11 @@ namespace NFluent.Extensions
         public static bool IsPrimitive(this Type type)
         {
 #if DOTNET_20 || DOTNET_30 || NETSTANDARD1_3
-            var primitives = new []
+            if (type == typeof(object))
             {
-                typeof(bool), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), 
-                typeof(ulong), typeof(int*), typeof(uint*), typeof(long*), typeof(ulong*), typeof(char), typeof(double), typeof(float)
-            };
-            foreach (var primitive in primitives)
-            {
-                if (type == primitive)
-                {
-                    return true;
-                }
+                return false;
             }
-            return false;
+            return TypeToString.ContainsKey(type);
  #else
             return type.IsPrimitive;
 #endif

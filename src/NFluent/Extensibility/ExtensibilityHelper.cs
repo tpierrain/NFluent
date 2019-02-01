@@ -75,7 +75,7 @@ namespace NFluent.Extensibility
         /// <typeparam name="T">type of checked value</typeparam>
         /// <typeparam name="TU">Type of comparand for previous check</typeparam>
         /// <returns>An <see cref="IExtendableCheckLink{T,TU}"/>implementation.</returns>
-        public static IExtendableCheckLink<T, TU> BuildExtendableCheckLink<T, TU>(T check, TU value) where T: class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+        public static ExtendableCheckLink<T, TU> BuildExtendableCheckLink<T, TU>(T check, TU value) where T: class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
             return new ExtendableCheckLink<T, TU>(check, value);
         }

@@ -12,15 +12,19 @@
 //    limitations under the License.
 // </copyright>
 // <summary>
-//   Implements fluent chained syntax for IEnumerables.
+//   Implements fluent chained syntax for enumerable types.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
     using System.Collections;
     using System.Collections.Generic;
+#if !DOTNET_20 && !DOTNET_30
+    using System.Linq;
+#endif
     using Extensibility;
     using Extensions;
+    using Kernel;
 
     /// <summary>
     /// Provides extension method on a ICheckLink for IEnumerable types.
@@ -30,134 +34,187 @@ namespace NFluent
         /// <summary>
         /// Checks that the checked <see cref="IEnumerable"/> contains only the authorized items. Can only be used after a call to Contains.
         /// </summary>
-        /// <param name="chainedCheckLink">
+        /// <param name="check">
+        /// The chained fluent check.
+        /// </param>
+        /// <typeparam name="T">type of enumerated items</typeparam>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        public static ExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> Only<T>(this ExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> check)
+        {
+            IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> chainedCheckLink = check;
+            chainedCheckLink.AccessCheck.IsOnlyMadeOf(chainedCheckLink.OriginalComparand);
+            return check;
+        }
+
+        /// <summary>
+        /// Checks that the checked <see cref="IEnumerable"/> contains only the authorized items. Can only be used after a call to Contains.
+        /// </summary>
+        /// <param name="check">
         /// The chained fluent check.
         /// </param>
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> Only<T>(this IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> chainedCheckLink)
+        public static ExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> Only(this ExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> check)
         {
+            IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> chainedCheckLink = check;
             chainedCheckLink.AccessCheck.IsOnlyMadeOf(chainedCheckLink.OriginalComparand);
-            return chainedCheckLink;
+            return check;
         }
 
         /// <summary>
         /// Checks that the checked <see cref="IEnumerable"/> contains the expected list of items only once.
         /// </summary>
-        /// <param name="chainedCheckLink">
+        /// <param name="check">
         /// The chained fluent check.
         /// </param>
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<ICheck<T>, IEnumerable> Once<T>(this IExtendableCheckLink<ICheck<T>, IEnumerable> chainedCheckLink) where T: IEnumerable
+        public static ExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> Once<T>(this ExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> check)
         {
-            ExtensibilityHelper.BeginCheck(chainedCheckLink.AccessCheck).
+            IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> chainedCheckLink = check;
+            ImplementOnce(ExtensibilityHelper.BeginCheck(chainedCheckLink.AccessCheck), chainedCheckLink.OriginalComparand);
+            return check;
+        }
+
+        private static void ImplementOnce<T>(ICheckLogic<IEnumerable<T>> check, IEnumerable<T> originalComparand)
+        {
+            check.
                 CantBeNegated("Once").
-                ComparingTo(chainedCheckLink.OriginalComparand, "once of", "").
+                ComparingTo(originalComparand, "once of", "").
                 Analyze((sut, test) =>
+            {
+                var itemIndex = 0;
+                var expectedList = new List<T>(originalComparand);
+                var listedItems = new List<T>();
+                foreach (var item in sut)
                 {
-                    var itemIndex = 0;
-                    var expectedList = ToNewList(chainedCheckLink);
-                    var listedItems = new List<object>();
-                    foreach (var item in sut)
+                    if (expectedList.Contains(item))
                     {
-                        if (expectedList.Contains(item))
-                        {
-                            listedItems.Add(item);
-                            expectedList.Remove(item);
-                        }
-                        else if (listedItems.Contains(item))
-                        {
-                            test.Fail(
-                                $"The {{0}} has extra occurrences of the expected items. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] at position {itemIndex} is redundant.");
-                            return;
-                        }
-
-                        itemIndex++;
+                        listedItems.Add(item);
+                        expectedList.Remove(item);
                     }
-                }).
-                EndCheck();
+                    else if (listedItems.Contains(item))
+                    {
+                        test.Fail(
+                            $"The {{0}} has extra occurrences of the expected items. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] at position {itemIndex} is redundant.");
+                        return;
+                    }
 
-            return chainedCheckLink;
+                    itemIndex++;
+                }
+            }).
+                EndCheck();
+        }
+
+        /// <summary>
+        /// Checks that the checked <see cref="IEnumerable"/> contains the expected list of items only once.
+        /// </summary>
+        /// <param name="check">
+        /// The chained fluent check.
+        /// </param>
+        /// <returns> bv             
+        /// A check link.
+        /// </returns>
+        public static ExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> Once(this ExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> check)
+        {
+            IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> chainedCheckLink = check;
+            ImplementOnce(
+                ExtensibilityHelper.BeginCheckAs(chainedCheckLink.AccessCheck, enumerable => enumerable.Cast<object>()),
+                chainedCheckLink.OriginalComparand.Cast<object>());
+            return check;
         }
 
         /// <summary>
         /// Checks that the checked <see cref="IEnumerable"/> contains items in the expected order.
         /// </summary>
-        /// <param name="chainedCheckLink">
+        /// <param name="check">
+        /// The chained fluent check.
+        /// </param>
+        /// <typeparam name="T">Enumerated item type.</typeparam>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        public static IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> InThatOrder<T>(this IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> check)
+        {
+            IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> chainedCheckLink = check;
+            var orderedList = new List<T>(chainedCheckLink.OriginalComparand);
+            var checker = ExtensibilityHelper.BeginCheck(chainedCheckLink.AccessCheck);
+                ImplementInThatOrder(checker, orderedList);
+            return check;
+        }
+
+        /// <summary>
+        /// Checks that the checked <see cref="IEnumerable"/> contains items in the expected order.
+        /// </summary>
+        /// <param name="check">
         /// The chained fluent check.
         /// </param>
         /// <returns>
         /// A check link.
         /// </returns>
-        public static IExtendableCheckLink<ICheck<T>, IEnumerable> InThatOrder<T>(this IExtendableCheckLink<ICheck<T>, IEnumerable> chainedCheckLink) where T: IEnumerable
+        public static IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> InThatOrder(this IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> check)
         {
-            ExtensibilityHelper.BeginCheck(chainedCheckLink.AccessCheck).CantBeNegated("InThatOrder").
-                ComparingTo(chainedCheckLink.OriginalComparand, "in that order", "").
-                Analyze((sut, test) => 
+            IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> chainedCheckLink = check;
+            var orderedList = new List<object>(chainedCheckLink.OriginalComparand.Cast<object>());
+            var checker = ExtensibilityHelper.BeginCheckAs(chainedCheckLink.AccessCheck, enumerable => enumerable.Cast<object>());
+                ImplementInThatOrder(checker, orderedList);
+            return check;
+        }
+
+        private static void ImplementInThatOrder<T>(ICheckLogic<IEnumerable<T>> checker, List<T> orderedList)
+        {
+            checker.CantBeNegated("InThatOrder").ComparingTo(orderedList, "in that order", "").Analyze((sut, test) =>
+            {
+                var failingIndex = 0;
+                var scanIndex = 0;
+                foreach (var item in sut)
                 {
-                    var orderedList = ToNewList(chainedCheckLink);
-
-                    var failingIndex = 0;
-                    var scanIndex = 0;
-                    foreach (var item in sut)
+                    if (!item.Equals(orderedList[scanIndex]))
                     {
-                        if (item != orderedList[scanIndex])
+                        // if current item is part of current list, check order
+                        var index = orderedList.IndexOf(item, scanIndex);
+                        if (index < 0)
                         {
-                            // if current item is part of current list, check order
-                            var index = orderedList.IndexOf(item, scanIndex);
-                            if (index < 0)
-                            {
-                                // if not found at the end of the list, try the full list
-                                index = orderedList.IndexOf(item);
-                                if (index >= 0)
-                                {
-                                    test.Fail(
-                                        $"The {{0}} does not follow to the expected order. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] appears too late in the list, at index '{failingIndex}'.");
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                var currentReference = orderedList[scanIndex];
-                                
-                                // skip all similar entries in the expected list (tolerance: the checked enumerable may contain as many instances of one item as expected)
-                                while (currentReference == orderedList[++scanIndex])
-                                {}
-
-                                // check if skipped only similar items
-                                if (scanIndex < index)
-                                {
-                                    test.Fail(
-                                        $"The {{0}} does not follow to the expected order. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] appears too early in the list, at index '{failingIndex}'.");
-                                    break;
-
-                                }
-                            }
-
+                            // if not found at the end of the list, try the full list
+                            index = orderedList.IndexOf(item);
                             if (index >= 0)
                             {
-                                scanIndex = index;
+                                test.Fail(
+                                    $"The {{0}} does not follow to the expected order. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] appears too late in the list, at index '{failingIndex}'.");
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            var currentReference = orderedList[scanIndex];
+
+                            // skip all similar entries in the expected list (tolerance: the checked enumerable may contain as many instances of one item as expected)
+                            while (currentReference.Equals(orderedList[++scanIndex]))
+                            {
+                            }
+
+                            // check if skipped only similar items
+                            if (scanIndex < index)
+                            {
+                                test.Fail(
+                                    $"The {{0}} does not follow to the expected order. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] appears too early in the list, at index '{failingIndex}'.");
+                                break;
                             }
                         }
 
-                        failingIndex++;
+                        if (index >= 0)
+                        {
+                            scanIndex = index;
+                        }
                     }
-                }).EndCheck();
-            return chainedCheckLink;
-        }
 
-        private static List<object> ToNewList<T>(IExtendableCheckLink<ICheck<T>, IEnumerable> chainedCheckLink)
-        {
-            var orderedList = new List<object>();
-            foreach (var item in chainedCheckLink.OriginalComparand)
-            {
-                orderedList.Add(item);
-            }
-
-            return orderedList;
+                    failingIndex++;
+                }
+            }).EndCheck();
         }
     }
 }

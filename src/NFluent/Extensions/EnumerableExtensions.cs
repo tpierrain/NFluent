@@ -53,29 +53,17 @@ namespace NFluent
         }
 
         /// <summary>
-        ///     Return a string containing all the <see cref="IEnumerable" /> elements, separated by a comma.
-        /// </summary>
-        /// <param name="enumerable">The enumerable to transform into a string.</param>
-        /// <returns>
-        ///     A string containing all the <see cref="IEnumerable" /> elements, separated by a comma.
-        /// </returns>
-        public static string ToEnumeratedString(this IEnumerable enumerable)
-        {
-            return ToEnumeratedString(enumerable, 0, -1);
-        }
-
-        /// <summary>
         ///     Return a string containing all the elements of an <see cref="IEnumerable" />, separated by a given separator.
         /// </summary>
         /// <param name="enumerable"></param>
         /// <param name="fromIndex"></param>
         /// <param name="len"></param>
         /// <returns>A string containing all the <see cref="IEnumerable" /> elements, separated by the given separator.</returns>
-        public static string ToEnumeratedString(this IEnumerable enumerable, long fromIndex, long len)
+        public static string ToEnumeratedString(this IEnumerable enumerable, long fromIndex = 0, long len =-1)
         {
-            if (enumerable is Array)
+            if (enumerable is Array array)
             {
-                return ((Array) enumerable).ArrayToStringProperlyFormatted(", ", fromIndex, len);
+                return array.ArrayToStringProperlyFormatted(", ", fromIndex, len);
             }
             return enumerable.ToEnumeratedStringAdvanced(", ", fromIndex, len, new List<object>());
         }
@@ -88,15 +76,12 @@ namespace NFluent
                 return "null";
             }
 
-            var sb = new StringBuilder();
-            sb.Append('{');
             if (seen.Contains(enumerable))
             {
-                sb.Append('{');
-                sb.Append(Ellipsis);
-                sb.Append("}}");
-                return sb.ToString();
+                return "{{"+Ellipsis+"}}";
             }
+            var sb = new StringBuilder();
+            sb.Append('{');
             var iterator = enumerable.GetEnumerator();
             var copy = new List<object>(seen) {enumerable};
             // we skip the first items
@@ -166,43 +151,7 @@ namespace NFluent
             }
             for (var i = firstIndex; i < lastItem; i++)
             {
-                var temp = i;
-                var zeroesStrike = true;
-                var closingStrikes = true;
-                var closing = string.Empty;
-                for (var j = array.Rank-1; j >= 0; j--)
-                {
-                    var currentIndex = temp % array.SizeOfDimension(j);
-                    if (currentIndex == 0 && zeroesStrike)
-                    {
-                        if (j > 0)
-                        {
-                            result.Append('{');
-                        }
-                    }
-                    else
-                    {
-                        
-                    }
-                    {
-                        zeroesStrike = false;
-                    }
-
-                    if (currentIndex == array.SizeOfDimension(j) - 1 && closingStrikes)
-                    {
-                        if (j > 0)
-                        {
-                            closing += '}';
-                        }
-                    }
-                    else
-                    {
-                        closingStrikes = false;
-                    }
-
-                    indices[j] = currentIndex + array.GetLowerBound(j);
-                    temp /= array.GetLongLength(j);
-                }
+                var closing = HandleDimensions(array, i, result, indices);
 
                 result.Append(array.GetValue(indices).ToStringProperlyFormatted());
                 result.Append(closing);
@@ -220,5 +169,42 @@ namespace NFluent
             return result.ToString();
         }
 
+        private static string HandleDimensions(Array array, long i, StringBuilder result, long[] indices)
+        {
+            var temp = i;
+            var zeroesStrike = true;
+            var closingStrikes = true;
+            var closing = string.Empty;
+            for (var j = array.Rank - 1; j >= 0; j--)
+            {
+                var currentIndex = temp % array.SizeOfDimension(j);
+                if (currentIndex == 0 && zeroesStrike)
+                {
+                    if (j > 0)
+                    {
+                        result.Append('{');
+                    }
+                }
+
+                zeroesStrike = false;
+
+                if (currentIndex == array.SizeOfDimension(j) - 1 && closingStrikes)
+                {
+                    if (j > 0)
+                    {
+                        closing += '}';
+                    }
+                }
+                else
+                {
+                    closingStrikes = false;
+                }
+
+                indices[j] = currentIndex + array.GetLowerBound(j);
+                temp /= array.GetLongLength(j);
+            }
+
+            return closing;
+        }
     }
 }

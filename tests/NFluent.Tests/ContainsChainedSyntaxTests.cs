@@ -20,6 +20,7 @@ using System;
 
 namespace NFluent.Tests
 {
+    using System.Collections;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -32,6 +33,7 @@ namespace NFluent.Tests
         public void IsOnlyMadeOfSuccessTest()
         {
            Check.That(this.tresAmigos).Contains("dos", "un", "tres").Only();
+           Check.That((IEnumerable) this.tresAmigos).Contains("dos", "un", "tres").Only();
         }
 
         [Test]
@@ -41,6 +43,7 @@ namespace NFluent.Tests
             Check.That(this.tresAmigos).Contains("un", "dos").InThatOrder();
             Check.That(this.tresAmigos).Contains("un", "un", "dos", "tres").InThatOrder();
             Check.That(this.tresAmigos).Contains("dos", "tres").InThatOrder();
+            Check.That((IEnumerable)this.tresAmigos).Contains("dos", "tres").InThatOrder();
         }
 
         [Test]
@@ -95,6 +98,7 @@ namespace NFluent.Tests
         public void ContainsOnceSucceeds()
         {
             Check.That(this.tresAmigos).Contains(this.tresAmigos).Once();
+            Check.That((IEnumerable) this.tresAmigos).Contains(this.tresAmigos).Once();
         }
 
         [Test]
