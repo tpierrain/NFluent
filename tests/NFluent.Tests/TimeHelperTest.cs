@@ -61,7 +61,7 @@ namespace NFluent.Tests
             {
                 TimeHelper.GetInNanoSeconds(10, (TimeUnit)100);
             })
-            .Throws<InvalidOperationException>();
+            .Throws<InvalidOperationException>().WithMessage("100 is not a supported time unit.");
         }
 
         [Test]
@@ -76,6 +76,24 @@ namespace NFluent.Tests
             Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromHours(10))).IsEqualTo(TimeUnit.Hours);
             Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromDays(2))).IsEqualTo(TimeUnit.Days);
             Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromDays(30))).IsEqualTo(TimeUnit.Weeks);
+        }
+        [Test]
+        public void DiscoverUnitWorksOnLimitValue()
+        {
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromTicks(19))).IsEqualTo(TimeUnit.Nanoseconds);
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromTicks(20))).IsEqualTo(TimeUnit.Microseconds);
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromTicks(19999))).IsEqualTo(TimeUnit.Microseconds);
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromTicks(20000))).IsEqualTo(TimeUnit.Milliseconds);
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromMilliseconds(1999))).IsEqualTo(TimeUnit.Milliseconds);
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromMilliseconds(2000))).IsEqualTo(TimeUnit.Seconds);
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromSeconds(119))).IsEqualTo(TimeUnit.Seconds);
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromSeconds(120))).IsEqualTo(TimeUnit.Minutes);
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromMinutes(119))).IsEqualTo(TimeUnit.Minutes);
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromMinutes(120))).IsEqualTo(TimeUnit.Hours);
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromHours(47))).IsEqualTo(TimeUnit.Hours);
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromHours(48))).IsEqualTo(TimeUnit.Days);
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromDays(13))).IsEqualTo(TimeUnit.Days);
+            Check.That(TimeHelper.DiscoverUnit(TimeSpan.FromDays(14))).IsEqualTo(TimeUnit.Weeks);
         }
     }
 }

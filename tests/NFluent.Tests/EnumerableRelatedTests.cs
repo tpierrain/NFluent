@@ -107,6 +107,12 @@ namespace NFluent.Tests
             "The checked enumerable has 1 element which is unexpected.",
             "The checked enumerable:",
                 "\t{666} (1 item)");
+
+            Check.ThatCode(() => { Check.That((IEnumerable)enumerable).Not.HasSize(1); }).IsAFailingCheckWithMessage(
+                "",
+                "The checked enumerable has 1 element which is unexpected.",
+                "The checked enumerable:",
+                "\t{666} (1 item)");
         }
 
         [Test]

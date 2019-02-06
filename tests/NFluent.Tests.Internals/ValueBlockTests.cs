@@ -128,7 +128,7 @@ namespace NFluent.Tests
 
                 blk.WithHashCode();
             })
-            .Throws<NotSupportedException>();
+            .Throws<NotSupportedException>().WithMessage("Cannot use hash code for generic instance description!");
         }
 
         [Test]

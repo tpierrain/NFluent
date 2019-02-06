@@ -105,7 +105,6 @@ namespace NFluent.Tests
             var testValue = TimeSpan.FromMilliseconds(500);
             Check.That(testValue).IsGreaterThan(100, TimeUnit.Milliseconds);
             Check.That(testValue).IsGreaterThan(TimeSpan.FromMilliseconds(100));
-            Check.That(testValue).IsGreaterThan(TimeSpan.FromMilliseconds(100));
         }
 
         [Test]

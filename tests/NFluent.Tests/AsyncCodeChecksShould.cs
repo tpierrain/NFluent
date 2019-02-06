@@ -17,13 +17,24 @@
 namespace NFluent.Tests
 {
     using System;
+    using System.Diagnostics;
+    using System.Runtime.CompilerServices;
     using System.Security;
     using System.Threading;
     using System.Threading.Tasks;
     using NUnit.Framework;
 
+    public class AsyncBase
+    {
+        [AsyncStateMachine(typeof(int))]
+        virtual protected Task PseudoAsyncMethod()
+        {
+            return null;
+        }
+    }
+
     [TestFixture]
-    public class AsyncCodeChecksShould
+    public class AsyncCodeChecksShould: AsyncBase
     {
 #region Fields
 
@@ -42,13 +53,20 @@ namespace NFluent.Tests
             Check.ThatCode(DoSomethingBadAsync().Wait).Throws<AggregateException>();
             // this should work without waiting
             Check.ThatCode(DoSomethingBadAsync).Throws<SecurityException>();
-            // pseudo async method
-            Check.ThatCode(PseudoAsyncMethod).DoesNotThrow();
-
             Check.ThatCode(ReturnTheAnswerAfterAWhileAsync).DoesNotThrow();
         }
 
-        private static Task PseudoAsyncMethod()
+        [Test]
+        public void EdgeCasesForPFakeAsync()
+        {
+            // pseudo async method
+            Check.ThatCode(PseudoAsyncMethod).DoesNotThrow();
+
+        }
+
+        // this attribute is here as an attempt to fool the async method detection
+//        [DebuggerStepThrough]
+        override protected Task PseudoAsyncMethod()
         {
             return new Task(() => { });
         }

@@ -689,17 +689,34 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsEqualToErrorMessageHighlightsAllWhiteSpacesAndTabsDifferencesEvenWhenOtherIssues()
+        {
+            var withWSp = "Hello    How are you?    kiddo";
+            var withTab = "Hello\tHow are you?\tkiddo dingo";
+
+            Check.ThatCode(() => { Check.That(withWSp).IsEqualTo(withTab); })
+                .IsAFailingCheckWithMessage("", 
+                    "The checked string is different from expected one, it is missing the end.", 
+                    "The checked string:", 
+                    "\t[\"Hello    How are you?    kiddo\"]", 
+                    "The expected string:", 
+                    "\t[\"Hello	How are you?	kiddo dingo\"]");
+        }
+
+        [Test]
         public void IsEqualToErrorMessageHighlightsLineFeedAndCarriageReturnLineFeed()
         {
             var withCRLF = "Hello\r\nHow are you?";
             var withLF = "Hello\nHow are you?";
 
             Check.ThatCode(() => { Check.That(withCRLF).IsEqualTo(withLF); })
-                .IsAFailingCheckWithMessage(Environment.NewLine +
-                             "The checked string has different end of line markers than expected one. At line 1, col 6, expected 'Hello' was 'Hello<<CR>>'." +
-                             Environment.NewLine + "The checked string:" + Environment.NewLine +
-                             "\t[\"Hello\r\nHow are you?\"]" + Environment.NewLine + "The expected string:" +
-                             Environment.NewLine + "\t[\"Hello\nHow are you?\"]");
+                .IsAFailingCheckWithMessage("",
+                    "The checked string has different end of line markers than expected one. At line 1, col 6, expected 'Hello' was 'Hello<<CR>>'.",
+                    "The checked string:",
+                    "\t[\"Hello",
+                    "How are you?\"]",
+                    "The expected string:",
+                    "\t[\"Hello\nHow are you?\"]");
         }
 
         [Test]

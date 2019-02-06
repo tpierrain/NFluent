@@ -125,7 +125,7 @@ namespace NFluent.Helpers
         {
             return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria)
             {
-                IsProperty = true
+                IsProperty = false
             };
         }
 
@@ -259,7 +259,7 @@ namespace NFluent.Helpers
             return finalResult;
         }
 
-        private IEnumerable<ReflectionWrapper> ExtractProperties(PropertyInfo[] propertyInfos, Dictionary<string, ReflectionWrapper> memberDico)
+        private IEnumerable<ReflectionWrapper> ExtractProperties(IEnumerable<PropertyInfo> propertyInfos, IDictionary<string, ReflectionWrapper> memberDico)
         {
             var result = new List<ReflectionWrapper>();
             foreach (var info in propertyInfos)
@@ -279,7 +279,7 @@ namespace NFluent.Helpers
             return result;
         }
 
-        private IEnumerable<ReflectionWrapper> ExtractFields(FieldInfo[] fieldsInfo, Dictionary<string, ReflectionWrapper> memberDico)
+        private IEnumerable<ReflectionWrapper> ExtractFields(IEnumerable<FieldInfo> fieldsInfo, IDictionary<string, ReflectionWrapper> memberDico)
         {
             var result = new List<ReflectionWrapper>();
             foreach (var info in fieldsInfo)

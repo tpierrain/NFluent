@@ -14,6 +14,7 @@
 // ReSharper disable once CheckNamespace
 namespace NFluent.Tests
 {
+    using System;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -21,9 +22,10 @@ namespace NFluent.Tests
     public class StringDifferenceAnalyzerTests
     {
         [Test]
-        public void ShouldHandleNullString()
+        public void ShouldNotHandleNullString()
         {
-            Check.That(StringDifference.Analyze(null, "foo", false)).HasSize(1);
+            Check.ThatCode( () =>
+            Check.That(StringDifference.Analyze(null, "foo", false)).HasSize(1)).Throws<NullReferenceException>();
         }
 
         [Test]

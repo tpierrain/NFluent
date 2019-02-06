@@ -23,6 +23,7 @@ namespace NFluent.Kernel
 #if !DOTNET_35 && !DOTNET_30 && !DOTNET_20 && !DOTNET_40
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 #endif
     using Extensibility;    
@@ -132,23 +133,25 @@ namespace NFluent.Kernel
             {
                 result.Result = function();
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40 && !PORTABLE
-                var ta = result.Result as Task;
-                if (ta == null)
+                if (!(result.Result is Task ta))
                 {
                     return;
                 }
 
                 // we must check if the method is flagged async
-                if (function.GetMethodInfo().GetCustomAttributes(false).Any(x => x.GetType().Name.StartsWith("AsyncStateMachineAttribute")))
+                if (!function.GetMethodInfo().GetCustomAttributes( typeof(AsyncStateMachineAttribute),false)
+                    .Any())
                 {
-                    try
-                    {
-                        ta.Wait();
-                    }
-                    catch (AggregateException exception)
-                    {
-                        result.RaisedException = exception.InnerException;
-                    }
+                    return;
+                }
+
+                try
+                {
+                    ta.Wait();
+                }
+                catch (AggregateException exception)
+                {
+                    result.RaisedException = exception.InnerException;
                 }
 #endif
             }, result);

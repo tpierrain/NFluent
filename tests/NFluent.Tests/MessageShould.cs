@@ -13,6 +13,8 @@
                 .ContainsExactly("",  "checked value and expected one");
             Check.That(FluentMessage.BuildMessage("{expected} and {checked}").ToString()).AsLines()
                 .ContainsExactly("",  "expected value and checked one");
+            Check.That(FluentMessage.BuildMessage("{given} and {checked}").ToString()).AsLines()
+                .ContainsExactly("",  "expected value and checked one");
         }
     }
 }

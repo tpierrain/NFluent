@@ -43,7 +43,7 @@ namespace NFluent.Tests
         public void NewCheckBuilderShouldWhenNegationMessageNotDefined()
         {
             var block = ExtensibilityHelper.BeginCheck(Check.That("kamoulox").Not);
-            Check.ThatCode(() => { block.EndCheck(); }).Throws<InvalidOperationException>();
+            Check.ThatCode(() => { block.EndCheck(); }).Throws<InvalidOperationException>().WithMessage("Negated error message was not specified. Use 'OnNegate' method to specify one.");
         }
 
 

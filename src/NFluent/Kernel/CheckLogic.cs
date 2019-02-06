@@ -80,7 +80,7 @@ namespace NFluent.Kernel
         public  ICheckLogic<T> CantBeNegated(string checkName)
         {
             var message = string.Format(CanTBeUsedWhenNegated, checkName);
-            SetNotNegatable(message);
+            this.SetNotNegatable(message);
             return this;
         }
 

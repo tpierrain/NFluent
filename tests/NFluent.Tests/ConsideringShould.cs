@@ -337,6 +337,7 @@ namespace NFluent.Tests
             var sut = new SutClass(2, 42, 4, null);
 
             Check.That(sut).Considering().NonPublic.Fields.And.Public.Properties.IsEqualTo(new SutClass(3, 42, 4, sut));
+            Check.That(sut).Considering().Public.Fields.And.NonPublic.Properties.IsEqualTo(new SutClass(2, 0, 0, null));
         }
 
         [Test]

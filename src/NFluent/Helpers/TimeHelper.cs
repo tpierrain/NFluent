@@ -21,22 +21,15 @@ namespace NFluent.Helpers
     /// </summary>
     public static class TimeHelper
     {
-        private const int NanoSecondsInOneMicroSecond = 1000;
-
+        private const int NanosecondsInOneMicroSecond = 1000;
         private const int MicroSecondsInOneMillisecond = 1000;
-
         private const int MillisecondInOneSecond = 1000;
-
         private const int SecondsInOneMinute = 60;
-
         private const int MinutesInOneHour = 60;
-
         private const int HoursInOneDay = 24;
-
         private const int DaysInWeek = 7;
 
-        private const int NanoSecondsPerTick = 100;
-
+        private const int NanosecondsPerTick = 100;
         private const int MinimumUnitAmount = 2;
 
         /// <summary>
@@ -61,7 +54,7 @@ namespace NFluent.Helpers
         /// <returns>Number of ticks</returns>
         public static long GetInTicks(long value, TimeUnit unit)
         {
-            return value * GetConversionFactor(unit) / NanoSecondsPerTick;
+            return value * GetConversionFactor(unit) / NanosecondsPerTick;
         }
         /// <summary>
         /// Converts a duration in nanoseconds to the desired <see cref="TimeUnit"/>.
@@ -98,7 +91,7 @@ namespace NFluent.Helpers
         /// <exception cref="InvalidOperationException">Raised if time unit is not recognized.</exception>
         public static TimeSpan ToTimeSpan(double value, TimeUnit timeUnit)
         {
-            return TimeSpan.FromTicks((long)(GetInNanoSeconds(value, timeUnit) / NanoSecondsPerTick));
+            return TimeSpan.FromTicks((long)(GetInNanoSeconds(value, timeUnit) / NanosecondsPerTick));
         }
 
         /// <summary>
@@ -110,7 +103,7 @@ namespace NFluent.Helpers
         /// <exception cref="InvalidOperationException">Raised if time unit is not recognized.</exception>
         public static double Convert(TimeSpan value, TimeUnit unit)
         {
-            return ((double)value.Ticks) * NanoSecondsPerTick / GetConversionFactor(unit);
+            return ((double)value.Ticks) * NanosecondsPerTick / GetConversionFactor(unit);
         }
 
         /// <summary>
@@ -179,7 +172,7 @@ namespace NFluent.Helpers
                 return value;
             }
 
-            value = value * NanoSecondsInOneMicroSecond;
+            value = value * NanosecondsInOneMicroSecond;
             if (unit == TimeUnit.Microseconds)
             {
                 return value;

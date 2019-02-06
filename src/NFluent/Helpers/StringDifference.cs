@@ -111,6 +111,33 @@ namespace NFluent.Helpers
 
         private bool IsFullText { get; }
 
+        private static string[] SplitLines(string text)
+        {
+            var temp = new List<string>();
+            var index = 0;
+            while (index <=text.Length)
+            {
+                var start = index;
+                if (index == text.Length)
+                {
+                    temp.Add(string.Empty);
+                    break;
+                }
+                index = text.IndexOf(Separator, start);
+                if (index < 0)
+                {
+                    temp.Add(text.Substring(start));
+                    index = text.Length+1;
+                }
+                else
+                {
+                    temp.Add(text.Substring(start, index-start));
+                    index = index + 1;
+                }
+            }
+            return temp.ToArray();
+        }
+
         public static IList<StringDifference> Analyze(string actual, string expected, bool caseInsensitive)
         {
             if (actual == expected)
@@ -119,14 +146,8 @@ namespace NFluent.Helpers
             }
 
             var result = new List<StringDifference>();
-            if (actual == null)
-            {
-                result.Add(Build(0, null, expected, caseInsensitive, true));
-                return result;
-            }
-
-            var actualLines = actual.Split(Separator);
-            var expectedLines = expected.Split(Separator);
+            var actualLines = SplitLines(actual);
+            var expectedLines = SplitLines(expected);
             var sharedLines = Math.Min(actualLines.Length, expectedLines.Length);
             var boolSingleLine = actualLines.Length == 1 && expectedLines.Length == 1;
             for (var line = 0; line < sharedLines; line++)
@@ -146,32 +167,6 @@ namespace NFluent.Helpers
             {
                 result.Add(Build(sharedLines, actualLines[sharedLines], null, caseInsensitive, false));
             }
-            else if (sharedLines == 1 && result.Count == 1)
-            {
-                if (result[0].Kind == DifferenceMode.LongerLine)
-                {
-                    // replace
-                    var newDiff = new StringDifference(
-                        DifferenceMode.Longer,
-                        0,
-                        result[0].Position,
-                        result[0].Actual,
-                        result[0].Expected, true);
-                    result[0] = newDiff;
-                }
-                else if (result[0].Kind == DifferenceMode.ShorterLine)
-                {
-                    // replace
-                    var newDiff = new StringDifference(
-                        DifferenceMode.Shorter,
-                        0,
-                        result[0].Position,
-                        result[0].Actual,
-                        result[0].Expected, true);
-                    result[0] = newDiff;
-                }
-            }
-
             return result;
         }
 
@@ -253,7 +248,7 @@ namespace NFluent.Helpers
                 expected = this.HighLightForDifference(this.Expected);
             }
 
-            if (!this.IsFullText || (this.Actual != actual || this.Expected != expected))
+            if (!this.IsFullText || this.Actual != actual || this.Expected != expected)
             {
                 mainText += string.Format(
                     " At line {0}, col {3}, expected '{1}' was '{2}'.",
@@ -338,7 +333,6 @@ namespace NFluent.Helpers
                             type = DifferenceMode.Spaces;
                             position = i;
                         }
-                        
                     }
                 }
                 else if (actualChar == expectedChar)
@@ -385,22 +379,26 @@ namespace NFluent.Helpers
             // the actualLine string is longer than expectedLine
             if (i < actual.Length)
             {
+                var difference = isFullText ? DifferenceMode.Longer : DifferenceMode.LongerLine;
                 return new StringDifference(
-                    actual[i] == CarriageReturn ? DifferenceMode.EndOfLine : DifferenceMode.LongerLine, 
+                    actual[i] == CarriageReturn ? DifferenceMode.EndOfLine : difference, 
                     line,
                     i,
                     actual, 
-                    expected, isFullText);
+                    expected, 
+                    isFullText);
             }
 
             if (j < expected.Length)
             {
+                var difference = isFullText ? DifferenceMode.Shorter : DifferenceMode.ShorterLine;
                 return new StringDifference(
-                    expected[j] == CarriageReturn ? DifferenceMode.EndOfLine : DifferenceMode.ShorterLine,
+                    expected[j] == CarriageReturn ? DifferenceMode.EndOfLine : difference,
                     line,
                     i,
                     actual,
-                    expected, isFullText);
+                    expected, 
+                    isFullText);
             }
 
             return new StringDifference(type, line, position, actual, expected, isFullText);

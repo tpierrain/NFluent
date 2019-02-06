@@ -147,7 +147,7 @@ namespace NFluent.Tests
             Check.ThatCode(()=>
             {
                 FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithEnumerableCount(0);
-            }).Throws<NotSupportedException>();
+            }).Throws<NotSupportedException>().WithMessage("Cannot use enumeration for generic instance description!");
         }
 
         [Test]

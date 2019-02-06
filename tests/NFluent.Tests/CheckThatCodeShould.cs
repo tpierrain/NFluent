@@ -363,6 +363,14 @@ namespace NFluent.Tests
             Check.ThatCode(() => 4).DoesNotThrow().And.WhichResult().IsEqualTo(4);
         }
 
+
+        [Test]
+        public void AndWorksProperly()
+        {
+            Check.ThatCode(() => 4).LastsLessThan(10, TimeUnit.Milliseconds).And
+                .ConsumesLessThan(10, TimeUnit.Milliseconds);
+        }
+
         [Test]
         public void Should_not_raise_when_expected_DueTo_exception_type_is_part_of_inner_exception()
         {
