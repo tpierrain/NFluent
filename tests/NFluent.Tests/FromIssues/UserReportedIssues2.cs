@@ -26,6 +26,14 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        // GH 286
+        [Test]
+        public void IsNotZeroFailsForDecimalCloseToZero()
+        {
+            Check.That(0.12m).IsNotZero();
+            Check.That(long.MaxValue).IsNotZero();
+        }
+
         // GH #269 error sor some timespan
         [Test]
         public void IssueWithTimeSpanMinVal()

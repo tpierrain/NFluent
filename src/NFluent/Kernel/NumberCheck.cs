@@ -162,7 +162,7 @@ namespace NFluent.Kernel
         /// </returns>
         private static bool InternalIsZero(TN value)
         {
-            return Convert.ToInt64(value) == 0;
+            return Convert.ToDecimal(value) == 0;
         }
     }
 }

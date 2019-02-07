@@ -33,10 +33,11 @@ are significant, please revert to us if you face issues.
 * Error message for Check.ThatCode().LastsLessThan did not report the actual time.
 * Error message for Not.ThrowsAny() was wrong.
 * Hashtable not properly reported in error messages.
-* Fixed error messages for negated checks on dynamics
+* Fixed error messages for negated checks on dynamics.
+* Fix false positive for IsNotZero (and IsZero) for decimal that are close to 0 (<.5).
 
 ### GitHub Issues
-* #269, #274, #270, #275, #276, #280, #283, #184
+* #269, #274, #270, #275, #276, #280, #283, #184, #284, #286
 
 ---------------
 ## V 2.4.0
