@@ -105,6 +105,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldReportDifferenceOfNumberOfLinesL()
+        {
+            var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto", false);
+            Check.That(stringDifferences).HasSize(1);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.ExtraLines);
+            Check.That(stringDifferences[0].Position).IsEqualTo(0);
+            Check.That(stringDifferences[0].Line).IsEqualTo(1);
+            stringDifferences = StringDifference.Analyze("toto", "toto\n", false);
+            Check.That(stringDifferences).HasSize(1);
+            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.MissingLines);
+            Check.That(stringDifferences[0].Position).IsEqualTo(0);
+            Check.That(stringDifferences[0].Line).IsEqualTo(1);
+        }
+
+        [Test]
         public void ShouldProvideSyntheticView()
         {
             var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto\nTiTi", false);
@@ -165,21 +180,6 @@ namespace NFluent.Tests
             Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.EndOfLine);
             Check.That(stringDifferences[0].Position).IsEqualTo(4);
             Check.That(stringDifferences[0].Line).IsEqualTo(0);
-        }
-
-        [Test]
-        public void ShouldReportDifferenceOfNumberOfLinesL()
-        {
-            var stringDifferences = StringDifference.Analyze("toto\ntiti", "toto", false);
-            Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.ExtraLines);
-            Check.That(stringDifferences[0].Position).IsEqualTo(0);
-            Check.That(stringDifferences[0].Line).IsEqualTo(1);
-            stringDifferences = StringDifference.Analyze("toto", "toto\n", false);
-            Check.That(stringDifferences).HasSize(1);
-            Check.That(stringDifferences[0].Kind).IsEqualTo(DifferenceMode.MissingLines);
-            Check.That(stringDifferences[0].Position).IsEqualTo(0);
-            Check.That(stringDifferences[0].Line).IsEqualTo(1);
         }
 
         [Test]

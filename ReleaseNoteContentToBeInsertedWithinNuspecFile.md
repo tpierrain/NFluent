@@ -1,4 +1,4 @@
-## V 2.5.0
+## V 2.5.0 (beta/in progress)
 ### Main feature
 * **CaptureConsole class** mocks the system console. Using it you can inject/simulate
 user input (with **Input** and **InputLine** methods) and read/review what the code has put on the
@@ -25,7 +25,8 @@ Example
 * Add support for WithCustomMessage for dynamics.
 * Revised signature for enumerable checks to reduce type erasure (loss of type information when chaining checks). Regression tests have been added regarding non generic IEnumerable support, but as the changes
 are significant, please revert to us if you face issues.
-
+* Fixes reporting of end of line markers: only carriage return chars were reported.
+* Changed error text for missing or extra lines in string to make it clearer.
 
 ### Fixes
 * Fix false positive with TimeSpan due linked to precision loss. It concerns: IsEqualTo(TimeSpan), IsLessThan(TimeSpan), IsGreaterThan(TimeSpan)

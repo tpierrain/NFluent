@@ -86,7 +86,7 @@ namespace NFluent.Helpers
 
     internal class StringDifference
     {
-        private const char Separator = '\n';
+        private const char Linefeed = '\n';
         private const char CarriageReturn = '\r';
 
         private StringDifference(DifferenceMode mode, int line, int position, string actual, string expected, bool isFulltext)
@@ -123,7 +123,7 @@ namespace NFluent.Helpers
                     temp.Add(string.Empty);
                     break;
                 }
-                index = text.IndexOf(Separator, start);
+                index = text.IndexOf(Linefeed, start);
                 if (index < 0)
                 {
                     temp.Add(text.Substring(start));
@@ -131,7 +131,7 @@ namespace NFluent.Helpers
                 }
                 else
                 {
-                    temp.Add(text.Substring(start, index-start));
+                    temp.Add(text.Substring(start, index+1-start));
                     index = index + 1;
                 }
             }
@@ -149,7 +149,7 @@ namespace NFluent.Helpers
             var actualLines = SplitLines(actual);
             var expectedLines = SplitLines(expected);
             var sharedLines = Math.Min(actualLines.Length, expectedLines.Length);
-            var boolSingleLine = actualLines.Length == 1 && expectedLines.Length == 1;
+            var boolSingleLine =  expectedLines.Length == 1;
             for (var line = 0; line < sharedLines; line++)
             {
                 var stringDifference = Build(line, actualLines[line], expectedLines[line], caseInsensitive, boolSingleLine);
@@ -184,7 +184,6 @@ namespace NFluent.Helpers
         /// </remarks>
         public static DifferenceMode Summarize(IEnumerable<StringDifference> stringDifferences)
         {
-
             var result = DifferenceMode.NoDifference;
             foreach (var stringDifference in stringDifferences)
             {
@@ -239,23 +238,39 @@ namespace NFluent.Helpers
             string expected;
             if (this.Line > 0 || this.Expected.Length > extractLength * 2 || this.Actual.Length > extractLength * 2)
             {
-                actual = this.HighLightForDifference(this.Actual.Extract(this.Position, extractLength));
-                expected = this.HighLightForDifference(this.Expected.Extract(this.Position, extractLength));
+                actual = this.Actual.Extract(this.Position, extractLength);
+                expected = this.Expected.Extract(this.Position, extractLength);
             }
             else
             {
-                actual = this.HighLightForDifference(this.Actual);
-                expected = this.HighLightForDifference(this.Expected);
+                actual = this.Actual;
+                expected = this.Expected;
             }
+            actual = this.HighLightForDifference(actual);
+            expected = this.HighLightForDifference(expected);
 
             if (!this.IsFullText || this.Actual != actual || this.Expected != expected)
             {
-                mainText += string.Format(
+                if (summary == DifferenceMode.MissingLines)
+                {
+                    mainText+=
+                        $" At line {this.Line + 1}, expected '{HighlightCrlfOrLfIfAny(expected)}' but line is missing.";
+                }
+                else if (summary == DifferenceMode.ExtraLines)
+                {
+                    mainText+=
+                        $" Found line {this.Line + 1} '{HighlightCrlfOrLfIfAny(actual)}'.";
+                }
+                else
+                {
+                    mainText += string.Format(
                     " At line {0}, col {3}, expected '{1}' was '{2}'.",
                     this.Line + 1,
-                    expected,
-                    actual,
+                    HighlightCrlfOrLfIfAny(expected),
+                    HighlightCrlfOrLfIfAny(actual),
                     this.Position + 1);
+
+                }
             }
 
             return mainText;
@@ -268,6 +283,8 @@ namespace NFluent.Helpers
         /// <returns>The same string but with &lt;&lt;CRLF&gt;&gt; inserted before the first CRLF or &lt;&lt;LF&gt;&gt; inserted before the first LF.</returns>
         private static string HighlightCrlfOrLfIfAny(string str)
         {
+            if (str == null)
+                return str;
             str = str.Replace("\r\n", "<<CRLF>>");
             str = str.Replace("\r", "<<CR>>");
             str = str.Replace("\n", "<<LF>>");
@@ -288,6 +305,11 @@ namespace NFluent.Helpers
 
         private static StringDifference Build(int line, string actual, string expected, bool ignoreCase, bool isFullText)
         {
+            bool IsEol(char theChar)
+            {
+                return theChar == CarriageReturn || theChar == Linefeed;
+            }
+
             if (actual == null)
             {
                 return new StringDifference(DifferenceMode.MissingLines, line, 0, null, expected, isFullText);
@@ -311,25 +333,40 @@ namespace NFluent.Helpers
                 var expectedChar = expected[j];
                 if (char.IsWhiteSpace(actualChar) && char.IsWhiteSpace(expectedChar))
                 {
+                    // special case for end of line markers
+                    if (IsEol(actualChar))
+                    {
+                        if (expectedChar == actualChar)
+                        {
+                            continue;
+                        }
+
+                        return IsEol(expectedChar) ? new StringDifference(DifferenceMode.EndOfLine, line, i, actual, expected, isFullText) : new StringDifference(DifferenceMode.ShorterLine, line, i, actual, expected, isFullText);
+                    }
+
+                    if (IsEol(expectedChar))
+                    {
+                        return new StringDifference(DifferenceMode.LongerLine, line, i, actual, expected, isFullText);
+                    }
                     var actualStart = i;
                     var expectedStart = j;
 
                     // we skip all spaces
-                    while (i + 1 < actual.Length && char.IsWhiteSpace(actual[i + 1]))
+                    while (i + 1 < actual.Length && char.IsWhiteSpace(actual[i + 1]) && !IsEol(actual[i+1]))
                     {
                         i++;
                     }
 
-                    while (j + 1 < expected.Length && char.IsWhiteSpace(expected[j + 1]))
+                    while (j + 1 < expected.Length && char.IsWhiteSpace(expected[j + 1]) && !IsEol(expected[j+1]))
                     {
                         j++;
                     }
 
-                    if ((i - actualStart) != (j - expectedStart) || actual.Substring(actualStart, i - actualStart)
+                    if (actual.Substring(actualStart, i - actualStart)
                         != expected.Substring(expectedStart, j - expectedStart))
                     {
                         if (type != DifferenceMode.Spaces)
-                        {
+                        {       
                             type = DifferenceMode.Spaces;
                             position = i;
                         }
@@ -375,6 +412,10 @@ namespace NFluent.Helpers
                     return new StringDifference(type, line, position, actual, expected, isFullText);
             }
 
+            while (i<actual.Length && IsEol(actual[i]))
+            {
+                i++;
+            }
             // strings are same so far
             // the actualLine string is longer than expectedLine
             if (i < actual.Length)
@@ -389,6 +430,10 @@ namespace NFluent.Helpers
                     isFullText);
             }
 
+            while (j<expected.Length && IsEol(expected[j]))
+            {
+                j++;
+            }
             if (j < expected.Length)
             {
                 var difference = isFullText ? DifferenceMode.Shorter : DifferenceMode.ShorterLine;
