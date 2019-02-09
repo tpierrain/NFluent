@@ -269,7 +269,6 @@ namespace NFluent.Helpers
                     HighlightCrlfOrLfIfAny(expected),
                     HighlightCrlfOrLfIfAny(actual),
                     this.Position + 1);
-
                 }
             }
 

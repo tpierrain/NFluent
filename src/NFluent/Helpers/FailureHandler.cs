@@ -81,8 +81,7 @@ namespace NFluent.Helpers
                         {
                             test.Fail($"Line {i} is different from what is expected"+Environment.NewLine+
                                        "Act:"+messageLines[i].DoubleCurlyBraces()+Environment.NewLine+
-                                        "Exp:"+expectedLines[i].DoubleCurlyBraces()
-                                );
+                                        "Exp:"+expectedLines[i].DoubleCurlyBraces() );
                             break;
                         }
                     }

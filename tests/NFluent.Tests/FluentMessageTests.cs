@@ -156,7 +156,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithHashCode();
-            }).Throws<NotSupportedException>();
+            }).Throws<NotSupportedException>().WithMessage("Cannot use hash code for generic instance description!");
         }
 
         [Test]

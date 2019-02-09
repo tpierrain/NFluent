@@ -87,6 +87,9 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That(enumerable).HasSize(5); }).IsAFailingCheckWithMessage(
                 "", "The checked enumerable has 1 element instead of 5.",
                 "The checked enumerable:", "\t{666} (1 item)");
+            Check.ThatCode(() => { Check.That((IEnumerable) enumerable).HasSize(5); }).IsAFailingCheckWithMessage(
+                "", "The checked enumerable has 1 element instead of 5.",
+                "The checked enumerable:", "\t{666} (1 item)");
         }
 
         [Test]

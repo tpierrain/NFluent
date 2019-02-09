@@ -54,7 +54,7 @@ namespace NFluent.Tests
                 // check with an incomplete error message
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"))
                     .IsAFailingCheckWithMessage("oups", "and more")
-            ).IsAFaillingCheck();            
+            ).IsAFaillingCheck();
             
             Check.ThatCode(() =>
                 // check with an incorrect error message
@@ -80,6 +80,26 @@ namespace NFluent.Tests
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oupsla"))
                     .IsAFailingCheckWithMessage("#[pous]+$")
             ).IsAFaillingCheck();
+
+        }
+
+        [Test]
+        public void IsAFaillingCheckShouldFailWithProperMessage()
+        {
+            Check.ThatCode(
+                    () => Check.ThatCode(() => { }).IsAFaillingCheck()).
+                IsAFailingCheckWithMessage("", 
+                    "The fluent check did not raise an exception, where as it must.", 
+                    "The expected fluent check's raised exception:", 
+                    "\tan instance of type: [NUnit.Framework.AssertionException]");
+            Check.ThatCode(
+                    () => Check.ThatCode(() => throw new Exception("yep")).IsAFaillingCheck()).
+                IsAFailingCheckWithMessage(	"", 
+                    "The exception raised is not of the expected type", 
+                    "The checked fluent check's raised exception:", 
+                    "\t[{System.Exception}: 'yep'] of type: [System.Exception]", 
+                    "The expected fluent check's raised exception:", 
+                "\tan instance of type: [NUnit.Framework.AssertionException]");
         }
     }
 }
