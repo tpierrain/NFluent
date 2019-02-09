@@ -79,6 +79,7 @@
       <Package>net20</Package>
     </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)\NFluent.20.Tests"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.20.Tests.Internals"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.Tests.MsTest"/>
     <ProjectFolder Include="$(TestsPath)\Nugget"/>
     <ProjectFolder Include="$(TestsPath)\NFluent.Tests.SelfHosted"/>
@@ -137,6 +138,7 @@
         <Coverage>true</Coverage>
       </TestProjects>
      <TestProjects Include='$(TestsPath)\NFluent.Tests.xUnit\bin\$(Configuration)\NFluent.Tests.xUnit.dll'>
+       <Framework>net-4.5</Framework>
        <Runner>xUnit</Runner>
        <Coverage>true</Coverage>
      </TestProjects>      
@@ -154,11 +156,15 @@
       </TestProjects>
      <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests\NFluent.NetStandard.20.Tests.csproj'>
        <Framework>netstandard2.0</Framework>
-       <Coverage>true</Coverage>
+       <Coverage>false</Coverage>
+     </TestProjects>
+     <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests.Internals\NFluent.NetStandard.20.Tests.Internals.csproj'>
+       <Framework>netstandard2.0</Framework>
+       <Coverage>false</Coverage>
      </TestProjects>
      <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests.Extensions\NFluent.NetStandard.20.Tests.Extensions.csproj'>
        <Framework>netstandard2.0</Framework>
-       <Coverage>true</Coverage>
+       <Coverage>false</Coverage>
      </TestProjects>
      <TestProjects Include='$(TestsPath)\NFluent.Tests.Core.xUnit\NFluent.Tests.Core.xUnit.csproj'>
        <Framework>netstandard1.3</Framework>

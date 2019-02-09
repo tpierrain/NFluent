@@ -216,13 +216,13 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
   <!-- 3- Run the TESTS -->
   <Target Name="ListTestProjects">
     <ItemGroup>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Framework)'!='netstandard2.0' AND '%(TestProjects.Runner)'==''">
+      <TestRun Include="@(TestProjects)" Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'==''">
         <Runner>"$(TestRunnerPath)"</Runner>
         <Args Condition="'%(TestProjects.DontReport)'!='true'">%(TestProjects.FullPath) $(NunitOptions) /framework:%(TestProjects.Framework)</Args>
         <Args Condition="'%(TestProjects.DontReport)'=='true'">%(TestProjects.FullPath) /framework:%(TestProjects.Framework)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'=='netstandard1.3' OR '%(TestProjects.Framework)'=='netstandard2.0'">
+      <TestRun Include="@(TestProjects)" Condition="!$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-'))">
         <Runner>dotnet.exe</Runner>
         <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
@@ -233,7 +233,7 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
         <Args Condition="'%(TestProjects.DontReport)'=='true'">"%(TestProjects.FullPath)"</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Framework)'!='netstandard1.3' AND '%(TestProjects.Framework)'!='netstandard2.0' AND '%(TestProjects.Runner)'=='MsTest'">
+      <TestRun Include="@(TestProjects)" Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='MsTest'">
         <Runner>"$(MsTestRunnerPath)$(MsTestRunner)"</Runner>
         <Args>$(MsTestOptions) %(TestProjects.Identity)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
