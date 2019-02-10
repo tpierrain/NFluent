@@ -90,7 +90,8 @@ namespace NFluent.Helpers
                     {
                         test.Fail($"Too many lines in the error message starting at #{expectedLines.Count}");
                     }
-                }).DefineExpectedValue(lines).
+                }).
+                DefineExpectedValue(lines).
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

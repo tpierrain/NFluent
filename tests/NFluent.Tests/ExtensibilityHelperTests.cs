@@ -50,17 +50,36 @@ namespace NFluent.Tests
         [Test]
         public void IsAFailingCheckReportsProperError()
         {
+            Check.ThatCode(() => Check.ThatCode(() => 0).IsAFailingCheckWithMessage("don't care"))
+                .IsAFailingCheckWithMessage("", 
+                    "The check succeeded whereas it should have failed.", 
+                    "The expected fluent check's raised exception's error message:", 
+                    "\t{\"don't care\"}");
+            ;
+
             Check.ThatCode(() =>
                 // check with an incomplete error message
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"))
                     .IsAFailingCheckWithMessage("oups", "and more")
-            ).IsAFaillingCheck();
+            ).IsAFailingCheckWithMessage("", 
+                "Lines are missing in the error message starting at #1", 
+                "The checked fluent check's raised exception's error message:", 
+                "\t{\"oups\"} (1 item)", 
+                "The expected fluent check's raised exception's error message:", 
+                "\t{\"oups\", \"and more\"}");
             
             Check.ThatCode(() =>
                 // check with an incorrect error message
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"))
                     .IsAFailingCheckWithMessage("oupsla")
-            ).IsAFaillingCheck();
+            ).IsAFailingCheckWithMessage("", 
+                "Line 0 is different from what is expected", 
+                "Act:oups", 
+                "Exp:oupsla", 
+                "The checked fluent check's raised exception's error message:", 
+                "\t{\"oups\"} (1 item)", 
+                "The expected fluent check's raised exception's error message:", 
+                "\t{\"oupsla\"}");
 
             Check.ThatCode(() =>
                 // check with a error message that is too long
@@ -74,13 +93,35 @@ namespace NFluent.Tests
                 // check with a error message that is too long
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"+Environment.NewLine+"and more"))
                     .IsAFailingCheckWithMessage("#[pous]+")
-            ).IsAFaillingCheck();
+            ).IsAFailingCheckWithMessage("", 
+                "Too many lines in the error message starting at #1", 
+                "The checked fluent check's raised exception's error message:", 
+                "\t{\"oups\", \"and more\"} (2 items)", 
+                "The expected fluent check's raised exception's error message:", 
+                "\t{\"#[pous]+\"}");
             Check.ThatCode(() =>
                 // check with a error message that does not match regex
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oupsla"))
                     .IsAFailingCheckWithMessage("#[pous]+$")
-            ).IsAFaillingCheck();
+            ).IsAFailingCheckWithMessage("", 
+                "Line 0 is different from what is expected", 
+                "Act:oupsla", 
+                "Exp (regex):#[pous]+$", 
+                "The checked fluent check's raised exception's error message:", 
+                "\t{\"oupsla\"} (1 item)", 
+                "The expected fluent check's raised exception's error message:", 
+                "\t{\"#[pous]+$\"}");
 
+            Check.ThatCode(() =>
+                // check with a error message that is too long
+                Check.ThatCode(() => throw new Exception("oups"))
+                    .IsAFailingCheckWithMessage("#[pous]+")
+            ).IsAFailingCheckWithMessage("", 
+                "The exception raised is not of the expected type.", 
+                "The checked fluent check's raised exception's error message:", 
+                "\t{\"oups\"} (1 item)", 
+                "The expected fluent check's raised exception's error message:", 
+                "\t{\"#[pous]+\"}");
         }
 
         [Test]
@@ -91,7 +132,7 @@ namespace NFluent.Tests
                 IsAFailingCheckWithMessage("", 
                     "The fluent check did not raise an exception, where as it must.", 
                     "The expected fluent check's raised exception:", 
-                    "\tan instance of type: [NUnit.Framework.AssertionException]");
+                    "#\tan instance of type: \\[.*Exception\\]");
             Check.ThatCode(
                     () => Check.ThatCode(() => throw new Exception("yep")).IsAFaillingCheck()).
                 IsAFailingCheckWithMessage(	"", 
@@ -99,7 +140,7 @@ namespace NFluent.Tests
                     "The checked fluent check's raised exception:", 
                     "\t[{System.Exception}: 'yep'] of type: [System.Exception]", 
                     "The expected fluent check's raised exception:", 
-                "\tan instance of type: [NUnit.Framework.AssertionException]");
+                "#\tan instance of type: \\[.*Exception\\]");
         }
     }
 }
