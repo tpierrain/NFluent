@@ -61,6 +61,7 @@ Custom error messages are not avaible for dynamic types.
 * default truncation with the Check.StringTruncationLength property
 * Multidimensional arrays are properly reported in error messages, respecting index structure.
 * Sourcelink (Net Core 2.1+ and Net Standard 2.0): you can debug through NFluent code using Sourlink on Core 2.1 projects
+* Multi dimensional array types are reported with the number of dimensions (eg: int[,,])
 
 ### Fixes
 * As now works with Not (and vice versa).

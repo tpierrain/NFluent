@@ -174,7 +174,22 @@ namespace NFluent.Tests
                 .IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one.", 
                     "The checked enumerable:", 
-                    "\t{{0, 0, 0}, {0, 0, 0}} (6 items) of type: [int[]]", 
+                    "\t{{0, 0, 0}, {0, 0, 0}} (6 items) of type: [int[,]]", 
+                    "The expected enumerable:", 
+                    "\t{0, 0, 0, 0, 0, 0} of type: [int[]]");
+        }
+
+        [Test]
+        public void IsEqualToThrowsExceptionWithProperMessage()
+        {
+            var array = new[,,] {{{0, 1}, {2, 3}, {4, 5}}, {{6, 7}, {8, 9}, {10, 11}}};
+            var otherSimilarButNotEqualArray = new int[6];
+
+            Check.ThatCode(() => { Check.That(array).IsEqualTo(otherSimilarButNotEqualArray); })
+                .IsAFailingCheckWithMessage("", 
+                    "The checked enumerable is different from the expected one.", 
+                    "The checked enumerable:", 
+                    "\t{{{0, 1}, {2, 3}, {4, 5}}, {{6, 7}, {8, 9}, {10, 11}}} (12 items) of type: [int[,,]]", 
                     "The expected enumerable:", 
                     "\t{0, 0, 0, 0, 0, 0} of type: [int[]]");
         }

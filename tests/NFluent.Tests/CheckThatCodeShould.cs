@@ -367,8 +367,8 @@ namespace NFluent.Tests
         [Test]
         public void AndWorksProperly()
         {
-            Check.ThatCode(() => 4).LastsLessThan(10, TimeUnit.Milliseconds).And
-                .ConsumesLessThan(10, TimeUnit.Milliseconds);
+            Check.ThatCode(() => 4).LastsLessThan(100, TimeUnit.Milliseconds).And
+                .ConsumesLessThan(100, TimeUnit.Milliseconds);
         }
 
         [Test]

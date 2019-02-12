@@ -925,6 +925,16 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
                 {
+                    Check.That("This is a line.\nAnd a next").IsEqualTo("This is a line.\nAnd a next line.");
+                })
+                .IsAFailingCheckWithMessage("",
+                    "The checked string is different from expected one, one line is shorter. At line 2, col 11, expected 'And a next line.' was 'And a next'.",
+                    "The checked string:",
+                "\t[\"This is a line.\nAnd a next\"]",
+                    "The expected string:",
+                "\t[\"This is a line.\nAnd a next line.\"]");
+            Check.ThatCode(() =>
+                {
                     Check.That("This is one line.\nAnd another").IsEqualTo("This is one line.\nAnd another line.");
                 })
                 .IsAFailingCheckWithMessage("",

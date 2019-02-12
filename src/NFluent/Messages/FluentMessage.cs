@@ -137,6 +137,7 @@ namespace NFluent.Extensibility
         /// Change the main message.
         /// </summary>
         /// <param name="newMessage">New message to use.</param>
+        [Obsolete]
         public void ChangeMessageTo(string newMessage)
         {
             this.message = newMessage;

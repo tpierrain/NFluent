@@ -171,7 +171,7 @@ namespace NFluent.Tests
         [Test]
         public void ShouldBlockWorksOnLongEnumeration()
         {
-            var possibleElements = "We need to test the message block methods with a long enumeration. A string convterted to a char array should be enough.";
+            var possibleElements = "We need to test the message block methods with a long enumeration.";
             const string checkedValue = "The Black Keys";
 
             // ReSharper disable once UnusedVariable
@@ -180,7 +180,10 @@ namespace NFluent.Tests
                                             .And.ReferenceValues(possibleElements.ToCharArray()).Label("The possible elements:")
                                             .ToString();
 
-//            Assert.AreEqual(Environment.NewLine+ "The checked enumerable is not one of the possible elements." + Environment.NewLine + "The checked enumrable:" + Environment.NewLine + "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" + Environment.NewLine + "\t[\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"]", errorMessage);
+            Assert.AreEqual(Environment.NewLine+ "The checked enumerable is not one of the possible elements." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + 
+                            "\t{'T', 'h', 'e', ' ', 'B', 'l', 'a', 'c', 'k', ' ', 'K', 'e', 'y', 's'}" + Environment.NewLine + 
+                            "The possible elements:" + Environment.NewLine + 
+                            "\t{'W', 'e', ' ', 'n', 'e', 'e', 'd', ' ', 't', 'o', ' ', 't', 'e', 's', 't', ' ', 't', 'h', 'e', ' ', ...}", errorMessage);
         }
     }
 }

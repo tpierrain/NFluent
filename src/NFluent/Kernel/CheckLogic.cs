@@ -195,7 +195,7 @@ namespace NFluent.Kernel
                 return;
             }
 
-            if (!this.isRoot && string.IsNullOrEmpty(this.LastError))
+            if (!this.isRoot && this.LastError==null)
             {
                 return ;
             }

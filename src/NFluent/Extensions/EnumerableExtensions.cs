@@ -86,7 +86,8 @@ namespace NFluent
             var copy = new List<object>(seen) {enumerable};
             // we skip the first items
             var firstIndex = Math.Max(0, referenceIndex - (numberOfItems / 2));
-            var lastItem = numberOfItems < 1 ? int.MaxValue : firstIndex + numberOfItems;
+            var lastItem = numberOfItems < 0 ? int.MaxValue : firstIndex + numberOfItems;
+
             if (firstIndex > 0)
             {
                 for (var i = 0; i < firstIndex; i++)
@@ -169,26 +170,28 @@ namespace NFluent
             return result.ToString();
         }
 
-        private static string HandleDimensions(Array array, long i, StringBuilder result, long[] indices)
+        private static string HandleDimensions(Array array, long i, StringBuilder result, IList<long> indices)
         {
             var temp = i;
-            var zeroesStrike = true;
-            var closingStrikes = true;
             var closing = string.Empty;
+            var canOpen = true;
+            var canClose = true;
             for (var j = array.Rank - 1; j >= 0; j--)
             {
-                var currentIndex = temp % array.SizeOfDimension(j);
-                if (currentIndex == 0 && zeroesStrike)
+                var dimension = array.GetLongLength(j);
+                var currentIndex = temp % dimension;
+                if (canOpen && currentIndex == 0)
                 {
                     if (j > 0)
                     {
                         result.Append('{');
                     }
                 }
-
-                zeroesStrike = false;
-
-                if (currentIndex == array.SizeOfDimension(j) - 1 && closingStrikes)
+                else
+                {
+                    canOpen = false;
+                }
+                if (canClose &&  currentIndex == dimension - 1)
                 {
                     if (j > 0)
                     {
@@ -197,11 +200,10 @@ namespace NFluent
                 }
                 else
                 {
-                    closingStrikes = false;
+                    canClose = false;
                 }
-
                 indices[j] = currentIndex + array.GetLowerBound(j);
-                temp /= array.GetLongLength(j);
+                temp /= dimension;
             }
 
             return closing;

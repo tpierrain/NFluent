@@ -55,7 +55,6 @@ namespace NFluent.Tests
                     "The check succeeded whereas it should have failed.", 
                     "The expected fluent check's raised exception's error message:", 
                     "\t{\"don't care\"}");
-            ;
 
             Check.ThatCode(() =>
                 // check with an incomplete error message

@@ -188,7 +188,12 @@ namespace NFluent.Extensions
         {
             if (type.IsArray)
             {
-                return type.GetElementType().TypeToStringProperlyFormatted() + "[]";
+                var dim = new StringBuilder();
+                dim.Append(type.GetElementType().ToStringProperlyFormatted());
+                dim.Append('[');
+                dim.Append(',', type.GetArrayRank() - 1);
+                dim.Append(']');
+                return dim.ToString();
             }
 
             // try to find the type among primitive types
