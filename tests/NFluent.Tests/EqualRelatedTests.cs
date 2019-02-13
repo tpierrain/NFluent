@@ -161,7 +161,7 @@ namespace NFluent.Tests
                     "The checked enumerable:", 
                     "\t{45, 43, 54, 666} (4 items)", 
                     "The expected enumerable:", 
-                    "\t{45, 43, 54, 667}");
+                    "\t{45, 43, 54, 667} (4 items)");
         }
 
         [Test]
@@ -176,7 +176,7 @@ namespace NFluent.Tests
                     "The checked enumerable:", 
                     "\t{{0, 0, 0}, {0, 0, 0}} (6 items) of type: [int[,]]", 
                     "The expected enumerable:", 
-                    "\t{0, 0, 0, 0, 0, 0} of type: [int[]]");
+                    "\t{0, 0, 0, 0, 0, 0} (6 items) of type: [int[]]");
         }
 
         [Test]
@@ -191,7 +191,7 @@ namespace NFluent.Tests
                     "The checked enumerable:", 
                     "\t{{{0, 1}, {2, 3}, {4, 5}}, {{6, 7}, {8, 9}, {10, 11}}} (12 items) of type: [int[,,]]", 
                     "The expected enumerable:", 
-                    "\t{0, 0, 0, 0, 0, 0} of type: [int[]]");
+                    "\t{0, 0, 0, 0, 0, 0} (6 items) of type: [int[]]");
         }
 
         [Test]
@@ -201,6 +201,20 @@ namespace NFluent.Tests
             var array = Array.CreateInstance(typeof(int), new []{2,2}, new []{-1, -1});
             var otherArray = new int[2, 2];
             Check.That(array).IsEqualTo(otherArray);
+        }
+
+        [Test]
+        public void
+            ShouldProvideTruncationOnLongEnumeration()
+        {
+            var first = "A sentence can provide a long enumeration.".ToCharArray();
+            Check.ThatCode(() => Check.That(first).IsEqualTo("A sentence can provide 1 long enumeration.".ToCharArray()))
+                .IsAFailingCheckWithMessage("", 
+                    "The checked enumerable is different from the expected one.", 
+                "The checked enumerable:", 
+                    "\t{..., 'n', ' ', 'p', 'r', 'o', 'v', 'i', 'd', 'e', ' ', 'a', ' ', 'l', 'o', 'n', 'g', ...} (42 items)", 
+                "The expected enumerable:", 
+                    "\t{..., 'n', ' ', 'p', 'r', 'o', 'v', 'i', 'd', 'e', ' ', '1', ' ', 'l', 'o', 'n', 'g', ...} (42 items)");
         }
 
         [Test]
@@ -504,7 +518,7 @@ namespace NFluent.Tests
                     "The checked enumerable:", 
                     "\t{{1, 2}, {1, 2}} (2 items)", 
                     "The expected enumerable:", 
-                    "\t{{1, 2}, {{...}}}");
+                    "\t{{1, 2}, {{...}}} (2 items)");
         }
     }
 }

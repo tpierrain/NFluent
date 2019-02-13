@@ -54,7 +54,7 @@ namespace NFluent.Tests
                 .IsAFailingCheckWithMessage("", 
                     "The check succeeded whereas it should have failed.", 
                     "The expected fluent check's raised exception's error message:", 
-                    "\t{\"don't care\"}");
+                    "\t{\"don't care\"} (1 item)");
 
             Check.ThatCode(() =>
                 // check with an incomplete error message
@@ -65,7 +65,7 @@ namespace NFluent.Tests
                 "The checked fluent check's raised exception's error message:", 
                 "\t{\"oups\"} (1 item)", 
                 "The expected fluent check's raised exception's error message:", 
-                "\t{\"oups\", \"and more\"}");
+                "\t{\"oups\", \"and more\"} (2 items)");
             
             Check.ThatCode(() =>
                 // check with an incorrect error message
@@ -78,7 +78,7 @@ namespace NFluent.Tests
                 "The checked fluent check's raised exception's error message:", 
                 "\t{\"oups\"} (1 item)", 
                 "The expected fluent check's raised exception's error message:", 
-                "\t{\"oupsla\"}");
+                "\t{\"oupsla\"} (1 item)");
 
             Check.ThatCode(() =>
                 // check with a error message that is too long
@@ -97,7 +97,7 @@ namespace NFluent.Tests
                 "The checked fluent check's raised exception's error message:", 
                 "\t{\"oups\", \"and more\"} (2 items)", 
                 "The expected fluent check's raised exception's error message:", 
-                "\t{\"#[pous]+\"}");
+                "\t{\"#[pous]+\"} (1 item)");
             Check.ThatCode(() =>
                 // check with a error message that does not match regex
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oupsla"))
@@ -109,7 +109,7 @@ namespace NFluent.Tests
                 "The checked fluent check's raised exception's error message:", 
                 "\t{\"oupsla\"} (1 item)", 
                 "The expected fluent check's raised exception's error message:", 
-                "\t{\"#[pous]+$\"}");
+                "\t{\"#[pous]+$\"} (1 item)");
 
             Check.ThatCode(() =>
                 // check with a error message that is too long
@@ -120,7 +120,7 @@ namespace NFluent.Tests
                 "The checked fluent check's raised exception's error message:", 
                 "\t{\"oups\"} (1 item)", 
                 "The expected fluent check's raised exception's error message:", 
-                "\t{\"#[pous]+\"}");
+                "\t{\"#[pous]+\"} (1 item)");
         }
 
         [Test]

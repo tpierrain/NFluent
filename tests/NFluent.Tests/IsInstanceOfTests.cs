@@ -519,7 +519,7 @@ namespace NFluent.Tests
                     "The checked value's type:",
                     "\t[NFluent.Tests.Person]",
                     "The expected value's type: anything but",
-                    "\t{int, string, NFluent.Tests.Person}");
+                    "\t{int, string, NFluent.Tests.Person} (3 items)");
             int? val = 12;
             Check.ThatCode(() => Check.That(val).IsNotAnInstanceOfThese(typeof(int?), typeof(string), typeof(Person)))
                 .IsAFailingCheckWithMessage("",
@@ -527,7 +527,7 @@ namespace NFluent.Tests
                     "The checked value's type:",
                     "\t[int?]", 
                     "The expected value's type: anything but", 
-                    "\t{int?, string, NFluent.Tests.Person}");
+                    "\t{int?, string, NFluent.Tests.Person} (3 items)");
         }
 
         [Test]
@@ -553,7 +553,7 @@ namespace NFluent.Tests
                     "The checked value's type:",
                     "\t[NFluent.Tests.Person]",
                     "The expected value's type: one of those",
-                    "\t{int, string, System.Version}");
+                    "\t{int, string, System.Version} (3 items)");
             int? val = 12;
             Check.ThatCode(() => Check.That(val).IsAnInstanceOfOneOf(typeof(int), typeof(string), typeof(Person)))
                 .IsAFailingCheckWithMessage("",
@@ -561,7 +561,7 @@ namespace NFluent.Tests
                     "The checked value's type:",
                     "\t[int?]", 
                     "The expected value's type: one of those", 
-                    "\t{int, string, NFluent.Tests.Person}");
+                    "\t{int, string, NFluent.Tests.Person} (3 items)");
 
 
             // check for specific case when only one type
@@ -580,7 +580,7 @@ namespace NFluent.Tests
                     "The checked value's type:",
                     "\t[null]", 
                     "The expected value's type: one of those", 
-                    "\t{int, string, NFluent.Tests.Person}");
+                    "\t{int, string, NFluent.Tests.Person} (3 items)");
         }
     }
 }

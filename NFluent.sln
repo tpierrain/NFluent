@@ -117,7 +117,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.NetStandard.20.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Tests.Core.xUnit", "tests\NFluent.Tests.Core.xUnit\NFluent.Tests.Core.xUnit.csproj", "{68BEC16B-E721-42AC-968D-D285BDBEF262}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.NetStandard.20.Tests.Internals", "tests\NFluent.NetStandard.20.Tests.Internals\NFluent.NetStandard.20.Tests.Internals.csproj", "{8F0252A6-1BB6-4BF6-A852-33EAFB6852CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.NetStandard.20.Tests.Internals", "tests\NFluent.NetStandard.20.Tests.Internals\NFluent.NetStandard.20.Tests.Internals.csproj", "{8F0252A6-1BB6-4BF6-A852-33EAFB6852CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{DEE62612-3A5D-4D3F-9DDD-84B869E9184F}"
+	ProjectSection(SolutionItems) = preProject
+		ReleaseNoteContentToBeInsertedWithinNuspecFile.md = ReleaseNoteContentToBeInsertedWithinNuspecFile.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

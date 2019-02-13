@@ -242,7 +242,7 @@ namespace NFluent.Tests
                     "The checked enumerable:",
                     "\t{{4}} (1 item)",
                     "The expected enumerable:",
-                    "\t{{8}}");
+                    "\t{{8}} (1 item)");
         }
 
         [Test]
@@ -256,7 +256,7 @@ namespace NFluent.Tests
                     "The checked enumerable:",
                     "\t{{4}} (1 item)",
                     "The expected enumerable:",
-                    "\t{{null}}");
+                    "\t{{null}} (1 item)");
         }
 
         [Test]

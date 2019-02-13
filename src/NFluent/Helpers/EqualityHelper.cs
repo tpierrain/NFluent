@@ -47,11 +47,16 @@ namespace NFluent.Helpers
                     test.DefineExpectedValue(expected, useOperator ? "equals to (using operator==)" : "",
                             "different from" + (useOperator ? " (using !operator==)" : ""));
 
-                    if (FluentEquals(sut, expected, mode))
+                    var differenceDetailses = FluentEquals(sut, expected, mode);
+                    if (differenceDetailses.Count==0)
                     {
                         return;
                     }
 
+                    if (expected is IEnumerable)
+                    {
+                        test.SetValuesIndex(differenceDetailses[0].Index);
+                    }
                     // shall we display the type as well?
                     var options = MessageOption.None;
                     if (sut == null || (expected != null && sut.GetType() != expected.GetType()))
@@ -85,7 +90,7 @@ namespace NFluent.Helpers
                 .DefineExpectedValue(expected)
                 .Analyze((sut, test) =>
                 {
-                    if (FluentEquals(sut, expected, mode))
+                    if (FluentEquals(sut, expected, mode).Count == 0)
                     {
                         return;
                     }
@@ -109,7 +114,7 @@ namespace NFluent.Helpers
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
-        internal static ICheckLink<ICheck<T>> PerformInequalCheck<T, TE>(
+        internal static ICheckLink<ICheck<T>> PerformUnequalCheck<T, TE>(
             ICheck<T> check,
             TE expected,
             bool useOperator = false)
@@ -126,7 +131,7 @@ namespace NFluent.Helpers
                 .Analyze((sut, test) =>
                 {
 
-                    if ( !FluentEquals(sut, expected, mode))
+                    if ( FluentEquals(sut, expected, mode).Count != 0)
                     {
                         return;
                     }
@@ -162,7 +167,7 @@ namespace NFluent.Helpers
                     }
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
                     var ratio = expected == 0.0 ? 1.0 : Math.Abs(diff / expected);
-                    var mainLine = $"The {{0}} is different from the {{1}}";
+                    var mainLine = "The {0} is different from the {1}";
                     if (ratio < 0.0001)
                     {
                         mainLine += $", with a difference of {diff:G2}";
@@ -219,18 +224,20 @@ namespace NFluent.Helpers
 
         internal static bool FluentEquals(object instance, object expected)
         {
-            return FluentEquals(instance, expected, Check.EqualMode);
+            return FluentEquals(instance, expected, Check.EqualMode).Count==0;
         }
 
-        private static bool FluentEquals(object instance, object expected, EqualityMode mode)
+        private static IList<DifferenceDetails> FluentEquals(object instance, object expected, EqualityMode mode)
         {
-            var ret = Equals(instance, expected);
+            var result = new List<DifferenceDetails>();
+            var ret = false;
             switch (mode)
             {
                 case EqualityMode.FluentEquals:
-                    return ValueDifference(instance, "actual", expected, "expected").Count == 0;
+                    return ValueDifference(instance, "actual", expected, "expected");
                 case EqualityMode.OperatorEq:
                 case EqualityMode.OperatorNeq:
+                    ret = Equals(instance, expected);
 
                     var actualType = instance.GetTypeWithoutThrowingException();
                     var expectedType = expected.GetTypeWithoutThrowingException();
@@ -246,29 +253,32 @@ namespace NFluent.Helpers
                             ret = !ret;
                         }
                     }
-
                     break;
             }
 
-            return ret;
+            if (!ret)
+            {
+                result.Add(new DifferenceDetails("actual", instance, "expected", expected, 0));
+            }
+            return result;
         }
 
         internal static IList<DifferenceDetails> ValueDifference(object firstItem, string firstName, object otherItem,
             string secondName)
         {
-            return ValueDifference(firstItem, firstName, otherItem, secondName, new List<object>(),
-                new List<object>());
+            return ValueDifference(firstItem, firstName, otherItem, secondName, 0,
+                new List<object>(),new List<object>());
         }
 
         private static IList<DifferenceDetails> ValueDifference(object firstItem, string firstName, object otherItem,
-            string secondName, List<object> firstSeen, List<object> secondSeen)
+            string secondName, int refIndex, List<object> firstSeen, List<object> secondSeen)
         {
             var result = new List<DifferenceDetails>();
             if (firstItem == null)
             {
                 if (otherItem != null)
                 {
-                    result.Add(new DifferenceDetails(firstName, null, secondName, otherItem));
+                    result.Add(new DifferenceDetails(firstName, null, secondName, otherItem, refIndex));
                 }
 
                 return result;
@@ -288,7 +298,7 @@ namespace NFluent.Helpers
                 }
                 if (firstItem is IEnumerable first && otherItem is IEnumerable second)
                 {
-                    return ValueDifferenceEnumerable(first, firstName, second, secondName, firstSeen, secondSeen);
+                    return ValueDifferenceEnumerable(first, firstName, second, secondName, refIndex, firstSeen, secondSeen);
                 }
 
                 if (firstItem.GetType().IsNumerical() &&
@@ -302,7 +312,7 @@ namespace NFluent.Helpers
                 }
             }
 
-            result.Add(new DifferenceDetails(firstName, firstItem, secondName, otherItem));
+            result.Add(new DifferenceDetails(firstName, firstItem, secondName, otherItem, refIndex));
             return result;
         }
 
@@ -312,14 +322,14 @@ namespace NFluent.Helpers
 
             if (firstArray.Rank != secondArray.Rank)
             {
-                valueDifferences.Add(new DifferenceDetails(firstName+".Rank", firstArray, secondName+".Rank", secondArray));
+                valueDifferences.Add(new DifferenceDetails(firstName+".Rank", firstArray, secondName+".Rank", secondArray, 0));
                 return valueDifferences;
             }
             for (var i = 0; i < firstArray.Rank; i++)
             {
                 if (firstArray.SizeOfDimension(i) != secondArray.SizeOfDimension(i))
                 {
-                    valueDifferences.Add(new DifferenceDetails($"{firstName}.Dimension({i})", firstArray, $"{secondName}.Dimension({i})", secondArray));
+                    valueDifferences.Add(new DifferenceDetails($"{firstName}.Dimension({i})", firstArray, $"{secondName}.Dimension({i})", secondArray, i));
                     return valueDifferences;
                 }
             }
@@ -341,20 +351,20 @@ namespace NFluent.Helpers
 
                 var firstEntry = firstArray.GetValue(indices);
                 var secondEntry = secondArray.GetValue(secondIndices);
-                valueDifferences.AddRange(ValueDifference(firstEntry, firstName+label, secondEntry, secondName+label, firstSeen, secondSeen));
+                valueDifferences.AddRange(ValueDifference(firstEntry, firstName+label, secondEntry, secondName+label, i, firstSeen, secondSeen));
             }
 
             return valueDifferences;
         }
 
         private static IList<DifferenceDetails> ValueDifferenceEnumerable(IEnumerable firstItem, string firstName,
-            IEnumerable otherItem,
-            string secondName, List<object> firstSeen, List<object> secondSeen)
+            IEnumerable otherItem, string secondName, int refIndex,
+            List<object> firstSeen, List<object> secondSeen)
         {
             var valueDifferences = new List<DifferenceDetails>();
             if (firstSeen.Contains(firstItem) || secondSeen.Contains(otherItem))
             {
-                valueDifferences.Add(new DifferenceDetails(firstName, null, secondName, null));
+                valueDifferences.Add(new DifferenceDetails(firstName, null, secondName, null, 0));
                 return valueDifferences;
             }
 
@@ -368,19 +378,19 @@ namespace NFluent.Helpers
                 var firstItemName = $"{firstName}[{index}]";
                 if (!scanner.MoveNext())
                 {
-                    valueDifferences.Add(new DifferenceDetails(firstItemName, item, null, null));
+                    valueDifferences.Add(new DifferenceDetails(firstItemName, item, null, null, index));
                     break;
                 }
 
                 var secondItemName = $"{secondName}[{index}]";
                 valueDifferences.AddRange(ValueDifference(item, firstItemName, scanner.Current,
-                    secondItemName, new List<object>(firstSeen), new List<object>(secondSeen)));
+                    secondItemName, index, new List<object>(firstSeen), new List<object>(secondSeen)));
                 index++;
             }
 
             if (scanner.MoveNext())
             {
-                valueDifferences.Add(new DifferenceDetails(null, null, $"{secondName}[{index}]", scanner.Current));
+                valueDifferences.Add(new DifferenceDetails(null, null, $"{secondName}[{index}]", scanner.Current, index));
             }
 
             return valueDifferences;
@@ -390,7 +400,7 @@ namespace NFluent.Helpers
         {
             public bool Equals(T x, T y)
             {
-                return FluentEquals(x, y, Check.EqualMode);
+                return FluentEquals(x, y, Check.EqualMode).Count == 0;
             }
 
             //ncrunch: no coverage start
@@ -405,18 +415,20 @@ namespace NFluent.Helpers
 
         internal class DifferenceDetails
         {
-            public DifferenceDetails(string firstName, object firstValue, string secondName, object secondValue)
+            public DifferenceDetails(string firstName, object firstValue, string secondName, object secondValue, int index)
             {
                 this.FirstName = firstName;
                 this.FirstValue = firstValue;
                 this.SecondName = secondName;
                 this.SecondValue = secondValue;
+                this.Index = index;
             }
 
             public string FirstName { get; internal set; }
             public string SecondName { get; internal set; }
             public object FirstValue { get; internal set; }
             public object SecondValue { get; internal set; }
+            public int Index { get; }
         }
     }
 }

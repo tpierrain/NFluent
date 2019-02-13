@@ -355,7 +355,7 @@ namespace NFluent.Tests
             "The checked string:",
             "\t[\"The Black Keys\"]",
             "The expected string: one of these",
-            "\t{\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"}");
+            "\t{\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"} (3 items)");
         }
 
         [Test]
@@ -390,7 +390,7 @@ namespace NFluent.Tests
                     "The checked string:",
                     "\t[\"The Black Keys\"]",
                     "The expected string: none of these",
-                    "\t{\"Metronomy\", \"Sigur Ros\", \"The Black Keys\", \"Get Well Soon\"}");
+                    "\t{\"Metronomy\", \"Sigur Ros\", \"The Black Keys\", \"Get Well Soon\"} (4 items)");
         }
 
         [Test]

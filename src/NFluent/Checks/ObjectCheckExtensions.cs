@@ -131,7 +131,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<T>> HasDifferentValueThan<T, TU>(this ICheck<T> check, TU expected)
         {
-            return EqualityHelper.PerformInequalCheck(check, expected, true);
+            return EqualityHelper.PerformUnequalCheck(check, expected, true);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<T>> IsNotEqualTo<T>(this ICheck<T> check, object expected)
         {
-            return EqualityHelper.PerformInequalCheck(check, expected);
+            return EqualityHelper.PerformUnequalCheck(check, expected);
         }
 
         /// <summary>

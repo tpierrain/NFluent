@@ -282,8 +282,6 @@ namespace NFluent.Helpers
         /// <returns>The same string but with &lt;&lt;CRLF&gt;&gt; inserted before the first CRLF or &lt;&lt;LF&gt;&gt; inserted before the first LF.</returns>
         private static string HighlightCrlfOrLfIfAny(string str)
         {
-            if (str == null)
-                return str;
             str = str.Replace("\r\n", "<<CRLF>>");
             str = str.Replace("\r", "<<CR>>");
             str = str.Replace("\n", "<<LF>>");

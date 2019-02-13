@@ -379,14 +379,14 @@ namespace NFluent.Tests
                 "The checked value's field 'arrayOfInts':",
                 "\t{0, 0, 0, 0} (4 items)", 
                 "The expected value's field 'arrayOfInts':",
-                 "\t{0, 0, 0, 0, 0}");
+                 "\t{0, 0, 0, 0, 0} (5 items)");
             Check.ThatCode(() => { Check.That(new {arrayOfInts =  "INTS"}).Considering().NonPublic.Fields.IsEqualTo(expected); })
                 .IsAFailingCheckWithMessage("", 
                     "The checked value's field 'arrayOfInts' does not have the expected value.", 
                     "The checked value's field 'arrayOfInts':", 
                     "\t[\"INTS\"] of type: [string]", 
                     "The expected value's field 'arrayOfInts':", 
-                    "\t{0, 0, 0, 0, 0} of type: [int[]]");
+                    "\t{0, 0, 0, 0, 0} (5 items) of type: [int[]]");
         }
 
         [Test]

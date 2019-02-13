@@ -106,17 +106,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldPermitChangingMainMessage()
-        {
-            var message = FluentMessage.BuildMessage("The {0} is before the {1} whereas it must not.");
-
-            message.ChangeMessageTo("The {0} is not before the {1}.");
-
-            Assert.AreEqual(NewLine + "The checked value is not before the expected one.", message.ToString());
-
-        }
-
-        [Test]
         public void HowExpectedValuesWorks()
         {
             var heroes = new[] { "Luke", "Yoda", "Chewie" };

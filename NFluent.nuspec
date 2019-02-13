@@ -38,6 +38,7 @@
 are significant, please revert to us if you face issues.
 * Fixes reporting of end of line markers: only carriage return chars were reported.
 * Changed error text for missing or extra lines in string to make it clearer.
+* IsEqualTo provides more details for IEnumerable (make sure first different item is visible).
 ### Fixes
 * Fix false positive with TimeSpan due linked to precision loss. It concerns: IsEqualTo(TimeSpan), IsLessThan(TimeSpan), IsGreaterThan(TimeSpan)
 * Fix random FileNotFound exceptions on the first failing assertion while using XUnit in some specific setup.
@@ -66,6 +67,7 @@
 * default truncation with the Check.StringTruncationLength property
 * Multidimensional arrays are properly reported in error messages, respecting index structure.
 * Sourcelink (Net Core 2.1+ and Net Standard 2.0): you can debug through NFluent code using Sourlink on Core 2.1 projects
+* Multi dimensional array types are reported with the number of dimensions (eg: int[,,])
 ### Fixes
 * As now works with Not (and vice versa).
 * Exception when using HasElementThatMatches or ContainsOnlyElementsThatMatch on arrays, and possibly

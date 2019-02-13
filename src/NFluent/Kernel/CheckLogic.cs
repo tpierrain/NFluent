@@ -246,9 +246,15 @@ namespace NFluent.Kernel
                 }
                 else
                 {
-                    block = this.IsNegated ? fluentMessage.WithGivenValue(this.expected) : fluentMessage.Expected(this.expected);
+                    block = this.IsNegated
+                        ? fluentMessage.WithGivenValue(this.expected)
+                        : fluentMessage.Expected(this.expected, this.index);
                     block.WithType(this.Option.HasFlag(MessageOption.WithType));
                     block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
+                    if (this.expected is IEnumerable list && !(this.expected is string))
+                    {
+                        block.WithEnumerableCount(this.expected is ICollection ? ((ICollection) this.expected).Count: list.Count());
+                    }
                 }
 
                 if (this.expected == null)
@@ -330,6 +336,10 @@ namespace NFluent.Kernel
             }
             this.comparison = comparisonMessage;
             this.negatedComparison = negatedComparison1;
+            if (newExpectedValue is IEnumerable)
+            {
+                this.expectedCount = newExpectedValue is ICollection ? ((ICollection) newExpectedValue).Count : ((IEnumerable) newExpectedValue).Count();
+            }
         }
 
         public ICheckLogic<T> DefineExpectedType(System.Type expectedInstanceType)
@@ -363,7 +373,7 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> OnNegateWhen(Func<T, bool> predicate, string error, MessageOption options)
+        public ICheckLogic<T> OnNegateWhen(Func<T, bool> predicate, string error, MessageOption negatedOptions)
         {
             if (this.negatedFailed)
             {
@@ -374,7 +384,7 @@ namespace NFluent.Kernel
             {
                 this.negatedFailed = true;
                 this.negatedError = error;
-                this.negatedOption = options;
+                this.negatedOption = negatedOptions;
             }
 
             return this;

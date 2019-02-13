@@ -194,12 +194,13 @@ namespace NFluent.Extensibility
         /// Adds a message block to describe the expected result.
         /// </summary>
         /// <param name="expected">The expected value.</param>
+        /// <param name="index"></param>
         /// <returns>
         /// The created MessageBlock.
         /// </returns>
-        public MessageBlock Expected(object expected)
+        public MessageBlock Expected(object expected, long index = 0)
         {
-            this.expectedBlock = new MessageBlock(this, expected, this.expectedLabel);
+            this.expectedBlock = new MessageBlock(this, expected, this.expectedLabel, index);
             this.referenceType = expected.GetTypeWithoutThrowingException();
             return this.expectedBlock;
         }

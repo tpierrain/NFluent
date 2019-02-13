@@ -27,6 +27,7 @@ Example
 are significant, please revert to us if you face issues.
 * Fixes reporting of end of line markers: only carriage return chars were reported.
 * Changed error text for missing or extra lines in string to make it clearer.
+* IsEqualTo provides more details for IEnumerable (make sure first different item is visible).
 
 ### Fixes
 * Fix false positive with TimeSpan due linked to precision loss. It concerns: IsEqualTo(TimeSpan), IsLessThan(TimeSpan), IsGreaterThan(TimeSpan)
