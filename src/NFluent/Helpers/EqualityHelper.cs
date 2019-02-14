@@ -30,6 +30,9 @@ namespace NFluent.Helpers
     /// </summary>
     internal static class EqualityHelper
     {
+        private const string sutLabel = "actual";
+        private const string ExpectedLabel = "expected";
+
         internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(
             ICheck<T> check,
             TE expected,
@@ -202,8 +205,8 @@ namespace NFluent.Helpers
                     }
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
                     var ratio = expected == 0.0 ? 1.0 : Math.Abs(diff / expected);
-                    var mainLine = $"The {{0}} is different from the {{1}}";
-                    if (ratio < 0.0001)
+                    var mainLine = "The {0} is different from the {1}";
+                    if (ratio < 0.0001f)
                     {
                         mainLine += $", with a difference of {diff:G2}";
                     }
@@ -234,7 +237,7 @@ namespace NFluent.Helpers
             switch (mode)
             {
                 case EqualityMode.FluentEquals:
-                    return ValueDifference(instance, "actual", expected, "expected");
+                    return ValueDifference(instance, sutLabel, expected, ExpectedLabel);
                 case EqualityMode.OperatorEq:
                 case EqualityMode.OperatorNeq:
                     ret = Equals(instance, expected);
@@ -258,7 +261,7 @@ namespace NFluent.Helpers
 
             if (!ret)
             {
-                result.Add(new DifferenceDetails("actual", instance, "expected", expected, 0));
+                result.Add(new DifferenceDetails(sutLabel, instance, ExpectedLabel, expected, 0));
             }
             return result;
         }

@@ -83,6 +83,8 @@
         {
             Check.ThatCode(() => { Check.That(new[] { 1, 2 }).HasFieldsWithSameValues(new[] { 1, 2, 3 }); })
                 .IsAFaillingCheck();
+            Check.ThatCode(() => { Check.That((IEnumerable)new[] { 1, 2 }).HasFieldsWithSameValues((IEnumerable) new[] { 1, 2, 3 }); })
+                .IsAFaillingCheck();
         }
 
         [Test]

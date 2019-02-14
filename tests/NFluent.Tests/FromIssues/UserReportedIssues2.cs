@@ -278,24 +278,47 @@ namespace NFluent.Tests.FromIssues
 
         // GH #205 
         [Test]
-        public void should_generate_correct_error_message_for_double()
+        public void isEqualTo_should_provide_details_and_suggest_isCloseTo()
         {
-            using (var session = new CultureSession("en-US"))
+            using (new CultureSession("en-US"))
             {
                 Check.ThatCode(() => Check.That(this.decimalValue*(1<<16)).IsEqualTo(0.95d*(1<<16))).IsAFailingCheckWithMessage("",
-                        "The checked value is different from the expected one, with a difference of 7.3E-12. You may consider using IsCloseTo() for comparison.",
-                        "The checked value:",
-                        "\t[62259.2]",
-                        "The expected value:",
-                        "\t[62259.2]");
+                    "The checked value is different from the expected one, with a difference of 7.3E-12. You may consider using IsCloseTo() for comparison.",
+                    "The checked value:",
+                    "\t[62259.2]",
+                    "The expected value:",
+                    "\t[62259.2]");
 
                 Check.ThatCode(() => Check.That(0.9500001f*(1<<16)).IsEqualTo(0.95f*(1<<16))).IsAFailingCheckWithMessage("",
-                        "The checked value is different from the expected one, with a difference of 0.0078. You may consider using IsCloseTo() for comparison.",
-                        "The checked value:",
-                        "\t[62259.21]",
-                        "The expected value:",
-                        "\t[62259.2]");
+                    "The checked value is different from the expected one, with a difference of 0.0078. You may consider using IsCloseTo() for comparison.",
+                    "The checked value:",
+                    "\t[62259.21]",
+                    "The expected value:",
+                    "\t[62259.2]");
+
             }
+        }
+
+        [Test]
+        public void should_not_provide_diff_value_when_at_limit()
+        {
+            var refValue = 10000;
+            var edgeValue = refValue + 0.0001 * refValue;
+            Check.ThatCode(() => Check.That((float)edgeValue).IsEqualTo(refValue)).
+                IsAFailingCheckWithMessage(	"", 
+                    "The checked value is different from the expected one.", 
+                    "The checked value:",
+                    "\t[10001]",
+                    "The expected value:", 
+                    "\t[10000]");
+
+            Check.ThatCode(() => Check.That(edgeValue).IsEqualTo(refValue)).
+                IsAFailingCheckWithMessage(	"", 
+                    "The checked value is different from the expected one.", 
+                    "The checked value:",
+                    "\t[10001]",
+                    "The expected value:", 
+                    "\t[10000]");
         }
 
         [Test]
