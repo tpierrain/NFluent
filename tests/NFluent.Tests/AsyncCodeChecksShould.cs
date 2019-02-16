@@ -61,11 +61,10 @@ namespace NFluent.Tests
         {
             // pseudo async method
             Check.ThatCode(PseudoAsyncMethod).DoesNotThrow();
-
         }
 
         // this attribute is here as an attempt to fool the async method detection
-//        [DebuggerStepThrough]
+        [DebuggerStepThrough]
         override protected Task PseudoAsyncMethod()
         {
             return new Task(() => { });

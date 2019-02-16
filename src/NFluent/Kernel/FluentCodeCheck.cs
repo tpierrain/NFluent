@@ -140,8 +140,7 @@ namespace NFluent.Kernel
                 }
 
                 // we must check if the method is flagged async
-                if (!function.GetMethodInfo().GetCustomAttributes( typeof(AsyncStateMachineAttribute),false)
-                    .Any())
+                if (!Attribute.GetCustomAttributes(function.GetMethodInfo(), typeof(AsyncStateMachineAttribute)).Any())
                 {
                     return;
                 }

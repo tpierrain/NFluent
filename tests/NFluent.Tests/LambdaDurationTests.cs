@@ -1,20 +1,17 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="LambdaDurationTests.cs" company="">
-// //   Copyright 2014 Cyrille DUPUYDAUBY, Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using NFluent.ApiChecks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LambdaDurationTests.cs" company="">
+//   Copyright 2014 Cyrille DUPUYDAUBY, Thomas PIERRAIN
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent.Tests
 {
@@ -32,6 +29,7 @@ namespace NFluent.Tests
         public void DurationTest()
         {
             Check.ThatCode(() => Thread.Sleep(1)).LastsLessThan(EnoughMillisecondsForMutualizedSoftwareFactorySlaveToSucceed, TimeUnit.Milliseconds);
+            // test at the limit
         }
 
         [Test]
@@ -120,5 +118,6 @@ namespace NFluent.Tests
                     "The expected code's cpu consumption: more than",
                     "\t[50 Milliseconds]"); 
         }
+
     }
 }

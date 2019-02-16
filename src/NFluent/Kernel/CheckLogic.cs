@@ -92,7 +92,7 @@ namespace NFluent.Kernel
             {
                 throw new System.InvalidOperationException(message);
             }
-            this.OnNegateWhen(_ => true, message, MessageOption.NoCheckedBlock);
+            this.negatedError = message;
         }
 
         public ICheckLogic<T> FailIfNull(string error = "The {0} is null.")
@@ -322,7 +322,7 @@ namespace NFluent.Kernel
         {
             if (this.cannotBetNegated && !string.IsNullOrEmpty(negatedComparison1))
             {
-                throw new System.InvalidOperationException(this.negatedError);
+                throw new System.InvalidOperationException($"You must not provide a negated comparison label, as {this.negatedError}");
             }
             this.expectedType = forceType ?? (newExpectedValue == null ? typeof(TU) : newExpectedValue.GetType());
             this.expected = newExpectedValue;

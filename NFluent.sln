@@ -10,7 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		DevDoD.md = DevDoD.md
 		HowToAddANewAssertion.md = HowToAddANewAssertion.md
 		LICENSE.txt = LICENSE.txt
-		MyPersonalPaperNote.md = MyPersonalPaperNote.md
 		NFluent.snk = NFluent.snk
 		ReadMe.md = ReadMe.md
 		UseCases.md = UseCases.md
@@ -109,6 +108,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.NetStandard.20.Test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{DEE62612-3A5D-4D3F-9DDD-84B869E9184F}"
 	ProjectSection(SolutionItems) = preProject
+		Backlog.md = Backlog.md
+		CONTRIBUTING.md = CONTRIBUTING.md
 		ReleaseNoteContentToBeInsertedWithinNuspecFile.md = ReleaseNoteContentToBeInsertedWithinNuspecFile.md
 	EndProjectSection
 EndProject
@@ -119,6 +120,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "continuous integration", "c
 		.build\Build.proj = .build\Build.proj
 		.build\buildlogic.targets = .build\buildlogic.targets
 		CI.cmd = CI.cmd
+		MutationTests.cmd = MutationTests.cmd
 		NFluent.nuspec = NFluent.nuspec
 	EndProjectSection
 EndProject

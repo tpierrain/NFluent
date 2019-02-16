@@ -29,14 +29,29 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(12).Not.CantBeNegatedCheck()).Throws<InvalidOperationException>()
                 .WithMessage("CantBeNegated can't be used when negated");
         }
-    }
 
+        [Test]
+        public void ThrowsWhenDefiningNegatedLabelWhenNonNegateable()
+        {
+            Check.ThatCode(() => Check.That(12).CantBeNegatedThrowsOnInvalidConstruction()).Throws<InvalidOperationException>()
+                .WithMessage("You must not provide a negated comparison label, as CantBeNegatedThrowsOnInvalidConstruction can't be used when negated");
+        }
+    }
 
     internal static class ExtensibilitySamples
     {
         public static ICheckLink<ICheck<int>> CantBeNegatedCheck(this ICheck<int> context)
         {
             ExtensibilityHelper.BeginCheck(context).CantBeNegated("CantBeNegated").FailIfNull().EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(context);
+        }
+
+        public static ICheckLink<ICheck<int>> CantBeNegatedThrowsOnInvalidConstruction(this ICheck<int> context)
+        {
+            ExtensibilityHelper.BeginCheck(context).
+                CantBeNegated("CantBeNegatedThrowsOnInvalidConstruction").
+                DefineExpectedValue(12, "Dummy", "forbidden").
+                EndCheck();
             return ExtensibilityHelper.BuildCheckLink(context);
         }
     }

@@ -283,7 +283,7 @@ namespace NFluent.Helpers
         private static string HighlightCrlfOrLfIfAny(string str)
         {
             str = str.Replace("\r\n", "<<CRLF>>");
-            str = str.Replace("\r", "<<CR>>");
+            //str = str.Replace("\r", "<<CR>>"); ==> isolated CR are not considered as EOL markers
             str = str.Replace("\n", "<<LF>>");
             return str;
         }
@@ -302,11 +302,6 @@ namespace NFluent.Helpers
 
         private static StringDifference Build(int line, string actual, string expected, bool ignoreCase, bool isFullText)
         {
-            bool IsEol(char theChar)
-            {
-                return theChar == CarriageReturn || theChar == Linefeed;
-            }
-
             if (actual == null)
             {
                 return new StringDifference(DifferenceMode.MissingLines, line, 0, null, expected, isFullText);
@@ -349,12 +344,12 @@ namespace NFluent.Helpers
                     var expectedStart = j;
 
                     // we skip all spaces
-                    while (i + 1 < actual.Length && char.IsWhiteSpace(actual[i + 1]) && !IsEol(actual[i+1]))
+                    while (ContainsWhiteSpaceAt(actual, i+1))
                     {
                         i++;
                     }
 
-                    while (j + 1 < expected.Length && char.IsWhiteSpace(expected[j + 1]) && !IsEol(expected[j+1]))
+                    while (ContainsWhiteSpaceAt(expected, j+1))
                     {
                         j++;
                     }
@@ -444,6 +439,16 @@ namespace NFluent.Helpers
             }
 
             return new StringDifference(type, line, position, actual, expected, isFullText);
+        }
+
+        private static bool ContainsWhiteSpaceAt(string actual, int i)
+        {
+            return i < actual.Length && char.IsWhiteSpace(actual[i]) && !IsEol(actual[i]);
+        }
+
+        private static bool IsEol(char theChar)
+        {
+            return theChar == CarriageReturn || theChar == Linefeed;
         }
 
         /// <summary>

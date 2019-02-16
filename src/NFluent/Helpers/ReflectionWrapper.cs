@@ -78,8 +78,6 @@ namespace NFluent.Helpers
 
         internal bool IsArray => this.ValueType.IsArray;
 
-        internal bool IsProperty { get; private set; }
-
         internal static ReflectionWrapper BuildFromInstance(Type type, object value, Criteria criteria)
         {
             if (type == typeof(ReflectionWrapper))
@@ -103,8 +101,11 @@ namespace NFluent.Helpers
             string nameInSource;
             if (EvaluateCriteria(AutoPropertyMask, name, out nameInSource))
             {
+                if (criteria.WithProperties)
+                {
+                    return null;
+                }
                 labelPattern = $"autoproperty '{{0}}' (field '{name}')";
-                isProperty = true;
             }
             else if (EvaluateCriteria(AnonymousTypeFieldMask, name, out nameInSource))
             {
@@ -117,16 +118,13 @@ namespace NFluent.Helpers
             }
 
             return new ReflectionWrapper(nameInSource, prefix, labelPattern, value?.GetType() ?? type, value,
-                criteria) {IsProperty = isProperty};
+                criteria);
         }
 
         internal static ReflectionWrapper BuildFromProperty(string prefix, string name, Type type, object value,
             Criteria criteria)
         {
-            return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria)
-            {
-                IsProperty = false
-            };
+            return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria);
         }
 
         internal void MapFields(ReflectionWrapper other,
@@ -292,7 +290,7 @@ namespace NFluent.Helpers
                 var expectedValue = this.Value == null ? null : info.GetValue(this.Value);
                 var extended = BuildFromField(this.MemberLongName, info.Name, info.FieldType, expectedValue,
                     this.Criteria);
-                if (this.Criteria.WithProperties && extended.IsProperty)
+                if (extended == null)
                 {
                     continue;
                 }
