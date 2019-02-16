@@ -97,7 +97,6 @@ namespace NFluent.Helpers
             Criteria criteria)
         {
             string labelPattern;
-            var isProperty = false;
             string nameInSource;
             if (EvaluateCriteria(AutoPropertyMask, name, out nameInSource))
             {

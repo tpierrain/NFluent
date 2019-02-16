@@ -140,7 +140,7 @@ namespace NFluent.Kernel
                 }
 
                 // we must check if the method is flagged async
-                if (!Attribute.GetCustomAttributes(function.GetMethodInfo(), typeof(AsyncStateMachineAttribute)).Any())
+                if (!FunctionIsAsync(function))
                 {
                     return;
                 }
@@ -158,6 +158,16 @@ namespace NFluent.Kernel
             return result;
         }
 
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40 && !PORTABLE
+        private static bool FunctionIsAsync<TU>(Func<TU> function)
+        {
+#if NETSTANDARD1_3
+            return function.GetMethodInfo().GetCustomAttributes(typeof(AsyncStateMachineAttribute), false).Any();
+#else
+            return Attribute.GetCustomAttributes(function.GetMethodInfo(), typeof(AsyncStateMachineAttribute)).Any();
+#endif
+        }
+#endif
         private static void CaptureTrace(Action action, RunTrace result)
         {
 #if !PORTABLE

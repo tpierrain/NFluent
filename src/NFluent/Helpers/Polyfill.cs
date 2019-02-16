@@ -148,7 +148,7 @@ namespace NFluent
             }
             return result;
         }
-
+       /* 
         public static IList<T> Cast<T, TU>(this IEnumerable<TU> list)
             where T: class
         {
@@ -163,7 +163,7 @@ namespace NFluent
             }
             return result;
         }
-
+        */
         public static IList<T> ToList<T>(this IEnumerable<T> list)
         {
             return new List<T>(list);
@@ -200,7 +200,7 @@ namespace NFluent
             }
             return false;
         }
-
+/*
         public static bool All<T>(this IList<T> list, Predicate<T> predicate)
         {
             foreach (var item in list)
@@ -212,7 +212,7 @@ namespace NFluent
             }
             return true;
         }
-
+   */
         public static bool Any<T>(this IEnumerable<T> list, Predicate<T> predicate)
         {
             foreach (var item in list)
