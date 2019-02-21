@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿ // --------------------------------------------------------------------------------------------------------------------
 //  <copyright file="EqualityHelper.cs" company="NFluent">
 //   Copyright 2018 Thomas PIERRAIN & Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,10 +56,6 @@ namespace NFluent.Helpers
                         return;
                     }
 
-                    if (expected is IEnumerable)
-                    {
-                        test.SetValuesIndex(differenceDetailses[0].Index);
-                    }
                     // shall we display the type as well?
                     var options = MessageOption.None;
                     if (sut == null || (expected != null && sut.GetType() != expected.GetType()))
@@ -74,7 +70,19 @@ namespace NFluent.Helpers
                         options |= MessageOption.WithHash;
                     }
 
-                    test.Fail("The {0} is different from the {1}.", options);
+                    var messageText = new StringBuilder("The {0} is different from the {1}."); 
+                    if (expected is IEnumerable)
+                    {
+                        test.SetValuesIndex(differenceDetailses[0].Index);
+                        if (differenceDetailses.Count > 1)
+                        {
+                            messageText.Append($" {differenceDetailses.Count} differences found!");
+                        }
+                    }
+                    else
+                    {
+                     }
+                    test.Fail(messageText.ToString(), options);
                 })
                 .OnNegate("The {0} is equal to the {1} whereas it must not.", 
                     MessageOption.NoCheckedBlock | MessageOption.WithType)
@@ -330,11 +338,13 @@ namespace NFluent.Helpers
             }
             for (var i = 0; i < firstArray.Rank; i++)
             {
-                if (firstArray.SizeOfDimension(i) != secondArray.SizeOfDimension(i))
+                if (firstArray.SizeOfDimension(i) == secondArray.SizeOfDimension(i))
                 {
-                    valueDifferences.Add(new DifferenceDetails($"{firstName}.Dimension({i})", firstArray, $"{secondName}.Dimension({i})", secondArray, i));
-                    return valueDifferences;
+                    continue;
                 }
+
+                valueDifferences.Add(new DifferenceDetails($"{firstName}.Dimension({i})", firstArray, $"{secondName}.Dimension({i})", secondArray, i));
+                return valueDifferences;
             }
             var indices = new int[firstArray.Rank];
             var secondIndices = new int[secondArray.Rank];

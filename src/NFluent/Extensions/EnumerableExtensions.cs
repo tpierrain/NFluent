@@ -30,6 +30,7 @@ namespace NFluent
     public static class EnumerableExtensions
     {
         private const string Ellipsis = "...";
+        private const string Separator = ", ";
 
         /// <summary>
         ///     Returns the number of items present within the specified enumerable (returns 0 if the enumerable is null).
@@ -59,16 +60,16 @@ namespace NFluent
         /// <param name="fromIndex"></param>
         /// <param name="len"></param>
         /// <returns>A string containing all the <see cref="IEnumerable" /> elements, separated by the given separator.</returns>
-        public static string ToEnumeratedString(this IEnumerable enumerable, long fromIndex = 0, long len =-1)
+        public static string ToEnumeratedString(this IEnumerable enumerable, long fromIndex = 0, long len = 0)
         {
             if (enumerable is Array array)
             {
-                return array.ArrayToStringProperlyFormatted(", ", fromIndex, len);
+                return array.ArrayToStringProperlyFormatted(fromIndex, len);
             }
-            return enumerable.ToEnumeratedStringAdvanced(", ", fromIndex, len, new List<object>());
+            return enumerable.ToEnumeratedStringAdvanced(fromIndex, len, new List<object>());
         }
 
-        private static string ToEnumeratedStringAdvanced(this IEnumerable enumerable, string separator,
+        private static string ToEnumeratedStringAdvanced(this IEnumerable enumerable,
             long referenceIndex, long numberOfItems, ICollection<object> seen)
         {
             if (enumerable == null)
@@ -86,7 +87,7 @@ namespace NFluent
             var copy = new List<object>(seen) {enumerable};
             // we skip the first items
             var firstIndex = Math.Max(0, referenceIndex - (numberOfItems / 2));
-            var lastItem = numberOfItems < 0 ? int.MaxValue : firstIndex + numberOfItems;
+            var lastItem = numberOfItems == 0 ? int.MaxValue : firstIndex + numberOfItems;
 
             if (firstIndex > 0)
             {
@@ -109,7 +110,7 @@ namespace NFluent
                 if (i != 0)
                 {
                     // add comma
-                    sb.Append(separator);
+                    sb.Append(Separator);
                 }
 
                 var item = iterator.Current;
@@ -119,7 +120,7 @@ namespace NFluent
                         sb.Append(s.ToStringProperlyFormatted());
                         break;
                     case IEnumerable sub:
-                        sb.Append(sub.ToEnumeratedStringAdvanced(separator, referenceIndex, numberOfItems, copy));
+                        sb.Append(sub.ToEnumeratedStringAdvanced(referenceIndex, numberOfItems, copy));
                         break;
                     default:
                         sb.Append(item.ToStringProperlyFormatted());
@@ -137,18 +138,18 @@ namespace NFluent
             return sb.ToString();
         }
 
-        private static string ArrayToStringProperlyFormatted(this Array array, string separator, long referenceIndex, long numberOfItems)
+        private static string ArrayToStringProperlyFormatted(this Array array, long referenceIndex, long numberOfItems)
         {
             var result = new StringBuilder();
             var indices = new long[array.Rank];
             result.Append('{');
             
             var firstIndex = Math.Max(0, referenceIndex - (numberOfItems / 2));
-            var lastItem = numberOfItems <= 0 ? array.Length-firstIndex : Math.Min(firstIndex + numberOfItems, array.LongLength()-firstIndex);
+            var lastItem = numberOfItems == 0 ? array.Length : Math.Min(firstIndex + numberOfItems, array.LongLength());
             if (firstIndex > 0)
             {
                 result.Append(Ellipsis);
-                result.Append(separator);
+                result.Append(Separator);
             }
             for (var i = firstIndex; i < lastItem; i++)
             {
@@ -158,7 +159,7 @@ namespace NFluent
                 result.Append(closing);
                 if (i != array.Length - 1)
                 {
-                    result.Append(separator);
+                    result.Append(Separator);
                 }
             }
 

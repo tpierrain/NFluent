@@ -152,16 +152,16 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualToThrowsExceptionWhenFailingWithIntArray()
         {
-            var array = new[] {45, 43, 54, 666};
-            var otherSimilarButNotEqualArray = new[] {45, 43, 54, 667};
+            var array = new[] {45, 43, 54, 666, 63};
+            var otherSimilarButNotEqualArray = new[] {25, 43, 54, 667, 63};
 
             Check.ThatCode(() => { Check.That(array).IsEqualTo(otherSimilarButNotEqualArray); })
                 .IsAFailingCheckWithMessage("", 
-                    "The checked enumerable is different from the expected one.", 
+                    "The checked enumerable is different from the expected one. 2 differences found!", 
                     "The checked enumerable:", 
-                    "\t{45, 43, 54, 666} (4 items)", 
+                    "\t{45, 43, 54, 666, 63} (5 items)", 
                     "The expected enumerable:", 
-                    "\t{45, 43, 54, 667} (4 items)");
+                    "\t{25, 43, 54, 667, 63} (5 items)");
         }
 
         [Test]
@@ -200,7 +200,42 @@ namespace NFluent.Tests
         {
             var array = Array.CreateInstance(typeof(int), new []{2,2}, new []{-1, -1});
             var otherArray = new int[2, 2];
+            var val = 0;
+            for (var i = 0; i < 2; i++)
+            {
+                for(var j = 0; j<2; j++)
+                {
+                    array.SetValue(val, i-1, j-1);
+                    otherArray[i, j] = val;
+                    val++;
+                }
+            }
             Check.That(array).IsEqualTo(otherArray);
+            for (var i = 0; i < 2; i++)
+            {
+                for(var j = 0; j<2; j++)
+                {
+                    array.SetValue(0, i-1, j-1);
+                }
+            }
+
+            Check.ThatCode(() =>
+                Check.That(array).IsEqualTo(otherArray)).
+                IsAFailingCheckWithMessage(	"", 
+                    "The checked enumerable is different from the expected one. 3 differences found!", 
+                    "The checked enumerable:", 
+                    "\t{{0, 0}, {0, 0}} (4 items)", 
+                    "The expected enumerable:", 
+                    "\t{{0, 1}, {2, 3}} (4 items)");
+           
+            Check.ThatCode(() =>
+                Check.That(otherArray).IsEqualTo(array)).
+                IsAFailingCheckWithMessage(	"", 
+                    "The checked enumerable is different from the expected one. 3 differences found!", 
+                    "The checked enumerable:", 
+                    "\t{{0, 1}, {2, 3}} (4 items)",
+                    "The expected enumerable:", 
+                    "\t{{0, 0}, {0, 0}} (4 items)");
         }
 
         [Test]
@@ -211,10 +246,10 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(first).IsEqualTo("A sentence can provide 1 long enumeration.".ToCharArray()))
                 .IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one.", 
-                "The checked enumerable:", 
-                    "\t{..., 'n', ' ', 'p', 'r', 'o', 'v', 'i', 'd', 'e', ' ', 'a', ' ', 'l', 'o', 'n', 'g', ...} (42 items)", 
-                "The expected enumerable:", 
-                    "\t{..., 'n', ' ', 'p', 'r', 'o', 'v', 'i', 'd', 'e', ' ', '1', ' ', 'l', 'o', 'n', 'g', ...} (42 items)");
+                    "The checked enumerable:", 
+                    "\t{..., 'n', ' ', 'p', 'r', 'o', 'v', 'i', 'd', 'e', ' ', 'a', ' ', 'l', 'o', 'n', 'g', ' ', 'e', 'n', 'u', ...} (42 items)", 
+                    "The expected enumerable:", 
+                    "\t{..., 'n', ' ', 'p', 'r', 'o', 'v', 'i', 'd', 'e', ' ', '1', ' ', 'l', 'o', 'n', 'g', ' ', 'e', 'n', 'u', ...} (42 items)");
         }
 
         [Test]

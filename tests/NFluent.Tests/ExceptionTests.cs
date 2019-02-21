@@ -16,6 +16,7 @@
 namespace NFluent.Tests
 {
     using System;
+    using System.Diagnostics;
     using Helpers;
     using NUnit.Framework;
     using ApiChecks;

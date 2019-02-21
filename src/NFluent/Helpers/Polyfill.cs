@@ -148,22 +148,7 @@ namespace NFluent
             }
             return result;
         }
-       /* 
-        public static IList<T> Cast<T, TU>(this IEnumerable<TU> list)
-            where T: class
-        {
-            if (list is IList<T> list1)
-            {
-                return list1;
-            }
-            var result = new List<T>();
-            foreach (var u in list)
-            {
-                result.Add(u as T);
-            }
-            return result;
-        }
-        */
+
         public static IList<T> ToList<T>(this IEnumerable<T> list)
         {
             return new List<T>(list);
@@ -200,19 +185,7 @@ namespace NFluent
             }
             return false;
         }
-/*
-        public static bool All<T>(this IList<T> list, Predicate<T> predicate)
-        {
-            foreach (var item in list)
-            {
-                if (!predicate(item))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-   */
+
         public static bool Any<T>(this IEnumerable<T> list, Predicate<T> predicate)
         {
             foreach (var item in list)

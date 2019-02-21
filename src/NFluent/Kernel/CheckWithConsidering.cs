@@ -87,7 +87,7 @@ namespace NFluent.Kernel
             get
             {
                 // default to public fields if not specified
-                this.Value.Criteria.WithFields = true;
+                this.Value.Criteria.CaptureFields();
                 return this;
             }
         }
@@ -97,7 +97,7 @@ namespace NFluent.Kernel
         {
             get
             {
-                this.Value.Criteria.WithProperties = true;
+                this.Value.Criteria.CaptureProperties();
                 return this;
             }
         }

@@ -199,6 +199,21 @@ namespace NFluent.Tests
             Check.That(variousObjects).Contains(expectedVariousObjects);
         }
 
+
+        [Test]
+        public void ContainsFailsWithTruncatedTextsForLargeArray()
+        {
+            var expected = "this is some expected long text";
+            var actual = "this is some actual long text";
+            Check.ThatCode(() =>
+                Check.That(actual.ToCharArray()).IsEquivalentTo(expected.ToCharArray())
+            ).IsAFailingCheckWithMessage("", 
+                "The checked enumerable does contain ['l'] whereas it should not.", "The checked enumerable:", 
+                "\t{'t', 'h', 'i', 's', ' ', 'i', 's', ' ', 's', 'o', 'm', 'e', ' ', 'a', 'c', 't', 'u', 'a', 'l', ' ', ...} (29 items)", 
+                "The expected value(s):", 
+                "\t{'t', 'h', 'i', 's', ' ', 'i', 's', ' ', 's', 'o', 'm', 'e', ' ', 'e', 'x', 'p', 'e', 'c', 't', 'e', ...} (31 items)");
+        }
+
 #endregion
     }
 }

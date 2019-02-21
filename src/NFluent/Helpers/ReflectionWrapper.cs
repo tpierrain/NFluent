@@ -484,7 +484,10 @@ namespace NFluent.Helpers
 
                 if (!expected.IsArray ||  (actual.IsArray && (((Array) expected.Value).Length == ((Array) actual.Value).Length)))
                 {
-                    return true;
+                    if (actual.ValueType.TypeHasMember() || expected.ValueType.TypeHasMember())
+                    {
+                        return true;
+                    }
                 }
 
                 result.Add(new MemberMatch(expected, actual));

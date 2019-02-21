@@ -323,5 +323,6 @@
             // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public string Application { get; set; }
         }
+
     }
 }

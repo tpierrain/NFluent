@@ -901,7 +901,6 @@ namespace NFluent.Tests
         [Test]
         public void ShouldReportLongerLines()
         {
-
             Check.ThatCode(() => { Check.That("toto t").IsEqualTo("toto  "); })
                 .IsAFailingCheckWithMessage("",
                     "The checked string is different from expected one, it contains extra text at the end.",
@@ -918,6 +917,18 @@ namespace NFluent.Tests
                     "\t[\"This is one line.\nAnd another line.\"]",
                     "The expected string:",
                     "\t[\"This is one line.\nAnd another\"]");
+        }
+
+        [Test]
+        public void ShouldTruncateAtLimit()
+        {
+            Check.ThatCode(() => { Check.That("test\nabcdefghijklmnopqrst").IsEqualTo("test\naBcdefghijklmnopqrst"); })
+                .IsAFailingCheckWithMessage("",
+                    "The checked string is different in case from the expected one. At line 2, col 2, expected 'aBcdefghijklmnopqrst' was 'abcdefghijklmnopqrst'.",
+                    "The checked string:", 
+                    "\t[\"test\nabcdefghijklmnopqrst\"]", 
+                    "The expected string:", 
+                    "\t[\"test\naBcdefghijklmnopqrst\"]");
         }
 
         [Test]

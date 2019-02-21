@@ -38,7 +38,6 @@ namespace NFluent.ApiChecks
             where T : Exception
         {
             var checker = check as LambdaExceptionCheck<T>;
-            Debug.Assert(checker != null, "checker != null");
             return new FluentCheck<string>(checker.Value.Message);
         }
     }

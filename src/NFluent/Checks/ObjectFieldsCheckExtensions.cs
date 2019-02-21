@@ -145,7 +145,7 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var fieldsWrapper = ReflectionWrapper.BuildFromInstance(checker.Value?.GetType()??typeof(T), checker.Value,
-                new Criteria(BindingFlags.Instance, false));
+                new Criteria(BindingFlags.Instance));
             var checkWithConsidering = new CheckWithConsidering(fieldsWrapper, checker.Negated);
             return checkWithConsidering;
         }

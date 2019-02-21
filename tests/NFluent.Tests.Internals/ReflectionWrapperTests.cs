@@ -28,7 +28,7 @@ namespace NFluent.Tests
         {
             var toto = new {entier = 2, lettre = 'b', sub = new { sub = (object) null} };
             var sut = ReflectionWrapper.BuildFromInstance(toto.GetType(), toto,
-                new Criteria(BindingFlags.Instance | BindingFlags.NonPublic, true, true));
+                new Criteria(BindingFlags.Instance | BindingFlags.NonPublic));
             Check.That(sut.GetHashCode()).IsEqualTo(147721457);
         }
     }

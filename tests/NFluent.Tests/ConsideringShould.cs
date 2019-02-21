@@ -29,6 +29,9 @@ namespace NFluent.Tests
             public int TheField;
             private int thePrivateField;
 
+            internal object ThePrivateProperty { get; }
+            public int TheProperty { get; }
+            
             public SutClass(int theField, int theProperty)
             {
                 this.TheField = theField;
@@ -43,10 +46,6 @@ namespace NFluent.Tests
                 this.ThePrivateProperty = thePrivateProperty;
                 this.thePrivateField = thePrivateField;
             }
-
-            protected internal object ThePrivateProperty { get; }
-
-            public int TheProperty { get; }
         }
 
         [Test]
@@ -93,6 +92,19 @@ namespace NFluent.Tests
                     "The expected value's property 'ThePrivateProperty''s is absent from the checked one.", 
                     "The expected value's property 'ThePrivateProperty':", 
                     "\t[null] of type: [object]");
+        }
+
+        [Test]
+        public void HandleDifferenceInType()
+        {
+            Check.ThatCode(() => 
+            Check.That(new {child = new EmptyChild()}).Considering().All.Properties.IsEqualTo(new {child = new EmptyAncestor()})
+            ).IsAFailingCheckWithMessage("", 
+                "The checked value's property 'child' does not have the expected value.", 
+                "The checked value's property 'child':", 
+                "\t[] of type: [NFluent.Tests.ConsideringShould+EmptyChild]", 
+                "The expected value's property 'child':", 
+                "\t[] of type: [NFluent.Tests.ConsideringShould+EmptyAncestor]");
         }
 
         [Test]
@@ -301,6 +313,8 @@ namespace NFluent.Tests
         public void WorkForOtherChecks()
         {
             var sut = new SutClass(2, 42);
+            Check.That(sut).Considering().Public.Properties.IsEqualTo(new SutClass(3, 42));
+
             Check.That(sut).Considering().Public.Fields.Equals(new SutClass(2, 42));
             Check.That(sut).Considering().All.Fields.Not.Equals(new SutClass(2, 42));
         }
@@ -462,6 +476,7 @@ namespace NFluent.Tests
         {
             var sut = new SutClass(5, 7);
             Check.That(sut).Considering().NonPublic.Properties.IsNull();
+            Check.That((SutClass)null).Considering().NonPublic.Properties.IsNull();
             Check.ThatCode(() => { Check.That(sut).Considering().NonPublic.Properties.Not.IsNull(); })
                 .IsAFailingCheckWithMessage("", "The checked value has only null member, whereas it should not.");
             Check.ThatCode(() => { Check.That(sut).Considering().Public.Properties.IsNull();})
@@ -478,9 +493,16 @@ namespace NFluent.Tests
             var sut = new SutClass(5, 7);
             Check.That(sut).Considering().Public.Properties.IsNotNull();
             Check.ThatCode(() => { Check.That(sut).Considering().Public.Properties.Not.IsNotNull(); }).
-                IsAFailingCheckWithMessage("", "The checked value has a non null member, whereas it should not.", "The checked value:", "\t[{ TheProperty = 7 }]");
+                IsAFailingCheckWithMessage("", 
+                    "The checked value has a non null member, whereas it should not.", 
+                    "The checked value:", 
+                    "\t[{ TheProperty = 7 }]");
             Check.ThatCode(() => { Check.That(sut).Considering().NonPublic.Properties.IsNotNull();})
-                .IsAFailingCheckWithMessage("",  "The checked value's property 'ThePrivateProperty' is null, whereas it should not.");
+                .IsAFailingCheckWithMessage("",  
+                    "The checked value's property 'ThePrivateProperty' is null, whereas it should not.");
+            Check.ThatCode(() => { Check.That((SutClass)null).Considering().NonPublic.Properties.IsNotNull();})
+                .IsAFailingCheckWithMessage("",  
+                    "The checked value's property 'ThePrivateProperty' is null, whereas it should not.");
         }
 
         [Test]
@@ -655,5 +677,15 @@ namespace NFluent.Tests
             Check.That(childOne).Considering().Public.Properties.IsEqualTo(childTwo);
         }
 
+        private class EmptyAncestor
+        {
+            public override string ToString()
+            {
+                return string.Empty;
+            }
+        }
+
+        private class EmptyChild : EmptyAncestor
+        {}
     }
 }

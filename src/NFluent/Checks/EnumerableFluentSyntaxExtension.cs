@@ -173,43 +173,39 @@ namespace NFluent
                 var scanIndex = 0;
                 foreach (var item in sut)
                 {
-                    if (!item.Equals(orderedList[scanIndex]))
+                    // if current item is part of current list, check order
+                    var index = orderedList.IndexOf(item, scanIndex);
+                    if (index >= 0)
                     {
-                        // if current item is part of current list, check order
-                        var index = orderedList.IndexOf(item, scanIndex);
-                        if (index < 0)
+                        var currentReference = orderedList[scanIndex];
+
+                        // skip all similar entries in the expected list (tolerance: the checked enumerable may contain as many instances of one item as expected)
+                        while (currentReference.Equals(orderedList[++scanIndex]))
+                        {}
+
+                        // check if skipped only similar items
+                        if (scanIndex < index)
                         {
-                            // if not found at the end of the list, try the full list
-                            index = orderedList.IndexOf(item);
-                            if (index >= 0)
-                            {
-                                test.Fail(
-                                    $"The {{0}} does not follow to the expected order. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] appears too late in the list, at index '{failingIndex}'.");
-                                break;
-                            }
+                            test.Fail(
+                                $"The {{0}} does not follow to the expected order. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] appears too early in the list, at index '{failingIndex}'.");
+                            break;
                         }
-                        else
-                        {
-                            var currentReference = orderedList[scanIndex];
-
-                            // skip all similar entries in the expected list (tolerance: the checked enumerable may contain as many instances of one item as expected)
-                            while (currentReference.Equals(orderedList[++scanIndex]))
-                            {
-                            }
-
-                            // check if skipped only similar items
-                            if (scanIndex < index)
-                            {
-                                test.Fail(
-                                    $"The {{0}} does not follow to the expected order. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] appears too early in the list, at index '{failingIndex}'.");
-                                break;
-                            }
-                        }
-
+                    }
+                    else
+                    {
+                        // if not found at the end of the list, try the full list
+                        index = orderedList.IndexOf(item);
                         if (index >= 0)
                         {
-                            scanIndex = index;
+                            test.Fail(
+                                $"The {{0}} does not follow to the expected order. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] appears too late in the list, at index '{failingIndex}'.");
+                            break;
                         }
+                    }
+
+                    if (index >= 0)
+                    {
+                        scanIndex = index;
                     }
 
                     failingIndex++;

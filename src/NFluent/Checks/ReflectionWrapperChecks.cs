@@ -102,7 +102,7 @@ namespace NFluent
                         test.CheckSutAttributes(_ => scan.Value, scan.MemberLabel)
                             .FailWhen(val => depth <= 0 && val != null,
                                 "The {0} is non null, whereas it should be.");
-                        return !test.Failed && scan.Value != null;
+                        return depth>0;
                     });
                 })
                 .OnNegate("The {0} has only null member, whereas it should not.", MessageOption.NoCheckedBlock)
@@ -121,7 +121,7 @@ namespace NFluent
                         test.CheckSutAttributes(_ => scan.Value, scan.MemberLabel)
                             .FailWhen(val => depth <= 0 && val == null,
                                 "The {0} is null, whereas it should not.", MessageOption.NoCheckedBlock);
-                        return !test.Failed && scan.Value != null;
+                        return !test.Failed;
                     });
                 })
                 .OnNegate("The {0} has a non null member, whereas it should not.")
@@ -191,13 +191,17 @@ namespace NFluent
                                 .Fail("The {0} is absent from the {1}.");
                             break;
                         }
-                        if (ReferenceEquals(match.Actual.Value, match.Expected.Value))
+
+                        if (!ReferenceEquals(match.Actual.Value, match.Expected.Value))
                         {
-                            test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
-                                .Fail("The {0} does reference the {1}, whereas it should not.", MessageOption.NoCheckedBlock)
-                                .ComparingTo(match.Expected.Value, "different instance than", "");
-                            break;
+                            continue;
                         }
+
+                        test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
+                            .Fail("The {0} does reference the {1}, whereas it should not.",
+                                MessageOption.NoCheckedBlock)
+                            .ComparingTo(match.Expected.Value, "different instance than", "");
+                        break;
                     }
                 })
                 .OnNegate("The {0} contains the same reference than the {1}, whereas it should not.")

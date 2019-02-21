@@ -16,6 +16,8 @@
 namespace NFluent.Extensions
 {
     using System;
+    using System.Reflection;
+
 #if DOTNET_45 || NETSTANDARD1_3
     using System.Reflection;
 #endif
@@ -25,6 +27,7 @@ namespace NFluent.Extensions
 
     internal static class ObjectExtensions
     {
+        private const BindingFlags BindingFlagsAll = BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic;
 
         /// <summary>
         /// Gets the type of the specified reference, or null if it is null.
@@ -64,6 +67,16 @@ namespace NFluent.Extensions
         {
             return type.GetTypeInfo().GetCustomAttributes(false)
                 .Any(customAttribute => customAttribute.GetType() == attribute);
+        }
+
+        /// <summary>
+        /// Checks if a type possesses at least a field or a property.
+        /// </summary>
+        /// <param name="type">Type to be checked</param>
+        /// <returns>true if the type as at least one field or property</returns>
+        public static bool TypeHasMember(this Type type)
+        {
+            return type.GetFields(BindingFlagsAll).Any() || type.GetProperties(BindingFlagsAll).Any();
         }
     }
 }

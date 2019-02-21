@@ -69,10 +69,9 @@ namespace NFluent.Extensions
             {
                 middle = 0;
             }
-            if (middle + len >= text.Length)
-            {
-                len = text.Length - middle;
-            }
+
+            len = Math.Min(len, text.Length - middle);
+
             result.Append(text.Substring(middle, len).DoubleCurlyBraces());
             if (middle + len < text.Length)
             {

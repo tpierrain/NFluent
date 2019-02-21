@@ -25,57 +25,42 @@ namespace NFluent.Kernel
         private bool isPrivate;
         private BindingFlags bindingFlagsForFields;
         private BindingFlags bindingFlagsForProperties;
-        private bool withFields;
-        private bool withProperties;
 
-        internal Criteria(BindingFlags bindingFlags, bool withFields = true, bool withProperties = false)
+        internal Criteria(BindingFlags bindingFlags)
         {
             this.bindingFlagsForFields = bindingFlags;
             this.bindingFlagsForProperties = bindingFlags;
-            this.withFields = withFields;
-            this.withProperties = withProperties;
         }
 
-        public bool WithFields
+        public void CaptureFields()
         {
-            get => this.withFields;
-            internal set
+            if (this.isPrivate)
             {
-                this.withFields = value;
-                if (this.isPrivate)
-                {
-                    this.bindingFlagsForFields |= BindingFlags.NonPublic;
-                    if (this.isPublic)
-                    {
-                        this.bindingFlagsForFields |= BindingFlags.Public;
-                    }
-                }
-                else
+                this.bindingFlagsForFields |= BindingFlags.NonPublic;
+                if (this.isPublic)
                 {
                     this.bindingFlagsForFields |= BindingFlags.Public;
                 }
             }
+            else
+            {
+                this.bindingFlagsForFields |= BindingFlags.Public;
+            }
         }
 
-        public bool WithProperties
+        public void CaptureProperties()
         {
-            get => this.withProperties;
-            internal set
+            if (this.isPrivate)
             {
-                this.withProperties = value; 
-                if (this.isPrivate)
-                {
-                    this.bindingFlagsForProperties |= BindingFlags.NonPublic;
-                    if (this.isPublic)
-                    {
-                        this.bindingFlagsForProperties |= BindingFlags.Public;
-                    }
-                }
-                else
+                this.bindingFlagsForProperties |= BindingFlags.NonPublic;
+                if (this.isPublic)
                 {
                     this.bindingFlagsForProperties |= BindingFlags.Public;
                 }
-
+            }
+            else
+            {
+                this.bindingFlagsForProperties |= BindingFlags.Public;
             }
         }
 
@@ -84,6 +69,9 @@ namespace NFluent.Kernel
         public BindingFlags BindingFlagsForProperties => this.bindingFlagsForProperties;
 
         public bool IgnoreExtra { get; set; }
+
+        public bool WithProperties => (this.BindingFlagsForProperties & (BindingFlags.Public | BindingFlags.NonPublic))!=0;
+        public bool WithFields => (this.BindingFlagsForFields & (BindingFlags.Public | BindingFlags.NonPublic))!=0;
 
         public bool IsNameExcluded(string name)
         {
