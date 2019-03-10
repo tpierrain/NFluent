@@ -15,6 +15,7 @@
 
 namespace NFluent
 {
+    using System;
 #if !PORTABLE
     using System.Collections;
 #endif
@@ -29,6 +30,7 @@ namespace NFluent
 #endif
 
     using Extensibility;
+    using Extensions;
     using Helpers;
 
     /// <summary>
@@ -36,6 +38,62 @@ namespace NFluent
     /// </summary>
     public static class DictionaryCheckExtensions
     {
+        /// <summary>
+        /// Checks that the actual <see cref="IDictionary{K,V}"/> is equivalent to a given dictionary.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="other">Reference dictionary</param>
+        /// <typeparam name="TK">Type for keys.</typeparam>
+        /// <typeparam name="TU">Type for values.</typeparam>
+        /// <returns>A check link.</returns>
+        public static ICheckLink<ICheck<IEnumerable<KeyValuePair<TK, TU>>>> IsEquivalentTo<TK, TU>(
+            this ICheck<IEnumerable<KeyValuePair<TK, TU>>> check, IEnumerable<KeyValuePair<TK, TU>> other)
+        {
+            ExtensibilityHelper.BeginCheck(check).Analyze((sut, test) =>
+                {
+                    if (sut == null)
+                    {
+                        if (other != null)
+                        {
+                            test.Fail("The {checked} is null whereas it should not.");
+                        }
+
+                        return;
+                    }
+
+                    if (other == null)
+                    {
+                        test.Fail("The {checked} must be null.");
+                        return;
+                    }
+
+                    foreach (var pair in other)
+                    {
+                        if (!sut.TryGet(pair.Key, out var value))
+                        {
+                            test.Fail(
+                                $"The {{checked}} is not equivalent to the {{expected}}. Missing entry ({pair.Key.ToStringProperlyFormatted().DoubleCurlyBraces()}, {pair.Value.ToStringProperlyFormatted().DoubleCurlyBraces()}).");
+                            return;
+                        }
+
+                        if (!EqualityHelper.FluentEquals(pair.Value, value))
+                        {
+                            test.Fail(
+                                $"The {{checked}} is not equivalent to the {{expected}}. Entry ({pair.Key.ToStringProperlyFormatted().DoubleCurlyBraces()}) does not have the expected value."+Environment.NewLine+
+                                "Expected:"+Environment.NewLine+
+                                $"\t{pair.Value.ToStringProperlyFormatted().DoubleCurlyBraces()}"+Environment.NewLine+
+                                "Actual:"+Environment.NewLine+
+                                $"\t{value.ToStringProperlyFormatted().DoubleCurlyBraces()}");
+                            return;
+                        }
+                    }
+            }).
+                DefineExpectedValue(other).
+                OnNegate("The {checked} is equivalent to the {expected}, whereas it should not!", MessageOption.NoExpectedBlock).
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
         /// <summary>
         /// Checks that the actual <see cref="IDictionary{K,V}"/> contains the expected expectedKey.
         /// </summary>
@@ -76,7 +134,6 @@ namespace NFluent
 
                     test.Fail("The {0} does not contain the expected key.");
                 }).
-//                DefineExpectedValue(key, "contains this key", "does not contain this key").
                 DefineExpectedResult(key, "Expected key:", "Forbidden key:").
                 OnNegate("The {0} does contain the given key, whereas it must not.").
                 EndCheck();

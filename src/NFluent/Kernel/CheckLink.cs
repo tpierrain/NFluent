@@ -27,7 +27,6 @@ namespace NFluent.Kernel
         public CheckLink(IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense previousCheck)
         {
             this.forkableCheck = previousCheck as IForkableCheck;
-            Debug.Assert(this.forkableCheck != null, "forkableCheck != null");
         }
 
         /// <inheritdoc />

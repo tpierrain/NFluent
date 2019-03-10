@@ -47,7 +47,6 @@ namespace NFluent.Kernel
             get
             {
                 var forkableCheck = this.previousCheck as IForkableCheck;
-                Debug.Assert(forkableCheck != null, "forkableCheck != null");
                 return forkableCheck.ForkInstance() as ICheck<TN?>;
             }
         }

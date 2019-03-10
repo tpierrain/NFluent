@@ -15,7 +15,6 @@
 namespace NFluent.ApiChecks
 {
     using System;
-    using System.Diagnostics;
     using Kernel;
 
     /// <summary>

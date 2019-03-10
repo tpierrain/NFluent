@@ -134,6 +134,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configuration", "configurat
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{0014c223-a481-4b87-a480-3d4792a9b276}*SharedItemsImports = 4
+		tests\NFluent.Tests\NFluent.Tests.projitems*{0014c223-a481-4b87-a480-3d4792a9b276}*SharedItemsImports = 4
 		tests\NFluent.Tests\NFluent.Tests.projitems*{0425a660-ca7d-43f6-93ab-f72c95d506e3}*SharedItemsImports = 13
 		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{1baa72cb-3a46-4711-9a5b-f96cf20d465e}*SharedItemsImports = 4
 		src\NFluent.Generated\NFluent.Generated.projitems*{1e2d9d56-d0a4-4d2e-8f2b-f211000e1667}*SharedItemsImports = 4
@@ -157,6 +159,8 @@ Global
 		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{ac520fdb-8125-46f3-85f3-d4962c53c136}*SharedItemsImports = 4
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{bdaa4d22-45a1-470e-a142-70e1f194ee3f}*SharedItemsImports = 4
 		tests\NFluent.Tests\NFluent.Tests.projitems*{bdaa4d22-45a1-470e-a142-70e1f194ee3f}*SharedItemsImports = 4
+		src\NFluent.Generated\NFluent.Generated.projitems*{cf1d857f-658f-4e1f-8487-cd751f189e6a}*SharedItemsImports = 4
+		src\NFluent\NFluent.projitems*{cf1d857f-658f-4e1f-8487-cd751f189e6a}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{dbfa1137-b129-496a-9201-149f5178747e}*SharedItemsImports = 13
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{e298f1af-a6a7-497c-9a2d-ac15584e1ac1}*SharedItemsImports = 13
 		src\NFluent.Generated\NFluent.Generated.projitems*{fa7f7527-23c3-43f6-a3d0-8da4ec981ffd}*SharedItemsImports = 4

@@ -27,7 +27,7 @@ namespace NFluent
     /// <summary>
     ///     Extension methods for adding new fluent methods to enumerable.
     /// </summary>
-    public static class EnumerableExtensions
+    internal static class EnumerableExtensions
     {
         private const string Ellipsis = "...";
         private const string Separator = ", ";

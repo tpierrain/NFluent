@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ApiChecks\ExceptionChecks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mocks\CaptureConsole.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Check.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\BooleanCheckExtensions.cs" />

@@ -30,7 +30,7 @@ namespace NFluent.Helpers
     /// </summary>
     internal static class EqualityHelper
     {
-        private const string sutLabel = "actual";
+        private const string SutLabel = "actual";
         private const string ExpectedLabel = "expected";
 
         internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(
@@ -245,7 +245,7 @@ namespace NFluent.Helpers
             switch (mode)
             {
                 case EqualityMode.FluentEquals:
-                    return ValueDifference(instance, sutLabel, expected, ExpectedLabel);
+                    return ValueDifference(instance, SutLabel, expected, ExpectedLabel);
                 case EqualityMode.OperatorEq:
                 case EqualityMode.OperatorNeq:
                     ret = Equals(instance, expected);
@@ -269,7 +269,7 @@ namespace NFluent.Helpers
 
             if (!ret)
             {
-                result.Add(new DifferenceDetails(sutLabel, instance, ExpectedLabel, expected, 0));
+                result.Add(new DifferenceDetails(SutLabel, instance, ExpectedLabel, expected, 0));
             }
             return result;
         }
@@ -307,7 +307,11 @@ namespace NFluent.Helpers
                     return ValueDifferenceArray(firstItem as Array, firstName, otherItem as Array, secondName,
                         firstSeen, secondSeen);
                 }
-                if (firstItem is IEnumerable first && otherItem is IEnumerable second)
+                if (firstItem is IDictionary firstDico && otherItem is IDictionary secondDico)
+                {
+                    return ValueDifferenceDictionary(firstDico, firstName, secondDico, secondName, refIndex, firstSeen, secondSeen);
+                }
+                else if (firstItem is IEnumerable first && otherItem is IEnumerable second)
                 {
                     return ValueDifferenceEnumerable(first, firstName, second, secondName, refIndex, firstSeen, secondSeen);
                 }
@@ -325,6 +329,37 @@ namespace NFluent.Helpers
 
             result.Add(new DifferenceDetails(firstName, firstItem, secondName, otherItem, refIndex));
             return result;
+        }
+
+        private static IList<DifferenceDetails> ValueDifferenceDictionary(IDictionary sutDico, string sutName, IDictionary expectedDIco, string expectedName, int index, List<object> firstItemsSeen, List<object> secondItemsSeen)
+        {
+            var valueDifferences = new List<DifferenceDetails>();
+            if (firstItemsSeen.Contains(sutDico) || secondItemsSeen.Contains(expectedDIco))
+            {
+                valueDifferences.Add(new DifferenceDetails(sutName, null, expectedName, null, 0));
+                return valueDifferences;
+            }
+
+            firstItemsSeen.Add(sutDico);
+            secondItemsSeen.Add(expectedDIco);
+
+            foreach (var key in sutDico.Keys)
+            {
+                if (!expectedDIco.Contains(key))
+                {
+                    valueDifferences.Add(new DifferenceDetails($"{sutName} key", key, expectedName, null, 0));
+                }
+                valueDifferences.AddRange(ValueDifference(sutDico[key], $"{sutName}[{key}]", expectedDIco[key], 
+                    $"{expectedName}[{key}]", 0, firstItemsSeen, secondItemsSeen));
+            }
+            foreach (var key in expectedDIco.Keys)
+            {
+                if (!expectedDIco.Contains(key))
+                {
+                    valueDifferences.Add(new DifferenceDetails(sutName, null, $"{expectedName}[{key}]", key, 0));
+                }
+            }
+            return valueDifferences;
         }
 
         private static IList<DifferenceDetails> ValueDifferenceArray(Array firstArray, string firstName, Array secondArray, string secondName, List<object> firstSeen, List<object> secondSeen)

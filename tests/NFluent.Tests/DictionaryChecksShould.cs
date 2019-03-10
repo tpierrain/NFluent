@@ -312,5 +312,71 @@ namespace NFluent.Tests
                 "Expected pair:",
                 "\t[[demo2, 1]]");
         }
+
+        [Test]
+        public void IsEquivalentToWorks()
+        {
+            var dict = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
+            var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
+            Check.That(dict).IsEquivalentTo(expected);
+            Check.That((IDictionary<string, string>) null).IsEquivalentTo(null);
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+            var value = new ReadOnlyDictionary<string, object>(dict);
+            Check.That(value).IsEqualTo(expected);
+            Check.That(value).IsEquivalentTo(expected);
+#endif
+        }
+
+        [Test]
+        public void IsIsEquivalentFailsWithProperErrorMessage()
+        {
+            var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
+            Check.ThatCode(() =>
+                Check.That(new Dictionary<string, object> { ["bar"] = new[] { "bar", "baz" } }).IsEquivalentTo(expected)).IsAFailingCheckWithMessage(
+                "", 
+                "The checked dictionary is not equivalent to the expected one. Missing entry (\"foo\", {\"bar\", \"baz\"}).",
+                "The checked dictionary:", 
+                "\t{[bar, System.String[]]} (1 item)", 
+                "The expected dictionary:", 
+                "\t{[foo, System.String[]]} (1 item)");
+            Check.ThatCode(() =>
+                Check.That(new Dictionary<string, object> { ["foo"] = new[] { "bar", "bar" } }).IsEquivalentTo(expected)).IsAFailingCheckWithMessage("", 
+                "The checked dictionary is not equivalent to the expected one. Entry (\"foo\") does not have the expected value.", 
+                "Expected:", 
+                "\t{\"bar\", \"baz\"}", 
+                "Actual:", 
+                "\t{\"bar\", \"bar\"}", 
+                "The checked dictionary:", 
+                "\t{[foo, System.String[]]} (1 item)", 
+                "The expected dictionary:", 
+                "\t{[foo, System.String[]]} (1 item)");
+            Check.ThatCode(() =>
+                Check.That((IDictionary<string, string>) null).IsEquivalentTo(expected)).IsAFailingCheckWithMessage("", 
+                "The checked enumerable is null whereas it should not.", 
+                "The checked enumerable:", 
+                "\t[null]", 
+                "The expected value(s):",
+                "\t{{[foo, System.String[]]}} (1 item)");
+            Check.ThatCode(() =>
+                Check.That(new Dictionary<string, object> { ["foo"] = new[] { "bar", "bar" } }).IsEquivalentTo(null)).IsAFailingCheckWithMessage(
+                "", 
+                "The checked dictionary must be null.", 
+                "The checked dictionary:", 
+                "\t{[foo, System.String[]]} (1 item)", 
+                "The expected value(s):", 
+                "\tnull of type: [System.Collections.Generic.Dictionary<string, object>]");
+        }
+
+        [Test]
+        public void IsIsEquivalentFailsWithProperErrorMessageWhenNegated()
+        {
+            var dict = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
+            var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
+            Check.ThatCode(() =>
+                Check.That(dict).Not.IsEquivalentTo(expected)).IsAFailingCheckWithMessage("", 
+                "The checked dictionary is equivalent to the expected one, whereas it should not!", 
+                "The checked dictionary:", 
+                "\t{[foo, System.String[]]} (1 item)");
+        }
     }
 }

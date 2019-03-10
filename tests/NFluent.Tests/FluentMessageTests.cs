@@ -79,9 +79,9 @@ namespace NFluent.Tests
             
             var message = FluentMessage.BuildMessage("The {0} does not contain exactly the {1}.")
                                             .On(heroes)
-                                            .WithEnumerableCount(heroes.Count())
+                                            .WithEnumerableCount(heroes.Length)
                                             .And.ExpectedValues(givenValues)
-                                            .WithEnumerableCount(givenValues.Count())
+                                            .WithEnumerableCount(givenValues.Length)
                                             .ToString();
 
             Assert.AreEqual(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t{\"Luke\", \"Yoda\", \"Chewie\"} (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t{\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"} (4 items)", message);

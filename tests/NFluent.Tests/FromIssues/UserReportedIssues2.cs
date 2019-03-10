@@ -16,6 +16,7 @@ namespace NFluent.Tests.FromIssues
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 #if DOTNET_45
     using System.Threading.Tasks;
 #endif
@@ -26,7 +27,24 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
-        // GH 286
+        // GH #290
+        [Test]
+        public void IsEquivalentToShouldWorkOnDictionaries()
+        {
+            var dict = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
+            var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
+            Check.That(dict).IsEqualTo(expected);
+
+            Check.That(dict).IsEquivalentTo(expected);
+
+#if DOTNET_45
+            var value = new ReadOnlyDictionary<string, object>(dict);
+            Check.That(value).IsEqualTo(expected);
+            Check.That(value).IsEquivalentTo(expected);
+#endif
+        }
+
+        // GH #286
         [Test]
         public void IsNotZeroFailsForDecimalCloseToZero()
         {
