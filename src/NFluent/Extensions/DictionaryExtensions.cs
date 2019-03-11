@@ -41,7 +41,7 @@ namespace NFluent.Extensions
                 }
             }
 
-            value = default;
+            value = default(TV);
             return false;
         }
     }
