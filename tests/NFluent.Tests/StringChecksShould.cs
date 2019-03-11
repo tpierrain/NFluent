@@ -920,6 +920,19 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldReportDifferenceInEolMarker()
+        {
+            Check.ThatCode(() => { Check.That("toto\n").IsEqualTo("toto\r\n"); })
+                .IsAFailingCheckWithMessage("", 
+                    "The checked string has different end of line markers than expected one. At line 1, col 5, expected 'toto<<CRLF>>' was 'toto<<LF>>'.", 
+                    "The checked string:", 
+                    "\t[\"toto\n\"]", 
+                    "The expected string:", 
+                    "\t[\"toto",
+                    "\"]");
+        }
+
+        [Test]
         public void ShouldTruncateAtLimit()
         {
             Check.ThatCode(() => { Check.That("test\nabcdefghijklmnopqrst").IsEqualTo("test\naBcdefghijklmnopqrst"); })

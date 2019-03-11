@@ -18,9 +18,6 @@ namespace NFluent.Extensions
     using System;
     using System.Reflection;
 
-#if DOTNET_45 || NETSTANDARD1_3
-    using System.Reflection;
-#endif
 #if !DOTNET_30 && !DOTNET_20
     using System.Linq;
 #endif

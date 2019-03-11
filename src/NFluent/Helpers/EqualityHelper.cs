@@ -238,7 +238,7 @@ namespace NFluent.Helpers
             return FluentEquals(instance, expected, Check.EqualMode).Count==0;
         }
 
-        private static IList<DifferenceDetails> FluentEquals(object instance, object expected, EqualityMode mode)
+        private static IList<DifferenceDetails> FluentEquals<TS, TE>(TS instance, TE expected, EqualityMode mode)
         {
             var result = new List<DifferenceDetails>();
             var ret = false;
@@ -258,7 +258,7 @@ namespace NFluent.Helpers
                                   .GetMethod(operatorName, new[] {actualType, expectedType});
                     if (ope != null)
                     {
-                        ret = (bool) ope.Invoke(null, new[] {instance, expected});
+                        ret = (bool) ope.Invoke(null, new object[] {instance, expected});
                         if (mode == EqualityMode.OperatorNeq)
                         {
                             ret = !ret;

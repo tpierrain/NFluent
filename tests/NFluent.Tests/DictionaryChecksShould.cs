@@ -319,12 +319,31 @@ namespace NFluent.Tests
             var dict = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
             var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
             Check.That(dict).IsEquivalentTo(expected);
-            Check.That((IDictionary<string, string>) null).IsEquivalentTo(null);
+            Check.That((IDictionary<string, string>) null).IsEquivalentTo((IDictionary<string, string>)null);
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
-            var value = new ReadOnlyDictionary<string, object>(dict);
-            Check.That(value).IsEqualTo(expected);
-            Check.That(value).IsEquivalentTo(expected);
+            IReadOnlyDictionary<string, string> value = new RoDico(SimpleDico);
+            Check.That(value).IsEqualTo(SimpleDico);
+            Check.That(value).IsEquivalentTo(SimpleDico);
 #endif
+        }
+
+        [Test]
+        public void IsEquivalentToWorksWithCustomDics()
+        {
+            var customDic = new List<KeyValuePair<string, int>> {
+                new KeyValuePair<string, int>("otherKey", 15) ,
+                new KeyValuePair<string, int>("key", 12)
+            };
+            var dic = new Dictionary<string, int>{["otherKey"]= 15, ["key"] = 12};
+            Check.That(customDic).IsEquivalentTo(dic);
+            Check.That(dic).IsEquivalentTo(customDic);
+            dic["extra"] = 20;
+            Check.ThatCode(() => Check.That(customDic).IsEquivalentTo(dic)).IsAFailingCheckWithMessage("", 
+                "The checked enumerable is not equivalent to the expected dictionary. Missing entry (\"extra\", 20).",
+                "The checked enumerable:", 
+                "\t{[otherKey, 15], [key, 12]} (2 items)", 
+                "The expected dictionary:", 
+                "\t{[otherKey, 15], [key, 12], [extra, 20]} (3 items)");
         }
 
         [Test]
@@ -351,20 +370,20 @@ namespace NFluent.Tests
                 "The expected dictionary:", 
                 "\t{[foo, System.String[]]} (1 item)");
             Check.ThatCode(() =>
-                Check.That((IDictionary<string, string>) null).IsEquivalentTo(expected)).IsAFailingCheckWithMessage("", 
+                Check.That((IDictionary<string, object>) null).IsEquivalentTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is null whereas it should not.", 
                 "The checked enumerable:", 
                 "\t[null]", 
-                "The expected value(s):",
-                "\t{{[foo, System.String[]]}} (1 item)");
+                "The expected dictionary:",
+                "\t{[foo, System.String[]]} (1 item)");
             Check.ThatCode(() =>
-                Check.That(new Dictionary<string, object> { ["foo"] = new[] { "bar", "bar" } }).IsEquivalentTo(null)).IsAFailingCheckWithMessage(
+                Check.That(new Dictionary<string, object> { ["foo"] = new[] { "bar", "bar" } }).IsEquivalentTo((IDictionary<string, object>)null)).IsAFailingCheckWithMessage(
                 "", 
                 "The checked dictionary must be null.", 
                 "The checked dictionary:", 
                 "\t{[foo, System.String[]]} (1 item)", 
-                "The expected value(s):", 
-                "\tnull of type: [System.Collections.Generic.Dictionary<string, object>]");
+                "The expected enumerable:", 
+                "\t[null]");
         }
 
         [Test]

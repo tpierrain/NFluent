@@ -221,9 +221,6 @@ namespace NFluent.Helpers
                 case DifferenceMode.EndOfLine:
                     textToScan = HighlightCrlfOrLfIfAny(textToScan);
                     break;
-                default:
-                    textToScan = textToScan?.TrimEnd('\r');
-                    break;
             }
 
             return textToScan;
@@ -283,7 +280,7 @@ namespace NFluent.Helpers
         private static string HighlightCrlfOrLfIfAny(string str)
         {
             str = str.Replace("\r\n", "<<CRLF>>");
-            //str = str.Replace("\r", "<<CR>>"); ==> isolated CR are not considered as EOL markers
+            //str = str.Replace("\r", "<<CR>>"); //==> isolated CR are not considered as EOL markers
             str = str.Replace("\n", "<<LF>>");
             return str;
         }
@@ -333,7 +330,9 @@ namespace NFluent.Helpers
                             continue;
                         }
 
-                        return IsEol(expectedChar) ? new StringDifference(DifferenceMode.EndOfLine, line, i, actual, expected, isFullText) : new StringDifference(DifferenceMode.ShorterLine, line, i, actual, expected, isFullText);
+                        return new StringDifference(
+                            IsEol(expectedChar) ? DifferenceMode.EndOfLine : DifferenceMode.ShorterLine, line, i,
+                            actual, expected, isFullText);
                     }
 
                     if (IsEol(expectedChar))
@@ -404,17 +403,21 @@ namespace NFluent.Helpers
                     return new StringDifference(type, line, position, actual, expected, isFullText);
             }
 
-            while (i<actual.Length && IsEol(actual[i]))
-            {
-                i++;
-            }
             // strings are same so far
             // the actualLine string is longer than expectedLine
             if (i < actual.Length)
             {
-                var difference = isFullText ? DifferenceMode.Longer : DifferenceMode.LongerLine;
+                DifferenceMode difference;
+                if (IsEol(actual[i]))
+                {
+                    // lines are missing, the error will be reported at next line
+                    difference = DifferenceMode.NoDifference;
+                }
+                else
+                    difference = isFullText ? DifferenceMode.Longer : DifferenceMode.LongerLine;
+
                 return new StringDifference(
-                    actual[i] == CarriageReturn ? DifferenceMode.EndOfLine : difference, 
+                    difference, 
                     line,
                     i,
                     actual, 
@@ -422,17 +425,20 @@ namespace NFluent.Helpers
                     isFullText);
             }
 
-            while (j<expected.Length && IsEol(expected[j]))
-            {
-                j++;
-            }
             if (j < expected.Length)
             {
-                var difference = isFullText ? DifferenceMode.Shorter : DifferenceMode.ShorterLine;
+                DifferenceMode difference;
+                if (IsEol(expected[j]))
+                {
+                    // lines are missing, the error will be reported at next sline
+                    difference = DifferenceMode.NoDifference;
+                }
+                else
+                    difference = isFullText ? DifferenceMode.Shorter : DifferenceMode.ShorterLine;
                 return new StringDifference(
-                    expected[j] == CarriageReturn ? DifferenceMode.EndOfLine : difference,
+                    difference,
                     line,
-                    i,
+                    j,
                     actual,
                     expected, 
                     isFullText);
