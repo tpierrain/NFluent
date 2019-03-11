@@ -34,7 +34,7 @@ namespace NFluent.Tests
         public void ValueDifferenceReturnsEmptyIfEqual()
         {
             var result = EqualityHelper.ValueDifference(this.a, "a", this.a, "a");
-            Check.That(result).HasSize(0);
+            Check.That(result.Count).IsEqualTo(0);
         }
 
         [Test]
@@ -43,14 +43,14 @@ namespace NFluent.Tests
             // List contains new instances of lists same as a and b
 
             var result = EqualityHelper.ValueDifference(this.a, "a", this.b, "b");
-            Check.That(result).HasSize(2);
+            Check.That(result.Count).IsEqualTo(2);
             Check.That(result[0].FirstName).IsEqualTo("a[0]");
             Check.That(result[0].SecondName).IsEqualTo("b[0]");
             Check.That(result[0].FirstValue).IsEqualTo(1);
             Check.That(result[0].SecondValue).IsEqualTo(3);
 
             result = EqualityHelper.ValueDifference(this.a, "a", this.a, "a");
-            Check.That(result).HasSize(0);
+            Check.That(result.Count).IsEqualTo(0);
 
             result = EqualityHelper.ValueDifference(this.list, "a", new List<List<int>> {this.a, this.a}, "b");
             Check.That(result[0].FirstName).IsEqualTo("a[1][0]");

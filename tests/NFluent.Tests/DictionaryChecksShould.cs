@@ -314,6 +314,28 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsEqualToWorks()
+        {
+            var dict = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
+            var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
+            Check.That(dict).IsEqualTo(expected);
+        }
+
+        [Test]
+        public void IsEqualToFailsOnDifference()
+        {
+            var dict = new Dictionary<string, int> { ["foo"] = 0, ["bar"] = 1 };
+            var expected = new Dictionary<string, int> { ["bar"] = 1,  ["foo"] = 0 };
+            Check.ThatCode( () =>
+            Check.That(dict).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
+                "The checked dictionary is different from the expected one. 2 differences found! But the checked dictionary is equivalent to the expected one.", 
+                "The checked dictionary:", 
+                "\t{[foo, 0], [bar, 1]} (2 items)", 
+                "The expected dictionary:", 
+                "\t{[bar, 1], [foo, 0]} (2 items)");
+        }
+
+        [Test]
         public void IsEquivalentToWorks()
         {
             var dict = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };

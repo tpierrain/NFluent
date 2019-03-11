@@ -75,5 +75,6 @@ namespace NFluent.Extensions
         {
             return type.GetFields(BindingFlagsAll).Any() || type.GetProperties(BindingFlagsAll).Any();
         }
+
     }
 }

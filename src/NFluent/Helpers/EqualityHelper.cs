@@ -78,6 +78,11 @@ namespace NFluent.Helpers
                         {
                             messageText.Append($" {differenceDetailses.Count} differences found!");
                         }
+
+                        if (differenceDetailses.IsEquivalent)
+                        {
+                            messageText.Append(" But the {checked} is equivalent to the {1}.");
+                        }
                     }
                     else
                     {
@@ -238,9 +243,9 @@ namespace NFluent.Helpers
             return FluentEquals(instance, expected, Check.EqualMode).Count==0;
         }
 
-        private static IList<DifferenceDetails> FluentEquals<TS, TE>(TS instance, TE expected, EqualityMode mode)
+        private static AggregatedDifference FluentEquals<TS, TE>(TS instance, TE expected, EqualityMode mode)
         {
-            var result = new List<DifferenceDetails>();
+            var result = new AggregatedDifference();
             var ret = false;
             switch (mode)
             {
@@ -274,17 +279,17 @@ namespace NFluent.Helpers
             return result;
         }
 
-        internal static IList<DifferenceDetails> ValueDifference(object firstItem, string firstName, object otherItem,
+        internal static AggregatedDifference ValueDifference<TA, TE>(TA firstItem, string firstName, TE otherItem,
             string secondName)
         {
             return ValueDifference(firstItem, firstName, otherItem, secondName, 0,
                 new List<object>(),new List<object>());
         }
 
-        private static IList<DifferenceDetails> ValueDifference(object firstItem, string firstName, object otherItem,
+        private static AggregatedDifference ValueDifference<TA, TE>(TA firstItem, string firstName, TE otherItem,
             string secondName, int refIndex, List<object> firstSeen, List<object> secondSeen)
         {
-            var result = new List<DifferenceDetails>();
+            var result = new AggregatedDifference();
             if (firstItem == null)
             {
                 if (otherItem != null)
@@ -309,9 +314,9 @@ namespace NFluent.Helpers
                 }
                 if (firstItem is IDictionary firstDico && otherItem is IDictionary secondDico)
                 {
-                    return ValueDifferenceDictionary(firstDico, firstName, secondDico, secondName, refIndex, firstSeen, secondSeen);
+                    return ValueDifferenceDictionary(firstDico, firstName, secondDico, secondName, firstSeen, secondSeen);
                 }
-                else if (firstItem is IEnumerable first && otherItem is IEnumerable second)
+                else if (!(firstItem is string) && !(otherItem is string) && firstItem is IEnumerable first && otherItem is IEnumerable second)
                 {
                     return ValueDifferenceEnumerable(first, firstName, second, secondName, refIndex, firstSeen, secondSeen);
                 }
@@ -331,40 +336,77 @@ namespace NFluent.Helpers
             return result;
         }
 
-        private static IList<DifferenceDetails> ValueDifferenceDictionary(IDictionary sutDico, string sutName, IDictionary expectedDIco, string expectedName, int index, List<object> firstItemsSeen, List<object> secondItemsSeen)
+        private static AggregatedDifference ValueDifferenceDictionary(IDictionary sutDico, string sutName, 
+            IDictionary expectedDico, string expectedName,
+            List<object> firstItemsSeen, List<object> secondItemsSeen)
         {
-            var valueDifferences = new List<DifferenceDetails>();
-            if (firstItemsSeen.Contains(sutDico) || secondItemsSeen.Contains(expectedDIco))
+            var valueDifferences = new AggregatedDifference {IsEquivalent = true};
+            if (firstItemsSeen.Contains(sutDico) || secondItemsSeen.Contains(expectedDico))
             {
                 valueDifferences.Add(new DifferenceDetails(sutName, null, expectedName, null, 0));
                 return valueDifferences;
             }
 
             firstItemsSeen.Add(sutDico);
-            secondItemsSeen.Add(expectedDIco);
+            secondItemsSeen.Add(expectedDico);
 
-            foreach (var key in sutDico.Keys)
+            var actualKeyIterator = sutDico.Keys.GetEnumerator();
+            var expectedKeyIterator = expectedDico.Keys.GetEnumerator();
+            var stillExpectedKeys = true;
+            var stillActualKeys = true;
+            while (true)
             {
-                if (!expectedDIco.Contains(key))
+                stillExpectedKeys = stillExpectedKeys && expectedKeyIterator.MoveNext();
+                stillActualKeys = stillActualKeys && actualKeyIterator.MoveNext();
+                if (!stillExpectedKeys)
                 {
-                    valueDifferences.Add(new DifferenceDetails($"{sutName} key", key, expectedName, null, 0));
-                }
-                valueDifferences.AddRange(ValueDifference(sutDico[key], $"{sutName}[{key}]", expectedDIco[key], 
-                    $"{expectedName}[{key}]", 0, firstItemsSeen, secondItemsSeen));
-            }
-            foreach (var key in expectedDIco.Keys)
-            {
-                if (!expectedDIco.Contains(key))
+                    // no more expected keys
+                    if (!stillActualKeys)
+                    {
+                        // we're done
+                        return valueDifferences;
+                    }
+                    // the sut has extra key(s)
+                    valueDifferences.Add(new DifferenceDetails($"{sutName} key", actualKeyIterator.Current, expectedName, null, 0));
+                    valueDifferences.IsEquivalent = false;
+                } else if (!stillActualKeys)
                 {
-                    valueDifferences.Add(new DifferenceDetails(sutName, null, $"{expectedName}[{key}]", key, 0));
+                    // key not found
+                    valueDifferences.IsEquivalent = false;
+                    valueDifferences.Add(new DifferenceDetails(sutName, null, $"{expectedName}[{expectedKeyIterator.Current}]", expectedKeyIterator.Current, 0));
+                }
+                else
+                {
+                    var actualKey = actualKeyIterator.Current;
+                    var itemDiffs = ValueDifference(actualKey, $"{sutName} key", expectedKeyIterator.Current, $"{expectedName} key", 0, firstItemsSeen, secondItemsSeen);
+                    if (itemDiffs.Count == 0)
+                    {
+                        // same key, check the values
+                        itemDiffs = ValueDifference(sutDico[actualKey], $"{sutName} value",
+                            expectedDico[actualKey], $"{expectedName} value", 0, firstItemsSeen,
+                            secondItemsSeen);
+                        valueDifferences.IsEquivalent &= itemDiffs.Count == 0;
+                    }
+                    else if (valueDifferences.IsEquivalent)
+                    {
+                        // check if the dictionaries are equivalent anyway
+                        if (expectedDico.Contains(actualKey))
+                        {
+                            valueDifferences.IsEquivalent = FluentEquals(sutDico[actualKey], expectedDico[actualKey]);
+                        }
+                        else
+                        {
+                            valueDifferences.IsEquivalent = false;
+                        }
+                    }
+                    valueDifferences.Merge(itemDiffs);
                 }
             }
-            return valueDifferences;
         }
 
-        private static IList<DifferenceDetails> ValueDifferenceArray(Array firstArray, string firstName, Array secondArray, string secondName, List<object> firstSeen, List<object> secondSeen)
+        private static AggregatedDifference ValueDifferenceArray(Array firstArray, string firstName, Array secondArray, string secondName, List<object> firstSeen, List<object> secondSeen)
         {
-            var valueDifferences = new List<DifferenceDetails>();
+            var valueDifferences = new AggregatedDifference();
 
             if (firstArray.Rank != secondArray.Rank)
             {
@@ -399,17 +441,17 @@ namespace NFluent.Helpers
 
                 var firstEntry = firstArray.GetValue(indices);
                 var secondEntry = secondArray.GetValue(secondIndices);
-                valueDifferences.AddRange(ValueDifference(firstEntry, firstName+label, secondEntry, secondName+label, i, firstSeen, secondSeen));
+                valueDifferences.Merge(ValueDifference(firstEntry, firstName+label, secondEntry, secondName+label, i, firstSeen, secondSeen));
             }
 
             return valueDifferences;
         }
 
-        private static IList<DifferenceDetails> ValueDifferenceEnumerable(IEnumerable firstItem, string firstName,
+        private static AggregatedDifference ValueDifferenceEnumerable(IEnumerable firstItem, string firstName,
             IEnumerable otherItem, string secondName, int refIndex,
             List<object> firstSeen, List<object> secondSeen)
         {
-            var valueDifferences = new List<DifferenceDetails>();
+            var valueDifferences = new AggregatedDifference();
             if (firstSeen.Contains(firstItem) || secondSeen.Contains(otherItem))
             {
                 valueDifferences.Add(new DifferenceDetails(firstName, null, secondName, null, 0));
@@ -431,7 +473,7 @@ namespace NFluent.Helpers
                 }
 
                 var secondItemName = $"{secondName}[{index}]";
-                valueDifferences.AddRange(ValueDifference(item, firstItemName, scanner.Current,
+                valueDifferences.Merge(ValueDifference(item, firstItemName, scanner.Current,
                     secondItemName, index, new List<object>(firstSeen), new List<object>(secondSeen)));
                 index++;
             }
@@ -477,6 +519,31 @@ namespace NFluent.Helpers
             public object FirstValue { get; internal set; }
             public object SecondValue { get; internal set; }
             public int Index { get; }
+        }
+
+        internal class AggregatedDifference
+        {
+            private readonly List<DifferenceDetails> details = new List<DifferenceDetails>();
+            public bool IsEquivalent { get; set; }
+
+            public int Count => this.details.Count;
+
+            public DifferenceDetails this[int id] => this.details[id];
+
+            public void Add(DifferenceDetails detail)
+            {
+                this.details.Add(detail);
+            }
+
+            public void AddRange(IList<DifferenceDetails> batch)
+            {
+                this.details.AddRange(details);
+            }
+
+            public void Merge(AggregatedDifference other)
+            {
+                this.details.AddRange(other.details);
+            }
         }
     }
 }
