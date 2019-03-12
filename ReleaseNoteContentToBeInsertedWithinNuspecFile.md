@@ -42,7 +42,7 @@ are significant, please revert to us if you face issues.
 * IsEqualTo now supports dictionary types. Error message hints to use IsEquivalentTo when relevant.
 
 ### GitHub Issues
-* #269, #274, #270, #275, #276, #280, #283, #184, #284, #286
+* #269, #274, #270, #275, #276, #280, #283, #184, #284, #286, #290
 
 ---------------
 ## V 2.4.0
