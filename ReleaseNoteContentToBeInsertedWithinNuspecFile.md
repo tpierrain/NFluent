@@ -1,4 +1,4 @@
-## V 2.5.0 (beta/in progress)
+## V 2.5.0
 ### Main feature
 * **CaptureConsole class** mocks the system console. Using it you can inject/simulate
 user input (with **Input** and **InputLine** methods) and read/review what the code has put on the
