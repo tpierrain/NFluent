@@ -17,6 +17,7 @@ namespace NFluent.Tests
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -207,6 +208,21 @@ namespace NFluent.Tests
                 "The checked enumerable is not in ascending order, whereas it should.",
                 "At #1: [4] comes after [1].", "The checked enumerable:",
                 "\t{4, 1, 2, 3, 5, null, 5} (7 items)");
+        }
+
+        [Test]
+        public void FailsOnDifferentQueries()
+        {
+            var sut = Enumerable.Range(0,4);
+            var expected = Enumerable.Range(0, 5);
+            Check.ThatCode(() => { Check.That(sut).IsEqualTo(expected); })
+                .IsAFailingCheckWithMessage(
+                    "", 
+                    "The checked enumerable is different from the expected one.", 
+                    "The checked enumerable:", 
+                    "\t{0, 1, 2, 3} (4 items)", 
+                    "The expected enumerable:", 
+                    "\t{0, 1, 2, 3, 4} (5 items)");
         }
 
         class ComparerWithNullAtTheEnd: IComparer{

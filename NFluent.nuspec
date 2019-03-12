@@ -12,7 +12,7 @@
     <iconUrl>https://raw.github.com/tpierrain/NFluent/master/Images/Icon.png</iconUrl>
     <description>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).</description>
     <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
-    <releaseNotes>## V 2.5.0 (beta/in progress)
+    <releaseNotes>## V 2.5.0
 ### Main feature
 * **CaptureConsole class** mocks the system console. Using it you can inject/simulate
 user input (with **Input** and **InputLine** methods) and read/review what the code has put on the
@@ -49,8 +49,9 @@
 * Fixed error messages for negated checks on dynamics.
 * Fix false positive for IsNotZero (and IsZero) for decimal that are close to 0 (&lt;.5).
 * IsEquivalentTo now supports dictionary types.
+* IsEqualTo now supports dictionary types. Error message hints to use IsEquivalentTo when relevant.
 ### GitHub Issues
-* #269, #274, #270, #275, #276, #280, #283, #184, #284, #286
+* #269, #274, #270, #275, #276, #280, #283, #184, #284, #286, #290
 ---------------
 ## V 2.4.0
 ### Main feature: Custom explicit error message

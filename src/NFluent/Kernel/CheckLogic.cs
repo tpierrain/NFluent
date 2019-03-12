@@ -253,7 +253,7 @@ namespace NFluent.Kernel
                     block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
                     if (this.expected is IEnumerable list && !(this.expected is string))
                     {
-                        block.WithEnumerableCount(this.expected is ICollection ? ((ICollection) this.expected).Count: list.Count());
+                        block.WithEnumerableCount(this.expected is ICollection collection ? collection.Count: list.Count());
                     }
                 }
 
