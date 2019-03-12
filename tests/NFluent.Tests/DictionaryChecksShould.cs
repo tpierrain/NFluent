@@ -324,15 +324,66 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualToFailsOnDifference()
         {
-            var dict = new Dictionary<string, int> { ["foo"] = 0, ["bar"] = 1 };
+            // just change the order
             var expected = new Dictionary<string, int> { ["bar"] = 1,  ["foo"] = 0 };
             Check.ThatCode( () =>
-            Check.That(dict).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
+            Check.That(new Dictionary<string, int> { ["foo"] = 0, ["bar"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one. 2 differences found! But the checked dictionary is equivalent to the expected one.", 
                 "The checked dictionary:", 
                 "\t{[foo, 0], [bar, 1]} (2 items)", 
                 "The expected dictionary:", 
                 "\t{[bar, 1], [foo, 0]} (2 items)");
+            Check.ThatCode( () =>
+            Check.That(new Dictionary<string, int> { ["foo"] = 1, ["bar"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
+                "The checked dictionary is different from the expected one. 2 differences found!", 
+                "The checked dictionary:", 
+                "\t{[foo, 1], [bar, 1]} (2 items)", 
+                "The expected dictionary:", 
+                "\t{[bar, 1], [foo, 0]} (2 items)");
+            Check.ThatCode( () =>
+            Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
+                "The checked dictionary is different from the expected one.", 
+                "The checked dictionary:", 
+                "\t{[bar, 1], [foo, 1]} (2 items)", 
+                "The expected dictionary:", 
+                "\t{[bar, 1], [foo, 0]} (2 items)");
+            Check.ThatCode( () =>
+            Check.That(new Dictionary<string, int> { ["bar!"] = 1, ["foo"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
+                "The checked dictionary is different from the expected one. 2 differences found!", 
+                "The checked dictionary:", 
+                "\t{[bar!, 1], [foo, 1]} (2 items)", 
+                "The expected dictionary:", 
+                "\t{[bar, 1], [foo, 0]} (2 items)");
+            Check.ThatCode( () =>
+            Check.That(new Dictionary<string, int> { ["bar"] = 1}).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
+                "The checked dictionary is different from the expected one.", 
+                "The checked dictionary:", 
+                "\t{[bar, 1]} (1 item)", 
+                "The expected dictionary:", 
+                "\t{[bar, 1], [foo, 0]} (2 items)");
+            Check.ThatCode( () =>
+                Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo"] = 0, ["extra"] = 2 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
+                "The checked dictionary is different from the expected one.", 
+                "The checked dictionary:", 
+                "\t{[bar, 1], [foo, 0], [extra, 2]} (3 items)", 
+                "The expected dictionary:", 
+                "\t{[bar, 1], [foo, 0]} (2 items)");
+        }
+
+        [Test]
+        public void IsEqualToDealWithRecursion()
+        {
+            var dico = new Dictionary<string, object>();
+            dico["first"] = dico;
+            var expectedDico = new Dictionary<string, object>();
+            expectedDico["first"] = expectedDico;
+
+            Check.ThatCode(() => Check.That(dico).IsEqualTo(expectedDico)).IsAFailingCheckWithMessage("",
+                "The checked dictionary is different from the expected one.", 
+                "The checked dictionary:", 
+                "\t{[first, System.Collections.Generic.Dictionary`2[System.String,System.Object]]} (1 item)", 
+                "The expected dictionary:", 
+                "\t{[first, System.Collections.Generic.Dictionary`2[System.String,System.Object]]} (1 item)");
         }
 
         [Test]
