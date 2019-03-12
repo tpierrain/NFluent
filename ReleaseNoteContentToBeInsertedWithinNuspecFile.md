@@ -30,7 +30,6 @@ are significant, please revert to us if you face issues.
 * IsEqualTo provides more details for IEnumerable (make sure first different item is visible).
 * Number of items in expected value was often not reported in error messages.
 
-
 ### Fixes
 * Fix false positive with TimeSpan due linked to precision loss. It concerns: IsEqualTo(TimeSpan), IsLessThan(TimeSpan), IsGreaterThan(TimeSpan)
 * Fix random FileNotFound exceptions on the first failing assertion while using XUnit in some specific setup.
@@ -40,6 +39,7 @@ are significant, please revert to us if you face issues.
 * Fixed error messages for negated checks on dynamics.
 * Fix false positive for IsNotZero (and IsZero) for decimal that are close to 0 (<.5).
 * IsEquivalentTo now supports dictionary types.
+* IsEqualTo now supports dictionary types. Error message hints to use IsEquivalentTo when relevant.
 
 ### GitHub Issues
 * #269, #274, #270, #275, #276, #280, #283, #184, #284, #286

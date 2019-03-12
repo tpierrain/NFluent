@@ -535,11 +535,6 @@ namespace NFluent.Helpers
                 this.details.Add(detail);
             }
 
-            public void AddRange(IList<DifferenceDetails> batch)
-            {
-                this.details.AddRange(details);
-            }
-
             public void Merge(AggregatedDifference other)
             {
                 this.details.AddRange(other.details);
