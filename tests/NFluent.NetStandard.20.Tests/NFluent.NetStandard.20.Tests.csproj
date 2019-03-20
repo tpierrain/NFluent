@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>NFluent.Tests</RootNamespace>
-    <AssemblyName>NFluent.Tests</AssemblyName>
+    <AssemblyName>NFluent.NetStandard.20.Tests</AssemblyName>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />

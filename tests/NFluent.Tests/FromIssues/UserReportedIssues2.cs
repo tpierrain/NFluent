@@ -17,6 +17,7 @@ namespace NFluent.Tests.FromIssues
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
 #if DOTNET_45
     using System.Threading.Tasks;
 #endif
@@ -27,6 +28,26 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        // GH 292
+        [Test]
+        public void Awkward_behaviour_with_NFluent()
+        {
+            var toBeChecked = new object[]
+            {
+                1,
+                2,
+                3,
+                4
+            };
+
+            IEnumerable<int> expected = Enumerable.Range(1, 4);
+            
+            CollectionAssert.AreEquivalent(expected, toBeChecked);  // OK 
+            CollectionAssert.AreEqual(expected, toBeChecked);       // OK
+
+            Check.That(toBeChecked).ContainsExactly(expected.Cast<object>());      // KO ;-(
+        }
+
         // GH #290
         [Test]
         public void IsEquivalentToShouldWorkOnDictionaries()

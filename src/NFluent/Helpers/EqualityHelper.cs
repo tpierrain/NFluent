@@ -354,7 +354,7 @@ namespace NFluent.Helpers
             var expectedKeyIterator = expectedDico.Keys.GetEnumerator();
             var stillExpectedKeys = true;
             var stillActualKeys = true;
-            while (true)
+            for (;;)
             {
                 stillExpectedKeys = stillExpectedKeys && expectedKeyIterator.MoveNext();
                 stillActualKeys = stillActualKeys && actualKeyIterator.MoveNext();
@@ -364,7 +364,7 @@ namespace NFluent.Helpers
                     if (!stillActualKeys)
                     {
                         // we're done
-                        return valueDifferences;
+                        break;
                     }
                     // the sut has extra key(s)
                     valueDifferences.Add(new DifferenceDetails($"{sutName} key", actualKeyIterator.Current, expectedName, null, 0));
@@ -402,6 +402,7 @@ namespace NFluent.Helpers
                     valueDifferences.Merge(itemDiffs);
                 }
             }
+            return valueDifferences;
         }
 
         private static AggregatedDifference ValueDifferenceArray(Array firstArray, string firstName, Array secondArray, string secondName, List<object> firstSeen, List<object> secondSeen)

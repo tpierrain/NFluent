@@ -141,8 +141,16 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<IEnumerable<T>>> ContainsExactly<T>(this ICheck<IEnumerable<T>> check, params T[] expectedValues) 
         {
-            var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
-            ImplementContainsExactly(ExtensibilityHelper.BeginCheck(check), properExpectedValues);
+            if (typeof(T) == typeof(object))
+            {
+                var objectList = ExtractEnumerableValueFromSingleEntry(expectedValues)?.Cast<object>();
+                ImplementContainsExactly(ExtensibilityHelper.BeginCheckAs(check, u => u.Cast<object>()), objectList);
+            }
+            else
+            {
+                var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
+                ImplementContainsExactly(ExtensibilityHelper.BeginCheck(check), properExpectedValues);
+            }
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
@@ -220,7 +228,6 @@ namespace NFluent
             });
             test.EndCheck();
         }
-
 
         /// <summary>
         /// Checks if the sut contains the same element than a given list.
