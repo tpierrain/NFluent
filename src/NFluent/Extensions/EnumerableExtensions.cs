@@ -69,6 +69,17 @@ namespace NFluent
             return enumerable.ToEnumeratedStringAdvanced(fromIndex, len, new List<object>());
         }
 
+        /// <summary>
+        /// Cast all items within an enumeration
+        /// </summary>
+        /// <typeparam name="T">Target type for item</typeparam>
+        /// <param name="enumerable">enumerable to cast</param>
+        /// <returns></returns>
+        public static IEnumerable<T> AmbitiousCast<T>(this IEnumerable enumerable)
+        {
+            return new MyEnumerable<T>(enumerable);
+        }
+
         private static string ToEnumeratedStringAdvanced(this IEnumerable enumerable,
             long referenceIndex, long numberOfItems, ICollection<object> seen)
         {
@@ -208,6 +219,58 @@ namespace NFluent
             }
 
             return closing;
+        }
+
+        private class MyEnumerable<T>: IEnumerable<T>
+        {
+            private readonly IEnumerable wrapped;
+
+            public MyEnumerable(IEnumerable wrapped)
+            {
+                this.wrapped = wrapped;
+            }
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                return new MyEnumerator(((IEnumerable) this).GetEnumerator());
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return this.wrapped.GetEnumerator();
+            }
+
+            private class MyEnumerator: IEnumerator<T>
+            {
+                private readonly IEnumerator wrapped;
+
+                public MyEnumerator(IEnumerator wrapped)
+                {
+                    this.wrapped = wrapped;
+                }
+
+                public void Dispose()
+                {
+                    if (this.wrapped is IDisposable disposable)
+                    {
+                        disposable.Dispose();
+                    }
+                }
+
+                public bool MoveNext()
+                {
+                    return this.wrapped.MoveNext();
+                }
+
+                public void Reset()
+                {
+                   this.wrapped.Reset();
+                }
+
+                public T Current => (T) this.wrapped.Current;
+
+                object IEnumerator.Current => this.Current;
+            }
         }
     }
 }

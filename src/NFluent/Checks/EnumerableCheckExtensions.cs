@@ -141,16 +141,9 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<IEnumerable<T>>> ContainsExactly<T>(this ICheck<IEnumerable<T>> check, params T[] expectedValues) 
         {
-            if (typeof(T) == typeof(object))
-            {
-                var objectList = ExtractEnumerableValueFromSingleEntry(expectedValues)?.Cast<object>();
-                ImplementContainsExactly(ExtensibilityHelper.BeginCheckAs(check, u => u.Cast<object>()), objectList);
-            }
-            else
-            {
-                var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
-                ImplementContainsExactly(ExtensibilityHelper.BeginCheck(check), properExpectedValues);
-            }
+
+            var properExpectedValues = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
+            ImplementContainsExactly(ExtensibilityHelper.BeginCheck(check), properExpectedValues);
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
@@ -193,36 +186,38 @@ namespace NFluent
                 }
 
                 var index = 0;
-                var first = sut.GetEnumerator();
-                var comparer = new EqualityHelper.EqualityComparer<object>();
-
-                // ReSharper disable once PossibleNullReferenceException
-                var expectedCount = count;
-                var failed = false;
-                using (var second = enumerable.GetEnumerator())
-                {
-                    while (first.MoveNext())
+                using(var first = sut.GetEnumerator())
+                { 
+                    var comparer = new EqualityHelper.EqualityComparer<object>();
+                    // ReSharper disable once PossibleNullReferenceException
+                    var expectedCount = count;
+                    var failed = false;
+                    using (var second = enumerable.GetEnumerator())
                     {
-                        if (!second.MoveNext() || !comparer.Equals(first.Current, second.Current))
+                        while (first.MoveNext())
                         {
-                            test.Fail(
-                                index == expectedCount
-                                    ? $"The {{0}} does not contain exactly the expected value(s). There are extra elements starting at index #{index}."
-                                    : $"The {{0}} does not contain exactly the expected value(s). First difference is at index #{index}.");
+                            if (!second.MoveNext() || !comparer.Equals(first.Current, second.Current))
+                            {
+                                test.Fail(
+                                    index == expectedCount
+                                        ? $"The {{0}} does not contain exactly the expected value(s). There are extra elements starting at index #{index}."
+                                        : $"The {{0}} does not contain exactly the expected value(s). First difference is at index #{index}.");
 
-                            test.SetValuesIndex(index);
-                            failed = true;
-                            break;
+                                test.SetValuesIndex(index);
+                                failed = true;
+                                break;
+                            }
+
+                            index++;
                         }
 
-                        index++;
-                    }
+                        if (second.MoveNext() && !failed)
+                        {
+                            test.Fail(
+                                $"The {{0}} does not contain exactly the expected value(s). Elements are missing starting at index #{index}.");
+                            test.SetValuesIndex(index);
+                        }
 
-                    if (second.MoveNext() && !failed)
-                    {
-                        test.Fail(
-                            $"The {{0}} does not contain exactly the expected value(s). Elements are missing starting at index #{index}.");
-                        test.SetValuesIndex(index);
                     }
                 }
             });
@@ -233,11 +228,12 @@ namespace NFluent
         /// Checks if the sut contains the same element than a given list.
         /// </summary>
         /// <param name="context">Context for the check</param>
-        /// <param name="content"></param>
+        /// <param name="expectedValues">Expected values</param>
         /// <returns>A chainable link.</returns>
         public static ICheckLink<ICheck<IEnumerable>> IsEquivalentTo(this ICheck<IEnumerable> context,
-            params object[] content)
+            params object[] expectedValues)
         {
+            var content = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             ImplementEquivalentTo(ExtensibilityHelper.BeginCheckAs(context, enumerable => enumerable.Cast<object>()), content);
             return ExtensibilityHelper.BuildCheckLink(context);
         }
@@ -246,12 +242,13 @@ namespace NFluent
         /// Checks if the sut contains the same element than a given list.
         /// </summary>
         /// <param name="context">Context for the check</param>
-        /// <param name="content"></param>
+        /// <param name="expectedValues"> expected content</param>
         /// <typeparam name="T">Type of enumerable content</typeparam>
         /// <returns>A chainable link.</returns>
         public static ICheckLink<ICheck<IEnumerable<T>>> IsEquivalentTo<T>(this ICheck<IEnumerable<T>> context,
-            params T[] content)
+            params T[] expectedValues)
         {
+            var content = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             var checker = ExtensibilityHelper.BeginCheck(context);
                 ImplementEquivalentTo(checker, content);
             return ExtensibilityHelper.BuildCheckLink(context);
@@ -271,9 +268,9 @@ namespace NFluent
             return IsEquivalentTo(context, content?.ToArray());
         }
 
-        private static void ImplementEquivalentTo<T>(ICheckLogic<IEnumerable<T>> checker, ICollection<T> content)
+        private static void ImplementEquivalentTo<T>(ICheckLogic<IEnumerable<T>> checker, IEnumerable<T> content)
         {
-            var length = content?.Count ?? 0;
+            var length = content?.Count() ?? 0;
             checker.Analyze((sut, test) =>
                 {
                     if (sut == null)
@@ -825,17 +822,16 @@ namespace NFluent
 
         private static IEnumerable<T> ExtractEnumerableValueFromPossibleOneValueArray<T>(T[] expectedValues)
         {
-            IEnumerable<T> properExpectedValues;
             if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
             {
-                properExpectedValues = expectedValues[0] as IEnumerable<T>;
+                if (expectedValues[0] is IEnumerable<T> goodEnum)
+                {
+                    return goodEnum;
+                }
+                // a cast is necessary
+                 return ((IEnumerable)expectedValues[0]).AmbitiousCast<T>();
             }
-            else
-            {
-                properExpectedValues = expectedValues;
-            }
-
-            return properExpectedValues;
+            return expectedValues;
         }
 
         private static IEnumerable ExtractEnumerableValueFromSingleEntry<T>(T[] expectedValues)

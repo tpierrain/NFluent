@@ -45,7 +45,8 @@ namespace NFluent.Tests.FromIssues
             CollectionAssert.AreEquivalent(expected, toBeChecked);  // OK 
             CollectionAssert.AreEqual(expected, toBeChecked);       // OK
 
-            Check.That(toBeChecked).ContainsExactly(expected.Cast<object>());      // KO ;-(
+            Check.That(toBeChecked).IsEquivalentTo(expected);      // KO ;-(
+
         }
 
         // GH #290

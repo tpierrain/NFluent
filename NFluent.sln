@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28714.193
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{CCA550FA-833A-4F2E-9C81-78EE585A49CC}"
 	ProjectSection(SolutionItems) = preProject
@@ -141,6 +141,7 @@ Global
 		src\NFluent.Generated\NFluent.Generated.projitems*{1e2d9d56-d0a4-4d2e-8f2b-f211000e1667}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{1e2d9d56-d0a4-4d2e-8f2b-f211000e1667}*SharedItemsImports = 4
 		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{2b7f0e07-9b42-4bd2-8e30-f90fd78faf1f}*SharedItemsImports = 13
+		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{308a72a3-462b-4c4e-abae-9d9d49d251e7}*SharedItemsImports = 4
 		src\NFluent.Generated\NFluent.Generated.projitems*{33adf67e-963a-4950-966b-14a513c245a1}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{33adf67e-963a-4950-966b-14a513c245a1}*SharedItemsImports = 4
 		src\NFluent.Generated\NFluent.Generated.projitems*{37fdae31-560d-40b8-8fa7-7def8a53b370}*SharedItemsImports = 13
@@ -149,6 +150,7 @@ Global
 		tests\NFluent.Tests.Meta\NFluent.Tests.Meta.projitems*{61d00587-a426-41de-970b-8cdf5c7a0e67}*SharedItemsImports = 13
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{6b88c45a-d45e-40fb-8635-d0e0ef0454e9}*SharedItemsImports = 4
 		tests\NFluent.Tests\NFluent.Tests.projitems*{6b88c45a-d45e-40fb-8635-d0e0ef0454e9}*SharedItemsImports = 4
+		tests\NFluent.Tests.Internals\NFluent.Tests.Internals.projitems*{95799318-9a09-46c8-ae53-2546f053ef40}*SharedItemsImports = 4
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{9601b939-8314-4be8-9cde-217e47a7259c}*SharedItemsImports = 4
 		tests\NFluent.Tests\NFluent.Tests.projitems*{9601b939-8314-4be8-9cde-217e47a7259c}*SharedItemsImports = 4
 		tests\NFluent.Tests.Internals\NFluent.Tests.Internals.projitems*{9e500148-4f6c-424a-aa09-801db1749677}*SharedItemsImports = 4
@@ -159,6 +161,7 @@ Global
 		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{ac520fdb-8125-46f3-85f3-d4962c53c136}*SharedItemsImports = 4
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{bdaa4d22-45a1-470e-a142-70e1f194ee3f}*SharedItemsImports = 4
 		tests\NFluent.Tests\NFluent.Tests.projitems*{bdaa4d22-45a1-470e-a142-70e1f194ee3f}*SharedItemsImports = 4
+		tests\NFluent.Tests.Meta\NFluent.Tests.Meta.projitems*{c2eec8dd-f390-4ecb-a169-25930896e1c1}*SharedItemsImports = 4
 		src\NFluent.Generated\NFluent.Generated.projitems*{cf1d857f-658f-4e1f-8487-cd751f189e6a}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{cf1d857f-658f-4e1f-8487-cd751f189e6a}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{dbfa1137-b129-496a-9201-149f5178747e}*SharedItemsImports = 13

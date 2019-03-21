@@ -16,7 +16,7 @@
 ### Main feature
 * **CaptureConsole class** mocks the system console. Using it you can inject/simulate
 user input (with **Input** and **InputLine** methods) and read/review what the code has put on the
-console (with the **Output** property). The class is disposable: nnormal behavior
+console (with the **Output** property). The class is disposable: normal behavior
 is restored on Dispose.
 Example
 using (var console = new CaptureConsole)
