@@ -27,10 +27,13 @@
     <xunitOptions />
     <xUnitTestRunnerPath>$(NuGetToolsPath)\XUnit.runner.console.$(xunitConsoleVersion)\tools\net452\xunit.console.exe</xUnitTestRunnerPath>
 
+    <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Community\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Community\</VsPath>
+    <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Professional\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Professional\</VsPath>
+    <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Enterprise\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Enterprise\</VsPath>
     <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Community\</VsPath>
     <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Professional\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Professional\</VsPath>
     <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Enterprise\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Enterprise\</VsPath>
-    <VsPath Condition="'$(VsPath)'==''">false</VsPath>
+    <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Preview\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Preview\</VsPath>
 
     <MsTestRunnerPath>$(VsPath)\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
     <MsTestOptions/>
@@ -87,6 +90,10 @@
   <Target Name="DebugBuild" DependsOnTargets="Package"/>
 
   <!--Targets-->
+  <Target Name="Start">
+    <Error Text="Can't find VisualStudio Tools" Condition="'$(VsPath)'==''" />
+  </Target>
+
   <Target Name="SetNightly">
     <PropertyGroup>
       <PackageStream>nightly</PackageStream>
@@ -128,7 +135,7 @@
   </Target>
 
   <!-- 0- Align version numners -->
-  <Target Name="SynchroVersion">
+  <Target Name="SynchroVersion" DependsOnTargets="Start">
     <!-- Ensure version number is propagated in new CsProj format file-->
     <!-- Capture version number -->
     <PropertyGroup>
@@ -188,10 +195,13 @@
   <Target Name="NugetRestore" DependsOnTargets="SynchroVersion">
 
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
-    <Exec Command='"$(NuGetExePath)" sources remove -Name extraSource' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/>
-    <Exec Command='"$(NuGetExePath)" sources add -Name extraSource -Source $(NugetSource)' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/>
+    <!--Exec Command='"$(NuGetExePath)" sources remove -Name extraSource' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/>
+    <Exec Command='"$(NuGetExePath)" sources add -Name extraSource -Source $(NugetSource)' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/-->
     <Message Importance="high" Text="Restoring $(SolutionRoot)\$(SolutionName)"/>
-    <Exec Command='"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages" -verbosity quiet'/>
+    <MSBuild Projects="$(SolutionRoot)\$(SolutionName).sln" 
+             Targets="restore" 
+             Properties="Configuration=$(Configuration)"/>
+    <!--Exec Command='"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages" -verbosity quiet'/-->
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
   </Target>
   
@@ -304,7 +314,7 @@ RUN ALL UNIT TESTS
 
     <Exec Command ='dotnet exec "$(CoverReportToolPath)\netcoreapp2.0\ReportGenerator.dll" -reports:$(CoverageDataFile) -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="('$(APPVEYOR)'!='True') and (Exists($(CoverageDataFile)))"/>
 
-    <Exec Command="pip install codecov"/>
+    <Exec Command="python -m pip install codecov --user"/>
     <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(CoverageDataFile)" -t $(CodeCovKey) -X gcov -n $(SolutionName)'
            Condition="('$(CodeCovKey)'!='') AND ('$(APPVEYOR)'=='True')"/>
    <Message Importance="high" Text="--------- end of Publish Coverage ---------"/>
