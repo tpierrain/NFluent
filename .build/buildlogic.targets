@@ -195,13 +195,13 @@
   <Target Name="NugetRestore" DependsOnTargets="SynchroVersion">
 
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
-    <!--Exec Command='"$(NuGetExePath)" sources remove -Name extraSource' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/>
-    <Exec Command='"$(NuGetExePath)" sources add -Name extraSource -Source $(NugetSource)' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/-->
-    <Message Importance="high" Text="Restoring $(SolutionRoot)\$(SolutionName)"/>
-    <MSBuild Projects="$(SolutionRoot)\$(SolutionName).sln" 
+    <Exec Command='"$(NuGetExePath)" sources remove -Name extraSource' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/>
+    <Exec Command='"$(NuGetExePath)" sources add -Name extraSource -Source $(NugetSource)' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/>
+    <Message Importance="high" Text="Restoring projects"/>
+    <!--MSBuild Projects="%(ProjectFolder.FullPath)" 
              Targets="restore" 
-             Properties="Configuration=$(Configuration)"/>
-    <!--Exec Command='"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages" -verbosity quiet'/-->
+             Properties="Configuration=$(Configuration)"/-->
+    <Exec Command='"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages" -verbosity quiet'/>
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
   </Target>
   
