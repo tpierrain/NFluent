@@ -315,7 +315,7 @@ RUN ALL UNIT TESTS
     <Exec Command ='dotnet exec "$(CoverReportToolPath)\netcoreapp2.0\ReportGenerator.dll" -reports:$(CoverageDataFile) -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="('$(APPVEYOR)'!='True') and (Exists($(CoverageDataFile)))"/>
 
     <Exec Command="python -m pip install codecov --user"/>
-    <Exec WorkingDirectory="$(SolutionRoot)" Command='codecov -f "$(CoverageDataFile)" -t $(CodeCovKey) -X gcov -n $(SolutionName)'
+    <Exec WorkingDirectory="$(SolutionRoot)" Command='python -m codecov -f "$(CoverageDataFile)" -t $(CodeCovKey) -X gcov -n $(SolutionName)'
            Condition="('$(CodeCovKey)'!='') AND ('$(APPVEYOR)'=='True')"/>
    <Message Importance="high" Text="--------- end of Publish Coverage ---------"/>
   </Target>
