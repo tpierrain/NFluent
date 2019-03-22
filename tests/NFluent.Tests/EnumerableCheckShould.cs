@@ -96,7 +96,7 @@ namespace NFluent.Tests
         
         [Test]
         public void
-            CheckForAbsencefWrongType()
+            CheckForAbsenceofWrongType()
         {
             var array = new List<object> {"test", "another", 4};
             Check.That(array).Not.ContainsOnlyInstanceOfType(typeof(string));
@@ -121,6 +121,16 @@ namespace NFluent.Tests
 
             var otherArray = new List<int>(new []{3, 2, 1});
             Check.That(array).IsEquivalentTo(otherArray);
+        }
+
+        [Test]
+        public void SupportIEnumerableObject()
+        {
+            var collection = new List<object> {1, 2, 3, 4};
+            Check.That(collection).IsEqualTo(new[] {1, 2, 3, 4});
+            Check.That(collection).ContainsExactly(new[] {1, 2, 3, 4});
+            Check.That(collection).Contains(new[] {1, 2});
+            Check.That(collection).IsEquivalentTo(new[] {4, 3, 1, 2});
         }
 
         [Test]

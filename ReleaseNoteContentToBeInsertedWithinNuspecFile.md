@@ -1,3 +1,10 @@
+## V 2.5.1
+### Fixes
+* Fix issue with IEnumerable<pbject> and Contains(Exactly), IsEqualTo, IsEquivalentTo.
+
+### GitHub Issues
+* #292
+
 ## V 2.5.0
 ### Main feature
 * **CaptureConsole class** mocks the system console. Using it you can inject/simulate
