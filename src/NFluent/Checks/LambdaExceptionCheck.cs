@@ -179,7 +179,7 @@ namespace NFluent
                     test.FailWhen(_ => resultException == null,
                         "The {0} is not of one of the expected types.", MessageOption.WithType);
                 })
-                .DefineExpectedValues(types, types.Length, "an instance of any", "")
+                .DefinePossibleTypes(types, "an instance of any", "")
                 .EndCheck();            
             return new CheckLink<ILambdaExceptionCheck<T>>(context);
         }

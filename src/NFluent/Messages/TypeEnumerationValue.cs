@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="RangeBlock.cs" company="NFluent">
+//  <copyright file="TypeEnumerationValue.cs" company="NFluent">
 //   Copyright 2019 Thomas PIERRAIN & Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,35 +16,28 @@
 namespace NFluent.Messages
 {
     using System;
+    using System.Collections.Generic;
+    using Extensions;
+#if !DOTNET_20 && !DOTNET_30
+    using System.Linq;
+#endif
 
-    /// <summary>
-    ///     Class representing a range of value
-    /// </summary>
-    internal class RangeBlock
+    internal class TypeEnumerationValue : ISelfDescriptiveValue
     {
-        private readonly double referenceValue;
-        private readonly double tolerance;
+        private readonly IEnumerable<Type> types;
 
-        /// <summary>
-        ///     Constructor
-        /// </summary>
-        /// <param name="referenceValue">Reference value (mid point)</param>
-        /// <param name="tolerance">Tolerance</param>
-        /// <remarks>This represents a range of <see cref="referenceValue" /> +/- <see cref="tolerance" /></remarks>
-        public RangeBlock(double referenceValue, double tolerance)
+        public TypeEnumerationValue(IEnumerable<Type> types)
         {
-            this.referenceValue = referenceValue;
-            this.tolerance = tolerance;
+            this.types = types;
         }
 
-        public bool IsInRange(double value)
-        {
-            return Math.Abs(this.referenceValue - value) <= this.tolerance;
-        }
+        public string ValueDescription => $"an instance of these types {this}";
 
         public override string ToString()
         {
-            return $"{this.referenceValue} (+/- {this.tolerance})";
+            return this.types == null
+                ? "[null]"
+                : $"{{{string.Join(", ", this.types.Select(x => x.ToStringProperlyFormatted()).ToArray())}}}";
         }
     }
 }

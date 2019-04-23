@@ -24,7 +24,7 @@ namespace NFluent.Messages
     /// </summary>
     internal class ValueBlock : IValueDescription
     {
-        private readonly object test;
+        private readonly object value;
 
         private bool fullTypeName;
 
@@ -35,13 +35,13 @@ namespace NFluent.Messages
         /// <summary>
         /// Initializes a new instance of the <see cref="ValueBlock"/> class.
         /// </summary>
-        /// <param name="test">
+        /// <param name="value">
         /// The tested object.
         /// </param>
-        public ValueBlock(object test)
+        public ValueBlock(object value)
         {
-            this.test = test;
-            this.type = test.GetTypeWithoutThrowingException();
+            this.value = value;
+            this.type = value.GetTypeWithoutThrowingException();
         }
 
         /// <summary>
@@ -61,9 +61,9 @@ namespace NFluent.Messages
                 builder.AppendFormat(" of type: [{0}]", temp);
             }
 
-            if (this.includeHash && this.test != null)
+            if (this.includeHash && this.value != null)
             {
-                builder.AppendFormat(" with HashCode: [{0}]", this.test.GetHashCode());
+                builder.AppendFormat(" with HashCode: [{0}]", this.value.GetHashCode());
             }
 
             return builder.ToString();
@@ -128,9 +128,11 @@ namespace NFluent.Messages
         /// </returns>
         private string Description()
         {
-            var description = new StringBuilder();
-            description.AppendFormat("[{0}]", this.test.ToStringProperlyFormatted());
-            return description.ToString();
+            if (this.value is ISelfDescriptiveValue self)
+            {
+                return self.ValueDescription;
+            }
+            return $"[{this.value.ToStringProperlyFormatted()}]";
         }
     }
 }

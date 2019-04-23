@@ -28,15 +28,6 @@ namespace NFluent
     /// </summary>
     /// <typeparam name="T">Type of return value.</typeparam>
     /// <typeparam name="TU">Type of parameter.</typeparam>
-    /// <param name="param">value of the parameter</param>
-    /// <returns>Return value.</returns>
-    public delegate T Func<in TU, out T>(TU param);
-
-    /// <summary>
-    /// Delegates that has a return value and takes one parameter.
-    /// </summary>
-    /// <typeparam name="T">Type of return value.</typeparam>
-    /// <typeparam name="TU">Type of parameter.</typeparam>
     /// <typeparam name="TV">Type of parameter.</typeparam>
     /// <param name="param">value of the parameter</param>
     /// <param name="param2">value of the parameter</param>
@@ -44,13 +35,23 @@ namespace NFluent
     public delegate T Func<in TU, in TV, out T>(TU param, TV param2);
 
     /// <summary>
-    /// Delegates that takes and parameter and does not return anything.
+    /// Delegates that takes two parameters and does not return anything.
     /// </summary>
     /// <typeparam name="TU">Type of first parameter.</typeparam>
     /// <typeparam name="TV">Type of second parameter.</typeparam>
     /// <param name="param">value of the parameter</param>
     /// <param name="param2">value of the second parameter</param>
     public delegate void Action<in TU, in TV>(TU param, TV param2);
+
+    /// <summary>
+    /// Implements a function with on argument returning a value.
+    /// </summary>
+    /// <typeparam name="T">Type of the argument</typeparam>
+    /// <typeparam name="TU">Type of the return value</typeparam>
+    /// <param name="value">Parameters value</param>
+    /// <returns></returns>
+    public delegate TU Func<in T, out TU>(T value);
+
 #endif
 #if DOTNET_30 || DOTNET_20
     using System.Collections;

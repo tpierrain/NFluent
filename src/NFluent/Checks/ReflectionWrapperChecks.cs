@@ -61,7 +61,7 @@ namespace NFluent
             params object[] values)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .DefineExpectedValues(values, values.Length, "one of", "none of")
+                .DefinePossibleValues(values, values.Length)
                 .Analyze((sut, test) =>
                 {
                     var match = false;

@@ -49,11 +49,11 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => Check.That(FirstLetterLowerCase).Not.IsInstanceOf<char>())
                     .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [char] whereas it must not.",
-                    "The checked value:",
+                    "The checked char is an instance of [char] whereas it must not.",
+                    "The checked char:",
                     "\t['a'] of type: [char]",
                     "The expected value: different from",
-                    "\tan instance of type: [char]");
+                    "\tan instance of [char]");
 
         }
 
@@ -62,11 +62,11 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => Check.That(FirstLetterLowerCase).IsNotInstanceOf<char>())
                     .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [char] whereas it must not.",
-                    "The checked value:",
+                    "The checked char is an instance of [char] whereas it must not.",
+                    "The checked char:",
                     "\t['a'] of type: [char]",
                     "The expected value: different from",
-                    "\tan instance of type: [char]");
+                    "\tan instance of [char]");
         }
 
         #endregion

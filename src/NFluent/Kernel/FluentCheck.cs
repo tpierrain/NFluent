@@ -54,22 +54,24 @@ namespace NFluent.Kernel
             this.checker = new Checker<T, ICheck<T>>(this, this);
         }
 
-        /// <inheritdoc />
+        internal FluentCheck(FluentSut<T> copy, bool negated): base(copy, negated)
+        {
+            this.checker = new Checker<T, ICheck<T>>(this, this);
+        }
+
+         /// <inheritdoc />
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         public ICheck<T> Not
         {
             get
             {
-                var fluentCheck = new FluentCheck<T>(Value, !Negated) {SutName = SutName};
-                fluentCheck.CustomMessage = CustomMessage;
+                var fluentCheck = new FluentCheck<T>(this, !Negated);
                 return fluentCheck;
             }
         }
 
         /// <inheritdoc />
         public IChecker<T, ICheck<T>> Checker => this.checker;
-
-        #region Public Methods and Operators
 
         /// <summary>
         /// Checks whether the specified <see cref="System.Object"/> is equal to this instance or not.
@@ -86,7 +88,6 @@ namespace NFluent.Kernel
         public new bool Equals(object obj)
         {
             this.IsEqualTo(obj);
- 
             return false;
         }
 
@@ -96,7 +97,6 @@ namespace NFluent.Kernel
             this.IsInstanceOfType(typeof(TU));
 
             // TODO: restore pattern matching version when appveyor is upgraded
-//            if (Value is TU converted)
             if (Value is TU )
                 return ExtensibilityHelper.BuildCheckLinkWhich(this, (TU) (object) Value, SutName);
             return ExtensibilityHelper.BuildCheckLinkWhich(this, default(TU), SutName);
@@ -108,17 +108,11 @@ namespace NFluent.Kernel
             return this.IsNoInstanceOfType(typeof(TU));
         }
 
-        #endregion
-
-        #region Explicit Interface Methods
-
         /// <inheritdoc />
         object IForkableCheck.ForkInstance()
         {
             Negated = !CheckContext.DefaultNegated;
             return this; 
         }
-
-        #endregion
     }
 }

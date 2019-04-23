@@ -47,10 +47,10 @@ namespace NFluent.Tests
                     Check.That((object) null).IsEqualTo(new object())
                 )
                 .IsAFailingCheckWithMessage("",
-                    "The checked value is different from the expected one.",
-                    "The checked value:",
+                    "The checked object is different from the expected one.",
+                    "The checked object:",
                     "\t[null] of type: [object]",
-                    "The expected value:",
+                    "The expected object:",
                     "\t[System.Object] of type: [object]");
         }
 
@@ -302,7 +302,7 @@ namespace NFluent.Tests
                     "The checked string is not null whereas it must.",
                     "The checked string:",
                     "\t[\"Son of a test\"]",
-                    "The expected value:",
+                    "The expected object:",
                     "\t[null]");
         }
 

@@ -71,7 +71,7 @@ namespace NFluent.Tests
                     "The checked value:", 
                     "\t[{ TheProperty = 42 }] of type: [NFluent.Helpers.ReflectionWrapper]", 
                     "The expected value: different from", 
-                "\tan instance of type: [<>f__AnonymousType1<int>]");
+                "\tan instance of [<>f__AnonymousType1<int>]");
         }
 
         [Test]
@@ -240,7 +240,7 @@ namespace NFluent.Tests
                 "The checked value's property 'TheProperty':",  
                 "\t[42] of type: [int]", 
                 "The expected value's property 'TheProperty':", 
-                "\tan instance of type: [string]");
+                "\tan instance of [string]");
         }
 
         [Test]
@@ -439,18 +439,18 @@ namespace NFluent.Tests
             {
                Check.That(sut).Considering().Public.Properties.IsOneOf(new {TheProperty = 12}, new {TheProperty = 14});
             }).IsAFailingCheckWithMessage("", 
-                "The checked value is equal to none of the expected value(s) whereas it should.", 
+                "The checked value is equal to none of the expected object whereas it should.", 
                 "The checked value:", 
                 "\t[{ TheProperty = 13 }]", 
-                "The expected value(s): one of", 
+                "The expected object: one of these", 
                 "\t{{ TheProperty = 12 }, { TheProperty = 14 }} (2 items)");
             Check.ThatCode(()=>
             {
                 Check.That(sut).Considering().Public.Properties.IsOneOf();
             }).IsAFailingCheckWithMessage("", 
-                "The checked value is equal to none of the expected value(s) whereas it should.", 
+                "The checked value is equal to none of the expected object whereas it should.", 
                 "The checked value:", "\t[{ TheProperty = 13 }]", 
-                "The expected value(s): one of", 
+                "The expected object: one of these", 
                 "\t{} (0 item)");
         }
 
@@ -465,7 +465,7 @@ namespace NFluent.Tests
             }).IsAFailingCheckWithMessage("", 
                 "The checked value is equal to one of the given value(s) whereas it should not.", 
                 "The checked value:", "\t[{ TheProperty = 13 }]", 
-                "The expected value(s): none of", 
+                "The expected object: none of these", 
                 "\t{{ TheProperty = 12 }, { TheProperty = 13 }} (2 items)");
         }
 

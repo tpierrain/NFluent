@@ -146,7 +146,7 @@ namespace NFluent
                     "The {0} must be null as there is no other possible value.", MessageOption.NoExpectedBlock)
                 .FailWhen(sut => possibleElements != null && !possibleElements.Any(x => string.Equals(x, sut)),
                     "The {0} is not one of the possible elements.")
-                .DefinePossibleValues(possibleElements, "one of these", "none of these")
+                .DefinePossibleValues(possibleElements, possibleElements== null ? 0 : possibleElements.Length)
                 .OnNegate("The {0} is one of the possible elements whereas it must not.")
                 .EndCheck();
 
@@ -187,7 +187,7 @@ namespace NFluent
         {
             block.
                 FailIfNull().
-                DefineExpectedValues(values, values.Count, "contains", "does not contain").
+                DefinePossibleValues(values, values.Count, "contains", "does not contain").
                 Analyze((sut, test) =>
                     {
                         var missingItems = new List<string>();

@@ -20,9 +20,9 @@ namespace NFluent.Messages
     {
         private readonly string adjective;
         private readonly string adjectiveForMessages;
-        private readonly string template = "The {0} {1}:";
+        private const string Template = "The {0} {1}:";
 
-       internal GenericLabelBlock(string adjective, string adjectiveMessage, EntityNamer namer)
+        internal GenericLabelBlock(string adjective, string adjectiveMessage, EntityNamingLogic namer)
         {
             this.adjective = adjective;
             this.adjectiveForMessages = adjectiveMessage;
@@ -35,19 +35,19 @@ namespace NFluent.Messages
         /// <value>
         /// The entity logic.
         /// </value>
-        private EntityNamer EntityLogic { get; }
+        public EntityNamingLogic EntityLogic { get; set; }
 
-        public static GenericLabelBlock BuildCheckedBlock(EntityNamer namer)
+        public static GenericLabelBlock BuildCheckedBlock(EntityNamingLogic namer)
         {
             return new GenericLabelBlock("checked", "checked", namer);
         }
 
-        public static GenericLabelBlock BuildExpectedBlock(EntityNamer namer)
+        public static GenericLabelBlock BuildExpectedBlock(EntityNamingLogic namer)
         {
             return new GenericLabelBlock("expected", "expected", namer);
         }
 
-        public static GenericLabelBlock BuildGivenBlock(EntityNamer namer)
+        public static GenericLabelBlock BuildGivenBlock(EntityNamingLogic namer)
         {
             return new GenericLabelBlock("expected", "given", namer);
         }
@@ -72,7 +72,7 @@ namespace NFluent.Messages
         /// </returns>
         public string CustomMessage(string message)
         {
-            return string.Format(message ?? this.template, this.adjectiveForMessages, this.EntityName());
+            return string.Format(message ?? Template, this.adjectiveForMessages, this.EntityName());
         }
 
         private string Adjective()

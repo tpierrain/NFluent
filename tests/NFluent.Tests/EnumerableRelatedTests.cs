@@ -48,6 +48,14 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void WhoseSizeWorksForArray()
+        {
+            var array = new[] { 45, 43, 54, 666 };
+
+            Check.That(array).WhoseSize().IsEqualTo(4);
+        }
+
+        [Test]
         public void HasSizeGivesTheNumberOfElementsAndNotTheCapacity()
         {
             var enumerable = new List<string>(500);
@@ -90,6 +98,21 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That((IEnumerable) enumerable).HasSize(5); }).IsAFailingCheckWithMessage(
                 "", "The checked enumerable has 1 element instead of 5.",
                 "The checked enumerable:", "\t{666} (1 item)");
+        }
+
+        [Test]
+        public void WichSizeFailsWithProperMessage()
+        {
+            var array = new[] { 45, 43, 54, 666 };
+
+            Check.ThatCode(()=>
+            Check.That(array).WhoseSize().IsEqualTo(3)).
+                IsAFailingCheckWithMessage("", 
+                    "The checked enumerable's size is different from the expected one.", 
+                    "The checked enumerable's size:", 
+                    "\t[4]", 
+                    "The expected enumerable's size:", 
+                    "\t[3]");
         }
 
         [Test]
@@ -217,7 +240,7 @@ namespace NFluent.Tests
         {
             IEnumerable enumerable = new List<int> { 45, 43, 54, 666 };
 
-            Check.ThatCode(() => { Check.That(enumerable).Not.IsEqualTo(enumerable); }).IsAFailingCheckWithMessage("",
+            Check.ThatCode(() =>  Check.That(enumerable).Not.IsEqualTo(enumerable)).IsAFailingCheckWithMessage("",
                 "The checked enumerable is equal to the given one whereas it must not.",
                     "The expected enumerable: different from",
                     "\t{45, 43, 54, 666} (4 items) of type: [System.Collections.Generic.List<int>]");
@@ -228,12 +251,12 @@ namespace NFluent.Tests
         {
             IEnumerable enumerable = new List<int> { 45, 43, 54, 666 };
 
-            Check.ThatCode(() => { Check.That(enumerable).Not.IsNotEqualTo(null); }).IsAFailingCheckWithMessage(
+            Check.ThatCode(() => Check.That(enumerable).Not.IsNotEqualTo(null)).IsAFailingCheckWithMessage(
                     "",
-                    "The checked enumerable is different from the given one.",
+                    "The checked enumerable is different from the expected object.",
                     "The checked enumerable:",
                     "\t{45, 43, 54, 666} (4 items)",
-                    "The expected enumerable:",
+                    "The expected object:",
                     "\t[null]");
         }
 

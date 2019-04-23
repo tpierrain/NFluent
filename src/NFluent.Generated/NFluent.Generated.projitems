@@ -27,4 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UlongCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UshortCheckExtensions.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)NumberFluentCheckGenerator.txt4" />
+  </ItemGroup>
 </Project>

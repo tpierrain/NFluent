@@ -34,7 +34,7 @@ namespace NFluent.Tests
             Assert.AreEqual(Environment.NewLine+ "The checked value is ok.", message);
 
             // override entity
-            message = FluentMessage.BuildMessage("The {0} is ok.").For("string").ToString();
+            message = FluentMessage.BuildMessage("The {0} is ok.").For(typeof(string)).ToString();
             Assert.AreEqual(Environment.NewLine+"The checked string is ok.", message);
         }
         
@@ -63,7 +63,7 @@ namespace NFluent.Tests
         public void HowGivenValueWorks()
         {
             var message = FluentMessage.BuildMessage("The {0} is before the {1} whereas it must not.")
-                                            .For("date time")
+                                            .For(new Messages.EntityNamingLogic("date time"))
                                             .On("portna")
                                             .And.WithGivenValue("ouaq").ToString();
 
@@ -131,41 +131,6 @@ namespace NFluent.Tests
             const string parameter = "string{45}";
 
             Assert.AreEqual("string{{45}}", parameter.DoubleCurlyBraces());
-        }
-
-
-        [Test]
-        public void InstanceValuesMustGenerateProperText()
-        {
-            var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).ToString();
-            Assert.AreEqual(Environment.NewLine+ "don't care" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\tan instance of type: [string]", errorMessage);
-        }
-
-        [Test]
-        public void InstanceValuesMustNotSupportEnumerationFeatures()
-        {
-            Check.ThatCode(()=>
-            {
-                FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithEnumerableCount(0);
-            }).Throws<NotSupportedException>().WithMessage("Cannot use enumeration for generic instance description!");
-        }
-
-        [Test]
-        public void InstanceValuesMustNotSupportHashCodes()
-        {
-            Check.ThatCode(() =>
-            {
-                FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithHashCode();
-            }).Throws<NotSupportedException>().WithMessage("Cannot use hash code for generic instance description!");
-        }
-
-        [Test]
-        public void InstanceValuesMustNotSupportWithType()
-        {
-            Check.ThatCode(() =>
-            {
-                FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).OfType(typeof(int));
-            }).Throws<NotSupportedException>();
         }
 
         [Test]

@@ -639,11 +639,11 @@ namespace NFluent.Tests
                 Check.That(one).Not.IsInstanceOf<ushort?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [ushort?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [ushort?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[1] of type: [ushort?]",
                     "The expected value: different from",
-                    "\tan instance of type: [ushort?]");
+                    "\tan instance of [ushort?]");
         }
 
         [Test]
@@ -660,11 +660,11 @@ namespace NFluent.Tests
                 Check.That((ushort?) null).Not.IsInstanceOf<ushort?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [ushort?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [ushort?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[null] of type: [ushort?]",
                     "The expected value: different from",
-                    "\tan instance of type: [ushort?]");
+                    "\tan instance of [ushort?]");
         }
 
         [Test]
@@ -675,11 +675,11 @@ namespace NFluent.Tests
                 Check.That((ushort?) null).IsInstanceOf<string>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is not an instance of [string].",
-                    "The checked value:",
+                    "The checked nullable is not an instance of [string].",
+                    "The checked nullable:",
                     "\t[null] of type: [ushort?]",
                     "The expected value:",
-                    "\tan instance of type: [string]");
+                    "\tan instance of [string]");
         }
 
         #endregion
@@ -704,11 +704,11 @@ namespace NFluent.Tests
                 Check.That(one).IsNotInstanceOf<ushort?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [ushort?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [ushort?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[1] of type: [ushort?]",
                     "The expected value: different from",
-                    "\tan instance of type: [ushort?]");
+                    "\tan instance of [ushort?]");
         }
 
         [Test]
@@ -719,11 +719,11 @@ namespace NFluent.Tests
                 Check.That((ushort?) null).IsNotInstanceOf<ushort?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [ushort?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [ushort?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[null] of type: [ushort?]",
                     "The expected value: different from",
-                    "\tan instance of type: [ushort?]");
+                    "\tan instance of [ushort?]");
         }
 
         #endregion

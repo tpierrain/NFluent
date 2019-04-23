@@ -15,8 +15,9 @@
 
 namespace NFluent.Kernel
 {
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35
     using System;
-
+#endif
     using Extensibility;
     using Helpers;
 
@@ -77,7 +78,6 @@ namespace NFluent.Kernel
         public FluentMessage BuildShortMessage(string message)
         {
             var result = FluentMessage.BuildMessage(message);
-
             result.For(typeof(T));
             return result;
         }
@@ -88,7 +88,21 @@ namespace NFluent.Kernel
         /// <param name="newLabel">The label for the SUT.</param>
         public void SetSutLabel(string newLabel)
         {
-            this.fluentSut.SutName = $"[{newLabel}]";
+            this.fluentSut.SutName.SetNameBuilder(() =>$"[{newLabel}]");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TU"></typeparam>
+        /// <param name="extractor"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
+        public ICheck<TU> ExtractSub<TU>(Func<T, TU> extractor, string label)
+        {
+            var sub = this.fluentSut.Extract(extractor,
+                value => value.SutName == null ? label : $"{value.SutName.EntityName}'s {label}");
+            return new FluentCheck<TU>(sub, this.Negated);
         }
 
         /// <summary>
@@ -107,7 +121,7 @@ namespace NFluent.Kernel
         // ncrunch: no coverage start
         // coverage disabled as this code cannot be executed and is to be removed at a later stage
         /// <inheritdoc />
-        [Obsolete("Use ExtensibilityHelper.BuildCheckLinkWhich instead")]
+        [System.Obsolete("Use ExtensibilityHelper.BuildCheckLinkWhich instead")]
         public ICheckLinkWhich<TC, TSub> BuildLinkWhich<TSub>(TSub itemChecker)
             where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
@@ -123,8 +137,12 @@ namespace NFluent.Kernel
         ///     <see cref="FluentCheckException"/> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
         /// <returns>The <see cref="BuildLinkWhich{TSub}"/> to use for linking.</returns>
-        [Obsolete("Use ExtensibilityHelper instead")]
-        public ICheckLinkWhich<TC, TSub> ExecuteCheckAndProvideSubItem<TSub>(Func<TSub> checkLambdaAction, string negatedExceptionMessage)
+        [System.Obsolete("Use ExtensibilityHelper instead")]
+        public ICheckLinkWhich<TC, TSub> ExecuteCheckAndProvideSubItem<TSub>( 
+#if DOTNET_35
+System.
+#endif
+            Func<TSub> checkLambdaAction, string negatedExceptionMessage)
             where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
             TSub checker = null;
@@ -154,21 +172,29 @@ namespace NFluent.Kernel
         ///     A new check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        public ICheckLink<TC> ExecuteCheck(Action action, string negatedExceptionMessage)
+        public ICheckLink<TC> ExecuteCheck(
+#if DOTNET_35
+            System.
+#endif
+            Action action, string negatedExceptionMessage)
         {
             this.ExecuteNotChainableCheck(action, negatedExceptionMessage);
             return this.BuildChainingObject();
         }
 
         /// <inheritdoc />
-        public void ExecuteNotChainableCheck(Action action, string negatedExceptionMessage)
+        public void ExecuteNotChainableCheck(
+#if DOTNET_35
+            System.
+#endif
+            Action action, string negatedExceptionMessage)
         {
             try
             {
                 // execute test
                 action();
             }
-            catch (Exception e)// when (ExceptionHelper.IsFailedException(e) && this.fluentCheckForExtensibility.Negated)
+            catch (System.Exception e)// when (ExceptionHelper.IsFailedException(e) && this.fluentCheckForExtensibility.Negated)
             {
                 if (!ExceptionHelper.IsFailedException(e) || !this.fluentCheckForExtensibility.Negated)
                 {

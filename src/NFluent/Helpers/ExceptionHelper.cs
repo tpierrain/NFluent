@@ -85,9 +85,8 @@ namespace NFluent.Helpers
             foreach (var assembly in
                     AppDomain.CurrentDomain.GetAssemblies()
                              .Where(ass => ass.FullName.ToLowerInvariant().Contains(assemblyMarker)))
-            {   
-                Type[] exportedTypes;
-                    exportedTypes = assembly.GetExportedTypes();
+            {
+                var exportedTypes = assembly.GetExportedTypes();
 
                 foreach (var type in exportedTypes)
                 {

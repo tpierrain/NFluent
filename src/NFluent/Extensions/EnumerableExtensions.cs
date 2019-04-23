@@ -39,6 +39,10 @@ namespace NFluent
         /// <returns>The number of items present within the specified enumerable (returns 0 if the enumerable is null).</returns>
         public static long Count(this IEnumerable enumerable)
         {
+            if (enumerable is ICollection collec)
+            {
+                return collec.Count;
+            }
             return enumerable?.Cast<object>().LongCount() ?? 0;
         }
 

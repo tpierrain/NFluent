@@ -49,7 +49,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That((string) null).Contains("fails", "anyway"); })
                 .IsAFailingCheckWithMessage("", 
                     "The checked string is null.",
-                             "The expected value(s): contains",
+                             "The expected string: contains",
                     "\t{\"fails\", \"anyway\"} (2 items)");
         }
 
@@ -61,7 +61,7 @@ namespace NFluent.Tests
                              "The checked string does not contain the expected value(s): {\"C\", \"A\"}",
                               "The checked string:",
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" ,
-                    "The expected value(s): contains",
+                    "The expected string: contains",
                     "\t{\"C\", \"a\", \"A\", \"z\"} (4 items)");
         }
 
@@ -73,7 +73,7 @@ namespace NFluent.Tests
                              "The checked string does not contain the expected value(s): {\"0\", \"4\"}", 
                              "The checked string:",
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
-                    "The expected value(s): contains",
+                    "The expected string: contains",
                     "\t{\"c\", \"0\", \"4\"} (3 items)");
         }
 
@@ -98,7 +98,7 @@ namespace NFluent.Tests
                              "The checked string contains unauthorized value(s): {\"c\", \"z\", \"u\"}",
                     "The checked string:",
                     "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
-                             "The expected value(s): does not contain",
+                             "The expected string: does not contain",
                     "\t{\"c\", \"z\", \"u\"} (3 items)");
         }
 

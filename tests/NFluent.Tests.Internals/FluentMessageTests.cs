@@ -36,11 +36,12 @@ namespace NFluent.Tests
         public void BasicTest()
         {
             var message = FluentMessage.BuildMessage("The {0} is ok.").ToString();
+            var namer = new EntityNamingLogic("string");
 
             Assert.AreEqual(NewLine + "The checked value is ok.", message);
 
             // override entity
-            message = FluentMessage.BuildMessage("The {0} is ok.").For("string").ToString();
+            message = FluentMessage.BuildMessage("The {0} is ok.").For(namer).ToString();
             Assert.AreEqual(NewLine + "The checked string is ok.", message);
         }
         
@@ -75,7 +76,7 @@ namespace NFluent.Tests
         {
             var message = FluentMessage.BuildMessage("test");
             const int x = 4;
-            var block = new MessageBlock(message, x, GenericLabelBlock.BuildCheckedBlock(new EntityNamer()));
+            var block = new MessageBlock(message, x, GenericLabelBlock.BuildCheckedBlock(new EntityNamingLogic()));
 
             Assert.AreEqual("The checked value:" + NewLine + "\t[4]", block.GetMessage());
 
@@ -97,8 +98,9 @@ namespace NFluent.Tests
         [Test]
         public void HowGivenValueWorks()
         {
+            var namer = new EntityNamingLogic("date time");
             var message = FluentMessage.BuildMessage("The {0} is before the {1} whereas it must not.")
-                                            .For("date time")
+                                            .For(namer)
                                             .On("portna")
                                             .And.WithGivenValue("ouaq").ToString();
 
@@ -170,43 +172,9 @@ namespace NFluent.Tests
         [Test]
         public void ShouldCreateExpectedLabel()
         {
-            var label = GenericLabelBlock.BuildExpectedBlock(new EntityNamer());
+            var label = GenericLabelBlock.BuildExpectedBlock(new EntityNamingLogic());
 
             Assert.AreEqual("The expected value:", label.CustomMessage(null));
-        }
-    
-        [Test]
-        public void InstanceValuesMustGenerateProperText()
-        {
-            var errorMessage = FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).ToString();
-            Assert.AreEqual(NewLine+ "don't care" + NewLine + "The expected value:" + NewLine + "\tan instance of type: [string]", errorMessage);
-        }
-
-        [Test]
-        public void InstanceValuesMustNotSupportEnumerationFeatures()
-        {
-            Check.ThatCode(()=>
-            {
-                FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithEnumerableCount(0);
-            }).Throws<NotSupportedException>();
-        }
-
-        [Test]
-        public void InstanceValuesMustNotSupportHashCodes()
-        {
-            Check.ThatCode(() =>
-            {
-                FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).WithHashCode();
-            }).Throws<NotSupportedException>();
-        }
-
-        [Test]
-        public void InstanceValuesMustNotSupportWithType()
-        {
-            Check.ThatCode(() =>
-            {
-                FluentMessage.BuildMessage("don't care").ExpectedType(typeof(string)).OfType(typeof(int));
-            }).Throws<NotSupportedException>();
         }
 
         [Test]

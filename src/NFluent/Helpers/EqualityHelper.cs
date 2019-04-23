@@ -84,9 +84,7 @@ namespace NFluent.Helpers
                             messageText.Append(" But the {checked} is equivalent to the {1}.");
                         }
                     }
-                    else
-                    {
-                     }
+
                     test.Fail(messageText.ToString(), options);
                 })
                 .OnNegate("The {0} is equal to the {1} whereas it must not.", 

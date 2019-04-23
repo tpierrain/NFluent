@@ -40,20 +40,22 @@ namespace NFluent.Kernel
         /// </summary>
         /// <param name="getTrace">The execution trace.</param>
         public FluentCodeCheck(T getTrace)
-            : this(getTrace, !CheckContext.DefaultNegated)
+            : base( getTrace, Check.Reporter,!CheckContext.DefaultNegated)
         {
+            this.Checker = new Checker<T, ICodeCheck<T>>(this, this);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FluentCodeCheck{T}"/> class.
         /// </summary>
-        /// <param name="value">The execution trace.
+        /// <param name="copy">The execution trace.
         /// </param>
         /// <param name="negated">True if test must be negated.
         /// </param>
-        private FluentCodeCheck(T value, bool negated) : base(value, Check.Reporter, negated)
+        private FluentCodeCheck(FluentCodeCheck<T> copy, bool negated) : base(copy, negated)
         {
             this.Checker = new Checker<T, ICodeCheck<T>>(this, this);
+            CustomMessage = copy.CustomMessage;
         }
 
         /// <summary>
@@ -71,11 +73,8 @@ namespace NFluent.Kernel
         {
             get
             {
-                var fluentCodeCheck = new FluentCodeCheck<T>(this.Value, CheckContext.DefaultNegated)
-                {
-                    SutName = SutName, CustomMessage = CustomMessage
-                };
-                return fluentCodeCheck ;
+                var fluentCodeCheck = new FluentCodeCheck<T>(this, CheckContext.DefaultNegated);
+                return fluentCodeCheck;
             }
         }
 

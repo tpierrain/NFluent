@@ -11,7 +11,12 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ApiChecks\ExceptionChecks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensibility\ICheckLogicBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensibility\MessageOption.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ISelfDescriptiveValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\TypeEnumerationValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\TypeOfInstanceValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mocks\CaptureConsole.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Check.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\BooleanCheckExtensions.cs" />
@@ -100,11 +105,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\IForkableCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\NullableOrNumberCheckLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\NumberCheck.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Messages\EntityNamer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\EntityNamingLogic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\EnumerationBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\FluentMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\GenericLabelBlock.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Messages\InstanceBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\IValueDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\RangeBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ReverseEngineeringExceptionMessagesHelper.cs" />

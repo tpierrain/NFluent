@@ -14,7 +14,10 @@
  // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Extensibility
 {
+
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35
     using System;
+#endif
 
     /// <summary>
     /// Provides a mean to execute some checks on a value, taking care of whether it should be negated or not, etc.
@@ -40,6 +43,15 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <returns>An instance of <see cref="ICheckLogic{T}"/>.</returns>
         ICheckLogic<T> BeginCheck();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TU"></typeparam>
+        /// <param name="extractor"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
+        ICheck<TU> ExtractSub<TU>(Func<T, TU> extractor, string label);
 
         /// <summary>
         /// Gets the check link to return for the next check to be executed (linked with the And operator).
@@ -73,7 +85,11 @@ namespace NFluent.Extensibility
         ///     <see cref="FluentCheckException"/> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
         /// <returns>The <see cref="BuildLinkWhich{TU}"/> to use for linking.</returns>
-        ICheckLinkWhich<TC, TSub> ExecuteCheckAndProvideSubItem<TSub>(Func<TSub> checkLambdaAction, string negatedExceptionMessage)
+        ICheckLinkWhich<TC, TSub> ExecuteCheckAndProvideSubItem<TSub>(
+#if DOTNET_35
+            System.
+#endif
+            Func<TSub> checkLambdaAction, string negatedExceptionMessage)
             where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense;
 
         /// <summary>
@@ -90,7 +106,11 @@ namespace NFluent.Extensibility
         ///     The <see cref="BuildChainingObject"/>.
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        ICheckLink<TC> ExecuteCheck(Action action, string negatedExceptionMessage);
+        ICheckLink<TC> ExecuteCheck(
+#if DOTNET_35
+            System.
+#endif
+                Action action, string negatedExceptionMessage);
 
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version) and returns a not linkable check.
@@ -100,7 +120,11 @@ namespace NFluent.Extensibility
         /// <see cref="FluentCheckException" /> otherwise.</param>
         /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
         /// <exception cref="FluentCheckException">The check fails.</exception>
-        void ExecuteNotChainableCheck(Action action, string negatedExceptionMessage);
+        void ExecuteNotChainableCheck(
+#if DOTNET_35
+            System.
+#endif
+            Action action, string negatedExceptionMessage);
 
         /// <summary>
         /// Builds an error message.

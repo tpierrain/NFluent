@@ -97,7 +97,7 @@ namespace NFluent.Tests.FromIssues
             const string haystack = "Hello, {LeMonde}";
             const string needle = "{World}";
             Check.ThatCode(()=>
-            Check.That(haystack).Contains(needle)).IsAFaillingCheck(); // This will intensionally fail
+            Check.That(haystack).Contains(needle)).IsAFaillingCheck(); // This will intentionally fail
         }
 
         // GH #258

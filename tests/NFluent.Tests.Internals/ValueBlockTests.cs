@@ -33,14 +33,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void ShouldWorkForInstance()
-        {
-            var blk = new InstanceBlock(typeof(string));
-
-            Assert.AreEqual("an instance of type: [string]", blk.GetMessage());
-        }
-
-        [Test]
         public void ShouldWorkForEnumeration()
         {
             var list = new []{ "a", "b", "c" };
@@ -105,50 +97,6 @@ namespace NFluent.Tests
 
             blk.WithEnumerableCount(list.GetLength(0));
             Assert.AreEqual("{..., \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\', \'g\', \' \', \'t\', \'o\', \' \', ...} (53 items)", blk.GetMessage());
-        }
-
-        [Test]
-        public void InstanceBlockShouldThrowOnEnumeration()
-        {
-            Check.ThatCode(() =>
-            {
-                var blk = new InstanceBlock(typeof(string));
-
-                blk.WithEnumerableCount(0);
-            })
-            .Throws<NotSupportedException>();
-        }
-
-        [Test]
-        public void InstanceBlockShouldThrowOnHashcode()
-        {
-            Check.ThatCode(() =>
-            {
-                var blk = new InstanceBlock(typeof(string));
-
-                blk.WithHashCode();
-            })
-            .Throws<NotSupportedException>().WithMessage("Cannot use hash code for generic instance description!");
-        }
-
-        [Test]
-        public void InstanceBlockShouldThrowOnForceType()
-        {
-            Check.ThatCode(() =>
-            {
-                var blk = new InstanceBlock(typeof(string));
-
-                blk.WithType(typeof(string));
-            })
-            .Throws<NotSupportedException>();
-        }
-
-        [Test]
-        public void InstanceBlockWorksWhenTypeRequested()
-        {
-            var blk = new InstanceBlock(typeof(string));
-            blk.WithType();
-            Check.That(blk.GetMessage()).IsEqualTo("an instance of type: [string]");
         }
     }
 }

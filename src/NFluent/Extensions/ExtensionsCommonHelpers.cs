@@ -144,7 +144,7 @@ namespace NFluent.Extensions
 
             if (theObject is Exception exc)
             {
-                return $"{{{exc.GetType().FullName}}}: '{exc.Message}'";
+                return $"{{{exc.GetType().FullName}}}: '{exc.Message}'"; //+Environment.NewLine+exc.StackTrace;
             }
 
             if (theObject is Stream stream)

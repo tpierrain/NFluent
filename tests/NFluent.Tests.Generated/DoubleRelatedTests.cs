@@ -639,11 +639,11 @@ namespace NFluent.Tests
                 Check.That(one).Not.IsInstanceOf<double?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [double?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [double?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[1] of type: [double?]",
                     "The expected value: different from",
-                    "\tan instance of type: [double?]");
+                    "\tan instance of [double?]");
         }
 
         [Test]
@@ -660,11 +660,11 @@ namespace NFluent.Tests
                 Check.That((double?) null).Not.IsInstanceOf<double?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [double?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [double?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[null] of type: [double?]",
                     "The expected value: different from",
-                    "\tan instance of type: [double?]");
+                    "\tan instance of [double?]");
         }
 
         [Test]
@@ -675,11 +675,11 @@ namespace NFluent.Tests
                 Check.That((double?) null).IsInstanceOf<string>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is not an instance of [string].",
-                    "The checked value:",
+                    "The checked nullable is not an instance of [string].",
+                    "The checked nullable:",
                     "\t[null] of type: [double?]",
                     "The expected value:",
-                    "\tan instance of type: [string]");
+                    "\tan instance of [string]");
         }
 
         #endregion
@@ -704,11 +704,11 @@ namespace NFluent.Tests
                 Check.That(one).IsNotInstanceOf<double?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [double?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [double?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[1] of type: [double?]",
                     "The expected value: different from",
-                    "\tan instance of type: [double?]");
+                    "\tan instance of [double?]");
         }
 
         [Test]
@@ -719,11 +719,11 @@ namespace NFluent.Tests
                 Check.That((double?) null).IsNotInstanceOf<double?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [double?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [double?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[null] of type: [double?]",
                     "The expected value: different from",
-                    "\tan instance of type: [double?]");
+                    "\tan instance of [double?]");
         }
 
         #endregion

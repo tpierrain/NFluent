@@ -15,6 +15,7 @@
 
 namespace NFluent
 {
+
     using System;
     using Extensibility;
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
@@ -88,7 +89,6 @@ namespace NFluent
             //return null;
             return new FluentDynamicCheck(value);
         }
-
 #endif
 
         /// <summary>
@@ -133,7 +133,6 @@ namespace NFluent
         {
             return new FluentCheck<Type>(typeof(T));
         }
-
 
         /// <summary>
         /// Returns a <see cref="IStructCheck{T}" /> instance that will provide check methods to be executed on a given enum or struct value.

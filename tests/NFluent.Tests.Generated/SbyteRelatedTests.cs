@@ -639,11 +639,11 @@ namespace NFluent.Tests
                 Check.That(one).Not.IsInstanceOf<sbyte?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [sbyte?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [sbyte?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[1] of type: [sbyte?]",
                     "The expected value: different from",
-                    "\tan instance of type: [sbyte?]");
+                    "\tan instance of [sbyte?]");
         }
 
         [Test]
@@ -660,11 +660,11 @@ namespace NFluent.Tests
                 Check.That((sbyte?) null).Not.IsInstanceOf<sbyte?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [sbyte?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [sbyte?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[null] of type: [sbyte?]",
                     "The expected value: different from",
-                    "\tan instance of type: [sbyte?]");
+                    "\tan instance of [sbyte?]");
         }
 
         [Test]
@@ -675,11 +675,11 @@ namespace NFluent.Tests
                 Check.That((sbyte?) null).IsInstanceOf<string>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is not an instance of [string].",
-                    "The checked value:",
+                    "The checked nullable is not an instance of [string].",
+                    "The checked nullable:",
                     "\t[null] of type: [sbyte?]",
                     "The expected value:",
-                    "\tan instance of type: [string]");
+                    "\tan instance of [string]");
         }
 
         #endregion
@@ -704,11 +704,11 @@ namespace NFluent.Tests
                 Check.That(one).IsNotInstanceOf<sbyte?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [sbyte?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [sbyte?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[1] of type: [sbyte?]",
                     "The expected value: different from",
-                    "\tan instance of type: [sbyte?]");
+                    "\tan instance of [sbyte?]");
         }
 
         [Test]
@@ -719,11 +719,11 @@ namespace NFluent.Tests
                 Check.That((sbyte?) null).IsNotInstanceOf<sbyte?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [sbyte?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [sbyte?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[null] of type: [sbyte?]",
                     "The expected value: different from",
-                    "\tan instance of type: [sbyte?]");
+                    "\tan instance of [sbyte?]");
         }
 
         #endregion

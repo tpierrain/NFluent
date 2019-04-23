@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="RangeBlock.cs" company="NFluent">
+//  <copyright file="ISelfDescriptiveValue.cs" company="NFluent">
 //   Copyright 2019 Thomas PIERRAIN & Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -15,36 +15,14 @@
 
 namespace NFluent.Messages
 {
-    using System;
-
     /// <summary>
-    ///     Class representing a range of value
+    /// Provides description for error messages
     /// </summary>
-    internal class RangeBlock
+    public interface ISelfDescriptiveValue
     {
-        private readonly double referenceValue;
-        private readonly double tolerance;
-
         /// <summary>
-        ///     Constructor
+        /// Gets the value description to be used in error messages.
         /// </summary>
-        /// <param name="referenceValue">Reference value (mid point)</param>
-        /// <param name="tolerance">Tolerance</param>
-        /// <remarks>This represents a range of <see cref="referenceValue" /> +/- <see cref="tolerance" /></remarks>
-        public RangeBlock(double referenceValue, double tolerance)
-        {
-            this.referenceValue = referenceValue;
-            this.tolerance = tolerance;
-        }
-
-        public bool IsInRange(double value)
-        {
-            return Math.Abs(this.referenceValue - value) <= this.tolerance;
-        }
-
-        public override string ToString()
-        {
-            return $"{this.referenceValue} (+/- {this.tolerance})";
-        }
+        string ValueDescription { get; }
     }
 }

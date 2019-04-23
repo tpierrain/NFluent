@@ -25,7 +25,6 @@ namespace NFluent.Extensions
     /// </summary>
     public static class StringExtensions
     {
-
         /// <summary>
         /// Doubles the curly braces in the string.
         /// </summary>

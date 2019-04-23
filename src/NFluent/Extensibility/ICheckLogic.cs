@@ -15,60 +15,10 @@
 
 namespace NFluent.Extensibility
 {
-    using System.Collections;
     using System.Collections.Generic;
-#if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
+#if !DOTNET_35 && !DOTNET_20 && !DOTNET_30 && !DOTNET_35
     using System;
 #endif
-    /// <summary>
-    /// Options for message generation.
-    /// </summary>
-    [System.Flags]
-    public enum MessageOption
-    {
-        /// <summary>
-        /// No specific option
-        /// </summary>
-        None = 0,
-        /// <summary>
-        /// Removes the description block for the checked value or sut
-        /// </summary>
-        NoCheckedBlock = 1,
-        /// <summary>
-        /// Removes the description block for the expected value(s)
-        /// </summary>
-        NoExpectedBlock = 2,
-        /// <summary>
-        /// Forces the sut type
-        /// </summary>
-        ForceType = 4,
-        /// <summary>
-        /// Add type info
-        /// </summary>
-        WithType = 8,
-        /// <summary>
-        /// Add hash for values
-        /// </summary>
-        WithHash = 16
-    }
-
-    /// <summary>
-    /// Minimal interface
-    /// </summary>
-    public interface ICheckLogicBase
-    {
-        /// <summary>
-        ///     Ends check.
-        /// </summary>
-        /// <remarks>At this point, exception is thrown.</remarks>
-        /// <returns>true if succesfull</returns>
-        void EndCheck();
-
-        /// <summary>
-        /// Gets the failed status.
-        /// </summary>
-        bool Failed { get; }
-    }
 
     /// <summary>
     /// Provides method to ease coding of checks.
@@ -128,18 +78,29 @@ namespace NFluent.Extensibility
         /// <param name="count">number of items</param>
         /// <param name="comparison"></param>
         /// <param name="negatedComparison"></param>
+        /// <typeparam name="TU">Type of item in the enumeration</typeparam>
         /// <returns>Continuation object</returns>
-        ICheckLogic<T> DefineExpectedValues(IEnumerable values, long count, string comparison = null, string negatedComparison = "different from");
+        ICheckLogic<T> DefineExpectedValues<TU>(IEnumerable<TU> values, long count, string comparison = null, string negatedComparison = "different from");
 
         /// <summary>
-        /// Specify that we expect a list of valies
+        /// 
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="comparison"></param>
+        /// <param name="negatedComparison"></param>
+        /// <returns></returns>
+        ICheckLogic<T> DefinePossibleTypes(IEnumerable<System.Type> values, string comparison = null, string negatedComparison = "different from");
+
+        /// <summary>
+        /// Specify that we expect a list of values
         /// </summary>
         /// <param name="values">enumeration of values</param>
         /// <param name="comparison"></param>
         /// <param name="negatedComparison"></param>
-        /// <typeparam name="U">Type of values in the list.</typeparam>
+        /// <param name="count"> number of values</param>
+        /// <typeparam name="TU">Type of values in the list.</typeparam>
         /// <returns>Continuation object</returns>
-        ICheckLogic<T> DefinePossibleValues<U>(IEnumerable<U> values, string comparison = "one of", string negatedComparison = "none of");
+        ICheckLogic<T> DefinePossibleValues<TU>(IEnumerable<TU> values, long count, string comparison = "one of these", string negatedComparison = "none of these");
 
         /// <summary>
         /// Specify that the expectation is an instance of some type

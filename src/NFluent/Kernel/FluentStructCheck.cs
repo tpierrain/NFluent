@@ -51,7 +51,7 @@ namespace NFluent.Kernel
             get
             {
                 var fluentStructCheck = new FluentStructCheck<T>(Value, !Negated);
-                fluentStructCheck.SutName = SutName;
+                fluentStructCheck.SutName.Merge(this.SutName);
                 return fluentStructCheck;
             }
         }

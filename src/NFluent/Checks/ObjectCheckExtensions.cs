@@ -79,7 +79,7 @@ namespace NFluent
         {
             var comparer = new EqualityHelper.EqualityComparer<T>();
             ExtensibilityHelper.BeginCheck(check)
-                .DefineExpectedValues(values, values.Length, "one of", "none of")
+                .DefinePossibleValues(values, values.Length)
                 .FailWhen(sut => !values.Any(value => comparer.Equals(sut, value)), "The {0} is not one of the {1}.")
                 .OnNegate("The {0} should not be one of the {1}.").
                 EndCheck();
@@ -206,7 +206,7 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> IsNull<T>(this ICheck<T> check) where T : class
         {
             ExtensibilityHelper.BeginCheck(check)
-                .SetSutName("object")
+                //.SetSutName("object")
                 .FailWhen(sut => sut!= null, "The {0} must be null.")
                 .OnNegate("The {0} must not be null.", MessageOption.NoCheckedBlock)
                 .EndCheck();

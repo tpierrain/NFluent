@@ -639,11 +639,11 @@ namespace NFluent.Tests
                 Check.That(one).Not.IsInstanceOf<uint?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [uint?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [uint?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[1] of type: [uint?]",
                     "The expected value: different from",
-                    "\tan instance of type: [uint?]");
+                    "\tan instance of [uint?]");
         }
 
         [Test]
@@ -660,11 +660,11 @@ namespace NFluent.Tests
                 Check.That((uint?) null).Not.IsInstanceOf<uint?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [uint?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [uint?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[null] of type: [uint?]",
                     "The expected value: different from",
-                    "\tan instance of type: [uint?]");
+                    "\tan instance of [uint?]");
         }
 
         [Test]
@@ -675,11 +675,11 @@ namespace NFluent.Tests
                 Check.That((uint?) null).IsInstanceOf<string>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is not an instance of [string].",
-                    "The checked value:",
+                    "The checked nullable is not an instance of [string].",
+                    "The checked nullable:",
                     "\t[null] of type: [uint?]",
                     "The expected value:",
-                    "\tan instance of type: [string]");
+                    "\tan instance of [string]");
         }
 
         #endregion
@@ -704,11 +704,11 @@ namespace NFluent.Tests
                 Check.That(one).IsNotInstanceOf<uint?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [uint?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [uint?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[1] of type: [uint?]",
                     "The expected value: different from",
-                    "\tan instance of type: [uint?]");
+                    "\tan instance of [uint?]");
         }
 
         [Test]
@@ -719,11 +719,11 @@ namespace NFluent.Tests
                 Check.That((uint?) null).IsNotInstanceOf<uint?>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [uint?] whereas it must not.",
-                    "The checked value:",
+                    "The checked nullable is an instance of [uint?] whereas it must not.",
+                    "The checked nullable:",
                     "\t[null] of type: [uint?]",
                     "The expected value: different from",
-                    "\tan instance of type: [uint?]");
+                    "\tan instance of [uint?]");
         }
 
         #endregion

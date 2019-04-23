@@ -17,6 +17,7 @@ namespace NFluent
 {
     using Extensibility;
     using Kernel;
+    using Messages;
 
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
     /// <summary>
@@ -51,7 +52,7 @@ namespace NFluent
             {
                 message = FluentMessage.BuildMessage("The {0} is not null whereas it must.")
                     .AddCustomMessage(this.CustomMessage)
-                    .For("dynamic")
+                    .For(DefaultNamer())
                     .On<object>(this.value).ToString();
 
             }
@@ -59,12 +60,19 @@ namespace NFluent
             {
                 message = FluentMessage.BuildMessage("The {0} is null whereas it must not.")
                     .AddCustomMessage(this.CustomMessage)
-                    .For("dynamic")
+                    .For(DefaultNamer())
                     .On<object>(this.value).ToString();
                 
             }
 
             throw new FluentCheckException(message);
+        }
+
+        private static EntityNamingLogic DefaultNamer()
+        {
+            var result = new EntityNamingLogic();
+            result.SetNameBuilder(() => "dynamic");
+            return result;
         }
 
         /// <summary>
@@ -83,7 +91,7 @@ namespace NFluent
             {
                 message = FluentMessage
                     .BuildMessage("The {0} is the expected reference whereas it must not.")
-                    .For("dynamic")
+                    .For(DefaultNamer())
                     .AddCustomMessage(this.CustomMessage)
                     .Expected(expected)
                     .Comparison("different from")
@@ -94,7 +102,7 @@ namespace NFluent
             {
                 message = FluentMessage
                     .BuildMessage("The {0} is not the expected reference.")
-                    .For("dynamic")
+                    .For(DefaultNamer())
                     .AddCustomMessage(this.CustomMessage)
                     .Expected(expected)
                     .And
@@ -120,7 +128,7 @@ namespace NFluent
             {
                 message = FluentMessage
                     .BuildMessage("The {0} is equal to the {1} whereas it must not.")
-                    .For("dynamic")
+                    .For(DefaultNamer())
                     .AddCustomMessage(this.CustomMessage)
                     .Expected(expected)
                     .Comparison("different from")
@@ -131,7 +139,7 @@ namespace NFluent
             {
                 message = FluentMessage
                     .BuildMessage("The {0} is not equal to the {1}.")
-                    .For("dynamic")
+                    .For(DefaultNamer())
                     .AddCustomMessage(this.CustomMessage)
                     .Expected(expected)
                     .And
@@ -148,7 +156,7 @@ namespace NFluent
         }
 
         /// <summary>
-        ///     Invert test condition
+        /// Invert test condition
         /// </summary>
         public FluentDynamicCheck Not
         {

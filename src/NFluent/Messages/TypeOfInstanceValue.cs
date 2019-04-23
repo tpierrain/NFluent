@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="RangeBlock.cs" company="NFluent">
+//  <copyright file="TypeOfInstanceValue.cs" company="NFluent">
 //   Copyright 2019 Thomas PIERRAIN & Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,35 +16,22 @@
 namespace NFluent.Messages
 {
     using System;
+    using Extensions;
 
-    /// <summary>
-    ///     Class representing a range of value
-    /// </summary>
-    internal class RangeBlock
+    internal class TypeOfInstanceValue : ISelfDescriptiveValue
     {
-        private readonly double referenceValue;
-        private readonly double tolerance;
+        private readonly Type type;
 
-        /// <summary>
-        ///     Constructor
-        /// </summary>
-        /// <param name="referenceValue">Reference value (mid point)</param>
-        /// <param name="tolerance">Tolerance</param>
-        /// <remarks>This represents a range of <see cref="referenceValue" /> +/- <see cref="tolerance" /></remarks>
-        public RangeBlock(double referenceValue, double tolerance)
+        public TypeOfInstanceValue(Type type)
         {
-            this.referenceValue = referenceValue;
-            this.tolerance = tolerance;
+            this.type = type;
         }
 
-        public bool IsInRange(double value)
-        {
-            return Math.Abs(this.referenceValue - value) <= this.tolerance;
-        }
+        public string ValueDescription => $"an instance of {this}";
 
         public override string ToString()
         {
-            return $"{this.referenceValue} (+/- {this.tolerance})";
+            return this.type == null ? "[null]" : $"[{this.type.TypeToStringProperlyFormatted()}]";
         }
     }
 }

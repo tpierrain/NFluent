@@ -40,7 +40,7 @@ namespace NFluent.Tests
                     "The checked string contains unauthorized value(s): {\"Batman\"}", 
                     "The checked string:", 
                     "\t[\"Batman and Robin\"]",  
-                    "The expected value(s): does not contain", 
+                    "The expected string: does not contain", 
                     "\t{\"Batman\"} (1 item)");
         }
 
@@ -61,7 +61,7 @@ namespace NFluent.Tests
                     "The checked string contains unauthorized value(s): {\"Robin\"}",
                     "The checked string:",
                     "\t[\"Batman and Robin\"]",
-                    "The expected value(s): does not contain",
+                    "The expected string: does not contain",
                     "\t{\"Robin\"} (1 item)");
         }
 

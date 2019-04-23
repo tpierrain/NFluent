@@ -106,7 +106,7 @@ namespace NFluent
         /// <summary>
         ///     Checks that the enumerable contains only the given expected values and nothing else, in order.
         ///     This check should only be used with IEnumerable that have a consistent iteration order
-        ///     (i.e. don't use it with Hashtable, prefer <see cref="IsOnlyMadeOf" /> in that case).
+        ///     (i.e. don't use it with Hashtable, prefer <see cref="IsEquivalentTo" /> in that case).
         /// </summary>
         /// <typeparam name="T">Type of the elements to be found.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
@@ -127,7 +127,7 @@ namespace NFluent
         /// <summary>
         ///     Checks that the enumerable contains only the given expected values and nothing else, in order.
         ///     This check should only be used with IEnumerable that have a consistent iteration order
-        ///     (i.e. don't use it with Hashtable, prefer <see cref="IsOnlyMadeOf" /> in that case).
+        ///     (i.e. don't use it with Hashtable, prefer <see cref="IsEquivalentTo" /> in that case).
         /// </summary>
         /// <typeparam name="T">Type of the elements to be found.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
@@ -150,7 +150,7 @@ namespace NFluent
         /// <summary>
         ///     Checks that the enumerable contains only the values of another enumerable and nothing else, in order.
         ///     This check should only be used with IEnumerable that have a consistent iteration order
-        ///     (i.e. don't use it with Hashtable, prefer <see cref="IsOnlyMadeOf" /> in that case).
+        ///     (i.e. don't use it with Hashtable, prefer <see cref="IsEquivalentTo" /> in that case).
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="otherEnumerable">The other enumerable containing the exact expected values to be found.</param>
@@ -562,6 +562,17 @@ namespace NFluent
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="check"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static ICheck<long> WhoseSize<T>(this ICheck<IEnumerable<T>> check)
+        {
+            return ExtensibilityHelper.ExtractChecker(check).ExtractSub(sut => sut.Count(), "size");
+        }
+
+        /// <summary>
         ///     Checks that the enumerable has the proper number of elements.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
@@ -694,30 +705,34 @@ namespace NFluent
 
         private static void ImplementIsOnlyMadeOf<T>(ICheckLogic<IEnumerable<T>> checker, IEnumerable expectedValues)
         {
-            checker.DefineExpectedValues(expectedValues, expectedValues.Count(), comparison: "only elements from",
-                negatedComparison: "at least one element different from").FailWhen(sut => sut == null & expectedValues != null,
-                "The {0} is null and thus, does not contain exactly the given value(s).").Analyze((sut, test) =>
-            {
-                if (sut == null && expectedValues == null)
+            checker.
+                DefineExpectedValues(expectedValues?.Cast<object>(), expectedValues.Count(), comparison: "only elements from",
+                negatedComparison: "at least one element different from").
+                FailWhen(sut => sut == null & expectedValues != null,
+                "The {0} is null and thus, does not contain exactly the given value(s).").
+                Analyze((sut, test) =>
                 {
-                    return;
-                }
+                    if (sut == null && expectedValues == null)
+                    {
+                        return;
+                    }
 
-                var unexpectedValuesFound = ExtractUnexpectedValues(sut, expectedValues);
+                    var unexpectedValuesFound = ExtractUnexpectedValues(sut, expectedValues);
 
-                if (unexpectedValuesFound.Count <= 0)
-                {
-                    return;
-                }
+                    if (unexpectedValuesFound.Count <= 0)
+                    {
+                        return;
+                    }
 
-                test.Fail(
-                    string.Format(
-                        "The {{0}} does not contain only the given value(s)."
-                        + Environment.NewLine
-                        + "It contains also other values:"
-                        + Environment.NewLine + "\t{0}",
-                        unexpectedValuesFound.ToStringProperlyFormatted().DoubleCurlyBraces()));
-            }).OnNegate("The {0} contains only the given values whereas it must not.").EndCheck();
+                    test.Fail(
+                        string.Format(
+                            "The {{0}} does not contain only the given value(s)."
+                            + Environment.NewLine
+                            + "It contains also other values:"
+                            + Environment.NewLine + "\t{0}",
+                            unexpectedValuesFound.ToStringProperlyFormatted().DoubleCurlyBraces()));
+                }).
+                OnNegate("The {0} contains only the given values whereas it must not.").EndCheck();
         }
 
         /// <summary>

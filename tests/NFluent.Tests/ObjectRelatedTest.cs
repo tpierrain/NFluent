@@ -242,8 +242,8 @@ namespace NFluent.Tests
                     Check.That((object)null).HasDifferentValueThan((object)null);
                 })
                 .IsAFailingCheckWithMessage("",
-                    "The checked value is equal to the expected one whereas it must not.",
-                    "The expected value: different from (using operator!=)",
+                    "The checked object is equal to the expected one whereas it must not.",
+                    "The expected object: different from (using operator!=)",
                     "\t[null]");
 
             Check.ThatCode(() => {

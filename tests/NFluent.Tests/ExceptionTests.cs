@@ -62,7 +62,7 @@ namespace NFluent.Tests
                     "The checked code's raised exception:",
                     "*",
                     "The expected code's raised exception:",
-                    "\tan instance of type: [System.InvalidOperationException]");
+                    "\tan instance of [System.InvalidOperationException]");
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace NFluent.Tests
             .IsAFailingCheckWithMessage("",
                     "The checked code did not raise an exception, whereas it must.",
                     "The expected code's raised exception:",
-                    "\tan instance of type: [System.Exception]");
+                    "\tan instance of [System.Exception]");
         }
     }
 }

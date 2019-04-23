@@ -131,7 +131,7 @@ namespace NFluent.Tests
                 IsAFailingCheckWithMessage("", 
                     "The fluent check did not raise an exception, where as it must.", 
                     "The expected fluent check's raised exception:", 
-                    "#\tan instance of type: \\[.*Exception\\]");
+                    "#\tan instance of \\[.*Exception\\]");
             Check.ThatCode(
                     () => Check.ThatCode(() => throw new Exception("yep")).IsAFaillingCheck()).
                 IsAFailingCheckWithMessage(	"", 
@@ -139,7 +139,7 @@ namespace NFluent.Tests
                     "The checked fluent check's raised exception:", 
                     "\t[{System.Exception}: 'yep'] of type: [System.Exception]", 
                     "The expected fluent check's raised exception:", 
-                "#\tan instance of type: \\[.*Exception\\]");
+                "#\tan instance of \\[.*Exception\\]");
         }
     }
 }

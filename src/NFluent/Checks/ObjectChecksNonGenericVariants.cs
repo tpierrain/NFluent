@@ -19,6 +19,7 @@ namespace NFluent
     using Extensibility;
     using Extensions;
     using Helpers;
+    using Messages;
 
     /// <summary>
     /// Hosts non generic variants of some checks.
@@ -55,7 +56,6 @@ namespace NFluent
                                     .Fail("The {0} is of a different type than the {1}.")
                                     .DefineExpectedType(expected.ValueType);
                                 return false;
-
                             }
 
                             if (actual != null && expected != null && expected.ValueType == actual.ValueType)
@@ -120,7 +120,7 @@ namespace NFluent
                             }
                         }
                 })
-                .DefineExpectedValue(types, "anything but", "one of those")
+                .DefineExpectedValue(new TypeEnumerationValue(types), "anything but", "")
                 .OnNegate($"The {{0}} is not one of the expected types.")
                 .EndCheck();
                 

@@ -164,11 +164,11 @@ namespace NFluent.Tests
                 Check.ThatEnum(FrenchNationality).IsInstanceOf<int>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is not an instance of the expected type.",
-                    "The checked value:",
+                    "The checked enum is not an instance of the expected type.",
+                    "The checked enum:",
                     "\t[French] of type: [NFluent.Tests.Nationality]",
                     "The expected value:",
-                    "\tan instance of type: [int]");
+                    "\tan instance of [int]");
         }
 
         [Test]
@@ -179,11 +179,11 @@ namespace NFluent.Tests
                 Check.ThatEnum(FrenchNationality).IsNotInstanceOf<Nationality>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [NFluent.Tests.Nationality] whereas it must not.",
-                    "The checked value:",
+                    "The checked enum is an instance of [NFluent.Tests.Nationality] whereas it must not.",
+                    "The checked enum:",
                     "\t[French] of type: [NFluent.Tests.Nationality]",
                     "The expected value: different from",
-                    "\tan instance of type: [NFluent.Tests.Nationality]");
+                    "\tan instance of [NFluent.Tests.Nationality]");
         }
 
         [Flags]

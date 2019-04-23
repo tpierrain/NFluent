@@ -51,8 +51,9 @@ namespace NFluent.Extensibility
         /// <param name="forceArray">test is an enumeration.</param>>
         /// <param name="index">The index for enumerable types</param>
         internal MessageBlock(FluentMessage message, object test, GenericLabelBlock block, long index = 0, bool forceArray = false)
-            : this(message, test.GetTypeWithoutThrowingException(), block)
         {
+            this.message = message;
+            this.block = block;
             if (!(test is string) && (forceArray || (test is IEnumerable)))
             {
                 this.value = new EnumerationBlock((IEnumerable)test, index);
@@ -61,25 +62,6 @@ namespace NFluent.Extensibility
             {
                 this.value = new ValueBlock(test);
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageBlock"/> class.
-        /// </summary>
-        /// <param name="message">
-        /// The message.
-        /// </param>
-        /// <param name="type">
-        /// The tested type.
-        /// </param>
-        /// <param name="label">
-        /// The block label.
-        /// </param>
-        internal MessageBlock(FluentMessage message, Type type, GenericLabelBlock label)
-        {
-            this.value = new InstanceBlock(type);
-            this.message = message;
-            this.block = label;
         }
 
         /// <summary>

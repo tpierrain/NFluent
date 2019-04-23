@@ -108,7 +108,7 @@ namespace NFluent.Tests
                     "The checked code's raised exception:",
                     "*",
                     "The expected code's raised exception:", 
-                    "\tan instance of type: [System.InvalidOperationException]");
+                    "\tan instance of [System.InvalidOperationException]");
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace NFluent.Tests
                     "The checked code's raised exception:",
                     "\t[{System.Exception}: 'Exception of type 'System.Exception' was thrown.']",
                     "The expected code's raised exception: different from",
-                    "\tan instance of type: [System.Exception]");
+                    "\tan instance of [System.Exception]");
         }
 
         [Test]
@@ -173,7 +173,7 @@ namespace NFluent.Tests
             .IsAFailingCheckWithMessage("",
                     "The checked code did not raise an exception, whereas it must.",
                     "The expected code's raised exception:",
-                    "\tan instance of type: [System.Exception]");
+                    "\tan instance of [System.Exception]");
         }
 
         [Test]
@@ -385,12 +385,9 @@ namespace NFluent.Tests
 
             // ReSharper disable once NotResolvedInText
             Check.ThatCode(
-                () =>
-                    {
-                        throw new ArgumentException(
-                            "outerException dummy message",
-                            new Exception("whatever mate", new ArgumentOutOfRangeException("kamoulox")));
-                    }).Throws<ArgumentException>().DueTo<ArgumentOutOfRangeException>().
+                () => throw new ArgumentException(
+                    "outerException dummy message",
+                    new Exception("whatever mate", new ArgumentOutOfRangeException("kamoulox")))).Throws<ArgumentException>().DueTo<ArgumentOutOfRangeException>().
                     WithMessage("Specified argument was out of the range of valid values." + Environment.NewLine + "Parameter name: kamoulox");
         }
 
@@ -404,7 +401,7 @@ namespace NFluent.Tests
                     (Exception) null)).ThrowsAny().DueTo<Exception>()).IsAFailingCheckWithMessage("",
                 "There is no inner exception.", 
                 "The expected value's inner exception:", 
-                "\tan instance of type: [System.Exception]");
+                "\tan instance of [System.Exception]");
         }
 
         [Test]
@@ -424,7 +421,7 @@ namespace NFluent.Tests
                     "\t[{System.ArgumentOutOfRangeException}: 'Specified argument was out of the range of valid values.",
                     "Parameter name: kamoulox'] of type: [System.ArgumentOutOfRangeException]",
                     "The expected value's inner exception:",
-                    "\tan instance of type: [System.Exception]");
+                    "\tan instance of [System.Exception]");
         }
 
         [Test]
@@ -443,8 +440,8 @@ namespace NFluent.Tests
                     "The checked value's inner exception:",
                     "\t[{System.ArgumentOutOfRangeException}: 'Specified argument was out of the range of valid values.",
                     "Parameter name: kamoulox'] of type: [System.ArgumentOutOfRangeException]",
-                    "The expected value(s): an instance of any",
-                    "\t{System.Exception, System.ArgumentException} (2 items)");
+                    "The expected value's inner exception: an instance of any",
+                    "\tan instance of these types {System.Exception, System.ArgumentException}");
             Check.ThatCode(() =>
             {
                 // ReSharper disable once NotResolvedInText
@@ -455,8 +452,8 @@ namespace NFluent.Tests
             .IsAFailingCheckWithMessage(
                     "",
                     "There is no inner exception.",
-                    "The expected value(s): an instance of any",
-                    "\t{System.Exception, System.ArgumentException} (2 items)");
+                    "The expected value's inner exception: an instance of any",
+                    "\tan instance of these types {System.Exception, System.ArgumentException}");
         }
 
         [Test]
@@ -491,7 +488,7 @@ namespace NFluent.Tests
                     "The checked value's inner exception:",
                     "\t[{System.InvalidCastException}: \'whatever mate\'] of type: [System.InvalidCastException]",
                     "The expected value's inner exception:",
-                    "\tan instance of type: [System.Exception]");
+                    "\tan instance of [System.Exception]");
         }
 
         [Test]

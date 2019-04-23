@@ -42,10 +42,10 @@ namespace NFluent.Tests
             {
                 Check.That("fu").IsOneOf("foo", "bar", "foobar");
             }).IsAFailingCheckWithMessage("",
-                "The checked string is not one of the expected value(s).", 
+                "The checked string is not one of the expected one.", 
             "The checked string:", 
             "\t[\"fu\"]",
-            "The expected value(s): one of", 
+            "The expected string: one of these", 
             "\t{\"foo\", \"bar\", \"foobar\"} (3 items)");
         }
 
@@ -56,10 +56,10 @@ namespace NFluent.Tests
             {
                 Check.That("foo").Not.IsOneOf("foo", "bar", "foobar");
             }).IsAFailingCheckWithMessage("",
-                "The checked string should not be one of the expected value(s).", 
+                "The checked string should not be one of the given one.", 
             "The checked string:", 
             "\t[\"foo\"]",
-            "The expected value(s): none of", 
+            "The expected string: none of these", 
             "\t{\"foo\", \"bar\", \"foobar\"} (3 items)");
         }
     }

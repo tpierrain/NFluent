@@ -347,11 +347,11 @@ namespace NFluent.Tests
                 Check.That(christmas2013).IsInstanceOf<string>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is not an instance of [string].",
-                    "The checked value:",
+                    "The checked date time is not an instance of [string].",
+                    "The checked date time:",
                      "\t[2013-12-25T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]",
                     "The expected value:",
-                    "\tan instance of type: [string]");
+                    "\tan instance of [string]");
         }
 
         [Test]
@@ -364,11 +364,11 @@ namespace NFluent.Tests
                 Check.That(actual).IsNotInstanceOf<DateTime>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is an instance of [System.DateTime] whereas it must not.",
-                    "The checked value:",
+                    "The checked date time is an instance of [System.DateTime] whereas it must not.",
+                    "The checked date time:",
                     "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]",
                     "The expected value: different from",
-                    "\tan instance of type: [System.DateTime]");
+                    "\tan instance of [System.DateTime]");
         }
 
         [Test]
@@ -381,11 +381,11 @@ namespace NFluent.Tests
                 Check.That(actual).Not.IsNotInstanceOf<string>();
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is not an instance of [string].",
-                    "The checked value:",
+                    "The checked date time is not an instance of [string].",
+                    "The checked date time:",
                     "\t[2013-01-01T00:00:00.0000000, Kind = Unspecified] of type: [System.DateTime]",
                     "The expected value:",
-                    "\tan instance of type: [string]");
+                    "\tan instance of [string]");
         }
 
         [Test]
