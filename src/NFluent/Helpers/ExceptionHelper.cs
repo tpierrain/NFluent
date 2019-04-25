@@ -139,6 +139,16 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
+        /// Builds an exception with the given message. Automatically detect the exception type to use depending on the used check framework.
+        /// </summary>
+        /// <param name="theMessage">The message to build the exception with.</param>
+        /// <returns>An exception instance of the appropriate type with the given message.</returns>
+        public static Exception BuildIgnoreException(string theMessage)
+        {
+            return Constructors.IgnoreException.Invoke(new object[] { theMessage }) as Exception;
+        }
+
+        /// <summary>
         /// Checks if an object is an instance of a failed assertion exception.
         /// </summary>
         /// <param name="exc">Exception to check</param>

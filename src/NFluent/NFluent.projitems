@@ -11,9 +11,11 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ApiChecks\ExceptionChecks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Assuming.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\ICheckLogicBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\MessageOption.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\IgnoreExceptionReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ISelfDescriptiveValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\TypeEnumerationValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\TypeOfInstanceValue.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\RangeBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ReverseEngineeringExceptionMessagesHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ValueBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NFluentEntryPoint.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Obsolete\ILambdaCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RunTrace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RunTraceResult.cs" />

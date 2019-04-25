@@ -39,7 +39,8 @@ namespace NFluent.Kernel
         /// Initializes a new instance of the <see cref="FluentCodeCheck{T}"/> class.
         /// </summary>
         /// <param name="getTrace">The execution trace.</param>
-        public FluentCodeCheck(T getTrace)
+        /// <param name="reporter"></param>
+        public FluentCodeCheck(T getTrace, IErrorReporter reporter)
             : base( getTrace, Check.Reporter,!CheckContext.DefaultNegated)
         {
             this.Checker = new Checker<T, ICodeCheck<T>>(this, this);

@@ -46,12 +46,36 @@ namespace NFluent.Kernel
         /// <param name="value">
         /// The value.
         /// </param>
+        /// <param name="reporter"></param>
+        /// <param name="negated"></param>
+        private FluentCheck(T value, IErrorReporter reporter, bool negated) : base(value, reporter, negated)
+        {
+            this.checker = new Checker<T, ICheck<T>>(this, this);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FluentCheck{T}"/> class.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <param name="reporter"></param>
+        /// <param name="negated"></param>
+        public FluentCheck(T value, IErrorReporter reporter) : this(value, reporter, !CheckContext.DefaultNegated)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FluentCheck{T}"/> class.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
         /// <param name="negated">
         /// A boolean value indicating whether the check should be negated or not.
         /// </param>
-        protected FluentCheck(T value, bool negated) : base(value, Check.Reporter, negated)
+        protected FluentCheck(T value, bool negated) : this(value, Check.Reporter, negated)
         {
-            this.checker = new Checker<T, ICheck<T>>(this, this);
         }
 
         internal FluentCheck(FluentSut<T> copy, bool negated): base(copy, negated)
@@ -61,16 +85,9 @@ namespace NFluent.Kernel
 
          /// <inheritdoc />
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public ICheck<T> Not
-        {
-            get
-            {
-                var fluentCheck = new FluentCheck<T>(this, !Negated);
-                return fluentCheck;
-            }
-        }
+        public ICheck<T> Not => new FluentCheck<T>(this, !Negated);
 
-        /// <inheritdoc />
+         /// <inheritdoc />
         public IChecker<T, ICheck<T>> Checker => this.checker;
 
         /// <summary>
@@ -97,8 +114,10 @@ namespace NFluent.Kernel
             this.IsInstanceOfType(typeof(TU));
 
             // TODO: restore pattern matching version when appveyor is upgraded
-            if (Value is TU )
+            if (Value is TU)
+            {
                 return ExtensibilityHelper.BuildCheckLinkWhich(this, (TU) (object) Value, SutName);
+            }
             return ExtensibilityHelper.BuildCheckLinkWhich(this, default(TU), SutName);
         }
 

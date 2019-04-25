@@ -18,7 +18,9 @@
 ### Fixes
 * Fix issue with IEnumerable&lt;pbject&gt; and Contains(Exactly), IsEqualTo, IsEquivalentTo.
 ### Extensibility
-* ICheckLogic.DefineExpectedValues now expect an generic IEnumerable&lt;T&gt; instead of a plain IEnumerable
+* ICheckLogic.DefineExpectedValues now expects an generic IEnumerable&lt;T&gt; instead of a plain IEnumerable
+* you can use ICheckLogic.DefinePossibleTypes if you need to have a list of possible types for the sut (displayed in the error message)
+* improved naming: ICheckLogic.DefineExpectedValues has been renamed DefinePossibleValues
 ### GitHub Issues
 * #292
 ## V 2.5.0

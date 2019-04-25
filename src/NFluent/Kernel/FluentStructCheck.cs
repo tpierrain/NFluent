@@ -1,17 +1,17 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="FluentStructCheck.cs" company="">
-// //   Copyright 2013 Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FluentStructCheck.cs" company="">
+//   Copyright 2013 Thomas PIERRAIN
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Kernel
 {
     using System.Diagnostics.CodeAnalysis;
@@ -30,7 +30,8 @@ namespace NFluent.Kernel
         /// Initializes a new instance of the <see cref="FluentStructCheck{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
-        public FluentStructCheck(T value) : this(value, !CheckContext.DefaultNegated)
+        /// <param name="reporter">Error reporter</param>
+        public FluentStructCheck(T value, IErrorReporter reporter) : this(value, reporter, !CheckContext.DefaultNegated)
         {
         }
 
@@ -38,23 +39,21 @@ namespace NFluent.Kernel
         /// Initializes a new instance of the <see cref="FluentStructCheck{T}" /> class.
         /// </summary>
         /// <param name="value">The value.</param>
+        /// <param name="reporter">Error reporter</param>
         /// <param name="negated">A boolean value indicating whether the check should be negated or not.</param>
-        private FluentStructCheck(T value, bool negated) : base(value, Check.Reporter, negated)
+        private FluentStructCheck(T value, IErrorReporter reporter, bool negated) : base(value, reporter, negated)
+        {
+            this.structChecker = new Checker<T, IStructCheck<T>>(this, this);
+        }
+
+        private FluentStructCheck(FluentSut<T> other, bool negated): base (other, negated)
         {
             this.structChecker = new Checker<T, IStructCheck<T>>(this, this);
         }
 
         /// <inheritdoc />
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public IStructCheck<T> Not
-        {
-            get
-            {
-                var fluentStructCheck = new FluentStructCheck<T>(Value, !Negated);
-                fluentStructCheck.SutName.Merge(this.SutName);
-                return fluentStructCheck;
-            }
-        }
+        public IStructCheck<T> Not => new FluentStructCheck<T>(this, !Negated);
 
         /// <summary>
         /// Gets the runner to use for checking something on a given type.

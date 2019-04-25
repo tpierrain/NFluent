@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AndRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AsOperatorTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AssumeShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AsyncCodeChecksShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\CheckLogicShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageShould.cs" />

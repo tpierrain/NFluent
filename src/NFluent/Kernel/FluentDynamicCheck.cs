@@ -27,14 +27,18 @@ namespace NFluent
         IForkableCheck
     {
         private readonly dynamic value;
+        private readonly IErrorReporter reporter;
         private bool negated;
 
         /// <summary>
+        /// Builds an instance of <see cref="FluentDynamicCheck"/>
         /// </summary>
-        /// <param name="value"></param>
-        public FluentDynamicCheck(dynamic value)
+        /// <param name="value">dynamic value to check</param>
+        /// <param name="reporter">failure reporter</param>
+        public FluentDynamicCheck(dynamic value, IErrorReporter reporter)
         {
             this.value = value;
+            this.reporter = reporter;
         }
 
         /// <summary>
@@ -42,30 +46,27 @@ namespace NFluent
         /// </summary>
         public DynamicCheckLink IsNotNull()
         {
-            if (this.negated != (this.value != null))
+            if (this.negated == (this.value != null))
             {
-                return new DynamicCheckLink(this);
-            }
+                string message;
+                if (this.negated)
+                {
+                    message = FluentMessage.BuildMessage("The {0} is not null whereas it must.")
+                        .AddCustomMessage(this.CustomMessage)
+                        .For(DefaultNamer())
+                        .On<object>(this.value).ToString();
+                }
+                else
+                {
+                    message = FluentMessage.BuildMessage("The {0} is null whereas it must not.")
+                        .AddCustomMessage(this.CustomMessage)
+                        .For(DefaultNamer())
+                        .On<object>(this.value).ToString();
+                }
 
-            string message;
-            if (this.negated)
-            {
-                message = FluentMessage.BuildMessage("The {0} is not null whereas it must.")
-                    .AddCustomMessage(this.CustomMessage)
-                    .For(DefaultNamer())
-                    .On<object>(this.value).ToString();
-
+                this.reporter.ReportError(message);
             }
-            else
-            {
-                message = FluentMessage.BuildMessage("The {0} is null whereas it must not.")
-                    .AddCustomMessage(this.CustomMessage)
-                    .For(DefaultNamer())
-                    .On<object>(this.value).ToString();
-                
-            }
-
-            throw new FluentCheckException(message);
+            return new DynamicCheckLink(this);
         }
 
         private static EntityNamingLogic DefaultNamer()
@@ -81,34 +82,34 @@ namespace NFluent
         /// <param name="expected">Expected reference.</param>
         public DynamicCheckLink IsSameReferenceAs(dynamic expected)
         {
-            if (this.negated != (object.ReferenceEquals(this.value, expected)))
+            if (this.negated == (object.ReferenceEquals(this.value, expected)))
             {
-                return new DynamicCheckLink(this);
-            }
+                string message;
+                if (this.negated)
+                {
+                    message = FluentMessage
+                        .BuildMessage("The {0} is the expected reference whereas it must not.")
+                        .For(DefaultNamer())
+                        .AddCustomMessage(this.CustomMessage)
+                        .Expected(expected)
+                        .Comparison("different from")
+                        .And
+                        .On<object>(this.value).ToString();
+                }
+                else
+                {
+                    message = FluentMessage
+                        .BuildMessage("The {0} is not the expected reference.")
+                        .For(DefaultNamer())
+                        .AddCustomMessage(this.CustomMessage)
+                        .Expected(expected)
+                        .And
+                        .On<object>(this.value).ToString();
+                }
 
-            string message;
-            if (this.negated)
-            {
-                message = FluentMessage
-                    .BuildMessage("The {0} is the expected reference whereas it must not.")
-                    .For(DefaultNamer())
-                    .AddCustomMessage(this.CustomMessage)
-                    .Expected(expected)
-                    .Comparison("different from")
-                    .And
-                    .On<object>(this.value).ToString();
+                this.reporter.ReportError(message);
             }
-            else
-            {
-                message = FluentMessage
-                    .BuildMessage("The {0} is not the expected reference.")
-                    .For(DefaultNamer())
-                    .AddCustomMessage(this.CustomMessage)
-                    .Expected(expected)
-                    .And
-                    .On<object>(this.value).ToString();
-            }
-            throw new FluentCheckException(message);
+            return new DynamicCheckLink(this);
         }
 
         /// <summary>
@@ -119,40 +120,41 @@ namespace NFluent
         /// </param>
         public DynamicCheckLink IsEqualTo(dynamic expected)
         {
-            if (this.negated != object.Equals(this.value, expected))
+            if (this.negated == object.Equals(this.value, expected))
             {
-                return new DynamicCheckLink(this);
+                string message;
+                if (this.negated)
+                {
+                    message = FluentMessage
+                        .BuildMessage("The {0} is equal to the {1} whereas it must not.")
+                        .For(DefaultNamer())
+                        .AddCustomMessage(this.CustomMessage)
+                        .Expected(expected)
+                        .Comparison("different from")
+                        .And
+                        .On<object>(this.value).ToString();
+                }
+                else
+                {
+                    message = FluentMessage
+                        .BuildMessage("The {0} is not equal to the {1}.")
+                        .For(DefaultNamer())
+                        .AddCustomMessage(this.CustomMessage)
+                        .Expected(expected)
+                        .And
+                        .On<object>(this.value).ToString();
+                }
+
+                this.reporter.ReportError(message);
             }
-            string message;
-            if (this.negated)
-            {
-                message = FluentMessage
-                    .BuildMessage("The {0} is equal to the {1} whereas it must not.")
-                    .For(DefaultNamer())
-                    .AddCustomMessage(this.CustomMessage)
-                    .Expected(expected)
-                    .Comparison("different from")
-                    .And
-                    .On<object>(this.value).ToString();
-            }
-            else
-            {
-                message = FluentMessage
-                    .BuildMessage("The {0} is not equal to the {1}.")
-                    .For(DefaultNamer())
-                    .AddCustomMessage(this.CustomMessage)
-                    .Expected(expected)
-                    .And
-                    .On<object>(this.value).ToString();
-            }
-            throw new FluentCheckException(message);
+            return new DynamicCheckLink(this);
         }
 
 
         /// <inheritdoc cref="IForkableCheck.ForkInstance" />
         public object ForkInstance()
         {
-            return new FluentDynamicCheck(this.value);
+            return new FluentDynamicCheck(this.value, this.reporter);
         }
 
         /// <summary>
@@ -162,7 +164,7 @@ namespace NFluent
         {
             get
             {
-                var ret = new FluentDynamicCheck(this.value)
+                var ret = new FluentDynamicCheck(this.value, this.reporter)
                 {
                     negated = !this.negated,
                     CustomMessage = this.CustomMessage

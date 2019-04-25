@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Check.cs" company="">
-//   Copyright 2013 Thomas PIERRAIN, Rui CARVALHO, Cyrille DUPUYDAUBY
+// <copyright file="Assume.cs" company="">
+//   Copyright 2019 Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -25,12 +25,10 @@ namespace NFluent
 
     /// <summary>
     /// Provides <see cref="ICheck{T}"/> instances to be used in order to make 
-    /// check(s) on the provided value.
+    /// assumption(s) on the provided value.
     /// </summary>
-    public static class Check
+    public static class Assuming
     {
-        private static IErrorReporter reporter;
-
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
@@ -44,40 +42,10 @@ namespace NFluent
         /// </remarks>
         public static ICheck<T> That<T>(T value)
         {
-            return new FluentCheck<T>(value);
+            return new FluentCheck<T>(value, Reporter);
         }
 
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
-        /// <summary>
-        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given async code (returning Task).
-        /// </summary>
-        /// <param name="awaitableMethod">The async code to be tested.</param>
-        /// <returns>
-        /// A <see cref="ICheck{RunTrace}" /> instance to use in order to assert things on the given value.
-        /// </returns>
-        /// <remarks>
-        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
-        /// </remarks>
-        public static ICodeCheck<RunTrace> ThatAsyncCode(Func<Task> awaitableMethod)
-        {
-            return new FluentCodeCheck<RunTrace>(FluentCodeCheck<RunTraceResult<Func<Task>>>.GetAsyncTrace(awaitableMethod), reporter);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given async function (returning Task{TResult}).
-        /// </summary>
-        /// <typeparam name="TResult">The type of the result for this asynchronous function.</typeparam>
-        /// <param name="awaitableFunction">The asynchronous function to be tested.</param>
-        /// <returns>
-        /// A <see cref="ICheck{RunTrace}" /> instance to use in order to assert things on the given value.
-        /// </returns>
-        /// <remarks>
-        /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
-        /// </remarks>
-        public static ICodeCheck<RunTraceResult<TResult>> ThatAsyncCode<TResult>(Func<Task<TResult>> awaitableFunction)
-        {
-            return new FluentCodeCheck<RunTraceResult<TResult>>(FluentCodeCheck<RunTraceResult<Task<TResult>>>.GetAsyncTrace(awaitableFunction), Reporter);
-        }
 
         /// <summary>
         /// Returns a <see cref="FluentDynamicCheck"/> instance that will provide check for dynamics.
@@ -89,7 +57,7 @@ namespace NFluent
         public static FluentDynamicCheck ThatDynamic(dynamic value)
         {
             //return null;
-            return new FluentDynamicCheck(value);
+            return new FluentDynamicCheck(value, Reporter);
         }
 #endif
 
@@ -133,7 +101,7 @@ namespace NFluent
         /// </returns>
         public static ICheck<Type> That<T>()
         {
-            return new FluentCheck<Type>(typeof(T));
+            return new FluentCheck<Type>(typeof(T), Reporter);
         }
 
         /// <summary>
@@ -164,22 +132,9 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Gets/sets how equality comparison are done.
-        /// </summary>
-        public static EqualityMode EqualMode { get; set; }
-
-        /// <summary>
         /// Gets or sets the default error report
         /// </summary>
-        public static IErrorReporter Reporter { get; set; } = new ExceptionReporter();
+        public static IErrorReporter Reporter { get; set; } = new IgnoreExceptionReporter();
 
-        /// <summary>
-        /// Gets/Sets the truncation length for long string.
-        /// </summary>
-        public static int StringTruncationLength
-        {
-            get => Extensions.ExtensionsCommonHelpers.StringTruncationLength;
-            set => Extensions.ExtensionsCommonHelpers.StringTruncationLength = value;
-        }
     }
 }
