@@ -59,8 +59,7 @@ namespace NFluent.Kernel
         /// <param name="value">
         /// The value.
         /// </param>
-        /// <param name="reporter"></param>
-        /// <param name="negated"></param>
+        /// <param name="reporter">error reporter</param>
         public FluentCheck(T value, IErrorReporter reporter) : this(value, reporter, !CheckContext.DefaultNegated)
         {
         }

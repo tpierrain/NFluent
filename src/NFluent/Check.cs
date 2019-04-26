@@ -29,8 +29,6 @@ namespace NFluent
     /// </summary>
     public static class Check
     {
-        private static IErrorReporter reporter;
-
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
@@ -60,7 +58,7 @@ namespace NFluent
         /// </remarks>
         public static ICodeCheck<RunTrace> ThatAsyncCode(Func<Task> awaitableMethod)
         {
-            return new FluentCodeCheck<RunTrace>(FluentCodeCheck<RunTraceResult<Func<Task>>>.GetAsyncTrace(awaitableMethod), reporter);
+            return new FluentCodeCheck<RunTrace>(FluentCodeCheck<RunTraceResult<Func<Task>>>.GetAsyncTrace(awaitableMethod), Reporter);
         }
 
         /// <summary>
@@ -89,7 +87,7 @@ namespace NFluent
         public static FluentDynamicCheck ThatDynamic(dynamic value)
         {
             //return null;
-            return new FluentDynamicCheck(value);
+            return new FluentDynamicCheck(value, Reporter);
         }
 #endif
 

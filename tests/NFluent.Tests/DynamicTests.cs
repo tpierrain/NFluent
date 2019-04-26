@@ -18,6 +18,8 @@ namespace NFluent.Tests
 {
     using NUnit.Framework;
 
+    using NFluent.Helpers;
+
     [TestFixture]
     public class DynamicTests
     {
@@ -34,7 +36,10 @@ namespace NFluent.Tests
 
             Check.ThatDynamic(sut).IsNotNull();
             // this check fails
-            Check.ThatCode(() => { Check.ThatDynamic(cmd.Subject).IsNotNull(); }).Throws<FluentCheckException>();
+            Check.ThatCode(() => { Check.ThatDynamic(cmd.Subject).IsNotNull(); }).IsAFailingCheckWithMessage("", 
+                "The checked dynamic is null whereas it must not.", 
+                "The checked dynamic:", 
+                "\t[null]");
         }
 
           // see GH #280
@@ -79,31 +84,7 @@ namespace NFluent.Tests
 
         static public void AssertCheckFails(System.Action test, params string[] message)
         {
-            try
-            {
-                test();
-                Assert.Fail("Assertion should have been raised!");
-            }
-            catch(FluentCheckException e)
-            {
-                if (message.Length==1)
-                {
-                    Assert.AreEqual(message[0], e.Message);
-                }
-                else
-                {
-                    var builder = new System.Text.StringBuilder();
-                    for(var i=0; i<message.Length; i++)
-                    {
-                        if  (i>0)
-                        {
-                            builder.Append(System.Environment.NewLine);
-                        }
-                        builder.Append(message[i]);
-                    }
-                    Assert.AreEqual(builder.ToString(), e.Message);
-                }
-            }
+            Check.ThatCode(() => test()).IsAFailingCheckWithMessage(message);
         }
 
         [Test]
@@ -114,7 +95,11 @@ namespace NFluent.Tests
 
             Check.ThatDynamic(sut).IsNotNull().And.IsEqualTo("test");
             // this check fails
-            Check.ThatCode(() => { Check.ThatDynamic(cmd.Subject).IsNotNull(); }).Throws<FluentCheckException>();
+            Check.ThatCode(() => { Check.ThatDynamic(cmd.Subject).IsNotNull(); }).IsAFailingCheckWithMessage(
+            "", 
+            "The checked dynamic is null whereas it must not.", 
+            "The checked dynamic:", 
+            "\t[null]");
         }
 
         [Test]
@@ -123,7 +108,13 @@ namespace NFluent.Tests
             dynamic sut = "test";
 
             Check.ThatDynamic(sut).IsSameReferenceAs(sut);
-            Check.ThatCode(() => { Check.ThatDynamic(sut).IsSameReferenceAs("tes"); }).Throws<FluentCheckException>();
+            Check.ThatCode(() => { Check.ThatDynamic(sut).IsSameReferenceAs("tes"); }).IsAFailingCheckWithMessage(
+                "", 
+                "The checked dynamic is not the expected reference.", 
+                "The checked dynamic:", 
+                "\t[\"test\"]", 
+                "The expected dynamic:", 
+                "\t[\"tes\"]");
         }
 
         [Test]
@@ -133,7 +124,12 @@ namespace NFluent.Tests
 
             Check.ThatDynamic(sut).IsEqualTo(sut);
 
-            Check.ThatCode(() => { Check.ThatDynamic(sut).IsEqualTo("tes"); }).Throws<FluentCheckException>();
+            Check.ThatCode(() => { Check.ThatDynamic(sut).IsEqualTo("tes"); }).IsAFailingCheckWithMessage("",
+                "The checked dynamic is not equal to the expected one.", 
+                "The checked dynamic:", 
+                "\t[\"test\"]", 
+                "The expected dynamic:", 
+                "\t[\"tes\"]");
         }
 
         [Test]

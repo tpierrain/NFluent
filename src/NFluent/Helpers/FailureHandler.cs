@@ -25,6 +25,7 @@ namespace NFluent.Helpers
     /// </summary>
     public static class FailureHandler
     {
+        //ncrunch: no coverage start
         /// <inheritdoc cref="IsAFailingCheckWithMessage"/>
         [Obsolete("Use IsAFailingCheckWithMessage instead (typo)")]
         public static ICheckLink<ICodeCheck<RunTrace>> IsAFaillingCheckWithMessage(this ICodeCheck<RunTrace> check,
@@ -32,6 +33,7 @@ namespace NFluent.Helpers
         {
             return check.IsAFailingCheckWithMessage(lines);
         }
+        //ncrunch: no coverage end
 
         /// <summary>
         ///     Verify that the code results in a failed NFluent check with a specified message.
@@ -97,7 +99,7 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
-        ///     Verify that the code results in a failed NFluent check with a specified message.
+        /// Verify that the code results in a failed NFluent check with a specified message.
         /// </summary>
         /// <param name="check"></param>
         /// <returns>A link check</returns>
@@ -113,5 +115,24 @@ namespace NFluent.Helpers
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
+
+        /// <summary>
+        /// Verify that the code results in a failed NFluent check with a specified message.
+        /// </summary>
+        /// <param name="check"></param>
+        /// <returns>A link check</returns>
+        public static ICheckLink<ICodeCheck<RunTrace>> IsaFailingAssumption(this ICodeCheck<RunTrace> check)
+        {
+            ExtensibilityHelper.BeginCheck(check)
+                .SetSutName("fluent check")
+                .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
+                .FailIfNull("The fluent check did not raise an exception, where as it must.")
+                .FailWhen((sut) => !ExceptionHelper.IsIgnoredException(sut),
+                    "The exception raised is not of the expected type").
+                DefineExpectedType(ExceptionHelper.BuildException(string.Empty).GetType()).
+                EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
     }
 }

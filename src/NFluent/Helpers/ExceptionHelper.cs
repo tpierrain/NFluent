@@ -18,12 +18,31 @@
 namespace NFluent.Helpers
 {
     using System;
-    using System.Diagnostics;
-#if !PORTABLE && !NETSTANDARD1_3 && !DOTNET_30 && !DOTNET_20
-    using System.Linq;
-#endif
-    using System.Reflection;
+    using System.Collections.Generic;
     using System.Text;
+
+    /// <summary>
+    /// Supported test frameworks
+    /// </summary>
+    public enum TestFramework
+    {
+        /// <summary>
+        /// NUnit frameworks
+        /// </summary>
+        NUnit,
+        /// <summary>
+        /// xUnit framework
+        /// </summary>
+        xUnit,
+        /// <summary>
+        /// MsTest
+        /// </summary>
+        MsTest,
+        /// <summary>
+        /// No known framework, using built in exceptions
+        /// </summary>
+        None
+    };
 
     /// <summary>
     /// Offer factory services to get adequate exception type depending on testing framework.
@@ -33,6 +52,14 @@ namespace NFluent.Helpers
         private static ExceptionConstructor constructors;
         private static readonly string ExceptionSeparator = Environment.NewLine + "--> ";
 
+        private static readonly Dictionary<TestFramework, ExceptionConstructor> exceptions =
+            new Dictionary<TestFramework, ExceptionConstructor>();
+
+        private const string Patterns = 
+            "MsTest,microsoft.visualstudio.testplatform.testframework,Microsoft.VisualStudio.TestTools,AssertFailedException,,AssertInconclusiveException;"+
+            "NUnit,nunit.framework,NUnit.,AssertionException,IgnoreException,InconclusiveException;"+
+            "xUnit,xunit.assert,Xunit.Sdk,XunitException,,";
+
         private static ExceptionConstructor Constructors
         {
             get
@@ -41,91 +68,52 @@ namespace NFluent.Helpers
                 {
                     return constructors;
                 }
-
+                
                 // we need to identify required exception types
-                var defaultConstructor = typeof(FluentCheckException).GetConstructor(new[] { typeof(string) });
-                var result = new ExceptionConstructor
-                                 {
-                                     FailedException = defaultConstructor,
-                                     IgnoreException = defaultConstructor,
-                                     InconclusiveException = defaultConstructor
-                                 };
+                exceptions[TestFramework.None] = new ExceptionConstructor(typeof(FluentCheckException), (message) => new FluentCheckException(message));
 
-                // assert we have a default constructor
-                Debug.Assert(defaultConstructor != null, "NFluent exception must provide a constructor accepting a single string as parameter!");
+                InitCache(Patterns);
 
-                // look for MSTest
-                var resultScan = ExceptionScanner("microsoft.visualstudio.testplatform.testframework", "Microsoft.VisualStudio.TestTools", "AssertFailedException", null, "AssertInconclusiveException")
-                                 ?? ExceptionScanner( "nunit.framework", "NUnit.", "AssertionException", "IgnoreException", "InconclusiveException")
-                                 ?? ExceptionScanner("xunit.assert", "Xunit.Sdk", "XunitException", null, null);
-
-                result = resultScan ?? result;
-                constructors = result;
-
+                foreach (var id in Enum.GetValues(typeof(TestFramework)))
+                {
+                    var builder = exceptions[(TestFramework) id];
+                    if (builder.IsSupported())
+                    {
+                        constructors = builder;
+                        break;
+                    }
+                }
                 return constructors;
             }
         }
 
-        private static ExceptionConstructor ExceptionScanner(string assemblyMarker, string nameSpace, string assertionExceptionName, string ignoreExceptionName, string inconclusiveExceptionName)
+        private static void InitCache(string patterns)
+        {
+            var lines = patterns.Split(';');
+            foreach (var line in lines)
+            {
+                var parameters = line.Split(',');
+                var testFrameworkId = (TestFramework)Enum.Parse(typeof(TestFramework), parameters[0]);
+                exceptions[testFrameworkId] = new ExceptionConstructor(parameters[1], parameters[2], parameters[3], parameters[4], parameters[5]);
+            }
+            ExceptionScanner();
+        }
+
+        private static void ExceptionScanner()
         {
 #if !(PORTABLE) && !(NETSTANDARD1_3)
-            var missingExceptions = 3;
-            var result = new ExceptionConstructor();
-            var defaultSignature = new[] { typeof(string) };
-            if (string.IsNullOrEmpty(ignoreExceptionName))
-            {
-                missingExceptions--;
-            }
-
-            if (string.IsNullOrEmpty(inconclusiveExceptionName))
-            {
-                missingExceptions--;
-            }
-
             foreach (var assembly in
-                    AppDomain.CurrentDomain.GetAssemblies()
-                             .Where(ass => ass.FullName.ToLowerInvariant().Contains(assemblyMarker)))
+                    AppDomain.CurrentDomain.GetAssemblies())
             {
-                var exportedTypes = assembly.GetExportedTypes();
-
-                foreach (var type in exportedTypes)
+                foreach (var exceptionConstructor in exceptions.Values)
                 {
-                    if (type.Namespace.StartsWith(nameSpace))
+                    if (exceptionConstructor.ScanAssembly(assembly))
                     {
-                        if (type.Name == assertionExceptionName)
-                        {
-                            var info = type.GetConstructor(defaultSignature);
-                            result.FailedException = info;
-                            missingExceptions--;
-                        }
-                        else if (type.Name == ignoreExceptionName)
-                        {
-                            var info = type.GetConstructor(defaultSignature);
-                            result.IgnoreException = info;
-                            missingExceptions--;
-                        }
-                        else if (type.Name == inconclusiveExceptionName)
-                        {
-                            var info = type.GetConstructor(defaultSignature);
-                            result.InconclusiveException = info;
-                            missingExceptions--;
-                            if (string.IsNullOrEmpty(ignoreExceptionName))
-                            {
-                                // if we do not expect a ignore exception, we remap inconclusive
-                                result.IgnoreException = info;
-                            }
-                       }
-                    }
-
-                    // stop search if we found everything
-                    if (missingExceptions == 0)
-                    {
-                        return result;
+                        break;
                     }
                 }
             }
 #endif
-            return null;
         }
 
         /// <summary>
@@ -135,7 +123,7 @@ namespace NFluent.Helpers
         /// <returns>An exception instance of the appropriate type with the given message.</returns>
         public static Exception BuildException(string theMessage)
         {
-            return Constructors.FailedException.Invoke(new object[] { theMessage }) as Exception;
+            return Constructors.BuildFailedException(theMessage);
         }
 
         /// <summary>
@@ -145,7 +133,7 @@ namespace NFluent.Helpers
         /// <returns>An exception instance of the appropriate type with the given message.</returns>
         public static Exception BuildIgnoreException(string theMessage)
         {
-            return Constructors.IgnoreException.Invoke(new object[] { theMessage }) as Exception;
+            return Constructors.BuildIgnoreException(theMessage);
         }
 
         /// <summary>
@@ -153,25 +141,21 @@ namespace NFluent.Helpers
         /// </summary>
         /// <param name="exc">Exception to check</param>
         /// <returns>true if the exception is of a correct type</returns>
-        public static bool IsFailedException(object exc)
+        public static bool IsFailedException(Exception exc)
         {
-            return exc!= null && (exc is FluentCheckException || (exc.GetType() == Constructors.FailedException.DeclaringType));
+            return exc is FluentCheckException || Constructors.IsFailedException(exc);
         }
 
         /// <summary>
-        /// Stores adequate constructors.
+        /// Checks if an object is an instance of a failed assumption exception.
         /// </summary>
-        private class ExceptionConstructor
+        /// <param name="exc">Exception to check</param>
+        /// <returns>true if the exception is of a correct type</returns>
+        public static bool IsIgnoredException(Exception exc)
         {
-            public ConstructorInfo FailedException { get; set; }
+            return exc is FluentCheckException || Constructors.IsIgnoredException(exc);
 
-            // ReSharper disable once UnusedAutoPropertyAccessor.Local
-            public ConstructorInfo InconclusiveException { get; set; }
-
-            // ReSharper disable once UnusedAutoPropertyAccessor.Local
-            public ConstructorInfo IgnoreException { get; set; }
         }
-
         // ncrunch: no coverage end
 
         /// <summary>

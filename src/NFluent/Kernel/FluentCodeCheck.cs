@@ -41,7 +41,7 @@ namespace NFluent.Kernel
         /// <param name="getTrace">The execution trace.</param>
         /// <param name="reporter"></param>
         public FluentCodeCheck(T getTrace, IErrorReporter reporter)
-            : base( getTrace, Check.Reporter,!CheckContext.DefaultNegated)
+            : base( getTrace, reporter,!CheckContext.DefaultNegated)
         {
             this.Checker = new Checker<T, ICodeCheck<T>>(this, this);
         }

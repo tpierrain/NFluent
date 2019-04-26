@@ -23,7 +23,6 @@ namespace NFluent
     using Extensibility;
 
     using Helpers;
-    using Kernel;
 
     /// <summary>
     /// Static class hosting extension methods in relation with checks for code.
@@ -140,25 +139,25 @@ namespace NFluent
             where T : Exception
         {
             var exc = CheckExceptionType(check, typeof(T));
-
             return new LambdaExceptionCheck<T>((T) exc, ((INegated) check).Negated);
         }
 
         private static Exception CheckExceptionType(ICodeCheck<RunTrace> check, Type expecting)
         {
             Exception result = null;
-            ExtensibilityHelper.BeginCheck(check).SetSutName("code")
-               .CheckSutAttributes(sut =>
+            ExtensibilityHelper.BeginCheck(check).
+                SetSutName("code").
+                CheckSutAttributes(sut =>
                 {
                     result = sut.RaisedException;
                     return result;
-                }, "raised exception")
-                .DefineExpectedType(expecting)
-                .FailIfNull("The checked code did not raise an exception, whereas it must.")
-                .FailWhen(sut => !expecting.IsInstanceOfType(sut),
-                    "The {0} is of a different type than expected.")
-                .OnNegate("The {0} raised an exception of the forbidden type.")
-                .EndCheck();
+                }, "raised exception").
+                DefineExpectedType(expecting).
+                FailIfNull("The checked code did not raise an exception, whereas it must.").
+                FailWhen(sut => !expecting.IsInstanceOfType(sut),
+                    "The {0} is of a different type than expected.").
+                OnNegate("The {0} raised an exception of the forbidden type.").
+                EndCheck();
             if (!expecting.IsInstanceOfType(result))
             {
                 result = null;
@@ -213,6 +212,5 @@ namespace NFluent
         {
             return ExtensibilityHelper.BuildCheck(check, sut => sut.Result);
         }
-
     }
 }

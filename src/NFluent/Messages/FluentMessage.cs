@@ -124,6 +124,7 @@ namespace NFluent.Extensibility
             return builder.ToString();
         }
 
+        //ncrunch: no coverage start
         /// <summary>
         /// Change the main message.
         /// </summary>
@@ -133,6 +134,7 @@ namespace NFluent.Extensibility
         {
             this.message = newMessage;
         }
+        //ncrunch: no coverage end
 
         /// <summary>
         /// Specifies the attribute to use to describe entities.
