@@ -164,7 +164,7 @@
      </TestProjects>
      <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests.Internals\NFluent.NetStandard.20.Tests.Internals.csproj'>
        <Framework>netstandard2.0</Framework>
-       <Coverage>false</Coverage>
+       <Coverage>true</Coverage>
      </TestProjects>
      <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests.Extensions\NFluent.NetStandard.20.Tests.Extensions.csproj'>
        <Framework>netstandard2.0</Framework>

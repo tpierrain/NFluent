@@ -4,12 +4,16 @@
 * Actual and expected value naming has been redesigned to improve naming accuracy. Impact vary depending on checks and types.
 
 ### Fixes
-* Fix issue with IEnumerable<pbject> and Contains(Exactly), IsEqualTo, IsEquivalentTo.
+* Fix issue with IEnumerable<object> and Contains(Exactly), IsEqualTo, IsEquivalentTo.
+* Several error messages have been improved due to fix on check helpers.
 
 ### Extensibility
 * ICheckLogic.DefineExpectedValues now expects an generic IEnumerable<T> instead of a plain IEnumerable
 * you can use ICheckLogic.DefinePossibleTypes if you need to have a list of possible types for the sut (displayed in the error message)
 * improved naming: ICheckLogic.DefineExpectedValues has been renamed DefinePossibleValues
+* checks helper (ICheckLogic) now correctly reports the fundamental error instead of a detail error. In previous version, the error messages could focus on details, e.g. report the
+exception's message when the issue is the exception's type.
+* add a flag (boolean) to BuildCheckLinkWhich method (allows to provide subitem check) that allows to speciyf sub item is available.
 
 ### GitHub Issues
 * #292

@@ -39,6 +39,7 @@ namespace NFluent.Kernel
 
         private readonly FluentSut<T> fluentSut;
         private ICheckLogicBase child;
+        private ICheckLogicBase parent;
         private bool isRoot;
         private string comparison;
         private object expected;
@@ -47,12 +48,14 @@ namespace NFluent.Kernel
         private System.Type expectedType;
         private bool enforceExpectedType;
         private bool failed;
+        private bool parentFailed;
         private long index;
         private string label;
         private string lastError;
         private string negatedComparison;
         private string negatedError;
         private bool negatedFailed;
+        private bool parentNegatedFailed;
         private bool doNotNeedNegatedMessage;
         private bool cannotBetNegated;
         private string negatedLabel;
@@ -120,7 +123,7 @@ namespace NFluent.Kernel
 
         public ICheckLogic<T> Analyze(Action<T, ICheckLogic<T>> action)
         {
-            if (this.failed)
+            if (this.failed || this.parentFailed)
             {
                 return this;
             }
@@ -159,16 +162,11 @@ namespace NFluent.Kernel
             {
                 result.SetNotNegatable(this.negatedError);
             }
-            
-            if (this.failed != this.IsNegated)
-            {
-                result.failed = this.failed;
-                result.negatedFailed = this.negatedFailed;
-                result.lastError = this.lastError;
-                result.negatedError = this.negatedError;
-                result.negatedOption = this.negatedOption;
-                result.options = this.options;
-            }
+
+            result.parentFailed = this.failed;
+            result.parentNegatedFailed = this.negatedFailed;
+
+            result.parent = this;
 
             this.child = result;
             return result;
@@ -176,7 +174,16 @@ namespace NFluent.Kernel
 
         public void EndCheck()
         {
-            this.child?.EndCheck();
+            if (this.parent != null && (this.parentFailed && !this.IsNegated) || (this.parentNegatedFailed && this.IsNegated))
+            {
+                this.parent.EndCheck();
+            }
+
+            if (this.child != null && ((this.IsNegated && !this.negatedFailed) || (!this.IsNegated && !this.failed)))
+            {
+                this.child.EndCheck();
+            }
+
             if (this.isRoot)
             {
                 if (string.IsNullOrEmpty(this.negatedError) && !this.doNotNeedNegatedMessage)
@@ -376,7 +383,7 @@ namespace NFluent.Kernel
 
         public ICheckLogic<T> OnNegateWhen(Func<T, bool> predicate, string error, MessageOption negatedOptions)
         {
-            if (this.negatedFailed)
+            if (this.negatedFailed || this.parentNegatedFailed)
             {
                 return this;
             }

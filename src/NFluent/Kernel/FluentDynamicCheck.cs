@@ -48,21 +48,13 @@ namespace NFluent
         {
             if (this.negated == (this.value != null))
             {
-                string message;
-                if (this.negated)
-                {
-                    message = FluentMessage.BuildMessage("The {0} is not null whereas it must.")
-                        .AddCustomMessage(this.CustomMessage)
-                        .For(DefaultNamer())
-                        .On<object>(this.value).ToString();
-                }
-                else
-                {
-                    message = FluentMessage.BuildMessage("The {0} is null whereas it must not.")
-                        .AddCustomMessage(this.CustomMessage)
-                        .For(DefaultNamer())
-                        .On<object>(this.value).ToString();
-                }
+                var template = this.negated 
+                    ? "The {0} is not null whereas it must."
+                    : "The {0} is null whereas it must not.";
+                var message = FluentMessage.BuildMessage(template)
+                    .AddCustomMessage(this.CustomMessage)
+                    .For(DefaultNamer())
+                    .On<object>((object)this.value).ToString();
 
                 this.reporter.ReportError(message);
             }
@@ -84,28 +76,17 @@ namespace NFluent
         {
             if (this.negated == (object.ReferenceEquals(this.value, expected)))
             {
-                string message;
-                if (this.negated)
-                {
-                    message = FluentMessage
-                        .BuildMessage("The {0} is the expected reference whereas it must not.")
-                        .For(DefaultNamer())
-                        .AddCustomMessage(this.CustomMessage)
-                        .Expected(expected)
-                        .Comparison("different from")
-                        .And
-                        .On<object>(this.value).ToString();
-                }
-                else
-                {
-                    message = FluentMessage
-                        .BuildMessage("The {0} is not the expected reference.")
-                        .For(DefaultNamer())
-                        .AddCustomMessage(this.CustomMessage)
-                        .Expected(expected)
-                        .And
-                        .On<object>(this.value).ToString();
-                }
+                var template = this.negated
+                    ? "The {0} is the expected reference whereas it must not."
+                    : "The {0} is not the expected reference.";
+                var message = FluentMessage
+                    .BuildMessage(template)
+                    .For(DefaultNamer())
+                    .AddCustomMessage(this.CustomMessage)
+                    .Expected(expected)
+                    .Comparison(this.negated ? "different from" : "")
+                    .And
+                    .On<object>(this.value).ToString();
 
                 this.reporter.ReportError(message);
             }
@@ -122,28 +103,17 @@ namespace NFluent
         {
             if (this.negated == object.Equals(this.value, expected))
             {
-                string message;
-                if (this.negated)
-                {
-                    message = FluentMessage
-                        .BuildMessage("The {0} is equal to the {1} whereas it must not.")
-                        .For(DefaultNamer())
-                        .AddCustomMessage(this.CustomMessage)
-                        .Expected(expected)
-                        .Comparison("different from")
-                        .And
-                        .On<object>(this.value).ToString();
-                }
-                else
-                {
-                    message = FluentMessage
-                        .BuildMessage("The {0} is not equal to the {1}.")
-                        .For(DefaultNamer())
-                        .AddCustomMessage(this.CustomMessage)
-                        .Expected(expected)
-                        .And
-                        .On<object>(this.value).ToString();
-                }
+                var template = this.negated
+                    ? "The {0} is equal to the {1} whereas it must not."
+                    : "The {0} is not equal to the {1}.";
+                var message = FluentMessage
+                    .BuildMessage(template)
+                    .For(DefaultNamer())
+                    .AddCustomMessage(this.CustomMessage)
+                    .Expected(expected)
+                    .Comparison(this.negated ? "different from" : "")
+                    .And
+                    .On<object>(this.value).ToString();
 
                 this.reporter.ReportError(message);
             }

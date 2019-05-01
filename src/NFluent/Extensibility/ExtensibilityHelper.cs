@@ -198,19 +198,25 @@ namespace NFluent.Extensibility
         /// <summary>
         /// Builds a chainable check with a sub item.
         /// </summary>
-        /// <typeparam name="TU"></typeparam>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="check"></param>
-        /// <param name="item"></param>
-        /// <param name="label"></param>
-        /// <returns></returns>
-        public static ICheckLinkWhich<ICheck<TU>, ICheck<T>> BuildCheckLinkWhich<TU, T>(ICheck<TU> check, T item, string label)
+        /// <typeparam name="TU">type of the sut</typeparam>
+        /// <typeparam name="T">type of the sub item</typeparam>
+        /// <param name="check">original check to link to</param>
+        /// <param name="item">sub item that can be check with which</param>
+        /// <param name="label">label for the sub item</param>
+        /// <param name="hasItem">set to false is no item is available</param>
+        /// <returns>A chainable link supporting Which</returns>
+        public static ICheckLinkWhich<ICheck<TU>, ICheck<T>> BuildCheckLinkWhich<TU, T>(ICheck<TU> check, T item, string label, bool hasItem = true)
         {
-            var chk = new FluentCheck<T>(item);
-            if (!string.IsNullOrEmpty(label))
+            FluentCheck<T> chk = null;
+            if (hasItem)
             {
-                chk.Checker.SetSutLabel(label);
+                chk = new FluentCheck<T>(item);
+                if (!string.IsNullOrEmpty(label))
+                {
+                    chk.Checker.SetSutLabel(label);
+                }
             }
+
             return new CheckLinkWhich<ICheck<TU>, ICheck<T>>(check, chk);
         }
 

@@ -34,5 +34,11 @@ namespace NFluent.Tests.MsTest
         {
             Check.That(ExceptionHelper.BuildException("Test")).IsInstanceOf<AssertFailedException>();
         }
+
+        [TestMethod]
+        public void AssumptionTest()
+        {
+            Check.ThatCode(() => Assuming.That("MsTest").IsEqualTo("great")).Throws<AssertInconclusiveException>();
+        }
     }
 }

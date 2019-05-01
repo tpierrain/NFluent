@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="IgnoreExceptionReporter.cs" company="NFluent">
+//  <copyright file="InconclusiveExceptionReporter.cs" company="NFluent">
 //   Copyright 2018 Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -18,12 +18,13 @@ namespace NFluent.Kernel
     using System.Diagnostics;
     using Extensibility;
     using Helpers;
+
     [DebuggerNonUserCode]
-    internal class IgnoreExceptionReporter : IErrorReporter
+    internal class InconclusiveExceptionReporter : IErrorReporter
     {
         public void ReportError(string message)
         {
-            throw ExceptionHelper.BuildIgnoreException(message);
+            throw ExceptionHelper.BuildInconclusiveException(message);
         }
     }
 }

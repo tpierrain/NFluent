@@ -19,6 +19,7 @@ namespace NFluent
     using System.ComponentModel;
     using System.Reflection;
     using Extensibility;
+    using Extensions;
     using Helpers;
     using Kernel;
 
@@ -144,7 +145,7 @@ namespace NFluent
         public static IMembersSelection Considering<T>(this ICheck<T> check)
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
-            var fieldsWrapper = ReflectionWrapper.BuildFromInstance(checker.Value?.GetType()??typeof(T), checker.Value,
+            var fieldsWrapper = ReflectionWrapper.BuildFromInstance(checker.Value.GetTypeWithoutThrowingException(), checker.Value,
                 new Criteria(BindingFlags.Instance));
             var checkWithConsidering = new CheckWithConsidering(fieldsWrapper, checker.Negated);
             return checkWithConsidering;

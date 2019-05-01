@@ -134,7 +134,6 @@ namespace NFluent
         /// <summary>
         /// Gets or sets the default error report
         /// </summary>
-        public static IErrorReporter Reporter { get; set; } = new IgnoreExceptionReporter();
-
+        public static IErrorReporter Reporter { get; set; } = new InconclusiveExceptionReporter();
     }
 }

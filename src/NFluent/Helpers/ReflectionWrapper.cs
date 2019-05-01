@@ -286,7 +286,7 @@ namespace NFluent.Helpers
                     continue;
                 }
 
-                var expectedValue = this.Value == null ? null : info.GetValue(this.Value);
+                var expectedValue = info.GetValue(this.Value);
                 var extended = BuildFromField(this.MemberLongName, info.Name, info.FieldType, expectedValue,
                     this.Criteria);
                 if (extended == null)

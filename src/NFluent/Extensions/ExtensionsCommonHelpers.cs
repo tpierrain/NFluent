@@ -16,7 +16,6 @@
 namespace NFluent.Extensions
 {
     using System;
-    using System.CodeDom;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -334,7 +333,7 @@ namespace NFluent.Extensions
                 return true;
             }
             
-            return info!=null && info.DeclaringType == type;
+            return info.DeclaringType == type;
         }
 
         /// <summary>

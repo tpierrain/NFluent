@@ -56,7 +56,7 @@ namespace NFluent.Extensibility
         /// </remarks>
         private FluentMessage(string message)
         {
-            this.message = message ?? throw new ArgumentNullException(nameof(message));
+            this.message = message;
             this.checkedNamingLogic = new EntityNamingLogic();
             this.expectedNamingLogic = new EntityNamingLogic();
             this.checkedLabel = GenericLabelBlock.BuildCheckedBlock(this.checkedNamingLogic);

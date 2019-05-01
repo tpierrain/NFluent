@@ -50,6 +50,7 @@ namespace NFluent.Helpers
                 .FailIfNull("The check succeeded whereas it should have failed.")
                 .FailWhen((sut) => !ExceptionHelper.IsFailedException(sut),
                     $"The exception raised is not of the expected type.")
+                .DefineExpectedType(ExceptionHelper.BuildException("").GetType())
                 .CheckSutAttributes((sut) => sut.Message.SplitAsLines(), "error message")
                 .Analyze((messageLines, test) =>
                 {
@@ -127,9 +128,9 @@ namespace NFluent.Helpers
                 .SetSutName("fluent check")
                 .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
                 .FailIfNull("The fluent check did not raise an exception, where as it must.")
-                .FailWhen((sut) => !ExceptionHelper.IsIgnoredException(sut),
+                .FailWhen((sut) => !ExceptionHelper.IsInconclusiveException(sut),
                     "The exception raised is not of the expected type").
-                DefineExpectedType(ExceptionHelper.BuildException(string.Empty).GetType()).
+                DefineExpectedType(ExceptionHelper.BuildInconclusiveException(string.Empty).GetType()).
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

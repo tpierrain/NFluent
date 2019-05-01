@@ -244,15 +244,15 @@ namespace NFluent
             return result;
         } 
 #endif
-        public static bool IsNullOrWhiteSpace(string texte)
+        public static bool IsNullOrWhiteSpace(string testedText)
         {
 #if DOTNET_20 || DOTNET_30 || DOTNET_35
-            if (string.IsNullOrEmpty(texte))
+            if (string.IsNullOrEmpty(testedText))
             {
                 return true;
             }
 
-            foreach (var character in texte)
+            foreach (var character in testedText)
             {
                 if (!char.IsWhiteSpace(character))
                 {
@@ -261,7 +261,7 @@ namespace NFluent
             }
             return true;
 #else
-            return string.IsNullOrWhiteSpace(texte);
+            return string.IsNullOrWhiteSpace(testedText);
 #endif
         }
 
@@ -282,7 +282,6 @@ namespace NFluent
 #endif
         }
 
-
 #if NETSTANDARD1_3
         public static long GetLongLength(this System.Array array, int index)
         {
@@ -302,9 +301,8 @@ namespace NFluent
 
         public static bool IsInstanceOfType(this System.Type type, object instance)
         {
-            return instance == null ? false : type.GetTypeInfo().IsAssignableFrom(instance.GetType().GetTypeInfo());
+            return type.GetTypeInfo().IsAssignableFrom(instance.GetType().GetTypeInfo());
         }
 #endif
-
     }
 }

@@ -192,9 +192,9 @@ namespace NFluent
         public static ILambdaExceptionCheck<Exception> ThrowsAny(this ICodeCheck<RunTrace> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .OnNegate("The checked code raised an exception, whereas it must not.")
                 .SetSutName("code")
                 .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
+                .OnNegate("The checked code raised an exception, whereas it must not.")
                 .FailIfNull("The checked code did not raise an exception, whereas it must.")
                 .EndCheck();
             var checker = ExtensibilityHelper.ExtractCodeChecker(check);

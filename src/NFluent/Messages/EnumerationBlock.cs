@@ -25,13 +25,7 @@ namespace NFluent.Messages
     /// </summary>
     internal class EnumerationBlock : IValueDescription
     {
-        #region Constants
-
         private const int NumberOfItemsToList = 20;
-
-        #endregion
-
-        #region Fields
 
         /// <summary>
         /// The tested object.
@@ -51,11 +45,6 @@ namespace NFluent.Messages
         private bool fullTypeName;
 
         /// <summary>
-        /// The include hash.
-        /// </summary>
-        private bool includeHash;
-
-        /// <summary>
         /// The include type.
         /// </summary>
         private bool includeType;
@@ -64,10 +53,6 @@ namespace NFluent.Messages
         /// The instance type.
         /// </summary>
         private Type type;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumerationBlock" /> class.
@@ -80,10 +65,6 @@ namespace NFluent.Messages
             this.referenceIndex = referenceIndex;
             this.type = test.GetTypeWithoutThrowingException();
         }
-
-        #endregion
-
-        #region Public Methods and Operators
 
         /// <summary>
         /// Gets the message as a string.
@@ -126,7 +107,6 @@ namespace NFluent.Messages
         /// </param>
         public void WithHashCode(bool active = true)
         {
-            this.includeHash = active;
         }
 
         /// <summary>
@@ -159,10 +139,6 @@ namespace NFluent.Messages
             this.includeType = true;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The description.
         /// </summary>
@@ -184,7 +160,5 @@ namespace NFluent.Messages
 
             return description.ToString();
         }
-
-        #endregion
     }
 }

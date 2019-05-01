@@ -53,8 +53,8 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.ThatCode(() => 0).IsAFailingCheckWithMessage("don't care"))
                 .IsAFailingCheckWithMessage("", 
                     "The check succeeded whereas it should have failed.", 
-                    "The expected fluent check's raised exception's error message:", 
-                    "\t{\"don't care\"} (1 item)");
+                    "The expected fluent check's raised exception:", 
+                    "#\tan instance of .*");
 
             Check.ThatCode(() =>
                 // check with an incomplete error message
@@ -117,10 +117,10 @@ namespace NFluent.Tests
                     .IsAFailingCheckWithMessage("#[pous]+")
             ).IsAFailingCheckWithMessage("", 
                 "The exception raised is not of the expected type.", 
-                "The checked fluent check's raised exception's error message:", 
-                "\t{\"oups\"} (1 item)", 
-                "The expected fluent check's raised exception's error message:", 
-                "\t{\"#[pous]+\"} (1 item)");
+                "The checked fluent check's raised exception:", 
+                "\t[{System.Exception}: 'oups'] of type: [System.Exception]", 
+                "The expected fluent check's raised exception:", 
+                "#\tan instance of .*");
         }
 
         [Test]

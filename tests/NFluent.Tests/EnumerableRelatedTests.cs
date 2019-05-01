@@ -623,7 +623,7 @@ namespace NFluent.Tests
 
         #endregion
 
-        // item #183
+        // GH #183
         [Test]
         public void ShouldProvideItemExploration()
         {
@@ -656,6 +656,14 @@ namespace NFluent.Tests
                 "\t[\"bar\"]", 
                 "The expected [element #2]:", 
                 "\t[\"hope\"]");
+        }
+
+        [Test]
+        public void WichFailsWhenNoItemSelected()
+        {
+            IEnumerable<string> randomWords = new List<string>{"yes", "foo"};
+            Check.ThatCode(() => Check.That(randomWords).Not.HasElementAt(3).Which.IsEqualTo("hope")).Throws<InvalidOperationException>()
+                .WithMessage("You cannot use Which when no item is selected.");
         }
 
         [Test]

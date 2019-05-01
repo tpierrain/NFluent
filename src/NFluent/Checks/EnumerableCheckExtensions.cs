@@ -409,14 +409,15 @@ namespace NFluent
             this ICheck<IEnumerable<T>> check, int index)
         {
             var item = default(T);
+            bool success = false;
             ExtensibilityHelper.BeginCheck(check)
                 .FailIfNull($"The {{0}} is null, whereas it must have an element with number {index}.")
-                .FailWhen(sut => !TryGetElementByNumber(sut, index, out item),
+                .FailWhen(sut => !(success = TryGetElementByNumber(sut, index, out item)),
                     $"The {{0}} does not have an element at index {index}.")
                 .OnNegate($"The {{0}} does have an element at index {index} whereas it should not.")
                 .EndCheck();
             
-            return ExtensibilityHelper.BuildCheckLinkWhich(check, item, $"element #{index}");
+            return ExtensibilityHelper.BuildCheckLinkWhich(check, item, $"element #{index}", success);
         }
 
         /// <summary>

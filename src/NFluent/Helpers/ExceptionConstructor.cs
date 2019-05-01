@@ -104,12 +104,6 @@ namespace NFluent.Helpers
             return this.assertExceptionBuilder(message);
         }
 
-        public Exception BuildIgnoreException(string message)
-        {
-            return (this.ignoreExceptionBuilder ??
-                    this.inconclusiveExceptionBuilder ?? this.assertExceptionBuilder)(message);
-        }
-
         public Exception BuildInconclusiveException(string message)
         {
             return (this.inconclusiveExceptionBuilder ??
@@ -121,10 +115,10 @@ namespace NFluent.Helpers
             return exc.GetTypeWithoutThrowingException() == this.assertExceptionType;
         }
 
-        public bool IsIgnoredException(Exception exc)
+        public bool IsInconclusiveException(Exception exc)
         {
-            return exc.GetTypeWithoutThrowingException() == (this.ignoreExceptionType ??
-                   this.inconclusiveExceptionType ?? this.assertExceptionType);
+            return exc.GetTypeWithoutThrowingException() == (this.inconclusiveExceptionType ??
+                   this.ignoreExceptionType ?? this.assertExceptionType);
         }
     }
 }

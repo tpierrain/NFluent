@@ -51,8 +51,10 @@ namespace NFluent.Tests
             var checker = fluentChecker.Checker;
 
             Check.ThatCode(() =>
-                checker.BeginCheck().FailIfNull().CheckSutAttributes(point => point.x, "x coordinate")
-                    .FailWhen(i => i > 0, "Should be positive").EndCheck()).IsAFailingCheckWithMessage("", "The checked value's x coordinate is null.");
+                checker.BeginCheck().
+                    FailIfNull().
+                    CheckSutAttributes(point => point.x, "x coordinate")
+                    .FailWhen(i => i > 0, "Should be positive").EndCheck()).IsAFailingCheckWithMessage("", "The checked value is null.");
         }
 
 

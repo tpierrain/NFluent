@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="TypeEnumerationValue.cs" company="NFluent">
-//   Copyright 2019 Thomas PIERRAIN & Cyrille DUPUYDAUBY
+//  <copyright file="xUnitTest.cs" company="NFluent">
+//   Copyright 2019 Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -13,29 +13,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NFluent.Messages
+namespace NFluent.Tests.Core.xUnit
 {
     using System;
-    using System.Collections.Generic;
-    using Extensions;
-#if !DOTNET_20 && !DOTNET_30
-    using System.Linq;
-#endif
+    using Xunit;
 
-    internal class TypeEnumerationValue : ISelfDescriptiveValue
+    public class xUnitTest
     {
-        private readonly IEnumerable<Type> types;
-
-        public TypeEnumerationValue(IEnumerable<Type> types)
+        [Fact]
+        public void BasicAssertionTest()
         {
-            this.types = types;
-        }
-
-        public string ValueDescription => $"an instance of these types {this}";
-
-        public override string ToString()
-        {
-            return  $"{{{string.Join(", ", this.types.Select(x => x.ToStringProperlyFormatted()).ToArray())}}}";
+            Check.ThatCode(() =>
+                Check
+                    .That(new Exception())
+                    .IsSameReferenceAs(new Exception())).Throws<FluentCheckException>();
         }
     }
 }

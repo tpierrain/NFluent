@@ -52,7 +52,7 @@ namespace NFluent.Helpers
         private static ExceptionConstructor constructors;
         private static readonly string ExceptionSeparator = Environment.NewLine + "--> ";
 
-        private static readonly Dictionary<TestFramework, ExceptionConstructor> exceptions =
+        private static readonly Dictionary<TestFramework, ExceptionConstructor> Exceptions =
             new Dictionary<TestFramework, ExceptionConstructor>();
 
         private const string Patterns = 
@@ -70,13 +70,13 @@ namespace NFluent.Helpers
                 }
                 
                 // we need to identify required exception types
-                exceptions[TestFramework.None] = new ExceptionConstructor(typeof(FluentCheckException), (message) => new FluentCheckException(message));
+                Exceptions[TestFramework.None] = new ExceptionConstructor(typeof(FluentCheckException), (message) => new FluentCheckException(message));
 
                 InitCache(Patterns);
 
                 foreach (var id in Enum.GetValues(typeof(TestFramework)))
                 {
-                    var builder = exceptions[(TestFramework) id];
+                    var builder = Exceptions[(TestFramework) id];
                     if (builder.IsSupported())
                     {
                         constructors = builder;
@@ -94,7 +94,7 @@ namespace NFluent.Helpers
             {
                 var parameters = line.Split(',');
                 var testFrameworkId = (TestFramework)Enum.Parse(typeof(TestFramework), parameters[0]);
-                exceptions[testFrameworkId] = new ExceptionConstructor(parameters[1], parameters[2], parameters[3], parameters[4], parameters[5]);
+                Exceptions[testFrameworkId] = new ExceptionConstructor(parameters[1], parameters[2], parameters[3], parameters[4], parameters[5]);
             }
             ExceptionScanner();
         }
@@ -102,10 +102,9 @@ namespace NFluent.Helpers
         private static void ExceptionScanner()
         {
 #if !(PORTABLE) && !(NETSTANDARD1_3)
-            foreach (var assembly in
-                    AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach (var exceptionConstructor in exceptions.Values)
+                foreach (var exceptionConstructor in Exceptions.Values)
                 {
                     if (exceptionConstructor.ScanAssembly(assembly))
                     {
@@ -131,9 +130,9 @@ namespace NFluent.Helpers
         /// </summary>
         /// <param name="theMessage">The message to build the exception with.</param>
         /// <returns>An exception instance of the appropriate type with the given message.</returns>
-        public static Exception BuildIgnoreException(string theMessage)
+        public static Exception BuildInconclusiveException(string theMessage)
         {
-            return Constructors.BuildIgnoreException(theMessage);
+            return Constructors.BuildInconclusiveException(theMessage);
         }
 
         /// <summary>
@@ -143,20 +142,18 @@ namespace NFluent.Helpers
         /// <returns>true if the exception is of a correct type</returns>
         public static bool IsFailedException(Exception exc)
         {
-            return exc is FluentCheckException || Constructors.IsFailedException(exc);
+            return Constructors.IsFailedException(exc);
         }
 
         /// <summary>
-        /// Checks if an object is an instance of a failed assumption exception.
+        /// Checks if an object is an instance of a failed assertion exception.
         /// </summary>
         /// <param name="exc">Exception to check</param>
         /// <returns>true if the exception is of a correct type</returns>
-        public static bool IsIgnoredException(Exception exc)
+        public static bool IsInconclusiveException(Exception exc)
         {
-            return exc is FluentCheckException || Constructors.IsIgnoredException(exc);
-
+            return Constructors.IsInconclusiveException(exc);
         }
-        // ncrunch: no coverage end
 
         /// <summary>
         /// Return a string containing the complete stack trace of the InnerExceptions for the given Exception.

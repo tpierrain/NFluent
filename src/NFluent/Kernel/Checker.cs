@@ -101,7 +101,7 @@ namespace NFluent.Kernel
         public ICheck<TU> ExtractSub<TU>(Func<T, TU> extractor, string label)
         {
             var sub = this.fluentSut.Extract(extractor,
-                value => value.SutName == null ? label : $"{value.SutName.EntityName}'s {label}");
+                value => $"{value.SutName.EntityName}'s {label}");
             return new FluentCheck<TU>(sub, this.Negated);
         }
 

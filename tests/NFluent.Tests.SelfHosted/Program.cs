@@ -15,7 +15,7 @@
             {
                 BasicTest();
                 ExceptionScanTest();
-
+                AssumptionTest();
             }
             catch (Exception e)
             {
@@ -23,6 +23,12 @@
                 return -1;
             }
             return 0;
+        }
+
+        private static void AssumptionTest()
+        {
+            Check.ThatCode(() => Assuming.That(2).IsEqualTo(3)).Throws<FluentCheckException>();
+            Check.ThatCode(() => Assuming.That(2).IsEqualTo(3)).IsaFailingAssumption();
         }
 
         public static void BasicTest()

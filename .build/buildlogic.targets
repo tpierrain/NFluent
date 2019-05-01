@@ -3,9 +3,9 @@
 
   <!--Configuration informations-->
   <PropertyGroup>
-    <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.6.519</opencoverVersion>
-    <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">4.0.5</reportGeneratorVersion>
-    <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.9.0</nunitConsoleVersion>
+    <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.7.922</opencoverVersion>
+    <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">4.1.4</reportGeneratorVersion>
+    <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.10.0</nunitConsoleVersion>
     <xunitConsoleVersion Condition="'$(xunitConsoleVersion)' == ''">2.4.1</xunitConsoleVersion>
 
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>
@@ -282,7 +282,7 @@ RUN ALL UNIT TESTS
     <Exec Command='"$(NuGetExePath)" install opencover -o "$(NuGetToolsPath)" -version $(opencoverVersion)'/>
 
     <Message Importance="normal" Text="Cover for %(TestRun.Identity) : $(CoverageDataFile) -mergeoutput " Condition="'%(TestRun.Coverage)'=='true'"/>
-    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -searchdirs:%(TestRun.RelativeDir) -register:user -filter:"+[*]* -[*.Tests*]* -[*]NUnit.*" -excludebyattribute:*.Obsolete*  -output:"$(CoverageDataFile)" -mergeoutput -mergebyhash -"targetargs:%(TestRun.Args)"'
+    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -target:%(TestRun.Runner) -searchdirs:%(TestRun.RelativeDir) -register:user -filter:"+[*]* -[*.Tests*]* -[nunit*]* -[NUnit*]* -[xunit*]*" -excludebyattribute:*.Obsolete*  -output:"$(CoverageDataFile)" -mergeoutput -mergebyhash -"targetargs:%(TestRun.Args)"'
           Condition="'%(TestRun.Coverage)'=='true'"/>
     <Message Importance="high" Text="--------- end of Coverage ---------"/>
   </Target>

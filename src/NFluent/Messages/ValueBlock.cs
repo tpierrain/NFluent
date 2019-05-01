@@ -25,9 +25,7 @@ namespace NFluent.Messages
     internal class ValueBlock : IValueDescription
     {
         private readonly object value;
-
         private bool fullTypeName;
-
         private bool includeHash;
         private bool includeType;
         private Type type;

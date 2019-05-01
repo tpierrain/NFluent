@@ -39,8 +39,7 @@ namespace NFluent
                 FailWhen(sut => sut== null && !typeof(T).IsNullable(), $"The {{checked}} is not an instance of [{type.ToStringProperlyFormatted()}].").
                 Analyze((sut, test) =>
                 {
-                    var reflectionSut = sut as ReflectionWrapper;
-                    if (reflectionSut != null)
+                    if (sut is ReflectionWrapper reflectionSut)
                     {
                         var expectedWrapper = ReflectionWrapper.BuildFromType(type, reflectionSut.Criteria);
                         expectedWrapper.MapFields(reflectionSut, 1, (expected, actual, depth) =>
@@ -106,22 +105,21 @@ namespace NFluent
             }
                 
             ExtensibilityHelper.BeginCheck(context)
-                .OnNegateWhen(sut => sut== null, "The checked object is null.")
-                .CheckSutAttributes( sut => sut.GetTypeWithoutThrowingException(), "type")
+                .OnNegateWhen(sut => sut== null, "The checked object is null.", MessageOption.WithType)
+                .DefinePossibleTypes(types, "anything but", "")
                 .Analyze((sut, test) =>
                 {
                         foreach (var type in types)
                         {
-                            if (sut == type)
+                            if (sut.GetTypeWithoutThrowingException() == type)
                             {
                                 test.Fail(
-                                    $"The {{0}} is [{type.ToStringProperlyFormatted()}] where as it must not.");
+                                    $"The {{0}}'s type is [{type.ToStringProperlyFormatted()}] where as it must not.", MessageOption.WithType);
                                 break;
                             }
                         }
                 })
-                .DefineExpectedValue(new TypeEnumerationValue(types), "anything but", "")
-                .OnNegate($"The {{0}} is not one of the expected types.")
+                .OnNegate($"The {{0}}'s type is not one of the expected types.", MessageOption.WithType)
                 .EndCheck();
                 
             return ExtensibilityHelper.BuildCheckLink(context);

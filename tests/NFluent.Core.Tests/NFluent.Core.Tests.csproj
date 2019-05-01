@@ -35,13 +35,6 @@
     <None Remove="NFluent.Core.Tests.v3.ncrunchproject" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\src\NFluent\T4\NumberFluentAssertionGenerator.txt">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>NumberFluentAssertionGenerator.tt</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Properties\" />
     <Folder Include="Properties\" />
   </ItemGroup>
