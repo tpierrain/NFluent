@@ -3,7 +3,7 @@
   <metadata>
     <id>NFluent</id>
     <title>NFluent, smooth your .NET TDD experience!</title>
-    <version>2.5.1-alpha-0000</version>
+    <version>2.6.0-alpha-0000</version>
     <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR</authors>
     <owners>Thomas PIERRAIN</owners>
     <license type="expression">Apache-2.0</license>
@@ -12,12 +12,15 @@
     <iconUrl>https://raw.github.com/tpierrain/NFluent/master/Images/Icon.png</iconUrl>
     <description>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).</description>
     <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
-    <releaseNotes>## V 2.5.1
+    <releaseNotes>## V 2.6.0
+### New feature
+* NFluent now supports assumption through Assume keyword. Full documentation to be provided for official release
 ### Improvements
 * Actual and expected value naming has been redesigned to improve naming accuracy. Impact vary depending on checks and types.
 ### Fixes
 * Fix issue with IEnumerable&lt;object&gt; and Contains(Exactly), IsEqualTo, IsEquivalentTo.
 * Several error messages have been improved due to fix on check helpers.
+* NotSupportedException when using ContainsExactly on strings.
 ### Extensibility
 * ICheckLogic.DefineExpectedValues now expects an generic IEnumerable&lt;T&gt; instead of a plain IEnumerable
 * you can use ICheckLogic.DefinePossibleTypes if you need to have a list of possible types for the sut (displayed in the error message)
@@ -26,7 +29,7 @@
 exception's message when the issue is the exception's type.
 * add a flag (boolean) to BuildCheckLinkWhich method (allows to provide subitem check) that allows to speciyf sub item is available.
 ### GitHub Issues
-* #292
+* #292, #295, #296, #297, #299
 ## V 2.5.0
 ### Main feature
 * **CaptureConsole class** mocks the system console. Using it you can inject/simulate
