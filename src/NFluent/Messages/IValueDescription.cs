@@ -57,10 +57,7 @@ namespace NFluent.Messages
         /// <param name="active">
         /// True to include the type. This is the default value.
         /// </param>
-        /// <param name="full">
-        /// True to display the full type name (with assembly).
-        /// </param>
-        void WithType(bool active = true, bool full = false);
+        void WithType(bool active = true);
 
         /// <summary>
         /// Requests that a specific type is included in the description block.

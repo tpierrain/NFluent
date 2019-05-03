@@ -173,11 +173,10 @@ namespace NFluent
         private static void ImplementContainsExactly<T, TU>(ICheckLogic<T> test, IEnumerable<TU> enumerable) where T:IEnumerable<TU>
         {
             var count = enumerable?.Count() ?? 0;
-            test.DefineExpectedValues(enumerable, count).FailWhen(sut => sut == null && enumerable != null,
-                "The {0} is null and thus does not contain exactly the {1}.", MessageOption.NoCheckedBlock).FailWhen(
-                sut => sut != null && enumerable == null, "The {0} is not null whereas it should.",
-                MessageOption.NoExpectedBlock).OnNegate("The {0} contains exactly the given values whereas it must not.",
-                MessageOption.NoExpectedBlock);
+            test.DefineExpectedValues(enumerable, count).
+                FailWhen(sut => sut == null && enumerable != null, "The {0} is null and thus does not contain exactly the {1}.", MessageOption.NoCheckedBlock).
+                FailWhen(sut => sut != null && enumerable == null, "The {0} is not null whereas it should.", MessageOption.NoExpectedBlock).
+                OnNegate("The {0} contains exactly the given values whereas it must not.", MessageOption.NoExpectedBlock);
             test.Analyze((sut, runner) =>
             {
                 if (sut == null)
@@ -211,12 +210,14 @@ namespace NFluent
                             index++;
                         }
 
-                        if (second.MoveNext() && !failed)
+                        if (!second.MoveNext() || failed)
                         {
-                            test.Fail(
-                                $"The {{0}} does not contain exactly the expected value(s). Elements are missing starting at index #{index}.");
-                            test.SetValuesIndex(index);
+                            return;
                         }
+
+                        test.Fail(
+                            $"The {{0}} does not contain exactly the expected value(s). Elements are missing starting at index #{index}.");
+                        test.SetValuesIndex(index);
 
                     }
                 }

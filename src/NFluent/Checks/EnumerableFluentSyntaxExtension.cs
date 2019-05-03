@@ -140,9 +140,8 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> InThatOrder<T>(this IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> check)
         {
-            IExtendableCheckLink<ICheck<IEnumerable<T>>, IEnumerable<T>> chainedCheckLink = check;
-            var orderedList = new List<T>(chainedCheckLink.OriginalComparand);
-            var checker = ExtensibilityHelper.BeginCheck(chainedCheckLink.AccessCheck);
+            var orderedList = new List<T>(check.OriginalComparand);
+            var checker = ExtensibilityHelper.BeginCheck(check.AccessCheck);
                 ImplementInThatOrder(checker, orderedList);
             return check;
         }
@@ -158,9 +157,8 @@ namespace NFluent
         /// </returns>
         public static IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> InThatOrder(this IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> check)
         {
-            IExtendableCheckLink<ICheck<IEnumerable>, IEnumerable> chainedCheckLink = check;
-            var orderedList = new List<object>(chainedCheckLink.OriginalComparand.Cast<object>());
-            var checker = ExtensibilityHelper.BeginCheckAs(chainedCheckLink.AccessCheck, enumerable => enumerable.Cast<object>());
+            var orderedList = new List<object>(check.OriginalComparand.Cast<object>());
+            var checker = ExtensibilityHelper.BeginCheckAs(check.AccessCheck, enumerable => enumerable.Cast<object>());
                 ImplementInThatOrder(checker, orderedList);
             return check;
         }

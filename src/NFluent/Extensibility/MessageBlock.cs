@@ -54,7 +54,7 @@ namespace NFluent.Extensibility
         {
             this.message = message;
             this.block = block;
-            if (!(test is string) && (forceArray || (test is IEnumerable)))
+            if (test.GetTypeWithoutThrowingException().IsAnEnumeration(forceArray))
             {
                 this.value = new EnumerationBlock((IEnumerable)test, index);
             }
@@ -165,15 +165,12 @@ namespace NFluent.Extensibility
         /// <param name="active">
         /// True to include the type. This is the default value.
         /// </param>
-        /// <param name="full">
-        /// True to display the full type name (with assembly).
-        /// </param>
         /// <returns>
         /// Returns this instance for chained calls.
         /// </returns>
-        public MessageBlock WithType(bool active = true, bool full = false)
+        public MessageBlock WithType(bool active = true)
         {
-            this.value.WithType(active, full);
+            this.value.WithType(active);
             return this;
         }
 

@@ -28,7 +28,7 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
-        // GH 292
+        // GH #292
         [Test]
         public void Awkward_behaviour_with_NFluent()
         {
@@ -44,9 +44,18 @@ namespace NFluent.Tests.FromIssues
             
             CollectionAssert.AreEquivalent(expected, toBeChecked);  // OK 
             CollectionAssert.AreEqual(expected, toBeChecked);       // OK
-
             Check.That(toBeChecked).IsEquivalentTo(expected);      // KO ;-(
 
+        }
+
+        // GH #292
+        [Test]
+        public void Exception()
+        {
+            IEnumerable<char> e1 = "test";
+            IEnumerable<char> e2 = "test2";
+
+            Check.ThatCode(() =>  Check.That(e1).ContainsExactly(e2)).IsAFaillingCheck();
         }
 
         // GH #290
@@ -56,9 +65,7 @@ namespace NFluent.Tests.FromIssues
             var dict = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
             var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
             Check.That(dict).IsEqualTo(expected);
-
             Check.That(dict).IsEquivalentTo(expected);
-
 #if DOTNET_45
             var value = new ReadOnlyDictionary<string, object>(dict);
             Check.That(value).IsEqualTo(expected);
@@ -162,6 +169,7 @@ namespace NFluent.Tests.FromIssues
         {
 
         }
+
         // GH #244
         [Test]
         public void Test_Enum_That_Should_Be_In_Error_But_Is_Not()

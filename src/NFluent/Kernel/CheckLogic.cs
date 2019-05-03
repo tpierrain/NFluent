@@ -197,11 +197,6 @@ namespace NFluent.Kernel
                 return;
             }
 
-            if (!this.isRoot && this.LastError == null)
-            {
-                return ;
-            }
-
             var fluentMessage = FluentMessage.BuildMessage(this.LastError);
             if (!string.IsNullOrEmpty(this.fluentSut.CustomMessage))
             {
@@ -240,8 +235,11 @@ namespace NFluent.Kernel
                 }
                 else if (this.expectedKind == ValueKind.Values)
                 {
-                    block = fluentMessage.ExpectedValues(this.expected, this.index)
-                        .WithEnumerableCount(this.expectedCount);
+                    block = fluentMessage.ExpectedValues(this.expected, this.index);
+                    if (this.expected is IEnumerable list && !(this.expected is string))
+                    {
+                        block.WithEnumerableCount(this.expected is ICollection collection ? collection.Count: list.Count());
+                    }
                 }
                 else if (this.expectedKind == ValueKind.Types)
                 {

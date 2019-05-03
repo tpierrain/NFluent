@@ -16,6 +16,7 @@
 namespace NFluent.Extensions
 {
     using System;
+    using System.Collections;
     using System.Reflection;
 
 #if !DOTNET_30 && !DOTNET_20
@@ -24,14 +25,24 @@ namespace NFluent.Extensions
 
     internal static class ObjectExtensions
     {
-        private const BindingFlags BindingFlagsAll = BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic;
 
+#if !NETSTANDARD1_3 && !DOTNET_45
         /// <summary>
-        /// Gets the type of the specified reference, or null if it is null.
+        /// Stub implementation for GetTypeInfo() for Net Framework.
         /// </summary>
-        /// <param name="reference">The reference we interested in retrieving the type (may be null).</param>
+        /// <param name="instance">Type to dig into.</param>
+        /// <returns>An instance allowing to use reflection.</returns>
+        public static Type GetTypeInfo(this Type instance)
+        {
+            return instance;
+        }
+#endif
+        /// <summary>
+        /// Gets the instance of the specified reference, or null if it is null.
+        /// </summary>
+        /// <param name="reference">The reference we interested in retrieving the instance (may be null).</param>
         /// <returns>
-        /// The type of the specified reference, or null if the reference is null.
+        /// The instance of the specified reference, or null if the reference is null.
         /// </returns>
         public static Type GetTypeWithoutThrowingException<T>(this T reference)
         {
@@ -43,38 +54,16 @@ namespace NFluent.Extensions
             return reference?.GetType() ?? defaultType;
         }
 
-#if !NETSTANDARD1_3 && !DOTNET_45
         /// <summary>
-        /// Stub implementation for GetTypeInfo() for Net Framework.
+        /// Returns true if the provided instance implements IEnumerable, disregarding well known enumeration (string).
         /// </summary>
-        /// <param name="type">Type to dig into.</param>
-        /// <returns>An instance allowing to use reflection.</returns>
-        public static Type GetTypeInfo(this Type type)
+        /// <typeparam name="T">instance of the provided instance</typeparam>
+        /// <param name="instance">instance to asses</param>
+        /// <param name="evenWellKnown">treat well known enumerations (string) as enumeration as well</param>
+        /// <returns>true is <see paramref="instance"/> should treated as an enumeration.</returns>
+        public static bool IsAnEnumeration<T>(this T instance, bool evenWellKnown)
         {
-            return type;
+            return instance is IEnumerable && (evenWellKnown || !(instance is string));
         }
-#endif
-        /// <summary>
-        /// Checks if a type has at least one attribute of a give type.
-        /// </summary>
-        /// <param name="type">Type to check</param>
-        /// <param name="attribute">Attribute type to check for.</param>
-        /// <returns>True if <paramref name="type"/> cref="type"/> has a least one attribute of type <paramref name="attribute"/>, false otherwise.</returns>
-        public static bool TypeHasAttribute(this Type type, Type attribute)
-        {
-            return type.GetTypeInfo().GetCustomAttributes(false)
-                .Any(customAttribute => customAttribute.GetType() == attribute);
-        }
-
-        /// <summary>
-        /// Checks if a type possesses at least a field or a property.
-        /// </summary>
-        /// <param name="type">Type to be checked</param>
-        /// <returns>true if the type as at least one field or property</returns>
-        public static bool TypeHasMember(this Type type)
-        {
-            return type.GetFields(BindingFlagsAll).Any() || type.GetProperties(BindingFlagsAll).Any();
-        }
-
     }
 }

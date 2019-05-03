@@ -1,4 +1,7 @@
-## V 2.5.1
+## V 2.6.0
+
+### New feature
+* NFluent now supports assumption through Assume keyword. Full documentation to be provided for official release
 
 ### Improvements
 * Actual and expected value naming has been redesigned to improve naming accuracy. Impact vary depending on checks and types.
@@ -6,6 +9,7 @@
 ### Fixes
 * Fix issue with IEnumerable<object> and Contains(Exactly), IsEqualTo, IsEquivalentTo.
 * Several error messages have been improved due to fix on check helpers.
+* NotSupportedException when using ContainsExactly on strings.
 
 ### Extensibility
 * ICheckLogic.DefineExpectedValues now expects an generic IEnumerable<T> instead of a plain IEnumerable
@@ -16,7 +20,7 @@ exception's message when the issue is the exception's type.
 * add a flag (boolean) to BuildCheckLinkWhich method (allows to provide subitem check) that allows to speciyf sub item is available.
 
 ### GitHub Issues
-* #292
+* #292, #295, #296, #297, #299
 
 ## V 2.5.0
 ### Main feature

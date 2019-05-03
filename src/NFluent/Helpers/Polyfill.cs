@@ -234,6 +234,18 @@ namespace NFluent
             }
             return false;
         }
+
+        public static bool Contains<T>(this IEnumerable<T> list, T lookup)
+        {
+            foreach (var item in list)
+            {
+                if (object.Equals(lookup, item))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     
         public static IEnumerable<TR> Select<T, TR>(this IEnumerable<T> list, Func<T, TR> selector) {
             var result = new List<TR>();

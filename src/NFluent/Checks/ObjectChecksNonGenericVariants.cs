@@ -19,7 +19,6 @@ namespace NFluent
     using Extensibility;
     using Extensions;
     using Helpers;
-    using Messages;
 
     /// <summary>
     /// Hosts non generic variants of some checks.

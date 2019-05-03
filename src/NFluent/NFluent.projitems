@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\ICheckLogicBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\MessageOption.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExceptionConstructor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\InconclusiveExceptionReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ISelfDescriptiveValue.cs" />

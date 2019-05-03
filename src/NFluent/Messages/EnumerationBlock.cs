@@ -40,11 +40,6 @@ namespace NFluent.Messages
         private long? enumerableCount;
 
         /// <summary>
-        /// The full type name.
-        /// </summary>
-        private bool fullTypeName;
-
-        /// <summary>
         /// The include type.
         /// </summary>
         private bool includeType;
@@ -79,10 +74,7 @@ namespace NFluent.Messages
 
             if (this.includeType && this.type != null)
             {
-                var temp = this.fullTypeName
-                    ? this.type.AssemblyQualifiedName
-                    : this.type.ToStringProperlyFormatted();
-                builder.AppendFormat(" of type: [{0}]", temp);
+                builder.AppendFormat(" of type: [{0}]", this.type.ToStringProperlyFormatted());
             }
 
             return builder.ToString();
@@ -115,12 +107,8 @@ namespace NFluent.Messages
         /// <param name="active">
         /// True to include the type. This is the default value.
         /// </param>
-        /// <param name="full">
-        /// True to display the full type name (with assembly).
-        /// </param>
-        public void WithType(bool active = true, bool full = false)
+        public void WithType(bool active = true)
         {
-            this.fullTypeName = full;
             this.includeType = active;
         }
 

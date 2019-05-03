@@ -25,7 +25,6 @@ namespace NFluent.Messages
     internal class ValueBlock : IValueDescription
     {
         private readonly object value;
-        private bool fullTypeName;
         private bool includeHash;
         private bool includeType;
         private Type type;
@@ -55,8 +54,7 @@ namespace NFluent.Messages
 
             if (this.includeType && this.type != null)
             {
-                var temp = this.fullTypeName ? this.type.AssemblyQualifiedName : this.type.ToStringProperlyFormatted();
-                builder.AppendFormat(" of type: [{0}]", temp);
+                builder.AppendFormat(" of type: [{0}]", this.type.ToStringProperlyFormatted());
             }
 
             if (this.includeHash && this.value != null)
@@ -95,12 +93,8 @@ namespace NFluent.Messages
         /// <param name="active">
         /// True to include the type. This is the default value.
         /// </param>
-        /// <param name="full">
-        /// True to display the full type name (with assembly).
-        /// </param>
-        public void WithType(bool active = true, bool full = false)
+        public void WithType(bool active = true)
         {
-            this.fullTypeName = full;
             this.includeType = active;
         }
 
