@@ -11,6 +11,7 @@
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>
     <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
     
+    <OpenCoverFilter>+[*]* -[*.Tests*]* -[nunit*]* -[NUnit*]* -[xunit*]* -[Newtonsoft*]*</OpenCoverFilter>
     <CoverageDataFile>$(SolutionRoot)\$(SolutionName)-coverage.xml</CoverageDataFile>
 
     <PackageStream>alpha</PackageStream>
@@ -282,7 +283,7 @@ RUN ALL UNIT TESTS
     <Exec Command='"$(NuGetExePath)" install opencover -o "$(NuGetToolsPath)" -version $(opencoverVersion)'/>
 
     <Message Importance="normal" Text="Cover for %(TestRun.Identity) : $(CoverageDataFile) -mergeoutput " Condition="'%(TestRun.Coverage)'=='true'"/>
-    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -oldstyle -target:%(TestRun.Runner) -searchdirs:%(TestRun.RelativeDir) -register:user -filter:"+[*]* -[*.Tests*]* -[nunit*]* -[NUnit*]* -[xunit*]*" -excludebyattribute:*.Obsolete*  -output:"$(CoverageDataFile)" -mergeoutput -mergebyhash -"targetargs:%(TestRun.Args)"'
+    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -oldstyle -target:%(TestRun.Runner) -searchdirs:%(TestRun.RelativeDir) -register:user -filter:"$(OpenCoverFilter)" -excludebyattribute:*.Obsolete*  -output:"$(CoverageDataFile)" -mergeoutput -mergebyhash -"targetargs:%(TestRun.Args)"'
           Condition="'%(TestRun.Coverage)'=='true'"/>
     <Message Importance="high" Text="--------- end of Coverage ---------"/>
   </Target>

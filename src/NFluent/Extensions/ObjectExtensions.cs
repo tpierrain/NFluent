@@ -63,7 +63,7 @@ namespace NFluent.Extensions
         /// <returns>true is <see paramref="instance"/> should treated as an enumeration.</returns>
         public static bool IsAnEnumeration<T>(this T instance, bool evenWellKnown)
         {
-            return instance is IEnumerable && (evenWellKnown || !(instance is string));
+            return  instance!= null &&  instance.GetTypeWithoutThrowingException().IsAnEnumeration(evenWellKnown);
         }
     }
 }

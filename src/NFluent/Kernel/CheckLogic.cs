@@ -220,9 +220,9 @@ namespace NFluent.Kernel
 
                 block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
 
-                if (this.fluentSut.Value is IEnumerable list && !(this.fluentSut.Value is string))
+                if (this.fluentSut.Value.IsAnEnumeration(false))
                 {
-                    block.WithEnumerableCount(list.Count());
+                    block.WithEnumerableCount((this.fluentSut.Value as IEnumerable).Count());
                 }
             }
 
@@ -236,9 +236,9 @@ namespace NFluent.Kernel
                 else if (this.expectedKind == ValueKind.Values)
                 {
                     block = fluentMessage.ExpectedValues(this.expected, this.index);
-                    if (this.expected is IEnumerable list && !(this.expected is string))
+                    if (this.expectedCount>0)
                     {
-                        block.WithEnumerableCount(this.expected is ICollection collection ? collection.Count: list.Count());
+                        block.WithEnumerableCount(this.expectedCount);
                     }
                 }
                 else if (this.expectedKind == ValueKind.Types)

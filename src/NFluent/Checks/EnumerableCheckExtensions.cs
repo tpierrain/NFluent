@@ -920,16 +920,11 @@ namespace NFluent
             return enumerable.Cast<object>().Where(element => !values.Contains(element, equalityComparer)).ToList();
         }
 
-        private static bool IsAnEnumerableButNotAnEnumerableOfChars<T>(T element)
-        {
-            return element is IEnumerable && !(element is IEnumerable<char>);
-        }
-
         private static bool IsAOneValueArrayWithOneCollectionInside<T>(T[] expectedValues)
         {
             // For every collections like ArrayList, List<T>, IEnumerable<T>, StringCollection, etc.
             return expectedValues != null && expectedValues.LongLength() == 1 &&
-                   IsAnEnumerableButNotAnEnumerableOfChars(expectedValues[0]);
+                   expectedValues[0].GetTypeWithoutThrowingException().IsAnEnumeration(false);
         }
 
         private static bool TryGetElementByNumber<T>(IEnumerable<T> collection, int number, out T element)

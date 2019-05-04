@@ -188,6 +188,25 @@ namespace NFluent.Tests
                 "The expected value(s):", 
                 "\t[null]");
         }
+        internal static IEnumerable<char> GetData()
+        {
+            yield return 't';
+            yield return 'e';
+            yield return 's';
+            yield return 't';
+        }
+
+        [Test]
+        // GH #299 issue with char enumerations
+        public void GenerateProperErrorWithCharEnumerations()
+        {
+            Check.ThatCode(()=> Check.That(GetData()).ContainsExactly("testt")).IsAFailingCheckWithMessage("", 
+                "The checked enumerable does not contain exactly the expected value(s). Elements are missing starting at index #4.", 
+                "The checked enumerable:", 
+                "\t{'t', 'e', 's', 't'} (4 items)", 
+                "The expected value(s):", 
+                "\t{'t', 'e', 's', 't', 't'} (5 items)");
+        }
 
         [Test]
         public void FailsWithProperMessageWhenNegated()
