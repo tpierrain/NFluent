@@ -75,30 +75,30 @@
         {
             Check.That(new[] { 1, 2 }).HasFieldsWithSameValues(new[] { 1, 2 });
             Check.ThatCode(() => { Check.That(new[] { 1, 2 }).HasFieldsWithSameValues(new[] { 2, 3 }); })
-                .IsAFaillingCheck();
+                .IsAFailingCheck();
         }
 
         [Test]
         public void ShouldFailOnDifferentArrayLength()
         {
             Check.ThatCode(() => { Check.That(new[] { 1, 2 }).HasFieldsWithSameValues(new[] { 1, 2, 3 }); })
-                .IsAFaillingCheck();
+                .IsAFailingCheck();
             Check.ThatCode(() => { Check.That((IEnumerable)new[] { 1, 2 }).HasFieldsWithSameValues((IEnumerable) new[] { 1, 2, 3 }); })
-                .IsAFaillingCheck();
+                .IsAFailingCheck();
         }
 
         [Test]
         public void NotShouldFailOnSameArrays()
         {
             Check.ThatCode(() => { Check.That(new[] { 1, 2 }).Not.HasFieldsWithSameValues(new[] { 1, 2 }); })
-                .IsAFaillingCheck();
+                .IsAFailingCheck();
         }
 
         [Test]
         public void ShouldIdentifyNullArrays()
         {
             Check.ThatCode(() => { Check.That(new[] { 1, 2 }).HasFieldsWithSameValues((int[])null); })
-                .IsAFaillingCheck();
+                .IsAFailingCheck();
         }
 
         [Test]

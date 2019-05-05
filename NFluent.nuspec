@@ -14,7 +14,12 @@
     <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
     <releaseNotes>## V 2.6.0
 ### New feature
-* NFluent now supports assumption through Assume keyword. Full documentation to be provided for official release
+* NFluent now supports assumption through Assume entry point. For example ou express it as :Assume.That(sut).IsEqualTo(expected); in a nutshell
+you type Assume instead of Check. All checks are available. Note that actual support depends on the underlying testing framework. As of now
+it is supported for NUnit and MsTest
+### New checks
+* You can use WhoseSize() to check the size of an enumeration. It is used as an extension keyword, as in:
+Check.That(enum).WhoseSize().IsEqualTo(3)
 ### Improvements
 * Actual and expected value naming has been redesigned to improve naming accuracy. Impact vary depending on checks and types.
 ### Fixes
@@ -29,7 +34,7 @@
 exception's message when the issue is the exception's type.
 * add a flag (boolean) to BuildCheckLinkWhich method (allows to provide subitem check) that allows to speciyf sub item is available.
 ### GitHub Issues
-* #292, #295, #296, #297, #299
+* #291, #292, #295, #296, #297, #299
 ## V 2.5.0
 ### Main feature
 * **CaptureConsole class** mocks the system console. Using it you can inject/simulate

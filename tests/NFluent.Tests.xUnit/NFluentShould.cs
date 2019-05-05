@@ -28,10 +28,9 @@ namespace NFluent.Tests.xUnit
             var temp = new NoNameSpaceType();
             Check.That(ExceptionHelper.BuildException("Test")).IsInstanceOf<XunitException>();
             Check.That(2).IsEqualTo(2);
-            Check.ThatCode(() => Check.That(2).IsEqualTo(0)).IsAFaillingCheck();
+            Check.ThatCode(() => Check.That(2).IsEqualTo(0)).IsAFailingCheck();
         }
 
-        [Fact]
         public void AssumptionScanTest()
         {
             // inject a type from the fuzzing assembly to check for some degenerative case

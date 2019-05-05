@@ -99,12 +99,19 @@ namespace NFluent.Helpers
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
+        /// <inheritdoc cref="IsAFailingCheck"/>
+        [Obsolete("Use IsAFailingCheckWithMessage instead (typo)")]
+        public static ICheckLink<ICodeCheck<RunTrace>> IsAFaillingCheck(this ICodeCheck<RunTrace> check)
+        {
+            return check.IsAFailingCheck();
+        }
+
         /// <summary>
         /// Verify that the code results in a failed NFluent check with a specified message.
         /// </summary>
         /// <param name="check"></param>
         /// <returns>A link check</returns>
-        public static ICheckLink<ICodeCheck<RunTrace>> IsAFaillingCheck(this ICodeCheck<RunTrace> check)
+        public static ICheckLink<ICodeCheck<RunTrace>> IsAFailingCheck(this ICodeCheck<RunTrace> check)
         {
             ExtensibilityHelper.BeginCheck(check)
                 .SetSutName("fluent check")

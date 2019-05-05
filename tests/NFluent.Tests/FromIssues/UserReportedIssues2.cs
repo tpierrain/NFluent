@@ -55,7 +55,7 @@ namespace NFluent.Tests.FromIssues
             IEnumerable<char> e1 = "test";
             IEnumerable<char> e2 = "test2";
 
-            Check.ThatCode(() =>  Check.That(e1).ContainsExactly(e2)).IsAFaillingCheck();
+            Check.ThatCode(() =>  Check.That(e1).ContainsExactly(e2)).IsAFailingCheck();
         }
 
         // GH #290
@@ -104,7 +104,7 @@ namespace NFluent.Tests.FromIssues
             const string haystack = "Hello, {LeMonde}";
             const string needle = "{World}";
             Check.ThatCode(()=>
-            Check.That(haystack).Contains(needle)).IsAFaillingCheck(); // This will intentionally fail
+            Check.That(haystack).Contains(needle)).IsAFailingCheck(); // This will intentionally fail
         }
 
         // GH #258
@@ -186,7 +186,7 @@ namespace NFluent.Tests.FromIssues
                 TestEnumProperty = TestEnum.Test3
             };
             Check.ThatCode(() =>
-                Check.That(testClass2).HasFieldsWithSameValues(testClass1)).IsAFaillingCheck();
+                Check.That(testClass2).HasFieldsWithSameValues(testClass1)).IsAFailingCheck();
         }
 
         public class TestClass

@@ -221,10 +221,10 @@ namespace NFluent.Tests
             Check.That(basic).ContainsValue("bar");
             Check.That(basic).ContainsPair("foo", "bar");
 
-            Check.ThatCode(() => { Check.That(basic).ContainsKey("bar"); }).IsAFaillingCheck();
-            Check.ThatCode(() => { Check.That(basic).ContainsValue("foo"); }).IsAFaillingCheck();
-            Check.ThatCode(() => { Check.That(basic).ContainsPair("bar", "foo"); }).IsAFaillingCheck();
-            Check.ThatCode(() => { Check.That(basic).ContainsPair("foo", "foo"); }).IsAFaillingCheck();
+            Check.ThatCode(() => { Check.That(basic).ContainsKey("bar"); }).IsAFailingCheck();
+            Check.ThatCode(() => { Check.That(basic).ContainsValue("foo"); }).IsAFailingCheck();
+            Check.ThatCode(() => { Check.That(basic).ContainsPair("bar", "foo"); }).IsAFailingCheck();
+            Check.ThatCode(() => { Check.That(basic).ContainsPair("foo", "foo"); }).IsAFailingCheck();
         }
 
         [Test]

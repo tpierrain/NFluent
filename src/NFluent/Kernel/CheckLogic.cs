@@ -40,7 +40,6 @@ namespace NFluent.Kernel
         private readonly FluentSut<T> fluentSut;
         private ICheckLogicBase child;
         private ICheckLogicBase parent;
-        private bool isRoot;
         private string comparison;
         private object expected;
         private long expectedCount;
@@ -52,6 +51,7 @@ namespace NFluent.Kernel
         private long index;
         private string label;
         private string lastError;
+
         private string negatedComparison;
         private string negatedError;
         private bool negatedFailed;
@@ -68,16 +68,15 @@ namespace NFluent.Kernel
         public CheckLogic(FluentSut<T> fluentSut)
         {
             this.fluentSut = fluentSut;
-            this.isRoot = true;
         }
 
         public bool IsNegated => this.fluentSut.Negated;
 
-        public string LastError => this.IsNegated ? this.negatedError : this.lastError;
+        private string LastError => this.IsNegated ? this.negatedError : this.lastError;
 
-        public string Label => this.IsNegated ? this.negatedLabel : this.label;
+        private string Label => this.IsNegated ? this.negatedLabel : this.label;
 
-        public MessageOption Option => this.IsNegated ? this.negatedOption : this.options;
+        private MessageOption Option => this.IsNegated ? this.negatedOption : this.options;
 
         public EntityNamingLogic SutName => this.fluentSut.SutName;
 
@@ -132,7 +131,7 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> Fail(string error, MessageOption noCheckedBlock)
+        public ICheckLogic<T> Fail(string error, MessageOption options)
         {
             this.failed = true;
             if (this.IsNegated)
@@ -141,8 +140,7 @@ namespace NFluent.Kernel
             }
 
             this.lastError = error;
-            this.options |= noCheckedBlock;
-
+            this.options |= options;
             return this;
         }
 
@@ -156,7 +154,7 @@ namespace NFluent.Kernel
         {
             var sutWrapper = this.fluentSut.Extract(sutExtractor,
                 sut => string.IsNullOrEmpty(propertyName) ? sut.SutName.EntityName : $"{sut.SutName.EntityName}'s {propertyName}");
-            var result = new CheckLogic<TU>(sutWrapper) {isRoot = false};
+            var result = new CheckLogic<TU>(sutWrapper);
 
             if (this.cannotBetNegated)
             {
@@ -165,7 +163,6 @@ namespace NFluent.Kernel
 
             result.parentFailed = this.failed;
             result.parentNegatedFailed = this.negatedFailed;
-
             result.parent = this;
 
             this.child = result;
@@ -184,12 +181,9 @@ namespace NFluent.Kernel
                 this.child.EndCheck();
             }
 
-            if (this.isRoot)
+            if (this.parent == null && string.IsNullOrEmpty(this.negatedError) && !this.doNotNeedNegatedMessage)
             {
-                if (string.IsNullOrEmpty(this.negatedError) && !this.doNotNeedNegatedMessage)
-                {
-                    throw new System.InvalidOperationException("Negated error message was not specified. Use 'OnNegate' method to specify one.");
-                }
+                throw new System.InvalidOperationException("Negated error message was not specified. Use 'OnNegate' method to specify one.");
             }
 
             if (this.Failed == this.IsNegated)
@@ -198,26 +192,13 @@ namespace NFluent.Kernel
             }
 
             var fluentMessage = FluentMessage.BuildMessage(this.LastError);
-            if (!string.IsNullOrEmpty(this.fluentSut.CustomMessage))
-            {
-                fluentMessage.AddCustomMessage(this.fluentSut.CustomMessage);
-            }
+            fluentMessage.AddCustomMessage(this.fluentSut.CustomMessage);
             fluentMessage.For(this.SutName);
+
             if (!this.Option.HasFlag(MessageOption.NoCheckedBlock))
             {
-                var block = fluentMessage.On(this.fluentSut.Value, this.index);
-
-                if (this.Option.HasFlag(MessageOption.WithType))
-                {
-                    block.WithType();
-                }
-
-                if (this.fluentSut.Value == null || typeof(T).IsNullable())
-                {
-                    block.OfType(typeof(T));
-                    fluentMessage.For(typeof(T));
-                }
-
+                var block = fluentMessage.On(this.fluentSut.Value, this.index); 
+                block.WithType(this.Option.HasFlag(MessageOption.WithType));
                 block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
 
                 if (this.fluentSut.Value.IsAnEnumeration(false))
@@ -229,46 +210,37 @@ namespace NFluent.Kernel
             if (this.withExpected && !this.Option.HasFlag(MessageOption.NoExpectedBlock))
             {
                 MessageBlock block;
-                if (this.expectedKind == ValueKind.Type)
+                switch (this.expectedKind)
                 {
-                    block = fluentMessage.Expected(this.expected);
-                }
-                else if (this.expectedKind == ValueKind.Values)
-                {
-                    block = fluentMessage.ExpectedValues(this.expected, this.index);
-                    if (this.expectedCount>0)
-                    {
-                        block.WithEnumerableCount(this.expectedCount);
-                    }
-                }
-                else if (this.expectedKind == ValueKind.Types)
-                {
-                    block = fluentMessage.Expected(this.expected, this.index);
-                }
-                else
-                {
-                    block = this.IsNegated
-                        ? fluentMessage.WithGivenValue(this.expected)
-                        : fluentMessage.Expected(this.expected, this.index);
-                    block.WithType(this.Option.HasFlag(MessageOption.WithType));
-                    block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
-                    if (this.expected is IEnumerable list && !(this.expected is string))
-                    {
-                        block.WithEnumerableCount(this.expected is ICollection collection ? collection.Count: list.Count());
-                    }
+                    case ValueKind.Type:
+                        block = fluentMessage.Expected(this.expected);
+                        break;
+                    case ValueKind.Values:
+                        block = fluentMessage.ExpectedValues(this.expected, this.index);
+                        if (this.expectedCount>0)
+                        {
+                            block.WithEnumerableCount(this.expectedCount);
+                        }
+                        break;
+                    case ValueKind.Types:
+                        block = fluentMessage.Expected(this.expected, this.index);
+                        break;
+                    default:
+                        block = this.IsNegated
+                            ? fluentMessage.WithGivenValue(this.expected)
+                            : fluentMessage.Expected(this.expected, this.index);
+                        block.WithType(this.Option.HasFlag(MessageOption.WithType));
+                        block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
+                        if (this.expected is IEnumerable list && !(this.expected is string))
+                        {
+                            block.WithEnumerableCount(this.expected is ICollection collection ? collection.Count: list.Count());
+                        }
+                        break;
                 }
 
-                if (this.expected == null)
+                if (this.expected == null || this.enforceExpectedType)
                 {
-                    //block.OfType(this.expectedType);
                     fluentMessage.For(this.expectedType);
-                }
-                else
-                {
-                    if (this.enforceExpectedType)
-                    {
-                        fluentMessage.For(this.expectedType);
-                    }
                 }
 
                 if (!string.IsNullOrEmpty(this.Label))
@@ -285,11 +257,6 @@ namespace NFluent.Kernel
                 fluentMessage.WithGivenValue(this.expected).Comparison(this.Comparison);
             }
 
-            this.ReportError(fluentMessage);
-        }
-
-        private void ReportError(FluentMessage fluentMessage)
-        {
             this.fluentSut.Reporter.ReportError(fluentMessage.ToString());
         }
 

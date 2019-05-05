@@ -117,7 +117,7 @@ namespace NFluent.Tests
             Check.That(array).IsEquivalentTo(3, 2, 1);
             Check.That<IEnumerable<int>>(null).IsEquivalentTo((IEnumerable<int>) null);
 
-            Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 4)).IsAFaillingCheck();
+            Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 4)).IsAFailingCheck();
 
             var otherArray = new List<int>(new []{3, 2, 1});
             Check.That(array).IsEquivalentTo(otherArray);

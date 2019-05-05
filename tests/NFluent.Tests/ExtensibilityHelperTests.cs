@@ -84,7 +84,7 @@ namespace NFluent.Tests
                 // check with a error message that is too long
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"+Environment.NewLine+"and more"))
                     .IsAFailingCheckWithMessage("oupsla")
-            ).IsAFaillingCheck();
+            ).IsAFailingCheck();
             // can use regular expression.
             Check.ThatCode(() => throw ExceptionHelper.BuildException("oups")).
                 IsAFailingCheckWithMessage("#[pous]+");
@@ -127,13 +127,13 @@ namespace NFluent.Tests
         public void IsAFaillingCheckShouldFailWithProperMessage()
         {
             Check.ThatCode(
-                    () => Check.ThatCode(() => { }).IsAFaillingCheck()).
+                    () => Check.ThatCode(() => { }).IsAFailingCheck()).
                 IsAFailingCheckWithMessage("", 
                     "The fluent check did not raise an exception, where as it must.", 
                     "The expected fluent check's raised exception:", 
                     "#\tan instance of \\[.*Exception\\]");
             Check.ThatCode(
-                    () => Check.ThatCode(() => throw new Exception("yep")).IsAFaillingCheck()).
+                    () => Check.ThatCode(() => throw new Exception("yep")).IsAFailingCheck()).
                 IsAFailingCheckWithMessage(	"", 
                     "The exception raised is not of the expected type", 
                     "The checked fluent check's raised exception:", 

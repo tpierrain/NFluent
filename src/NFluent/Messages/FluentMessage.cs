@@ -175,8 +175,13 @@ namespace NFluent.Extensibility
         public MessageBlock On<T>(T test, long index = 0)
         {
             this.checkedBlock = new MessageBlock(this, test, this.checkedLabel, index);
-            this.For(test.GetTypeWithoutThrowingException());
-            this.checkedType = test.GetTypeWithoutThrowingException();
+            var checkedType = test.GetTypeWithoutThrowingException();
+            if (test == null || checkedType.IsNullable())
+            {
+                this.checkedBlock.OfType(checkedType);
+            }
+            this.For(checkedType);
+            this.checkedType = checkedType;
             return this.checkedBlock;
         }
 

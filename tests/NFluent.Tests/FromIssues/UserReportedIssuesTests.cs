@@ -46,7 +46,7 @@ namespace NFluent.Tests
                 Check.That(instance2).HasFieldsWithSameValues(instance1); // throws NullReferenceException
                 Check.That(instance1).HasFieldsWithSameValues(instance2); // throws FluentCheckException
                 throw new Exception("Checks should fail.");
-            }).IsAFaillingCheck();
+            }).IsAFailingCheck();
 
         }
 
@@ -337,7 +337,7 @@ namespace NFluent.Tests
 
                 Check.That(modelA).HasFieldsWithSameValues(modelB);
             })
-            .IsAFaillingCheck();
+            .IsAFailingCheck();
         }
 
         // Issue #111

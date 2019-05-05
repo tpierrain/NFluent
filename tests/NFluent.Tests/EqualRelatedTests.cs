@@ -36,7 +36,7 @@ namespace NFluent.Tests
 
             var currentMode = Check.EqualMode;
             Check.EqualMode = EqualityMode.Equals;
-            Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).IsAFaillingCheck();
+            Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).IsAFailingCheck();
             Check.EqualMode = currentMode;
         }
 
@@ -546,7 +546,7 @@ namespace NFluent.Tests
             var otherRecursive = new List<object> {a};
             var interim = new List<object> {recursive};
             otherRecursive.Add(interim);
-            Check.ThatCode(() => Check.That(recursive).IsEqualTo(otherRecursive)).IsAFaillingCheck();
+            Check.ThatCode(() => Check.That(recursive).IsEqualTo(otherRecursive)).IsAFailingCheck();
             Check.ThatCode(() => Check.That(new List<object> {a, a}).IsEqualTo(recursive)).
                 IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one.", 

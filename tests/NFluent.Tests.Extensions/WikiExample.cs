@@ -40,7 +40,7 @@ namespace NFluent.Tests
             string nullString = null;
             Check.ThatCode(() =>
                     Check.That(nullString).IsThisNumber(12))
-                .IsAFaillingCheck();
+                .IsAFailingCheck();
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace NFluent.Tests
             string texte = "12";
             Check.ThatCode(() =>
                     Check.That(texte).IsThisNumber(14))
-                .IsAFaillingCheck();
+                .IsAFailingCheck();
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace NFluent.Tests
             string texte = "14";
             Check.ThatCode(() =>
                     Check.That(texte).Not.IsThisNumber(14))
-                .IsAFaillingCheck();
+                .IsAFailingCheck();
         }
     }
 }
