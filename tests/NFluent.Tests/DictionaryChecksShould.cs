@@ -211,7 +211,6 @@ namespace NFluent.Tests
         }
 #endif
 
-#if !PORTABLE
         [Test]
         public void CompatibleWithHashtable()
         {
@@ -285,8 +284,9 @@ namespace NFluent.Tests
                 "The checked dictionary:", 
                 "\t{[foo, bar]} (1 item)", 
                 "Forbidden pair:", 
-                "\t[[foo, bar]]");       }
-#endif
+                "\t[[foo, bar]]");
+        }
+
         [Test]
         public void ContainsPairFailsAppropriately()
         {

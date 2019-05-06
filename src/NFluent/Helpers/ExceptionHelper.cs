@@ -101,7 +101,7 @@ namespace NFluent.Helpers
 
         private static void ExceptionScanner()
         {
-#if !(PORTABLE) && !(NETSTANDARD1_3)
+#if !NETSTANDARD1_3
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var exceptionConstructor in Exceptions.Values)

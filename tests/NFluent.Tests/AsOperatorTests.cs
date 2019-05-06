@@ -97,10 +97,10 @@ namespace NFluent.Tests
                 {
                     Check.WithCustomMessage("We should get 2.").ThatCode(() => 1).WhichResult().IsEqualTo(2);
                 }).IsAFailingCheckWithMessage("We should get 2.",
-                "The checked value is different from the expected one.", 
-                "The checked value:", 
+                "The checked code's result is different from the expected one.", 
+                "The checked code's result:", 
                 "\t[1]", 
-                "The expected value:", 
+                "The expected code's result:", 
                 "\t[2]");
         }
     }

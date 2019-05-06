@@ -88,7 +88,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ICheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICheckLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICheckLinkWhich.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ICodeCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IExtendableCheckLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IHasParentCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ILambdaExceptionCheck.cs" />
@@ -104,7 +103,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\CheckLinkWhich.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\ExtendableCheckLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\FluentCheck.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Kernel\FluentCodeCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\FluentStructCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\FluentSut.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\IForkableCheck.cs" />

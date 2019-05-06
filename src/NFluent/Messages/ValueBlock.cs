@@ -22,20 +22,20 @@ namespace NFluent.Messages
     /// <summary>
     /// Class describing a value block.
     /// </summary>
-    internal class ValueBlock : IValueDescription
+    internal class ValueBlock<T> : IValueDescription
     {
-        private readonly object value;
+        private readonly T value;
         private bool includeHash;
         private bool includeType;
-        private Type type;
+        private readonly Type type;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ValueBlock"/> class.
+        /// Initializes a new instance of the <see cref="ValueBlock{T}"/> class.
         /// </summary>
         /// <param name="value">
         /// The tested object.
         /// </param>
-        public ValueBlock(object value)
+        public ValueBlock(T value)
         {
             this.value = value;
             this.type = value.GetTypeWithoutThrowingException();
@@ -52,7 +52,7 @@ namespace NFluent.Messages
             var builder = new StringBuilder();
             builder.Append(this.Description());
 
-            if (this.includeType && this.type != null)
+            if (this.includeType)
             {
                 builder.AppendFormat(" of type: [{0}]", this.type.ToStringProperlyFormatted());
             }
@@ -96,20 +96,6 @@ namespace NFluent.Messages
         public void WithType(bool active = true)
         {
             this.includeType = active;
-        }
-
-        /// <summary>
-        /// Requests that a specific type is included in the description block.
-        /// </summary>
-        /// <param name="forcedType">
-        /// Type to include in the description.
-        /// </param>
-        /// <remarks>
-        /// Default type is the type of the object instance given in constructor.
-        /// </remarks>
-        public void WithType(Type forcedType)
-        {
-            this.type = forcedType;
         }
 
         /// <summary>

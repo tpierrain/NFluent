@@ -15,6 +15,15 @@
 namespace NFluent
 {
     using System;
+    using System.Diagnostics;
+#if !DOTNET_20 && !DOTNET_30
+    using System.Linq;
+#endif
+    using System.Reflection;
+    using System.Runtime.CompilerServices;
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+    using System.Threading.Tasks;
+#endif
 
     /// <summary>
     /// This class stores trace information for a code evaluation.
@@ -44,5 +53,148 @@ namespace NFluent
         /// The total processor time.
         /// </value>
         public TimeSpan TotalProcessorTime { get; set; }
+
+        /// <summary>
+        /// Execute the action to capture the run.
+        /// </summary>
+        /// <param name="action">
+        /// <see cref="Action"/> to be analyzed.
+        /// </param>
+        /// <returns>
+        /// Return <see cref="RunTrace"/> describing the execution.
+        /// </returns>
+        internal static RunTrace GetTrace(Action action)
+        {
+            var result = new RunTrace();
+            CaptureTrace(action, result);
+            return result;
+        }
+
+        /// <summary>
+        /// Execute the function to capture the run.
+        /// </summary>
+        /// <typeparam name="TU">Result type of the function.</typeparam>
+        /// <param name="function">
+        /// <see cref="Action"/> to be analyzed.
+        /// </param>
+        /// <returns>
+        /// Return <see cref="RunTrace"/> describing the execution.
+        /// </returns>
+        internal static RunTraceResult<TU> GetTrace<TU>(Func<TU> function)
+        {
+            var result = new RunTraceResult<TU>();
+
+            CaptureTrace(() =>
+            {
+                result.Result = function();
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+                if (!(result.Result is Task ta))
+                {
+                    return;
+                }
+
+                // we must check if the method is flagged async
+                if (!FunctionIsAsync(function))
+                {
+                    return;
+                }
+
+                try
+                {
+                    ta.Wait();
+                }
+                catch (AggregateException exception)
+                {
+                    result.RaisedException = exception.InnerException;
+                }
+#endif
+            }, result);
+            return result;
+        }
+
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+        private static bool FunctionIsAsync<TU>(Func<TU> function)
+        {
+#if NETSTANDARD1_3
+            return function.GetMethodInfo().GetCustomAttributes(typeof(AsyncStateMachineAttribute), false).Any();
+#else
+            return Attribute.GetCustomAttributes(function.GetMethodInfo(), typeof(AsyncStateMachineAttribute)).Any();
+#endif
+        }
+#endif
+        private static void CaptureTrace(Action action, RunTrace result)
+        {
+            var watch = new Stopwatch();
+            var cpu = Process.GetCurrentProcess().TotalProcessorTime;
+            watch.Start();
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+                result.RaisedException = e;
+            }
+            finally
+            {
+                watch.Stop();
+                result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
+
+                // ReSharper disable PossibleLossOfFraction
+                result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
+            }
+        }
+
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+        internal static RunTrace GetAsyncTrace(Func<Task> awaitableMethod)
+        {
+            var result = new RunTrace();
+            CaptureTrace(
+                () =>
+                {
+                    try
+                    {
+                        // starts and waits the completion of the awaitable method
+                        awaitableMethod().Wait();
+                    }
+                    catch (AggregateException exception)
+                    {
+                        result.RaisedException = exception.InnerException;
+                    }
+                },
+                result);
+            return result;
+        }
+
+        /// <summary>
+        /// Execute the function to capture the run.
+        /// </summary>
+        /// <typeparam name="TResult">Result type of the awaitable function.</typeparam>
+        /// <param name="waitableFunction">
+        /// <see cref="Action"/> to be analyzed.
+        /// </param>
+        /// <returns>
+        /// Return <see cref="RunTrace"/> describing the execution.
+        /// </returns>
+        internal static RunTraceResult<TResult> GetAsyncTrace<TResult>(Func<Task<TResult>> waitableFunction)
+        {
+            var result = new RunTraceResult<TResult>();
+            CaptureTrace(
+                () =>
+                    {
+                        try
+                        {
+                            // starts and waits the completion of the awaitable method
+                            result.Result = waitableFunction().Result;
+                        }
+                        catch (AggregateException agex)
+                        {
+                            result.RaisedException = agex.InnerException;
+                        }
+                    },
+                result);
+            return result;
+        }
+#endif
     }
 }

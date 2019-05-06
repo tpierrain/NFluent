@@ -25,7 +25,7 @@ namespace NFluent.Tests
         [Test]
         public void ShouldWorkForBasicValue()
         {
-            var blk = new ValueBlock(2);
+            var blk = new ValueBlock<int>(2);
             Assert.AreEqual("[2]", blk.GetMessage());
 
             blk.WithType();
@@ -36,7 +36,7 @@ namespace NFluent.Tests
         public void ShouldWorkForEnumeration()
         {
             var list = new []{ "a", "b", "c" };
-            var blk = new ValueBlock(list);
+            var blk = new ValueBlock<string[]>(list);
 
             Assert.AreEqual("[{\"a\", \"b\", \"c\"}]", blk.GetMessage());
 
@@ -47,7 +47,7 @@ namespace NFluent.Tests
         public void ShouldWorkForMatrices()
         {
             var matrix = new[,] {{1, 2, 3}, {4, 5, 6}};
-            var blk = new ValueBlock(matrix);
+            var blk = new ValueBlock<int[,]>(matrix);
             Assert.AreEqual("[{{1, 2, 3}, {4, 5, 6}}]", blk.GetMessage());
         }
 
@@ -56,7 +56,7 @@ namespace NFluent.Tests
         public void ShouldTruncateLongEnumeration()
         {
             var list = "this is a long string to be converted to a byte array".ToCharArray();
-            var blk = new EnumerationBlock(list, 0);
+            var blk = new EnumerationBlock<char[]>(list, 0);
 
             blk.WithEnumerableCount(list.GetLength(0));
             Assert.AreEqual("{\'t\', \'h\', \'i\', \'s\', \' \', \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\', ...} (53 items)", blk.GetMessage());
@@ -66,34 +66,21 @@ namespace NFluent.Tests
         public void ShouldWorkForEdgeEnumerations()
         {
             var list = string.Empty.ToCharArray();
-            var blk = new EnumerationBlock(list, 0);
+            var blk = new EnumerationBlock<char[]>(list, 0);
 
             blk.WithEnumerableCount(list.GetLength(0));
             Assert.AreEqual("{} (0 item)", blk.GetMessage());
-            blk = new EnumerationBlock(null, 0);
+            blk = new EnumerationBlock<char[]>(null, 0);
 
             blk.WithEnumerableCount(list.GetLength(0));
             Assert.AreEqual("null", blk.GetMessage());
         }
 
         [Test]
-        public void ShoulSupportWithType()
-        {
-            var list = string.Empty.ToCharArray();
-            var blk = new EnumerationBlock(list, 0);
-
-            blk.WithEnumerableCount(list.GetLength(0));
-            blk.WithType();
-            Assert.AreEqual("{} (0 item) of type: [char[]]", blk.GetMessage());
-            blk.WithType(typeof(string));
-            Assert.AreEqual("{} (0 item) of type: [string]", blk.GetMessage());
-        }
-
-        [Test]
         public void ShouldFocusOnSomePart()
         {
             var list = "this is a long string to be converted to a byte array".ToCharArray();
-            var blk = new EnumerationBlock(list, 15);
+            var blk = new EnumerationBlock<char[]>(list, 15);
 
             blk.WithEnumerableCount(list.GetLength(0));
             Assert.AreEqual("{..., \'i\', \'s\', \' \', \'a\', \' \', \'l\', \'o\', \'n\', \'g\', \' \', \'s\', \'t\', \'r\', \'i\', \'n\', \'g\', \' \', \'t\', \'o\', \' \', ...} (53 items)", blk.GetMessage());

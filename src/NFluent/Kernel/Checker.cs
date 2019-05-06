@@ -102,7 +102,8 @@ namespace NFluent.Kernel
         {
             var sub = this.fluentSut.Extract(extractor,
                 value => $"{value.SutName.EntityName}'s {label}");
-            return new FluentCheck<TU>(sub, this.Negated);
+            var res = new FluentCheck<TU>(sub, this.Negated) {CustomMessage = this.fluentSut.CustomMessage};
+            return res;
         }
 
         /// <summary>

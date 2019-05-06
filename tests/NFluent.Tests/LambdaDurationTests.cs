@@ -15,6 +15,7 @@
 
 namespace NFluent.Tests
 {
+    using System;
     using System.Diagnostics;
     using System.Threading;
     using NFluent.Helpers;
@@ -71,7 +72,37 @@ namespace NFluent.Tests
                 {
                     Thread.Sleep(20);
                 }).ConsumesLessThan(100, TimeUnit.Milliseconds);
-        }   
+        }
+
+
+        [Test]
+        public void CheckOnLimitValue()
+        {
+            // simulate arbitrary execution signature 
+            var trace = new RunTrace
+            {
+                ExecutionTime = TimeSpan.FromMilliseconds(30), TotalProcessorTime = TimeSpan.FromMilliseconds(20)
+            };
+            Check.That(trace).LastsLessThan(30, TimeUnit.Milliseconds);
+            Check.ThatCode(()=>
+            Check.That(trace).LastsLessThan(29, TimeUnit.Milliseconds)).
+                IsAFailingCheckWithMessage("", 
+                    "The checked code's execution time was too high.", 
+                    "The checked code's execution time:", 
+                    "\t[30 Milliseconds]", 
+                    "The expected code's execution time: less than", 
+                    "\t[29 Milliseconds]");
+            Check.That(trace).ConsumesLessThan(20, TimeUnit.Milliseconds);
+            Check.ThatCode(()=>
+            Check.That(trace).ConsumesLessThan(19, TimeUnit.Milliseconds)).
+                IsAFailingCheckWithMessage("", 
+                    "The checked code's cpu consumption was too high.", 
+                    "The checked code's cpu consumption:", 
+                    "\t[20 Milliseconds]", 
+                    "The expected code's cpu consumption: less than", 
+                    "\t[19 Milliseconds]");
+        }
+
 
         [Test]
         public void ConsumedTestFailsProperly()

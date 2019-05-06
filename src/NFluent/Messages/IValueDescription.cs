@@ -1,6 +1,4 @@
-﻿#region File header
-
- // --------------------------------------------------------------------------------------------------------------------
+﻿ // --------------------------------------------------------------------------------------------------------------------
  // <copyright file="IValueDescription.cs" company="">
  //   Copyright 2014 Cyrille Dupuydauby, Thomas PIERRAIN
  //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +12,6 @@
  //   limitations under the License.
  // </copyright>
  // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace NFluent.Messages
 {
@@ -25,8 +22,6 @@ namespace NFluent.Messages
     /// </summary>
     internal interface IValueDescription
     {
-        #region Public Methods and Operators
-
         /// <summary>
         /// Gets the message as a string.
         /// </summary>
@@ -58,18 +53,5 @@ namespace NFluent.Messages
         /// True to include the type. This is the default value.
         /// </param>
         void WithType(bool active = true);
-
-        /// <summary>
-        /// Requests that a specific type is included in the description block.
-        /// </summary>
-        /// <param name="forcedType">
-        /// Type to include in the description.
-        /// </param>
-        /// <remarks>
-        /// Default type is the type of the object instance given in constructor.
-        /// </remarks>
-        void WithType(Type forcedType);
-
-        #endregion
     }
 }

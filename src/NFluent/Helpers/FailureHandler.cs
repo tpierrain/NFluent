@@ -28,7 +28,7 @@ namespace NFluent.Helpers
         //ncrunch: no coverage start
         /// <inheritdoc cref="IsAFailingCheckWithMessage"/>
         [Obsolete("Use IsAFailingCheckWithMessage instead (typo)")]
-        public static ICheckLink<ICodeCheck<RunTrace>> IsAFaillingCheckWithMessage(this ICodeCheck<RunTrace> check,
+        public static ICheckLink<ICheck<RunTrace>> IsAFaillingCheckWithMessage(this ICheck<RunTrace> check,
             params string[] lines)
         {
             return check.IsAFailingCheckWithMessage(lines);
@@ -41,7 +41,7 @@ namespace NFluent.Helpers
         /// <param name="check"></param>
         /// <param name="lines"></param>
         /// <returns>A link check</returns>
-        public static ICheckLink<ICodeCheck<RunTrace>> IsAFailingCheckWithMessage(this ICodeCheck<RunTrace> check,
+        public static ICheckLink<ICheck<RunTrace>> IsAFailingCheckWithMessage(this ICheck<RunTrace> check,
             params string[] lines)
         {
             ExtensibilityHelper.BeginCheck(check)
@@ -101,7 +101,7 @@ namespace NFluent.Helpers
 
         /// <inheritdoc cref="IsAFailingCheck"/>
         [Obsolete("Use IsAFailingCheckWithMessage instead (typo)")]
-        public static ICheckLink<ICodeCheck<RunTrace>> IsAFaillingCheck(this ICodeCheck<RunTrace> check)
+        public static ICheckLink<ICheck<RunTrace>> IsAFaillingCheck(this ICheck<RunTrace> check)
         {
             return check.IsAFailingCheck();
         }
@@ -111,7 +111,7 @@ namespace NFluent.Helpers
         /// </summary>
         /// <param name="check"></param>
         /// <returns>A link check</returns>
-        public static ICheckLink<ICodeCheck<RunTrace>> IsAFailingCheck(this ICodeCheck<RunTrace> check)
+        public static ICheckLink<ICheck<RunTrace>> IsAFailingCheck(this ICheck<RunTrace> check)
         {
             ExtensibilityHelper.BeginCheck(check)
                 .SetSutName("fluent check")
@@ -129,7 +129,7 @@ namespace NFluent.Helpers
         /// </summary>
         /// <param name="check"></param>
         /// <returns>A link check</returns>
-        public static ICheckLink<ICodeCheck<RunTrace>> IsaFailingAssumption(this ICodeCheck<RunTrace> check)
+        public static ICheckLink<ICheck<RunTrace>> IsaFailingAssumption(this ICheck<RunTrace> check)
         {
             ExtensibilityHelper.BeginCheck(check)
                 .SetSutName("fluent check")

@@ -16,7 +16,6 @@
 // ReSharper disable once CheckNamespace
 namespace NFluent.Extensibility
 {
-#if !(PORTABLE)
     using System.Text;
     /// <summary>
     /// Helper class that helps to retrieve well formated strings exception messages from a failing NFluent Check execution.
@@ -97,5 +96,4 @@ namespace NFluent.Extensibility
             return result.ToString();
         }
     }
-#endif
 }

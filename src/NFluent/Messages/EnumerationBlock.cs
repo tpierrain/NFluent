@@ -23,15 +23,14 @@ namespace NFluent.Messages
     /// <summary>
     /// Class describing a value block.
     /// </summary>
-    internal class EnumerationBlock : IValueDescription
+    internal class EnumerationBlock<T> : IValueDescription where T: IEnumerable
     {
         private const int NumberOfItemsToList = 20;
 
         /// <summary>
         /// The tested object.
         /// </summary>
-        private readonly IEnumerable test;
-
+        private readonly T test;
         private readonly long referenceIndex;
 
         /// <summary>
@@ -50,11 +49,11 @@ namespace NFluent.Messages
         private Type type;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnumerationBlock" /> class.
+        /// Initializes a new instance of the <see cref="EnumerationBlock{T}" /> class.
         /// </summary>
         /// <param name="test">The tested object.</param>
         /// <param name="referenceIndex">Index of the reference value.</param>
-        public EnumerationBlock(IEnumerable test, long referenceIndex)
+        public EnumerationBlock(T test, long referenceIndex)
         {
             this.test = test;
             this.referenceIndex = referenceIndex;
@@ -98,8 +97,7 @@ namespace NFluent.Messages
         /// True to include the type. This is the default value.
         /// </param>
         public void WithHashCode(bool active = true)
-        {
-        }
+        {}
 
         /// <summary>
         /// Requests that the type is included in the description block.
@@ -110,21 +108,6 @@ namespace NFluent.Messages
         public void WithType(bool active = true)
         {
             this.includeType = active;
-        }
-
-        /// <summary>
-        /// Requests that a specific type is included in the description block.
-        /// </summary>
-        /// <param name="forcedType">
-        /// Type to include in the description.
-        /// </param>
-        /// <remarks>
-        /// Default type is the type of the object instance given in constructor.
-        /// </remarks>
-        public void WithType(Type forcedType)
-        {
-            this.type = forcedType;
-            this.includeType = true;
         }
 
         /// <summary>

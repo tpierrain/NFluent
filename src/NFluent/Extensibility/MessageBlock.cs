@@ -1,5 +1,3 @@
-#region File header
-
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MessageBlock.cs" company="">
 //   Copyright 2014 Cyrille Dupuydauby, Thomas PIERRAIN
@@ -14,14 +12,11 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace NFluent.Extensibility
 {
-    using System;
     using System.Collections;
     using System.Text;
-
     using Extensions;
     using Messages;
 
@@ -32,36 +27,30 @@ namespace NFluent.Extensibility
     {
         private readonly GenericLabelBlock block;
         private readonly FluentMessage message;
-        private readonly IValueDescription value;
+        private IValueDescription value;
         private string comparisonLabel;
         private string customMessage;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageBlock"/> class.
-        /// </summary>
-        /// <param name="message">
-        /// The message.
-        /// </param>
-        /// <param name="test">
-        /// The tested object.
-        /// </param>
-        /// <param name="block">
-        /// The block attribute.
-        /// </param>
-        /// <param name="forceArray">test is an enumeration.</param>>
-        /// <param name="index">The index for enumerable types</param>
-        internal MessageBlock(FluentMessage message, object test, GenericLabelBlock block, long index = 0, bool forceArray = false)
+ 
+        internal MessageBlock(FluentMessage message, GenericLabelBlock block)
         {
             this.message = message;
             this.block = block;
-            if (test.GetTypeWithoutThrowingException().IsAnEnumeration(forceArray))
+        }
+
+        internal static MessageBlock Build<T>(FluentMessage message, T value, GenericLabelBlock block, long index = 0,
+            bool forceArray = false)
+        {
+            var result = new MessageBlock(message, block);
+            if (value.IsAnEnumeration(forceArray))
             {
-                this.value = new EnumerationBlock((IEnumerable)test, index);
+                result.value = new EnumerationBlock<IEnumerable>(value as IEnumerable, index);
             }
             else
             {
-                this.value = new ValueBlock(test);
+                result.value = new ValueBlock<T>(value);
             }
+            return result;
         }
 
         /// <summary>
@@ -175,24 +164,6 @@ namespace NFluent.Extensibility
         }
 
         /// <summary>
-        /// Requests that a specific type is included in the description block.
-        /// </summary>
-        /// <param name="forcedType">
-        /// Type to include in the description.
-        /// </param>
-        /// <remarks>
-        /// Default type is the type of the object instance given in constructor.
-        /// </remarks>
-        /// <returns>
-        /// Returns this instance for chained calls.
-        /// </returns>
-        public MessageBlock OfType(Type forcedType)
-        {
-            this.value.WithType(forcedType);
-            return this;
-        }
-
-        /// <summary>
         /// The full label.
         /// </summary>
         /// <returns>
@@ -212,6 +183,5 @@ namespace NFluent.Extensibility
 
             return fullLabel;
         }
-
     }
 }

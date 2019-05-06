@@ -279,7 +279,7 @@ namespace NFluent
 
         public static long LongLength<T>(this T[] array)
         {
-#if PORTABLE || NETSTANDARD1_3
+#if NETSTANDARD1_3
             return array.Length;
 #else
             return array.LongLength;
@@ -287,7 +287,7 @@ namespace NFluent
         }
         public static long LongLength(this System.Array array)
         {
-#if PORTABLE || NETSTANDARD1_3
+#if NETSTANDARD1_3
             return array.Length;
 #else
             return array.LongLength;

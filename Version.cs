@@ -13,9 +13,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 using System.Reflection;
-#if !PORTABLE
 using System.Runtime.InteropServices;
-#endif
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
@@ -35,13 +33,12 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyDescription("NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Thomas PIERRAIN (thomas@pierrain.net), Cyrille DUPUYDAUBY (@cyrdup), Rui CARVALHO, Marc-Antoine LATOUR and Co")]
+[assembly: AssemblyCompany("Thomas PIERRAIN (thomas@pierrain.net), Cyrille DUPUYDAUBY (@_dupdob_), Rui CARVALHO, Marc-Antoine LATOUR and Co")]
 [assembly: AssemblyProduct("NFluent")]
-[assembly: AssemblyCopyright("Copyright ©  2014-2018. Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).")]
+[assembly: AssemblyCopyright("Copyright © 2013-2019. Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-#if  !PORTABLE
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
@@ -49,5 +46,3 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("2959f969-9a70-4126-bbb2-ee2a03420e4f")]
-
-#endif

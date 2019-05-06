@@ -31,6 +31,7 @@ namespace NFluent.Tests.xUnit
             Check.ThatCode(() => Check.That(2).IsEqualTo(0)).IsAFailingCheck();
         }
 
+        [Fact]
         public void AssumptionScanTest()
         {
             // inject a type from the fuzzing assembly to check for some degenerative case

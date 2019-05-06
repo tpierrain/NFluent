@@ -256,7 +256,7 @@ namespace NFluent.Extensions
         private static string ToStringProperlyFormatted(this bool theBoolean)
         {
             // Ensure that boolean values are not localized 
-#if !PORTABLE && !NETSTANDARD1_3
+#if !NETSTANDARD1_3
             return theBoolean.ToString(CultureInfo.InvariantCulture);
 #else
             return theBoolean.ToString();
@@ -271,11 +271,7 @@ namespace NFluent.Extensions
         private static string ToStringProperlyFormatted(this double value)
         {
             // Ensure that boolean values are not localized 
-#if !PORTABLE
             return value.ToString(CultureInfo.InvariantCulture);
-#else
-            return value.ToString();
-#endif
         }
 
         /// <summary>
@@ -286,11 +282,7 @@ namespace NFluent.Extensions
         private static string ToStringProperlyFormatted(this float value)
         {
             // Ensure that boolean values are not localized 
-#if !PORTABLE
             return value.ToString(CultureInfo.InvariantCulture);
-#else
-            return value.ToString();
-#endif
         }
 
         /// <summary>

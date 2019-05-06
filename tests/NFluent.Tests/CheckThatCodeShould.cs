@@ -363,7 +363,6 @@ namespace NFluent.Tests
             Check.ThatCode(() => 4).DoesNotThrow().And.WhichResult().IsEqualTo(4);
         }
 
-
         [Test]
         public void AndWorksProperly()
         {

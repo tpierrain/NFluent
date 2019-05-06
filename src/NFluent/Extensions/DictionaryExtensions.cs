@@ -25,7 +25,7 @@ namespace NFluent.Extensions
             {
                 return trueDico.TryGetValue(key, out value);
             }
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40 && !PORTABLE
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
 
             if (dico is IReadOnlyDictionary<TK, TV> roDico)
             {

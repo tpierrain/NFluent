@@ -21,7 +21,6 @@ namespace NFluent
     using System.Reflection;
 #endif
     using Extensibility;
-
     using Helpers;
 
     /// <summary>
@@ -47,8 +46,8 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// Execution was strictly above limit.
         /// </exception>
-        public static ICheckLink<ICodeCheck<T>> LastsLessThan<T>(
-            this ICodeCheck<T> check,
+        public static ICheckLink<ICheck<T>> LastsLessThan<T>(
+            this ICheck<T> check,
             double threshold,
             TimeUnit timeUnit)
             where T : RunTrace
@@ -56,7 +55,6 @@ namespace NFluent
             var durationThreshold = new Duration(threshold, timeUnit);
 
             ExtensibilityHelper.BeginCheck(check).
-                SetSutName("code").
                 CheckSutAttributes(sut =>  new Duration(sut.ExecutionTime, timeUnit), "execution time").
                 FailWhen((sut) => sut > durationThreshold, "The {checked} was too high.").
                 DefineExpectedValue(durationThreshold, "less than", "more than").
@@ -84,8 +82,8 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// Execution was strictly above limit.
         /// </exception>
-        public static ICheckLink<ICodeCheck<T>> ConsumesLessThan<T>(
-            this ICodeCheck<T> check,
+        public static ICheckLink<ICheck<T>> ConsumesLessThan<T>(
+            this ICheck<T> check,
             double threshold,
             TimeUnit timeUnit)
             where T : RunTrace
@@ -93,7 +91,6 @@ namespace NFluent
             var durationThreshold = new Duration(threshold, timeUnit);
 
             ExtensibilityHelper.BeginCheck(check).
-                SetSutName("code").
                 CheckSutAttributes(sut =>  new Duration(sut.TotalProcessorTime, timeUnit), "cpu consumption").
                 FailWhen((sut) => sut > durationThreshold, "The {checked} was too high.").
                 DefineExpectedValue(durationThreshold, "less than", "more than").
@@ -113,11 +110,10 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code raised an exception.</exception>
-        public static ICheckLink<ICodeCheck<T>> DoesNotThrow<T>(this ICodeCheck<T> check)
+        public static ICheckLink<ICheck<T>> DoesNotThrow<T>(this ICheck<T> check)
             where T : RunTrace
         {
             ExtensibilityHelper.BeginCheck(check).
-                SetSutName("code").
                 CheckSutAttributes(sut => sut.RaisedException, "raised exception").
                 FailWhen(sut=> sut != null, "The checked code raised an exception, whereas it must not.").
                 OnNegate("The checked code did not raise an exception, whereas it must.", MessageOption.NoCheckedBlock).
@@ -135,18 +131,17 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The code did not raised an exception of the specified type, or did not raised an exception at all.</exception>
-        public static ILambdaExceptionCheck<T> Throws<T>(this ICodeCheck<RunTrace> check)
+        public static ILambdaExceptionCheck<T> Throws<T>(this ICheck<RunTrace> check)
             where T : Exception
         {
             var exc = CheckExceptionType(check, typeof(T));
             return new LambdaExceptionCheck<T>((T) exc, ((INegated) check).Negated);
         }
 
-        private static Exception CheckExceptionType(ICodeCheck<RunTrace> check, Type expecting)
+        private static Exception CheckExceptionType(ICheck<RunTrace> check, Type expecting)
         {
             Exception result = null;
             ExtensibilityHelper.BeginCheck(check).
-                SetSutName("code").
                 CheckSutAttributes(sut =>
                 {
                     result = sut.RaisedException;
@@ -171,7 +166,7 @@ namespace NFluent
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="exceptionType">Expected exception type.</param>
         /// <returns>A check link.</returns>
-        public static ILambdaExceptionCheck<Exception> ThrowsType(this ICodeCheck<RunTrace> check, Type exceptionType)
+        public static ILambdaExceptionCheck<Exception> ThrowsType(this ICheck<RunTrace> check, Type exceptionType)
         {
             var exc = CheckExceptionType(check, exceptionType);
             return new LambdaExceptionCheck<Exception>(exc, ((INegated) check).Negated);
@@ -189,15 +184,14 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The code did not raised an exception of the specified type, or did not raised an exception at all.
         /// </exception>
-        public static ILambdaExceptionCheck<Exception> ThrowsAny(this ICodeCheck<RunTrace> check)
+        public static ILambdaExceptionCheck<Exception> ThrowsAny(this ICheck<RunTrace> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .SetSutName("code")
                 .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
                 .OnNegate("The checked code raised an exception, whereas it must not.")
                 .FailIfNull("The checked code did not raise an exception, whereas it must.")
                 .EndCheck();
-            var checker = ExtensibilityHelper.ExtractCodeChecker(check);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
 
             return new LambdaExceptionCheck<Exception>(checker.Value.RaisedException, ((INegated) check).Negated);
         }
@@ -208,9 +202,9 @@ namespace NFluent
         /// <typeparam name="T">Type of the code result. Should be inferred.</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <returns>A check object for the result.</returns>
-        public static ICheck<T> WhichResult<T>(this ICodeCheck<RunTraceResult<T>> check)
+        public static ICheck<T> WhichResult<T>(this ICheck<RunTraceResult<T>> check)
         {
-            return ExtensibilityHelper.BuildCheck(check, sut => sut.Result);
+            return ExtensibilityHelper.ExtractChecker(check).ExtractSub((result => result.Result), "result");
         }
     }
 }

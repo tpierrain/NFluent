@@ -18,9 +18,6 @@ namespace NFluent
 
     using System;
     using Extensibility;
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
-    using System.Threading.Tasks;
-#endif
     using Kernel;
 
     /// <summary>
@@ -71,9 +68,9 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
-        public static ICodeCheck<RunTrace> ThatCode(Action value)
+        public static ICheck<RunTrace> ThatCode(Action value)
         {
-            return new FluentCodeCheck<RunTrace>(FluentCodeCheck<RunTraceResult<Action>>.GetTrace(value), Reporter);
+            return new FluentCheck<RunTrace>(RunTrace.GetTrace(value), Reporter);
         }
 
         /// <summary>
@@ -87,9 +84,9 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
-        public static ICodeCheck<RunTraceResult<TU>> ThatCode<TU>(Func<TU> value)
+        public static ICheck<RunTraceResult<TU>> ThatCode<TU>(Func<TU> value)
         {
-            return new FluentCodeCheck<RunTraceResult<TU>>(FluentCodeCheck<RunTraceResult<TU>>.GetTrace(value), Reporter);
+            return new FluentCheck<RunTraceResult<TU>>(RunTrace.GetTrace(value), Reporter);
         }
 
         /// <summary>

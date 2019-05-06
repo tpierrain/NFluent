@@ -18,6 +18,9 @@ Check.That(enum).WhoseSize().IsEqualTo(3)
 * NotSupportedException when using ContainsExactly on strings.
 
 ### Extensibility
+Foreword: several breaking changes have been introduced that may trigger build error in your custom extensions if you have made any.
+Methods and types have been renamed, so your code will have to refer the new names. IF YOU ENCOUNTER ISSUES AND NEED ASSISTANCE, please open an issue, we will assist you ASAP.
+* All lambda/code specific interfaces (ICodeCheck<T>...) and classes have been removed. NFluent now uses the standard interfaces and types (i.e. Check<T>)
 * ICheckLogic.DefineExpectedValues now expects an generic IEnumerable<T> instead of a plain IEnumerable
 * you can use ICheckLogic.DefinePossibleTypes if you need to have a list of possible types for the sut (displayed in the error message)
 * improved naming: ICheckLogic.DefineExpectedValues has been renamed DefinePossibleValues

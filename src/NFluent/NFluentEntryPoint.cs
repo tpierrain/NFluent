@@ -83,9 +83,9 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
-        public ICodeCheck<RunTrace> ThatCode(Action value)
+        public ICheck<RunTrace> ThatCode(Action value)
         {
-            return new FluentCodeCheck<RunTrace>(FluentCodeCheck<RunTraceResult<Action>>.GetTrace(value), this.reporter)
+            return new FluentCheck<RunTrace>(RunTrace.GetTrace(value), this.reporter)
             {
                 CustomMessage = this.message
             };
@@ -113,9 +113,9 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
-        public ICodeCheck<RunTraceResult<TU>> ThatCode<TU>(Func<TU> value)
+        public ICheck<RunTraceResult<TU>> ThatCode<TU>(Func<TU> value)
         {
-            return new FluentCodeCheck<RunTraceResult<TU>>(FluentCodeCheck<RunTraceResult<TU>>.GetTrace(value), this.reporter)
+            return new FluentCheck<RunTraceResult<TU>>(RunTrace.GetTrace(value), this.reporter)
             {
                 CustomMessage = this.message
             };

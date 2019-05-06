@@ -16,9 +16,7 @@
 namespace NFluent
 {
     using System;
-#if !PORTABLE
     using System.Collections;
-#endif
     using System.Collections.Generic;
 #if !DOTNET_20 && !DOTNET_30
     using System.Linq;
@@ -120,7 +118,7 @@ namespace NFluent
                         if (dico.ContainsKey(key))
                             return;
                     }
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40 && !PORTABLE
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
                     else if  (sut is IReadOnlyDictionary<TK, TU> roDico)
                     {
                         if (roDico.ContainsKey(key))
@@ -191,7 +189,7 @@ namespace NFluent
                     {
                         found = dico.TryGetValue(expectedKey, out foundValue);
                     }
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40 && !PORTABLE
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
                     else if  (sut is IReadOnlyDictionary<TK, TU> roDico)
                     {
                         found = roDico.TryGetValue(expectedKey, out foundValue);
@@ -229,7 +227,6 @@ namespace NFluent
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
-#if !PORTABLE
         /// <summary>
         /// Checks that the actual <see cref="Hashtable"/> contains the expected expectedKey.
         /// </summary>
@@ -306,6 +303,5 @@ namespace NFluent
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }
-#endif
     }
 }

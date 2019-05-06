@@ -174,12 +174,8 @@ namespace NFluent.Extensibility
         /// </returns>
         public MessageBlock On<T>(T test, long index = 0)
         {
-            this.checkedBlock = new MessageBlock(this, test, this.checkedLabel, index);
             var checkedType = test.GetTypeWithoutThrowingException();
-            if (test == null || checkedType.IsNullable())
-            {
-                this.checkedBlock.OfType(checkedType);
-            }
+            this.checkedBlock = MessageBlock.Build(this, test, this.checkedLabel, index);
             this.For(checkedType);
             this.checkedType = checkedType;
             return this.checkedBlock;
@@ -193,9 +189,9 @@ namespace NFluent.Extensibility
         /// <returns>
         /// The created MessageBlock.
         /// </returns>
-        public MessageBlock Expected(object expected, long index = 0)
+        public MessageBlock Expected<T>(T expected, long index = 0)
         {
-            this.expectedBlock = new MessageBlock(this, expected, this.expectedLabel, index);
+            this.expectedBlock = MessageBlock.Build(this, expected, this.expectedLabel, index);
             this.For(expected.GetTypeWithoutThrowingException());
             return this.expectedBlock;
         }
@@ -207,9 +203,9 @@ namespace NFluent.Extensibility
         /// <returns>
         /// The created MessageBlock.
         /// </returns>
-        public MessageBlock ReferenceValues(object expected)
+        public MessageBlock ReferenceValues<T>(T expected)
         {
-            this.expectedBlock = new MessageBlock(this, expected, this.expectedLabel);
+            this.expectedBlock = MessageBlock.Build(this, expected, this.expectedLabel);
             return this.expectedBlock;
         }
 
@@ -225,12 +221,12 @@ namespace NFluent.Extensibility
         /// <returns>
         /// The created MessageBlock.
         /// </returns>
-        public MessageBlock ExpectedValues(object expectedValues, long index = 0)
+        public MessageBlock ExpectedValues<T>(T expectedValues, long index = 0)
         {
             this.expectedNamingLogic.SetPlural();
             this.expectedNamingLogic.EntityType = null;
             this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(this.expectedNamingLogic);
-            this.expectedBlock = new MessageBlock(this, expectedValues, this.expectedLabel, index, true);
+            this.expectedBlock = MessageBlock.Build(this, expectedValues, this.expectedLabel, index, true);
             return this.expectedBlock;
         }
 
@@ -240,10 +236,10 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="givenValue">The given value.</param>
         /// <returns>The created MessageBlock.</returns>
-        public MessageBlock WithGivenValue(object givenValue)
+        public MessageBlock WithGivenValue<T>(T givenValue)
         {
             this.expectedLabel = GenericLabelBlock.BuildGivenBlock(this.expectedNamingLogic);
-            this.expectedBlock = new MessageBlock(this, givenValue, this.expectedLabel);
+            this.expectedBlock = MessageBlock.Build(this, givenValue, this.expectedLabel);
             return this.expectedBlock;
         }
 

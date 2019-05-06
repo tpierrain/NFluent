@@ -123,6 +123,11 @@ namespace NFluent.Messages
                 return "object";
             }
 
+            if (typeof(RunTrace).IsAssignableFrom(type))
+            {
+                return "code";
+            }
+
             if (type.IsNullable())
             {
                 return "nullable";

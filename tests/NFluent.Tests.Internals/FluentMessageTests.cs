@@ -76,7 +76,7 @@ namespace NFluent.Tests
         {
             var message = FluentMessage.BuildMessage("test");
             const int x = 4;
-            var block = new MessageBlock(message, x, GenericLabelBlock.BuildCheckedBlock(new EntityNamingLogic()));
+            var block = MessageBlock.Build(message, x, GenericLabelBlock.BuildCheckedBlock(new EntityNamingLogic()));
 
             Assert.AreEqual("The checked value:" + NewLine + "\t[4]", block.GetMessage());
 
