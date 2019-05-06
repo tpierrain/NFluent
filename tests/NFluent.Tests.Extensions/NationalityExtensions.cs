@@ -17,6 +17,7 @@
 namespace NFluent.Tests.Extensions
 {
     using Extensibility;
+    using Kernel;
     using Messages;
 
     /// <summary>

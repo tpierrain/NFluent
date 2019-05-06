@@ -17,6 +17,7 @@ namespace NFluent
     using System;
 
     using Extensibility;
+    using Kernel;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="IComparable"/> instance.

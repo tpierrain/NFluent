@@ -18,6 +18,8 @@ namespace NFluent.Helpers
 
     using Extensibility;
     using Extensions;
+    using Kernel;
+
 #if NETSTANDARD1_3
     using System.Reflection;
 #endif

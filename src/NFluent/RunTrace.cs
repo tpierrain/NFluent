@@ -122,6 +122,7 @@ namespace NFluent
 #endif
         }
 #endif
+
         private static void CaptureTrace(Action action, RunTrace result)
         {
             var watch = new Stopwatch();

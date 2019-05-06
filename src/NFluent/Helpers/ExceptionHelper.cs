@@ -20,6 +20,7 @@ namespace NFluent.Helpers
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using Kernel;
 
     /// <summary>
     /// Supported test frameworks

@@ -14,6 +14,8 @@
  // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
+    using Kernel;
+
     /// <summary>
     /// Provides check methods to be executed on a given value.
     /// </summary>

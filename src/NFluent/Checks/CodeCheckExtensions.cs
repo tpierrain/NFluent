@@ -22,6 +22,7 @@ namespace NFluent
 #endif
     using Extensibility;
     using Helpers;
+    using Kernel;
 
     /// <summary>
     /// Static class hosting extension methods in relation with checks for code.

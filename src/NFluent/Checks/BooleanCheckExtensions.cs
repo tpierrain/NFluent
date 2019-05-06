@@ -15,6 +15,7 @@
 namespace NFluent
 {
     using Extensibility;
+    using Kernel;
 
     /// <summary>
     /// Provides check methods to be executed on a boolean value.

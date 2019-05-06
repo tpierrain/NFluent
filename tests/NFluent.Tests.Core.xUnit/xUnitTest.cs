@@ -16,6 +16,7 @@
 namespace NFluent.Tests.Core.xUnit
 {
     using System;
+    using Kernel;
     using Xunit;
 
     public class xUnitTest

@@ -12,7 +12,7 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent
+namespace NFluent.Kernel
 {
     using System;
 

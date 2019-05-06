@@ -22,6 +22,7 @@ namespace NFluent
 #endif
     using Extensibility;
     using Helpers;
+    using Kernel;
 
     /// <summary>
     /// Provides check methods to be executed on an object instance.

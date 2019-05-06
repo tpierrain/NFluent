@@ -99,6 +99,7 @@ namespace NFluent.Tests
         {
             Check.That(this.tresAmigos).Contains(this.tresAmigos).Once();
             Check.That((IEnumerable) this.tresAmigos).Contains(this.tresAmigos).Once();
+            Check.That((IEnumerable) this.tresAmigos).Contains(new[] { "un", "dos", "tres" }).Once();
         }
 
         [Test]

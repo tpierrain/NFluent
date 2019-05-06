@@ -17,6 +17,7 @@
 namespace NFluent
 {
     using System;
+    using Kernel;
 
     /// <summary>
     /// Provides lambda/action specific check.

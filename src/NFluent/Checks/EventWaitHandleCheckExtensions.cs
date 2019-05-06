@@ -18,6 +18,7 @@ namespace NFluent
     using System.Threading;
     using Extensibility;
     using Helpers;
+    using Kernel;
 
     /// <summary>
     /// Provides check methods to be executed on a <see cref="EventWaitHandle"/> instance.

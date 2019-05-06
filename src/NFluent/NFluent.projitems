@@ -74,7 +74,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\CheckWithConsidering.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\ExceptionReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\ExtractingExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)FluentCheckException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\FluentCheckException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\EqualityMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\FluentDynamicCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Duration.cs" />

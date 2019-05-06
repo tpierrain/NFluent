@@ -82,9 +82,9 @@ namespace NFluent.Tests
                 "\t[\"test\"]");
         }
 
-        static public void AssertCheckFails(System.Action test, params string[] message)
+        public static void AssertCheckFails(System.Action test, params string[] message)
         {
-            Check.ThatCode(() => test()).IsAFailingCheckWithMessage(message);
+            Check.ThatCode(test).IsAFailingCheckWithMessage(message);
         }
 
         [Test]
@@ -95,7 +95,8 @@ namespace NFluent.Tests
 
             Check.ThatDynamic(sut).IsNotNull().And.IsEqualTo("test");
             // this check fails
-            Check.ThatCode(() => { Check.ThatDynamic(cmd.Subject).IsNotNull(); }).IsAFailingCheckWithMessage(
+            Check.ThatCode(() =>
+                Check.ThatDynamic(cmd.Subject).IsEqualTo(null).And.IsNotNull()).IsAFailingCheckWithMessage(
             "", 
             "The checked dynamic is null whereas it must not.", 
             "The checked dynamic:", 
@@ -171,7 +172,6 @@ namespace NFluent.Tests
                 "\t[\"test\"]"
                 );
         }
-
     }
 }
 #endif
