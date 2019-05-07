@@ -470,6 +470,10 @@ namespace NFluent.Tests
                 Check.ThatCode(() => throw new ArgumentException("outerException dummy message", new ArgumentOutOfRangeException("kamoulox")))
                         .Throws<ArgumentException>()
                         .DueToAnyFrom(typeof(ArgumentOutOfRangeException), typeof(ArgumentException));
+                // duplicate test  due to isse with NCover
+                Check.ThatCode(() => throw new ArgumentException("outerException dummy message", new ArgumentException("kamoulox")))
+                    .Throws<ArgumentException>()
+                    .DueToAnyFrom(typeof(ArgumentOutOfRangeException), typeof(ArgumentException));
         }
 
         [Test]

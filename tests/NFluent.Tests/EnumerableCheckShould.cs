@@ -138,6 +138,14 @@ namespace NFluent.Tests
         {
             var array = new[] {1, 2, 3};
             Check.That((IEnumerable)array).IsEquivalentTo(3, 2, 1);
+            Check.ThatCode(()=>
+            Check.That((IEnumerable)array).IsEquivalentTo(3, 2)).
+                IsAFailingCheckWithMessage("",
+                    "The checked enumerable does contain [1] whereas it should not.", 
+                    "The checked enumerable:", 
+                    "\t{1, 2, 3} (3 items)", 
+                    "The expected value(s):", 
+                    "\t{3, 2} (2 items)");
         }
         
         [Test]
