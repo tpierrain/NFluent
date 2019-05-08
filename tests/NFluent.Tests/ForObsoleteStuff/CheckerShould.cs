@@ -50,6 +50,17 @@
         }
 
         [Test]
+        public void OfferSimpleExtensibility()
+        {
+            var check = Check.That(2);
+            var checker = ExtensibilityHelper.ExtractChecker(check);
+            
+            Check.ThatCode(() =>
+            { checker.ExecuteCheck(() => { }, "should not fail").And.IsEqualTo(3);
+            }).IsAFailingCheck();
+        }
+
+        [Test]
         public void HandleProperlyNonFailingChecksOnNonChainable()
         {
             var check = Check.That(2);

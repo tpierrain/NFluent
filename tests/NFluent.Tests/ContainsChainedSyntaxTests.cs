@@ -61,6 +61,17 @@ namespace NFluent.Tests
                     "\t{\"un\", \"dos\", \"un\", \"tres\"} (4 items)",
                     "The expected enumerable: in that order",
                     "\t{\"un\", \"dos\", \"tres\"}");
+            //
+            Check.ThatCode(() =>
+                {
+                    Check.That(tresAmigosAndMore).Contains(this.tresAmigos).InThatOrder();
+                }).
+                IsAFailingCheckWithMessage("",
+                    "The checked enumerable does not follow to the expected order. Item [\"un\"] appears too late in the list, at index '2'.",
+                    "The checked enumerable:",
+                    "\t{\"un\", \"dos\", \"un\", \"tres\"} (4 items)",
+                    "The expected enumerable: in that order",
+                    "\t{\"un\", \"dos\", \"tres\"}");
         }
 
        [Test]

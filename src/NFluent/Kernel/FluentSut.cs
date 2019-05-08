@@ -34,15 +34,6 @@ namespace NFluent.Kernel
         /// Builds a new <see cref="FluentSut{T}"/> instance.
         /// </summary>
         /// <param name="value">Value to examine.</param>
-        /// <param name="reporter">Error reporter</param>
-        public FluentSut(T value, IErrorReporter reporter) : this(value, reporter, !CheckContext.DefaultNegated)
-        {
-        }
-
-        /// <summary>
-        /// Builds a new <see cref="FluentSut{T}"/> instance.
-        /// </summary>
-        /// <param name="value">Value to examine.</param>
         /// <param name="reporter">Error reporter to use</param>
         /// <param name="negated">true if the check logic must be negated.</param>
         public FluentSut(T value, IErrorReporter reporter, bool negated)

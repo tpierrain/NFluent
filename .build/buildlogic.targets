@@ -23,7 +23,7 @@
     <NuGetExePath>nuget.exe</NuGetExePath>
     <MsTestRunner>vstest.console.exe</MsTestRunner>
 
-    <NunitOptions>--result="$(SolutionRoot)\TestResults.xml"</NunitOptions>
+    <NunitOptions>--result="$(SolutionRoot)\TestResult.xml"</NunitOptions>
     <TestRunnerPath>$(NuGetToolsPath)\NUnit.ConsoleRunner.$(nunitConsoleVersion)\tools\nunit3-console.exe</TestRunnerPath>
     <xunitOptions />
     <xUnitTestRunnerPath>$(NuGetToolsPath)\XUnit.runner.console.$(xunitConsoleVersion)\tools\net452\xunit.console.exe</xUnitTestRunnerPath>
@@ -44,7 +44,7 @@
   <Choose>
     <When Condition="'$(APPVEYOR)'=='True'">
       <PropertyGroup>
-        <NunitOptions>--result="$(SolutionRoot)\TestResults.xml";format=AppVeyor</NunitOptions>
+        <NunitOptions>--result="$(SolutionRoot)\TestResult.xml";format=AppVeyor</NunitOptions>
         <TestRunnerPath>nunit3-console.exe</TestRunnerPath>
         <xUnitTestRunnerPath>$(xunit20)\xunit.console.x86.exe</xUnitTestRunnerPath>
         <xunitOptions>-appveyor</xunitOptions>

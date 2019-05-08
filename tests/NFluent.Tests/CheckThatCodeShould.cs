@@ -373,21 +373,20 @@ namespace NFluent.Tests
         [Test]
         public void Should_not_raise_when_expected_DueTo_exception_type_is_part_of_inner_exception()
         {
-            // ReSharper disable once NotResolvedInText
-            Check.ThatCode(
-                () =>
-                    {
-                        throw new ArgumentException(
-                            "outerException dummy message",
-                            new ArgumentOutOfRangeException("kamoulox"));
-                    }).Throws<ArgumentException>().DueTo<ArgumentOutOfRangeException>();
-
-            // ReSharper disable once NotResolvedInText
             Check.ThatCode(
                 () => throw new ArgumentException(
                     "outerException dummy message",
-                    new Exception("whatever mate", new ArgumentOutOfRangeException("kamoulox")))).Throws<ArgumentException>().DueTo<ArgumentOutOfRangeException>().
-                    WithMessage("Specified argument was out of the range of valid values." + Environment.NewLine + "Parameter name: kamoulox");
+                    new ArgumentOutOfRangeException("kamoulox"))).
+                Throws<ArgumentException>().
+                DueTo<ArgumentOutOfRangeException>();
+
+            Check.ThatCode(
+                () => throw new ArgumentException(
+                    "outerException dummy message",
+                    new Exception("whatever mate", new ArgumentOutOfRangeException("kamoulox")))).
+            Throws<ArgumentException>().
+            DueTo<ArgumentOutOfRangeException>().
+            WithMessage("Specified argument was out of the range of valid values." + Environment.NewLine + "Parameter name: kamoulox");
         }
 
         [Test]
@@ -470,7 +469,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => throw new ArgumentException("outerException dummy message", new ArgumentOutOfRangeException("kamoulox")))
                         .Throws<ArgumentException>()
                         .DueToAnyFrom(typeof(ArgumentOutOfRangeException), typeof(ArgumentException));
-                // duplicate test  due to isse with NCover
+                // duplicate test due to issue with NCover
                 Check.ThatCode(() => throw new ArgumentException("outerException dummy message", new ArgumentException("kamoulox")))
                     .Throws<ArgumentException>()
                     .DueToAnyFrom(typeof(ArgumentOutOfRangeException), typeof(ArgumentException));
@@ -495,7 +494,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        // GH 228
+        // GH #228
         public void
             ThrowExtensionsFailWhenNegated()
         {

@@ -61,7 +61,7 @@ namespace NFluent
                                 return false;
                             }
 
-                            if (actual == null) 
+                            if (actual == null)
                             {
                                 test.CheckSutAttributes(_ => expectedWrapper.Value, expected.MemberLabel)
                                     .DefineExpectedValue(expected)
@@ -72,6 +72,7 @@ namespace NFluent
                                 test.CheckSutAttributes(_ => actual, actual.MemberLabel.DoubleCurlyBraces())
                                     .Fail("The {0} is absent from the {1}.");
                             }
+
                             return false;
                         });
                     }
