@@ -2,21 +2,20 @@
 namespace NFluent.Tests
 {
     using System.Collections;
-   using System.Collections.Generic;
-   using NUnit.Framework;
-   using NFluent.Helpers;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+    using NFluent.Helpers;
 
-   [TestFixture]
+    [TestFixture]
     public class EnumerableShouldSupportAmbiguousType
     {
         [Test]
-        [Ignore("in progress")]
         public void NotIsEqualToThrowsExceptionWhenFailing()
         {
             IEnumerable enumerable = new System.Collections.Generic.List<int> { 45, 43, 54, 666 };
-            IEnumerable suspiciousEnumerable = new List<int> { 43, 45, 54, 666 };
+            IEnumerable suspiciousEnumerable = new List<int> { 45, 43, 54, 666 };
 
-            Check.ThatCode(() =>  Check.That(enumerable).IsEqualTo(suspiciousEnumerable)).IsAFailingCheckWithMessage("",
+            Check.ThatCode(() =>  Check.That(suspiciousEnumerable).Not.IsEqualTo(enumerable)).IsAFailingCheckWithMessage("",
                 "The checked enumerable is equal to the given one whereas it must not.",
                     "The expected enumerable: different from",
                     "\t{45, 43, 54, 666} (4 items) of type: [System.Collections.Generic.List<int>]");
