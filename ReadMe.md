@@ -6,17 +6,15 @@
 **Stable**   [![NuGet](https://img.shields.io/nuget/v/NFluent.svg)](https://www.nuget.org/packages/NFluent/)
  [![NuGet](https://img.shields.io/nuget/dt/NFluent.svg)](https://www.nuget.org/packages/NFluent/)
 
-**PreReleases**    [![NuGet Pre Release](https://img.shields.io/nuget/vpre/NFluent.svg)]()
-
 **Beta**    [![MyGet](https://img.shields.io/myget/dupdobnightly/vpre/NFluent.svg)](https://www.myget.org/feed/dupdobnightly/package/nuget/NFluent) [![MyGet](https://img.shields.io/myget/dupdobnightly/dt/NFluent.svg)](https://www.myget.org/feed/dupdobnightly/package/nuget/NFluent)
 
-**Issues**
+**Chat** ![Gitter](https://img.shields.io/gitter/room/nfluent/community.svg)
 
+**Issues**
 [![GitHub issues](https://img.shields.io/github/issues/tpierrain/NFluent.svg)](https://github.com/tpierrain/NFluent/issues)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/tpierrain/NFluent.svg)](https://github.com/tpierrain/NFluent/issues?q=is%3Aissue+is%3Aclosed)
 
 **Build Status**
-
 [![Build status](https://ci.appveyor.com/api/projects/status/ju5m6t3fm2xsl0o9/branch/master?svg=true)](https://ci.appveyor.com/project/tpierrain/nfluent/branch/master)
 [![Codecov](https://img.shields.io/codecov/c/github/NFluent/NFluent.svg)](https://codecov.io/gh/NFluent/NFluent)
 [![AppVeyor tests](https://img.shields.io/appveyor/tests/tpierrain/nfluent/master.svg)](https://ci.appveyor.com/project/tpierrain/nfluent)
