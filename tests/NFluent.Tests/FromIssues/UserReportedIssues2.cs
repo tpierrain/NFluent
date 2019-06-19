@@ -123,12 +123,10 @@ namespace NFluent.Tests.FromIssues
         public void
             ShouldSupportMultidimensionalArray()
         {
-            var myClass = new MyType();
-            myClass.Property = new int[4, 2];
+            var myClass = new MyType {Property = new int[4, 2]};
             myClass.Property[1, 1] = 4;
             Check.That(myClass).HasFieldsWithSameValues(myClass);
-            var myOther = new MyType();
-            myOther.Property = new int[4, 2];
+            var myOther = new MyType {Property = new int[4, 2]};
             myOther.Property[1, 1] = 5;
             Check.ThatCode(() => Check.That(myClass).HasFieldsWithSameValues(myOther)).IsAFailingCheckWithMessage("", 
                 "The checked value's field 'Property.[1,1]' does not have the expected value.", 
@@ -272,7 +270,7 @@ namespace NFluent.Tests.FromIssues
             public int MyProperty { get; set; }
         }
 
-        private double decimalValue => 0.95000000000000006d;
+        private static double DecimalValue => 0.95000000000000006d;
 
         private class BaseClass
         {
@@ -326,11 +324,11 @@ namespace NFluent.Tests.FromIssues
 
         // GH #205 
         [Test]
-        public void isEqualTo_should_provide_details_and_suggest_isCloseTo()
+        public void IsEqualTo_should_provide_details_and_suggest_isCloseTo()
         {
             using (new CultureSession("en-US"))
             {
-                Check.ThatCode(() => Check.That(this.decimalValue*(1<<16)).IsEqualTo(0.95d*(1<<16))).IsAFailingCheckWithMessage("",
+                Check.ThatCode(() => Check.That(DecimalValue*(1<<16)).IsEqualTo(0.95d*(1<<16))).IsAFailingCheckWithMessage("",
                     "The checked value is different from the expected one, with a difference of 7.3E-12. You may consider using IsCloseTo() for comparison.",
                     "The checked value:",
                     "\t[62259.2]",

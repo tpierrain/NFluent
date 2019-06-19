@@ -19,6 +19,7 @@ namespace NFluent.Kernel
     using System;
 #endif
     using Extensibility;
+    using Extensions;
     using Helpers;
 
     /// <summary>
@@ -197,7 +198,7 @@ System.
             }
             catch (System.Exception e)// when (ExceptionHelper.IsFailedException(e) && this.fluentCheckForExtensibility.Negated)
             {
-                if (!ExceptionHelper.IsFailedException(e) || !this.fluentCheckForExtensibility.Negated)
+                if (e.GetTypeWithoutThrowingException() != ExceptionHelper.FailedExceptionType() || !this.fluentCheckForExtensibility.Negated)
                 {
                     throw;
                 }

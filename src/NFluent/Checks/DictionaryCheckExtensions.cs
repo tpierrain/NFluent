@@ -85,7 +85,7 @@ namespace NFluent
                             return;
                         }
                     }
-            }).
+                }).
                 DefineExpectedValue(other).
                 OnNegate("The {checked} is equivalent to the {expected}, whereas it should not!", MessageOption.NoExpectedBlock).
                 EndCheck();

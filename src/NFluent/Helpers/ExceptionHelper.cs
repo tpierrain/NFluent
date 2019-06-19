@@ -34,7 +34,7 @@ namespace NFluent.Helpers
         /// <summary>
         /// xUnit framework
         /// </summary>
-        xUnit,
+        XUnit,
         /// <summary>
         /// MsTest
         /// </summary>
@@ -59,7 +59,7 @@ namespace NFluent.Helpers
         private const string Patterns = 
             "MsTest,microsoft.visualstudio.testplatform.testframework,Microsoft.VisualStudio.TestTools,AssertFailedException,,AssertInconclusiveException;"+
             "NUnit,nunit.framework,NUnit.,AssertionException,IgnoreException,InconclusiveException;"+
-            "xUnit,xunit.assert,Xunit.Sdk,XunitException,,";
+            "XUnit,xunit.assert,Xunit.Sdk,XunitException,,";
 
         private static ExceptionConstructor Constructors
         {
@@ -137,23 +137,21 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
-        /// Checks if an object is an instance of a failed assertion exception.
+        /// Gets the failed assertion exception type.
         /// </summary>
-        /// <param name="exc">Exception to check</param>
-        /// <returns>true if the exception is of a correct type</returns>
-        public static bool IsFailedException(Exception exc)
+        /// <returns>the failed assertion exception type</returns>
+        public static Type FailedExceptionType()
         {
-            return Constructors.IsFailedException(exc);
+            return Constructors.FailedExceptionType();
         }
 
         /// <summary>
-        /// Checks if an object is an instance of a failed assertion exception.
+        /// Checks if the failed assumption exception type
         /// </summary>
-        /// <param name="exc">Exception to check</param>
-        /// <returns>true if the exception is of a correct type</returns>
-        public static bool IsInconclusiveException(Exception exc)
+        /// <returns>the failed asumption exception type</returns>
+        public static Type InconclusiveExceptionType()
         {
-            return Constructors.IsInconclusiveException(exc);
+            return Constructors.InconclusiveExceptionType();
         }
 
         /// <summary>

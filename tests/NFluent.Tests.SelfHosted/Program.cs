@@ -44,7 +44,7 @@ namespace NFluent.Tests.SelfHosted
         private static void AssumptionTest()
         {
             Check.ThatCode(() => Assuming.That(2).IsEqualTo(3)).Throws<FluentCheckException>();
-            Check.ThatCode(() => Assuming.That(2).IsEqualTo(3)).IsaFailingAssumption();
+            Check.ThatCode(() => Assuming.That(2).IsEqualTo(3)).IsAFailingAssumption();
         }
 
         public static void BasicTest()

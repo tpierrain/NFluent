@@ -120,6 +120,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Obsolete\ILambdaCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RunTrace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RunTraceResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Criteria.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeUnit.cs" />
   </ItemGroup>
   <ItemGroup>

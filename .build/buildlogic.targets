@@ -195,6 +195,7 @@
   <!-- 1- Restore dependencies -->
   <Target Name="NugetRestore" DependsOnTargets="SynchroVersion">
 
+    
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
     <Exec Command='"$(NuGetExePath)" sources remove -Name extraSource' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/>
     <Exec Command='"$(NuGetExePath)" sources add -Name extraSource -Source $(NugetSource)' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/>

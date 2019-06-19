@@ -110,14 +110,14 @@ namespace NFluent.Helpers
                     this.ignoreExceptionBuilder ?? this.assertExceptionBuilder)(message);
         }
 
-        public bool IsFailedException(Exception exc)
+        public Type FailedExceptionType()
         {
-            return exc.GetTypeWithoutThrowingException() == this.assertExceptionType;
+            return this.assertExceptionType;
         }
 
-        public bool IsInconclusiveException(Exception exc)
+        public Type InconclusiveExceptionType()
         {
-            return exc.GetTypeWithoutThrowingException() == (this.inconclusiveExceptionType ??
+            return (this.inconclusiveExceptionType ??
                    this.ignoreExceptionType ?? this.assertExceptionType);
         }
     }

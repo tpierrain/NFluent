@@ -18,12 +18,12 @@
 
 namespace NFluent.Tests
 {
-    using NFluent.Helpers;
+    using Helpers;
     using NUnit.Framework;
 
     public class NUnitSpecific
     {
-#if !NETCOREAPP1_0
+#if !NETCOREAPP1_1
         [Test]
         public void ExceptionScanTest()
         {

@@ -124,7 +124,83 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsAFaillingCheckShouldFailWithProperMessage()
+        public void IsAFailingAssumptionReportsProperError()
+        {
+            Check.ThatCode(() => Assuming.ThatCode(() => 0).IsAFailingCheckWithMessage("don't care"))
+                .IsAFailingAssumptionWithMessage("", 
+                    "The check succeeded whereas it should have failed.", 
+                    "The expected fluent check's raised exception:", 
+                    Criteria.FromRegEx("\tan instance of .*"));
+
+            Check.ThatCode(() =>
+                // check with an incomplete error message
+                Check.ThatCode(() => throw ExceptionHelper.BuildInconclusiveException("oups"))
+                    .IsAFailingAssumptionWithMessage("oups", "and more")
+            ).IsAFailingCheckWithMessage("", 
+                "Lines are missing in the error message starting at #1", 
+                "The checked fluent assumption's raised exception's error message:", 
+                "\t{\"oups\"} (1 item)", 
+                "The expected fluent assumption's raised exception's error message:", 
+                "\t{\"oups\", \"and more\"} (2 items)");
+            
+            Check.ThatCode(() =>
+                // check with an incorrect error message
+                Check.ThatCode(() => throw ExceptionHelper.BuildInconclusiveException("oups"))
+                    .IsAFailingAssumptionWithMessage("oupsla")
+            ).IsAFailingCheckWithMessage("", 
+                "Line 0 is different from what is expected", 
+                "Act:oups", 
+                "Exp:\"oupsla\"", 
+                "The checked fluent assumption's raised exception's error message:", 
+                "\t{\"oups\"} (1 item)", 
+                "The expected fluent assumption's raised exception's error message:", 
+                "\t{\"oupsla\"} (1 item)");
+
+            Check.ThatCode(() =>
+                // check with a error message that is too long
+                Check.ThatCode(() => throw ExceptionHelper.BuildInconclusiveException("oups"+Environment.NewLine+"and more"))
+                    .IsAFailingAssumptionWithMessage("oupsla")
+            ).IsAFailingCheck();
+            // can use regular expression.
+            Check.ThatCode(() => throw ExceptionHelper.BuildInconclusiveException("oups")).
+                IsAFailingAssumptionWithMessage( Criteria.FromRegEx("[pous]+"));
+            Check.ThatCode(() =>
+                // check with a error message that is too long
+                Check.ThatCode(() => throw ExceptionHelper.BuildInconclusiveException("oups"+Environment.NewLine+"and more"))
+                    .IsAFailingAssumptionWithMessage(Criteria.FromRegEx("[pous]+"))
+            ).IsAFailingCheckWithMessage("", 
+                "Too many lines in the error message starting at #1", 
+                "The checked fluent assumption's raised exception's error message:", 
+                "\t{\"oups\", \"and more\"} (2 items)", 
+                "The expected fluent assumption's raised exception's error message:", 
+                "\t{matches: [pous]+} (1 item)");
+            Check.ThatCode(() =>
+                // check with a error message that does not match regex
+                Check.ThatCode(() => throw ExceptionHelper.BuildInconclusiveException("oupsla"))
+                    .IsAFailingAssumptionWithMessage(Criteria.FromRegEx("[pous]+$"))
+            ).IsAFailingCheckWithMessage("", 
+                "Line 0 is different from what is expected", 
+                "Act:oupsla", 
+                "Exp:matches: [pous]+$", 
+                "The checked fluent assumption's raised exception's error message:", 
+                "\t{\"oupsla\"} (1 item)", 
+                "The expected fluent assumption's raised exception's error message:", 
+                "\t{matches: [pous]+$} (1 item)");
+
+            Check.ThatCode(() =>
+                // check with a error message that is too long
+                Check.ThatCode(() => throw new Exception("oups"))
+                    .IsAFailingAssumptionWithMessage(Criteria.FromRegEx("[pous]+"))
+            ).IsAFailingCheckWithMessage("", 
+                "The exception raised is not of the expected type.", 
+                "The checked fluent assumption's raised exception:", 
+                "\t[{System.Exception}: 'oups'] of type: [System.Exception]", 
+                "The expected fluent assumption's raised exception:", 
+                "#\tan instance of .*");
+        }
+
+        [Test]
+        public void IsAFailingCheckShouldFailWithProperMessage()
         {
             Check.ThatCode(
                     () => Check.ThatCode(() => { }).IsAFailingCheck()).

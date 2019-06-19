@@ -31,7 +31,7 @@ namespace NFluent.Tests
         {
             using (var myEvent = new AutoResetEvent(false))
             {
-                SetTheEventFromAnotherThreadAfterADelay(myEvent, 300);
+                SetTheEventFromAnotherThreadAfterADelay(myEvent, 100);
 
                 Check.That(myEvent).IsSetWithin(1, TimeUnit.Seconds);
             }

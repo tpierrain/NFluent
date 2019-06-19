@@ -35,7 +35,7 @@ namespace NFluent
         TException Value { get; }
 
         /// <summary>
-        /// Checks if the exception wwas due to an (inner) exception of a specified type.
+        /// Checks if the exception was due to an (inner) exception of a specified type.
         /// </summary>
         /// <typeparam name="TE">Expected inner exception type</typeparam>
         /// <returns>A chainable link</returns>
