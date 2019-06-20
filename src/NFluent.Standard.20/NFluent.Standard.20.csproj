@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\NFluent.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>C:\Users\dupdob\source\repos\NFluent\.build\NFluent.snk</AssemblyOriginatorKeyFile>
     <RootNamespace>NFluent</RootNamespace>
     <AssemblyName>NFluent</AssemblyName>
     <LangVersion>latest</LangVersion>
@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\NFluent.snk" Link="NFluent.snk" />
+    <None Include="..\..\.build\NFluent.snk" Link="NFluent.snk" />
   </ItemGroup>
 
   <ItemGroup>

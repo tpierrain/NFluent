@@ -1,6 +1,6 @@
 [![GitHub stars](https://img.shields.io/github/stars/tpierrain/nfluent.svg?style=social&label=Star)](https://github.com/tpierrain/NFluent)
 
-![NFluent](https://github.com/tpierrain/nfluent/blob/master/NFluentBanner.png?raw=true)
+![NFluent](https://github.com/tpierrain/nfluent/blob/master/images/NFluentBanner.png?raw=true)
 ![Motto](https://github.com/tpierrain/nfluent/blob/master/Images/AssertIsDead.png?raw=true)
 
 **Stable**   [![NuGet](https://img.shields.io/nuget/v/NFluent.svg)](https://www.nuget.org/packages/NFluent/)

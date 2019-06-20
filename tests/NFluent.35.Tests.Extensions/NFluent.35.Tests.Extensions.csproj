@@ -47,12 +47,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Version.cs">
-      <Link>Properties\Version.cs</Link>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\src\NFluent.35\NFluent.35.csproj">
       <Project>{3A474510-F384-41CE-9270-539B1E51DA7E}</Project>
       <Name>NFluent.35</Name>
@@ -64,6 +58,11 @@
   <ItemGroup>
     <None Include="NFluent.snk" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\.build\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="..\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

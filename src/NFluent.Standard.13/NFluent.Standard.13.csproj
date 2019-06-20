@@ -6,7 +6,7 @@
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject />
     <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>../../NFluent.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>C:\Users\dupdob\source\repos\NFluent\.build\NFluent.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageId>
     </PackageId>
@@ -78,5 +78,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\.build\NFluent.snk" Link="NFluent.snk" />
   </ItemGroup>
 </Project>

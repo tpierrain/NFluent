@@ -12,7 +12,7 @@
     <NugetKey>$(NFLUENT_NUGET_API_KEY)</NugetKey>
     <NugetFeed>$(NFLUENT_NUGET_FEED)</NugetFeed>
     <CodeCovKey>$(CODECOV_KEY)</CodeCovKey>
-    <AttributeVersionFile>$(SolutionRoot)\Version.cs</AttributeVersionFile>
+    <AttributeVersionFile>$(SolutionRoot)\.build\Version.cs</AttributeVersionFile>
 
     <ToolsPath>$(SolutionRoot)\tools\</ToolsPath>
     <SourcePath>$(SolutionRoot)\src\</SourcePath>

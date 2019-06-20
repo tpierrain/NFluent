@@ -49,7 +49,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\NFluent.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\.build\NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -59,14 +59,13 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Compile Include="..\..\Version.cs">
+    <Compile Include="..\..\.build\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\NFluent.snk">
+    <None Include="..\..\.build\NFluent.snk">
       <Link>NFluent.snk</Link>
     </None>
     <None Include="..\NFluent.35\packages.config">
@@ -81,7 +80,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" />
+      <UserProperties ProjectLinkReference="3a474510-f384-41ce-9270-539b1e51da7e" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

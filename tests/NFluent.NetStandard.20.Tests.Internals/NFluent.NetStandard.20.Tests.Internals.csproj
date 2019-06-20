@@ -5,18 +5,19 @@
     <SignAssembly>true</SignAssembly>
     <RootNamespace>NFluent</RootNamespace>
     <AssemblyName>NFluent.Tests.Internals</AssemblyName>
-    <AssemblyOriginatorKeyFile>..\..\NFluent.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>C:\Users\dupdob\source\repos\NFluent\.build\NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <Import Project="..\NFluent.Tests.Internals\NFluent.Tests.Internals.projitems" Label="Shared" />
 
   <ItemGroup>
+    <None Include="..\..\.build\NFluent.snk" Link="NFluent.snk" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="NUnit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\NFluent.snk" Link="NFluent.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\NFluent.Standard.20\NFluent.Standard.20.csproj" />

@@ -10,15 +10,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		DevDoD.md = DevDoD.md
 		HowToAddANewAssertion.md = HowToAddANewAssertion.md
 		LICENSE.txt = LICENSE.txt
-		NFluent.snk = NFluent.snk
 		ReadMe.md = ReadMe.md
 		UseCases.md = UseCases.md
-		Version.cs = Version.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5BD348A4-E85B-4283-AA2A-01967F6F11C2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{64EFC15A-C599-41B6-BD22-144F8468A439}"
+	ProjectSection(SolutionItems) = preProject
+		.build\NFluent.snk = .build\NFluent.snk
+		.build\Version.cs = .build\Version.cs
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "compatibility", "compatibility", "{E3F40977-9951-4FCE-AA2C-9D3D804D836C}"
 EndProject
