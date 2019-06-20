@@ -5,8 +5,8 @@
     <ApplicationIcon />
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject />
-    <SignAssembly>False</SignAssembly>
-    <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\.build\NFluent.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageId>
     </PackageId>
@@ -20,62 +20,41 @@
     <Copyright>Copyright © 2017- 2014. Licensed under the Apache License, Version 2.0.</Copyright>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>http://www.n-fluent.net/</PackageProjectUrl>
-    <RootNamespace>NFluent.Tests</RootNamespace>
+    <AssemblyName>NFluent.Tests.Internals</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <DebugType>portable</DebugType>
-    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>portable</DebugType>
     <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="NFluent.Core.Tests.v3.ncrunchproject" />
+    <None Remove="NFluent.Core.Internals.Tests.v3.ncrunchproject" />
+    <None Remove="NFluent.Core.Tests.Internals.v3.ncrunchproject" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\.build\NFluent.snk" Link="NFluent.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="NUnit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
-    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+    <PackageReference Include="System.Collections.NonGeneric" Version="4.3.0" />
+    <PackageReference Include="System.Diagnostics.StackTrace" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\NFluent.Standard.13\NFluent.Standard.13.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="CheckedFile.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="ExpectedFile.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
-  <Import Project="..\NFluent.Tests\NFluent.Tests.projitems" Label="Shared" />
-  <Import Project="..\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems" Label="Shared" />
-  <ItemGroup>
-    <Content Update="C:\Users\dupdo\Documents\GitHub\NFluent\tests\NFluent.Tests\T4\NumberTestsGenerator.txt">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>NumberTestsGenerator.tt</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="C:\Users\dupdo\Documents\GitHub\NFluent\src\NFluent\T4\NumberFluentAssertionGenerator.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>NumberFluentAssertionGenerator.txt</LastGenOutput>
-    </None>
-    <None Update="C:\Users\dupdo\Documents\GitHub\NFluent\tests\NFluent.Tests\T4\NumberTestsGenerator.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>NumberTestsGenerator.txt</LastGenOutput>
-    </None>
-  </ItemGroup>
+  <Import Project="..\NFluent.Tests.Internals\NFluent.Tests.Internals.projitems" Label="Shared" />
 </Project>

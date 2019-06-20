@@ -5,7 +5,7 @@
     <SignAssembly>true</SignAssembly>
     <RootNamespace>NFluent</RootNamespace>
     <AssemblyName>NFluent.Tests.Internals</AssemblyName>
-    <AssemblyOriginatorKeyFile>C:\Users\dupdob\source\repos\NFluent\.build\NFluent.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\.build\NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <Import Project="..\NFluent.Tests.Internals\NFluent.Tests.Internals.projitems" Label="Shared" />

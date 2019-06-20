@@ -7,11 +7,11 @@ branches:
 configuration: Release
 platform: Any CPU
 build_script:
-- cmd: build.cmd
+- cmd: code\build.cmd
 test: off
 
 artifacts:
-  - path: 'Artifacts\Packages\*.nupkg'
+  - path: 'code\Artifacts\Packages\*.nupkg'
     name: NFluentPackages
 
 environment:

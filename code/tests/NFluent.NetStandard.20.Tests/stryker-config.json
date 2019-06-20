@@ -1,0 +1,12 @@
+{
+  "stryker-config": {
+    "reporters": [
+      "All"
+    ],
+	"test-runner" : "VsTest",
+    "coverage-analysis": "all",
+	"abort-test-on-fail":  true,
+    "log-level": "info",
+    "log-file": false
+  }
+}

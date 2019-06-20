@@ -20,7 +20,7 @@
 
     <NuspecFilePath>$(SolutionRoot)\$(SolutionName).nuspec</NuspecFilePath>
     <ReleaseNoteFile>$(SolutionRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.md</ReleaseNoteFile>
-    <AppVeyorFile>$(SolutionRoot)\appveyor.yml</AppVeyorFile>
+    <AppVeyorFile>$(SolutionRoot)\..\appveyor.yml</AppVeyorFile>
   </PropertyGroup>
   
   <Import Project="buildlogic.targets"/>
