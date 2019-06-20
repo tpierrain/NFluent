@@ -5,13 +5,11 @@ VisualStudioVersion = 16.0.28714.193
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{CCA550FA-833A-4F2E-9C81-78EE585A49CC}"
 	ProjectSection(SolutionItems) = preProject
-		Backlog.md = Backlog.md
-		CONTRIBUTING.md = CONTRIBUTING.md
-		DevDoD.md = DevDoD.md
-		HowToAddANewAssertion.md = HowToAddANewAssertion.md
-		LICENSE.txt = LICENSE.txt
-		ReadMe.md = ReadMe.md
-		UseCases.md = UseCases.md
+		..\CODE_OF_CONDUCT.md = ..\CODE_OF_CONDUCT.md
+		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
+		..\ISSUE_TEMPLATE.md = ..\ISSUE_TEMPLATE.md
+		..\LICENSE.txt = ..\LICENSE.txt
+		..\ReadMe.md = ..\ReadMe.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5BD348A4-E85B-4283-AA2A-01967F6F11C2}"
@@ -110,19 +108,22 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.NetStandard.20.Test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{DEE62612-3A5D-4D3F-9DDD-84B869E9184F}"
 	ProjectSection(SolutionItems) = preProject
-		ArchitectureDecisionRecord.md = ArchitectureDecisionRecord.md
-		Backlog.md = Backlog.md
-		CONTRIBUTING.md = CONTRIBUTING.md
+		..\docs\ArchitectureDecisionRecord.md = ..\docs\ArchitectureDecisionRecord.md
+		..\docs\Backlog.md = ..\docs\Backlog.md
+		..\docs\DevDoD.md = ..\docs\DevDoD.md
+		..\docs\ForNCrunchUsers.md = ..\docs\ForNCrunchUsers.md
+		..\docs\HowToAddANewAssertion.md = ..\docs\HowToAddANewAssertion.md
 		ReleaseNoteContentToBeInsertedWithinNuspecFile.md = ReleaseNoteContentToBeInsertedWithinNuspecFile.md
+		..\docs\UseCases.md = ..\docs\UseCases.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "continuous integration", "continuous integration", "{30A45412-002D-4E07-BDA7-945315A661BC}"
 	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
+		..\appveyor.yml = ..\appveyor.yml
 		build.cmd = build.cmd
 		.build\Build.proj = .build\Build.proj
 		.build\buildlogic.targets = .build\buildlogic.targets
-		CI.cmd = CI.cmd
+		..\CI.cmd = ..\CI.cmd
 		MutationTests.cmd = MutationTests.cmd
 		NFluent.nuspec = NFluent.nuspec
 	EndProjectSection

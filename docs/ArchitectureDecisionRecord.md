@@ -12,6 +12,8 @@ when conditions permit
 
 -------------
 #### 
+#### Upgrade to Visual Studio 2019 (2019/06/20)
+Visual Studio 2019 has been released for a few months and is available on AppVeyor.
 
 #### ? Double checks in test (2019/05/07)
 There is a regression in OpenCover V4.7 regarding identification of some runtime

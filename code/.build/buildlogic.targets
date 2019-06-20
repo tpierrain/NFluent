@@ -219,6 +219,7 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
     <Message Importance="normal" Text="--------- will run: $(SolutionRoot)\$(SolutionName).sln"/>
     <MSBuild Projects="$(SolutionRoot)\$(SolutionName).sln" 
              Targets="Build" 
+             BuildInParallel ="true"
              Properties="Configuration=$(Configuration)"/>
 
     <Message Importance="high" Text="--------- end of BUILD  -------------------------------------"/>

@@ -17,4 +17,9 @@ if "%config%" == "" (
    set config=Release
 )
 
-msbuild .\.build\Build.proj /t:%target% /p:Configuration="%config%" /fl /v:m /flp:LogFile=msbuild.log;Verbosity=Diagnostic /nr:false
+set extraOpt=""
+if "%APPVEYOR%"=="true" (
+    set extraOpt="/logger:""C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"""
+)
+
+msbuild .\.build\Build.proj /t:%target% /p:Configuration="%config%" /fl /v:m /flp:LogFile=msbuild.log;Verbosity=Diagnostic /nr:false %extraOpt%
