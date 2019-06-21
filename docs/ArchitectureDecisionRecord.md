@@ -12,6 +12,12 @@ when conditions permit
 
 -------------
 #### 
+#### Drop support for Net 2.0 and 3.0
+NUnit dropped support to pre 3.5 frameworks with verion 3.11. Support to NEt 2.0 and 3.0 has
+been added with NFluent 2.0. Supporting older frameworks adds complexity to the code by
+imposing the usage of compile time compilations, as well as the implementation of polyfills
+methods.
+
 #### Upgrade to Visual Studio 2019 (2019/06/20)
 Visual Studio 2019 has been released for a few months and is available on AppVeyor.
 So the solution has been upgraded to VS 2019 as well as the build settings for Appveyor.
@@ -30,7 +36,7 @@ Please comment the extra check you add for future removal.
 This decision will be reverted when Opencover is fixed.
 
 
-#### Multi-targeting project organization (2019/05/07):
+#### Multi-targeting project organization (2019/05/07)
 Priority is to maximize features consistency accross Net platforms and to simplify
 maintenance
 1. All source files are listed in a single shared project that is refered by
