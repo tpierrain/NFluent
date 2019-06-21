@@ -456,6 +456,13 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void NotHasCantBeUsedWithWhich()
+        {
+            Check.ThatCode( ()=>
+                Check.That((List<int>)null).Not.HasElementAt(5).Which.IsEqualTo(1)).Throws<InvalidOperationException>();
+        }
+
+        [Test]
         public void HasElementNumberThrowsWhenCollectionHasEnoughElementsIsEmpty()
 
         {

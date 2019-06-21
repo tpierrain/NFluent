@@ -280,6 +280,7 @@ NFluent.userprefs
 .vs/restore.dg
 *.ncrunch*
 *.orig
-/TestResults.xml
-/tests/NFluent.NetStandard.20.Tests/stryker-config.json
-/tests/NFluent.NetStandard.20.Tests/StrykerLogs/*.*
+TestResults.xml
+stryker-config.json
+**/Stryker*/*.*
+**/.DS_Store
