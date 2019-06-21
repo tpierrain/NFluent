@@ -19,7 +19,7 @@ if "%config%" == "" (
 
 set extraOpt=""
 if defined APPVEYOR (
-    set extraOpt="/logger:""C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"""
+    set extraOpt=/logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 )
 
 msbuild .\.build\Build.proj /t:%target% /p:Configuration="%config%" /fl /v:m /flp:LogFile=msbuild.log;Verbosity=Diagnostic /nr:false %extraOpt%
