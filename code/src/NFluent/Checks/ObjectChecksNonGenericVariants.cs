@@ -43,25 +43,21 @@ namespace NFluent
                         var expectedWrapper = ReflectionWrapper.BuildFromType(type, reflectionSut.Criteria);
                         expectedWrapper.MapFields(reflectionSut, 1, (expected, actual, depth) =>
                         {
-                            if (actual != null && expected != null && actual.ValueType != expected.ValueType)
+                            if (actual != null && expected != null)
                             {
-                                if (!actual.ValueType.IsPrimitive() && !expected.ValueType.IsPrimitive())
+                                if (actual.ValueType != expected.ValueType) 
                                 {
-                                    return true;
+                                    if (!actual.ValueType.IsPrimitive() && !expected.ValueType.IsPrimitive())
+                                    {
+                                        return true;
+                                    }
+
+                                    test.CheckSutAttributes(_ => actual.Value, actual.MemberLabel)
+                                        .Fail("The {0} is of a different type than the {1}.")
+                                        .DefineExpectedType(expected.ValueType);
                                 }
-
-                                test.CheckSutAttributes(_ => actual.Value, actual.MemberLabel)
-                                    .Fail("The {0} is of a different type than the {1}.")
-                                    .DefineExpectedType(expected.ValueType);
-                                return false;
                             }
-
-                            if (actual != null && expected != null && expected.ValueType == actual.ValueType)
-                            {
-                                return false;
-                            }
-
-                            if (actual == null)
+                            else if (actual == null)
                             {
                                 test.CheckSutAttributes(_ => expectedWrapper.Value, expected.MemberLabel)
                                     .DefineExpectedValue(expected)

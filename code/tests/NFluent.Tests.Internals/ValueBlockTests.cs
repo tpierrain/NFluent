@@ -70,10 +70,6 @@ namespace NFluent.Tests
 
             blk.WithEnumerableCount(list.GetLength(0));
             Assert.AreEqual("{} (0 item)", blk.GetMessage());
-            blk = new EnumerationBlock<char[]>(null, 0);
-
-            blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("null", blk.GetMessage());
         }
 
         [Test]

@@ -37,12 +37,14 @@ namespace NFluent.Extensibility
         private readonly EntityNamingLogic checkedNamingLogic;
         private readonly EntityNamingLogic expectedNamingLogic;
         private readonly GenericLabelBlock checkedLabel;
-        private string message;
+        private readonly string message;
         private GenericLabelBlock expectedLabel;
         private MessageBlock expectedBlock;
         private MessageBlock checkedBlock;
         private Type checkedType;
         private string customAddOn;
+        private bool dontRepeatExpected;
+        private bool dontRepeatChecked;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FluentMessage"/> class.
@@ -56,7 +58,23 @@ namespace NFluent.Extensibility
         /// </remarks>
         private FluentMessage(string message)
         {
-            this.message = message;
+            var format = message;
+            format = format.Replace("{checked}", "{0}");
+            format = format.Replace("{expected}", "{1}");
+            format = format.Replace("{given}", "{1}");
+            this.message = format;
+            if (format.Contains("{0}") && format.Contains("{1}"))
+            {
+                if (format.IndexOf("{1}", format.IndexOf("{0}", StringComparison.Ordinal), StringComparison.Ordinal)>=0)
+                {
+                    this.dontRepeatExpected = true;
+                }
+                else
+                {
+                    this.dontRepeatChecked = true;
+                }
+            }
+
             this.checkedNamingLogic = new EntityNamingLogic();
             this.expectedNamingLogic = new EntityNamingLogic();
             this.checkedLabel = GenericLabelBlock.BuildCheckedBlock(this.checkedNamingLogic);
@@ -84,30 +102,11 @@ namespace NFluent.Extensibility
             var builder = new StringBuilder(this.customAddOn);
             builder.Append(EndOfLine);
 
-            var format = this.message;
-            format = format.Replace("{checked}", "{0}");
-            format = format.Replace("{expected}", "{1}");
-            format = format.Replace("{given}", "{1}");
+            var same = this.expectedLabel.EntityName() == this.checkedLabel.EntityName();
+            var localLabel = (same && this.dontRepeatChecked) ? this.checkedLabel.CustomMessage("{0} one") : this.checkedLabel.ToString();
+            var givenOrExpectedLabel = (same && this.dontRepeatExpected) ? this.expectedLabel.CustomMessage("{0} one") : this.expectedLabel.ToString();
 
-            var givenOrExpectedLabel = this.expectedLabel.ToString();
-            var localLabel = this.checkedLabel.ToString();
-            // analyze structure of sentence
-            if ((this.expectedLabel.EntityName() == this.checkedLabel.EntityName()))
-            {
-                var checkedPos = format.IndexOf("{0}", StringComparison.Ordinal);
-                var expectedPos = format.IndexOf("{1}", StringComparison.Ordinal);
-
-                if (checkedPos >= 0 && expectedPos > checkedPos)
-                {
-                    givenOrExpectedLabel = this.expectedLabel.CustomMessage("{0} one");
-                }
-                else if (expectedPos >= 0 && checkedPos > expectedPos)
-                {
-                    localLabel = this.checkedLabel.CustomMessage("{0} one");
-                }
-            }
-
-            builder.AppendFormat(format, localLabel, givenOrExpectedLabel);
+            builder.AppendFormat(this.message, localLabel, givenOrExpectedLabel);
 
             if (this.checkedBlock != null)
             {
@@ -123,18 +122,6 @@ namespace NFluent.Extensibility
 
             return builder.ToString();
         }
-
-        //ncrunch: no coverage start
-        /// <summary>
-        /// Change the main message.
-        /// </summary>
-        /// <param name="newMessage">New message to use.</param>
-        [Obsolete]
-        public void ChangeMessageTo(string newMessage)
-        {
-            this.message = newMessage;
-        }
-        //ncrunch: no coverage end
 
         /// <summary>
         /// Specifies the attribute to use to describe entities.
@@ -174,10 +161,10 @@ namespace NFluent.Extensibility
         /// </returns>
         public MessageBlock On<T>(T test, long index = 0)
         {
-            var checkedType = test.GetTypeWithoutThrowingException();
+            var theType = test.GetTypeWithoutThrowingException();
             this.checkedBlock = MessageBlock.Build(this, test, this.checkedLabel, index);
-            this.For(checkedType);
-            this.checkedType = checkedType;
+            this.For(theType);
+            this.checkedType = theType;
             return this.checkedBlock;
         }
 

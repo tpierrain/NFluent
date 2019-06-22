@@ -192,19 +192,20 @@ namespace NFluent
                             break;
                         }
 
-                        if (!ReferenceEquals(match.Actual.Value, match.Expected.Value))
-                        {
-                            continue;
-                        }
+                        var isSameRef = ReferenceEquals(match.Actual.Value, match.Expected.Value);
 
                         test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
-                            .Fail("The {0} does reference the {1}, whereas it should not.",
+                            .FailWhen( subSut => isSameRef, "The {0} does reference the {1}, whereas it should not.",
                                 MessageOption.NoCheckedBlock)
-                            .ComparingTo(match.Expected.Value, "different instance than", "");
-                        break;
+                            .ComparingTo(match.Expected.Value, "different instance than", "same instance as");
+                        if (test.Failed)
+                        {
+                            break;
+                        }
                     }
                 })
-                .OnNegate("The {0} contains the same reference than the {1}, whereas it should not.")
+                .OnNegate("The {0} does not contain the same reference than the {1}, whereas it should.")
+                .DefineExpectedValue(expected, "different from", "same as")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

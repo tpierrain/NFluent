@@ -15,6 +15,7 @@
 
 namespace NFluent.Tests
 {
+    using System.Collections;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -567,6 +568,16 @@ namespace NFluent.Tests
             WorkForIsDistinct()
         {
             var sharedReference = new object();
+            Check.ThatCode(() =>
+            {
+                Check.That(new {Property = sharedReference}).Considering().Public.Properties
+                    .Not.IsDistinctFrom(new {Property = new object()});
+            }).IsAFailingCheckWithMessage("", 
+                "The checked value does not contain the same reference than the given one, whereas it should.", 
+                "The checked value:", 
+                "\t[{ Property = {  } }]", 
+                "The expected value: same as", 
+                "\t[{ Property = System.Object }]");
 
             Check.That(new {Property = sharedReference}).Considering().Public.Properties
                 .IsDistinctFrom(new {Property = new object()});
@@ -597,6 +608,8 @@ namespace NFluent.Tests
                 "The checked value's property 'Properties' is absent from the expected one.", 
                 "The checked value's property 'Properties':", 
                 "\t[2]");
+
+
         }
 
         [Test]
@@ -610,11 +623,12 @@ namespace NFluent.Tests
             {
                 Check.That(new {Property = sharedReference}).Considering().Public.Properties
                     .Not.IsDistinctFrom(new {Property = new object()});
-            }).IsAFailingCheckWithMessage(
-                "", 
-                "The checked value contains the same reference than the expected one, whereas it should not.", 
+            }).IsAFailingCheckWithMessage("", 
+                "The checked value does not contain the same reference than the given one, whereas it should.", 
                 "The checked value:", 
-                "\t[{ Property = {  } }]");
+                "\t[{ Property = {  } }]", 
+                "The expected value: same as", 
+                "\t[{ Property = System.Object }]");
 
 
         }

@@ -87,11 +87,6 @@ namespace NFluent
         private static string ToEnumeratedStringAdvanced(this IEnumerable enumerable,
             long referenceIndex, long numberOfItems, ICollection<object> seen)
         {
-            if (enumerable == null)
-            {
-                return "null";
-            }
-
             if (seen.Contains(enumerable))
             {
                 return "{{"+Ellipsis+"}}";
