@@ -85,20 +85,19 @@ namespace NFluent.Helpers
                 return value as ReflectionWrapper;
             }
 
-            return new ReflectionWrapper(Empty, Empty, "instance", type, value, criteria);
+            return new ReflectionWrapper(Empty, Empty, Empty, type, value, criteria);
         }
 
         internal static ReflectionWrapper BuildFromType(Type type, Criteria criteria)
         {
-            return new ReflectionWrapper(Empty, Empty, "instance", type, null, criteria);
+            return new ReflectionWrapper(Empty, Empty, Empty, type, null, criteria);
         }
 
         internal static ReflectionWrapper BuildFromField(string prefix, string name, Type type, object value,
             Criteria criteria)
         {
             string labelPattern;
-            string nameInSource;
-            if (EvaluateCriteria(AutoPropertyMask, name, out nameInSource))
+            if (EvaluateCriteria(AutoPropertyMask, name, out var nameInSource))
             {
                 if (criteria.WithProperties)
                 {
@@ -307,7 +306,7 @@ namespace NFluent.Helpers
             var fieldType = array.GetType().GetElementType();
             if (array.Rank == 1)
             {
-                for (var i = array.GetLowerBound(0); i < array.GetUpperBound(0); i++)
+                for (var i = array.GetLowerBound(0); i <= array.GetUpperBound(0); i++)
                 {
                     var expectedEntryDescription = BuildFromField(this.MemberLongName, $"[{i}]", fieldType,
                         array.GetValue(i), this.Criteria);
@@ -323,13 +322,13 @@ namespace NFluent.Helpers
                     var label = new StringBuilder("[");
                     for (var j = 0; j < array.Rank; j++)
                     {
-                        var currentIndex = temp % array.SizeOfDimension(j);
+                        var currentIndex = j == array.Rank - 1 ? temp : temp % array.SizeOfDimension(j);
                         label.Append(currentIndex.ToString());
                         label.Append(j < array.Rank - 1 ? "," : "]");
                         indices[j] = currentIndex + array.GetLowerBound(j);
                         temp /= array.SizeOfDimension(j);
                     }
-
+                   
                     var expectedEntryDescription = BuildFromField(this.MemberLongName, label.ToString(), fieldType,
                         array.GetValue(indices), this.Criteria);
                     result.Add(expectedEntryDescription);

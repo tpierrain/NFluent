@@ -26,10 +26,10 @@ namespace NFluent.Tests
         [Test]
         public void HashCodeIsConsistent()
         {
-            var toto = new {entier = 2, lettre = 'b', sub = new { sub = (object) null} };
+            var toto = new {entier = 2, lettre = 'b', sub = new { sub = (object) 4, nullSub = (object) null }};
             var sut = ReflectionWrapper.BuildFromInstance(toto.GetType(), toto,
                 new Criteria(BindingFlags.Instance | BindingFlags.NonPublic));
-            Check.That(sut.GetHashCode()).IsEqualTo(147721457);
+            Check.That(sut.GetHashCode()).IsEqualTo(147721549);
         }
     }
 }

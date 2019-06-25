@@ -16,5 +16,12 @@
             Check.That(FluentMessage.BuildMessage("{given} and {checked}").ToString()).AsLines()
                 .ContainsExactly("",  "expected value and checked one");
         }
+
+        [Test]
+        public void SupportLackOfChecked()
+        {
+            Check.That(FluentMessage.BuildMessage("{given}").ToString()).AsLines()
+                .ContainsExactly("",  "expected value");
+        }
     }
 }

@@ -132,9 +132,9 @@ namespace NFluent.Helpers
         public static ICheckLink<ICheck<RunTrace>> IsAFailingAssumption(this ICheck<RunTrace> check)
         {
             ExtensibilityHelper.BeginCheck(check)
-                .SetSutName("fluent check")
+                .SetSutName("fluent assumption")
                 .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
-                .FailIfNull("The fluent check did not raise an exception, where as it must.")
+                .FailIfNull("The assumption succeeded whereas it should have failed.")
                 .FailWhen(sut => ExceptionHelper.InconclusiveExceptionType() != sut.GetTypeWithoutThrowingException(),
                     "The exception raised is not of the expected type").
                 DefineExpectedType(ExceptionHelper.InconclusiveExceptionType()).

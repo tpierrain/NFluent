@@ -74,7 +74,7 @@
         public void ShouldFailOnDifferentArrays()
         {
             Check.That(new[] { 1, 2 }).HasFieldsWithSameValues(new[] { 1, 2 });
-            Check.ThatCode(() => { Check.That(new[] { 1, 2 }).HasFieldsWithSameValues(new[] { 2, 3 }); })
+            Check.ThatCode(() => { Check.That(new[] { 1, 2 }).HasFieldsWithSameValues(new[] { 1, 3 }); })
                 .IsAFailingCheck();
         }
 

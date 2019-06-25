@@ -1,6 +1,5 @@
 ﻿namespace NFluent.Tests
 {
-    using ApiChecks;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -46,6 +45,32 @@
             Assuming.ThatCode(() => 2).DoesNotThrow();
             Assuming.ThatCode(() => {}).DoesNotThrow();
             Check.ThatCode(() => Assuming.ThatCode(() =>2).ThrowsAny()).IsAFailingAssumption();
+        }
+
+        [Test]
+        public void AssumptionCheckShouldFaileWithProperErrorMessage()
+        {
+            Check.ThatCode(() =>
+            Check.ThatCode(() => Check.ThatCode(() =>2).ThrowsAny()).IsAFailingAssumption()).
+            IsAFailingCheckWithMessage("", 
+                "The exception raised is not of the expected type", 
+                "The checked fluent assumption's raised exception:", 
+                "\t[{NUnit.Framework.AssertionException}: '", 
+                "The checked code did not raise an exception, whereas it must.'] of type: [NUnit.Framework.AssertionException]", 
+                "The expected fluent assumption's raised exception:", 
+                "\tan instance of [NUnit.Framework.InconclusiveException]");
+            Check.ThatCode(() =>
+                    Check.ThatCode(() => Check.ThatCode(() =>2).DoesNotThrow()).IsAFailingAssumption()).
+                IsAFailingCheckWithMessage("", 
+                    "The assumption succeeded whereas it should have failed.", 
+                    "The expected fluent assumption's raised exception:", 
+                    "\tan instance of [NUnit.Framework.InconclusiveException]");
+            Check.ThatCode(() =>
+                    Check.ThatCode(() => Check.ThatCode(() =>2).DoesNotThrow()).IsAFailingAssumptionWithMessage("don't care")).
+                IsAFailingCheckWithMessage("", 
+                    "The assumption succeeded whereas it should have failed.", 
+                    "The expected fluent assumption's raised exception:", 
+                    "\tan instance of [NUnit.Framework.InconclusiveException]");
         }
 
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_40 && !DOTNET_35

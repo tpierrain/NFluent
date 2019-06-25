@@ -16,7 +16,6 @@ namespace NFluent.Helpers
 {
     using System;
     using System.Reflection;
-    using Extensions;
 
     /// <summary>
     /// Stores adequate constructors.
@@ -61,7 +60,7 @@ namespace NFluent.Helpers
         {
             if(this.assemblyNameBeginning == null)
             {
-                return  false;
+                return false;
             }
 
             if (!assembly.FullName.ToLowerInvariant().Contains(this.assemblyNameBeginning))

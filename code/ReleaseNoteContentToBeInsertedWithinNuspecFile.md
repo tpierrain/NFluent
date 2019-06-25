@@ -16,6 +16,8 @@ Check.That(enum).WhoseSize().IsEqualTo(3)
 * Fix issue with IEnumerable<object> and Contains(Exactly), IsEqualTo, IsEquivalentTo.
 * Several error messages have been improved due to fix on check helpers.
 * NotSupportedException when using ContainsExactly on strings.
+* Fix issue with single dimension arrays and field based checks where the LAST item of the array
+* was not evaluated during the check (issue found thanks to mutation test)
 
 ### Extensibility
 Foreword: several breaking changes have been introduced that may trigger build error in your custom extensions if you have made any.
@@ -27,6 +29,7 @@ Methods and types have been renamed, so your code will have to refer the new nam
 * checks helper (ICheckLogic) now correctly reports the fundamental error instead of a detail error. In previous version, the error messages could focus on details, e.g. report the
 exception's message when the issue is the exception's type.
 * add a flag (boolean) to BuildCheckLinkWhich method (allows to provide subitem check) that allows to speciyf sub item is available.
+
 
 ### GitHub Issues
 * #291, #292, #295, #296, #297, #299

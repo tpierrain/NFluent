@@ -72,7 +72,7 @@ namespace NFluent.Helpers
                     checkLogic
                         .CheckSutAttributes(_=>this.Actual.Value, this.Actual.MemberLabel)
                         .Fail("The {0} has the same value than the given one, whereas it should not.", MessageOption.NoCheckedBlock)
-                        .ComparingTo(this.Expected.Value, "different from", "");
+                        .ComparingTo(this.Expected.Value, "different from");
                 }
                 else
                 {

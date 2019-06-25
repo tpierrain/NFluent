@@ -155,6 +155,6 @@ namespace NFluent.Extensibility
         /// <param name="comparisonInfo"></param>
         /// <param name="negatedComparisonInfo"></param>
         /// <returns></returns>
-        ICheckLogic<T> ComparingTo<TU>(TU other, string comparisonInfo, string negatedComparisonInfo);
+        ICheckLogic<T> ComparingTo<TU>(TU other, string comparisonInfo = null, string negatedComparisonInfo = null);
     }
 }

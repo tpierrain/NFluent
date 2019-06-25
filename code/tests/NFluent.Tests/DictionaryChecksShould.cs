@@ -329,6 +329,8 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["foo"] = 0, ["bar"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one. 2 differences found! But the checked dictionary is equivalent to the expected one.", 
+                "actual key[0] = \"foo\" instead of \"bar\".", 
+                "actual key[1] = \"bar\" instead of \"foo\".",                
                 "The checked dictionary:", 
                 "\t{[foo, 0], [bar, 1]} (2 items)", 
                 "The expected dictionary:", 
@@ -336,6 +338,8 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["foo"] = 1, ["bar"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one. 2 differences found!", 
+                "actual key[0] = \"foo\" instead of \"bar\".", 
+                "actual key[1] = \"bar\" instead of \"foo\".", 
                 "The checked dictionary:", 
                 "\t{[foo, 1], [bar, 1]} (2 items)", 
                 "The expected dictionary:", 
@@ -343,6 +347,7 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one.", 
+                "actual[\"foo\"] = 1 instead of 0.",
                 "The checked dictionary:", 
                 "\t{[bar, 1], [foo, 1]} (2 items)", 
                 "The expected dictionary:", 
@@ -350,6 +355,8 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["bar!"] = 1, ["foo"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one. 2 differences found!", 
+                "actual key[0] = \"bar!\" instead of \"bar\".", 
+                "actual[\"foo\"] = 1 instead of 0.",
                 "The checked dictionary:", 
                 "\t{[bar!, 1], [foo, 1]} (2 items)", 
                 "The expected dictionary:", 
@@ -357,6 +364,7 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["bar"] = 1}).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one.", 
+                "actual[\"foo\"] does not exist. Expected 0.", 
                 "The checked dictionary:", 
                 "\t{[bar, 1]} (1 item)", 
                 "The expected dictionary:", 
@@ -364,6 +372,7 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
                 Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo"] = 0, ["extra"] = 2 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one.", 
+                "actual[\"extra\"] should not exist (value null)",
                 "The checked dictionary:", 
                 "\t{[bar, 1], [foo, 0], [extra, 2]} (3 items)", 
                 "The expected dictionary:", 

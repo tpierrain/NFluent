@@ -45,7 +45,6 @@ namespace NFluent.Tests
             var result = EqualityHelper.ValueDifference(this.a, "a", this.b, "b");
             Check.That(result.Count).IsEqualTo(2);
             Check.That(result[0].FirstName).IsEqualTo("a[0]");
-            Check.That(result[0].SecondName).IsEqualTo("b[0]");
             Check.That(result[0].FirstValue).IsEqualTo(1);
             Check.That(result[0].SecondValue).IsEqualTo(3);
 
@@ -69,7 +68,7 @@ namespace NFluent.Tests
         public void ValueDifferenceGivesDetailsOnFailureWithShorterEnums()
         {
             var result = EqualityHelper.ValueDifference(new List<List<int>> {this.a}, "a", this.list, "b");
-            Check.That(result[0].FirstName).IsEqualTo(null);
+            Check.That(result[0].FirstName).IsEqualTo("a[1]");
             result = EqualityHelper.ValueDifference(this.list, "a", new List<List<int>> {this.a}, "b");
             Check.That(result[0].FirstName).IsEqualTo("a[1]");
         }

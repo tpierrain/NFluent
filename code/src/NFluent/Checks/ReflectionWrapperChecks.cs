@@ -102,7 +102,7 @@ namespace NFluent
                         test.CheckSutAttributes(_ => scan.Value, scan.MemberLabel)
                             .FailWhen(val => depth <= 0 && val != null,
                                 "The {0} is non null, whereas it should be.");
-                        return depth>0;
+                        return true;
                     });
                 })
                 .OnNegate("The {0} has only null member, whereas it should not.", MessageOption.NoCheckedBlock)
@@ -197,7 +197,7 @@ namespace NFluent
                         test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
                             .FailWhen( subSut => isSameRef, "The {0} does reference the {1}, whereas it should not.",
                                 MessageOption.NoCheckedBlock)
-                            .ComparingTo(match.Expected.Value, "different instance than", "same instance as");
+                            .ComparingTo(match.Expected.Value, "different instance than");
                         if (test.Failed)
                         {
                             break;
@@ -205,7 +205,7 @@ namespace NFluent
                     }
                 })
                 .OnNegate("The {0} does not contain the same reference than the {1}, whereas it should.")
-                .DefineExpectedValue(expected, "different from", "same as")
+                .DefineExpectedValue(expected, negatedComparison:"same as")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

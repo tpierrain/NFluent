@@ -179,7 +179,6 @@ namespace NFluent.Tests
                     "The checked enumerable is null and thus does not contain exactly the expected value(s).",
                     "The expected value(s):",
                     "\t{\"what da heck!\"} (1 item)");
-
         }
 
         [Test]
@@ -239,6 +238,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That(actual).IsEqualTo(expected); }).IsAFailingCheckWithMessage(
                     "",
                     "The checked enumerable is different from the expected one.",
+                    "actual[0][0] = 4 instead of 8.",
                     "The checked enumerable:",
                     "\t{{4}} (1 item)",
                     "The expected enumerable:",
@@ -253,6 +253,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That(actual).IsEqualTo(expected); }).IsAFailingCheckWithMessage(
                     "",
                     "The checked enumerable is different from the expected one.",
+                    "actual[0][0] = 4 instead of null.",
                     "The checked enumerable:",
                     "\t{{4}} (1 item)",
                     "The expected enumerable:",

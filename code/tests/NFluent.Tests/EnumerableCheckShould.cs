@@ -256,6 +256,7 @@ namespace NFluent.Tests
                 .IsAFailingCheckWithMessage(
                     "", 
                     "The checked enumerable is different from the expected one.", 
+                    "actual[4] does not exist. Expected 4.",
                     "The checked enumerable:", 
                     "\t{0, 1, 2, 3} (4 items)", 
                     "The expected enumerable:", 

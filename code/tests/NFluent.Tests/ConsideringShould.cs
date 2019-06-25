@@ -568,16 +568,6 @@ namespace NFluent.Tests
             WorkForIsDistinct()
         {
             var sharedReference = new object();
-            Check.ThatCode(() =>
-            {
-                Check.That(new {Property = sharedReference}).Considering().Public.Properties
-                    .Not.IsDistinctFrom(new {Property = new object()});
-            }).IsAFailingCheckWithMessage("", 
-                "The checked value does not contain the same reference than the given one, whereas it should.", 
-                "The checked value:", 
-                "\t[{ Property = {  } }]", 
-                "The expected value: same as", 
-                "\t[{ Property = System.Object }]");
 
             Check.That(new {Property = sharedReference}).Considering().Public.Properties
                 .IsDistinctFrom(new {Property = new object()});

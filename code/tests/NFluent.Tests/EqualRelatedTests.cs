@@ -158,6 +158,8 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That(array).IsEqualTo(otherSimilarButNotEqualArray); })
                 .IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one. 2 differences found!", 
+                    "actual[0] = 45 instead of 25.", 
+                    "actual[3] = 666 instead of 667.",
                     "The checked enumerable:", 
                     "\t{45, 43, 54, 666, 63} (5 items)", 
                     "The expected enumerable:", 
@@ -173,6 +175,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That(array).IsEqualTo(otherSimilarButNotEqualArray); })
                 .IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one.", 
+                    "actual.Rank = 2 instead of 1.", 
                     "The checked enumerable:", 
                     "\t{{0, 0, 0}, {0, 0, 0}} (6 items) of type: [int[,]]", 
                     "The expected enumerable:", 
@@ -188,6 +191,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => { Check.That(array).IsEqualTo(otherSimilarButNotEqualArray); })
                 .IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one.", 
+                    "actual.Rank = 3 instead of 1.",
                     "The checked enumerable:", 
                     "\t{{{0, 1}, {2, 3}, {4, 5}}, {{6, 7}, {8, 9}, {10, 11}}} (12 items) of type: [int[,,]]", 
                     "The expected enumerable:", 
@@ -196,7 +200,7 @@ namespace NFluent.Tests
 
         [Test]
         public void
-            ShouldWOrkWithArbitraryIndexBase()
+            ShouldWorkWithArbitraryIndexBase()
         {
             var array = Array.CreateInstance(typeof(int), new []{2,2}, new []{-1, -1});
             var otherArray = new int[2, 2];
@@ -223,6 +227,9 @@ namespace NFluent.Tests
                 Check.That(array).IsEqualTo(otherArray)).
                 IsAFailingCheckWithMessage(	"", 
                     "The checked enumerable is different from the expected one. 3 differences found!", 
+                    "actual[1,0] = 0 instead of 2.", 
+                    "actual[0,1] = 0 instead of 1.", 
+                    "actual[1,1] = 0 instead of 3.",
                     "The checked enumerable:", 
                     "\t{{0, 0}, {0, 0}} (4 items)", 
                     "The expected enumerable:", 
@@ -232,6 +239,9 @@ namespace NFluent.Tests
                 Check.That(otherArray).IsEqualTo(array)).
                 IsAFailingCheckWithMessage(	"", 
                     "The checked enumerable is different from the expected one. 3 differences found!", 
+                    "actual[1,0] = 2 instead of 0.",
+                    "actual[0,1] = 1 instead of 0.", 
+                    "actual[1,1] = 3 instead of 0.",
                     "The checked enumerable:", 
                     "\t{{0, 1}, {2, 3}} (4 items)",
                     "The expected enumerable:", 
@@ -246,6 +256,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(first).IsEqualTo("A sentence can provide 1 long enumeration.".ToCharArray()))
                 .IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one.", 
+                    "actual[23] = 'a' instead of '1'.", 
                     "The checked enumerable:", 
                     "\t{..., 'n', ' ', 'p', 'r', 'o', 'v', 'i', 'd', 'e', ' ', 'a', ' ', 'l', 'o', 'n', 'g', ' ', 'e', 'n', 'u', ...} (42 items)", 
                     "The expected enumerable:", 
@@ -546,10 +557,18 @@ namespace NFluent.Tests
             var otherRecursive = new List<object> {a};
             var interim = new List<object> {recursive};
             otherRecursive.Add(interim);
-            Check.ThatCode(() => Check.That(recursive).IsEqualTo(otherRecursive)).IsAFailingCheck();
+            Check.ThatCode(() => Check.That(recursive).IsEqualTo(otherRecursive)).IsAFailingCheckWithMessage("", 
+                "The checked enumerable is different from the expected one.", 
+                "actual[1] = {{1, 2}, {{...}}} instead of {{{1, 2}, {{...}}}}.",
+                "The checked enumerable:", 
+                "\t{{1, 2}, {{...}}} (2 items)", 
+                "The expected enumerable:", 
+                "\t{{1, 2}, {{{1, 2}, {{...}}}}} (2 items)");
             Check.ThatCode(() => Check.That(new List<object> {a, a}).IsEqualTo(recursive)).
                 IsAFailingCheckWithMessage("", 
-                    "The checked enumerable is different from the expected one.", 
+                    "The checked enumerable is different from the expected one. 2 differences found!", 
+                    "actual[1][0] = 1 instead of {1, 2}.", 
+                    "actual[1][1] = 2 instead of {{1, 2}, {{...}}}.",
                     "The checked enumerable:", 
                     "\t{{1, 2}, {1, 2}} (2 items)", 
                     "The expected enumerable:", 

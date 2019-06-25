@@ -123,18 +123,28 @@ namespace NFluent.Tests.FromIssues
         public void
             ShouldSupportMultidimensionalArray()
         {
-            var myClass = new MyType {Property = new int[4, 2]};
-            myClass.Property[1, 1] = 4;
+            var array = Array.CreateInstance(typeof(int), new []{2,2}, new []{-1, -1});
+            var otherArray = new int[2, 2];
+            var val = 0;
+            for (var i = 0; i < 2; i++)
+            {
+                for(var j = 0; j < 2; j++)
+                {
+                    array.SetValue(val, i-1, j-1);
+                    otherArray[i, j] = val;
+                    val++;
+                }
+            }
+            var myClass = new  {Property = array};
             Check.That(myClass).HasFieldsWithSameValues(myClass);
-            var myOther = new MyType {Property = new int[4, 2]};
+            var myOther = new {Property = otherArray};
             myOther.Property[1, 1] = 5;
             Check.ThatCode(() => Check.That(myClass).HasFieldsWithSameValues(myOther)).IsAFailingCheckWithMessage("", 
                 "The checked value's field 'Property.[1,1]' does not have the expected value.", 
                 "The checked value's field 'Property.[1,1]':",
-                "\t[4]",
+                "\t[3]",
                 "The expected value's field 'Property.[1,1]':",
                 "\t[5]");
-
         }
 
         class MyType{
@@ -341,7 +351,20 @@ namespace NFluent.Tests.FromIssues
                     "\t[62259.21]",
                     "The expected value:",
                     "\t[62259.2]");
-
+                Check.ThatCode(() => Check.That(100001f).IsEqualTo(100000f)).IsAFailingCheckWithMessage("",
+                    "The checked value is different from the expected one, with a difference of 1.",
+                    "The checked value:",
+                    "\t[100001]",
+                    "The expected value:",
+                    "\t[100000]");
+                
+                Check.ThatCode(() => Check.That(100000001d).IsEqualTo(100000000d)).IsAFailingCheckWithMessage("",
+                    "The checked value is different from the expected one, with a difference of 1.",
+                    "The checked value:",
+                    "\t[100000001]",
+                    "The expected value:",
+                    "\t[100000000]");
+                
             }
         }
 
