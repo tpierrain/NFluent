@@ -46,9 +46,10 @@
             Assuming.ThatCode(() => {}).DoesNotThrow();
             Check.ThatCode(() => Assuming.ThatCode(() =>2).ThrowsAny()).IsAFailingAssumption();
         }
-
+#if !NETCOREAPP1_1
+// this test is not relevant if the framework does not offer assembly reflection methods
         [Test]
-        public void AssumptionCheckShouldFaileWithProperErrorMessage()
+        public void AssumptionCheckShouldFailWithProperErrorMessage()
         {
             Check.ThatCode(() =>
             Check.ThatCode(() => Check.ThatCode(() =>2).ThrowsAny()).IsAFailingAssumption()).
@@ -72,7 +73,7 @@
                     "The expected fluent assumption's raised exception:", 
                     "\tan instance of [NUnit.Framework.InconclusiveException]");
         }
-
+#endif
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_40 && !DOTNET_35
         [Test]
         public void ProvideIgnoreForDynamic()

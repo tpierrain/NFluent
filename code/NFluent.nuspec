@@ -26,6 +26,8 @@
 * Fix issue with IEnumerable&lt;object&gt; and Contains(Exactly), IsEqualTo, IsEquivalentTo.
 * Several error messages have been improved due to fix on check helpers.
 * NotSupportedException when using ContainsExactly on strings.
+* Fix issue with single dimension arrays and field based checks where the LAST item of the array
+* was not evaluated during the check (issue found thanks to mutation test)
 ### Extensibility
 Foreword: several breaking changes have been introduced that may trigger build error in your custom extensions if you have made any.
 Methods and types have been renamed, so your code will have to refer the new names. IF YOU ENCOUNTER ISSUES AND NEED ASSISTANCE, please open an issue, we will assist you ASAP.
