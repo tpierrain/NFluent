@@ -60,6 +60,7 @@ namespace NFluent.Extensions
         static ExtensionsCommonHelpers()
         {
             StringTruncationLength = 20*1048;
+            CountOfLineOfDetails = 5;
         }
 
         internal static int StringTruncationLength
@@ -77,6 +78,8 @@ namespace NFluent.Extensions
                 endingLengthForLongString = value - startingLengthForLongString;
             }
         }
+
+        internal static int CountOfLineOfDetails { get; set; }
 
         /// <summary>
         /// Checks if a type is numerical (i.e: int, double, short, uint...).

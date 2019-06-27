@@ -88,7 +88,7 @@ namespace NFluent.Helpers
 
                         if (differenceDetails.DoesProvideDetails(sut, expected))
                         {
-                            var differenceDetailsCount = Math.Min(5, differenceDetails.Count);
+                            var differenceDetailsCount = Math.Min(ExtensionsCommonHelpers.CountOfLineOfDetails, differenceDetails.Count);
 
                             for(var i = 0; i < differenceDetailsCount; i++)
                             {
@@ -99,7 +99,7 @@ namespace NFluent.Helpers
                             if (differenceDetailsCount != differenceDetails.Count)
                             {
                                 messageText.AppendLine();
-                                messageText.Append("...");
+                                messageText.Append($"... ({differenceDetails.Count - differenceDetailsCount} differences omitted)");
                             }
                         }
                     }
@@ -322,20 +322,7 @@ namespace NFluent.Helpers
 
             if (otherItem != null)
             {
-                if (firstItem.GetType().IsArray && otherItem.GetType().IsArray)
-                {
-                    return ValueDifferenceArray(firstItem as Array, firstName, otherItem as Array, secondName,
-                        firstSeen);
-                }
-                if (firstItem is IDictionary firstDico && otherItem is IDictionary secondDico)
-                {
-                    return ValueDifferenceDictionary(firstDico, firstName, secondDico, secondName, firstSeen);
-                }
-                else if (!(firstItem is string) && !(otherItem is string) && firstItem is IEnumerable first && otherItem is IEnumerable second)
-                {
-                    return ValueDifferenceEnumerable(first, firstName, second, secondName, firstSeen);
-                }
-
+                // we silently convert numerical value
                 if (firstItem.GetType().IsNumerical() &&
                     otherItem.GetType().IsNumerical())
                 {
@@ -345,6 +332,28 @@ namespace NFluent.Helpers
                         return result;
                     }
                 }
+
+                if (firstSeen.Contains(firstItem))
+                {
+                    result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, firstItem, otherItem, 0));
+                    return result;
+                }
+
+                firstSeen = new List<object>(firstSeen) {firstItem};
+                if (firstItem.GetType().IsArray && otherItem.GetType().IsArray)
+                {
+                    return ValueDifferenceArray(firstItem as Array, firstName, otherItem as Array, secondName,
+                        firstSeen);
+                }
+                if (firstItem is IDictionary firstDico && otherItem is IDictionary secondDico)
+                {
+                    return ValueDifferenceDictionary(firstDico, firstName, secondDico, secondName, firstSeen);
+                }
+                if ( firstItem.IsAnEnumeration(false) && otherItem.IsAnEnumeration(false))
+                {
+                    return ValueDifferenceEnumerable(firstItem as IEnumerable, firstName, otherItem as IEnumerable, secondName, firstSeen);
+                }
+
             }
 
             result.Add( DifferenceDetails.DoesNotHaveExpectedValue(firstName, firstItem, otherItem, refIndex));
@@ -356,16 +365,6 @@ namespace NFluent.Helpers
             List<object> firstItemsSeen)
         {
             var valueDifferences = new AggregatedDifference {IsEquivalent = true};
-            if (firstItemsSeen.Contains(sutDico))
-            {
-                if (sutDico != expectedDico)
-                {
-                    valueDifferences.Add(DifferenceDetails.DoesNotHaveExpectedValue(sutName, sutDico, expectedDico, 0));
-                }
-                return valueDifferences;
-            }
-
-            firstItemsSeen.Add(sutDico);
 
             var actualKeyIterator = sutDico.Keys.GetEnumerator();
             var expectedKeyIterator = expectedDico.Keys.GetEnumerator();
@@ -480,17 +479,6 @@ namespace NFluent.Helpers
             ICollection<object> firstSeen)
         {
             var valueDifferences = new AggregatedDifference();
-            if (firstSeen.Contains(firstItem))
-            {
-                if (firstSeen != otherItem)
-                {
-                    valueDifferences.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, firstItem, otherItem, 0));
-                }
-                return valueDifferences;
-            }
-
-            firstSeen.Add(firstItem);
-            firstSeen.Add(otherItem);
 
             var scanner = otherItem.GetEnumerator();
             var index = 0;

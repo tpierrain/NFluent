@@ -172,9 +172,7 @@ namespace NFluent.Kernel
         public void EndCheck()
         {
             if (this.parentFailed)
-            {
                 this.parent.EndCheck();
-            }
 
             if (this.child != null && !this.IsNegated && !this.failed)
             {

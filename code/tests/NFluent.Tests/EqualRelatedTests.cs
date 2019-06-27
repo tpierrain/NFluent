@@ -264,6 +264,26 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void
+            ShouldProvideOnlyTheFirstErrors()
+        {
+            var first = "A sentence can provide a long enumeration.".ToCharArray();
+            Check.ThatCode(() => Check.That(first).IsEqualTo("A sentence can provide long enumeration.  ".ToCharArray()))
+                .IsAFailingCheckWithMessage("", 
+                    "The checked enumerable is different from the expected one. 19 differences found!", 
+                    "actual[23] = 'a' instead of 'l'.", 
+                    "actual[24] = ' ' instead of 'o'.", 
+                    "actual[25] = 'l' instead of 'n'.", 
+                    "actual[26] = 'o' instead of 'g'.", 
+                    "actual[27] = 'n' instead of ' '.", 
+                    "... (14 differences omitted)",
+                    "The checked enumerable:", 
+                    "\t{..., 'n', ' ', 'p', 'r', 'o', 'v', 'i', 'd', 'e', ' ', 'a', ' ', 'l', 'o', 'n', 'g', ' ', 'e', 'n', 'u', ...} (42 items)", 
+                    "The expected enumerable:", 
+                    "\t{..., 'n', ' ', 'p', 'r', 'o', 'v', 'i', 'd', 'e', ' ', 'l', 'o', 'n', 'g', ' ', 'e', 'n', 'u', 'm', 'e', ...} (42 items)");
+        }
+
+        [Test]
         public void IsEqualToThrowsExceptionWhenFailingWithString()
         {
             var first = "Son of a test";

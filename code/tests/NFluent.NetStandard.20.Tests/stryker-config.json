@@ -4,7 +4,7 @@
       "All"
     ],
 	"test-runner" : "VsTest",
-    "coverage-analysis": "perTestInIsolation",
+    "coverage-analysis": "perTest",
 	"abort-test-on-fail":  true,
     "log-level": "info",
     "log-file": false
