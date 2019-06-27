@@ -146,6 +146,11 @@ namespace NFluent.Helpers
 
             return ExtensibilityHelper.BuildCheckLink(check);
         }
+        internal static bool FluentEquals(object instance, object expected)
+        {
+            return FluentEquals(instance, expected, Check.EqualMode).Count==0;
+        }
+
 
         internal static ICheckLink<ICheck<T>> PerformUnequalCheck<T, TE>(
             ICheck<T> check,
@@ -254,11 +259,6 @@ namespace NFluent.Helpers
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
-        internal static bool FluentEquals(object instance, object expected)
-        {
-            return FluentEquals(instance, expected, Check.EqualMode).Count==0;
-        }
-
         private static AggregatedDifference FluentEquals<TS, TE>(TS instance, TE expected, EqualityMode mode)
         {
             var result = new AggregatedDifference();
@@ -302,7 +302,7 @@ namespace NFluent.Helpers
         }
 
         private static AggregatedDifference ValueDifference<TA, TE>(TA firstItem, string firstName, TE otherItem,
-            string secondName, int refIndex, List<object> firstSeen)
+            string secondName, int refIndex, ICollection<object> firstSeen)
         {
             var result = new AggregatedDifference();
             if (firstItem == null)
@@ -340,15 +340,6 @@ namespace NFluent.Helpers
                 }
 
                 firstSeen = new List<object>(firstSeen) {firstItem};
-                if (firstItem.GetType().IsArray && otherItem.GetType().IsArray)
-                {
-                    return ValueDifferenceArray(firstItem as Array, firstName, otherItem as Array, secondName,
-                        firstSeen);
-                }
-                if (firstItem is IDictionary firstDico && otherItem is IDictionary secondDico)
-                {
-                    return ValueDifferenceDictionary(firstDico, firstName, secondDico, secondName, firstSeen);
-                }
                 if ( firstItem.IsAnEnumeration(false) && otherItem.IsAnEnumeration(false))
                 {
                     return ValueDifferenceEnumerable(firstItem as IEnumerable, firstName, otherItem as IEnumerable, secondName, firstSeen);
@@ -362,7 +353,7 @@ namespace NFluent.Helpers
 
         private static AggregatedDifference ValueDifferenceDictionary(IDictionary sutDico, string sutName, 
             IDictionary expectedDico, string expectedName,
-            List<object> firstItemsSeen)
+            ICollection<object> firstItemsSeen)
         {
             var valueDifferences = new AggregatedDifference {IsEquivalent = true};
 
@@ -431,7 +422,7 @@ namespace NFluent.Helpers
             return valueDifferences;
         }
 
-        private static AggregatedDifference ValueDifferenceArray(Array firstArray, string firstName, Array secondArray, string secondName, List<object> firstSeen)
+        private static AggregatedDifference ValueDifferenceArray(Array firstArray, string firstName, Array secondArray, string secondName, ICollection<object> firstSeen)
         {
             var valueDifferences = new AggregatedDifference();
 
@@ -478,6 +469,15 @@ namespace NFluent.Helpers
             IEnumerable otherItem, string secondName,
             ICollection<object> firstSeen)
         {
+            if (firstItem.GetType().IsArray && otherItem.GetType().IsArray)
+            {
+                return ValueDifferenceArray(firstItem as Array, firstName, otherItem as Array, secondName,
+                    firstSeen);
+            }
+            if (firstItem is IDictionary firstDico && otherItem is IDictionary secondDico)
+            {
+                return ValueDifferenceDictionary(firstDico, firstName, secondDico, secondName, firstSeen);
+            }
             var valueDifferences = new AggregatedDifference();
 
             var scanner = otherItem.GetEnumerator();
@@ -493,7 +493,7 @@ namespace NFluent.Helpers
 
                 var secondItemName = $"{secondName}[{index}]";
                 valueDifferences.Merge(ValueDifference(item, firstItemName, scanner.Current,
-                    secondItemName, index, new List<object>(firstSeen)));
+                    secondItemName, index, firstSeen));
                 index++;
             }
 
