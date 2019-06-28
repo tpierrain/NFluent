@@ -78,11 +78,13 @@ namespace NFluent.Helpers
                 foreach (var id in Enum.GetValues(typeof(TestFramework)))
                 {
                     var builder = Exceptions[(TestFramework) id];
-                    if (builder.IsSupported())
+                    if (!builder.IsSupported())
                     {
-                        constructors = builder;
-                        break;
+                        continue;
                     }
+
+                    constructors = builder;
+                    break;
                 }
                 return constructors;
             }

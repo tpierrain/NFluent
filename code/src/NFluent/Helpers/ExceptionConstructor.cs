@@ -76,26 +76,28 @@ namespace NFluent.Helpers
                 {
                     if (type.Name == this.assertExceptionName)
                     {
-                        var info = type.GetConstructor(Types);
-                        this.assertExceptionBuilder = (message) => info.Invoke(new object[] {message}) as Exception;
+                        this.assertExceptionBuilder = GetConstructor(type);
                         this.assertExceptionType = type;
                     }
                     else if (type.Name == this.ignoreExceptionName)
                     {
-                        var info = type.GetConstructor(Types);
-                        this.ignoreExceptionBuilder = (message) => info.Invoke(new object[] {message}) as Exception;
+                        this.ignoreExceptionBuilder = GetConstructor(type);
                         this.ignoreExceptionType = type;
 
                     }
                     else if (type.Name == this.inconclusiveExceptionName)
                     {
-                        var info = type.GetConstructor(Types);
-                        this.inconclusiveExceptionBuilder = (message) => info.Invoke(new object[] {message}) as Exception;
+                        this.inconclusiveExceptionBuilder = GetConstructor(type);
                         this.inconclusiveExceptionType = type;
                     }
                 }
             }
             return true;
+        }
+
+        private static Func<string, Exception> GetConstructor(Type type)
+        {
+            return (message) => type.GetConstructor(Types).Invoke(new object[] {message}) as Exception;
         }
 
         public Exception BuildFailedException(string message)
@@ -106,7 +108,8 @@ namespace NFluent.Helpers
         public Exception BuildInconclusiveException(string message)
         {
             return (this.inconclusiveExceptionBuilder ??
-                    this.ignoreExceptionBuilder ?? this.assertExceptionBuilder)(message);
+                    this.ignoreExceptionBuilder ?? 
+                    this.assertExceptionBuilder)(message);
         }
 
         public Type FailedExceptionType()
@@ -117,7 +120,8 @@ namespace NFluent.Helpers
         public Type InconclusiveExceptionType()
         {
             return (this.inconclusiveExceptionType ??
-                   this.ignoreExceptionType ?? this.assertExceptionType);
+                   this.ignoreExceptionType ?? 
+                   this.assertExceptionType);
         }
     }
 }

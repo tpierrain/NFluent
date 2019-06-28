@@ -15,11 +15,11 @@
 
 namespace NFluent
 {
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
     using Extensibility;
     using Kernel;
     using Messages;
 
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
     /// <summary>
     ///     Provides fluent check methods to be executed on a given value.
     /// </summary>
@@ -106,14 +106,15 @@ namespace NFluent
                 var template = this.negated
                     ? "The {0} is equal to the {1} whereas it must not."
                     : "The {0} is not equal to the {1}.";
-                var message = FluentMessage
-                    .BuildMessage(template)
-                    .For(DefaultNamer())
-                    .AddCustomMessage(this.CustomMessage)
-                    .Expected(expected)
-                    .Comparison(this.negated ? "different from" : "")
-                    .And
-                    .On<object>(this.value).ToString();
+                var message = FluentMessage.
+                    BuildMessage(template).
+                    For(DefaultNamer()).
+                    AddCustomMessage(this.CustomMessage).
+                    Expected(expected).
+                    Comparison(this.negated ? "different from" : "").
+                    And.
+                    On<object>(this.value).
+                    ToString();
 
                 this.reporter.ReportError(message);
             }
