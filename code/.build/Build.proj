@@ -139,12 +139,12 @@
       <TestProjects Include='$(TestsPath)\NFluent.Tests.MsTest\bin\$(Configuration)\NFluent.Tests.MsTest.dll'>
         <Framework>net-4.5</Framework>
         <Runner>MsTest</Runner>
-        <Coverage>false</Coverage>
+        <Coverage>true</Coverage>
       </TestProjects>
      <TestProjects Include='$(TestsPath)\NFluent.Tests.xUnit\bin\$(Configuration)\NFluent.Tests.xUnit.dll'>
        <Framework>net-4.5</Framework>
        <Runner>xUnit</Runner>
-       <Coverage>false</Coverage>
+       <Coverage>true</Coverage>
      </TestProjects>      
      <TestProjects Include='$(TestsPath)\NFluent.Core.Tests.Internals\NFluent.Core.Tests.Internals.csproj'>
         <Framework>netstandard1.3</Framework>
