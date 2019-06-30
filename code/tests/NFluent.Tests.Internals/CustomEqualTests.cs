@@ -33,7 +33,7 @@ namespace NFluent.Tests
         [Test]
         public void ValueDifferenceReturnsEmptyIfEqual()
         {
-            var result = EqualityHelper.ValueDifference(this.a, "a", this.a, "a");
+            var result = EqualityHelper.ValueDifference(this.a, "a", this.a);
             Check.That(result.Count).IsEqualTo(0);
         }
 
@@ -42,34 +42,34 @@ namespace NFluent.Tests
         {
             // List contains new instances of lists same as a and b
 
-            var result = EqualityHelper.ValueDifference(this.a, "a", this.b, "b");
+            var result = EqualityHelper.ValueDifference(this.a, "a", this.b);
             Check.That(result.Count).IsEqualTo(2);
             Check.That(result[0].FirstName).IsEqualTo("a[0]");
             Check.That(result[0].FirstValue).IsEqualTo(1);
             Check.That(result[0].SecondValue).IsEqualTo(3);
 
-            result = EqualityHelper.ValueDifference(this.a, "a", this.a, "a");
+            result = EqualityHelper.ValueDifference(this.a, "a", this.a);
             Check.That(result.Count).IsEqualTo(0);
 
-            result = EqualityHelper.ValueDifference(this.list, "a", new List<List<int>> {this.a, this.a}, "b");
+            result = EqualityHelper.ValueDifference(this.list, "a", new List<List<int>> {this.a, this.a});
             Check.That(result[0].FirstName).IsEqualTo("a[1][0]");
         }
 
         [Test]
         public void ValueDifferenceGivesDetailsOnFailureWithNull()
         {
-            var result = EqualityHelper.ValueDifference(new List<List<int>> {this.a, null}, "a", this.list, "b");
+            var result = EqualityHelper.ValueDifference(new List<List<int>> {this.a, null}, "a", this.list);
             Check.That(result[0].FirstName).IsEqualTo("a[1]");
-            result = EqualityHelper.ValueDifference(this.list, "a", new List<List<int>> {this.a, null}, "b");
+            result = EqualityHelper.ValueDifference(this.list, "a", new List<List<int>> {this.a, null});
             Check.That(result[0].FirstName).IsEqualTo("a[1]");
         }
 
         [Test]
         public void ValueDifferenceGivesDetailsOnFailureWithShorterEnums()
         {
-            var result = EqualityHelper.ValueDifference(new List<List<int>> {this.a}, "a", this.list, "b");
+            var result = EqualityHelper.ValueDifference(new List<List<int>> {this.a}, "a", this.list);
             Check.That(result[0].FirstName).IsEqualTo("a[1]");
-            result = EqualityHelper.ValueDifference(this.list, "a", new List<List<int>> {this.a}, "b");
+            result = EqualityHelper.ValueDifference(this.list, "a", new List<List<int>> {this.a});
             Check.That(result[0].FirstName).IsEqualTo("a[1]");
         }
     }

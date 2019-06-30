@@ -84,7 +84,12 @@
             Check.ThatCode(() => { Check.That(new[] { 1, 2 }).HasFieldsWithSameValues(new[] { 1, 2, 3 }); })
                 .IsAFailingCheck();
             Check.ThatCode(() => { Check.That((IEnumerable)new[] { 1, 2 }).HasFieldsWithSameValues((IEnumerable) new[] { 1, 2, 3 }); })
-                .IsAFailingCheck();
+                .IsAFailingCheckWithMessage("", 
+                    "The checked value does not have the expected value.", 
+                    "The checked value:", 
+                    "\t{1, 2} (2 items)", 
+                    "The expected value:", 
+                    "\t{1, 2, 3} (3 items)");
         }
 
         [Test]

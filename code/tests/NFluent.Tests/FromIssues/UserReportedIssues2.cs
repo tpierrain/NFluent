@@ -324,6 +324,7 @@ namespace NFluent.Tests.FromIssues
             Check.That(list2).ContainsExactly(new List<List<int>> {a, b}); // Fail
         }
 
+        // GH #212
         [Test(Description = "Issue #212")]
         public void CollectionWithNumeric()
         {

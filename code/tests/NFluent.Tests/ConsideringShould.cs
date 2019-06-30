@@ -386,6 +386,7 @@ namespace NFluent.Tests
         {
             var sut = new {arrayOfInts = new int[4]};
             var expected = new {arrayOfInts = new int[5]};
+            
             Check.ThatCode(() => { Check.That(sut).Considering().NonPublic.Fields.IsEqualTo(expected); })
                 .IsAFailingCheckWithMessage(
                 "",
@@ -394,6 +395,7 @@ namespace NFluent.Tests
                 "\t{0, 0, 0, 0} (4 items)", 
                 "The expected value's field 'arrayOfInts':",
                  "\t{0, 0, 0, 0, 0} (5 items)");
+            
             Check.ThatCode(() => { Check.That(new {arrayOfInts =  "INTS"}).Considering().NonPublic.Fields.IsEqualTo(expected); })
                 .IsAFailingCheckWithMessage("", 
                     "The checked value's field 'arrayOfInts' does not have the expected value.", 

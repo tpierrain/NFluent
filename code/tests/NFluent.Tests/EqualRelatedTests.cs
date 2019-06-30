@@ -36,7 +36,12 @@ namespace NFluent.Tests
 
             var currentMode = Check.EqualMode;
             Check.EqualMode = EqualityMode.Equals;
-            Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).IsAFailingCheck();
+            Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).IsAFailingCheckWithMessage("", 
+                "The checked enumerable is different from the expected one.", 
+                "The checked enumerable:", 
+                "\t{} (0 item)", 
+                "The expected enumerable:", 
+                "\t{} (0 item)");
             Check.EqualMode = currentMode;
         }
 
@@ -430,6 +435,61 @@ namespace NFluent.Tests
             var otherArray = new[] {666, 74};
 
             Check.That(array).IsNotEqualTo(otherArray);
+        }
+
+        [Test]
+        public void IsEqualReportsDifferentArrayLength()
+        {
+            var array = new[] {45, 43, 54, 666};
+            var otherArray = new[] {666, 74};
+
+            Check.ThatCode(()=>
+            Check.That(array).IsEqualTo(otherArray)).IsAFailingCheckWithMessage("", 
+                "The checked enumerable is different from the expected one.", 
+                "actual.Dimension(0) = 4 instead of 2.", 
+                "The checked enumerable:", 
+                "\t{45, 43, 54, 666} (4 items)", 
+                "The expected enumerable:", 
+                "\t{666, 74} (2 items)");
+        }
+
+        [Test]
+        public void IsEqualToWorksWithArrayAndString()
+        {
+            var array = new[] {"thumb", "other"};
+            var otherArray = new[] {"test", "other"};
+
+            var otherAsCharArray = new []{new []{'t', 'h', 'u', 'm', 'b'}, new []{'o', 't', 'h', 'e', 'r'}};
+            Check.ThatCode(() =>
+                    Check.That(array).IsEqualTo(otherAsCharArray)).
+                IsAFailingCheckWithMessage("", 
+                    "The checked enumerable is different from the expected one. 2 differences found!", 
+                    "actual[0] = \"thumb\" instead of {'t', 'h', 'u', 'm', 'b'}.", 
+                    "actual[1] = \"other\" instead of {'o', 't', 'h', 'e', 'r'}.", 
+                    "The checked enumerable:", 
+                    "\t{\"thumb\", \"other\"} (2 items) of type: [string[]]", 
+                    "The expected enumerable:", 
+                    "\t{{'t', 'h', 'u', 'm', 'b'}, {'o', 't', 'h', 'e', 'r'}} (2 items) of type: [char[][]]");
+            
+            Check.ThatCode(() =>
+                    Check.That(otherAsCharArray).IsEqualTo(array)).
+                IsAFailingCheckWithMessage("", 
+                    "The checked enumerable is different from the expected one. 2 differences found!", 
+                    "actual[0] = {'t', 'h', 'u', 'm', 'b'} instead of \"thumb\".", 
+                    "actual[1] = {'o', 't', 'h', 'e', 'r'} instead of \"other\".", 
+                    "The checked enumerable:", 
+                    "\t{{'t', 'h', 'u', 'm', 'b'}, {'o', 't', 'h', 'e', 'r'}} (2 items) of type: [char[][]]",
+                    "The expected enumerable:", 
+                    "\t{\"thumb\", \"other\"} (2 items) of type: [string[]]");
+            
+            Check.ThatCode(() =>
+            Check.That(array).IsEqualTo(otherArray)).IsAFailingCheckWithMessage("", 
+                "The checked enumerable is different from the expected one.", 
+                "actual[0] = \"thumb\" instead of \"test\".", 
+                "The checked enumerable:", 
+                "\t{\"thumb\", \"other\"} (2 items)", 
+                "The expected enumerable:", 
+                "\t{\"test\", \"other\"} (2 items)");
         }
 
         [Test]
