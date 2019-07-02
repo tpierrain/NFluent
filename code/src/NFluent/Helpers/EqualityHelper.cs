@@ -31,7 +31,6 @@ namespace NFluent.Helpers
     internal static class EqualityHelper
     {
         private const string SutLabel = "actual";
-        private const string ExpectedLabel = "expected";
         private const float FloatCloseToThreshold = 1f/100000;
         private const double DoubleCloseToThreshold = 1d/100000000;
 
@@ -235,14 +234,12 @@ namespace NFluent.Helpers
         private static AggregatedDifference FluentEquals<TS, TE>(TS instance, TE expected, EqualityMode mode)
         {
             var result = new AggregatedDifference();
-            var ret = false;
             switch (mode)
             {
                 case EqualityMode.FluentEquals:
                     return ValueDifference(instance, SutLabel, expected);
                 case EqualityMode.OperatorEq:
                 case EqualityMode.OperatorNeq:
-                    ret = Equals(instance, expected);
 
                     var actualType = instance.GetTypeWithoutThrowingException();
                     var expectedType = expected.GetTypeWithoutThrowingException();
@@ -252,22 +249,23 @@ namespace NFluent.Helpers
                                   .GetMethod(operatorName, new[] {actualType, expectedType});
                     if (ope != null)
                     {
-                        ret = (bool) ope.Invoke(null, new object[] {instance, expected});
+                        var ret = (bool) ope.Invoke(null, new object[] {instance, expected});
                         if (mode == EqualityMode.OperatorNeq)
                         {
                             ret = !ret;
                         }
+                        result.SetAsDifferent(!ret);
+                    }
+                    else
+                    {
+                        result.SetAsDifferent(!Equals(instance, expected));
                     }
                     break;
                 case EqualityMode.Equals:
-                    ret = Equals(instance, expected);
+                    result.SetAsDifferent(!Equals(instance, expected));
                     break;
-            }
-
-            if (!ret)
-            {
-                result.SetAsDifferent();
-            }
+            } 
+            
             return result;
         }
 
@@ -495,13 +493,11 @@ namespace NFluent.Helpers
 
         internal class DifferenceDetails
         {
-            private readonly bool notFound;
-            private readonly bool notExpected;
+            private readonly DifferenceMode mode;
 
-            private DifferenceDetails(string firstName, object firstValue, object secondValue, int index, bool notFound, bool notExpected)
+            private DifferenceDetails(string firstName, object firstValue, object secondValue, int index, DifferenceMode mode)
             {
-                this.notFound = notFound;
-                this.notExpected = notExpected;
+                this.mode = mode;
                 this.FirstName = firstName;
                 this.FirstValue = firstValue;
                 this.SecondValue = secondValue;
@@ -510,17 +506,17 @@ namespace NFluent.Helpers
 
             public static DifferenceDetails WasNotExpected(string checkedName, object value, int index)
             {
-                return new DifferenceDetails(checkedName, value, null, index, false, true);
+                return new DifferenceDetails(checkedName, value, null, index, DifferenceMode.Extra);
             }
 
             public static DifferenceDetails DoesNotHaveExpectedValue(string checkedName, object value, object expected, int index)
             {
-                return new DifferenceDetails(checkedName, value, expected, index, false, false);
+                return new DifferenceDetails(checkedName, value, expected, index, DifferenceMode.Value);
             }
 
             public static DifferenceDetails WasNotFound(string checkedName, object expected, int index)
             {
-                return new DifferenceDetails(checkedName, null, expected, index, true, false);
+                return new DifferenceDetails(checkedName, null, expected, index, DifferenceMode.Missing);
             }
 
             public string FirstName { get; internal set; }
@@ -530,11 +526,18 @@ namespace NFluent.Helpers
 
             public override string ToString()
             {
-                return this.notExpected ? $"{this.FirstName} should not exist (value {this.SecondValue.ToStringProperlyFormatted()})"
-                    : this.notFound ?
+                return this.mode == DifferenceMode.Extra ? $"{this.FirstName} should not exist (value {this.SecondValue.ToStringProperlyFormatted()})"
+                    : this.mode == DifferenceMode.Missing ?
                         $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}."
                     : $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
             }
+
+            private enum DifferenceMode
+            {
+                Value,
+                Missing,
+                Extra
+            };
         }
 
         internal class AggregatedDifference
@@ -554,9 +557,9 @@ namespace NFluent.Helpers
                 this.details.Add(detail);
             }
 
-            public void SetAsDifferent()
+            public void SetAsDifferent(bool state)
             {
-                different = true;
+                different = state;
             }
 
             public void Merge(AggregatedDifference other)
