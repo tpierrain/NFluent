@@ -15,6 +15,7 @@
 
 namespace NFluent.Tests
 {
+    using Extensibility;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -632,8 +633,13 @@ namespace NFluent.Tests
                 "\t[{ Property = {  } }]", 
                 "The expected value: same as", 
                 "\t[{ Property = System.Object }]");
+        }
 
-
+        [Test]
+        public void HashCodeIsConsistent()
+        {
+            var toto = new {entier = 2, lettre = 'b', sub = new { sub = (object) 4, nullSub = (object) null }};
+            Check.That(toto).Considering().All.Properties.HasHashCode(147721549);
         }
 
         private class Recurse
@@ -763,4 +769,20 @@ namespace NFluent.Tests
             }
         }
     }
+    internal static class Extractor
+    {
+        public static ICheckLink<ICheck<ReflectionWrapper>> HasHashCode(this ICheck<ReflectionWrapper> wrapper, int val)
+        {
+            ExtensibilityHelper.BeginCheck(wrapper).
+                CheckSutAttributes(x=> x.GetHashCode(), "hashcode").
+                FailWhen(x => x != val,
+                    "The {0} does not have the expected value.").
+                OnNegate("The {0} should not have the given hashcode.").
+                DefineExpectedValue(val).
+                EndCheck();
+
+            return ExtensibilityHelper.BuildCheckLink(wrapper);
+        }
+    }
+
 }
