@@ -559,7 +559,7 @@ namespace NFluent.Helpers
 
             public void SetAsDifferent(bool state)
             {
-                different = state;
+                this.different = state;
             }
 
             public void Merge(AggregatedDifference other)

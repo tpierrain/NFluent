@@ -98,6 +98,18 @@ namespace NFluent.Tests
         public void HandleDifferenceInType()
         {
             Check.ThatCode(() => 
+            Check.That(new object()).Considering().All.Properties.IsEqualTo(new {child = new EmptyAncestor()})
+            ).IsAFailingCheckWithMessage("", 
+                "The expected value's property 'child''s is absent from the checked one.", 
+                "The expected value's property 'child':", 
+                "\t[] of type: [NFluent.Tests.ConsideringShould+EmptyAncestor]");
+            Check.ThatCode(() => 
+            Check.That(new {child = new EmptyAncestor()}).Considering().All.Properties.IsEqualTo(new int())
+            ).IsAFailingCheckWithMessage("", 
+                "The checked value's property 'child' is absent from the expected one.", 
+                "The checked value's property 'child':", 
+                "\t[] of type: [NFluent.Tests.ConsideringShould+EmptyAncestor]");
+            Check.ThatCode(() => 
             Check.That(new {child = new EmptyChild()}).Considering().All.Properties.IsEqualTo(new {child = new EmptyAncestor()})
             ).IsAFailingCheckWithMessage("", 
                 "The checked value's property 'child' does not have the expected value.", 
@@ -427,6 +439,15 @@ namespace NFluent.Tests
 
         [Test]
         public void
+        GenerateHashCode()
+        {
+            var sut = new SutClass(12, 13);
+            Check.That(
+            Check.That(sut).Considering().Public.Properties.GetHashCode()).IsEqualTo(39449526);
+        }
+
+        [Test]
+        public void
             WorkForIsOneOf()
         {
             var sut = new SutClass(12, 13);
@@ -682,6 +703,13 @@ namespace NFluent.Tests
             Check.That(childOne).Considering().Public.Properties.IsEqualTo(childTwo);
         }
 
+        [Test]
+        public void HandleIsEqualProperly()
+        {
+            Check.That(new { field = MockEqual.True()}).Considering().All.Fields.IsEqualTo(new { field = MockEqual.True()});
+            Check.That(new { field = MockEqual.True()}).Considering().All.Fields.Equals(new { field = MockEqual.True()});
+        }
+        
         private class EmptyAncestor
         {
             public override string ToString()
@@ -692,5 +720,57 @@ namespace NFluent.Tests
 
         private class EmptyChild : EmptyAncestor
         {}
+
+        private class MockEqual
+        {
+            protected bool Equals(MockEqual other)
+            {
+                return this.isEqual;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj))
+                {
+                    return false;
+                }
+
+                if (ReferenceEquals(this, obj))
+                {
+                    return true;
+                }
+
+                if (obj.GetType() != this.GetType())
+                {
+                    return false;
+                }
+
+                return Equals((MockEqual) obj);
+            }
+
+            public override int GetHashCode()
+            {
+                return this.isEqual.GetHashCode();
+            }
+
+            private bool isEqual;
+            private int count;
+
+            private static int counter;
+            private MockEqual(bool isEqual)
+            {
+                this.isEqual = isEqual;
+                this.count = counter++;
+            }
+
+            public static MockEqual True()
+            {
+                return new MockEqual(true);
+            }
+            public static MockEqual False()
+            {
+                return new MockEqual(false);
+            }
+        }
     }
 }
