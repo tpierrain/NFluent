@@ -15,7 +15,6 @@
 
 namespace NFluent.Tests
 {
-    using System.Collections;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -435,15 +434,6 @@ namespace NFluent.Tests
         {
             var sut = new SutClass(12, 13);
             Check.That(sut).Considering().Public.Properties.HasDifferentValueThan(new SutClass(11, 12));
-        }
-
-        [Test]
-        public void
-        GenerateHashCode()
-        {
-            var sut = new SutClass(12, 13);
-            Check.That(
-            Check.That(sut).Considering().Public.Properties.GetHashCode()).IsEqualTo(39449526);
         }
 
         [Test]
