@@ -26,7 +26,7 @@ namespace NFluent
     /// </summary>
     public static class DateTimeCheckExtensions
     {
-        private static DateTime Round(this DateTime dt, TimeUnit unit)
+        internal static DateTime Round(this DateTime dt, TimeUnit unit)
         {
             return new DateTime(dt.Ticks - (dt.Ticks % TimeHelper.GetInTicks(1, unit)), dt.Kind);
         }
@@ -233,11 +233,11 @@ namespace NFluent
         ///     // successful checks
         ///     DateTime dateTime1 = new DateTime(2000, 1, 1, 23, 59, 59, 999);
         ///     DateTime dateTime2 = new DateTime(2000, 1, 1, 00, 00, 00, 000);
-        ///     CheckThat(dateTime1).IsEqualToIgnoringHours(dateTime2);
+        ///     Check.That(dateTime1).IsEqualToIgnoringHours(dateTime2);
         ///     // failing checks (even if time difference is only 1ms)
         ///     DateTime dateTimeA = new DateTime(2000, 1, 2, 00, 00, 00, 000);
         ///     DateTime dateTimeB = new DateTime(2000, 1, 1, 23, 59, 59, 999);
-        ///     CheckThat(dateTimeA).IsEqualToIgnoringHours(dateTimeB);
+        ///     Check.That(dateTimeA).IsEqualToIgnoringHours(dateTimeB);
         /// </code>
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
