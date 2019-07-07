@@ -29,17 +29,17 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is different from the expected one.", 
                     "The checked date time:", 
-                    "\t[01/01/2013 00:00:00 +01:00]", 
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]", 
                     "The expected date time:", 
-                    "\t[01/01/2013 00:00:00 +02:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +02:00:00]");
             Check.ThatCode(()=>
             Check.That(newYears).IsEqualToIgnoringHours(new DateTimeOffset(new DateTime(2013, 1, 2, 12, 0, 0), new TimeSpan(0, 1, 0, 0)))).
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is not equal to the given one (ignoring hours). The dates are different.", 
                     "The checked date time:", 
-                    "\t[01/01/2013 00:00:00 +01:00]", 
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]", 
                     "The expected date time: same day", 
-                    "\t[02/01/2013 12:00:00 +01:00]");
+                    "\t[2013-01-02T12:00:00.0000000 +01:00:00]");
         }
 
         [Test]
@@ -51,7 +51,7 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is equal to the given one (ignoring hours) whereas it must not.", 
                     "The expected date time: different day", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
         }
 
         [Test]
@@ -64,9 +64,9 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is not equal to the given one. The hours are different.", 
                     "The checked date time:", 
-                    "\t[01/01/2013 02:00:00 +01:00]", 
+                    "\t[2013-01-01T02:00:00.0000000 +01:00:00]", 
                     "The expected date time: same hour", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
 
             Check.ThatCode(()=>
             Check.That(new DateTimeOffset(new DateTime(2013, 1, 1, 0, 0, 0), new TimeSpan(0, 2, 0, 0))).
@@ -74,9 +74,9 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is not equal to the given one (ignoring hours). The offsets are different.", 
                     "The checked date time:", 
-                    "\t[01/01/2013 00:00:00 +02:00]", 
+                    "\t[2013-01-01T00:00:00.0000000 +02:00:00]", 
                     "The expected date time: same hour", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
 
             Check.ThatCode(()=>
             Check.That(new DateTimeOffset(new DateTime(2013, 1, 2, 0, 0, 0), new TimeSpan(0, 1, 0, 0))).
@@ -84,9 +84,9 @@
             IsAFailingCheckWithMessage("", 
                 "The checked date time is not equal to the given one. The dates are different.", 
                 "The checked date time:", 
-                "\t[02/01/2013 00:00:00 +01:00]", 
+                "\t[2013-01-02T00:00:00.0000000 +01:00:00]", 
                 "The expected date time: same hour", 
-                "\t[01/01/2013 00:00:00 +01:00]");
+                "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
         }
 
         [Test]
@@ -98,7 +98,7 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is equal to the given one (ignoring minutes) whereas it must not.", 
                     "The expected date time: different hour", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
         }
 
         [Test]
@@ -111,9 +111,9 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is not equal to the given one (ignoring seconds). The time of day is different (Minutes).", 
                     "The checked date time:", 
-                    "\t[01/01/2013 00:01:00 +01:00]", 
+                    "\t[2013-01-01T00:01:00.0000000 +01:00:00]", 
                     "The expected date time: same time up to the same minute", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
 
             Check.ThatCode(()=>
                     Check.That(new DateTimeOffset(new DateTime(2013, 1, 1, 2, 0, 0), new TimeSpan(0, 1, 0, 0))).
@@ -121,9 +121,9 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is not equal to the given one (ignoring seconds). The time of day is different (Hours).", 
                     "The checked date time:", 
-                    "\t[01/01/2013 02:00:00 +01:00]", 
+                    "\t[2013-01-01T02:00:00.0000000 +01:00:00]", 
                     "The expected date time: same time up to the same minute", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
 
             Check.ThatCode(()=>
                     Check.That(new DateTimeOffset(new DateTime(2013, 1, 1, 0, 0, 0), new TimeSpan(0, 2, 0, 0))).
@@ -131,9 +131,9 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is not equal to the given one (ignoring seconds). The offsets are different.", 
                     "The checked date time:", 
-                    "\t[01/01/2013 00:00:00 +02:00]", 
+                    "\t[2013-01-01T00:00:00.0000000 +02:00:00]", 
                     "The expected date time: same time up to the same minute", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
 
             Check.ThatCode(()=>
                     Check.That(new DateTimeOffset(new DateTime(2013, 1, 2, 0, 0, 0), new TimeSpan(0, 1, 0, 0))).
@@ -141,9 +141,9 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is not equal to the given one (ignoring seconds). The dates are different.", 
                     "The checked date time:", 
-                    "\t[02/01/2013 00:00:00 +01:00]", 
+                    "\t[2013-01-02T00:00:00.0000000 +01:00:00]", 
                     "The expected date time: same time up to the same minute", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
         }
 
         [Test]
@@ -155,7 +155,7 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is equal to the given one (ignoring seconds) whereas it must not.", 
                     "The expected date time: different time up to the same minute", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
         }
         
         [Test]
@@ -168,9 +168,9 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is not equal to the given one (ignoring milliseconds). The time of day is different (Seconds).", 
                     "The checked date time:", 
-                    "\t[01/01/2013 00:00:01 +01:00]", 
+                    "\t[2013-01-01T00:00:01.0000000 +01:00:00]", 
                     "The expected date time: same second", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
 
             Check.ThatCode(()=>
                     Check.That(new DateTimeOffset(new DateTime(2013, 1, 1, 0, 1, 0), new TimeSpan(0, 1, 0, 0))).
@@ -178,9 +178,9 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is not equal to the given one (ignoring milliseconds). The time of day is different (Minutes).", 
                     "The checked date time:", 
-                    "\t[01/01/2013 00:01:00 +01:00]", 
+                    "\t[2013-01-01T00:01:00.0000000 +01:00:00]", 
                     "The expected date time: same second", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
 
             Check.ThatCode(()=>
                     Check.That(new DateTimeOffset(new DateTime(2013, 1, 1, 2, 0, 0), new TimeSpan(0, 1, 0, 0))).
@@ -188,9 +188,9 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is not equal to the given one (ignoring milliseconds). The time of day is different (Hours).", 
                     "The checked date time:", 
-                    "\t[01/01/2013 02:00:00 +01:00]", 
+                    "\t[2013-01-01T02:00:00.0000000 +01:00:00]", 
                     "The expected date time: same second", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
 
             Check.ThatCode(()=>
                     Check.That(new DateTimeOffset(new DateTime(2013, 1, 1, 0, 0, 0), new TimeSpan(0, 2, 0, 0))).
@@ -198,9 +198,9 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is not equal to the given one (ignoring milliseconds). The offsets are different.", 
                     "The checked date time:", 
-                    "\t[01/01/2013 00:00:00 +02:00]", 
+                    "\t[2013-01-01T00:00:00.0000000 +02:00:00]", 
                     "The expected date time: same second", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
 
             Check.ThatCode(()=>
                     Check.That(new DateTimeOffset(new DateTime(2013, 1, 2, 0, 0, 0), new TimeSpan(0, 1, 0, 0))).
@@ -208,13 +208,13 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is not equal to the given one (ignoring milliseconds). The dates are different.", 
                     "The checked date time:", 
-                    "\t[02/01/2013 00:00:00 +01:00]", 
+                    "\t[2013-01-02T00:00:00.0000000 +01:00:00]", 
                     "The expected date time: same second", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
         }
 
         [Test]
-        public void IsEqualToIgnoringMillisRaisesProperMessageNegated()
+        public void IsEqualToIgnoringMillisRaisesProperMessagewHENNegated()
         {
             var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
             Check.ThatCode(()=>
@@ -222,7 +222,7 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is equal to the given one (ignoring milliseconds) whereas it must not.", 
                     "The expected date time: different second", 
-                    "\t[01/01/2013 00:00:00 +01:00]");
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
         }
 
         [Test]
@@ -276,16 +276,16 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is not equal to the given one.", 
                     "The checked date time:", 
-                    "\t[01/01/2013 01:01:01 +00:00]",
+                    "\t[2013-01-01T01:01:01.0010000 +00:00:00]",
                     "The expected date time: same time", 
-                    "\t[01/01/2013 02:01:01 +00:00]");
+                    "\t[2013-01-01T02:01:01.0010000 +00:00:00]");
             Check.ThatCode( ()=>
             Check.That(newYears).Not.
                 MatchTheSameUtcInstant(newYears)).
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is equal to the given one whereas it must not.",
                     "The expected date time: different time", 
-                    "\t[01/01/2013 01:01:01 +00:00]");
+                    "\t[2013-01-01T01:01:01.0010000 +00:00:00]");
         }
 
         [Test]

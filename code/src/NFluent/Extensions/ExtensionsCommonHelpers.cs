@@ -99,69 +99,46 @@ namespace NFluent.Extensions
         /// <returns>A string that represents the current object. If the object is already a string, this method will surround it with brackets.</returns>
         public static string ToStringProperlyFormatted(this object theObject)
         {
-            if (theObject == null)
+            switch (theObject)
             {
-                return NullText;
-            }
+                case null:
+                    return NullText;
+                case char _:
+                    return $"'{theObject}'";
+                case string s:
+                    return $@"""{TruncateLongString(s)}""";
+                case DateTime time:
+                    return string.Format(CultureInfo.InvariantCulture, "{0:o}, Kind = {1}", time, time.Kind);
+                case bool b:
+#if !NETSTANDARD1_3
+                    return b.ToString(CultureInfo.InvariantCulture);
+#else
+                    return b.ToString();
+#endif
+                case double d:
+                    return d.ToString(CultureInfo.InvariantCulture);
+                case float f:
+                    return f.ToString(CultureInfo.InvariantCulture);
+                case IEnumerable enumerable:
+                    return enumerable.ToEnumeratedString();
+                case Type type:
+                    return TypeToStringProperlyFormatted(type);
+                case Exception exc:
+                    return $"{{{exc.GetType().FullName}}}: '{exc.Message}'";
+                case Stream stream:
+                    return $"{stream} (Length: {stream.Length})";
+                case DictionaryEntry entry:
+                    return $"[{entry.Key}, {entry.Value}]";
+                case DateTimeOffset timeOffset:
+                    return string.Format(CultureInfo.InvariantCulture, "{0:o} {1}{2}", timeOffset.DateTime, timeOffset.Offset.TotalSeconds>=0 ? "+":"" ,timeOffset.Offset);
+                default:
+                {
+                    var result = theObject.ToString();
 
-            if (theObject is char)
-            {
-                return $"'{theObject}'";
+                    // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                    return result == null ? NullText : TruncateLongString(result);
+                }
             }
-
-            if (theObject is string s)
-            {
-                return $@"""{TruncateLongString(s)}""";
-            }
-            
-            if (theObject is DateTime time)
-            {
-                return ToStringProperlyFormatted(time);
-            }
-
-            if (theObject is bool b)
-            {
-                return ToStringProperlyFormatted(b);
-            }
-
-            if (theObject is double d)
-            {
-                return ToStringProperlyFormatted(d);
-            }
-
-            if (theObject is float f)
-            {
-                return ToStringProperlyFormatted(f);
-            }
-
-            if (theObject is IEnumerable enumerable)
-            {
-                return enumerable.ToEnumeratedString();
-            }
-
-            if (theObject is Type type)
-            {
-                return TypeToStringProperlyFormatted(type);
-            }
-
-            if (theObject is Exception exc)
-            {
-                return $"{{{exc.GetType().FullName}}}: '{exc.Message}'";
-            }
-
-            if (theObject is Stream stream)
-            {
-                return $"{stream} (Length: {stream.Length})";
-            }
-
-            if (theObject is DictionaryEntry entry)
-            {
-                return $"[{entry.Key}, {entry.Value}]";
-            }
-            var result = theObject.ToString();
-
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            return result == null ? NullText : TruncateLongString(result);
         }
 
         private static string TruncateLongString(string result)
@@ -238,54 +215,6 @@ namespace NFluent.Extensions
 
             builder.Append('>');
             return builder.ToString();
-        }
-
-        /// <summary>
-        /// Returns a string that represents the current DateTime.         
-        /// </summary>
-        /// <param name="theDateTime">The DateTime.</param>
-        /// <returns>A string that represents the current object with current culture ignore.</returns>
-        private static string ToStringProperlyFormatted(this DateTime theDateTime)
-        {
-            // return a ISO-8601 Date format
-            return string.Format(CultureInfo.InvariantCulture, "{0:o}, Kind = {1}", theDateTime, theDateTime.Kind);
-        }
-
-        /// <summary>
-        /// Returns a string that represents the current Boolean.         
-        /// </summary>
-        /// <param name="theBoolean">The Boolean.</param>
-        /// <returns>A string that represents the current object with current culture ignore.</returns>
-        private static string ToStringProperlyFormatted(this bool theBoolean)
-        {
-            // Ensure that boolean values are not localized 
-#if !NETSTANDARD1_3
-            return theBoolean.ToString(CultureInfo.InvariantCulture);
-#else
-            return theBoolean.ToString();
-#endif
-        }
-
-        /// <summary>
-        /// Returns a string that represents the current double.         
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>A string that represents the current object with current culture ignore.</returns>
-        private static string ToStringProperlyFormatted(this double value)
-        {
-            // Ensure that boolean values are not localized 
-            return value.ToString(CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
-        /// Returns a string that represents the current float.         
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>A string that represents the current object with current culture ignore.</returns>
-        private static string ToStringProperlyFormatted(this float value)
-        {
-            // Ensure that boolean values are not localized 
-            return value.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
