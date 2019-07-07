@@ -54,17 +54,17 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut.Offset != other.Offset,
-                    "The {0} is not equal to the {1} (ignoring hours). The Offsets are Different")
+                    "The {0} is not equal to the {1} (ignoring milliseconds). The offsets are different.")
                 .FailWhen(sut => sut.DateTime.Round(TimeUnit.Days) != other.DateTime.Round(TimeUnit.Days),
-                    "Wrong Check. The dates are different")
+                    "The {0} is not equal to the {1} (ignoring milliseconds). The dates are different.")
                 .FailWhen(sut => sut.DateTime.Round(TimeUnit.Hours) != other.DateTime.Round(TimeUnit.Hours),
-                    "Wrong Check. The Time of day is different (Hours).")
+                    "The {0} is not equal to the {1} (ignoring milliseconds). The time of day is different (Hours).")
                 .FailWhen(sut => sut.DateTime.Round(TimeUnit.Minutes) != other.DateTime.Round(TimeUnit.Minutes),
-                    "Wrong Check. The Time of day is different (Minutes).")
+                    "The {0} is not equal to the {1} (ignoring milliseconds). The time of day is different (Minutes).")
                 .FailWhen(sut => sut.DateTime.Round(TimeUnit.Seconds) != other.DateTime.Round(TimeUnit.Seconds),
-                    "Wrong Check. The Time of day is different (Seconds).")
+                    "The {0} is not equal to the {1} (ignoring milliseconds). The time of day is different (Seconds).")
                 .ComparingTo(other, "same second", "different second")
-                .OnNegate("The {0} is equal to the {1} (ignoring milliseconds) whereas it must not.")
+                .OnNegate("The {0} is equal to the {1} (ignoring milliseconds) whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -100,15 +100,15 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut.Offset != other.Offset,
-                    "The {0} is not equal to the {1} (ignoring hours). The Offsets are Different")
+                    "The {0} is not equal to the {1} (ignoring seconds). The offsets are different.")
                 .FailWhen(sut => sut.DateTime.Round(TimeUnit.Days) != other.DateTime.Round(TimeUnit.Days),
-                    "Wrong Check. The dates are different")
+                    "The {0} is not equal to the {1} (ignoring seconds). The dates are different.")
                 .FailWhen(sut => sut.DateTime.Round(TimeUnit.Hours) != other.DateTime.Round(TimeUnit.Hours),
-                    "Wrong Check. The Time of day is different (Hours).")
+                    "The {0} is not equal to the {1} (ignoring seconds). The time of day is different (Hours).")
                 .FailWhen(sut => sut.DateTime.Round(TimeUnit.Minutes) != other.DateTime.Round(TimeUnit.Minutes),
-                    "Wrong Check. The Time of day is different (Minutes).")
+                    "The {0} is not equal to the {1} (ignoring seconds). The time of day is different (Minutes).")
                 .ComparingTo(other, "same time up to the same minute", "different time up to the same minute")
-                .OnNegate("The {0} is equal to the {1} (ignoring seconds) whereas it must not.")
+                .OnNegate("The {0} is equal to the {1} (ignoring seconds) whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -144,13 +144,13 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut.Offset != other.Offset,
-                    "The {0} is not equal to the {1} (ignoring hours). The Offsets are Different")
+                    "The {0} is not equal to the {1} (ignoring hours). The offsets are different.")
                 .FailWhen(sut => sut.DateTime.Round(TimeUnit.Days) != other.DateTime.Round(TimeUnit.Days),
-                    "Wrong Check. The dates are different")
+                    "The {0} is not equal to the {1}. The dates are different.")
                 .FailWhen(sut => sut.DateTime.Round(TimeUnit.Hours) != other.DateTime.Round(TimeUnit.Hours),
-                    "Wrong Check. The Time of day is different (Hours).")
+                    "The {0} is not equal to the {1}. The hours are different.")
                 .ComparingTo(other, "same hour", "different hour")
-                .OnNegate("The {0} is equal to the {1} (ignoring minutes) whereas it must not.")
+                .OnNegate("The {0} is equal to the {1} (ignoring minutes) whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -186,11 +186,11 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut.Offset != other.Offset,
-                    "The {0} is not equal to the {1} (ignoring hours). The Offsets are Different")
+                    "The {0} is not equal to the {1} (ignoring hours). The offsets are different.")
                 .FailWhen(sut => sut.DateTime.Round(TimeUnit.Days) != other.DateTime.Round(TimeUnit.Days),
-                    "Wrong Check. The dates are different")
+                    "The {0} is not equal to the {1} (ignoring hours). The dates are different.")
                 .ComparingTo(other, "same day", "different day")
-                .OnNegate("The {0} is equal to the {1} (ignoring hours) whereas it must not.")
+                .OnNegate("The {0} is equal to the {1} (ignoring hours) whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -226,7 +226,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut.UtcDateTime != other.UtcDateTime, "The {0} is not equal to the {1}.")
                 .ComparingTo(other, "same time", "different time")
-                .OnNegate("The {0} is equal to the {1} whereas it must not.")
+                .OnNegate("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);

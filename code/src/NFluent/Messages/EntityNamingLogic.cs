@@ -103,7 +103,7 @@ namespace NFluent.Messages
                 return "string";
             }
 
-            if (type == typeof(DateTime))
+            if (type == typeof(DateTime) || type == typeof(DateTimeOffset))
             {
                 return "date time";
             }
