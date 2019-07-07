@@ -263,7 +263,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut.UtcDateTime.Round(TimeUnit.Seconds) != other.UtcDateTime.Round(TimeUnit.Seconds), "The {0} is not equal to the {1} (ignoring seconds).")
                 .ComparingTo(other, "same second", "different second")
-                .OnNegate("The {0} is equal to the {1} (ignoring milliseconds) whereas it must not.")
+                .OnNegate("The {0} is equal to the {1} (ignoring milliseconds) whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -300,7 +300,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut.UtcDateTime.Round(TimeUnit.Minutes) != other.UtcDateTime.Round(TimeUnit.Minutes), "The {0} is not equal to the {1} (ignoring seconds).")
                 .ComparingTo(other, "same minute", "different minute")
-                .OnNegate("The {0} is equal to the {1} (ignoring seconds) whereas it must not.")
+                .OnNegate("The {0} is equal to the {1} (ignoring seconds) whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -337,7 +337,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut.UtcDateTime.Round(TimeUnit.Hours) != other.UtcDateTime.Round(TimeUnit.Hours), "The {0} is not equal to the {1} (ignoring minutes).")
                 .ComparingTo(other, "same hour", "different hour")
-                .OnNegate("The {0} is equal to the {1} (ignoring minutes) whereas it must not.")
+                .OnNegate("The {0} is equal to the {1} (ignoring minutes) whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -374,7 +374,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => sut.UtcDateTime.Round(TimeUnit.Days) != other.UtcDateTime.Round(TimeUnit.Days), "The {0} is not equal to the {1} (ignoring hours).")
                 .ComparingTo(other, "same day", "different day")
-                .OnNegate("The {0} is equal to the {1} (ignoring hours) whereas it must not.")
+                .OnNegate("The {0} is equal to the {1} (ignoring hours) whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);

@@ -55,6 +55,18 @@
         }
 
         [Test]
+        public void IsSameInstantIgnoringHoursRaisesProperMessageWhenNegated()
+        {
+            var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
+            Check.ThatCode(()=>
+            Check.That(newYears).Not.MatchTheSameUtcInstantIgnoringHours(newYears)).
+                IsAFailingCheckWithMessage("", 
+                    "The checked date time is equal to the given one (ignoring hours) whereas it must not.", 
+                    "The expected date time: different day", 
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
+        }
+
+        [Test]
         public void IsEqualToIgnoringMinutesRaisesProperMessage()
         {
             var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
@@ -90,6 +102,20 @@
         }
 
         [Test]
+        public void IsSameInstantToIgnoringMinutesRaisesProperMessage()
+        {
+            var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
+            Check.ThatCode(() =>
+                Check.That(new DateTimeOffset(new DateTime(2013, 1, 1, 2, 0, 0), new TimeSpan(0, 1, 0, 0)))
+                    .MatchTheSameUtcInstantIgnoringMinutes(newYears)).IsAFailingCheckWithMessage("",
+                "The checked date time is not equal to the given one (ignoring minutes).",
+                "The checked date time:",
+                "\t[2013-01-01T02:00:00.0000000 +01:00:00]",
+                "The expected date time: same hour",
+                "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
+        }
+
+        [Test]
         public void IsEqualToIgnoringMinutesRaisesProperMessageWhenNegated()
         {
             var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
@@ -98,6 +124,33 @@
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is equal to the given one (ignoring minutes) whereas it must not.", 
                     "The expected date time: different hour", 
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
+        }
+
+        [Test]
+        public void MatchSameInstantIgnoringMinutesRaisesProperMessageWhenNegated()
+        {
+            var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
+            Check.ThatCode(()=>
+                    Check.That(newYears).Not.MatchTheSameUtcInstantIgnoringMinutes(newYears)).
+                IsAFailingCheckWithMessage("", 
+                    "The checked date time is equal to the given one (ignoring minutes) whereas it must not.", 
+                    "The expected date time: different hour", 
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
+        }
+
+        [Test]
+        public void IsSameInstantToIgnoringSecondsRaisesProperMessage()
+        {
+            var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
+            Check.ThatCode(()=>
+                    Check.That(new DateTimeOffset(new DateTime(2013, 1, 1, 0, 1, 0), new TimeSpan(0, 1, 0, 0))).
+                        MatchTheSameUtcInstantIgnoringSeconds(newYears)).
+                IsAFailingCheckWithMessage("", 
+                    "The checked date time is not equal to the given one (ignoring seconds).", 
+                    "The checked date time:", 
+                    "\t[2013-01-01T00:01:00.0000000 +01:00:00]", 
+                    "The expected date time: same minute", 
                     "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
         }
 
@@ -159,6 +212,18 @@
         }
         
         [Test]
+        public void IsSameInstantIgnoringSecondsRaisesProperMessageNegated()
+        {
+            var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
+            Check.ThatCode(()=>
+                    Check.That(newYears).Not.MatchTheSameUtcInstantIgnoringSeconds(newYears)).
+                IsAFailingCheckWithMessage("", 
+                    "The checked date time is equal to the given one (ignoring seconds) whereas it must not.", 
+                    "The expected date time: different minute", 
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
+        }
+        
+        [Test]
         public void IsEqualToIgnoringMillisRaisesProperMessage()
         {
             var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
@@ -214,11 +279,38 @@
         }
 
         [Test]
-        public void IsEqualToIgnoringMillisRaisesProperMessagewHENNegated()
+        public void MatchInstantIgnoringMillisRaisesProperMessage()
+        {
+            var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
+            Check.ThatCode(()=>
+                    Check.That(new DateTimeOffset(new DateTime(2013, 1, 1, 0, 0, 1), new TimeSpan(0, 1, 0, 0))).
+                        MatchTheSameUtcInstantIgnoringMillis(newYears)).
+                IsAFailingCheckWithMessage("", 
+                    "The checked date time is not equal to the given one (ignoring seconds).", 
+                    "The checked date time:", 
+                    "\t[2013-01-01T00:00:01.0000000 +01:00:00]", 
+                    "The expected date time: same second", 
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
+        }
+
+        [Test]
+        public void IsEqualToIgnoringMillisRaisesProperMessageWhenNegated()
         {
             var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
             Check.ThatCode(()=>
                     Check.That(newYears).Not.IsEqualToIgnoringMillis(newYears)).
+                IsAFailingCheckWithMessage("", 
+                    "The checked date time is equal to the given one (ignoring milliseconds) whereas it must not.", 
+                    "The expected date time: different second", 
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]");
+        }
+
+        [Test]
+        public void MatchInstnatMillisRaisesProperMessagewhenNegated()
+        {
+            var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
+            Check.ThatCode(()=>
+                    Check.That(newYears).Not.MatchTheSameUtcInstantIgnoringMillis(newYears)).
                 IsAFailingCheckWithMessage("", 
                     "The checked date time is equal to the given one (ignoring milliseconds) whereas it must not.", 
                     "The expected date time: different second", 
