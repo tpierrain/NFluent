@@ -33,6 +33,7 @@ namespace NFluent.Helpers
         {
             return check.IsAFailingCheckWithMessage(lines);
         }
+
         /// <inheritdoc cref="IsAFailingCheck"/>
         [Obsolete("Use IsAFailingCheckWithMessage instead (typo)")]
         public static ICheckLink<ICheck<RunTrace>> IsAFaillingCheck(this ICheck<RunTrace> check)
@@ -81,8 +82,8 @@ namespace NFluent.Helpers
                             if (!Regex.IsMatch(messageLines[i], expectedLines[i].Substring(1)))
                             {
                                 test.Fail($"Line {i} is different from what is expected"+Environment.NewLine+
-                                          "Act:"+messageLines[i].DoubleCurlyBraces()+Environment.NewLine+
-                                          "Exp (regex):"+expectedLines[i].DoubleCurlyBraces()
+                                          "Act:" + messageLines[i].DoubleCurlyBraces()+Environment.NewLine+
+                                          "Exp (regex):" + expectedLines[i].DoubleCurlyBraces()
                                 );
                                 break;
                             }
@@ -90,8 +91,8 @@ namespace NFluent.Helpers
                         else if (messageLines[i] != expectedLines[i])
                         {
                             test.Fail($"Line {i} is different from what is expected"+Environment.NewLine+
-                                       "Act:"+messageLines[i].DoubleCurlyBraces()+Environment.NewLine+
-                                        "Exp:"+expectedLines[i].DoubleCurlyBraces() );
+                                       "Act:" + messageLines[i].DoubleCurlyBraces()+Environment.NewLine+
+                                        "Exp:" + expectedLines[i].DoubleCurlyBraces() );
                             break;
                         }
                     }

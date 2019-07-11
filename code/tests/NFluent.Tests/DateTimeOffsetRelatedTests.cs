@@ -55,6 +55,20 @@
         }
 
         [Test]
+        public void IsSameInstantIgnoringHoursRaisesProperMessage()
+        {
+            var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
+            Check.ThatCode(()=>
+            Check.That(newYears).MatchTheSameUtcInstantIgnoringHours(new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, -1, 0, 0)))).
+                IsAFailingCheckWithMessage("", 
+                    "The checked date time is not equal to the given one (ignoring hours).", 
+                    "The checked date time:", 
+                "\t[2013-01-01T00:00:00.0000000 +01:00:00]", 
+                "The expected date time: same day", 
+                "\t[2013-01-01T00:00:00.0000000 -01:00:00]");
+        }
+
+        [Test]
         public void IsSameInstantIgnoringHoursRaisesProperMessageWhenNegated()
         {
             var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
@@ -306,7 +320,7 @@
         }
 
         [Test]
-        public void MatchInstnatMillisRaisesProperMessagewhenNegated()
+        public void MatchInstantMillisRaisesProperMessagewhenNegated()
         {
             var newYears = new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 1, 0, 0));
             Check.ThatCode(()=>

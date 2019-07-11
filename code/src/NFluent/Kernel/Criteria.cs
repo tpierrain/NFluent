@@ -71,6 +71,7 @@ namespace NFluent.Kernel
         public bool IgnoreExtra { get; set; }
 
         public bool WithProperties => (this.BindingFlagsForProperties & (BindingFlags.Public | BindingFlags.NonPublic))!=0;
+
         public bool WithFields => (this.BindingFlagsForFields & (BindingFlags.Public | BindingFlags.NonPublic))!=0;
 
         public bool IsNameExcluded(string name)
