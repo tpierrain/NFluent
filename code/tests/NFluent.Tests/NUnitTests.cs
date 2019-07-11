@@ -26,6 +26,7 @@ namespace NFluent.Tests
             Check.That("Unit").IsNotEmpty();
 
             Check.ThatCode(() => Check.That("Unit").IsEqualTo("great")).Throws<AssertionException>();
+            Check.ThatCode(() => Assuming.That("Unit").IsEqualTo("great")).Throws<InconclusiveException>();
         }
         #endif
     }

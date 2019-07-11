@@ -38,7 +38,6 @@ namespace NFluent.Helpers
         ///     The auto property mask.
         /// </summary>
         private static readonly Regex AutoPropertyMask;
-
         private readonly string labelPattern;
         private readonly string prefix;
 
@@ -47,8 +46,8 @@ namespace NFluent.Helpers
         /// </summary>
         static ReflectionWrapper()
         {
-            AutoPropertyMask = new Regex("^<(.*)>k_");
-            AnonymousTypeFieldMask = new Regex("^<(.*)>(i_|\\z)");
+            AutoPropertyMask = new Regex("^<(.*)>k_", RegexOptions.Compiled);
+            AnonymousTypeFieldMask = new Regex("^<(.*)>(i_|\\z)", RegexOptions.Compiled);
         }
 
         private ReflectionWrapper(string nameInSource, string prefix, string labelPattern, Type type, object value,
@@ -183,12 +182,13 @@ namespace NFluent.Helpers
             }
 
             // we recurse
+            var nextDepth = depth - 1;
             foreach (var member in this.GetSubExtendedMemberInfosFields())
             {
-                member.MapFields(actual.FindMember(member), scanned, depth - 1, mapFunction);
+                member.MapFields(actual.FindMember(member), scanned, nextDepth, mapFunction);
             }
 
-            // we deal with missing fields
+            // we deal with missing fields (unless asked to ignore them)
             if (this.Criteria.IgnoreExtra)
             {
                 return;
@@ -198,7 +198,7 @@ namespace NFluent.Helpers
             {
                 if (this.FindMember(actualFields) == null)
                 {
-                    mapFunction(null, actualFields, depth - 1);
+                    mapFunction(null, actualFields, nextDepth);
                 }
             }
         }
@@ -304,11 +304,16 @@ namespace NFluent.Helpers
         {
             var result = new List<ReflectionWrapper>();
             var fieldType = array.GetType().GetElementType();
+            var name = this.MemberLongName;
+            if (string.IsNullOrEmpty(name))
+            {
+                name = "this";
+            }
             if (array.Rank == 1)
             {
                 for (var i = array.GetLowerBound(0); i <= array.GetUpperBound(0); i++)
                 {
-                    var expectedEntryDescription = BuildFromField(this.MemberLongName, $"[{i}]", fieldType,
+                    var expectedEntryDescription = BuildFromField(Empty, $"{name}[{i}]", fieldType,
                         array.GetValue(i), this.Criteria);
                     result.Add(expectedEntryDescription);
                 }
@@ -322,14 +327,15 @@ namespace NFluent.Helpers
                     var label = new StringBuilder("[");
                     for (var j = 0; j < array.Rank; j++)
                     {
-                        var currentIndex = j == array.Rank - 1 ? temp : temp % array.SizeOfDimension(j);
+                        var isLastDimension = j == array.Rank - 1;
+                        var currentIndex = isLastDimension ? temp : temp % array.SizeOfDimension(j);
                         label.Append(currentIndex.ToString());
-                        label.Append(j < array.Rank - 1 ? "," : "]");
+                        label.Append(isLastDimension ? "]" : ",");
                         indices[j] = currentIndex + array.GetLowerBound(j);
                         temp /= array.SizeOfDimension(j);
                     }
                    
-                    var expectedEntryDescription = BuildFromField(this.MemberLongName, label.ToString(), fieldType,
+                    var expectedEntryDescription = BuildFromField(Empty,  $"{name}{label}", fieldType,
                         array.GetValue(indices), this.Criteria);
                     result.Add(expectedEntryDescription);
                 }
@@ -475,13 +481,18 @@ namespace NFluent.Helpers
                     return false;
                 }
 
+                if (depth>0)
+                {
+                    return true;
+                }
+
                 if (depth <= 0 && expected.ValueType.ImplementsEquals())
                 {
                     result.Add(new MemberMatch(expected, actual));
                     return false;
                 }
 
-                if (!expected.IsArray || (actual.IsArray && (((Array) expected.Value).Length == ((Array) actual.Value).Length)))
+                if (!expected.IsArray || (actual.IsArray && ((Array) expected.Value).Length == ((Array) actual.Value).Length))
                 {
                     if (actual.ValueType.TypeHasMember() || expected.ValueType.TypeHasMember())
                     {

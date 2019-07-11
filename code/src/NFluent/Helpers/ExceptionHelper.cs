@@ -57,9 +57,9 @@ namespace NFluent.Helpers
             new Dictionary<TestFramework, ExceptionConstructor>();
 
         private const string Patterns = 
-            "MsTest,microsoft.visualstudio.testplatform.testframework,Microsoft.VisualStudio.TestTools,AssertFailedException,,AssertInconclusiveException;"+
-            "NUnit,nunit.framework,NUnit.,AssertionException,IgnoreException,InconclusiveException;"+
-            "XUnit,xunit.assert,Xunit.Sdk,XunitException,,";
+            "MsTest,microsoft.visualstudio.testplatform.testframework,Microsoft.VisualStudio.TestTools,AssertFailedException,AssertInconclusiveException;"+
+            "NUnit,nunit.framework,NUnit.,AssertionException,InconclusiveException;"+
+            "XUnit,xunit.assert,Xunit.Sdk,XunitException,";
 
         private static ExceptionConstructor Constructors
         {
@@ -97,7 +97,7 @@ namespace NFluent.Helpers
             {
                 var parameters = line.Split(',');
                 var testFrameworkId = (TestFramework)Enum.Parse(typeof(TestFramework), parameters[0]);
-                Exceptions[testFrameworkId] = new ExceptionConstructor(parameters[1], parameters[2], parameters[3], parameters[4], parameters[5]);
+                Exceptions[testFrameworkId] = new ExceptionConstructor(parameters[1], parameters[2], parameters[3], parameters[4]);
             }
             ExceptionScanner();
         }
@@ -109,10 +109,7 @@ namespace NFluent.Helpers
             {
                 foreach (var exceptionConstructor in Exceptions.Values)
                 {
-                    if (exceptionConstructor.ScanAssembly(assembly))
-                    {
-                        break;
-                    }
+                    exceptionConstructor.ScanAssembly(assembly);
                 }
             }
 #endif

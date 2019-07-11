@@ -140,10 +140,10 @@ namespace NFluent.Tests.FromIssues
             var myOther = new {Property = otherArray};
             myOther.Property[1, 1] = 5;
             Check.ThatCode(() => Check.That(myClass).HasFieldsWithSameValues(myOther)).IsAFailingCheckWithMessage("", 
-                "The checked value's field 'Property.[1,1]' does not have the expected value.", 
-                "The checked value's field 'Property.[1,1]':",
+                "The checked value's field 'Property[1,1]' does not have the expected value.", 
+                "The checked value's field 'Property[1,1]':",
                 "\t[3]",
-                "The expected value's field 'Property.[1,1]':",
+                "The expected value's field 'Property[1,1]':",
                 "\t[5]");
         }
 

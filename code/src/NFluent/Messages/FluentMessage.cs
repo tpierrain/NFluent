@@ -13,13 +13,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 // ReSharper disable once CheckNamespace
 namespace NFluent.Extensibility
 {
     using System;
     using System.Text;
-
+    using System.Text.RegularExpressions;
     using Extensions;
     using Messages;
 
@@ -43,8 +42,11 @@ namespace NFluent.Extensibility
         private MessageBlock checkedBlock;
         private Type checkedType;
         private string customAddOn;
-        private bool dontRepeatExpected;
-        private bool dontRepeatChecked;
+        private readonly bool dontRepeatExpected;
+        private readonly bool dontRepeatChecked;
+
+        private static readonly Regex NormalOrder = new Regex(".*\\{0\\}.*\\{1\\}.*", RegexOptions.Compiled);
+        private static readonly Regex ReverseOrder = new Regex(".*\\{1\\}.*\\{0\\}.*", RegexOptions.Compiled);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FluentMessage"/> class.
@@ -63,17 +65,8 @@ namespace NFluent.Extensibility
             format = format.Replace("{expected}", "{1}");
             format = format.Replace("{given}", "{1}");
             this.message = format;
-            if (format.Contains("{0}") && format.Contains("{1}"))
-            {
-                if (format.IndexOf("{1}", format.IndexOf("{0}", StringComparison.Ordinal), StringComparison.Ordinal)>=0)
-                {
-                    this.dontRepeatExpected = true;
-                }
-                else
-                {
-                    this.dontRepeatChecked = true;
-                }
-            }
+            this.dontRepeatExpected = NormalOrder.IsMatch(format);
+            this.dontRepeatChecked = ReverseOrder.IsMatch(format);
 
             this.checkedNamingLogic = new EntityNamingLogic();
             this.expectedNamingLogic = new EntityNamingLogic();

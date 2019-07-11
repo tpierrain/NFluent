@@ -587,7 +587,7 @@ namespace NFluent.Helpers
 
                 if (this.IsEquivalent)
                 {
-                    messageText.Append(" But the {checked} is equivalent to the {1}.");
+                    messageText.Append(" But they are equivalent.");
                 }
 
                 if (this.DoesProvideDetails(sut, expected))

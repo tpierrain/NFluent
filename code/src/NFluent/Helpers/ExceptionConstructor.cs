@@ -25,23 +25,19 @@ namespace NFluent.Helpers
         private readonly string assemblyNameBeginning;
         private readonly string @namespace;
         private readonly string assertExceptionName;
-        private readonly string ignoreExceptionName;
         private readonly string inconclusiveExceptionName;
 
         private Func<string, Exception> assertExceptionBuilder;
         private Type assertExceptionType;
         private Func<string, Exception> inconclusiveExceptionBuilder;
         private Type inconclusiveExceptionType;
-        private Func<string, Exception> ignoreExceptionBuilder;
-        private Type ignoreExceptionType;
         private static readonly Type[] Types = { typeof(string) };
 
-        public ExceptionConstructor(string assemblyNameBeginning, string ns, string assertExceptionName, string ignoreExceptionName, string inconclusiveExceptionName)
+        public ExceptionConstructor(string assemblyNameBeginning, string ns, string assertExceptionName, string inconclusiveExceptionName)
         {
             this.assemblyNameBeginning = assemblyNameBeginning;
             this.@namespace = ns;
             this.assertExceptionName = assertExceptionName;
-            this.ignoreExceptionName = ignoreExceptionName;
             this.inconclusiveExceptionName = inconclusiveExceptionName;
         }
 
@@ -56,16 +52,16 @@ namespace NFluent.Helpers
             return this.assertExceptionBuilder != null;
         }
 
-        public bool ScanAssembly(Assembly assembly)
+        public void ScanAssembly(Assembly assembly)
         {
             if(this.assemblyNameBeginning == null)
             {
-                return false;
+                return;
             }
 
             if (!assembly.FullName.ToLowerInvariant().Contains(this.assemblyNameBeginning))
             {
-                return false;
+                return;
             }
 
             var exportedTypes = assembly.GetExportedTypes();
@@ -79,12 +75,6 @@ namespace NFluent.Helpers
                         this.assertExceptionBuilder = GetConstructor(type);
                         this.assertExceptionType = type;
                     }
-                    else if (type.Name == this.ignoreExceptionName)
-                    {
-                        this.ignoreExceptionBuilder = GetConstructor(type);
-                        this.ignoreExceptionType = type;
-
-                    }
                     else if (type.Name == this.inconclusiveExceptionName)
                     {
                         this.inconclusiveExceptionBuilder = GetConstructor(type);
@@ -92,7 +82,6 @@ namespace NFluent.Helpers
                     }
                 }
             }
-            return true;
         }
 
         private static Func<string, Exception> GetConstructor(Type type)
@@ -108,7 +97,6 @@ namespace NFluent.Helpers
         public Exception BuildInconclusiveException(string message)
         {
             return (this.inconclusiveExceptionBuilder ??
-                    this.ignoreExceptionBuilder ?? 
                     this.assertExceptionBuilder)(message);
         }
 
@@ -120,7 +108,6 @@ namespace NFluent.Helpers
         public Type InconclusiveExceptionType()
         {
             return (this.inconclusiveExceptionType ??
-                   this.ignoreExceptionType ?? 
                    this.assertExceptionType);
         }
     }

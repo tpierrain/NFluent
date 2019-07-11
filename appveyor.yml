@@ -17,7 +17,8 @@ artifacts:
 environment:
   NFLUENT_NUGET_API_KEY: 
   NFLUENT_NUGET_FEED: https://www.nuget.org/api/v2/package
-  CODECOV_KEY: 52c1cbc1-8337-4542-b5ae-70ded055284a
+  CODECOV_KEY:
+    secure: DsJzrv6YlrqW177NuquKFS/jq6Cj4PMJ2+QyuY+Garee3M+M+gWhplP0sRKFUIqZ
 
 assembly_info:
   patch: true
@@ -28,7 +29,8 @@ assembly_info:
 
 notifications:
 - provider: Slack
-  incoming_webhook: https://hooks.slack.com/services/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
+  incoming_webhook:
+	secure: 8HsB7ugtiao2POPBIleKwZhgUm/eXfndfmhRN9ewMr+etPGhsrJ8Wy6jIlqeJAgHlsdVIpaL2TGEEOEuMm9LcZbYP9n8BWw5Nd2vOcsnLO4=
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: false

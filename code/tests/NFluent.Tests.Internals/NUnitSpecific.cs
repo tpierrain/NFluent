@@ -28,6 +28,7 @@ namespace NFluent.Tests
         public void ExceptionScanTest()
         {
             Check.That(ExceptionHelper.BuildException("Test")).IsInstanceOf<AssertionException>();
+            Check.That(ExceptionHelper.BuildInconclusiveException("Test")).IsInstanceOf<InconclusiveException>();
         }
 #endif
     }

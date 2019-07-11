@@ -3,8 +3,6 @@
     using System.Collections.Generic;
     using System;
     using System.Collections;
-    using ApiChecks;
-    using Helpers;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -85,11 +83,9 @@
                 .IsAFailingCheck();
             Check.ThatCode(() => { Check.That((IEnumerable)new[] { 1, 2 }).HasFieldsWithSameValues((IEnumerable) new[] { 1, 2, 3 }); })
                 .IsAFailingCheckWithMessage("", 
-                    "The checked value does not have the expected value.", 
-                    "The checked value:", 
-                    "\t{1, 2} (2 items)", 
-                    "The expected value:", 
-                    "\t{1, 2, 3} (3 items)");
+                    "The expected value's field 'this[2]''s is absent from the checked one.", 
+                    "The expected value's field 'this[2]':", 
+                    "\t[3] of type: [int]");
         }
 
         [Test]
@@ -177,7 +173,7 @@
             var x = new DummyClass(2, 4);
             var expected = new { x = 2, y = 4, emptyList = (int[])null };
             Check.That(x).HasFieldsWithSameValues(expected);
-            Check.That(expected).HasFieldsWithSameValues(x);;
+            Check.That(expected).HasFieldsWithSameValues(x);
         }
 
         [Test]

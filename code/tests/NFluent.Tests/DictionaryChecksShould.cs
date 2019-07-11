@@ -328,7 +328,7 @@ namespace NFluent.Tests
             var expected = new Dictionary<string, int> { ["bar"] = 1,  ["foo"] = 0 };
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["foo"] = 0, ["bar"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
-                "The checked dictionary is different from the expected one. 2 differences found! But the checked dictionary is equivalent to the expected one.", 
+                "The checked dictionary is different from the expected one. 2 differences found! But they are equivalent.", 
                 "actual key[0] = \"foo\" instead of \"bar\".", 
                 "actual key[1] = \"bar\" instead of \"foo\".",                
                 "The checked dictionary:", 

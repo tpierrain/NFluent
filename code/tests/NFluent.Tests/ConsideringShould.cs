@@ -520,6 +520,15 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void RaisesOnIsNotNullWithDeepNull()
+        {
+            Check.ThatCode(() => { Check.That(new {x = new {y = new {z = (object) null}}}).Considering().Public.Properties.IsNotNull();})
+                .IsAFailingCheckWithMessage("",  
+            "The checked value's property 'x.y.z' is null, whereas it should not.");
+
+        }
+
+        [Test]
         public void
             WorkForIsNotNullOnRecursive()
         {

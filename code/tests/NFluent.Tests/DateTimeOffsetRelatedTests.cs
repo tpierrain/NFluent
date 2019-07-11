@@ -32,6 +32,14 @@
                     "\t[2013-01-01T00:00:00.0000000 +01:00:00]", 
                     "The expected date time:", 
                     "\t[2013-01-01T00:00:00.0000000 +02:00:00]");
+            Check.ThatCode(() =>
+            Check.That(newYears).IsEqualToIgnoringHours(new DateTimeOffset(new DateTime(2013, 1, 1), new TimeSpan(0, 2, 0, 0)))).
+                IsAFailingCheckWithMessage("", 
+                    "The checked date time is not equal to the given one (ignoring hours). The offsets are different.", 
+                    "The checked date time:", 
+                    "\t[2013-01-01T00:00:00.0000000 +01:00:00]", 
+                    "The expected date time: same day", 
+                    "\t[2013-01-01T00:00:00.0000000 +02:00:00]");
             Check.ThatCode(()=>
             Check.That(newYears).IsEqualToIgnoringHours(new DateTimeOffset(new DateTime(2013, 1, 2, 12, 0, 0), new TimeSpan(0, 1, 0, 0)))).
                 IsAFailingCheckWithMessage("", 

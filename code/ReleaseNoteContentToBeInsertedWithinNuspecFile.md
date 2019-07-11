@@ -13,6 +13,8 @@ Check.That(enum).WhoseSize().IsEqualTo(3)
 * Actual and expected value naming has been redesigned to improve naming accuracy. Impact vary depending on checks and types.
 * Comparison of enumeration now provides details regarding the differences. You can control
 how many differences are reported using the property **ExtensionsCommonHelpers.CountOfLineOfDetails**.
+* Cleaned up the reporting of array fields when using Considering. The superfluous dot (as in _field.[index]_)
+has been removed.
 
 ### Fixes
 * Fix issue with IEnumerable<object> and Contains(Exactly), IsEqualTo, IsEquivalentTo.
@@ -20,6 +22,8 @@ how many differences are reported using the property **ExtensionsCommonHelpers.C
 * NotSupportedException when using ContainsExactly on strings.
 * Fix issue with single dimension arrays and field based checks where the LAST item of the array
 * was not evaluated during the check (issue found thanks to mutation test)
+* Comparing Array with considering was no different than when using IsEqualTo. This has been fixed.
+Therefore error messages are now in line with what was expected
 
 ### Extensibility
 Foreword: several breaking changes have been introduced that may trigger build error in your custom extensions if you have made any.
