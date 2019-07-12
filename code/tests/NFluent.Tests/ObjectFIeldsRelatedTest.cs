@@ -154,6 +154,22 @@
         }
 
         [Test]
+        public void IsEqualToDrillsDeepestMember()
+        {
+            var x = new DummyClass();
+
+            Check.ThatCode(() =>
+                {
+                    Check.That(new AltDummyClass()).Considering().All.Fields.IsEqualTo(new DummyClass());
+                })
+                .IsAFailingCheckWithMessage("", 
+                    "The expected value's field 'emptyList._syncRoot''s is absent from the checked one.", 
+                    "The expected value's field 'emptyList._syncRoot':", 
+                    "\t[null] of type: [object]");
+
+        }
+
+        [Test]
         public void HasFieldsWithSameValuesWorksForAutoProperty()
         {
             var x = new DummyWithAutoProperty();
@@ -293,6 +309,19 @@
                 this.x = x;
                 this.y = y;
             }
+
+        }
+
+        private class AltDummyClass
+        {
+            // ReSharper disable once NotAccessedField.Local
+            private int x = 2;
+
+            // ReSharper disable once NotAccessedField.Local
+            private int y = 3;
+
+            // ReSharper disable once NotAccessedField.Local
+            private object emptyList = new object();
         }
 
         private class DummyHeritance : DummyClass

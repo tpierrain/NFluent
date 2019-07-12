@@ -681,7 +681,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void HandleOverringForFields()
+        public void HandleOverridingForFields()
         {
             // Arrange
             var autoPropertyValue = "I am a test.";
@@ -695,7 +695,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void HandleOverringForProperties()
+        public void HandleOverridingForProperties()
         {
             // Arrange
             var autoPropertyValue = "I am a test.";
@@ -772,6 +772,7 @@ namespace NFluent.Tests
             {
                 return new MockEqual(true);
             }
+
             public static MockEqual False()
             {
                 return new MockEqual(false);
