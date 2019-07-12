@@ -422,7 +422,7 @@ namespace NFluent.Helpers
         {
             var other = BuildFromInstance(obj?.GetType() ?? typeof(object), obj, this.Criteria);
             var isEqual = true;
-            this.MapFields(other, 0, (expected, actual, depth) =>
+            this.MapFields(other, 1, (expected, actual, depth) =>
             {
                 if (!isEqual || actual == null)
                 {
