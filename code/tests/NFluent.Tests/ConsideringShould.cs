@@ -318,7 +318,7 @@ namespace NFluent.Tests
         public void WorkForNull()
         {
             var sut = new SutClass(2, 42);
-            Check.That(sut).Considering().Public.Fields.Equals(null);
+            Check.That((object)null).Considering().Public.Fields.Equals(null);
         }
 
         [Test]
@@ -715,6 +715,12 @@ namespace NFluent.Tests
             Check.That(new { field = MockEqual.True()}).Considering().All.Fields.Equals(new { field = MockEqual.True()});
         }
         
+        [Test]
+        public void HandleEqualSupportForField()
+        {
+            Check.That(new SutClass(1,2,3,new object())).Considering().All.Fields.Equals(new SutClass(1,2,3, MockEqual.True()));
+        }
+        
         private class EmptyAncestor
         {
             public override string ToString()
@@ -735,22 +741,7 @@ namespace NFluent.Tests
 
             public override bool Equals(object obj)
             {
-                if (ReferenceEquals(null, obj))
-                {
-                    return false;
-                }
-
-                if (ReferenceEquals(this, obj))
-                {
-                    return true;
-                }
-
-                if (obj.GetType() != this.GetType())
-                {
-                    return false;
-                }
-
-                return Equals((MockEqual) obj);
+                return this.isEqual;
             }
 
             public override int GetHashCode()

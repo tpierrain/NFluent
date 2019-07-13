@@ -160,7 +160,7 @@ namespace NFluent.Helpers
         }
 
         private void MapFields(
-            ReflectionWrapper actual,
+            ReflectionWrapper expected,
             ICollection<object> scanned,
             int depth, Func<ReflectionWrapper, ReflectionWrapper, int, bool> mapFunction)
         {
@@ -175,7 +175,7 @@ namespace NFluent.Helpers
                 scanned.Add(this.Value);
             }
 
-            if (!mapFunction(this, actual, depth))
+            if (!mapFunction(this, expected, depth))
             {
                 // no need to recurse
                 return;
@@ -185,7 +185,7 @@ namespace NFluent.Helpers
             var nextDepth = depth - 1;
             foreach (var member in this.GetSubExtendedMemberInfosFields())
             {
-                member.MapFields(actual.FindMember(member), scanned, nextDepth, mapFunction);
+                member.MapFields( expected.FindMember(member), scanned, nextDepth, mapFunction);
             }
 
             // we deal with missing fields (unless asked to ignore them)
@@ -194,11 +194,11 @@ namespace NFluent.Helpers
                 return;
             }
 
-            foreach (var actualFields in actual.GetSubExtendedMemberInfosFields())
+            foreach (var expectedField in expected.GetSubExtendedMemberInfosFields())
             {
-                if (this.FindMember(actualFields) == null)
+                if (this.FindMember(expectedField) == null)
                 {
-                    mapFunction(null, actualFields, nextDepth);
+                    mapFunction(null, expectedField, nextDepth);
                 }
             }
         }
@@ -305,7 +305,7 @@ namespace NFluent.Helpers
             var result = new List<ReflectionWrapper>();
             var fieldType = array.GetType().GetElementType();
             var name = this.MemberLongName;
-            if (string.IsNullOrEmpty(name))
+            if (IsNullOrEmpty(name))
             {
                 name = "this";
             }
@@ -422,21 +422,21 @@ namespace NFluent.Helpers
         {
             var other = BuildFromInstance(obj?.GetType() ?? typeof(object), obj, this.Criteria);
             var isEqual = true;
-            this.MapFields(other, 1, (expected, actual, depth) =>
+            this.MapFields(other, 1, (actual, expected, depth) =>
             {
-                if (!isEqual || actual == null)
+                if (!isEqual || expected == null)
                 {
                     // we have established this is not equal
                     return false;
                 }
 
-                if (depth <= 0 && expected.ValueType.ImplementsEquals())
+                if (depth > 0 || !expected.ValueType.ImplementsEquals())
                 {
-                    isEqual = EqualityHelper.FluentEquals(expected.Value, actual.Value);
-                    return false;
+                    return true;
                 }
 
-                return true;
+                isEqual = EqualityHelper.FluentEquals(actual.Value, expected.Value);
+                return false;
             });
             return isEqual;
         }

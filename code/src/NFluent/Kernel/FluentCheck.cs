@@ -16,6 +16,7 @@ namespace NFluent.Kernel
 {
     using System.Diagnostics.CodeAnalysis;
     using Extensibility;
+    using Helpers;
 
     /// <summary>
     /// Provides fluent check methods to be executed on a given value.
@@ -103,7 +104,14 @@ namespace NFluent.Kernel
         /// </exception>
         public new bool Equals(object obj)
         {
-            this.IsEqualTo(obj);
+            if (this.Value is ReflectionWrapper wrapper)
+            {
+                ReflectionWrapperChecks.IsEqualTo((ICheck<ReflectionWrapper>) this, obj);
+            }
+            else
+            {
+                this.IsEqualTo(obj);
+            }
             return false;
         }
 

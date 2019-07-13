@@ -6,7 +6,7 @@
 	"test-runner" : "VsTest",
     "coverage-analysis": "perTest",
 	"abort-test-on-fail":  true,
-    "log-level": "debug",
+    "log-level": "info",
     "log-file": false
   }
 }

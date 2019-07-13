@@ -15,6 +15,8 @@ Check.That(enum).WhoseSize().IsEqualTo(3)
 how many differences are reported using the property **ExtensionsCommonHelpers.CountOfLineOfDetails**.
 * Cleaned up the reporting of array fields when using Considering. The superfluous dot (as in _field.[index]_)
 has been removed.
+* Improved implementation for Equals when using Considering. You should use IsEqualTo when checking for
+* equality, but we also provide an implementation of Equals as a failsafe.
 
 ### Fixes
 * Fix issue with IEnumerable<object> and Contains(Exactly), IsEqualTo, IsEquivalentTo.

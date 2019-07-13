@@ -231,17 +231,17 @@ namespace NFluent.Helpers
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
-        private static AggregatedDifference FluentEquals<TS, TE>(TS instance, TE expected, EqualityMode mode)
+        private static AggregatedDifference FluentEquals<TS, TE>(TS sut, TE expected, EqualityMode mode)
         {
             var result = new AggregatedDifference();
             switch (mode)
             {
                 case EqualityMode.FluentEquals:
-                    return ValueDifference(instance, SutLabel, expected);
+                    return ValueDifference(sut, SutLabel, expected);
                 case EqualityMode.OperatorEq:
                 case EqualityMode.OperatorNeq:
 
-                    var actualType = instance.GetTypeWithoutThrowingException();
+                    var actualType = sut.GetTypeWithoutThrowingException();
                     var expectedType = expected.GetTypeWithoutThrowingException();
                     var operatorName = mode == EqualityMode.OperatorEq ? "op_Equality" : "op_Inequality";
                     var ope = actualType
@@ -249,7 +249,7 @@ namespace NFluent.Helpers
                                   .GetMethod(operatorName, new[] {actualType, expectedType});
                     if (ope != null)
                     {
-                        var ret = (bool) ope.Invoke(null, new object[] {instance, expected});
+                        var ret = (bool) ope.Invoke(null, new object[] {sut, expected});
                         if (mode == EqualityMode.OperatorNeq)
                         {
                             ret = !ret;
@@ -258,11 +258,11 @@ namespace NFluent.Helpers
                     }
                     else
                     {
-                        result.SetAsDifferent(!Equals(instance, expected));
+                        result.SetAsDifferent(!Equals(sut, expected));
                     }
                     break;
                 case EqualityMode.Equals:
-                    result.SetAsDifferent(!Equals(instance, expected));
+                    result.SetAsDifferent(!Equals(sut, expected));
                     break;
             } 
             
@@ -274,51 +274,51 @@ namespace NFluent.Helpers
             return ValueDifference(firstItem, firstName, otherItem, 0, new List<object>());
         }
 
-        private static AggregatedDifference ValueDifference<TA, TE>(TA firstItem, string firstName, TE otherItem, int refIndex, ICollection<object> firstSeen)
+        private static AggregatedDifference ValueDifference<TA, TE>(TA actual, string firstName, TE expected, int refIndex, ICollection<object> firstSeen)
         {
             var result = new AggregatedDifference();
-            if (firstItem == null)
+            if (expected == null)
             {
-                if (otherItem != null)
+                if (actual != null)
                 {
-                    result.Add( DifferenceDetails.WasNotFound(firstName, otherItem, refIndex));
+                    result.Add( DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex));
                 }
 
                 return result;
             }
 
-            if (firstItem.Equals(otherItem))
+            if (expected.Equals(actual))
             {
                 return result;
             }
 
-            if (otherItem != null)
+            if (actual != null)
             {
                 // we silently convert numerical value
-                if (firstItem.GetType().IsNumerical() &&
-                    otherItem.GetType().IsNumerical())
+                if (actual.GetType().IsNumerical() &&
+                    expected.GetType().IsNumerical())
                 {
-                    var changeType = Convert.ChangeType(firstItem, otherItem.GetType(), null);
-                    if (otherItem.Equals(changeType))
+                    var changeType = Convert.ChangeType(actual, expected.GetType(), null);
+                    if (expected.Equals(changeType))
                     {
                         return result;
                     }
                 }
 
-                if (firstSeen.Contains(firstItem))
+                if (firstSeen.Contains(actual))
                 {
-                    result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, firstItem, otherItem, 0));
+                    result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, 0));
                     return result;
                 }
 
-                firstSeen = new List<object>(firstSeen) {firstItem};
-                if ( firstItem.IsAnEnumeration(false) && otherItem.IsAnEnumeration(false))
+                firstSeen = new List<object>(firstSeen) {actual};
+                if ( actual.IsAnEnumeration(false) && expected.IsAnEnumeration(false))
                 {
-                    return ValueDifferenceEnumerable(firstItem as IEnumerable, firstName, otherItem as IEnumerable, firstSeen);
+                    return ValueDifferenceEnumerable(actual as IEnumerable, firstName, expected as IEnumerable, firstSeen);
                 }
             }
 
-            result.Add( DifferenceDetails.DoesNotHaveExpectedValue(firstName, firstItem, otherItem, refIndex));
+            result.Add( DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex));
             return result;
         }
 
