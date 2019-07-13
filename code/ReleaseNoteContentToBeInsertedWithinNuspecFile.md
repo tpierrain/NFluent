@@ -4,12 +4,16 @@
 * NFluent now supports assumption through Assume entry point. For example ou express it as :Assume.That(sut).IsEqualTo(expected); in a nutshell
 you type Assume instead of Check. All checks are available. Note that actual support depends on the underlying testing framework. As of now
 it is supported for NUnit and MsTest
+* NFluent now supports DateTimeOffset type with the same checks than for DateTime. These checks fails
+if the offsets are different. The IsSameUtcInstant cheks perform a comparison integrating the offset.
 
 ### New checks
 * You can use WhoseSize() to check the size of an enumeration. It is used as an extension keyword, as in:
 Check.That(enum).WhoseSize().IsEqualTo(3)
 
 ### Improvements
+* When using the Equals method, NFluent now uses expected.Equals(actual) instead of actual.Equals(expected).
+This should have limited impact.
 * Actual and expected value naming has been redesigned to improve naming accuracy. Impact vary depending on checks and types.
 * Comparison of enumeration now provides details regarding the differences. You can control
 how many differences are reported using the property **ExtensionsCommonHelpers.CountOfLineOfDetails**.
@@ -40,7 +44,7 @@ exception's message when the issue is the exception's type.
 
 
 ### GitHub Issues
-* #291, #292, #295, #296, #297, #299, #302
+* #225, #291, #292, #295, #296, #297, #299, #302
 
 ## V 2.5.0
 ### Main feature
