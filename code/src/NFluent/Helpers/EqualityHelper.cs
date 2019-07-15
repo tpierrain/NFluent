@@ -262,7 +262,7 @@ namespace NFluent.Helpers
                     }
                     break;
                 case EqualityMode.Equals:
-                    result.SetAsDifferent(!Equals(sut, expected));
+                    result.SetAsDifferent(!Equals(expected, sut));
                     break;
             } 
             

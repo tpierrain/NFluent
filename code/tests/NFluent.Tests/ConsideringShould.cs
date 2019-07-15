@@ -426,7 +426,12 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                 {
                     Check.That(sut).Considering().Public.Properties.HasSameValueAs(new SutClass(11, 12));
-                }).IsAFailingCheckWithMessage("", "The checked value is different from the expected one.", "The checked value:", "\t[{ TheProperty = 13 }] of type: [NFluent.Helpers.ReflectionWrapper]", "The expected value: equals to (using operator==)", "\t[NFluent.Tests.ConsideringShould+SutClass] of type: [NFluent.Tests.ConsideringShould+SutClass]");
+                }).IsAFailingCheckWithMessage("", 
+                "The checked value's property 'TheProperty' does not have the expected value.", 
+                "The checked value's property 'TheProperty':", 
+                "\t[13]", 
+                "The expected value's property 'TheProperty':", 
+                "\t[12]");
         }
 
         [Test]
@@ -644,13 +649,6 @@ namespace NFluent.Tests
                 "\t[{ Property = System.Object }]");
         }
 
-        [Test]
-        public void HashCodeIsConsistent()
-        {
-            var toto = new {entier = 2, lettre = 'b', sub = new { sub = (object) 4, nullSub = (object) null }};
-            Check.That(toto).Considering().All.Properties.HasHashCode(147721549);
-        }
-
         private class Recurse
         {
             private Recurse me;
@@ -659,12 +657,6 @@ namespace NFluent.Tests
             public Recurse()
             {
                 this.me = this;
-            }
-
-            public Recurse(int x)
-            {
-                this.me = this;
-                this.x = x;
             }
 
             public int X => this.x;

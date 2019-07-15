@@ -27,7 +27,4 @@
     <Compile Include="$(MSBuildThisFileDirectory)UlongRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UshortRelatedTests.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)NumberTestsGenerator.txt4" />
-  </ItemGroup>
 </Project>

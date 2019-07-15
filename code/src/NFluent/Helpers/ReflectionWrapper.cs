@@ -417,56 +417,6 @@ namespace NFluent.Helpers
             return texte.ToString();
         }
 
-        /// <inheritdoc />
-        public override bool Equals(object obj)
-        {
-            var other = BuildFromInstance(obj?.GetType() ?? typeof(object), obj, this.Criteria);
-            var isEqual = true;
-            this.MapFields(other, 1, (actual, expected, depth) =>
-            {
-                if (!isEqual || expected == null)
-                {
-                    // we have established this is not equal
-                    return false;
-                }
-
-                if (depth > 0 || !expected.ValueType.ImplementsEquals())
-                {
-                    return true;
-                }
-
-                isEqual = EqualityHelper.FluentEquals(actual.Value, expected.Value);
-                return false;
-            });
-            return isEqual;
-        }
-
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            if (this.Value == null)
-            {
-                return 1;
-            }
-
-            var hasSub = false;
-            var subs = this.GetSubExtendedMemberInfosFields();
-            var hash = 0;
-
-            foreach (var memberInfosField in subs)
-            {
-                hash = hash * 23 + memberInfosField.GetHashCode();
-                hasSub = true;
-            }
-
-            if (!hasSub)
-            {
-                hash = this.Value.GetHashCode();
-            }
-
-            return hash;
-        }
-
         internal List<MemberMatch> MemberMatches<TU>(TU expectedValue)
         {
             var expectedWrapped =

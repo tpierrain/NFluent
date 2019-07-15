@@ -17,6 +17,7 @@ namespace NFluent
 {
     using Extensibility;
     using Helpers;
+    using Kernel;
 
     /// <summary>
     ///     Hosts reflection-based checks <see cref="ObjectFieldsCheckExtensions.Considering{T}" />
@@ -49,6 +50,50 @@ namespace NFluent
                     }
                 }).OnNegate("The {0} is equal to one of {1} whereas it should not.")
                 .EndCheck();
+        }
+
+        /// <summary>
+        /// Checks that the actual value is equal to another expected value using operator==.
+        /// </summary>
+        /// <typeparam name="TU">Type of the expected value</typeparam>
+        /// <param name="check">
+        /// The fluent check to be extended.
+        /// </param>
+        /// <param name="expected">
+        /// The expected value.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The actual value is not equal to the expected value.
+        /// </exception>
+        public static ICheckLink<ICheck<ReflectionWrapper>> HasSameValueAs<TU>(this ICheck<ReflectionWrapper> check, TU expected)
+        {
+            FieldEqualTest(check, expected, true);
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is different from another expected value using operator!=.
+        /// </summary>
+        /// <typeparam name="TU">Type of the expected value.</typeparam>
+        /// <param name="check">
+        /// The fluent check to be extended.
+        /// </param>
+        /// <param name="expected">
+        /// The expected value.
+        /// </param>
+        /// <returns>
+        /// A check link.   
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The actual value is equal to the expected value.
+        /// </exception>
+        public static ICheckLink<ICheck<ReflectionWrapper>> HasDifferentValueThan<TU>(this ICheck<ReflectionWrapper> check, TU expected)
+        {
+            FieldEqualTest(check, expected, false);
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
