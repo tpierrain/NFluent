@@ -1,8 +1,8 @@
 ## V 2.6.0
 
 ### New feature
-* NFluent now supports assumption through Assume entry point. For example ou express it as :Assume.That(sut).IsEqualTo(expected); in a nutshell
-you type Assume instead of Check. All checks are available. Note that actual support depends on the underlying testing framework. As of now
+* NFluent now supports assumption through Assuming entry point. For example you express it as :Assume.That(sut).IsEqualTo(expected); in a nutshell
+you type Assuming instead of Check. All checks are available. Note that actual support depends on the underlying testing framework. As of now
 it is supported for NUnit and MsTest
 * NFluent now supports DateTimeOffset type with the same checks than for DateTime. These checks fails
 if the offsets are different. The IsSameUtcInstant cheks perform a comparison integrating the offset.
