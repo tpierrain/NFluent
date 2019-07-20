@@ -1,3 +1,3 @@
 cd code
-build CI
+build
 cd ..
