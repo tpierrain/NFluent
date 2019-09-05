@@ -20,7 +20,7 @@ To create a new check method, write a test for it (TDD ;-), and then follow the 
 as the one used for the StartsWith() check (applying on string) presented below:
 
 ```c#
-		public static ICheckLink<ICheck<char>> IsALetter(this ICheck<char> check)
+	public static ICheckLink<ICheck<char>> IsALetter(this ICheck<char> check)
         {
             // Every check method starts by extracting a checker instance from the check thanks to
             // the ExtensibilityHelper static class.
