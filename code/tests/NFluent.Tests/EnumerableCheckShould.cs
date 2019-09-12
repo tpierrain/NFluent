@@ -147,6 +147,21 @@ namespace NFluent.Tests
                     "The expected value(s):", 
                     "\t{3, 2} (2 items)");
         }
+        [Test]
+        public void CheckIsEquivalentOnNestedEnumerable()
+        {
+            var array = new[] {new []{1, 2, 3}, new []{4, 5, 6}};
+            var altArray = new[] {new []{4, 5, 6}, new []{1, 2, 3}};
+            Check.That((IEnumerable)array).IsEquivalentTo(altArray);
+            Check.ThatCode(()=>
+            Check.That((IEnumerable)array).IsEquivalentTo( new []{4, 5, 6}, new []{1, 3, 2})).
+                IsAFailingCheckWithMessage(	"", 
+                    "The checked enumerable does contain [{1, 2, 3}] whereas it should not.", 
+                    "The checked enumerable:", 
+                    "\t{{1, 2, 3}, {4, 5, 6}} (2 items)", 
+                    "The expected value(s):", 
+                    "\t{{4, 5, 6}, {1, 3, 2}} (2 items)");
+        }
         
         [Test]
         public void

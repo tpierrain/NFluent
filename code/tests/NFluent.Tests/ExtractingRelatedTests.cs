@@ -12,11 +12,11 @@
 // //   limitations under the License.
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
+
 namespace NFluent.Tests
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
@@ -28,16 +28,17 @@ namespace NFluent.Tests
         public void ExtractingWorksWithEnumerable()
         {
             var persons = new List<Person>
-                                 {
-                                     new Person { Name = "Thomas", Age = 38 }, 
-                                     new Person { Name = "Achille", Age = 10, Nationality = Nationality.French }, 
-                                     new Person { Name = "Anton", Age = 7, Nationality = Nationality.French }, 
-                                     new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
-                                 };
+            {
+                new Person {Name = "Thomas", Age = 38},
+                new Person {Name = "Achille", Age = 10, Nationality = Nationality.French},
+                new Person {Name = "Anton", Age = 7, Nationality = Nationality.French},
+                new Person {Name = "Arjun", Age = 7, Nationality = Nationality.Indian}
+            };
 
             Check.That(persons.Extracting("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
             Check.That(persons.Extracting("Age")).ContainsExactly(38, 10, 7, 7);
-            Check.That(persons.Extracting("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+            Check.That(persons.Extracting("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French,
+                Nationality.French, Nationality.Indian);
 
             // more fluent than the following classical NUnit way, isn't it? 
             // CollectionAssert.AreEquivalent(enumerable.Extracting("Age"), new[] { 38, 10, 7, 7 });
@@ -62,36 +63,38 @@ namespace NFluent.Tests
 
             Check.That(persons.Extracting(p => p.Name)).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
             Check.That(persons.Extracting(p => p.Age)).ContainsExactly(38, 10, 7, 7);
-            Check.That(persons.Extracting(p => p.Nationality)).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+            Check.That(persons.Extracting(p => p.Nationality)).ContainsExactly(Nationality.Unknown, Nationality.French,
+                Nationality.French, Nationality.Indian);
         }
 
         [Test]
         public void ExtractingThrowInvalidOperationExceptionIfPropertyDoesNotExist()
         {
             var musicians = new List<Person>
-                                 {
-                                     new Person { Name = "MethodMan", Age = 38 }, 
-                                     new Person { Name = "GZA", Nationality = Nationality.American }
-                                 };
+            {
+                new Person {Name = "MethodMan", Age = 38},
+                new Person {Name = "GZA", Nationality = Nationality.American}
+            };
 
             Check.ThatCode(() =>
-            {
-                // Forced to enumerate the result so that the Extracting extension method is executed (IEnumerable's lazy evaluation)
-                foreach (var unused in musicians.Extracting("Portnaouaq"))
                 {
-                }
-            })  
-            .Throws<InvalidOperationException>().WithMessage("Objects of expectedType NFluent.Tests.Person don't have property with name 'Portnaouaq'");
+                    // Forced to enumerate the result so that the Extracting extension method is executed (IEnumerable's lazy evaluation)
+                    foreach (var unused in musicians.Extracting("Portnaouaq"))
+                    {
+                    }
+                })
+                .Throws<InvalidOperationException>()
+                .WithMessage("Objects of expectedType NFluent.Tests.Person don't have property with name 'Portnaouaq'");
         }
 
         [Test]
         public void ExtractingWorksEvenWithPrivateProperty()
         {
             var persons = new List<Person>
-                                 {
-                                     new Person { Name = "Ali G" }, 
-                                     new Person { Name = "Borat" }
-                                 };
+            {
+                new Person {Name = "Ali G"},
+                new Person {Name = "Borat"}
+            };
 
             Check.That(persons.Extracting("PrivateHesitation")).ContainsExactly("Kamoulox !", "Kamoulox !");
         }
@@ -104,16 +107,17 @@ namespace NFluent.Tests
         public void ExtractingWorksWithArray()
         {
             Person[] persons = new[]
-                                 {
-                                     new Person { Name = "Thomas", Age = 38 }, 
-                                     new Person { Name = "Achille", Age = 10, Nationality = Nationality.French }, 
-                                     new Person { Name = "Anton", Age = 7, Nationality = Nationality.French }, 
-                                     new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
-                                 };
-            
+            {
+                new Person {Name = "Thomas", Age = 38},
+                new Person {Name = "Achille", Age = 10, Nationality = Nationality.French},
+                new Person {Name = "Anton", Age = 7, Nationality = Nationality.French},
+                new Person {Name = "Arjun", Age = 7, Nationality = Nationality.Indian}
+            };
+
             Check.That(persons.Extracting("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
             Check.That(persons.Extracting("Age")).ContainsExactly(38, 10, 7, 7);
-            Check.That(persons.Extracting("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+            Check.That(persons.Extracting("Nationality")).ContainsExactly(Nationality.Unknown, Nationality.French,
+                Nationality.French, Nationality.Indian);
 
             Check.That(persons.Extracting("Age")).IsEquivalentTo(7, 7, 10, 38);
         }
@@ -131,7 +135,8 @@ namespace NFluent.Tests
 
             Check.That(persons.Extracting(p => p.Name)).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
             Check.That(persons.Extracting(p => p.Age)).ContainsExactly(38, 10, 7, 7);
-            Check.That(persons.Extracting(p => p.Nationality)).ContainsExactly(Nationality.Unknown, Nationality.French, Nationality.French, Nationality.Indian);
+            Check.That(persons.Extracting(p => p.Nationality)).ContainsExactly(Nationality.Unknown, Nationality.French,
+                Nationality.French, Nationality.Indian);
         }
 
 #pragma warning disable 618
@@ -139,12 +144,12 @@ namespace NFluent.Tests
         public void PropertiesWorksWithArray()
         {
             Person[] persons = new[]
-                                 {
-                                     new Person { Name = "Thomas", Age = 38 }, 
-                                     new Person { Name = "Achille", Age = 10, Nationality = Nationality.French }, 
-                                     new Person { Name = "Anton", Age = 7, Nationality = Nationality.French }, 
-                                     new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
-                                 };
+            {
+                new Person {Name = "Thomas", Age = 38},
+                new Person {Name = "Achille", Age = 10, Nationality = Nationality.French},
+                new Person {Name = "Anton", Age = 7, Nationality = Nationality.French},
+                new Person {Name = "Arjun", Age = 7, Nationality = Nationality.Indian}
+            };
 
             Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
         }
@@ -153,12 +158,12 @@ namespace NFluent.Tests
         public void PropertiesWorksWithEnumerable()
         {
             var persons = new List<Person>
-                                 {
-                                     new Person { Name = "Thomas", Age = 38 },
-                                     new Person { Name = "Achille", Age = 10, Nationality = Nationality.French },
-                                     new Person { Name = "Anton", Age = 7, Nationality = Nationality.French },
-                                     new Person { Name = "Arjun", Age = 7, Nationality = Nationality.Indian }
-                                 };
+            {
+                new Person {Name = "Thomas", Age = 38},
+                new Person {Name = "Achille", Age = 10, Nationality = Nationality.French},
+                new Person {Name = "Anton", Age = 7, Nationality = Nationality.French},
+                new Person {Name = "Arjun", Age = 7, Nationality = Nationality.Indian}
+            };
 
             Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
         }

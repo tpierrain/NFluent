@@ -74,7 +74,7 @@ namespace NFluent
                             return;
                         }
 
-                        if (!EqualityHelper.FluentEquals(pair.Value, value))
+                        if (!EqualityHelper.FluentEquivalent(pair.Value, value))
                         {
                             test.Fail(
                                 $"The {{checked}} is not equivalent to the {{expected}}. Entry ({pair.Key.ToStringProperlyFormatted().DoubleCurlyBraces()}) does not have the expected value."+Environment.NewLine+
@@ -82,6 +82,16 @@ namespace NFluent
                                 $"\t{pair.Value.ToStringProperlyFormatted().DoubleCurlyBraces()}"+Environment.NewLine+
                                 "Actual:"+Environment.NewLine+
                                 $"\t{value.ToStringProperlyFormatted().DoubleCurlyBraces()}");
+                            return;
+                        }
+                    }
+
+                    foreach (var pair in sut)
+                    {
+                        if (!other.TryGet(pair.Key, out _))
+                        {
+                            test.Fail(
+                                $"The {{checked}} is not equivalent to the {{expected}}. Extra entry present({pair.Key.ToStringProperlyFormatted().DoubleCurlyBraces()}, {pair.Value.ToStringProperlyFormatted().DoubleCurlyBraces()}).");
                             return;
                         }
                     }

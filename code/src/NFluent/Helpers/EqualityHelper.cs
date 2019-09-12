@@ -125,6 +125,12 @@ namespace NFluent.Helpers
             return !FluentEquals(instance, expected, Check.EqualMode).IsDifferent;
         }
 
+        internal static bool FluentEquivalent(object instance, object expected)
+        {
+            var scan = FluentEquals(instance, expected, Check.EqualMode);
+            return !scan.IsDifferent || scan.IsEquivalent;
+        }
+
         internal static ICheckLink<ICheck<T>> PerformUnequalCheck<T, TE>(
             ICheck<T> check,
             TE expected,
@@ -312,6 +318,7 @@ namespace NFluent.Helpers
                 }
 
                 firstSeen = new List<object>(firstSeen) {actual};
+
                 if ( actual.IsAnEnumeration(false) && expected.IsAnEnumeration(false))
                 {
                     return ValueDifferenceEnumerable(actual as IEnumerable, firstName, expected as IEnumerable, firstSeen);
@@ -322,7 +329,8 @@ namespace NFluent.Helpers
             return result;
         }
 
-        private static AggregatedDifference ValueDifferenceDictionary(IDictionary sutDico, string sutName, 
+        private static AggregatedDifference ValueDifferenceDictionary(IDictionary sutDico, 
+            string sutName, 
             IDictionary expectedDico,
             ICollection<object> firstItemsSeen)
         {
@@ -379,7 +387,7 @@ namespace NFluent.Helpers
                     {
                         // check if the dictionaries are equivalent anyway
                         valueDifferences.IsEquivalent = expectedDico.Contains(actualKey) &&
-                                                        FluentEquals(sutDico[actualKey], expectedDico[actualKey]);
+                                                        FluentEquivalent(sutDico[actualKey], expectedDico[actualKey]);
                     }
                     valueDifferences.Merge(itemDiffs);
                 }
@@ -398,6 +406,7 @@ namespace NFluent.Helpers
                 valueDifferences.Add( DifferenceDetails.DoesNotHaveExpectedValue(firstName+".Rank", firstArray.Rank, secondArray.Rank, 0));
                 return valueDifferences;
             }
+
             for (var i = 0; i < firstArray.Rank; i++)
             {
                 if (firstArray.SizeOfDimension(i) == secondArray.SizeOfDimension(i))

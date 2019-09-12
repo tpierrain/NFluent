@@ -451,6 +451,14 @@ namespace NFluent.Tests
                 "\t{[foo, System.String[]]} (1 item)", 
                 "The expected dictionary:", 
                 "\t{[foo, System.String[]]} (1 item)");
+            // added due to GH #307
+            Check.ThatCode(() =>
+                Check.That(expected).IsEquivalentTo(new Dictionary<string, object>())).IsAFailingCheckWithMessage("", 
+                "The checked dictionary is not equivalent to the expected one. Extra entry present(\"foo\", {\"bar\", \"baz\"}).",
+                "The checked dictionary:", 
+                "\t{[foo, System.String[]]} (1 item)", 
+                "The expected dictionary:", 
+                "\t{} (0 item)");
             Check.ThatCode(() =>
                 Check.That((IDictionary<string, object>) null).IsEquivalentTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is null whereas it should not.", 
