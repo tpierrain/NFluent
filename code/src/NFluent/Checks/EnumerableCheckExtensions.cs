@@ -294,11 +294,16 @@ namespace NFluent
                     var isOk = true;
                     foreach (var item in sut)
                     {
-                        if (!expectedContent.Remove(item))
+                        var index = expectedContent.FindIndex(t => EqualityHelper.FluentEquivalent(item, t));
+                        if (index<0)
                         {
                             test.Fail(
                                 $"The {{checked}} does contain [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] whereas it should not.");
                             isOk = false;
+                        }
+                        else
+                        {
+                            expectedContent.RemoveAt(index);
                         }
                     }
 

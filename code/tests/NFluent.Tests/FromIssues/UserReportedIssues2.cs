@@ -28,6 +28,20 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        // GH #307
+        [Test]
+        public void Test_DictOfDict_IsEquivalentTo()
+        {
+            var dictOf3_A = new Dictionary<string, string> { { "aa", "AA" }, { "bb", "BB" }, { "cc", "CC" } };
+            var dictOf3_B = new Dictionary<string, string> { { "cc", "CC" }, { "aa", "AA" }, { "bb", "BB" } };
+            var dictOf2 = new Dictionary<string, string> { { "cc", "CC" }, { "bb", "BB" } };
+
+            var dictOf2Dict_A = new Dictionary<string, Dictionary<string, string>> { { "key1", dictOf2 }, { "key2", dictOf3_A } };
+            var dictOf2Dict_B = new Dictionary<string, Dictionary<string, string>> { { "key1", dictOf2 }, { "key2", dictOf3_B } };
+
+            Check.That(dictOf2Dict_A).IsEquivalentTo(dictOf2Dict_B);  // Fails -> Too picky on evaluating child-dict order
+        }
+        
         // GH #292
         [Test]
         public void Awkward_behaviour_with_NFluent()
