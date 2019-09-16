@@ -462,23 +462,55 @@ namespace NFluent.Helpers
 
             var scanner = otherItem.GetEnumerator();
             var index = 0;
+            var mayBeEquivalent = true;
+            var expected = new ArrayList();
             foreach (var item in firstItem)
             {
                 var firstItemName = $"{firstName}[{index}]";
                 if (!scanner.MoveNext())
                 {
                     valueDifferences.Add(DifferenceDetails.WasNotExpected(firstItemName, item, index));
+                    mayBeEquivalent = false;
                     break;
                 }
 
-                valueDifferences.Merge(ValueDifference(item, firstItemName, scanner.Current,
-                     index, firstSeen));
+                expected.Add(scanner.Current);
+                var aggregatedDifference = ValueDifference(item, firstItemName, scanner.Current,
+                    index, firstSeen);
+                valueDifferences.Merge(aggregatedDifference);
                 index++;
             }
 
             if (scanner.MoveNext())
             {
                 valueDifferences.Add(DifferenceDetails.WasNotFound($"{firstName}[{index}]", scanner.Current, index));
+                mayBeEquivalent = false;
+            }
+
+            if (mayBeEquivalent  && valueDifferences.IsDifferent)
+            {
+                var found = true;
+                foreach (var item in firstItem)
+                {
+                    found = false;
+                    for(var i =0; i<expected.Count; i++)
+                    {
+                        if (!FluentEquivalent(item, expected[i]))
+                        {
+                            continue;
+                        }
+
+                        found = true;
+                        expected.RemoveAt(i);
+                        break;
+                    }
+                    if (!found)
+                    {
+                        break;
+                    }
+                }
+
+                valueDifferences.IsEquivalent = found;
             }
 
             return valueDifferences;
