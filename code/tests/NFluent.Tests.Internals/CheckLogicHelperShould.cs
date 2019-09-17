@@ -17,8 +17,8 @@ namespace NFluent.Tests
 {
     using System;
     using Extensibility;
-    using Helpers;
     using Kernel;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     internal class CheckLogicHelperShould

@@ -18,7 +18,7 @@
 
 namespace NFluent.Tests
 {
-    using Helpers;
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     public class NUnitSpecific

@@ -1,4 +1,4 @@
-﻿ // --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 //  <copyright file="EqualityHelper.cs" company="NFluent">
 //   Copyright 2018 Thomas PIERRAIN & Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +18,7 @@ namespace NFluent.Helpers
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using Extensibility;
     using Extensions;
@@ -454,10 +455,20 @@ namespace NFluent.Helpers
                 return ValueDifferenceArray(firstItem as Array, firstName, otherItem as Array,
                     firstSeen);
             }
+
+            
             if (firstItem is IDictionary firstDico && otherItem is IDictionary secondDico)
             {
                 return ValueDifferenceDictionary(firstDico, firstName, secondDico, firstSeen);
             }
+            // fetch an IDictionary generic interface, if any
+            var dictionaryInterface = otherItem.GetTypeWithoutThrowingException().GetInterfaces()
+                .FirstOrDefault(x => x.IsGenericType && x == typeof(IDictionary<,>));
+            if (dictionaryInterface != null)
+            {
+
+            }
+
             var valueDifferences = new AggregatedDifference();
 
             var scanner = otherItem.GetEnumerator();

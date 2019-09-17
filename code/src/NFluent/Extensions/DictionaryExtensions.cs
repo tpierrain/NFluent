@@ -15,7 +15,12 @@
 
 namespace NFluent.Extensions
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using Helpers;
+    using Messages;
 
     internal static class DictionaryExtensions
     {
@@ -34,15 +39,38 @@ namespace NFluent.Extensions
 #endif
             foreach (var pair in dico)
             {
-                if (Equals(pair.Key, key))
+                if (!Equals(pair.Key, key))
                 {
-                    value = pair.Value;
-                    return true;
+                    continue;
                 }
+
+                value = pair.Value;
+                return true;
             }
 
             value = default(TV);
             return false;
         }
+
+        public static IReadOnlyDictionary<K, V> WrapDictionary<K, V>(object knownDictionary)
+        {
+            var dictionaryInterface = knownDictionary.GetType().GetInterfaces()
+                .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+            if (dictionaryInterface == null)
+            {
+                return null;
+            }
+
+            var types = new Type[4];
+            types[0] = typeof(K);
+            types[1] = typeof(V);
+            types[2] = dictionaryInterface.GetGenericArguments()[0];
+            types[3] = dictionaryInterface.GetGenericArguments()[1];
+            var targetType= typeof(DictionaryWrapper<,,,>).MakeGenericType(types);
+            var constructor = targetType.GetConstructor(new[] {dictionaryInterface});
+            Debug.Assert(constructor!= null, "Internal error. Failed to find DictionaryWrapper builder.");
+            return (IReadOnlyDictionary<K,V>) constructor.Invoke(new[] {knownDictionary});
+        }
+
     }
 }
