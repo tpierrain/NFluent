@@ -16,6 +16,7 @@
 namespace NFluent.Extensions
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
@@ -54,6 +55,27 @@ namespace NFluent.Extensions
 
         public static IReadOnlyDictionary<K, V> WrapDictionary<K, V>(object knownDictionary)
         {
+            // if the object implements IDictionary
+            if (knownDictionary is IDictionary)
+            {
+                var simpleWrapper= typeof(DictionaryWrapper<,>).MakeGenericType(new []{typeof(K), typeof(V)});
+                var constructorForSimpleWrapper = simpleWrapper.GetConstructor(new[] {typeof(IDictionary)});
+                Debug.Assert(constructorForSimpleWrapper!= null, "Internal error. Failed to find DictionaryWrapper builder.");
+                return (IReadOnlyDictionary<K,V>) constructorForSimpleWrapper.Invoke(new[] {knownDictionary});
+            }
+
+            // if it implements IReadonlyDictionary<,>
+            var roDictionaryInterface = knownDictionary.GetType().GetInterfaces()
+                .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>));
+            if (roDictionaryInterface != null)
+            {
+                var targetROType= typeof(ReadOnlyDictionaryWrapper<,,,>).MakeGenericType(new [] {typeof(K), typeof(V), roDictionaryInterface.GetGenericArguments()[0], roDictionaryInterface.GetGenericArguments()[1]});
+                var roConstructor = targetROType.GetConstructor(new[] {roDictionaryInterface});
+                Debug.Assert(roConstructor!= null, "Internal error. Failed to find DictionaryWrapper builder.");
+                return (IReadOnlyDictionary<K,V>) roConstructor.Invoke(new[] {knownDictionary});
+            }
+ 
+            // last attempt, IDictionary<,>
             var dictionaryInterface = knownDictionary.GetType().GetInterfaces()
                 .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
             if (dictionaryInterface == null)

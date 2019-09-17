@@ -2,6 +2,7 @@
 
 namespace NFluent.Tests.Helpers
 {
+    using System.Collections.ObjectModel;
     using System.Linq;
     using Extensions;
     using NUnit.Framework;
@@ -32,7 +33,33 @@ namespace NFluent.Tests.Helpers
         {
             var demo = new Dictionary<int, string> {{1, "one"}, {2, "two"}};
 
-            var wrapped = DictionaryExtensions.WrapDictionary<object, object>((object) demo);
+            var wrapped = DictionaryExtensions.WrapDictionary<object, object>(demo);
+
+            Check.That(wrapped).IsNotNull();
+
+            Check.That(wrapped).ContainsKey(2);
+        }
+
+        [Test]
+        public void CanWrapReadonlyDictionary()
+        {
+            var demo = new Dictionary<int, string> {{1, "one"}, {2, "two"}};
+            var rodemo = new RoDico<int, string>(demo);
+
+            var wrapped = DictionaryExtensions.WrapDictionary<object, object>(rodemo);
+
+            Check.That(wrapped).IsNotNull();
+
+            Check.That(wrapped).ContainsKey(2);
+        }
+
+        [Test]
+        public void CanWrapCustomDictionary()
+        {
+            var demo = new Dictionary<int, string> {{1, "one"}, {2, "two"}};
+            var coDemo = new CustomDico<int, string>(demo);
+
+            var wrapped = DictionaryExtensions.WrapDictionary<object, object>(coDemo);
 
             Check.That(wrapped).IsNotNull();
 

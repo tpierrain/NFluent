@@ -10,11 +10,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CheckLogicHelperShould.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomDico.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomEqualTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DictionaryWrapperShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumerableExtensionShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FluentMessageTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NUnitSpecific.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RoDico.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringDifferenceAnalyzerTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringHelperShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ValueBlockTests.cs" />
