@@ -3,8 +3,9 @@
 namespace NFluent.Helpers
 {
     using System.Collections;
+#if !DOTNET_20 && !DOTNET_30
     using System.Linq;
-
+#endif
     internal class DictionaryWrapper<TK, TV, TK2, TV2> 
         : IReadOnlyDictionary<TK, TV>
     where TK2: TK
@@ -155,6 +156,8 @@ namespace NFluent.Helpers
                 this.dictionary = dictionary;
                 this.keyEnumerator = dictionary.GetEnumerator();
             }
+
+            public int Count => this.dictionary.Count;
             public void Dispose()
             {}
 

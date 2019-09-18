@@ -18,7 +18,9 @@ namespace NFluent.Helpers
     using System;
     using System.Collections;
     using System.Collections.Generic;
+#if !DOTNET_20 && !DOTNET_30
     using System.Linq;
+#endif
     using System.Text;
     using Extensibility;
     using Extensions;
@@ -463,7 +465,7 @@ namespace NFluent.Helpers
             }
             // fetch an IDictionary generic interface, if any
             var dictionaryInterface = otherItem.GetTypeWithoutThrowingException().GetInterfaces()
-                .FirstOrDefault(x => x.IsGenericType && x == typeof(IDictionary<,>));
+                .FirstOrDefault(x => x.IsGenericType() && x == typeof(IDictionary<,>));
             if (dictionaryInterface != null)
             {
 

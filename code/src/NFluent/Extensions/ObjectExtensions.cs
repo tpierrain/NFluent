@@ -16,8 +16,6 @@
 namespace NFluent.Extensions
 {
     using System;
-    using System.Collections;
-    using System.Reflection;
 
 #if !DOTNET_30 && !DOTNET_20
     using System.Linq;

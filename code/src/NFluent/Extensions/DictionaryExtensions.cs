@@ -15,14 +15,17 @@
 
 namespace NFluent.Extensions
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
     using Helpers;
-    using Messages;
+#if DOTNET_45 || NETSTANDARD1_3
+    using System.Reflection;
+#endif
 
+#if !DOTNET_20 && !DOTNET_30
+    using System.Linq;
+#endif
     internal static class DictionaryExtensions
     {
         public static bool TryGet<TK, TV>(this IEnumerable<KeyValuePair<TK, TV>> dico, TK key, out TV value)
@@ -65,30 +68,26 @@ namespace NFluent.Extensions
             }
 
             // if it implements IReadonlyDictionary<,>
-            var roDictionaryInterface = knownDictionary.GetType().GetInterfaces()
-                .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>));
+            var interfaces = knownDictionary.GetType().GetInterfaces();
+            var roDictionaryInterface = interfaces
+                .FirstOrDefault(i => i.IsGenericType() && i.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>));
             if (roDictionaryInterface != null)
             {
-                var targetROType= typeof(ReadOnlyDictionaryWrapper<,,,>).MakeGenericType(new [] {typeof(K), typeof(V), roDictionaryInterface.GetGenericArguments()[0], roDictionaryInterface.GetGenericArguments()[1]});
-                var roConstructor = targetROType.GetConstructor(new[] {roDictionaryInterface});
-                Debug.Assert(roConstructor!= null, "Internal error. Failed to find DictionaryWrapper builder.");
+                var targetRoType= typeof(ReadOnlyDictionaryWrapper<,,,>).MakeGenericType(typeof(K), typeof(V), roDictionaryInterface.GetGenericArguments()[0], roDictionaryInterface.GetGenericArguments()[1]);
+                var roConstructor = targetRoType.GetConstructor(new[] {roDictionaryInterface});
+                Debug.Assert(roConstructor!= null, "Internal error. Failed to find ReadOnlyDictionaryWrapper builder.");
                 return (IReadOnlyDictionary<K,V>) roConstructor.Invoke(new[] {knownDictionary});
             }
- 
+        
             // last attempt, IDictionary<,>
-            var dictionaryInterface = knownDictionary.GetType().GetInterfaces()
-                .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+            var dictionaryInterface = interfaces
+                .FirstOrDefault(i => i.IsGenericType() && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
             if (dictionaryInterface == null)
             {
                 return null;
             }
 
-            var types = new Type[4];
-            types[0] = typeof(K);
-            types[1] = typeof(V);
-            types[2] = dictionaryInterface.GetGenericArguments()[0];
-            types[3] = dictionaryInterface.GetGenericArguments()[1];
-            var targetType= typeof(DictionaryWrapper<,,,>).MakeGenericType(types);
+            var targetType= typeof(DictionaryWrapper<,,,>).MakeGenericType(typeof(K), typeof(V), dictionaryInterface.GetGenericArguments()[0], dictionaryInterface.GetGenericArguments()[1]);
             var constructor = targetType.GetConstructor(new[] {dictionaryInterface});
             Debug.Assert(constructor!= null, "Internal error. Failed to find DictionaryWrapper builder.");
             return (IReadOnlyDictionary<K,V>) constructor.Invoke(new[] {knownDictionary});

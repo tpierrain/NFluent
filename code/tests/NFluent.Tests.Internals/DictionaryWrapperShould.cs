@@ -2,8 +2,6 @@
 
 namespace NFluent.Tests.Helpers
 {
-    using System.Collections.ObjectModel;
-    using System.Linq;
     using Extensions;
     using NUnit.Framework;
     using NFluent.Helpers;
@@ -24,8 +22,6 @@ namespace NFluent.Tests.Helpers
             Check.That(wrapper.Values).CountIs(demo.Values.Count).And.IsEqualTo(demo.Values);
 
             Check.That(wrapper.Count).IsEqualTo(demo.Count);
-
-            Check.That(wrapper.Cast<object>()).CountIs(2);
         }
 
         [Test]

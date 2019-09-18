@@ -16,6 +16,8 @@
 namespace NFluent
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using Extensibility;
     using Extensions;
 #if NETSTANDARD1_3
@@ -54,8 +56,6 @@ namespace NFluent
 
 #endif
 #if DOTNET_30 || DOTNET_20
-    using System.Collections;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Delegate that does not return a value and takes no parameter.
@@ -136,7 +136,6 @@ namespace NFluent
     {
 #if DOTNET_30 || DOTNET_20
         public static IList<T> Cast<T>(this IEnumerable list)
-            where T: class
         {
             if (list is IList<T> list1)
             {
@@ -145,7 +144,7 @@ namespace NFluent
             var result = new List<T>();
             foreach (var u in list)
             {
-                result.Add(u as T);
+                result.Add((T) u);
             }
             return result;
         }
@@ -214,7 +213,7 @@ namespace NFluent
         
         public static void RemoveAll<T>(this IList<T> list, Predicate<T> predicate)
         {
-            for (int i = 0; i < list.Count; i++)
+            for (var i = 0; i < list.Count; i++)
             {
                 if (predicate(list[i]))
                 {
@@ -254,7 +253,20 @@ namespace NFluent
                 result.Add(selector.Invoke(item));
             }
             return result;
-        } 
+        }
+
+        public static T FirstOrDefault<T>(this IEnumerable<T> list, Func<T, bool> predicate)
+        {
+            foreach (var t in list)
+            {
+                if (predicate(t))
+                {
+                    return t;
+                }
+            }
+
+            return default(T);
+        }
 #endif
         public static bool IsNullOrWhiteSpace(string testedText)
         {
@@ -317,4 +329,17 @@ namespace NFluent
         }
 #endif
     }
+
+    #if DOTNET_20 || DOTNET_30 || DOTNET_35 || DOTNET_40
+    internal interface IReadOnlyDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
+    {
+        int Count { get; }
+        bool ContainsKey(TKey key);
+        bool TryGetValue(TKey key, out TValue value);
+        TValue this[TKey key] { get; }
+        IEnumerable<TKey> Keys {  get; }
+        IEnumerable<TValue> Values { get; }
+
+    }
+    #endif
 }
