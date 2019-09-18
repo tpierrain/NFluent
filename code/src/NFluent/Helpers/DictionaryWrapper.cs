@@ -148,7 +148,7 @@ namespace NFluent.Helpers
 
         private class DictionaryEnumerator : IEnumerator<KeyValuePair<TK, TV>>
         {
-            private readonly IEnumerator keyEnumerator;
+            private readonly IDictionaryEnumerator keyEnumerator;
             private readonly IDictionary dictionary;
 
             public DictionaryEnumerator(IDictionary dictionary)
@@ -171,7 +171,7 @@ namespace NFluent.Helpers
                 this.keyEnumerator.Reset();
             }
 
-            public KeyValuePair<TK, TV> Current => new KeyValuePair<TK, TV>((TK)this.keyEnumerator.Current, (TV)this.dictionary[this.keyEnumerator.Current]);
+            public KeyValuePair<TK, TV> Current => new KeyValuePair<TK, TV>((TK)this.keyEnumerator.Key, (TV)this.keyEnumerator.Value);
 
             object IEnumerator.Current => this.Current;
         }

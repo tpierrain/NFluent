@@ -45,6 +45,11 @@
             return type.GetInterfaces().Contains(typeof(IEnumerable)) && (evenWellKnown || type != typeof(string));
         }
 
+        /// <summary>
+        /// Returns true if the type is a generic type
+        /// </summary>
+        /// <param name="type">type to asses</param>
+        /// <returns>true if <see paramref="type"/> is a generic type.</returns>
         public static bool IsGenericType(this Type type)
         {
             return type.GetTypeInfo().IsGenericType;
