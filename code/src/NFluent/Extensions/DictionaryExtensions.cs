@@ -56,21 +56,29 @@ namespace NFluent.Extensions
             return false;
         }
 
+
+        public static IReadOnlyDictionary<K, V> WrapDictionary<K, V, TKS, TVS>(IDictionary<TKS, TVS> sourceDictionary) where TKS: K where TVS : V
+        {
+            return new DictionaryWrapper<K, V, TKS, TVS>(sourceDictionary);
+        }
+
+        public static IReadOnlyDictionary<K, V> WrapReadOnlyDictionaryDictionary<K, V, TKS, TVS>(IReadOnlyDictionary<TKS, TVS> sourceDictionary) where TKS: K where TVS : V
+        {
+            return new ReadOnlyDictionaryWrapper<K, V, TKS, TVS>(sourceDictionary);
+        }
+
         public static IReadOnlyDictionary<K, V> WrapDictionary<K, V>(object knownDictionary)
         {
             // if the object implements IDictionary
-            if (knownDictionary is IDictionary)
+            if (knownDictionary is IDictionary simpleDictionary)
             {
-                var simpleWrapper= typeof(DictionaryWrapper<,>).MakeGenericType(new []{typeof(K), typeof(V)});
-                var constructorForSimpleWrapper = simpleWrapper.GetConstructor(new[] {typeof(IDictionary)});
-                Debug.Assert(constructorForSimpleWrapper!= null, "Internal error. Failed to find DictionaryWrapper builder.");
-                return (IReadOnlyDictionary<K,V>) constructorForSimpleWrapper.Invoke(new[] {knownDictionary});
+                return new DictionaryWrapper<K, V>(simpleDictionary);
             }
 
             // if it implements IReadonlyDictionary<,>
-            var interfaces = knownDictionary.GetType().GetInterfaces();
+            var interfaces = knownDictionary.GetType().GetInterfaces().Where( i=>i.IsGenericType()).ToArray();
             var roDictionaryInterface = interfaces
-                .FirstOrDefault(i => i.IsGenericType() && i.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>));
+                .FirstOrDefault(i=> i.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>));
             if (roDictionaryInterface != null)
             {
                 var targetRoType= typeof(ReadOnlyDictionaryWrapper<,,,>).MakeGenericType(typeof(K), typeof(V), roDictionaryInterface.GetGenericArguments()[0], roDictionaryInterface.GetGenericArguments()[1]);
@@ -81,7 +89,7 @@ namespace NFluent.Extensions
         
             // last attempt, IDictionary<,>
             var dictionaryInterface = interfaces
-                .FirstOrDefault(i => i.IsGenericType() && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+                .FirstOrDefault(i => i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
             if (dictionaryInterface == null)
             {
                 return null;

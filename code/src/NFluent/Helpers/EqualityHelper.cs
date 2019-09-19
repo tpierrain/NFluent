@@ -332,9 +332,9 @@ namespace NFluent.Helpers
             return result;
         }
 
-        private static AggregatedDifference ValueDifferenceDictionary(IDictionary sutDico, 
+        private static AggregatedDifference ValueDifferenceDictionary(IReadOnlyDictionary<object, object> sutDico, 
             string sutName, 
-            IDictionary expectedDico,
+            IReadOnlyDictionary<object, object> expectedDico,
             ICollection<object> firstItemsSeen)
         {
             var valueDifferences = new AggregatedDifference {IsEquivalent = true};
@@ -389,7 +389,7 @@ namespace NFluent.Helpers
                     else if (valueDifferences.IsEquivalent)
                     {
                         // check if the dictionaries are equivalent anyway
-                        valueDifferences.IsEquivalent = expectedDico.Contains(actualKey) &&
+                        valueDifferences.IsEquivalent = expectedDico.ContainsKey(actualKey) &&
                                                         FluentEquivalent(sutDico[actualKey], expectedDico[actualKey]);
                     }
                     valueDifferences.Merge(itemDiffs);
@@ -458,17 +458,12 @@ namespace NFluent.Helpers
                     firstSeen);
             }
 
-            
-            if (firstItem is IDictionary firstDico && otherItem is IDictionary secondDico)
-            {
-                return ValueDifferenceDictionary(firstDico, firstName, secondDico, firstSeen);
-            }
-            // fetch an IDictionary generic interface, if any
-            var dictionaryInterface = otherItem.GetTypeWithoutThrowingException().GetInterfaces()
-                .FirstOrDefault(x => x.IsGenericType() && x == typeof(IDictionary<,>));
-            if (dictionaryInterface != null)
-            {
 
+            var otherDico = DictionaryExtensions.WrapDictionary<object, object>(otherItem);
+            if (otherDico != null)
+            {
+                var firstDico = DictionaryExtensions.WrapDictionary<object, object>(firstItem);
+                return ValueDifferenceDictionary(firstDico, firstName, otherDico, firstSeen);
             }
 
             var valueDifferences = new AggregatedDifference();

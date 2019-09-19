@@ -30,6 +30,7 @@ namespace NFluent.Tests.FromIssues
     {
         // GH #307
         [Test]
+        // TODO: add tests with custom dicos, list of custom dicos...
         public void Test_DictOfDict_IsEquivalentTo()
         {
             var dictOf3_A = new Dictionary<string, string> { { "aa", "AA" }, { "bb", "BB" }, { "cc", "CC" } };
