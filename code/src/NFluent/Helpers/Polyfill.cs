@@ -177,6 +177,19 @@ namespace NFluent
             return result;
         }
 
+        public static int FindIndex<T>(this IList<T> list, Predicate<T> predicate)
+        {
+            for(var i = 0; i < list.Count; i++)
+            {
+                if (predicate(list[i]))
+                {
+                    return i;
+
+                }
+            }
+            return -1;
+        }
+    
         public static bool Any<T>(this IList<T> list)
         {
             foreach (var item in list)

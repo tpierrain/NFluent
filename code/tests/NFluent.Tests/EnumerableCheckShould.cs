@@ -140,8 +140,9 @@ namespace NFluent.Tests
             Check.That((IEnumerable)array).IsEquivalentTo(3, 2, 1);
             Check.ThatCode(()=>
             Check.That((IEnumerable)array).IsEquivalentTo(3, 2)).
-                IsAFailingCheckWithMessage("",
-                    "The checked enumerable does contain [1] whereas it should not.", 
+                IsAFailingCheckWithMessage("", 
+                    "The checked enumerable is not equivalent to the expected value(s).", 
+                    "actual.Dimension(0) = 3 instead of 2.", 
                     "The checked enumerable:", 
                     "\t{1, 2, 3} (3 items)", 
                     "The expected value(s):", 
@@ -154,14 +155,7 @@ namespace NFluent.Tests
             var array = new[] {new []{1, 2, 3}, new []{4, 5, 6}};
             var altArray = new[] {new []{4, 5, 6}, new []{1, 2, 3}};
             Check.That((IEnumerable)array).IsEquivalentTo(altArray);
-            Check.ThatCode(()=>
-            Check.That((IEnumerable)array).IsEquivalentTo( new []{4, 5, 6}, new []{1, 3, 2})).
-                IsAFailingCheckWithMessage(	"", 
-                    "The checked enumerable does contain [{1, 2, 3}] whereas it should not.", 
-                    "The checked enumerable:", 
-                    "\t{{1, 2, 3}, {4, 5, 6}} (2 items)", 
-                    "The expected value(s):", 
-                    "\t{{4, 5, 6}, {1, 3, 2}} (2 items)");
+            Check.That((IEnumerable)array).IsEquivalentTo( new []{4, 5, 6}, new []{1, 3, 2});
         }
         
         [Test]
@@ -173,7 +167,13 @@ namespace NFluent.Tests
             Check.ThatCode(()=>
                     Check.That((IEnumerable)array).IsEquivalentTo( new List<List<int>> {new List<int>{5, 4, 6}, new List<int>{3, 3, 1}})).
                 IsAFailingCheckWithMessage(	"", 
-                    "The checked enumerable does contain [{1, 2, 3}] whereas it should not.", 
+                    "The checked enumerable is not equivalent to the expected value(s). 6 differences found!", 
+                    "actual[0][0] = 1 instead of 5.", 
+                    "actual[0][1] = 2 instead of 4.", 
+                    "actual[0][2] = 3 instead of 6.", 
+                    "actual[1][0] = 4 instead of 3.", 
+                    "actual[1][1] = 5 instead of 3.", 
+                    "... (1 differences omitted)", 
                     "The checked enumerable:", 
                     "\t{{1, 2, 3}, {4, 5, 6}} (2 items)", 
                     "The expected value(s):", 

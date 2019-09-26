@@ -234,8 +234,17 @@ namespace NFluent
         public static ICheckLink<ICheck<IEnumerable>> IsEquivalentTo(this ICheck<IEnumerable> context,
             params object[] expectedValues)
         {
-            var content = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
-            ImplementEquivalentTo(ExtensibilityHelper.BeginCheckAs(context, enumerable => enumerable.Cast<object>()), content);
+            var checker = ExtensibilityHelper.BeginCheck(context);
+            var dictionary = ExtractDictionaryFromValueArray(expectedValues);
+            if (dictionary != null)
+            {
+                EqualityHelper.ImplementEquivalentTo(checker, dictionary);
+            }
+            else
+            {
+                EqualityHelper.ImplementEquivalentTo(checker, ExtractEnumerableValueFromPossibleOneValueArray(expectedValues));
+                
+            }
             return ExtensibilityHelper.BuildCheckLink(context);
         }
 
@@ -249,10 +258,23 @@ namespace NFluent
         public static ICheckLink<ICheck<IEnumerable<T>>> IsEquivalentTo<T>(this ICheck<IEnumerable<T>> context,
             params T[] expectedValues)
         {
-            var content = ExtractEnumerableValueFromPossibleOneValueArray(expectedValues);
             var checker = ExtensibilityHelper.BeginCheck(context);
-                ImplementEquivalentTo(checker, content);
+            var dictionary = ExtractDictionaryFromValueArray(expectedValues);
+            if (dictionary != null)
+            {
+                EqualityHelper.ImplementEquivalentTo(checker, dictionary);
+            }
+            else
+            {
+                EqualityHelper.ImplementEquivalentTo(checker, ExtractEnumerableValueFromPossibleOneValueArray(expectedValues));
+                
+            }
             return ExtensibilityHelper.BuildCheckLink(context);
+        }
+
+        private static IReadOnlyDictionary<object, object> ExtractDictionaryFromValueArray<T>(T[] expectedValues)
+        {
+            return  (expectedValues == null || expectedValues.Length>1) ? null : DictionaryExtensions.WrapDictionary<object, object>(expectedValues[0]);
         }
 
         /// <summary>
@@ -267,61 +289,6 @@ namespace NFluent
             IEnumerable<T> content)
         {
             return IsEquivalentTo(context, content?.ToArray());
-        }
-
-        private static void ImplementEquivalentTo<T>(ICheckLogic<IEnumerable<T>> checker, IEnumerable<T> content)
-        {
-            var length = content?.Count() ?? 0;
-            checker.Analyze((sut, test) =>
-                {
-                    if (sut == null)
-                    {
-                        if (content != null)
-                        {
-                            test.Fail("The {checked} is null whereas it should not.");
-                        }
-
-                        return;
-                    }
-
-                    if (content == null)
-                    {
-                        test.Fail("The {checked} must be null.");
-                        return;
-                    }
-
-                    var expectedContent = new List<T>(content);
-                    var isOk = true;
-                    foreach (var item in sut)
-                    {
-                        var index = expectedContent.FindIndex(t => EqualityHelper.FluentEquivalent(item, t));
-                        if (index<0)
-                        {
-                            test.Fail(
-                                $"The {{checked}} does contain [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] whereas it should not.");
-                            isOk = false;
-                        }
-                        else
-                        {
-                            expectedContent.RemoveAt(index);
-                        }
-                    }
-
-                    if (isOk && expectedContent.Count > 0)
-                    {
-                        if (expectedContent.Count == 1)
-                        {
-                            test.Fail(
-                                $"The {{checked}} is missing: [{expectedContent[0].ToStringProperlyFormatted().DoubleCurlyBraces()}].");
-                        }
-                        else
-                        {
-                            test.Fail(
-                                $"The {{checked}} is missing {expectedContent.Count} items: {expectedContent.ToStringProperlyFormatted().DoubleCurlyBraces()}.");
-                        }
-                    }
-                }).DefineExpectedValues(content, length)
-                .OnNegate("The {checked} is equivalent to the {expected} whereas it should not.").EndCheck();
         }
 
         /// <summary>
