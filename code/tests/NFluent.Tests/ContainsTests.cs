@@ -203,13 +203,20 @@ namespace NFluent.Tests
         [Test]
         public void ContainsFailsWithTruncatedTextsForLargeArray()
         {
-            var expected = "this is some expected long text";
-            var actual = "this is some actual long text";
+            const string expected = "this is some expected long text";
+            const string actual = "this is some actual long text .";
             Check.ThatCode(() =>
                 Check.That(actual.ToCharArray()).IsEquivalentTo(expected.ToCharArray())
             ).IsAFailingCheckWithMessage("", 
-                "The checked enumerable does contain ['l'] whereas it should not.", "The checked enumerable:", 
-                "\t{'t', 'h', 'i', 's', ' ', 'i', 's', ' ', 's', 'o', 'm', 'e', ' ', 'a', 'c', 't', 'u', 'a', 'l', ' ', ...} (29 items)", 
+                "The checked enumerable is not equivalent to the expected value(s). 18 differences found!", 
+                "'a' should not exist (found in actual[13]); 'e' should be found instead.", 
+                "'c' should not exist (found in actual[14]); 'x' should be found instead.", 
+                "'t' should not exist (found in actual[15]); 'p' should be found instead.", 
+                "'u' should not exist (found in actual[16]); 'e' should be found instead.", 
+                "'a' should not exist (found in actual[17]); 'c' should be found instead.", 
+                "... (13 differences omitted)", 
+                "The checked enumerable:", 
+                "\t{'t', 'h', 'i', 's', ' ', 'i', 's', ' ', 's', 'o', 'm', 'e', ' ', 'a', 'c', 't', 'u', 'a', 'l', ' ', ...} (31 items)", 
                 "The expected value(s):", 
                 "\t{'t', 'h', 'i', 's', ' ', 'i', 's', ' ', 's', 'o', 'm', 'e', ' ', 'e', 'x', 'p', 'e', 'c', 't', 'e', ...} (31 items)");
         }

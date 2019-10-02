@@ -34,8 +34,8 @@ namespace NFluent.Helpers
     internal static class EqualityHelper
     {
         private const string SutLabel = "actual";
-        private const float FloatCloseToThreshold = 1f/100000;
-        private const double DoubleCloseToThreshold = 1d/100000000;
+        private const float FloatCloseToThreshold = 1f / 100000;
+        private const double DoubleCloseToThreshold = 1d / 100000000;
 
         internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(
             ICheck<T> check,
@@ -46,7 +46,7 @@ namespace NFluent.Helpers
 
             if (useOperator)
             {
-                mode =  EqualityMode.OperatorEq;
+                mode = EqualityMode.OperatorEq;
             }
             ExtensibilityHelper.BeginCheck(check)
                 .Analyze((sut, test) =>
@@ -74,14 +74,14 @@ namespace NFluent.Helpers
                         options |= MessageOption.WithHash;
                     }
 
-                    if (expected is IEnumerable && differenceDetails.Count>0)
+                    if (expected is IEnumerable && differenceDetails.Count > 0)
                     {
                         test.SetValuesIndex(differenceDetails[0].Index);
                     }
 
                     test.Fail(differenceDetails.GetErrorMessage(sut, expected), options);
                 })
-                .OnNegate("The {0} is equal to the {1} whereas it must not.", 
+                .OnNegate("The {0} is equal to the {1} whereas it must not.",
                     MessageOption.NoCheckedBlock | MessageOption.WithType)
                 .EndCheck();
 
@@ -116,7 +116,7 @@ namespace NFluent.Helpers
 
                     test.Fail(analysis.GetErrorMessage(sut, expected), options);
                 })
-                .OnNegate("The {0} is equal to the {1} whereas it must not.", 
+                .OnNegate("The {0} is equal to the {1} whereas it must not.",
                     MessageOption.NoCheckedBlock | MessageOption.WithType)
                 .EndCheck();
 
@@ -146,12 +146,12 @@ namespace NFluent.Helpers
                 mode = EqualityMode.OperatorNeq;
             }
             ExtensibilityHelper.BeginCheck(check)
-                .DefineExpectedValue(expected, "different from" + (useOperator ? " (using operator!=)" : ""), 
+                .DefineExpectedValue(expected, "different from" + (useOperator ? " (using operator!=)" : ""),
                     useOperator ? "equals to (using operator==)" : "")
                 .Analyze((sut, test) =>
                 {
                     var analysis = FluentEquals(sut, expected, mode);
-                    if ( analysis.IsDifferent)
+                    if (analysis.IsDifferent)
                     {
                         return;
                     }
@@ -164,9 +164,9 @@ namespace NFluent.Helpers
                     }
 
                     // shall we display the hash too
-                    test.Fail("The {0} is equal to the {1} whereas it must not.", options|MessageOption.NoCheckedBlock);
+                    test.Fail("The {0} is equal to the {1} whereas it must not.", options | MessageOption.NoCheckedBlock);
                 })
-                .OnNegate( "The {0} is different from the {1}.")
+                .OnNegate("The {0} is different from the {1}.")
                 .EndCheck();
 
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -253,11 +253,11 @@ namespace NFluent.Helpers
                     var expectedType = expected.GetTypeWithoutThrowingException();
                     var operatorName = mode == EqualityMode.OperatorEq ? "op_Equality" : "op_Inequality";
                     var ope = actualType
-                                  .GetMethod(operatorName, new[] {actualType, expectedType}) ?? expectedType
-                                  .GetMethod(operatorName, new[] {actualType, expectedType});
+                                  .GetMethod(operatorName, new[] { actualType, expectedType }) ?? expectedType
+                                  .GetMethod(operatorName, new[] { actualType, expectedType });
                     if (ope != null)
                     {
-                        var ret = (bool) ope.Invoke(null, new object[] {sut, expected});
+                        var ret = (bool)ope.Invoke(null, new object[] { sut, expected });
                         if (mode == EqualityMode.OperatorNeq)
                         {
                             ret = !ret;
@@ -272,8 +272,8 @@ namespace NFluent.Helpers
                 case EqualityMode.Equals:
                     result.SetAsDifferent(!Equals(expected, sut));
                     break;
-            } 
-            
+            }
+
             return result;
         }
 
@@ -323,7 +323,7 @@ namespace NFluent.Helpers
             {
                 if (actual != null)
                 {
-                    result.Add( DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex));
+                    result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex));
                 }
 
                 return result;
@@ -353,9 +353,9 @@ namespace NFluent.Helpers
                     return result;
                 }
 
-                firstSeen = new List<object>(firstSeen) {actual};
+                firstSeen = new List<object>(firstSeen) { actual };
 
-                if ( actual.IsAnEnumeration(false) && expected.IsAnEnumeration(false))
+                if (actual.IsAnEnumeration(false) && expected.IsAnEnumeration(false))
                 {
                     return ValueDifferenceEnumerable(actual as IEnumerable, firstName, expected as IEnumerable, firstSeen);
                 }
@@ -365,19 +365,19 @@ namespace NFluent.Helpers
             return result;
         }
 
-        private static AggregatedDifference ValueDifferenceDictionary(IReadOnlyDictionary<object, object> sutDico, 
-            string sutName, 
+        private static AggregatedDifference ValueDifferenceDictionary(IReadOnlyDictionary<object, object> sutDico,
+            string sutName,
             IReadOnlyDictionary<object, object> expectedDico,
             ICollection<object> firstItemsSeen)
         {
-            var valueDifferences = new AggregatedDifference {IsEquivalent = true};
+            var valueDifferences = new AggregatedDifference { IsEquivalent = true };
 
             var actualKeyIterator = sutDico.Keys.GetEnumerator();
             var expectedKeyIterator = expectedDico.Keys.GetEnumerator();
             var stillExpectedKeys = true;
             var stillActualKeys = true;
             var index = 0;
-            for (;;)
+            for (; ; )
             {
                 stillExpectedKeys = stillExpectedKeys && expectedKeyIterator.MoveNext();
                 stillActualKeys = stillActualKeys && actualKeyIterator.MoveNext();
@@ -392,42 +392,48 @@ namespace NFluent.Helpers
                     // the sut has extra key(s)
                     valueDifferences.Add(DifferenceDetails.WasNotExpected($"{sutName}[{actualKeyIterator.Current.ToStringProperlyFormatted()}]", sutDico[actualKeyIterator.Current], index));
                     valueDifferences.IsEquivalent = false;
-                } else if (!stillActualKeys)
+                }
+                else if (!stillActualKeys)
                 {
                     // key not found
                     valueDifferences.IsEquivalent = false;
-                    valueDifferences.Add( DifferenceDetails.WasNotFound($"{sutName}[{expectedKeyIterator.Current.ToStringProperlyFormatted()}]", 
+                    valueDifferences.Add(DifferenceDetails.WasNotFound($"{sutName}[{expectedKeyIterator.Current.ToStringProperlyFormatted()}]",
                         expectedDico[expectedKeyIterator.Current],
                         0));
                 }
                 else
                 {
                     var actualKey = actualKeyIterator.Current;
-                    var itemDiffs = ValueDifference(actualKey, 
-                        $"{sutName} key[{index}]", 
-                        expectedKeyIterator.Current, 
-                        index, 
+                    var itemDiffs = ValueDifference(actualKey,
+                        $"{sutName} key[{index}]",
+                        expectedKeyIterator.Current,
+                        index,
                         firstItemsSeen);
                     if (!itemDiffs.IsDifferent)
                     {
                         // same key, check the values
                         itemDiffs = ValueDifference(sutDico[actualKey],
                             $"{sutName}[{actualKey.ToStringProperlyFormatted()}]",
-                            expectedDico[actualKey], 
-                            index, 
+                            expectedDico[actualKey],
+                            index,
                             firstItemsSeen);
                         valueDifferences.IsEquivalent &= (!itemDiffs.IsDifferent || itemDiffs.IsEquivalent);
                     }
-                    else if (valueDifferences.IsEquivalent)
+                    else //if (valueDifferences.IsEquivalent)
                     {
                         // check if the dictionaries are equivalent anyway
                         var expectedIndex = expectedDico.ContainsKey(actualKey) ? expectedDico.Keys.ToList().FindIndex(x => x == actualKey) : -1;
-                        if (expectedIndex>=0)
-                        { 
-                            valueDifferences.IsEquivalent = FluentEquivalent(sutDico[actualKey], expectedDico[actualKey]);
-                            itemDiffs = new AggregatedDifference();
-                            itemDiffs.Add(
-                                DifferenceDetails.WasFoundElseWhere($"{sutName}[{actualKey.ToStringProperlyFormatted()}]", expectedDico[actualKey], index, expectedIndex));
+                        if (expectedIndex >= 0)
+                        {
+
+                            itemDiffs = ValueDifference(sutDico[actualKey],
+                                $"{sutName}[{actualKey.ToStringProperlyFormatted()}]",
+                                expectedDico[actualKey],
+                                index,
+                                firstItemsSeen);
+                            valueDifferences.IsEquivalent &= itemDiffs.IsEquivalent || !itemDiffs.IsDifferent;
+                            valueDifferences.Add(
+                                DifferenceDetails.WasFoundElseWhere($"{sutName} entry {actualKey.ToStringProperlyFormatted()}", expectedDico[actualKey], index, expectedIndex));
                         }
                     }
                     valueDifferences.Merge(itemDiffs);
@@ -444,7 +450,7 @@ namespace NFluent.Helpers
 
             if (firstArray.Rank != secondArray.Rank)
             {
-                valueDifferences.Add( DifferenceDetails.DoesNotHaveExpectedValue(firstName+".Rank", firstArray.Rank, secondArray.Rank, 0));
+                valueDifferences.Add(DifferenceDetails.DoesNotHaveExpectedAttribute(firstName + ".Rank", firstArray.Rank, secondArray.Rank, 0));
                 return valueDifferences;
             }
 
@@ -455,9 +461,9 @@ namespace NFluent.Helpers
                     continue;
                 }
 
-                valueDifferences.Add(DifferenceDetails.DoesNotHaveExpectedValue($"{firstName}.Dimension({i})", 
-                    firstArray.SizeOfDimension(i), 
-                    secondArray.SizeOfDimension(i), 
+                valueDifferences.Add(DifferenceDetails.DoesNotHaveExpectedAttribute($"{firstName}.Dimension({i})",
+                    firstArray.SizeOfDimension(i),
+                    secondArray.SizeOfDimension(i),
                     i));
                 return valueDifferences;
             }
@@ -467,7 +473,7 @@ namespace NFluent.Helpers
             var notSeen = new List<object>(firstArray.Length);
             for (var i = 0; i < firstArray.Length; i++)
             {
-                var temp = i;       
+                var temp = i;
                 var label = new StringBuilder("[");
                 for (var j = 0; j < firstArray.Rank; j++)
                 {
@@ -481,11 +487,11 @@ namespace NFluent.Helpers
 
                 var firstEntry = firstArray.GetValue(indices);
                 var secondEntry = secondArray.GetValue(secondIndices);
-                var aggregatedDifference = ValueDifference(firstEntry, firstName+label, secondEntry, i, firstSeen);
+                var aggregatedDifference = ValueDifference(firstEntry, firstName + label, secondEntry, i, firstSeen);
                 if (aggregatedDifference.IsDifferent && !aggregatedDifference.IsEquivalent)
                 {
                     var foundAt = notSeen.FindIndex(x => FluentEquivalent(firstEntry, x));
-                    if ( foundAt < 0 )
+                    if (foundAt < 0)
                     {
                         notSeen.Add(firstEntry);
                     }
@@ -533,7 +539,9 @@ namespace NFluent.Helpers
             var scanner = otherItem.GetEnumerator();
             var index = 0;
             var mayBeEquivalent = true;
-            var expected = new ArrayList();
+            var expected = new List<KeyValuePair<object, int>>();
+            var unexpected = new List<KeyValuePair<object, int>>();
+            var aggregatedDifferences = new Dictionary<int, AggregatedDifference>();
             foreach (var item in firstItem)
             {
                 var firstItemName = $"{firstName}[{index}]";
@@ -544,11 +552,49 @@ namespace NFluent.Helpers
                     break;
                 }
 
-                expected.Add(scanner.Current);
                 var aggregatedDifference = ValueDifference(item, firstItemName, scanner.Current,
                     index, firstSeen);
-                valueDifferences.Merge(aggregatedDifference);
+                if (aggregatedDifference.IsDifferent)
+                {
+                    aggregatedDifferences.Add(index, aggregatedDifference);
+                }
+
+                if (aggregatedDifference.IsDifferent && !aggregatedDifference.IsEquivalent)
+                {
+                    // try to see it was at a different position
+                    var indexOrigin = unexpected.FindIndex(pair => EqualityHelper.FluentEquivalent(pair.Key, item));
+                    if (indexOrigin >= 0)
+                    {
+                        // we found the value at another index
+                        valueDifferences.Add(DifferenceDetails.WasFoundElseWhere(firstItemName, item, index, unexpected[indexOrigin].Value));
+                        unexpected.RemoveAt(indexOrigin);
+                        aggregatedDifferences.Remove(indexOrigin);
+                    }
+                    else
+                    {
+                        expected.Add(new KeyValuePair<object, int>(item, index));
+                    }
+
+                    // we keep it until we see it
+                    var indexOther = expected.FindIndex(pair => FluentEquivalent(pair.Key, scanner.Current));
+                    if (indexOther >= 0)
+                    {
+                        valueDifferences.Add(DifferenceDetails.WasFoundElseWhere(firstItemName, expected[indexOther].Key, expected[indexOther].Value, index));
+                        aggregatedDifferences.Remove(indexOther);
+                        expected.RemoveAt(indexOther);
+                    }
+                    else
+                    {
+                        unexpected.Add(new KeyValuePair<object, int>(scanner.Current, index));
+                    }
+                }
+                //valueDifferences.Merge(aggregatedDifference);
                 index++;
+            }
+
+            foreach (var differencesValue in aggregatedDifferences.Values)
+            {
+                valueDifferences.Merge(differencesValue);
             }
 
             if (scanner.MoveNext())
@@ -557,30 +603,9 @@ namespace NFluent.Helpers
                 mayBeEquivalent = false;
             }
 
-            if (mayBeEquivalent  && valueDifferences.IsDifferent)
+            if (mayBeEquivalent && valueDifferences.IsDifferent)
             {
-                var found = true;
-                foreach (var item in firstItem)
-                {
-                    found = false;
-                    for(var i =0; i<expected.Count; i++)
-                    {
-                        if (!FluentEquivalent(item, expected[i]))
-                        {
-                            continue;
-                        }
-
-                        found = true;
-                        expected.RemoveAt(i);
-                        break;
-                    }
-                    if (!found)
-                    {
-                        break;
-                    }
-                }
-
-                valueDifferences.IsEquivalent = found;
+                valueDifferences.IsEquivalent = expected.Count == 0 && unexpected.Count == 0;
             }
 
             return valueDifferences;
@@ -602,143 +627,148 @@ namespace NFluent.Helpers
             //ncrunch: no coverage end
         }
 
-        internal class DifferenceDetails
+    }
+    internal class DifferenceDetails
+    {
+        private DifferenceMode Mode {get;}
+        private DifferenceDetails(string firstName, object firstValue, object secondValue, int index, DifferenceMode mode)
         {
-            private readonly DifferenceMode mode;
-
-            private DifferenceDetails(string firstName, object firstValue, object secondValue, int index, DifferenceMode mode)
-            {
-                this.mode = mode;
-                this.FirstName = firstName;
-                this.FirstValue = firstValue;
-                this.SecondValue = secondValue;
-                this.Index = index;
-            }
-
-            public static DifferenceDetails WasNotExpected(string checkedName, object value, int index)
-            {
-                return new DifferenceDetails(checkedName, value, null, index, DifferenceMode.Extra);
-            }
-
-            public static DifferenceDetails DoesNotHaveExpectedValue(string checkedName, object value, object expected, int index)
-            {
-                return new DifferenceDetails(checkedName, value, expected, index, DifferenceMode.Value);
-            }
-
-            public static DifferenceDetails WasNotFound(string checkedName, object expected, int index)
-            {
-                return new DifferenceDetails(checkedName, null, expected, index, DifferenceMode.Missing);
-            }
-
-            public static DifferenceDetails WasFoundElseWhere(string checkedName, object value, int expectedIndex, int actualIndex)
-            {
-                return new DifferenceDetails(checkedName, value, null, expectedIndex, DifferenceMode.Moved){ActualIndex = actualIndex};
-            }
-
-            public string FirstName { get; internal set; }
-            public object FirstValue { get; internal set; }
-            public object SecondValue { get; internal set; }
-            public int Index { get; }
-            public int ActualIndex {get; internal set; }
-
-            public override string ToString()
-            {
-                switch (this.mode)
-                {
-                    case DifferenceMode.Extra:
-                        return
-                            $"{this.FirstName} should not exist (value {this.SecondValue.ToStringProperlyFormatted()})";
-                    case DifferenceMode.Missing:
-                        return
-                            $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}.";
-                    case DifferenceMode.Moved:
-                        return $"{this.FirstName} was found at {this.ActualIndex} instead of {this.Index}.";
-                    case DifferenceMode.Value:
-                    default:
-                        return
-                            $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
-
-                }
-            }
-
-            private enum DifferenceMode
-            {
-                Value,
-                Missing,
-                Extra,
-                Moved
-            };
+            this.Mode = mode;
+            this.FirstName = firstName;
+            this.FirstValue = firstValue;
+            this.SecondValue = secondValue;
+            this.Index = index;
         }
 
-        internal class AggregatedDifference
+        public static DifferenceDetails WasNotExpected(string checkedName, object value, int index)
         {
-            private readonly List<DifferenceDetails> details = new List<DifferenceDetails>();
-            private bool different;
-            public bool IsEquivalent { get; set; }
+            return new DifferenceDetails(checkedName, value, null, index, DifferenceMode.Extra);
+        }
 
-            public int Count => this.details.Count;
+        public static DifferenceDetails DoesNotHaveExpectedValue(string checkedName, object value, object expected, int index)
+        {
+            return new DifferenceDetails(checkedName, value, expected, index, DifferenceMode.Value);
+        }
+        public static DifferenceDetails DoesNotHaveExpectedAttribute(string checkedName, object value, object expected, int index)
+        {
+            return new DifferenceDetails(checkedName, value, expected, index, DifferenceMode.Attribute);
+        }
 
-            public bool IsDifferent => this.different|| this.details.Count > 0;
+        public static DifferenceDetails WasNotFound(string checkedName, object expected, int index)
+        {
+            return new DifferenceDetails(checkedName, null, expected, index, DifferenceMode.Missing);
+        }
 
-            public DifferenceDetails this[int id] => this.details[id];
+        public static DifferenceDetails WasFoundElseWhere(string checkedName, object value, int expectedIndex, int actualIndex)
+        {
+            return new DifferenceDetails(checkedName, value, null, expectedIndex, DifferenceMode.Moved) { ActualIndex = actualIndex };
+        }
 
-            public void Add(DifferenceDetails detail)
+        public string FirstName { get; internal set; }
+        public object FirstValue { get; internal set; }
+        public object SecondValue { get; internal set; }
+        public int Index { get; }
+        public int ActualIndex { get; internal set; }
+
+        public string GetMessage(bool forEquivalence)
+        {
+            switch (this.Mode)
             {
-                this.details.Add(detail);
+                case DifferenceMode.Extra:
+                    return forEquivalence ? $"{this.FirstName} value should not exist (value {this.FirstValue.ToStringProperlyFormatted()})":
+                        $"{this.FirstName} should not exist (value {this.FirstValue.ToStringProperlyFormatted()})";
+                case DifferenceMode.Missing:
+                    return forEquivalence ? $"{this.SecondValue.ToStringProperlyFormatted()} should be present but was not found."
+                        : $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}.";
+                case DifferenceMode.Moved:
+                    return $"{this.FirstName} was found at index {this.ActualIndex} instead of {this.Index}.";
+                case DifferenceMode.Attribute:
+                    return $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
+                case DifferenceMode.Value:
+                default:
+                    return forEquivalence ? $"{this.FirstValue.ToStringProperlyFormatted()} should not exist (found in {this.FirstName}); {this.SecondValue.ToStringProperlyFormatted()} should be found instead.":
+                        $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
+            }
+        }
+
+        public enum DifferenceMode
+        {
+            Attribute,
+            Value,
+            Missing,
+            Extra,
+            Moved
+        };
+    }
+
+    internal class AggregatedDifference
+    {
+        private readonly List<DifferenceDetails> details = new List<DifferenceDetails>();
+        private bool different;
+        public bool IsEquivalent { get; set; }
+
+        public int Count => this.details.Count;
+
+        public bool IsDifferent => this.different || this.details.Count > 0;
+
+        public DifferenceDetails this[int id] => this.details[id];
+
+        public void Add(DifferenceDetails detail)
+        {
+            this.details.Add(detail);
+        }
+
+        public void SetAsDifferent(bool state)
+        {
+            this.different = state;
+        }
+
+        public void Merge(AggregatedDifference other)
+        {
+            this.details.AddRange(other.details);
+        }
+
+        public bool DoesProvideDetails(object actual, object expected)
+        {
+            if (this.details.Count == 1)
+            {
+                return !Equals(this.details[0].FirstValue, actual) || !Equals(this.details[0].SecondValue, expected);
             }
 
-            public void SetAsDifferent(bool state)
+            return true;
+        }
+
+        public string GetErrorMessage(object sut, object expected, bool forEquivalence = false)
+        {
+            var messageText = new StringBuilder(forEquivalence ? "The {0} is not equivalent to the {1}." : "The {0} is different from the {1}.");
+            if (this.details.Count > 1)
             {
-                this.different = state;
+                messageText.Append($" {this.details.Count} differences found!");
             }
 
-            public void Merge(AggregatedDifference other)
+            if (this.IsEquivalent)
             {
-                this.details.AddRange(other.details);
+                messageText.Append(" But they are equivalent.");
             }
 
-            public bool DoesProvideDetails(object actual, object expected)
+            if (this.DoesProvideDetails(sut, expected))
             {
-                if (this.details.Count == 1)
+                var differenceDetailsCount = Math.Min(ExtensionsCommonHelpers.CountOfLineOfDetails, this.details.Count);
+
+                for (var i = 0; i < differenceDetailsCount; i++)
                 {
-                    return !Equals(this.details[0].FirstValue, actual) || !Equals(this.details[0].SecondValue, expected);
+                    messageText.AppendLine();
+                    messageText.Append(this.details[i].GetMessage(forEquivalence).DoubleCurlyBraces());
                 }
 
-                return true;
+                if (differenceDetailsCount != this.details.Count)
+                {
+                    messageText.AppendLine();
+                    messageText.Append($"... ({this.details.Count - differenceDetailsCount} differences omitted)");
+                }
             }
 
-            public string GetErrorMessage(object sut, object expected, bool forEquivalence = false)
-            {
-                var messageText = new StringBuilder(forEquivalence ? "The {0} is not equivalent to the {1}.": "The {0} is different from the {1}."); 
-                if (this.details.Count > 1)
-                {
-                    messageText.Append($" {this.details.Count} differences found!");
-                }
-
-                if (this.IsEquivalent)
-                {
-                    messageText.Append(" But they are equivalent.");
-                }
-
-                if (this.DoesProvideDetails(sut, expected))
-                {
-                    var differenceDetailsCount = Math.Min(ExtensionsCommonHelpers.CountOfLineOfDetails, this.details.Count);
-
-                    for(var i = 0; i < differenceDetailsCount; i++)
-                    {
-                        messageText.AppendLine();
-                        messageText.Append(this.details[i].ToString().DoubleCurlyBraces());
-                    }
-
-                    if (differenceDetailsCount != this.details.Count)
-                    {
-                        messageText.AppendLine();
-                        messageText.Append($"... ({this.details.Count - differenceDetailsCount} differences omitted)");
-                    }
-                }
-
-                return messageText.ToString();
-            }
+            return messageText.ToString();
         }
     }
 }

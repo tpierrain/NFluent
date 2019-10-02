@@ -329,17 +329,18 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["foo"] = 0, ["bar"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one. 2 differences found! But they are equivalent.", 
-                "actual key[0] = \"foo\" instead of \"bar\".", 
-                "actual key[1] = \"bar\" instead of \"foo\".",                
+                "actual entry \"foo\" was found at index 1 instead of 0.", 
+                "actual entry \"bar\" was found at index 0 instead of 1.", 
                 "The checked dictionary:", 
                 "\t{[foo, 0], [bar, 1]} (2 items)", 
                 "The expected dictionary:", 
                 "\t{[bar, 1], [foo, 0]} (2 items)");
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["foo"] = 1, ["bar"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
-                "The checked dictionary is different from the expected one. 2 differences found!", 
-                "actual key[0] = \"foo\" instead of \"bar\".", 
-                "actual key[1] = \"bar\" instead of \"foo\".", 
+                "The checked dictionary is different from the expected one. 3 differences found!", 
+                "actual entry \"foo\" was found at index 1 instead of 0.", 
+                "actual[\"foo\"] = 1 instead of 0.", 
+                "actual entry \"bar\" was found at index 0 instead of 1.",
                 "The checked dictionary:", 
                 "\t{[foo, 1], [bar, 1]} (2 items)", 
                 "The expected dictionary:", 
@@ -372,7 +373,7 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
                 Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo"] = 0, ["extra"] = 2 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one.", 
-                "actual[\"extra\"] should not exist (value null)",
+                "actual[\"extra\"] should not exist (value 2)",
                 "The checked dictionary:", 
                 "\t{[bar, 1], [foo, 0], [extra, 2]} (3 items)", 
                 "The expected dictionary:", 

@@ -166,14 +166,12 @@ namespace NFluent.Tests
             Check.That((IEnumerable)array).IsEquivalentTo(altArray);
             Check.ThatCode(()=>
                     Check.That((IEnumerable)array).IsEquivalentTo( new List<List<int>> {new List<int>{5, 4, 6}, new List<int>{3, 3, 1}})).
-                IsAFailingCheckWithMessage(	"", 
-                    "The checked enumerable is not equivalent to the expected value(s). 6 differences found!", 
-                    "actual[0][0] = 1 instead of 5.", 
-                    "actual[0][1] = 2 instead of 4.", 
-                    "actual[0][2] = 3 instead of 6.", 
-                    "actual[1][0] = 4 instead of 3.", 
-                    "actual[1][1] = 5 instead of 3.", 
-                    "... (1 differences omitted)", 
+                IsAFailingCheckWithMessage("", 
+                    "The checked enumerable is not equivalent to the expected value(s). 4 differences found!", 
+                    "actual[1] was found at index 0 instead of 1.", 
+                    "4 should not exist (found in actual[1][0]); 3 should be found instead.", 
+                    "5 should not exist (found in actual[1][1]); 3 should be found instead.", 
+                    "6 should not exist (found in actual[1][2]); 1 should be found instead.", 
                     "The checked enumerable:", 
                     "\t{{1, 2, 3}, {4, 5, 6}} (2 items)", 
                     "The expected value(s):", 
@@ -185,30 +183,34 @@ namespace NFluent.Tests
             CheckForEquivalencyFailsWithProperMessage()
         {
             var array = new[] {1, 2, 3};
-
+            
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 4)).IsAFailingCheckWithMessage("", 
-                "The checked enumerable does contain [3] whereas it should not.", 
+                "The checked enumerable is not equivalent to the expected value(s).", 
+                "3 should not exist (found in actual[2]); 4 should be found instead.",
                 "The checked enumerable:",
                 "\t{1, 2, 3} (3 items)", 
                 "The expected value(s):", 
                 "\t{1, 2, 4} (3 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4)).IsAFailingCheckWithMessage("", 
-                "The checked enumerable is missing: [4].", 
-                "The checked enumerable:",
+                "The checked enumerable is not equivalent to the expected value(s).", 
+                "actual.Dimension(0) = 3 instead of 4.", 
+                "The checked enumerable:", 
                 "\t{1, 2, 3} (3 items)", 
                 "The expected value(s):", 
                 "\t{1, 2, 3, 4} (4 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4, 5)).IsAFailingCheckWithMessage("", 
-                "The checked enumerable is missing 2 items: {4, 5}.", 
+                "The checked enumerable is not equivalent to the expected value(s).", 
+                "actual.Dimension(0) = 3 instead of 5.",
                 "The checked enumerable:",
                 "\t{1, 2, 3} (3 items)", 
                 "The expected value(s):", 
                 "\t{1, 2, 3, 4, 5} (5 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2)).IsAFailingCheckWithMessage("", 
-                "The checked enumerable does contain [3] whereas it should not.", 
+                "The checked enumerable is not equivalent to the expected value(s).", 
+                "actual.Dimension(0) = 3 instead of 2.",
                 "The checked enumerable:",
                 "\t{1, 2, 3} (3 items)", 
                 "The expected value(s):", 
