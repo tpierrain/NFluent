@@ -40,6 +40,8 @@ namespace NFluent.Tests.FromIssues
 
             var dictOf2Dict_A = new Dictionary<string, Dictionary<string, string>> { { "key1", dictOf2 }, { "key2", dictOf3_A } };
             var dictOf2Dict_B = new Dictionary<string, Dictionary<string, string>> { { "key1", dictOf2 }, { "key2", dictOf3_B } };
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+
             var dictOf2Dict_C = new Dictionary<string, IReadOnlyDictionary<string, string>> { { "key1", new RoDico(dictOf2)} , { "key2", new RoDico(dictOf3_B) } };
 
 //            Check.That(dictOf2Dict_A).IsEquivalentTo(dictOf2Dict_B);  // Fails -> Too picky on evaluating child-dict order
@@ -47,6 +49,7 @@ namespace NFluent.Tests.FromIssues
             Check.That(dictOf2Dict_C).IsEquivalentTo(dictOf2Dict_B);  // Fails -> Too picky on evaluating child-dict order
 
             var customDico = new RoDico(dictOf3_B);
+            #endif
         }
         
         // GH #292
