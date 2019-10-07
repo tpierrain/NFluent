@@ -343,7 +343,7 @@ namespace NFluent
 #endif
     }
 
-    #if DOTNET_20 || DOTNET_30 || DOTNET_35 || DOTNET_40
+#if DOTNET_20 || DOTNET_30 || DOTNET_35 || DOTNET_40
     internal interface IReadOnlyDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
     {
         int Count { get; }
@@ -354,5 +354,5 @@ namespace NFluent
         IEnumerable<TValue> Values { get; }
 
     }
-    #endif
+#endif
 }

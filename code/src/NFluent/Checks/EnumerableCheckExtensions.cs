@@ -259,16 +259,7 @@ namespace NFluent
             params T[] expectedValues)
         {
             var checker = ExtensibilityHelper.BeginCheck(context);
-            var dictionary = ExtractDictionaryFromValueArray(expectedValues);
-            if (dictionary != null)
-            {
-                EqualityHelper.ImplementEquivalentTo(checker, dictionary);
-            }
-            else
-            {
-                EqualityHelper.ImplementEquivalentTo(checker, ExtractEnumerableValueFromPossibleOneValueArray(expectedValues));
-                
-            }
+            EqualityHelper.ImplementEquivalentTo(checker, ExtractEnumerableValueFromPossibleOneValueArray(expectedValues));
             return ExtensibilityHelper.BuildCheckLink(context);
         }
 

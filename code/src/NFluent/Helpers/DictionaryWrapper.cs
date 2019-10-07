@@ -157,7 +157,6 @@ namespace NFluent.Helpers
                 this.keyEnumerator = dictionary.GetEnumerator();
             }
 
-            public int Count => this.dictionary.Count;
             public void Dispose()
             {}
 

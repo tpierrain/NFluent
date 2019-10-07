@@ -56,17 +56,6 @@ namespace NFluent.Extensions
             return false;
         }
 
-
-        public static IReadOnlyDictionary<K, V> WrapDictionary<K, V, TKS, TVS>(IDictionary<TKS, TVS> sourceDictionary) where TKS: K where TVS : V
-        {
-            return new DictionaryWrapper<K, V, TKS, TVS>(sourceDictionary);
-        }
-
-        public static IReadOnlyDictionary<K, V> WrapReadOnlyDictionaryDictionary<K, V, TKS, TVS>(IReadOnlyDictionary<TKS, TVS> sourceDictionary) where TKS: K where TVS : V
-        {
-            return new ReadOnlyDictionaryWrapper<K, V, TKS, TVS>(sourceDictionary);
-        }
-
         public static IReadOnlyDictionary<K, V> WrapDictionary<K, V>(object knownDictionary)
         {
             // if the object implements IDictionary
