@@ -265,7 +265,7 @@ namespace NFluent
 
         private static IReadOnlyDictionary<object, object> ExtractDictionaryFromValueArray<T>(T[] expectedValues)
         {
-            return  (expectedValues == null || expectedValues.Length>1) ? null : DictionaryExtensions.WrapDictionary<object, object>(expectedValues[0]);
+            return (expectedValues.Length!=1) ? null : DictionaryExtensions.WrapDictionary<object, object>(expectedValues[0]);
         }
 
         /// <summary>

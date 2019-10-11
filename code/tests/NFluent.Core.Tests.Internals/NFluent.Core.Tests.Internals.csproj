@@ -42,7 +42,7 @@
     <None Include="..\..\.build\NFluent.snk" Link="NFluent.snk" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />

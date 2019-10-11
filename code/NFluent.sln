@@ -110,6 +110,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{DEE62612-3
 	ProjectSection(SolutionItems) = preProject
 		..\docs\ArchitectureDecisionRecord.md = ..\docs\ArchitectureDecisionRecord.md
 		..\docs\Backlog.md = ..\docs\Backlog.md
+		Changelog.md = Changelog.md
 		..\docs\DevDoD.md = ..\docs\DevDoD.md
 		..\docs\ForNCrunchUsers.md = ..\docs\ForNCrunchUsers.md
 		..\docs\HowToAddANewAssertion.md = ..\docs\HowToAddANewAssertion.md

@@ -56,14 +56,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.0.0" />
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Collections.NonGeneric" Version="4.3.0" />
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.6.0" />
   </ItemGroup>
   <Import Project="..\NFluent\NFluent.projitems" Label="Shared" />
   <Import Project="..\NFluent.Generated\NFluent.Generated.projitems" Label="Shared" />

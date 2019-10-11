@@ -46,6 +46,20 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void FailOnIllegalValues()
+        {
+            var test = new List<string>();
+            var test2 = new List<string>();
+
+            Check.That(test).IsEqualTo(test2);
+
+            var currentMode = Check.EqualMode;
+            Check.EqualMode = (EqualityMode) (-1);
+            Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).Throws<NotSupportedException>();
+            Check.EqualMode = currentMode;
+        }
+
+        [Test]
         public void WorkForNullValue()
         {
             Check.ThatCode(() =>
@@ -345,12 +359,18 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualToThrowsProperExceptionEvenWithNullAsValue()
         {
-            Check.ThatCode(() => { Check.That((string) null).IsEqualTo("Kamoulox !"); })
+            Check.ThatCode(() => Check.That((string) null).IsEqualTo("Kamoulox !"))
                 .IsAFailingCheckWithMessage(Environment.NewLine + "The checked string is null whereas it must not." +
                                              Environment.NewLine + "The checked string:" + Environment.NewLine +
                                              "\t[null]" + Environment.NewLine + "The expected string:" +
                                              Environment.NewLine + "\t[\"Kamoulox !\"]");
         }
+
+        [Test]
+        public void IsEqualToWorksEvenWithNullStrings()
+        {
+           Check.That((string) null).IsEqualTo((string)null);
+        }       
 
         [Test]
         public void WeCanSeeTheDifferenceBewteenTwoDifferentObjectsThatHaveTheSameToString()

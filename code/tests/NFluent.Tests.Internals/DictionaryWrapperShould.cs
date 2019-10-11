@@ -1,5 +1,4 @@
-﻿
-namespace NFluent.Tests.Helpers
+﻿namespace NFluent.Tests.Helpers
 {
     using System;
     using System.Collections;
@@ -84,11 +83,9 @@ namespace NFluent.Tests.Helpers
         public void CanWrapWithoutTypeSignature()
         {
             var demo = new Dictionary<int, string> {{1, "one"}, {2, "two"}};
-
             var wrapped = DictionaryExtensions.WrapDictionary<object, object>(demo);
 
             Check.That(wrapped).IsNotNull();
-
             Check.That(wrapped).ContainsKey(2);
         }
 

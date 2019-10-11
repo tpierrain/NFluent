@@ -53,6 +53,7 @@ namespace NFluent.Tests.SutClasses
         public string this[string key] => this.myDico[key];
 
         public IEnumerable<string> Keys => this.myDico.Keys;
+
         public IEnumerable<string> Values => this.myDico.Values;
     }
 #endif

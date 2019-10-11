@@ -84,9 +84,9 @@ namespace NFluent.Tests
         [Test]
         public void TestPrivateField()
         {
-            TestMe test1 = CreateTestItem();
+            var test1 = CreateTestItem();
             // ReSharper disable once UnusedVariable
-            TestMe test2 = CreateTestItem();
+            var test2 = CreateTestItem();
 
             var stream = new MemoryStream();
             Serialize(stream, test1);
@@ -96,7 +96,8 @@ namespace NFluent.Tests
 
             // Id is not checked at all and the List<int>._version field is tested when it should not be
             //this check fails
-//                Check.That(test1).HasFieldsWithSameValues(test2);
+            Check.ThatCode(()=>
+            Check.That(test1).HasFieldsWithSameValues(test2)).IsAFailingCheck();
         }
 
             private static void Deserialize(MemoryStream stream, TestMe testItem)
@@ -130,7 +131,6 @@ namespace NFluent.Tests
                 return testItem;
             }
 
-
         // issue #154: NFluent does not use the overloaded operators
         [Test]
         public void FailsToUseOperator()
@@ -151,6 +151,7 @@ namespace NFluent.Tests
             Check.That(myClone).HasSameValueAs(myClone);
             Check.That(mySelf).HasDifferentValueThan(4);
         }
+
         internal class Person
         {
             public string Name { get; set; }

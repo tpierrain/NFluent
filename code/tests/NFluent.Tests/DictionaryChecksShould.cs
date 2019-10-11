@@ -21,7 +21,6 @@ namespace NFluent.Tests
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
     using System.Collections.ObjectModel;
 #endif
-    using ApiChecks;
     using NFluent.Helpers;
     using NUnit.Framework;
     using SutClasses;

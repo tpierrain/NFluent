@@ -150,6 +150,28 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void CheckIsEquivalentFailsWithProperMessage()
+        {
+            var array = new[] {1, 2, 3};
+            Check.ThatCode(()=>
+            Check.That((IEnumerable)array).IsEquivalentTo(3, 2, 4)).
+                IsAFailingCheckWithMessage("", 
+                    "The checked enumerable is not equivalent to the expected value(s). 2 differences found!", 
+                    "1 should not exist (found in actual[0]); 3 should be found instead.", 
+                    "3 should not exist (found in actual[2]); 4 should be found instead.", 
+                    "The checked enumerable:", 
+                    "\t{1, 2, 3} (3 items)", 
+                    "The expected value(s):", 
+                    "\t{3, 2, 4} (3 items)");
+        }
+
+        [Test]
+        public void WorkOnEmptyEnumerable()
+        {
+            Check.That((IEnumerable)new object[]{}).IsEquivalentTo();
+        }
+
+        [Test]
         public void CheckIsEquivalentOnNestedEnumerable()
         {
             var array = new[] {new []{1, 2, 3}, new []{4, 5, 6}};

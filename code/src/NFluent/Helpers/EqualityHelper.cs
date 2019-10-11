@@ -272,6 +272,8 @@ namespace NFluent.Helpers
                 case EqualityMode.Equals:
                     result.SetAsDifferent(!Equals(expected, sut));
                     break;
+                default:
+                    throw new NotSupportedException();
             }
 
             return result;
@@ -471,6 +473,7 @@ namespace NFluent.Helpers
             var indices = new int[firstArray.Rank];
             var secondIndices = new int[secondArray.Rank];
             var notSeen = new List<object>(firstArray.Length);
+            var unexpected = new List<object>(firstArray.Length);
             for (var i = 0; i < firstArray.Length; i++)
             {
                 var temp = i;
@@ -490,20 +493,20 @@ namespace NFluent.Helpers
                 var aggregatedDifference = ValueDifference(firstEntry, firstName + label, secondEntry, i, firstSeen);
                 if (aggregatedDifference.IsDifferent && !aggregatedDifference.IsEquivalent)
                 {
-                    var foundAt = notSeen.FindIndex(x => FluentEquivalent(firstEntry, x));
+                    var foundAt = unexpected.FindIndex(x => FluentEquivalent(firstEntry, x));
                     if (foundAt < 0)
                     {
                         notSeen.Add(firstEntry);
                     }
                     else
                     {
-                        notSeen.RemoveAt(foundAt);
+                        unexpected.RemoveAt(foundAt);
                     }
 
                     foundAt = notSeen.FindIndex(x => FluentEquivalent(secondEntry, x));
                     if (foundAt < 0)
                     {
-                        notSeen.Add(secondEntry);
+                        unexpected.Add(secondEntry);
                     }
                     else
                     {
@@ -588,7 +591,6 @@ namespace NFluent.Helpers
                         unexpected.Add(new KeyValuePair<object, int>(scanner.Current, index));
                     }
                 }
-                //valueDifferences.Merge(aggregatedDifference);
                 index++;
             }
 
@@ -627,78 +629,6 @@ namespace NFluent.Helpers
             //ncrunch: no coverage end
         }
 
-    }
-    internal class DifferenceDetails
-    {
-        private DifferenceMode Mode {get;}
-        private DifferenceDetails(string firstName, object firstValue, object secondValue, int index, DifferenceMode mode)
-        {
-            this.Mode = mode;
-            this.FirstName = firstName;
-            this.FirstValue = firstValue;
-            this.SecondValue = secondValue;
-            this.Index = index;
-        }
-
-        public static DifferenceDetails WasNotExpected(string checkedName, object value, int index)
-        {
-            return new DifferenceDetails(checkedName, value, null, index, DifferenceMode.Extra);
-        }
-
-        public static DifferenceDetails DoesNotHaveExpectedValue(string checkedName, object value, object expected, int index)
-        {
-            return new DifferenceDetails(checkedName, value, expected, index, DifferenceMode.Value);
-        }
-        public static DifferenceDetails DoesNotHaveExpectedAttribute(string checkedName, object value, object expected, int index)
-        {
-            return new DifferenceDetails(checkedName, value, expected, index, DifferenceMode.Attribute);
-        }
-
-        public static DifferenceDetails WasNotFound(string checkedName, object expected, int index)
-        {
-            return new DifferenceDetails(checkedName, null, expected, index, DifferenceMode.Missing);
-        }
-
-        public static DifferenceDetails WasFoundElseWhere(string checkedName, object value, int expectedIndex, int actualIndex)
-        {
-            return new DifferenceDetails(checkedName, value, null, expectedIndex, DifferenceMode.Moved) { ActualIndex = actualIndex };
-        }
-
-        public string FirstName { get; internal set; }
-        public object FirstValue { get; internal set; }
-        public object SecondValue { get; internal set; }
-        public int Index { get; }
-        public int ActualIndex { get; internal set; }
-
-        public string GetMessage(bool forEquivalence)
-        {
-            switch (this.Mode)
-            {
-                case DifferenceMode.Extra:
-                    return forEquivalence ? $"{this.FirstName} value should not exist (value {this.FirstValue.ToStringProperlyFormatted()})":
-                        $"{this.FirstName} should not exist (value {this.FirstValue.ToStringProperlyFormatted()})";
-                case DifferenceMode.Missing:
-                    return forEquivalence ? $"{this.SecondValue.ToStringProperlyFormatted()} should be present but was not found."
-                        : $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}.";
-                case DifferenceMode.Moved:
-                    return $"{this.FirstName} was found at index {this.ActualIndex} instead of {this.Index}.";
-                case DifferenceMode.Attribute:
-                    return $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
-                case DifferenceMode.Value:
-                default:
-                    return forEquivalence ? $"{this.FirstValue.ToStringProperlyFormatted()} should not exist (found in {this.FirstName}); {this.SecondValue.ToStringProperlyFormatted()} should be found instead.":
-                        $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
-            }
-        }
-
-        public enum DifferenceMode
-        {
-            Attribute,
-            Value,
-            Missing,
-            Extra,
-            Moved
-        };
     }
 
     internal class AggregatedDifference

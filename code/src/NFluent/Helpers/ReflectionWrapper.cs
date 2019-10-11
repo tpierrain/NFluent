@@ -15,13 +15,13 @@
 
 namespace NFluent.Helpers
 {
+    using Extensions;
+    using Kernel;
     using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
-    using Extensions;
-    using Kernel;
     using static System.String;
 
     /// <summary>
@@ -185,7 +185,7 @@ namespace NFluent.Helpers
             var nextDepth = depth - 1;
             foreach (var member in this.GetSubExtendedMemberInfosFields())
             {
-                member.MapFields( expected.FindMember(member), scanned, nextDepth, mapFunction);
+                member.MapFields(expected.FindMember(member), scanned, nextDepth, mapFunction);
             }
 
             // we deal with missing fields (unless asked to ignore them)
@@ -213,7 +213,7 @@ namespace NFluent.Helpers
 
             if (this.IsArray)
             {
-                var array = (Array) this.Value;
+                var array = (Array)this.Value;
                 result.AddRange(this.GetSubArrayExtendedInfo(array));
             }
             else
@@ -334,8 +334,8 @@ namespace NFluent.Helpers
                         indices[j] = currentIndex + array.GetLowerBound(j);
                         temp /= array.SizeOfDimension(j);
                     }
-                   
-                    var expectedEntryDescription = BuildFromField(Empty,  $"{name}{label}", fieldType,
+
+                    var expectedEntryDescription = BuildFromField(Empty, $"{name}{label}", fieldType,
                         array.GetValue(indices), this.Criteria);
                     result.Add(expectedEntryDescription);
                 }
@@ -431,18 +431,18 @@ namespace NFluent.Helpers
                     return false;
                 }
 
-                if (depth>0)
+                if (depth > 0)
                 {
                     return true;
                 }
 
-                if (depth <= 0 && expected.ValueType.ImplementsEquals())
+                if (expected.ValueType.ImplementsEquals())
                 {
                     result.Add(new MemberMatch(expected, actual));
                     return false;
                 }
 
-                if (!expected.IsArray || (actual.IsArray && ((Array) expected.Value).Length == ((Array) actual.Value).Length))
+                if (!expected.IsArray || (actual.IsArray && ((Array)expected.Value).Length == ((Array)actual.Value).Length))
                 {
                     if (actual.ValueType.TypeHasMember() || expected.ValueType.TypeHasMember())
                     {

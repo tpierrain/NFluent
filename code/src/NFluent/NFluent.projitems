@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DictionaryWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\DifferenceDetails.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExceptionConstructor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\InconclusiveExceptionReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ISelfDescriptiveValue.cs" />
