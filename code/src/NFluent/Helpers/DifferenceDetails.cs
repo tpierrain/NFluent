@@ -88,6 +88,4 @@ namespace NFluent.Helpers
             Moved
         };
     }
-
-
 }
