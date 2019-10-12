@@ -101,7 +101,6 @@
         <Framework>net-3.0</Framework>
         <DontReport>true</DontReport>
       </TestProjects>
-      -->
       <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'>
         <Framework>net-3.5</Framework>
         <DontReport>true</DontReport>
@@ -114,6 +113,7 @@
         <Framework>net-3.5</Framework>
         <DontReport>true</DontReport>
       </TestProjects>
+      -->
       <TestProjects Include='$(TestsPath)\NFluent.40.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'>
         <Framework>net-4.0</Framework>
         <DontReport>true</DontReport>
