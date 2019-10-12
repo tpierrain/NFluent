@@ -92,7 +92,8 @@
   </ItemGroup>
   
    <ItemGroup>
-      <TestProjects Include='$(TestsPath)\NFluent.20.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
+     <!--
+     <TestProjects Include='$(TestsPath)\NFluent.20.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
         <Framework>net-2.0</Framework>
         <DontReport>true</DontReport>
       </TestProjects>
@@ -100,6 +101,7 @@
         <Framework>net-3.0</Framework>
         <DontReport>true</DontReport>
       </TestProjects>
+      -->
       <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'>
         <Framework>net-3.5</Framework>
         <DontReport>true</DontReport>
