@@ -92,28 +92,26 @@
   </ItemGroup>
   
    <ItemGroup>
-     <!--
-     <TestProjects Include='$(TestsPath)\NFluent.20.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
+     <TestProjects Include='$(TestsPath)\NFluent.20.Tests\bin\$(Configuration)\NFluent.Tests.dll' Condition="'$(APPVEYOR)'!='True'">
         <Framework>net-2.0</Framework>
         <DontReport>true</DontReport>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.30.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
+      <TestProjects Include='$(TestsPath)\NFluent.30.Tests\bin\$(Configuration)\NFluent.Tests.dll' Condition="'$(APPVEYOR)'!='True'">
         <Framework>net-3.0</Framework>
         <DontReport>true</DontReport>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'>
+      <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll' Condition="'$(APPVEYOR)'!='True'">
         <Framework>net-3.5</Framework>
         <DontReport>true</DontReport>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.35.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
+      <TestProjects Include='$(TestsPath)\NFluent.35.Tests\bin\$(Configuration)\NFluent.Tests.dll' Condition="'$(APPVEYOR)'!='True'">
         <Framework>net-3.5</Framework>
         <DontReport>true</DontReport>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll'>
+      <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll' Condition="'$(APPVEYOR)'!='True'">
         <Framework>net-3.5</Framework>
         <DontReport>true</DontReport>
       </TestProjects>
-      -->
       <TestProjects Include='$(TestsPath)\NFluent.40.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'>
         <Framework>net-4.0</Framework>
         <DontReport>true</DontReport>
@@ -187,5 +185,4 @@
         <DontReport>true</DontReport>
       </TestProjects>
     </ItemGroup>
-
 </Project>
