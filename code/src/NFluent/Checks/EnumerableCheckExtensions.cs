@@ -243,7 +243,6 @@ namespace NFluent
             else
             {
                 EqualityHelper.ImplementEquivalentTo(checker, ExtractEnumerableValueFromPossibleOneValueArray(expectedValues));
-                
             }
             return ExtensibilityHelper.BuildCheckLink(context);
         }

@@ -19,6 +19,10 @@ namespace NFluent.Helpers
     internal class DifferenceDetails
     {
         private DifferenceMode Mode {get;}
+
+        public bool StillNeededForEquivalence => this.Mode != DifferenceMode.Moved && this.Mode !=DifferenceMode.Value;
+        public bool StillNeededForEquality => this.Mode != DifferenceMode.FoundInsteadOf;
+
         private DifferenceDetails(string firstName, object firstValue, object secondValue, int index, DifferenceMode mode)
         {
             this.Mode = mode;
@@ -26,6 +30,7 @@ namespace NFluent.Helpers
             this.FirstValue = firstValue;
             this.SecondValue = secondValue;
             this.Index = index;
+            this.ActualIndex = index;
         }
 
         public static DifferenceDetails WasNotExpected(string checkedName, object value, int index)
@@ -52,6 +57,11 @@ namespace NFluent.Helpers
             return new DifferenceDetails(checkedName, value, null, expectedIndex, DifferenceMode.Moved) { ActualIndex = actualIndex };
         }
 
+        public static DifferenceDetails WasFoundInsteadOf(string checkedName, object checkedValue, object expectedValue)
+        {
+            return new DifferenceDetails(checkedName, checkedValue, expectedValue, 0, DifferenceMode.FoundInsteadOf);
+        }
+
         public string FirstName { get; internal set; }
         public object FirstValue { get; internal set; }
         public object SecondValue { get; internal set; }
@@ -69,13 +79,14 @@ namespace NFluent.Helpers
                     return forEquivalence ? $"{this.SecondValue.ToStringProperlyFormatted()} should be present but was not found."
                         : $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}.";
                 case DifferenceMode.Moved:
-                    return $"{this.FirstName} was found at index {this.ActualIndex} instead of {this.Index}.";
+                    return $"{this.FirstName} value ('{this.FirstValue}') was found at index {this.ActualIndex} instead of {this.Index}.";
                 case DifferenceMode.Attribute:
                     return $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
-                case DifferenceMode.Value:
+                case DifferenceMode.FoundInsteadOf:
+                    return $"{this.FirstValue.ToStringProperlyFormatted()} should not exist (found in {this.FirstName}); {this.SecondValue.ToStringProperlyFormatted()} should be found instead.";
+               case DifferenceMode.Value:
                 default:
-                    return forEquivalence ? $"{this.FirstValue.ToStringProperlyFormatted()} should not exist (found in {this.FirstName}); {this.SecondValue.ToStringProperlyFormatted()} should be found instead.":
-                        $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
+                    return $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
             }
         }
 
@@ -85,7 +96,8 @@ namespace NFluent.Helpers
             Value,
             Missing,
             Extra,
-            Moved
+            Moved,
+            FoundInsteadOf
         };
     }
 }

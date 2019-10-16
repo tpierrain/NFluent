@@ -315,7 +315,7 @@
         private class AltDummyClass
         {
             // ReSharper disable once NotAccessedField.Local
-            private int x = 2;
+            private readonly int x = 2;
 
             // ReSharper disable once NotAccessedField.Local
             private int y = 3;

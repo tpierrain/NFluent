@@ -328,8 +328,8 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["foo"] = 0, ["bar"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one. 2 differences found! But they are equivalent.", 
-                "actual entry \"foo\" was found at index 1 instead of 0.", 
-                "actual entry \"bar\" was found at index 0 instead of 1.", 
+                "actual entry \"foo\" value ('0') was found at index 1 instead of 0.", 
+                "actual entry \"bar\" value ('1') was found at index 0 instead of 1.", 
                 "The checked dictionary:", 
                 "\t{[foo, 0], [bar, 1]} (2 items)", 
                 "The expected dictionary:", 
@@ -337,9 +337,9 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["foo"] = 1, ["bar"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one. 3 differences found!", 
-                "actual entry \"foo\" was found at index 1 instead of 0.", 
+                "actual entry \"foo\" value ('0') was found at index 1 instead of 0.", 
                 "actual[\"foo\"] = 1 instead of 0.", 
-                "actual entry \"bar\" was found at index 0 instead of 1.",
+                "actual entry \"bar\" value ('1') was found at index 0 instead of 1.",
                 "The checked dictionary:", 
                 "\t{[foo, 1], [bar, 1]} (2 items)", 
                 "The expected dictionary:", 
