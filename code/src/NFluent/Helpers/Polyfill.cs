@@ -224,6 +224,19 @@ namespace NFluent
             return result;
         }
         
+        public static int Count<T>(this IList<T> list, Predicate<T> predicate)
+        {
+            var count = 0;
+            foreach (var item in list)
+            {
+                if (predicate(item))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+        
         public static void RemoveAll<T>(this IList<T> list, Predicate<T> predicate)
         {
             for (var i = 0; i < list.Count; i++)

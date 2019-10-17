@@ -36,7 +36,6 @@ namespace NFluent.Helpers
         private const string SutLabel = "actual";
         private const float FloatCloseToThreshold = 1f / 100000;
         private const double DoubleCloseToThreshold = 1d / 100000000;
-        private static int indexOther;
 
         internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(
             ICheck<T> check,
@@ -485,7 +484,7 @@ namespace NFluent.Helpers
                     temp /= firstArray.SizeOfDimension(j);
                 }
 
-                return $"actual[{string.Join(",", indices)}]";
+                return $"actual[{string.Join(",", indices.Select(x=> x.ToString()).ToArray())}]";
             }, firstSeen); 
         }
 
