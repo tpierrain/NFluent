@@ -28,33 +28,6 @@ namespace NFluent.Extensions
 #endif
     internal static class DictionaryExtensions
     {
-        public static bool TryGet<TK, TV>(this IEnumerable<KeyValuePair<TK, TV>> dico, TK key, out TV value)
-        {
-            if (dico is IDictionary<TK, TV> trueDico)
-            {
-                return trueDico.TryGetValue(key, out value);
-            }
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
-
-            if (dico is IReadOnlyDictionary<TK, TV> roDico)
-            {
-                return roDico.TryGetValue(key, out value);
-            }
-#endif
-            foreach (var pair in dico)
-            {
-                if (!Equals(pair.Key, key))
-                {
-                    continue;
-                }
-
-                value = pair.Value;
-                return true;
-            }
-
-            value = default(TV);
-            return false;
-        }
 
         public static IReadOnlyDictionary<K, V> WrapDictionary<K, V>(object knownDictionary)
         {

@@ -6,6 +6,8 @@
 ### Fixes
 * Check.That(IDictionary).IsEquivalent now fails as expected when the _sut_ has entries that do not exist in the expected dictionary.
 * IsEquivalent now performs deep equivalence. For example, it supports Dictionaries of Dictionaries.
+* Enumeration of KeyValue pairs are no longer treated as dictionaries but as enumeration. This behavior was a hack
+to support custom IDictionary<K,V> implementations. Detection logic has been improved so this is no longer necessary.
 
 ### GitHub Issues
 * #306

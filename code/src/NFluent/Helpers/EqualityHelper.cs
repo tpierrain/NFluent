@@ -456,7 +456,7 @@ namespace NFluent.Helpers
         private static AggregatedDifference ValueDifferenceArray(Array firstArray, string firstName, Array secondArray, ICollection<object> firstSeen)
         {
             var valueDifferences = new AggregatedDifference();
-
+            // TODO: consider providing more details when dimension(s) differs
             if (firstArray.Rank != secondArray.Rank)
             {
                 valueDifferences.Add(DifferenceDetails.DoesNotHaveExpectedAttribute(firstName + ".Rank", firstArray.Rank, secondArray.Rank, 0));
@@ -476,9 +476,6 @@ namespace NFluent.Helpers
                     i));
                 return valueDifferences;
             }
-
-            var notSeen = new List<object>(firstArray.Length);
-            var unexpected = new List<object>(firstArray.Length);
 
             return ScanEnumeration(firstArray, secondArray, (index)=>
             {

@@ -175,8 +175,9 @@ namespace NFluent.Tests
         {
             var array = new[] {new []{1, 2, 3}, new []{4, 5, 6}};
             var altArray = new[] {new []{4, 5, 6}, new []{1, 2, 3}};
-            Check.That((IEnumerable)array).IsEquivalentTo(altArray);
-            Check.That((IEnumerable)array).IsEquivalentTo( new []{4, 5, 6}, new []{1, 3, 2});
+//            Check.That((IEnumerable)array).IsEquivalentTo(altArray);
+//            Check.That((IEnumerable)array).IsEquivalentTo( new []{4, 5, 6}, new []{1, 3, 2});
+            Check.That((IEnumerable)array).IsEquivalentTo( new []{1, 3, 2}, new []{5, 4, 6});
         }
         
         [Test]
