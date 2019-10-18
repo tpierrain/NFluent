@@ -74,7 +74,7 @@ namespace NFluent.Helpers
             {
                 case DifferenceMode.Extra:
                     return forEquivalence ? $"{this.FirstName} value should not exist (value {this.FirstValue.ToStringProperlyFormatted()})":
-                        $"{this.FirstName} should not exist (value {this.FirstValue.ToStringProperlyFormatted()})";
+                        $"{this.FirstName} should not exist (value {this.FirstValue.ToStringProperlyFormatted()}).";
                 case DifferenceMode.Missing:
                     return forEquivalence ? $"{this.SecondValue.ToStringProperlyFormatted()} should be present but was not found."
                         : $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}.";

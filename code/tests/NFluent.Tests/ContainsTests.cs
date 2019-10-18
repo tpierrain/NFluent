@@ -208,7 +208,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                 Check.That(actual.ToCharArray()).IsEquivalentTo(expected.ToCharArray())
             ).IsAFailingCheckWithMessage("", 
-                "The checked enumerable is not equivalent to the expected value(s). 6 differences found!", 
+                "The checked enumerable is not equivalent to the expected one. 6 differences found!", 
                 "'a' should not exist (found in actual[13]); 'p' should be found instead.", 
                 "'u' should not exist (found in actual[16]); 'e' should be found instead.", 
                 "'a' should not exist (found in actual[17]); 'e' should be found instead.", 
@@ -217,7 +217,7 @@ namespace NFluent.Tests
                 "'.' should not exist (found in actual[30]); 'x' should be found instead.",
                 "The checked enumerable:", 
                 "\t{'t', 'h', 'i', 's', ' ', 'i', 's', ' ', 's', 'o', 'm', 'e', ' ', 'a', 'c', 't', 'u', 'a', 'l', ' ', ...} (31 items)", 
-                "The expected value(s):", 
+                "The expected enumerable:", 
                 "\t{'t', 'h', 'i', 's', ' ', 'i', 's', ' ', 's', 'o', 'm', 'e', ' ', 'e', 'x', 'p', 'e', 'c', 't', 'e', ...} (31 items)");
         }
 

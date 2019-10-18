@@ -128,7 +128,7 @@ namespace NFluent.Helpers
             return !FluentEquals(instance, expected, Check.EqualMode).IsDifferent;
         }
 
-        internal static bool FluentEquivalent(object instance, object expected)
+        private static bool FluentEquivalent(object instance, object expected)
         {
             var scan = FluentEquals(instance, expected, Check.EqualMode);
             return !scan.IsDifferent || scan.IsEquivalent;
@@ -308,7 +308,7 @@ namespace NFluent.Helpers
                     }
 
                     test.Fail(scan.GetErrorMessage(sut, content, true));
-                }).DefineExpectedValues(content, length)
+                }).DefineExpectedValue(content)
                 .OnNegate("The {checked} is equivalent to the {expected} whereas it should not.").EndCheck();
         }
 
@@ -372,6 +372,7 @@ namespace NFluent.Helpers
             IReadOnlyDictionary<object, object> expectedDico,
             ICollection<object> firstItemsSeen)
         {
+            // TODO: improve error messages
             var valueDifferences = new AggregatedDifference { IsEquivalent = true };
 
             var actualKeyIterator = sutDico.Keys.GetEnumerator();
@@ -406,8 +407,9 @@ namespace NFluent.Helpers
                 else
                 {
                     var actualKey = actualKeyIterator.Current;
+                    var actualKeyName = $"{sutName} key[{index}]";
                     var itemDiffs = ValueDifference(actualKey,
-                        $"{sutName} key[{index}]",
+                        actualKeyName,
                         expectedKeyIterator.Current,
                         index,
                         firstItemsSeen);
@@ -436,6 +438,11 @@ namespace NFluent.Helpers
                             valueDifferences.IsEquivalent &= itemDiffs.IsEquivalent || !itemDiffs.IsDifferent;
                             valueDifferences.Add(
                                 DifferenceDetails.WasFoundElseWhere($"{sutName} entry {actualKey.ToStringProperlyFormatted()}", expectedDico[actualKey], index, expectedIndex));
+                        }
+                        else
+                        {
+                            valueDifferences.Add(DifferenceDetails.WasNotExpected($"{sutName}'s key {actualKey.ToStringProperlyFormatted()}", sutDico[actualKey], index));
+                            valueDifferences.IsEquivalent = false;
                         }
                     }
                     valueDifferences.Merge(itemDiffs);
@@ -502,7 +509,10 @@ namespace NFluent.Helpers
             if (otherDico != null)
             {
                 var firstDico = DictionaryExtensions.WrapDictionary<object, object>(firstItem);
-                return ValueDifferenceDictionary(firstDico, firstName, otherDico, firstSeen);
+                if (firstDico != null)
+                {
+                    return ValueDifferenceDictionary(firstDico, firstName, otherDico, firstSeen);
+                }
             }
 
             return ScanEnumeration(firstItem, otherItem, (x) => $"{firstName}[{x}]", firstSeen);

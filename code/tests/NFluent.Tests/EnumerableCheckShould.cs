@@ -141,11 +141,11 @@ namespace NFluent.Tests
             Check.ThatCode(()=>
             Check.That((IEnumerable)array).IsEquivalentTo(3, 2)).
                 IsAFailingCheckWithMessage("", 
-                    "The checked enumerable is not equivalent to the expected value(s).", 
+                    "The checked enumerable is not equivalent to the expected one.", 
                     "actual.Dimension(0) = 3 instead of 2.", 
                     "The checked enumerable:", 
                     "\t{1, 2, 3} (3 items)", 
-                    "The expected value(s):", 
+                    "The expected enumerable:", 
                     "\t{3, 2} (2 items)");
         }
 
@@ -156,11 +156,11 @@ namespace NFluent.Tests
             Check.ThatCode(()=>
             Check.That((IEnumerable)array).IsEquivalentTo(3, 2, 4)).
                 IsAFailingCheckWithMessage("", 
-                    "The checked enumerable is not equivalent to the expected value(s).", 
+                    "The checked enumerable is not equivalent to the expected one.", 
                     "1 should not exist (found in actual[0]); 4 should be found instead.", 
                     "The checked enumerable:", 
                     "\t{1, 2, 3} (3 items)", 
-                    "The expected value(s):", 
+                    "The expected enumerable:", 
                     "\t{3, 2, 4} (3 items)");
         }
 
@@ -188,11 +188,11 @@ namespace NFluent.Tests
             Check.ThatCode(()=>
                     Check.That((IEnumerable)array).IsEquivalentTo( new List<List<int>> {new List<int>{5, 4, 6}, new List<int>{3, 3, 1}})).
                 IsAFailingCheckWithMessage("", 
-                    "The checked enumerable is not equivalent to the expected value(s).", 
+                    "The checked enumerable is not equivalent to the expected one.", 
                     "{1, 2, 3} should not exist (found in actual[0]); {3, 3, 1} should be found instead.", 
                     "The checked enumerable:", 
                     "\t{{1, 2, 3}, {4, 5, 6}} (2 items)", 
-                    "The expected value(s):", 
+                    "The expected enumerable:", 
                     "\t{{5, 4, 6}, {3, 3, 1}} (2 items)");
         }
         
@@ -203,49 +203,49 @@ namespace NFluent.Tests
             var array = new[] {1, 2, 3};
             
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 4)).IsAFailingCheckWithMessage("", 
-                "The checked enumerable is not equivalent to the expected value(s).", 
+                "The checked enumerable is not equivalent to the expected one.", 
                 "3 should not exist (found in actual[2]); 4 should be found instead.",
                 "The checked enumerable:",
                 "\t{1, 2, 3} (3 items)", 
-                "The expected value(s):", 
+                "The expected enumerable:", 
                 "\t{1, 2, 4} (3 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4)).IsAFailingCheckWithMessage("", 
-                "The checked enumerable is not equivalent to the expected value(s).", 
+                "The checked enumerable is not equivalent to the expected one.", 
                 "actual.Dimension(0) = 3 instead of 4.", 
                 "The checked enumerable:", 
                 "\t{1, 2, 3} (3 items)", 
-                "The expected value(s):", 
+                "The expected enumerable:", 
                 "\t{1, 2, 3, 4} (4 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4, 5)).IsAFailingCheckWithMessage("", 
-                "The checked enumerable is not equivalent to the expected value(s).", 
+                "The checked enumerable is not equivalent to the expected one.", 
                 "actual.Dimension(0) = 3 instead of 5.",
                 "The checked enumerable:",
                 "\t{1, 2, 3} (3 items)", 
-                "The expected value(s):", 
+                "The expected enumerable:", 
                 "\t{1, 2, 3, 4, 5} (5 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2)).IsAFailingCheckWithMessage("", 
-                "The checked enumerable is not equivalent to the expected value(s).", 
+                "The checked enumerable is not equivalent to the expected one.", 
                 "actual.Dimension(0) = 3 instead of 2.",
                 "The checked enumerable:",
                 "\t{1, 2, 3} (3 items)", 
-                "The expected value(s):", 
+                "The expected enumerable:", 
                 "\t{1, 2} (2 items)");
 
             Check.ThatCode(() => Check.That<IEnumerable<int>>(null).IsEquivalentTo(1)).IsAFailingCheckWithMessage("",
                 "The checked enumerable is null whereas it should not.", 
                 "The checked enumerable:", 
                 "\t[null]", 
-                "The expected value(s):", 
+                "The expected enumerable:", 
                 "\t{1} (1 item)");
 
             Check.ThatCode(() => Check.That<IEnumerable<int>>(new[]{1}).IsEquivalentTo(null)).IsAFailingCheckWithMessage("",
                 "The checked enumerable must be null.", 
                 "The checked enumerable:", 
                 "\t{1} (1 item)", 
-                "The expected value(s):", 
+                "The expected enumerable:", 
                 "\t[null]");
         }
         internal static IEnumerable<char> GetData()
@@ -273,10 +273,10 @@ namespace NFluent.Tests
         {
             var array = new[] {1, 2, 3};
             Check.ThatCode(() => Check.That(array).Not.IsEquivalentTo(1, 2, 3)).IsAFailingCheckWithMessage("", 
-                "The checked enumerable is equivalent to the expected value(s) whereas it should not.", 
+                "The checked enumerable is equivalent to the given one whereas it should not.", 
                 "The checked enumerable:",
                 "\t{1, 2, 3} (3 items)", 
-                "The expected value(s): different from", 
+                "The expected enumerable: different from", 
                 "\t{1, 2, 3} (3 items)");
         }
 

@@ -47,58 +47,8 @@ namespace NFluent
         public static ICheckLink<ICheck<IEnumerable<KeyValuePair<TK, TU>>>> IsEquivalentTo<TK, TU>(
             this ICheck<IEnumerable<KeyValuePair<TK, TU>>> check, IEnumerable<KeyValuePair<TK, TU>> other)
         {
-            ExtensibilityHelper.BeginCheck(check).Analyze((sut, test) =>
-                {
-                    if (sut == null)
-                    {
-                        if (other != null)
-                        {
-                            test.Fail("The {checked} is null whereas it should not.");
-                        }
-
-                        return;
-                    }
-
-                    if (other == null)
-                    {
-                        test.Fail("The {checked} must be null.");
-                        return;
-                    }
-
-                    foreach (var pair in other)
-                    {
-                        if (!sut.TryGet(pair.Key, out var value))
-                        {
-                            test.Fail(
-                                $"The {{checked}} is not equivalent to the {{expected}}. Missing entry ({pair.Key.ToStringProperlyFormatted().DoubleCurlyBraces()}, {pair.Value.ToStringProperlyFormatted().DoubleCurlyBraces()}).");
-                            return;
-                        }
-
-                        if (!EqualityHelper.FluentEquivalent(pair.Value, value))
-                        {
-                            test.Fail(
-                                $"The {{checked}} is not equivalent to the {{expected}}. Entry ({pair.Key.ToStringProperlyFormatted().DoubleCurlyBraces()}) does not have the expected value."+Environment.NewLine+
-                                "Expected:"+Environment.NewLine+
-                                $"\t{pair.Value.ToStringProperlyFormatted().DoubleCurlyBraces()}"+Environment.NewLine+
-                                "Actual:"+Environment.NewLine+
-                                $"\t{value.ToStringProperlyFormatted().DoubleCurlyBraces()}");
-                            return;
-                        }
-                    }
-
-                    foreach (var pair in sut)
-                    {
-                        if (!other.TryGet(pair.Key, out _))
-                        {
-                            test.Fail(
-                                $"The {{checked}} is not equivalent to the {{expected}}. Extra entry present({pair.Key.ToStringProperlyFormatted().DoubleCurlyBraces()}, {pair.Value.ToStringProperlyFormatted().DoubleCurlyBraces()}).");
-                            return;
-                        }
-                    }
-                }).
-                DefineExpectedValue(other).
-                OnNegate("The {checked} is equivalent to the {expected}, whereas it should not!", MessageOption.NoExpectedBlock).
-                EndCheck();
+            var checker = ExtensibilityHelper.BeginCheck(check);
+            EqualityHelper.ImplementEquivalentTo(checker, other);
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 

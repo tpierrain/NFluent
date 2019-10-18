@@ -354,11 +354,12 @@ namespace NFluent.Tests
                 "\t{[bar, 1], [foo, 0]} (2 items)");
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["bar!"] = 1, ["foo"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
-                "The checked dictionary is different from the expected one. 2 differences found!", 
-                "actual key[0] = \"bar!\" instead of \"bar\".", 
-                "actual[\"foo\"] = 1 instead of 0.",
-                "The checked dictionary:", 
-                "\t{[bar!, 1], [foo, 1]} (2 items)", 
+                "The checked dictionary is different from the expected one. 3 differences found!", 
+                "actual's key \"bar!\" should not exist (value 1).",
+                "actual key[0] = \"bar!\" instead of \"bar\".",
+                "actual[\"foo\"] = 1 instead of 0.", 
+                "The checked dictionary:",
+                "\t{[bar!, 1], [foo, 1]} (2 items)",
                 "The expected dictionary:", 
                 "\t{[bar, 1], [foo, 0]} (2 items)");
             Check.ThatCode( () =>
@@ -372,7 +373,7 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
                 Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo"] = 0, ["extra"] = 2 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one.", 
-                "actual[\"extra\"] should not exist (value 2)",
+                "actual[\"extra\"] should not exist (value 2).",
                 "The checked dictionary:", 
                 "\t{[bar, 1], [foo, 0], [extra, 2]} (3 items)", 
                 "The expected dictionary:", 
@@ -421,7 +422,8 @@ namespace NFluent.Tests
             Check.That(dic).IsEquivalentTo(customDic);
             dic["extra"] = 20;
             Check.ThatCode(() => Check.That(customDic).IsEquivalentTo(dic)).IsAFailingCheckWithMessage("", 
-                "The checked enumerable is not equivalent to the expected dictionary. Missing entry (\"extra\", 20).",
+                "The checked enumerable is not equivalent to the expected dictionary.",
+                "[extra, 20] should be present but was not found.",
                 "The checked enumerable:", 
                 "\t{[otherKey, 15], [key, 12]} (2 items)", 
                 "The expected dictionary:", 
@@ -435,18 +437,16 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                 Check.That(new Dictionary<string, object> { ["bar"] = new[] { "bar", "baz" } }).IsEquivalentTo(expected)).IsAFailingCheckWithMessage(
                 "", 
-                "The checked dictionary is not equivalent to the expected one. Missing entry (\"foo\", {\"bar\", \"baz\"}).",
+                "The checked dictionary is not equivalent to the expected one.",
+                "actual's key \"bar\" value should not exist (value {\"bar\", \"baz\"})",
                 "The checked dictionary:", 
                 "\t{[bar, System.String[]]} (1 item)", 
                 "The expected dictionary:", 
                 "\t{[foo, System.String[]]} (1 item)");
             Check.ThatCode(() =>
                 Check.That(new Dictionary<string, object> { ["foo"] = new[] { "bar", "bar" } }).IsEquivalentTo(expected)).IsAFailingCheckWithMessage("", 
-                "The checked dictionary is not equivalent to the expected one. Entry (\"foo\") does not have the expected value.", 
-                "Expected:", 
-                "\t{\"bar\", \"baz\"}", 
-                "Actual:", 
-                "\t{\"bar\", \"bar\"}", 
+                "The checked dictionary is not equivalent to the expected one.", 
+                "\"bar\" should not exist (found in actual[1]); \"baz\" should be found instead.",
                 "The checked dictionary:", 
                 "\t{[foo, System.String[]]} (1 item)", 
                 "The expected dictionary:", 
@@ -454,8 +454,9 @@ namespace NFluent.Tests
             // added due to GH #307
             Check.ThatCode(() =>
                 Check.That(expected).IsEquivalentTo(new Dictionary<string, object>())).IsAFailingCheckWithMessage("", 
-                "The checked dictionary is not equivalent to the expected one. Extra entry present(\"foo\", {\"bar\", \"baz\"}).",
-                "The checked dictionary:", 
+                "The checked dictionary is not equivalent to the expected one.",
+                "actual[\"foo\"] value should not exist (value {\"bar\", \"baz\"})",
+            "The checked dictionary:", 
                 "\t{[foo, System.String[]]} (1 item)", 
                 "The expected dictionary:", 
                 "\t{} (0 item)");
@@ -483,8 +484,10 @@ namespace NFluent.Tests
             var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
             Check.ThatCode(() =>
                 Check.That(dict).Not.IsEquivalentTo(expected)).IsAFailingCheckWithMessage("", 
-                "The checked dictionary is equivalent to the expected one, whereas it should not!", 
+                "The checked dictionary is equivalent to the given one whereas it should not.", 
                 "The checked dictionary:", 
+                "\t{[foo, System.String[]]} (1 item)", 
+                "The expected dictionary: different from", 
                 "\t{[foo, System.String[]]} (1 item)");
         }
     }

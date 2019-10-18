@@ -1,6 +1,7 @@
 ## V 2.6.1
 ### Improvements
 * Check.That(IEnumerable).IsEquivalent(...) now uses default logic for equality check.
+* Significantly improved error messages for enumeration and dictionary equality comparison.
 
 ### Fixes
 * Check.That(IDictionary).IsEquivalent now fails as expected when the _sut_ has entries that do not exist in the expected dictionary.
@@ -15,7 +16,7 @@
 * NFluent now supports assumption through Assuming entry point. For example you express it as :Assume.That(sut).IsEqualTo(expected); in a nutshell
 you type Assuming instead of Check. All checks are available. Note that actual support depends on the underlying testing framework. As of now
 it is supported for NUnit and MsTest
-* NFluent now supports DateTimeOffset type with the same checks than for DateTime. These checks fails
+* NFluent now supports DateTimeOffset type with the same gchecks than for DateTime. These checks fails
 if the offsets are different. The IsSameUtcInstant cheks perform a comparison integrating the offset.
 
 ### New checks
