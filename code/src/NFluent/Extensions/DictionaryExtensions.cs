@@ -28,7 +28,6 @@ namespace NFluent.Extensions
 #endif
     internal static class DictionaryExtensions
     {
-
         public static IReadOnlyDictionary<K, V> WrapDictionary<K, V>(object knownDictionary)
         {
             // if the object implements IDictionary
@@ -45,7 +44,6 @@ namespace NFluent.Extensions
             {
                 var targetRoType= typeof(ReadOnlyDictionaryWrapper<,,,>).MakeGenericType(typeof(K), typeof(V), roDictionaryInterface.GetGenericArguments()[0], roDictionaryInterface.GetGenericArguments()[1]);
                 var roConstructor = targetRoType.GetConstructor(new[] {roDictionaryInterface});
-                Debug.Assert(roConstructor!= null, "Internal error. Failed to find ReadOnlyDictionaryWrapper builder.");
                 return (IReadOnlyDictionary<K,V>) roConstructor.Invoke(new[] {knownDictionary});
             }
         
@@ -59,7 +57,6 @@ namespace NFluent.Extensions
 
             var targetType= typeof(DictionaryWrapper<,,,>).MakeGenericType(typeof(K), typeof(V), dictionaryInterface.GetGenericArguments()[0], dictionaryInterface.GetGenericArguments()[1]);
             var constructor = targetType.GetConstructor(new[] {dictionaryInterface});
-            Debug.Assert(constructor!= null, "Internal error. Failed to find DictionaryWrapper builder.");
             return (IReadOnlyDictionary<K,V>) constructor.Invoke(new[] {knownDictionary});
         }
 

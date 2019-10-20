@@ -324,7 +324,7 @@ namespace NFluent
             Func<T, bool> predicate)
         {
             var item = default(T);
-            var label = string.Empty;
+            string label = null;
             ExtensibilityHelper.BeginCheck(check).
                 FailIfNull().
                 Analyze((sut, test) =>
@@ -395,7 +395,7 @@ namespace NFluent
             Func<T, bool> predicate)
         {
             var item = default(T);
-            var label = string.Empty;
+            string label = null;
             ExtensibilityHelper.BeginCheck(check).
                 FailIfNull().
                 Analyze((sut, test) =>
@@ -413,7 +413,6 @@ namespace NFluent
                             index = i;
                             item = scan.Current;
                             break;
-
                         }
                         if (!index.HasValue)
                         {

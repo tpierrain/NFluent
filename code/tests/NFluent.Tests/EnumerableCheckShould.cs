@@ -124,6 +124,14 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void FlagAsNonEquivalentIfMissingEntries()
+        {
+            var array = new[] {1, 2, 3};
+
+            Check.That(array).Not.IsEquivalentTo((IEnumerable) new[] {1, 2});
+        }
+
+        [Test]
         public void SupportIEnumerableObject()
         {
             var collection = new List<object> {1, 2, 3, 4};

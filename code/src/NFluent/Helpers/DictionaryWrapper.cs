@@ -50,14 +50,9 @@ namespace NFluent.Helpers
 
         public bool TryGetValue(TK key, out TV value)
         {
-            if (this.source.TryGetValue((TK2) key, out var temp))
-            {
-                value = temp;
-                return true;
-            }
-
-            value = default(TV);
-            return false;
+            var found = this.source.TryGetValue((TK2) key, out var temp);
+            value = temp;
+            return found;
         }
 
         public TV this[TK key] => this.source[(TK2) key];
@@ -98,14 +93,9 @@ namespace NFluent.Helpers
 
         public bool TryGetValue(TK key, out TV value)
         {
-            if (this.source.TryGetValue((TK2) key, out var temp))
-            {
-                value = temp;
-                return true;
-            }
-
-            value = default(TV);
-            return false;
+            var found = this.source.TryGetValue((TK2) key, out var temp);
+            value = temp;
+            return found;
         }
 
         public TV this[TK key] => this.source[(TK2) key];
@@ -143,14 +133,16 @@ namespace NFluent.Helpers
 
         public bool TryGetValue(TK key, out TV value)
         {
-            if (this.source.Contains(key))
+            var found = this.source.Contains(key);
+            if (found)
             {
                 value = (TV) this.source[key];
-                return true;
             }
-
-            value = default(TV);
-            return false;
+            else
+            {
+                value = default(TV);
+            }
+            return found;
         }
 
         public TV this[TK key] => (TV) this.source[key];

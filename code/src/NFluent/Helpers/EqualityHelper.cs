@@ -74,10 +74,7 @@ namespace NFluent.Helpers
                         options |= MessageOption.WithHash;
                     }
 
-                    if (expected is IEnumerable && differenceDetails.GetCount(false) > 0)
-                    {
-                        test.SetValuesIndex(differenceDetails.GetFirstIndex(false));
-                    }
+                    test.SetValuesIndex(differenceDetails.GetFirstIndex(false));
 
                     test.Fail(differenceDetails.GetErrorMessage(sut, expected), options);
                 })
@@ -531,7 +528,7 @@ namespace NFluent.Helpers
                 if (!scanner.MoveNext())
                 {
                     valueDifferences.Add(DifferenceDetails.WasNotExpected(firstItemName, item, index));
-                    mayBeEquivalent = false;
+                    unexpected.Add(new KeyValuePair<object, int>(item, index));
                     break;
                 }
 
@@ -658,7 +655,7 @@ namespace NFluent.Helpers
         {
             if (this.details.Count == 1)
             {
-                return !Equals(this.details[0].FirstValue, actual) || !Equals(this.details[0].SecondValue, expected);
+                return !Equals(this.details[0].FirstValue, actual) && !Equals(this.details[0].SecondValue, expected);
             }
 
             return true;
@@ -689,7 +686,7 @@ namespace NFluent.Helpers
                 }
 
                 var messages = 0;
-                for (var i = 0; i < this.details.Count && messages<differenceDetailsCount; i++)
+                for (var i = 0; messages < differenceDetailsCount; i++)
                 {
                     if ((forEquivalence && !this.details[i].StillNeededForEquivalence)||(!forEquivalence && !this.details[i].StillNeededForEquality))
                     {
