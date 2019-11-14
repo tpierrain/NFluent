@@ -17,7 +17,9 @@ namespace NFluent
 {
     using System;
     using Extensibility;
+    using Helpers;
     using Kernel;
+    using Messages;
 
     /// <summary>
     /// Provides check methods to be executed on a DateTimeOffset instance. 
@@ -376,6 +378,49 @@ namespace NFluent
                 .ComparingTo(other, "same day", "different day")
                 .OnNegate("The {0} is equal to the {1} (ignoring hours) whereas it must not.", MessageOption.NoCheckedBlock)
                 .EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+        
+        /// <summary>
+        /// Determines whether the actual DateTimeOffset is close to an expected value within a given within.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <param name="within">The within.</param>
+        /// <returns>A continuation check.</returns>
+        public static ICheckLink<ICheck<DateTimeOffset>> IsCloseTo(this ICheck<DateTimeOffset> check, DateTimeOffset expected, Duration within)
+        {
+            var range = new DateTimeOffsetRangeBlock(expected, within);
+            return check.IsInRange(range);
+        }
+        
+        /// <summary>
+        /// Determines whether the actual DateTimeOffset is close to an expected value within a given within.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <param name="within">The within.</param>
+        /// <returns>A continuation check.</returns>
+        public static ICheckLink<ICheck<DateTimeOffset>> IsCloseTo(this ICheck<DateTimeOffset> check, DateTimeOffset expected, TimeSpan within)
+        {
+            var range = new DateTimeOffsetRangeBlock(expected, within);
+            return check.IsInRange(range);
+        }
+        
+        /// <summary>
+        /// Determines whether the actual DateTimeOffset is close to an expected value within a given within.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="range">The expected range.</param>
+        /// <returns>A continuation check.</returns>
+        internal static ICheckLink<ICheck<DateTimeOffset>> IsInRange(this ICheck<DateTimeOffset> check, DateTimeOffsetRangeBlock range)
+        {
+            ExtensibilityHelper.BeginCheck(check).
+                                FailWhen((sut) => !range.IsInRange(sut), "The {0} is outside the expected value range.").
+                                DefineExpectedValue(range).
+                                OnNegate("The {0} is within the expected range, whereas it must not.").
+                                EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
         }
