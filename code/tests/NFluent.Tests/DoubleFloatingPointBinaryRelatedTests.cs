@@ -101,25 +101,33 @@ namespace NFluent.Tests
             })
             .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked double value is a finite number whereas it must not." + Environment.NewLine + "The checked double value:" + Environment.NewLine + "\t[20]");
         }
+        
+        #endregion
+        
+        #region IsCloseTo
 
         [Test]
-        public void IsAroundWorks()
+        public void IsCloseToWorks()
         {
             Check.That(Twenty).IsCloseTo(20.1, 0.2);
             Check.That(Twenty).IsCloseTo(21, 1);
         }
 
         [Test]
-        public void IsAroundShouldFailsIfToFar()
+        public void IsCloseToShouldFailsIfToFar()
         {
             using (new CultureSession("en-US"))
             {
-                Check.ThatCode(() => {
-                    Check.That(TwentyF).IsCloseTo(20.1, 0.01);
-                }).IsAFailingCheckWithMessage(Environment.NewLine+ "The checked value is outside the expected value range." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[20]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[20.1 (+/- 0.01)]");
+                Check.ThatCode(() => Check.That(TwentyF).IsCloseTo(20.1, 0.01))
+                     .IsAFailingCheckWithMessage("",
+                                                 "The checked value is outside the expected value range.",
+                                                 "The checked value:",
+                                                 "\t[20]",
+                                                 "The expected value:",
+                                                 "\t[20.1 (+/- 0.01)]");
             }
         }
-
+        
         #endregion
     }
 }
