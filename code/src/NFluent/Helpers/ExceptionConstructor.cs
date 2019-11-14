@@ -64,23 +64,31 @@ namespace NFluent.Helpers
                 return;
             }
 
-            var exportedTypes = assembly.GetExportedTypes();
-
-            foreach (var type in exportedTypes)
+            try
             {
-                if (type.Namespace.StartsWith(this.@namespace))
+                var exportedTypes = assembly.GetExportedTypes();
+
+                foreach (var type in exportedTypes)
                 {
-                    if (type.Name == this.assertExceptionName)
+                    if (type.Namespace.StartsWith(this.@namespace))
                     {
-                        this.assertExceptionBuilder = GetConstructor(type);
-                        this.assertExceptionType = type;
-                    }
-                    else if (type.Name == this.inconclusiveExceptionName)
-                    {
-                        this.inconclusiveExceptionBuilder = GetConstructor(type);
-                        this.inconclusiveExceptionType = type;
+                        if (type.Name == this.assertExceptionName)
+                        {
+                            this.assertExceptionBuilder = GetConstructor(type);
+                            this.assertExceptionType = type;
+                        }
+                        else if (type.Name == this.inconclusiveExceptionName)
+                        {
+                            this.inconclusiveExceptionBuilder = GetConstructor(type);
+                            this.inconclusiveExceptionType = type;
+                        }
                     }
                 }
+            }
+            catch (NotSupportedException)
+            {
+                // we ran into a dynamic assembly
+                // TODO: add a unit test for this
             }
         }
 
