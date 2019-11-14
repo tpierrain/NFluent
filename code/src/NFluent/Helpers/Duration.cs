@@ -321,5 +321,14 @@ namespace NFluent.Helpers
         {
             return ConvertToMilliseconds(this.RawDuration, this.Unit);
         }
+
+        /// <summary>
+        /// Gets the duration as a <see cref="TimeSpan"/>.
+        /// </summary>
+        /// <returns></returns>
+        internal TimeSpan ToTimeSpan()
+        {
+            return this.duration;
+        }
     }
 }

@@ -111,6 +111,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\IForkableCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\NullableOrNumberCheckLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\NumberCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\DateTimeRangeBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\EntityNamingLogic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\EnumerationBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\FluentMessage.cs" />

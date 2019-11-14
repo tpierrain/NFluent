@@ -15,6 +15,7 @@
 namespace NFluent.Tests
 {
     using System;
+    using Extensions;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -956,6 +957,56 @@ namespace NFluent.Tests
                 .IsNotInstanceOf<string>().And
                 .IsInstanceOf<DateTime>().And
                 .IsNotEqualTo("Batman").And.IsNotEqualTo(new DateTime(2014));
+        }
+        
+        [Test]
+        public void IsCloseToTimeSpanWorks()
+        {
+            var reference = DateTime.UtcNow;
+            
+            Check.That(reference).IsCloseTo(reference.AddMilliseconds(1), TimeSpan.FromMilliseconds(1));
+            Check.That(reference).IsCloseTo(reference.AddMilliseconds(-1), TimeSpan.FromMilliseconds(1));
+        }
+        
+        [Test]
+        public void IsCloseToDurationWorks()
+        {
+            var reference = DateTime.UtcNow;
+            
+            Check.That(reference).IsCloseTo(reference.AddMilliseconds(1), new Duration(1, TimeUnit.Milliseconds));
+            Check.That(reference).IsCloseTo(reference.AddMilliseconds(-1), new Duration(1, TimeUnit.Milliseconds));
+        }
+
+        [Test]
+        public void IsCloseToTimeSpanShouldFailsIfToFar()
+        {
+            var reference = DateTime.UtcNow;
+            var expected = reference.AddMilliseconds(2);
+            var within = TimeSpan.FromMilliseconds(1);
+
+            Check.ThatCode(() => Check.That(reference).IsCloseTo(expected, within))
+                 .IsAFailingCheckWithMessage("",
+                                             "The checked date time is outside the expected value range.",
+                                             "The checked date time:",
+                                             "\t[" + reference.ToStringProperlyFormatted() + "]",
+                                             "The expected value:",
+                                             "\t[" + expected + " (+/- " + within + ")]");
+        }
+        
+        [Test]
+        public void IsCloseToDurationShouldFailsIfToFar()
+        {
+            var reference = DateTime.UtcNow;
+            var expected = reference.AddMilliseconds(2);
+            var within = new Duration(1, TimeUnit.Milliseconds);
+
+            Check.ThatCode(() => Check.That(reference).IsCloseTo(expected, within))
+                 .IsAFailingCheckWithMessage("",
+                                             "The checked date time is outside the expected value range.",
+                                             "The checked date time:",
+                                             "\t[" + reference.ToStringProperlyFormatted() + "]",
+                                             "The expected value:",
+                                             "\t[" + expected + " (+/- " + within + ")]");
         }
 
 #if !DOTNET_30 && !DOTNET_20
