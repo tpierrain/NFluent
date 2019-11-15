@@ -116,7 +116,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\FluentMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\GenericLabelBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\IValueDescription.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Messages\RangeBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\RangeBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ReverseEngineeringExceptionMessagesHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ValueBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NFluentEntryPoint.cs" />

@@ -13,7 +13,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NFluent.Messages
+namespace NFluent.Helpers
 {
     using System;
 

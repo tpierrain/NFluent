@@ -21,12 +21,7 @@ namespace NFluent.Helpers
     /// </summary>
     public struct Duration
     {
-        #region fields
-
         private readonly TimeSpan duration;
-
-        #endregion
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Duration"/> struct. 
