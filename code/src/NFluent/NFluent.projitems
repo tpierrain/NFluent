@@ -17,6 +17,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\MessageOption.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\DateTimeOffsetRangeBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\DateTimeRangeBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DictionaryWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DifferenceDetails.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExceptionConstructor.cs" />
@@ -111,8 +113,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\IForkableCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\NullableOrNumberCheckLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\NumberCheck.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Messages\DateTimeOffsetRangeBlock.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Messages\DateTimeRangeBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\EntityNamingLogic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\EnumerationBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\FluentMessage.cs" />
