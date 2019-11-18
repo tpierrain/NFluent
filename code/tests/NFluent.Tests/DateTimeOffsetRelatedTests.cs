@@ -430,6 +430,14 @@
             Check.That(reference).IsCloseTo(reference.AddMilliseconds(1), new Duration(1, TimeUnit.Milliseconds));
             Check.That(reference).IsCloseTo(reference.AddMilliseconds(-1), new Duration(1, TimeUnit.Milliseconds));
         }
+        
+        [Test]
+        public void CanNegateIsCloseTo()
+        {
+            var reference = DateTimeOffset.UtcNow;
+            
+            Check.That(reference).Not.IsCloseTo(reference.AddMilliseconds(2), new Duration(1, TimeUnit.Milliseconds));
+        }
 
         [Test]
         public void IsCloseToTimeSpanShouldFailsIfToFar()
@@ -461,6 +469,22 @@
                                              "\t[" + reference.ToStringProperlyFormatted() + "]",
                                              "The expected value:",
                                              "\t[" + expected + " (+/- 1 Milliseconds)]");
+        }
+        
+        [Test]
+        public void NegatedIsCloseToShouldFailsIfTooClose()
+        {
+            var reference = DateTimeOffset.UtcNow;
+            var expected = reference.AddMilliseconds(1);
+            var within = new Duration(2, TimeUnit.Milliseconds);
+
+            Check.ThatCode(() => Check.That(reference).Not.IsCloseTo(expected, within))
+                 .IsAFailingCheckWithMessage("",
+                                             "The checked date time is within the expected value range, whereas it must not.",
+                                             "The checked date time:",
+                                             "\t[" + reference.ToStringProperlyFormatted() + "]",
+                                             "The expected date time: different from",
+                                             "\t[" + expected + " (+/- 2 Milliseconds)]");
         }
     }
 }

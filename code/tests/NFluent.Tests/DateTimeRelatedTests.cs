@@ -976,9 +976,17 @@ namespace NFluent.Tests
             Check.That(reference).IsCloseTo(reference.AddMilliseconds(1), new Duration(1, TimeUnit.Milliseconds));
             Check.That(reference).IsCloseTo(reference.AddMilliseconds(-1), new Duration(1, TimeUnit.Milliseconds));
         }
+        
+        [Test]
+        public void CanNegateIsCloseTo()
+        {
+            var reference = DateTime.UtcNow;
+            
+            Check.That(reference).Not.IsCloseTo(reference.AddMilliseconds(2), new Duration(1, TimeUnit.Milliseconds));
+        }
 
         [Test]
-        public void IsCloseToTimeSpanShouldFailsIfToFar()
+        public void IsCloseToTimeSpanShouldFailsIfTooFar()
         {
             var reference = DateTime.UtcNow;
             var expected = reference.AddMilliseconds(2);
@@ -994,7 +1002,7 @@ namespace NFluent.Tests
         }
         
         [Test]
-        public void IsCloseToDurationShouldFailsIfToFar()
+        public void IsCloseToDurationShouldFailsIfTooFar()
         {
             var reference = DateTime.UtcNow;
             var expected = reference.AddMilliseconds(2);
@@ -1007,6 +1015,22 @@ namespace NFluent.Tests
                                              "\t[" + reference.ToStringProperlyFormatted() + "]",
                                              "The expected value:",
                                              "\t[" + expected + " (+/- 1 Milliseconds)]");
+        }
+        
+        [Test]
+        public void NegatedIsCloseToShouldFailsIfTooClose()
+        {
+            var reference = DateTime.UtcNow;
+            var expected = reference.AddMilliseconds(1);
+            var within = new Duration(2, TimeUnit.Milliseconds);
+
+            Check.ThatCode(() => Check.That(reference).Not.IsCloseTo(expected, within))
+                 .IsAFailingCheckWithMessage("",
+                                             "The checked date time is within the expected value range, whereas it must not.",
+                                             "The checked date time:",
+                                             "\t[" + reference.ToStringProperlyFormatted() + "]",
+                                             "The expected date time: different from",
+                                             "\t[" + expected + " (+/- 2 Milliseconds)]");
         }
 
 #if !DOTNET_30 && !DOTNET_20
