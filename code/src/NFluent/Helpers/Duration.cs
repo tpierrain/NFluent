@@ -154,6 +154,16 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
+        /// Creates a duration from a timespan by discovering the most appropriate <see cref="TimeUnit"/>.
+        /// </summary>
+        /// <param name="timeSpan">The time span.</param>
+        /// <returns>The created <see cref="Duration"/> instance</returns>
+        public static Duration FromTimeSpan(TimeSpan timeSpan)
+        {
+            return new Duration(timeSpan, TimeHelper.DiscoverUnit(timeSpan));
+        }
+
+        /// <summary>
         /// Checks if duration a is less than duration b.
         /// </summary>
         /// <param name="a">

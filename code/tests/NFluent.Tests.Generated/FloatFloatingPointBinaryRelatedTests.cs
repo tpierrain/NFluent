@@ -108,16 +108,20 @@ namespace NFluent.Tests
             })
             .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked float value is a finite number whereas it must not." + Environment.NewLine + "The checked float value:" + Environment.NewLine + "\t[20]");
         }
+        
+        #endregion
+        
+        #region IsClosedTo
 
         [Test]
-        public void IsAroundWorks()
+        public void IsCloseToWorks()
         {
             Check.That(Twenty).IsCloseTo(20.1, 0.2);
             Check.That(Twenty).IsCloseTo(21, 1);
         }
 
         [Test]
-        public void IsAroundShouldFailsIfToFar()
+        public void IsClosedToShouldFailsIfTooFar()
         {
             using (new CultureSession("en-US"))
             {

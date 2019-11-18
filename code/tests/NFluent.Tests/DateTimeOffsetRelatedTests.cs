@@ -1,6 +1,7 @@
 ﻿namespace NFluent.Tests
 {
     using System;
+    using Extensions;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -410,6 +411,80 @@
             Check.That(oneHourOffSet).IsNotEqualTo(new DateTimeOffset(localTime, new TimeSpan(6, 0, 0)));
 
             Check.That(oneHourOffSet).Not.MatchTheSameUtcInstantIgnoringMillis(new DateTimeOffset(localTime, new TimeSpan(6, 0, 0)));
+        }
+        
+        [Test]
+        public void IsCloseToTimeSpanWorks()
+        {
+            var reference = DateTimeOffset.UtcNow;
+            
+            Check.That(reference).IsCloseTo(reference.AddMilliseconds(1), TimeSpan.FromMilliseconds(1));
+            Check.That(reference).IsCloseTo(reference.AddMilliseconds(-1), TimeSpan.FromMilliseconds(1));
+        }
+        
+        [Test]
+        public void IsCloseToDurationWorks()
+        {
+            var reference = DateTimeOffset.UtcNow;
+            
+            Check.That(reference).IsCloseTo(reference.AddMilliseconds(1), new Duration(1, TimeUnit.Milliseconds));
+            Check.That(reference).IsCloseTo(reference.AddMilliseconds(-1), new Duration(1, TimeUnit.Milliseconds));
+        }
+        
+        [Test]
+        public void CanNegateIsCloseTo()
+        {
+            var reference = DateTimeOffset.UtcNow;
+            
+            Check.That(reference).Not.IsCloseTo(reference.AddMilliseconds(2), new Duration(1, TimeUnit.Milliseconds));
+        }
+
+        [Test]
+        public void IsCloseToTimeSpanShouldFailsIfTooFar()
+        {
+            var reference = DateTimeOffset.UtcNow;
+            var expected = reference.AddMilliseconds(2);
+            var within = TimeSpan.FromMilliseconds(1);
+
+            Check.ThatCode(() => Check.That(reference).IsCloseTo(expected, within))
+                 .IsAFailingCheckWithMessage("",
+                                             "The checked date time is outside the expected value range.",
+                                             "The checked date time:",
+                                             "\t[" + reference.ToStringProperlyFormatted() + "]",
+                                             "The expected value:",
+                                             "\t[" + expected + " (+/- 1000 Microseconds)]");
+        }
+        
+        [Test]
+        public void IsCloseToDurationShouldFailsIfTooFar()
+        {
+            var reference = DateTimeOffset.UtcNow;
+            var expected = reference.AddMilliseconds(2);
+            var within = new Duration(1, TimeUnit.Milliseconds);
+
+            Check.ThatCode(() => Check.That(reference).IsCloseTo(expected, within))
+                 .IsAFailingCheckWithMessage("",
+                                             "The checked date time is outside the expected value range.",
+                                             "The checked date time:",
+                                             "\t[" + reference.ToStringProperlyFormatted() + "]",
+                                             "The expected value:",
+                                             "\t[" + expected + " (+/- 1 Milliseconds)]");
+        }
+        
+        [Test]
+        public void NegatedIsCloseToShouldFailsIfTooClose()
+        {
+            var reference = DateTimeOffset.UtcNow;
+            var expected = reference.AddMilliseconds(1);
+            var within = new Duration(2, TimeUnit.Milliseconds);
+
+            Check.ThatCode(() => Check.That(reference).Not.IsCloseTo(expected, within))
+                 .IsAFailingCheckWithMessage("",
+                                             "The checked date time is within the expected value range, whereas it must not.",
+                                             "The checked date time:",
+                                             "\t[" + reference.ToStringProperlyFormatted() + "]",
+                                             "The expected date time: different from",
+                                             "\t[" + expected + " (+/- 2 Milliseconds)]");
         }
     }
 }

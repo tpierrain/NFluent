@@ -17,7 +17,9 @@ namespace NFluent
 {
     using System;
     using Extensibility;
+    using Helpers;
     using Kernel;
+    using Messages;
 
     /// <summary>
     /// Provides check methods to be executed on a DateTimeOffset instance. 
@@ -378,6 +380,38 @@ namespace NFluent
                 .EndCheck();
             
             return ExtensibilityHelper.BuildCheckLink(check);
+        }
+        
+        /// <summary>
+        /// Determines whether the actual DateTimeOffset is close to an expected value within a given within.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <param name="within">The within.</param>
+        /// <returns>A continuation check.</returns>
+        public static ICheckLink<ICheck<DateTimeOffset>> IsCloseTo(this ICheck<DateTimeOffset> check, DateTimeOffset expected, Duration within)
+        {
+            var range = new DateTimeOffsetRangeBlock(expected, within);
+            
+            ExtensibilityHelper.BeginCheck(check).
+                                FailWhen((sut) => !range.IsInRange(sut), "The {0} is outside the expected value range.").
+                                DefineExpectedValue(range).
+                                OnNegate("The {0} is within the expected value range, whereas it must not.").
+                                EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLink(check);
+        }
+        
+        /// <summary>
+        /// Determines whether the actual DateTimeOffset is close to an expected value within a given within.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="expected">The expected value.</param>
+        /// <param name="within">The within.</param>
+        /// <returns>A continuation check.</returns>
+        public static ICheckLink<ICheck<DateTimeOffset>> IsCloseTo(this ICheck<DateTimeOffset> check, DateTimeOffset expected, TimeSpan within)
+        {
+            return check.IsCloseTo(expected, Duration.FromTimeSpan(within));
         }
     }
 }
