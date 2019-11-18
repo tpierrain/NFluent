@@ -114,7 +114,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsCloseToShouldFailsIfToFar()
+        public void IsCloseToShouldFailsIfTooFar()
         {
             using (new CultureSession("en-US"))
             {

@@ -440,7 +440,7 @@
         }
 
         [Test]
-        public void IsCloseToTimeSpanShouldFailsIfToFar()
+        public void IsCloseToTimeSpanShouldFailsIfTooFar()
         {
             var reference = DateTimeOffset.UtcNow;
             var expected = reference.AddMilliseconds(2);
@@ -456,7 +456,7 @@
         }
         
         [Test]
-        public void IsCloseToDurationShouldFailsIfToFar()
+        public void IsCloseToDurationShouldFailsIfTooFar()
         {
             var reference = DateTimeOffset.UtcNow;
             var expected = reference.AddMilliseconds(2);
