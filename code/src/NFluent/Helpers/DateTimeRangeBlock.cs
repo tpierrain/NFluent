@@ -24,21 +24,7 @@ namespace NFluent.Messages
     internal class DateTimeRangeBlock
     {
         private readonly DateTime referenceValue;
-        private readonly TimeSpan tolerance;
-        private readonly string toleranceString;
-
-        /// <summary>
-        ///     Constructor
-        /// </summary>
-        /// <param name="referenceValue">Reference value (mid point)</param>
-        /// <param name="tolerance">Tolerance</param>
-        /// <remarks>This represents a range of <see cref="referenceValue" /> +/- <see cref="tolerance" /></remarks>
-        public DateTimeRangeBlock(DateTime referenceValue, TimeSpan tolerance)
-        {
-            this.referenceValue = referenceValue;
-            this.tolerance = tolerance;
-            this.toleranceString = tolerance.ToString();
-        }
+        private readonly Duration tolerance;
         
         /// <summary>
         ///     Constructor
@@ -49,18 +35,18 @@ namespace NFluent.Messages
         public DateTimeRangeBlock(DateTime referenceValue, Duration tolerance)
         {
             this.referenceValue = referenceValue;
-            this.tolerance = tolerance.ToTimeSpan();
-            this.toleranceString = tolerance.ToString();
+            this.tolerance = tolerance;
         }
 
         public bool IsInRange(DateTime value)
         {
-            return (this.referenceValue - value).Duration() <= this.tolerance;
+            var duration = new Duration((this.referenceValue - value).Duration(), TimeUnit.Nanoseconds);
+            return duration <= this.tolerance;
         }
 
         public override string ToString()
         {
-            return $"{this.referenceValue} (+/- {this.toleranceString})";
+            return $"{this.referenceValue} (+/- {this.tolerance})";
         }
     }
 }

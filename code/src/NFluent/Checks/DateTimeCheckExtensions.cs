@@ -349,7 +349,14 @@ namespace NFluent
         public static ICheckLink<ICheck<DateTime>> IsCloseTo(this ICheck<DateTime> check, DateTime expected, Duration within)
         {
             var range = new DateTimeRangeBlock(expected, within);
-            return check.IsInRange(range);
+            
+            ExtensibilityHelper.BeginCheck(check).
+                                FailWhen((sut) => !range.IsInRange(sut), "The {0} is outside the expected value range.").
+                                DefineExpectedValue(range).
+                                OnNegate("The {0} is within the expected range, whereas it must not.").
+                                EndCheck();
+            
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
         
         /// <summary>
@@ -361,25 +368,7 @@ namespace NFluent
         /// <returns>A continuation check.</returns>
         public static ICheckLink<ICheck<DateTime>> IsCloseTo(this ICheck<DateTime> check, DateTime expected, TimeSpan within)
         {
-            var range = new DateTimeRangeBlock(expected, within);
-            return check.IsInRange(range);
-        }
-        
-        /// <summary>
-        /// Determines whether the actual date time is close to an expected value within a given within.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="range">The expected range.</param>
-        /// <returns>A continuation check.</returns>
-        internal static ICheckLink<ICheck<DateTime>> IsInRange(this ICheck<DateTime> check, DateTimeRangeBlock range)
-        {
-            ExtensibilityHelper.BeginCheck(check).
-                                FailWhen((sut) => !range.IsInRange(sut), "The {0} is outside the expected value range.").
-                                DefineExpectedValue(range).
-                                OnNegate("The {0} is within the expected range, whereas it must not.").
-                                EndCheck();
-            
-            return ExtensibilityHelper.BuildCheckLink(check);
+            return check.IsCloseTo(expected, Duration.FromTimeSpan(within));
         }
     }
 }

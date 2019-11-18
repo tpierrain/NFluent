@@ -29,6 +29,15 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldCreateFromTimeSpanWithVariousUnits()
+        {
+            Check.That(Duration.FromTimeSpan(TimeSpan.FromMilliseconds(1))).IsEqualTo(new Duration(1, TimeUnit.Milliseconds));
+            Check.That(Duration.FromTimeSpan(TimeSpan.FromMilliseconds(2))).IsEqualTo(new Duration(2, TimeUnit.Milliseconds));
+            Check.That(Duration.FromTimeSpan(TimeSpan.FromHours(3))).IsEqualTo(new Duration(3, TimeUnit.Hours));
+            Check.That(Duration.FromTimeSpan(TimeSpan.FromTicks(300))).IsEqualTo(new Duration(30_000, TimeUnit.Nanoseconds));
+        }
+
+        [Test]
         public void ShouldSupportVariousUnits()
         {
             Check.That(new Duration(100, TimeUnit.Nanoseconds).RawDuration).IsEqualTo(100);

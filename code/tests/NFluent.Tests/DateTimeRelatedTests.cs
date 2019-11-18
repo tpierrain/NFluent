@@ -990,7 +990,7 @@ namespace NFluent.Tests
                                              "The checked date time:",
                                              "\t[" + reference.ToStringProperlyFormatted() + "]",
                                              "The expected value:",
-                                             "\t[" + expected + " (+/- " + within + ")]");
+                                             "\t[" + expected + " (+/- 1000 Microseconds)]");
         }
         
         [Test]
@@ -1006,7 +1006,7 @@ namespace NFluent.Tests
                                              "The checked date time:",
                                              "\t[" + reference.ToStringProperlyFormatted() + "]",
                                              "The expected value:",
-                                             "\t[" + expected + " (+/- " + within + ")]");
+                                             "\t[" + expected + " (+/- 1 Milliseconds)]");
         }
 
 #if !DOTNET_30 && !DOTNET_20

@@ -444,7 +444,7 @@
                                              "The checked date time:",
                                              "\t[" + reference.ToStringProperlyFormatted() + "]",
                                              "The expected value:",
-                                             "\t[" + expected + " (+/- " + within + ")]");
+                                             "\t[" + expected + " (+/- 1000 Microseconds)]");
         }
         
         [Test]
@@ -460,7 +460,7 @@
                                              "The checked date time:",
                                              "\t[" + reference.ToStringProperlyFormatted() + "]",
                                              "The expected value:",
-                                             "\t[" + expected + " (+/- " + within + ")]");
+                                             "\t[" + expected + " (+/- 1 Milliseconds)]");
         }
     }
 }
