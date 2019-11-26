@@ -53,7 +53,7 @@ namespace NFluent.Kernel
 
         /// <inheritdoc />
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public IStructCheck<T> Not => new FluentStructCheck<T>(this, !Negated);
+        public IStructCheck<T> Not => new FluentStructCheck<T>(this, !Negated) {CustomMessage = CustomMessage};
 
         /// <summary>
         /// Gets the runner to use for checking something on a given type.

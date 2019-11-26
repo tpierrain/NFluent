@@ -3,10 +3,12 @@
     "reporters": [
       "All"
     ],
-	"test-runner" : "VsTest",
+    "test-runner": "VsTest",
     "coverage-analysis": "perTest",
-	"abort-test-on-fail":  false,
-    "log-level": "Info",
-    "log-file": true
+    "abort-test-on-fail": true,
+    "test-multiple-mutants": true,
+    "log-level": "trace",
+    "log-file": true,
+    "dev-mode":  true 
   }
 }

@@ -53,6 +53,18 @@ namespace NFluent.Tests.FromIssues
 #endif
         }
         
+        // GH #313
+        [Test]
+        public void WithMessageFail()
+        {
+            Check.ThatCode(() =>
+                Check.WithCustomMessage("It's false!").That(false).IsTrue()).IsAFailingCheckWithMessage(
+                "It's false!",
+                "The checked boolean is false whereas it must be true.", 
+                "The checked boolean:", 
+                "\t[False]");
+        }
+
         // GH #292
         [Test]
         public void Awkward_behaviour_with_NFluent()

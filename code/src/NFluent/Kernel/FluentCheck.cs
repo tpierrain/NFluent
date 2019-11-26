@@ -85,7 +85,7 @@ namespace NFluent.Kernel
 
          /// <inheritdoc />
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
-        public ICheck<T> Not => new FluentCheck<T>(this, !Negated);
+        public ICheck<T> Not => new FluentCheck<T>(this, !Negated) {CustomMessage = CustomMessage};
 
          /// <inheritdoc />
         public IChecker<T, ICheck<T>> Checker => this.checker;
