@@ -104,7 +104,7 @@ namespace NFluent.Kernel
         /// </exception>
         public new bool Equals(object obj)
         {
-            if (this.Value is ReflectionWrapper wrapper)
+            if (this.Value is ReflectionWrapper)
             {
                 ReflectionWrapperChecks.IsEqualTo((ICheck<ReflectionWrapper>) this, obj);
             }
@@ -112,6 +112,7 @@ namespace NFluent.Kernel
             {
                 this.IsEqualTo(obj);
             }
+
             return false;
         }
 

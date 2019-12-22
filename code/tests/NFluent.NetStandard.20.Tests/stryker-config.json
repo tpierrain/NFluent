@@ -6,9 +6,9 @@
     "test-runner": "VsTest",
     "coverage-analysis": "perTest",
     "abort-test-on-fail": true,
-    "test-multiple-mutants": true,
-    "log-level": "trace",
+    "test-multiple-mutants": false,
+    "log-level": "info",
     "log-file": true,
-    "dev-mode":  true 
+    "dev-mode":  false 
   }
 }

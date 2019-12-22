@@ -1,16 +1,22 @@
 ## V 2.6.1
+### New checks
+* You can use IsCloseTo on DateTime and DateTimeOffset to check if a given date is close to a reference one.
+
 ### Improvements
 * Check.That(IEnumerable).IsEquivalent(...) now uses default logic for equality check.
 * Significantly improved error messages for enumeration and dictionary equality comparison.
+* Restore typed IsEqualTo check. It should ensure smoother experience with autocompletion logic. Non typed version
+(using Object as a parameter) is still available.
 
 ### Fixes
+* the Not operator no longer erases the custom message set using WithCustomMessage
 * Check.That(IDictionary).IsEquivalent now fails as expected when the _sut_ has entries that do not exist in the expected dictionary.
 * IsEquivalent now performs deep equivalence. For example, it supports Dictionaries of Dictionaries.
 * Enumeration of KeyValue pairs are no longer treated as dictionaries but as enumeration. This behavior was a hack
 to support custom IDictionary<K,V> implementations. Detection logic has been improved so this is no longer necessary.
 
 ### GitHub Issues
-* #306
+* #306, #312, #313
 
 ## V 2.6.0
 
