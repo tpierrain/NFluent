@@ -4,7 +4,7 @@
   <!--Configuration informations-->
   <PropertyGroup>
     <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.7.922</opencoverVersion>
-    <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">4.3.0</reportGeneratorVersion>
+    <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">4.4.0</reportGeneratorVersion>
     <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.10.0</nunitConsoleVersion>
     <xunitConsoleVersion Condition="'$(xunitConsoleVersion)' == ''">2.4.1</xunitConsoleVersion>
 
@@ -194,7 +194,6 @@
 
   <!-- 1- Restore dependencies -->
   <Target Name="NugetRestore" DependsOnTargets="SynchroVersion">
-
     
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
     <Exec Command='"$(NuGetExePath)" sources remove -Name extraSource' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/>
