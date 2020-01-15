@@ -136,13 +136,13 @@
         <Framework>net-4.5</Framework>
         <Coverage>false</Coverage>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Tests.MsTest\bin\$(Configuration)\NFluent.Tests.MsTest.dll'>
-        <Framework>net-4.5</Framework>
+      <TestProjects Include='$(TestsPath)\NFluent.Tests.MsTest\NFluent.Tests.MsTest.csproj'>
+        <Framework>netstandard2.0</Framework>
         <Runner>MsTest</Runner>
         <Coverage>true</Coverage>
       </TestProjects>
-     <TestProjects Include='$(TestsPath)\NFluent.Tests.xUnit\bin\$(Configuration)\NFluent.Tests.xUnit.dll'>
-       <Framework>net-4.5</Framework>
+     <TestProjects Include='$(TestsPath)\NFluent.Tests.xUnit\NFluent.Tests.xUnit.csproj'>
+       <Framework>netstandard2.0</Framework>
        <Runner>xUnit</Runner>
        <Coverage>true</Coverage>
      </TestProjects>      
@@ -174,8 +174,8 @@
        <Framework>netstandard1.3</Framework>
        <Coverage>false</Coverage>
      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Tests.SelfHosted\bin\$(Configuration)\NFluent.Tests.SelfHosted.exe'>
-        <Framework>net-4.5</Framework>
+      <TestProjects Include='$(TestsPath)\NFluent.Tests.SelfHosted\bin\$(Configuration)\netcoreapp2.1\NFluent.Tests.SelfHosted.dll'>
+        <Framework>netcoreapp2.1</Framework>
         <Runner>Self</Runner>
         <Coverage>true</Coverage>
       </TestProjects>

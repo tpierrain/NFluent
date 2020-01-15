@@ -18,6 +18,7 @@ namespace NFluent.Tests.SelfHosted
     using System;
     using Helpers;
     using Kernel;
+    using NFluent;
 
     /// <summary>
     ///     Performs some test to simulate unknown test framework
@@ -43,6 +44,7 @@ namespace NFluent.Tests.SelfHosted
 
         private static void AssumptionTest()
         {
+            
             Check.ThatCode(() => Assuming.That(2).IsEqualTo(3)).Throws<FluentCheckException>();
             Check.ThatCode(() => Assuming.That(2).IsEqualTo(3)).IsAFailingAssumption();
         }

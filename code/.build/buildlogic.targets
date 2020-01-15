@@ -234,12 +234,12 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
         <Args Condition="'%(TestProjects.DontReport)'=='true'">%(TestProjects.FullPath) /framework:%(TestProjects.Framework)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="!$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-'))">
+      <TestRun Include="@(TestProjects)" Condition="!$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'!='Self'">
         <Runner>dotnet.exe</Runner>
         <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)"  Condition="'%(TestProjects.Runner)'=='xUnit'">
+      <TestRun Include="@(TestProjects)"  Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='xUnit'">
         <Runner>"$(xUnitTestRunnerPath)"</Runner>
         <Args Condition="'%(TestProjects.DontReport)'!='true'">"%(TestProjects.FullPath)" $(xunitOptions)</Args>
         <Args Condition="'%(TestProjects.DontReport)'=='true'">"%(TestProjects.FullPath)"</Args>
@@ -250,9 +250,14 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
         <Args>$(MsTestOptions) %(TestProjects.Identity)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="'%(TestProjects.Runner)'=='Self'">
+      <TestRun Include="@(TestProjects)" Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='Self'">
         <Runner>"%(TestProjects.Identity)"</Runner>
         <Args></Args>
+        <Coverage>%(TestProjects.Coverage)</Coverage>
+      </TestRun>
+      <TestRun Include="@(TestProjects)" Condition="!$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='Self'">
+        <Runner>dotnet.exe</Runner>
+        <Args>"%(TestProjects.Identity)"</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
       </ItemGroup>
