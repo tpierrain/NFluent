@@ -88,7 +88,6 @@ namespace NFluent.Helpers
             catch (NotSupportedException)
             {
                 // we ran into a dynamic assembly
-                // TODO: add a unit test for this
             }
         }
 
