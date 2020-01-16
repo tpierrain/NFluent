@@ -315,6 +315,7 @@
         private class AltDummyClass
         {
             // ReSharper disable once NotAccessedField.Local
+#pragma warning disable 414
             private readonly int x = 2;
 
             // ReSharper disable once NotAccessedField.Local
@@ -322,6 +323,7 @@
 
             // ReSharper disable once NotAccessedField.Local
             private object emptyList = new object();
+#pragma warning restore 414
         }
 
         private class DummyHeritance : DummyClass
