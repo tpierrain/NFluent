@@ -106,7 +106,7 @@ namespace NFluent.Kernel
         {
             if (this.Value is ReflectionWrapper)
             {
-                ReflectionWrapperChecks.IsEqualTo((ICheck<ReflectionWrapper>) this, obj);
+                ((ICheck<ReflectionWrapper>) this).IsEqualTo(obj);
             }
             else
             {

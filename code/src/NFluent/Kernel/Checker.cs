@@ -148,13 +148,7 @@ System.
             where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
         {
             TSub checker = null;
-            void Caller()
-            {
-                checker = checkLambdaAction();
-            }
-
-            this.ExecuteNotChainableCheck(Caller, negatedExceptionMessage);
-
+            this.ExecuteNotChainableCheck(() => checker = checkLambdaAction(), negatedExceptionMessage);
             return this.BuildLinkWhich(checker);
         }
 

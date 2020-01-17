@@ -35,7 +35,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Thomas PIERRAIN (thomas@pierrain.net), Cyrille DUPUYDAUBY (@_dupdob_), Rui CARVALHO, Marc-Antoine LATOUR and Co")]
 [assembly: AssemblyProduct("NFluent")]
-[assembly: AssemblyCopyright("Copyright © 2013-2019. Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).")]
+[assembly: AssemblyCopyright("Copyright © 2013-2020. Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -16,8 +16,6 @@
 namespace NFluent.Tests
 {
     using System;
-    using System.Diagnostics;
-    using Helpers;
     using NUnit.Framework;
     using ApiChecks;
     using NFluent.Helpers;
@@ -38,16 +36,57 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.ThatCode(() => throw new Exception()).DoesNotThrow();
-            })
-            .ThrowsAny()
-            .AndWhichMessage().StartsWith(Environment.NewLine+ "The checked code raised an exception, whereas it must not."); // TODO: reproduce startWith
+            }).
+            ThrowsAny().
+            AndWhichMessage().
+            StartsWith(Environment.NewLine+ "The checked code raised an exception, whereas it must not.");
         }
+
+#if !DOTNET_30 && !DOTNET_20
+        [Test]
+        public void SupportWhichMember()
+        {
+            Check.ThatCode(() => throw new ArgumentException("failed", "thearg")).Throws<ArgumentException>().
+                WhichMember(e => e.ParamName).
+                IsEqualTo("thearg");
+        }
+
+        [Test]
+        public void WhichMembersGenerateAdequateMessage()
+        {
+            Check.ThatCode(()=>
+            Check.ThatCode(() => throw new ArgumentException("failed", "thearg")).
+                Throws<ArgumentException>().
+                WhichMember(e => e.ParamName).
+                IsEqualTo("the arg")).IsAFailingCheckWithMessage("", 
+                "The checked value's ParamName is different from expected one.", 
+                "The checked value's ParamName:", 
+                "\t[\"thearg\"]", 
+                "The expected value's ParamName:", 
+                "\t[\"the arg\"]");
+        }
+
+        [Test]
+        public  void WhichMemberShouldSupportVariousExtractor()
+        {
+            Check.ThatCode(()=>
+                Check.ThatCode(() => throw new ArgumentException("failed", "thearg")).
+                    Throws<ArgumentException>().
+                    WhichMember(e => e.ParamName.ToUpper()).
+                    IsEqualTo("the arg")).IsAFailingCheckWithMessage("", 
+                "The checked value's e.ParamName.ToUpper() is different from expected one.", 
+                "The checked value's e.ParamName.ToUpper():", 
+                "\t[\"THEARG\"]", 
+                "The expected value's e.ParamName.ToUpper():", 
+                "\t[\"the arg\"]");
+        }
+        #endif
 
         [Test]
         public void ExpectedExceptionRaised()
         {
-            Check.ThatCode(() => { throw new InvalidOperationException(); }).Throws<InvalidOperationException>();
-            Check.ThatCode(() => { throw new Exception(); }).ThrowsAny();
+            Check.ThatCode(() => throw new InvalidOperationException()).Throws<InvalidOperationException>();
+            Check.ThatCode(() => throw new Exception()).ThrowsAny();
         }
 
         [Test]
@@ -55,9 +94,9 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
                 {
-                    Check.ThatCode(() => { throw new Exception(); }).Throws<InvalidOperationException>();
-                })
-                .IsAFailingCheckWithMessage("",
+                    Check.ThatCode(() => throw new Exception()).Throws<InvalidOperationException>();
+                }).
+                IsAFailingCheckWithMessage("",
                     "The checked code's raised exception is of a different type than expected.",
                     "The checked code's raised exception:",
                     "*",
@@ -72,8 +111,8 @@ namespace NFluent.Tests
             {
                 // ReSharper disable once ObjectCreationAsStatement
                 Check.ThatCode(() => { new object(); }).ThrowsAny();
-            })
-            .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
+            }).
+            IsAFailingCheckWithMessage(Environment.NewLine+ "The checked code did not raise an exception, whereas it must.");
         }
 
         [Test]

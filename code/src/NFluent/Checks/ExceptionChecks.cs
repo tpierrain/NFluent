@@ -16,6 +16,7 @@ namespace NFluent
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
 #if NETSTANDARD1_3
     using System.Reflection;
 #endif
@@ -150,6 +151,41 @@ namespace NFluent
                 .EndCheck();
             
             return new CheckLink<ILambdaExceptionCheck<T>>(checker);
+        }
+
+        /// <summary>
+        /// Allows to check some property of the raised exception
+        /// </summary>
+        /// <typeparam name="T">Exception type</typeparam>
+        /// <typeparam name="TM">Property/field type</typeparam>
+        /// <param name="checker">Syntax helper</param>
+        /// <param name="propertyExpression">Extracting expression.</param>
+        /// <returns>A checker object for the property value</returns>
+        public static ICheck<TM> WhichMember<T, TM>(this ILambdaExceptionCheck<T> checker, Expression<Func<T, TM>> propertyExpression)
+        where T: Exception
+        {
+            var syntaxHelper = (FluentSut<T>) checker;
+
+            var nameBuilder = new List<string>();
+            var scanner = propertyExpression.Body;
+            while (scanner is MemberExpression member)
+            {
+                nameBuilder.Add(member.Member.Name);
+                scanner = member.Expression;
+            }
+
+            if (scanner != null)
+            {
+                if (scanner.ToString() != propertyExpression.Parameters[0].ToString())
+                {
+                    nameBuilder.Add(scanner.ToString());
+                }
+            }
+            nameBuilder.Reverse();
+            var sub = syntaxHelper.Extract(propertyExpression.Compile(),
+                value => $"{value.SutName.EntityName}'s {string.Join(".", nameBuilder.ToArray())}");
+            var res = new FluentCheck<TM>(sub, syntaxHelper.Negated) {CustomMessage = syntaxHelper.CustomMessage};
+            return res;
         }
 #endif
     }

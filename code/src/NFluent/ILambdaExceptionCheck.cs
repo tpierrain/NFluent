@@ -41,5 +41,6 @@ namespace NFluent
         /// <returns>A chainable link</returns>
         ILambdaExceptionCheck<TE> DueTo<TE>()
             where TE : Exception;
+
     }
 }

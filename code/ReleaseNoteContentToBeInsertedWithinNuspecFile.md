@@ -1,4 +1,4 @@
-## V 2.6.1
+## V 2.7.0
 ### New checks
 * You can use IsCloseTo on DateTime and DateTimeOffset to check if a given date is close to a reference one.
 
@@ -7,6 +7,7 @@
 * Significantly improved error messages for enumeration and dictionary equality comparison.
 * Restore typed IsEqualTo check. It should ensure smoother experience with autocompletion logic. Non typed version
 (using Object as a parameter) is still available.
+* You can use WhichMember to perform checks on any member of an exception.
 
 ### Fixes
 * the Not operator no longer erases the custom message set using WithCustomMessage
@@ -16,7 +17,7 @@
 to support custom IDictionary<K,V> implementations. Detection logic has been improved so this is no longer necessary.
 
 ### GitHub Issues
-* #306, #312, #313
+* #306, #312, #313, #314, #315
 
 ## V 2.6.0
 

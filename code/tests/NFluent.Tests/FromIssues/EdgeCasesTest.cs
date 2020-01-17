@@ -22,6 +22,13 @@ namespace NFluent.Tests
     [TestFixture]
     public class EdgeCasesTest
     {
+
+        [Test]
+        public void UseFieldsOnAnonymousType()
+        {
+            Check.That(new FieldTest(1,2,3)).HasFieldsWithSameValues(new {x = 1, y = 2});
+        }
+
         [Test]
         public void IsInstanceOfCanBeLinked()
         {
@@ -54,6 +61,20 @@ namespace NFluent.Tests
             Check.That(.0002).IsPositive();
 
             Check.That(.02).IsGreaterThan(.01);
+        }
+
+        public class FieldTest
+        {
+            private int x;
+            private int y;
+            private int z;
+
+            public FieldTest(int x, int y, int z)
+            {
+                this.x = x;
+                this.y = y;
+                this.z = z;
+            }
         }
     }
 #pragma warning restore 618
