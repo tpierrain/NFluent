@@ -180,12 +180,9 @@ namespace NFluent
                 scanner = member.Expression;
             }
 
-            if (scanner != null)
+            if (scanner.ToString() != propertyExpression.Parameters[0].ToString())
             {
-                if (scanner.ToString() != propertyExpression.Parameters[0].ToString())
-                {
-                    nameBuilder.Add(scanner.ToString());
-                }
+                nameBuilder.Add(scanner.ToString());
             }
             nameBuilder.Reverse();
             return string.Join(".", nameBuilder.ToArray());

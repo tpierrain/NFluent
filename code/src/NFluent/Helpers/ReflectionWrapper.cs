@@ -393,25 +393,25 @@ namespace NFluent.Helpers
                 return this.Value.ToString();
             }
 
-            var texte = new StringBuilder(100);
-            texte.Append("{ ");
+            var resultAsText = new StringBuilder(100);
+            resultAsText.Append("{ ");
             var first = true;
             foreach (var sub in this.GetSubExtendedMemberInfosFields())
             {
                 if (!first)
                 {
-                    texte.Append(", ");
+                    resultAsText.Append(", ");
                 }
                 else
                 {
                     first = false;
                 }
 
-                texte.AppendFormat("{0} = {1}", sub.NameInSource, sub.ToString(scanned));
+                resultAsText.AppendFormat("{0} = {1}", sub.NameInSource, sub.ToString(scanned));
             }
 
-            texte.Append(" }");
-            return texte.ToString();
+            resultAsText.Append(" }");
+            return resultAsText.ToString();
         }
 
         internal List<MemberMatch> MemberMatches<TU>(TU expectedValue)

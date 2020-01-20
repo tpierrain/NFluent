@@ -67,7 +67,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public  void WhichMemberShouldSupportVariousExtractor()
+        public void WhichMemberShouldSupportVariousExtractor()
         {
             Check.ThatCode(()=>
                 Check.ThatCode(() => throw new ArgumentException("failed", "thearg")).
@@ -80,6 +80,7 @@ namespace NFluent.Tests
                 "The expected value's e.ParamName.ToUpper():", 
                 "\t[\"the arg\"]");
         }
+
         #endif
 
         [Test]
