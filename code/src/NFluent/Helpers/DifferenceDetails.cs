@@ -70,23 +70,37 @@ namespace NFluent.Helpers
 
         public string GetMessage(bool forEquivalence)
         {
-            switch (this.Mode)
+            if (this.Mode == DifferenceMode.Extra)
             {
-                case DifferenceMode.Extra:
-                    return forEquivalence ? $"{this.FirstName} value should not exist (value {this.FirstValue.ToStringProperlyFormatted()})":
-                        $"{this.FirstName} should not exist (value {this.FirstValue.ToStringProperlyFormatted()}).";
-                case DifferenceMode.Missing:
-                    return forEquivalence ? $"{this.SecondValue.ToStringProperlyFormatted()} should be present but was not found."
-                        : $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}.";
-                case DifferenceMode.Moved:
-                    return $"{this.FirstName} value ('{this.FirstValue}') was found at index {this.ActualIndex} instead of {this.Index}.";
-                case DifferenceMode.Attribute:
-                    return $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
-                case DifferenceMode.FoundInsteadOf:
-                    return $"{this.FirstValue.ToStringProperlyFormatted()} should not exist (found in {this.FirstName}); {this.SecondValue.ToStringProperlyFormatted()} should be found instead.";
-               case DifferenceMode.Value:
-                default:
-                    return $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
+                return forEquivalence
+                    ? $"{this.FirstName} value should not exist (value {this.FirstValue.ToStringProperlyFormatted()})"
+                    : $"{this.FirstName} should not exist (value {this.FirstValue.ToStringProperlyFormatted()}).";
+            }
+            else if (this.Mode == DifferenceMode.Missing)
+            {
+                return forEquivalence
+                    ? $"{this.SecondValue.ToStringProperlyFormatted()} should be present but was not found."
+                    : $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}.";
+            }
+            else if (this.Mode == DifferenceMode.Moved)
+            {
+                return
+                    $"{this.FirstName} value ('{this.FirstValue}') was found at index {this.ActualIndex} instead of {this.Index}.";
+            }
+            else if (this.Mode == DifferenceMode.Attribute)
+            {
+                return
+                    $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
+            }
+            else if (this.Mode == DifferenceMode.FoundInsteadOf)
+            {
+                return
+                    $"{this.FirstValue.ToStringProperlyFormatted()} should not exist (found in {this.FirstName}); {this.SecondValue.ToStringProperlyFormatted()} should be found instead.";
+            }
+            else
+            {
+                return
+                    $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
             }
         }
 

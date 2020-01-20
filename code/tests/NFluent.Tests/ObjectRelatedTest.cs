@@ -27,14 +27,14 @@ namespace NFluent.Tests
 
         class NoOpComparer : IEqualityComparer
         {
-            private bool _answer;
+            private readonly bool _answer;
 
             public NoOpComparer(bool answer)
             {
                 this._answer = answer;
             }
 
-            public bool Equals(object x, object y)
+            public new bool Equals(object x, object y)
             {
                 return this._answer;
             }
