@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="ClassMemberCriteria.cs" company="NFluent">
+//  <copyright file="Criteria.cs" company="NFluent">
 //   Copyright 2018 Thomas PIERRAIN & Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -23,56 +23,52 @@ namespace NFluent.Kernel
         private List<string> exclusion;
         private bool isPublic;
         private bool isPrivate;
-        private BindingFlags bindingFlagsForFields;
-        private BindingFlags bindingFlagsForProperties;
 
         internal ClassMemberCriteria(BindingFlags bindingFlags)
         {
-            this.bindingFlagsForFields = bindingFlags;
-            this.bindingFlagsForProperties = bindingFlags;
+            this.BindingFlagsForFields = bindingFlags;
+            this.BindingFlagsForProperties = bindingFlags;
         }
 
         public void CaptureFields()
         {
             if (this.isPrivate)
             {
-                this.bindingFlagsForFields |= BindingFlags.NonPublic;
+                this.BindingFlagsForFields |= BindingFlags.NonPublic;
                 if (this.isPublic)
                 {
-                    this.bindingFlagsForFields |= BindingFlags.Public;
+                    this.BindingFlagsForFields |= BindingFlags.Public;
                 }
             }
             else
             {
-                this.bindingFlagsForFields |= BindingFlags.Public;
+                this.BindingFlagsForFields |= BindingFlags.Public;
             }
         }
 
         public void CaptureProperties()
         {
             if (this.isPrivate)
-            {
-                this.bindingFlagsForProperties |= BindingFlags.NonPublic;
+            {   
+                this.BindingFlagsForProperties |= BindingFlags.NonPublic;
                 if (this.isPublic)
                 {
-                    this.bindingFlagsForProperties |= BindingFlags.Public;
+                    this.BindingFlagsForProperties |= BindingFlags.Public;
                 }
             }
             else
             {
-                this.bindingFlagsForProperties |= BindingFlags.Public;
+                this.BindingFlagsForProperties |= BindingFlags.Public;
             }
         }
 
-        public BindingFlags BindingFlagsForFields => this.bindingFlagsForFields;
+        public BindingFlags BindingFlagsForFields { get; private set; }
 
-        public BindingFlags BindingFlagsForProperties => this.bindingFlagsForProperties;
+        public BindingFlags BindingFlagsForProperties { get; private set; }
 
         public bool IgnoreExtra { get; set; }
 
         public bool WithProperties => (this.BindingFlagsForProperties & (BindingFlags.Public | BindingFlags.NonPublic))!=0;
-
-        public bool WithFields => (this.BindingFlagsForFields & (BindingFlags.Public | BindingFlags.NonPublic))!=0;
 
         public bool IsNameExcluded(string name)
         {

@@ -131,7 +131,7 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var fieldsWrapper = ReflectionWrapper.BuildFromInstance(typeof(T), checker.Value,
-                new Kernel.Criteria(BindingFlags.Instance));
+                new ClassMemberCriteria(BindingFlags.Instance));
             var checkWithConsidering = new CheckWithConsidering(fieldsWrapper, checker.Negated).All.Fields;
             ReflectionWrapperChecks.FieldEqualTest(checkWithConsidering, expected, false);
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -146,7 +146,7 @@ namespace NFluent
         {
             var checker = ExtensibilityHelper.ExtractChecker(check);
             var fieldsWrapper = ReflectionWrapper.BuildFromInstance(checker.Value.GetTypeWithoutThrowingException(), checker.Value,
-                new Kernel.Criteria(BindingFlags.Instance));
+                new ClassMemberCriteria(BindingFlags.Instance));
             var checkWithConsidering = new CheckWithConsidering(fieldsWrapper, checker.Negated);
             return checkWithConsidering;
         }

@@ -35,7 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DateTimeOffsetCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\CheckLogicExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\IErrorReporter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Kernel\Criteria.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\ClassMemberCriteria.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DateTimeCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DictionaryCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\DoubleSpecificCheckExtensions.cs" />

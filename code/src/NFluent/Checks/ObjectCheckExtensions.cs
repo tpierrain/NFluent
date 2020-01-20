@@ -16,6 +16,7 @@
 namespace NFluent
 {
     using System;
+    using System.Collections;
     using System.ComponentModel;
 #if !DOTNET_20 && !DOTNET_30
     using System.Linq;
@@ -42,18 +43,18 @@ namespace NFluent
         /// <param name="expected">
         /// The expected value.
         /// </param>
-        /// <param name="dummy">Reserved for future use.</param>
+        /// <param name="customComparer">Reserved for future use.</param>
         /// <returns>
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
         /// The actual value is not equal to the expected value.
         /// </exception>
-        public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, object expected, bool dummy=false)
+        public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, object expected, IEqualityComparer customComparer = null)
         {
-            return EqualityHelper.PerformEqualCheck(check, expected);
+            return EqualityHelper.PerformEqualCheck(check, expected, customComparer);
         }
-
+         
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
@@ -132,7 +133,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<T>> HasSameValueAs<T, TU>(this ICheck<T> check, TU expected)
         {
-            return EqualityHelper.PerformEqualCheck(check, expected, true);
+            return EqualityHelper.PerformEqualCheck(check, expected, useOperator: true);
         }
 
         /// <summary>

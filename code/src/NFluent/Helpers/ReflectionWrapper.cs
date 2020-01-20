@@ -51,7 +51,7 @@ namespace NFluent.Helpers
         }
 
         private ReflectionWrapper(string nameInSource, string prefix, string labelPattern, Type type, object value,
-            Criteria criteria)
+            ClassMemberCriteria criteria)
         {
             this.NameInSource = nameInSource;
             this.prefix = prefix;
@@ -67,7 +67,7 @@ namespace NFluent.Helpers
             ? this.NameInSource
             : $"{this.prefix}.{this.NameInSource}";
 
-        internal Criteria Criteria { get; set; }
+        internal ClassMemberCriteria Criteria { get; set; }
 
         internal string MemberLabel => Format(this.labelPattern, this.MemberLongName);
 
@@ -77,7 +77,7 @@ namespace NFluent.Helpers
 
         internal bool IsArray => this.ValueType.IsArray;
 
-        internal static ReflectionWrapper BuildFromInstance(Type type, object value, Criteria criteria)
+        internal static ReflectionWrapper BuildFromInstance(Type type, object value, ClassMemberCriteria criteria)
         {
             if (type == typeof(ReflectionWrapper))
             {
@@ -87,13 +87,13 @@ namespace NFluent.Helpers
             return new ReflectionWrapper(Empty, Empty, Empty, type, value, criteria);
         }
 
-        internal static ReflectionWrapper BuildFromType(Type type, Criteria criteria)
+        internal static ReflectionWrapper BuildFromType(Type type, ClassMemberCriteria criteria)
         {
             return new ReflectionWrapper(Empty, Empty, Empty, type, null, criteria);
         }
 
         internal static ReflectionWrapper BuildFromField(string prefix, string name, Type type, object value,
-            Criteria criteria)
+            ClassMemberCriteria criteria)
         {
             string labelPattern;
             if (EvaluateCriteria(AutoPropertyMask, name, out var nameInSource))
@@ -119,7 +119,7 @@ namespace NFluent.Helpers
         }
 
         internal static ReflectionWrapper BuildFromProperty(string prefix, string name, Type type, object value,
-            Criteria criteria)
+            ClassMemberCriteria criteria)
         {
             return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria);
         }
@@ -223,11 +223,8 @@ namespace NFluent.Helpers
                 var currentType = this.ValueType;
                 while (currentType != null)
                 {
-                    if (this.Criteria.WithFields)
-                    {
-                        var fieldsInfo = currentType.GetFields(this.Criteria.BindingFlagsForFields);
-                        result.AddRange(this.ExtractFields(fieldsInfo, memberDico));
-                    }
+                    var fieldsInfo = currentType.GetFields(this.Criteria.BindingFlagsForFields);
+                    result.AddRange(this.ExtractFields(fieldsInfo, memberDico));
 
                     if (this.Criteria.WithProperties)
                     {

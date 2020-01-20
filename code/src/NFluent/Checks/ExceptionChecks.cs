@@ -16,7 +16,6 @@ namespace NFluent
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 #if NETSTANDARD1_3
     using System.Reflection;
 #endif
@@ -96,8 +95,7 @@ namespace NFluent
         /// <param name="types"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static ICheckLink<ILambdaExceptionCheck<T>> DueToAnyFrom<T>(this ILambdaExceptionCheck<T> context,
-            params Type[] types) where T: Exception
+        public static ICheckLink<ILambdaExceptionCheck<T>> DueToAnyFrom<T>(this ILambdaExceptionCheck<T> context, params Type[] types) where T: Exception
         {
             Exception resultException;
             var listOfTypes = new List<Type>(types);
@@ -140,7 +138,7 @@ namespace NFluent
         {
             var memberExpression = propertyExpression.Body as MemberExpression;
 
-            var propertyName = memberExpression?.Member.Name ?? propertyExpression.ToString();
+            var propertyName = GetPropertyNameFromExpression(propertyExpression);
             ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
                 .CantBeNegated("WithProperty")
                 .SetSutName("exception")
@@ -165,7 +163,15 @@ namespace NFluent
         where T: Exception
         {
             var syntaxHelper = (FluentSut<T>) checker;
+            var name = GetPropertyNameFromExpression(propertyExpression);
+            var sub = syntaxHelper.Extract(propertyExpression.Compile(),
+                value => $"{value.SutName.EntityName}'s {name}");
+            var res = new FluentCheck<TM>(sub, syntaxHelper.Negated) {CustomMessage = syntaxHelper.CustomMessage};
+            return res;
+        }
 
+        private static string GetPropertyNameFromExpression<T, TM>(Expression<Func<T, TM>> propertyExpression)
+        {
             var nameBuilder = new List<string>();
             var scanner = propertyExpression.Body;
             while (scanner is MemberExpression member)
@@ -182,10 +188,7 @@ namespace NFluent
                 }
             }
             nameBuilder.Reverse();
-            var sub = syntaxHelper.Extract(propertyExpression.Compile(),
-                value => $"{value.SutName.EntityName}'s {string.Join(".", nameBuilder.ToArray())}");
-            var res = new FluentCheck<TM>(sub, syntaxHelper.Negated) {CustomMessage = syntaxHelper.CustomMessage};
-            return res;
+            return string.Join(".", nameBuilder.ToArray());
         }
 #endif
     }

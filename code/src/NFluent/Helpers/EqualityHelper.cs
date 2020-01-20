@@ -40,21 +40,18 @@ namespace NFluent.Helpers
         internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(
             ICheck<T> check,
             TE expected,
+            IEqualityComparer comparer = null,
             bool useOperator = false)
         {
-            var mode = Check.EqualMode;
+            var mode = useOperator ? EqualityMode.OperatorEq : Check.EqualMode;
 
-            if (useOperator)
-            {
-                mode = EqualityMode.OperatorEq;
-            }
             ExtensibilityHelper.BeginCheck(check)
                 .Analyze((sut, test) =>
                 {
                     test.DefineExpectedValue(expected, useOperator ? "equals to (using operator==)" : "",
                             "different from" + (useOperator ? " (using !operator==)" : ""));
 
-                    var differenceDetails = FluentEquals(sut, expected, mode);
+                    var differenceDetails = FluentEquals(sut, expected, mode, comparer);
                     if (!differenceDetails.IsDifferent)
                     {
                         return;
@@ -237,9 +234,15 @@ namespace NFluent.Helpers
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
-        private static AggregatedDifference FluentEquals<TS, TE>(TS sut, TE expected, EqualityMode mode)
+        private static AggregatedDifference FluentEquals<TS, TE>(TS sut, TE expected, EqualityMode mode, IEqualityComparer comparer = null)
         {
             var result = new AggregatedDifference();
+            if (comparer != null)
+            {
+                result.SetAsDifferent(!comparer.Equals(expected, sut));
+                return result;
+            }
+
             switch (mode)
             {
                 case EqualityMode.FluentEquals:

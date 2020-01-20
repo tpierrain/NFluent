@@ -173,8 +173,10 @@ namespace NFluent.Tests
         {
             var sut = new SutClass(2, 42);
 
+            Check.That(sut).Considering().Public.Properties.IsEqualTo(new SutClass(3, 42));
+
             Check.ThatCode(() =>
-                    Check.That(sut).Considering().Public.Properties.IsEqualTo(new SutClass(2, 43)))
+                    Check.That(sut).Considering().Public.Properties.IsEqualTo(new SutClass(3, 43)))
                 .IsAFailingCheckWithMessage("", 
                     "The checked value's property 'TheProperty' does not have the expected value.", 
                     "The checked value's property 'TheProperty':",

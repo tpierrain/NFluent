@@ -117,6 +117,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "continuous integration", "c
 		..\appveyor.yml = ..\appveyor.yml
 		build.cmd = build.cmd
 		.build\Build.proj = .build\Build.proj
+		BuildAndMutate.cmd = BuildAndMutate.cmd
 		.build\buildlogic.targets = .build\buildlogic.targets
 		..\CI.cmd = ..\CI.cmd
 		MutationTests.cmd = MutationTests.cmd
@@ -133,9 +134,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configuration", "configurat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Tests.SelfHosted", "tests\NFluent.Tests.SelfHosted\NFluent.Tests.SelfHosted.csproj", "{55C72F16-9E10-4BA3-A490-1401EEF86D4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.MsTest", "tests\NFluent.Tests.MsTest\NFluent.Tests.MsTest.csproj", "{8ABE2B72-E588-40F2-AD48-792C71520143}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Tests.MsTest", "tests\NFluent.Tests.MsTest\NFluent.Tests.MsTest.csproj", "{8ABE2B72-E588-40F2-AD48-792C71520143}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Tests.xUnit", "tests\NFluent.Tests.xUnit\NFluent.Tests.xUnit.csproj", "{788BA275-A78C-4FD7-B842-4CD9F2B9A1B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Tests.xUnit", "tests\NFluent.Tests.xUnit\NFluent.Tests.xUnit.csproj", "{788BA275-A78C-4FD7-B842-4CD9F2B9A1B2}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

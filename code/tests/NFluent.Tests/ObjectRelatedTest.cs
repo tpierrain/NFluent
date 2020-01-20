@@ -17,12 +17,42 @@ using System;
 
 namespace NFluent.Tests
 {
+    using System.Collections;
     using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
     public class ObjectRelatedTest
     {
+
+        class NoOpComparer : IEqualityComparer
+        {
+            private bool _answer;
+
+            public NoOpComparer(bool answer)
+            {
+                this._answer = answer;
+            }
+
+            public bool Equals(object x, object y)
+            {
+                return this._answer;
+            }
+
+            public int GetHashCode(object obj)
+            {
+                return this._answer ? 0 : obj.GetHashCode();
+            }
+        }
+
+        [Test]
+        public void IsEqualSupportCustomComparer()
+        {
+            Check.That(new object()).IsEqualTo(new object(), new NoOpComparer(true));
+            Check.ThatCode(() => Check.That(new object()).IsEqualTo(new object(), new NoOpComparer(false)))
+                .IsAFailingCheck();
+        }
+
         [Test]
         public void IsSameReferenceAsWorks()
         {
