@@ -17,7 +17,6 @@ namespace NFluent.Extensions
 {
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using Helpers;
 #if DOTNET_45 || NETSTANDARD1_3
     using System.Reflection;
@@ -59,6 +58,5 @@ namespace NFluent.Extensions
             var constructor = targetType.GetConstructor(new[] {dictionaryInterface});
             return (IReadOnlyDictionary<K,V>) constructor.Invoke(new[] {knownDictionary});
         }
-
     }
 }

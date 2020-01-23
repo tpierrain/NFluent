@@ -39,9 +39,9 @@ namespace NFluent.Tests.xUnit
         [Fact]
         public void AssumptionScanTest()
         {
-            // inject a type from the fuzzing assembly to check for some degenerative case
             Assuming.That(2).IsEqualTo(2);
-            Assuming.ThatCode(() => Check.That(2).IsEqualTo(0)).Throws<XunitException>();
+            Check.ThatCode(() => Assuming.That(2).IsEqualTo(0)).Throws<XunitException>();
+            Check.ThatCode(() => Assuming.That(2).IsEqualTo(0)).IsAFailingAssumption();
         }
     }
 }

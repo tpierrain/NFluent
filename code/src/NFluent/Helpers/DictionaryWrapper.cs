@@ -154,11 +154,9 @@ namespace NFluent.Helpers
         private class DictionaryEnumerator : IEnumerator<KeyValuePair<TK, TV>>
         {
             private readonly IDictionaryEnumerator keyEnumerator;
-            private readonly IDictionary dictionary;
 
             public DictionaryEnumerator(IDictionary dictionary)
             {
-                this.dictionary = dictionary;
                 this.keyEnumerator = dictionary.GetEnumerator();
             }
 

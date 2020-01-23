@@ -15,20 +15,16 @@
 
 namespace NFluent
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
 #if !DOTNET_20 && !DOTNET_30
     using System.Linq;
-#else
-
 #endif
 #if NETSTANDARD1_3
     using System.Collections.ObjectModel;
 #endif
 
     using Extensibility;
-    using Extensions;
     using Helpers;
 
     /// <summary>

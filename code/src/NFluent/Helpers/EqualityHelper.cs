@@ -658,7 +658,7 @@ namespace NFluent.Helpers
         {
             if (this.details.Count == 1)
             {
-                return !Equals(this.details[0].FirstValue, actual) && !Equals(this.details[0].SecondValue, expected);
+                return !Equals(this.details[0].FirstValue, actual);
             }
 
             return true;

@@ -64,6 +64,18 @@ namespace NFluent.Tests
                 "\t[\"thearg\"]", 
                 "The expected value's ParamName:", 
                 "\t[\"the arg\"]");
+#if !NETCOREAPP1_1
+            Check.ThatCode(()=>
+            Check.ThatCode(() => throw new ArgumentException("failed", "thearg")).
+                Throws<ArgumentException>().
+                WhichMember(e => e.TargetSite.Name).
+                IsEqualTo("method")).IsAFailingCheckWithMessage("", 
+                "The checked value's TargetSite.Name is different from expected one. At line 1, col 1, expected 'method' was '<WhichMembersGenerat...'.", 
+                "The checked value's TargetSite.Name:", 
+                "\t[\"<WhichMembersGenerateAdequateMessage>b__3_4\"]", 
+                "The expected value's TargetSite.Name:", 
+                "\t[\"method\"]");
+#endif
         }
 
         [Test]
