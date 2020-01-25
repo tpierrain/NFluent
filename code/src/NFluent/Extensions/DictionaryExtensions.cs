@@ -27,12 +27,12 @@ namespace NFluent.Extensions
 #endif
     internal static class DictionaryExtensions
     {
-        public static IReadOnlyDictionary<K, V> WrapDictionary<K, V>(object knownDictionary)
+        public static IReadOnlyDictionary<TK, TV> WrapDictionary<TK, TV>(object knownDictionary)
         {
             // if the object implements IDictionary
             if (knownDictionary is IDictionary simpleDictionary)
             {
-                return new DictionaryWrapper<K, V>(simpleDictionary);
+                return new DictionaryWrapper<TK, TV>(simpleDictionary);
             }
 
             // if it implements IReadonlyDictionary<,>
@@ -41,22 +41,35 @@ namespace NFluent.Extensions
                 .FirstOrDefault(i=> i.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>));
             if (roDictionaryInterface != null)
             {
-                var targetRoType= typeof(ReadOnlyDictionaryWrapper<,,,>).MakeGenericType(typeof(K), typeof(V), roDictionaryInterface.GetGenericArguments()[0], roDictionaryInterface.GetGenericArguments()[1]);
-                var roConstructor = targetRoType.GetConstructor(new[] {roDictionaryInterface});
-                return (IReadOnlyDictionary<K,V>) roConstructor.Invoke(new[] {knownDictionary});
+                var targetRoType= typeof(ReadOnlyDictionaryWrapper<,,,>).MakeGenericType(typeof(TK), typeof(TV), roDictionaryInterface.GetGenericArguments()[0], roDictionaryInterface.GetGenericArguments()[1]);
+                var readOnlyDictionaryBuilder = targetRoType.GetConstructor(new[] {roDictionaryInterface});
+                return (IReadOnlyDictionary<TK,TV>) readOnlyDictionaryBuilder?.Invoke(new[] {knownDictionary});
             }
         
-            // last attempt, IDictionary<,>
+            // attempt IDictionary<,>
             var dictionaryInterface = interfaces
                 .FirstOrDefault(i => i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
-            if (dictionaryInterface == null)
+            if (dictionaryInterface != null)
             {
-                return null;
+                var targetType = typeof(DictionaryWrapper<,,,>).MakeGenericType(typeof(TK), typeof(TV),
+                    dictionaryInterface.GetGenericArguments()[0], dictionaryInterface.GetGenericArguments()[1]);
+                var constructor = targetType.GetConstructor(new[] {dictionaryInterface});
+                return (IReadOnlyDictionary<TK, TV>) constructor?.Invoke(new[] {knownDictionary});
             }
 
-            var targetType= typeof(DictionaryWrapper<,,,>).MakeGenericType(typeof(K), typeof(V), dictionaryInterface.GetGenericArguments()[0], dictionaryInterface.GetGenericArguments()[1]);
-            var constructor = targetType.GetConstructor(new[] {dictionaryInterface});
-            return (IReadOnlyDictionary<K,V>) constructor.Invoke(new[] {knownDictionary});
+            var enumerationInterface =
+                interfaces.FirstOrDefault(i => i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+            var enumerated = enumerationInterface?.GetGenericArguments()[0];
+            if (enumerationInterface != null && enumerated.IsGenericType() && enumerated.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
+            {
+                var targetRoType= typeof(KeyValueEnumerationWrapper<,,,>).MakeGenericType(typeof(TK), 
+                    typeof(TV), 
+                    enumerated.GetGenericArguments()[0], 
+                    enumerated.GetGenericArguments()[1]);
+                var readOnlyDictionaryBuilder = targetRoType.GetConstructor(new[] {enumerationInterface});
+                return (IReadOnlyDictionary<TK, TV>)readOnlyDictionaryBuilder?.Invoke(new[]{knownDictionary});
+            }
+            return null;
         }
     }
 }

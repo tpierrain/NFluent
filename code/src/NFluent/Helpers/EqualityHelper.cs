@@ -401,7 +401,7 @@ namespace NFluent.Helpers
                     // key not found
                     valueDifferences.IsEquivalent = false;
                     valueDifferences.Add(DifferenceDetails.WasNotFound($"{sutName}[{expectedKeyIterator.Current.ToStringProperlyFormatted()}]",
-                        expectedDico[expectedKeyIterator.Current],
+                        new DictionaryEntry(expectedKeyIterator.Current, expectedDico[expectedKeyIterator.Current]), 
                         0));
                 }
                 else

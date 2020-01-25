@@ -16,6 +16,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Customization\ErrorReportingShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumerableShouldSupportAmbiguousType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\CheckLogicShould.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\CustomDico.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\CustomEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NUnitTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StructRelatedTests.cs" />

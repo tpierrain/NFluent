@@ -18,7 +18,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/ju5m6t3fm2xsl0o9/branch/master?svg=true)](https://ci.appveyor.com/project/tpierrain/nfluent/branch/master)
 [![Codecov](https://img.shields.io/codecov/c/github/NFluent/NFluent.svg)](https://codecov.io/gh/NFluent/NFluent)
 [![AppVeyor tests](https://img.shields.io/appveyor/tests/tpierrain/nfluent/master.svg)](https://ci.appveyor.com/project/tpierrain/nfluent)
-
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FNFluent%2FNFluent%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/NFluent/NFluent/master)
 ---
 
 NFluent is __an assertion library__ which aims __to fluent your .NET TDD experience__.

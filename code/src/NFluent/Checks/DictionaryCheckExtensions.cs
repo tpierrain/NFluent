@@ -1,17 +1,17 @@
-﻿// // --------------------------------  ------------------------------------------------------------------------------------
-// // <copyright file="DictionaryCheckExtensions.cs" company="">
-// //   Copyright 2013 Cyrille DUPUYDAUBY, Thomas PIERRAIN
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------  ------------------------------------------------------------------------------------
+// <copyright file="DictionaryCheckExtensions.cs" company="">
+//   Copyright 2013 Cyrille DUPUYDAUBY, Thomas PIERRAIN
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent
 {
@@ -25,6 +25,7 @@ namespace NFluent
 #endif
 
     using Extensibility;
+    using Extensions;
     using Helpers;
 
     /// <summary>
@@ -43,8 +44,7 @@ namespace NFluent
         public static ICheckLink<ICheck<IEnumerable<KeyValuePair<TK, TU>>>> IsEquivalentTo<TK, TU>(
             this ICheck<IEnumerable<KeyValuePair<TK, TU>>> check, IEnumerable<KeyValuePair<TK, TU>> other)
         {
-            var checker = ExtensibilityHelper.BeginCheck(check);
-            EqualityHelper.ImplementEquivalentTo(checker, other);
+            EqualityHelper.ImplementEquivalentTo(ExtensibilityHelper.BeginCheck(check), other);
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
@@ -69,24 +69,10 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check).
                 Analyze((sut, test) =>
                 {
-                    if (sut is IDictionary<TK, TU> dico)
+                    if (!DictionaryExtensions.WrapDictionary<TK, TU>(sut).ContainsKey(key))
                     {
-                        if (dico.ContainsKey(key))
-                            return;
+                        test.Fail("The {0} does not contain the expected key.");
                     }
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
-                    else if  (sut is IReadOnlyDictionary<TK, TU> roDico)
-                    {
-                        if (roDico.ContainsKey(key))
-                            return;
-                    }
-#endif
-                    else if (sut.Any(keyValuePair => EqualityHelper.FluentEquals(keyValuePair.Key, key)))
-                    {
-                        return;
-                    }
-
-                    test.Fail("The {0} does not contain the expected key.");
                 }).
                 DefineExpectedResult(key, "Expected key:", "Forbidden key:").
                 OnNegate("The {0} does contain the given key, whereas it must not.").
@@ -139,43 +125,15 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check).
                 Analyze((sut, test) =>
                 {
-                    var foundValue = default(TU);
-                    var found = false;
-                    if (sut is IDictionary<TK, TU> dico)
+                    var found = DictionaryExtensions.WrapDictionary<TK, TU>(sut).TryGetValue(expectedKey, out var foundValue);
+                    if (!found ||
+                        !EqualityHelper.FluentEquals(foundValue, expectedValue))
                     {
-                        found = dico.TryGetValue(expectedKey, out foundValue);
+                        test.Fail(
+                            !found
+                                ? "The {0} does not contain the expected key-value pair. The given key was not found."
+                                : "The {0} does not contain the expected value for the given key.");
                     }
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
-                    else if  (sut is IReadOnlyDictionary<TK, TU> roDico)
-                    {
-                        found = roDico.TryGetValue(expectedKey, out foundValue);
-                    }
-#endif
-                    else
-                    {
-                        foreach (var keyValuePair in sut)
-                        {
-                            if (!EqualityHelper.FluentEquals(keyValuePair.Key, expectedKey))
-                            {
-                                continue;
-                            }
-
-                            found = true;
-                            foundValue = keyValuePair.Value;
-                            break;
-                        }
-                    }
-                 
-                    // check found value
-                    if (found && EqualityHelper.FluentEquals(foundValue, expectedValue))
-                    {
-                        return;
-                    }
-
-                    test.Fail(
-                        !found
-                            ? "The {0} does not contain the expected key-value pair. The given key was not found."
-                            : "The {0} does not contain the expected value for the given key.");
                 }).
                 DefineExpectedResult(new KeyValuePair<TK, TU>(expectedKey, expectedValue), "Expected pair:", "Forbidden pair:").
                 OnNegate("The {0} does contain the given key-value pair, whereas it must not.").
@@ -198,7 +156,7 @@ namespace NFluent
         public static ICheckLink<ICheck<Hashtable>> ContainsKey(this ICheck<Hashtable> check, object key)
         {
             ExtensibilityHelper.BeginCheck(check).
-                FailWhen(sut => ! sut.ContainsKey(key), "The {0} does not contain the expected key.").
+                FailWhen(sut => !sut.ContainsKey(key), "The {0} does not contain the expected key.").
                 DefineExpectedResult(key, "Expected key:", "Forbidden key:").
                 OnNegate("The {0} does contain the given key, whereas it must not.").
                 EndCheck();

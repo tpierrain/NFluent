@@ -128,7 +128,7 @@ namespace NFluent.Extensions
                 case Stream stream:
                     return $"{stream} (Length: {stream.Length})";
                 case DictionaryEntry entry:
-                    return $"[{entry.Key}, {entry.Value}]";
+                    return $"[{entry.Key.ToStringProperlyFormatted()}]= {entry.Value.ToStringProperlyFormatted()}";
                 case DateTimeOffset timeOffset:
                     return string.Format(CultureInfo.InvariantCulture, "{0:o} {1}{2}", timeOffset.DateTime, timeOffset.Offset.TotalSeconds>=0 ? "+":"" ,timeOffset.Offset);
                 default:

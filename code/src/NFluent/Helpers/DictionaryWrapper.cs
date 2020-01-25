@@ -14,19 +14,20 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Helpers
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 #if !DOTNET_20 && !DOTNET_30
     using System.Linq;
 #endif
-    internal class DictionaryWrapper<TK, TV, TK2, TV2> 
+    internal class DictionaryWrapper<TK, TV, TKSource, TVSource> 
         : IReadOnlyDictionary<TK, TV>
-    where TK2: TK
-    where TV2: TV
+    where TKSource: TK
+    where TVSource: TV
     {
-        private readonly IDictionary<TK2, TV2> source;
+        private readonly IDictionary<TKSource, TVSource> source;
 
-        public DictionaryWrapper(IDictionary<TK2, TV2> source)
+        public DictionaryWrapper(IDictionary<TKSource, TVSource> source)
         {
             this.source = source;
         }
@@ -45,66 +46,22 @@ namespace NFluent.Helpers
 
         public bool ContainsKey(TK key)
         {
-            return this.source.ContainsKey((TK2)key);
+            return this.source.ContainsKey((TKSource)key);
         }
 
         public bool TryGetValue(TK key, out TV value)
         {
-            var found = this.source.TryGetValue((TK2) key, out var temp);
+            var found = this.source.TryGetValue((TKSource) key, out var temp);
             value = temp;
             return found;
         }
 
-        public TV this[TK key] => this.source[(TK2) key];
+        public TV this[TK key] => this.source[(TKSource) key];
 
         public IEnumerable<TK> Keys => this.source.Keys.Cast<TK>();
 
         public IEnumerable<TV> Values => this.source.Values.Cast<TV>();
     }
-
-    internal class ReadOnlyDictionaryWrapper<TK, TV, TK2, TV2> 
-        : IReadOnlyDictionary<TK, TV>
-    where TK2: TK
-    where TV2: TV
-    {
-        private readonly IReadOnlyDictionary<TK2, TV2> source;
-
-        public ReadOnlyDictionaryWrapper(IReadOnlyDictionary<TK2, TV2> source)
-        {
-            this.source = source;
-        }
-
-        public IEnumerator<KeyValuePair<TK, TV>> GetEnumerator()
-        {
-            return this.source.Select( entry => new KeyValuePair<TK, TV>(entry.Key, entry.Value)).GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
-        public int Count => this.source.Count;
-
-        public bool ContainsKey(TK key)
-        {
-            return this.source.ContainsKey((TK2)key);
-        }
-
-        public bool TryGetValue(TK key, out TV value)
-        {
-            var found = this.source.TryGetValue((TK2) key, out var temp);
-            value = temp;
-            return found;
-        }
-
-        public TV this[TK key] => this.source[(TK2) key];
-
-        public IEnumerable<TK> Keys => this.source.Keys.Cast<TK>();
-
-        public IEnumerable<TV> Values => this.source.Values.Cast<TV>();
-    }
-
     internal class DictionaryWrapper<TK, TV> 
         : IReadOnlyDictionary<TK, TV>
     {
@@ -177,5 +134,97 @@ namespace NFluent.Helpers
 
             object IEnumerator.Current => this.Current;
         }
+    }
+
+    internal class ReadOnlyDictionaryWrapper<TK, TV, TK2, TV2> 
+        : IReadOnlyDictionary<TK, TV>
+    where TK2: TK
+    where TV2: TV
+    {
+        private readonly IReadOnlyDictionary<TK2, TV2> source;
+
+        public ReadOnlyDictionaryWrapper(IReadOnlyDictionary<TK2, TV2> source)
+        {
+            this.source = source;
+        }
+
+        public IEnumerator<KeyValuePair<TK, TV>> GetEnumerator()
+        {
+            return this.source.Select( entry => new KeyValuePair<TK, TV>(entry.Key, entry.Value)).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        public int Count => this.source.Count;
+
+        public bool ContainsKey(TK key)
+        {
+            return this.source.ContainsKey((TK2)key);
+        }
+
+        public bool TryGetValue(TK key, out TV value)
+        {
+            var found = this.source.TryGetValue((TK2) key, out var temp);
+            value = temp;
+            return found;
+        }
+
+        public TV this[TK key] => this.source[(TK2) key];
+
+        public IEnumerable<TK> Keys => this.source.Keys.Cast<TK>();
+
+        public IEnumerable<TV> Values => this.source.Values.Cast<TV>();
+    }
+
+    internal class KeyValueEnumerationWrapper<TK, TV, TKSource, TVSource>
+        : IReadOnlyDictionary<TK, TV>
+        where TKSource : TK
+        where TVSource : TV
+    {
+        private readonly IEnumerable<KeyValuePair<TKSource, TVSource>> source;
+
+        public KeyValueEnumerationWrapper(IEnumerable<KeyValuePair<TKSource, TVSource>> source)
+        {
+            this.source = source;
+        }
+
+        public IEnumerator<KeyValuePair<TK, TV>> GetEnumerator()
+        {
+            return this.source.Select(p => new KeyValuePair<TK, TV>(p.Key, p.Value)).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        public int Count => (int) this.source.Count();
+
+        public bool ContainsKey(TK key)
+        {
+            return this.source.Any(pair => key.Equals(pair.Key));
+        }
+
+        public bool TryGetValue(TK key, out TV value)
+        {
+            try
+            {
+                value = this.source.First(pair => key.Equals(pair.Key)).Value;
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                value = default(TV);
+                return false;
+            }
+        }
+
+        public TV this[TK key] => this.source.First(pair => key.Equals(pair.Key)).Value;
+
+        public IEnumerable<TK> Keys => this.source.Select(pair => (TK) pair.Key);
+        public IEnumerable<TV> Values => this.source.Select(pair => (TV) pair.Value);
     }
 }

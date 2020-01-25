@@ -293,6 +293,18 @@ namespace NFluent
 
             return default(T);
         }
+        public static T First<T>(this IEnumerable<T> list, Func<T, bool> predicate)
+        {
+            foreach (var t in list)
+            {
+                if (predicate(t))
+                {
+                    return t;
+                }
+            }
+
+            throw new InvalidOperationException();
+        }
 #endif
         public static bool IsNullOrWhiteSpace(string testedText)
         {

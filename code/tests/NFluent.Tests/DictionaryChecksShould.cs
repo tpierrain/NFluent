@@ -18,6 +18,7 @@ namespace NFluent.Tests
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using Helpers;
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
     using System.Collections.ObjectModel;
 #endif
@@ -233,28 +234,28 @@ namespace NFluent.Tests
             Check.That(basic).ContainsKey("bar")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does not contain the expected key.",
                 "The checked dictionary:",
-                "\t{[foo, bar]} (1 item)",
+                "\t{[\"foo\"]= \"bar\"} (1 item)", 
                 "Expected key:",
                 "\t[\"bar\"]");
             Check.ThatCode(()=>
             Check.That(basic).ContainsValue("foo")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does not contain the expected value.",
                 "The checked dictionary:", 
-                "\t{[foo, bar]} (1 item)", 
+                "\t{[\"foo\"]= \"bar\"} (1 item)", 
                 "Expected value:", 
                 "\t[\"foo\"]");
             Check.ThatCode(()=>
             Check.That(basic).ContainsPair("bar", "foo")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does not contain the expected key-value pair. The given key was not found.",
                 "The checked dictionary:", 
-                "\t{[foo, bar]} (1 item)", 
+                "\t{[\"foo\"]= \"bar\"} (1 item)", 
                 "Expected pair:", 
                 "\t[[bar, foo]]");
             Check.ThatCode(()=>
                 Check.That(basic).ContainsPair("foo", "foo")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does not contain the expected value for the given key.",
                 "The checked dictionary:", 
-                "\t{[foo, bar]} (1 item)", 
+                "\t{[\"foo\"]= \"bar\"} (1 item)", 
                 "Expected pair:", 
                 "\t[[foo, foo]]");
         }
@@ -267,21 +268,21 @@ namespace NFluent.Tests
             Check.That(basic).Not.ContainsKey("foo")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does contain the given key, whereas it must not.",
                 "The checked dictionary:",
-                "\t{[foo, bar]} (1 item)", 
+                "\t{[\"foo\"]= \"bar\"} (1 item)", 
                 "Forbidden key:",
                 "\t[\"foo\"]");
             Check.ThatCode(()=>
             Check.That(basic).Not.ContainsValue("bar")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does contain the given value, whereas it must not.",
                 "The checked dictionary:", 
-                "\t{[foo, bar]} (1 item)", 
+                "\t{[\"foo\"]= \"bar\"} (1 item)", 
                 "Forbidden value:", 
                 "\t[\"bar\"]");
             Check.ThatCode(()=>
                 Check.That(basic).Not.ContainsPair("foo", "bar")).IsAFailingCheckWithMessage("",
                 "The checked dictionary does contain the given key-value pair, whereas it must not.",
                 "The checked dictionary:", 
-                "\t{[foo, bar]} (1 item)", 
+                "\t{[\"foo\"]= \"bar\"} (1 item)", 
                 "Forbidden pair:", 
                 "\t[[foo, bar]]");
         }
@@ -365,7 +366,7 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["bar"] = 1}).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one.", 
-                "actual[\"foo\"] does not exist. Expected 0.", 
+                "actual[\"foo\"] does not exist. Expected [\"foo\"]= 0.", 
                 "The checked dictionary:", 
                 "\t{[bar, 1]} (1 item)", 
                 "The expected dictionary:", 
@@ -411,7 +412,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsEquivalentToWorksWithCustomDics()
+        public void IsEquivalentToWorksEnumerationOfEntries()
         {
             var customDic = new List<KeyValuePair<string, int>> {
                 new KeyValuePair<string, int>("otherKey", 15) ,
@@ -423,7 +424,46 @@ namespace NFluent.Tests
             dic["extra"] = 20;
             Check.ThatCode(() => Check.That(customDic).IsEquivalentTo(dic)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is not equivalent to the expected dictionary.",
-                "[extra, 20] should be present but was not found.",
+                "[\"extra\"]= 20 should be present but was not found.",
+                "The checked enumerable:", 
+                "\t{[otherKey, 15], [key, 12]} (2 items)", 
+                "The expected dictionary:", 
+                "\t{[otherKey, 15], [key, 12], [extra, 20]} (3 items)");
+        }
+       [Test]
+        public void IsEquivalentToWorksForCustomEnumerationOfEntries()
+        {
+            var customDic = new CustomEnumerable<KeyValuePair<string, int>> (new List<KeyValuePair<string, int>> {
+                new KeyValuePair<string, int>("otherKey", 15) ,
+                new KeyValuePair<string, int>("key", 12)
+            });
+            var dic = new Dictionary<string, int>{["otherKey"]= 15, ["key"] = 12};
+            Check.That(customDic).IsEquivalentTo(dic);
+            Check.That(dic).IsEquivalentTo(customDic);
+            dic["extra"] = 20;
+            Check.ThatCode(() => Check.That(customDic).IsEquivalentTo(dic)).IsAFailingCheckWithMessage("", 
+                "The checked enumerable is not equivalent to the expected dictionary.",
+                "[\"extra\"]= 20 should be present but was not found.",
+                "The checked enumerable:", 
+                "\t{[otherKey, 15], [key, 12]} (2 items)", 
+                "The expected dictionary:", 
+                "\t{[otherKey, 15], [key, 12], [extra, 20]} (3 items)");
+        }
+
+        [Test]
+        public void IsEquivalentToWorksWithCustomDics()
+        {
+            var customDic = new CustomDico<string, int>(new Dictionary<string, int>{["otherKey"]= 15, ["key"] = 12});
+            var dic = new Dictionary<string, int>{["otherKey"]= 15, ["key"] = 12};
+            Check.That(customDic).IsEquivalentTo(dic);
+            Check.That(dic).IsEquivalentTo(customDic);
+            Check.That(customDic).ContainsKey("key");
+            Check.That(customDic).ContainsValue(12);
+            Check.That(customDic).ContainsPair("key", 12);
+            dic["extra"] = 20;
+            Check.ThatCode(() => Check.That(customDic).IsEquivalentTo(dic)).IsAFailingCheckWithMessage("", 
+                "The checked enumerable is not equivalent to the expected dictionary.",
+                "[\"extra\"]= 20 should be present but was not found.",
                 "The checked enumerable:", 
                 "\t{[otherKey, 15], [key, 12]} (2 items)", 
                 "The expected dictionary:", 

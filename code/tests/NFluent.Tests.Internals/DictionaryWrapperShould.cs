@@ -3,7 +3,10 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
     using System.Collections.ObjectModel;
+#endif
+    using System.Linq;
     using Extensions;
     using NUnit.Framework;
     using NFluent.Helpers;
@@ -103,6 +106,14 @@
         public void CanSupportBasicMethodsOnCustomDico()
         {
             var rodemo = new RoDico<int, string>(new Dictionary<int, string> {{1, "one"}, {2, "two"}});
+            var wrapped = DictionaryExtensions.WrapDictionary<object, object>(rodemo);
+
+            CheckBaseMethods(wrapped);
+        }
+        [Test]
+        public void CanSupportBasicMethodsOnEnumerationOfKeyValPairs()
+        {
+            var rodemo = new Dictionary<int, string> {{1, "one"}, {2, "two"}}.ToArray();
             var wrapped = DictionaryExtensions.WrapDictionary<object, object>(rodemo);
 
             CheckBaseMethods(wrapped);
