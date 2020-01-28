@@ -12,12 +12,13 @@
 ### Fixes
 * the Not operator no longer erases the custom message set using WithCustomMessage
 * Check.That(IDictionary).IsEquivalent now fails as expected when the _sut_ has entries that do not exist in the expected dictionary.
-* IsEquivalent now performs deep equivalence. For example, it supports Dictionaries of Dictionaries.
+* IsEquivalent now performs deep equivalence. For example, it supports Dictionaries of Dictionaries
+* Enum properties are properly considered when using Considering.
 * Enumeration of KeyValue pairs are no longer treated as dictionaries but as enumeration. This behavior was a hack
 to support custom IDictionary<K,V> implementations. Detection logic has been improved so this is no longer necessary.
 
 ### GitHub Issues
-* #306, #312, #313, #314, #315
+* #306, #312, #313, #314, #315, #317
 
 ## V 2.6.0
 

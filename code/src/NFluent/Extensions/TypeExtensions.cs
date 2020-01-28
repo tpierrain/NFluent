@@ -31,7 +31,8 @@
         /// <returns>true if the type as at least one field or property</returns>
         public static bool TypeHasMember(this Type type)
         {
-            return type.GetFields(BindingFlagsAll).Any() || type.GetProperties(BindingFlagsAll).Any();
+
+            return !type.GetTypeInfo().IsEnum && (type.GetFields(BindingFlagsAll).Any() || type.GetProperties(BindingFlagsAll).Any());
         }
 
         /// <summary>

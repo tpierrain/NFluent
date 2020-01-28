@@ -48,6 +48,24 @@ namespace NFluent.Tests
             }
         }
 
+        private enum SutEnum
+        {
+            First,
+            Second
+        }
+
+
+        [Test]
+        public void TreatEnumAsPrimitiveValues()
+        {
+            Check.That(new {Prop = SutEnum.First}).Considering().Public.Properties.IsEqualTo(new {Prop = SutEnum.First});
+            Check.ThatCode( ()=>
+            Check.That(new {Prop = SutEnum.First}).Considering().Public.Properties.IsEqualTo(new {Prop = SutEnum.Second})).IsAFailingCheck();
+            // Considering must not see the enum underlying field
+            Check.That(new {Prop = SutEnum.First}).Considering().Public.Fields.IsEqualTo(new {Prop = SutEnum.Second});
+        }
+
+
         [Test]
         public void NotShouldWorkWhenMissingMember()
         {

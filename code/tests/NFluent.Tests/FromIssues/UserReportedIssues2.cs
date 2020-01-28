@@ -26,9 +26,24 @@ namespace NFluent.Tests.FromIssues
     using NUnit.Framework;
     using SutClasses;
 
+    public enum Friends
+    {
+        Joey = 1,
+        Chandler = 2
+    }
+
     [TestFixture]
     public class UserReportedIssues2
     {
+
+        [Test]
+        // GH #317
+        public void ConsideringShouldWorkWithEnumProperties()
+        {
+            Check.ThatCode( ()=>
+            Check.That(new { Friend = Friends.Chandler }).Considering().Public.Properties.IsEqualTo(new { Friend = Friends.Joey }));
+        }
+
         // GH #307
         [Test]
         // TODO: add tests with custom dicos, list of custom dicos...
