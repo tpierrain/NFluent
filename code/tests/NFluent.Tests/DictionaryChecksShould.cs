@@ -398,6 +398,22 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void SupportIsEqualWithEnum()
+        {
+            var expectedDico = new Dictionary<string, object>();
+            expectedDico["first"] = expectedDico;
+            var sut = new List<string>{"first"};
+
+            Check.ThatCode(() => Check.That(sut).IsEqualTo(expectedDico)).IsAFailingCheckWithMessage("",
+                "The checked enumerable is different from the expected dictionary.",
+                "actual[0] = \"first\" instead of [first, System.Collections.Generic.Dictionary`2[System.String,System.Object]].", 
+                "The checked enumerable:", 
+                "\t{\"first\"} (1 item) of type: [System.Collections.Generic.List<string>]", 
+            "The expected dictionary:", 
+            "\t{[first, System.Collections.Generic.Dictionary`2[System.String,System.Object]]} (1 item) of type: [System.Collections.Generic.Dictionary<string, object>]");
+        }
+
+        [Test]
         public void IsEquivalentToWorks()
         {
             var dict = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };

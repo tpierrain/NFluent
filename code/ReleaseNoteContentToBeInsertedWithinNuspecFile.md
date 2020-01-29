@@ -16,6 +16,7 @@
 * Enum properties are properly considered when using Considering.
 * Enumeration of KeyValue pairs are no longer treated as dictionaries but as enumeration. This behavior was a hack
 to support custom IDictionary<K,V> implementations. Detection logic has been improved so this is no longer necessary.
+* Check.That(IEnumerable).IsInDescendingOrder no longer requires items to implement IComparable
 
 ### GitHub Issues
 * #306, #312, #313, #314, #315, #317
