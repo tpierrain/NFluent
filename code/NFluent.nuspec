@@ -3,7 +3,7 @@
   <metadata>
     <id>NFluent</id>
     <title>NFluent, smooth your .NET TDD experience!</title>
-    <version>2.6.1-alpha-0000</version>
+    <version>2.7.0-alpha-0000</version>
     <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR</authors>
     <owners>Thomas PIERRAIN</owners>
     <license type="expression">Apache-2.0</license>
@@ -24,11 +24,12 @@
 ### Fixes
 * the Not operator no longer erases the custom message set using WithCustomMessage
 * Check.That(IDictionary).IsEquivalent now fails as expected when the _sut_ has entries that do not exist in the expected dictionary.
-* IsEquivalent now performs deep equivalence. For example, it supports Dictionaries of Dictionaries.
+* IsEquivalent now performs deep equivalence. For example, it supports Dictionaries of Dictionaries
+* Enum properties are properly considered when using Considering.
 * Enumeration of KeyValue pairs are no longer treated as dictionaries but as enumeration. This behavior was a hack
 to support custom IDictionary&lt;K,V&gt; implementations. Detection logic has been improved so this is no longer necessary.
 ### GitHub Issues
-* #306, #312, #313, #314, #315
+* #306, #312, #313, #314, #315, #317
 ## V 2.6.0
 ### New feature
 * NFluent now supports assumption through Assuming entry point. For example you express it as :Assume.That(sut).IsEqualTo(expected); in a nutshell
