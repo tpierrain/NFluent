@@ -1025,10 +1025,10 @@ namespace NFluent
                 FailIfNull().
                 Analyze((sut, test) =>
                 {
-                    IComparable previous = null;
+                    object previous = null;
                     var index = 0;
                     var first = true;
-                    foreach (IComparable current in sut)
+                    foreach (var current in sut)
                     {
                         if (!first)
                         {
