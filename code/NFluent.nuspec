@@ -9,7 +9,7 @@
     <license type="expression">Apache-2.0</license>
     <projectUrl>http://www.n-fluent.net</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <icon>https://raw.github.com/tpierrain/NFluent/master/Images/Icon.png</icon>
+    <icon>images\Icon.png</icon>
     <description>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).</description>
     <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
     <releaseNotes># V 2.7.0
@@ -140,6 +140,10 @@ exception's message when the issue is the exception's type.
     <tags>tdd bdd test fluent check checks easy nunit xunit mbunit mstestsucks</tags>
   </metadata>
   <files>
+
+    <!-- Images -->
+    <file src="..\Images\icon.png" target="images\" />
+
     <!-- Core -->
     <file src="Artifacts\Binaries\netstandard1.3\NFluent.dll" target="lib\netstandard1.3\" />
     <file src="Artifacts\Binaries\netstandard1.3\NFluent.xml" target="lib\netstandard1.3\" />
