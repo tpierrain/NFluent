@@ -43,20 +43,6 @@ namespace NFluent.Extensions
             {typeof(bool), "bool" }, {typeof(decimal), "decimal" }, { typeof(object), "object"}, {typeof(void), "void" }
             };
 
-        private static readonly IList<Type> NumericalTypes = new List<Type> { 
-            typeof(byte), 
-            typeof(sbyte), 
-            typeof(short), 
-            typeof(ushort), 
-            typeof(int), 
-            typeof(uint), 
-            typeof(long), 
-            typeof(ulong), 
-            typeof(double), 
-            typeof(float),
-            typeof(decimal)
-        };
-
         static ExtensionsCommonHelpers()
         {
             StringTruncationLength = 20*1048;
@@ -80,17 +66,6 @@ namespace NFluent.Extensions
         }
 
         internal static int CountOfLineOfDetails { get; set; }
-
-        /// <summary>
-        /// Checks if a type is numerical (i.e: int, double, short, uint...).
-        /// </summary>
-        /// <param name="type">Type to evaluate.</param>
-        /// <returns>true if the type is a numerical type.</returns>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
-        public static bool IsNumerical(this Type type)
-        {
-            return NumericalTypes.Contains(type);
-        }
 
         /// <summary>
         /// Returns a string that represents the current object. If the object is already a string, this method will surround it with brackets.

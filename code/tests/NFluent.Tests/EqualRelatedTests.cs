@@ -524,8 +524,8 @@ namespace NFluent.Tests
         [Test]
         public void IsNotEqualWorksWithIntNumbers()
         {
-            int firstInt = 23;
-            int secondButIdenticalInt = 7;
+            const int firstInt = 23;
+            const int secondButIdenticalInt = 7;
 
             Check.That(secondButIdenticalInt).IsNotEqualTo(firstInt);
         }
@@ -533,8 +533,8 @@ namespace NFluent.Tests
         [Test]
         public void IsNotEqualWorksWithDoubleNumbers()
         {
-            double firstDouble = 23.7D;
-            double secondButIdenticalDouble = 23.75D;
+            const double firstDouble = 23.7D;
+            const double secondButIdenticalDouble = 23.75D;
 
             Check.That(secondButIdenticalDouble).IsNotEqualTo(firstDouble);
         }
@@ -542,17 +542,39 @@ namespace NFluent.Tests
         [Test]
         public void IsNotEqualWorksWithFloatNumbers()
         {
-            float firstFloat = 23.56F;
-            float secondButIdenticalFloat = 23.99999F;
+            const float firstFloat = 23.56F;
+            const float secondButIdenticalFloat = 23.99999F;
 
             Check.That(secondButIdenticalFloat).IsNotEqualTo(firstFloat);
         }
 
         [Test]
+        public void IsNotEqualWorksWithIntNumberAndObject()
+        {
+            const int firstInt = 23;
+            var obj = new object();
+            const sbyte firstByte = 12;
+
+            Check.That(obj).IsNotEqualTo(firstInt);
+            Check.That(firstInt).IsNotEqualTo(obj);
+
+            Check.That(obj).IsNotEqualTo(firstByte);
+            Check.That(firstByte).IsNotEqualTo(obj);
+        }
+
+        [Test]
+        public void IsEqualDealWithNumericalTypeConversion()
+        {
+            Check.ThatCode(()=>
+            Check.That((sbyte) -1).IsEqualTo((ushort)65535)).IsAFailingCheck();
+ //           Check.That(-1).IsEqualTo((sbyte) -1);
+        }
+
+        [Test]
         public void IsNotEqualToThrowsExceptionWithClearStatusWhenFails()
         {
-            var first = "Son of a test";
-            var otherReferenceToSameObject = first;
+            const string first = "Son of a test";
+            const string otherReferenceToSameObject = first;
 
             Check.ThatCode(() => { Check.That(first).IsNotEqualTo(otherReferenceToSameObject); })
                 .IsAFailingCheckWithMessage(Environment.NewLine +
@@ -564,7 +586,7 @@ namespace NFluent.Tests
         [Test]
         public void NotIsNotEqualToThrowsExceptionWhenFailing()
         {
-            var first = "Son of a test";
+            const string first = "Son of a test";
 
             Check.ThatCode(() => { Check.That(first).Not.IsNotEqualTo("what?"); })
                 .IsAFailingCheckWithMessage(Environment.NewLine +

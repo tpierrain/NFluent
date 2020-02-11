@@ -35,6 +35,27 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        [Test]
+        // GH #320
+        public void IssueWithDoubleAndInt()
+        {
+            double? number = 2.2;
+
+            Check.ThatCode( () =>
+                Check.That(number).Equals(2)).IsAFailingCheck();
+            Check.ThatCode( () =>
+            Check.That(number).IsEqualTo(2)).IsAFailingCheck(); // OK
+        }
+
+        [Test]
+        // GH #319
+        public void IssueWithTypesAndisEquivalent()
+        {
+            Check.That(new byte[] { 0, 1 }).IsEquivalentTo(0, 1); // Fail
+            Check.That(new byte[] { 0, 1 }).IsEquivalentTo((byte)0, (byte)1); // OK
+            Check.That(new byte[] { 0, 1 }).ContainsExactly(0, 1); // OK
+            Check.That(new byte[] { 0, 1 }).ContainsExactly((byte)0, (byte)1); // OK
+        }
 
         [Test]
         // GH #317

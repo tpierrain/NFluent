@@ -18,6 +18,8 @@ namespace NFluent.Helpers
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
+    using System.Runtime.InteropServices;
 #if !DOTNET_20 && !DOTNET_30
     using System.Linq;
 #endif
@@ -338,12 +340,13 @@ namespace NFluent.Helpers
 
             if (actual != null)
             {
+                var commonType = actual.GetType().FindCommonNumericalType(expected.GetType());
                 // we silently convert numerical value
-                if (actual.GetType().IsNumerical() &&
-                    expected.GetType().IsNumerical())
+                if (commonType != null)
                 {
-                    var changeType = Convert.ChangeType(actual, expected.GetType(), null);
-                    if (expected.Equals(changeType))
+                    var convertedActual = Convert.ChangeType(actual, commonType);
+                    var convertedExpected = Convert.ChangeType(expected, commonType);
+                    if (convertedExpected.Equals(convertedActual))
                     {
                         return result;
                     }
