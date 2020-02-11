@@ -144,9 +144,19 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualWorksWithIntNumbers()
         {
-            var firstInt = 23;
-            var secondButIdenticalInt = 23;
+            const int firstInt = 23;
+            const int secondButIdenticalInt = 23;
 
+            Check.That(secondButIdenticalInt).IsEqualTo(firstInt);
+        }
+
+        [Test]
+        public void IsEqualWorksWithBytes()
+        {
+            const byte firstInt = 12;
+            const int secondButIdenticalInt = 12;
+
+            Check.That((short) 255).Equals((byte)255);
             Check.That(secondButIdenticalInt).IsEqualTo(firstInt);
         }
 
@@ -553,7 +563,7 @@ namespace NFluent.Tests
         {
             const int firstInt = 23;
             var obj = new object();
-            const sbyte firstByte = 12;
+            const byte firstByte = 12;
 
             Check.That(obj).IsNotEqualTo(firstInt);
             Check.That(firstInt).IsNotEqualTo(obj);
@@ -566,8 +576,10 @@ namespace NFluent.Tests
         public void IsEqualDealWithNumericalTypeConversion()
         {
             Check.ThatCode(()=>
-            Check.That((sbyte) -1).IsEqualTo((ushort)65535)).IsAFailingCheck();
- //           Check.That(-1).IsEqualTo((sbyte) -1);
+                Check.That((ushort) 65535).IsEqualTo((sbyte)-1)).IsAFailingCheck();
+            Check.ThatCode(()=>
+                Check.That((sbyte) -1).IsEqualTo((ushort)65535)).IsAFailingCheck();
+            Check.That(-1).IsEqualTo((sbyte) -1);
         }
 
         [Test]

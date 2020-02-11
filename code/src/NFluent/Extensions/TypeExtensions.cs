@@ -90,7 +90,7 @@
             {
                 otherIndex++;
             }
-            else if (!typeIsSigned && otherIsSigned)
+            if (!typeIsSigned && otherIsSigned)
             {
                 index++;
             }

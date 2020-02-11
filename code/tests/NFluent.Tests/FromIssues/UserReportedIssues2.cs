@@ -49,7 +49,7 @@ namespace NFluent.Tests.FromIssues
 
         [Test]
         // GH #319
-        public void IssueWithTypesAndisEquivalent()
+        public void IssueWithTypesAndIsEquivalent()
         {
             Check.That(new byte[] { 0, 1 }).IsEquivalentTo(0, 1); // Fail
             Check.That(new byte[] { 0, 1 }).IsEquivalentTo((byte)0, (byte)1); // OK
