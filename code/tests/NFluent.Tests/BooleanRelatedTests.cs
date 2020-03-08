@@ -17,6 +17,7 @@ using System;
 namespace NFluent.Tests
 {
     using Helpers;
+    using Messages;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -57,7 +58,7 @@ namespace NFluent.Tests
         public void NotIsFalseMayThrowExceptions()
         {
             const bool tddSucks = false;
-            
+            EntityNamingLogic.ClearDefaultNameCache();
             Check.ThatCode( () => Check.That(tddSucks).Not.IsFalse())
                     .IsAFailingCheckWithMessage(Environment.NewLine+ "The checked boolean is false whereas it must be true." + Environment.NewLine + "The checked boolean:" + Environment.NewLine + "\t[False]");
         }

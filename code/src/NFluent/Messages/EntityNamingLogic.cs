@@ -77,6 +77,14 @@ namespace NFluent.Messages
             }
         }
 
+        /// <summary>
+        /// Clear the default name cached. Used in NFluent tests.
+        /// </summary>
+        public static void ClearDefaultNameCache()
+        {
+            NamingCache.Clear();
+        }
+
         private static string GetDefaultName(Type type)
         {
             if (type == null)

@@ -16,6 +16,7 @@ namespace NFluent.Tests
 {
     using System;
     using Extensions;
+    using Messages;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -55,7 +56,7 @@ namespace NFluent.Tests
         {
             var christmas2013 = new DateTime(2013, 12, 25);
             var newYearsEve2014 = new DateTime(2013, 12, 31);
-
+            EntityNamingLogic.ClearDefaultNameCache();
             Check.ThatCode(() =>
             {
                 Check.That(christmas2013).Not.IsBefore(newYearsEve2014);

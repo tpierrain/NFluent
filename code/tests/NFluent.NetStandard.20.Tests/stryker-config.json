@@ -2,16 +2,15 @@
   "stryker-config": {
     "reporters": [
       "progress",
-      "html",
-      "dashboard",
-      "dots"
+      "html"
+      //      "dashboard",
+      //      "dots"
     ],
-    "test-runner": "VsTest",
+    "test-runner": "vstest",
     "coverage-analysis": "perTest",
     "abort-test-on-fail": true,
-    "test-multiple-mutants": false,
     "log-level": "info",
-    "log-file": false,
+    "log-file": true,
     "dev-mode": false,
     "dashboard-project": "github.com/NFluent/NFluent",
     "dashboard-version": "master"
