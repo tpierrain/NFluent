@@ -15,7 +15,6 @@
 
 namespace NFluent
 {
-    using System;
     using Extensibility;
     using Helpers;
     using Kernel;
@@ -26,7 +25,6 @@ namespace NFluent
     public static class IntCheckExtensions
     {
         // DoNotChangeOrRemoveThisLine
-
         // Since this class is the model/template for the generation of all the other numbers related CheckExtensions classes, don't forget to re-generate all the other classes every time you change this one. To do that, just save the ..\T4\NumberFluentAssertionGenerator.tt file within Visual Studio. This will trigger the T4 code generation process.
 
         /// <summary>
@@ -94,27 +92,6 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual value is less than an operand.
-        /// </summary>
-        /// <param name="check">
-        /// The fluent check to be extended.
-        /// </param>
-        /// <param name="comparand">
-        /// Comparand to compare the value to.
-        /// </param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">
-        /// The value is not less than the comparand.
-        /// </exception>
-        [Obsolete("Use IsStrictlyLessThan instead.")]
-        public static ICheckLink<ICheck<int>> IsLessThan(this ICheck<int> check, int comparand)
-        {
-            return check.Not.IsStrictlyGreaterThan(comparand);
-        }
-
-        /// <summary>
         /// Checks that the checked value is strictly less than the comparand.
         /// </summary>
         /// <param name="check">
@@ -132,27 +109,6 @@ namespace NFluent
         public static ICheckLink<ICheck<int>> IsStrictlyLessThan(this ICheck<int> check, int comparand)
         {
             return new NumberCheck<int>(check).IsStrictlyLessThan(comparand);
-        }
-
-        /// <summary>
-        /// Checks that the actual value is more than an operand.
-        /// </summary>
-        /// <param name="check">
-        /// The fluent check to be extended.
-        /// </param>
-        /// <param name="comparand">
-        /// Comparand to compare the value to.
-        /// </param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">
-        /// The value is not less than the comparand.
-        /// </exception>
-        [Obsolete("Use IsStrictlyGreaterThan instead.")]
-        public static ICheckLink<ICheck<int>> IsGreaterThan(this ICheck<int> check, int comparand)
-        {
-            return check.Not.IsStrictlyLessThan(comparand);
         }
 
         /// <summary>

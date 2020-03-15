@@ -3,7 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+#if !DOTNET_35 && !DOTNET_40
     using System.Collections.ObjectModel;
 #endif
     using System.Linq;
@@ -119,7 +119,7 @@
             CheckBaseMethods(wrapped);
         }
 
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+#if !DOTNET_35 && !DOTNET_40
         [Test]
         public void CanSupportBasicMethodsOnReadOnlyDico()
         {

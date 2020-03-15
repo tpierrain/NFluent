@@ -25,24 +25,6 @@ namespace NFluent.Helpers
     /// </summary>
     public static class FailureHandler
     {
-        //ncrunch: no coverage start
-        /// <inheritdoc cref="IsAFailingCheckWithMessage"/>
-        [Obsolete("Use IsAFailingCheckWithMessage instead (typo)")]
-        public static ICheckLink<ICheck<RunTrace>> IsAFaillingCheckWithMessage(this ICheck<RunTrace> check,
-            params string[] lines)
-        {
-            return check.IsAFailingCheckWithMessage(lines);
-        }
-
-        /// <inheritdoc cref="IsAFailingCheck"/>
-        [Obsolete("Use IsAFailingCheckWithMessage instead (typo)")]
-        public static ICheckLink<ICheck<RunTrace>> IsAFaillingCheck(this ICheck<RunTrace> check)
-        {
-            return check.IsAFailingCheck();
-        }
-
-        //ncrunch: no coverage end
-
         /// <summary>
         ///     Verify that the code results in a failed NFluent check with a specified message.
         /// </summary>

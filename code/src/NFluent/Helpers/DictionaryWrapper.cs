@@ -17,9 +17,7 @@ namespace NFluent.Helpers
     using System;
     using System.Collections;
     using System.Collections.Generic;
-#if !DOTNET_20 && !DOTNET_30
     using System.Linq;
-#endif
     internal class DictionaryWrapper<TK, TV, TKSource, TVSource> 
         : IReadOnlyDictionary<TK, TV>
     where TKSource: TK

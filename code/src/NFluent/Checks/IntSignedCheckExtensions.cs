@@ -15,7 +15,6 @@
 
 namespace NFluent
 {
-    using System;
     using Kernel;
 
     /// <summary>
@@ -24,22 +23,7 @@ namespace NFluent
     public static class IntSignedCheckExtensions
     {
         // DoNotChangeOrRemoveThisLine
-
         // Since this class is the model/template for the generation of all the other numbers related CheckExtensions classes, don't forget to re-generate all the other classes every time you change this one. To do that, just save the ..\T4\NumberFluentAssertionGenerator.tt file within Visual Studio. This will trigger the T4 code generation process.
-
-        /// <summary>
-        /// Checks that the actual value is strictly positive.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        [Obsolete("Use IsStrictlyPositive instead.")]
-        public static ICheckLink<ICheck<int>> IsPositive(this ICheck<int> check)
-        {
-            return new NumberCheck<int>(check).IsStrictlyPositive();
-        }
 
         /// <summary>
         /// Checks that the actual value is strictly positive.
@@ -75,20 +59,6 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not strictly negative.</exception>
-        [Obsolete("Use IsStrictlyNegative instead.")]
-        public static ICheckLink<ICheck<int>> IsNegative(this ICheck<int> check)
-        {
-            return new NumberCheck<int>(check).IsStrictlyNegative();
-        }
-
-        /// <summary>
-        /// Checks that the actual value is strictly negative.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The value is not strictly negative.</exception>
         public static ICheckLink<ICheck<int>> IsStrictlyNegative(this ICheck<int> check)
         {
             return new NumberCheck<int>(check).IsStrictlyNegative();
@@ -106,6 +76,5 @@ namespace NFluent
         {
             return new NumberCheck<int>(check).IsNegativeOrZero();
         }
-
     }
 }

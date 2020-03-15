@@ -18,11 +18,7 @@ using System.Runtime.CompilerServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-#if DOTNET_20
-[assembly: AssemblyTitle("NFluent for .NET 2.0")]
-#elif DOTNET_30
-[assembly: AssemblyTitle("NFluent for .NET 3.0")]
-#elif DOTNET_35
+#if DOTNET_35
 [assembly: AssemblyTitle("NFluent for .NET 3.5")]
 #elif DOTNET_40
 [assembly: AssemblyTitle("NFluent for .NET 4.0")]

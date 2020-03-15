@@ -61,15 +61,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsSameReferenceThanWorks()
-        {
-            var test = new object();
-#pragma warning disable CS0618
-            Check.That(test).IsSameReferenceThan(test);
-#pragma warning restore CS0618
-        }
-
-        [Test]
         public void IsSameReferenceThanDoesNotLoseOriginalTypeForOtherCheck()
         {
             var numbers = new[] { 1, 4, 42 };

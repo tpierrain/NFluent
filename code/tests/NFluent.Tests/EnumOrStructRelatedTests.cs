@@ -63,6 +63,18 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldOutputTypesWhenComparing()
+        {
+            Check.ThatCode(() =>
+                Check.ThatEnum(new Basic(1, 2)).IsEqualTo(4)).IsAFailingCheckWithMessage("", 
+                "The checked struct is different from the expected value.", 
+                "The checked struct:", 
+                "\t[NFluent.Tests.EnumOrStructRelatedTests+Basic] of type: [NFluent.Tests.EnumOrStructRelatedTests+Basic]", 
+                "The expected value:", 
+                "\t[4] of type: [int]");
+        }
+
+        [Test]
         public void ShouldFailWithHashesWhenSimilar()
         {
             Check.ThatCode(() => { Check.ThatEnum(new Basic(1,2)).IsEqualTo(new Basic(1, 3)); })

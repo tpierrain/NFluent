@@ -15,12 +15,8 @@
 
 namespace NFluent
 {
-    using System;
-
     using Extensibility;
-
     using Helpers;
-
     using Kernel;
 
     /// <summary>
@@ -29,7 +25,6 @@ namespace NFluent
     public static class ByteCheckExtensions
     {
         // DoNotChangeOrRemoveThisLine
-
         #pragma warning restore 169
 
         /// <summary>
@@ -97,27 +92,6 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual value is less than an operand.
-        /// </summary>
-        /// <param name="check">
-        /// The fluent check to be extended.
-        /// </param>
-        /// <param name="comparand">
-        /// Comparand to compare the value to.
-        /// </param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">
-        /// The value is not less than the comparand.
-        /// </exception>
-        [Obsolete("Use IsStrictlyLessThan instead.")]
-        public static ICheckLink<ICheck<byte>> IsLessThan(this ICheck<byte> check, byte comparand)
-        {
-            return check.Not.IsStrictlyGreaterThan(comparand);
-        }
-
-        /// <summary>
         /// Checks that the checked value is strictly less than the comparand.
         /// </summary>
         /// <param name="check">
@@ -135,27 +109,6 @@ namespace NFluent
         public static ICheckLink<ICheck<byte>> IsStrictlyLessThan(this ICheck<byte> check, byte comparand)
         {
             return new NumberCheck<byte>(check).IsStrictlyLessThan(comparand);
-        }
-
-        /// <summary>
-        /// Checks that the actual value is more than an operand.
-        /// </summary>
-        /// <param name="check">
-        /// The fluent check to be extended.
-        /// </param>
-        /// <param name="comparand">
-        /// Comparand to compare the value to.
-        /// </param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">
-        /// The value is not less than the comparand.
-        /// </exception>
-        [Obsolete("Use IsStrictlyGreaterThan instead.")]
-        public static ICheckLink<ICheck<byte>> IsGreaterThan(this ICheck<byte> check, byte comparand)
-        {
-            return check.Not.IsStrictlyLessThan(comparand);
         }
 
         /// <summary>

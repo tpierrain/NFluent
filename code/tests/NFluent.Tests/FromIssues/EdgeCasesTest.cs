@@ -52,18 +52,8 @@ namespace NFluent.Tests
 
             Check.That(test).IsEqualTo(4);
         }
-#pragma warning disable 618
 
-        [Test]
-        public void CheckNumbersWithDecimalParts()
-        {
-            Check.That(-.0002).IsNegative();
-            Check.That(.0002).IsPositive();
-
-            Check.That(.02).IsGreaterThan(.01);
-        }
-
-        public class FieldTest
+        internal class FieldTest
         {
             private int x;
             private int y;
@@ -77,5 +67,4 @@ namespace NFluent.Tests
             }
         }
     }
-#pragma warning restore 618
 }

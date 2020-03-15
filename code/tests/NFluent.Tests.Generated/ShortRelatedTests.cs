@@ -224,39 +224,6 @@ namespace NFluent.Tests
 
         #endregion
 
-        #region IsLessThan
-#pragma warning disable 618
-
-        [Test]
-        public void IsLessThanWorks()
-        {
-            Check.That(One).IsLessThan(Twenty);
-        }
-
-        [Test]
-        public void NotIsLessThanWorks()
-        {
-            Check.That(Twenty).Not.IsLessThan(One);
-        }
-
-        [Test]
-        public void NotIsLessThanThrowsExceptionWhenFailing()
-        {
-            Check.ThatCode(() =>
-            {
-                Check.That(One).Not.IsLessThan(Twenty);
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked value is less than the given one.",
-                    "The checked value:",
-                    "\t[1]",
-                    "The expected value: strictly greater than",
-                    "\t[20]");
-        }
-
-#pragma warning restore 618
-        #endregion
-
         #region IsStrictlyLessThan
 
         [Test]
@@ -311,51 +278,6 @@ namespace NFluent.Tests
                     "\t[20]");
         }
 
-        #endregion
-
-
-
-        #region IsGreaterThan
-#pragma warning disable 618
-
-        [Test]
-        public void IsGreaterThanWorks()
-        {
-            Check.That(Twenty).IsGreaterThan(One);
-        }
-
-        [Test]
-        public void IsGreaterThanThrowsExceptionWhenFailing()
-        {
-            Check.ThatCode(() =>
-            {
-                Check.That(One).IsGreaterThan(Twenty);
-            })
-                .IsAFailingCheckWithMessage("",
-                    "The checked value is strictly less than the given one.",
-                    "The checked value:",
-                    "\t[1]",
-                    "The expected value: greater than",
-                    "\t[20]");
-
-        }
-
-        [Test]
-        public void NotIsGreaterThanThrowsExceptionWhenFailing()
-        {
-            Check.ThatCode(() =>
-            {
-                Check.That(Twenty).Not.IsGreaterThan(One);
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked value is greater than the given one.",
-                    "The checked value:",
-                    "\t[20]",
-                    "The expected value: strictly less than",
-                    "\t[1]");
-        }
-
-#pragma warning restore 618
         #endregion
 
         #region IsStrictlyGreaterThan

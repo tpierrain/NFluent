@@ -2,9 +2,7 @@
 {
     using System;
     using System.Collections;
-#if !DOTNET_20 && !DOTNET_30
     using System.Linq;
-#endif
     using System.Reflection;
 
     internal static class TypeExtensions

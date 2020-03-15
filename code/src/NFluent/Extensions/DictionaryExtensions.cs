@@ -21,10 +21,8 @@ namespace NFluent.Extensions
 #if DOTNET_45 || NETSTANDARD1_3
     using System.Reflection;
 #endif
-
-#if !DOTNET_20 && !DOTNET_30
     using System.Linq;
-#endif
+
     internal static class DictionaryExtensions
     {
         public static IReadOnlyDictionary<TK, TV> WrapDictionary<TK, TV>(object knownDictionary)

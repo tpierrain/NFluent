@@ -39,26 +39,6 @@
             Check.That(numbers).HasNotFieldsWithSameValues(new { Length = 99 }).And.Contains(2);
         }
 
-#pragma warning disable 618
-        [Test]
-        public void ObsoleteApiChecks()
-        {
-            var x = new DummyClass();
-            Check.That(x).HasFieldsEqualToThose(new DummyClass());
-        }
-
-        [Test]
-        public void HasFieldsNotEqualToThoseIsObsoleteButWorks()
-        {
-            var x = new DummyClass();
-            Check.That(x).HasFieldsNotEqualToThose(new DummyClass(1, 2));
-
-            // check with missing fields
-            Check.That(new DummyClass()).HasFieldsNotEqualToThose(new DummyHeritance(1, 2));
-        }
-
-#pragma warning restore 618
-
         [Test]
         public void ShouldWorkOnPlainArrays()
         {
@@ -206,15 +186,6 @@
             var numbers = new List<int>(new[] { 1, 2, 3 });
             Check.That(numbers).HasFieldsWithSameValues(new { _size = 3 }).And.Contains(2);
         }
-
-#pragma warning disable 618
-        [Test]
-        public void HasFieldsEqualToThoseIsObsoleteButWorksAgainstAnonymousClass()
-        {
-            var x = new DummyClass();
-            Check.That(x).HasFieldsEqualToThose(new { x = 2, y = 3});
-        }
-#pragma warning restore 618
 
         [Test]
         public void HasFieldsEqualWorksAgainstAnonymousClassAndAutoProperties()

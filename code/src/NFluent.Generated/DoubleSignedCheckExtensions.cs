@@ -15,7 +15,6 @@
 
 namespace NFluent
 {
-    using System;
     using Kernel;
 
     /// <summary>
@@ -24,22 +23,7 @@ namespace NFluent
     public static class DoubleSignedCheckExtensions
     {
         // DoNotChangeOrRemoveThisLine
-
         #pragma warning restore 169
-
-        /// <summary>
-        /// Checks that the actual value is strictly positive.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The value is not strictly positive.</exception>
-        [Obsolete("Use IsStrictlyPositive instead.")]
-        public static ICheckLink<ICheck<double>> IsPositive(this ICheck<double> check)
-        {
-            return new NumberCheck<double>(check).IsStrictlyPositive();
-        }
 
         /// <summary>
         /// Checks that the actual value is strictly positive.
@@ -75,20 +59,6 @@ namespace NFluent
         /// A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">The value is not strictly negative.</exception>
-        [Obsolete("Use IsStrictlyNegative instead.")]
-        public static ICheckLink<ICheck<double>> IsNegative(this ICheck<double> check)
-        {
-            return new NumberCheck<double>(check).IsStrictlyNegative();
-        }
-
-        /// <summary>
-        /// Checks that the actual value is strictly negative.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The value is not strictly negative.</exception>
         public static ICheckLink<ICheck<double>> IsStrictlyNegative(this ICheck<double> check)
         {
             return new NumberCheck<double>(check).IsStrictlyNegative();
@@ -106,6 +76,5 @@ namespace NFluent
         {
             return new NumberCheck<double>(check).IsNegativeOrZero();
         }
-
     }
 }

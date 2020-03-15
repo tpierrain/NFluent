@@ -77,7 +77,7 @@ namespace NFluent.Tests.FromIssues
             var dictOf2Dict_A = new Dictionary<string, Dictionary<string, string>> { { "key1", dictOf2 }, { "key2", dictOf3_A } };
             var dictOf2Dict_B = new Dictionary<string, Dictionary<string, string>> { { "key2", dictOf3_B }, { "key1", dictOf2 } };
             Check.That(dictOf2Dict_A).IsEquivalentTo(dictOf2Dict_B);  
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+#if !DOTNET_35 && !DOTNET_40
             var dictOf2Dict_C = new Dictionary<string, IReadOnlyDictionary<string, string>> { { "key1", new RoDico(dictOf2)} , { "key2", new RoDico(dictOf3_B) } };
 
             Check.That(dictOf2Dict_A).IsEquivalentTo(dictOf2Dict_C); 

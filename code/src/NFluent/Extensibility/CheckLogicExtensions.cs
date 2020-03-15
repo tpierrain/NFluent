@@ -14,7 +14,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Extensibility
 {
-#if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
+#if !DOTNET_35
     using System;
 #endif
     /// <summary>

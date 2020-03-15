@@ -18,9 +18,7 @@ namespace NFluent
     using System;
     using System.Collections;
     using System.ComponentModel;
-#if !DOTNET_20 && !DOTNET_30
     using System.Linq;
-#endif
     using Extensibility;
     using Helpers;
     using Kernel;
@@ -290,27 +288,6 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> IsNotNull<T>(this ICheck<T> check) where T : class
         {
             return check.Not.IsNull();
-        }
-
-        /// <summary>
-        /// Obsolete. Use <see cref="ObjectCheckExtensions.IsSameReferenceAs{T, TU}"/> instead. 
-        /// Checks that the actual value has an expected reference.
-        /// </summary>
-        /// <typeparam name="T">
-        /// Type of the checked value.
-        /// </typeparam>
-        /// <typeparam name="TU">Type of expected reference</typeparam>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected object.</param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The actual value is not the same reference than the expected value.</exception>
-        [Obsolete("Use IsSameReferenceAs")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static ICheckLink<ICheck<T>> IsSameReferenceThan<T, TU>(this ICheck<T> check, TU expected)
-        {
-            return IsSameReferenceAs(check, expected);
         }
 
         /// <summary>

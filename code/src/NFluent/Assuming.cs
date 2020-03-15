@@ -42,7 +42,7 @@ namespace NFluent
             return new FluentCheck<T>(value, Reporter);
         }
 
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+#if !DOTNET_35 && !DOTNET_40
 
         /// <summary>
         /// Returns a <see cref="FluentDynamicCheck"/> instance that will provide check for dynamics.

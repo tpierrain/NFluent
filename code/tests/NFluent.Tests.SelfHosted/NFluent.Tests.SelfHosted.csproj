@@ -14,6 +14,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="NFluent.Tests.SelfHosted.v3.ncrunchproject" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\NFluent.Standard.20\NFluent.Standard.20.csproj" />
   </ItemGroup>
 

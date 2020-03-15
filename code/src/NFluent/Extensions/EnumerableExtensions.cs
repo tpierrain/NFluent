@@ -20,9 +20,7 @@ namespace NFluent
     using System.Collections.Generic;
     using System.Text;
     using Extensions;
-#if !DOTNET_30 && !DOTNET_20
     using System.Linq;
-#endif
 
     /// <summary>
     ///     Extension methods for adding new fluent methods to enumerable.

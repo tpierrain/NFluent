@@ -22,10 +22,7 @@ namespace NFluent
     using Extensions;
     using Helpers;
     using Kernel;
-
-#if !DOTNET_30 && !DOTNET_20
     using System.Linq;
-#endif
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="IEnumerable" /> value.

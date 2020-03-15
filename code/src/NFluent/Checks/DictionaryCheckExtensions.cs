@@ -17,9 +17,7 @@ namespace NFluent
 {
     using System.Collections;
     using System.Collections.Generic;
-#if !DOTNET_20 && !DOTNET_30
     using System.Linq;
-#endif
 #if NETSTANDARD1_3
     using System.Collections.ObjectModel;
 #endif

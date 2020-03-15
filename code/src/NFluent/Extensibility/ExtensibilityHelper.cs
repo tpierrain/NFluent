@@ -14,9 +14,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace NFluent.Extensibility
 {
-    #if !DOTNET_20
     using System;
-    #endif
     using Kernel;
     using Messages;
 

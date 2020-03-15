@@ -15,7 +15,7 @@
 
 namespace NFluent.Kernel
 {
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35
+#if !DOTNET_35
     using System;
 #endif
     using Extensibility;
@@ -27,9 +27,6 @@ namespace NFluent.Kernel
     /// <typeparam name="T">Type of the SUT</typeparam>
     public class FluentSut<T> : IWithValue<T>, INegated
     {
-        private readonly T value;
-        private readonly EntityNamingLogic namingLogic;
-
         /// <summary>
         /// Builds a new <see cref="FluentSut{T}"/> instance.
         /// </summary>
@@ -39,9 +36,9 @@ namespace NFluent.Kernel
         public FluentSut(T value, IErrorReporter reporter, bool negated)
         {
             this.Reporter = reporter;
-            this.value = value;
+            this.Value = value;
             this.Negated = negated;
-            this.namingLogic = new EntityNamingLogic {EntityType = typeof(T)};
+            this.SutName = new EntityNamingLogic {EntityType = typeof(T)};
         }
 
         /// <summary>
@@ -51,7 +48,7 @@ namespace NFluent.Kernel
         /// <param name="negated">true if the check logic must be negated.</param>
         public FluentSut(FluentSut<T> other, bool negated) : this(other.Value, other.Reporter, negated)
         {
-            this.namingLogic = other.namingLogic.Clone();
+            this.SutName = other.SutName.Clone();
         }
 
         /// <summary>
@@ -62,12 +59,12 @@ namespace NFluent.Kernel
         /// <summary>
         /// Sut
         /// </summary>
-        public T Value => this.value;
+        public T Value { get; }
 
         /// <summary>
         /// Name for the sut.
         /// </summary>
-        public EntityNamingLogic SutName => this.namingLogic;
+        public EntityNamingLogic SutName { get; }
 
         /// <summary>
         /// Gets the error reporter
@@ -82,15 +79,15 @@ namespace NFluent.Kernel
         /// <summary>
         /// Build a FluentSut from an extract of the current value.
         /// </summary>
-        /// <typeparam name="TU">type of the subvalue</typeparam>
+        /// <typeparam name="TU">type of the sub value</typeparam>
         /// <param name="extractor">sub value extractor</param>
-        /// <param name="namer">naming methods</param>
+        /// <param name="nameCallback">naming methods</param>
         /// <returns>A new <see cref="FluentSut{T}"/> instance</returns>
-        public FluentSut<TU> Extract<TU>(Func<T, TU> extractor, Func<FluentSut<T>, string> namer)
+        public FluentSut<TU> Extract<TU>(Func<T, TU> extractor, Func<FluentSut<T>, string> nameCallback)
         {
-            var val = (object)this.value == null ? default(TU) : extractor(this.value);
+            var val = (object)this.Value == null ? default(TU) : extractor(this.Value);
             var result = new FluentSut<TU>(val, this.Reporter, this.Negated);
-            result.SutName.SetNameBuilder(() => namer(this));
+            result.SutName.SetNameBuilder(() => nameCallback(this));
             result.CustomMessage = this.CustomMessage;
             return result;
         }

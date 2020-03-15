@@ -16,10 +16,7 @@
 namespace NFluent.Extensions
 {
     using System;
-
-#if !DOTNET_30 && !DOTNET_20
     using System.Linq;
-#endif
 
     internal static class ObjectExtensions
     {

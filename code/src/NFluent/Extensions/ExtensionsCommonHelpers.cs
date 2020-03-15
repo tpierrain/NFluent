@@ -256,7 +256,7 @@ namespace NFluent.Extensions
         /// <returns></returns>
         public static bool IsPrimitive(this Type type)
         {
-#if DOTNET_20 || DOTNET_30 || NETSTANDARD1_3
+#if NETSTANDARD1_3
             if (type == typeof(object))
             {
                 return false;

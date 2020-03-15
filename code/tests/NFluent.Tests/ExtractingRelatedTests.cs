@@ -139,36 +139,6 @@ namespace NFluent.Tests
                 Nationality.French, Nationality.Indian);
         }
 
-#pragma warning disable 618
-        [Test]
-        public void PropertiesWorksWithArray()
-        {
-            Person[] persons = new[]
-            {
-                new Person {Name = "Thomas", Age = 38},
-                new Person {Name = "Achille", Age = 10, Nationality = Nationality.French},
-                new Person {Name = "Anton", Age = 7, Nationality = Nationality.French},
-                new Person {Name = "Arjun", Age = 7, Nationality = Nationality.Indian}
-            };
-
-            Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
-        }
-
-        [Test]
-        public void PropertiesWorksWithEnumerable()
-        {
-            var persons = new List<Person>
-            {
-                new Person {Name = "Thomas", Age = 38},
-                new Person {Name = "Achille", Age = 10, Nationality = Nationality.French},
-                new Person {Name = "Anton", Age = 7, Nationality = Nationality.French},
-                new Person {Name = "Arjun", Age = 7, Nationality = Nationality.Indian}
-            };
-
-            Check.That(persons.Properties("Name")).ContainsExactly("Thomas", "Achille", "Anton", "Arjun");
-        }
-#pragma warning restore 618
-
         #endregion
     }
 }

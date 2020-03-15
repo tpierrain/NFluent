@@ -18,9 +18,7 @@ namespace NFluent.Messages
     using System;
     using System.Collections.Generic;
     using Extensions;
-#if !DOTNET_20 && !DOTNET_30
     using System.Linq;
-#endif
 
     internal class TypeEnumerationValue : ISelfDescriptiveValue
     {

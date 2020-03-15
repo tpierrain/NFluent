@@ -22,7 +22,7 @@ namespace NFluent.Kernel
     using Messages;
 
 // the system namespace is not imported for older Net version. This allows to overload the definition of delegate types. 
-#if !DOTNET_35 && !DOTNET_20 && !DOTNET_30
+#if !DOTNET_35
     using System;
 #endif
 //    [DebuggerNonUserCode]

@@ -19,9 +19,7 @@ namespace NFluent
 #if NETSTANDARD1_3
     using System.Reflection;
 #endif
-#if !DOTNET_20 && !DOTNET_30
     using System.Linq.Expressions;
-#endif
     using Extensibility;
     using Helpers;
     using Kernel;
@@ -123,7 +121,6 @@ namespace NFluent
             return new CheckLink<ILambdaExceptionCheck<T>>(context);
         }
 
-#if !DOTNET_30 && !DOTNET_20
         /// <summary>
         /// Checks if the exception has a specific property having a specific value.
         /// </summary>
@@ -187,6 +184,5 @@ namespace NFluent
             nameBuilder.Reverse();
             return string.Join(".", nameBuilder.ToArray());
         }
-#endif
     }
 }

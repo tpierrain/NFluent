@@ -111,7 +111,7 @@ namespace NFluent.Tests
         
         #endregion
         
-        #region IsClosedTo
+        #region IsCloseTo
 
         [Test]
         public void IsCloseToWorks()
@@ -121,16 +121,20 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsClosedToShouldFailsIfTooFar()
+        public void IsCloseToShouldFailsIfTooFar()
         {
             using (new CultureSession("en-US"))
             {
-                Check.ThatCode(() => {
-                    Check.That(TwentyF).IsCloseTo(20.1, 0.01);
-                }).IsAFailingCheckWithMessage(Environment.NewLine+ "The checked value is outside the expected value range." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[20]" + Environment.NewLine + "The expected value:" + Environment.NewLine + "\t[20.1 (+/- 0.01)]");
+                Check.ThatCode(() => Check.That(TwentyF).IsCloseTo(20.1, 0.01))
+                     .IsAFailingCheckWithMessage("",
+                                                 "The checked value is outside the expected value range.",
+                                                 "The checked value:",
+                                                 "\t[20]",
+                                                 "The expected value:",
+                                                 "\t[20.1 (+/- 0.01)]");
             }
         }
-
+        
         #endregion
     }
 }

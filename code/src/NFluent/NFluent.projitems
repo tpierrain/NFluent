@@ -17,10 +17,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\MessageOption.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\AggregatedDifference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DateTimeOffsetRangeBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DateTimeRangeBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DictionaryWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DifferenceDetails.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\DifferenceFinders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExceptionConstructor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\InconclusiveExceptionReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ISelfDescriptiveValue.cs" />
@@ -85,7 +87,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Duration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\EqualityHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExceptionHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExtensionAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\IsInstanceHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Polyfill.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\StringDifference.cs" />
@@ -122,7 +123,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ReverseEngineeringExceptionMessagesHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ValueBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NFluentEntryPoint.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\ILambdaCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RunTrace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RunTraceResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Criteria.cs" />
