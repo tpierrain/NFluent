@@ -322,25 +322,22 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsEqualWorksWhenOnlyOrderChanges()
+        {
+            var dict = new Dictionary<string, object> { ["bar"] = 1,  ["foo"] = 0 };
+            var expected = new Dictionary<string, object> { ["foo"] = 0,  ["bar"] = 1 };
+            Check.That(dict).IsEqualTo(expected);
+        }
+
+        [Test]
         public void IsEqualToFailsOnDifference()
         {
             // just change the order
             var expected = new Dictionary<string, int> { ["bar"] = 1,  ["foo"] = 0 };
             Check.ThatCode( () =>
-            Check.That(new Dictionary<string, int> { ["foo"] = 0, ["bar"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
-                "The checked dictionary is different from the expected one. 2 differences found! But they are equivalent.", 
-                "actual entry \"foo\" value ('0') was found at index 1 instead of 0.", 
-                "actual entry \"bar\" value ('1') was found at index 0 instead of 1.", 
-                "The checked dictionary:", 
-                "\t{[foo, 0], [bar, 1]} (2 items)", 
-                "The expected dictionary:", 
-                "\t{[bar, 1], [foo, 0]} (2 items)");
-            Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["foo"] = 1, ["bar"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
-                "The checked dictionary is different from the expected one. 3 differences found!", 
-                "actual entry \"foo\" value ('0') was found at index 1 instead of 0.", 
+                "The checked dictionary is different from the expected one.", 
                 "actual[\"foo\"] = 1 instead of 0.", 
-                "actual entry \"bar\" value ('1') was found at index 0 instead of 1.",
                 "The checked dictionary:", 
                 "\t{[foo, 1], [bar, 1]} (2 items)", 
                 "The expected dictionary:", 

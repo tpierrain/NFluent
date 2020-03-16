@@ -1,7 +1,8 @@
 # V 3.0.0
 ## Major changes
 * Dropped support for Net 2.0 and 3.5
-* 
+* Equality logic changed for IDictionary: dictionaries are considered equals if they have the same keys and
+the same values for each key. In NFluent V2, they were considered as **different** but **equivalent**.
 
 ## Breaking changes
 ### Obsolete

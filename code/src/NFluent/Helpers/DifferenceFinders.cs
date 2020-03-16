@@ -109,37 +109,21 @@ namespace NFluent.Helpers
                         expectedKeyIterator.Current,
                         index,
                         firstItemsSeen);
-                    if (!itemDiffs.IsDifferent)
+                    if (!expectedDictionary.TryGetValue(actualKey, out var item))
                     {
-                        // same key, check the values
-                        itemDiffs = ValueDifference(sutDictionary[actualKey],
-                            $"{sutName}[{actualKey.ToStringProperlyFormatted()}]",
-                            expectedDictionary[actualKey],
-                            index,
-                            firstItemsSeen);
-                        valueDifferences.IsEquivalent &= (!itemDiffs.IsDifferent || itemDiffs.IsEquivalent);
+                        valueDifferences.Add(DifferenceDetails.WasNotExpected(
+                            $"{sutName}'s key {actualKey.ToStringProperlyFormatted()}", sutDictionary[actualKey],
+                            index));
+                        valueDifferences.IsEquivalent = false;
                     }
-                    else //if (valueDifferences.IsEquivalent)
+                    else
                     {
-                        // check if the dictionaries are equivalent anyway
-                        var expectedIndex = expectedDictionary.ContainsKey(actualKey) ? expectedDictionary.Keys.ToList().FindIndex(x => x == actualKey) : -1;
-                        if (expectedIndex >= 0)
-                        {
-
-                            itemDiffs = ValueDifference(sutDictionary[actualKey],
-                                $"{sutName}[{actualKey.ToStringProperlyFormatted()}]",
-                                expectedDictionary[actualKey],
-                                index,
-                                firstItemsSeen);
-                            valueDifferences.IsEquivalent &= itemDiffs.IsEquivalent || !itemDiffs.IsDifferent;
-                            valueDifferences.Add(
-                                DifferenceDetails.WasFoundElseWhere($"{sutName} entry {actualKey.ToStringProperlyFormatted()}", expectedDictionary[actualKey], index, expectedIndex));
-                        }
-                        else
-                        {
-                            valueDifferences.Add(DifferenceDetails.WasNotExpected($"{sutName}'s key {actualKey.ToStringProperlyFormatted()}", sutDictionary[actualKey], index));
-                            valueDifferences.IsEquivalent = false;
-                        }
+                        itemDiffs = ValueDifference(sutDictionary[actualKey],
+                        $"{sutName}[{actualKey.ToStringProperlyFormatted()}]",
+                        expectedDictionary[actualKey],
+                        index,
+                        firstItemsSeen);
+                        valueDifferences.IsEquivalent &= (!itemDiffs.IsDifferent || itemDiffs.IsEquivalent);
                     }
                     valueDifferences.Merge(itemDiffs);
                 }
