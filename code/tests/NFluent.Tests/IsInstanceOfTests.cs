@@ -105,7 +105,13 @@ namespace NFluent.Tests
         [Test]
         public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
         {
-            Check.That((int?) null).IsInstanceOf<int?>();
+            Check.ThatCode(()=>
+            Check.That((int?) null).IsInstanceOf<int?>()).IsAFailingCheckWithMessage("", 
+                "The checked nullable does not have a value.", 
+                "The checked nullable:", 
+                "\t[null] of type: [int?]", 
+                "The expected value:", 
+                "\tan instance of [int?]");
         }
 
         [Test]
@@ -288,21 +294,6 @@ namespace NFluent.Tests
         public void IsNotInstanceOfWorksIfValueIsNull()
         {
             Check.That((object) null).IsNotInstanceOf<object>();
-        }
-
-        [Test]
-        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
-        {
-            Check.ThatCode(() =>
-            {
-                Check.That((int?) null).IsNotInstanceOf<int?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [int?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [int?]",
-                    "The expected value: different from",
-                    "\tan instance of [int?]");
         }
 
         [Test]

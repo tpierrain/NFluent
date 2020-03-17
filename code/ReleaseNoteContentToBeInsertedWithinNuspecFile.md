@@ -1,10 +1,13 @@
 # V 3.0.0
 ## Major changes
+
+## Breaking changes
 * Dropped support for Net 2.0 and 3.5
 * Equality logic changed for IDictionary: dictionaries are considered equals if they have the same keys and
 the same values for each key. In NFluent V2, they were considered as **different** but **equivalent**.
+* `IsAnInstanceOf<nullableType>(null)` now fails (with an appropriate message). Previously, it did succeed. But,
+as captured in issue #68, this behavior was triggered by a bug and kept due to a poor error message when fixed.
 
-## Breaking changes
 ### Obsolete
 Here is the list of methods, classes and other obsolete stuff that have been removed in this version as well
 as workaround advices.

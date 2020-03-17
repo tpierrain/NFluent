@@ -569,24 +569,21 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        public void IsInstanceOfFailsIfValueIsNullButOfSameNullableType()
         {
-            Check.That((byte?) null).IsInstanceOf<byte?>();
+            Check.ThatCode(()=>
+                Check.That((byte?) null).IsInstanceOf<byte?>()).IsAFailingCheckWithMessage("", 
+                "The checked nullable does not have a value.", 
+                "The checked nullable:", 
+                "\t[null] of type: [byte?]", 
+                "The expected value:", 
+                "\tan instance of [byte?]");
         }
 
         [Test]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((byte?) null).Not.IsInstanceOf<byte?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [byte?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [byte?]",
-                    "The expected value: different from",
-                    "\tan instance of [byte?]");
+            Check.That((byte?) null).Not.IsInstanceOf<byte?>();
         }
 
         [Test]
@@ -634,18 +631,9 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        public void IsNotInstanceOfSucceedsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((byte?) null).IsNotInstanceOf<byte?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [byte?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [byte?]",
-                    "The expected value: different from",
-                    "\tan instance of [byte?]");
+            Check.That((byte?) null).IsNotInstanceOf<byte?>();
         }
 
         #endregion

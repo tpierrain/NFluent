@@ -569,24 +569,21 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        public void IsInstanceOfFailsIfValueIsNullButOfSameNullableType()
         {
-            Check.That((long?) null).IsInstanceOf<long?>();
+            Check.ThatCode(()=>
+                Check.That((long?) null).IsInstanceOf<long?>()).IsAFailingCheckWithMessage("", 
+                "The checked nullable does not have a value.", 
+                "The checked nullable:", 
+                "\t[null] of type: [long?]", 
+                "The expected value:", 
+                "\tan instance of [long?]");
         }
 
         [Test]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((long?) null).Not.IsInstanceOf<long?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [long?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [long?]",
-                    "The expected value: different from",
-                    "\tan instance of [long?]");
+            Check.That((long?) null).Not.IsInstanceOf<long?>();
         }
 
         [Test]
@@ -634,18 +631,9 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        public void IsNotInstanceOfSucceedsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((long?) null).IsNotInstanceOf<long?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [long?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [long?]",
-                    "The expected value: different from",
-                    "\tan instance of [long?]");
+            Check.That((long?) null).IsNotInstanceOf<long?>();
         }
 
         #endregion

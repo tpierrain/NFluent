@@ -569,24 +569,21 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        public void IsInstanceOfFailsIfValueIsNullButOfSameNullableType()
         {
-            Check.That((double?) null).IsInstanceOf<double?>();
+            Check.ThatCode(()=>
+                Check.That((double?) null).IsInstanceOf<double?>()).IsAFailingCheckWithMessage("", 
+                "The checked nullable does not have a value.", 
+                "The checked nullable:", 
+                "\t[null] of type: [double?]", 
+                "The expected value:", 
+                "\tan instance of [double?]");
         }
 
         [Test]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((double?) null).Not.IsInstanceOf<double?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [double?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [double?]",
-                    "The expected value: different from",
-                    "\tan instance of [double?]");
+            Check.That((double?) null).Not.IsInstanceOf<double?>();
         }
 
         [Test]
@@ -634,18 +631,9 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        public void IsNotInstanceOfSucceedsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((double?) null).IsNotInstanceOf<double?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [double?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [double?]",
-                    "The expected value: different from",
-                    "\tan instance of [double?]");
+            Check.That((double?) null).IsNotInstanceOf<double?>();
         }
 
         #endregion

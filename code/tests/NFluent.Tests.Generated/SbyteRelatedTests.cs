@@ -569,24 +569,21 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        public void IsInstanceOfFailsIfValueIsNullButOfSameNullableType()
         {
-            Check.That((sbyte?) null).IsInstanceOf<sbyte?>();
+            Check.ThatCode(()=>
+                Check.That((sbyte?) null).IsInstanceOf<sbyte?>()).IsAFailingCheckWithMessage("", 
+                "The checked nullable does not have a value.", 
+                "The checked nullable:", 
+                "\t[null] of type: [sbyte?]", 
+                "The expected value:", 
+                "\tan instance of [sbyte?]");
         }
 
         [Test]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((sbyte?) null).Not.IsInstanceOf<sbyte?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [sbyte?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [sbyte?]",
-                    "The expected value: different from",
-                    "\tan instance of [sbyte?]");
+            Check.That((sbyte?) null).Not.IsInstanceOf<sbyte?>();
         }
 
         [Test]
@@ -634,18 +631,9 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        public void IsNotInstanceOfSucceedsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((sbyte?) null).IsNotInstanceOf<sbyte?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [sbyte?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [sbyte?]",
-                    "The expected value: different from",
-                    "\tan instance of [sbyte?]");
+            Check.That((sbyte?) null).IsNotInstanceOf<sbyte?>();
         }
 
         #endregion

@@ -569,24 +569,21 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        public void IsInstanceOfFailsIfValueIsNullButOfSameNullableType()
         {
-            Check.That((ulong?) null).IsInstanceOf<ulong?>();
+            Check.ThatCode(()=>
+                Check.That((ulong?) null).IsInstanceOf<ulong?>()).IsAFailingCheckWithMessage("", 
+                "The checked nullable does not have a value.", 
+                "The checked nullable:", 
+                "\t[null] of type: [ulong?]", 
+                "The expected value:", 
+                "\tan instance of [ulong?]");
         }
 
         [Test]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((ulong?) null).Not.IsInstanceOf<ulong?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [ulong?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [ulong?]",
-                    "The expected value: different from",
-                    "\tan instance of [ulong?]");
+            Check.That((ulong?) null).Not.IsInstanceOf<ulong?>();
         }
 
         [Test]
@@ -634,18 +631,9 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        public void IsNotInstanceOfSucceedsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((ulong?) null).IsNotInstanceOf<ulong?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [ulong?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [ulong?]",
-                    "The expected value: different from",
-                    "\tan instance of [ulong?]");
+            Check.That((ulong?) null).IsNotInstanceOf<ulong?>();
         }
 
         #endregion

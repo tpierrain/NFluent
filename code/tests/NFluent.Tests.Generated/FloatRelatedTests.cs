@@ -569,24 +569,21 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        public void IsInstanceOfFailsIfValueIsNullButOfSameNullableType()
         {
-            Check.That((float?) null).IsInstanceOf<float?>();
+            Check.ThatCode(()=>
+                Check.That((float?) null).IsInstanceOf<float?>()).IsAFailingCheckWithMessage("", 
+                "The checked nullable does not have a value.", 
+                "The checked nullable:", 
+                "\t[null] of type: [float?]", 
+                "The expected value:", 
+                "\tan instance of [float?]");
         }
 
         [Test]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((float?) null).Not.IsInstanceOf<float?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [float?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [float?]",
-                    "The expected value: different from",
-                    "\tan instance of [float?]");
+            Check.That((float?) null).Not.IsInstanceOf<float?>();
         }
 
         [Test]
@@ -634,18 +631,9 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        public void IsNotInstanceOfSucceedsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((float?) null).IsNotInstanceOf<float?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [float?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [float?]",
-                    "The expected value: different from",
-                    "\tan instance of [float?]");
+            Check.That((float?) null).IsNotInstanceOf<float?>();
         }
 
         #endregion

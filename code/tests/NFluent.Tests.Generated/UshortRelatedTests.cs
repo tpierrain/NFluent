@@ -569,24 +569,21 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        public void IsInstanceOfFailsIfValueIsNullButOfSameNullableType()
         {
-            Check.That((ushort?) null).IsInstanceOf<ushort?>();
+            Check.ThatCode(()=>
+                Check.That((ushort?) null).IsInstanceOf<ushort?>()).IsAFailingCheckWithMessage("", 
+                "The checked nullable does not have a value.", 
+                "The checked nullable:", 
+                "\t[null] of type: [ushort?]", 
+                "The expected value:", 
+                "\tan instance of [ushort?]");
         }
 
         [Test]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((ushort?) null).Not.IsInstanceOf<ushort?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [ushort?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [ushort?]",
-                    "The expected value: different from",
-                    "\tan instance of [ushort?]");
+            Check.That((ushort?) null).Not.IsInstanceOf<ushort?>();
         }
 
         [Test]
@@ -634,18 +631,9 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        public void IsNotInstanceOfSucceedsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((ushort?) null).IsNotInstanceOf<ushort?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [ushort?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [ushort?]",
-                    "The expected value: different from",
-                    "\tan instance of [ushort?]");
+            Check.That((ushort?) null).IsNotInstanceOf<ushort?>();
         }
 
         #endregion

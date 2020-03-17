@@ -35,7 +35,8 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> IsInstanceOfType<T>(this ICheck<T> check, Type type)
         {
             ExtensibilityHelper.BeginCheck(check).
-                FailWhen(sut => sut== null && !typeof(T).IsNullable(), $"The {{checked}} is not an instance of [{type.ToStringProperlyFormatted()}].").
+                FailWhen(sut => sut == null && typeof(T) == type && typeof(T).IsNullable(), $"The {{checked}} does not have a value.").
+                FailWhen(sut => sut == null, $"The {{checked}} is not an instance of [{type.ToStringProperlyFormatted()}].").
                 Analyze((sut, test) =>
                 {
                     if (sut is ReflectionWrapper reflectionSut)

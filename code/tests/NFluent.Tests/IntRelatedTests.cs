@@ -562,24 +562,21 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        public void IsInstanceOfFailsIfValueIsNullButOfSameNullableType()
         {
-            Check.That((int?) null).IsInstanceOf<int?>();
+            Check.ThatCode(()=>
+                Check.That((int?) null).IsInstanceOf<int?>()).IsAFailingCheckWithMessage("", 
+                "The checked nullable does not have a value.", 
+                "The checked nullable:", 
+                "\t[null] of type: [int?]", 
+                "The expected value:", 
+                "\tan instance of [int?]");
         }
 
         [Test]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((int?) null).Not.IsInstanceOf<int?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [int?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [int?]",
-                    "The expected value: different from",
-                    "\tan instance of [int?]");
+            Check.That((int?) null).Not.IsInstanceOf<int?>();
         }
 
         [Test]
@@ -627,18 +624,9 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        public void IsNotInstanceOfSucceedsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((int?) null).IsNotInstanceOf<int?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [int?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [int?]",
-                    "The expected value: different from",
-                    "\tan instance of [int?]");
+            Check.That((int?) null).IsNotInstanceOf<int?>();
         }
 
         #endregion

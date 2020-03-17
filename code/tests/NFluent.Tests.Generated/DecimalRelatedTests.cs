@@ -569,24 +569,21 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsInstanceOfWorksIfValueIsNullButOfSameNullableType()
+        public void IsInstanceOfFailsIfValueIsNullButOfSameNullableType()
         {
-            Check.That((decimal?) null).IsInstanceOf<decimal?>();
+            Check.ThatCode(()=>
+                Check.That((decimal?) null).IsInstanceOf<decimal?>()).IsAFailingCheckWithMessage("", 
+                "The checked nullable does not have a value.", 
+                "The checked nullable:", 
+                "\t[null] of type: [decimal?]", 
+                "The expected value:", 
+                "\tan instance of [decimal?]");
         }
 
         [Test]
         public void NotIsInstanceOfThrowsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((decimal?) null).Not.IsInstanceOf<decimal?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [decimal?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [decimal?]",
-                    "The expected value: different from",
-                    "\tan instance of [decimal?]");
+            Check.That((decimal?) null).Not.IsInstanceOf<decimal?>();
         }
 
         [Test]
@@ -634,18 +631,9 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsNotInstanceOfThrowsIfValueIsNullButOfSameNullableType()
+        public void IsNotInstanceOfSucceedsIfValueIsNullButOfSameNullableType()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((decimal?) null).IsNotInstanceOf<decimal?>();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable is an instance of [decimal?] whereas it must not.",
-                    "The checked nullable:",
-                    "\t[null] of type: [decimal?]",
-                    "The expected value: different from",
-                    "\tan instance of [decimal?]");
+            Check.That((decimal?) null).IsNotInstanceOf<decimal?>();
         }
 
         #endregion
