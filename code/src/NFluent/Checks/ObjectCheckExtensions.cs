@@ -346,7 +346,7 @@ namespace NFluent
                     return !hasValue;
                 }, "The {0} has no value, which is unexpected.", MessageOption.NoCheckedBlock)
                 .OnNegate("The {0} has a value, whereas it must not.").EndCheck();
-            return ExtensibilityHelper.BuildCheckLinkWhich(check, sut => sut ?? default(T), "", hasValue);
+            return ExtensibilityHelper.BuildCheckLinkWhich(check, sut => sut ?? default(T), "value", hasValue);
         }
         
         /// <summary>
