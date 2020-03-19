@@ -25,9 +25,9 @@ namespace NFluent.Tests.Extensions
     /// </summary>
     public static class NationalityExtensions
     {
-        public static ICheckLink<IStructCheck<Nationality>> IsEuropean(this IStructCheck<Nationality> check)
+        public static ICheckLink<ICheck<Nationality>> IsEuropean(this ICheck<Nationality> check)
         {
-            var structChecker = ExtensibilityHelper.ExtractStructChecker(check);
+            var structChecker = ExtensibilityHelper.ExtractChecker(check);
             var namer = new EntityNamingLogic("Nationality");
 
             return structChecker.ExecuteCheck(
@@ -42,9 +42,9 @@ namespace NFluent.Tests.Extensions
                 FluentMessage.BuildMessage("The {0} is part of Europe whereas it must not.").For(namer).On(structChecker.Value).ToString());
         }
 
-        public static ICheckLink<IStructCheck<Nationality>> IsOccidental(this IStructCheck<Nationality> check)
+        public static ICheckLink<ICheck<Nationality>> IsOccidental(this ICheck<Nationality> check)
         {
-            var structChecker = ExtensibilityHelper.ExtractStructChecker(check);
+            var structChecker = ExtensibilityHelper.ExtractChecker(check);
 
             return structChecker.BuildChainingObject();
         }

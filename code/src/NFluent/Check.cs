@@ -145,10 +145,10 @@ namespace NFluent
         /// <remarks>
         /// Every method of the returned <see cref="IStructCheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
         /// </remarks>
-        public static IStructCheck<T> ThatEnum<T>(T value)
+        public static ICheck<T> ThatEnum<T>(T value)
             where T : struct
         {
-            return new FluentStructCheck<T>(value, Reporter);
+            return new FluentCheck<T>(value, Reporter);
         }
 
 

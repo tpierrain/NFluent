@@ -49,8 +49,7 @@ namespace NFluent.Tests
         public void IsEqualSupportCustomComparer()
         {
             Check.That(new object()).IsEqualTo(new object(), new NoOpComparer(true));
-            Check.ThatCode(() => Check.That(new object()).IsEqualTo(new object(), new NoOpComparer(false)))
-                .IsAFailingCheck();
+            Check.ThatCode(() => Check.That(new object()).IsEqualTo(new object(), new NoOpComparer(false))).IsAFailingCheck();
         }
 
         [Test]
@@ -73,13 +72,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(new object()).IsSameReferenceAs(new object());
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked object must be the same instance as the given one.",
-                    "The checked object:",
-                    "\t[System.Object]",
-                    "The expected object: same instance as",
-                    "\t[System.Object]");
+            }).IsAFailingCheckWithMessage("", "The checked object must be the same instance as the given one.", "The checked object:", "\t[System.Object]", "The expected object: same instance as", "\t[System.Object]");
         }
 
         [Test]
@@ -128,9 +121,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That((Mood?)null).IsNotNull();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable value is null whereas it must not.");
+            }).IsAFailingCheckWithMessage("", "The checked nullable value is null whereas it must not.");
         }
 
         [Test]
@@ -161,11 +152,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(goodMood).Not.IsNotNull();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable value must be null.",
-                    "The checked nullable value:",
-                    "\t[NFluent.Tests.Mood]");
+            }).IsAFailingCheckWithMessage("", "The checked nullable value must be null.", "The checked nullable value:", "\t[NFluent.Tests.Mood]");
         }
         
         [Test]
@@ -174,8 +161,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That((Mood?)null).Not.IsNull();
-            })
-            .IsAFailingCheckWithMessage("", "The checked nullable value is null whereas it must not.");
+            }).IsAFailingCheckWithMessage("", "The checked nullable value is null whereas it must not.");
         }
 
         [Test]
@@ -184,11 +170,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(new object()).IsNull();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked object must be null.",
-                    "The checked object:",
-                    "\t[System.Object]");
+            }).IsAFailingCheckWithMessage("", "The checked object must be null.", "The checked object:", "\t[System.Object]");
         }
 
         [Test]
@@ -203,9 +185,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That((object)null).IsNotNull();
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked object must not be null.");
+            }).IsAFailingCheckWithMessage("", "The checked object must not be null.");
         }
 
         [Test]
@@ -216,13 +196,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
             {
                 Check.That(test).IsDistinctFrom(test);
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked object must be an instance distinct from the given one.",
-                    "The checked object:",
-                    "\t[System.Object]",
-                    "The expected object: distinct from",
-                    "\t[System.Object]");
+            }).IsAFailingCheckWithMessage("", "The checked object must be an instance distinct from the given one.", "The checked object:", "\t[System.Object]", "The expected object: distinct from", "\t[System.Object]");
         }
 
         [Test]
@@ -239,18 +213,11 @@ namespace NFluent.Tests
             var mySelf = new Person() { Name = "dupdob" };
             var myClone = new PersonEx() { Name = "tpierrain" };
             Check.ThatCode(() => {
-                    Check.That(myClone).HasSameValueAs(mySelf);
-                })
-                .ThrowsAny()
-                .WithMessage(
-                    Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[NFluent.Tests.ObjectRelatedTest+PersonEx] of type: [NFluent.Tests.ObjectRelatedTest+PersonEx]" + Environment.NewLine + "The expected value: equals to (using operator==)" + Environment.NewLine + "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
+                Check.That(myClone).HasSameValueAs(mySelf);
+            }).ThrowsAny().WithMessage(Environment.NewLine+ "The checked value is different from the expected one." + Environment.NewLine + "The checked value:" + Environment.NewLine + "\t[NFluent.Tests.ObjectRelatedTest+PersonEx] of type: [NFluent.Tests.ObjectRelatedTest+PersonEx]" + Environment.NewLine + "The expected value: equals to (using operator==)" + Environment.NewLine + "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
             Check.ThatCode(() => {
-                    Check.That(myClone).Not.HasSameValueAs(new Person() { Name = "tpierrain"});
-                })
-                .IsAFailingCheckWithMessage("",
-                    "The checked value is equal to the given one whereas it must not.",
-                    "The expected value: different from (using !operator==)",
-                    "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
+                Check.That(myClone).Not.HasSameValueAs(new Person() { Name = "tpierrain"});
+            }).IsAFailingCheckWithMessage("", "The checked value is equal to the given one whereas it must not.", "The expected value: different from (using !operator==)", "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
         }
 
         [Test]
@@ -260,30 +227,16 @@ namespace NFluent.Tests
             var myClone = new PersonEx() { Name = "dupdob" };
 
             Check.ThatCode(() => {
-                    Check.That((object)null).HasDifferentValueThan((object)null);
-                })
-                .IsAFailingCheckWithMessage("",
-                    "The checked object is equal to the expected one whereas it must not.",
-                    "The expected object: different from (using operator!=)",
-                    "\t[null]");
+                Check.That((object)null).HasDifferentValueThan((object)null);
+            }).IsAFailingCheckWithMessage("", "The checked object is equal to the given one whereas it must not.", "The expected object: different from (using operator!=)", "\t[null] of type: [object]");
 
             Check.ThatCode(() => {
                 Check.That(myClone).HasDifferentValueThan(mySelf);
-            })
-                .IsAFailingCheckWithMessage("",
-                    "The checked value is equal to the expected one whereas it must not.",
-                    "The expected value: different from (using operator!=)",
-                    "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
+            }).IsAFailingCheckWithMessage("", "The checked value is equal to the given one whereas it must not.", "The expected value: different from (using operator!=)", "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
            
             Check.ThatCode(value: () => {
-                    Check.That(myClone).Not.HasDifferentValueThan(new Person() {Name = "test"});
-                })
-                .IsAFailingCheckWithMessage("",
-                    "The checked value is different from the given one.",
-                    "The checked value:",
-                    "\t[NFluent.Tests.ObjectRelatedTest+PersonEx]", 
-                    "The expected value: equals to (using operator==)",
-                    "\t[NFluent.Tests.ObjectRelatedTest+Person]");
+                Check.That(myClone).Not.HasDifferentValueThan(new Person() {Name = "test"});
+            }).IsAFailingCheckWithMessage("", "The checked value is different from the expected one.", "The checked value:", "\t[NFluent.Tests.ObjectRelatedTest+PersonEx] of type: [NFluent.Tests.ObjectRelatedTest+PersonEx]", "The expected value: equals to (using !operator!=)", "\t[NFluent.Tests.ObjectRelatedTest+Person] of type: [NFluent.Tests.ObjectRelatedTest+Person]");
         }
 
         private class Person

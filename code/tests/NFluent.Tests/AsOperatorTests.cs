@@ -67,7 +67,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.WithCustomMessage("We should get 2.").ThatEnum(1).IsEqualTo(2); 
+                Check.WithCustomMessage("We should get 2.").That(1).IsEqualTo(2); 
             }).IsAFailingCheckWithMessage("We should get 2.",
                 "The checked value is different from the expected one.", 
                 "The checked value:", 

@@ -55,23 +55,6 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Returns a <see cref="IStructCheck{T}" /> instance that will provide check methods to be executed on a given enum or struct value.
-        /// </summary>
-        /// <typeparam name="T">Type of the enum or structure value to be tested.</typeparam>
-        /// <param name="value">The value to be tested.</param>
-        /// <returns>
-        /// A <see cref="IStructCheck{T}" /> instance to use in order to assert things on the given enum or struct value.
-        /// </returns>
-        /// <remarks>
-        /// Every method of the returned <see cref="IStructCheck{T}" /> instance will throw a <see cref="FluentCheckException" /> when failing.
-        /// </remarks>
-        public  IStructCheck<T> ThatEnum<T>(T value)
-            where T : struct
-        {
-            return new FluentStructCheck<T>(value, this.reporter) {CustomMessage = this.message};
-        }
-
-        /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
         /// <param name="value">The code to be tested.</param>

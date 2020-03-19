@@ -40,22 +40,6 @@ namespace NFluent.Extensibility
         }
 
         /// <summary>
-        /// Extracts the checker to be used in order to check things on the struct instance contained within
-        /// the given fluent check.
-        /// </summary>
-        /// <typeparam name="TS">The type of the struct to be checked.</typeparam>
-        /// <param name="check">The fluent check instance to work on.</param>
-        /// <returns>
-        /// The checker to be used to check things on the value contained in the fluent check.
-        /// </returns>
-        public static IChecker<TS, IStructCheck<TS>> ExtractStructChecker<TS>(IStructCheck<TS> check) where TS : struct
-        {
-            // ok this is a crappy cast, but it's for the good cause here (i.e. a clean and virgin intellisense for users)
-            // ReSharper disable once SuspiciousTypeConversion.Global
-            return ((ICheckForExtensibility<TS, IStructCheck<TS>>)check).Checker;
-        }
-
-        /// <summary>
         /// Gets an <see cref="IExtendableCheckLink{T, TU}"/> that permits refining checks
         /// </summary>
         /// <param name="check">check to extend</param>
@@ -102,17 +86,6 @@ namespace NFluent.Extensibility
         /// Initiates a check logic chain.
         /// </summary>
         /// <typeparam name="T">Type of sut</typeparam>
-        /// <param name="check">The fluent check instance to work on.</param>
-        /// <returns>An <see cref="ICheckLogic{T}"/>instance.</returns>
-        public static ICheckLogic<T> BeginCheck<T>(IStructCheck<T> check) where T : struct
-        {
-            return ExtractStructChecker(check).BeginCheck();
-        }
-
-        /// <summary>
-        /// Initiates a check logic chain.
-        /// </summary>
-        /// <typeparam name="T">Type of sut</typeparam>
         /// <param name="sut">The fluent check instance to work on.</param>
         /// <returns>An <see cref="ICheckLogic{T}"/>instance.</returns>
         public static ICheckLogic<T> BeginCheck<T>(FluentSut<T> sut)
@@ -129,17 +102,6 @@ namespace NFluent.Extensibility
         public static ICheckLink<ICheck<T>> BuildCheckLink<T>(ICheck<T> check)
         {
             return ExtractChecker(check).BuildChainingObject();
-        }
-
-        /// <summary>
-        /// Builds a chainable object.
-        /// </summary>
-        /// <typeparam name="T">Type of sut</typeparam>
-        /// <param name="check">The fluent check instance to work on.</param>
-        /// <returns>An <see cref="ICheckLink{T}"/> instance to add further checks.</returns>
-        public static ICheckLink<IStructCheck<T>> BuildCheckLink<T>(IStructCheck<T> check) where T : struct
-        {
-            return ExtractStructChecker(check).BuildChainingObject();
         }
 
         /// <summary>
@@ -174,6 +136,32 @@ namespace NFluent.Extensibility
             if (hasItem)
             {
                 chk = new FluentCheck<T>(item);
+                if (!string.IsNullOrEmpty(label))
+                {
+                    chk.Checker.SetSutLabel(label);
+                }
+            }
+
+            return new CheckLinkWhich<ICheck<TU>, ICheck<T>>(check, chk);
+        }
+        
+        /// <summary>
+        /// Builds a chainable check with a sub item.
+        /// </summary>
+        /// <typeparam name="TU">type of the sut</typeparam>
+        /// <typeparam name="T">type of the sub item</typeparam>
+        /// <param name="check">original check to link to</param>
+        /// <param name="extractor">method to extract the value from the sut</param>
+        /// <param name="label">label for the sub item</param>
+        /// <param name="hasItem">set to false is no item is available</param>
+        /// <returns>A chainable link supporting Which</returns>
+        public static ICheckLinkWhich<ICheck<TU>, ICheck<T>> BuildCheckLinkWhich<TU, T>(ICheck<TU> check, Func<TU, T> extractor, string label, bool hasItem = true)
+        {
+            FluentCheck<T> chk = null;
+            if (hasItem)
+            {
+                var checker = ExtractChecker(check);
+                chk = new FluentCheck<T>(extractor(checker.Value));
                 if (!string.IsNullOrEmpty(label))
                 {
                     chk.Checker.SetSutLabel(label);

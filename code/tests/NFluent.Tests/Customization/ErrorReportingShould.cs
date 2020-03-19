@@ -23,7 +23,7 @@
             }
 
             Check.That(reporter.Error).AsLines().ContainsExactly("",
-                "The checked value is equal to the expected one whereas it must not.",
+                "The checked value is equal to the given one whereas it must not.",
                 "The expected value: different from",
                 "\t[12] of type: [int]");
         }

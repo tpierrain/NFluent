@@ -35,8 +35,8 @@
         [Test]
         public void ProvideIgnoreForStructCheck()
         {
-            Assuming.ThatEnum(4).IsEqualTo(4);
-            Check.ThatCode(() => Assuming.ThatEnum(4).IsEqualTo(5)).IsAFailingAssumption();
+            Assuming.That(4).IsEqualTo(4);
+            Check.ThatCode(() => Assuming.That(4).IsEqualTo(5)).IsAFailingAssumption();
         }
 
         [Test]

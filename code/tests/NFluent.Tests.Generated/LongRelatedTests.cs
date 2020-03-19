@@ -403,7 +403,7 @@ namespace NFluent.Tests
                 Check.That(Twenty).IsNotEqualTo(Twenty);
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is equal to the expected one whereas it must not.",
+                    "The checked value is equal to the given one whereas it must not.",
                     "The expected value: different from",
                     "\t[20] of type: [long]");
         }
@@ -416,7 +416,7 @@ namespace NFluent.Tests
                 Check.That(One).Not.IsNotEqualTo(Twenty);
             })
             .IsAFailingCheckWithMessage("",
-                    "The checked value is different from the given one.",
+                    "The checked value is different from the expected one.",
                     "The checked value:",
                     "\t[1]",
                     "The expected value:",
@@ -478,12 +478,8 @@ namespace NFluent.Tests
         [Test]
         public void TryingToChainANullableWithoutAValueIsPossibleButThrowsAnException()
         {
-            Check.ThatCode(() =>
-            {
-                Check.That((long?) null).Not.HasAValue().Which.IsAfter(Zero);
-            })
-            .IsAFailingCheckWithMessage("",
-                    "The checked nullable has no value to be checked.");
+            Check.ThatCode(() => { Check.That((long?) null).Not.HasAValue().Which.IsAfter(Zero); })
+                .Throws<InvalidOperationException>().WithMessage("You cannot use Which when no item is selected.");
         }
 
         #endregion

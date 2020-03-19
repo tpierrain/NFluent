@@ -47,8 +47,8 @@ namespace NFluent.Tests
 
         private struct Basic
         {
-            public int x;
-            public int y;
+            public readonly int x;
+            public readonly int y;
 
             public Basic(int x, int y)
             {
@@ -169,18 +169,19 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsInstanceOfFailsPropery()
+        public void IsInstanceOfFailsProperly()
         {
             Check.ThatCode(() =>
             {
                 Check.ThatEnum(FrenchNationality).IsInstanceOf<int>();
             })
-            .IsAFailingCheckWithMessage("",
-                    "The checked enum is not an instance of the expected type.",
-                    "The checked enum:",
-                    "\t[French] of type: [NFluent.Tests.Nationality]",
-                    "The expected value:",
-                    "\tan instance of [int]");
+            .IsAFailingCheckWithMessage(
+                "", 
+                "The checked enum is not an instance of [int].", 
+                "The checked enum:", 
+                "\t[French] of type: [NFluent.Tests.Nationality]", 
+                "The expected value:", 
+                "\tan instance of [int]");
         }
 
         [Test]

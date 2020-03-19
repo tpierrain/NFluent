@@ -18,7 +18,6 @@ namespace NFluent.Helpers
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
 #if NETSTANDARD1_3
     using System.Reflection;
 #endif
@@ -34,19 +33,37 @@ namespace NFluent.Helpers
         private const float FloatCloseToThreshold = 1f / 100000;
         private const double DoubleCloseToThreshold = 1d / 100000000;
 
-        internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(
-            ICheck<T> check,
+        internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(ICheck<T> check,
             TE expected,
-            IEqualityComparer comparer = null,
-            bool useOperator = false)
+            IEqualityComparer comparer = null)
         {
-            var mode = useOperator ? EqualityMode.OperatorEq : Check.EqualMode;
+            return PerformEqualCheck(check, expected, Check.EqualMode, comparer);
+        }
+
+        internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(ICheck<T> check,
+            TE expected,
+            EqualityMode mode,
+            IEqualityComparer comparer = null)
+        {
 
             ExtensibilityHelper.BeginCheck(check)
                 .Analyze((sut, test) =>
                 {
-                    test.DefineExpectedValue(expected, useOperator ? "equals to (using operator==)" : "",
-                            $"different from{(useOperator ? " (using !operator==)" : "")}");
+                    var modeLabel = string.Empty;
+                    var negatedMode = string.Empty;
+                    switch (mode)
+                    {
+                        case EqualityMode.OperatorEq:
+                            modeLabel = "equals to (using operator==)";
+                            negatedMode = " (using !operator==)";
+                            break;
+                        case EqualityMode.OperatorNeq:
+                            modeLabel = "equals to (using !operator!=)";
+                            negatedMode = " (using operator!=)";
+                            break;
+                    }
+                    test.DefineExpectedValue(expected, modeLabel,
+                            $"different from{negatedMode}");
 
                     var differenceDetails = FluentEquals(sut, expected, mode, comparer);
                     if (!differenceDetails.IsDifferent)
@@ -74,80 +91,6 @@ namespace NFluent.Helpers
                 })
                 .OnNegate("The {0} is equal to the {1} whereas it must not.",
                     MessageOption.NoCheckedBlock | MessageOption.WithType)
-                .EndCheck();
-
-            return ExtensibilityHelper.BuildCheckLink(check);
-        }
-
-        internal static ICheckLink<IStructCheck<T>> PerformEqualCheck<T, TE>(
-            IStructCheck<T> check,
-            TE expected) where T : struct
-        {
-            var mode = Check.EqualMode;
-
-            ExtensibilityHelper.BeginCheck(check)
-                .DefineExpectedValue(expected)
-                .Analyze((sut, test) =>
-                {
-                    var analysis = FluentEquals(sut, expected, mode);
-                    if (!analysis.IsDifferent)
-                    {
-                        return;
-                    }
-
-                    var options = MessageOption.None;
-
-                    if (expected != null && sut.GetType() != expected.GetType())
-                    {
-                        options |= MessageOption.WithType;
-                    }
-
-                    // shall we display the hash too
-                    if (expected != null && sut.GetType() == expected.GetType()
-                        && sut.ToStringProperlyFormatted() == expected.ToStringProperlyFormatted())
-                    {
-                        options |= MessageOption.WithHash;
-                    }
-
-                    test.Fail(analysis.GetErrorMessage(sut, expected), options);
-                })
-                .OnNegate("The {0} is equal to the {1} whereas it must not.",
-                    MessageOption.NoCheckedBlock | MessageOption.WithType)
-                .EndCheck();
-
-            return ExtensibilityHelper.BuildCheckLink(check);
-        }
-
-        internal static ICheckLink<ICheck<T>> PerformUnequalCheck<T, TE>(ICheck<T> check,TE expected, bool useOperator = false)
-        {
-            var mode = Check.EqualMode;
-
-            if (useOperator)
-            {
-                mode = EqualityMode.OperatorNeq;
-            }
-            ExtensibilityHelper.BeginCheck(check)
-                .DefineExpectedValue(expected, $"different from{(useOperator ? " (using operator!=)" : "")}",
-                    useOperator ? "equals to (using operator==)" : "")
-                .Analyze((sut, test) =>
-                {
-                    var analysis = FluentEquals(sut, expected, mode);
-                    if (analysis.IsDifferent)
-                    {
-                        return;
-                    }
-
-                    // shall we display the type as well?
-                    var options = MessageOption.None;
-                    if (expected != null)
-                    {
-                        options |= MessageOption.WithType;
-                    }
-
-                    // shall we display the hash too
-                    test.Fail("The {0} is equal to the {1} whereas it must not.", options | MessageOption.NoCheckedBlock);
-                })
-                .OnNegate("The {0} is different from the {1}.")
                 .EndCheck();
 
             return ExtensibilityHelper.BuildCheckLink(check);

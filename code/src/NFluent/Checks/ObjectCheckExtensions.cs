@@ -131,7 +131,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<T>> HasSameValueAs<T, TU>(this ICheck<T> check, TU expected)
         {
-            return EqualityHelper.PerformEqualCheck(check, expected, useOperator: true);
+            return EqualityHelper.PerformEqualCheck(check, expected, EqualityMode.OperatorEq, null);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<T>> HasDifferentValueThan<T, TU>(this ICheck<T> check, TU expected)
         {
-            return EqualityHelper.PerformUnequalCheck(check, expected, true);
+            return EqualityHelper.PerformEqualCheck(check.Not, expected, EqualityMode.OperatorNeq, null);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">The actual value is equal to the expected value.</exception>
         public static ICheckLink<ICheck<T>> IsNotEqualTo<T>(this ICheck<T> check, object expected)
         {
-            return EqualityHelper.PerformUnequalCheck(check, expected);
+            return EqualityHelper.PerformEqualCheck(check.Not, expected);
         }
 
         /// <summary>
@@ -230,7 +230,6 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> IsNull<T>(this ICheck<T> check) where T : class
         {
             ExtensibilityHelper.BeginCheck(check)
-                //.SetSutName("object")
                 .FailWhen(sut => sut!= null, "The {0} must be null.")
                 .OnNegate("The {0} must not be null.", MessageOption.NoCheckedBlock)
                 .EndCheck();
@@ -330,6 +329,37 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> IsDistinctFrom<T, TU>(this ICheck<T> check, TU comparand)
         {
             return check.Not.IsSameReferenceAs(comparand);
+        }
+
+        /// <summary>
+        /// Checks that the nullable sut has a value.
+        /// </summary>
+        /// <typeparam name="T">value type</typeparam>
+        /// <param name="check">fluent check</param>
+        /// <returns>A check link offering <see cref="ICheckLinkWhich{TMain,TSub}.Which"/> to access the value.</returns>
+        public static ICheckLinkWhich<ICheck<T?>, ICheck<T>> HasAValue<T>(this ICheck<T?> check) where T : struct
+        {
+            var hasValue = false;
+            ExtensibilityHelper.BeginCheck(check).FailWhen(sut =>
+                {
+                    hasValue = sut.HasValue;
+                    return !hasValue;
+                }, "The {0} has no value, which is unexpected.", MessageOption.NoCheckedBlock)
+                .OnNegate("The {0} has a value, whereas it must not.").EndCheck();
+            return ExtensibilityHelper.BuildCheckLinkWhich(check, sut => sut ?? default(T), "", hasValue);
+        }
+        
+        /// <summary>
+        /// Checks that the nullable sut does not have a value.
+        /// </summary>
+        /// <typeparam name="T">value type</typeparam>
+        /// <param name="check">fluent check</param>
+        /// <returns>A check link</returns>
+        public static ICheckLink<ICheck<T?>> HasNoValue<T>(this ICheck<T?> check) where T : struct
+        {
+            ExtensibilityHelper.BeginCheck(check).FailWhen(sut => sut.HasValue, "The {0} has a value, whereas it must not.")
+                .OnNegate("The {0} has no value, which is unexpected.", MessageOption.NoCheckedBlock).EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(check);
         }
     }
 }

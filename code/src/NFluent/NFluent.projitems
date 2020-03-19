@@ -59,7 +59,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Checks\StreamCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\StringCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\StringFluentSyntaxExtension.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Checks\StructCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\TimeSpanCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\TypeCheckExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicCheckLink.cs" />
@@ -109,10 +108,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\CheckLinkWhich.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\ExtendableCheckLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\FluentCheck.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Kernel\FluentStructCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\FluentSut.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\IForkableCheck.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Kernel\NullableOrNumberCheckLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\NumberCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\EntityNamingLogic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\EnumerationBlock.cs" />
