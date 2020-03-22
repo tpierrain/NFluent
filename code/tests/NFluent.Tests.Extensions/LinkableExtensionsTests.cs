@@ -35,7 +35,7 @@ namespace NFluent.Tests.Extensions
         {
             const Nationality frenchNationality = Nationality.French;
 
-            Check.ThatEnum(frenchNationality).IsEuropean().And.IsOccidental();
+            Check.That(frenchNationality).IsEuropean().And.IsOccidental();
         }
     }
 }

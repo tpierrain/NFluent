@@ -6,7 +6,6 @@
       //      "dashboard",
       //      "dots"
     ],
-    "test-runner": "vstest",
     "coverage-analysis": "perTest",
     "abort-test-on-fail": true,
     "log-level": "info",

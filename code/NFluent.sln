@@ -144,8 +144,10 @@ Global
 		src\NFluent.Generated\NFluent.Generated.projitems*{3a474510-f384-41ce-9270-539b1e51da7e}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{3a474510-f384-41ce-9270-539b1e51da7e}*SharedItemsImports = 4
 		tests\NFluent.Tests.Meta\NFluent.Tests.Meta.projitems*{61d00587-a426-41de-970b-8cdf5c7a0e67}*SharedItemsImports = 13
+		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{6954e791-41c2-4d1f-b6e6-ba77c2784311}*SharedItemsImports = 5
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{6b88c45a-d45e-40fb-8635-d0e0ef0454e9}*SharedItemsImports = 4
 		tests\NFluent.Tests\NFluent.Tests.projitems*{6b88c45a-d45e-40fb-8635-d0e0ef0454e9}*SharedItemsImports = 4
+		tests\NFluent.Tests.Internals\NFluent.Tests.Internals.projitems*{8f0252a6-1bb6-4bf6-a852-33eafb6852ca}*SharedItemsImports = 5
 		tests\NFluent.Tests.Internals\NFluent.Tests.Internals.projitems*{95799318-9a09-46c8-ae53-2546f053ef40}*SharedItemsImports = 4
 		tests\NFluent.Tests.Internals\NFluent.Tests.Internals.projitems*{9e500148-4f6c-424a-aa09-801db1749677}*SharedItemsImports = 4
 		tests\NFluent.Tests.Internals\NFluent.Tests.Internals.projitems*{a7c2f427-3d13-4c9b-8663-1ce1e0734608}*SharedItemsImports = 4
@@ -154,10 +156,14 @@ Global
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{bdaa4d22-45a1-470e-a142-70e1f194ee3f}*SharedItemsImports = 4
 		tests\NFluent.Tests\NFluent.Tests.projitems*{bdaa4d22-45a1-470e-a142-70e1f194ee3f}*SharedItemsImports = 4
 		tests\NFluent.Tests.Meta\NFluent.Tests.Meta.projitems*{c2eec8dd-f390-4ecb-a169-25930896e1c1}*SharedItemsImports = 4
+		src\NFluent.Generated\NFluent.Generated.projitems*{c90111a0-3ab2-40ed-b665-c0ddb8deb26e}*SharedItemsImports = 5
+		src\NFluent\NFluent.projitems*{c90111a0-3ab2-40ed-b665-c0ddb8deb26e}*SharedItemsImports = 5
 		src\NFluent.Generated\NFluent.Generated.projitems*{cf1d857f-658f-4e1f-8487-cd751f189e6a}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{cf1d857f-658f-4e1f-8487-cd751f189e6a}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{dbfa1137-b129-496a-9201-149f5178747e}*SharedItemsImports = 13
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{e298f1af-a6a7-497c-9a2d-ac15584e1ac1}*SharedItemsImports = 13
+		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{fe288842-65f6-47dc-952a-413077247511}*SharedItemsImports = 5
+		tests\NFluent.Tests\NFluent.Tests.projitems*{fe288842-65f6-47dc-952a-413077247511}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

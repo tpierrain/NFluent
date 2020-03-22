@@ -351,13 +351,12 @@ namespace NFluent.Tests
                 "The expected dictionary:", 
                 "\t{[bar, 1], [foo, 0]} (2 items)");
             Check.ThatCode( () =>
-            Check.That(new Dictionary<string, int> { ["bar!"] = 1, ["foo"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
-                "The checked dictionary is different from the expected one. 3 differences found!", 
-                "actual's key \"bar!\" should not exist (value 1).",
-                "actual key[0] = \"bar!\" instead of \"bar\".",
-                "actual[\"foo\"] = 1 instead of 0.", 
+            Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo!"] = 0 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
+                "The checked dictionary is different from the expected one. 2 differences found!", 
+                "actual's key \"foo!\" should not exist (value 0).",
+                "actual key[1] = \"foo!\" instead of \"foo\".",
                 "The checked dictionary:",
-                "\t{[bar!, 1], [foo, 1]} (2 items)",
+                "\t{[bar, 1], [foo!, 0]} (2 items)",
                 "The expected dictionary:", 
                 "\t{[bar, 1], [foo, 0]} (2 items)");
             Check.ThatCode( () =>
@@ -392,6 +391,23 @@ namespace NFluent.Tests
                 "\t{[first, System.Collections.Generic.Dictionary`2[System.String,System.Object]]} (1 item)", 
                 "The expected dictionary:", 
                 "\t{[first, System.Collections.Generic.Dictionary`2[System.String,System.Object]]} (1 item)");
+        }
+
+        [Test]
+        public void SupportEquivalence()
+        {
+            var dictionary = new Dictionary<int, int[]> {[0] = new[] {1, 3, 2}};
+
+            Check.ThatCode(() =>
+                Check.That(dictionary).IsEqualTo(new Dictionary<int, int[]> {[0] = new[] {1, 2, 3}})).
+                IsAFailingCheckWithMessage("", 
+                "The checked dictionary is different from the expected one. 2 differences found! But they are equivalent.", 
+                "actual[2] value ('2') was found at index 1 instead of 2.", 
+                "actual[2] value ('3') was found at index 2 instead of 1.", 
+                "The checked dictionary:", 
+                "\t{[0, System.Int32[]]} (1 item)", 
+                "The expected dictionary:", 
+                "\t{[0, System.Int32[]]} (1 item)");
         }
 
         [Test]

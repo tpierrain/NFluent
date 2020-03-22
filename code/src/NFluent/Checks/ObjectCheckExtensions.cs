@@ -17,7 +17,6 @@ namespace NFluent
 {
     using System;
     using System.Collections;
-    using System.ComponentModel;
     using System.Linq;
     using Extensibility;
     using Helpers;
@@ -85,7 +84,7 @@ namespace NFluent
         public static ICheckLink<ICheck<T>> IsDefaultValue<T>(this ICheck<T> context)
         {
             ExtensibilityHelper.BeginCheck(context).
-                FailWhen(sut => !object.Equals(sut, default(T)), "The {checked} is not the default value for its type.").
+                FailWhen(sut => !Equals(sut, default(T)), "The {checked} is not the default value for its type.").
                 DefineExpectedValue(default(T)).
                 OnNegate("The {checked} is the default value for its type, whereas it should not.").
                 EndCheck();
@@ -131,7 +130,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<T>> HasSameValueAs<T, TU>(this ICheck<T> check, TU expected)
         {
-            return EqualityHelper.PerformEqualCheck(check, expected, EqualityMode.OperatorEq, null);
+            return EqualityHelper.PerformEqualCheck(check, expected, EqualityMode.OperatorEq);
         }
 
         /// <summary>
@@ -155,7 +154,7 @@ namespace NFluent
         /// </exception>
         public static ICheckLink<ICheck<T>> HasDifferentValueThan<T, TU>(this ICheck<T> check, TU expected)
         {
-            return EqualityHelper.PerformEqualCheck(check.Not, expected, EqualityMode.OperatorNeq, null);
+            return EqualityHelper.PerformEqualCheck(check.Not, expected, EqualityMode.OperatorNeq);
         }
 
         /// <summary>
@@ -341,10 +340,12 @@ namespace NFluent
         {
             var hasValue = false;
             ExtensibilityHelper.BeginCheck(check).FailWhen(sut =>
-                {
-                    hasValue = sut.HasValue;
-                    return !hasValue;
-                }, "The {0} has no value, which is unexpected.", MessageOption.NoCheckedBlock)
+                    {
+                        hasValue = sut.HasValue;
+                        return !hasValue;
+                    },
+                    "The {0} has no value, which is unexpected.", 
+                    MessageOption.NoCheckedBlock)
                 .OnNegate("The {0} has a value, whereas it must not.").EndCheck();
             return ExtensibilityHelper.BuildCheckLinkWhich(check, sut => sut ?? default(T), "value", hasValue);
         }

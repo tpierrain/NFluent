@@ -34,8 +34,8 @@ namespace NFluent.Tests
         [Test]
         public void ExtractRunnableStructCheckWorks()
         {
-            var runnableStructCheck = ExtensibilityHelper.ExtractChecker(Check.ThatEnum(Nationality.Chinese));
-            Check.ThatEnum(runnableStructCheck.Value).IsEqualTo(Nationality.Chinese);
+            var runnableStructCheck = ExtensibilityHelper.ExtractChecker(Check.That(Nationality.Chinese));
+            Check.That(runnableStructCheck.Value).IsEqualTo(Nationality.Chinese);
             Check.That(runnableStructCheck.Negated).IsFalse();
         }
 

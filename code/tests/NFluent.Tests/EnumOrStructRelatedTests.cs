@@ -28,7 +28,6 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualToWorksWithEnum()
         {
-            Check.ThatEnum(FrenchNationality).IsEqualTo(Nationality.French);
             Check.That(FrenchNationality).IsEqualTo(Nationality.French);
         }
 
@@ -36,7 +35,7 @@ namespace NFluent.Tests
         public void IsEqualToThrowsExceptionWhenFailingWithEnum()
         {
 
-            Check.ThatCode(() => { Check.ThatEnum(FrenchNationality).IsEqualTo(Nationality.American); })
+            Check.ThatCode(() => { Check.That(FrenchNationality).IsEqualTo(Nationality.American); })
                 .IsAFailingCheckWithMessage("",
                     "The checked enum is different from the expected one.",
                     "The checked enum:",
@@ -66,7 +65,7 @@ namespace NFluent.Tests
         public void ShouldOutputTypesWhenComparing()
         {
             Check.ThatCode(() =>
-                Check.ThatEnum(new Basic(1, 2)).IsEqualTo(4)).IsAFailingCheckWithMessage("", 
+                Check.That(new Basic(1, 2)).IsEqualTo(4)).IsAFailingCheckWithMessage("", 
                 "The checked struct is different from the expected value.", 
                 "The checked struct:", 
                 "\t[NFluent.Tests.EnumOrStructRelatedTests+Basic] of type: [NFluent.Tests.EnumOrStructRelatedTests+Basic]", 
@@ -77,7 +76,7 @@ namespace NFluent.Tests
         [Test]
         public void ShouldFailWithHashesWhenSimilar()
         {
-            Check.ThatCode(() => { Check.ThatEnum(new Basic(1,2)).IsEqualTo(new Basic(1, 3)); })
+            Check.ThatCode(() => { Check.That(new Basic(1,2)).IsEqualTo(new Basic(1, 3)); })
                 .IsAFailingCheckWithMessage("",
                     "The checked struct is different from the expected one.",
                     "The checked struct:",
@@ -89,25 +88,25 @@ namespace NFluent.Tests
         [Test]
         public void IsNorEqualShouldWorkOnDifferentType()
         {
-            Check.ThatEnum(new Basic(1,2)).IsNotEqualTo(4);
+            Check.That(new Basic(1,2)).IsNotEqualTo(4);
         }
 
         [Test]
         public void EqualShouldFailWithNull()
         {
-           Check.ThatEnum(new Basic(1,2)).IsNotEqualTo(null);
+           Check.That(new Basic(1,2)).IsNotEqualTo(null);
         }
 
         [Test]
         public void IsNotEqualToWorksWithEnum()
         {
-            Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.Korean);
+            Check.That(FrenchNationality).IsNotEqualTo(Nationality.Korean);
         }
 
         [Test]
         public void DoesNotPropagateNot()
         {
-            Check.ThatEnum(FrenchNationality).Not.IsEqualTo(Nationality.Korean).And.IsEqualTo(Nationality.French);
+            Check.That(FrenchNationality).Not.IsEqualTo(Nationality.Korean).And.IsEqualTo(Nationality.French);
         }
 
         [Test]
@@ -115,7 +114,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatEnum(FrenchNationality).IsNotEqualTo(Nationality.French);
+                Check.That(FrenchNationality).IsNotEqualTo(Nationality.French);
             })
             .IsAFailingCheckWithMessage("",
                     "The checked enum is equal to the given one whereas it must not.",
@@ -126,7 +125,7 @@ namespace NFluent.Tests
         [Test]
         public void NotOperatorWorksOnIsEqualToForEnum()
         {
-            Check.ThatEnum(FrenchNationality).Not.IsEqualTo(Nationality.American);
+            Check.That(FrenchNationality).Not.IsEqualTo(Nationality.American);
         }
 
         [Test]
@@ -134,7 +133,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatEnum(FrenchNationality).Not.IsEqualTo(Nationality.French);
+                Check.That(FrenchNationality).Not.IsEqualTo(Nationality.French);
             })
             .IsAFailingCheckWithMessage("",
                     "The checked enum is equal to the given one whereas it must not.", 
@@ -145,7 +144,7 @@ namespace NFluent.Tests
         [Test]
         public void NotOperatorWorksOnIsNotEqualToForEnum()
         {
-            Check.ThatEnum(FrenchNationality).Not.IsNotEqualTo(Nationality.French);
+            Check.That(FrenchNationality).Not.IsNotEqualTo(Nationality.French);
         }
 
         // TODO: write tests related to error message of IsNotEqualTo (cause the error message seems not so good)
@@ -153,19 +152,19 @@ namespace NFluent.Tests
         public void IsEqualToWorksWithStruct()
         {
             var inLove = new Mood { Description = "In love", IsPositive = true };
-            Check.ThatEnum(inLove).IsEqualTo(inLove);
+            Check.That(inLove).IsEqualTo(inLove);
         }
 
         [Test]
         public void IsInstanceOfWorks()
         {
-            Check.ThatEnum(FrenchNationality).IsInstanceOf<Nationality>();
+            Check.That(FrenchNationality).IsInstanceOf<Nationality>();
         }
 
         [Test]
         public void IsNotInstanceOfWorks()
         {
-            Check.ThatEnum(FrenchNationality).IsNotInstanceOf<int>();
+            Check.That(FrenchNationality).IsNotInstanceOf<int>();
         }
 
         [Test]
@@ -173,7 +172,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatEnum(FrenchNationality).IsInstanceOf<int>();
+                Check.That(FrenchNationality).IsInstanceOf<int>();
             })
             .IsAFailingCheckWithMessage(
                 "", 
@@ -189,7 +188,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() =>
             {
-                Check.ThatEnum(FrenchNationality).IsNotInstanceOf<Nationality>();
+                Check.That(FrenchNationality).IsNotInstanceOf<Nationality>();
             })
             .IsAFailingCheckWithMessage("",
                     "The checked enum is an instance of [NFluent.Tests.Nationality] whereas it must not.",

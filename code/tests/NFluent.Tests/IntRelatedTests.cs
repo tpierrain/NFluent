@@ -297,6 +297,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsStrictlyGreaterThanThrowsExceptionWhenFailingBecauseLess()
+        {
+            Check.ThatCode(() =>
+            {
+                Check.That(Zero).IsStrictlyGreaterThan(One);
+            })
+            .IsAFailingCheckWithMessage("",
+                    "The checked value is less than the given one.",
+                    "The checked value:",
+                    "\t[0]",
+                    "The expected value: strictly greater than",
+                    "\t[1]");
+        }
+
+        [Test]
         public void NotIsStrictlyGreaterThanThrowsExceptionWhenFailing()
         {
             Check.ThatCode(() =>

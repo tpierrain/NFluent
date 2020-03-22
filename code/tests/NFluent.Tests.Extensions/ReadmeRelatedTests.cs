@@ -71,7 +71,7 @@ namespace NFluent.Tests
             Check.That(one).HasAValue().Which.IsStrictlyPositive().And.IsEqualTo(1);
 
             const Nationality frenchNationality = Nationality.French;
-            Check.ThatEnum(frenchNationality).IsNotEqualTo(Nationality.Korean);
+            Check.That(frenchNationality).IsNotEqualTo(Nationality.Korean);
 
             string motivationalSaying = "Failure is mother of success.";
             Check.That(motivationalSaying).IsNotInstanceOf<int>();
