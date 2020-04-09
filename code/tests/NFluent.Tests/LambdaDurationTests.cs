@@ -44,7 +44,7 @@ namespace NFluent.Tests
                 IsAFailingCheckWithMessage("", 
                     "The checked code's execution time was too low.", 
                     "The checked code's execution time:", 
-                    "#\\[.+ Milliseconds\\]",
+                    Criteria.FromRegEx("\\[.+ Milliseconds\\]"),
                     "The expected code's execution time: more than", 
                     "\t[1000 Milliseconds]");
         }
@@ -59,7 +59,7 @@ namespace NFluent.Tests
                 .IsAFailingCheckWithMessage("", 
                     "The checked code's execution time was too high.", 
                     "The checked code's execution time:", 
-                    "#\\[.+ Milliseconds\\]",
+                    Criteria.FromRegEx("\\[.+ Milliseconds\\]"),
                     "The expected code's execution time: less than", 
                     "\t[0 Milliseconds]");
         }
@@ -126,7 +126,7 @@ namespace NFluent.Tests
             .IsAFailingCheckWithMessage("",
                     "The checked code's cpu consumption was too high.",
                     "The checked code's cpu consumption:", 
-                    "#\\[.+ Milliseconds\\]",
+                    Criteria.FromRegEx("\\[.+ Milliseconds\\]"),
                     "The expected code's cpu consumption: less than",
                     "\t[5 Milliseconds]"); 
         }
@@ -145,7 +145,7 @@ namespace NFluent.Tests
                 .IsAFailingCheckWithMessage("",
                     "The checked code's cpu consumption was too low.",
                     "The checked code's cpu consumption:", 
-                    "#\\[.+ Milliseconds\\]",
+                    Criteria.FromRegEx("\\[.+ Milliseconds\\]"),
                     "The expected code's cpu consumption: more than",
                     "\t[50 Milliseconds]"); 
         }

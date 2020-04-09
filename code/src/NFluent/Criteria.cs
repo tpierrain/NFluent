@@ -127,6 +127,7 @@ namespace NFluent
                 return result;
             }
         }
+
         private class RegExCriteria : IValueCriteria
         {
             private readonly string reference;

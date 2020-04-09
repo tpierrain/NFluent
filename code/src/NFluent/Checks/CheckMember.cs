@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IExposingChecker.cs" company="">
-//   Copyright 2013 Thomas PIERRAIN
+//  <copyright file="CheckMember.cs" company="NFluent">
+//   Copyright 2020 Thomas PIERRAIN & Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -12,24 +12,32 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent.Extensibility
+
+namespace NFluent
 {
+    using System;
+    using Kernel;
+
     /// <summary>
-    /// Exposes an executable check for this given type. 
+    /// Offers checks on members of an object
     /// </summary>
-    /// <typeparam name="T">
-    /// The type of the data to be checked.
-    /// </typeparam>
-    /// <typeparam name="TC">Interface for the check.
-    /// </typeparam>
-    public interface IExposingChecker<out T, out TC> where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TM"></typeparam>
+    public class CheckMember<T, TM>
     {
-        /// <summary>
-        /// Gets the runnable check to use for checking something on a value of a given type.
-        /// </summary>
-        /// <value>
-        /// The runnable check to use for checking something on a given type.
-        /// </value>
-        IChecker<T, TC> Checker { get; } 
+        private readonly ICheck<T> originalCheck;
+        private readonly TM value;
+
+        internal CheckMember(ICheck<T> originalCheck, TM value)
+        {
+            this.originalCheck = originalCheck;
+            this.value = value;
+        }
+
+        public CheckMember<T, TM> Verifies(Action<ICheck<TM>> func)
+        {
+            func(new FluentCheck<TM>(this.value));
+            return this;
+        }
     }
 }

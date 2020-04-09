@@ -54,7 +54,7 @@ namespace NFluent.Tests
                 .IsAFailingCheckWithMessage("", 
                     "The check succeeded whereas it should have failed.", 
                     "The expected fluent check's raised exception:", 
-                    "#\tan instance of .*");
+                    Criteria.FromRegEx("\tan instance of .*"));
 
             Check.ThatCode(() =>
                 // check with an incomplete error message
@@ -74,7 +74,7 @@ namespace NFluent.Tests
             ).IsAFailingCheckWithMessage("", 
                 "Line 0 is different from what is expected", 
                 "Act:oups", 
-                "Exp:oupsla", 
+                "Exp:\"oupsla\"", 
                 "The checked fluent check's raised exception's error message:", 
                 "\t{\"oups\"} (1 item)", 
                 "The expected fluent check's raised exception's error message:", 
@@ -87,40 +87,40 @@ namespace NFluent.Tests
             ).IsAFailingCheck();
             // can use regular expression.
             Check.ThatCode(() => throw ExceptionHelper.BuildException("oups")).
-                IsAFailingCheckWithMessage("#[pous]+");
+                IsAFailingCheckWithMessage(Criteria.FromRegEx("[pous]+"));
             Check.ThatCode(() =>
                 // check with a error message that is too long
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oups"+Environment.NewLine+"and more"))
-                    .IsAFailingCheckWithMessage("#[pous]+")
+                    .IsAFailingCheckWithMessage(Criteria.FromRegEx("[pous]+"))
             ).IsAFailingCheckWithMessage("", 
                 "Too many lines in the error message starting at #1", 
                 "The checked fluent check's raised exception's error message:", 
                 "\t{\"oups\", \"and more\"} (2 items)", 
                 "The expected fluent check's raised exception's error message:", 
-                "\t{\"#[pous]+\"} (1 item)");
+                "\t{matches: [pous]+} (1 item)");
             Check.ThatCode(() =>
                 // check with a error message that does not match regex
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oupsla"))
-                    .IsAFailingCheckWithMessage("#[pous]+$")
+                    .IsAFailingCheckWithMessage(Criteria.FromRegEx("[pous]+$"))
             ).IsAFailingCheckWithMessage("", 
                 "Line 0 is different from what is expected", 
                 "Act:oupsla", 
-                "Exp (regex):#[pous]+$", 
+                "Exp:matches: [pous]+$", 
                 "The checked fluent check's raised exception's error message:", 
                 "\t{\"oupsla\"} (1 item)", 
                 "The expected fluent check's raised exception's error message:", 
-                "\t{\"#[pous]+$\"} (1 item)");
+                "\t{matches: [pous]+$} (1 item)");
 
             Check.ThatCode(() =>
                 // check with a error message that is too long
                 Check.ThatCode(() => throw new Exception("oups"))
-                    .IsAFailingCheckWithMessage("#[pous]+")
+                    .IsAFailingCheckWithMessage(Criteria.FromRegEx("[pous]+"))
             ).IsAFailingCheckWithMessage("", 
                 "The exception raised is not of the expected type.", 
                 "The checked fluent check's raised exception:", 
                 "\t[{System.Exception}: 'oups'] of type: [System.Exception]", 
                 "The expected fluent check's raised exception:", 
-                "#\tan instance of .*");
+                Criteria.FromRegEx("\tan instance of .*"));
         }
 
         [Test]
@@ -196,7 +196,8 @@ namespace NFluent.Tests
                 "The checked fluent assumption's raised exception:", 
                 "\t[{System.Exception}: 'oups'] of type: [System.Exception]", 
                 "The expected fluent assumption's raised exception:", 
-                "#\tan instance of .*");
+                Criteria.FromRegEx("\tan instance of .*")
+                );
         }
 
         [Test]
@@ -207,7 +208,7 @@ namespace NFluent.Tests
                 IsAFailingCheckWithMessage("", 
                     "The fluent check did not raise an exception, where as it must.", 
                     "The expected fluent check's raised exception:", 
-                    "#\tan instance of \\[.*Exception\\]");
+                    Criteria.FromRegEx("\tan instance of \\[.*Exception\\]"));
             Check.ThatCode(
                     () => Check.ThatCode(() => throw new Exception("yep")).IsAFailingCheck()).
                 IsAFailingCheckWithMessage(	"", 
@@ -215,7 +216,7 @@ namespace NFluent.Tests
                     "The checked fluent check's raised exception:", 
                     "\t[{System.Exception}: 'yep'] of type: [System.Exception]", 
                     "The expected fluent check's raised exception:", 
-                "#\tan instance of \\[.*Exception\\]");
+                    Criteria.FromRegEx("\tan instance of \\[.*Exception\\]"));
         }
     }
 }

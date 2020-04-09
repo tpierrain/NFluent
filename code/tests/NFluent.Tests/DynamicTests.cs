@@ -82,7 +82,7 @@ namespace NFluent.Tests
                 "\t[\"test\"]");
         }
 
-        public static void AssertCheckFails(System.Action test, params string[] message)
+        public static void AssertCheckFails(System.Action test, params Criteria[] message)
         {
             Check.ThatCode(test).IsAFailingCheckWithMessage(message);
         }

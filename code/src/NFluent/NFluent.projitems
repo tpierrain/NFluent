@@ -12,7 +12,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)ApiChecks\ExceptionChecks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Assuming.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\CheckMember.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\ExceptionChecks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\MemberCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DecimalCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\ICheckLogicBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\MessageOption.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />

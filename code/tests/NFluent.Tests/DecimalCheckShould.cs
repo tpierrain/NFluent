@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IExposingChecker.cs" company="">
-//   Copyright 2013 Thomas PIERRAIN
+//  <copyright file="DecimalCheckShould.cs" company="NFluent">
+//   Copyright 2020 Thomas PIERRAIN & Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -12,24 +12,32 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent.Extensibility
+
+namespace NFluent.Tests
 {
-    /// <summary>
-    /// Exposes an executable check for this given type. 
-    /// </summary>
-    /// <typeparam name="T">
-    /// The type of the data to be checked.
-    /// </typeparam>
-    /// <typeparam name="TC">Interface for the check.
-    /// </typeparam>
-    public interface IExposingChecker<out T, out TC> where TC : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
+    using NFluent.Helpers;
+    using NUnit.Framework;
+
+    [TestFixture]
+    public class DecimalCheckShould
     {
-        /// <summary>
-        /// Gets the runnable check to use for checking something on a value of a given type.
-        /// </summary>
-        /// <value>
-        /// The runnable check to use for checking something on a given type.
-        /// </value>
-        IChecker<T, TC> Checker { get; } 
+        [Test]
+        public void SupportIsCloseTo()
+        {
+            Check.That(1.01m).IsCloseTo(1m, .01m);
+        }
+
+        [Test]
+        public void ProvideErrorMessageWithIsCloseTo()
+        {
+            Check.ThatCode(() =>
+                Check.That(1.02m).IsCloseTo(1m, .01m)).IsAFailingCheckWithMessage(
+            "", 
+            "The checked value is outside the expected value range.", 
+            "The checked value:", 
+            "\t[1,02]", 
+            "The expected value:", 
+            "\t[1 (+/- 0,01)]");
+        }
     }
 }

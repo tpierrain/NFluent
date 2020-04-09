@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AssumeShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AsyncCodeChecksShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Customization\ErrorReportingShould.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DecimalCheckShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumerableShouldSupportAmbiguousType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\CheckLogicShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CustomDico.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ReverseEngineeringExceptionMessagesHelperTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StreamTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringChecksShould.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StructuredCheckShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SutClasses\RoDico.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeHelperTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeSpanTests.cs" />

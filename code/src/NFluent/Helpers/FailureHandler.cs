@@ -32,7 +32,7 @@ namespace NFluent.Helpers
         /// <param name="lines"></param>
         /// <returns>A link check</returns>
         public static ICheckLink<ICheck<RunTrace>> IsAFailingCheckWithMessage(this ICheck<RunTrace> check,
-            params string[] lines)
+            params Criteria[] lines)
         {
             ExtensibilityHelper.BeginCheck(check)
                 .SetSutName("fluent check")
@@ -45,9 +45,9 @@ namespace NFluent.Helpers
                 .Analyze((messageLines, test) =>
                 {
                     var expectedLines = (lines.Length == 1) ? lines[0].SplitAsLines() : lines;
-                    for (var i = 0; i < expectedLines.Count; i++)
+                    for (var i = 0; i < expectedLines.Length; i++)
                     {
-                        if (expectedLines[i] == "*")
+                        if (expectedLines[i].ToString() == "\"*\"")
                         {
                             //any line
                             continue;
@@ -59,32 +59,20 @@ namespace NFluent.Helpers
                             break;
                         }
 
-                        if (expectedLines[i].StartsWith("#"))
+                        if (!expectedLines[i].IsEqualTo(messageLines[i]))
                         {
-                            if (!Regex.IsMatch(messageLines[i], expectedLines[i].Substring(1)))
-                            {
-                                test.Fail($"Line {i} is different from what is expected"+Environment.NewLine+
-                                          "Act:" + messageLines[i].DoubleCurlyBraces()+Environment.NewLine+
-                                          "Exp (regex):" + expectedLines[i].DoubleCurlyBraces()
-                                );
-                                break;
-                            }
-                        }
-                        else if (messageLines[i] != expectedLines[i])
-                        {
-                            test.Fail($"Line {i} is different from what is expected"+Environment.NewLine+
-                                       "Act:" + messageLines[i].DoubleCurlyBraces()+Environment.NewLine+
-                                        "Exp:" + expectedLines[i].DoubleCurlyBraces() );
+                            test.Fail($"Line {i} is different from what is expected" + Environment.NewLine +
+                                      "Act:" + messageLines[i].DoubleCurlyBraces() + Environment.NewLine +
+                                      "Exp:" + expectedLines[i].ToString().DoubleCurlyBraces());
                             break;
                         }
-                    }
 
-                    if (messageLines.Count > expectedLines.Count)
-                    {
-                        test.Fail($"Too many lines in the error message starting at #{expectedLines.Count}");
+                        if (messageLines.Count > expectedLines.Length)
+                        {
+                            test.Fail($"Too many lines in the error message starting at #{expectedLines.Length}");
+                        }
                     }
-                }).
-                DefineExpectedValue(lines).
+                }).DefineExpectedValue(lines).
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

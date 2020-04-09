@@ -17,7 +17,7 @@
 namespace NFluent
 {
     /// <summary>
-    /// Implements the And operator for dynmaic check. Used in conjonction with <see cref="FluentDynamicCheck"/>
+    /// Implements the And operator for dynamic check. Used in conjunction with <see cref="FluentDynamicCheck"/>
     /// </summary>
     public class DynamicCheckLink
     {

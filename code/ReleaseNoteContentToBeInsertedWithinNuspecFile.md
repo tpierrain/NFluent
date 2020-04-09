@@ -1,6 +1,7 @@
 # V 3.0.0
 ## Major changes
-* Dropped support for Net 2.0 and 3.5
+* Dropped support for Net Framework 2.0, 3.0, and 4.0. NFluent supports Net 3.5 SP1, Net. 4.5.2 +, Net Standard 1.3+ and Net Standard 2.0+.
+ If you can't upgrade your framework version to a supported one, please use NFluent 2.7. 
 * `Check.ThatEnum`has been removed. You must use `Check.That` instead.
 
 ## Breaking changes

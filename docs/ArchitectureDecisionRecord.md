@@ -12,11 +12,13 @@ when conditions permit
 
 -------------
 #### 
-#### Drop support for Net 2.0 and 3.0
-NUnit dropped support to pre 3.5 frameworks with verion 3.11. Support to NEt 2.0 and 3.0 has
+#### Drop support for Net 2.0, 3.0 and 4.0 (2020/04/8)
+NUnit dropped support to pre 3.5 frameworks with version 3.11. Support to Net 2.0 and 3.0 has
 been added with NFluent 2.0. Supporting older frameworks adds complexity to the code by
 imposing the usage of compile time compilations, as well as the implementation of polyfills
 methods.
+NFluent V3 drops support of all end of life net/net core framework version.
+
 
 #### Upgrade to Visual Studio 2019 (2019/06/20)
 Visual Studio 2019 has been released for a few months and is available on AppVeyor.

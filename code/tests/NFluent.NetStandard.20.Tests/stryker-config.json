@@ -10,7 +10,7 @@
     "abort-test-on-fail": true,
     "log-level": "info",
     "log-file": true,
-    "dev-mode": false,
+    "dev-mode": true,
     "dashboard-project": "github.com/NFluent/NFluent",
     "dashboard-version": "master"
   }

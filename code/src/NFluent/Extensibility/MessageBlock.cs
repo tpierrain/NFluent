@@ -26,7 +26,6 @@ namespace NFluent.Extensibility
     public class MessageBlock
     {
         private readonly GenericLabelBlock block;
-        private readonly FluentMessage message;
         private IValueDescription value;
         private string comparisonLabel;
         private string customMessage;
@@ -34,7 +33,7 @@ namespace NFluent.Extensibility
  
         internal MessageBlock(FluentMessage message, GenericLabelBlock block)
         {
-            this.message = message;
+            this.And = message;
             this.block = block;
         }
 
@@ -59,7 +58,7 @@ namespace NFluent.Extensibility
         /// <value>
         /// The <see cref="FluentMessage"/> holding that block.
         /// </value>
-        public FluentMessage And => this.message;
+        public FluentMessage And { get; }
 
         /// <summary>
         /// Adds a specific comparison message (e.g 'equal to').
@@ -115,7 +114,7 @@ namespace NFluent.Extensibility
         /// </returns>
         public override string ToString()
         {
-            return this.message.ToString();
+            return this.And.ToString();
         }
 
         /// <summary>

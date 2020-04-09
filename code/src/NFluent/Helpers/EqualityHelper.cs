@@ -156,7 +156,6 @@ namespace NFluent.Helpers
                     }
 
                     mainLine += ".";
-
                     if (ratio < FloatCloseToThreshold)
                     {
                         mainLine += " You may consider using IsCloseTo() for comparison.";
