@@ -133,9 +133,7 @@ namespace NFluent
         public static ICheckLink<ILambdaExceptionCheck<T>> WithProperty<T, TP>(this ILambdaExceptionCheck<T> checker, Expression<Func<T, TP>> propertyExpression, TP propertyValue)
             where T:Exception
         {
-            var memberExpression = propertyExpression.Body as MemberExpression;
-
-            var propertyName = GetPropertyNameFromExpression(propertyExpression);
+            var propertyName = ExpressionHelper.GetPropertyNameFromExpression(propertyExpression);
             ExtensibilityHelper.BeginCheck(checker as FluentSut<T>)
                 .CantBeNegated("WithProperty")
                 .SetSutName("exception")
@@ -160,29 +158,11 @@ namespace NFluent
         where T: Exception
         {
             var syntaxHelper = (FluentSut<T>) checker;
-            var name = GetPropertyNameFromExpression(propertyExpression);
+            var name = ExpressionHelper.GetPropertyNameFromExpression(propertyExpression);
             var sub = syntaxHelper.Extract(propertyExpression.Compile(),
                 value => $"{value.SutName.EntityName}'s {name}");
             var res = new FluentCheck<TM>(sub, syntaxHelper.Negated) {CustomMessage = syntaxHelper.CustomMessage};
             return res;
-        }
-
-        private static string GetPropertyNameFromExpression<T, TM>(Expression<Func<T, TM>> propertyExpression)
-        {
-            var nameBuilder = new List<string>();
-            var scanner = propertyExpression.Body;
-            while (scanner is MemberExpression member)
-            {
-                nameBuilder.Add(member.Member.Name);
-                scanner = member.Expression;
-            }
-
-            if (scanner.ToString() != propertyExpression.Parameters[0].ToString())
-            {
-                nameBuilder.Add(scanner.ToString());
-            }
-            nameBuilder.Reverse();
-            return string.Join(".", nameBuilder.ToArray());
         }
     }
 }

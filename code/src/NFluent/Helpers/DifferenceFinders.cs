@@ -4,7 +4,9 @@ namespace NFluent.Helpers
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using Extensions;
+    using Kernel;
 
     internal static class DifferenceFinders
     {
@@ -16,6 +18,7 @@ namespace NFluent.Helpers
         public static AggregatedDifference ValueDifference<TA, TE>(TA actual, string firstName, TE expected, int refIndex, ICollection<object> firstSeen)
         {
             var result = new AggregatedDifference();
+            // handle null case first
             if (expected == null)
             {
                 if (actual != null)
@@ -26,37 +29,59 @@ namespace NFluent.Helpers
                 return result;
             }
 
+            // if both equals from a BCL perspective, we are done.
             if (expected.Equals(actual))
             {
                 return result;
             }
 
-            if (actual != null)
+            // handle actual is null
+            if (actual == null)
             {
-                var commonType = actual.GetType().FindCommonNumericalType(expected.GetType());
-                // we silently convert numerical value
-                if (commonType != null)
-                {
-                    var convertedActual = Convert.ChangeType(actual, commonType);
-                    var convertedExpected = Convert.ChangeType(expected, commonType);
-                    if (convertedExpected.Equals(convertedActual))
-                    {
-                        return result;
-                    }
-                }
+                result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, null, expected, refIndex));
+                return result;
+            }
 
-                if (firstSeen.Contains(actual))
+            // do not recurse
+            if (firstSeen.Contains(actual))
+            {
+                result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, 0));
+                return result;
+            }
+            firstSeen = new List<object>(firstSeen) { actual };
+
+            // deals with numerical
+            var type = expected.GetType();
+            var commonType = actual.GetType().FindCommonNumericalType(type);
+            // we silently convert numerical value
+            if (commonType != null)
+            {
+                var convertedActual = Convert.ChangeType(actual, commonType);
+                var convertedExpected = Convert.ChangeType(expected, commonType);
+                if (convertedExpected.Equals(convertedActual))
                 {
-                    result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, 0));
                     return result;
                 }
+            }
 
-                firstSeen = new List<object>(firstSeen) { actual };
-
-                if (actual.IsAnEnumeration(false) && expected.IsAnEnumeration(false))
+            if (type.TypeIsAnonymous())
+            {
+                var criteria = new ClassMemberCriteria(BindingFlags.GetProperty|BindingFlags.Public|BindingFlags.Instance);
+                // use field based comparison
+                var wrapper = ReflectionWrapper.BuildFromInstance(type, expected, criteria);
+                var actualWrapped = ReflectionWrapper.BuildFromInstance(actual.GetType(), actual, criteria);
+                foreach (var match in actualWrapped.MemberMatches(wrapper).Where(match => !match.DoValuesMatches))
                 {
-                    return ValueDifferenceEnumerable(actual as IEnumerable, firstName, expected as IEnumerable, firstSeen);
+                    result.Add(DifferenceDetails.FromMatch(match));
                 }
+
+                return result;
+            }
+
+            // handle enumeration
+            if (actual.IsAnEnumeration(false) && expected.IsAnEnumeration(false))
+            {
+                return ValueDifferenceEnumerable(actual as IEnumerable, firstName, expected as IEnumerable, firstSeen);
             }
 
             result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex));
@@ -168,7 +193,7 @@ namespace NFluent.Helpers
                     temp /= firstArray.SizeOfDimension(j);
                 }
 
-                return $"actual[{String.Join(",", indices.Select(x=> x.ToString()).ToArray())}]";
+                return $"actual[{string.Join(",", indices.Select(x=> x.ToString()).ToArray())}]";
             }, firstSeen); 
         }
 

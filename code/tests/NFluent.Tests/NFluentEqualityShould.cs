@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="StructuredCheckShould.cs" company="NFluent">
-//   Copyright 2020 Thomas PIERRAIN & Cyrille DUPUYDAUBY
+// <copyright file="NFluentEqualityShould.cs" company="">
+//   Copyright 2020 Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -12,43 +12,41 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+using NUnit.Framework;
 
 namespace NFluent.Tests
 {
     using NFluent.Helpers;
-    using NUnit.Framework;
 
     [TestFixture]
-    public class StructuredCheckShould
+    public class NFluentEqualityShould
     {
         [Test]
-        public void OfferSimpleSyntax()
+        public void HandleAnonymousTuples()
         {
-            var sut = new Dummy();
+            var x = (1, 2);
 
-            Check.That(sut).WhichMember(o=> o.x).Verifies( m => m.IsEqualTo(0));
+            Check.That(x).IsEqualTo((1, 2));
         }
 
         [Test]
-        //[Ignore("WIP")]
-        public void OfferErrorMessageWhenFailing()
+        public void HandleAnonymousTypesWhenEquals()
         {
-            var sut = new Dummy();
-            Check.ThatCode( ()=>
-            Check.That(sut).WhichMember(o => o.x).Verifies( m => m.IsEqualTo(1))).
-                IsAFailingCheckWithMessage("", 
-                    "The checked value fails the check because:", 
-                    "The checked [x] is different from the expected one.", 
-                    "The checked [x]:", 
-                    "\t[0]", 
-                    "The expected [x]:", 
-                    "\t[1]");
+            Check.That(new {x = 1, y = 2}).IsEqualTo(new {x = 1, y = 2});
         }
-        
-        internal class Dummy
+
+        [Test]
+        public void HandleAnonymousTypesWhenDifferent()
         {
-            public int x;
-            public string text;
+            Check.ThatCode(()=>
+            Check.That(new {x = 1, y = 2}).IsEqualTo(new {x = 1, y = 3}))
+                .IsAFailingCheck();
+        }
+
+        [Test]
+        public void HandleAnonymousTypesAgainstTuples()
+        {
+            Check.That((1, 2)).IsEqualTo(new {Item1 = 1, Item2 = 2});
         }
     }
 }

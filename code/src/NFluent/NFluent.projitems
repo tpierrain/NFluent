@@ -27,6 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DifferenceDetails.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DifferenceFinders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExceptionConstructor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExpressionHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\InconclusiveExceptionReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ISelfDescriptiveValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\TypeEnumerationValue.cs" />
@@ -103,7 +104,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)INegateableCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)INegated.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)INullableOrNumberCheckLink.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IStructCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IWithValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\CheckContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\Checker.cs" />

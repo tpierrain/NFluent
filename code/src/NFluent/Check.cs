@@ -18,7 +18,7 @@ namespace NFluent
 
     using System;
     using Extensibility;
-#if !DOTNET_35 && !DOTNET_40
+#if !DOTNET_35
     using System.Threading.Tasks;
 #endif
     using Kernel;
@@ -45,7 +45,7 @@ namespace NFluent
             return new FluentCheck<T>(value);
         }
 
-#if !DOTNET_35 && !DOTNET_40
+#if !DOTNET_35
         /// <summary>
         /// Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given async code (returning Task).
         /// </summary>

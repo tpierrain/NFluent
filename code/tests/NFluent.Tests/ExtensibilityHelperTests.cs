@@ -74,7 +74,7 @@ namespace NFluent.Tests
             ).IsAFailingCheckWithMessage("", 
                 "Line 0 is different from what is expected", 
                 "Act:oups", 
-                "Exp:\"oupsla\"", 
+                "Exp:oupsla", 
                 "The checked fluent check's raised exception's error message:", 
                 "\t{\"oups\"} (1 item)", 
                 "The expected fluent check's raised exception's error message:", 
@@ -97,7 +97,7 @@ namespace NFluent.Tests
                 "The checked fluent check's raised exception's error message:", 
                 "\t{\"oups\", \"and more\"} (2 items)", 
                 "The expected fluent check's raised exception's error message:", 
-                "\t{matches: [pous]+} (1 item)");
+                "\t{\"matches: [pous]+\"} (1 item)");
             Check.ThatCode(() =>
                 // check with a error message that does not match regex
                 Check.ThatCode(() => throw ExceptionHelper.BuildException("oupsla"))
@@ -109,7 +109,7 @@ namespace NFluent.Tests
                 "The checked fluent check's raised exception's error message:", 
                 "\t{\"oupsla\"} (1 item)", 
                 "The expected fluent check's raised exception's error message:", 
-                "\t{matches: [pous]+$} (1 item)");
+                "\t{\"matches: [pous]+$\"} (1 item)");
 
             Check.ThatCode(() =>
                 // check with a error message that is too long
@@ -150,7 +150,7 @@ namespace NFluent.Tests
             ).IsAFailingCheckWithMessage("", 
                 "Line 0 is different from what is expected", 
                 "Act:oups", 
-                "Exp:\"oupsla\"", 
+                "Exp:oupsla", 
                 "The checked fluent assumption's raised exception's error message:", 
                 "\t{\"oups\"} (1 item)", 
                 "The expected fluent assumption's raised exception's error message:", 
@@ -173,7 +173,7 @@ namespace NFluent.Tests
                 "The checked fluent assumption's raised exception's error message:", 
                 "\t{\"oups\", \"and more\"} (2 items)", 
                 "The expected fluent assumption's raised exception's error message:", 
-                "\t{matches: [pous]+} (1 item)");
+                "\t{\"matches: [pous]+\"} (1 item)");
             Check.ThatCode(() =>
                 // check with a error message that does not match regex
                 Check.ThatCode(() => throw ExceptionHelper.BuildInconclusiveException("oupsla"))
@@ -185,7 +185,7 @@ namespace NFluent.Tests
                 "The checked fluent assumption's raised exception's error message:", 
                 "\t{\"oupsla\"} (1 item)", 
                 "The expected fluent assumption's raised exception's error message:", 
-                "\t{matches: [pous]+$} (1 item)");
+                "\t{\"matches: [pous]+$\"} (1 item)");
 
             Check.ThatCode(() =>
                 // check with a error message that is too long

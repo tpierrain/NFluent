@@ -120,39 +120,6 @@ namespace NFluent.Kernel
             return new CheckLink<TC>(this.fluentCheckForExtensibility);
         }
 
-        // ncrunch: no coverage start
-        // coverage disabled as this code cannot be executed and is to be removed at a later stage
-        /// <inheritdoc />
-        [System.Obsolete("Use ExtensibilityHelper.BuildCheckLinkWhich instead")]
-        public ICheckLinkWhich<TC, TSub> BuildLinkWhich<TSub>(TSub itemChecker)
-            where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
-        {
-            return new CheckLinkWhich<TC, TSub>(this.fluentCheckForExtensibility, itemChecker);
-        }
-
-        /// <summary>
-        /// Execute the check provided as an happy-path lambda.
-        /// </summary>
-        /// <typeparam name="TSub">Checker type for the sub item.</typeparam>
-        /// <param name="checkLambdaAction">The happy-path action (vs. the one for negated version which has not to be specified). 
-        ///     This lambda should simply return if everything is ok, or throws a 
-        ///     <see cref="FluentCheckException"/> otherwise.</param>
-        /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
-        /// <returns>The <see cref="BuildLinkWhich{TSub}"/> to use for linking.</returns>
-        [System.Obsolete("Use ExtensibilityHelper instead")]
-        public ICheckLinkWhich<TC, TSub> ExecuteCheckAndProvideSubItem<TSub>( 
-#if DOTNET_35
-System.
-#endif
-            Func<TSub> checkLambdaAction, string negatedExceptionMessage)
-            where TSub : class, IMustImplementIForkableCheckWithoutDisplayingItsMethodsWithinIntelliSense
-        {
-            TSub checker = null;
-            this.ExecuteNotChainableCheck(() => checker = checkLambdaAction(), negatedExceptionMessage);
-            return this.BuildLinkWhich(checker);
-        }
-
-        // ncrunch: no coverage end
 
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).

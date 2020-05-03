@@ -19,7 +19,7 @@ namespace NFluent
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-#if !DOTNET_35 && !DOTNET_40
+#if !DOTNET_35
     using System.Threading.Tasks;
 #endif
 
@@ -85,7 +85,7 @@ namespace NFluent
             CaptureTrace(() =>
             {
                 result.Result = function();
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+#if !DOTNET_35
                 if (!(result.Result is Task ta))
                 {
                     return;
@@ -110,7 +110,7 @@ namespace NFluent
             return result;
         }
 
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+#if !DOTNET_35
         private static bool FunctionIsAsync<TU>(Func<TU> function)
         {
 #if NETSTANDARD1_3
@@ -144,7 +144,7 @@ namespace NFluent
             }
         }
 
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+#if !DOTNET_35
         internal static RunTrace GetAsyncTrace(Func<Task> awaitableMethod)
         {
             var result = new RunTrace();

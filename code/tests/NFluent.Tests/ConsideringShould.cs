@@ -86,11 +86,11 @@ namespace NFluent.Tests
                 Check.That(sut).Considering().Properties.IsNoInstanceOfType(expected.GetType());
             }).IsAFailingCheckWithMessage(
                     "", 
-                    "The checked value is an instance of [<>f__AnonymousType2<int>] whereas it must not.", 
+                    Criteria.FromRegEx("The checked value is an instance of \\[<>f__AnonymousType\\d<int>\\] whereas it must not\\."), 
                     "The checked value:", 
                     "\t[{ TheProperty = 42 }] of type: [NFluent.Helpers.ReflectionWrapper]", 
                     "The expected value: different from", 
-                "\tan instance of [<>f__AnonymousType2<int>]");
+                    Criteria.FromRegEx("\tan instance of \\[<>f__AnonymousType\\d<int>\\]"));
         }
 
         [Test]

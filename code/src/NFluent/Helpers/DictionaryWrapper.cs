@@ -60,6 +60,7 @@ namespace NFluent.Helpers
 
         public IEnumerable<TV> Values => this.source.Values.Cast<TV>();
     }
+
     internal class DictionaryWrapper<TK, TV> 
         : IReadOnlyDictionary<TK, TV>
     {
@@ -95,7 +96,7 @@ namespace NFluent.Helpers
             }
             else
             {
-                value = default(TV);
+                value = default;
             }
             return found;
         }
@@ -199,7 +200,7 @@ namespace NFluent.Helpers
             return this.GetEnumerator();
         }
 
-        public int Count => (int) this.source.Count();
+        public int Count => this.source.Count();
 
         public bool ContainsKey(TK key)
         {
@@ -215,7 +216,7 @@ namespace NFluent.Helpers
             }
             catch (InvalidOperationException)
             {
-                value = default(TV);
+                value = default;
                 return false;
             }
         }

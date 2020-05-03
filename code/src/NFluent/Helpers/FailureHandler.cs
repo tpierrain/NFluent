@@ -47,12 +47,6 @@ namespace NFluent.Helpers
                     var expectedLines = (lines.Length == 1) ? lines[0].SplitAsLines() : lines;
                     for (var i = 0; i < expectedLines.Length; i++)
                     {
-                        if (expectedLines[i].ToString() == "\"*\"")
-                        {
-                            //any line
-                            continue;
-                        }
-
                         if (messageLines.Count <= i)
                         {
                             test.Fail($"Lines are missing in the error message starting at #{i}");

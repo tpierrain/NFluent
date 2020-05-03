@@ -19,7 +19,7 @@ namespace NFluent.Tests
     using System.Collections;
     using System.Collections.Generic;
     using Helpers;
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+#if !DOTNET_35
     using System.Collections.ObjectModel;
 #endif
     using NFluent.Helpers;
@@ -193,7 +193,7 @@ namespace NFluent.Tests
                 "\t[\"missing\"]");
         }
 
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+#if !DOTNET_35
         // GH #222
         [Test]
         public void
@@ -433,7 +433,7 @@ namespace NFluent.Tests
             var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
             Check.That(dict).IsEquivalentTo(expected);
             Check.That((IDictionary<string, string>) null).IsEquivalentTo((IDictionary<string, string>)null);
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+#if !DOTNET_35
             IReadOnlyDictionary<string, string> value = new RoDico(SimpleDico);
             Check.That(value).IsEqualTo(SimpleDico);
             Check.That(value).IsEquivalentTo(SimpleDico);

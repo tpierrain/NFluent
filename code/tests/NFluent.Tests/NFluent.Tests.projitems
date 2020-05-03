@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CustomDico.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CustomEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageShould.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NFluentEqualityShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NullableChecksShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NUnitTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StructRelatedTests.cs" />

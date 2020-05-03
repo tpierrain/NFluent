@@ -20,8 +20,6 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 #if DOTNET_35
 [assembly: AssemblyTitle("NFluent for .NET 3.5")]
-#elif DOTNET_40
-[assembly: AssemblyTitle("NFluent for .NET 4.0")]
 #elif DOTNET_45
 [assembly: AssemblyTitle("NFluent for .NET 4.5")]
 #elif !NETSTANDARD1_3 && !NETSTANDARD2_0 && !NETCOREAPP2_1

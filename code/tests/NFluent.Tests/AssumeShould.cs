@@ -74,7 +74,7 @@
                     "\tan instance of [NUnit.Framework.InconclusiveException]");
         }
 #endif
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_40 && !DOTNET_35
+#if!DOTNET_35
         [Test]
         public void ProvideIgnoreForDynamic()
         {

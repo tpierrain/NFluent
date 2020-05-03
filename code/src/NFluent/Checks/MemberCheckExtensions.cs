@@ -17,6 +17,7 @@ namespace NFluent
 {
     using System;
     using System.Linq.Expressions;
+    using Helpers;
     using Kernel;
 
     /// <summary>
@@ -34,14 +35,9 @@ namespace NFluent
         /// <returns>a CheckMember instance offering checks on the member</returns>
         public static CheckMember<T, TM> WhichMember<T, TM>(this ICheck<T> check, Expression<Func<T,TM>> extractor)
         {
-            string name = ExtractName(extractor);
+            var name = ExpressionHelper.GetPropertyNameFromExpression(extractor);
             // scan the extractor to get the message
-            return new CheckMember<T, TM>(check, extractor.Compile().Invoke(((FluentSut<T>) check).Value));
-        }
-
-        private static string ExtractName<T, TM>(Expression<Func<T, TM>> extractor)
-        {
-            return extractor.Body.ToString();
+            return new CheckMember<T, TM>(check, extractor.Compile().Invoke(((FluentSut<T>) check).Value), name);
         }
     }
 }

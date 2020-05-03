@@ -71,8 +71,7 @@ namespace NFluent.Tests
             .IsAFailingCheckWithMessage("",
                     "The checked code raised an exception, whereas it must not.",
                     "The checked code's raised exception:", 
-                    "*"
-                    );
+                    Criteria.FromRegEx(".*"));
         }
 
         [Test]
@@ -106,7 +105,7 @@ namespace NFluent.Tests
             .IsAFailingCheckWithMessage("",
                     "The checked code's raised exception is of a different type than expected.",
                     "The checked code's raised exception:",
-                    "*",
+                    Criteria.FromRegEx(".*"),
                     "The expected code's raised exception:", 
                     "\tan instance of [System.InvalidOperationException]");
         }

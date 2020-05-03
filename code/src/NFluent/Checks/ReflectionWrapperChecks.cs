@@ -15,12 +15,13 @@
 
 namespace NFluent
 {
+    using System.Linq;
     using Extensibility;
     using Helpers;
     using Kernel;
 
     /// <summary>
-    ///     Hosts reflection-based checks <see cref="ObjectFieldsCheckExtensions.Considering{T}" />
+    /// Hosts reflection-based checks <see cref="ObjectFieldsCheckExtensions.Considering{T}" />
     /// </summary>
     public static class ReflectionWrapperChecks
     {
@@ -41,12 +42,9 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .Analyze((sut, test) =>
                 {
-                    foreach (var match in sut.MemberMatches(expectedValue))
+                    foreach (var match in sut.MemberMatches(expectedValue).Where(match => match.DoValuesMatches != mustMatch))
                     {
-                        if (match.DoValuesMatches != mustMatch)
-                        {
-                            match.Check(test);
-                        }
+                        match.Check(test);
                     }
                 }).OnNegate("The {0} is equal to one of {1} whereas it should not.")
                 .EndCheck();

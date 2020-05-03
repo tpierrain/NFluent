@@ -80,16 +80,5 @@
                 .Throws<ArgumentException>();
         }
 
-        [Test]
-        public void SupportExecuteAndProvideSubItem()
-        {
-            var check = Check.That(2);
-
-            Check.That(
-                ExtensibilityHelper.ExtractChecker(check)
-                    .ExecuteCheckAndProvideSubItem(() => Check.That(2), "on negation")).
-                InheritsFrom<ICheckLinkWhich<ICheck<int>, ICheck<int>>>();
-
-        }
     }
 }

@@ -121,12 +121,7 @@ namespace NFluent.Kernel
         {
             this.IsInstanceOfType(typeof(TU));
 
-            // TODO: restore pattern matching version when appveyor is upgraded
-            if (Value is TU)
-            {
-                return ExtensibilityHelper.BuildCheckLinkWhich(this, (TU) (object) Value, SutName);
-            }
-            return ExtensibilityHelper.BuildCheckLinkWhich(this, default(TU), SutName);
+            return ExtensibilityHelper.BuildCheckLinkWhich(this,  Value is TU ? (TU) (object) Value : default(TU), SutName);
         }
 
         /// <inheritdoc />

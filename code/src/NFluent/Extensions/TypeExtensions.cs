@@ -1,63 +1,94 @@
-﻿namespace NFluent.Extensions
+﻿// --------------------------------------------------------------------------------------------------------------------
+//  <copyright file="TypeExtensions.cs" company="NFluent">
+//   Copyright 2020 by Cyrille DUPUYDAUBY
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace NFluent.Extensions
 {
     using System;
     using System.Collections;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
 
     internal static class TypeExtensions
     {
-        private const BindingFlags BindingFlagsAll = BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic;
+        private const BindingFlags BindingFlagsAll =
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
-        private static readonly Type[] SignedTypesOrder = { typeof(sbyte), typeof(short), typeof(int), typeof(long), typeof(float), typeof(double), typeof(decimal)};
-        private static readonly Type[] UnsignedTypesOrder = { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), 
-            typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal)};
+        private static readonly Type[] SignedTypesOrder =
+            {typeof(sbyte), typeof(short), typeof(int), typeof(long), typeof(float), typeof(double), typeof(decimal)};
+
+        private static readonly Type[] UnsignedTypesOrder =
+        {
+            typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint),
+            typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal)
+        };
 
         /// <summary>
-        /// Checks if a type has at least one attribute of a give type.
+        ///     Checks if a type has at least one attribute of a give type.
         /// </summary>
         /// <param name="type">Type to check</param>
         /// <param name="attribute">Attribute type to check for.</param>
-        /// <returns>True if <paramref name="type"/> cref="type"/> has a least one attribute of type <paramref name="attribute"/>, false otherwise.</returns>
+        /// <returns>
+        ///     True if <paramref name="type" /> cref="type"/> has a least one attribute of type <paramref name="attribute" />
+        ///     , false otherwise.
+        /// </returns>
         public static bool TypeHasAttribute(this Type type, Type attribute)
         {
             return type.GetTypeInfo().GetCustomAttributes(false)
                 .Any(customAttribute => customAttribute.GetType() == attribute);
         }
 
+
+        public static bool TypeIsAnonymous(this Type type)
+        {
+            return type.TypeHasAttribute(typeof(CompilerGeneratedAttribute)) && type.Name.Contains("Anonymous");
+        }
         /// <summary>
-        /// Checks if a type possesses at least a field or a property.
+        ///     Checks if a type possesses at least a field or a property.
         /// </summary>
         /// <param name="type">Type to be checked</param>
         /// <returns>true if the type as at least one field or property</returns>
         public static bool TypeHasMember(this Type type)
         {
-            return !type.GetTypeInfo().IsEnum && (type.GetFields(BindingFlagsAll).Any() || type.GetProperties(BindingFlagsAll).Any());
+            return !type.GetTypeInfo().IsEnum &&
+                   (type.GetFields(BindingFlagsAll).Any() || type.GetProperties(BindingFlagsAll).Any());
         }
 
         /// <summary>
-        /// Returns true if the provided type implements IEnumerable, disregarding well known enumeration (string).
+        ///     Returns true if the provided type implements IEnumerable, disregarding well known enumeration (string).
         /// </summary>
         /// <param name="type">type to assess</param>
         /// <param name="evenWellKnown">treat well known enumerations (string) as enumeration as well</param>
-        /// <returns>true is <see paramref="type"/> should treated as an enumeration.</returns>
+        /// <returns>true is <see paramref="type" /> should treated as an enumeration.</returns>
         public static bool IsAnEnumeration(this Type type, bool evenWellKnown)
         {
             return type.GetInterfaces().Contains(typeof(IEnumerable)) && (evenWellKnown || type != typeof(string));
         }
 
         /// <summary>
-        /// Returns true if the type is a generic type
+        ///     Returns true if the type is a generic type
         /// </summary>
         /// <param name="type">type to asses</param>
-        /// <returns>true if <see paramref="type"/> is a generic type.</returns>
+        /// <returns>true if <see paramref="type" /> is a generic type.</returns>
         public static bool IsGenericType(this Type type)
         {
             return type.GetTypeInfo().IsGenericType;
         }
 
         /// <summary>
-        /// Checks if a type is numerical (i.e: int, double, short, uint...).
+        ///     Checks if a type is numerical (i.e: int, double, short, uint...).
         /// </summary>
         /// <param name="type">Type to evaluate.</param>
         /// <returns>true if the type is a numerical type.</returns>
@@ -67,7 +98,7 @@
         }
 
         /// <summary>
-        /// Finds an implicit conversion that works for both types.
+        ///     Finds an implicit conversion that works for both types.
         /// </summary>
         /// <param name="type">First type</param>
         /// <param name="otherType">Other types</param>
@@ -88,10 +119,12 @@
             {
                 otherIndex++;
             }
+
             if (!typeIsSigned && otherIsSigned)
             {
                 index++;
             }
+
             // return the largest type of both
             return UnsignedTypesOrder[Math.Max(index, otherIndex)];
         }

@@ -16,6 +16,7 @@
 namespace NFluent
 {
     using System;
+    using Extensibility;
     using Kernel;
 
     /// <summary>
@@ -23,21 +24,39 @@ namespace NFluent
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TM"></typeparam>
-    public class CheckMember<T, TM>
+    public class CheckMember<T, TM> : IErrorReporter
     {
         private readonly ICheck<T> originalCheck;
         private readonly TM value;
+        private readonly string name;
+        private string errors;
 
-        internal CheckMember(ICheck<T> originalCheck, TM value)
+        internal CheckMember(ICheck<T> originalCheck, TM value, string name)
         {
             this.originalCheck = originalCheck;
             this.value = value;
+            this.name = name;
         }
 
+        /// <summary>
+        /// Allows to perform arbitrary checks on any member of an object.
+        /// </summary>
+        /// <param name="func">member extractor method</param>
+        /// <returns>a check object for the extracted member.</returns>
         public CheckMember<T, TM> Verifies(Action<ICheck<TM>> func)
         {
-            func(new FluentCheck<TM>(this.value));
+            func(new FluentCheck<TM>(this.value, this).As(name));
+            if (!string.IsNullOrEmpty(this.errors))
+            {
+                var message = "The {checked} fails the check because:"+this.errors;
+                ExtensibilityHelper.ExtractChecker(this.originalCheck).BeginCheck().CantBeNegated("Verifies").Fail(message, MessageOption.NoCheckedBlock).EndCheck();
+            }
             return this;
+        }
+
+        void IErrorReporter.ReportError(string message)
+        {
+            this.errors = message;
         }
     }
 }

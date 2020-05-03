@@ -1,5 +1,7 @@
 # V 3.0.0
 ## Major changes
+* You can provide anonymous types and tuples when using IsEqualTo against any type. The check will be made against all
+_sut_'s propertie.
 * Dropped support for Net Framework 2.0, 3.0, and 4.0. NFluent supports Net 3.5 SP1, Net. 4.5.2 +, Net Standard 1.3+ and Net Standard 2.0+.
  If you can't upgrade your framework version to a supported one, please use NFluent 2.7. 
 * `Check.ThatEnum`has been removed. You must use `Check.That` instead.
@@ -20,13 +22,15 @@ as workaround advices.
 * Drop support for Net 2.0 and 3.0: keep using NFluent V2.x versions
 * `ILambdaCheck`: the definition was kept to prevent breaking build, but it was no longer used. If this is a
 problem for you, open an issue
-* **IsPositive** (available for numbers): please use **IsStrictlyPositive** instead.
-* **IsNegative** (available for numbers): please use **IsStrictlyNegative** instead.
-* **IsLessThan** (available for numbers): please use **IsStrictlyNegative** instead.
-* **IsGreaterThan** (available for numbers): please use **IsStrictlyGreaterThan** instead.
-* **IsSameReferenceThan**: please use **IsSameReferenceAs** instead.
-* **HasFieldsEqualToThose**: please use **HasFieldsWithSameValues** instead.
-* **HasFieldsNotEqualToThose**: please use **HasNotFieldsWithSameValues** instead.
-* **IsAFaillingCheckWithMessage**: please use **IsAFailingCheckWithMessage** instead.
-* **IsAFaillingCheck**: please use **IsAFailingCheck** instead.
-* **Properties** (available for enumeration): please use **Extracting** instead.
+* `IsPositive` (available for numbers): please use `IsStrictlyPositive` instead.
+* `IsNegative` (available for numbers): please use `IsStrictlyNegative` instead.
+* `IsLessThan` (available for numbers): please use `IsStrictlyNegative` instead.
+* `IsGreaterThan` (available for numbers): please use `IsStrictlyGreaterThan` instead.
+* `IsSameReferenceThan`: please use `IsSameReferenceAs` instead.
+* `HasFieldsEqualToThose`: please use `HasFieldsWithSameValues` instead.
+* `HasFieldsNotEqualToThose`: please use `HasNotFieldsWithSameValues` instead.
+* `IsAFaillingCheckWithMessage`: please use `IsAFailingCheckWithMessage` instead.
+* `IsAFaillingCheck`: please use `IsAFailingCheck` instead.
+* `Properties` (available for enumeration): please use `Extracting` instead.
+* `Checker.BuildLinkWhich` (used for custom extension): please use `ExtensibilityHelper.BuildCheckLinkWhich` instead.
+* `Checker.ExecuteCheckAndProvideSubItem` (used for custom extension): please 'ExtensibilityHelper' static class methods instead.

@@ -112,7 +112,7 @@ namespace NFluent
 
             public override string ToString()
             {
-                return '"'+this.reference+'"';
+                return this.reference;
             }
 
             public ValueCriteria[] SplitAsLines()

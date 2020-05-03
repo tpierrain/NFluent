@@ -62,6 +62,21 @@ namespace NFluent.Helpers
             return new DifferenceDetails(checkedName, checkedValue, expectedValue, 0, DifferenceMode.FoundInsteadOf);
         }
 
+        public static DifferenceDetails FromMatch(MemberMatch match)
+        {
+            if (!match.ActualFieldFound)
+            {
+                return WasNotFound(match.Expected.MemberLabel, match.Expected, 0);
+            }
+
+            if (!match.ExpectedFieldFound)
+            {
+                return WasNotExpected(match.Actual.MemberLabel, match.Actual, 0);
+            }
+
+            return DoesNotHaveExpectedValue(match.Expected.MemberLabel, match.Actual.Value, match.Expected.Value, 0);
+        }
+        
         public string FirstName { get; internal set; }
         public object FirstValue { get; internal set; }
         public object SecondValue { get; internal set; }
@@ -113,5 +128,6 @@ namespace NFluent.Helpers
             Moved,
             FoundInsteadOf
         };
+
     }
 }

@@ -86,7 +86,7 @@ namespace NFluent.Tests
             }).IsAFailingCheckWithMessage("This should work.",
                 "The checked code raised an exception, whereas it must not.",
                 "The checked code's raised exception:", 
-                "*");
+                Criteria.FromRegEx(".*"));
         }
 
         [Test]
