@@ -131,6 +131,8 @@ Global
 		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{2b7f0e07-9b42-4bd2-8e30-f90fd78faf1f}*SharedItemsImports = 13
 		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{308a72a3-462b-4c4e-abae-9d9d49d251e7}*SharedItemsImports = 4
 		src\NFluent.Generated\NFluent.Generated.projitems*{37fdae31-560d-40b8-8fa7-7def8a53b370}*SharedItemsImports = 13
+		src\NFluent.Generated\NFluent.Generated.projitems*{3a474510-f384-41ce-9270-539b1e51da7e}*SharedItemsImports = 4
+		src\NFluent\NFluent.projitems*{3a474510-f384-41ce-9270-539b1e51da7e}*SharedItemsImports = 4
 		tests\NFluent.Tests.Meta\NFluent.Tests.Meta.projitems*{61d00587-a426-41de-970b-8cdf5c7a0e67}*SharedItemsImports = 13
 		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{6954e791-41c2-4d1f-b6e6-ba77c2784311}*SharedItemsImports = 5
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{6b88c45a-d45e-40fb-8635-d0e0ef0454e9}*SharedItemsImports = 4
@@ -143,6 +145,8 @@ Global
 		tests\NFluent.Tests.Meta\NFluent.Tests.Meta.projitems*{c2eec8dd-f390-4ecb-a169-25930896e1c1}*SharedItemsImports = 4
 		src\NFluent.Generated\NFluent.Generated.projitems*{c90111a0-3ab2-40ed-b665-c0ddb8deb26e}*SharedItemsImports = 5
 		src\NFluent\NFluent.projitems*{c90111a0-3ab2-40ed-b665-c0ddb8deb26e}*SharedItemsImports = 5
+		src\NFluent.Generated\NFluent.Generated.projitems*{c9be0166-0bf9-4964-8d46-4a2c89d2b02b}*SharedItemsImports = 5
+		src\NFluent\NFluent.projitems*{c9be0166-0bf9-4964-8d46-4a2c89d2b02b}*SharedItemsImports = 5
 		src\NFluent.Generated\NFluent.Generated.projitems*{cf1d857f-658f-4e1f-8487-cd751f189e6a}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{cf1d857f-658f-4e1f-8487-cd751f189e6a}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{dbfa1137-b129-496a-9201-149f5178747e}*SharedItemsImports = 13

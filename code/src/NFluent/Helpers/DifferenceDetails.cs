@@ -71,7 +71,7 @@ namespace NFluent.Helpers
 
             if (!match.ExpectedFieldFound)
             {
-                return WasNotExpected(match.Actual.MemberLabel, match.Actual, 0);
+                return WasNotExpected(match.Expected.MemberLabel, match.Expected, 0);
             }
 
             return DoesNotHaveExpectedValue(match.Expected.MemberLabel, match.Actual.Value, match.Expected.Value, 0);

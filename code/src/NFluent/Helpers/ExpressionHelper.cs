@@ -15,7 +15,9 @@
 
 namespace NFluent.Helpers
 {
+#if !DOTNET_35
     using System;
+#endif
     using System.Collections.Generic;
     using System.Linq.Expressions;
 
@@ -36,7 +38,7 @@ namespace NFluent.Helpers
                 nameBuilder.Add(scanner.ToString());
             }
             nameBuilder.Reverse();
-            return String.Join(".", nameBuilder.ToArray());
+            return string.Join(".", nameBuilder.ToArray());
         }
     }
 }

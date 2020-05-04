@@ -66,7 +66,10 @@ namespace NFluent.Helpers
 
             if (type.TypeIsAnonymous())
             {
-                var criteria = new ClassMemberCriteria(BindingFlags.GetProperty|BindingFlags.Public|BindingFlags.Instance);
+                var criteria = new ClassMemberCriteria(BindingFlags.Instance);
+                criteria.SetPublic();
+                criteria.CaptureProperties();
+                criteria.CaptureFields();
                 // use field based comparison
                 var wrapper = ReflectionWrapper.BuildFromInstance(type, expected, criteria);
                 var actualWrapped = ReflectionWrapper.BuildFromInstance(actual.GetType(), actual, criteria);
