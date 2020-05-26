@@ -15,6 +15,7 @@
 
 namespace NFluent.Tests
 {
+    using Helpers;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -30,14 +31,17 @@ namespace NFluent.Tests
         [Test]
         public void ProvideErrorMessageWithIsCloseTo()
         {
-            Check.ThatCode(() =>
-                Check.That(1.02m).IsCloseTo(1m, .01m)).IsAFailingCheckWithMessage(
-            "", 
-            "The checked value is outside the expected value range.", 
-            "The checked value:", 
-            "\t[1,02]", 
-            "The expected value:", 
-            "\t[1 (+/- 0,01)]");
+            using (new CultureSession("en-US"))
+            {
+                Check.ThatCode(() =>
+                    Check.That(1.02m).IsCloseTo(1m, .01m)).IsAFailingCheckWithMessage(
+                    "",
+                    "The checked value is outside the expected value range.",
+                    "The checked value:",
+                    "\t[1.02]",
+                    "The expected value:",
+                    "\t[1 (+/- 0.01)]");
+            }
         }
     }
 }

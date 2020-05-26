@@ -56,35 +56,50 @@ namespace NFluent.Helpers
             // we silently convert numerical value
             if (commonType != null)
             {
-                var convertedActual = Convert.ChangeType(actual, commonType);
-                var convertedExpected = Convert.ChangeType(expected, commonType);
-                if (convertedExpected.Equals(convertedActual))
-                {
-                    return result;
-                }
+                return NumericalValueDifference(actual, firstName, expected, refIndex, commonType, result);
             }
 
             if (type.TypeIsAnonymous())
             {
-                var criteria = new ClassMemberCriteria(BindingFlags.Instance);
-                criteria.SetPublic();
-                criteria.CaptureProperties();
-                criteria.CaptureFields();
-                // use field based comparison
-                var wrapper = ReflectionWrapper.BuildFromInstance(type, expected, criteria);
-                var actualWrapped = ReflectionWrapper.BuildFromInstance(actual.GetType(), actual, criteria);
-                foreach (var match in actualWrapped.MemberMatches(wrapper).Where(match => !match.DoValuesMatches))
-                {
-                    result.Add(DifferenceDetails.FromMatch(match));
-                }
-
-                return result;
+                return AnonymousTypeDifference(actual, expected, type, result);
             }
 
             // handle enumeration
             if (actual.IsAnEnumeration(false) && expected.IsAnEnumeration(false))
             {
                 return ValueDifferenceEnumerable(actual as IEnumerable, firstName, expected as IEnumerable, firstSeen);
+            }
+
+            result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex));
+            return result;
+        }
+
+        private static AggregatedDifference AnonymousTypeDifference<TA, TE>(TA actual, TE expected, Type type,
+            AggregatedDifference result)
+        {
+            var criteria = new ClassMemberCriteria(BindingFlags.Instance);
+            criteria.SetPublic();
+            criteria.CaptureProperties();
+            criteria.CaptureFields();
+            // use field based comparison
+            var wrapper = ReflectionWrapper.BuildFromInstance(type, expected, criteria);
+            var actualWrapped = ReflectionWrapper.BuildFromInstance(actual.GetType(), actual, criteria);
+            foreach (var match in actualWrapped.MemberMatches(wrapper).Where(match => !match.DoValuesMatches))
+            {
+                result.Add(DifferenceDetails.FromMatch(match));
+            }
+
+            return result;
+        }
+
+        private static AggregatedDifference NumericalValueDifference<TA, TE>(TA actual, string firstName, TE expected,
+            int refIndex, Type commonType, AggregatedDifference result)
+        {
+            var convertedActual = Convert.ChangeType(actual, commonType);
+            var convertedExpected = Convert.ChangeType(expected, commonType);
+            if (convertedExpected.Equals(convertedActual))
+            {
+                return result;
             }
 
             result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex));

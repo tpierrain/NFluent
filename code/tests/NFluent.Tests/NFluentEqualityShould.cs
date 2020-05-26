@@ -21,6 +21,7 @@ namespace NFluent.Tests
     [TestFixture]
     public class NFluentEqualityShould
     {
+        #if !DOTNET_35
         [Test]
         public void HandleAnonymousTuples()
         {
@@ -28,6 +29,13 @@ namespace NFluent.Tests
 
             Check.That(x).IsEqualTo((1, 2));
         }
+
+        [Test]
+        public void HandleAnonymousTypesAgainstTuples()
+        {
+            Check.That((1, 2)).IsEqualTo(new {Item1 = 1, Item2 = 2});
+        }
+        #endif
 
         [Test]
         public void HandleAnonymousTypesWhenEquals()
@@ -41,12 +49,6 @@ namespace NFluent.Tests
             Check.ThatCode(()=>
             Check.That(new {x = 1, y = 2}).IsEqualTo(new {x = 1, y = 3}))
                 .IsAFailingCheck();
-        }
-
-        [Test]
-        public void HandleAnonymousTypesAgainstTuples()
-        {
-            Check.That((1, 2)).IsEqualTo(new {Item1 = 1, Item2 = 2});
         }
     }
 }

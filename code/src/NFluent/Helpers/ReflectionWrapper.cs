@@ -19,10 +19,10 @@ namespace NFluent.Helpers
     using Kernel;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
-    using static System.String;
 
     /// <summary>
     ///     This class wraps instances for reflection based checks (in NFluent).
@@ -63,13 +63,13 @@ namespace NFluent.Helpers
 
         internal string NameInSource { get; }
 
-        internal string MemberLongName => IsNullOrEmpty(this.prefix)
+        internal string MemberLongName => string.IsNullOrEmpty(this.prefix)
             ? this.NameInSource
             : $"{this.prefix}.{this.NameInSource}";
 
         internal ClassMemberCriteria Criteria { get; set; }
 
-        internal string MemberLabel => Format(this.labelPattern, this.MemberLongName);
+        internal string MemberLabel => string.Format(this.labelPattern, this.MemberLongName);
 
         internal object Value { get; }
 
@@ -84,12 +84,12 @@ namespace NFluent.Helpers
                 return value as ReflectionWrapper;
             }
 
-            return new ReflectionWrapper(Empty, Empty, Empty, type, value, criteria);
+            return new ReflectionWrapper(string.Empty, string.Empty, string.Empty, type, value, criteria);
         }
 
         internal static ReflectionWrapper BuildFromType(Type type, ClassMemberCriteria criteria)
         {
-            return new ReflectionWrapper(Empty, Empty, Empty, type, null, criteria);
+            return new ReflectionWrapper(string.Empty, string.Empty, string.Empty, type, null, criteria);
         }
 
         internal static ReflectionWrapper BuildFromField(string prefix, string name, Type type, object value,
@@ -238,16 +238,7 @@ namespace NFluent.Helpers
 
             // scan
             var finalResult = new List<ReflectionWrapper>(result.Count);
-            foreach (var member in result)
-            {
-                if (this.Criteria.IsNameExcluded(member.NameInSource) ||
-                    this.Criteria.IsNameExcluded(member.MemberLongName))
-                {
-                    continue;
-                }
-
-                finalResult.Add(member);
-            }
+            finalResult.AddRange(result.Where(member => !this.Criteria.IsNameExcluded(member.NameInSource) && !this.Criteria.IsNameExcluded(member.MemberLongName)));
 
             return finalResult;
         }
@@ -268,7 +259,7 @@ namespace NFluent.Helpers
                 memberDico[info.Name] = extended;
                 result.Add(extended);
             }
-
+            
             return result;
         }
 
@@ -302,7 +293,7 @@ namespace NFluent.Helpers
             var result = new List<ReflectionWrapper>();
             var fieldType = array.GetType().GetElementType();
             var name = this.MemberLongName;
-            if (IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name))
             {
                 name = "this";
             }
@@ -310,7 +301,7 @@ namespace NFluent.Helpers
             {
                 for (var i = array.GetLowerBound(0); i <= array.GetUpperBound(0); i++)
                 {
-                    var expectedEntryDescription = BuildFromField(Empty, $"{name}[{i}]", fieldType,
+                    var expectedEntryDescription = BuildFromField(string.Empty, $"{name}[{i}]", fieldType,
                         array.GetValue(i), this.Criteria);
                     result.Add(expectedEntryDescription);
                 }
@@ -332,7 +323,7 @@ namespace NFluent.Helpers
                         temp /= array.SizeOfDimension(j);
                     }
 
-                    var expectedEntryDescription = BuildFromField(Empty, $"{name}{label}", fieldType,
+                    var expectedEntryDescription = BuildFromField(string.Empty, $"{name}{label}", fieldType,
                         array.GetValue(indices), this.Criteria);
                     result.Add(expectedEntryDescription);
                 }
@@ -364,7 +355,7 @@ namespace NFluent.Helpers
                 return true;
             }
 
-            actualFieldName = Empty;
+            actualFieldName = string.Empty;
             return false;
         }
 

@@ -44,30 +44,27 @@ namespace NFluent
                         var expectedWrapper = ReflectionWrapper.BuildFromType(type, reflectionSut.Criteria);
                         expectedWrapper.MapFields(reflectionSut, 1, (expected, actual, depth) =>
                         {
-                            if (actual != null && expected != null)
-                            {
-                                if (actual.ValueType != expected.ValueType) 
-                                {
-                                    if (!actual.ValueType.IsPrimitive() && !expected.ValueType.IsPrimitive())
-                                    {
-                                        return true;
-                                    }
-
-                                    test.CheckSutAttributes(_ => actual.Value, actual.MemberLabel)
-                                        .Fail("The {0} is of a different type than the {1}.")
-                                        .DefineExpectedType(expected.ValueType);
-                                }
-                            }
-                            else if (actual == null)
+                            if (actual == null)
                             {
                                 test.CheckSutAttributes(_ => expectedWrapper.Value, expected.MemberLabel)
                                     .DefineExpectedValue(expected)
                                     .Fail("The {1} is absent from the {0}.", MessageOption.NoCheckedBlock);
                             }
-                            else
+                            else if (expected == null)
                             {
                                 test.CheckSutAttributes(_ => actual, actual.MemberLabel.DoubleCurlyBraces())
                                     .Fail("The {0} is absent from the {1}.");
+                            }
+                            else if (actual.ValueType != expected.ValueType) 
+                            {
+                                if (!actual.ValueType.IsPrimitive() && !expected.ValueType.IsPrimitive())
+                                {
+                                    return true;
+                                }
+
+                                test.CheckSutAttributes(_ => actual.Value, actual.MemberLabel)
+                                    .Fail("The {0} is of a different type than the {1}.")
+                                    .DefineExpectedType(expected.ValueType);
                             }
 
                             return false;
@@ -106,22 +103,21 @@ namespace NFluent
                 .DefinePossibleTypes(types, "anything but", "")
                 .Analyze((sut, test) =>
                 {
-                        foreach (var type in types)
+                    foreach (var type in types)
+                    {
+                        if (sut.GetTypeWithoutThrowingException() == type)
                         {
-                            if (sut.GetTypeWithoutThrowingException() == type)
-                            {
-                                test.Fail(
-                                    $"The {{0}}'s type is [{type.ToStringProperlyFormatted()}] where as it must not.", MessageOption.WithType);
-                                break;
-                            }
+                            test.Fail(
+                                $"The {{0}}'s type is [{type.ToStringProperlyFormatted()}] where as it must not.", MessageOption.WithType);
+                            break;
                         }
+                    }
                 })
                 .OnNegate($"The {{0}}'s type is not one of the expected types.", MessageOption.WithType)
                 .EndCheck();
                 
             return ExtensibilityHelper.BuildCheckLink(context);
         }
-
 
         /// <summary>
         /// Checks that the sut's type is one of several possible types.
