@@ -338,16 +338,20 @@ namespace NFluent
         /// <returns>A check link offering <see cref="ICheckLinkWhich{TMain,TSub}.Which"/> to access the value.</returns>
         public static ICheckLinkWhich<ICheck<T?>, ICheck<T>> HasAValue<T>(this ICheck<T?> check) where T : struct
         {
-            var hasValue = false;
+            T? val = null;
             ExtensibilityHelper.BeginCheck(check).FailWhen(sut =>
                     {
-                        hasValue = sut.HasValue;
-                        return !hasValue;
+                        if (sut.HasValue)
+                        {
+                            val = sut.Value;
+                            return false;
+                        }
+                        return true;
                     },
                     "The {0} has no value, which is unexpected.", 
                     MessageOption.NoCheckedBlock)
                 .OnNegate("The {0} has a value, whereas it must not.").EndCheck();
-            return ExtensibilityHelper.BuildCheckLinkWhich(check, sut => sut ?? default(T), "value", hasValue);
+            return ExtensibilityHelper.BuildCheckLinkWhich(check, val.HasValue ? val.Value : default(T), "value", val.HasValue);
         }
         
         /// <summary>

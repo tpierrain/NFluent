@@ -82,11 +82,12 @@ namespace NFluent.Kernel
         /// <typeparam name="TU">type of the sub value</typeparam>
         /// <param name="extractor">sub value extractor</param>
         /// <param name="nameCallback">naming methods</param>
+        /// <param name="reporter">error reporter for the extracted sut</param>
         /// <returns>A new <see cref="FluentSut{T}"/> instance</returns>
-        public FluentSut<TU> Extract<TU>(Func<T, TU> extractor, Func<FluentSut<T>, string> nameCallback)
+        public FluentSut<TU> Extract<TU>(Func<T, TU> extractor, Func<FluentSut<T>, string> nameCallback, IErrorReporter reporter = null)
         {
             var val = (object)this.Value == null ? default(TU) : extractor(this.Value);
-            var result = new FluentSut<TU>(val, this.Reporter, this.Negated);
+            var result = new FluentSut<TU>(val, reporter ?? this.Reporter, this.Negated);
             result.SutName.SetNameBuilder(() => nameCallback(this));
             result.CustomMessage = this.CustomMessage;
             return result;

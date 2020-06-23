@@ -15,10 +15,11 @@
 
 namespace NFluent
 {
+#if !DOTNET_35
     using System;
+#endif
     using System.Linq.Expressions;
     using Helpers;
-    using Kernel;
 
     /// <summary>
     /// Hosts extension method related to member checking
@@ -37,7 +38,7 @@ namespace NFluent
         {
             var name = ExpressionHelper.GetPropertyNameFromExpression(extractor);
             // scan the extractor to get the message
-            return new CheckMember<T, TM>(check, extractor.Compile().Invoke(((FluentSut<T>) check).Value), name);
+            return new CheckMember<T, TM>(check, extractor, name);
         }
     }
 }

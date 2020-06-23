@@ -15,6 +15,7 @@
 
 namespace NFluent.Tests
 {
+    using System;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -38,11 +39,36 @@ namespace NFluent.Tests
             Check.That(sut).WhichMember(o => o.x).Verifies( m => m.IsEqualTo(1))).
                 IsAFailingCheckWithMessage("", 
                     "The checked value fails the check because:", 
-                    "The checked [x] is different from the expected one.", 
-                    "The checked [x]:", 
+                    "The checked value's x is different from the expected one.", 
+                    "The checked value's x:", 
                     "\t[0]", 
-                    "The expected [x]:", 
+                    "The expected value's x:", 
                     "\t[1]");
+        }
+
+        [Test]
+        [Ignore("WIP")]
+        public void SupportMultipleCriteria()
+        {
+            var sut = new Dummy();
+            Check.ThatCode( ()=>
+                    Check.That(sut).WhichMember(o => o.x).Verifies( m => m.IsEqualTo(1).And.IsStrictlyGreaterThan(0))).
+                IsAFailingCheckWithMessage("", 
+                    "The checked value fails the check because:", 
+                    "The checked value's x is different from the expected one.", 
+                    "The checked value's x:", 
+                    "\t[0]", 
+                    "The expected value's x:", 
+                    "\t[1]");
+        }
+        
+        [Test]
+        public void NotSupportNegationWithVerifies()
+        {
+            var sut = new Dummy();
+            Check.ThatCode(() =>
+                    Check.That(sut).Not.WhichMember(o => o.x).Verifies(m => m.IsEqualTo(1)))
+                .Throws<InvalidOperationException>().WithMessage("Verifies can't be used when negated");
         }
         
         internal class Dummy

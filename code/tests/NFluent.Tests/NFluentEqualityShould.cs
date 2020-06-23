@@ -16,6 +16,7 @@ using NUnit.Framework;
 
 namespace NFluent.Tests
 {
+    using System.Runtime.CompilerServices;
     using NFluent.Helpers;
 
     [TestFixture]
@@ -49,6 +50,46 @@ namespace NFluent.Tests
             Check.ThatCode(()=>
             Check.That(new {x = 1, y = 2}).IsEqualTo(new {x = 1, y = 3}))
                 .IsAFailingCheck();
+        }
+
+        [Test]
+        public void HandleAnonymousTypesWhenMissingProperties()
+        {
+            Check.ThatCode(()=>
+            Check.That(new {x = 1}).IsEqualTo(new {x = 1, y = 3}))
+                .IsAFailingCheck();
+        }
+        
+        [Test]
+        public void HandleAnonymousTypesWhenExtraFields()
+        {
+            Check.ThatCode(()=>
+                    Check.That(new {x = 1, y = 2, Z = 4}).IsEqualTo(new {x = 1, y = 3}))
+                .IsAFailingCheck();
+        }
+
+        [Test]
+        public void HandlePseudoAnonymousTypes()
+        {
+            Check.That(new PseudoAnonymous()).Not.IsEqualTo(new PseudoAnonymous());
+            Check.That(new OtherGenerated()).Not.IsEqualTo(new OtherGenerated());
+        }
+
+        private sealed class PseudoAnonymous
+        {
+            public override bool Equals(object obj)
+            {
+                return false;
+            }
+        }
+
+        [CompilerGenerated]
+        private sealed class OtherGenerated
+        {
+            public override bool Equals(object obj)
+            {
+                return false;
+            }
         }
     }
 }

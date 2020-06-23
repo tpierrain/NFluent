@@ -32,34 +32,19 @@ namespace NFluent.Kernel
 
         public void CaptureFields()
         {
-            if (this.isPrivate)
-            {
-                this.BindingFlagsForFields |= BindingFlags.NonPublic;
-                if (this.isPublic)
-                {
-                    this.BindingFlagsForFields |= BindingFlags.Public;
-                }
-            }
-            else
-            {
-                this.BindingFlagsForFields |= BindingFlags.Public;
-            }
+            this.BindingFlagsForFields |= this.GetBindingFlags();
+        }
+
+        private BindingFlags GetBindingFlags()
+        {
+            return (this.isPrivate ? BindingFlags.NonPublic : BindingFlags.Public) 
+                   | (this.isPublic ? BindingFlags.Public : 0);
         }
 
         public void CaptureProperties()
+
         {
-            if (this.isPrivate)
-            {   
-                this.BindingFlagsForProperties |= BindingFlags.NonPublic;
-                if (this.isPublic)
-                {
-                    this.BindingFlagsForProperties |= BindingFlags.Public;
-                }
-            }
-            else
-            {
-                this.BindingFlagsForProperties |= BindingFlags.Public;
-            }
+            this.BindingFlagsForProperties |= this.GetBindingFlags();
         }
 
         public BindingFlags BindingFlagsForFields { get; private set; }

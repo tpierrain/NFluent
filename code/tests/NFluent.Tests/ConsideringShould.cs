@@ -54,7 +54,6 @@ namespace NFluent.Tests
             Second
         }
 
-
         [Test]
         public void TreatEnumAsPrimitiveValues()
         {
@@ -64,7 +63,6 @@ namespace NFluent.Tests
             // Considering must not see the enum underlying field
             Check.That(new {Prop = SutEnum.First}).Considering().Public.Fields.IsEqualTo(new {Prop = SutEnum.Second});
         }
-
 
         [Test]
         public void NotShouldWorkWhenMissingMember()
@@ -282,6 +280,14 @@ namespace NFluent.Tests
             var sut = new SutClass(2, 42, 4, null);
 
             Check.That(sut).Considering().All.Fields.And.All.Properties.IsEqualTo(new SutClass(2, 42, 4, null));
+        }
+
+        [Test]
+        public void SupportDuplicateCriterias()
+        {
+            var sut = new SutClass(2, 42, 4, null);
+
+            Check.That(sut).Considering().All.Fields.And.All.Fields.IsEqualTo(new SutClass(2, 42, 4, null));
         }
 
         [Test]

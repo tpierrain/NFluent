@@ -15,6 +15,7 @@
 
 namespace NFluent.Tests
 {
+    using System;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -76,6 +77,15 @@ namespace NFluent.Tests
                 "\t[2]", 
                 "The expected [value]:", 
                 "\t[3]");
+        }
+
+        [Test]
+        public void FailOnWhichWhenNoValue()
+        {
+            int? sut = null;
+            Check.ThatCode(() => 
+                Check.That(sut).Not.HasAValue().Which.IsEqualTo(1)
+                ).Throws<InvalidOperationException>();
         }
     }
 }

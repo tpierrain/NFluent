@@ -15,7 +15,8 @@
 
 namespace NFluent.Helpers
 {
-    using NFluent.Extensions;
+    using Extensions;
+
     internal class DifferenceDetails
     {
         private DifferenceMode Mode {get;}
@@ -66,15 +67,10 @@ namespace NFluent.Helpers
         {
             if (!match.ActualFieldFound)
             {
-                return WasNotFound(match.Expected.MemberLabel, match.Expected, 0);
+                return WasNotFound(match.Actual.MemberLabel, match.Actual, 0);
             }
 
-            if (!match.ExpectedFieldFound)
-            {
-                return WasNotExpected(match.Expected.MemberLabel, match.Expected, 0);
-            }
-
-            return DoesNotHaveExpectedValue(match.Expected.MemberLabel, match.Actual.Value, match.Expected.Value, 0);
+            return match.ExpectedFieldFound ? DoesNotHaveExpectedValue(match.Expected.MemberLabel, match.Actual.Value, match.Expected.Value, 0) : WasNotExpected(match.Expected.MemberLabel, match.Expected, 0);
         }
         
         public string FirstName { get; internal set; }
@@ -85,38 +81,23 @@ namespace NFluent.Helpers
 
         public string GetMessage(bool forEquivalence)
         {
-            if (this.Mode == DifferenceMode.Extra)
+            return this.Mode switch
             {
-                return forEquivalence
+                DifferenceMode.Extra => forEquivalence
                     ? $"{this.FirstName} value should not exist (value {this.FirstValue.ToStringProperlyFormatted()})"
-                    : $"{this.FirstName} should not exist (value {this.FirstValue.ToStringProperlyFormatted()}).";
-            }
-            else if (this.Mode == DifferenceMode.Missing)
-            {
-                return forEquivalence
+                    : $"{this.FirstName} should not exist (value {this.FirstValue.ToStringProperlyFormatted()}).",
+                DifferenceMode.Missing => forEquivalence
                     ? $"{this.SecondValue.ToStringProperlyFormatted()} should be present but was not found."
-                    : $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}.";
-            }
-            else if (this.Mode == DifferenceMode.Moved)
-            {
-                return
-                    $"{this.FirstName} value ('{this.FirstValue}') was found at index {this.ActualIndex} instead of {this.Index}.";
-            }
-            else if (this.Mode == DifferenceMode.Attribute)
-            {
-                return
-                    $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
-            }
-            else if (this.Mode == DifferenceMode.FoundInsteadOf)
-            {
-                return
-                    $"{this.FirstValue.ToStringProperlyFormatted()} should not exist (found in {this.FirstName}); {this.SecondValue.ToStringProperlyFormatted()} should be found instead.";
-            }
-            else
-            {
-                return
-                    $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
-            }
+                    : $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}.",
+                DifferenceMode.Moved =>
+                $"{this.FirstName} value ('{this.FirstValue}') was found at index {this.ActualIndex} instead of {this.Index}.",
+                DifferenceMode.Attribute =>
+                $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.",
+                DifferenceMode.FoundInsteadOf =>
+                $"{this.FirstValue.ToStringProperlyFormatted()} should not exist (found in {this.FirstName}); {this.SecondValue.ToStringProperlyFormatted()} should be found instead.",
+                _ =>
+                $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}."
+            };
         }
 
         public enum DifferenceMode

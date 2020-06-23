@@ -16,6 +16,7 @@
 namespace NFluent
 {
     using System;
+    using System.Linq.Expressions;
     using Extensibility;
     using Kernel;
 
@@ -27,15 +28,18 @@ namespace NFluent
     public class CheckMember<T, TM> : IErrorReporter
     {
         private readonly ICheck<T> originalCheck;
-        private readonly TM value;
         private readonly string name;
         private string errors;
+        private readonly FluentCheck<TM> fluentCheck;
 
-        internal CheckMember(ICheck<T> originalCheck, TM value, string name)
+        internal CheckMember(ICheck<T> originalCheck, Expression<Func<T,TM>> extractor, string name)
         {
+            var syntaxHelper = (FluentSut<T>) originalCheck;
             this.originalCheck = originalCheck;
-            this.value = value;
             this.name = name;
+            var sub = syntaxHelper.Extract(sut => extractor.Compile().Invoke(sut), 
+                x => $"{x.SutName.EntityName}'s {name}", this);
+            fluentCheck = new FluentCheck<TM>(sub, false) {CustomMessage = syntaxHelper.CustomMessage};
         }
 
         /// <summary>
@@ -45,7 +49,7 @@ namespace NFluent
         /// <returns>a check object for the extracted member.</returns>
         public CheckMember<T, TM> Verifies(Action<ICheck<TM>> func)
         {
-            func(new FluentCheck<TM>(this.value, this).As(name));
+            func(fluentCheck);
             if (!string.IsNullOrEmpty(this.errors))
             {
                 var message = "The {checked} fails the check because:"+this.errors;
@@ -56,7 +60,7 @@ namespace NFluent
 
         void IErrorReporter.ReportError(string message)
         {
-            this.errors = message;
+            this.errors += message;
         }
     }
 }

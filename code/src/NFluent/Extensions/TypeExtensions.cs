@@ -49,12 +49,17 @@ namespace NFluent.Extensions
             return type.GetTypeInfo().GetCustomAttributes(false)
                 .Any(customAttribute => customAttribute.GetType() == attribute);
         }
-
-
+                
+        /// <summary>
+        /// Checks if an anonymous type.
+        /// </summary>
+        /// <param name="type">type to check</param>
+        /// <returns>true if <see cref="type"/> is anonymous.</returns>
         public static bool TypeIsAnonymous(this Type type)
         {
             return type.TypeHasAttribute(typeof(CompilerGeneratedAttribute)) && type.Name.Contains("Anonymous");
         }
+
         /// <summary>
         ///     Checks if a type possesses at least a field or a property.
         /// </summary>
