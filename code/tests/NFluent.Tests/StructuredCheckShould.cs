@@ -31,7 +31,6 @@ namespace NFluent.Tests
         }
 
         [Test]
-        //[Ignore("WIP")]
         public void OfferErrorMessageWhenFailing()
         {
             var sut = new Dummy();
@@ -47,7 +46,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        [Ignore("WIP")]
+        //[Ignore("WIP")]
         public void SupportMultipleCriteria()
         {
             var sut = new Dummy();
@@ -59,7 +58,12 @@ namespace NFluent.Tests
                     "The checked value's x:", 
                     "\t[0]", 
                     "The expected value's x:", 
-                    "\t[1]");
+                    "\t[1]", 
+                    "The checked value's x is equal to the given one.", 
+                    "The checked value's x:", 
+                    "\t[0]", 
+                    "The expected value's x: strictly greater than", 
+                    "\t[0]");
         }
         
         [Test]
