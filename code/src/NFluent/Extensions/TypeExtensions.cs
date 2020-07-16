@@ -54,7 +54,7 @@ namespace NFluent.Extensions
         /// Checks if an anonymous type.
         /// </summary>
         /// <param name="type">type to check</param>
-        /// <returns>true if <see cref="type"/> is anonymous.</returns>
+        /// <returns>true if <see paramref="type"/> is anonymous.</returns>
         public static bool TypeIsAnonymous(this Type type)
         {
             return type.TypeHasAttribute(typeof(CompilerGeneratedAttribute)) && type.Name.Contains("Anonymous");

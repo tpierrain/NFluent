@@ -60,7 +60,6 @@
     <None Include="..\..\.build\NFluent.snk">
       <Link>NFluent.snk</Link>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\.build\Version.cs">

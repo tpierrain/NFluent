@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyFileVersion("3.0.0.0")]
-[assembly: AssemblyVersion("2.4.0.0")]
+[assembly: AssemblyVersion("3.0.0.0")]
 [assembly: AssemblyInformationalVersion("3.0.0-alpha-0000")]
 
 // General Information about an assembly is controlled through the following 

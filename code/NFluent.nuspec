@@ -45,7 +45,7 @@
 * `Properties` (available for enumeration): please use `Extracting` instead.
 * `Checker.BuildLinkWhich` (used for custom extension): please use `ExtensibilityHelper.BuildCheckLinkWhich` instead.
 * `Checker.ExecuteCheckAndProvideSubItem` (used for custom extension): please 'ExtensibilityHelper' static class methods instead.</releaseNotes>
-    <copyright>Copyright 2013-2018  Thomas PIERRAIN, Cyrille DUPUYDAUBY</copyright>
+    <copyright>Copyright 2013-2020  Thomas PIERRAIN, Cyrille DUPUYDAUBY</copyright>
     <language>en-US</language>
     <tags>tdd bdd test fluent check checks easy nunit xunit mbunit mstestsucks</tags>
   </metadata>
@@ -63,10 +63,6 @@
     <file src="Artifacts\Binaries\net45\NFluent.dll" target="lib\net45\" />
     <file src="Artifacts\Binaries\net45\NFluent.xml" target="lib\net45\" />
     <file src="Artifacts\Binaries\net45\NFluent.pdb" target="lib\net45\" />
-    <!-- .NET 4.0 (for dynamics and tasks support) -->
-    <file src="Artifacts\Binaries\net40\NFluent.dll" target="lib\net40\" />
-    <file src="Artifacts\Binaries\net40\NFluent.xml" target="lib\net40\" />
-    <file src="Artifacts\Binaries\net40\NFluent.pdb" target="lib\net40\" />
     <!-- .NET 3.5 -->
     <file src="Artifacts\Binaries\net35\NFluent.dll" target="lib\net35\" />
     <file src="Artifacts\Binaries\net35\NFluent.xml" target="lib\net35\" />

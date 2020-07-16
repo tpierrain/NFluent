@@ -271,7 +271,6 @@ namespace NFluent
         /// <param name="content">Expected content</param>
         /// <typeparam name="T">Type of enumerable content</typeparam>
         /// <returns>A chainable link.</returns>
-        // GH #249
         public static ICheckLink<ICheck<IEnumerable<T>>> IsEquivalentTo<T>(this ICheck<IEnumerable<T>> context,
             IEnumerable<T> content)
         {

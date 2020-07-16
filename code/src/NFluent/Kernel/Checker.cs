@@ -119,8 +119,7 @@ namespace NFluent.Kernel
         {
             return new CheckLink<TC>(this.fluentCheckForExtensibility);
         }
-
-
+        
         /// <summary>
         /// Executes the check provided as an happy-path lambda (vs lambda for negated version).
         /// </summary>

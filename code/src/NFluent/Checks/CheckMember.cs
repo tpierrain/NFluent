@@ -28,7 +28,6 @@ namespace NFluent
     public class CheckMember<T, TM> : IErrorReporter
     {
         private readonly ICheck<T> originalCheck;
-        private readonly string name;
         private string errors;
         private readonly FluentCheck<TM> fluentCheck;
 
@@ -36,10 +35,9 @@ namespace NFluent
         {
             var syntaxHelper = (FluentSut<T>) originalCheck;
             this.originalCheck = originalCheck;
-            this.name = name;
             var sub = syntaxHelper.Extract(sut => extractor.Compile().Invoke(sut), 
                 x => $"{x.SutName.EntityName}'s {name}", this);
-            fluentCheck = new FluentCheck<TM>(sub, false) {CustomMessage = syntaxHelper.CustomMessage};
+            this.fluentCheck = new FluentCheck<TM>(sub, false) {CustomMessage = syntaxHelper.CustomMessage};
         }
 
         /// <summary>
@@ -50,11 +48,13 @@ namespace NFluent
         public CheckMember<T, TM> Verifies(Action<ICheck<TM>> func)
         {
             func(fluentCheck);
-            if (!string.IsNullOrEmpty(this.errors))
+            if (string.IsNullOrEmpty(this.errors))
             {
-                var message = "The {checked} fails the check because:"+this.errors;
-                ExtensibilityHelper.ExtractChecker(this.originalCheck).BeginCheck().CantBeNegated("Verifies").Fail(message, MessageOption.NoCheckedBlock).EndCheck();
+                return this;
             }
+
+            var message = "The {checked} fails the check because:"+this.errors;
+            ExtensibilityHelper.ExtractChecker(this.originalCheck).BeginCheck().CantBeNegated("Verifies").Fail(message, MessageOption.NoCheckedBlock).EndCheck();
             return this;
         }
 

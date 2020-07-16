@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <SolutionName>NFluent</SolutionName>
-    <APIVersion>2.4.0.0</APIVersion>
+    <APIVersion>3.0.0.0</APIVersion>
     <SolutionRoot>$(MSBuildProjectDirectory)\..</SolutionRoot>
     <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
     <CodeCovURL>https://codecov.io/gh/dupdob/$(SolutionName)</CodeCovURL>
@@ -64,9 +64,6 @@
       <Package>net45</Package>
     </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)\NFluent.45.Tests.Meta"/>
-    <ProjectFolder Include="$(SourcePath)\NFluent.40">
-      <Package>net40</Package>
-    </ProjectFolder>
     <ProjectFolder Include="$(SourcePath)\NFluent.35">
       <Package>net35</Package>
     </ProjectFolder>

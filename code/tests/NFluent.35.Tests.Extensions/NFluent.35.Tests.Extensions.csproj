@@ -57,7 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="NFluent.snk" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\.build\Version.cs">
