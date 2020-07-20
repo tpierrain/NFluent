@@ -81,6 +81,16 @@ namespace NFluent.Tests
             {
                 return false;
             }
+
+            private bool Equals(PseudoAnonymous other)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public override int GetHashCode()
+            {
+                throw new System.NotImplementedException();
+            }
         }
 
         [CompilerGenerated]
@@ -89,6 +99,16 @@ namespace NFluent.Tests
             public override bool Equals(object obj)
             {
                 return false;
+            }
+
+            private bool Equals(OtherGenerated other)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public override int GetHashCode()
+            {
+                throw new System.NotImplementedException();
             }
         }
     }

@@ -26,8 +26,11 @@ namespace NFluent.Tests
         public void OfferSimpleSyntax()
         {
             var sut = new Dummy();
+            sut.text = "test";
+            sut.x = 1;
 
-            Check.That(sut).WhichMember(o=> o.x).Verifies( m => m.IsEqualTo(0));
+            Check.That(sut).WhichMember(o=> o.x).Verifies( m => m.IsEqualTo(1));
+            Check.That(sut).WhichMember(o=> o.text).Verifies( m => m.IsEqualTo("test"));
         }
 
         [Test]
