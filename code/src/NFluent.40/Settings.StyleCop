@@ -1,7 +1,0 @@
-<StyleCopSettings Version="105">
-  <GlobalSettings>
-    <CollectionProperty Name="RecognizedWords">
-      <Value>awaitable</Value>
-    </CollectionProperty>
-  </GlobalSettings>
-</StyleCopSettings>
