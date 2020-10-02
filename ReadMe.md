@@ -150,7 +150,7 @@ Can't be more easy: NFluent is [available on nuget.org](http://nuget.org/package
 
 Use cases
 ----------
-__[NFluent use cases are available here](./UseCases.md)__.
+__[NFluent use cases are available here](./docs/UseCases.md)__.
 
 Newsgroup
 ---------
