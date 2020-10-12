@@ -2,7 +2,8 @@
   "stryker-config": {
     "reporters": [
       "progress",
-      "html"
+      "html",
+      "json"
       //      "dashboard",
       //      "dots"
     ],
