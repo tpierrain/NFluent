@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using VerifyCS = NFluent.Analyzer.Test.CSharpCodeFixVerifier<
-    NFluent.Analyzer.NFluentAnalyzerAnalyzer,
+    NFluent.Analyzer.NFluentAnalyzer,
     NFluent.Analyzer.NFluentAnalyzerCodeFixProvider>;
 
 namespace NFluent.Analyzer.Test
@@ -22,38 +22,48 @@ namespace NFluent.Analyzer.Test
         [TestMethod]
         public async Task TestMethod2()
         {
-            var test = @"
+            const string test = @"
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using System.Diagnostics;
+    using NFluent;
 
     namespace ConsoleApplication1
     {
-        class {|#0:TypeName|}
-        {   
+        class TestClass
+        {
+            public void ShouldDetectIncompleteExpression()
+            {
+                Check.That(10);
+            }
         }
     }";
 
-            var fixtest = @"
+            const string fixTest = @"
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using System.Diagnostics;
+    using NFluent;
 
     namespace ConsoleApplication1
     {
-        class TYPENAME
-        {   
+        class TestClass
+        {
+            public void ShouldDetectIncompleteExpression()
+            {
+                Check.That(10);
+            }
         }
     }";
 
-            var expected = VerifyCS.Diagnostic("NFluentAnalyzer").WithLocation(0).WithArguments("TypeName");
-            await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);
+            var expected = VerifyCS.Diagnostic("NFluentAnalyzer");
+            await VerifyCS.VerifyCodeFixAsync(test, expected, fixTest);
         }
     }
 }

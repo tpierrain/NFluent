@@ -30,7 +30,7 @@
     <ProjectReference Include="..\NFluent.Analyzer\NFluent.Analyzer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup> 
     <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="" />
   </ItemGroup>
 
