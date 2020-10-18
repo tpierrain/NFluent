@@ -1,10 +1,12 @@
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace NFluent.Analyzer
 {
+    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class NFluentAnalyzer : DiagnosticAnalyzer
     {
@@ -23,25 +25,31 @@ namespace NFluent.Analyzer
 
         public override void Initialize(AnalysisContext context)
         {
-            // TODO: Consider registering other actions that act on syntax instead of or in addition to symbols
             // See https://github.com/dotnet/roslyn/blob/master/docs/analyzers/Analyzer%20Actions%20Semantics.md for more information
-            context.RegisterSymbolAction(AnalyzeSymbol, SymbolKind.NamedType);
+            context.RegisterSyntaxNodeAction(AnalyzeSymbol, SyntaxKind.ExpressionStatement);
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
         }
 
-        private static void AnalyzeSymbol(SymbolAnalysisContext context)
+        private static void AnalyzeSymbol(SyntaxNodeAnalysisContext context)
         {
-            // TODO: Replace the following code with your own analysis, generating Diagnostic objects for any issues you find
-            var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
-
-            // Find just those named type symbols with names containing lowercase letters.
-            if (namedTypeSymbol.Name.ToCharArray().Any(char.IsLower))
+            var statement = context.Node as ExpressionStatementSyntax;
+            var invocationExpression = statement.Expression as InvocationExpressionSyntax;
+            if (invocationExpression == null)
             {
-                // For all such symbols, produce a diagnostic.
-                var diagnostic = Diagnostic.Create(Rule, namedTypeSymbol.Locations[0], namedTypeSymbol.Name);
-
-                context.ReportDiagnostic(diagnostic);
+                return;
+            }
+            if (invocationExpression.Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
+            {
+                var memberAccess = invocationExpression.Expression as MemberAccessExpressionSyntax;
+                if (memberAccess.Expression is IdentifierNameSyntax name)
+                {
+                    if (name.ToString() == "Check")
+                    {
+                        var diagnostic = Diagnostic.Create(Rule, context.Node.GetLocation(), invocationExpression.ArgumentList.Arguments.FirstOrDefault().ToString());
+                        context.ReportDiagnostic(diagnostic);
+                    }
+                }
             }
         }
     }

@@ -12,6 +12,7 @@ if "%target%"=="" (
 if "%target%"=="" (
 	set target=CI
 )
+
 set config=%2
 if "%config%" == "" (
    set config=Release
