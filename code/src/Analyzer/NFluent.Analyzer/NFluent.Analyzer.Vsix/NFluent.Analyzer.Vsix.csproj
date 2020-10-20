@@ -5,7 +5,7 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <RootNamespace>NFluent.Analyzer.Vsix</RootNamespace>
-    <AssemblyName>NFluent.Analyzer.Vsix</AssemblyName>
+    <AssemblyName>NFluent.Analyzer</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -24,6 +24,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="NFluent.Analyzer.Vsix.v3.ncrunchproject" />
+    <None Include="..\..\..\..\..\Images\New Logo\nfluent2018.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\..\..\.build\NFluent.snk" Link="NFluent.snk" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="15.1.192" PrivateAssets="all" />
   </ItemGroup>
 
@@ -31,6 +40,17 @@
     <StartAction>Program</StartAction>
     <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
     <StartArguments>/rootsuffix $(VSSDKTargetPlatformRegRootSuffix)</StartArguments>
+    <Version>0.1.0</Version>
+    <Authors>Cyrille Dupuydauby</Authors>
+    <Company>NFluent</Company>
+    <Product>NFluent Visual Studio Analyze</Product>
+    <Description>Help you spot and fix common mistakes and error when using NFluent assertion library</Description>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>http://www.n-fluent.net</PackageProjectUrl>
+    <PackageIcon>nfluent2018.png</PackageIcon>
+    <PackageId>NFluent.Analyzer</PackageId>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>C:\Users\dupdob\source\repos\NFluent\code\.build\NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />

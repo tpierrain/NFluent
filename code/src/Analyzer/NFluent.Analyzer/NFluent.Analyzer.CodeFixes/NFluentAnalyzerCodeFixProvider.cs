@@ -33,7 +33,7 @@ namespace NFluent.Analyzer
 
                 if (invocationExpression.Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression && invocationExpression.ArgumentList.Arguments.Any())
                 {
-                    var memberAccess = invocationExpression.Expression as MemberAccessExpressionSyntax;
+                    var memberAccess = (MemberAccessExpressionSyntax) invocationExpression.Expression;
                     if (memberAccess.Expression is IdentifierNameSyntax)
                     {
                         context.RegisterCodeFix(
@@ -46,27 +46,94 @@ namespace NFluent.Analyzer
             }
         }
 
-        private async Task<Document> AddAutomaticCheckMethod(Document document, InvocationExpressionSyntax invocationExpression,
+        private static async Task<Document> AddAutomaticCheckMethod(Document document, InvocationExpressionSyntax invocationExpression,
             CancellationToken cancellationToken)
         {
             // Get the symbol representing the type to be renamed.
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
             var info = semanticModel.GetSymbolInfo(invocationExpression);
-            var sut_type = ((IMethodSymbol) info.Symbol).Parameters[0].Type;
-            if (sut_type.IsReferenceType)
+            var sutType = ((IMethodSymbol) info.Symbol).Parameters[0].Type;
+            var replacementNode = BuildCorrectCheckThatExpression(invocationExpression, sutType);
+
+            if (replacementNode == null)
             {
-                var replacementNode =
-                    SyntaxFactory.InvocationExpression(
-                        SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
-                            invocationExpression,
-                            SyntaxFactory.IdentifierName(SyntaxFactory.ParseToken("IsNotNull"))));
-                var root = await document.GetSyntaxRootAsync(cancellationToken);
-                var newRoot = root.ReplaceNode(invocationExpression, replacementNode);
-                return document.WithSyntaxRoot(newRoot);
+                return document;
             }
 
-            return document;
+            var root = await document.GetSyntaxRootAsync(cancellationToken);
+            return document.WithSyntaxRoot(root.ReplaceNode(invocationExpression, replacementNode));
+        }
+
+        private static InvocationExpressionSyntax BuildCorrectCheckThatExpression(
+            InvocationExpressionSyntax invocationExpression, ITypeSymbol sutType)
+        {
+            var checkName = string.Empty;
+
+            // deal with well known types
+            switch (sutType.SpecialType)
+            {
+                case SpecialType.System_Boolean:
+                    checkName = "IsTrue";
+                    // When we have a reference type
+                    break;
+                case SpecialType.System_String:
+                    checkName = "IsNotEmpty";
+                    break;
+                case SpecialType.System_Enum:
+                    break;
+                case SpecialType.System_SByte:
+                case SpecialType.System_Byte:
+                case SpecialType.System_Int16:
+                case SpecialType.System_UInt16:
+                case SpecialType.System_Int32:
+                case SpecialType.System_UInt32:
+                case SpecialType.System_Int64:
+                case SpecialType.System_UInt64:
+                case SpecialType.System_Decimal:
+                case SpecialType.System_Single:
+                case SpecialType.System_Double:
+                    checkName = "IsNotZero";
+                    break;
+                case SpecialType.System_DateTime:
+                    break;
+                case SpecialType.System_IAsyncResult:
+                    break;
+                case SpecialType.System_AsyncCallback:
+                    break;
+                default:
+                    if (sutType.TypeKind == TypeKind.Array || sutType.AllInterfaces.Any( t => t.SpecialType == SpecialType.System_Collections_IEnumerable))
+                    {
+                        return SyntaxFactory.InvocationExpression(
+                            SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                                SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, invocationExpression, SyntaxFactory.IdentifierName("Not")),
+                                SyntaxFactory.IdentifierName(SyntaxFactory.ParseToken("IsEmpty"))));
+                    }
+                    if (sutType.IsReferenceType || sutType.OriginalDefinition?.SpecialType == SpecialType.System_Nullable_T)
+                    {
+                        checkName = "IsNotNull";
+                        // When we have a reference type
+                    }
+
+                    break;
+            }
+
+            InvocationExpressionSyntax replacementNode;
+            if (!string.IsNullOrEmpty(checkName))
+            {
+                // no fix applied
+
+                replacementNode = SyntaxFactory.InvocationExpression(
+                    SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                        invocationExpression,
+                        SyntaxFactory.IdentifierName(checkName)));
+            }
+            else
+            {
+                replacementNode = null;
+            }
+
+            return replacementNode;
         }
     }
 }

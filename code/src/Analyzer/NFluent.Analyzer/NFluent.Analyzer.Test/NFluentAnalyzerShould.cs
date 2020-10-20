@@ -7,6 +7,7 @@ using VerifyCSAnalyzer = NFluent.Analyzer.Test.CSharpAnalyzerVerifier<NFluent.An
 
 namespace NFluent.Analyzer.Test
 {
+    using System.Collections.Generic;
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis.Testing;
 
@@ -27,12 +28,6 @@ namespace NFluent.Analyzer.Test
         public async Task ReportCheckThatExpression()
         {
             const string testCode = @"
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Diagnostics;
     using NFluent;
 
     namespace ConsoleApplication1
@@ -50,7 +45,7 @@ namespace NFluent.Analyzer.Test
             var test = new VerifyCSAnalyzer.Test
             {
                 TestCode =  testCode,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic("NFluentAnalyzer").WithArguments("10").WithLocation(16,17)},
+                ExpectedDiagnostics = {VerifyCS.Diagnostic("NFluentAnalyzer").WithArguments("10").WithLocation(10,17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 
@@ -58,15 +53,9 @@ namespace NFluent.Analyzer.Test
         }
 
         [TestMethod]
-        public async Task DontReportCheckThatIsNotNullExpression()
+        public async Task DontReportProperCheckThatExpression()
         {
             const string testCode = @"
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Diagnostics;
     using NFluent;
 
     namespace ConsoleApplication1
@@ -91,59 +80,59 @@ namespace NFluent.Analyzer.Test
         }
 
         // Diagnostic test
-        [TestMethod]
-        public async Task ReportAndFixCheckThatExpression()
+        [DataTestMethod]
+        [DataRow("this", "IsNotNull()")]
+        [DataRow("true", "IsTrue()")]
+        [DataRow("10", "IsNotZero()")]
+        [DataRow("10.0", "IsNotZero()")]
+        [DataRow("10m", "IsNotZero()")]
+        [DataRow("10.0f", "IsNotZero()")]
+        [DataRow("new []{1,2}", "Not.IsEmpty()")]
+        [DataRow("new List<int>{1}", "Not.IsEmpty()")]
+        [DataRow("(int?)2", "IsNotNull()")]
+        [DataRow("\"Test\"", "IsNotEmpty()")]
+        public async Task ReportAndFixCheckThatExpression(string sut, string check)
         {
-            const string testCode = @"
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Diagnostics;
+            var testCode = $@"
     using NFluent;
+    using System.Collections.Generic;
 
     namespace ConsoleApplication1
-    {
+    {{
         class TestClass
-        {
+        {{
             public void ShouldDetectIncompleteExpression()
-            {
-                Check.That(this);
-            }
-        }
-    }";
+            {{
+                Check.That({sut});
+            }}
+        }}
+    }}";
 
-            const string fixTest = @"
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Diagnostics;
+            var fixTest = $@"
     using NFluent;
+    using System.Collections.Generic;
 
     namespace ConsoleApplication1
-    {
+    {{
         class TestClass
-        {
+        {{
             public void ShouldDetectIncompleteExpression()
-            {
-                Check.That(this).IsNotNull();
-            }
-        }
-    }";
-
+            {{
+                Check.That({sut}).{check};
+            }}
+        }}
+    }}";
             var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCS.Test
             {
                 TestCode =  testCode,
                 FixedCode = fixTest,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic("NFluentAnalyzer").WithArguments("this").WithLocation(16,17)},
+                ExpectedDiagnostics = {VerifyCS.Diagnostic("NFluentAnalyzer").WithArguments(sut).WithLocation(11,17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 
             await test.RunAsync();
         }
+
     }
 }

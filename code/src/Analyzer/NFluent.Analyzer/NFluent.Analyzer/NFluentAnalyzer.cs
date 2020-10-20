@@ -26,29 +26,32 @@ namespace NFluent.Analyzer
         public override void Initialize(AnalysisContext context)
         {
             // See https://github.com/dotnet/roslyn/blob/master/docs/analyzers/Analyzer%20Actions%20Semantics.md for more information
-            context.RegisterSyntaxNodeAction(AnalyzeSymbol, SyntaxKind.ExpressionStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeExpressionStatement, SyntaxKind.ExpressionStatement);
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
         }
 
-        private static void AnalyzeSymbol(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeExpressionStatement(SyntaxNodeAnalysisContext context)
         {
-            var statement = context.Node as ExpressionStatementSyntax;
-            var invocationExpression = statement.Expression as InvocationExpressionSyntax;
-            if (invocationExpression == null)
+            var statement = (ExpressionStatementSyntax) context.Node;
+            if (!(statement.Expression is InvocationExpressionSyntax invocationExpression))
             {
                 return;
             }
-            if (invocationExpression.Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
+
+            if (invocationExpression.Expression.Kind() != SyntaxKind.SimpleMemberAccessExpression)
             {
-                var memberAccess = invocationExpression.Expression as MemberAccessExpressionSyntax;
-                if (memberAccess.Expression is IdentifierNameSyntax name)
+                return;
+            }
+
+            var memberAccess = (MemberAccessExpressionSyntax) invocationExpression.Expression;
+            if (memberAccess.Expression is IdentifierNameSyntax name)
+            {
+                if (name.ToString() == "Check" && invocationExpression.ArgumentList.Arguments.Any())
                 {
-                    if (name.ToString() == "Check")
-                    {
-                        var diagnostic = Diagnostic.Create(Rule, context.Node.GetLocation(), invocationExpression.ArgumentList.Arguments.FirstOrDefault().ToString());
-                        context.ReportDiagnostic(diagnostic);
-                    }
+                    // we have a 'check.That(x); situation
+                    var diagnostic = Diagnostic.Create(Rule, context.Node.GetLocation(), invocationExpression.ArgumentList.Arguments.First().ToString());
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
         }
