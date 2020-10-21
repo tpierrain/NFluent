@@ -45,6 +45,24 @@ namespace NFluent.Analyzer
             }
 
             var memberAccess = (MemberAccessExpressionSyntax) invocationExpression.Expression;
+            if (memberAccess.Name.ToString() == "As")
+            {
+                if (context.SemanticModel.GetSymbolInfo(memberAccess).Symbol.ContainingNamespace.Name != "NFluent")
+                {
+                    return;
+                }
+
+                if (memberAccess.Expression is InvocationExpressionSyntax invocation &&
+                    invocation.Expression is MemberAccessExpressionSyntax syntax)
+                {
+                    invocationExpression = invocation;
+                    memberAccess = syntax;
+                }
+                else
+                {
+                    return;
+                }
+            }
             if (memberAccess.Name.ToString() == "That")
             {
                 if (context.SemanticModel.GetSymbolInfo(memberAccess).Symbol.ContainingNamespace.Name != "NFluent")

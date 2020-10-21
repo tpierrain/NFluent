@@ -162,5 +162,33 @@ namespace NFluent.Analyzer.Test
             await test.RunAsync();
         }
 
+        [TestMethod]
+        public async Task ReportCheckWithAs()
+        {
+            const string testCode = @"
+    using NFluent;
+
+    namespace ConsoleApplication1
+    {
+        class TestClass
+        {
+            public void ShouldDetectIncompleteExpression()
+            {
+                Check.That(10).As(""number"");
+            }
+        }
+    }";
+
+            var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
+            var test = new VerifyCSAnalyzer.Test
+            {
+                TestCode =  testCode,
+                ExpectedDiagnostics = {VerifyCS.Diagnostic("NFluentAnalyzer").WithArguments(10).WithLocation(10,17)},
+                ReferenceAssemblies = referenceAssemblies
+            };
+
+            await test.RunAsync();
+        }
+
     }
 }
