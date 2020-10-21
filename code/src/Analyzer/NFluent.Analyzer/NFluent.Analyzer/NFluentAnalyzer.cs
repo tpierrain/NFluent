@@ -1,10 +1,10 @@
-using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
+
 
 namespace NFluent.Analyzer
 {
-    using Microsoft.CodeAnalysis.CSharp;
+    using System.Collections.Immutable;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.Diagnostics;    using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
@@ -17,7 +17,7 @@ namespace NFluent.Analyzer
         private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.AnalyzerTitle), Resources.ResourceManager, typeof(Resources));
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.AnalyzerMessageFormat), Resources.ResourceManager, typeof(Resources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(Resources.AnalyzerDescription), Resources.ResourceManager, typeof(Resources));
-        private const string Category = "Naming";
+        private const string Category = "Testing";
 
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
@@ -45,14 +45,16 @@ namespace NFluent.Analyzer
             }
 
             var memberAccess = (MemberAccessExpressionSyntax) invocationExpression.Expression;
-            if (memberAccess.Expression is IdentifierNameSyntax name)
+            if (memberAccess.Name.ToString() == "That")
             {
-                if (name.ToString() == "Check" && invocationExpression.ArgumentList.Arguments.Any())
+                if (context.SemanticModel.GetSymbolInfo(memberAccess).Symbol.ContainingNamespace.Name != "NFluent")
                 {
-                    // we have a 'check.That(x); situation
-                    var diagnostic = Diagnostic.Create(Rule, context.Node.GetLocation(), invocationExpression.ArgumentList.Arguments.First().ToString());
-                    context.ReportDiagnostic(diagnostic);
+                    return;
                 }
+                // we have a 'check.That(x); situation
+                var diagnostic = Diagnostic.Create(Rule, context.Node.GetLocation(), invocationExpression.ArgumentList.Arguments.First().ToString());
+                context.ReportDiagnostic(diagnostic);
+
             }
         }
     }

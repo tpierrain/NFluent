@@ -66,7 +66,7 @@ namespace NFluent.Analyzer
         }
 
         private static InvocationExpressionSyntax BuildCorrectCheckThatExpression(
-            InvocationExpressionSyntax invocationExpression, ITypeSymbol sutType)
+            ExpressionSyntax invocationExpression, ITypeSymbol sutType)
         {
             var checkName = string.Empty;
 
