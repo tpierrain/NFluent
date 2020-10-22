@@ -23,4 +23,4 @@ if defined APPVEYOR (
     set extraOpt=/logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 )
 
-msbuild .\.build\Build.proj /t:%target% /p:Configuration="%config%" /fl /v:m /flp:LogFile=msbuild.log;Verbosity=d /clp:Verbosity=n /nr:false %extraOpt%
+msbuild .\.build\Build.proj /t:%target% /p:Configuration="%config%" /fl /v:m /flp:LogFile=msbuild.log;Verbosity=d /nr:false %extraOpt%

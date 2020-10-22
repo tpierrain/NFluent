@@ -50,7 +50,7 @@
     <PackageIcon>nfluent2018.png</PackageIcon>
     <PackageId>NFluent.Analyzer</PackageId>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>C:\Users\dupdob\source\repos\NFluent\code\.build\NFluent.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\..\.build\NFluent.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
 
