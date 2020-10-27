@@ -63,9 +63,18 @@ namespace NFluent.Analyzer {
         /// <summary>
         ///   Looks up a localized string similar to Add simple check.
         /// </summary>
-        internal static string CodeFixTitle {
+        internal static string AddSimpleCheckTitle {
             get {
-                return ResourceManager.GetString("CodeFixTitle", resourceCulture);
+                return ResourceManager.GetString("AddSimpleCheckTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transform to explicit check.
+        /// </summary>
+        internal static string ExpandBinaryExpressionTitle {
+            get {
+                return ResourceManager.GetString("ExpandBinaryExpressionTitle", resourceCulture);
             }
         }
     }

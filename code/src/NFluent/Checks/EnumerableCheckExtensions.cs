@@ -567,7 +567,6 @@ namespace NFluent
             return HasSize(check, expectedCount);
         }
         
-
         /// <summary>
         ///     Checks that the enumerable is empty.
         /// </summary>

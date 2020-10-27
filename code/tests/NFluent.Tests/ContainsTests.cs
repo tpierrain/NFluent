@@ -15,10 +15,8 @@
 
 namespace NFluent.Tests
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Helpers;
     using NFluent.Helpers;
     using NUnit.Framework;
 

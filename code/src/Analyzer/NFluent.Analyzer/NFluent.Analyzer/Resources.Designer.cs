@@ -63,27 +63,54 @@ namespace NFluent.Analyzer {
         /// <summary>
         ///   Looks up a localized string similar to Check should always have a condition.
         /// </summary>
-        internal static string AnalyzerDescription {
+        internal static string MCDescription {
             get {
-                return ResourceManager.GetString("AnalyzerDescription", resourceCulture);
+                return ResourceManager.GetString("MCDescription", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Sut &apos;{0}&apos; should be actualy checked.
         /// </summary>
-        internal static string AnalyzerMessageFormat {
+        internal static string MCMessageFormat {
             get {
-                return ResourceManager.GetString("AnalyzerMessageFormat", resourceCulture);
+                return ResourceManager.GetString("MCMessageFormat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Verify Check is done.
+        ///   Looks up a localized string similar to Verifies if a check is performed .
         /// </summary>
-        internal static string AnalyzerTitle {
+        internal static string MCTitle {
             get {
-                return ResourceManager.GetString("AnalyzerTitle", resourceCulture);
+                return ResourceManager.GetString("MCTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Binary expression should be evaluated using NFluent&apos;s syntax.
+        /// </summary>
+        internal static string SCDescription {
+            get {
+                return ResourceManager.GetString("SCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sut &apos;{0}&apos; should be evaluated using &apos;{1}&apos;..
+        /// </summary>
+        internal static string SCMessageFormat {
+            get {
+                return ResourceManager.GetString("SCMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transfomr checks on binary expression.
+        /// </summary>
+        internal static string SCTitle {
+            get {
+                return ResourceManager.GetString("SCTitle", resourceCulture);
             }
         }
     }

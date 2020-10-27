@@ -7,7 +7,6 @@ using VerifyCSAnalyzer = NFluent.Analyzer.Test.CSharpAnalyzerVerifier<NFluent.An
 
 namespace NFluent.Analyzer.Test
 {
-    using System.Collections.Generic;
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis.Testing;
 
@@ -18,9 +17,7 @@ namespace NFluent.Analyzer.Test
         [TestMethod]
         public async Task StaySilentWhenNoCode()
         {
-            var test = @"";
-
-            await VerifyCS.VerifyAnalyzerAsync(test);
+            await VerifyCS.VerifyAnalyzerAsync(@"");
         }
 
         // Diagnostic test
@@ -45,7 +42,7 @@ namespace NFluent.Analyzer.Test
             var test = new VerifyCSAnalyzer.Test
             {
                 TestCode =  testCode,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic("NFluentAnalyzer").WithArguments("10").WithLocation(10,17)},
+                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments("10").WithLocation(10,17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 
@@ -127,7 +124,7 @@ namespace NFluent.Analyzer.Test
             {
                 TestCode =  testCode,
                 FixedCode = fixTest,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic("NFluentAnalyzer").WithArguments(sut).WithLocation(11,17)},
+                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments(sut).WithLocation(11,17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 
@@ -155,7 +152,7 @@ namespace NFluent.Analyzer.Test
             var test = new VerifyCSAnalyzer.Test
             {
                 TestCode =  testCode,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic("NFluentAnalyzer").WithArguments(10).WithLocation(10,17)},
+                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments(10).WithLocation(10,17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 
@@ -183,7 +180,49 @@ namespace NFluent.Analyzer.Test
             var test = new VerifyCSAnalyzer.Test
             {
                 TestCode =  testCode,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic("NFluentAnalyzer").WithArguments(10).WithLocation(10,17)},
+                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments(10).WithLocation(10,17)},
+                ReferenceAssemblies = referenceAssemblies
+            };
+
+            await test.RunAsync();
+        }
+
+        [TestMethod]
+        public async Task FixBinaryExpression()
+        {
+            const string testCode = @"
+    using NFluent;
+
+    namespace ConsoleApplication1
+    {
+        class TestClass
+        {
+            public void ShouldDetectIncompleteExpression()
+            {
+                Check.That(10 == 10).IsTrue();
+            }
+        }
+    }";
+            const string fixedCode = @"
+    using NFluent;
+
+    namespace ConsoleApplication1
+    {
+        class TestClass
+        {
+            public void ShouldDetectIncompleteExpression()
+            {
+                Check.That(10).IsEqualTo(10);
+            }
+        }
+    }";
+
+            var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
+            var test = new VerifyCS.Test
+            {
+                TestCode =  testCode, 
+                FixedCode =  fixedCode,
+                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.SutIsTheCheckId).WithArguments(10, "IsEqualTo").WithLocation(10,17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 

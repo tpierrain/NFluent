@@ -10,18 +10,31 @@ namespace NFluent.Analyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class NFluentAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "NFluentAnalyzer";
+        public const string MissingCheckId = "NA0001";
+        public const string SutIsTheCheckId = "NA0002";
 
         // You can change these strings in the Resources.resx file. If you do not want your analyzer to be localize-able, you can use regular strings for Title and MessageFormat.
         // See https://github.com/dotnet/roslyn/blob/master/docs/analyzers/Localizing%20Analyzers.md for more on localization
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.AnalyzerTitle), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.AnalyzerMessageFormat), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(Resources.AnalyzerDescription), Resources.ResourceManager, typeof(Resources));
         private const string Category = "Testing";
 
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+        private static readonly DiagnosticDescriptor MissingCheckRule = BuildRule(MissingCheckId, nameof(Resources.MCTitle), nameof(Resources.MCMessageFormat), nameof(Resources.MCDescription));
+        private static readonly DiagnosticDescriptor SutIsTheCheckRule = BuildRule(SutIsTheCheckId, nameof(Resources.SCTitle), nameof(Resources.SCMessageFormat), nameof(Resources.SCDescription));
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(MissingCheckRule, SutIsTheCheckRule);
+
+        private static DiagnosticDescriptor BuildRule(string id, string localizableTitle, string localizableFormat,
+            string localizableDescription, DiagnosticSeverity severity = DiagnosticSeverity.Warning,
+            string category = Category, bool isEnabledByDefault = true)
+        {
+            return new DiagnosticDescriptor(id, 
+                new LocalizableResourceString(localizableTitle, Resources.ResourceManager, typeof(Resources)), 
+                new LocalizableResourceString(localizableFormat, Resources.ResourceManager, typeof(Resources)), 
+                category,
+                severity,
+                isEnabledByDefault,
+                new LocalizableResourceString(localizableDescription, Resources.ResourceManager, typeof(Resources))
+                );
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -45,7 +58,7 @@ namespace NFluent.Analyzer
             }
 
             var memberAccess = (MemberAccessExpressionSyntax) invocationExpression.Expression;
-            if (memberAccess.Name.ToString() == "As")
+            if (memberAccess.HasName("As"))
             {
                 if (context.SemanticModel.GetSymbolInfo(memberAccess).Symbol.ContainingNamespace.Name != "NFluent")
                 {
@@ -63,17 +76,75 @@ namespace NFluent.Analyzer
                     return;
                 }
             }
-            if (memberAccess.Name.ToString() == "That")
+            if (memberAccess.HasName("That"))
             {
                 if (context.SemanticModel.GetSymbolInfo(memberAccess).Symbol.ContainingNamespace.Name != "NFluent")
                 {
                     return;
                 }
                 // we have a 'check.That(x); situation
-                var diagnostic = Diagnostic.Create(Rule, context.Node.GetLocation(), invocationExpression.ArgumentList.Arguments.First().ToString());
+                var diagnostic = Diagnostic.Create(MissingCheckRule, context.Node.GetLocation(), invocationExpression.ArgumentList.Arguments.First().ToString());
                 context.ReportDiagnostic(diagnostic);
-
             }
+            else
+            {
+                var thatNode = FindInvocationOfThat(context.SemanticModel, memberAccess);
+
+                if (thatNode == null)
+                {
+                    return;
+                }
+
+                var sut = thatNode.ArgumentList.Arguments[0].Expression;
+                var actualCheck = thatNode.Parent as MemberAccessExpressionSyntax;
+                if (sut is BinaryExpressionSyntax binaryExpressionSyntax && (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse") ))
+                {
+                    var realSut = binaryExpressionSyntax.Left;
+                    if (realSut is LiteralExpressionSyntax)
+                    {
+                        realSut = binaryExpressionSyntax.Right;
+                    }
+
+                    var checkName = string.Empty;
+                    switch (binaryExpressionSyntax.OperatorToken.Kind())
+                    {
+                        case SyntaxKind.EqualsEqualsToken:
+                            checkName = "IsEqualTo";
+                            break;
+                    }
+
+                    if (!string.IsNullOrEmpty(checkName))
+                    {
+                        var diagnostic = Diagnostic.Create(SutIsTheCheckRule, context.Node.GetLocation(),
+                            realSut.ToString(), checkName);
+                        context.ReportDiagnostic(diagnostic);
+                    }
+                }
+            }
+        }
+
+        public static InvocationExpressionSyntax FindInvocationOfThat(SemanticModel model,
+            ExpressionSyntax memberAccess)
+        {
+            InvocationExpressionSyntax thatNode = null;
+            foreach (var childNode in memberAccess.DescendantNodesAndSelf())
+            {
+                if (childNode.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+                {
+                    var mAccess = (MemberAccessExpressionSyntax) childNode;
+                    if (mAccess.HasName("That")
+                        && model.GetSymbolInfo(mAccess).Symbol.ContainingNamespace.Name == "NFluent"
+                        && mAccess.Parent is InvocationExpressionSyntax invocation
+                        && invocation.ArgumentList.Arguments.Count == 1)
+                    {
+                        // we found check.That, let's  find the sut
+                        thatNode = invocation;
+                        break;
+                    }
+                }
+            }
+
+            return thatNode;
         }
     }
 }

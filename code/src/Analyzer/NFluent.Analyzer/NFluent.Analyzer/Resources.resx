@@ -117,16 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AnalyzerDescription" xml:space="preserve">
+  <data name="MCDescription" xml:space="preserve">
     <value>Check should always have a condition</value>
     <comment>Check.That(x); has no effect. One need to have an actual check expressed.</comment>
   </data>
-  <data name="AnalyzerMessageFormat" xml:space="preserve">
+  <data name="MCMessageFormat" xml:space="preserve">
     <value>Sut '{0}' should be actualy checked</value>
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
-  <data name="AnalyzerTitle" xml:space="preserve">
-    <value>Verify Check is done</value>
+  <data name="MCTitle" xml:space="preserve">
+    <value>Verifies if a check is performed </value>
     <comment>The title of the diagnostic.</comment>
+  </data>
+  <data name="SCDescription" xml:space="preserve">
+    <value>Binary expression should be evaluated using NFluent's syntax</value>
+  </data>
+  <data name="SCMessageFormat" xml:space="preserve">
+    <value>Sut '{0}' should be evaluated using '{1}'.</value>
+  </data>
+  <data name="SCTitle" xml:space="preserve">
+    <value>Transfomr checks on binary expression</value>
   </data>
 </root>
