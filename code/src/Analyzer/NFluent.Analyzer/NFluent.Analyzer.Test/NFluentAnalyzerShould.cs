@@ -188,41 +188,98 @@ namespace NFluent.Analyzer.Test
         }
 
         [TestMethod]
-        public async Task FixBinaryExpression()
+        [DataTestMethod]
+        [DataRow("(10 == 10).IsTrue()", "10", "IsEqualTo", "10")]
+        [DataRow("(10 != 10).IsTrue()", "10", "IsNotEqualTo", "10")]
+        [DataRow("(10 < 15).IsTrue()", "10", "IsStrictlyLessThan", "15")]
+        [DataRow("(10 < x).IsTrue()", "x", "IsStrictlyGreaterThan", "10")]
+        [DataRow("(x > 10).IsTrue()", "x", "IsStrictlyGreaterThan", "10")]
+        [DataRow("(10 > x).IsTrue()", "x", "IsStrictlyLessThan", "10")]
+        [DataRow("(x >= 10).IsTrue()", "x", "IsAfter", "10")]
+        [DataRow("(10 >= x).IsTrue()", "x", "IsBefore", "10")]
+        [DataRow("(x <= 10).IsTrue()", "x", "IsBefore", "10")]
+        [DataRow("(10 <= x).IsTrue()", "x", "IsAfter", "10")]
+        public async Task FixBinaryExpression(string testBit, string sut, string checkName, string refValue)
         {
-            const string testCode = @"
+            var testCode = $@"
     using NFluent;
 
-    namespace ConsoleApplication1
-    {
+    namespace ConsoleApplication
+    {{
         class TestClass
-        {
+        {{
+            int x;
             public void ShouldDetectIncompleteExpression()
-            {
-                Check.That(10 == 10).IsTrue();
-            }
-        }
-    }";
-            const string fixedCode = @"
+            {{
+                Check.That{testBit};
+            }}
+        }}
+    }}";
+            var fixedCode =$@"
     using NFluent;
 
-    namespace ConsoleApplication1
-    {
+    namespace ConsoleApplication
+    {{
         class TestClass
-        {
+        {{
+            int x;
             public void ShouldDetectIncompleteExpression()
-            {
-                Check.That(10).IsEqualTo(10);
-            }
-        }
-    }";
-
+            {{
+                Check.That({sut}).{checkName}({refValue});
+            }}
+        }}
+    }}";
             var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCS.Test
             {
                 TestCode =  testCode, 
                 FixedCode =  fixedCode,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.SutIsTheCheckId).WithArguments(10, "IsEqualTo").WithLocation(10,17)},
+                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.SutIsTheCheckId).WithArguments(sut, checkName).WithLocation(11,17)},
+                ReferenceAssemblies = referenceAssemblies
+            };
+
+            await test.RunAsync();
+        }
+
+        [TestMethod]
+        [DataTestMethod]
+        [DataRow("(10 == 10).IsFalse()", "10", "IsEqualTo", "10")]
+        public async Task FixFalseBinaryExpression(string testBit, string sut, string checkName, string refValue)
+        {
+            var testCode = $@"
+    using NFluent;
+
+    namespace ConsoleApplication
+    {{
+        class TestClass
+        {{
+            int x;
+            public void ShouldDetectIncompleteExpression()
+            {{
+                Check.That{testBit};
+            }}
+        }}
+    }}";
+            var fixedCode =$@"
+    using NFluent;
+
+    namespace ConsoleApplication
+    {{
+        class TestClass
+        {{
+            int x;
+            public void ShouldDetectIncompleteExpression()
+            {{
+                Check.That({sut}).Not.{checkName}({refValue});
+            }}
+        }}
+    }}";
+            var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
+            var test = new VerifyCS.Test
+            {
+                TestCode =  testCode, 
+                FixedCode =  fixedCode,
+                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.SutIsTheCheckId).WithArguments(sut, checkName).WithLocation(11,17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 

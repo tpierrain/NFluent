@@ -59,31 +59,25 @@ namespace NFluent.Analyzer
             if (sut is BinaryExpressionSyntax binaryExpressionSyntax &&
                 (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse")))
             {
-                var realSut = binaryExpressionSyntax.Left;
-                var refValue = binaryExpressionSyntax.Right;
-                if (realSut is LiteralExpressionSyntax)
-                {
-                    refValue = realSut;
-                    realSut = binaryExpressionSyntax.Right;
-                }
-
-                var checkName = string.Empty;
-                switch (binaryExpressionSyntax.OperatorToken.Kind())
-                {
-                    case SyntaxKind.EqualsEqualsToken:
-                        checkName = "IsEqualTo";
-                        break;
-                }
+                var checkName = NFluentAnalyzer.BinaryExpressionSutParser(binaryExpressionSyntax, out var realSut, out var refValue);
 
                 if (!string.IsNullOrEmpty(checkName))
                 {
+                    ExpressionSyntax checkThatExpression = SyntaxFactory.InvocationExpression(
+                        thatNode.Expression,
+                        RoslynHelper.BuildArgumentList(realSut)
+                    );
+                    if (actualCheck.HasName("IsFalse"))
+                    {
+                        // we negate the checks
+                        checkThatExpression = SyntaxFactory.MemberAccessExpression(
+                            SyntaxKind.SimpleMemberAccessExpression, checkThatExpression,
+                            SyntaxFactory.IdentifierName("Not"));
+                    } 
                     var fix = SyntaxFactory.InvocationExpression(
                         SyntaxFactory.MemberAccessExpression(
                             SyntaxKind.SimpleMemberAccessExpression,
-                            SyntaxFactory.InvocationExpression(
-                                thatNode.Expression,
-                                RoslynHelper.BuildArgumentList(realSut)
-                                ), SyntaxFactory.IdentifierName(checkName)), 
+                            checkThatExpression, SyntaxFactory.IdentifierName(checkName)), 
                         RoslynHelper.BuildArgumentList(refValue));
 
                     var root = await contextDocument.GetSyntaxRootAsync(cancellationToken);

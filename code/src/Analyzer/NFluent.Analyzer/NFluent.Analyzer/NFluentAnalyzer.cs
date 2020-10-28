@@ -99,19 +99,7 @@ namespace NFluent.Analyzer
                 var actualCheck = thatNode.Parent as MemberAccessExpressionSyntax;
                 if (sut is BinaryExpressionSyntax binaryExpressionSyntax && (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse") ))
                 {
-                    var realSut = binaryExpressionSyntax.Left;
-                    if (realSut is LiteralExpressionSyntax)
-                    {
-                        realSut = binaryExpressionSyntax.Right;
-                    }
-
-                    var checkName = string.Empty;
-                    switch (binaryExpressionSyntax.OperatorToken.Kind())
-                    {
-                        case SyntaxKind.EqualsEqualsToken:
-                            checkName = "IsEqualTo";
-                            break;
-                    }
+                    var checkName = BinaryExpressionSutParser(binaryExpressionSyntax, out var realSut, out var _);
 
                     if (!string.IsNullOrEmpty(checkName))
                     {
@@ -121,6 +109,45 @@ namespace NFluent.Analyzer
                     }
                 }
             }
+        }
+
+        public static string BinaryExpressionSutParser(BinaryExpressionSyntax binaryExpressionSyntax,
+            out ExpressionSyntax realSut, out ExpressionSyntax referenceValue)
+        {
+            var direct = true;
+            realSut = binaryExpressionSyntax.Left;
+            referenceValue = binaryExpressionSyntax.Right;
+            if (realSut is LiteralExpressionSyntax && !(referenceValue is LiteralExpressionSyntax))
+            {
+                referenceValue = realSut;
+                realSut = binaryExpressionSyntax.Right;
+                direct = false;
+            }
+
+            var checkName = string.Empty;
+            switch (binaryExpressionSyntax.OperatorToken.Kind())
+            {
+                case SyntaxKind.EqualsEqualsToken:
+                    checkName = "IsEqualTo";
+                    break;
+                case SyntaxKind.ExclamationEqualsToken:
+                    checkName = "IsNotEqualTo";
+                    break;
+                case SyntaxKind.LessThanToken:
+                    checkName = direct ? "IsStrictlyLessThan" : "IsStrictlyGreaterThan";
+                    break;
+                case SyntaxKind.GreaterThanToken:
+                    checkName = direct ? "IsStrictlyGreaterThan" : "IsStrictlyLessThan";
+                    break;
+                case SyntaxKind.LessThanEqualsToken:
+                    checkName = direct ? "IsBefore" : "IsAfter";
+                    break;                
+                case SyntaxKind.GreaterThanEqualsToken:
+                    checkName = direct ? "IsAfter" : "IsBefore";
+                    break;
+            }
+
+            return checkName;
         }
 
         public static InvocationExpressionSyntax FindInvocationOfThat(SemanticModel model,
