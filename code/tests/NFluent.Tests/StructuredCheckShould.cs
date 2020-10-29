@@ -16,21 +16,50 @@
 namespace NFluent.Tests
 {
     using System;
+    using Extensibility;
     using NFluent.Helpers;
     using NUnit.Framework;
 
     [TestFixture]
     public class StructuredCheckShould
     {
+        private DummyReporter dummyReporter;
+
         [Test]
         public void OfferSimpleSyntax()
         {
-            var sut = new Dummy();
-            sut.text = "test";
-            sut.x = 1;
+            var sut = new Dummy {Text = "test", X = 1};
 
-            Check.That(sut).WhichMember(o=> o.x).Verifies( m => m.IsEqualTo(1));
-            Check.That(sut).WhichMember(o=> o.text).Verifies( m => m.IsEqualTo("test"));
+            Check.That(sut).WhichMember(o=> o.X).Verifies( m => m.IsEqualTo(1));
+            Check.That(sut).WhichMember(o=> o.Text).Verifies( m => m.IsEqualTo("test"));
+        }
+
+        [Test]
+        public void SupportCustomReporters()
+        {
+            var lastReporter = Check.Reporter;
+            try
+            {
+                var sut = new Dummy();
+                this.dummyReporter = new DummyReporter();
+                Check.Reporter = this.dummyReporter;
+                Check.That(sut).WhichMember(o => o.X).Verifies(m => m.IsEqualTo(1));
+
+                Check.That(this.dummyReporter.LastMessage).IsNotEmpty();
+            }
+            finally
+            {
+                Check.Reporter = lastReporter;
+            }
+        }
+
+        public class DummyReporter : IErrorReporter
+        {
+            public string LastMessage;
+            public void ReportError(string message)
+            {
+                this.LastMessage = message;
+            }
         }
 
         [Test]
@@ -38,13 +67,13 @@ namespace NFluent.Tests
         {
             var sut = new Dummy();
             Check.ThatCode( ()=>
-            Check.That(sut).WhichMember(o => o.x).Verifies( m => m.IsEqualTo(1))).
+            Check.That(sut).WhichMember(o => o.X).Verifies( m => m.IsEqualTo(1))).
                 IsAFailingCheckWithMessage("", 
                     "The checked value fails the check because:", 
-                    "The checked value's x is different from the expected one.", 
-                    "The checked value's x:", 
+                    "The checked value's X is different from the expected one.", 
+                    "The checked value's X:", 
                     "\t[0]", 
-                    "The expected value's x:", 
+                    "The expected value's X:", 
                     "\t[1]");
         }
 
@@ -54,18 +83,18 @@ namespace NFluent.Tests
         {
             var sut = new Dummy();
             Check.ThatCode( ()=>
-                    Check.That(sut).WhichMember(o => o.x).Verifies( m => m.IsEqualTo(1).And.IsStrictlyGreaterThan(0))).
+                    Check.That(sut).WhichMember(o => o.X).Verifies( m => m.IsEqualTo(1).And.IsStrictlyGreaterThan(0))).
                 IsAFailingCheckWithMessage("", 
                     "The checked value fails the check because:", 
-                    "The checked value's x is different from the expected one.", 
-                    "The checked value's x:", 
+                    "The checked value's X is different from the expected one.", 
+                    "The checked value's X:", 
                     "\t[0]", 
-                    "The expected value's x:", 
+                    "The expected value's X:", 
                     "\t[1]", 
-                    "The checked value's x is equal to the given one.", 
-                    "The checked value's x:", 
+                    "The checked value's X is equal to the given one.", 
+                    "The checked value's X:", 
                     "\t[0]", 
-                    "The expected value's x: strictly greater than", 
+                    "The expected value's X: strictly greater than", 
                     "\t[0]");
         }
         
@@ -74,14 +103,14 @@ namespace NFluent.Tests
         {
             var sut = new Dummy();
             Check.ThatCode(() =>
-                    Check.That(sut).Not.WhichMember(o => o.x).Verifies(m => m.IsEqualTo(1)))
+                    Check.That(sut).Not.WhichMember(o => o.X).Verifies(m => m.IsEqualTo(1)))
                 .Throws<InvalidOperationException>().WithMessage("Verifies can't be used when negated");
         }
         
         internal class Dummy
         {
-            public int x;
-            public string text;
+            public int X;
+            public string Text;
         }
     }
 }

@@ -38,7 +38,7 @@ namespace NFluent.Analyzer
                 {
                     context.RegisterCodeFix(
                         CodeAction.Create(CodeFixResources.ExpandBinaryExpressionTitle,
-                            c => ConvertExpressionSut(context.Document, invocationExpression, c)), 
+                            c => ConvertExpressionSut(context.Document, invocationExpression, c), nameof(CodeFixResources.ExpandBinaryExpressionTitle)), 
                         contextDiagnostic);
                 }
             }

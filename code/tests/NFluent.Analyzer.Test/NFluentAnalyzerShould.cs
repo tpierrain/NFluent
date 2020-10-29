@@ -110,7 +110,7 @@ namespace NFluent.Analyzer.Test
             var test = new VerifyCSAnalyzer.Test
             {
                 TestCode =  testCode,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments(10).WithLocation(10,17)},
+                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments(10).WithLocation(11,17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 
@@ -126,7 +126,7 @@ namespace NFluent.Analyzer.Test
             var test = new VerifyCSAnalyzer.Test
             {
                 TestCode =  testCode,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments(10).WithLocation(10,17)},
+                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments(10).WithLocation(11,17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 

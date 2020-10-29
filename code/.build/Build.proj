@@ -44,6 +44,10 @@
       <CSProj>NFluent.NetStandard.20.Tests.csproj</CSProj>
       <Fwk>core</Fwk>
     </ProjectFolder>
+    <ProjectFolder Include="$(TestsPath)NFluent.Analyzer.Test">
+      <CSProj>NFluent.Analyzer.Test.csproj</CSProj>
+      <Fwk>core</Fwk>
+    </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)NFluent.NetStandard.20.Tests.Extensions">
       <CSProj>NFluent.NetStandard.20.Tests.Extensions.csproj</CSProj>
       <Fwk>core</Fwk>

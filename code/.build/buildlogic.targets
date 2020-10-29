@@ -4,8 +4,8 @@
   <!--Configuration informations-->
   <PropertyGroup>
     <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.7.922</opencoverVersion>
-    <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">4.4.0</reportGeneratorVersion>
-    <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.10.0</nunitConsoleVersion>
+    <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">4.7.1</reportGeneratorVersion>
+    <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.11.1</nunitConsoleVersion>
     <xunitConsoleVersion Condition="'$(xunitConsoleVersion)' == ''">2.4.1</xunitConsoleVersion>
 
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>

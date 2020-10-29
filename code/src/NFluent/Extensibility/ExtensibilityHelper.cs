@@ -144,31 +144,5 @@ namespace NFluent.Extensibility
 
             return new CheckLinkWhich<ICheck<TU>, ICheck<T>>(check, chk);
         }
-        
-        /// <summary>
-        /// Builds a chainable check with a sub item.
-        /// </summary>
-        /// <typeparam name="TU">type of the sut</typeparam>
-        /// <typeparam name="T">type of the sub item</typeparam>
-        /// <param name="check">original check to link to</param>
-        /// <param name="extractor">method to extract the value from the sut</param>
-        /// <param name="label">label for the sub item</param>
-        /// <param name="hasItem">set to false is no item is available</param>
-        /// <returns>A chainable link supporting Which</returns>
-        public static ICheckLinkWhich<ICheck<TU>, ICheck<T>> BuildCheckLinkWhich<TU, T>(ICheck<TU> check, Func<TU, T> extractor, string label, bool hasItem = true)
-        {
-            FluentCheck<T> chk = null;
-            if (hasItem)
-            {
-                var checker = ExtractChecker(check);
-                chk = new FluentCheck<T>(extractor(checker.Value));
-                if (!string.IsNullOrEmpty(label))
-                {
-                    chk.Checker.SetSutLabel(label);
-                }
-            }
-
-            return new CheckLinkWhich<ICheck<TU>, ICheck<T>>(check, chk);
-        }
     }
 }
