@@ -3,6 +3,7 @@
 namespace NFluent.Analyzer
 {
     using System.Collections.Immutable;
+    using System.Linq;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Diagnostics;    using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -47,59 +48,33 @@ namespace NFluent.Analyzer
         private static void AnalyzeExpressionStatement(SyntaxNodeAnalysisContext context)
         {
             var statement = (ExpressionStatementSyntax) context.Node;
-            if (!(statement.Expression is InvocationExpressionSyntax invocationExpression))
+            var thatNode = FindInvocationOfThat(context.SemanticModel, statement.Expression);
+            var invocationExpression = thatNode;
+
+            if (thatNode == null)
             {
                 return;
             }
 
-            if (invocationExpression.Expression.Kind() != SyntaxKind.SimpleMemberAccessExpression)
+            // deal for when we have the 'As' variation
+            if (thatNode.Parent is MemberAccessExpressionSyntax memberAccess && memberAccess.HasName("As"))
             {
-                return;
+                thatNode = memberAccess.Parent as InvocationExpressionSyntax;
             }
 
-            var memberAccess = (MemberAccessExpressionSyntax) invocationExpression.Expression;
-            if (memberAccess.HasName("As"))
+            if (thatNode.Parent is ExpressionStatementSyntax)
             {
-                if (context.SemanticModel.GetSymbolInfo(memberAccess).Symbol.ContainingNamespace.Name != "NFluent")
-                {
-                    return;
-                }
-
-                if (memberAccess.Expression is InvocationExpressionSyntax invocation &&
-                    invocation.Expression is MemberAccessExpressionSyntax syntax)
-                {
-                    invocationExpression = invocation;
-                    memberAccess = syntax;
-                }
-                else
-                {
-                    return;
-                }
-            }
-            if (memberAccess.HasName("That"))
-            {
-                if (context.SemanticModel.GetSymbolInfo(memberAccess).Symbol.ContainingNamespace.Name != "NFluent")
-                {
-                    return;
-                }
                 // we have a 'check.That(x); situation
                 var diagnostic = Diagnostic.Create(MissingCheckRule, context.Node.GetLocation(), invocationExpression.ArgumentList.Arguments.First().ToString());
                 context.ReportDiagnostic(diagnostic);
             }
             else
             {
-                var thatNode = FindInvocationOfThat(context.SemanticModel, memberAccess);
-
-                if (thatNode == null)
-                {
-                    return;
-                }
-
                 var sut = thatNode.ArgumentList.Arguments[0].Expression;
                 var actualCheck = thatNode.Parent as MemberAccessExpressionSyntax;
                 if (sut is BinaryExpressionSyntax binaryExpressionSyntax && (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse") ))
                 {
-                    var checkName = BinaryExpressionSutParser(binaryExpressionSyntax, out var realSut, out var _);
+                    var checkName = BinaryExpressionSutParser(binaryExpressionSyntax, out var realSut, out _);
 
                     if (!string.IsNullOrEmpty(checkName))
                     {
@@ -111,6 +86,10 @@ namespace NFluent.Analyzer
             }
         }
 
+        /// <summary>
+        /// Analyze binary expression to extract information required to improve a check
+        /// </summary>
+        /// <returns>the name of the check to use as a replacement of the binary expression</returns>
         public static string BinaryExpressionSutParser(BinaryExpressionSyntax binaryExpressionSyntax,
             out ExpressionSyntax realSut, out ExpressionSyntax referenceValue)
         {
@@ -153,25 +132,19 @@ namespace NFluent.Analyzer
         public static InvocationExpressionSyntax FindInvocationOfThat(SemanticModel model,
             ExpressionSyntax memberAccess)
         {
-            InvocationExpressionSyntax thatNode = null;
-            foreach (var childNode in memberAccess.DescendantNodesAndSelf())
+            foreach (var mAccess in memberAccess.DescendantNodesAndSelf().Where( cn => cn.IsKind(SyntaxKind.SimpleMemberAccessExpression)).Cast<MemberAccessExpressionSyntax>())
             {
-                if (childNode.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+                if (mAccess.HasName("That")
+                    && model.GetSymbolInfo(mAccess).Symbol.ContainingNamespace.Name == "NFluent"
+                    && mAccess.Parent is InvocationExpressionSyntax invocation
+                    && invocation.ArgumentList.Arguments.Count == 1)
                 {
-                    var mAccess = (MemberAccessExpressionSyntax) childNode;
-                    if (mAccess.HasName("That")
-                        && model.GetSymbolInfo(mAccess).Symbol.ContainingNamespace.Name == "NFluent"
-                        && mAccess.Parent is InvocationExpressionSyntax invocation
-                        && invocation.ArgumentList.Arguments.Count == 1)
-                    {
-                        // we found check.That, let's  find the sut
-                        thatNode = invocation;
-                        break;
-                    }
+                    // we found check.That, let's  find the sut
+                    return invocation;
                 }
             }
 
-            return thatNode;
+            return null;
         }
     }
 }

@@ -13,6 +13,26 @@ namespace NFluent.Analyzer.Test
     [TestClass]
     public class NFluentAnalyzerShould
     {
+        private const string SampleCodeTemplate = @"using NFluent;
+    using System.Collections.Generic;
+    namespace ConsoleApplication1
+    {{
+        class TestClass
+        {{
+            private int x;
+
+            public void SampleCheckMethod()
+            {{
+                {0}
+            }}
+        }}
+    }}";
+
+        private static string SampleCodeFromCheck(string checkCode)
+        {
+            return string.Format(SampleCodeTemplate, checkCode);
+        }
+
         //No diagnostics expected to show up
         [TestMethod]
         public async Task StaySilentWhenNoCode()
@@ -24,25 +44,13 @@ namespace NFluent.Analyzer.Test
         [TestMethod]
         public async Task ReportCheckThatExpression()
         {
-            const string testCode = @"
-    using NFluent;
-
-    namespace ConsoleApplication1
-    {
-        class TestClass
-        {
-            public void ShouldDetectIncompleteExpression()
-            {
-                Check.That(10);
-            }
-        }
-    }";
+            var testCode = SampleCodeFromCheck("Check.That(10);");
 
             var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCSAnalyzer.Test
             {
                 TestCode =  testCode,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments("10").WithLocation(10,17)},
+                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments("10").WithLocation(11,17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 
@@ -52,19 +60,7 @@ namespace NFluent.Analyzer.Test
         [TestMethod]
         public async Task DontReportProperCheckThatExpression()
         {
-            const string testCode = @"
-    using NFluent;
-
-    namespace ConsoleApplication1
-    {
-        class TestClass
-        {
-            public void ShouldDetectIncompleteExpression()
-            {
-                Check.That(10).IsZero();
-            }
-        }
-    }";
+            var testCode = SampleCodeFromCheck("Check.That(10).IsZero();");
 
             var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCSAnalyzer.Test
@@ -90,35 +86,9 @@ namespace NFluent.Analyzer.Test
         [DataRow("\"Test\"", "IsNotEmpty()")]
         public async Task ReportAndFixCheckThatExpression(string sut, string check)
         {
-            var testCode = $@"
-    using NFluent;
-    using System.Collections.Generic;
+            var testCode = SampleCodeFromCheck($"Check.That({sut});");
+            var fixTest = SampleCodeFromCheck($"Check.That({sut}).{check};");
 
-    namespace ConsoleApplication1
-    {{
-        class TestClass
-        {{
-            public void ShouldDetectIncompleteExpression()
-            {{
-                Check.That({sut});
-            }}
-        }}
-    }}";
-
-            var fixTest = $@"
-    using NFluent;
-    using System.Collections.Generic;
-
-    namespace ConsoleApplication1
-    {{
-        class TestClass
-        {{
-            public void ShouldDetectIncompleteExpression()
-            {{
-                Check.That({sut}).{check};
-            }}
-        }}
-    }}";
             var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCS.Test
             {
@@ -134,20 +104,8 @@ namespace NFluent.Analyzer.Test
         [TestMethod]
         public async Task ReportCheckWithCustomMessage()
         {
-            const string testCode = @"
-    using NFluent;
-
-    namespace ConsoleApplication1
-    {
-        class TestClass
-        {
-            public void ShouldDetectIncompleteExpression()
-            {
-                Check.WithCustomMessage(""dont care"").That(10);
-            }
-        }
-    }";
-
+            var testCode = SampleCodeFromCheck(@"Check.WithCustomMessage(""dont care"").That(10);");
+ 
             var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCSAnalyzer.Test
             {
@@ -162,19 +120,7 @@ namespace NFluent.Analyzer.Test
         [TestMethod]
         public async Task ReportCheckWithAs()
         {
-            const string testCode = @"
-    using NFluent;
-
-    namespace ConsoleApplication1
-    {
-        class TestClass
-        {
-            public void ShouldDetectIncompleteExpression()
-            {
-                Check.That(10).As(""number"");
-            }
-        }
-    }";
+            var testCode = SampleCodeFromCheck(@"Check.That(10).As(""number"");");
 
             var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCSAnalyzer.Test
@@ -201,34 +147,9 @@ namespace NFluent.Analyzer.Test
         [DataRow("(10 <= x).IsTrue()", "x", "IsAfter", "10")]
         public async Task FixBinaryExpression(string testBit, string sut, string checkName, string refValue)
         {
-            var testCode = $@"
-    using NFluent;
+            var testCode = SampleCodeFromCheck($"Check.That{testBit};");
+            var fixedCode = SampleCodeFromCheck($"Check.That({sut}).{checkName}({refValue});");
 
-    namespace ConsoleApplication
-    {{
-        class TestClass
-        {{
-            int x;
-            public void ShouldDetectIncompleteExpression()
-            {{
-                Check.That{testBit};
-            }}
-        }}
-    }}";
-            var fixedCode =$@"
-    using NFluent;
-
-    namespace ConsoleApplication
-    {{
-        class TestClass
-        {{
-            int x;
-            public void ShouldDetectIncompleteExpression()
-            {{
-                Check.That({sut}).{checkName}({refValue});
-            }}
-        }}
-    }}";
             var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCS.Test
             {
@@ -246,34 +167,9 @@ namespace NFluent.Analyzer.Test
         [DataRow("(10 == 10).IsFalse()", "10", "IsEqualTo", "10")]
         public async Task FixFalseBinaryExpression(string testBit, string sut, string checkName, string refValue)
         {
-            var testCode = $@"
-    using NFluent;
+            var testCode = SampleCodeFromCheck($"Check.That{testBit};");
+            var fixedCode = SampleCodeFromCheck($"Check.That({sut}).Not.{checkName}({refValue});");
 
-    namespace ConsoleApplication
-    {{
-        class TestClass
-        {{
-            int x;
-            public void ShouldDetectIncompleteExpression()
-            {{
-                Check.That{testBit};
-            }}
-        }}
-    }}";
-            var fixedCode =$@"
-    using NFluent;
-
-    namespace ConsoleApplication
-    {{
-        class TestClass
-        {{
-            int x;
-            public void ShouldDetectIncompleteExpression()
-            {{
-                Check.That({sut}).Not.{checkName}({refValue});
-            }}
-        }}
-    }}";
             var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCS.Test
             {
