@@ -1,20 +1,37 @@
-﻿using System.Collections.Immutable;
-using System.Composition;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CodeActions;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿// --------------------------------------------------------------------------------------------------------------------
+//  <copyright file="NFluentAnalyzerCodeFixProvider.cs" company="NFluent">
+//   Copyright 2020 Cyrille DUPUYDAUBY
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace NFluent.Analyzer
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(NFluentAnalyzerCodeFixProvider)), Shared]
+    using System.Collections.Immutable;
+    using System.Composition;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CodeActions;
+    using Microsoft.CodeAnalysis.CodeFixes;
+    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(NFluentAnalyzerCodeFixProvider))]
+    [Shared]
     public class NFluentAnalyzerCodeFixProvider : CodeFixProvider
     {
-        public sealed override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(NFluentAnalyzer.MissingCheckId, NFluentAnalyzer.SutIsTheCheckId);
+        public sealed override ImmutableArray<string> FixableDiagnosticIds =>
+            ImmutableArray.Create(NFluentAnalyzer.MissingCheckId, NFluentAnalyzer.SutIsTheCheckId);
 
         public sealed override FixAllProvider GetFixAllProvider()
         {
@@ -27,8 +44,8 @@ namespace NFluent.Analyzer
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
             foreach (var contextDiagnostic in context.Diagnostics)
             {
-
-                var invocationExpression = root.FindToken(contextDiagnostic.Location.SourceSpan.Start).Parent.AncestorsAndSelf()
+                var invocationExpression = root.FindToken(contextDiagnostic.Location.SourceSpan.Start).Parent
+                    .AncestorsAndSelf()
                     .OfType<InvocationExpressionSyntax>().First();
                 if (contextDiagnostic.Id == NFluentAnalyzer.MissingCheckId)
                 {
@@ -38,13 +55,15 @@ namespace NFluent.Analyzer
                 {
                     context.RegisterCodeFix(
                         CodeAction.Create(CodeFixResources.ExpandBinaryExpressionTitle,
-                            c => ConvertExpressionSut(context.Document, invocationExpression, c), nameof(CodeFixResources.ExpandBinaryExpressionTitle)), 
+                            c => ConvertExpressionSut(context.Document, invocationExpression, c),
+                            nameof(CodeFixResources.ExpandBinaryExpressionTitle)),
                         contextDiagnostic);
                 }
             }
         }
 
-        private static async Task<Document> ConvertExpressionSut(Document contextDocument, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        private static async Task<Document> ConvertExpressionSut(Document contextDocument,
+            InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
         {
             var thatNode =
                 NFluentAnalyzer.FindInvocationOfThat(await contextDocument.GetSemanticModelAsync(cancellationToken),
@@ -59,7 +78,9 @@ namespace NFluent.Analyzer
             if (sut is BinaryExpressionSyntax binaryExpressionSyntax &&
                 (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse")))
             {
-                var checkName = NFluentAnalyzer.BinaryExpressionSutParser(binaryExpressionSyntax, out var realSut, out var refValue);
+                var checkName =
+                    NFluentAnalyzer.BinaryExpressionSutParser(binaryExpressionSyntax, out var realSut,
+                        out var refValue);
 
                 if (!string.IsNullOrEmpty(checkName))
                 {
@@ -73,11 +94,12 @@ namespace NFluent.Analyzer
                         checkThatExpression = SyntaxFactory.MemberAccessExpression(
                             SyntaxKind.SimpleMemberAccessExpression, checkThatExpression,
                             SyntaxFactory.IdentifierName("Not"));
-                    } 
+                    }
+
                     var fix = SyntaxFactory.InvocationExpression(
                         SyntaxFactory.MemberAccessExpression(
                             SyntaxKind.SimpleMemberAccessExpression,
-                            checkThatExpression, SyntaxFactory.IdentifierName(checkName)), 
+                            checkThatExpression, SyntaxFactory.IdentifierName(checkName)),
                         RoslynHelper.BuildArgumentList(refValue));
 
                     var root = await contextDocument.GetSyntaxRootAsync(cancellationToken);
@@ -106,7 +128,8 @@ namespace NFluent.Analyzer
             }
         }
 
-        private static async Task<Document> AddAutomaticCheckMethod(Document document, ExpressionSyntax invocationExpression,
+        private static async Task<Document> AddAutomaticCheckMethod(Document document,
+            ExpressionSyntax invocationExpression,
             CancellationToken cancellationToken)
         {
             // Get the symbol representing the type to be renamed.
@@ -162,14 +185,18 @@ namespace NFluent.Analyzer
                 case SpecialType.System_AsyncCallback:
                     break;
                 default:
-                    if (sutType.TypeKind == TypeKind.Array || sutType.AllInterfaces.Any( t => t.SpecialType == SpecialType.System_Collections_IEnumerable))
+                    if (sutType.TypeKind == TypeKind.Array || sutType.AllInterfaces.Any(t =>
+                        t.SpecialType == SpecialType.System_Collections_IEnumerable))
                     {
                         return SyntaxFactory.InvocationExpression(
                             SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
-                                SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, invocationExpression, SyntaxFactory.IdentifierName("Not")),
+                                SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                                    invocationExpression, SyntaxFactory.IdentifierName("Not")),
                                 SyntaxFactory.IdentifierName("IsEmpty")));
                     }
-                    if (sutType.IsReferenceType || sutType.OriginalDefinition?.SpecialType == SpecialType.System_Nullable_T)
+
+                    if (sutType.IsReferenceType ||
+                        sutType.OriginalDefinition?.SpecialType == SpecialType.System_Nullable_T)
                     {
                         checkName = "IsNotNull";
                     }

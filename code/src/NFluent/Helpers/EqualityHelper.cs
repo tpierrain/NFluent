@@ -85,7 +85,7 @@ namespace NFluent.Helpers
                         options |= MessageOption.WithHash;
                     }
 
-                    test.SetValuesIndex(differenceDetails.GetFirstIndex(false));
+                    test.SetValuesIndex(differenceDetails.GetFirstIndex());
 
                     test.Fail(differenceDetails.GetErrorMessage(sut, expected), options);
                 })

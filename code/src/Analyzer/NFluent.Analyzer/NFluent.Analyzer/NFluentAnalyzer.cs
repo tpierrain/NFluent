@@ -1,3 +1,17 @@
+// --------------------------------------------------------------------------------------------------------------------
+//  <copyright file="NFluentAnalyzer.cs" company="NFluent">
+//   Copyright 2020 Cyrille DUPUYDAUBY
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 
 namespace NFluent.Analyzer
@@ -5,8 +19,9 @@ namespace NFluent.Analyzer
     using System.Collections.Immutable;
     using System.Linq;
     using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.Diagnostics;    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Microsoft.CodeAnalysis.Diagnostics;
 
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class NFluentAnalyzer : DiagnosticAnalyzer
@@ -18,23 +33,27 @@ namespace NFluent.Analyzer
         // See https://github.com/dotnet/roslyn/blob/master/docs/analyzers/Localizing%20Analyzers.md for more on localization
         private const string Category = "Testing";
 
-        private static readonly DiagnosticDescriptor MissingCheckRule = BuildRule(MissingCheckId, nameof(Resources.MCTitle), nameof(Resources.MCMessageFormat), nameof(Resources.MCDescription));
-        private static readonly DiagnosticDescriptor SutIsTheCheckRule = BuildRule(SutIsTheCheckId, nameof(Resources.SCTitle), nameof(Resources.SCMessageFormat), nameof(Resources.SCDescription));
+        private static readonly DiagnosticDescriptor MissingCheckRule = BuildRule(MissingCheckId,
+            nameof(Resources.MCTitle), nameof(Resources.MCMessageFormat), nameof(Resources.MCDescription));
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(MissingCheckRule, SutIsTheCheckRule);
+        private static readonly DiagnosticDescriptor SutIsTheCheckRule = BuildRule(SutIsTheCheckId,
+            nameof(Resources.SCTitle), nameof(Resources.SCMessageFormat), nameof(Resources.SCDescription));
+
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(MissingCheckRule, SutIsTheCheckRule);
 
         private static DiagnosticDescriptor BuildRule(string id, string localizableTitle, string localizableFormat,
             string localizableDescription, DiagnosticSeverity severity = DiagnosticSeverity.Warning,
             string category = Category, bool isEnabledByDefault = true)
         {
-            return new DiagnosticDescriptor(id, 
-                new LocalizableResourceString(localizableTitle, Resources.ResourceManager, typeof(Resources)), 
-                new LocalizableResourceString(localizableFormat, Resources.ResourceManager, typeof(Resources)), 
+            return new DiagnosticDescriptor(id,
+                new LocalizableResourceString(localizableTitle, Resources.ResourceManager, typeof(Resources)),
+                new LocalizableResourceString(localizableFormat, Resources.ResourceManager, typeof(Resources)),
                 category,
                 severity,
                 isEnabledByDefault,
                 new LocalizableResourceString(localizableDescription, Resources.ResourceManager, typeof(Resources))
-                );
+            );
         }
 
         public override void Initialize(AnalysisContext context)
@@ -65,14 +84,16 @@ namespace NFluent.Analyzer
             if (thatNode.Parent is ExpressionStatementSyntax)
             {
                 // we have a 'check.That(x); situation
-                var diagnostic = Diagnostic.Create(MissingCheckRule, context.Node.GetLocation(), invocationExpression.ArgumentList.Arguments.First().ToString());
+                var diagnostic = Diagnostic.Create(MissingCheckRule, context.Node.GetLocation(),
+                    invocationExpression.ArgumentList.Arguments.First().ToString());
                 context.ReportDiagnostic(diagnostic);
             }
             else
             {
                 var sut = thatNode.ArgumentList.Arguments[0].Expression;
                 var actualCheck = thatNode.Parent as MemberAccessExpressionSyntax;
-                if (sut is BinaryExpressionSyntax binaryExpressionSyntax && (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse") ))
+                if (sut is BinaryExpressionSyntax binaryExpressionSyntax &&
+                    (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse")))
                 {
                     var checkName = BinaryExpressionSutParser(binaryExpressionSyntax, out var realSut, out _);
 
@@ -87,7 +108,7 @@ namespace NFluent.Analyzer
         }
 
         /// <summary>
-        /// Analyze binary expression to extract information required to improve a check
+        ///     Analyze binary expression to extract information required to improve a check
         /// </summary>
         /// <returns>the name of the check to use as a replacement of the binary expression</returns>
         public static string BinaryExpressionSutParser(BinaryExpressionSyntax binaryExpressionSyntax,
@@ -120,7 +141,7 @@ namespace NFluent.Analyzer
                     break;
                 case SyntaxKind.LessThanEqualsToken:
                     checkName = direct ? "IsBefore" : "IsAfter";
-                    break;                
+                    break;
                 case SyntaxKind.GreaterThanEqualsToken:
                     checkName = direct ? "IsAfter" : "IsBefore";
                     break;
@@ -132,7 +153,8 @@ namespace NFluent.Analyzer
         public static InvocationExpressionSyntax FindInvocationOfThat(SemanticModel model,
             ExpressionSyntax memberAccess)
         {
-            foreach (var mAccess in memberAccess.DescendantNodesAndSelf().Where( cn => cn.IsKind(SyntaxKind.SimpleMemberAccessExpression)).Cast<MemberAccessExpressionSyntax>())
+            foreach (var mAccess in memberAccess.DescendantNodesAndSelf()
+                .Where(cn => cn.IsKind(SyntaxKind.SimpleMemberAccessExpression)).Cast<MemberAccessExpressionSyntax>())
             {
                 if (mAccess.HasName("That")
                     && model.GetSymbolInfo(mAccess).Symbol.ContainingNamespace.Name == "NFluent"

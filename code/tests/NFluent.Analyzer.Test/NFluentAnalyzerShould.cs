@@ -1,5 +1,18 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+//  <copyright file="NFluentAnalyzerShould.cs" company="NFluent">
+//   Copyright 2020 Cyrille DUPUYDAUBY
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 using VerifyCS = NFluent.Analyzer.Test.CSharpCodeFixVerifier<
     NFluent.Analyzer.NFluentAnalyzer,
     NFluent.Analyzer.NFluentAnalyzerCodeFixProvider>;
@@ -8,7 +21,9 @@ using VerifyCSAnalyzer = NFluent.Analyzer.Test.CSharpAnalyzerVerifier<NFluent.An
 namespace NFluent.Analyzer.Test
 {
     using System.Collections.Immutable;
+    using System.Threading.Tasks;
     using Microsoft.CodeAnalysis.Testing;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class NFluentAnalyzerShould
@@ -46,11 +61,13 @@ namespace NFluent.Analyzer.Test
         {
             var testCode = SampleCodeFromCheck("Check.That(10);");
 
-            var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
+            var referenceAssemblies =
+                ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCSAnalyzer.Test
             {
-                TestCode =  testCode,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments("10").WithLocation(11,17)},
+                TestCode = testCode,
+                ExpectedDiagnostics =
+                    {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments("10").WithLocation(11, 17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 
@@ -62,10 +79,11 @@ namespace NFluent.Analyzer.Test
         {
             var testCode = SampleCodeFromCheck("Check.That(10).IsZero();");
 
-            var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
+            var referenceAssemblies =
+                ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCSAnalyzer.Test
             {
-                TestCode =  testCode,
+                TestCode = testCode,
                 ReferenceAssemblies = referenceAssemblies
             };
 
@@ -89,12 +107,14 @@ namespace NFluent.Analyzer.Test
             var testCode = SampleCodeFromCheck($"Check.That({sut});");
             var fixTest = SampleCodeFromCheck($"Check.That({sut}).{check};");
 
-            var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
+            var referenceAssemblies =
+                ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCS.Test
             {
-                TestCode =  testCode,
+                TestCode = testCode,
                 FixedCode = fixTest,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments(sut).WithLocation(11,17)},
+                ExpectedDiagnostics =
+                    {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments(sut).WithLocation(11, 17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 
@@ -105,12 +125,14 @@ namespace NFluent.Analyzer.Test
         public async Task ReportCheckWithCustomMessage()
         {
             var testCode = SampleCodeFromCheck(@"Check.WithCustomMessage(""dont care"").That(10);");
- 
-            var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
+
+            var referenceAssemblies =
+                ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCSAnalyzer.Test
             {
-                TestCode =  testCode,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments(10).WithLocation(11,17)},
+                TestCode = testCode,
+                ExpectedDiagnostics =
+                    {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments(10).WithLocation(11, 17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 
@@ -122,11 +144,13 @@ namespace NFluent.Analyzer.Test
         {
             var testCode = SampleCodeFromCheck(@"Check.That(10).As(""number"");");
 
-            var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
+            var referenceAssemblies =
+                ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCSAnalyzer.Test
             {
-                TestCode =  testCode,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments(10).WithLocation(11,17)},
+                TestCode = testCode,
+                ExpectedDiagnostics =
+                    {VerifyCS.Diagnostic(NFluentAnalyzer.MissingCheckId).WithArguments(10).WithLocation(11, 17)},
                 ReferenceAssemblies = referenceAssemblies
             };
 
@@ -150,12 +174,17 @@ namespace NFluent.Analyzer.Test
             var testCode = SampleCodeFromCheck($"Check.That{testBit};");
             var fixedCode = SampleCodeFromCheck($"Check.That({sut}).{checkName}({refValue});");
 
-            var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
+            var referenceAssemblies =
+                ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCS.Test
             {
-                TestCode =  testCode, 
-                FixedCode =  fixedCode,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.SutIsTheCheckId).WithArguments(sut, checkName).WithLocation(11,17)},
+                TestCode = testCode,
+                FixedCode = fixedCode,
+                ExpectedDiagnostics =
+                {
+                    VerifyCS.Diagnostic(NFluentAnalyzer.SutIsTheCheckId).WithArguments(sut, checkName)
+                        .WithLocation(11, 17)
+                },
                 ReferenceAssemblies = referenceAssemblies
             };
 
@@ -170,17 +199,21 @@ namespace NFluent.Analyzer.Test
             var testCode = SampleCodeFromCheck($"Check.That{testBit};");
             var fixedCode = SampleCodeFromCheck($"Check.That({sut}).Not.{checkName}({refValue});");
 
-            var referenceAssemblies = ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
+            var referenceAssemblies =
+                ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
             var test = new VerifyCS.Test
             {
-                TestCode =  testCode, 
-                FixedCode =  fixedCode,
-                ExpectedDiagnostics = {VerifyCS.Diagnostic(NFluentAnalyzer.SutIsTheCheckId).WithArguments(sut, checkName).WithLocation(11,17)},
+                TestCode = testCode,
+                FixedCode = fixedCode,
+                ExpectedDiagnostics =
+                {
+                    VerifyCS.Diagnostic(NFluentAnalyzer.SutIsTheCheckId).WithArguments(sut, checkName)
+                        .WithLocation(11, 17)
+                },
                 ReferenceAssemblies = referenceAssemblies
             };
 
             await test.RunAsync();
         }
-
     }
 }

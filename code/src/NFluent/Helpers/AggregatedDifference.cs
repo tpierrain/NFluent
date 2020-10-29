@@ -51,9 +51,9 @@ namespace NFluent.Helpers
             this.details.AddRange(other.details);
         }
 
-        public int GetFirstIndex(bool forEquivalence)
+        public int GetFirstIndex()
         {
-            return this.details.FirstOrDefault(x => forEquivalence ? x.StillNeededForEquivalence : x.StillNeededForEquality)?.ActualIndex??0;
+            return this.details.FirstOrDefault(x => x.StillNeededForEquality)?.ActualIndex ?? 0;
         }
         
         public bool DoesProvideDetails(object actual, object expected)
