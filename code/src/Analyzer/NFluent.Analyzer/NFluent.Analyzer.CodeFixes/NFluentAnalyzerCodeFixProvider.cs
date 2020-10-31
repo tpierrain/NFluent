@@ -46,35 +46,46 @@ namespace NFluent.Analyzer
             {
                 var invocationExpression = root.FindToken(contextDiagnostic.Location.SourceSpan.Start).Parent
                     .AncestorsAndSelf()
-                    .OfType<InvocationExpressionSyntax>().First();
-                if (contextDiagnostic.Id == NFluentAnalyzer.MissingCheckId)
+                    .OfType<ExpressionStatementSyntax>().First();
+                var thatNode =
+                    NFluentAnalyzer.FindInvocationOfThat(await context.Document.GetSemanticModelAsync(context.CancellationToken),
+                        invocationExpression);
+                if (thatNode == null)
                 {
-                    FixMissingCheck(context, invocationExpression, contextDiagnostic);
+                    return;
                 }
-                else if (contextDiagnostic.Id == NFluentAnalyzer.SutIsTheCheckId)
+                switch (contextDiagnostic.Id)
                 {
-                    context.RegisterCodeFix(
-                        CodeAction.Create(CodeFixResources.ExpandBinaryExpressionTitle,
-                            c => ConvertExpressionSut(context.Document, invocationExpression, c),
-                            nameof(CodeFixResources.ExpandBinaryExpressionTitle)),
-                        contextDiagnostic);
+                    case NFluentAnalyzer.MissingCheckId:
+                        FixMissingCheck(context, thatNode, contextDiagnostic);
+                        break;
+                    case NFluentAnalyzer.SutIsTheCheckId:
+                        context.RegisterCodeFix(
+                            CodeAction.Create(CodeFixResources.ExpandBinaryExpressionTitle,
+                                c => ConvertExpressionSut(context.Document, thatNode, c),
+                                nameof(CodeFixResources.ExpandBinaryExpressionTitle)),
+                            contextDiagnostic);
+                        break;
                 }
             }
         }
 
         private static async Task<Document> ConvertExpressionSut(Document contextDocument,
-            InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+            InvocationExpressionSyntax thatNode, CancellationToken cancellationToken)
         {
-            var thatNode =
-                NFluentAnalyzer.FindInvocationOfThat(await contextDocument.GetSemanticModelAsync(cancellationToken),
-                    invocationExpression);
-            if (thatNode == null)
+            var sut = thatNode.ArgumentList.Arguments[0].Expression;
+            
+            MemberAccessExpressionSyntax actualCheck;
+            // deal for when we have the 'As' variation
+            if (thatNode.Parent is MemberAccessExpressionSyntax memberAccess && memberAccess.HasName("As"))
             {
-                return contextDocument;
+                actualCheck = memberAccess.Parent.Parent as MemberAccessExpressionSyntax;
+            }
+            else
+            {
+                actualCheck = thatNode.Parent as MemberAccessExpressionSyntax;
             }
 
-            var sut = thatNode.ArgumentList.Arguments[0].Expression;
-            var actualCheck = thatNode.Parent as MemberAccessExpressionSyntax;
             if (sut is BinaryExpressionSyntax binaryExpressionSyntax &&
                 (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse")))
             {
@@ -82,46 +93,49 @@ namespace NFluent.Analyzer
                     NFluentAnalyzer.BinaryExpressionSutParser(binaryExpressionSyntax, out var realSut,
                         out var refValue);
 
+                // can we fix this ?
                 if (!string.IsNullOrEmpty(checkName))
                 {
-                    ExpressionSyntax checkThatExpression = SyntaxFactory.InvocationExpression(
-                        thatNode.Expression,
-                        RoslynHelper.BuildArgumentList(realSut)
-                    );
+                    // use the 'sut' as 'That's argument
+                    ExpressionSyntax altThat = thatNode.Update(thatNode.Expression, RoslynHelper.BuildArgumentList(realSut));
+
                     if (actualCheck.HasName("IsFalse"))
                     {
-                        // we negate the checks
-                        checkThatExpression = SyntaxFactory.MemberAccessExpression(
-                            SyntaxKind.SimpleMemberAccessExpression, checkThatExpression,
+                        // inject 'Not'
+                        altThat = SyntaxFactory.MemberAccessExpression(
+                            SyntaxKind.SimpleMemberAccessExpression, altThat,
                             SyntaxFactory.IdentifierName("Not"));
                     }
+                    // inject the fixed 'That'
+                    var updatedCheckThat = actualCheck.ReplaceNode(thatNode, altThat);
+                    // inject the proper check name
+                    var altCheckNaMme = updatedCheckThat.Update(updatedCheckThat.Expression, 
+                        updatedCheckThat.OperatorToken, 
+                        SyntaxFactory.IdentifierName(checkName));
+                    // inject the parameter
+                    var newFix = ((InvocationExpressionSyntax)actualCheck.Parent).Update(altCheckNaMme, RoslynHelper.BuildArgumentList(refValue));
 
-                    var fix = SyntaxFactory.InvocationExpression(
-                        SyntaxFactory.MemberAccessExpression(
-                            SyntaxKind.SimpleMemberAccessExpression,
-                            checkThatExpression, SyntaxFactory.IdentifierName(checkName)),
-                        RoslynHelper.BuildArgumentList(refValue));
-
+                    // inject the fixed check
                     var root = await contextDocument.GetSyntaxRootAsync(cancellationToken);
-                    return contextDocument.WithSyntaxRoot(root.ReplaceNode(invocationExpression.Parent.Parent, fix));
+                    return contextDocument.WithSyntaxRoot(root.ReplaceNode(actualCheck.Parent, newFix));
                 }
             }
 
             return contextDocument;
         }
 
-        private static void FixMissingCheck(CodeFixContext context, InvocationExpressionSyntax invocationExpression,
+        private static void FixMissingCheck(CodeFixContext context, InvocationExpressionSyntax thatNode,
             Diagnostic contextDiagnostic)
         {
-            if (invocationExpression.Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression &&
-                invocationExpression.ArgumentList.Arguments.Any())
+            if (thatNode.Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression &&
+                thatNode.ArgumentList.Arguments.Any())
             {
-                var memberAccess = (MemberAccessExpressionSyntax) invocationExpression.Expression;
+                var memberAccess = (MemberAccessExpressionSyntax) thatNode.Expression;
                 if (memberAccess.Expression is IdentifierNameSyntax)
                 {
                     context.RegisterCodeFix(
                         CodeAction.Create(CodeFixResources.AddSimpleCheckTitle,
-                            c => AddAutomaticCheckMethod(context.Document, invocationExpression, c),
+                            c => AddAutomaticCheckMethod(context.Document, thatNode, c),
                             nameof(CodeFixResources.AddSimpleCheckTitle)),
                         contextDiagnostic);
                 }

@@ -157,7 +157,6 @@ namespace NFluent.Analyzer.Test
             await test.RunAsync();
         }
 
-        [TestMethod]
         [DataTestMethod]
         [DataRow("(10 == 10).IsTrue()", "10", "IsEqualTo", "10")]
         [DataRow("(10 != 10).IsTrue()", "10", "IsNotEqualTo", "10")]
@@ -192,6 +191,51 @@ namespace NFluent.Analyzer.Test
         }
 
         [TestMethod]
+        public async Task FixBinaryExpressionWithAs()
+        {
+            var testCode = SampleCodeFromCheck($"Check.That(10 == 10).As(\"test\").IsTrue();");
+            var fixedCode = SampleCodeFromCheck($"Check.That(10).As(\"test\").IsEqualTo(10);");
+
+            var referenceAssemblies =
+                ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
+            var test = new VerifyCS.Test
+            {
+                TestCode = testCode,
+                FixedCode = fixedCode,
+                ExpectedDiagnostics =
+                {
+                    VerifyCS.Diagnostic(NFluentAnalyzer.SutIsTheCheckId).WithArguments(10, "IsEqualTo")
+                        .WithLocation(11, 17)
+                },
+                ReferenceAssemblies = referenceAssemblies
+            };
+
+            await test.RunAsync();
+        }
+
+        [TestMethod]
+        public async Task FixBinaryExpressionWithWithCustomMessage()
+        {
+            var testCode = SampleCodeFromCheck($"Check.WithCustomMessage(\"drill\").That(10 == 10).As(\"test\").IsTrue();");
+            var fixedCode = SampleCodeFromCheck($"Check.WithCustomMessage(\"drill\").That(10).As(\"test\").IsEqualTo(10);");
+
+            var referenceAssemblies =
+                ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
+            var test = new VerifyCS.Test
+            {
+                TestCode = testCode,
+                FixedCode = fixedCode,
+                ExpectedDiagnostics =
+                {
+                    VerifyCS.Diagnostic(NFluentAnalyzer.SutIsTheCheckId).WithArguments(10, "IsEqualTo")
+                        .WithLocation(11, 17)
+                },
+                ReferenceAssemblies = referenceAssemblies
+            };
+
+            await test.RunAsync();
+        }
+
         [DataTestMethod]
         [DataRow("(10 == 10).IsFalse()", "10", "IsEqualTo", "10")]
         public async Task FixFalseBinaryExpression(string testBit, string sut, string checkName, string refValue)

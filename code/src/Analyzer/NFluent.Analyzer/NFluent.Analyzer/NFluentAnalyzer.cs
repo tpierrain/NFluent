@@ -90,7 +90,7 @@ namespace NFluent.Analyzer
             }
             else
             {
-                var sut = thatNode.ArgumentList.Arguments[0].Expression;
+                var sut = invocationExpression.ArgumentList.Arguments[0].Expression;
                 var actualCheck = thatNode.Parent as MemberAccessExpressionSyntax;
                 if (sut is BinaryExpressionSyntax binaryExpressionSyntax &&
                     (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse")))
@@ -151,7 +151,7 @@ namespace NFluent.Analyzer
         }
 
         public static InvocationExpressionSyntax FindInvocationOfThat(SemanticModel model,
-            ExpressionSyntax memberAccess)
+            SyntaxNode memberAccess)
         {
             foreach (var mAccess in memberAccess.DescendantNodesAndSelf()
                 .Where(cn => cn.IsKind(SyntaxKind.SimpleMemberAccessExpression)).Cast<MemberAccessExpressionSyntax>())
