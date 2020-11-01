@@ -52,6 +52,14 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\..\.build\NFluent.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
+    <PackageReleaseNotes>** Alpha Version **. This version spots:
+- unfinished checks: Check.That(sut);
+- binary expression obsession: Check.That(sut = 10).IsTrue();
+- enumeration size check: Check.That(sut.Count).IsEqualTo(10);</PackageReleaseNotes>
+    <Copyright>Author Cyrille Dupuydauby</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/NFluent/NFluent</RepositoryUrl>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />

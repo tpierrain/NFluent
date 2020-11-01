@@ -77,5 +77,14 @@ namespace NFluent.Analyzer {
                 return ResourceManager.GetString("ExpandBinaryExpressionTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Enumerable specific check.
+        /// </summary>
+        internal static string SwitchToEnumerableCheck {
+            get {
+                return ResourceManager.GetString("SwitchToEnumerableCheck", resourceCulture);
+            }
+        }
     }
 }

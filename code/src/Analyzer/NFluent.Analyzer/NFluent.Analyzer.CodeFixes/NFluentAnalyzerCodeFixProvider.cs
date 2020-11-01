@@ -31,7 +31,7 @@ namespace NFluent.Analyzer
     public class NFluentAnalyzerCodeFixProvider : CodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds =>
-            ImmutableArray.Create(NFluentAnalyzer.MissingCheckId, NFluentAnalyzer.SutIsTheCheckId);
+            ImmutableArray.Create(NFluentAnalyzer.MissingCheckId, NFluentAnalyzer.SutIsTheCheckId, NFluentAnalyzer.EnumerationCheckId);
 
         public sealed override FixAllProvider GetFixAllProvider()
         {
@@ -66,8 +66,34 @@ namespace NFluent.Analyzer
                                 nameof(CodeFixResources.ExpandBinaryExpressionTitle)),
                             contextDiagnostic);
                         break;
+                    case NFluentAnalyzer.EnumerationCheckId:
+                        context.RegisterCodeFix(CodeAction.Create(CodeFixResources.SwitchToEnumerableCheck, 
+                                c => ConvertEnumerableCheck(context.Document, thatNode, c), 
+                                nameof(CodeFixResources.SwitchToEnumerableCheck)), 
+                            contextDiagnostic);
+                        break;
                 }
             }
+        }
+
+        private static async Task<Document> ConvertEnumerableCheck(Document contextDocument, InvocationExpressionSyntax thatNode, CancellationToken cancellationToken)
+        {
+            var sut = thatNode.ArgumentList.Arguments[0].Expression;
+            var actualCheck = NFluentAnalyzer.FindActualCheck(thatNode);
+            if (sut is MemberAccessExpressionSyntax memberAccess && memberAccess.HasName("Count"))
+            {
+                if (actualCheck.HasName("IsEqualTo"))
+                {
+                    // replace Check.That(sut.Count).IsEqualTo(10) by Check.That(sut).CountIs(10)
+                    var fixedThat = thatNode.Update(thatNode.Expression,
+                        RoslynHelper.BuildArgumentList(memberAccess.Expression));
+                    var fixedCheck = actualCheck.Update(actualCheck.Expression.ReplaceNode(thatNode, fixedThat), 
+                        actualCheck.OperatorToken, SyntaxFactory.IdentifierName("CountIs"));
+                    var root = await contextDocument.GetSyntaxRootAsync(cancellationToken);
+                    return contextDocument.WithSyntaxRoot(root.ReplaceNode(actualCheck, fixedCheck));
+                }
+            }
+            return contextDocument;
         }
 
         private static async Task<Document> ConvertExpressionSut(Document contextDocument,
@@ -75,16 +101,7 @@ namespace NFluent.Analyzer
         {
             var sut = thatNode.ArgumentList.Arguments[0].Expression;
             
-            MemberAccessExpressionSyntax actualCheck;
-            // deal for when we have the 'As' variation
-            if (thatNode.Parent is MemberAccessExpressionSyntax memberAccess && memberAccess.HasName("As"))
-            {
-                actualCheck = memberAccess.Parent.Parent as MemberAccessExpressionSyntax;
-            }
-            else
-            {
-                actualCheck = thatNode.Parent as MemberAccessExpressionSyntax;
-            }
+            var actualCheck = NFluentAnalyzer.FindActualCheck(thatNode);
 
             if (sut is BinaryExpressionSyntax binaryExpressionSyntax &&
                 (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse")))

@@ -28,6 +28,7 @@ namespace NFluent.Analyzer
     {
         public const string MissingCheckId = "NA0001";
         public const string SutIsTheCheckId = "NA0002";
+        public const string EnumerationCheckId = "NA0003";
 
         // You can change these strings in the Resources.resx file. If you do not want your analyzer to be localize-able, you can use regular strings for Title and MessageFormat.
         // See https://github.com/dotnet/roslyn/blob/master/docs/analyzers/Localizing%20Analyzers.md for more on localization
@@ -39,8 +40,11 @@ namespace NFluent.Analyzer
         private static readonly DiagnosticDescriptor SutIsTheCheckRule = BuildRule(SutIsTheCheckId,
             nameof(Resources.SCTitle), nameof(Resources.SCMessageFormat), nameof(Resources.SCDescription));
 
+        private static readonly DiagnosticDescriptor EnumerationCheck = BuildRule(EnumerationCheckId,
+            nameof(Resources.CCTitle), nameof(Resources.CCMessageFormat), nameof(Resources.CCDescription));
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(MissingCheckRule, SutIsTheCheckRule);
+            ImmutableArray.Create(MissingCheckRule, SutIsTheCheckRule, EnumerationCheck);
 
         private static DiagnosticDescriptor BuildRule(string id, string localizableTitle, string localizableFormat,
             string localizableDescription, DiagnosticSeverity severity = DiagnosticSeverity.Warning,
@@ -81,7 +85,7 @@ namespace NFluent.Analyzer
                 thatNode = memberAccess.Parent as InvocationExpressionSyntax;
             }
 
-            if (thatNode.Parent is ExpressionStatementSyntax)
+            if (thatNode?.Parent is ExpressionStatementSyntax)
             {
                 // we have a 'check.That(x); situation
                 var diagnostic = Diagnostic.Create(MissingCheckRule, context.Node.GetLocation(),
@@ -91,10 +95,11 @@ namespace NFluent.Analyzer
             else
             {
                 var sut = invocationExpression.ArgumentList.Arguments[0].Expression;
-                var actualCheck = thatNode.Parent as MemberAccessExpressionSyntax;
+                var actualCheck = thatNode?.Parent as MemberAccessExpressionSyntax;
                 if (sut is BinaryExpressionSyntax binaryExpressionSyntax &&
                     (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse")))
                 {
+                    // we have a Check.That(sut == expected).IsTrue() ==> Check.That(sut).IsEqual(expected);
                     var checkName = BinaryExpressionSutParser(binaryExpressionSyntax, out var realSut, out _);
 
                     if (!string.IsNullOrEmpty(checkName))
@@ -102,6 +107,26 @@ namespace NFluent.Analyzer
                         var diagnostic = Diagnostic.Create(SutIsTheCheckRule, context.Node.GetLocation(),
                             realSut.ToString(), checkName);
                         context.ReportDiagnostic(diagnostic);
+                    }
+                }
+
+                if (sut is MemberAccessExpressionSyntax member && member.HasName("Count") && actualCheck.HasName("IsEqualTo"))
+                {
+                    // we have a Check.That(sut.Count).IsEqualTo(expected)
+                    var sutSymbol = context.SemanticModel.GetSymbolInfo(member.Expression);
+                    if (sutSymbol.Symbol != null)
+                    {
+                        switch (sutSymbol.Symbol)
+                        {
+                            case IFieldSymbol fieldSymbol:
+                                if (fieldSymbol.Type.Interfaces.Any(i => i.SpecialType == SpecialType.System_Collections_IEnumerable))
+                                {
+                                    context.ReportDiagnostic(Diagnostic.Create(EnumerationCheck, 
+                                        context.Node.GetLocation(), 
+                                        member.Expression.ToString(), "CountIs"));
+                                }
+                                break;
+                        }
                     }
                 }
             }
@@ -156,9 +181,9 @@ namespace NFluent.Analyzer
             foreach (var mAccess in memberAccess.DescendantNodesAndSelf()
                 .Where(cn => cn.IsKind(SyntaxKind.SimpleMemberAccessExpression)).Cast<MemberAccessExpressionSyntax>())
             {
-                if (mAccess.HasName("That")
-                    && model.GetSymbolInfo(mAccess).Symbol.ContainingNamespace.Name == "NFluent"
-                    && mAccess.Parent is InvocationExpressionSyntax invocation
+                if (mAccess.HasName("That") 
+                    && model.GetSymbolInfo(mAccess).Symbol?.ContainingNamespace.Name == "NFluent" 
+                    && mAccess.Parent is InvocationExpressionSyntax invocation 
                     && invocation.ArgumentList.Arguments.Count == 1)
                 {
                     // we found check.That, let's  find the sut
@@ -167,6 +192,30 @@ namespace NFluent.Analyzer
             }
 
             return null;
+        }
+
+        public static MemberAccessExpressionSyntax FindActualCheck(InvocationExpressionSyntax thatNode)
+        {
+            var actualCheck = thatNode.Parent as MemberAccessExpressionSyntax;
+            if (actualCheck == null)
+            {
+                return null;
+            }
+            // deal for when we have the 'As' variation
+            if (actualCheck.HasName("Not"))
+            {
+                actualCheck = actualCheck.Parent as MemberAccessExpressionSyntax;
+                if (actualCheck == null)
+                {
+                    return null;
+                }
+            }
+            if (actualCheck.HasName("As"))
+            {
+                actualCheck = actualCheck.Parent.Parent as MemberAccessExpressionSyntax;
+            }
+
+            return actualCheck;
         }
     }
 }

@@ -61,6 +61,33 @@ namespace NFluent.Analyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enumeration should be checked using proper checks.
+        /// </summary>
+        internal static string CCDescription {
+            get {
+                return ResourceManager.GetString("CCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sut &apos;{0}&apos; should be checked using &apos;{1}&quot;..
+        /// </summary>
+        internal static string CCMessageFormat {
+            get {
+                return ResourceManager.GetString("CCMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Improves check on enumeration.
+        /// </summary>
+        internal static string CCTitle {
+            get {
+                return ResourceManager.GetString("CCTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check should always have a condition.
         /// </summary>
         internal static string MCDescription {
@@ -88,7 +115,7 @@ namespace NFluent.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Binary expression should be evaluated using NFluent&apos;s syntax.
+        ///   Looks up a localized string similar to Binary expression should be checked using NFluent&apos;s syntax.
         /// </summary>
         internal static string SCDescription {
             get {
@@ -97,7 +124,7 @@ namespace NFluent.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sut &apos;{0}&apos; should be evaluated using &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Sut &apos;{0}&apos; should be checked using &apos;{1}&apos;..
         /// </summary>
         internal static string SCMessageFormat {
             get {
@@ -106,7 +133,7 @@ namespace NFluent.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transfomr checks on binary expression.
+        ///   Looks up a localized string similar to Transform checks on binary expression.
         /// </summary>
         internal static string SCTitle {
             get {

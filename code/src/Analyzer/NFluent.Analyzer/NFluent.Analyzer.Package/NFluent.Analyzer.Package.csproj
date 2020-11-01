@@ -13,13 +13,16 @@
     <Authors>dupdob</Authors>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>http://n-fluent.net/</PackageProjectUrl>
-    <PackageIconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</PackageIconUrl>
+    <PackageIconUrl></PackageIconUrl>
     <RepositoryUrl>https://github.com/tpierrain/NFluent</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>This extension analyzes NFluent usages and help you fix common mistakes.</Description>
-    <PackageReleaseNotes></PackageReleaseNotes>
-    <Copyright>Copyright</Copyright>
-    <PackageTags>NFluent.Analyzer, analyzers</PackageTags>
+    <PackageReleaseNotes>** Alpha Version **. This version spots:
+- unfinished checks: Check.That(sut);
+- binary expression obsession: Check.That(sut = 10).IsTrue();
+- enumeration size check: Check.That(sut.Count).IsEqualTo(10);</PackageReleaseNotes>
+    <Copyright>Author Cyrille Dupuydauby</Copyright>
+    <PackageTags>NFluent, analyzers</PackageTags>
     <NoPackageAnalysis>true</NoPackageAnalysis>
 
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput</TargetsForTfmSpecificContentInPackage>
@@ -27,10 +30,22 @@
     <Version>0.1.0</Version>
 
     <PackageLicenseExpression>Apache2-0</PackageLicenseExpression>
+
+    <PackageIcon>nugget.png</PackageIcon>
+
+    <NeutralLanguage>en</NeutralLanguage>
+
+    <SignAssembly>true</SignAssembly>
+
+    <AssemblyOriginatorKeyFile>NFluent.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="NFluent.Analyzer.Package.v3.ncrunchproject" />
+    <None Include="..\..\..\..\..\Images\New Logo\nugget.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

@@ -124,4 +124,7 @@
   <data name="ExpandBinaryExpressionTitle" xml:space="preserve">
     <value>Transform to explicit check</value>
   </data>
+  <data name="SwitchToEnumerableCheck" xml:space="preserve">
+    <value>Use Enumerable specific check</value>
+  </data>
 </root>

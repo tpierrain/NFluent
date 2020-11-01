@@ -259,5 +259,43 @@ namespace NFluent.Analyzer.Test
 
             await test.RunAsync();
         }
+
+        [TestMethod]
+        public async Task FixCountIsEqualTo()
+        {
+        const string CodeTemplate = @"using NFluent;
+    using System.Collections.Generic;
+    namespace ConsoleApplication1
+    {{
+        class TestClass
+        {{
+            private IList<string> x;
+
+            public void SampleCheckMethod()
+            {{
+                {0}
+            }}
+        }}
+    }}";
+
+            var testCode = string.Format(CodeTemplate, "Check.That(x.Count).IsEqualTo(10);");
+            var fixedCode = string.Format(CodeTemplate, "Check.That(x).CountIs(10);");
+
+            var referenceAssemblies =
+                ReferenceAssemblies.Default.AddPackages(ImmutableArray.Create(new PackageIdentity("NFluent", "2.7.0")));
+            var test = new VerifyCS.Test
+            {
+                TestCode = testCode,
+                FixedCode = fixedCode,
+                ExpectedDiagnostics =
+                {
+                    VerifyCS.Diagnostic(NFluentAnalyzer.EnumerationCheckId).WithArguments("x", "CountIs")
+                        .WithLocation(11, 17)
+                },
+                ReferenceAssemblies = referenceAssemblies
+            };
+
+            await test.RunAsync();
+        }
     }
 }

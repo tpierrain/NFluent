@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CCDescription" xml:space="preserve">
+    <value>Enumeration should be checked using proper checks</value>
+  </data>
+  <data name="CCMessageFormat" xml:space="preserve">
+    <value>Sut '{0}' should be checked using '{1}".</value>
+  </data>
+  <data name="CCTitle" xml:space="preserve">
+    <value>Improves check on enumeration</value>
+  </data>
   <data name="MCDescription" xml:space="preserve">
     <value>Check should always have a condition</value>
     <comment>Check.That(x); has no effect. One need to have an actual check expressed.</comment>
@@ -130,12 +139,12 @@
     <comment>The title of the diagnostic.</comment>
   </data>
   <data name="SCDescription" xml:space="preserve">
-    <value>Binary expression should be evaluated using NFluent's syntax</value>
+    <value>Binary expression should be checked using NFluent's syntax</value>
   </data>
   <data name="SCMessageFormat" xml:space="preserve">
-    <value>Sut '{0}' should be evaluated using '{1}'.</value>
+    <value>Sut '{0}' should be checked using '{1}'.</value>
   </data>
   <data name="SCTitle" xml:space="preserve">
-    <value>Transfomr checks on binary expression</value>
+    <value>Transform checks on binary expression</value>
   </data>
 </root>
