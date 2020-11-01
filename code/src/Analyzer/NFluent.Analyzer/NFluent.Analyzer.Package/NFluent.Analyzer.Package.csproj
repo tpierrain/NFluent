@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <PackageId>NFluent.Analyzer</PackageId>
-    <PackageVersion>1.0.0.0</PackageVersion>
+    <PackageVersion>0.1.0.0</PackageVersion>
     <Authors>dupdob</Authors>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>http://n-fluent.net/</PackageProjectUrl>
@@ -27,9 +27,9 @@
 
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput</TargetsForTfmSpecificContentInPackage>
 
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
 
-    <PackageLicenseExpression>Apache2-0</PackageLicenseExpression>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 
     <PackageIcon>nugget.png</PackageIcon>
 
