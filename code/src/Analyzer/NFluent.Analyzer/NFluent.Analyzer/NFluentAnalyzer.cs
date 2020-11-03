@@ -13,7 +13,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace NFluent.Analyzer
 {
     using System.Collections.Immutable;
@@ -35,7 +34,7 @@ namespace NFluent.Analyzer
         private const string Category = "Testing";
 
         private static readonly DiagnosticDescriptor MissingCheckRule = BuildRule(MissingCheckId,
-            nameof(Resources.MCTitle), nameof(Resources.MCMessageFormat), nameof(Resources.MCDescription));
+            nameof(Resources.MCTitle), nameof(Resources.MCMessageFormat), nameof(Resources.MCDescription), DiagnosticSeverity.Error);
 
         private static readonly DiagnosticDescriptor SutIsTheCheckRule = BuildRule(SutIsTheCheckId,
             nameof(Resources.SCTitle), nameof(Resources.SCMessageFormat), nameof(Resources.SCDescription));
@@ -85,7 +84,9 @@ namespace NFluent.Analyzer
                 thatNode = memberAccess.Parent as InvocationExpressionSyntax;
             }
 
-            if (thatNode?.Parent is ExpressionStatementSyntax)
+            var actualCheck = FindActualCheck(thatNode);
+
+            if (actualCheck == null)
             {
                 // we have a 'check.That(x); situation
                 var diagnostic = Diagnostic.Create(MissingCheckRule, context.Node.GetLocation(),
@@ -95,7 +96,6 @@ namespace NFluent.Analyzer
             else
             {
                 var sut = invocationExpression.ArgumentList.Arguments[0].Expression;
-                var actualCheck = thatNode?.Parent as MemberAccessExpressionSyntax;
                 if (sut is BinaryExpressionSyntax binaryExpressionSyntax &&
                     (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse")))
                 {
@@ -200,7 +200,7 @@ namespace NFluent.Analyzer
             if (actualCheck == null)
             {
                 return null;
-            }
+            }   
             // deal for when we have the 'As' variation
             if (actualCheck.HasName("Not"))
             {
