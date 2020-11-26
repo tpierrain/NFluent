@@ -528,7 +528,7 @@ namespace NFluent
         /// <returns></returns>
         public static ICheck<long> WhoseSize<T>(this ICheck<IEnumerable<T>> check)
         {
-            return ExtensibilityHelper.ExtractChecker(check).ExtractSub(sut => sut.Count(), "size");
+            return ExtensibilityHelper.ExtractChecker(check).ExtractSub<long>(sut => sut.Count(), "size");
         }
 
         /// <summary>
@@ -663,8 +663,9 @@ namespace NFluent
 
         private static void ImplementIsOnlyMadeOf<T>(ICheckLogic<IEnumerable<T>> checker, IEnumerable expectedValues)
         {
+            var enumerable = expectedValues?.Cast<object>().ToList();
             checker.
-                DefineExpectedValues(expectedValues?.Cast<object>(), expectedValues.Count(), comparison: "only elements from",
+                DefineExpectedValues(enumerable, enumerable?.Count() ?? 0, comparison: "only elements from",
                 negatedComparison: "at least one element different from").
                 FailWhen(sut => sut == null & expectedValues != null,
                 "The {0} is null and thus, does not contain exactly the given value(s).").

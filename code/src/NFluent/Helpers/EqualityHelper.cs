@@ -18,7 +18,8 @@ namespace NFluent.Helpers
     using System;
     using System.Collections;
     using System.Collections.Generic;
-#if NETSTANDARD1_3
+    using System.Linq;
+#if NETSTANDARD1_3 || DOTNET_45
     using System.Reflection;
 #endif
     using Extensibility;
@@ -33,11 +34,64 @@ namespace NFluent.Helpers
         private const float FloatCloseToThreshold = 1f / 100000;
         private const double DoubleCloseToThreshold = 1d / 100000000;
 
+        private static readonly IEqualityComparer DefaultComparer = new EqualityComparer();
+        private static readonly IDictionary<Type, IEqualityComparer> ComparerMap = new Dictionary<Type, IEqualityComparer>();
+
         internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(ICheck<T> check,
             TE expected,
             IEqualityComparer comparer = null)
         {
             return PerformEqualCheck(check, expected, Check.EqualMode, comparer);
+        }
+
+        public static IEqualityComparer RegisterComparer<T>(IEqualityComparer comparer)
+        {
+            lock (ComparerMap)
+            {
+                ComparerMap.TryGetValue(typeof(T), out var result);
+                if (comparer == null)
+                {
+                    ComparerMap.Remove(typeof(T));
+                }
+                else
+                {
+                    ComparerMap[typeof(T)] = comparer;
+                }
+                return result;
+            }
+        }
+
+        private static IEqualityComparer FindComparer(Type searchType)
+        {
+            if (searchType == null)
+            {
+                return null;
+            }
+
+            lock (ComparerMap)
+            {
+                if (ComparerMap.Count == 0)
+                {
+                    return null;
+                }
+                if (ComparerMap.TryGetValue(searchType, out var comparer))
+                {
+                    return comparer;
+                }
+
+                return searchType.GetInterfaces().Any(@interface => ComparerMap.TryGetValue(@interface, out comparer)) ? comparer : FindComparer(searchType.GetTypeInfo().BaseType);
+            }
+        }
+
+        private static IEqualityComparer FindComparer<T>()
+        {
+            return FindComparer(typeof(T));
+        }
+
+        public static bool CustomEquals<T, TU>(T sut, TU expected)
+        {
+            var comparer = FindComparer<T>() ?? FindComparer(expected?.GetType()) ?? DefaultComparer;
+            return comparer.Equals(sut, expected);
         }
 
         internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(ICheck<T> check,
@@ -46,6 +100,20 @@ namespace NFluent.Helpers
             IEqualityComparer comparer = null)
         {
 
+            if (typeof(T).IsNumerical() && typeof(T) == typeof(TE))
+            {
+                if (typeof(T) == typeof(double))
+                {
+                    PerformEqualCheckDouble((ICheck<double>) check, expected);
+                    return ExtensibilityHelper.BuildCheckLink(check);
+                }
+
+                if (typeof(T) == typeof(float))
+                {
+                    PerformEqualCheckFloat((ICheck<float>) check, expected);
+                    return ExtensibilityHelper.BuildCheckLink(check);
+                }
+            }
             ExtensibilityHelper.BeginCheck(check)
                 .Analyze((sut, test) =>
                 {
@@ -73,7 +141,10 @@ namespace NFluent.Helpers
 
                     // shall we display the type as well?
                     var options = MessageOption.None;
-                    if (sut == null || (expected != null && sut.GetType() != expected.GetType()))
+                    if (sut == null || 
+                        (expected != null 
+                         && sut.GetType() != expected.GetType() 
+                         && !(sut.GetType().IsNumerical() && expected.GetType().IsNumerical())))
                     {
                         options |= MessageOption.WithType;
                     }
@@ -101,8 +172,9 @@ namespace NFluent.Helpers
             return !FluentEquals(instance, expected, Check.EqualMode).IsDifferent;
         }
 
-        internal static ICheckLink<ICheck<double>> PerformEqualCheck(ICheck<double> check, double expected)
+        private static void PerformEqualCheckDouble(ICheck<double> check, object val)
         {
+            var expected = (double) val;
             ExtensibilityHelper.BeginCheck(check)
                 .DefineExpectedValue(expected)
                 .Analyze((sut, test) =>
@@ -132,11 +204,11 @@ namespace NFluent.Helpers
                 })
                 .OnNegate("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock | MessageOption.WithType)
                 .EndCheck();
-            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
-        internal static ICheckLink<ICheck<float>> PerformEqualCheck(ICheck<float> check, float expected)
+        private static void PerformEqualCheckFloat(ICheck<float> check, object value)
         {
+            var expected = (float) value;
             ExtensibilityHelper.BeginCheck(check)
                 .DefineExpectedValue(expected)
                 .Analyze((sut, test) =>
@@ -165,7 +237,6 @@ namespace NFluent.Helpers
                 })
                 .OnNegate("The {0} is equal to the {1} whereas it must not.", MessageOption.NoCheckedBlock | MessageOption.WithType)
                 .EndCheck();
-            return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         internal static AggregatedDifference FluentEquals<TS, TE>(TS sut, TE expected, EqualityMode mode, IEqualityComparer comparer = null)
@@ -243,6 +314,22 @@ namespace NFluent.Helpers
                     test.Fail(scan.GetErrorMessage(sut, content, true));
                 }).DefineExpectedValue(content)
                 .OnNegate("The {checked} is equivalent to the {expected} whereas it should not.").EndCheck();
+        }
+
+        private class EqualityComparer : IEqualityComparer
+        {
+            public new bool Equals(object x, object y)
+            {
+                return x.Equals(y);
+            }
+
+            //ncrunch: no coverage start
+            [Obsolete("Not implemented")]
+            public int GetHashCode(object obj)
+            {
+                throw new NotSupportedException();
+            }
+            //ncrunch: no coverage end
         }
 
         internal class EqualityComparer<T> : IEqualityComparer<T>

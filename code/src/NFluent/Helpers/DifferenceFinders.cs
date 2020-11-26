@@ -15,7 +15,7 @@ namespace NFluent.Helpers
             return ValueDifference(firstItem, firstName, otherItem, 0, new List<object>());
         }
 
-        public static AggregatedDifference ValueDifference<TA, TE>(TA actual, string firstName, TE expected, int refIndex, ICollection<object> firstSeen)
+        private static AggregatedDifference ValueDifference<TA, TE>(TA actual, string firstName, TE expected, int refIndex, ICollection<object> firstSeen)
         {
             var result = new AggregatedDifference();
             // handle null case first
@@ -30,7 +30,7 @@ namespace NFluent.Helpers
             }
 
             // if both equals from a BCL perspective, we are done.
-            if (expected.Equals(actual))
+            if (EqualityHelper.CustomEquals(expected, actual))
             {
                 return result;
             }
@@ -152,7 +152,7 @@ namespace NFluent.Helpers
                         expectedKeyIterator.Current,
                         index,
                         firstItemsSeen);
-                    if (!expectedDictionary.TryGetValue(actualKey, out var item))
+                    if (!expectedDictionary.TryGetValue(actualKey, out _))
                     {
                         valueDifferences.Add(DifferenceDetails.WasNotExpected(
                             $"{sutName}'s key {actualKey.ToStringProperlyFormatted()}", sutDictionary[actualKey],
@@ -225,13 +225,13 @@ namespace NFluent.Helpers
                     firstSeen);
             }
 
-            var otherDico = DictionaryExtensions.WrapDictionary<object, object>(otherItem);
-            if (otherDico != null)
+            var dictionary = DictionaryExtensions.WrapDictionary<object, object>(otherItem);
+            if (dictionary != null)
             {
-                var firstDico = DictionaryExtensions.WrapDictionary<object, object>(firstItem);
-                if (firstDico != null)
+                var wrapDictionary = DictionaryExtensions.WrapDictionary<object, object>(firstItem);
+                if (wrapDictionary != null)
                 {
-                    return ValueDifferenceDictionary(firstDico, firstName, otherDico, firstSeen);
+                    return ValueDifferenceDictionary(wrapDictionary, firstName, dictionary, firstSeen);
                 }
             }
 
@@ -324,11 +324,10 @@ namespace NFluent.Helpers
             return valueDifferences;
         }
 
-        private static bool FluentEquivalent(object instance, object expected)
+        private static bool FluentEquivalent<TS, TE>(TS instance, TE expected)
         {
             var scan = EqualityHelper.FluentEquals(instance, expected, Check.EqualMode);
             return !scan.IsDifferent || scan.IsEquivalent;
         }
-
     }
 }

@@ -91,22 +91,22 @@ namespace NFluent.Kernel
         public IChecker<T, ICheck<T>> Checker => this.checker;
 
         /// <summary>
-        /// Checks whether the specified <see cref="System.Object"/> is equal to this instance or not.
+        /// Checks whether the specified <see cref="object"/> is equal to this instance or not.
         /// </summary>
         /// <param name="obj">
-        /// The <see cref="System.Object"/> to compare with this instance.
+        /// The <see cref="object"/> to compare with this instance.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; throws a <see cref="FluentCheckException"/> otherwise.
+        /// <c>true</c> if the specified <see cref="object"/> is equal to this instance; throws a <see cref="FluentCheckException"/> otherwise.
         /// </returns>
         /// <exception cref="FluentCheckException">
-        /// The specified <see cref="System.Object"/> is not equal to this instance.
+        /// The specified <see cref="object"/> is not equal to this instance.
         /// </exception>
         public new bool Equals(object obj)
         {
             if (this.Value is ReflectionWrapper)
             {
-                ((ICheck<ReflectionWrapper>) this).IsEqualTo(obj);
+                ((ICheck<ReflectionWrapper>) this).IsEqualTo<object>(obj);
             }
             else
             {

@@ -18,6 +18,7 @@ using System;
 namespace NFluent.Tests
 {
     using System.Collections;
+    using System.Collections.Generic;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -27,21 +28,21 @@ namespace NFluent.Tests
 
         class NoOpComparer : IEqualityComparer
         {
-            private readonly bool _answer;
+            private readonly bool answer;
 
             public NoOpComparer(bool answer)
             {
-                this._answer = answer;
+                this.answer = answer;
             }
 
             public new bool Equals(object x, object y)
             {
-                return this._answer;
+                return this.answer;
             }
 
             public int GetHashCode(object obj)
             {
-                return this._answer ? 0 : obj.GetHashCode();
+                return this.answer ? 0 : obj.GetHashCode();
             }
         }
 
@@ -50,6 +51,31 @@ namespace NFluent.Tests
         {
             Check.That(new object()).IsEqualTo(new object(), new NoOpComparer(true));
             Check.ThatCode(() => Check.That(new object()).IsEqualTo(new object(), new NoOpComparer(false))).IsAFailingCheck();
+        }
+
+        [Test]
+        public void CanDeclareCustomComparer()
+        {
+            var previous = Check.RegisterComparer<object>(new NoOpComparer(true));
+            Check.That(new object()).IsEqualTo(new object());
+            Check.RegisterComparer<object>(previous);
+        }
+
+        [Test]
+        public void CanDeclareLocalCustomComparer()
+        {
+            using (Check.RegisterLocalComparer<object>(new NoOpComparer(true)))
+            {
+                Check.That(new object()).IsEqualTo(new object());
+            }
+        }
+
+        [Test]
+        public void CanDeclareCustomComparerForInterface()
+        {
+            var previous = Check.RegisterComparer<IEnumerable>(new NoOpComparer(true));
+            Check.That(new List()).IsEqualTo(new Dictionary<string, string>());
+            Check.RegisterComparer<IEnumerable>(previous);
         }
 
         [Test]

@@ -27,7 +27,7 @@ namespace NFluent.Tests
                 session.InputLine("hello");
                 Check.That(Console.ReadLine()).IsEqualTo("hello");
                 session.Input("AB");
-                Check.That(Console.Read()).IsEqualTo('A');
+                Check.That((char)Console.Read()).IsEqualTo('A');
             }
         }
 

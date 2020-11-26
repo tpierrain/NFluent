@@ -16,7 +16,6 @@
 namespace NFluent
 {
     using Extensibility;
-    using Helpers;
     using Kernel;
 
     /// <summary>
@@ -129,26 +128,6 @@ namespace NFluent
         public static ICheckLink<ICheck<byte>> IsStrictlyGreaterThan(this ICheck<byte> check, byte comparand)
         {
             return new NumberCheck<byte>(check).IsStrictlyGreaterThan(comparand);
-        }
-
-        /// <summary>
-        /// Checks that the actual value is equal to another expected value.
-        /// </summary>
-        /// <param name="check">
-        /// The fluent check to be extended.
-        /// </param>
-        /// <param name="expected">
-        /// The expected value.
-        /// </param>
-        /// <returns>
-        /// A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">
-        /// The actual value is not equal to the expected value.
-        /// </exception>
-        public static ICheckLink<ICheck<byte>> IsEqualTo(this ICheck<byte> check, byte expected)
-        {
-            return EqualityHelper.PerformEqualCheck(check , expected);
         }
     }
 }

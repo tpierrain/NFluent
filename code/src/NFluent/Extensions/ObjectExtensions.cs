@@ -16,7 +16,6 @@
 namespace NFluent.Extensions
 {
     using System;
-    using System.Linq;
 
     internal static class ObjectExtensions
     {

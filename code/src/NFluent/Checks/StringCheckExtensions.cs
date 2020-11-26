@@ -29,7 +29,7 @@ namespace NFluent
     public static class StringCheckExtensions
     {
         /// <summary>
-        ///     Checks that the checker value is equal to another expected value.
+        ///     Checks that the checked string is equal to another expected value.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
@@ -45,22 +45,7 @@ namespace NFluent
         }
 
         /// <summary>
-        ///     Checks that the checker value is not equal to another expected value.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected value.</param>
-        /// <returns>
-        ///     A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The checker value is equal to the expected value.</exception>
-        public static ICheckLink<ICheck<string>> IsNotEqualTo(this ICheck<string> check, object expected)
-        {
-            return IsNotEqualTo(check, (string) expected);
-        }
-
-
-        /// <summary>
-        ///     Checks that the checker value is not equal to another expected value.
+        ///     Checks that the checked string is not equal to another expected value.
         /// </summary>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected value.</param>
@@ -71,27 +56,6 @@ namespace NFluent
         public static ICheckLink<ICheck<string>> IsNotEqualTo(this ICheck<string> check, string expected)
         {
             return check.Not.IsEqualTo(expected);
-        }
-
-        /// <summary>
-        /// Checks that the checker value is equal to another expected value.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="expected">The expected value.</param>
-        /// <returns>
-        ///  A check link.
-        /// </returns>
-        /// <exception cref="FluentCheckException">The checker value is not equal to the expected value.</exception>
-        public static ICheckLink<ICheck<string>> IsEqualTo(this ICheck<string> check, object expected)
-        {
-            if (expected is string s)
-            {
-                return IsEqualTo(check, s);
-            }
-            else
-            {
-                return EqualityHelper.PerformEqualCheck(check, expected);
-            }
         }
 
         /// <summary>
@@ -109,7 +73,6 @@ namespace NFluent
             PerformEqualCheck(comparand, test, true);
             return ExtensibilityHelper.BuildCheckLink(check);
         }
-
 
         private static void PerformEqualCheck(object expected, ICheckLogic<string> test, bool ignoreCase = false)
         {

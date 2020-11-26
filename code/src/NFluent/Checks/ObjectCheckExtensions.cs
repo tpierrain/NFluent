@@ -27,13 +27,13 @@ namespace NFluent
     /// </summary>
     public static class ObjectCheckExtensions
     {
-
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
         /// <typeparam name="T">
         /// Type of the checked value.
         /// </typeparam>
+        /// <typeparam name="TE">Type of the expected value.</typeparam>
         /// <param name="check">
         /// The fluent check to be extended.
         /// </param>
@@ -47,7 +47,7 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The actual value is not equal to the expected value.
         /// </exception>
-        public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, object expected, IEqualityComparer customComparer = null)
+        public static ICheckLink<ICheck<T>> IsEqualTo<T, TE>(this ICheck<T> check, TE expected, IEqualityComparer customComparer = null)
         {
             return EqualityHelper.PerformEqualCheck(check, expected, customComparer);
         }
@@ -294,7 +294,7 @@ namespace NFluent
         /// <typeparam name="T">
         /// Type of the checked value.
         /// </typeparam>
-        /// <typeparam name="TU">Type of expeted reference</typeparam>
+        /// <typeparam name="TU">Type of expected reference</typeparam>
         /// <param name="check">The fluent check to be extended.</param>
         /// <param name="expected">The expected object.</param>
         /// <returns>
@@ -341,17 +341,18 @@ namespace NFluent
             T? val = null;
             ExtensibilityHelper.BeginCheck(check).FailWhen(sut =>
                     {
-                        if (sut.HasValue)
+                        if (!sut.HasValue)
                         {
-                            val = sut.Value;
-                            return false;
+                            return true;
                         }
-                        return true;
+
+                        val = sut.Value;
+                        return false;
                     },
                     "The {0} has no value, which is unexpected.", 
                     MessageOption.NoCheckedBlock)
                 .OnNegate("The {0} has a value, whereas it must not.").EndCheck();
-            return ExtensibilityHelper.BuildCheckLinkWhich(check, val.HasValue ? val.Value : default(T), "value", val.HasValue);
+            return ExtensibilityHelper.BuildCheckLinkWhich(check, val ?? default, "value", val.HasValue);
         }
         
         /// <summary>

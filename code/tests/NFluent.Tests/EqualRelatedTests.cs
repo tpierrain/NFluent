@@ -400,8 +400,8 @@ namespace NFluent.Tests
         [Test]
         public void WeCanAlsoSeeTheDifferenceBetweenTwoDifferentInstancesOfTheSameTypeWhithIdenticalToString()
         {
-            Person dad = new Person {Name = "John", HashCode = 2};
-            Person uncle = new Person {Name = "John", HashCode = 3};
+            var dad = new Person {Name = "John", HashCode = 2};
+            var uncle = new Person {Name = "John", HashCode = 3};
 
             Check.ThatCode(() => { Check.That(uncle).IsEqualTo(dad); })
                 .IsAFailingCheckWithMessage("",
@@ -413,9 +413,9 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void WeCanAlsoSeeTheDifferenceBetweenTwoDifferentInstancesWhithIdenticalToString()
+        public void WeCanAlsoSeeTheDifferenceBetweenTwoDifferentInstancesWithIdenticalToString()
         {
-            Person dad = new Person {Name = "John", HashCode = 2};
+            var dad = new Person {Name = "John", HashCode = 2};
 
             Check.ThatCode(() => { Check.That("John").IsEqualTo(dad); })
                 .IsAFailingCheckWithMessage("",
@@ -525,10 +525,10 @@ namespace NFluent.Tests
         [Test]
         public void IsNotEqualToWorksObject()
         {
-            var heroe = new Person {Name = "Gandhi"};
+            var hero = new Person {Name = "Gandhi"};
             var badGuy = new Person {Name = "Pol Pot"};
 
-            Check.That(heroe).IsNotEqualTo(badGuy);
+            Check.That(hero).IsNotEqualTo(badGuy);
         }
 
         [Test]
@@ -646,12 +646,6 @@ namespace NFluent.Tests
         }
 
         #endregion
-
-        [Test]
-        public void IsSameTypeWorks()
-        {
-            // Check.That((IEnumerable<object>)new []{new object()}).IsInstanceOf<IEnumerable<object>>();
-        }
 
         [Test]
         public void AndOperatorCanChainMultipleAssertionsForDoubleNumber()

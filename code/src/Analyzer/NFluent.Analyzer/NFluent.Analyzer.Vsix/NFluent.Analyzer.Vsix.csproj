@@ -48,16 +48,13 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>http://www.n-fluent.net</PackageProjectUrl>
     <PackageIcon>nfluent2018.png</PackageIcon>
-    <PackageId>NFluent.Analyzer</PackageId>
+    <PackageId>NFluentAnalyzer</PackageId>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\..\.build\NFluent.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
-    <PackageReleaseNotes>** Alpha Version **. This version spots:
-- unfinished checks: Check.That(sut);
-- binary expression obsession: Check.That(sut = 10).IsTrue();
-- enumeration size check: Check.That(sut.Count).IsEqualTo(10);</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <Copyright>Author Cyrille Dupuydauby</Copyright>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/NFluent/NFluent</RepositoryUrl>
     <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
