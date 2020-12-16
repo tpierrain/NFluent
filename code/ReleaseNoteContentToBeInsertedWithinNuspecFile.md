@@ -15,6 +15,10 @@ as captured in issue #68, this behavior was triggered by a bug and kept due to a
 to value `types`, you can migrate your existing extensions to the `ICheck<T>` type instead. Please open an issue if
 you need help.
 
+## Fixes
+* HasFieldWithSameValues resulted in false positive when string fields had the same value.
+
+* Closed issues: #325, #331
 
 ### Obsolete
 Here is the list of methods, classes and other obsolete stuff that have been removed in this version as well

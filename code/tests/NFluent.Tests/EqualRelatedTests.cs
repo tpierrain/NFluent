@@ -35,14 +35,21 @@ namespace NFluent.Tests
             Check.That(test).IsEqualTo(test2);
 
             var currentMode = Check.EqualMode;
-            Check.EqualMode = EqualityMode.Equals;
-            Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).IsAFailingCheckWithMessage("", 
-                "The checked enumerable is different from the expected one.", 
-                "The checked enumerable:", 
-                "\t{} (0 item)", 
-                "The expected enumerable:", 
-                "\t{} (0 item)");
-            Check.EqualMode = currentMode;
+            try
+            {
+                Check.EqualMode = EqualityMode.Equals;
+                Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).IsAFailingCheckWithMessage("",
+                    "The checked enumerable is different from the expected one.",
+                    "The checked enumerable:",
+                    "\t{} (0 item)",
+                    "The expected enumerable:",
+                    "\t{} (0 item)");
+            }
+            finally
+            {
+                Check.EqualMode = currentMode;
+            }
+
         }
 
         [Test]
@@ -54,9 +61,15 @@ namespace NFluent.Tests
             Check.That(test).IsEqualTo(test2);
 
             var currentMode = Check.EqualMode;
-            Check.EqualMode = (EqualityMode) (-1);
-            Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).Throws<NotSupportedException>();
-            Check.EqualMode = currentMode;
+            try
+            {
+                Check.EqualMode = (EqualityMode) (-1);
+                Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).Throws<NotSupportedException>();
+            }
+            finally
+            {
+                Check.EqualMode = currentMode;
+            }
         }
 
         [Test]

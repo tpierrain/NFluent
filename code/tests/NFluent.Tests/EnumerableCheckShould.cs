@@ -20,6 +20,7 @@ namespace NFluent.Tests
     using System.Linq;
     using NFluent.Helpers;
     using NUnit.Framework;
+    using SutClasses;
 
     [TestFixture]
     public class EnumerableCheckShould
@@ -161,6 +162,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void SupportNonGenericIEnumerable()
+        {
+            var toBeChecked = new object[]
+            {
+                1,
+                2,
+                3,
+                4
+            };
+
+            var expected = Enumerable.Range(1, 4);
+            Check.That(toBeChecked).IsEquivalentTo(expected);
+        }
+
+        [Test]
         public void CheckIsEquivalentOnPlainEnumerable()
         {
             var array = new[] {1, 2, 3};
@@ -207,6 +223,28 @@ namespace NFluent.Tests
             Check.That((IEnumerable)array).IsEquivalentTo( new []{1, 3, 2}, new []{5, 4, 6});
         }
         
+        [Test]
+        public void SupportIsEquivalentWithDictionaries()
+        {
+            var dictOf3_A = new Dictionary<string, string> { { "aa", "AA" }, { "bb", "BB" }, { "cc", "CC" } };
+            var dictOf3_B = new Dictionary<string, string> { { "cc", "CC" }, { "aa", "AA" }, { "bb", "BB" } };
+            var dictOf2 = new Dictionary<string, string> { { "cc", "CC" }, { "bb", "BB" } };
+
+            var dictOf2Dict_A = new Dictionary<string, Dictionary<string, string>> { { "key1", dictOf2 }, { "key2", dictOf3_A } };
+            var dictOf2Dict_B = new Dictionary<string, Dictionary<string, string>> { { "key2", dictOf3_B }, { "key1", dictOf2 } };
+            Check.That(dictOf2Dict_A).IsEquivalentTo(dictOf2Dict_B);  
+#if !DOTNET_35
+            var dictOf2Dict_C = new Dictionary<string, IReadOnlyDictionary<string, string>> { { "key1", new RoDico(dictOf2)} , { "key2", new RoDico(dictOf3_B) } };
+
+            Check.That(dictOf2Dict_A).IsEquivalentTo(dictOf2Dict_C); 
+            Check.That(dictOf2Dict_C).IsEquivalentTo(dictOf2Dict_B); 
+
+            var customDico = new RoDico(dictOf3_B);
+            Check.That(customDico).IsEquivalentTo(dictOf3_B);  
+            Check.That(dictOf3_B).IsEquivalentTo(customDico); 
+#endif
+        }
+
         [Test]
         public void CheckIsEquivalentOnNestedEquivalentEnumerable()
         {

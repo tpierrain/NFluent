@@ -16,7 +16,6 @@
 namespace NFluent.Helpers
 {
     using System;
-    using System.Text.RegularExpressions;
     using Extensibility;
     using Extensions;
 

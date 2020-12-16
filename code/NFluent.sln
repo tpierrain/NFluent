@@ -128,10 +128,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Analyzer.Vsix", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Analyzer.Test", "tests\NFluent.Analyzer.Test\NFluent.Analyzer.Test.csproj", "{87474057-BDBC-4715-803E-1D777A7DF569}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NFluent.Tests.ReportedIssues", "tests\NFluent.Tests.ReportedIssues\NFluent.Tests.ReportedIssues.shproj", "{0147471A-18D2-4714-8CDA-37DA471E0E45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.NetCore3.Tests.ReportedIssues", "tests\NFluent.NetCore3.Tests.ReportedIssues\NFluent.NetCore3.Tests.ReportedIssues.csproj", "{F4872EAA-BF75-47EC-A8EF-7791A0E89B50}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{0014c223-a481-4b87-a480-3d4792a9b276}*SharedItemsImports = 4
 		tests\NFluent.Tests\NFluent.Tests.projitems*{0014c223-a481-4b87-a480-3d4792a9b276}*SharedItemsImports = 4
+		tests\NFluent.Tests.ReportedIssues\NFluent.Tests.ReportedIssues.projitems*{0147471a-18d2-4714-8cda-37da471e0e45}*SharedItemsImports = 13
 		tests\NFluent.Tests\NFluent.Tests.projitems*{0425a660-ca7d-43f6-93ab-f72c95d506e3}*SharedItemsImports = 13
 		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{2b7f0e07-9b42-4bd2-8e30-f90fd78faf1f}*SharedItemsImports = 13
 		tests\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems*{308a72a3-462b-4c4e-abae-9d9d49d251e7}*SharedItemsImports = 4
@@ -156,6 +161,7 @@ Global
 		src\NFluent\NFluent.projitems*{cf1d857f-658f-4e1f-8487-cd751f189e6a}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{dbfa1137-b129-496a-9201-149f5178747e}*SharedItemsImports = 13
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{e298f1af-a6a7-497c-9a2d-ac15584e1ac1}*SharedItemsImports = 13
+		tests\NFluent.Tests.ReportedIssues\NFluent.Tests.ReportedIssues.projitems*{f4872eaa-bf75-47ec-a8ef-7791a0e89b50}*SharedItemsImports = 5
 		tests\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems*{fe288842-65f6-47dc-952a-413077247511}*SharedItemsImports = 5
 		tests\NFluent.Tests\NFluent.Tests.projitems*{fe288842-65f6-47dc-952a-413077247511}*SharedItemsImports = 5
 	EndGlobalSection
@@ -269,6 +275,10 @@ Global
 		{87474057-BDBC-4715-803E-1D777A7DF569}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87474057-BDBC-4715-803E-1D777A7DF569}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87474057-BDBC-4715-803E-1D777A7DF569}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4872EAA-BF75-47EC-A8EF-7791A0E89B50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4872EAA-BF75-47EC-A8EF-7791A0E89B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4872EAA-BF75-47EC-A8EF-7791A0E89B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4872EAA-BF75-47EC-A8EF-7791A0E89B50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -311,6 +321,8 @@ Global
 		{190DA82F-00C9-4742-9288-425A8E418213} = {F301E834-1488-4307-B94A-092B9655EEE7}
 		{1DAEA6A5-9D33-4BD9-98D7-2634E4568253} = {F301E834-1488-4307-B94A-092B9655EEE7}
 		{87474057-BDBC-4715-803E-1D777A7DF569} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
+		{0147471A-18D2-4714-8CDA-37DA471E0E45} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
+		{F4872EAA-BF75-47EC-A8EF-7791A0E89B50} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9A6ED20-537A-4D69-82C7-53AF50CEAEE8}

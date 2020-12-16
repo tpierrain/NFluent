@@ -83,6 +83,35 @@
         }
 
         [Test]
+        public void ShouldWorkOnMultidimensionalArrays()
+        {
+            // we create an array with arbitrary (non zero) lower bounds.
+            var array = Array.CreateInstance(typeof(int), new []{2,2}, new []{-1, -1});
+            var otherArray = new int[2, 2];
+            var val = 0;
+            for (var i = 0; i < 2; i++)
+            {
+                for(var j = 0; j < 2; j++)
+                {
+                    array.SetValue(val, i-1, j-1);
+                    otherArray[i, j] = val;
+                    val++;
+                }
+            }
+            var myClass = new  {Property = (int[,]) array};
+            Check.That(myClass).HasFieldsWithSameValues(myClass);
+            var myOther = new {Property = otherArray};
+            myOther.Property[1, 1] = 5;
+            Check.ThatCode(() => Check.That(myClass).HasFieldsWithSameValues(myOther)).IsAFailingCheckWithMessage("", 
+                "The checked value's field 'Property[1,1]' does not have the expected value.", 
+                "The checked value's field 'Property[1,1]':",
+                "\t[3]",
+                "The expected value's field 'Property[1,1]':",
+                "\t[5]");
+
+        }
+
+        [Test]
         public void IsEqualFailsIfFieldsDifferent()
         {
             var x = new DummyClass(2, 2);

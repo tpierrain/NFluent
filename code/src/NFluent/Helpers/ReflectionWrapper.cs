@@ -137,7 +137,7 @@ namespace NFluent.Helpers
 
         private void ScanFields(Func<ReflectionWrapper, int, bool> scanField, int depth, ICollection<object> scanned)
         {
-            if (this.ValueType.IsClass() && this.Value != null)
+            if (this.Value != null)
             {
                 if (scanned.Contains(this.Value))
                 {
@@ -164,7 +164,13 @@ namespace NFluent.Helpers
             ICollection<object> scanned,
             int depth, Func<ReflectionWrapper, ReflectionWrapper, int, bool> mapFunction)
         {
-            if (this.ValueType.IsClass() && this.Value != null)
+            if (!mapFunction(this, expected, depth))
+            {
+                // no need to recurse
+                return;
+            }
+
+            if (this.Value != null)
             {
                 // logic recursion prevention, only for (non null) reference type
                 if (scanned.Contains(this.Value))
@@ -173,12 +179,6 @@ namespace NFluent.Helpers
                 }
 
                 scanned.Add(this.Value);
-            }
-
-            if (!mapFunction(this, expected, depth))
-            {
-                // no need to recurse
-                return;
             }
 
             // we recurse

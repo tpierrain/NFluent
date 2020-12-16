@@ -43,6 +43,7 @@ namespace NFluent.Helpers
         {
             return new DifferenceDetails(checkedName, value, expected, index, DifferenceMode.Value);
         }
+
         public static DifferenceDetails DoesNotHaveExpectedAttribute(string checkedName, object value, object expected, int index)
         {
             return new DifferenceDetails(checkedName, value, expected, index, DifferenceMode.Attribute);

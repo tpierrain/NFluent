@@ -26,10 +26,10 @@ namespace NFluent.Tests
 
             Check.That(heroes).Not.Contains("Joker").And.StartsWith("Bat").And.Contains("Robin");
 
-            Check.That(heroes).Contains("and").And.IsInstanceOf<string>().And.IsNotInstanceOf<UserReportedIssuesTests.Person>().And.IsNotEqualTo(null);
+            Check.That(heroes).Contains("and").And.IsInstanceOf<string>().And.IsNotInstanceOf<Person>().And.IsNotEqualTo(null);
             Check.That(heroes).Contains("Robin").And.StartsWith("Batman").And.IsInstanceOf<string>();
             Check.That(heroes).IsInstanceOf<string>().And.Contains("Batman", "Robin").And.StartsWith("Batm");
-            Check.That(heroes).Contains("and").And.IsNotInstanceOf<UserReportedIssuesTests.Person>().And.IsInstanceOf<string>();
+            Check.That(heroes).Contains("and").And.IsNotInstanceOf<Person>().And.IsInstanceOf<string>();
         }
     }
 }

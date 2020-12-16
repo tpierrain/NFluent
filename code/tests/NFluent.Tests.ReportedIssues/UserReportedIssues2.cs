@@ -16,12 +16,10 @@ namespace NFluent.Tests.FromIssues
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
 #if DOTNET_45
     using System.Threading.Tasks;
 #endif
-    using Helpers;
     using NFluent.Helpers;
     using NUnit.Framework;
     using SutClasses;
@@ -118,7 +116,6 @@ namespace NFluent.Tests.FromIssues
             CollectionAssert.AreEquivalent(expected, toBeChecked);  // OK 
             CollectionAssert.AreEqual(expected, toBeChecked);       // OK
             Check.That(toBeChecked).IsEquivalentTo(expected);      // KO ;-(
-
         }
 
         // GH #292
@@ -415,14 +412,14 @@ namespace NFluent.Tests.FromIssues
                 Check.ThatCode(() => Check.That(DecimalValue*(1<<16)).IsEqualTo(0.95d*(1<<16))).IsAFailingCheckWithMessage("",
                     "The checked value is different from the expected one, with a difference of 7.3E-12. You may consider using IsCloseTo() for comparison.",
                     "The checked value:",
-                    "\t[62259.2]",
+                    "\t[62259.200000000004]",
                     "The expected value:",
                     "\t[62259.2]");
 
                 Check.ThatCode(() => Check.That(0.9500001f*(1<<16)).IsEqualTo(0.95f*(1<<16))).IsAFailingCheckWithMessage("",
                     "The checked value is different from the expected one, with a difference of 0.0078. You may consider using IsCloseTo() for comparison.",
                     "The checked value:",
-                    "\t[62259.21]",
+                    "\t[62259.207]",
                     "The expected value:",
                     "\t[62259.2]");
                 Check.ThatCode(() => Check.That(100001f).IsEqualTo(100000f)).IsAFailingCheckWithMessage("",

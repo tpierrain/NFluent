@@ -43,7 +43,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)DynamicTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumerableCheckShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ForObsoleteStuff\CheckerShould.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)FromIssues\EdgeCasesTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumerableRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumOrStructRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EqualRelatedTests.cs" />
@@ -53,7 +52,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExtensibilityHelperTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExtractingRelatedTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FluentMessageTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)FromIssues\UserReportedIssues2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HelpersTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CultureSession.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\TestFiles.cs" />
@@ -81,7 +79,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)TimeSpanTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ToEnumeratedStringTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TypeRelatedTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)FromIssues\UserReportedIssuesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)CheckedFile.xml">

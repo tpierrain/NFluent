@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>0147471a-18d2-4714-8cda-37da471e0e45</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>NFluent.Tests.ReportedIssues</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CheckObjectShould.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CultureSession.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EdgeCasesTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nationality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Person.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RoDico.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserReportedIssues2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserReportedIssuesTests.cs" />
+  </ItemGroup>
+</Project>

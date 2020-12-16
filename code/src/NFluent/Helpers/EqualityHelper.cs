@@ -132,7 +132,6 @@ namespace NFluent.Helpers
                     }
                     test.DefineExpectedValue(expected, modeLabel,
                             $"different from{negatedMode}");
-
                     var differenceDetails = FluentEquals(sut, expected, mode, comparer);
                     if (!differenceDetails.IsDifferent)
                     {
