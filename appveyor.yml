@@ -1,8 +1,9 @@
-version: 2.7.0.{build}
+version: 2.7.1.{build}
 image: Visual Studio 2019
 branches:
   only:
   - master
+  - V*
 
 configuration: Release
 platform: Any CPU

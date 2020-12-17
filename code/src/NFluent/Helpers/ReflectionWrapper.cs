@@ -164,6 +164,13 @@ namespace NFluent.Helpers
             ICollection<object> scanned,
             int depth, Func<ReflectionWrapper, ReflectionWrapper, int, bool> mapFunction)
         {
+
+            if (!mapFunction(this, expected, depth))
+            {
+                // no need to recurse
+                return;
+            }
+
             if (this.ValueType.IsClass() && this.Value != null)
             {
                 // logic recursion prevention, only for (non null) reference type
@@ -173,12 +180,6 @@ namespace NFluent.Helpers
                 }
 
                 scanned.Add(this.Value);
-            }
-
-            if (!mapFunction(this, expected, depth))
-            {
-                // no need to recurse
-                return;
             }
 
             // we recurse
