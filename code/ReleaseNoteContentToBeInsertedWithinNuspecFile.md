@@ -1,3 +1,6 @@
+# V 2.8.0
+
+
 # V 2.7.1
 # Fixes
 * HasFieldsWithSameValues failed to properly compare when the expected value contained duplicate string. 
