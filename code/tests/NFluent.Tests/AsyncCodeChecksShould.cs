@@ -120,10 +120,20 @@ namespace NFluent.Tests
             // proper way for async function
             Check.ThatAsyncCode(ReturnTheAnswerAfterAWhileAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
         }
+        
+        [Test]
+        public void CheckThatAsyncCodeWorksWithLestLass()
+        {
+            Check.ThatAsyncCode(async () =>
+            {
+                var result = await ReturnTheAnswerAfterAWhileAsync();
+            }).LastsLessThan(50, TimeUnit.Milliseconds);
+        }
 
 #endregion
 
 #region Methods
+
 
         // useless attribute is used to make sure 'async' related attribute is correctly detected when multiple attributes are present
         [Ignore("this is an arbitrary attribute")]

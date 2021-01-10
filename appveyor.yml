@@ -3,7 +3,7 @@ image: Visual Studio 2019
 branches:
   only:
   - master
-  - V3
+  - /V.*/
 
 configuration: Release
 platform: Any CPU
