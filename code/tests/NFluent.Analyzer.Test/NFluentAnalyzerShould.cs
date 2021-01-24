@@ -22,7 +22,6 @@ namespace NFluent.Analyzer.Test
 {
     using System.Collections.Immutable;
     using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.Testing;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
